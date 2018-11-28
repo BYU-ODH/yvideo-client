@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### Installation
+
+After pulling the repo to a local file, run `npm i` in the root directory (where this file is). Then you can continue using any of the scripts below.
+
 ## Available Scripts
 
 In the project directory, you can run:
