@@ -62,10 +62,6 @@
 		],
 		"block-spacing": "error",
 		"brace-style": "error",
-		"capitalized-comments": [
-			"warn",
-			"always"
-		],
 		"func-call-spacing": [
 			"error",
 			"never"
