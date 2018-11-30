@@ -1,4 +1,4 @@
-<svg width="40" height="45" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="40" height="45" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor: pointer">
 <path d="M0 0 H40 V5 H0 V0 Z" fill="white"/>
 <path d="M0 10 H40 V15 H0 V10 Z" fill="white"/>
 <path d="M0 20 H40 V25 H0 V20 Z" fill="white"/>

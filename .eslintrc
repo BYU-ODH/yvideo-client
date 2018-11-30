@@ -87,7 +87,7 @@
 			"error",
 			"always"
 		],
-		"sort-vars": "error",
+		"sort-vars": "warn",
 		"spaced-comment": [
 			"error",
 			"always"

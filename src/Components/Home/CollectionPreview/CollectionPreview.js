@@ -17,6 +17,11 @@ const StyledCollectionContainer =
 		& p.gray {
 			color: #a4a4a4;
 		}
+
+		:hover {
+			cursor: pointer;
+			text-decoration: underline;
+		}
 	`,
 
 	StyledCollectionPreview = styled.div`
@@ -37,6 +42,10 @@ const StyledCollectionContainer =
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		& svg {
+			cursor: pointer;
+		}
 	`,
 
 	// eslint-disable-next-line sort-vars

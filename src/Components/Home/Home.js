@@ -15,6 +15,10 @@ const StyledContent =
 			margin-bottom: 1.8rem;
 			margin-top: 5rem;
 		}
+	`,
+
+	StyledHome = styled.div`
+		padding-top: 8.4rem;
 	`
 
 export class Home extends Component {
@@ -61,7 +65,7 @@ export class Home extends Component {
 
 	render() {
 		return (
-			<div>
+			<StyledHome>
 				<StyledContent>
 					<p>Recently Viewed</p>
 				</StyledContent>
@@ -91,7 +95,7 @@ export class Home extends Component {
 					}
 				</StyledContent>
 
-			</div>
+			</StyledHome>
 		)
 	}
 }

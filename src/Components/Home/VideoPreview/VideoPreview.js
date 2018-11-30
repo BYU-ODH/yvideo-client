@@ -10,9 +10,14 @@ const StyledVideoContainer =
 			margin-top: 1rem;
 			margin-bottom: 0;
 		}
-		
+
 		& p.gray {
 			color: #a4a4a4;
+		}
+
+		:hover {
+			cursor: pointer;
+			text-decoration: underline;
 		}
 	`,
 
