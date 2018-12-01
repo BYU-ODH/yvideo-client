@@ -30,6 +30,12 @@ const StyledVideoContainer =
 		width: 17.8rem;
 		display: flex;
 		flex-direction: row-reverse;
+		transition: all .1s;
+
+		:hover {
+			box-shadow: 0px .4rem .7rem -.1rem rgba(0,0,0,0.5);
+			margin-top: -.3rem;
+			margin-bottom: .3rem;
 	`,
 
 	// eslint-disable-next-line sort-vars
