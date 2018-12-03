@@ -1,18 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-
-import UserPic from './User/UserPic'
 
 const StyledNav = styled.div`
 	margin-right: 2.4rem;
-`
+`,
 
-export default class Nav extends Component {
-	render() {
+	// eslint-disable-next-line sort-vars
+	Nav = () => {
 		return (
 			<StyledNav>
-				<UserPic />
 			</StyledNav>
 		)
 	}
-}
+
+export default Nav
