@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import Logo from './Nav/Logo/Logo'
-import Nav from './Nav/Nav'
 
 const StyledHeader = styled.div`
 	height: 8.4rem;
@@ -11,10 +10,11 @@ const StyledHeader = styled.div`
 	/* padding: 0 2.4rem; */
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 
 	position: fixed;
 	background-color: white;
+
+	z-index: 16;
 `
 
 export class Header extends Component {
@@ -22,7 +22,7 @@ export class Header extends Component {
 		return (
 			<StyledHeader>
 				<Logo />
-				<Nav />
+				{/* <button onClick={this.props.toggleMenu}>Toggle Menu</button> */}
 			</StyledHeader>
 		)
 	}
