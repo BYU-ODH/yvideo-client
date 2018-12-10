@@ -12,7 +12,7 @@ const StyledHeader = styled.div`
 	align-items: center;
 
 	position: fixed;
-	background-color: white;
+	background-color: ${props => props.lost ? 'transparent' : 'white'};
 
 	z-index: 16;
 `
@@ -20,7 +20,7 @@ const StyledHeader = styled.div`
 export class Header extends Component {
 	render() {
 		return (
-			<StyledHeader>
+			<StyledHeader lost={this.props.lost}>
 				<Logo />
 				{/* <button onClick={this.props.toggleMenu}>Toggle Menu</button> */}
 			</StyledHeader>

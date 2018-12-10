@@ -83,11 +83,6 @@
 		],
 		"no-trailing-spaces": "warn",
 		"no-unneeded-ternary": "error",
-		"one-var": [
-			"error",
-			"always"
-		],
-		"sort-vars": "warn",
 		"spaced-comment": [
 			"error",
 			"always"

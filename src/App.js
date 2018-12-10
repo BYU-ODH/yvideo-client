@@ -5,6 +5,7 @@ import {
 	Route,
 	Link,
 	Redirect,
+	Switch,
 	withRouter
 } from 'react-router-dom'
 
@@ -14,6 +15,9 @@ import Header from './Components/Header/Header'
 import Menu from './Components/Menu/Menu'
 import Home from './Components/Home/Home'
 // import Collections from './Components/Collections/Collections'
+import NotFound from './Components/Error/Error'
+
+import VideoPage from './Components/VideoPage/VideoPage'
 
 export default class App extends Component {
 
@@ -21,10 +25,18 @@ export default class App extends Component {
 		super(props)
 
 		this.state = {
-			active: false
+			active: false,
+			lost: false
 		}
 
 		this.toggleMenu = this.toggleMenu.bind(this)
+		this.toggleLost = this.toggleLost.bind(this)
+	}
+
+	toggleLost = () => {
+		this.setState({
+			lost: !this.state.lost
+		})
 	}
 
 	toggleMenu = () => {
@@ -37,24 +49,31 @@ export default class App extends Component {
 		return (
 			<Router>
 				<div>
-					<Header />
+					<Header lost={this.state.lost} />
 					<Menu active={this.state.active} toggleMenu={this.toggleMenu} />
+					<Switch>
 
-					{/* <Route exact path='/' component={Home} />
-					<Route path='/collections' component={Collections} /> */}
+						{/* <Route exact path='/' component={Home} />
+						<Route path='/collections' component={Collections} />
 
-					<AuthButton />
-					<ul>
-						<li>
-							<Link to='/'>Home</Link>
-						</li>
-						<li>
-							<Link to='/protected'>Protected Page</Link>
-						</li>
-					</ul>
-					<Route exact path='/' component={Public} />
-					<Route path='/login' component={Login} />
-					<PrivateRoute path='/protected' component={Home} />
+						<AuthButton />
+						<ul>
+							<li>
+								<Link to='/'>Home</Link>
+							</li>
+							<li>
+								<Link to='/protected'>Protected Page</Link>
+							</li>
+						</ul> */}
+
+						<Route exact path='/' component={Public} />
+						<Route path='/login' component={Login} />
+						<PrivateRoute path='/protected' component={Home} />
+
+						<Route path='/videos/:id' component={VideoPage} />
+
+						<Route render={props => <NotFound {...props} toggleLost={this.toggleLost} />} />
+					</Switch>
 
 				</div>
 			</Router>
