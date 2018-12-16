@@ -3,14 +3,14 @@ import React, { Component } from 'react'
 import {
 	BrowserRouter as Router,
 	Route,
-	Link,
 	Redirect,
-	Switch,
-	withRouter
+	Switch
+	// withRouter
 } from 'react-router-dom'
 
 import './Fonts/fonts.css'
 
+import Landing from './Components/Landing/Landing'
 import Header from './Components/Header/Header'
 import Menu from './Components/Menu/Menu'
 import Home from './Components/Home/Home'
@@ -26,7 +26,8 @@ export default class App extends Component {
 
 		this.state = {
 			active: false,
-			lost: false
+			lost: false,
+			isAuth: false
 		}
 
 		this.toggleMenu = this.toggleMenu.bind(this)
@@ -48,42 +49,47 @@ export default class App extends Component {
 	render() {
 		return (
 			<Router>
-				<div>
-					<Header lost={this.state.lost} />
-					<Menu active={this.state.active} toggleMenu={this.toggleMenu} />
-					<Switch>
+				{this.state.isAuth ?
+					<div>
+						<Header lost={this.state.lost} />
+						<Menu active={this.state.active} toggleMenu={this.toggleMenu} />
+						<Switch>
 
-						{/* <Route exact path='/' component={Home} />
-						<Route path='/collections' component={Collections} />
+							{/* <Route exact path='/' component={Home} />
+						<Route path='/collections' component={Collections} /> */}
 
-						<AuthButton />
-						<ul>
-							<li>
-								<Link to='/'>Home</Link>
-							</li>
-							<li>
-								<Link to='/protected'>Protected Page</Link>
-							</li>
-						</ul> */}
+							{/* <AuthButton />
+							<ul>
+								<li>
+									<Link to='/'>Home</Link>
+								</li>
+								<li>
+									<Link to='/protected'>Protected Page</Link>
+								</li>
+							</ul> */}
 
-						<Route exact path='/' component={Public} />
-						<Route path='/login' component={Login} />
-						<PrivateRoute path='/protected' component={Home} />
+							<Route exact path='/' component={Home} />
 
-						<Route path='/videos/:id' component={VideoPage} />
+							<Route path='/login' component={Login} />
 
-						<Route render={props => <NotFound {...props} toggleLost={this.toggleLost} />} />
-					</Switch>
+							<PrivateRoute path='/dashboard' component={Home} />
 
-				</div>
+							<Route path='/videos/:id' component={VideoPage} />
+
+							<Route render={props => <NotFound {...props} toggleLost={this.toggleLost} />} />
+						</Switch>
+
+					</div>
+					: <Landing />
+				}
 			</Router>
 		)
 	}
 }
 
-function Public() {
-	return <h3>Home</h3>
-}
+// function Public() {
+// 	return <h3>Home</h3>
+// }
 
 function PrivateRoute({ component: Component, ...rest }) {
 	return (
@@ -116,20 +122,20 @@ const fakeAuth = {
 }
 
 // eslint-disable-next-line one-var
-const AuthButton = withRouter(({ history }) =>
-	fakeAuth.isAuthenticated ?
-		<p style={{ paddingTop: 20 + 'rem' }}>
-			Welcome!{' '}
-			<button
-				onClick={() => {
-					fakeAuth.signout(() => history.push('/'))
-				}}
-			>
-				Sign out
-        </button>
-		</p>
-		:
-		<p style={{ paddingTop: 20 + 'rem' }}>You are not logged in.</p>)
+// const AuthButton = withRouter(({ history }) =>
+// 		fakeAuth.isAuthenticated ?
+// 			<p style={{ paddingTop: 20 + 'rem' }}>
+// 				Welcome!{' '}
+// 				<button
+// 					onClick={() => {
+// 						fakeAuth.signout(() => history.push('/'))
+// 					}}
+// 				>
+// 					Sign out
+//         </button>
+// 			</p>
+// 			:
+// 			<p style={{ paddingTop: 20 + 'rem' }}>You are not logged in.</p>)
 
 class Login extends React.Component {
 	state = { redirectToReferrer: false };
