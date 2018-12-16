@@ -23,13 +23,20 @@ const StyledTitle =
 		display: flex;
 		align-items: center;
 		margin-left: 2.4rem;
+	`,
+
+	StyledLogo = styled.div`
+		background: url(${HexLogo}) no-repeat center;
+		background-size: contain;
+		height: 3.6rem;
+		width: 3.6rem;
 	`
 
 export default class Title extends Component {
 	render() {
 		return (
 			<StyledTitleWrapper to='/'>
-				<embed src={HexLogo} width='36' height='36' />
+				<StyledLogo />
 				<StyledTitle>YVIDEO</StyledTitle>
 			</StyledTitleWrapper>
 		)

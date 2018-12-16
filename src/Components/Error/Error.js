@@ -46,10 +46,6 @@ const StyledError = styled.div`
 	`
 
 export default class componentName extends Component {
-	constructor(props) {
-		super(props)
-	}
-
 	componentWillMount() {
 		this.props.toggleLost()
 	}
