@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- 8
+cache:
+  directories:
+  - node_modules
+script:
+- npm run build
+- npm test
+before_deploy:
+- cd build
+- tag=$(git tag --points-at $TRAVIS_COMMIT | tail -1)
+- tar cf ../$tag.tar *
+- cd ..
+deploy:
+  provider: releases
+  api_key:
+    secure: Dd4xjczL2Gg1gYxdiT9VsF4ggqqdSC7fH2dyqbmTOvSGJonGzSe8I1YhIL6XmwYNm36IYCDTr8uX8XFhT8R0U31thUVvzJ/hDQL3nHgSRmYTJxSZxII6NuED8m8DpKwpuXY9Zuyk0KJlY+5gZTOIT3j9NA/xl+/mvTUoUXqtYT4DFX2POnar5Q9hwQ7g7ffrNAfvTSH2aGkaASKt2eSyWvKI4+aZOuYkGZrjZhMQsXvE58eLaR3J4UBzsi7TVWDHNGm8psIeGBJAB7BSWsC+LE7Xy3mFTKAdmFD6H+1YJhm2+98HpMPsllyAtWhoOILQrE38QLAiAgWbhsurE+s6FBkbMWggDjWAW4wDlSNrJYqQMI9NAWJZ5N4rhZODRBqmna88LkGWVHVFaWZFDZ735LBLfglfTZMdFp4Nxzi8HLxYkdicO7DcP/k0bk1sbheL2BJ6zm0FEvRKdHVDq33OqpIIES3eaTbQ/AZImXvj3mjTlCwQhtRR8NhTSbbbZIoJMMYP9qYL+L8UlOU/Mj1L8wYg7gqeuB9TN6hjXBa9mjdVxx+Sw9qIo2hCH37gXL/IxRpdrUgwOqLa2T+ZI6iSJrF0bghWVjcH8YYJ8bP2nRwamw03wLpxvLd8a/SVTJUdzh6S22Z+vXnS6vpK4lrr31r/SQp1gutGxH6hnThUL4s=
+  file: $tag.tar
+  skip_cleanup: true
+  on:
+    tags: true

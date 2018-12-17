@@ -118,7 +118,7 @@ export default class Landing extends Component {
 						<h1>YVIDEO</h1>
 					</div>
 					<div className='button-wrapper'>
-						<StyledButton className='primary'>Sign In</StyledButton>
+						<StyledButton as='a' href={'https://ayamelbeta.byu.edu/auth/cas/redirect'+window.location.origin} className='primary'>Sign In</StyledButton>
 						<StyledButton className='secondary' onClick={this.toggleAbout}>About</StyledButton>
 					</div>
 				</StyledHello>
