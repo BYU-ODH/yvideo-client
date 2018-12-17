@@ -128,31 +128,31 @@ const _CollectionPreview = [
 	}
 ],
 
-	_VideoPreview = [
-		{
-			'contentId': 1,
-			'name': 'Emilie Muller',
-			'thumbnail': 'https://s3-alpha.figma.com/img/3e99/12b3/3b459ecf36ff1095f600b3ae3e542d97',
-			'collection': 'German Public Content'
-		},
-		{
-			'contentId': 2,
-			'name': 'The Longest Yeah Boy Ever',
-			'thumbnail': 'https://s3-alpha.figma.com/img/8781/74a1/80b73b5e046e9f661060fb139e06653e',
-			'collection': 'Collection 117'
-		},
-		{
-			'contentId': 3,
-			'name': 'Detroit',
-			'thumbnail': 'https://s3-alpha.figma.com/img/92a2/adb3/65405049a9cc385cec3104056d6952c0',
-			'collection': 'Collection 117'
-		},
-		{
-			'contentId': 4,
-			'name': 'Les Choristes',
-			'thumbnail': 'https://s3-alpha.figma.com/img/5b3b/f49a/0352d400fe8db4a1d03fecb8d926af6e',
-			'collection': 'French Class'
-		}
-	]
+_VideoPreview = [
+	{
+		'contentId': 1,
+		'name': 'Emilie Muller',
+		'thumbnail': 'https://s3-alpha.figma.com/img/3e99/12b3/3b459ecf36ff1095f600b3ae3e542d97',
+		'collection': 'German Public Content'
+	},
+	{
+		'contentId': 2,
+		'name': 'The Longest Yeah Boy Ever',
+		'thumbnail': 'https://s3-alpha.figma.com/img/8781/74a1/80b73b5e046e9f661060fb139e06653e',
+		'collection': 'Collection 117'
+	},
+	{
+		'contentId': 3,
+		'name': 'Detroit',
+		'thumbnail': 'https://s3-alpha.figma.com/img/92a2/adb3/65405049a9cc385cec3104056d6952c0',
+		'collection': 'Collection 117'
+	},
+	{
+		'contentId': 4,
+		'name': 'Les Choristes',
+		'thumbnail': 'https://s3-alpha.figma.com/img/5b3b/f49a/0352d400fe8db4a1d03fecb8d926af6e',
+		'collection': 'French Class'
+	}
+]
 
 export default Home
