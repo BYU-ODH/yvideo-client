@@ -49,22 +49,25 @@ export default class App extends Component {
 	}
 
 	componentDidMount = () => {
-		this.checkAuth(this.setState)
+		this.checkAuth()
 	}
 
-	checkAuth(setState) {
+	checkAuth() {
 		fetch('https://ayamelbeta.byu.edu/api/user', { credentials: 'include' })
 			.then(data => {
-				data.ok ? console.log(data) : console.error(data)
-				this.setState({
-					auth: true
-				})
-			})
-			.catch(err => {
-				console.error(err)
-				this.setState({
-					auth: false
-				})
+				if (data.ok) {
+					console.log(data)
+					Cookies.set('auth', true)
+					this.setState({
+						auth: true
+					})
+				} else {
+					console.error(data)
+					Cookies.set('auth', false)
+					this.setState({
+						auth: false
+					})
+				}
 			})
 	}
 
@@ -82,16 +85,15 @@ export default class App extends Component {
 	}
 }
 
-const PrivateRoute = ({ component: Component, auth: isAuth, ...rest }) => {
-	return (
-		<Route
-			{...rest}
-			render={props =>
-				isAuth ?
-					<Component {...props} />
-					:
-					() => window.location.href = 'https://ayamelbeta.byu.edu/auth/cas/redirect' + window.location.origin
-			}
-		/>
-	)
+const PrivateRoute = ({ component: Component, auth: isAuth, path: endPath, ...rest }) => {
+	if (isAuth !== true)
+		return window.location.href = 'https://ayamelbeta.byu.edu/auth/cas/redirect' + window.location.origin + endPath
+	else {
+		return (
+			<Route
+				{...rest}
+				render={props => <Component {...props} />}
+			/>
+		)
+	}
 }
