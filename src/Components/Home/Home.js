@@ -105,25 +105,25 @@ const _CollectionPreview = [
 	{
 		'contentCount': 17,
 		'name': 'American Heritage',
-		'url': 'https://s3-alpha.figma.com/img/8cab/3ce4/012ce704e985c8ceef98d0c81e9c3f00',
+		'url': '',
 		'id': 16
 	},
 	{
 		'contentCount': 4,
 		'name': 'Germ 101 - Term Videos',
-		'url': 'https://s3-alpha.figma.com/img/77cd/6ec1/8f49d9585034111bbc6453e50c9e6997',
+		'url': '',
 		'id': 8
 	},
 	{
 		'contentCount': 2,
 		'name': 'MTV Music Videos',
-		'url': 'https://s3-alpha.figma.com/img/41e0/198a/adf1e2025f5bdd1213b5748b79953e9b',
+		'url': '',
 		'id': 17
 	},
 	{
 		'contentCount': 8,
 		'name': 'Yoga Meditation',
-		'url': 'https://s3-alpha.figma.com/img/fc1c/6b87/272178796ef6b666b6befb1723d495d8',
+		'url': '',
 		'id': 20
 	}
 ],
@@ -132,25 +132,25 @@ const _CollectionPreview = [
 		{
 			'contentId': 1,
 			'name': 'Emilie Muller',
-			'thumbnail': 'https://s3-alpha.figma.com/img/3e99/12b3/3b459ecf36ff1095f600b3ae3e542d97',
+			'thumbnail': '',
 			'collection': 'German Public Content'
 		},
 		{
 			'contentId': 2,
 			'name': 'The Longest Yeah Boy Ever',
-			'thumbnail': 'https://s3-alpha.figma.com/img/8781/74a1/80b73b5e046e9f661060fb139e06653e',
+			'thumbnail': '',
 			'collection': 'Collection 117'
 		},
 		{
 			'contentId': 3,
 			'name': 'Detroit',
-			'thumbnail': 'https://s3-alpha.figma.com/img/92a2/adb3/65405049a9cc385cec3104056d6952c0',
+			'thumbnail': '',
 			'collection': 'Collection 117'
 		},
 		{
 			'contentId': 4,
 			'name': 'Les Choristes',
-			'thumbnail': 'https://s3-alpha.figma.com/img/5b3b/f49a/0352d400fe8db4a1d03fecb8d926af6e',
+			'thumbnail': '',
 			'collection': 'French Class'
 		}
 	]

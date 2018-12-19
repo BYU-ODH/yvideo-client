@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 import Overlay from './Overlay'
 
@@ -118,7 +119,7 @@ export default class Landing extends Component {
 						<h1>YVIDEO</h1>
 					</div>
 					<div className='button-wrapper'>
-						<StyledButton as='a' href={'https://ayamelbeta.byu.edu/auth/cas/redirect'+window.location.origin} className='primary'>Sign In</StyledButton>
+						<StyledButton as={Link} to={'/dashboard'} className='primary'>Sign In</StyledButton>
 						<StyledButton className='secondary' onClick={this.toggleAbout}>About</StyledButton>
 					</div>
 				</StyledHello>
