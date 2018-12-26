@@ -9,10 +9,12 @@ import './Fonts/fonts.css'
 
 import Cookies from 'js-cookie'
 
-import Landing from './Components/Pages/Landing/Landing'
 import Header from './Components/Header/Header'
 import Menu from './Components/Menu/Menu'
+
+import Landing from './Components/Pages/Landing/Landing'
 import Home from './Components/Pages/Home/Home'
+import Collections from './Components/Pages/Collections/Collections'
 import Error from './Components/Pages/Error/Error'
 
 // import VideoPage from './Components/VideoPage/VideoPage'
@@ -89,6 +91,8 @@ export default class App extends Component {
 						toggleLost={this.toggleLost}
 					/>
 					{/* <PrivateRoute path='/videos/:id' component={VideoPage} /> */}
+
+					<Route path='/collections' component={Collections} />
 
 					<Route render={props => <Error {...props} toggleLost={this.toggleLost} error='404' message={'You\'ve wandered too far'} />} />
 				</Switch>

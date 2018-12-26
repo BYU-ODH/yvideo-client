@@ -3,8 +3,6 @@ import styled from 'styled-components'
 
 import carrot from './../../../carrot.svg'
 
-import { Link } from 'react-router-dom'
-
 const StyledCollectionList = styled.div`
 	display: flex;
 	flex-direction: row;
@@ -51,13 +49,13 @@ const StyledCollectionList = styled.div`
 	`,
 
 	CollectionList = props => {
-			return (
-				<StyledCollectionList>
-					<p className='name'>{props.name}</p>
-					<p className='gray count'>{props.length} Videos</p>
-					<embed className='arrow' src={carrot}/>
-				</StyledCollectionList>
-			)
+		return (
+			<StyledCollectionList>
+				<p className='name'>{props.name}</p>
+				<p className='gray count'>{props.length} Videos</p>
+				<embed className='arrow' src={carrot} />
+			</StyledCollectionList>
+		)
 	}
 
-	export default CollectionList
+export default CollectionList
