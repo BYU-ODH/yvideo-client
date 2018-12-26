@@ -45,7 +45,7 @@ const StyledError = styled.div`
 		margin-top: 8rem;
 	`
 
-export default class componentName extends Component {
+export default class Error extends Component {
 	componentWillMount() {
 		this.props.toggleLost()
 	}
@@ -57,8 +57,8 @@ export default class componentName extends Component {
 	render() {
 		return (
 			<StyledError>
-				<h1>404</h1>
-				<h2>You've wandered too far</h2>
+				<h1>{this.props.error}</h1>
+				<h2>{this.props.message}</h2>
 				<StyledLink to={'/'}>Go back home</StyledLink>
 			</StyledError>
 		)

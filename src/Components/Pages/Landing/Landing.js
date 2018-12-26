@@ -7,7 +7,7 @@ import Overlay from './Overlay'
 import CometsLeft from './CometsLeft.svg'
 import CometsRight from './CometsRight.svg'
 
-import HexLogo from './../../HexLogo2.svg'
+import HexLogo from './../../../HexLogo2.svg'
 
 const StyledLanding = styled.div`
 	width: 100%;

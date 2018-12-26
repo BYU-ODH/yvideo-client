@@ -2,23 +2,21 @@ import React, { Component } from 'react'
 
 import {
 	Route,
-	Switch,
-	withRouter,
-	Redirect
+	Switch
 } from 'react-router-dom'
 
 import './Fonts/fonts.css'
 
 import Cookies from 'js-cookie'
 
-import Landing from './Components/Landing/Landing'
+import Landing from './Components/Pages/Landing/Landing'
 import Header from './Components/Header/Header'
 import Menu from './Components/Menu/Menu'
-import Home from './Components/Home/Home'
-import NotFound from './Components/Error/Error'
+import Home from './Components/Pages/Home/Home'
+import Error from './Components/Pages/Error/Error'
 
-import VideoPage from './Components/VideoPage/VideoPage'
-import { createReadStream } from 'fs'
+// import VideoPage from './Components/VideoPage/VideoPage'
+// import { createReadStream } from 'fs'
 
 export default class App extends Component {
 
@@ -28,7 +26,8 @@ export default class App extends Component {
 		this.state = {
 			active: false,
 			lost: false,
-			auth: false
+			auth: false,
+			authCheck: true
 		}
 
 		this.toggleMenu = this.toggleMenu.bind(this)
@@ -48,7 +47,7 @@ export default class App extends Component {
 		})
 	}
 
-	componentDidMount = () => {
+	componentWillMount = () => {
 		this.checkAuth()
 	}
 
@@ -56,16 +55,19 @@ export default class App extends Component {
 		fetch('https://ayamelbeta.byu.edu/api/user', { credentials: 'include' })
 			.then(data => {
 				if (data.ok) {
-					console.log(data)
 					Cookies.set('auth', true)
+					console.log(data)
 					this.setState({
-						auth: true
+						auth: true,
+						authCheck: false
 					})
+					this.setState({ authCheck: false })
 				} else {
-					console.error(data)
 					Cookies.set('auth', false)
+					console.error(data)
 					this.setState({
-						auth: false
+						auth: false,
+						authCheck: false
 					})
 				}
 			})
@@ -73,27 +75,53 @@ export default class App extends Component {
 
 	render() {
 		return (
-			<Switch>
-				<Route exact path='/' component={Landing} />
+			<div>
 
-				<PrivateRoute path='/dashboard' component={Home} auth={this.state.auth} />
-				{/* <PrivateRoute path='/videos/:id' component={VideoPage} /> */}
+				<Switch>
+					<Route exact path='/' component={Landing} />
 
-				<Route render={props => <NotFound {...props} toggleLost={this.toggleLost} />} />
-			</Switch>
+					<PrivateRoute
+						path='/dashboard'
+						component={Home}
+						active={this.state.active}
+						authCheck={this.state.authCheck}
+						toggleMenu={this.toggleMenu}
+						toggleLost={this.toggleLost}
+					/>
+					{/* <PrivateRoute path='/videos/:id' component={VideoPage} /> */}
+
+					<Route render={props => <Error {...props} toggleLost={this.toggleLost} error='404' message={'You\'ve wandered too far'} />} />
+				</Switch>
+			</div>
 		)
+
 	}
 }
 
-const PrivateRoute = ({ component: Component, auth: isAuth, path: endPath, ...rest }) => {
-	if (isAuth !== true)
-		return window.location.href = 'https://ayamelbeta.byu.edu/auth/cas/redirect' + window.location.origin + endPath
-	else {
-		return (
-			<Route
-				{...rest}
-				render={props => <Component {...props} />}
-			/>
-		)
-	}
+const PrivateRoute = ({
+	component: Component,
+	toggleMenu: toggleMenu2,
+	active: active2,
+	path: Path,
+	authCheck: AuthCheck,
+	toggleLost: ToggleLost,
+	...rest
+}) => {
+	if (!AuthCheck) {
+		if (Cookies.get('auth') !== 'true')
+			return window.location.href = 'https://ayamelbeta.byu.edu/auth/cas/redirect' + window.location.origin + Path
+		else {
+			return (
+				<div>
+					<Header />
+					<Menu toggleMenu={props => props.toggleMenu2} active={props => props.active2} />
+
+					<Route
+						{...rest}
+						render={props => <Component {...props} />}
+					/>
+				</div>
+			)
+		}
+	} else return <Error toggleLost={ToggleLost} error='500' message={'This is on us. We\'re very sorry.'} />
 }
