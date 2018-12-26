@@ -4,8 +4,7 @@ import styled from 'styled-components'
 
 import PreviewIcon from './icon.svg'
 
-const StyledCollectionContainer =
-	styled.div`
+const StyledCollectionContainer = styled.div`
 		display: flex;
 		flex-direction: column;
 
