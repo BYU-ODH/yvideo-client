@@ -19,7 +19,7 @@ const StyledCollectionContainer = styled.div`
 
 		:hover {
 			cursor: pointer;
-			text-decoration: underline;
+			/* text-decoration: underline; */
 		}
 	`,
 
@@ -32,6 +32,13 @@ const StyledCollectionContainer = styled.div`
 		width: 17.8rem;
 		display: flex;
 		flex-direction: row-reverse;
+		/* transition: all .1s;
+
+		:hover {
+			box-shadow: 0px .4rem .7rem -.2rem rgba(0,0,0,0.5);
+			margin-top: -.3rem;
+			margin-bottom: .3rem;
+		} */
 	`,
 
 	StyledIconBox = styled.div`
