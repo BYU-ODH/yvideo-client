@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 
-import {
-	Route,
-	Switch
-} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import './Fonts/fonts.css'
 
@@ -14,11 +11,7 @@ import Menu from './Components/Menu/Menu'
 
 import Landing from './Components/Pages/Landing/Landing'
 import Home from './Components/Pages/Home/Home'
-import Collections from './Components/Pages/Collections/Collections'
 import Error from './Components/Pages/Error/Error'
-
-// import VideoPage from './Components/VideoPage/VideoPage'
-// import { createReadStream } from 'fs'
 
 export default class App extends Component {
 
@@ -29,18 +22,12 @@ export default class App extends Component {
 			active: false,
 			lost: false,
 			auth: false,
-			authCheck: true
+			check: true
 		}
 
 		this.toggleMenu = this.toggleMenu.bind(this)
-		this.toggleLost = this.toggleLost.bind(this)
 		this.checkAuth = this.checkAuth.bind(this)
-	}
-
-	toggleLost = () => {
-		this.setState({
-			lost: !this.state.lost
-		})
+		this.signOut = this.signOut.bind(this)
 	}
 
 	toggleMenu = () => {
@@ -54,78 +41,77 @@ export default class App extends Component {
 	}
 
 	checkAuth() {
-		fetch('https://ayamelbeta.byu.edu/api/user', { credentials: 'include' })
+		fetch('https://santi.space/api/user/auth', { credentials: 'include' })
 			.then(data => {
+				console.log('/api/user/auth', data)
 				if (data.ok) {
 					Cookies.set('auth', true)
-					console.log(data)
 					this.setState({
 						auth: true,
-						authCheck: false
+						check: false
 					})
-					this.setState({ authCheck: false })
 				} else {
 					Cookies.set('auth', false)
-					console.error(data)
 					this.setState({
 						auth: false,
-						authCheck: false
+						check: false
 					})
 				}
+			})
+			.catch(error => {
+				// display 500 error
+			})
+	}
+
+	signOut = () => {
+		this.setState({ wait: true })
+		fetch('https://santi.space/auth/logout', { credentials: 'include' })
+			.then(data => {
+				console.log(data)
+				this.setState({
+					auth: false,
+					wait: false
+				})
+				window.location.href = window.location.origin
 			})
 	}
 
 	render() {
 		return (
-			<div>
+			<Switch>
+				<Route exact path='/' component={Landing} />
 
-				<Switch>
-					<Route exact path='/' component={Landing} />
+				<PrivateRoute
+					path='/dashboard'
+					component={Home}
+					active={this.state.active}
+					check={this.state.check}
+					toggleMenu={this.toggleMenu}
+					signOut={this.signOut}
+				/>
 
-					<PrivateRoute
-						path='/dashboard'
-						component={Home}
-						active={this.state.active}
-						authCheck={this.state.authCheck}
-						toggleMenu={this.toggleMenu}
-						toggleLost={this.toggleLost}
-					/>
-					{/* <PrivateRoute path='/videos/:id' component={VideoPage} /> */}
-
-					<Route path='/collections' component={Collections} />
-
-					<Route render={props => <Error {...props} toggleLost={this.toggleLost} error='404' message={'You\'ve wandered too far'} />} />
-				</Switch>
-			</div>
+				<Route component={Error} error='404' message={'You\'ve wandered too far'} />
+			</Switch>
 		)
 
 	}
 }
 
-const PrivateRoute = ({
-	component: Component,
-	toggleMenu: toggleMenu2,
-	active: active2,
-	path: Path,
-	authCheck: AuthCheck,
-	toggleLost: ToggleLost,
-	...rest
-}) => {
-	if (!AuthCheck) {
-		if (Cookies.get('auth') !== 'true')
-			return window.location.href = 'https://ayamelbeta.byu.edu/auth/cas/redirect' + window.location.origin + Path
-		else {
-			return (
-				<div>
-					<Header />
-					<Menu toggleMenu={props => props.toggleMenu2} active={props => props.active2} />
+const HeaderRoute = props => {
+	return (
+		<div>
+			<Header />
+			<Menu active={props.active} toggleMenu={props.toggleMenu} signOut={props.signOut} />
+			<Route path={props.path} component={props.component} />
+		</div>
+	)
+}
 
-					<Route
-						{...rest}
-						render={props => <Component {...props} />}
-					/>
-				</div>
-			)
-		}
-	} else return <Error toggleLost={ToggleLost} error='500' message={'This is on us. We\'re very sorry.'} />
+const PrivateRoute = ({ component: Component, ...props }) => {
+	if (!props.check) {
+		if (Cookies.get('auth') !== 'true')
+			window.location.href = 'https://santi.space/auth/cas/redirect' + window.location.origin + props.path
+		else
+			return <HeaderRoute {...props} component={Component} />
+	} else return <Error error='500' message={'This is on us. We\'re very sorry.'} />
 }

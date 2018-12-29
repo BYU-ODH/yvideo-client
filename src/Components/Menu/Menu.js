@@ -24,7 +24,7 @@ const StyledMenu = styled.div`
 
 	transition: all .4s ease-in-out;
 
-	& > button {
+	& > button:first-of-type {
 		position: relative;
 		left: -8.4rem;
 		transition: left .4s ease-in-out;
@@ -34,27 +34,24 @@ const StyledMenu = styled.div`
 		left: calc(100% - 32rem);
 		box-shadow: 0 -.5rem 3rem 0 rgba(0,0,0,0.25);
 
-		& > button {
+		& > button:first-of-type {
 			position: relative;
 			left: 0;
 		}
 	}
 `,
 
-	// eslint-disable-next-line sort-vars
 	StyledH4 = styled.h4`
 		margin-top: 2.4rem;
 		font-weight: 500;
 	`,
 
-	// eslint-disable-next-line sort-vars
 	StyledHr = styled.hr`
 		margin: 1rem 0;
 		border: none;
 		border-top: 1px solid #c4c4c4;
 	`,
 
-	// eslint-disable-next-line sort-vars
 	StyledLink = styled(Link)`
 		margin-bottom: 1rem;
 
@@ -62,15 +59,16 @@ const StyledMenu = styled.div`
 		font-weight: 300;
 
 		color: black;
+
+		background: transparent;
+		border: none;
 	`,
 
-	// eslint-disable-next-line sort-vars
 	StyledBoldLink = styled(StyledLink)`
 		font-weight: 500;
 		text-transform: uppercase;
 	`,
 
-	// eslint-disable-next-line sort-vars
 	Menu = props => {
 		return (
 			<StyledMenu className={props.active ? 'active' : ''}>
@@ -78,11 +76,33 @@ const StyledMenu = styled.div`
 				<StyledH4>Grant Perdue</StyledH4>
 				<StyledHr />
 				<StyledLink to='/word-list'>My Word List</StyledLink>
-				<StyledLink to='/logout'>Sign out</StyledLink>
+				<StyledLink as={SignOutButton} signOut={props.signOut}>Sign out</StyledLink>
 				<br />
 				<StyledBoldLink to='/collections'>Collections</StyledBoldLink>
 			</StyledMenu>
 		)
-	}
+	},
+
+	SignOutButton = props => {
+		return <StyledButton onClick={props.signOut}>{props.children}</StyledButton>
+	},
+
+	StyledButton = styled.button`
+		margin-bottom: 1rem;
+		padding: 0;
+
+		width: fit-content;
+
+		text-decoration: none;
+		outline: none;
+		font-weight: 300;
+
+		color: black;
+
+		background: transparent;
+		border: none;
+
+		cursor: pointer;
+	`
 
 export default Menu

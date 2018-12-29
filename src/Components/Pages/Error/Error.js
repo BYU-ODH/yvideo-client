@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { Link } from 'react-router-dom'
@@ -43,24 +43,16 @@ const StyledError = styled.div`
 		text-decoration: none;
 		cursor: pointer;
 		margin-top: 8rem;
-	`
+	`,
 
-export default class Error extends Component {
-	componentWillMount() {
-		this.props.toggleLost()
-	}
-
-	componentWillUnmount() {
-		this.props.toggleLost()
-	}
-
-	render() {
+	Error = props => {
 		return (
 			<StyledError>
-				<h1>{this.props.error}</h1>
-				<h2>{this.props.message}</h2>
+				<h1>{props.error}</h1>
+				<h2>{props.message}</h2>
 				<StyledLink to={'/'}>Go back home</StyledLink>
 			</StyledError>
 		)
 	}
-}
+
+export default Error
