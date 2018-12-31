@@ -67,8 +67,7 @@ export class Collections extends Component {
 		super(props)
 
 		this.state = {
-			// previewEndpoint: 'http://10.37.151.57:9000/api/user/preview',
-			previewEndpoint: 'https://ayamelbeta.byu.edu/api/user/preview/4',
+			previewEndpoint: process.env.REACT_APP_YVIDEO_SERVER+'/api/user/preview/4',
 			preview: [],
 			recent: []
 		}

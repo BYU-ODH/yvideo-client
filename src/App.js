@@ -41,7 +41,7 @@ export default class App extends Component {
 	}
 
 	checkAuth() {
-		fetch('https://santi.space/api/user/auth', { credentials: 'include' })
+		fetch(process.env.REACT_APP_YVIDEO_SERVER+'/api/user/auth', { credentials: 'include' })
 			.then(data => {
 				console.log('/api/user/auth', data)
 				if (data.ok) {
@@ -65,7 +65,7 @@ export default class App extends Component {
 
 	signOut = () => {
 		this.setState({ wait: true })
-		fetch('https://santi.space/auth/logout', { credentials: 'include' })
+		fetch(process.env.REACT_APP_YVIDEO_SERVER+'/auth/logout', { credentials: 'include' })
 			.then(data => {
 				console.log(data)
 				this.setState({
@@ -110,7 +110,7 @@ const HeaderRoute = props => {
 const PrivateRoute = ({ component: Component, ...props }) => {
 	if (!props.check) {
 		if (Cookies.get('auth') !== 'true')
-			window.location.href = 'https://santi.space/auth/cas/redirect' + window.location.origin + props.path
+			window.location.href = process.env.REACT_APP_YVIDEO_SERVER+'/auth/cas/redirect' + window.location.origin + props.path
 		else
 			return <HeaderRoute {...props} component={Component} />
 	} else return <Error error='500' message={'This is on us. We\'re very sorry.'} />
