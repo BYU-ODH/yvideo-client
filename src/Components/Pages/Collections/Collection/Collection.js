@@ -48,10 +48,6 @@ const StyledCollectionHead = styled.div`
 		transition: height .25s ease-in-out;
 
 		overflow: hidden;
-
-		& > div {
-			padding: 2rem;
-		}
 	`
 
 export default class Collection extends Component {
@@ -74,17 +70,15 @@ export default class Collection extends Component {
 		const { count, name } = { ...this.props.data }
 		return (
 			<div>
-				<StyledCollectionHead isOpen={this.state.isOpen}>
+				<StyledCollectionHead isOpen={this.state.isOpen} onClick={this.togglePanel} >
 					<h4>{name}</h4>
 					<p>{count} Videos</p>
-					<div onClick={this.togglePanel} />
+					<div />
 				</StyledCollectionHead>
 				<StyledCollectionBody isOpen={this.state.isOpen} count={count}>
-					<div>
-						{
-							_VideoPreview.map(item => <CollectionItem key={item.contentId} data={item} />)
-						}
-					</div>
+					{
+						_VideoPreview.map(item => <CollectionItem key={item.contentId} data={item} />)
+					}
 				</StyledCollectionBody>
 			</div>
 		)
