@@ -41,11 +41,12 @@ const StyledVideoContainer =
 
 	// eslint-disable-next-line sort-vars
 	VideoPreview = props => {
+		const { thumbnail, name, collection } = { ...props.data }
 		return (
 			<StyledVideoContainer>
-				<StyledVideoPreview thumb={props.thumb} />
-				<p>{props.name}</p>
-				<p className='gray'>{props.collection}</p>
+				<StyledVideoPreview thumb={thumbnail} />
+				<p>{name}</p>
+				<p className='gray'>{collection}</p>
 			</StyledVideoContainer>
 		)
 	}

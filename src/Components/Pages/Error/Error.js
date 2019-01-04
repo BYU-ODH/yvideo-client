@@ -50,7 +50,7 @@ const StyledError = styled.div`
 			<StyledError>
 				<h1>{props.error}</h1>
 				<h2>{props.message}</h2>
-				<StyledLink to={'/'}>Go back home</StyledLink>
+				<StyledLink to={'/dashboard'}>Go back home</StyledLink>
 			</StyledError>
 		)
 	}

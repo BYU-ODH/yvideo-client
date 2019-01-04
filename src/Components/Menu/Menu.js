@@ -75,10 +75,10 @@ const StyledMenu = styled.div`
 				<UserPic initials='GP' toggleMenu={props.toggleMenu} />
 				<StyledH4>Grant Perdue</StyledH4>
 				<StyledHr />
-				<StyledLink to='/word-list'>My Word List</StyledLink>
-				<StyledLink as={SignOutButton} signOut={props.signOut}>Sign out</StyledLink>
+				<StyledLink to='/word-list' onClick={props.toggleMenu}>My Word List</StyledLink>
+				<StyledLink as={SignOutButton} signOut={props.signOut} onClick={props.toggleMenu}>Sign out</StyledLink>
 				<br />
-				<StyledBoldLink to='/collections'>Collections</StyledBoldLink>
+				<StyledBoldLink to='/collections' onClick={props.toggleMenu}>Collections</StyledBoldLink>
 			</StyledMenu>
 		)
 	},

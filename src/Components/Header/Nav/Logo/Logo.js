@@ -12,6 +12,10 @@ const StyledTitle =
 		font-size: 1.8rem;
 		line-height: 2.1rem;
 		margin: 0 0 0 1.3rem;
+
+		background: linear-gradient(to right, #0582CA 0%, #002E5D 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	`,
 
 	StyledTitleWrapper = styled(Link)`

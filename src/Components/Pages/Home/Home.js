@@ -72,12 +72,9 @@ export class Home extends Component {
 				<StyledContent>
 					{
 						this.state.recent !== [] ? this.state.recent.map(item =>
-							<VideoPreview
-								key={item.contentId}
-								thumb={item.thumbnail}
-								name={item.name}
-								collection={item.collection}
-							/>) : <li>Uh Oh</li>
+							<VideoPreview key={item.contentId} data={item} />)
+							:
+							<li>Uh Oh</li>
 					}
 				</StyledContent>
 				<StyledContent>

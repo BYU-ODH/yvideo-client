@@ -19,6 +19,10 @@ const StyledLanding = styled.div`
 		height: 100vh;
 		margin: 0;
 		background-color: transparent;
+
+		@media (max-width: 800px) {
+			background-size: contain;
+		}
 	}
 `,
 
@@ -49,7 +53,13 @@ const StyledLanding = styled.div`
 			& > h1 {
 				font-family: 'Roboto Mono';
 				font-size: 4.8rem;
-				margin-left: 2rem;
+				margin: 0 0 0 2rem;
+				height: 4.8rem;
+				line-height: 4.8rem;
+
+				background: linear-gradient(to right, #0582CA 0%, #002E5D 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
 			}
 
 			&.button-wrapper {
@@ -74,6 +84,7 @@ const StyledLanding = styled.div`
 		border-radius: 100rem;
 		border: none;
 		text-transform: uppercase;
+		text-decoration: none;
 		margin: 0 0 2.6rem 0;
 		cursor: pointer;
 		outline: none;
