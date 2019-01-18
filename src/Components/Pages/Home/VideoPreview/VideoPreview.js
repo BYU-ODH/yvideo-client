@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 const StyledVideoContainer =
 	styled.div`
@@ -21,22 +21,34 @@ const StyledVideoContainer =
 		}
 	`,
 
+	Shimmer = keyframes`
+		0% {
+			background-position: -30rem 0;
+		}
+		100% {
+				background-position: 30rem 0;
+		}
+	`,
+
 	StyledVideoPreview = styled.div`
 		background-image: url(${ props => props.thumb});
 		background-size: cover;
 		background-position: center;
-		background-color: gray;
+
+		animation: ${Shimmer} 2s linear 1s infinite;
+		animation-fill-mode: forwards;
+
+		background: #eee;
+		background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
+		background-repeat: no-repeat;
+
+
 		height: 10rem;
 		width: 17.8rem;
 		display: flex;
 		flex-direction: row-reverse;
-		/* transition: all .1s;
 
-		:hover {
-			box-shadow: 0px .4rem .7rem -.1rem rgba(0,0,0,0.5);
-			margin-top: -.3rem;
-			margin-bottom: .3rem;
-		} */
+
 	`,
 
 	// eslint-disable-next-line sort-vars

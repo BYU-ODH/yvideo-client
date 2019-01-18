@@ -45,8 +45,12 @@ const fadeIn = keyframes`
 			padding: 6rem 15rem;
 
 			display: flex;
-			justify-content: space-around;
 			flex-wrap: wrap;
+			justify-content: space-around;
+
+			/* display: grid; */
+			/* grid-template-columns: 1fr 1fr 1fr; */
+			/* grid-gap: 3rem; */
 
 			&>button {
 				background: transparent;
@@ -61,6 +65,7 @@ const fadeIn = keyframes`
 
 			&>div {
 				width: 27.5rem;
+				padding: 2rem;
 
 				&>h3 {
 					font-weight: bold;

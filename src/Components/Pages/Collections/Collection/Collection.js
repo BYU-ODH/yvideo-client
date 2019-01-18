@@ -28,6 +28,7 @@ const StyledCollectionHead = styled.div`
 
 	& > h4 {
 		flex: 2;
+		font-weight: 500;
 	}
 
 	& > p {

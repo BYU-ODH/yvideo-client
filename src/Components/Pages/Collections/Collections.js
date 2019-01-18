@@ -1,66 +1,14 @@
 import React, { Component } from 'react'
+import Cookies from 'js-cookie'
+
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Collection from './Collection/Collection'
-import manage from './manage.svg'
+import BlockCollection from './BlockCollection/BlockCollection'
 
-// const StyledCollections = styled.div`
-// 		padding-top: .5rem;
-
-// 		& p {
-// 			margin-top: 0.5rem;
-// 			margin-bottom: 0.5rem;
-// 		}
-// 	`,
-
-// StyledHeading = styled.div`
-// 	padding-top: 8.4rem;
-// 	display: flex;
-// 	flex-direction: row;
-// 	margin-left: 3rem;
-// 	margin-right: 2rem;
-
-// 	& p {
-// 		margin-top: 0.5rem;
-// 		margin-bottom: 0.5rem;
-// 	}
-
-// 	& embed {
-// 		width: 2rem;
-// 		height: 2rem;
-// 	}
-
-// 	.heading {
-// 		box-sizing: border-box;
-// 		width: 60%;
-// 		font-weight: bold;
-// 	}
-
-// 	.manageToggle {
-// 		box-sizing: border-box;
-// 		width: 40%;
-// 		display: flex;
-// 	}
-
-// 	.manageToggle:hover {
-// 		cursor: pointer;
-// 		text-decoration: underline;
-// 	}
-
-// 	.manageBanner {
-// 		box-sizing: border-box;
-// 		padding-right: 1rem;
-// 		text-align: right;
-// 		width: 80%;
-// 	}
-
-// 	.manageIcon {
-// 		box-sizing: border-box;
-// 		width: 20%;
-// 	}
-
-// `,
+import blockView from './block-view.svg'
+import listView from './list-view.svg'
 
 const StyledCollectionsNew = styled.div`
 		max-width: 100rem;
@@ -91,17 +39,22 @@ const StyledCollectionsNew = styled.div`
 				}
 
 				& > button {
-					background: url(${manage});
-					border: none;
-					height: 1.5rem;
-					width: 1.5rem;
-					margin-left: 5rem;
-					outline: none;
-					cursor: pointer;
+					
 				}
 			}
 
 		}
+	`,
+
+	StyledViewToggle = styled.button`
+		background: url(${props => props.block ? listView : blockView}) center no-repeat;
+		background-size: cover;
+		border: none;
+		height: 1.5rem;
+		width: 1.5rem;
+		margin-left: 5rem;
+		outline: none;
+		cursor: pointer;
 	`
 
 export class Collections extends Component {
@@ -112,25 +65,12 @@ export class Collections extends Component {
 		this.state = {
 			previewEndpoint: process.env.REACT_APP_YVIDEO_SERVER + '/api/user/preview/4',
 			preview: [],
-			recent: []
+			recent: [],
+			block: false
 		}
 
-		this.getData = this.getData.bind(this)
+		this.toggleBlock = this.toggleBlock.bind(this)
 		this.getTestData = this.getTestData.bind(this)
-	}
-
-	getData(url = '', data = {}) {
-		return fetch(url, {
-			method: 'GET', // *GET, POST, PUT, DELETE, etc.
-			mode: 'cors', // No-cors, cors, *same-origin
-			cache: 'default', // *Default, no-cache, reload, force-cache, only-if-cached
-			credentials: 'same-origin', // Include, *same-origin, omit
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8'
-			},
-			redirect: 'follow', // Manual, *follow, error
-			referrer: 'client' // No-referrer, *client
-		})
 	}
 
 	getTestData(url = '', data = { preview: _CollectionPreview }) {
@@ -140,10 +80,23 @@ export class Collections extends Component {
 		})
 	}
 
+	toggleBlock() {
+		this.setState({
+			block: !this.state.block
+		})
+	}
+
 	componentWillMount() {
 		this.getTestData(this.state.previewEndpoint)
 			.then(response => this.setState({ preview: response.preview }))
 			.catch(error => console.error(error))
+
+		if (Cookies.get('block') !== 'true' || 'false')
+			Cookies.set('block', this.state.block)
+
+		this.setState({
+			block: Cookies.get('block')
+		})
 	}
 
 	render() {
@@ -155,40 +108,19 @@ export class Collections extends Component {
 					</div>
 					<div>
 						<Link to={'/collection-manager'} >Manage Collections</Link>
-						<button onClick={() => alert('boop!')} />
+						<StyledViewToggle block={this.state.block} onClick={this.toggleBlock} />
 					</div>
 				</header>
 				<div className='list'>
 					{
-						this.state.preview !== [] ?
-							this.state.preview.map(item => <Collection key={item.id} data={item} />)
+						this.state.block ?
+							this.state.preview.map(item => <BlockCollection key={item.id} data={item} />)
 							:
-							<div>I'm in trouble if you see this</div>
+							this.state.preview.map(item => <Collection key={item.id} data={item} />)
 					}
 				</div>
 			</StyledCollectionsNew>
 		)
-		// return (
-		// 	<StyledCollectionsNew>
-		// 		<StyledHeading>
-		// 			<p className='heading'>Collections</p>
-		// 			<div className='manageToggle'>
-		// 				<p className='manageBanner'>Manage Collections</p>
-		// 				<embed className='manageIcon' src={manage} />
-		// 			</div>
-		// 		</StyledHeading>
-		// 		<StyledCollections>
-		// 			{
-		// 				this.state.preview !== [] ? this.state.preview.map(item =>
-		// 					<CollectionList
-		// 						key={item.id}
-		// 						thumb={item.url}
-		// 						name={item.name}
-		// 						length={item.count} />) : <li>Uh Oh</li>
-		// 			}
-		// 		</StyledCollections>
-		// 	</StyledCollectionsNew>
-		// )
 	}
 }
 
