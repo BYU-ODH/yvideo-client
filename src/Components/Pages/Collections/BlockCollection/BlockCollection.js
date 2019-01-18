@@ -41,6 +41,10 @@ const StyledBlockCollection = styled.div`
 		overflow-x: scroll;
 		overflow-y: hidden;
 
+		will-change: overflow;
+
+		scroll-behavior: smooth;
+
 		::-webkit-scrollbar {
 			background: transparent;
 		}
@@ -115,14 +119,6 @@ export default class BlockCollection extends Component {
 		this.scrollRight = this.scrollRight.bind(this)
 	}
 
-	componentDidMount() {
-		window.addEventListener('scroll', this.scrollListener, { passive: true })
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('scroll', this.scrollListener)
-	}
-
 	scrollListener(e) {
 		if (e.target.scrollLeft === 0) {
 			this.setState({
@@ -134,7 +130,7 @@ export default class BlockCollection extends Component {
 					})
 				}, 250)
 			})
-		} else {
+		} else if (e.target.scrollLeft !== 0) {
 			this.setState({
 				hideLeft: false
 			}, () => {
@@ -146,13 +142,15 @@ export default class BlockCollection extends Component {
 	}
 
 	scrollLeft() {
-		const sl = this.wrapper.current.scrollLeft
-		this.wrapper.current.scrollLeft = sl - 178
+		this.wrapper.current.scrollBy({
+			left: -179
+		})
 	}
 
 	scrollRight() {
-		const sl = this.wrapper.current.scrollLeft
-		this.wrapper.current.scrollLeft = sl + 178
+		this.wrapper.current.scrollBy({
+			left: 178
+		})
 	}
 
 	render() {
@@ -167,7 +165,8 @@ export default class BlockCollection extends Component {
 					<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 						<div />
 					</Arrow>
-					<SlideWrapper count={count} onScroll={this.scrollListener} ref={this.wrapper}>
+					<SlideWrapper count={count} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
+						{/* <SlideWrapper count={count} onScroll={this.scrollListener} onScrollCapture={this.scrollListener}> */}
 						{
 							_VideoPreview.map(item => <BlockCollectionItem key={item.contentId} data={item} />)
 						}
@@ -226,5 +225,32 @@ const _VideoPreview = [
 		'translation': true,
 		'captions': false,
 		'annotations': false
+	},
+	{
+		'contentId': 6,
+		'name': 'Mama Mia',
+		'thumbnail': '',
+		'collection': 'Collection 117',
+		'translation': false,
+		'captions': false,
+		'annotations': false
+	},
+	{
+		'contentId': 7,
+		'name': 'Francois de Villeneuve',
+		'thumbnail': '',
+		'collection': 'French Class',
+		'translation': false,
+		'captions': true,
+		'annotations': false
+	},
+	{
+		'contentId': 8,
+		'name': 'M. Lemieux',
+		'thumbnail': '',
+		'collection': 'French Class',
+		'translation': true,
+		'captions': false,
+		'annotations': true
 	}
 ]
