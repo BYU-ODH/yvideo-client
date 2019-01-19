@@ -6,13 +6,12 @@ import Header from './../Header/Header'
 import Menu from './../Menu/Menu'
 
 const HeaderRoute = ({ component: Component, ...rest }) => {
-	const { active, toggleMenu, signOut, ...restprops } = rest.stateVars
 	return (
-		<div>
+		<React.Fragment>
 			<Header />
-			<Menu active={active} toggleMenu={toggleMenu} signOut={signOut} />
-			<Route {...restprops} render={props => <Component {...props} />} />
-		</div>
+			<Menu stateVars={rest.stateVars} />
+			<Route path={rest.path} render={props => <Component {...props} stateVars={rest.stateVars} />} />
+		</React.Fragment>
 	)
 }
 

@@ -3,9 +3,10 @@ import styled from 'styled-components'
 
 import { Link } from 'react-router-dom'
 
-import UserPic from './User/UserPic'
+import UserPic from './UserPic'
+import SignOutButton from './SignOutButton'
 
-const StyledMenu = styled.div`
+const Container = styled.div`
 	position: fixed;
 	top: 0;
 	left: 100%;
@@ -39,20 +40,21 @@ const StyledMenu = styled.div`
 			left: 0;
 		}
 	}
-`,
 
-	StyledH4 = styled.h4`
+	& > h4 {
 		margin-top: 2.4rem;
 		font-weight: 500;
-	`,
+	}
 
-	StyledHr = styled.hr`
+	& > hr {
 		margin: 1rem 0;
 		border: none;
 		border-top: 1px solid #c4c4c4;
-	`,
+		max-width: 27rem;
+	}
+`,
 
-	StyledLink = styled(Link)`
+	SLink = styled(Link)`
 		margin-bottom: 1rem;
 
 		text-decoration: none;
@@ -64,45 +66,53 @@ const StyledMenu = styled.div`
 		border: none;
 	`,
 
-	StyledBoldLink = styled(StyledLink)`
-		font-weight: 500;
+	Header = styled.h4`
 		text-transform: uppercase;
+		font-weight: 500;
 	`,
 
 	Menu = props => {
+
+		const { active, toggleMenu, signOut, isProf, isAdmin } = props.stateVars
+
 		return (
-			<StyledMenu className={props.active ? 'active' : ''}>
-				<UserPic initials='GP' toggleMenu={props.toggleMenu} />
-				<StyledH4>Grant Perdue</StyledH4>
-				<StyledHr />
-				<StyledLink to='/word-list' onClick={props.toggleMenu}>My Word List</StyledLink>
-				<StyledLink as={SignOutButton} signOut={props.signOut} onClick={props.toggleMenu}>Sign out</StyledLink>
-				<br />
-				<StyledBoldLink to='/collections' onClick={props.toggleMenu}>Collections</StyledBoldLink>
-			</StyledMenu>
+			<Container className={active ? 'active' : ''} onClick={toggleMenu}>
+
+				<UserPic initials='GP' toggleMenu={toggleMenu} />
+				<h4>Grant Perdue</h4>
+				<hr />
+				<SLink to='/word-list'>My Word List</SLink>
+
+				{
+					isProf || isAdmin ||
+					<SLink to='/collections'>Collections</SLink>
+				}
+
+				<SLink as={SignOutButton} signOut={signOut}>Sign out</SLink>
+
+				{
+					(isProf || isAdmin) &&
+					<React.Fragment>
+						<Header>Collections</Header>
+						<hr />
+						<SLink to='/collection-manager'>Manage Collections</SLink>
+						<SLink to='/create-collection'>Create New Collection</SLink>
+					</React.Fragment>
+				}
+
+				{
+					isAdmin &&
+					<React.Fragment>
+						<Header>Admin</Header>
+						<hr />
+						<SLink to='/admin-users'>Users</SLink>
+						<SLink to='/admin-collections'>Collections</SLink>
+						<SLink to='/admin-content'>Content</SLink>
+					</React.Fragment>
+				}
+
+			</Container>
 		)
-	},
-
-	SignOutButton = props => {
-		return <StyledButton onClick={props.signOut}>{props.children}</StyledButton>
-	},
-
-	StyledButton = styled.button`
-		margin-bottom: 1rem;
-		padding: 0;
-
-		width: fit-content;
-
-		text-decoration: none;
-		outline: none;
-		font-weight: 300;
-
-		color: black;
-
-		background: transparent;
-		border: none;
-
-		cursor: pointer;
-	`
+	}
 
 export default Menu

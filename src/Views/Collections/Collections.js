@@ -100,6 +100,7 @@ export class Collections extends Component {
 	}
 
 	render() {
+		const { isProf, isAdmin } = this.props.stateVars
 		return (
 			<Container>
 				<header>
@@ -107,7 +108,10 @@ export class Collections extends Component {
 						<h3>Collections</h3>
 					</div>
 					<div>
-						<Link to={'/collection-manager'} >Manage Collections</Link>
+						{
+							(isProf || isAdmin) &&
+							<Link to={'/collection-manager'} >Manage Collections</Link>
+						}
 						<ViewToggle block={this.state.block} onClick={this.toggleBlock} />
 					</div>
 				</header>

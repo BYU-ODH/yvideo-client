@@ -22,7 +22,8 @@ export default class App extends Component {
 			lost: false,
 			auth: false,
 			check: true,
-			isProf: false
+			isProf: false,
+			isAdmin: false
 		}
 
 		this.toggleMenu = this.toggleMenu.bind(this)
@@ -85,7 +86,8 @@ export default class App extends Component {
 			check: this.state.check,
 			toggleMenu: this.toggleMenu,
 			signOut: this.signOut,
-			isProf: this.isProf
+			isProf: this.state.isProf,
+			isAdmin: this.state.isAdmin
 		}
 
 		return (

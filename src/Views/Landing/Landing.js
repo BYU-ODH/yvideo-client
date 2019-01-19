@@ -4,16 +4,17 @@ import { Link } from 'react-router-dom'
 
 import Overlay from './Overlay'
 
-import CometsLeft from './../../Assets/Landing/CometsLeft.svg'
-import CometsRight from './../../Assets/Landing/CometsRight.svg'
+import LComets from './../../Assets/Landing/CometsLeft.svg'
+import RComets from './../../Assets/Landing/CometsRight.svg'
 import HexLogo from './../../Assets/HexLogo2.svg'
 
 const Container = styled.div`
 	width: 100%;
 	height: 100vh;
 	display: flex;
+`,
 
-	&>div.comets {
+	Comets = styled.div`
 		width: 50%;
 		height: 100vh;
 		margin: 0;
@@ -22,15 +23,14 @@ const Container = styled.div`
 		@media (max-width: 800px) {
 			background-size: contain;
 		}
-	}
-`,
 
-	CometsLeft = styled.div`
-		background: url(${CometsLeft}) no-repeat bottom left;
-	`,
+		&.left{
+			background: url(${LComets}) no-repeat bottom left;
+		}
 
-	CometsRight = styled.div`
-		background: url(${CometsRight}) no-repeat top right;
+		&.right{
+			background: url(${RComets}) no-repeat top right;
+		}
 	`,
 
 	Welcome = styled.div`
@@ -121,8 +121,8 @@ export default class Landing extends Component {
 	render() {
 		return (
 			<Container>
-				<CometsLeft className='comets' />
-				<CometsRight className='comets' />
+				<Comets className='left' />
+				<Comets className='right' />
 				<Welcome>
 					<div>
 						<Logo />

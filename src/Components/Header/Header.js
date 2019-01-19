@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Logo from './Logo'
 
-const StyledHeader = styled.div`
+const Container = styled.div`
 	height: 8.4rem;
 	width: 100%;
 	/* box-shadow: 0 -.5rem 3rem 0 rgba(0,0,0,0.25); */
@@ -20,10 +20,10 @@ const StyledHeader = styled.div`
 export class Header extends Component {
 	render() {
 		return (
-			<StyledHeader lost={this.props.lost}>
+			<Container lost={this.props.lost}>
 				<Logo />
 				{/* <button onClick={this.props.toggleMenu}>Toggle Menu</button> */}
-			</StyledHeader>
+			</Container>
 		)
 	}
 }

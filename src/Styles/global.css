@@ -1,13 +1,4 @@
-@font-face {
-	font-family: 'Roboto';
-	src: url('./Fonts/Roboto/Roboto-Regular.ttf');
-}
-
-@font-face {
-	font-family: 'Roboto Mono';
-	src: url('./Fonts/Roboto_Mono/RobotoMono-Regular.ttf');
-}
-
+@import url('Fonts/fonts.css');
 * {
 	margin: 0;
 }

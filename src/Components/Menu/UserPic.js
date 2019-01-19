@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const StyledUserPic = styled.button`
+const Container = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -26,9 +26,9 @@ const StyledUserPic = styled.button`
 
 	UserPic = props => {
 		return (
-			<StyledUserPic onClick={props.toggleMenu}>
+			<Container onClick={props.toggleMenu}>
 				{props.initials}
-			</StyledUserPic>
+			</Container>
 		)
 	}
 
