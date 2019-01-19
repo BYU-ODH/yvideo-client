@@ -1,20 +1,16 @@
 import React, { Component } from 'react'
-
+import Cookies from 'js-cookie'
 import { Route, Switch } from 'react-router-dom'
 
-import './Fonts/fonts.css'
+import './Styles/global.css'
+// import Global from './Styles/Global'
 
-import Cookies from 'js-cookie'
+import PrivateRoute from './Components/Routes/PrivateRoute'
 
-import Header from './Components/Header/Header'
-import Menu from './Components/Menu/Menu'
-
-import Landing from './Components/Pages/Landing/Landing'
-
-import Home from './Components/Pages/Home/Home'
-import Collections from './Components/Pages/Collections/Collections'
-
-import Error from './Components/Pages/Error/Error'
+import Landing from './Views/Landing/Landing'
+import Home from './Views/Home/Home'
+import Collections from './Views/Collections/Collections'
+import Error from './Views/Error/Error'
 
 export default class App extends Component {
 
@@ -25,7 +21,8 @@ export default class App extends Component {
 			active: false,
 			lost: false,
 			auth: false,
-			check: true
+			check: true,
+			isProf: false
 		}
 
 		this.toggleMenu = this.toggleMenu.bind(this)
@@ -46,7 +43,8 @@ export default class App extends Component {
 	checkAuth() {
 		fetch(process.env.REACT_APP_YVIDEO_SERVER + '/api/user/auth', { credentials: 'include' })
 			.then(data => {
-				console.log('/api/user/auth', data)
+				console.log('You\'re logged in via CAS.')
+				// console.log('/api/user/auth', data)
 				if (data.ok) {
 					Cookies.set('auth', true)
 					this.setState({
@@ -81,12 +79,15 @@ export default class App extends Component {
 	}
 
 	render() {
+
 		const stateVars = {
 			active: this.state.active,
 			check: this.state.check,
 			toggleMenu: this.toggleMenu,
-			signOut: this.signOut
+			signOut: this.signOut,
+			isProf: this.isProf
 		}
+
 		return (
 			<Switch>
 				<Route exact path='/' component={Landing} />
@@ -95,28 +96,9 @@ export default class App extends Component {
 				<PrivateRoute path='/collections' component={Collections} stateVars={stateVars} />
 
 				<Route render={() => <Error error='404' message={'You\'ve wandered too far'} />} />
+				{/* <Global /> */}
 			</Switch>
 		)
 
 	}
-}
-
-const HeaderRoute = props => {
-	const { active, toggleMenu, signOut } = { ...props.stateVars }
-	return (
-		<div>
-			<Header />
-			<Menu active={active} toggleMenu={toggleMenu} signOut={signOut} />
-			<Route path={props.path} component={props.component} />
-		</div>
-	)
-}
-
-const PrivateRoute = ({ component: Component, ...props }) => {
-	if (!props.check) {
-		if (Cookies.get('auth') !== 'true')
-			window.location.href = process.env.REACT_APP_YVIDEO_SERVER + '/auth/cas/redirect' + window.location.origin + props.path
-		else
-			return <HeaderRoute {...props} component={Component} />
-	} else return <Error error='500' message={'This is on us. We\'re very sorry.'} />
 }

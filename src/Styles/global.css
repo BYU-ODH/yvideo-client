@@ -1,0 +1,24 @@
+@font-face {
+	font-family: 'Roboto';
+	src: url('./Fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+	font-family: 'Roboto Mono';
+	src: url('./Fonts/Roboto_Mono/RobotoMono-Regular.ttf');
+}
+
+* {
+	margin: 0;
+}
+
+html {
+	font-family: 'Roboto';
+	font-size: 10px;
+	line-height: 10px;
+}
+
+body {
+	font-size: 1.2rem;
+	line-height: 1.4rem;
+}

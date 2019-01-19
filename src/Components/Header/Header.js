@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import Logo from './Nav/Logo/Logo'
+import Logo from './Logo'
 
 const StyledHeader = styled.div`
 	height: 8.4rem;
