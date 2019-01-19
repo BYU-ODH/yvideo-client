@@ -10,7 +10,7 @@ import BlockCollection from './Block/BlockCollection'
 import blockView from './../../Assets/Collections/block-view.svg'
 import listView from './../../Assets/Collections/list-view.svg'
 
-const StyledCollectionsNew = styled.div`
+const Container = styled.div`
 		max-width: 100rem;
 
 		padding: 8.4rem 2.4rem 0 2.4rem;
@@ -46,7 +46,7 @@ const StyledCollectionsNew = styled.div`
 		}
 	`,
 
-	StyledViewToggle = styled.button`
+	ViewToggle = styled.button`
 		background: url(${props => props.block ? listView : blockView}) center no-repeat;
 		background-size: cover;
 		border: none;
@@ -101,14 +101,14 @@ export class Collections extends Component {
 
 	render() {
 		return (
-			<StyledCollectionsNew>
+			<Container>
 				<header>
 					<div>
 						<h3>Collections</h3>
 					</div>
 					<div>
 						<Link to={'/collection-manager'} >Manage Collections</Link>
-						<StyledViewToggle block={this.state.block} onClick={this.toggleBlock} />
+						<ViewToggle block={this.state.block} onClick={this.toggleBlock} />
 					</div>
 				</header>
 				<div className='list'>
@@ -119,10 +119,12 @@ export class Collections extends Component {
 							this.state.preview.map(item => <ListCollection key={item.id} data={item} />)
 					}
 				</div>
-			</StyledCollectionsNew>
+			</Container>
 		)
 	}
 }
+
+export default Collections
 
 const _CollectionPreview = [
 	{
@@ -150,4 +152,3 @@ const _CollectionPreview = [
 		'id': 20
 	}
 ]
-export default Collections

@@ -7,7 +7,7 @@ import translation from './../../../Assets/Collections/VideoOptions/translation.
 import captions from './../../../Assets/Collections/VideoOptions/captions.svg'
 import annotations from './../../../Assets/Collections/VideoOptions/annotations.svg'
 
-const Shimmer = keyframes`
+const shimmer = keyframes`
 0% {
 	background-position: -10rem 0;
 }
@@ -16,7 +16,7 @@ const Shimmer = keyframes`
 }
 `,
 
-	StyledCollectionItem = styled(Link)`
+	Container = styled(Link)`
 		display: grid;
 		grid-template-columns: 18rem auto;
 		align-items: center;
@@ -38,7 +38,7 @@ const Shimmer = keyframes`
 			background: url(${props => props.thumb}) center no-repeat;
 			background-size: cover;
 
-			animation: ${Shimmer} 2s linear infinite;
+			animation: ${shimmer} 2s linear infinite;
 			animation-fill-mode: forwards;
 
 			background-color: #eee;
@@ -84,7 +84,7 @@ const Shimmer = keyframes`
 const ListItem = props => {
 	const { name, thumbnail, translation, captions, annotations } = { ...props.data }
 	return (
-		<StyledCollectionItem to='/'>
+		<Container to='/'>
 			<div className='thumb' thumb={thumbnail} />
 			<div className='name'>
 				<h4>{name}</h4>
@@ -94,7 +94,7 @@ const ListItem = props => {
 					<Icon className='annotations' checked={annotations} />
 				</ul>
 			</div>
-		</StyledCollectionItem>
+		</Container>
 	)
 }
 

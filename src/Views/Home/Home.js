@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import PreviewCollection from './Previews/PreviewCollection'
 import PreviewVideo from './Previews/PreviewVideo'
 
-const StyledContent =
+const Content =
 	styled.div`
 		width: 91.2rem;
 		margin: 0 auto;
@@ -17,7 +17,7 @@ const StyledContent =
 		}
 	`,
 
-	StyledHome = styled.div`
+	Container = styled.div`
 		padding-top: 8.4rem;
 	`
 
@@ -65,22 +65,22 @@ export class Home extends Component {
 
 	render() {
 		return (
-			<StyledHome>
-				<StyledContent>
+			<Container>
+				<Content>
 					<p>Recently Viewed</p>
-				</StyledContent>
-				<StyledContent>
+				</Content>
+				<Content>
 					{
 						this.state.recent !== [] ? this.state.recent.map(item =>
 							<PreviewVideo key={item.contentId} data={item} />)
 							:
 							<li>Uh Oh</li>
 					}
-				</StyledContent>
-				<StyledContent>
+				</Content>
+				<Content>
 					<p>Collections</p>
-				</StyledContent>
-				<StyledContent>
+				</Content>
+				<Content>
 					{
 						this.state.preview !== [] ? this.state.preview.map(item =>
 							<PreviewCollection
@@ -90,9 +90,8 @@ export class Home extends Component {
 								length={item.contentCount}
 							/>) : <li>Uh Oh</li>
 					}
-				</StyledContent>
-
-			</StyledHome>
+				</Content>
+			</Container>
 		)
 	}
 }

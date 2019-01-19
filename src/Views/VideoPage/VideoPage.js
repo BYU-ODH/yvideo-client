@@ -3,16 +3,16 @@ import styled from 'styled-components'
 
 import Player from './Player'
 
-const StyledVideoPage = styled.div`
+const Container = styled.div`
 
 `
 
 class VideoPageChild extends Component {
 	render() {
 		return (
-			<StyledVideoPage>
+			<Container>
 				<Player videoId={this.props.videoId} />
-			</StyledVideoPage>
+			</Container>
 		)
 	}
 }

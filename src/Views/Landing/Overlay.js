@@ -21,7 +21,7 @@ const fadeIn = keyframes`
 		}
 	`,
 
-	StyledOverlay = styled.div`
+	Container = styled.div`
 		position: absolute;
 		width: 100%;
 		height: 100vh;
@@ -36,7 +36,7 @@ const fadeIn = keyframes`
 		justify-content: center;
 		align-items: center;
 
-		&>div {
+		& > div {
 			background-color: white;
 			box-shadow: 0px .4rem .7rem -.1rem rgba(0,0,0,0.25);
 
@@ -52,7 +52,7 @@ const fadeIn = keyframes`
 			/* grid-template-columns: 1fr 1fr 1fr; */
 			/* grid-gap: 3rem; */
 
-			&>button {
+			& > button {
 				background: transparent;
 				border: none;
 				font-size: 18px;
@@ -63,11 +63,11 @@ const fadeIn = keyframes`
 				cursor: pointer;
 			}
 
-			&>div {
+			& > div {
 				width: 27.5rem;
 				padding: 2rem;
 
-				&>h3 {
+				& > h3 {
 					font-weight: bold;
 					font-size: 1.8rem;
 					text-justify: center;
@@ -105,7 +105,7 @@ export default class Overlay extends Component {
 
 	render() {
 		return (
-			<StyledOverlay visible={this.state.visible} out={!this.state.visible}>
+			<Container visible={this.state.visible} out={!this.state.visible}>
 				<div>
 					<div>
 						<h3>What is YVIDEO?</h3>
@@ -121,7 +121,7 @@ export default class Overlay extends Component {
 					</div>
 					<button onClick={this.closeModal}>close</button>
 				</div>
-			</StyledOverlay>
+			</Container>
 		)
 	}
 }

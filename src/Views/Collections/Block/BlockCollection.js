@@ -8,7 +8,7 @@ import BlockItem from './BlockItem'
 import arrowLeft from './../../../Assets/Collections/arrow-right.svg'
 import arrowRight from './../../../Assets/Collections/arrow-right.svg'
 
-const StyledBlockCollection = styled.div`
+const Container = styled.div`
 	padding: 2rem;
 
 	& > div {
@@ -16,7 +16,7 @@ const StyledBlockCollection = styled.div`
 	}
 `,
 
-	CollectionHeader = styled.div`
+	Header = styled.div`
 		display: grid;
 		grid-template-columns: 18rem auto;
 		justify-items: start;
@@ -156,11 +156,11 @@ export default class BlockCollection extends Component {
 	render() {
 		const { name, count } = this.props.data
 		return (
-			<StyledBlockCollection>
-				<CollectionHeader>
+			<Container>
+				<Header>
 					<Link to={'/'}>{name}</Link>
 					<p>{count} Videos</p>
-				</CollectionHeader>
+				</Header>
 				<div>
 					<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 						<div />
@@ -175,7 +175,7 @@ export default class BlockCollection extends Component {
 						<div />
 					</Arrow>
 				</div>
-			</StyledBlockCollection>
+			</Container>
 		)
 	}
 }

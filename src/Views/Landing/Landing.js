@@ -8,7 +8,7 @@ import CometsLeft from './../../Assets/Landing/CometsLeft.svg'
 import CometsRight from './../../Assets/Landing/CometsRight.svg'
 import HexLogo from './../../Assets/HexLogo2.svg'
 
-const StyledLanding = styled.div`
+const Container = styled.div`
 	width: 100%;
 	height: 100vh;
 	display: flex;
@@ -25,15 +25,15 @@ const StyledLanding = styled.div`
 	}
 `,
 
-	StyledCometsLeft = styled.div`
+	CometsLeft = styled.div`
 		background: url(${CometsLeft}) no-repeat bottom left;
 	`,
 
-	StyledCometsRight = styled.div`
+	CometsRight = styled.div`
 		background: url(${CometsRight}) no-repeat top right;
 	`,
 
-	StyledHello = styled.div`
+	Welcome = styled.div`
 		position: fixed;
 		width: 100%;
 		height: 100vh;
@@ -68,14 +68,14 @@ const StyledLanding = styled.div`
 		}
 	`,
 
-	StyledLogo = styled.div`
+	Logo = styled.div`
 		background: url(${HexLogo}) no-repeat center;
 		background-size: contain;
 		height: 10rem;
 		width: 10rem;
 	`,
 
-	StyledButton = styled.button`
+	Button = styled.button`
 		font-family: 'Roboto Mono';
 		font-weight: bold;
 		font-size: 2.4rem;
@@ -120,26 +120,26 @@ export default class Landing extends Component {
 
 	render() {
 		return (
-			<StyledLanding>
-				<StyledCometsLeft className='comets' />
-				<StyledCometsRight className='comets' />
-				<StyledHello>
+			<Container>
+				<CometsLeft className='comets' />
+				<CometsRight className='comets' />
+				<Welcome>
 					<div>
-						<StyledLogo />
+						<Logo />
 						<h1>YVIDEO</h1>
 					</div>
 					<div className='button-wrapper'>
-						<StyledButton as={Link} to={'/dashboard'} className='primary'>Sign In</StyledButton>
-						<StyledButton className='secondary' onClick={this.toggleAbout}>About</StyledButton>
+						<Button as={Link} to={'/dashboard'} className='primary'>Sign In</Button>
+						<Button className='secondary' onClick={this.toggleAbout}>About</Button>
 					</div>
-				</StyledHello>
+				</Welcome>
 				{
 					this.state.overlay ?
 						<Overlay toggleAbout={this.toggleAbout} />
 						:
 						''
 				}
-			</StyledLanding>
+			</Container>
 		)
 	}
 }

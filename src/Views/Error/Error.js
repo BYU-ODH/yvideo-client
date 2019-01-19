@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import Background from './../../Assets/desertbackground.svg'
 
-const StyledError = styled.div`
+const Container = styled.div`
 	width: 100%;
 	height: 100vh;
 	background: url(${Background});
@@ -32,7 +32,7 @@ const StyledError = styled.div`
 	}
 `,
 
-	StyledLink = styled(Link)`
+	SLink = styled(Link)`
 		padding: 1.5rem;
 		border: 2px solid white;
 		border-radius: 10rem;
@@ -47,11 +47,11 @@ const StyledError = styled.div`
 
 	Error = props => {
 		return (
-			<StyledError>
+			<Container>
 				<h1>{props.error}</h1>
 				<h2>{props.message}</h2>
-				<StyledLink to={'/dashboard'}>Go back home</StyledLink>
-			</StyledError>
+				<SLink to={'/dashboard'}>Go back home</SLink>
+			</Container>
 		)
 	}
 

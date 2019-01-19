@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-const Shimmer = keyframes`
+const shimmer = keyframes`
 0% {
 	background-position: -30rem 0;
 }
@@ -10,7 +10,7 @@ const Shimmer = keyframes`
 }
 `,
 
-	SBlockItem = styled.div`
+	Container = styled.div`
 		& h4 {
 			font-weight: 500;
 		}
@@ -26,7 +26,7 @@ const Shimmer = keyframes`
 
 		margin-bottom: 1rem;
 		
-		animation: ${Shimmer} 2s linear infinite;
+		animation: ${shimmer} 2s linear infinite;
 		animation-fill-mode: forwards;
 
 		background-color: #eee;
@@ -37,10 +37,10 @@ const Shimmer = keyframes`
 const BlockItem = props => {
 	const { name, thumbnail } = { ...props.data }
 	return (
-		<SBlockItem>
+		<Container>
 			<Thumbnail src={thumbnail} />
 			<h4>{name}</h4>
-		</SBlockItem>
+		</Container>
 	)
 }
 

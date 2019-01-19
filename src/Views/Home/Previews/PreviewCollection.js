@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 
 import PreviewIcon from './../../../Assets/icon.svg'
 
-const StyledCollectionContainer = styled.div`
+const Container = styled.div`
 		display: flex;
 		flex-direction: column;
 
@@ -31,7 +31,7 @@ const StyledCollectionContainer = styled.div`
 		}
 	`,
 
-	StyledCollectionPreview = styled.div`
+	Wrapper = styled.div`
 		background-image: url(${ props => props.thumb});
 		background-size: cover;
 		background-position: center;
@@ -49,7 +49,7 @@ const StyledCollectionContainer = styled.div`
 
 	`,
 
-	StyledIconBox = styled.div`
+	IconBox = styled.div`
 		height: 10rem;
 		width: 8rem;
 		background-color: rgba(0,0,0,.60);
@@ -65,15 +65,15 @@ const StyledCollectionContainer = styled.div`
 	// eslint-disable-next-line sort-vars
 	PreviewCollection = props => {
 		return (
-			<StyledCollectionContainer>
-				<StyledCollectionPreview thumb={props.thumb} >
-					<StyledIconBox>
+			<Container>
+				<Wrapper thumb={props.thumb} >
+					<IconBox>
 						<embed src={PreviewIcon} />
-					</StyledIconBox>
-				</StyledCollectionPreview>
+					</IconBox>
+				</Wrapper>
 				<p>{props.name}</p>
 				<p className='gray'>{props.length} Videos</p>
-			</StyledCollectionContainer>
+			</Container>
 		)
 	}
 

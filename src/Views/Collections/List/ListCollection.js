@@ -5,7 +5,7 @@ import ListItem from './ListItem'
 
 import carrot from './../../../Assets/Collections/carrot.svg'
 
-const StyledListHead = styled.div`
+const Header = styled.div`
 	display: grid;
 	grid-template-columns: 18rem auto 1.5rem;
 	justify-items: start;
@@ -43,7 +43,7 @@ const StyledListHead = styled.div`
 	}
 	`,
 
-	StyledListBody = styled.div`
+	Body = styled.div`
 
 		height: ${props => props.isOpen ? (parseInt(props.count) * 6.5 + 2).toString() + 'rem' : '0'};
 		transition: height .25s ease-in-out;
@@ -71,16 +71,16 @@ export default class ListCollection extends Component {
 		const { count, name } = { ...this.props.data }
 		return (
 			<div>
-				<StyledListHead isOpen={this.state.isOpen} onClick={this.togglePanel} >
+				<Header isOpen={this.state.isOpen} onClick={this.togglePanel} >
 					<h4>{name}</h4>
 					<p>{count} Videos</p>
 					<div />
-				</StyledListHead>
-				<StyledListBody isOpen={this.state.isOpen} count={count}>
+				</Header>
+				<Body isOpen={this.state.isOpen} count={count}>
 					{
 						_VideoPreview.map(item => <ListItem key={item.contentId} data={item} />)
 					}
-				</StyledListBody>
+				</Body>
 			</div>
 		)
 	}
