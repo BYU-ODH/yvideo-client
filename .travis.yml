@@ -12,6 +12,7 @@ before_deploy:
 - tag=$(git tag --points-at $TRAVIS_COMMIT | tail -1)
 - tar cf ../$tag.tar *
 - cd ..
+- if [[ -n "$(git branch --contains $TRAVIS_COMMIT | grep master)" ]]; then prerelease=false; else prerelease=true; fi
 deploy:
   provider: releases
   api_key:
@@ -20,3 +21,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+  prerelease: $prerelease
