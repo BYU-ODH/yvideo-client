@@ -1,28 +1,73 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+
+import { Switch, Route, withRouter } from 'react-router-dom'
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			auth: false
+		}
+
+		this.login = this.login.bind(this)
+		this.logout = this.logout.bind(this)
+	}
+
+	componentDidMount = () => {
+	}
+
+	login() {
+		window.open('https://api.yvideobeta.byu.edu/auth/cas/redirect' + window.location.origin + '/login-success', 'BYU CAS Login')
+
+		// listen for the storage event and update the localStorage from the new window
+	}
+
+	logout() {
+		this.setState({ auth: false })
+	}
+
+	render() {
+		return (
+			<div>
+				{this.state.auth ?
+					<button onClick={this.logout}>Log Out</button>
+					:
+					<button onClick={this.login}>Log In</button>
+				}
+				<Switch>
+					{this.state.auth ?
+						<Route path={'/'} component={Test} />
+						:
+						<Route path={'/'} component={Landing} />
+					}
+				</Switch>
+				<Route exact path={'/login-success'} component={LoginSuccess} />
+			</div>
+		)
+	}
 }
 
-export default App;
+export default withRouter(App)
+
+const Test = props => {
+	return (
+		<div>
+			This is the test page.
+		</div>
+	)
+}
+
+const Landing = props => {
+	return (
+		<div>
+			This is the landing page.
+		</div>
+	)
+}
+
+const LoginSuccess = () => {
+	// window.self.close()
+	console.log('wowee')
+	return null
+}
