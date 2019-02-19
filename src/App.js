@@ -1,73 +1,34 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-import { Switch, Route, withRouter } from 'react-router-dom'
+import PrivateRoute from './routes/PrivateRoute'
+
+// import Load from './components/load/Load'
+import Dashboard from './views/Dashboard'
+import Landing from './views/Landing'
+import Collection from './views/Collection'
+
+const mapStateToProps = state => {
+	return {
+		authorized: state.authorized,
+		loading: state.loading
+	}
+}
 
 class App extends Component {
-	constructor(props) {
-		super(props)
+	render = () =>
+		<Router>
+			<Switch>
+				<Route exact path={'/'} component={Landing} />
 
-		this.state = {
-			auth: false
-		}
-
-		this.login = this.login.bind(this)
-		this.logout = this.logout.bind(this)
-	}
-
-	componentDidMount = () => {
-	}
-
-	login() {
-		window.open('https://api.yvideobeta.byu.edu/auth/cas/redirect' + window.location.origin + '/login-success', 'BYU CAS Login')
-
-		// listen for the storage event and update the localStorage from the new window
-	}
-
-	logout() {
-		this.setState({ auth: false })
-	}
-
-	render() {
-		return (
-			<div>
-				{this.state.auth ?
-					<button onClick={this.logout}>Log Out</button>
-					:
-					<button onClick={this.login}>Log In</button>
-				}
-				<Switch>
-					{this.state.auth ?
-						<Route path={'/'} component={Test} />
-						:
-						<Route path={'/'} component={Landing} />
-					}
-				</Switch>
-				<Route exact path={'/login-success'} component={LoginSuccess} />
-			</div>
-		)
-	}
+				<Route component={PrivateRoute}>
+					<Route path={'/dashboard'} component={Dashboard} />
+					<Route path={'/collection'} component={Collection} />
+					<Route path={'/login-success'} component={() => null} />
+				</Route>
+			</Switch>
+		</Router>
 }
 
-export default withRouter(App)
-
-const Test = props => {
-	return (
-		<div>
-			This is the test page.
-		</div>
-	)
-}
-
-const Landing = props => {
-	return (
-		<div>
-			This is the landing page.
-		</div>
-	)
-}
-
-const LoginSuccess = () => {
-	// window.self.close()
-	console.log('wowee')
-	return null
-}
+export default connect(mapStateToProps)(App)
