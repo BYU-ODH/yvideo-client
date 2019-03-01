@@ -9,14 +9,6 @@ import {
 
 class PrivateRoute extends React.Component {
 
-	componentDidMount = () => {
-		this.checkAuth()
-	}
-
-	componentWillUnmount = () => {
-		this.caslogout()
-	}
-
 	caslogin = () => {
 		const url = process.env.REACT_APP_YVIDEO_SERVER + '/auth/cas/redirect' + window.location.origin + '/login-success'
 		const name = 'BYU CAS Secure Login'
@@ -25,10 +17,10 @@ class PrivateRoute extends React.Component {
 		const popuppoll = setInterval(() => {
 			try {
 				if (popup.location.origin === window.location.origin || popup.closed) {
+					clearInterval(popuppoll)
 					popup.close()
 					this.props.login()
 					this.checkAuth()
-					clearInterval(popuppoll)
 				}
 			} catch (e) { }
 		}, 500)
@@ -44,41 +36,37 @@ class PrivateRoute extends React.Component {
 				if (popup.location.origin === window.location.origin || popup.closed) {
 					clearInterval(popuppoll)
 					popup.close()
-					window.location.reload()
+					this.props.logout()
+					// window.location.reload()
 				}
 			} catch (e) { }
 		}, 500)
 	}
 
-	checkAuth = async () => {
-		try {
-			await this.props.getUserAuth()
-			console.log(this.props.userAuth)
-		} catch (error) {
-			this.caslogin()
-		}
-	}
-
 	render = () => {
-		return (
-			<React.Fragment>
-				{/* <Header /> */}
-				{/* <Menu stateVars={rest.stateVars} /> */}
-			</React.Fragment>
-		)
+		if (this.props.authorized) {
+			return (
+				<div>
+					<button onClick={this.caslogout}>Log Out</button>
+					{this.props.children}
+				</div>
+			)
+		} else
+			return null
 	}
 }
 
 const mapStateToProps = state => {
 	return {
+		authorized: state.authorized,
 		userAuth: state.userAuth
 	}
 }
 
-const mapDispatchToProps = {
+const actionCreators = {
 	login,
 	logout,
 	getUserAuth
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute)
+export default connect(mapStateToProps, actionCreators)(PrivateRoute)

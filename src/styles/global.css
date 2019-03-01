@@ -1,4 +1,4 @@
-@import url('fonts/fonts.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono');
 * {
 	margin: 0;
 }
@@ -12,13 +12,4 @@ html {
 body {
 	font-size: 1.2rem;
 	line-height: 1.4rem;
-}
-
-#load {
-	position: fixed;
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }

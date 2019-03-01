@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import { loaded } from './../redux/actions'
+
 export class Collection extends Component {
-	static propTypes = {
-		prop: PropTypes
+	componentDidMount = () => {
+		setTimeout(() => {
+			this.props.loaded()
+		}, 1000)
 	}
 
 	render() {
 		return (
 			<div>
-				Collection Page
+				<h1>Collection</h1>
 			</div>
 		)
 	}
@@ -21,7 +24,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+	loaded
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Collection)

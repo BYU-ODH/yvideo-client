@@ -1,16 +1,14 @@
 import { LOAD, LOADED } from '../actions/types'
 
-const initState = {
-	loading: true
-}
+const initState = false
 
 const loadReducer = (state = initState, action) => {
 	switch (action.type) {
 		case LOAD:
-			return { ...state, loading: action.payload }
+			return true
 
 		case LOADED:
-			return { ...state, loading: action.payload }
+			return false
 
 		default:
 			return state

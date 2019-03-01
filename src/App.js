@@ -1,34 +1,66 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import PrivateRoute from './routes/PrivateRoute'
+import { getUserAuth, load, loaded, login } from './redux/actions'
 
-// import Load from './components/load/Load'
+import Load from './components/load/Load'
+
+import Login from './routes/Login'
 import Dashboard from './views/Dashboard'
 import Landing from './views/Landing'
 import Collection from './views/Collection'
 
+class App extends Component {
+
+	componentWillMount = async () => {
+		this.props.load()
+
+		try {
+			await this.props.getUserAuth(user => {
+				console.log(user)
+				this.props.login()
+			})
+		} catch (message) {
+			console.log(message)
+		}
+	}
+
+	render = () =>
+		<div>
+			<BrowserRouter>
+				{
+					this.props.authorized ?
+						<Switch>
+							<Route exact path={'/'} component={Dashboard} />
+							<Route path={'/collection'} component={Collection} />
+						</Switch>
+						:
+						<Switch>
+							<Route exact path={'/'} component={Landing} />
+							<Route exact component={Login} />
+						</Switch>
+				}
+			</BrowserRouter>
+
+			{this.props.loading && <Load loading={this.props.loading} done={this.props.done} />}
+		</div>
+}
+
 const mapStateToProps = state => {
 	return {
 		authorized: state.authorized,
-		loading: state.loading
+		loading: state.loading,
+		done: state.done,
+		userAuth: state.userAuth
 	}
 }
 
-class App extends Component {
-	render = () =>
-		<Router>
-			<Switch>
-				<Route exact path={'/'} component={Landing} />
-
-				<Route component={PrivateRoute}>
-					<Route path={'/dashboard'} component={Dashboard} />
-					<Route path={'/collection'} component={Collection} />
-					<Route path={'/login-success'} component={() => null} />
-				</Route>
-			</Switch>
-		</Router>
+const actionCreators = {
+	getUserAuth,
+	load,
+	loaded,
+	login
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, actionCreators)(App)

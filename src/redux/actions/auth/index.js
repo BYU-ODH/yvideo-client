@@ -1,15 +1,9 @@
 import { LOGIN, LOGOUT } from './types'
 
 export const login = () => {
-	return {
-		type: LOGIN,
-		payload: true
-	}
+	return { type: LOGIN }
 }
 
 export const logout = () => {
-	return {
-		type: LOGOUT,
-		payload: false
-	}
+	return { type: LOGOUT }
 }

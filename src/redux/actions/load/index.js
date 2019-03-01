@@ -1,15 +1,16 @@
-import { LOAD, LOADED } from './types'
+import { LOAD, DONE, READY, LOADED } from './types'
 
 export const load = () => {
-	return {
-		type: LOAD,
-		payload: true
-	}
+	return { type: LOAD }
 }
 
 export const loaded = () => {
-	return {
-		type: LOADED,
-		payload: false
+	return dispatch => {
+		dispatch({ type: DONE })
+		setTimeout(() => {
+			dispatch({ type: READY })
+			dispatch({ type: LOADED })
+		},
+			250)
 	}
 }

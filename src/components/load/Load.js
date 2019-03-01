@@ -1,7 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import styled from 'styled-components'
+
 import Spin from './Spin'
+
+const Container = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: white;
+
+	opacity: ${props => props.done ? 0 : 1};
+	transition: opacity .25s ease-in-out;
+`
 
 const load = document.getElementById('load')
 
@@ -20,7 +38,7 @@ class Load extends React.Component {
 	}
 
 	render() {
-		return ReactDOM.createPortal(<Spin />,
+		return ReactDOM.createPortal(<Container loading={this.props.loading} done={this.props.done}><Spin /></Container>,
 			this.el)
 	}
 }
