@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { loaded } from './../redux/actions'
+import { loaded, found } from './../redux/actions'
+
+import { Container } from './styles'
 
 export class Collection extends Component {
 	componentDidMount = () => {
+		this.props.found()
 		setTimeout(() => {
 			this.props.loaded()
 		}, 1000)
@@ -12,19 +15,16 @@ export class Collection extends Component {
 
 	render() {
 		return (
-			<div>
+			<Container>
 				<h1>Collection</h1>
-			</div>
+			</Container>
 		)
 	}
 }
 
-const mapStateToProps = (state) => ({
-
-})
-
 const mapDispatchToProps = {
-	loaded
+	loaded,
+	found
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Collection)
+export default connect(null, mapDispatchToProps)(Collection)

@@ -6,19 +6,23 @@ import { getUserAuth, load, loaded, login } from './redux/actions'
 
 import Load from './components/load/Load'
 
+import HeaderRoute from './routes/HeaderRoute'
+
 import Login from './routes/Login'
-import Dashboard from './views/Dashboard'
-import Landing from './views/Landing'
+
+import Dashboard from './views/dashboard/Dashboard'
+import Landing from './views/landing/Landing'
 import Collection from './views/Collection'
+
+import Error from './views/error/Error'
 
 class App extends Component {
 
 	componentWillMount = async () => {
 		this.props.load()
-
 		try {
 			await this.props.getUserAuth(user => {
-				console.log(user)
+				console.log('userAuth:\t', user)
 				this.props.login()
 			})
 		} catch (message) {
@@ -31,14 +35,18 @@ class App extends Component {
 			<BrowserRouter>
 				{
 					this.props.authorized ?
-						<Switch>
-							<Route exact path={'/'} component={Dashboard} />
-							<Route path={'/collection'} component={Collection} />
-						</Switch>
+						<HeaderRoute>
+							<Switch>
+								<Route exact path={'/'} component={Dashboard} />
+								<Route path={'/collections'} component={Collection} />
+
+								<Route render={() => <Error error='404' message={'You\'ve wandered too far'} />} />
+							</Switch>
+						</HeaderRoute>
 						:
 						<Switch>
 							<Route exact path={'/'} component={Landing} />
-							<Route exact component={Login} />
+							<Route component={Login} />
 						</Switch>
 				}
 			</BrowserRouter>

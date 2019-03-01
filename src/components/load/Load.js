@@ -19,6 +19,8 @@ const Container = styled.div`
 
 	opacity: ${props => props.done ? 0 : 1};
 	transition: opacity .25s ease-in-out;
+
+	z-index: 50;
 `
 
 const load = document.getElementById('load')

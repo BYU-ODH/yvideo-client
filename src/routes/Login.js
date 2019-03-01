@@ -1,5 +1,7 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
+import { Redirect } from 'react-router-dom'
 
 import { login, getUserAuth } from './../redux/actions'
 
@@ -41,7 +43,7 @@ export class Login extends Component {
 	}
 
 	render() {
-		return null
+		return <Redirect to={'/'} />
 	}
 }
 
