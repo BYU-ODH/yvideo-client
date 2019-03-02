@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { loaded, found } from './../redux/actions'
+import { load, loaded, found } from './../redux/actions'
 
 import { Container } from './styles'
 
@@ -10,19 +10,24 @@ export class Collection extends Component {
 		this.props.found()
 		setTimeout(() => {
 			this.props.loaded()
-		}, 1000)
+		}, 500)
+	}
+
+	componentWillUnmount = () => {
+		this.props.load()
 	}
 
 	render() {
 		return (
 			<Container>
-				<h1>Collection</h1>
+				<h1>Collections</h1>
 			</Container>
 		)
 	}
 }
 
 const mapDispatchToProps = {
+	load,
 	loaded,
 	found
 }

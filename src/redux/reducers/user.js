@@ -1,11 +1,22 @@
-import { GET_USER_INFO, GET_COLL_PREVIEW, GET_COLL_RECENT } from '../actions/types'
+import { GET_USER, GET_USER_INFO, GET_COLL_PREVIEW, GET_COLL_RECENT } from '../actions/types'
+
+const initUser = {}
+
+export const userReducer = (state = initUser, { type, payload }) => {
+	switch (type) {
+		case GET_USER:
+			return payload
+
+		default:
+			return state
+	}
+}
 
 const initUserInfo = {}
 
 export const userInfoReducer = (state = initUserInfo, { type, payload }) => {
 	switch (type) {
 		case GET_USER_INFO:
-			console.log('payload', payload)
 			return payload
 
 		default:

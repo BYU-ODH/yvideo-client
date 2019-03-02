@@ -5,7 +5,7 @@ import { logout, load } from '../../redux/actions'
 
 import { LogoutButtonContainer } from './styles'
 
-import cookies from './../../cookies'
+import { cookies } from './../../util'
 
 import axios from 'axios'
 

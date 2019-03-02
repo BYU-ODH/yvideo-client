@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { loaded, lost } from './../../redux/actions'
+import { load, loaded, lost } from './../../redux/actions'
 
 import { ErrorContainer, SLink } from './styles'
 
@@ -10,7 +10,11 @@ export class Error extends React.Component {
 		this.props.lost()
 		setTimeout(() => {
 			this.props.loaded()
-		}, 1000)
+		}, 500)
+	}
+
+	componentWillUnmount = () => {
+		this.props.load()
 	}
 
 	render() {
@@ -26,6 +30,7 @@ export class Error extends React.Component {
 }
 
 const mapDispatchToProps = {
+	load,
 	loaded,
 	lost
 }

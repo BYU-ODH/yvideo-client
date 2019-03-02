@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
+import { getInitials } from '../../util'
 import { connect } from 'react-redux'
 
 import { toggleMenu } from './../../redux/actions'
 
 import LogoutButton from './LogoutButton'
 
-import { MenuStyled, LinkStyled, Header, UserPicStyled } from './styles'
+import { MenuStyled, LinkStyled, Header, UserPic } from './styles'
 
 class Menu extends Component {
 
 	render() {
-		const { menuActive, toggleMenu, isProf, isAdmin } = this.props
+		const { user, menuActive, toggleMenu, isProf, isAdmin } = this.props
 
 		return (
 			<MenuStyled className={menuActive ? 'active' : ''} onClick={toggleMenu}>
 
-				<UserPicStyled>GP</UserPicStyled>
-				<h4>Grant Perdue</h4>
+				<UserPic>{typeof user.name !== 'undefined' && getInitials(user.name)}</UserPic>
+				<h4>{typeof user.name !== 'undefined' && user.name}</h4>
 				<hr />
 				<LinkStyled to='/word-list'>My Word List</LinkStyled>
 
@@ -55,6 +56,7 @@ class Menu extends Component {
 
 const mapStateToProps = state => {
 	return {
+		user: state.user,
 		isProf: state.userAuth.roles.includes('professor'),
 		isAdmin: state.userAuth.roles.includes('admin'),
 		isStudent: state.userAuth.roles.includes('student'),

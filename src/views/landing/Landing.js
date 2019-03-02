@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { loaded, found } from './../../redux/actions'
+import { load, loaded, found } from './../../redux/actions'
 
 import { Link } from 'react-router-dom'
 
@@ -22,7 +22,11 @@ class Landing extends Component {
 		this.props.found()
 		setTimeout(() => {
 			this.props.loaded()
-		}, 1000)
+		}, 500)
+	}
+
+	componentWillUnmount = () => {
+		this.props.load()
 	}
 
 	toggleAbout = () => {
@@ -58,6 +62,7 @@ class Landing extends Component {
 }
 
 const mapDispatchToProps = {
+	load,
 	loaded,
 	found
 }

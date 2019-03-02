@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { getUserAuth, load, loaded, login } from './redux/actions'
+import { getUser, getUserAuth, load, loaded, login } from './redux/actions'
 
 import Load from './components/load/Load'
 
@@ -18,41 +18,46 @@ import Error from './views/error/Error'
 
 class App extends Component {
 
-	componentWillMount = async () => {
-		this.props.load()
+	componentDidMount = async () => {
+		const { load, getUserAuth, getUser, login } = this.props
+		load()
 		try {
-			await this.props.getUserAuth(user => {
-				console.log('userAuth:\t', user)
-				this.props.login()
+			await getUserAuth(() => {
+				login()
+				getUser()
 			})
 		} catch (message) {
 			console.log(message)
 		}
 	}
 
-	render = () =>
-		<div>
-			<BrowserRouter>
-				{
-					this.props.authorized ?
-						<HeaderRoute>
+	render = () => {
+		const { authorized, loading, done } = this.props
+		return (
+			<div>
+				<BrowserRouter>
+					{
+						authorized ?
+							<HeaderRoute>
+								<Switch>
+									<Route exact path={'/'} component={Dashboard} />
+									<Route path={'/collections'} component={Collection} />
+
+									<Route render={() => <Error error='404' message={'You\'ve wandered too far'} />} />
+								</Switch>
+							</HeaderRoute>
+							:
 							<Switch>
-								<Route exact path={'/'} component={Dashboard} />
-								<Route path={'/collections'} component={Collection} />
-
-								<Route render={() => <Error error='404' message={'You\'ve wandered too far'} />} />
+								<Route exact path={'/'} component={Landing} />
+								<Route component={Login} />
 							</Switch>
-						</HeaderRoute>
-						:
-						<Switch>
-							<Route exact path={'/'} component={Landing} />
-							<Route component={Login} />
-						</Switch>
-				}
-			</BrowserRouter>
+					}
+				</BrowserRouter>
 
-			{this.props.loading && <Load loading={this.props.loading} done={this.props.done} />}
-		</div>
+				{loading && <Load loading={loading} done={done} />}
+			</div>
+		)
+	}
 }
 
 const mapStateToProps = state => {
@@ -65,6 +70,7 @@ const mapStateToProps = state => {
 }
 
 const actionCreators = {
+	getUser,
 	getUserAuth,
 	load,
 	loaded,

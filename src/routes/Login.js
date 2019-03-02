@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
+import { cookies } from '../util'
 import { connect } from 'react-redux'
 
 import { Redirect } from 'react-router-dom'
 
-import { login, getUserAuth } from './../redux/actions'
-
-import cookies from './../cookies'
+import { load, login, getUser, getUserAuth } from '../redux/actions'
 
 export class Login extends Component {
 	componentWillMount = () => {
-		if (cookies.get('auth') !== 'true')
-			this.caslogin()
+		this.props.load()
+
+		console.log(cookies)
+
+		try {
+			if (cookies.get('auth') !== 'true')
+				this.caslogin()
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	caslogin = () => {
@@ -32,6 +39,7 @@ export class Login extends Component {
 	checkAuth = async () => {
 		try {
 			await this.props.getUserAuth(user => {
+				this.props.getUser()
 				console.log(this.props.userAuth)
 				this.props.login()
 				cookies.set('auth', true, 30)
@@ -52,7 +60,9 @@ const mapStateToProps = state => ({
 })
 
 const actionCreators = {
+	load,
 	login,
+	getUser,
 	getUserAuth
 }
 

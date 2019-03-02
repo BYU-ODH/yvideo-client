@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 
 const shimmer = keyframes`
 	0% {
@@ -32,17 +32,27 @@ export const Preview = styled.div`
 	background-size: cover;
 	background-position: center;
 
-	animation: ${shimmer} 2s linear 1s infinite;
-	animation-fill-mode: forwards;
-
-	background: #eee;
-	background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
-	background-repeat: no-repeat;
-
 	height: 10rem;
 	width: 17.8rem;
 	display: flex;
 	flex-direction: row-reverse;
+
+	${
+	props => !props.loaded ?
+		css`
+			animation: ${shimmer} 2s linear 1s infinite;
+			animation-fill-mode: forwards;
+			background-color: #eee;
+			background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
+			background-repeat: no-repeat;
+		`
+		:
+		css`
+			background: url(${props => props.src}) center no-repeat;
+			background-color: gray;
+			background-size: cover;
+		`
+	}
 `
 export const PreviewCollectionContainer = styled.div`
 	display: flex;
@@ -71,12 +81,22 @@ export const Wrapper = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
 
-	animation: ${shimmer} 2s linear 1s infinite;
-	animation-fill-mode: forwards;
-
-	background: #eee;
-	background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
-	background-repeat: no-repeat;
+	${
+	props => !props.loaded ?
+		css`
+			animation: ${shimmer} 2s linear 1s infinite;
+			animation-fill-mode: forwards;
+			background-color: #eee;
+			background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
+			background-repeat: no-repeat;
+		`
+		:
+		css`
+			background: url(${props => props.src}) center no-repeat;
+			background-color: gray;
+			background-size: cover;
+		`
+	}
 `
 
 export const IconBox = styled.div`

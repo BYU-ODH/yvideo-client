@@ -1,5 +1,4 @@
-class cookies {
-
+class Cookies {
 	set = (cookie_name, cookie_value, max_days, path, domain) => {
 		const d = new Date()
 		d.setTime(d.getTime() + max_days * 24 * 60 * 60 * 1000)
@@ -47,4 +46,10 @@ class cookies {
 	}
 }
 
-export default new cookies()
+export const cookies = new Cookies()
+
+export const getInitials = fullName => {
+	let initials = fullName.match(/\b\w/g) || []
+	initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
+	return initials
+}

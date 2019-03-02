@@ -84,7 +84,7 @@ export const Header = styled.h4`
 	font-weight: 500;
 `
 
-export const UserPicStyled = styled.button`
+export const UserPic = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -92,7 +92,10 @@ export const UserPicStyled = styled.button`
 	height: 3.6rem;
 	width: 3.6rem;
 
-	border: .1rem solid black;
+	color: white;
+	line-height: 1.9;
+
+	border: .125rem solid white;
 	border-radius: 50%;
 
 	outline: none;
@@ -100,7 +103,7 @@ export const UserPicStyled = styled.button`
 	font-weight: 500;
 	font-size: 1.8rem;
 
-	background-color: white;
+	background: linear-gradient(to bottom, #0582CA 0%, #002E5D 100%);
 
 	z-index: 18;
 

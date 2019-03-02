@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { loaded, found, getCollectionPreview, getCollectionRecent } from '../../redux/actions'
+import { load, loaded, found, getCollectionPreview, getCollectionRecent } from '../../redux/actions'
 
 import PreviewCollection from './previews/PreviewCollection'
 import PreviewVideo from './previews/PreviewVideo'
@@ -14,8 +14,6 @@ export class Dashboard extends Component {
 		const { found, getCollectionPreview, getCollectionRecent, loaded } = this.props
 
 		found()
-
-		console.clear()
 
 		try {
 			await getCollectionPreview()
@@ -31,11 +29,16 @@ export class Dashboard extends Component {
 
 		setTimeout(() => {
 			loaded()
-		}, 1000)
+		}, 500)
+	}
+
+	componentWillUnmount = () => {
+		this.props.load()
 	}
 
 	render() {
-		const { recent, preview, userAuth } = this.props
+		const { recent, preview } = this.props
+
 		return (
 			<Container>
 				<Content>
@@ -55,12 +58,9 @@ export class Dashboard extends Component {
 				<Content>
 					{
 						preview !== [] ? preview.map(item =>
-							<PreviewCollection
-								key={item.id}
-								thumb={item.url}
-								name={item.name}
-								length={item.contentCount}
-							/>) : <li>Uh Oh</li>
+							<PreviewCollection key={item.id} data={item} />)
+							:
+							<li>Uh Oh</li>
 					}
 				</Content>
 			</Container>
@@ -75,6 +75,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+	load,
 	loaded,
 	found,
 	getCollectionPreview,

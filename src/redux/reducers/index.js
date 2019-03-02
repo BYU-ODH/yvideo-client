@@ -5,7 +5,7 @@ import authReducer from './auth'
 import preloadReducer from './preload'
 import menuReducer from './menu'
 import lostReducer from './lost'
-import { userInfoReducer, userPreviewReducer, userRecentReducer } from './user'
+import { userReducer, userInfoReducer, userPreviewReducer, userRecentReducer } from './user'
 
 const rootReducer = combineReducers({
 	loading: loadReducer,
@@ -13,6 +13,7 @@ const rootReducer = combineReducers({
 	authorized: authReducer,
 	menuActive: menuReducer,
 	lost: lostReducer,
+	user: userReducer,
 	userAuth: userInfoReducer,
 	preview: userPreviewReducer,
 	recent: userRecentReducer
