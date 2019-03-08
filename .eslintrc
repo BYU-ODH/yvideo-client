@@ -1,5 +1,8 @@
 {
 	"parser": "babel-eslint",
+	"env": {
+		"es6": true
+	},
 	"plugins": [
 		"react"
 	],
@@ -16,7 +19,7 @@
 		],
 		"quotes": [
 			"error",
-			"single"
+			"backtick"
 		],
 		"comma-dangle": [
 			"error",

@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux'
 
-import loadReducer from './load'
-import authReducer from './auth'
-import preloadReducer from './preload'
-import menuReducer from './menu'
-import lostReducer from './lost'
-import { userReducer, userInfoReducer, userPreviewReducer, userRecentReducer } from './user'
+import loadReducer from './r/load'
+import authReducer from './r/auth'
+import preloadReducer from './r/preload'
+import menuReducer from './r/menu'
+import lostReducer from './r/lost'
+import { userReducer, userInfoReducer, userRecentReducer } from './r/user'
+import collectionReducer from './r/collection'
 
 const rootReducer = combineReducers({
 	loading: loadReducer,
@@ -15,8 +16,8 @@ const rootReducer = combineReducers({
 	lost: lostReducer,
 	user: userReducer,
 	userAuth: userInfoReducer,
-	preview: userPreviewReducer,
-	recent: userRecentReducer
+	recent: userRecentReducer,
+	collections: collectionReducer
 })
 
 export default rootReducer

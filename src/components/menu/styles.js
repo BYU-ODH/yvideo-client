@@ -103,7 +103,7 @@ export const UserPic = styled.button`
 	font-weight: 500;
 	font-size: 1.8rem;
 
-	background: linear-gradient(to bottom, #0582CA 0%, #002E5D 100%);
+	background: linear-gradient(to bottom, #0582CA 0%, #0157b8 100%);
 
 	z-index: 18;
 

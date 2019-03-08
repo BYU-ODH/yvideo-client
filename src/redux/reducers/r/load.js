@@ -1,4 +1,4 @@
-import { LOAD, LOADED } from '../actions/types'
+import { LOAD, LOADED } from '../../actions/types'
 
 const initState = false
 

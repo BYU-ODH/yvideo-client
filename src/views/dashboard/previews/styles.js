@@ -9,7 +9,7 @@ const shimmer = keyframes`
 	}
 `
 
-export const PreviewVideoContainer = styled.div`
+export const SPreviewVideo = styled.div`
 	display: flex;
 	flex-direction: column;
 
@@ -28,10 +28,6 @@ export const PreviewVideoContainer = styled.div`
 `
 
 export const Preview = styled.div`
-	background-image: url(${ props => props.thumb});
-	background-size: cover;
-	background-position: center;
-
 	height: 10rem;
 	width: 17.8rem;
 	display: flex;
@@ -54,7 +50,7 @@ export const Preview = styled.div`
 		`
 	}
 `
-export const PreviewCollectionContainer = styled.div`
+export const SPreviewCollection = styled.div`
 	display: flex;
 	flex-direction: column;
 

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import Background from './../../assets/desertbackground.svg'
 
-export const ErrorContainer = styled.div`
+export const SError = styled.div`
 	width: 100%;
 	height: 100vh;
 	background: url(${Background});

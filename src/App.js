@@ -12,7 +12,7 @@ import Login from './routes/Login'
 
 import Dashboard from './views/dashboard/Dashboard'
 import Landing from './views/landing/Landing'
-import Collection from './views/Collection'
+import Collections from './views/collections/Collections'
 
 import Error from './views/error/Error'
 
@@ -40,15 +40,15 @@ class App extends Component {
 						authorized ?
 							<HeaderRoute>
 								<Switch>
-									<Route exact path={'/'} component={Dashboard} />
-									<Route path={'/collections'} component={Collection} />
+									<Route exact path={`/`} component={Dashboard} />
+									<Route path={`/collections`} component={Collections} />
 
-									<Route render={() => <Error error='404' message={'You\'ve wandered too far'} />} />
+									<Route render={() => <Error error='404' message={`You've wandered too far`} />} />
 								</Switch>
 							</HeaderRoute>
 							:
 							<Switch>
-								<Route exact path={'/'} component={Landing} />
+								<Route exact path={`/`} component={Landing} />
 								<Route component={Login} />
 							</Switch>
 					}
@@ -60,14 +60,12 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return {
-		authorized: state.authorized,
-		loading: state.loading,
-		done: state.done,
-		userAuth: state.userAuth
-	}
-}
+const mapStateToProps = state => ({
+	authorized: state.authorized,
+	loading: state.loading,
+	done: state.done,
+	userAuth: state.userAuth
+})
 
 const actionCreators = {
 	getUser,

@@ -1,4 +1,4 @@
-import { LOST, FOUND } from '../actions/types'
+import { LOST, FOUND } from '../../actions/types'
 
 const initialState = false
 

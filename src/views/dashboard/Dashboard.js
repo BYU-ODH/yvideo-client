@@ -1,28 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, found, getCollectionPreview, getCollectionRecent } from '../../redux/actions'
+import { load, loaded, found, getCollections, getRecent } from '../../redux/actions'
 
 import PreviewCollection from './previews/PreviewCollection'
 import PreviewVideo from './previews/PreviewVideo'
 
-import { Container, Content } from './styles'
+import { Container, Content, PreviewEmpty } from './styles'
 
 export class Dashboard extends Component {
 
 	componentDidMount = async () => {
-		const { found, getCollectionPreview, getCollectionRecent, loaded } = this.props
+		const { found, getCollections, getRecent, loaded } = this.props
 
 		found()
 
 		try {
-			await getCollectionPreview()
+			await getCollections()
 		} catch (error) {
 			console.log(error)
 		}
 
 		try {
-			await getCollectionRecent()
+			await getRecent()
 		} catch (error) {
 			console.log(error)
 		}
@@ -37,7 +37,7 @@ export class Dashboard extends Component {
 	}
 
 	render() {
-		const { recent, preview } = this.props
+		const { recent, collections } = this.props
 
 		return (
 			<Container>
@@ -46,10 +46,10 @@ export class Dashboard extends Component {
 				</Content>
 				<Content>
 					{
-						recent !== [] ? recent.map(item =>
-							<PreviewVideo key={item.contentId} data={item} />)
+						recent !== undefined && recent.length !== 0 ?
+							recent.map(item => <PreviewVideo key={item.contentId} data={item} />)
 							:
-							<li>Uh Oh</li>
+							<PreviewEmpty>no videos :(</PreviewEmpty>
 					}
 				</Content>
 				<Content>
@@ -57,10 +57,10 @@ export class Dashboard extends Component {
 				</Content>
 				<Content>
 					{
-						preview !== [] ? preview.map(item =>
-							<PreviewCollection key={item.id} data={item} />)
+						collections !== undefined && collections.length !== 0 ?
+							collections.map(item => <PreviewCollection key={item.id} data={item} />)
 							:
-							<li>Uh Oh</li>
+							<PreviewEmpty>no collections :(</PreviewEmpty>
 					}
 				</Content>
 			</Container>
@@ -70,7 +70,7 @@ export class Dashboard extends Component {
 
 const mapStateToProps = state => ({
 	userAuth: state.userAuth,
-	preview: state.preview,
+	collections: state.collections,
 	recent: state.recent
 })
 
@@ -78,8 +78,8 @@ const mapDispatchToProps = {
 	load,
 	loaded,
 	found,
-	getCollectionPreview,
-	getCollectionRecent
+	getCollections,
+	getRecent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

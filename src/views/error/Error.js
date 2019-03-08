@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { load, loaded, lost } from './../../redux/actions'
 
-import { ErrorContainer, SLink } from './styles'
+import { SError, SLink } from './styles'
 
 export class Error extends React.Component {
 	componentDidMount = () => {
@@ -20,11 +20,11 @@ export class Error extends React.Component {
 	render() {
 		const { error, message } = this.props
 		return (
-			<ErrorContainer>
+			<SError>
 				<h1>{error}</h1>
 				<h2>{message}</h2>
 				<SLink to={'/'}>Go back home</SLink>
-			</ErrorContainer >
+			</SError >
 		)
 	}
 }

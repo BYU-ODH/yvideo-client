@@ -1,4 +1,4 @@
-import { READY, DONE } from '../actions/types'
+import { READY, DONE } from '../../actions/types'
 
 const initState = false
 

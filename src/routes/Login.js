@@ -1,16 +1,12 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { cookies } from '../util'
 import { connect } from 'react-redux'
-
-import { Redirect } from 'react-router-dom'
 
 import { load, login, getUser, getUserAuth } from '../redux/actions'
 
 export class Login extends Component {
 	componentWillMount = () => {
 		this.props.load()
-
-		console.log(cookies)
 
 		try {
 			if (cookies.get('auth') !== 'true')
@@ -30,7 +26,9 @@ export class Login extends Component {
 				if (popup.location.origin === window.location.origin || popup.closed) {
 					clearInterval(popuppoll)
 					popup.close()
-					this.checkAuth()
+					this.checkAuth().then(() => {
+						this.props.history.push('/')
+					})
 				}
 			} catch (e) { }
 		}, 500)
@@ -51,7 +49,7 @@ export class Login extends Component {
 	}
 
 	render() {
-		return <Redirect to={'/'} />
+		return null
 	}
 }
 
