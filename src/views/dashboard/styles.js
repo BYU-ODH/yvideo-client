@@ -5,14 +5,24 @@ export const Container = styled.div`
 `
 
 export const Content = styled.div`
-	width: 91.2rem;
+	max-width: 91.2rem;
 	margin: 0 auto;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
 
 	& > p {
 		margin-bottom: 1.8rem;
 		margin-top: 5rem;
+	}
+
+	@media screen and (max-width: 960px) {
+		max-width: 40.6rem;
+	}
+
+	@media screen and (max-width: 455px) {
+		max-width: unset;
+		width: 90vw;
 	}
 `
 

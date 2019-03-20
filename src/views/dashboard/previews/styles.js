@@ -9,25 +9,7 @@ const shimmer = keyframes`
 	}
 `
 
-export const SPreviewVideo = styled.div`
-	display: flex;
-	flex-direction: column;
-
-	& p {
-		margin-top: 1rem;
-		margin-bottom: 0;
-	}
-
-	& p.gray {
-		color: #a4a4a4;
-	}
-
-	:hover {
-		cursor: pointer;
-	}
-`
-
-export const Preview = styled.div`
+export const PreviewBackground = styled.div`
 	height: 10rem;
 	width: 17.8rem;
 	display: flex;
@@ -49,10 +31,18 @@ export const Preview = styled.div`
 			background-size: cover;
 		`
 	}
+
+	@media screen and (max-width: 455px) {
+		max-width: unset;
+		width: 90vw;
+	}
 `
-export const SPreviewCollection = styled.div`
+
+export const Preview = styled.div`
 	display: flex;
 	flex-direction: column;
+
+	margin-bottom: 2rem;
 
 	& p {
 		margin-top: 1rem;
@@ -93,6 +83,11 @@ export const Wrapper = styled.div`
 			background-size: cover;
 		`
 	}
+
+	@media screen and (max-width: 455px) {
+		width: 90vw;
+		height: 50.5vw;
+	}
 `
 
 export const IconBox = styled.div`
@@ -105,5 +100,10 @@ export const IconBox = styled.div`
 
 	& svg {
 		cursor: pointer;
+	}
+
+	@media screen and (max-width: 455px) {
+		height: 50.5vw;
+		width: 40.4vw;
 	}
 `

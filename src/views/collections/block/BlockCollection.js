@@ -35,7 +35,7 @@ const Container = styled.div`
 	SlideWrapper = styled.div`
 		display: grid;
 		grid-auto-flow: column;
-		grid-template-columns: ${props => 'repeat(' + props.count + ', 17.8rem)'};
+		grid-template-columns: ${props => `repeat(` + props.count + `, 17.8rem)`};
 		grid-gap: 5rem;
 
 		overflow-x: scroll;
@@ -77,17 +77,17 @@ const Container = styled.div`
 				width: 1.5rem;
 
 				transition: opacity .25s ease-in-out;
-				opacity: ${props => props.right ? '0' : '1'};
+				opacity: ${props => props.right ? `0` : `1`};
 				background-image: url(${arrowRight});
 				background-size: cover;
 			}
 		}
 
 		&.left {
-			left: ${props => props.hideLeft ? '-100rem' : '0'};
+			left: ${props => props.hideLeft ? `-100rem` : `0`};
 
 			transition: opacity .25s ease-in-out;
-			opacity: ${props => props.left ? '0' : '1'};
+			opacity: ${props => props.left ? `0` : `1`};
 			background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
 
 			& > div {
@@ -95,7 +95,7 @@ const Container = styled.div`
 				width: 1.5rem;
 
 				transition: opacity .25s ease-in-out;
-				opacity: ${props => props.left ? '0' : '1'};
+				opacity: ${props => props.left ? `0` : `1`};
 				background-image: url(${arrowLeft});
 				background-size: cover;
 			}
@@ -158,7 +158,7 @@ export default class BlockCollection extends Component {
 		return (
 			<Container>
 				<Header>
-					<Link to={'/'}>{name}</Link>
+					<Link to={`/`}>{name}</Link>
 					<p>{count} Videos</p>
 				</Header>
 				<div>
@@ -183,72 +183,72 @@ export default class BlockCollection extends Component {
 const _VideoPreview = [
 	{
 		'contentId': 1,
-		'name': 'Emilie Muller',
-		'thumbnail': '',
-		'collection': 'German Public Content',
+		'name': `Emilie Muller`,
+		'thumbnail': ``,
+		'collection': `German Public Content`,
 		'translation': true,
 		'captions': true,
 		'annotations': true
 	},
 	{
 		'contentId': 2,
-		'name': 'The Longest Yeah Boy Ever',
-		'thumbnail': '',
-		'collection': 'Collection 117',
+		'name': `The Longest Yeah Boy Ever`,
+		'thumbnail': ``,
+		'collection': `Collection 117`,
 		'translation': false,
 		'captions': true,
 		'annotations': true
 	},
 	{
 		'contentId': 3,
-		'name': 'Detroit',
-		'thumbnail': '',
-		'collection': 'Collection 117',
+		'name': `Detroit`,
+		'thumbnail': ``,
+		'collection': `Collection 117`,
 		'translation': true,
 		'captions': false,
 		'annotations': false
 	},
 	{
 		'contentId': 4,
-		'name': 'Les Choristes',
-		'thumbnail': '',
-		'collection': 'French Class',
+		'name': `Les Choristes`,
+		'thumbnail': ``,
+		'collection': `French Class`,
 		'translation': false,
 		'captions': false,
 		'annotations': false
 	},
 	{
 		'contentId': 5,
-		'name': 'Pauvre Garcon',
-		'thumbnail': '',
-		'collection': 'French Class',
+		'name': `Pauvre Garcon`,
+		'thumbnail': ``,
+		'collection': `French Class`,
 		'translation': true,
 		'captions': false,
 		'annotations': false
 	},
 	{
 		'contentId': 6,
-		'name': 'Mama Mia',
-		'thumbnail': '',
-		'collection': 'Collection 117',
+		'name': `Mama Mia`,
+		'thumbnail': ``,
+		'collection': `Collection 117`,
 		'translation': false,
 		'captions': false,
 		'annotations': false
 	},
 	{
 		'contentId': 7,
-		'name': 'Francois de Villeneuve',
-		'thumbnail': '',
-		'collection': 'French Class',
+		'name': `Francois de Villeneuve`,
+		'thumbnail': ``,
+		'collection': `French Class`,
 		'translation': false,
 		'captions': true,
 		'annotations': false
 	},
 	{
 		'contentId': 8,
-		'name': 'M. Lemieux',
-		'thumbnail': '',
-		'collection': 'French Class',
+		'name': `M. Lemieux`,
+		'thumbnail': ``,
+		'collection': `French Class`,
 		'translation': true,
 		'captions': false,
 		'annotations': true

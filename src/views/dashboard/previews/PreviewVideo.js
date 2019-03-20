@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { SPreviewVideo, Preview } from './styles'
+import { Preview, PreviewBackground } from './styles'
 
 class PreviewVideo extends Component {
 	constructor(props) {
@@ -24,11 +24,11 @@ class PreviewVideo extends Component {
 		const { thumbnail, name, collection } = this.props.data
 		const { loaded } = this.state
 		return (
-			<SPreviewVideo>
-				<Preview src={thumbnail} loaded={loaded} />
+			<Preview>
+				<PreviewBackground src={thumbnail} loaded={loaded} />
 				<p>{name}</p>
 				<p className='gray'>{collection}</p>
-			</SPreviewVideo>
+			</Preview>
 		)
 	}
 }

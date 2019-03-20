@@ -1,10 +1,10 @@
 import { GET_USER, GET_USER_INFO, GET_RECENT } from './types'
 import axios from 'axios'
-import { cookies } from '../../../util'
+import { cookies } from '../../../js/util'
 
 export const getUser = callback => {
 	return async dispatch => {
-		await axios(process.env.REACT_APP_YVIDEO_SERVER + `/api/user`, { withCredentials: true })
+		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user`, { withCredentials: true })
 			.then(result => {
 				const json = result.data
 				dispatch({ type: GET_USER, payload: json })
@@ -20,7 +20,7 @@ export const getUser = callback => {
 
 export const getUserAuth = callback => {
 	return async dispatch => {
-		await axios(process.env.REACT_APP_YVIDEO_SERVER + `/api/user/auth`, { withCredentials: true })
+		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/auth`, { withCredentials: true })
 			.then(result => {
 				const json = result.data
 				dispatch({ type: GET_USER_INFO, payload: json })

@@ -25,7 +25,7 @@ const shimmer = keyframes`
 		height: 10rem;
 
 		margin-bottom: 1rem;
-		
+
 		animation: ${shimmer} 2s linear infinite;
 		animation-fill-mode: forwards;
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { SPreviewCollection, Wrapper, IconBox } from './styles'
+import { Preview, Wrapper, IconBox } from './styles'
 
 import PreviewIcon from './../../../assets/icon.svg'
 
@@ -23,17 +23,18 @@ class PreviewCollection extends Component {
 	}
 
 	render() {
-		const { thumbnail, name, contentCount } = this.props.data
+		const { thumbnail, name, content } = this.props.data
+		const contentCount = content.length
 		return (
-			<SPreviewCollection>
+			<Preview>
 				<Wrapper src={thumbnail} loaded={this.state.loaded}>
 					<IconBox>
 						<embed src={PreviewIcon} />
 					</IconBox>
 				</Wrapper>
 				<p>{name}</p>
-				<p className='gray'>{contentCount} Videos</p>
-			</SPreviewCollection>
+				<p className='gray'>{contentCount} Video{contentCount === 1 || `s`}</p>
+			</Preview>
 		)
 	}
 }

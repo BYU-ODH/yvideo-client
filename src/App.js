@@ -67,7 +67,7 @@ const mapStateToProps = state => ({
 	userAuth: state.userAuth
 })
 
-const actionCreators = {
+const mapDispatchToProps = {
 	getUser,
 	getUserAuth,
 	load,
@@ -75,4 +75,4 @@ const actionCreators = {
 	login
 }
 
-export default connect(mapStateToProps, actionCreators)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

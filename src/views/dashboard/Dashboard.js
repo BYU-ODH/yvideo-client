@@ -39,9 +39,11 @@ export class Dashboard extends Component {
 	render() {
 		const { recent, collections } = this.props
 
+		const modColl = collections.slice(0, 4)
+
 		return (
 			<Container>
-				<Content>
+				<Content header>
 					<p>Recently Viewed</p>
 				</Content>
 				<Content>
@@ -52,13 +54,13 @@ export class Dashboard extends Component {
 							<PreviewEmpty>no videos :(</PreviewEmpty>
 					}
 				</Content>
-				<Content>
+				<Content header>
 					<p>Collections</p>
 				</Content>
 				<Content>
 					{
-						collections !== undefined && collections.length !== 0 ?
-							collections.map(item => <PreviewCollection key={item.id} data={item} />)
+						modColl !== undefined && modColl.length !== 0 ?
+							modColl.map(item => <PreviewCollection key={item.id} data={item} />)
 							:
 							<PreviewEmpty>no collections :(</PreviewEmpty>
 					}
