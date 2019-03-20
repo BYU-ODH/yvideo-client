@@ -14,17 +14,15 @@ class YLex {
 		return values.map(renderer).join(`, `)
 	}
 
-	renderSense = sense => {
-		return <F>
-			{sense.definition}
-			{sense.examples &&
-				sense.examples.length &&
-				<F><br /><i>Examples:</i>{sense.examples.map(s => <F><br />{s}</F>)}</F>}
-			{sense.notes &&
-				sense.notes.length &&
-				<F><br /><i>Notes:</i>{sense.notes.map(s => <F><br />{s}</F>)}</F>}
-		</F>
-	}
+	renderSense = sense => <F>
+		{sense.definition}
+		{sense.examples &&
+			sense.examples.length &&
+			<F><br /><i>Examples:</i>{sense.examples.map(s => <F><br />{s}</F>)}</F>}
+		{sense.notes &&
+			sense.notes.length &&
+			<F><br /><i>Notes:</i>{sense.notes.map(s => <F><br />{s}</F>)}</F>}
+	</F>
 
 	renderLemma = lemma => {
 
