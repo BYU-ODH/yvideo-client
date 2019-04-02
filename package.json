@@ -7,7 +7,7 @@
 		"js-cookie": "^2.2.0",
 		"react": "^16.8.1",
 		"react-dom": "^16.8.1",
-		"react-scripts": "^2.1.5",
+		"react-scripts": "^2.1.8",
 		"redux-thunk": "^2.3.0",
 		"uuid": "^3.3.2"
 	},
