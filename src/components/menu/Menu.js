@@ -33,6 +33,7 @@ class Menu extends Component {
 					<React.Fragment>
 						<Header>Collections</Header>
 						<hr />
+						<LinkStyled to='/collections'>View Collections</LinkStyled>
 						<LinkStyled to='/collection-manager'>Manage Collections</LinkStyled>
 						<LinkStyled to='/create-collection'>Create New Collection</LinkStyled>
 					</React.Fragment>

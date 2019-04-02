@@ -13,14 +13,11 @@ export default class BlockCollection extends Component {
 			left: true,
 			hideLeft: true
 		}
-		this.wrapper = React.createRef()
 
-		this.scrollListener = this.scrollListener.bind(this)
-		this.scrollLeft = this.scrollLeft.bind(this)
-		this.scrollRight = this.scrollRight.bind(this)
+		this.wrapper = React.createRef()
 	}
 
-	scrollListener(e) {
+	scrollListener = e => {
 		if (e.target.scrollLeft === 0) {
 			this.setState({
 				left: true
@@ -42,25 +39,27 @@ export default class BlockCollection extends Component {
 		}
 	}
 
-	scrollLeft() {
+	scrollLeft = () => {
 		this.wrapper.current.scrollBy({
 			left: -179
 		})
 	}
 
-	scrollRight() {
+	scrollRight = () => {
 		this.wrapper.current.scrollBy({
 			left: 178
 		})
 	}
 
 	render() {
-		const { name, count } = this.props.data
+
+		const { name, content } = this.props.data
+
 		return (
 			<Container>
 				<Header>
 					<Link to={`/`}>{name}</Link>
-					<p>{count} Videos</p>
+					<p>{content.length} Videos</p>
 				</Header>
 				<div>
 					<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
@@ -68,7 +67,7 @@ export default class BlockCollection extends Component {
 					</Arrow>
 					<SlideWrapper count={count} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 						{
-							_VideoPreview.map(item => <BlockItem key={item.contentId} data={item} />)
+							content.map(item => <BlockItem key={item.contentId} data={item} />)
 						}
 					</SlideWrapper>
 					<Arrow className='right' onClick={this.scrollRight}>

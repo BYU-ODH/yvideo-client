@@ -51,87 +51,88 @@ export const SlideWrapper = styled.div`
 
 export const Arrow = styled.div`
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-    position: absolute;
-    top: 0;
+	position: absolute;
+	top: 0;
 
-    height: 10rem;
-    width: 6rem;
+	height: 10rem;
+	width: 6rem;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    &.right{
-        right: 0;
-        background-image: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+	&.right{
+		right: 0;
+		background-image: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
 
-        & > div {
-            height: 1.5rem;
-            width: 1.5rem;
+		& > div {
+			height: 1.5rem;
+			width: 1.5rem;
 
-            transition: opacity .25s ease-in-out;
-            opacity: ${props => props.right ? `0` : `1`};
-            background-image: url(${arrowRight});
-            background-size: cover;
-        }
-    }
+			transition: opacity .25s ease-in-out;
+			opacity: ${props => props.right ? `0` : `1`};
+			background-image: url(${arrowRight});
+			background-size: cover;
+		}
+	}
 
-    &.left {
-        left: ${props => props.hideLeft ? `-100rem` : `0`};
+	&.left {
+		left: ${props => props.hideLeft ? `-100rem` : `0`};
 
-        transition: opacity .25s ease-in-out;
-        opacity: ${props => props.left ? `0` : `1`};
-        background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+		transition: opacity .25s ease-in-out;
+		opacity: ${props => props.left ? `0` : `1`};
+		background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
 
-        & > div {
-            height: 1.5rem;
-            width: 1.5rem;
+		& > div {
+			height: 1.5rem;
+			width: 1.5rem;
 
-            transition: opacity .25s ease-in-out;
-            opacity: ${props => props.left ? `0` : `1`};
-            background-image: url(${arrowLeft});
-            background-size: cover;
-        }
-    }
-
+			transition: opacity .25s ease-in-out;
+			opacity: ${props => props.left ? `0` : `1`};
+			background-image: url(${arrowLeft});
+			background-size: cover;
+		}
+	}
 `
+
 const shimmer = keyframes`
-0% {
+	0% {
 	background-position: -30rem 0;
-}
-100% {
+	}
+	100% {
 		background-position: 30rem 0;
-}
+	}
 `
 
 export const ItemContainer = styled.div`
-    & h4 {
-        font-weight: 500;
-    }
+	& h4 {
+		font-weight: 500;
+	}
 `
 
 export const Thumbnail = styled.div`
-        width: 17.8rem;
-        height: 10rem;
+	width: 17.8rem;
+	height: 10rem;
 
-        margin-bottom: 1rem;
-    ${
-    props => !props.loaded ?
-        css `
-        background-color: #eee;
-        background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
-        background-repeat: no-repeat;
+	margin-bottom: 1rem;
 
-        animation: ${shimmer} 2s linear infinite;
-        animation-fill-mode: forwards;
-        `
-    :
-        css`
-        background-color: gray;
-        background-image: url(${props => props.src});
-        background-size: cover;
-        `
-    }
+	${
+	props => !props.loaded ?
+		css`
+			background-color: #eee;
+			background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
+			background-repeat: no-repeat;
+
+			animation: ${shimmer} 2s linear infinite;
+			animation-fill-mode: forwards;
+		`
+		:
+		css`
+			background-color: gray;
+			background-image: url(${props => props.src});
+			background-size: cover;
+		`
+	}
 `
