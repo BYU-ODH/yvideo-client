@@ -6,12 +6,15 @@ class BlockItem extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			img: props.data.thumbnail,
+			// img: props.data.thumbnail,
 			loaded: false
 		}
 	}
 
 	componentDidMount = () => {
+
+		console.log(this.props)
+
 		const temp = new Image()
 		temp.src = this.state.img
 		temp.onload = () => {
@@ -20,11 +23,13 @@ class BlockItem extends Component {
 	}
 
 	render() {
-		const { name, thumbnail } = this.props.data
+
+		const { name } = this.props
 		const { loaded } = this.state
+
 		return (
 			<ItemContainer>
-				<Thumbnail src={thumbnail} loaded={loaded} />
+				<Thumbnail src={name} loaded={loaded} />
 				<h4>{name}</h4>
 			</ItemContainer>
 		)
