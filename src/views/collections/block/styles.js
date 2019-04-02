@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 
 import arrowLeft from '../../../assets/collections/arrow-left.svg'
 import arrowRight from '../../../assets/collections/arrow-right.svg'
@@ -117,17 +117,21 @@ export const Thumbnail = styled.div`
         height: 10rem;
 
         margin-bottom: 1rem;
-    &.default{
+    ${
+    props => !props.loaded ?
+        css `
         background-color: #eee;
         background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
         background-repeat: no-repeat;
 
         animation: ${shimmer} 2s linear infinite;
         animation-fill-mode: forwards;
-    }
-    &.src{
+        `
+    :
+        css`
         background-color: gray;
         background-image: url(${props => props.src});
         background-size: cover;
+        `
     }
 `

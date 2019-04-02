@@ -67,7 +67,6 @@ export default class BlockCollection extends Component {
 						<div />
 					</Arrow>
 					<SlideWrapper count={count} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
-						{/* <SlideWrapper count={count} onScroll={this.scrollListener} onScrollCapture={this.scrollListener}> */}
 						{
 							_VideoPreview.map(item => <BlockItem key={item.contentId} data={item} />)
 						}

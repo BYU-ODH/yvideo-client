@@ -47,6 +47,7 @@ export class Collections extends Component {
 
 	render() {
 		const { isProf, isAdmin, collections, block } = this.props
+
 		return (
 			<SCollection>
 				<header>
