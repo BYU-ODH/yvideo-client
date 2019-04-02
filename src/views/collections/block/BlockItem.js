@@ -1,47 +1,39 @@
-import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { Component } from 'react'
 
-const shimmer = keyframes`
-0% {
-	background-position: -30rem 0;
-}
-100% {
-		background-position: 30rem 0;
-}
-`,
+import { ItemContainer, Thumbnail } from './styles.js'
 
-	Container = styled.div`
-		& h4 {
-			font-weight: 500;
+class BlockItem extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			// img: props.data.thumbnail,
+			loaded: false
 		}
-	`,
+	}
 
-	Thumbnail = styled.div`
-		background-color: gray;
-		background-image: url(${props => props.src}) center no-repeat;
-		background-size: cover;
+	componentDidMount = () => {
 
-		width: 17.8rem;
-		height: 10rem;
+		console.log(this.props)
 
-		margin-bottom: 1rem;
+		const temp = new Image()
+		temp.src = this.state.img
+		temp.onload = () => {
+			this.setState({ loaded: true })
+		}
+	}
 
-		animation: ${shimmer} 2s linear infinite;
-		animation-fill-mode: forwards;
+	render() {
 
-		background-color: #eee;
-		background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
-		background-repeat: no-repeat;
-	`
+		const { name } = this.props
+		const { loaded } = this.state
 
-const BlockItem = props => {
-	const { name, thumbnail } = { ...props.data }
-	return (
-		<Container>
-			<Thumbnail src={thumbnail} />
-			<h4>{name}</h4>
-		</Container>
-	)
+		return (
+			<ItemContainer>
+				<Thumbnail src={name} loaded={loaded} />
+				<h4>{name}</h4>
+			</ItemContainer>
+		)
+	}
 }
 
 export default BlockItem

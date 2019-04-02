@@ -1,107 +1,9 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
-
 import { Link } from 'react-router-dom'
 
 import BlockItem from './BlockItem'
 
-import arrowLeft from '../../../assets/collections/arrow-right.svg'
-import arrowRight from '../../../assets/collections/arrow-right.svg'
-
-const Container = styled.div`
-	padding: 2rem;
-
-	& > div {
-		position: relative;
-	}
-`,
-
-	Header = styled.div`
-		display: grid;
-		grid-template-columns: 18rem auto;
-		justify-items: start;
-		padding-bottom: 2rem;
-
-		& > p {
-			color: #a4a4a4;
-		}
-
-		& a {
-			color: black;
-			text-decoration: none;
-		}
-	`,
-
-	SlideWrapper = styled.div`
-		display: grid;
-		grid-auto-flow: column;
-		grid-template-columns: ${props => `repeat(` + props.count + `, 17.8rem)`};
-		grid-gap: 5rem;
-
-		overflow-x: scroll;
-		overflow-y: hidden;
-
-		will-change: overflow;
-
-		scroll-behavior: smooth;
-
-		::-webkit-scrollbar {
-			background: transparent;
-		}
-
-		& > div:last-child {
-			padding-right: 6rem;
-		}
-	`,
-
-	Arrow = styled.div`
-
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		position: absolute;
-		top: 0;
-
-		height: 10rem;
-		width: 6rem;
-
-		cursor: pointer;
-
-		&.right{
-			right: 0;
-			background-image: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
-
-			& > div {
-				height: 1.5rem;
-				width: 1.5rem;
-
-				transition: opacity .25s ease-in-out;
-				opacity: ${props => props.right ? `0` : `1`};
-				background-image: url(${arrowRight});
-				background-size: cover;
-			}
-		}
-
-		&.left {
-			left: ${props => props.hideLeft ? `-100rem` : `0`};
-
-			transition: opacity .25s ease-in-out;
-			opacity: ${props => props.left ? `0` : `1`};
-			background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
-
-			& > div {
-				height: 1.5rem;
-				width: 1.5rem;
-
-				transition: opacity .25s ease-in-out;
-				opacity: ${props => props.left ? `0` : `1`};
-				background-image: url(${arrowLeft});
-				background-size: cover;
-			}
-		}
-
-	`
+import { Container, Header, SlideWrapper, Arrow } from './styles.js'
 
 export default class BlockCollection extends Component {
 	constructor(props) {
@@ -113,13 +15,9 @@ export default class BlockCollection extends Component {
 		}
 
 		this.wrapper = React.createRef()
-
-		this.scrollListener = this.scrollListener.bind(this)
-		this.scrollLeft = this.scrollLeft.bind(this)
-		this.scrollRight = this.scrollRight.bind(this)
 	}
 
-	scrollListener(e) {
+	scrollListener = e => {
 		if (e.target.scrollLeft === 0) {
 			this.setState({
 				left: true
@@ -141,34 +39,35 @@ export default class BlockCollection extends Component {
 		}
 	}
 
-	scrollLeft() {
+	scrollLeft = () => {
 		this.wrapper.current.scrollBy({
 			left: -179
 		})
 	}
 
-	scrollRight() {
+	scrollRight = () => {
 		this.wrapper.current.scrollBy({
 			left: 178
 		})
 	}
 
 	render() {
-		const { name, count } = this.props.data
+
+		const { name, content } = this.props.data
+
 		return (
 			<Container>
 				<Header>
 					<Link to={`/`}>{name}</Link>
-					<p>{count} Videos</p>
+					<p>{content.length} Videos</p>
 				</Header>
 				<div>
 					<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 						<div />
 					</Arrow>
-					<SlideWrapper count={count} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
-						{/* <SlideWrapper count={count} onScroll={this.scrollListener} onScrollCapture={this.scrollListener}> */}
+					<SlideWrapper count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 						{
-							_VideoPreview.map(item => <BlockItem key={item.contentId} data={item} />)
+							content.map(item => <BlockItem key={item.contentId} data={item} />)
 						}
 					</SlideWrapper>
 					<Arrow className='right' onClick={this.scrollRight}>
@@ -184,7 +83,7 @@ const _VideoPreview = [
 	{
 		'contentId': 1,
 		'name': `Emilie Muller`,
-		'thumbnail': ``,
+		'thumbnail': `../image.jpg`,
 		'collection': `German Public Content`,
 		'translation': true,
 		'captions': true,
@@ -193,7 +92,7 @@ const _VideoPreview = [
 	{
 		'contentId': 2,
 		'name': `The Longest Yeah Boy Ever`,
-		'thumbnail': ``,
+		'thumbnail': `https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500`,
 		'collection': `Collection 117`,
 		'translation': false,
 		'captions': true,
