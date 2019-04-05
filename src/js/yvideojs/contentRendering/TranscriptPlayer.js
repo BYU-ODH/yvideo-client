@@ -1,4 +1,4 @@
-import { Ayamel } from "yvideojs"
+import { Ayamel } from 'yvideojs'
 
 // TODO: resizing
 
@@ -18,58 +18,58 @@ const TranscriptPlayer = args => {
 	let activeIndex = 0
 
 	// Transcript DOM
-	const transcriptSelect = document.createElement(`div`),
-		syncButton = document.createElement(`button`),
-		transcriptContentHolder = document.createElement(`div`),
-		transcriptSelector = document.createElement(`select`),
-		iconAnchorElement = document.createElement(`i`)
+	// const transcriptSelect = document.createElement(`div`),
+	// 	syncButton = document.createElement(`button`),
+	// 	transcriptContentHolder = document.createElement(`div`),
+	// 	transcriptSelector = document.createElement(`select`),
+	// 	iconAnchorElement = document.createElement(`i`)
 
-	const transcriptDisplay = document.createElement(`div`);
+	// const transcriptDisplay = document.createElement(`div`)
 
-	(initTranscriptPlayer = () => {
-		transcriptDisplay.classList.add(`transcriptDisplay`)
-		transcriptSelect.classList.add(`form-inline`)
-		transcriptSelect.classList.add(`transcriptSelect`)
-		transcriptContentHolder.classList.add(`transcriptContentHolder`)
-		iconAnchorElement.classList.add(`icon-anchor`)
-		syncButton.title = `Anchor transcript to media location`
+	// const initTranscriptPlayer = () => {
+	// 	transcriptDisplay.classList.add(`transcriptDisplay`)
+	// 	transcriptSelect.classList.add(`form-inline`)
+	// 	transcriptSelect.classList.add(`transcriptSelect`)
+	// 	transcriptContentHolder.classList.add(`transcriptContentHolder`)
+	// 	iconAnchorElement.classList.add(`icon-anchor`)
+	// 	syncButton.title = `Anchor transcript to media location`
 
-		syncButton.appendChild(iconAnchorElement)
-		syncButton.addEventListener(`click`, (e) => {
-			sync = !sync
-			if (sync)
-				syncButton.classList.add(`active`)
-			else
-				syncButton.classList.remove(`active`)
+	// 	syncButton.appendChild(iconAnchorElement)
+	// 	syncButton.addEventListener(`click`, (e) => {
+	// 		sync = !sync
+	// 		if (sync)
+	// 			syncButton.classList.add(`active`)
+	// 		else
+	// 			syncButton.classList.remove(`active`)
 
-		})
-		syncButton.setAttribute(`type`, `button`)
-		syncButton.classList.add(`btn`)
-		if (sync)
-			syncButton.classList.add(`active`)
+	// 	})
+	// 	syncButton.setAttribute(`type`, `button`)
+	// 	syncButton.classList.add(`btn`)
+	// 	if (sync)
+	// 		syncButton.classList.add(`active`)
 
-		transcriptSelect.appendChild(transcriptSelector)
-		transcriptSelect.appendChild(syncButton)
-		transcriptSelector.addEventListener(`change`, (e) => {
-			activeIndex = e.target.selectedIndex
-			transcriptContentHolder.querySelectorAll(`.transcriptContent`).forEach((t, i) => {
-				t.style.display = i === activeIndex ? `block` : `none`
-			})
-		})
+	// 	transcriptSelect.appendChild(transcriptSelector)
+	// 	transcriptSelect.appendChild(syncButton)
+	// 	transcriptSelector.addEventListener(`change`, (e) => {
+	// 		activeIndex = e.target.selectedIndex
+	// 		transcriptContentHolder.querySelectorAll(`.transcriptContent`).forEach((t, i) => {
+	// 			t.style.display = i === activeIndex ? `block` : `none`
+	// 		})
+	// 	})
 
-		transcriptDisplay.appendChild(transcriptSelect)
-		transcriptDisplay.appendChild(transcriptContentHolder)
-		element.appendChild(transcriptDisplay)
-	})()
+	// 	transcriptDisplay.appendChild(transcriptSelect)
+	// 	transcriptDisplay.appendChild(transcriptContentHolder)
+	// 	element.appendChild(transcriptDisplay)
+	// }
 
-	addTrack = ti => {
+	const addTrack = ti => {
 		if (tracks.length < ti + 1) return false
 		const transcriptOption = document.createElement(`option`),
 			transcriptContent = document.createElement(`div`),
 			transcript = tracks[ti]
 
 		transcriptOption.innerHTML = transcript.label
-		transcriptSelector.appendChild(transcriptOption)
+		// transcriptSelector.appendChild(transcriptOption)
 		transcriptContent.style.display = activeIndex === ti ? `block` : `none`
 		transcriptContent.setAttribute(`data-trackindex`, ti)
 		transcriptContent.classList.add(`transcriptContent`)
@@ -89,7 +89,7 @@ const TranscriptPlayer = args => {
 			transcriptContent.appendChild(q)
 		})
 
-		transcriptContentHolder.appendChild(transcriptContent)
+		// transcriptContentHolder.appendChild(transcriptContent)
 		return true
 	}
 
@@ -141,8 +141,8 @@ const TranscriptPlayer = args => {
 				return currentTime
 			},
 			set(value) {
-				const top = 1 / 0
-				const bottom = -1 / 0
+				let top = 1 / 0
+				let bottom = -1 / 0
 				const track = tracks[activeIndex]
 
 				currentTime = +value;

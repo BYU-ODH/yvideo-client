@@ -3,262 +3,262 @@ class xApi {
 		this.course = course
 		this.user = user
 		this.ADL = ADL
-		this.page = course = user = {}
+		// this.page = course = user = {}
 		this.record = false
-		this.resourceName = ``
+		// this.resourceName = ``
 		this.baseUri = `${window.location.origin}/`
 	}
 
 	send = async args => {
-		const { record, user, baseUri, page, resourceName, course } = this
+		const { record, user, baseUri, course } = this
 
 		if (!record) return
 
 		// create statement
 		// Agent = User, Action = Verb, Activity = Content Object
-		const stmt = new ADL.XAPIStatement(new ADL.XAPIStatement.Agent(`mailto:${user.email ? user.email : `placeholder@some.org`}`, user.name),
-			new ADL.XAPIStatement.Verb(baseUri + args.verb, args.verb),
-			new ADL.XAPIStatement.Activity(page.name, resourceName))
+		// const stmt = new ADL.XAPIStatement(new ADL.XAPIStatement.Agent(`mailto:${user.email ? user.email : `placeholder@some.org`}`, user.name),
+		// new ADL.XAPIStatement.Verb(baseUri + args.verb, args.verb),
+		// new ADL.XAPIStatement.Activity(page.name, resourceName))
 
-		stmt.timestamp = (new Date()).toISOString()
+		// stmt.timestamp = (new Date()).toISOString()
 
-		if (args.type) stmt.object.definition.extensions = args.type
+		// if (args.type) stmt.object.definition.extensions = args.type
 
 		// some universal xApi extensions that should be included in each request
 		if (args.extensions) {
 			args.extensions[`${baseUri}contextId`] = course.id || -1
 			args.extensions[`${baseUri}authScheme`] = user.authScheme
-			stmt.object.definition.extensions = args.extensions
+			// stmt.object.definition.extensions = args.extensions
 		}
 
 		// send statement and log response
-		await ADL.XAPIWrapper.sendStatement(stmt, (resp, obj) => {
-			console.log(`[${obj.id}]: ${resp.status} - ${resp.statusText}`)
-		})
+		// await ADL.XAPIWrapper.sendStatement(stmt, (resp, obj) => {
+		// console.log(`[${obj.id}]: ${resp.status} - ${resp.statusText}`)
+		// })
 	}
 
 	pageLoad = () => {
-		send({ verb: `started`, extensions: {} })
+		this.send({ verb: `started`, extensions: {} })
 	}
 
 	ended = time => {
-		send({
+		this.send({
 			verb: `ended`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	playClick = time => {
-		send({
+		this.send({
 			verb: `played`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	pauseClick = time => {
-		send({
+		this.send({
 			verb: `paused`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	rateChange = (time, rate) => {
-		send({
+		this.send({
 			verb: `changed_playrate`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}playRate`]: rate
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}playRate`]: rate
 			}
 		})
 	}
 
 	volumeChange = (time, volume) => {
-		send({
+		this.send({
 			verb: `changed_volume`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}volume`]: volume
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}volume`]: volume
 			}
 		})
 	}
 
 	timeJump = (oldTime, newTime) => {
-		send({
+		this.send({
 			verb: `jumped`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}oldTime`]: oldTime,
-				[`${baseUri}newTime`]: newTime
+				[`${this.baseUri}oldTime`]: oldTime,
+				[`${this.baseUri}newTime`]: newTime
 			}
 		})
 	}
 
 	repeatCaption = time => {
-		send({
+		this.send({
 			verb: `repeated_caption`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	transcriptCueClick = (captionTrackId, cueNumber, time) => {
-		send({
+		this.send({
 			verb: `clicked_transcript_cue`,
-			type: `${baseUri}transcription`,
+			type: `${this.baseUri}transcription`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}cueNumber`]: cueNumber,
-				[`${baseUri}captionTrackId`]: captionTrackId
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}cueNumber`]: cueNumber,
+				[`${this.baseUri}captionTrackId`]: captionTrackId
 			}
 		})
 	}
 
 	captionTranslation = (captionTrackId, text, time) => {
-		send({
+		this.send({
 			verb: `translated_word`,
-			type: `${baseUri}caption`,
+			type: `${this.baseUri}caption`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}captionTrackId`]: captionTrackId,
-				[`${baseUri}text`]: `"${text}"`
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}captionTrackId`]: captionTrackId,
+				[`${this.baseUri}text`]: `"${text}"`
 			}
 		})
 	}
 
 	transcriptionTranslation = (captionTrackId, cueNumber, text, time) => {
-		send({
+		this.send({
 			verb: `translateda_word`,
-			type: `${baseUri}caption`,
+			type: `${this.baseUri}caption`,
 			extensions: {
-				[`${baseUri}captionTrackId`]: captionTrackId,
-				[`${baseUri}cueNumber`]: cueNumber,
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}text`]: `"${text}"`
+				[`${this.baseUri}captionTrackId`]: captionTrackId,
+				[`${this.baseUri}cueNumber`]: cueNumber,
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}text`]: `"${text}"`
 			}
 		})
 	}
 
 	viewTextAnnotation = (annotationDocId, text, time) => {
-		send({
+		this.send({
 			verb: `viewed_annotation`,
-			type: `${baseUri}annotation`,
+			type: `${this.baseUri}annotation`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}text`]: text,
-				[`${baseUri}annotationDocId`]: annotationDocId
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}text`]: text,
+				[`${this.baseUri}annotationDocId`]: annotationDocId
 			}
 		})
 	}
 
 	enterFullscreen = time => {
-		send({
+		this.send({
 			verb: `enter_fullscreen`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	exitFullscreen = time => {
-		send({
+		this.send({
 			verb: `exit_fullscreen`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	enableCaptionTrack = (captionTrack, time) => {
-		send({
+		this.send({
 			verb: `enabled_closed_caption`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}captionTrack`]: captionTrack.label
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}captionTrack`]: captionTrack.label
 			}
 		})
 	}
 
 	disableCaptionTrack = (captionTrack, time) => {
-		send({
+		this.send({
 			verb: `disabled_closed_caption`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}captionTrack`]: captionTrack.label
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}captionTrack`]: captionTrack.label
 			}
 		})
 	}
 
 	changeSpeed = (speedLevel, time) => {
-		send({
+		this.send({
 			verb: `changed_speed`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time,
-				[`${baseUri}speedLevel`]: speedLevel
+				[`${this.baseUri}playerTime`]: time,
+				[`${this.baseUri}speedLevel`]: speedLevel
 			}
 		})
 	}
 
 	mute = time => {
-		send({
+		this.send({
 			verb: `muted`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	unmute = time => {
-		send({
+		this.send({
 			verb: `unmuted`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	changedResolution = time => {
-		send({
+		this.send({
 			verb: `changed_resolution`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	watched = time => {
-		send({
+		this.send({
 			verb: `watched`,
-			type: `${baseUri}mediaPlayer`,
+			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${baseUri}playerTime`]: time
+				[`${this.baseUri}playerTime`]: time
 			}
 		})
 	}
 
 	addListeners = player => {
 
-		throttle = (func, wait) => {
+		this.throttle = (func, wait) => {
 			let timeout
 			return args => {
 				if (!timeout) {
@@ -270,7 +270,7 @@ class xApi {
 			}
 		}
 
-		player.addEventListener(`play`, throttle(() => {
+		player.addEventListener(`play`, this.throttle(() => {
 			this.playClick(`${player.currentTime}`)
 		}, 500))
 
@@ -290,11 +290,11 @@ class xApi {
 			this.repeatCaption(`${player.currentTime}`)
 		})
 
-		player.addEventListener(`ratechange`, throttle(() => {
+		player.addEventListener(`ratechange`, this.throttle(() => {
 			this.rateChange(`${player.currentTime}`, `${player.playbackRate}`)
 		}, 1000))
 
-		player.addEventListener(`volumechange`, throttle(() => {
+		player.addEventListener(`volumechange`, this.throttle(() => {
 			return player.muted && this.volumeChange(`${player.currentTime}`, `${player.volume}`)
 		}, 1000))
 
@@ -329,7 +329,7 @@ class xApi {
 
 	registerPage = args => {
 		this.page = args.page
-		this.course = args.course ? args.course : course
+		this.course = args.course ? args.course : this.course
 		this.user = args.user
 		this.resourceName =
 			args.resource ?
@@ -340,7 +340,7 @@ class xApi {
 					:
 					this.resourceName
 
-		addListeners(args.player)
+		this.addListeners(args.player)
 	}
 
 	connect = () => { }

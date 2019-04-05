@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const ContentLoader = (() => {
 
-	getDocumentWhitelist = (args, type, ids) => {
+	const getDocumentWhitelist = (args, type, ids) => {
 
 		if (ids.length === 0) return Promise.resolve([])
 
@@ -31,20 +31,20 @@ const ContentLoader = (() => {
 	}
 
 	/* args: resource, courseId, contentId, permission */
-	getTranscriptWhitelist = args => {
+	const getTranscriptWhitelist = args => {
 		return getDocumentWhitelist(args,
 			`captionTrack`,
 			args.resource.getTranscriptIds())
 	}
 
 	/* args: resource, courseId, contentId, permission */
-	getAnnotationWhitelist = args => {
+	const getAnnotationWhitelist = args => {
 		return getDocumentWhitelist(args,
 			`annotationDocument`,
 			args.resource.getAnnotationIds())
 	}
 
-	renderContent = args => {
+	const renderContent = args => {
 		// Check if we are rendering something from the resource library
 		if ([`video`, `audio`, `image`, `text`].indexOf(args.content.contentType) >= 0) {
 			ResourceLibrary.setBaseUrl(`https://api.ayamel.org/api/v1/`)
@@ -67,13 +67,13 @@ const ContentLoader = (() => {
 					permission: args.permission,
 					callback: args.callback
 				})
-			})
+			}).catch(err => console.log(err))
 		} else if (args.content.contentType === `playlist`)
 			console.error(`Playlists are not supported.`)
 
 	}
 
-	castContentObject = content => {
+	const castContentObject = content => {
 		switch (typeof content) {
 			case `number`:
 				return axios(`/content/${content}/json?${Date.now().toString(36)}`)

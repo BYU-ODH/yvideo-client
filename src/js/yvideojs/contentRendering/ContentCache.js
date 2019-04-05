@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 class ContentCache {
 	cache = {}
 
@@ -5,7 +7,7 @@ class ContentCache {
 		if (this.cache[id])
 			callback(this.cache[id])
 		else {
-			axois(`${process.env.REACT_APP_YVIDEO_SERVER}/content/${id}/json`)
+			axios(`${process.env.REACT_APP_YVIDEO_SERVER}/content/${id}/json`)
 				.then(res => res.json())
 				.then((data) => {
 					this.cache[id] = data

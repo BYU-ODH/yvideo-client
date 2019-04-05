@@ -28,6 +28,8 @@ class Menu extends Component {
 
 				<LinkStyled as={LogoutButton}>Sign out</LinkStyled>
 
+				<LinkStyled to={`/player/1`}>Player Test</LinkStyled>
+
 				{
 					(isProf || isAdmin) &&
 					<React.Fragment>

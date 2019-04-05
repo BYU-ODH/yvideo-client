@@ -95,20 +95,20 @@ const showWordList = content => {
 	return content.settings.showWordList === `true`
 }
 
-const getDefaultLanguage = languages => {
-	for (langObj in languages) {
-		if (langObj.value === `eng`)
-			return langObj
-	}
-	return languages[0]
-}
+// const getDefaultLanguage = languages => {
+// 	for (const langObj in languages) {
+// 		if (langObj.value === `eng`)
+// 			return langObj
+// 	}
+// 	return languages[0]
+// }
 
 const setupTranslatorPane = (tab, player, content, resourceMap) => {
-	const codes = (content.settings.targetLanguages || ``)
+	let codes = (content.settings.targetLanguages || ``)
 		.split(`,`).filter((s) => {
 			return !!s
-		}),
-		selectHolder = document.createElement(`div`),
+		})
+	const selectHolder = document.createElement(`div`),
 		translationsHolder = document.createElement(`div`)
 
 	// Fallback procedure when no languages have been selected
@@ -165,7 +165,7 @@ const setupTranslatorPane = (tab, player, content, resourceMap) => {
 
 		let translationSize
 		const detail = event.detail,
-			translations = detail.translations,
+			// translations = detail.translations,
 			wordList = `<div class='addToWordList'><button class='btn btn-small'><i class='icon-paste'></i> Add to Word List</button></div>`,
 			html = document.createElement(`div`)
 		html.innerHTML = YLex.renderResult(event.detail) + wordList
@@ -266,8 +266,9 @@ const setupTranscriptPane = (tab, player, content, trackResources, trackMimes) =
 }
 
 const setupAnnotatorPane = (tab, player) => {
-	const display = document.createElement(`div`),
-		data = null,
+	const display = document.createElement(`div`)
+
+	let data = null,
 		newplayer = null
 
 	display.style.overflow = `scroll`
