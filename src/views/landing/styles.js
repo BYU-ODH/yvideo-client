@@ -121,7 +121,7 @@ export const OverlayContainer = styled.div`
 	width: 100%;
 	height: 100vh;
 
-	visibility: ${props => props.out ? 'hidden' : 'visible'};
+	visibility: ${props => props.out ? `hidden` : `visible`};
 	animation: ${props => props.out ? fadeOut : fadeIn} .25s linear;
 	transition: visibility .25s linear;
 

@@ -46,7 +46,8 @@ export class Collections extends Component {
 	}
 
 	render() {
-		const { isProf, isAdmin, collections, block } = this.props
+		const { isProf, isAdmin, collections } = this.props
+		const { block } = this.state
 
 		return (
 			<SCollection>

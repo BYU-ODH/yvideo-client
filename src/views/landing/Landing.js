@@ -46,7 +46,7 @@ class Landing extends Component {
 						<h1>YVIDEO</h1>
 					</div>
 					<div className='button-wrapper'>
-						<Button as={Link} to={'/login'} className='primary'>Sign In</Button>
+						<Button as={Link} to={`/login`} className='primary'>Sign In</Button>
 						<Button className='secondary' onClick={this.toggleAbout}>About</Button>
 					</div>
 				</Welcome>
@@ -54,7 +54,7 @@ class Landing extends Component {
 					this.state.overlay ?
 						<Overlay toggleAbout={this.toggleAbout} />
 						:
-						''
+						``
 				}
 			</Container>
 		)
