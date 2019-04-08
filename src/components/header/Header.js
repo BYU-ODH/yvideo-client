@@ -8,20 +8,18 @@ import Logo from './Logo'
 
 export class Header extends Component {
 	render() {
-		const { lost } = this.props
+		const { lost, border } = this.props
 		return (
-			<HeaderContainer lost={lost}>
+			<HeaderContainer lost={lost} border={border}>
 				<Logo />
-				{/* <button onClick={this.props.toggleMenu}>Toggle Menu</button> */}
 			</HeaderContainer>
 		)
 	}
 }
 
-const mapStateToProps = state => {
-	return {
-		lost: state.lost
-	}
-}
+const mapStateToProps = state => ({
+	lost: state.lost,
+	border: state.headerBorder
+})
 
 export default withRouter(connect(mapStateToProps)(Header))
