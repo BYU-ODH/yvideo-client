@@ -7,6 +7,7 @@ import menuReducer from './r/menu'
 import lostReducer from './r/lost'
 import { userReducer, userInfoReducer, userRecentReducer } from './r/user'
 import collectionReducer from './r/collection'
+import headerReducer from './r/header'
 
 const rootReducer = combineReducers({
 	loading: loadReducer,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
 	user: userReducer,
 	userAuth: userInfoReducer,
 	recent: userRecentReducer,
-	collections: collectionReducer
+	collections: collectionReducer,
+	headerBorder: headerReducer
 })
 
 export default rootReducer

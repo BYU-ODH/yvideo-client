@@ -13,8 +13,10 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 
+border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
+
 position: fixed;
-background-color: ${props => props.lost ? 'transparent' : 'white'};
+background-color: ${props => props.lost ? `transparent` : `white`};
 
 z-index: 16;
 

@@ -1,5 +1,6 @@
 export { getUser, getUserAuth, getRecent } from './user'
 export { getCollections } from './collection'
+export { toggleBorder } from './header'
 export { login, logout } from './auth'
 export { load, loaded } from './load'
 export { lost, found } from './lost'

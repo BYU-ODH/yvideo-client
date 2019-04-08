@@ -46,9 +46,9 @@ class Menu extends Component {
 					<React.Fragment>
 						<Header>Admin</Header>
 						<hr />
-						<LinkStyled to='/admin-users'>Users</LinkStyled>
-						<LinkStyled to='/admin-collections'>Collections</LinkStyled>
-						<LinkStyled to='/admin-content'>Content</LinkStyled>
+						<LinkStyled to='/admin/users'>Users</LinkStyled>
+						<LinkStyled to='/admin/collections'>Collections</LinkStyled>
+						<LinkStyled to='/admin/content'>Content</LinkStyled>
 					</React.Fragment>
 				}
 

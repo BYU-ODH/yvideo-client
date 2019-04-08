@@ -14,6 +14,7 @@ import Dashboard from './views/dashboard/Dashboard'
 import Landing from './views/landing/Landing'
 import Collections from './views/collections/Collections'
 import VideoPage from './views/player/VideoPage'
+import Admin from './views/admin/Admin'
 
 import Error from './views/error/Error'
 
@@ -44,6 +45,8 @@ class App extends Component {
 									<Route exact path={`/`} component={Dashboard} />
 									<Route path={`/collections`} component={Collections} />
 									<Route path={`/player/:videoId`} component={VideoPage} />
+
+									<Route path={`/admin/:page`} component={Admin} />
 
 									<Route render={() => <Error error='404' message={`You've wandered too far`} />} />
 								</Switch>
