@@ -1,8 +1,9 @@
 import { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import { cookies } from '../js/util'
 import { connect } from 'react-redux'
 
-import { load, login, getUser, getUserAuth } from '../redux/actions'
+import { load, login, getUser, getUserInfo } from '../redux/actions'
 
 export class Login extends Component {
 	componentWillMount = () => {
@@ -36,7 +37,7 @@ export class Login extends Component {
 
 	checkAuth = async () => {
 		try {
-			await this.props.getUserAuth(user => {
+			await this.props.getUserInfo(user => {
 				this.props.getUser()
 				this.props.login()
 				cookies.set(`auth`, true, 30)
@@ -59,7 +60,7 @@ const actionCreators = {
 	load,
 	login,
 	getUser,
-	getUserAuth
+	getUserInfo
 }
 
-export default connect(mapStateToProps, actionCreators)(Login)
+export default withRouter(connect(mapStateToProps, actionCreators)(Login))

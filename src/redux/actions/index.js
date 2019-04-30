@@ -1,6 +1,13 @@
-export { getUser, getUserAuth, getRecent } from './user'
+export { getUser, getUserInfo, getRecent } from './user'
 export { getCollections } from './collection'
 export { login, logout } from './auth'
-export { load, loaded } from './load'
-export { lost, found } from './lost'
-export { toggleMenu } from './menu'
+
+export {
+	toggleMenu,
+	load,
+	loaded,
+	lost,
+	found,
+	adminOn,
+	adminOff
+} from './interface'

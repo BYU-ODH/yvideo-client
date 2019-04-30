@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { getInitials } from '../../js/util'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { toggleMenu } from './../../redux/actions'
@@ -46,9 +47,9 @@ class Menu extends Component {
 					<React.Fragment>
 						<Header>Admin</Header>
 						<hr />
-						<LinkStyled to='/admin-users'>Users</LinkStyled>
-						<LinkStyled to='/admin-collections'>Collections</LinkStyled>
-						<LinkStyled to='/admin-content'>Content</LinkStyled>
+						<LinkStyled to='/admin/users'>Users</LinkStyled>
+						<LinkStyled to='/admin/collections'>Collections</LinkStyled>
+						<LinkStyled to='/admin/content'>Content</LinkStyled>
 					</React.Fragment>
 				}
 
@@ -60,9 +61,9 @@ class Menu extends Component {
 const mapStateToProps = state => {
 	return {
 		user: state.user,
-		isProf: state.userAuth.roles.includes(`professor`),
-		isAdmin: state.userAuth.roles.includes(`admin`),
-		isStudent: state.userAuth.roles.includes(`student`),
+		isProf: state.userInfo.roles.includes(`professor`),
+		isAdmin: state.userInfo.roles.includes(`admin`),
+		isStudent: state.userInfo.roles.includes(`student`),
 		menuActive: state.menuActive
 	}
 }
@@ -71,4 +72,4 @@ const actionCreators = {
 	toggleMenu
 }
 
-export default connect(mapStateToProps, actionCreators)(Menu)
+export default withRouter(connect(mapStateToProps, actionCreators)(Menu))

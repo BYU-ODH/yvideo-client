@@ -1,6 +1,15 @@
 export { GET_USER, GET_USER_INFO, GET_RECENT } from './user/types'
-export { LOAD, LOADED, READY, DONE } from './load/types'
 export { GET_COLLECTIONS } from './collection/types'
 export { LOGIN, LOGOUT } from './auth/types'
-export { LOST, FOUND } from './lost/types'
-export { TOGGLE_MENU } from './menu/types'
+
+export {
+	TOGGLE_MENU,
+	LOAD,
+	LOADED,
+	READY,
+	DONE,
+	LOST,
+	FOUND,
+	ADMIN_ON,
+	ADMIN_OFF
+} from './interface/types'

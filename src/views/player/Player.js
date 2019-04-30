@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { found, loaded } from './../../redux/actions'
+import { loaded } from './../../redux/actions'
+
+import { withRouter } from 'react-router-dom'
 
 import { Ayamel, ResourceLibrary } from 'yvideojs'
 import 'yvideojs/css/player.css'
@@ -23,12 +25,12 @@ class Player extends Component {
 
 	componentDidMount() {
 
-		this.props.found()
 		setTimeout(() => {
 			this.props.loaded()
 		}, 500)
 
 		const that = this
+
 		fetch(this.state.videoUrl, { credentials: `include` })
 			.then(response => {
 				return response.json()
@@ -75,8 +77,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-	found,
 	loaded
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Player)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Player))

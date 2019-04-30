@@ -18,7 +18,7 @@ export const getUser = callback => {
 	}
 }
 
-export const getUserAuth = callback => {
+export const getUserInfo = callback => {
 	return async dispatch => {
 		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/auth`, { withCredentials: true })
 			.then(result => {
@@ -39,12 +39,53 @@ export const getRecent = callback => {
 		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/recent`, { withCredentials: true })
 			.then(result => {
 				const json = result.data
+				const err = `Could not load recent videos. Displaying fillers.`
 				if (json.length > 0) dispatch({ type: GET_RECENT, payload: json })
+				else throw err
 				typeof callback === `function` && callback(json)
 			})
-			.catch(() => {
-				const err = `Could not load recent videos.`
+			.catch(err => {
+				dispatch({type: GET_RECENT, payload: fakedata})
 				throw err
 			})
 	}
 }
+
+const fakedata = [
+	{
+		contentId: 0,
+		thumbnail: ``,
+		name: `video 1.1`,
+		collection: `test`
+	},
+	{
+		contentId: 1,
+		thumbnail: ``,
+		name: `video 2.1`,
+		collection: `test2`
+	},
+	{
+		contentId: 2,
+		thumbnail: ``,
+		name: `video 2.2`,
+		collection: `test2`
+	},
+	{
+		contentId: 3,
+		thumbnail: ``,
+		name: `video 3.1`,
+		collection: `test3`
+	},
+	{
+		contentId: 4,
+		thumbnail: ``,
+		name: `video 4.1`,
+		collection: `test4`
+	},
+	{
+		contentId: 5,
+		thumbnail: ``,
+		name: `video 5.1`,
+		collection: `test5`
+	}
+]

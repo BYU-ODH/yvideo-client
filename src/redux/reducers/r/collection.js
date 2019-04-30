@@ -1,8 +1,8 @@
 import { GET_COLLECTIONS } from '../../actions/types'
 
-const initUserPreview = []
+const initState = []
 
-export const collectionReducer = (state = initUserPreview, { type, payload }) => {
+export const collectionReducer = (state = initState, { type, payload }) => {
 	switch (type) {
 		case GET_COLLECTIONS:
 			return payload

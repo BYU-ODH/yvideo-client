@@ -31,10 +31,7 @@ class ListCollection extends Component {
 				<Body isOpen={isOpen} count={content.length}>
 					{
 						content.map(item => {
-							const translation = false
-							const captions = false
-							const annotations = false
-							return <ListItem key={item.id} data={{ ...item, translation, captions, annotations }} />
+							return <ListItem key={item.id} data={item} />
 						})
 					}
 				</Body>

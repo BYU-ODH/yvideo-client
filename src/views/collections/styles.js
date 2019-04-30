@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import blockView from '../../assets/collections/block-view.svg'
 import listView from '../../assets/collections/list-view.svg'
 
-export const SCollection = styled.div`
+export const CollectionStyled = styled.div`
 	max-width: 100rem;
 
 	padding: 8.4rem 2.4rem 0 2.4rem;

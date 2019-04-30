@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, found } from './../../redux/actions'
+import { load, loaded } from './../../redux/actions'
 
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import Overlay from './Overlay'
 
@@ -19,7 +19,6 @@ class Landing extends Component {
 	}
 
 	componentDidMount = () => {
-		this.props.found()
 		setTimeout(() => {
 			this.props.loaded()
 		}, 500)
@@ -63,8 +62,7 @@ class Landing extends Component {
 
 const mapDispatchToProps = {
 	load,
-	loaded,
-	found
+	loaded
 }
 
-export default connect(null, mapDispatchToProps)(Landing)
+export default withRouter(connect(null, mapDispatchToProps)(Landing))

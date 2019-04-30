@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, lost } from './../../redux/actions'
+import { load, loaded, lost, found } from './../../redux/actions'
 
 import { SError, SLink } from './styles'
 
@@ -15,6 +15,7 @@ export class Error extends React.Component {
 
 	componentWillUnmount = () => {
 		this.props.load()
+		this.props.found()
 	}
 
 	render() {
@@ -32,7 +33,8 @@ export class Error extends React.Component {
 const mapDispatchToProps = {
 	load,
 	loaded,
-	lost
+	lost,
+	found
 }
 
 export default connect(null, mapDispatchToProps)(Error)

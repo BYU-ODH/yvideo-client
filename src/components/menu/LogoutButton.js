@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 import { logout, load } from '../../redux/actions'
 
@@ -64,4 +65,4 @@ const actionCreators = {
 	load
 }
 
-export default connect(null, actionCreators)(LogoutButton)
+export default withRouter(connect(null, actionCreators)(LogoutButton))

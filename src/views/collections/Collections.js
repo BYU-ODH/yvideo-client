@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, found, getCollections } from '../../redux/actions'
+import { load, loaded, getCollections } from '../../redux/actions'
 
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import ListCollection from './list/ListCollection'
 import BlockCollection from './block/BlockCollection'
 
-import { SCollection, ViewToggle } from './styles'
+import { CollectionStyled, ViewToggle } from './styles'
 
 export class Collections extends Component {
 	constructor(props) {
@@ -20,9 +20,11 @@ export class Collections extends Component {
 	}
 
 	componentDidMount = async () => {
-		const { found, getCollections, loaded } = this.props
+		const { getCollections, loaded } = this.props
 
-		found()
+		this.setState({
+			block: localStorage.getItem(`blockmode`) === `true`
+		})
 
 		try {
 			await getCollections()
@@ -40,6 +42,7 @@ export class Collections extends Component {
 	}
 
 	toggleBlock = () => {
+		localStorage.setItem(`blockmode`, !this.state.block)
 		this.setState({
 			block: !this.state.block
 		})
@@ -50,7 +53,7 @@ export class Collections extends Component {
 		const { block } = this.state
 
 		return (
-			<SCollection>
+			<CollectionStyled>
 				<header>
 					<div>
 						<h3>Collections</h3>
@@ -75,23 +78,22 @@ export class Collections extends Component {
 							})
 					}
 				</div>
-			</SCollection>
+			</CollectionStyled>
 		)
 	}
 }
 
 const mapStateToProps = state => ({
 	collections: state.collections,
-	isProf: state.userAuth.roles.includes(`professor`),
-	isAdmin: state.userAuth.roles.includes(`admin`),
-	isStudent: state.userAuth.roles.includes(`student`)
+	isProf: state.userInfo.roles.includes(`professor`),
+	isAdmin: state.userInfo.roles.includes(`admin`),
+	isStudent: state.userInfo.roles.includes(`student`)
 })
 
 const mapDispatchToProps = {
 	load,
 	loaded,
-	found,
 	getCollections
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Collections)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Collections))

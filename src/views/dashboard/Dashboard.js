@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, found, getCollections, getRecent } from '../../redux/actions'
+import { load, loaded, getCollections, getRecent } from '../../redux/actions'
+
+import { withRouter } from 'react-router-dom'
 
 import PreviewCollection from './previews/PreviewCollection'
 import PreviewVideo from './previews/PreviewVideo'
@@ -10,21 +12,28 @@ import { Container, Content, PreviewEmpty } from './styles'
 
 export class Dashboard extends Component {
 
-	componentDidMount = async () => {
-		const { found, getCollections, getRecent, loaded } = this.props
+	constructor(props) {
+		super(props)
+		this.state = {
+			error: false
+		}
+	}
 
-		found()
+	componentDidMount = async () => {
+		const { getCollections, getRecent, loaded } = this.props
 
 		try {
 			await getCollections()
 		} catch (error) {
 			console.log(error)
+			this.setState({ error: true })
 		}
 
 		try {
 			await getRecent()
 		} catch (error) {
 			console.log(error)
+			this.setState({ error: true })
 		}
 
 		setTimeout(() => {
@@ -39,6 +48,7 @@ export class Dashboard extends Component {
 	render() {
 		const { recent, collections } = this.props
 
+		const modRec = recent.slice(0, 4)
 		const modColl = collections.slice(0, 4)
 
 		return (
@@ -48,8 +58,8 @@ export class Dashboard extends Component {
 				</Content>
 				<Content>
 					{
-						recent !== undefined && recent.length !== 0 ?
-							recent.map(item => <PreviewVideo key={item.contentId} data={item} />)
+						modRec !== undefined && modRec.length !== 0 ?
+						modRec.map(item => <PreviewVideo key={item.contentId} data={item} />)
 							:
 							<PreviewEmpty>no videos :(</PreviewEmpty>
 					}
@@ -71,7 +81,7 @@ export class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-	userAuth: state.userAuth,
+	userInfo: state.userInfo,
 	collections: state.collections,
 	recent: state.recent
 })
@@ -79,9 +89,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	load,
 	loaded,
-	found,
 	getCollections,
 	getRecent
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Dashboard))

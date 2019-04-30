@@ -2,10 +2,10 @@ import styled, { keyframes, css } from 'styled-components'
 
 import { Link } from 'react-router-dom'
 
-import carrot from '../../../assets/collections/carrot.svg'
-import translation from '../../../assets/collections/videoOptions/translation.svg'
-import captions from '../../../assets/collections/videoOptions/captions.svg'
-import annotations from '../../../assets/collections/videoOptions/annotations.svg'
+import carrot from './../../../assets/collections/carrot.svg'
+import translation from './../../../assets/collections/videoOptions/translation.svg'
+import captions from './../../../assets/collections/videoOptions/captions.svg'
+import annotations from './../../../assets/collections/videoOptions/annotations.svg'
 
 export const Header = styled.div`
 	display: grid;
@@ -119,14 +119,14 @@ export const Icon = styled.li`
 
 	&.translation {
 		background: url(${translation}) center no-repeat;
-		display: ${props => props.checked === true ? `block` : `none`};
+		display: ${props => props.checked ? `block` : `none`};
 	}
 	&.captions {
 		background: url(${captions}) center no-repeat;
-		display: ${props => props.checked === true ? `block` : `none`};
+		display: ${props => props.checked ? `block` : `none`};
 	}
 	&.annotations {
 		background: url(${annotations}) center no-repeat;
-		display: ${props => props.checked === true ? `block` : `none`};
+		display: ${props => props.checked ? `block` : `none`};
 	}
 `

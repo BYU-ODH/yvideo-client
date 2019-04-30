@@ -22,6 +22,7 @@ class ListItem extends Component {
 	render() {
 		const { name, thumbnail, translation, captions, annotations } = this.props.data
 		const { loaded } = this.state
+
 		return (
 			<Container to='/'>
 				<Preview src={thumbnail} loaded={loaded} />

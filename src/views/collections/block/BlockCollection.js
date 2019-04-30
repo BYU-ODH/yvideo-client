@@ -67,7 +67,7 @@ export default class BlockCollection extends Component {
 					</Arrow>
 					<SlideWrapper count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 						{
-							content.map(item => <BlockItem key={item.contentId} data={item} />)
+							content.map(item => <BlockItem key={item.id} data={item} />)
 						}
 					</SlideWrapper>
 					<Arrow className='right' onClick={this.scrollRight}>

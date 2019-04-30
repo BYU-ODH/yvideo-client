@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { getUser, getUserAuth, load, loaded, login } from './redux/actions'
+import { getUser, getUserInfo, load, loaded, login } from './redux/actions'
 
 import Load from './components/load/Load'
 
@@ -14,16 +14,17 @@ import Dashboard from './views/dashboard/Dashboard'
 import Landing from './views/landing/Landing'
 import Collections from './views/collections/Collections'
 import VideoPage from './views/player/VideoPage'
+import Admin from './views/admin/Admin'
 
 import Error from './views/error/Error'
 
 class App extends Component {
 
 	componentDidMount = async () => {
-		const { load, getUserAuth, getUser, login } = this.props
+		const { load, getUserInfo, getUser, login } = this.props
 		load()
 		try {
-			await getUserAuth(() => {
+			await getUserInfo(() => {
 				login()
 				getUser()
 			})
@@ -44,6 +45,8 @@ class App extends Component {
 									<Route exact path={`/`} component={Dashboard} />
 									<Route path={`/collections`} component={Collections} />
 									<Route path={`/player/:videoId`} component={VideoPage} />
+
+									<Route path={`/admin/:page`} component={Admin} />
 
 									<Route render={() => <Error error='404' message={`You've wandered too far`} />} />
 								</Switch>
@@ -66,12 +69,12 @@ const mapStateToProps = state => ({
 	authorized: state.authorized,
 	loading: state.loading,
 	done: state.done,
-	userAuth: state.userAuth
+	userInfo: state.userInfo
 })
 
 const mapDispatchToProps = {
 	getUser,
-	getUserAuth,
+	getUserInfo,
 	load,
 	loaded,
 	login

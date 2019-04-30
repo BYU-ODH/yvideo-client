@@ -12,9 +12,6 @@ class BlockItem extends Component {
 	}
 
 	componentDidMount = () => {
-
-		console.log(this.props)
-
 		const temp = new Image()
 		temp.src = this.state.img
 		temp.onload = () => {

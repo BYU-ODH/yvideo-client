@@ -2,8 +2,8 @@ import { LOGIN, LOGOUT } from '../../actions/types'
 
 const initState = false
 
-const authReducer = (state = initState, action) => {
-	switch (action.type) {
+const authReducer = (state = initState, { type }) => {
+	switch (type) {
 		case LOGIN:
 			return true
 
