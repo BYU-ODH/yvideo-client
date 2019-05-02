@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import React, { Component, memo } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { getUser, getUserInfo, load, loaded, login } from './redux/actions'
+import { getUser, getUserInfo, load, loaded, getAuthCookie } from './redux/actions'
 
 import Load from './components/load/Load'
 
@@ -21,12 +21,12 @@ import Error from './views/error/Error'
 class App extends Component {
 
 	componentDidMount = async () => {
-		const { load, getUserInfo, getUser, login } = this.props
+		const { load, getUserInfo, getUser, getAuthCookie } = this.props
 		load()
 		try {
-			await getUserInfo(() => {
-				login()
-				getUser()
+			await getUserInfo(async () => {
+				await getUser()
+				await getAuthCookie()
 			})
 		} catch (message) {
 			console.log(message)
@@ -37,7 +37,7 @@ class App extends Component {
 		const { authorized, loading, done } = this.props
 		return (
 			<div>
-				<BrowserRouter>
+				<Router>
 					{
 						authorized ?
 							<HeaderRoute>
@@ -57,7 +57,7 @@ class App extends Component {
 								<Route component={Login} />
 							</Switch>
 					}
-				</BrowserRouter>
+				</Router>
 
 				{loading && <Load loading={loading} done={done} />}
 			</div>
@@ -77,7 +77,7 @@ const mapDispatchToProps = {
 	getUserInfo,
 	load,
 	loaded,
-	login
+	getAuthCookie
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default memo(connect(mapStateToProps, mapDispatchToProps)(App))

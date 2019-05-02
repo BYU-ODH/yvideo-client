@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import ReactDOM from 'react-dom'
 
 import styled from 'styled-components'
@@ -23,12 +23,12 @@ const Container = styled.div`
 	z-index: 50;
 `
 
-const load = document.getElementById('load')
+const load = document.getElementById(`load`)
 
 class Load extends React.Component {
 	constructor(props) {
 		super(props)
-		this.el = document.createElement('div')
+		this.el = document.createElement(`div`)
 	}
 
 	componentDidMount() {
@@ -45,4 +45,4 @@ class Load extends React.Component {
 	}
 }
 
-export default Load
+export default memo(Load)

@@ -1,4 +1,4 @@
-import { AyamelPlayer, FullScreen, Translator, LangUtils } from 'yvideojs'
+import { AyamelPlayer, Translator, LangUtils } from 'yvideojs'
 import xApi from '../xApi.js'
 import ContentLoader from './ContentLoader.js'
 import ContentCache from './ContentCache.js'
@@ -8,12 +8,12 @@ import axios from 'axios'
 
 const YLex = {}
 
-class ContentRenderer {
+const ContentRenderer = {
 
 	/* args: resource, content, courseId, contentId, holder, components,
 			screenAdaption, startTime, endTime, renderCue, permission, callback */
 
-	render = async args => {
+	render: async args => {
 
 		// Temporary hack to show current source
 		const srcUrlEl = document.getElementById(`sourceUrl`)
@@ -391,7 +391,7 @@ const setupMainPlayer = args => {
 		}
 	})
 
-	window.addEventListener(FullScreen.fullScreenEvent, event => {
+	window.addEventListener(window.Ayamel.utils.FullScreen.fullScreenEvent, event => {
 		if (window.Ayamel.utils.FullScreen.isFullScreen) {
 			// Need to remove the player's css so that the fullscreen can resize properly
 			player.element.style.removeProperty(`width`)

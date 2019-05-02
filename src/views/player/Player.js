@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { loaded } from './../../redux/actions'
+import { load, loaded } from './../../redux/actions'
 
 import { withRouter } from 'react-router-dom'
 
@@ -29,18 +29,18 @@ class Player extends Component {
 			this.props.loaded()
 		}, 500)
 
-		const that = this
-
 		fetch(this.state.videoUrl, { credentials: `include` })
 			.then(response => {
 				return response.json()
 			})
 			.then(content => {
-				that.state.content = content
+				this.setState({
+					content
+				})
 				// Render the content
 				ContentLoader.render({
 					ContentLoader,
-					content: that.state.content,
+					content: this.state.content,
 					userId: this.state.userId.toString(),
 					owner: true,
 					teacher: false,
@@ -64,6 +64,10 @@ class Player extends Component {
 			.catch(err => console.error(err))
 	}
 
+	componentWillUnmount() {
+		this.props.load()
+	}
+
 	render() {
 		return (
 			<div id='contentHolder'>
@@ -77,6 +81,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+	load,
 	loaded
 }
 

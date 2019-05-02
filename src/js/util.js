@@ -2,7 +2,11 @@ class Cookies {
 	set = (cookie_name, cookie_value, max_days, path, domain) => {
 		const d = new Date()
 		d.setTime(d.getTime() + max_days * 24 * 60 * 60 * 1000)
-		document.cookie = `${cookie_name}=${cookie_value}${path && `;path=${path}`}${domain && `;domain=${domain}`};expires=${d.toUTCString()}`
+
+		if (path === undefined) path = ``
+		if (domain === undefined) domain = ``
+
+		document.cookie = `${cookie_name}=${cookie_value};path=${path};domain=${domain};expires=${d.toUTCString()}`
 	}
 
 	get = cookie_name => {

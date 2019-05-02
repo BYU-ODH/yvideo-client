@@ -2,7 +2,7 @@ import { GET_COLLECTIONS } from './types'
 
 import axios from 'axios'
 
-const test = true
+const test = false
 
 export const getCollections = callback => {
 	return async dispatch => {

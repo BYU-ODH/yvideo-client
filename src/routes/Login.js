@@ -38,9 +38,11 @@ export class Login extends Component {
 	checkAuth = async () => {
 		try {
 			await this.props.getUserInfo(user => {
-				this.props.getUser()
-				this.props.login()
-				cookies.set(`auth`, true, 30)
+				console.log(`user:`, user)
+				if (user.authenticated) {
+					this.props.getUser()
+					this.props.login()
+				}
 			})
 		} catch (error) {
 			console.log(error)

@@ -1,19 +1,25 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, adminOn, adminOff, getCollections, toggleBorder } from './../../redux/actions'
+import { load, loaded, adminOn, adminOff, getCollections } from './../../redux/actions'
 
 import { withRouter } from 'react-router-dom'
 
-import { SAdmin, SideIcons, SideMenu, Content } from './styles'
+import {
+	AdminStyled,
+	SideIcons,
+	SideMenu,
+	Content,
+	Selector,
+	SelectorIcons
+} from './styles'
 
 export class Admin extends Component {
 
 	componentDidMount = async () => {
-		const { adminOn, getCollections, loaded, toggleBorder } = this.props
+		const { adminOn, getCollections, loaded } = this.props
 
 		adminOn()
-		toggleBorder()
 
 		try {
 			await getCollections()
@@ -33,12 +39,18 @@ export class Admin extends Component {
 	}
 
 	render() {
+		const { page } = this.props.match.params
 		return (
-			<SAdmin>
-				<SideIcons></SideIcons>
-				<SideMenu></SideMenu>
-				<Content></Content>
-			</SAdmin>
+			<AdminStyled>
+				<SelectorIcons position={page} />
+				<Selector position={page} />
+				<SideIcons>
+				</SideIcons>
+				<SideMenu>
+				</SideMenu>
+				<Content>
+				</Content>
+			</AdminStyled>
 		)
 	}
 }
@@ -48,7 +60,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
 	getCollections,
-	toggleBorder,
 	load,
 	loaded,
 	adminOn,

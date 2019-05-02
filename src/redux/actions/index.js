@@ -1,7 +1,6 @@
 export { getUser, getUserInfo, getRecent } from './user'
+export { login, logout, getAuthCookie } from './auth'
 export { getCollections } from './collection'
-export { toggleBorder } from './header'
-export { login, logout } from './auth'
 
 export {
 	toggleMenu,

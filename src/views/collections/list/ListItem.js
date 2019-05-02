@@ -20,11 +20,11 @@ class ListItem extends Component {
 	}
 
 	render() {
-		const { name, thumbnail, translation, captions, annotations } = this.props.data
+		const { id, name, thumbnail, translation, captions, annotations } = this.props.data
 		const { loaded } = this.state
 
 		return (
-			<Container to='/'>
+			<Container to={`/player/${id}`}>
 				<Preview src={thumbnail} loaded={loaded} />
 				<div className='name'>
 					<h4>{name}</h4>

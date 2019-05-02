@@ -8,9 +8,9 @@ import Logo from './Logo'
 
 export class Header extends Component {
 	render() {
-		const { lost, border } = this.props
+		const { lost, onAdmin } = this.props
 		return (
-			<HeaderContainer lost={lost} border={border}>
+			<HeaderContainer lost={lost} border={onAdmin}>
 				<Logo />
 			</HeaderContainer>
 		)
@@ -19,7 +19,7 @@ export class Header extends Component {
 
 const mapStateToProps = state => ({
 	lost: state.lost,
-	border: state.headerBorder
+	onAdmin: state.onAdmin
 })
 
 export default withRouter(connect(mapStateToProps)(Header))

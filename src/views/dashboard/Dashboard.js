@@ -25,14 +25,14 @@ export class Dashboard extends Component {
 		try {
 			await getCollections()
 		} catch (error) {
-			console.log(error)
+			console.warn(error)
 			this.setState({ error: true })
 		}
 
 		try {
 			await getRecent()
 		} catch (error) {
-			console.log(error)
+			console.warn(error)
 			this.setState({ error: true })
 		}
 
