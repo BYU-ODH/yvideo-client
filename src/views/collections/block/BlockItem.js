@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { ItemContainer, Thumbnail } from './styles.js'
 
 class BlockItem extends Component {
@@ -21,14 +23,16 @@ class BlockItem extends Component {
 
 	render() {
 
-		const { name } = this.props
+		const { name, id } = this.props.data
 		const { loaded } = this.state
 
 		return (
-			<ItemContainer>
-				<Thumbnail src={name} loaded={loaded} />
-				<h4>{name}</h4>
-			</ItemContainer>
+			<Link to={`/player/${id}`}>
+				<ItemContainer>
+					<Thumbnail src={name} loaded={loaded} />
+					<h4>{name}</h4>
+				</ItemContainer>
+			</Link>
 		)
 	}
 }

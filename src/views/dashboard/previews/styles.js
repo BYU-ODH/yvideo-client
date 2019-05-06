@@ -33,8 +33,8 @@ export const PreviewBackground = styled.div`
 	}
 
 	@media screen and (max-width: 455px) {
-		max-width: unset;
 		width: 90vw;
+		height: 50.5vw;
 	}
 `
 

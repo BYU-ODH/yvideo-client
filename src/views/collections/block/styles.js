@@ -40,6 +40,8 @@ export const SlideWrapper = styled.div`
 
 	scroll-behavior: smooth;
 
+	margin-right: 6rem;
+
 	::-webkit-scrollbar {
 		background: transparent;
 	}

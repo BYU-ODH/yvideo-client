@@ -18,6 +18,8 @@ import Admin from './views/admin/Admin'
 
 import Error from './views/error/Error'
 
+import {MainBody} from './styles'
+
 class App extends Component {
 
 	componentDidMount = async () => {
@@ -36,7 +38,7 @@ class App extends Component {
 	render = () => {
 		const { authorized, loading, done } = this.props
 		return (
-			<div>
+			<MainBody>
 				<Router>
 					{
 						authorized ?
@@ -60,7 +62,7 @@ class App extends Component {
 				</Router>
 
 				{loading && <Load loading={loading} done={done} />}
-			</div>
+			</MainBody>
 		)
 	}
 }

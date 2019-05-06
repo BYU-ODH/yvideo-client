@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
+import { connect } from 'react-redux'
 import { load, loaded, getCollections, getRecent } from '../../redux/actions'
 
 import { withRouter } from 'react-router-dom'

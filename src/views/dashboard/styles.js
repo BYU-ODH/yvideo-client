@@ -2,6 +2,10 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
 	padding-top: 8.4rem;
+	padding-bottom: 15rem;
+
+	overflow-y: scroll;
+	height: calc(100vh - 23.4rem);
 `
 
 export const Content = styled.div`
@@ -9,7 +13,17 @@ export const Content = styled.div`
 	margin: 0 auto;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: start;
+
+	& > a,
+	& > div {
+		margin-right: 6.6rem;
+	}
+
+	& > a:last-child,
+	& > div:last-child {
+		margin-right: 0;
+	}
 
 	& > p {
 		margin-bottom: 1.8rem;
@@ -18,6 +32,12 @@ export const Content = styled.div`
 
 	@media screen and (max-width: 960px) {
 		max-width: 40.6rem;
+		justify-content: space-between;
+
+		& > a,
+		& > div {
+			margin-right: 0;
+		}
 	}
 
 	@media screen and (max-width: 455px) {

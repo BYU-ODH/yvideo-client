@@ -51,7 +51,6 @@ const ContentLoader = (() => {
 
 			ResourceLibrary.load(args.content.resourceId, resource => {
 				args.resource = resource
-				console.log(ContentRenderer)
 				ContentRenderer.render({
 					getTranscriptWhitelist,
 					getAnnotationWhitelist,

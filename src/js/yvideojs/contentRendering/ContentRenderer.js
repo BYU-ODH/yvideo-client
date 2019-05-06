@@ -16,12 +16,12 @@ const ContentRenderer = {
 	render: async args => {
 
 		// Temporary hack to show current source
-		const srcUrlEl = document.getElementById(`sourceUrl`)
+		// const srcUrlEl = document.getElementById(`sourceUrl`)
 
-		if (srcUrlEl) {
-			const srcFile = args.resource.content.files[0]
-			srcUrlEl.value = srcFile.downloadUri || srcFile.streamUri
-		}
+		// if (srcUrlEl) {
+		// 	const srcFile = args.resource.content.files[0]
+		// 	srcUrlEl.value = srcFile.downloadUri || srcFile.streamUri
+		// }
 
 		const container = document.createElement(`div`)
 
