@@ -27,12 +27,12 @@ class BlockItem extends Component {
 		const { loaded } = this.state
 
 		return (
-			<Link to={`/player/${id}`}>
-				<ItemContainer>
+			<ItemContainer>
+				<Link to={`/player/${id}`}>
 					<Thumbnail src={name} loaded={loaded} />
 					<h4>{name}</h4>
-				</ItemContainer>
-			</Link>
+				</Link>
+			</ItemContainer>
 		)
 	}
 }

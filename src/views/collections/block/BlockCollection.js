@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import BlockItem from './BlockItem'
 
-import { Container, Header, SlideWrapper, Arrow } from './styles.js'
+import { Container, Header, SlideWrapper, Arrow, BlockEnd } from './styles.js'
 
 export default class BlockCollection extends Component {
 	constructor(props) {
@@ -69,6 +69,7 @@ export default class BlockCollection extends Component {
 						{
 							content.map(item => <BlockItem key={item.id} data={item} />)
 						}
+						<BlockEnd />
 					</SlideWrapper>
 					<Arrow className='right' onClick={this.scrollRight}>
 						<div />

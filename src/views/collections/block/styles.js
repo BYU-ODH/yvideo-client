@@ -40,14 +40,12 @@ export const SlideWrapper = styled.div`
 
 	scroll-behavior: smooth;
 
-	margin-right: 6rem;
-
 	::-webkit-scrollbar {
 		background: transparent;
 	}
 
-	& > div:last-child {
-		padding-right: 6rem;
+	& > a:last-child {
+		margin-right: 6rem;
 	}
 `
 
@@ -137,4 +135,9 @@ export const Thumbnail = styled.div`
 			background-size: cover;
 		`
 	}
+`
+
+export const BlockEnd = styled.div`
+	width: .1rem;
+	height: 10rem;
 `
