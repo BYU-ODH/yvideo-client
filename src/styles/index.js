@@ -9,4 +9,9 @@ export const MainBody = styled.div`
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
+
+	& a {
+		color: inherit;
+		text-decoration: none;
+	}
 `
