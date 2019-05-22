@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Preview, Wrapper, IconBox } from './styles'
 
-import PreviewIcon from './../../../assets/icon.svg'
+import PreviewIcon from 'assets/icon.svg'
 
 class PreviewCollection extends Component {
 	constructor(props) {

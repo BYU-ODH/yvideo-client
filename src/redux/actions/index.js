@@ -9,5 +9,6 @@ export {
 	lost,
 	found,
 	adminOn,
-	adminOff
+	adminOff,
+	toggleEdit
 } from './interface'

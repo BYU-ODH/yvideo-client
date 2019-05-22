@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, adminOn, adminOff, getCollections } from './../../redux/actions'
+import { load, loaded, adminOn, adminOff, getCollections } from 'redux/actions'
 
 import { withRouter } from 'react-router-dom'
 
@@ -14,7 +14,7 @@ import {
 	SelectorIcons
 } from './styles'
 
-export class Admin extends Component {
+class Admin extends Component {
 
 	componentDidMount = async () => {
 		const { adminOn, getCollections, loaded } = this.props

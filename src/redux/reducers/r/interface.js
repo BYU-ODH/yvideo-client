@@ -7,7 +7,8 @@ import {
 	DONE,
 	READY,
 	ADMIN_ON,
-	ADMIN_OFF
+	ADMIN_OFF,
+	TOGGLE_EDIT
 } from '../../actions/types'
 
 const initState = {
@@ -15,7 +16,8 @@ const initState = {
 	loading: false,
 	done: false,
 	lost: false,
-	onAdmin: false
+	onAdmin: false,
+	editMode: false
 }
 
 export const menuReducer = (state = initState.menuActive, { type }) => {
@@ -77,4 +79,9 @@ export const onAdminReducer = (state = initState.onAdmin, { type }) => {
 		default:
 			return state
 	}
+}
+
+export const editReducer = (state = initState.editMode, {type}) => {
+	if (type === TOGGLE_EDIT) return !this.state
+	return state
 }

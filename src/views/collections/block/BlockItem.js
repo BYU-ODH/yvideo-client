@@ -8,7 +8,7 @@ class BlockItem extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			// img: props.data.thumbnail,
+			img: props.data.thumbnail,
 			loaded: false
 		}
 	}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, lost, found } from './../../redux/actions'
+import { load, loaded, lost, found } from 'redux/actions'
 
 import { SError, SLink } from './styles'
 

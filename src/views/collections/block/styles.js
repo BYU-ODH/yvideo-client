@@ -1,7 +1,7 @@
 import styled, { keyframes, css } from 'styled-components'
 
-import arrowLeft from '../../../assets/collections/arrow-left.svg'
-import arrowRight from '../../../assets/collections/arrow-right.svg'
+import arrowLeft from 'assets/collections/arrow-left.svg'
+import arrowRight from 'assets/collections/arrow-right.svg'
 
 export const Container = styled.div`
 	padding: 2rem;

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
 
-export const SideMenuStyled = styled.div`
+export const Container = styled.div`
 
 `

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import { load, loaded, getCollections, getRecent } from './../../redux/actions'
+import { load, loaded, getCollections, getRecent } from 'redux/actions'
 
 import { withRouter } from 'react-router-dom'
 
@@ -10,11 +10,11 @@ import axios from 'axios'
 import { Ayamel, ResourceLibrary } from 'yvideojs'
 import 'yvideojs/css/player.css'
 
-import ContentLoader from './../../js/yvideojs/contentRendering/ContentLoader'
+import ContentLoader from 'js/yvideojs/contentRendering/ContentLoader'
 
-import PreviewCollection from './../dashboard/previews/PreviewCollection'
-import PreviewVideo from './../dashboard/previews/PreviewVideo'
-import { Container, Content, PreviewEmpty } from './../dashboard/styles'
+import PreviewCollection from 'views/dashboard/previews/PreviewCollection'
+import PreviewVideo from 'views/dashboard/previews/PreviewVideo'
+import { Container, Content, PreviewEmpty } from 'views/dashboard/styles'
 
 import { PlayerCssFix } from './styles'
 

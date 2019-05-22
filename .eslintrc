@@ -4,7 +4,8 @@
 		"es6": true
 	},
 	"plugins": [
-		"react"
+		"react",
+		"react-hooks"
 	],
 	"parserOptions": {
 		"ecmaFeatures": {
@@ -94,6 +95,8 @@
 		"no-var": "error",
 		"object-shorthand": "error",
 		"prefer-arrow-callback": "error",
-		"prefer-const": "error"
+		"prefer-const": "error",
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn"
 	}
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, getCollections } from '../../redux/actions'
+import { load, loaded, getCollections } from 'redux/actions'
 
 import { Link, withRouter } from 'react-router-dom'
 
@@ -52,6 +52,8 @@ export class Collections extends Component {
 		const { isProf, isAdmin, collections } = this.props
 		const { block } = this.state
 
+		const filteredCollections = collections.filter(collection => !collection.archived)
+
 		return (
 			<CollectionStyled>
 				<header>
@@ -61,7 +63,7 @@ export class Collections extends Component {
 					<div>
 						{
 							(isProf || isAdmin) &&
-							<Link to={`/collection-manager`} >Manage Collections</Link>
+							<Link to={`/manager`} >Manage Collections</Link>
 						}
 						<ViewToggle block={block} onClick={this.toggleBlock} />
 					</div>
@@ -69,11 +71,11 @@ export class Collections extends Component {
 				<div className='list'>
 					{
 						block ?
-							collections.map(item => {
+							filteredCollections.map(item => {
 								return <BlockCollection key={item.id} data={item} />
 							})
 							:
-							collections.map(item => {
+							filteredCollections.map(item => {
 								return <ListCollection key={item.id} data={item} />
 							})
 					}

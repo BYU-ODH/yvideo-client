@@ -1,8 +1,8 @@
 import styled, { keyframes } from 'styled-components'
 
-import LComets from './../../assets/landing/CometsLeft.svg'
-import RComets from './../../assets/landing/CometsRight.svg'
-import HexLogo from './../../assets/hexborder.svg'
+import LComets from 'assets/landing/CometsLeft.svg'
+import RComets from 'assets/landing/CometsRight.svg'
+import HexLogo from 'assets/hexborder.svg'
 
 export const Container = styled.div`
 width: 100%;

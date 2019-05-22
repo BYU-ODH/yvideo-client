@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded } from './../../redux/actions'
+import { load, loaded } from 'redux/actions'
 
 import { Link, withRouter } from 'react-router-dom'
 

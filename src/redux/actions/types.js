@@ -12,5 +12,6 @@ export {
 	LOST,
 	FOUND,
 	ADMIN_ON,
-	ADMIN_OFF
+	ADMIN_OFF,
+	TOGGLE_EDIT
 } from './interface/types'

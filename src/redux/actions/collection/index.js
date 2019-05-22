@@ -2,7 +2,7 @@ import { GET_COLLECTIONS } from './types'
 
 import axios from 'axios'
 
-const test = false
+const test = true
 
 export const getCollections = callback => {
 	return async dispatch => {
@@ -26,12 +26,17 @@ const fakedata = [
 		id: 0,
 		thumbnail: ``,
 		name: `test`,
+		published: true,
+		owner: `zgrant12`,
+		archived: false,
 		content: [
 			{
 				id: 0,
 				thumbnail: ``,
 				name: `video 1.1`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: false,
 				captions: false,
 				annotations: false
@@ -40,7 +45,9 @@ const fakedata = [
 				id: 1,
 				thumbnail: ``,
 				name: `video 1.2`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: false,
 				captions: false,
 				annotations: true
@@ -49,7 +56,9 @@ const fakedata = [
 				id: 2,
 				thumbnail: ``,
 				name: `video 1.3`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: false,
 				captions: true,
 				annotations: false
@@ -58,7 +67,9 @@ const fakedata = [
 				id: 3,
 				thumbnail: ``,
 				name: `video 1.4`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: false,
 				captions: true,
 				annotations: true
@@ -67,7 +78,9 @@ const fakedata = [
 				id: 4,
 				thumbnail: ``,
 				name: `video 1.5`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: true,
 				captions: false,
 				annotations: false
@@ -76,7 +89,9 @@ const fakedata = [
 				id: 5,
 				thumbnail: ``,
 				name: `video 1.6`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: false,
 				translation: true,
 				captions: false,
 				annotations: true
@@ -85,7 +100,9 @@ const fakedata = [
 				id: 6,
 				thumbnail: ``,
 				name: `video 1.7`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: false,
 				translation: true,
 				captions: true,
 				annotations: false
@@ -94,7 +111,9 @@ const fakedata = [
 				id: 7,
 				thumbnail: ``,
 				name: `video 1.8`,
-				collection: `test`,
+				views: 5,
+				contentType: `video`,
+				published: false,
 				translation: true,
 				captions: true,
 				annotations: true
@@ -105,12 +124,17 @@ const fakedata = [
 		id: 1,
 		thumbnail: ``,
 		name: `test2`,
+		published: false,
+		owner: `zgrant12`,
+		archived: false,
 		content: [
 			{
 				id: 0,
 				thumbnail: ``,
 				name: `video 2.1`,
-				collection: `test2`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: true,
 				captions: true,
 				annotations: false
@@ -119,7 +143,9 @@ const fakedata = [
 				id: 1,
 				thumbnail: ``,
 				name: `video 2.2`,
-				collection: `test2`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: true,
 				captions: true,
 				annotations: true
@@ -130,12 +156,17 @@ const fakedata = [
 		id: 2,
 		thumbnail: ``,
 		name: `test3`,
+		published: true,
+		owner: `zgrant12`,
+		archived: false,
 		content: [
 			{
 				id: 0,
 				thumbnail: ``,
 				name: `video 3.1`,
-				collection: `test3`,
+				views: 5,
+				contentType: `video`,
+				published: false,
 				translation: false,
 				captions: true,
 				annotations: true
@@ -146,12 +177,17 @@ const fakedata = [
 		id: 3,
 		thumbnail: ``,
 		name: `test4`,
+		published: false,
+		owner: `zgrant12`,
+		archived: false,
 		content: [
 			{
 				id: 0,
 				thumbnail: ``,
 				name: `video 4.1`,
-				collection: `test4`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: false,
 				captions: false,
 				annotations: true
@@ -160,7 +196,9 @@ const fakedata = [
 				id: 1,
 				thumbnail: ``,
 				name: `video 4.2`,
-				collection: `test4`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: false,
 				captions: true,
 				annotations: false
@@ -171,12 +209,38 @@ const fakedata = [
 		id: 4,
 		thumbnail: ``,
 		name: `test5`,
+		published: true,
+		owner: `zgrant12`,
+		archived: false,
 		content: [
 			{
 				id: 0,
 				thumbnail: ``,
 				name: `video 5.1`,
-				collection: `test5`,
+				views: 5,
+				contentType: `video`,
+				published: false,
+				translation: true,
+				captions: false,
+				annotations: true
+			}
+		]
+	},
+	{
+		id: 5,
+		thumbnail: ``,
+		name: `You should not see this`,
+		published: true,
+		owner: `zgrant12`,
+		archived: true,
+		content: [
+			{
+				id: 0,
+				thumbnail: ``,
+				name: `You should not see this`,
+				views: 5,
+				contentType: `video`,
+				published: true,
 				translation: true,
 				captions: false,
 				annotations: true

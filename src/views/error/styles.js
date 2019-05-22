@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { Link } from 'react-router-dom'
 
-import Background from './../../assets/desertbackground.svg'
+import Background from 'assets/desertbackground.svg'
 
 export const SError = styled.div`
 	width: 100%;
@@ -38,7 +38,8 @@ export const SLink = styled(Link)`
 	padding: 1.5rem;
 	border: 2px solid white;
 	border-radius: 10rem;
-	color: white;
+	color: white !important;
+	text-shadow: 0 0 15px rgba(255,255,255,1);
 	font-family: 'Roboto Mono';
 	font-weight: bold;
 	font-size: 1.8rem;

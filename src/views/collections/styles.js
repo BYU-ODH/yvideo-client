@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import blockView from '../../assets/collections/block-view.svg'
-import listView from '../../assets/collections/list-view.svg'
+import blockView from 'assets/collections/block-view.svg'
+import listView from 'assets/collections/list-view.svg'
 
 export const CollectionStyled = styled.div`
 	max-width: 100rem;

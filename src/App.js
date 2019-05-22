@@ -2,23 +2,24 @@ import React, { Component, memo } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { getUser, getUserInfo, load, loaded, getAuthCookie } from './redux/actions'
+import { getUser, getUserInfo, load, loaded, getAuthCookie } from 'redux/actions'
 
-import Load from './components/load/Load'
+import Load from 'components/load/Load'
 
-import HeaderRoute from './routes/HeaderRoute'
+import HeaderRoute from 'routes/HeaderRoute'
 
-import Login from './routes/Login'
+import Login from 'routes/Login'
 
-import Dashboard from './views/dashboard/Dashboard'
-import Landing from './views/landing/Landing'
-import Collections from './views/collections/Collections'
-import VideoPage from './views/player/VideoPage'
-import Admin from './views/admin/Admin'
+import Dashboard from 'views/dashboard/Dashboard'
+import Landing from 'views/landing/Landing'
+import Collections from 'views/collections/Collections'
+import VideoPage from 'views/player/VideoPage'
+import Admin from 'views/admin/Admin'
+import Manager from 'views/manager/Manager'
 
-import Error from './views/error/Error'
+import Error from 'views/error/Error'
 
-import {MainBody} from './styles'
+import { MainBody } from './styles'
 
 class App extends Component {
 
@@ -49,6 +50,8 @@ class App extends Component {
 									<Route path={`/player/:videoId`} component={VideoPage} />
 
 									<Route path={`/admin/:page`} component={Admin} />
+
+									<Route path={`/manager/:id?`} component={Manager} />
 
 									<Route render={() => <Error error='404' message={`You've wandered too far`} />} />
 								</Switch>

@@ -2,10 +2,10 @@ import styled, { keyframes, css } from 'styled-components'
 
 import { Link } from 'react-router-dom'
 
-import carrot from './../../../assets/collections/carrot.svg'
-import translation from './../../../assets/collections/videoOptions/translation.svg'
-import captions from './../../../assets/collections/videoOptions/captions.svg'
-import annotations from './../../../assets/collections/videoOptions/annotations.svg'
+import carrot from 'assets/collections/carrot.svg'
+import translation from 'assets/collections/videoOptions/translation.svg'
+import captions from 'assets/collections/videoOptions/captions.svg'
+import annotations from 'assets/collections/videoOptions/annotations.svg'
 
 export const Header = styled.div`
 	display: grid;

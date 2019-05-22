@@ -7,7 +7,8 @@ import {
 	LOST,
 	FOUND,
 	ADMIN_ON,
-	ADMIN_OFF
+	ADMIN_OFF,
+	TOGGLE_EDIT
 } from './types'
 
 export const toggleMenu = () => {
@@ -43,4 +44,8 @@ export const adminOn = () => {
 
 export const adminOff = () => {
 	return { type: ADMIN_OFF }
+}
+
+export const toggleEdit = () => {
+	return { type: TOGGLE_EDIT }
 }

@@ -20,7 +20,7 @@ export class Login extends Component {
 	caslogin = () => {
 		const url = `${process.env.REACT_APP_YVIDEO_SERVER}/auth/cas/redirect${window.location.origin}/success`
 		const name = `BYU CAS Secure Login`
-		const popup = window.open(url, name, `width=780,height=600`)
+		const popup = window.open(url, name, `width=800,height=800`)
 
 		const popuppoll = setInterval(() => {
 			try {
