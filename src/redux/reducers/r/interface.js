@@ -9,7 +9,7 @@ import {
 	ADMIN_ON,
 	ADMIN_OFF,
 	TOGGLE_EDIT
-} from '../../actions/types'
+} from 'redux/actions/types'
 
 const initState = {
 	menuActive: false,

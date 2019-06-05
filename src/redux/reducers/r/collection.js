@@ -1,8 +1,11 @@
-import { GET_COLLECTIONS } from '../../actions/types'
+import { GET_COLLECTIONS, GET_COLLECTION } from 'redux/actions/types'
 
-const initState = []
+const initState = {
+	collections: [],
+	collection: {}
+}
 
-export const collectionReducer = (state = initState, { type, payload }) => {
+export const collectionsReducer = (state = initState.collections, { type, payload }) => {
 	switch (type) {
 		case GET_COLLECTIONS:
 			return payload
@@ -12,4 +15,12 @@ export const collectionReducer = (state = initState, { type, payload }) => {
 	}
 }
 
-export default collectionReducer
+export const collectionReducer = (state = initState.collection, { type, payload }) => {
+	switch (type) {
+		case GET_COLLECTION:
+			return payload
+
+		default:
+			return state
+	}
+}

@@ -1,4 +1,4 @@
-import { TOGGLE_BORDER } from '../../actions/types'
+import { TOGGLE_BORDER } from 'redux/actions/types'
 
 const initState = false
 

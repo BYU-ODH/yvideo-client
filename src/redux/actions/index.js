@@ -1,7 +1,7 @@
 export { getUser, getUserInfo, getRecent } from './user'
 export { login, logout, getAuthCookie } from './auth'
-export { getCollections } from './collection'
-
+export { getCollection, getCollections } from './collection'
+export { getResource } from './resource'
 export {
 	toggleMenu,
 	load,

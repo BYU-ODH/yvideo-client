@@ -45,6 +45,7 @@ class Manager extends Component {
 
 	render() {
 		const { collections } = this.props
+
 		const { id } = this.props.match.params
 
 		const matchingCollection = collections.filter(coll => coll.id.toString() === id)
@@ -62,7 +63,7 @@ class Manager extends Component {
 						{published.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
 					</AccordionMenu>
 
-					<AccordionMenu header={`Unublished`}>
+					<AccordionMenu header={`Unublished`} active>
 						{unpublished.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
 					</AccordionMenu>
 

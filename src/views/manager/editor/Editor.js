@@ -22,6 +22,7 @@ const Editor = props => {
 	const { content, published } = collection
 
 	const [isContent, setIsContent] = useState(true)
+	const [contentCache, setContentCache] = useState({})
 
 	const togglePublish = e => {
 		e.preventDefault()
@@ -57,7 +58,7 @@ const Editor = props => {
 			<Tab>
 				{
 					isContent ?
-					content.map((item, index) => <Content key={index} video={item} />)
+					content.map((item, index) => <Content key={index} collectionId={collection.id} video={item} cache={{contentCache, setContentCache}} />)
 					:
 					<Permissions />
 				}

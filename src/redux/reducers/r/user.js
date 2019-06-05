@@ -1,4 +1,4 @@
-import { GET_USER, GET_USER_INFO, GET_RECENT } from '../../actions/types'
+import { GET_USER, GET_USER_INFO, GET_RECENT } from 'redux/actions/types'
 
 const initState = {
 	user: {},

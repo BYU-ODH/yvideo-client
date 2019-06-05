@@ -38,7 +38,6 @@ export class Login extends Component {
 	checkAuth = async () => {
 		try {
 			await this.props.getUserInfo(user => {
-				console.log(`user:`, user)
 				if (user.authenticated) {
 					this.props.getUser()
 					this.props.login()

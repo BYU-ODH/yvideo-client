@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux'
 
 import authReducer from './r/auth'
-import collectionReducer from './r/collection'
+import { collectionReducer, collectionsReducer } from './r/collection'
 import { menuReducer, loadReducer, doneReducer, lostReducer, onAdminReducer, editReducer } from './r/interface'
 import { userReducer, userInfoReducer, recentReducer } from './r/user'
+import { resourceReducer } from './r/resource'
 
 const rootReducer = combineReducers({
 	authorized: authReducer,
 
-	collections: collectionReducer,
+	collections: collectionsReducer,
+	collection: collectionReducer,
 
 	menuActive: menuReducer,
 	loading: loadReducer,
@@ -20,7 +22,9 @@ const rootReducer = combineReducers({
 	userInfo: userInfoReducer,
 	recent: recentReducer,
 
-	editMode: editReducer
+	editMode: editReducer,
+
+	resource: resourceReducer
 })
 
 export default rootReducer
