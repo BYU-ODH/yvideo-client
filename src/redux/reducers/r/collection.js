@@ -1,25 +1,25 @@
-import { GET_COLLECTIONS, GET_COLLECTION } from 'redux/actions/types'
+import { GET_COLLECTIONS, GET_CONTENT, GET_PRIVILEGED_COLLECTIONS } from 'redux/actions/types'
 
 const initState = {
 	collections: [],
-	collection: {}
+	content: {}
 }
 
 export const collectionsReducer = (state = initState.collections, { type, payload }) => {
 	switch (type) {
 		case GET_COLLECTIONS:
 			return payload
-
+		case GET_PRIVILEGED_COLLECTIONS:
+			return payload
 		default:
 			return state
 	}
 }
 
-export const collectionReducer = (state = initState.collection, { type, payload }) => {
+export const contentReducer = (state = initState.content, { type, payload }) => {
 	switch (type) {
-		case GET_COLLECTION:
+		case GET_CONTENT:
 			return payload
-
 		default:
 			return state
 	}

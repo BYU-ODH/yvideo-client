@@ -1,57 +1,61 @@
-import { GET_COLLECTION, GET_COLLECTIONS } from './types'
+import { GET_CONTENT, GET_COLLECTIONS, GET_PRIVILEGED_COLLECTIONS } from './types'
 
 import axios from 'axios'
 
 export const getCollections = callback => {
+
 	return async dispatch => {
-		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collectionsPreview`, { withCredentials: true })
+
+		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true })
 			.then(result => {
-				const json = result.data
+				const { data } = result
+
 				const err = `Could not load collection previews. Displaying fillers.`
-				if (json.length > 0) dispatch({ type: GET_COLLECTIONS, payload: json })
+
+				if (data.length > 0)
+					dispatch({ type: GET_COLLECTIONS, payload: data })
 				else throw err
-				typeof callback === `function` && callback(json)
+
+				typeof callback === `function` && callback(data)
 			})
 			.catch(err => console.error(err))
 	}
 }
 
-export const getCollection = (id, callback) => {
+export const getPrivilegedCollections = callback => {
+
 	return async dispatch => {
 
-		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`, { withCredentials: true })
-			.then(async result => {
+		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/privilegedCollections`, { withCredentials: true })
+			.then(result => {
+				const { data } = result
 
-				const collRes = result.data
-				collRes.resource = {}
+				const err = `Could not load collection previews. Displaying fillers.`
 
-				await axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${collRes.resourceId}?${Date.now().toString(36)}`, { includeCredentials: true })
-					.then(async result => {
-						collRes.resource = result.data.resource
-						collRes.resource.resources = {}
-						collRes.resource.relations.forEach(item => collRes.resource.resources[item.attributes.kind] = [])
+				if (data.length > 0)
+					dispatch({ type: GET_PRIVILEGED_COLLECTIONS, payload: data })
+				else throw err
 
-						await collRes.resource.relations.forEach(item => {
-							axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${item.subjectId}?${Date.now().toString(36)}`, { includeCredentials: true })
-								.then(result => {
-									collRes.resource.resources[item.attributes.kind].push(result.data.resource)
-								})
-								.catch(err => {
-									throw err
-								})
-						})
-
-					})
-					.catch(err => {
-						throw err
-					})
-
-				if (Object.entries(collRes).length === 0 && collRes.constructor === Object)
-					dispatch({ type: GET_COLLECTION, paylaod: collRes })
-
-				if (typeof callback === `function`) callback(collRes)
+				typeof callback === `function` && callback(data)
 			})
 			.catch(err => console.error(err))
+	}
+}
 
+export const getContent = collection => {
+
+	return async dispatch => {
+
+		const finalResult = {}
+
+		await collection.content.forEach(async item => {
+			await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${item.id}`, { withCredentials: true })
+				.then(response => {
+					finalResult[item.id] = response.data
+				})
+				.catch(err => console.error(err))
+		})
+
+		dispatch({ type: GET_CONTENT, payload: finalResult })
 	}
 }

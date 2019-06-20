@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, adminOn, adminOff, getCollections } from 'redux/actions'
+import { load, loaded, adminOn, adminOff, getPrivilegedCollections } from 'redux/actions'
 
 import { withRouter } from 'react-router-dom'
 
@@ -16,24 +16,36 @@ import { Container, Body, SideMenu, NoCollection, CreateButton, Plus } from './s
 import plus from 'assets/collections/plus.svg'
 
 class Manager extends Component {
+	constructor(props) {
+		super(props)
 
-	componentDidMount = async () => {
-		const { adminOn, loaded, getCollections } = this.props
-
-		adminOn()
-
-		try {
-			await getCollections()
-		} catch (error) {
-			console.log(error)
+		this.state = {
+			matchingCollection: {},
+			publishedColls: [],
+			unpublishedColls: []
 		}
-
-		setTimeout(() => {
-			loaded()
-		}, 500)
 	}
 
-	componentWillUnmount = () => {
+	componentDidMount() {
+
+		this.props.getPrivilegedCollections(this.props.loaded)
+
+		const { collections } = this.state
+
+		this.props.adminOn()
+
+		this.setState({
+			matchingCollection: collections.filter(coll => coll.id.toString() === this.props.match.params.id)[0],
+			publishedColls: collections.filter(item => item.published && !item.archived),
+			unpublishedColls: collections.filter(item => !item.published && !item.archived)
+		})
+	}
+
+	shouldComponentUpdate(nextProps) {
+		return this.props.collections !== nextProps.collections
+	}
+
+	componentWillUnmount() {
 		const { adminOff, load } = this.props
 		load()
 		adminOff()
@@ -44,14 +56,12 @@ class Manager extends Component {
 	}
 
 	render() {
-		const { collections } = this.props
 
-		const { id } = this.props.match.params
+		const { matchingCollection, publishedColls, unpublishedColls } = this.state
 
-		const matchingCollection = collections.filter(coll => coll.id.toString() === id)
+		console.log(`manager rendered`, unpublishedColls)
 
-		const published = collections.filter(item => item.published && !item.archived)
-		const unpublished = collections.filter(item => !item.published && !item.archived)
+		const displayEditor = matchingCollection !== undefined && matchingCollection !== null && Object.entries(matchingCollection).length > 0 && matchingCollection.constructor === Object
 
 		return (
 			<Container>
@@ -60,21 +70,21 @@ class Manager extends Component {
 					<h4>My Collections</h4>
 
 					<AccordionMenu header={`Published`} active>
-						{published.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
+						{publishedColls.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
 					</AccordionMenu>
 
 					<AccordionMenu header={`Unublished`} active>
-						{unpublished.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
+						{unpublishedColls.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
 					</AccordionMenu>
 
 					<CreateButton onClick={this.createNew}><Plus src={plus} />Create New Collection</CreateButton>
 
 				</SideMenu>
 				<Body>
-					{id === undefined || matchingCollection.length !== 1 ?
-						<NoCollection>Select a Collection to get started.</NoCollection>
+					{displayEditor ?
+						<Editor collection={matchingCollection} />
 						:
-						<Editor collection={matchingCollection.length > 0 ? matchingCollection[0] : null} />
+						<NoCollection>Select a Collection to get started.</NoCollection>
 					}
 				</Body>
 			</Container>
@@ -88,7 +98,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-	getCollections,
+	getPrivilegedCollections,
 	load,
 	loaded,
 	adminOn,

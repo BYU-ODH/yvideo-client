@@ -6,11 +6,15 @@ import { Wrapper, Container, Column, Setting } from './styles'
 
 const ContentSettings = props => {
 
-	const [on, setToggle] = useState(false)
+	const [settings, setSettings] = useState({
+
+	})
 
 	const handleToggle = e => {
 		e.preventDefault()
-		setToggle(!on)
+		setSettings({
+			...settings
+		})
 	}
 
 	return (
@@ -20,7 +24,7 @@ const ContentSettings = props => {
 					<h4>General</h4>
 					<Setting>
 						<p>Allow automatic definitions</p>
-						<SwitchToggle on={on} setToggle={handleToggle} />
+						<SwitchToggle on={settings.test} setToggle={handleToggle} />
 					</Setting>
 				</Column>
 
@@ -36,14 +40,14 @@ const ContentSettings = props => {
 
 				<Column>
 					<h4>Transcripts
-					<SwitchToggle on={on} setToggle={handleToggle} />
+					<SwitchToggle on={settings.test2} setToggle={handleToggle} />
 					</h4>
 				</Column>
 
 				<Column>
 					<h4>
 						Captions
-					<SwitchToggle on={on} setToggle={handleToggle} />
+					<SwitchToggle on={settings.test3} setToggle={handleToggle} />
 					</h4>
 				</Column>
 

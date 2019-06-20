@@ -1,5 +1,5 @@
 export { GET_USER, GET_USER_INFO, GET_RECENT } from './user/types'
-export { GET_COLLECTION, GET_COLLECTIONS } from './collection/types'
+export { GET_CONTENT, GET_COLLECTIONS, GET_PRIVILEGED_COLLECTIONS } from './collection/types'
 export { TOGGLE_BORDER } from './header/types'
 export { LOGIN, LOGOUT } from './auth/types'
 export { GET_RESOURCE } from './resource/types'
