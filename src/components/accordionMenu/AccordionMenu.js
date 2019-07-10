@@ -21,11 +21,16 @@ class AccordionMenu extends React.Component {
 	}
 
 	render() {
+
+		const { handleToggle } = this
+		const { header, children = [] } = this.props
+		const { active } = this.state
+
 		return (
 			<Container>
-				<h6 onClick={this.handleToggle}>{this.props.header}<Arrow src={arrow} active={this.state.active} /></h6>
-				<List numChildren={this.props.children.length} active={this.state.active}>
-					{this.props.children}
+				<h6 onClick={handleToggle}>{header}<Arrow src={arrow} active={this.state.active} /></h6>
+				<List numChildren={children.length} active={active}>
+					{children}
 				</List>
 			</Container>
 		)

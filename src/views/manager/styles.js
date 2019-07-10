@@ -32,16 +32,6 @@ export const Body = styled.div`
 	height: calc(100vh - 16rem);
 `
 
-export const NoCollection = styled.div`
-	height: 100%;
-	font-size: 2.4rem;
-	color: #ccc;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`
-
 export const CreateButton = styled.button`
 	padding: 0;
 
@@ -69,4 +59,14 @@ export const Plus = styled.div`
 
 	background: url(${props => props.src}) center no-repeat;
 	background-size: contain;
+`
+
+export const NoCollection = styled.div`
+	height: 100%;
+	font-size: 2.4rem;
+	color: #ccc;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `

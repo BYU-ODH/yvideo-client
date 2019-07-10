@@ -46,7 +46,8 @@ export class Dashboard extends Component {
 	}
 
 	render() {
-		const { recent, collections } = this.props
+		const { recent, collectionsCache } = this.props
+		const { collections = [] } = collectionsCache
 
 		const modRec = recent.slice(0, 4)
 		const modColl = collections.slice(0, 4)
@@ -82,7 +83,7 @@ export class Dashboard extends Component {
 
 const mapStateToProps = state => ({
 	userInfo: state.userInfo,
-	collections: state.collections,
+	collectionsCache: state.collectionsCache,
 	recent: state.recent
 })
 

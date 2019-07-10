@@ -1,8 +1,28 @@
 export { GET_USER, GET_USER_INFO, GET_RECENT } from './user/types'
-export { GET_CONTENT, GET_COLLECTIONS, GET_PRIVILEGED_COLLECTIONS } from './collection/types'
 export { TOGGLE_BORDER } from './header/types'
 export { LOGIN, LOGOUT } from './auth/types'
-export { GET_RESOURCE } from './resource/types'
+
+export {
+	ABORT_COLLECTIONS,
+	ERROR_COLLECTIONS,
+	START_COLLECTIONS,
+	UPDATE_COLLECTIONS
+} from './collection/types'
+
+export {
+	ABORT_CONTENT,
+	ERROR_CONTENT,
+	START_CONTENT,
+	UPDATE_CONTENT
+} from './content/types'
+
+export {
+	ABORT_RESOURCES,
+	ERROR_RESOURCES,
+	START_RESOURCES,
+	UPDATE_RESOURCES
+} from './resource/types'
+
 export {
 	TOGGLE_MENU,
 	LOAD,

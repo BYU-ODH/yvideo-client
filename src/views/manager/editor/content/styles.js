@@ -103,6 +103,29 @@ export const Thumbnail = styled.div`
 	}
 `
 
+export const TitleEdit = styled.input`
+	position: relative;
+	top: -.3rem;
+	left: -.2rem;
+	margin-bottom: -.6rem;
+`
+
+export const PublishButton = styled.button`
+	color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+	font-weight: bold;
+	line-height: 1.5rem;
+	letter-spacing: .05rem;
+
+	background: transparent;
+	width: fit-content;
+
+	border: none;
+	padding: 0;
+
+	cursor: pointer;
+	outline: none;
+`
+
 const shimmer = keyframes`
 	0% {
 	background-position: -30rem 0;

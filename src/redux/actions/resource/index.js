@@ -1,85 +1,31 @@
-import { GET_RESOURCE } from 'redux/actions/types'
+import { ABORT_RESOURCES, ERROR_RESOURCES, START_RESOURCES, UPDATE_RESOURCES } from './types'
 
 import axios from 'axios'
 
-export const getResource = (collRes, callback) => {
-	return async dispatch => {
-		await axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${collRes.resourceId}?${Date.now().toString(36)}`, { includeCredentials: true })
-			.then(async result => {
-				collRes.resource = result.data.resource
-				collRes.resource.resources = {}
-				collRes.resource.relations.forEach(item => collRes.resource.resources[item.type] = [])
+const { REACT_APP_STALE_TIME, REACT_APP_RESOURCE_LIB } = process.env
 
-				await collRes.resource.relations.forEach(async item => {
-					await axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${item.subjectId}?${Date.now().toString(36)}`, { includeCredentials: true })
-						.then(result => {
-							collRes.resource.resources[item.type].push(result.data.resource)
+export const getResources = (collection = null) => {
+	return async (dispatch, getState) => {
 
-							if (Object.entries(collRes).length === 0 && collRes.constructor === Object)
-								dispatch({ type: GET_RESOURCE, payload: collRes })
+		const stale = Date.now() - getState().resourceCache.lastFetched >= REACT_APP_STALE_TIME
 
-							if (typeof callback === `function`) callback(collRes)
+		if (stale) {
+			dispatch({ type: START_RESOURCES })
 
-						})
-						.catch(err => {
-							throw err
-						})
-				})
-			})
-			.catch(err => {
-				throw err
-			})
+			const result = await axios(`${REACT_APP_RESOURCE_LIB}/resources/${collection.resourceId}?${Date.now().toString(36)}`, { includeCredentials: true })
+				.catch(err => dispatch({ type: ERROR_RESOURCES, payload: err }))
+
+			collection.resource = result.data.resource
+			collection.resource.resources = {}
+			collection.resource.relations.forEach(item => collection.resource.resources[item.type] = [])
+
+			Promise.all(collection.resource.relations.map(async item => {
+				const result = await axios(`${REACT_APP_RESOURCE_LIB}/resources/${item.subjectId}?${Date.now().toString(36)}`, { includeCredentials: true })
+				collection.resource.resources[item.type].push(result.data.resource)
+			}))
+
+			dispatch({ type: UPDATE_RESOURCES, payload: collection })
+
+		} else dispatch({ type: ABORT_RESOURCES })
 	}
 }
-
-// const testdata = {
-// 	client: {
-// 		id: `byu_demo`,
-// 		name: `BYU Demos`
-// 	},
-// 	clientUser: {
-// 		id: `user:13`
-// 	},
-// 	content: {
-// 		files: [
-// 			{
-// 				attributes: [],
-// 				bytes: 0,
-// 				mime: `video/x-youtube`,
-// 				mimeType: `video/x-youtube`,
-// 				quality: 1,
-// 				representation: `original`,
-// 				streamUri: `https://www.youtube.com/watch?v=YMBj_tU7HRU`
-// 			}
-// 		]
-// 	},
-// 	dateAdded: `1556818336`,
-// 	dateModified: `1556818336`,
-// 	description: `Oliver`,
-// 	id: `5ccb29a033e57c70758b4567`,
-// 	keywords: ``,
-// 	languages: {
-// 		iso639_3: [`eng`]
-// 	},
-// 	relations: [
-// 		{
-// 			attributes: [],
-// 			client: { id: `byu_demo`, name: `BYU Demos` },
-// 			id: `54f8d4ee33e57cdb688b4568`,
-// 			objectId: `54f8a7b633e57c55688b4569`,
-// 			subjectId: `54f8d4ed33e57cdb688b4567`,
-// 			type: `transcript_of`
-// 		},
-// 		{
-// 			attributes: [],
-// 			client: { id: `byu_demo`, name: `BYU Demos` },
-// 			id: `54f8d6a733e57cba688b4568`,
-// 			objectId: `54f8a7b633e57c55688b4569`,
-// 			subjectId: `54f8d6a533e57cba688b4567`,
-// 			type: `references`
-// 		}
-// 	],
-// 	status: `normal`,
-// 	title: `Johnathan`,
-// 	type: `video`
-// }

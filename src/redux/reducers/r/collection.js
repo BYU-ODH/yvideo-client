@@ -1,25 +1,46 @@
-import { GET_COLLECTIONS, GET_CONTENT, GET_PRIVILEGED_COLLECTIONS } from 'redux/actions/types'
+import {
+	ABORT_COLLECTIONS,
+	ERROR_COLLECTIONS,
+	START_COLLECTIONS,
+	UPDATE_COLLECTIONS
+} from 'redux/actions/types'
 
 const initState = {
-	collections: [],
-	content: {}
+	collections: {},
+	error: null,
+	isFetching: false,
+	lastFetched: 0
 }
 
-export const collectionsReducer = (state = initState.collections, { type, payload }) => {
+export const collectionsReducer = (state = initState, { type, payload, error }) => {
 	switch (type) {
-		case GET_COLLECTIONS:
-			return payload
-		case GET_PRIVILEGED_COLLECTIONS:
-			return payload
-		default:
-			return state
-	}
-}
 
-export const contentReducer = (state = initState.content, { type, payload }) => {
-	switch (type) {
-		case GET_CONTENT:
-			return payload
+		case ERROR_COLLECTIONS:
+			return {
+				...state,
+				error,
+				isFetching: false
+			}
+
+		case START_COLLECTIONS:
+			return {
+				...state,
+				isFetching: true
+			}
+
+		case UPDATE_COLLECTIONS:
+			return {
+				...state,
+				collections: {
+					...state.collections,
+					...payload
+				},
+				error: null,
+				isFetching: false,
+				lastFetched: Date.now()
+			}
+
+		case ABORT_COLLECTIONS:
 		default:
 			return state
 	}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { load, loaded, adminOn, adminOff, getPrivilegedCollections } from 'redux/actions'
+import { load, loaded, adminOn, adminOff, getCollections } from 'redux/actions'
 
 import { withRouter } from 'react-router-dom'
 
@@ -11,38 +11,28 @@ import { Link } from 'react-router-dom'
 
 import AccordionMenu from 'components/accordionMenu/AccordionMenu'
 
-import { Container, Body, SideMenu, NoCollection, CreateButton, Plus } from './styles'
+import {
+	Container,
+	Body,
+	SideMenu,
+	CreateButton,
+	Plus,
+	NoCollection
+} from './styles'
 
 import plus from 'assets/collections/plus.svg'
 
 class Manager extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			matchingCollection: {},
-			publishedColls: [],
-			unpublishedColls: []
-		}
+	componentDidMount = () => {
+		const { getCollections, adminOn } = this.props
+		getCollections()
+		adminOn()
 	}
 
-	componentDidMount() {
-
-		this.props.getPrivilegedCollections(this.props.loaded)
-
-		const { collections } = this.state
-
-		this.props.adminOn()
-
-		this.setState({
-			matchingCollection: collections.filter(coll => coll.id.toString() === this.props.match.params.id)[0],
-			publishedColls: collections.filter(item => item.published && !item.archived),
-			unpublishedColls: collections.filter(item => !item.published && !item.archived)
-		})
-	}
-
-	shouldComponentUpdate(nextProps) {
-		return this.props.collections !== nextProps.collections
+	shouldComponentUpdate = nextProps => {
+		const { collectionsCache, match } = this.props
+		return collectionsCache !== nextProps.collectionsCache || match.params.id !== nextProps.match.params.id
 	}
 
 	componentWillUnmount() {
@@ -57,11 +47,24 @@ class Manager extends Component {
 
 	render() {
 
-		const { matchingCollection, publishedColls, unpublishedColls } = this.state
+		const { collectionsCache, match, loaded } = this.props
+		const { collections } = collectionsCache
 
-		console.log(`manager rendered`, unpublishedColls)
+		let selectedCollection
 
-		const displayEditor = matchingCollection !== undefined && matchingCollection !== null && Object.entries(matchingCollection).length > 0 && matchingCollection.constructor === Object
+		const sideLists = {
+			published: [],
+			unpublished: []
+		}
+
+		Object.keys(collections).forEach(id => {
+			const { published, name } = collections[id]
+			if (id === match.params.id) selectedCollection = collections[id]
+			if (published) sideLists.published.push({ id, name })
+			else sideLists.unpublished.push({ id, name })
+		})
+
+		if (!collectionsCache.isFetching) loaded()
 
 		return (
 			<Container>
@@ -70,21 +73,21 @@ class Manager extends Component {
 					<h4>My Collections</h4>
 
 					<AccordionMenu header={`Published`} active>
-						{publishedColls.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
+						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
 					</AccordionMenu>
 
 					<AccordionMenu header={`Unublished`} active>
-						{unpublishedColls.map(item => <Link key={item.id} to={`/manager/${item.id}`}>{item.name}</Link>)}
+						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
 					</AccordionMenu>
 
 					<CreateButton onClick={this.createNew}><Plus src={plus} />Create New Collection</CreateButton>
 
 				</SideMenu>
 				<Body>
-					{displayEditor ?
-						<Editor collection={matchingCollection} />
-						:
+					{selectedCollection === null || selectedCollection === undefined ?
 						<NoCollection>Select a Collection to get started.</NoCollection>
+						:
+						<Editor collection={selectedCollection} />
 					}
 				</Body>
 			</Container>
@@ -93,12 +96,13 @@ class Manager extends Component {
 }
 
 const mapStateToProps = state => ({
-	collections: state.collections,
-	editMode: state.editMode
+	collectionsCache: state.collectionsCache,
+	editMode: state.editMode,
+	state
 })
 
 const mapDispatchToProps = {
-	getPrivilegedCollections,
+	getCollections,
 	load,
 	loaded,
 	adminOn,

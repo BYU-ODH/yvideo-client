@@ -1,61 +1,29 @@
-import { GET_CONTENT, GET_COLLECTIONS, GET_PRIVILEGED_COLLECTIONS } from './types'
+import { ABORT_COLLECTIONS, ERROR_COLLECTIONS, START_COLLECTIONS, UPDATE_COLLECTIONS } from 'redux/actions/types'
 
 import axios from 'axios'
 
-export const getCollections = callback => {
+const { REACT_APP_STALE_TIME, REACT_APP_YVIDEO_SERVER } = process.env
 
-	return async dispatch => {
+export const getCollections = (authorized = false) => {
+	return async (dispatch, getState) => {
 
-		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true })
-			.then(result => {
-				const { data } = result
+		const time = Date.now() - getState().collectionsCache.lastFetched
 
-				const err = `Could not load collection previews. Displaying fillers.`
+		const stale = time >= REACT_APP_STALE_TIME
 
-				if (data.length > 0)
-					dispatch({ type: GET_COLLECTIONS, payload: data })
-				else throw err
+		if (stale) {
+			dispatch({ type: START_COLLECTIONS })
 
-				typeof callback === `function` && callback(data)
-			})
-			.catch(err => console.error(err))
-	}
-}
+			const results = await axios(`${REACT_APP_YVIDEO_SERVER}/api/user/${authorized ? `privilegedCollections` : `collections`}`, { withCredentials: true })
+				.catch(err => dispatch({ type: ERROR_COLLECTIONS, error: err }))
 
-export const getPrivilegedCollections = callback => {
+			const data = results.data.reduce((map, item) => {
+				map[item.id] = item
+				return map
+			}, {})
 
-	return async dispatch => {
+			dispatch({ type: UPDATE_COLLECTIONS, payload: data })
 
-		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/privilegedCollections`, { withCredentials: true })
-			.then(result => {
-				const { data } = result
-
-				const err = `Could not load collection previews. Displaying fillers.`
-
-				if (data.length > 0)
-					dispatch({ type: GET_PRIVILEGED_COLLECTIONS, payload: data })
-				else throw err
-
-				typeof callback === `function` && callback(data)
-			})
-			.catch(err => console.error(err))
-	}
-}
-
-export const getContent = collection => {
-
-	return async dispatch => {
-
-		const finalResult = {}
-
-		await collection.content.forEach(async item => {
-			await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${item.id}`, { withCredentials: true })
-				.then(response => {
-					finalResult[item.id] = response.data
-				})
-				.catch(err => console.error(err))
-		})
-
-		dispatch({ type: GET_CONTENT, payload: finalResult })
+		} else dispatch({ type: ABORT_COLLECTIONS })
 	}
 }

@@ -1,12 +1,15 @@
 import styled from 'styled-components'
 
+import radioChecked from 'assets/radio-checked.svg'
+import radioUnchecked from 'assets/radio-unchecked.svg'
+
 export const Wrapper = styled.div`
-	height: ${props => props.active ? `20rem` : `0`};
+	height: ${props => props.active ? `30rem` : `0`};
 	transition: all .5s ease-in-out;
 	overflow: hidden;
 `
 
-export const Container = styled.div`
+export const InnerContainer = styled.div`
 	padding: 2rem 0;
 
 	display: grid;
@@ -27,6 +30,10 @@ export const Column = styled.div`
 		grid-gap: 1rem;
 		align-items: center;
 	}
+
+	& textarea {
+		width: 100%;
+	}
 `
 
 export const Setting = styled.div`
@@ -41,4 +48,30 @@ export const Setting = styled.div`
 		width: inherit;
 		display: block;
 	}
+`
+
+export const RatioList = styled.div`
+	display: flex;
+
+	& > div {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+
+		& > label {
+			margin: .5rem 0;
+			display: flex;
+			cursor: pointer;
+		}
+	}
+`
+
+export const RadioButton = styled.div`
+	width: 1.5rem;
+	height: 1.5rem;
+	background: url(${props => props.checked ? radioChecked : radioUnchecked }) center no-repeat;
+	background-size: contain;
+	margin-right: 1rem;
+	position: relative;
+	top: -.2rem;
 `
