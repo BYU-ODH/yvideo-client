@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-
-import logo from './../../assets/hexborder.svg'
+import logo from 'assets/hexborder.svg'
 
 const
 	rotate = keyframes`

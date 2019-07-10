@@ -6,6 +6,9 @@ import { getUser, getUserInfo, load, loaded, getAuthCookie } from 'redux/actions
 
 import Load from 'components/load/Load'
 
+import Modal from 'components/modal/Modal'
+import CreateCollection from 'components/forms/CreateCollection'
+
 import HeaderRoute from 'routes/HeaderRoute'
 
 import Login from 'routes/Login'
@@ -37,7 +40,7 @@ class App extends Component {
 	}
 
 	render = () => {
-		const { authorized, loading, done } = this.props
+		const { authorized, loading, done, modalActive } = this.props
 		return (
 			<MainBody>
 				<Router>
@@ -65,17 +68,14 @@ class App extends Component {
 				</Router>
 
 				{loading && <Load loading={loading} done={done} />}
+				{modalActive && <Modal active={modalActive} component={CreateCollection} />}
 			</MainBody>
 		)
 	}
 }
 
-const mapStateToProps = state => ({
-	authorized: state.authorized,
-	loading: state.loading,
-	done: state.done,
-	userInfo: state.userInfo
-})
+const mapStateToProps = ({ authorized, loading, done, userInfo, modalActive }) =>
+	({ authorized, loading, done, userInfo, modalActive })
 
 const mapDispatchToProps = {
 	getUser,

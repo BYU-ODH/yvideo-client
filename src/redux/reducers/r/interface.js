@@ -8,7 +8,8 @@ import {
 	READY,
 	ADMIN_ON,
 	ADMIN_OFF,
-	TOGGLE_EDIT
+	TOGGLE_EDIT,
+	TOGGLE_MODAL
 } from 'redux/actions/types'
 
 const initState = {
@@ -17,7 +18,8 @@ const initState = {
 	done: false,
 	lost: false,
 	onAdmin: false,
-	editMode: false
+	editMode: false,
+	modalActive: false
 }
 
 export const menuReducer = (state = initState.menuActive, { type }) => {
@@ -81,7 +83,12 @@ export const onAdminReducer = (state = initState.onAdmin, { type }) => {
 	}
 }
 
-export const editReducer = (state = initState.editMode, {type}) => {
-	if (type === TOGGLE_EDIT) return !this.state
+export const editReducer = (state = initState.editMode, { type }) => {
+	if (type === TOGGLE_EDIT) return !state
+	return state
+}
+
+export const modalReducer = (state = initState.modalActive, { type }) => {
+	if (type === TOGGLE_MODAL) return !state
 	return state
 }

@@ -8,7 +8,8 @@ import {
 	FOUND,
 	ADMIN_ON,
 	ADMIN_OFF,
-	TOGGLE_EDIT
+	TOGGLE_EDIT,
+	TOGGLE_MODAL
 } from './types'
 
 export const toggleMenu = () => {
@@ -48,4 +49,8 @@ export const adminOff = () => {
 
 export const toggleEdit = () => {
 	return { type: TOGGLE_EDIT }
+}
+
+export const toggleModal = () => {
+	return { type: TOGGLE_MODAL }
 }

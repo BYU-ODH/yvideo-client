@@ -33,5 +33,6 @@ export {
 	FOUND,
 	ADMIN_ON,
 	ADMIN_OFF,
-	TOGGLE_EDIT
+	TOGGLE_EDIT,
+	TOGGLE_MODAL
 } from './interface/types'

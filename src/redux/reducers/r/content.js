@@ -8,7 +8,8 @@ import {
 const initState = {
 	content: {},
 	error: null,
-	isFetching: false
+	isFetching: false,
+	lastFetched: 0
 }
 
 export const contentReducer = (state = initState, { type, payload, error }) => {
@@ -35,7 +36,8 @@ export const contentReducer = (state = initState, { type, payload, error }) => {
 					...payload
 				},
 				error: null,
-				isFetching: false
+				isFetching: false,
+				lastFetched: Date.now()
 			}
 
 		case ABORT_CONTENT:

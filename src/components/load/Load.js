@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { Component, memo } from 'react'
 import ReactDOM from 'react-dom'
 
 import styled from 'styled-components'
@@ -25,7 +25,7 @@ const Container = styled.div`
 
 const load = document.getElementById(`load`)
 
-class Load extends React.Component {
+class Load extends Component {
 	constructor(props) {
 		super(props)
 		this.el = document.createElement(`div`)

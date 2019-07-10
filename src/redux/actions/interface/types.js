@@ -13,3 +13,4 @@ export const ADMIN_ON = `ADMIN_ON`
 export const ADMIN_OFF = `ADMIN_OFF`
 
 export const TOGGLE_EDIT = `TOGGLE_EDIT`
+export const TOGGLE_MODAL = `TOGGLE_MODAL`

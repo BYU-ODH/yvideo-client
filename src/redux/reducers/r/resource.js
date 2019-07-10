@@ -28,7 +28,7 @@ export const resourceReducer = (state = initState, { type, payload, error }) => 
 				...state,
 				resources: {
 					...state.resources,
-					[payload.resourceId]: payload
+					[payload.id]: payload
 				},
 				error: null,
 				isFetching: false,

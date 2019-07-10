@@ -4,14 +4,14 @@ import axios from 'axios'
 
 const { REACT_APP_STALE_TIME, REACT_APP_YVIDEO_SERVER } = process.env
 
-export const getCollections = (authorized = false) => {
+export const getCollections = (authorized = false, force = false) => {
 	return async (dispatch, getState) => {
 
 		const time = Date.now() - getState().collectionsCache.lastFetched
 
 		const stale = time >= REACT_APP_STALE_TIME
 
-		if (stale) {
+		if (stale || force) {
 			dispatch({ type: START_COLLECTIONS })
 
 			const results = await axios(`${REACT_APP_YVIDEO_SERVER}/api/user/${authorized ? `privilegedCollections` : `collections`}`, { withCredentials: true })

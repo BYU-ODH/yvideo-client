@@ -13,5 +13,6 @@ export {
 	found,
 	adminOn,
 	adminOff,
-	toggleEdit
+	toggleEdit,
+	toggleModal
 } from './interface'

@@ -7,15 +7,17 @@ import { collectionsReducer } from './r/collection'
 import { resourceReducer } from './r/resource'
 import { contentReducer } from './r/content'
 
-import { menuReducer, loadReducer, doneReducer, lostReducer, onAdminReducer, editReducer } from './r/interface'
+import { menuReducer, loadReducer, doneReducer, lostReducer, onAdminReducer, editReducer, modalReducer } from './r/interface'
 
 const rootReducer = combineReducers({
 	authorized: authReducer,
 
 	collectionsCache: collectionsReducer,
 	contentCache: contentReducer,
+	resourceCache: resourceReducer,
 
 	menuActive: menuReducer,
+	modalActive: modalReducer,
 	loading: loadReducer,
 	done: doneReducer,
 	lost: lostReducer,
@@ -25,9 +27,7 @@ const rootReducer = combineReducers({
 	userInfo: userInfoReducer,
 	recent: recentReducer,
 
-	editMode: editReducer,
-
-	resourceCache: resourceReducer
+	editMode: editReducer
 })
 
 export default rootReducer

@@ -41,6 +41,7 @@ export const Setting = styled.div`
 	grid-template-columns: 1fr 1.8rem;
 	grid-gap: 1rem;
 	justify-content: space-between;
+	margin-bottom: .5rem;
 
 	& > p {
 		text-overflow: ellipsis;

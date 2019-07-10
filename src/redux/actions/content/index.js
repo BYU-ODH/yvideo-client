@@ -2,7 +2,7 @@ import { ABORT_CONTENT, ERROR_CONTENT, START_CONTENT, UPDATE_CONTENT } from 'red
 
 import axios from 'axios'
 
-const { REACT_APP_YVIDEO_SERVER } = process.env
+const { REACT_APP_STALE_TIME, REACT_APP_YVIDEO_SERVER } = process.env
 
 export const getContent = (contentIds = []) => {
 	return async (dispatch, getState) => {
@@ -10,7 +10,9 @@ export const getContent = (contentIds = []) => {
 		const cachedIds = Object.keys(content).map(id => parseInt(id))
 		const notCached = contentIds.filter(id => !cachedIds.includes(id))
 
-		if (notCached.length > 0) {
+		const stale = Date.now() - getState().resourceCache.lastFetched >= REACT_APP_STALE_TIME
+
+		if (stale || notCached.length > 0) {
 			dispatch({ type: START_CONTENT })
 
 			const results = await Promise.all(notCached.map(id => axios(`${REACT_APP_YVIDEO_SERVER}/api/content/${id}`, { withCredentials: true })

@@ -1,26 +1,11 @@
+import plus from 'assets/collections/plus.svg'
+import AccordionMenu from 'components/accordionMenu/AccordionMenu'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
-import { load, loaded, adminOn, adminOff, getCollections } from 'redux/actions'
-
-import { withRouter } from 'react-router-dom'
-
+import { Link, withRouter } from 'react-router-dom'
+import { adminOff, adminOn, getCollections, load, loaded, toggleModal } from 'redux/actions'
 import Editor from './editor/Editor'
-
-import { Link } from 'react-router-dom'
-
-import AccordionMenu from 'components/accordionMenu/AccordionMenu'
-
-import {
-	Container,
-	Body,
-	SideMenu,
-	CreateButton,
-	Plus,
-	NoCollection
-} from './styles'
-
-import plus from 'assets/collections/plus.svg'
+import { Body, Container, CreateButton, NoCollection, Plus, SideMenu } from './styles'
 
 class Manager extends Component {
 
@@ -41,8 +26,8 @@ class Manager extends Component {
 		adminOff()
 	}
 
-	createNew = () => {
-		alert(`I'm not ready yet!`)
+	createNew = async () => {
+		this.props.toggleModal()
 	}
 
 	render() {
@@ -102,6 +87,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+	toggleModal,
 	getCollections,
 	load,
 	loaded,

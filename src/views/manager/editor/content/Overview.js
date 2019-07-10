@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
+import { getResources } from 'redux/actions'
 
 import ContentSettings from './contentSettings/ContentSettings'
 
@@ -69,17 +72,36 @@ class Overview extends Component {
 	}
 
 	componentDidUpdate = (prevProps) => {
-		const { content } = this.props
-		if (content !== prevProps.content && content !== this.state.content && content !== undefined)
-			this.setState({ content })
-
+		const { content, resourceCache } = this.props
+		if (content !== prevProps.content && content !== this.state.content && content !== undefined) {
+			this.setState({
+				content: {
+					...content,
+					resource: resourceCache.resources[content.resourceId]
+				},
+				editing: false
+			})
+		}
 	}
 
 	handlers = {
 		handleEdit: e => {
 			e.preventDefault()
+
+			const { content, editing } = this.state
+
 			this.setState({
-				editing: !this.state.editing
+				editing: !editing
+			})
+
+			this.props.getResources(content.resourceId, resource => {
+				this.setState({
+					content: {
+						...content,
+						description: resource.description,
+						resource
+					}
+				})
 			})
 		},
 		handleNameChange: e => {
@@ -103,10 +125,15 @@ class Overview extends Component {
 			})
 		},
 		handleDescription: e => {
+			const { content } = this.state
 			this.setState({
 				content: {
-					...this.state.content,
-					description: e.target.value
+					...content,
+					description: e.target.value,
+					resource: {
+						...content.resource,
+						description: e.target.value
+					}
 				}
 			})
 		},
@@ -146,6 +173,8 @@ class Overview extends Component {
 			showAnnotations
 		} = content.settings
 
+		const { isFetching } = this.props.resourceCache
+
 		return (
 			<Container>
 				<Preview>
@@ -164,9 +193,9 @@ class Overview extends Component {
 						</ul>
 						{
 							editing ?
-							<PublishButton published={content.published} onClick={togglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
-							:
-							<em>{content.published ? `Published` : `Unpublished`}</em>
+								<PublishButton published={content.published} onClick={togglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
+								:
+								<em>{content.published ? `Published` : `Unpublished`}</em>
 						}
 
 					</div>
@@ -174,10 +203,18 @@ class Overview extends Component {
 						<EditButton onClick={handleEdit}>{editing ? `Save` : `Edit`}</EditButton>
 					</div>
 				</Preview>
-				<ContentSettings handlers={this.handlers} content={this.state.content} editing={editing} />
+				{isFetching || <ContentSettings handlers={this.handlers} content={this.state.content} editing={editing} />}
 			</Container>
 		)
 	}
 }
 
-export default Overview
+const mapStateToProps = state => ({
+	resourceCache: state.resourceCache
+})
+
+const mapDispatchToProps = {
+	getResources
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Overview)

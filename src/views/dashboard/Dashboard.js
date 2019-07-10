@@ -47,10 +47,10 @@ export class Dashboard extends Component {
 
 	render() {
 		const { recent, collectionsCache } = this.props
-		const { collections = [] } = collectionsCache
+		const { collections = {} } = collectionsCache
 
 		const modRec = recent.slice(0, 4)
-		const modColl = collections.slice(0, 4)
+		const modColl = Object.keys(collections).slice(0, 4) || null
 
 		return (
 			<Container>
@@ -70,8 +70,8 @@ export class Dashboard extends Component {
 				</Content>
 				<Content>
 					{
-						modColl !== undefined && modColl.length !== 0 ?
-							modColl.map(item => <PreviewCollection key={item.id} data={item} />)
+						modColl !== null && modColl.length > 0 ?
+							modColl.map(id => <PreviewCollection key={id} data={collections[id]} />)
 							:
 							<PreviewEmpty>no collections :(</PreviewEmpty>
 					}
