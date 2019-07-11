@@ -19,7 +19,10 @@ const initState = {
 	lost: false,
 	onAdmin: false,
 	editMode: false,
-	modalActive: false
+	modal: {
+		active: false,
+		component: null
+	}
 }
 
 export const menuReducer = (state = initState.menuActive, { type }) => {
@@ -88,7 +91,12 @@ export const editReducer = (state = initState.editMode, { type }) => {
 	return state
 }
 
-export const modalReducer = (state = initState.modalActive, { type }) => {
-	if (type === TOGGLE_MODAL) return !state
+export const modalReducer = (state = initState.modal, { type, payload = null }) => {
+	if (type === TOGGLE_MODAL) {
+		return {
+			active: !state.active,
+			component: payload
+		}
+	}
 	return state
 }

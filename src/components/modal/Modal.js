@@ -47,22 +47,20 @@ class Modal extends Component {
 		modal.removeChild(this.el)
 	}
 
-	toggleModal = () => {
-		this.props.toggleModal()
-	}
-
 	render() {
-		const Component = this.props.component
+		const Component = this.props.modal.component || null
 		return ReactDOM.createPortal(<Container>
 			<div>
-				<Component toggleModal={this.toggleModal} />
+				<Component toggleModal={this.props.toggleModal} />
 			</div>
 		</Container>,
 			this.el)
 	}
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = ({ modal }) => ({
+	modal
+})
 
 const mapDispatchToProps = {
 	toggleModal

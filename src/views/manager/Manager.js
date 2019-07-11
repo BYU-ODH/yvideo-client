@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { adminOff, adminOn, getCollections, load, loaded, toggleModal } from 'redux/actions'
 import Editor from './editor/Editor'
+import CreateCollection from 'components/forms/CreateCollection'
 import { Body, Container, CreateButton, NoCollection, Plus, SideMenu } from './styles'
 
 class Manager extends Component {
@@ -27,7 +28,7 @@ class Manager extends Component {
 	}
 
 	createNew = async () => {
-		this.props.toggleModal()
+		this.props.toggleModal(CreateCollection)
 	}
 
 	render() {
@@ -61,7 +62,7 @@ class Manager extends Component {
 						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
 					</AccordionMenu>
 
-					<AccordionMenu header={`Unublished`} active>
+					<AccordionMenu header={`Unpublished`} active>
 						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
 					</AccordionMenu>
 

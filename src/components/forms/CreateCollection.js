@@ -52,7 +52,7 @@ export class CreateCollection extends Component {
 			return data
 		}, {})
 
-		const newCollection = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/create`, {
+		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/create`, {
 			method: `POST`,
 			data: JSON.stringify(data),
 			withCredentials: true,
@@ -60,8 +60,6 @@ export class CreateCollection extends Component {
 				'Content-Type': `application/json`
 			}
 		}).catch(err => console.error(err))
-
-		console.log(newCollection)
 	}
 
 	render() {
@@ -70,8 +68,8 @@ export class CreateCollection extends Component {
 				<h2>Create New Collection</h2>
 				<input type={`text`} name={`name`} value={this.state.name} onChange={this.handleNameChange} placeholder={`Collection name...`} />
 				<div>
-					<Button onClick={this.props.toggleModal}>Cancel</Button>
-					<Button type={`submit`} color={`#0582CA`}>Create</Button>
+					<Button type='button' onClick={this.props.toggleModal}>Cancel</Button>
+					<Button type='submit' color={`#0582CA`}>Create</Button>
 				</div>
 			</Container>
 		)

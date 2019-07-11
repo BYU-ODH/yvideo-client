@@ -51,6 +51,6 @@ export const toggleEdit = () => {
 	return { type: TOGGLE_EDIT }
 }
 
-export const toggleModal = () => {
-	return { type: TOGGLE_MODAL }
+export const toggleModal = payload => {
+	return { type: TOGGLE_MODAL, payload }
 }

@@ -17,7 +17,9 @@ const rootReducer = combineReducers({
 	resourceCache: resourceReducer,
 
 	menuActive: menuReducer,
-	modalActive: modalReducer,
+
+	modal: modalReducer,
+
 	loading: loadReducer,
 	done: doneReducer,
 	lost: lostReducer,

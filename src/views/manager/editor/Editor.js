@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
 
-import { getContent } from 'redux/actions'
+import { getContent, toggleModal } from 'redux/actions'
 
 import Overview from './content/Overview'
 import Permissions from './permissions/Permissions'
+
+import CreateContent from 'components/forms/CreateContent'
 
 import {
 	Container,
@@ -58,9 +60,8 @@ class Editor extends Component {
 		alert(`This isn't ready yet!`)
 	}
 
-	createContent = e => {
-		e.preventDefault()
-		alert(`This isn't ready yet!`)
+	createContent = () => {
+		this.props.toggleModal(CreateContent)
 	}
 
 	archive = e => {
@@ -116,7 +117,8 @@ const mapStateToProps =
 	})
 
 const mapDispatchToProps = {
-	getContent
+	getContent,
+	toggleModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor)
