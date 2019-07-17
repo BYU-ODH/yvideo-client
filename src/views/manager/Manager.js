@@ -11,8 +11,9 @@ import { Body, Container, CreateButton, NoCollection, Plus, SideMenu } from './s
 class Manager extends Component {
 
 	componentDidMount = () => {
-		const { getCollections, adminOn } = this.props
-		getCollections()
+		const { getCollections, adminOn, user = { permissions: [] } } = this.props
+		const privileged = user.permissions.includes(`admin`)
+		getCollections(privileged)
 		adminOn()
 	}
 
@@ -28,7 +29,7 @@ class Manager extends Component {
 	}
 
 	createNew = async () => {
-		this.props.toggleModal(CreateCollection)
+		this.props.toggleModal({ component: CreateCollection })
 	}
 
 	render() {
@@ -81,11 +82,7 @@ class Manager extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	collectionsCache: state.collectionsCache,
-	editMode: state.editMode,
-	state
-})
+const mapStateToProps = ({ collectionsCache, editMode, user }) => ({ collectionsCache, editMode, user })
 
 const mapDispatchToProps = {
 	toggleModal,

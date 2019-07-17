@@ -1,22 +1,50 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
+import { getCollectionPermissions } from 'redux/actions'
 
 import PermissionTable from './permissionTable/PermissionTable'
 
-const Permissions = props => {
-	return (
-		<div>
+class Permissions extends Component {
 
-			<PermissionTable header={`Courses`} placeholder={`Enter courseID`} data={courses} />
+	componentDidMount = () => {
+		const { collection, getCollectionPermissions } = this.props
+		if (collection.id !== null) getCollectionPermissions(this.props.collection.id)
+	}
 
-			<PermissionTable header={`TA / Faculty`} placeholder={`Enter netID or name`} data={tafaculty} />
+	componentDidUpdate = prevProps => {
+		const { collection, getCollectionPermissions } = this.props
 
-			<PermissionTable header={`Audit Exceptions`} placeholder={`Enter netID or name`} data={auditors} />
+		if (collection !== prevProps.collection && collection !== undefined)
+			getCollectionPermissions(this.props.collection.id)
 
-		</div>
-	)
+	}
+
+	render() {
+
+		return (
+			<div>
+
+				<PermissionTable header={`Courses`} placeholder={`Enter courseID`} data={courses} />
+
+				<PermissionTable header={`TA / Faculty`} placeholder={`Enter netID or name`} data={tafaculty} />
+
+				<PermissionTable header={`Audit Exceptions`} placeholder={`Enter netID or name`} data={auditors} />
+
+			</div>
+		)
+	}
 }
 
-export default Permissions
+const mapStateToProps = state => ({
+	state
+})
+
+const mapDispatchToProps = {
+	getCollectionPermissions
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Permissions)
 
 const courses = [
 	{

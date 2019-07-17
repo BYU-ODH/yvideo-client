@@ -3,13 +3,19 @@ import { getInitials } from '../../js/util'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { toggleMenu } from './../../redux/actions'
+import { toggleMenu, toggleModal } from 'redux/actions'
+
+import CreateCollection from 'components/forms/CreateCollection'
 
 import LogoutButton from './LogoutButton'
 
 import { MenuStyled, LinkStyled, Header, UserPic } from './styles'
 
 class Menu extends Component {
+
+	createCollection = () => {
+		this.props.toggleModal({ component: CreateCollection })
+	}
 
 	render() {
 		const { user, menuActive, toggleMenu, isProf, isAdmin } = this.props
@@ -31,24 +37,24 @@ class Menu extends Component {
 
 				{
 					(isProf || isAdmin) &&
-					<React.Fragment>
+					<>
 						<Header>Collections</Header>
 						<hr />
 						<LinkStyled to='/collections'>View Collections</LinkStyled>
 						<LinkStyled to='/manager'>Manage Collections</LinkStyled>
-						<LinkStyled to='/manager/create'>Create New Collection</LinkStyled>
-					</React.Fragment>
+						<LinkStyled to='/manager' onClick={this.createCollection}>Create New Collection</LinkStyled>
+					</>
 				}
 
 				{
 					isAdmin &&
-					<React.Fragment>
+					<>
 						<Header>Admin</Header>
 						<hr />
 						<LinkStyled to='/admin/users'>Users</LinkStyled>
 						<LinkStyled to='/admin/collections'>Collections</LinkStyled>
 						<LinkStyled to='/admin/content'>Content</LinkStyled>
-					</React.Fragment>
+					</>
 				}
 
 			</MenuStyled >
@@ -67,7 +73,8 @@ const mapStateToProps = state => {
 }
 
 const actionCreators = {
-	toggleMenu
+	toggleMenu,
+	toggleModal
 }
 
 export default withRouter(connect(mapStateToProps, actionCreators)(Menu))

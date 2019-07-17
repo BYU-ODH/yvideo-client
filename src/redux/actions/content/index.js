@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const { REACT_APP_STALE_TIME, REACT_APP_YVIDEO_SERVER } = process.env
 
-export const getContent = (contentIds = []) => {
+export const getContent = (contentIds = [], force = false) => {
 	return async (dispatch, getState) => {
 		const { content } = getState().contentCache
 		const cachedIds = Object.keys(content).map(id => parseInt(id))
@@ -12,7 +12,7 @@ export const getContent = (contentIds = []) => {
 
 		const stale = Date.now() - getState().resourceCache.lastFetched >= REACT_APP_STALE_TIME
 
-		if (stale || notCached.length > 0) {
+		if (stale || notCached.length > 0 || force) {
 			dispatch({ type: START_CONTENT })
 
 			const results = await Promise.all(notCached.map(id => axios(`${REACT_APP_YVIDEO_SERVER}/api/content/${id}`, { withCredentials: true })

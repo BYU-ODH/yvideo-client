@@ -21,7 +21,8 @@ const initState = {
 	editMode: false,
 	modal: {
 		active: false,
-		component: null
+		component: null,
+		collectionId: -1
 	}
 }
 
@@ -91,11 +92,12 @@ export const editReducer = (state = initState.editMode, { type }) => {
 	return state
 }
 
-export const modalReducer = (state = initState.modal, { type, payload = null }) => {
+export const modalReducer = (state = initState.modal, { type, payload = { component: null, collectionId: -1 } }) => {
 	if (type === TOGGLE_MODAL) {
 		return {
 			active: !state.active,
-			component: payload
+			component: payload.component,
+			collectionId: payload.collectionId
 		}
 	}
 	return state

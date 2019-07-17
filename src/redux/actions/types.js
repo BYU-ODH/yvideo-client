@@ -10,6 +10,13 @@ export {
 } from './collection/types'
 
 export {
+	ABORT_PERMISSIONS,
+	ERROR_PERMISSIONS,
+	START_PERMISSIONS,
+	UPDATE_PERMISSIONS
+} from './permissions/types'
+
+export {
 	ABORT_CONTENT,
 	ERROR_CONTENT,
 	START_CONTENT,

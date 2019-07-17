@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import { userReducer, userInfoReducer, recentReducer } from './r/user'
 import authReducer from './r/auth'
 
+import { permissionsReducer } from './r/permissions'
 import { collectionsReducer } from './r/collection'
 import { resourceReducer } from './r/resource'
 import { contentReducer } from './r/content'
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
 	authorized: authReducer,
 
 	collectionsCache: collectionsReducer,
+	permissionsCache: permissionsReducer,
 	contentCache: contentReducer,
 	resourceCache: resourceReducer,
 

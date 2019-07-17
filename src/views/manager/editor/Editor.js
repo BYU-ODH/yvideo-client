@@ -27,8 +27,9 @@ class Editor extends Component {
 		super(props)
 
 		this.state = {
-			isContent: true,
+			isContent: false,
 			collection: {
+				id: null,
 				content: []
 			}
 		}
@@ -61,7 +62,10 @@ class Editor extends Component {
 	}
 
 	createContent = () => {
-		this.props.toggleModal(CreateContent)
+		this.props.toggleModal({
+			component: CreateContent,
+			collectionId: this.props.collection.id
+		})
 	}
 
 	archive = e => {
@@ -99,7 +103,7 @@ class Editor extends Component {
 								})
 								: null
 							:
-							<Permissions />
+							<Permissions collection={collection} />
 					}
 					{isContent &&
 						<NewContent onClick={this.createContent}><Icon src={plus} /></NewContent>
@@ -111,10 +115,7 @@ class Editor extends Component {
 
 }
 
-const mapStateToProps =
-	({ contentCache }) => ({
-		contentCache
-	})
+const mapStateToProps = ({ contentCache }) => ({ contentCache })
 
 const mapDispatchToProps = {
 	getContent,

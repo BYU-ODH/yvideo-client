@@ -20,14 +20,14 @@ export class Collections extends Component {
 	}
 
 	componentDidMount = async () => {
-		const { getCollections, loaded } = this.props
+		const { getCollections, loaded, isAdmin } = this.props
 
 		this.setState({
 			block: localStorage.getItem(`blockmode`) === `true`
 		})
 
 		try {
-			await getCollections()
+			await getCollections(isAdmin)
 		} catch (error) {
 			console.log(error)
 		}
@@ -49,8 +49,10 @@ export class Collections extends Component {
 	}
 
 	render() {
-		const { isProf, isAdmin, collections } = this.props
+		const { isProf, isAdmin, collectionsCache } = this.props
 		const { block } = this.state
+
+		const collections = Object.keys(collectionsCache.collections).map(key => collectionsCache.collections[key])
 
 		const filteredCollections = collections.filter(collection => !collection.archived)
 
@@ -86,7 +88,7 @@ export class Collections extends Component {
 }
 
 const mapStateToProps = state => ({
-	collections: state.collections,
+	collectionsCache: state.collectionsCache,
 	isProf: state.userInfo.roles.includes(`professor`),
 	isAdmin: state.userInfo.roles.includes(`admin`),
 	isStudent: state.userInfo.roles.includes(`student`)

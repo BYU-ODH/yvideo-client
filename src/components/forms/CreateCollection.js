@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { toggleModal, getCollections } from 'redux/actions'
+
 import styled from 'styled-components'
 
 import axios from 'axios'
@@ -45,21 +47,25 @@ export class CreateCollection extends Component {
 	}
 
 	handleSubmit = async e => {
-		e.preventDefault()
 
-		const data = [].reduce.call(e.target.elements, (data, element) => {
-			if (element.name !== ``) data[element.name] = element.value
-			return data
-		}, {})
+		const { toggleModal, getCollections, user } = this.props
+
+		e.preventDefault()
 
 		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/create`, {
 			method: `POST`,
-			data: JSON.stringify(data),
+			data: JSON.stringify(this.state),
 			withCredentials: true,
 			headers: {
 				'Content-Type': `application/json`
 			}
 		}).catch(err => console.error(err))
+			.then(() => {
+				toggleModal()
+				const privileged = user.permissions.includes(`admin`)
+				getCollections(privileged, true)
+				getCollections()
+			})
 	}
 
 	render() {
@@ -76,12 +82,11 @@ export class CreateCollection extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-
-})
+const mapStateToProps = ({ user }) => ({ user })
 
 const mapDispatchToProps = {
-
+	toggleModal,
+	getCollections
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)

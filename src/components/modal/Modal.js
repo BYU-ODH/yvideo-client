@@ -48,7 +48,7 @@ class Modal extends Component {
 	}
 
 	render() {
-		const Component = this.props.modal.component || null
+		const Component = this.props.modal.component === null ? null : this.props.modal.component
 		return ReactDOM.createPortal(<Container>
 			<div>
 				<Component toggleModal={this.props.toggleModal} />

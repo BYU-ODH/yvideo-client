@@ -30,7 +30,7 @@ class Player extends Component {
 		ResourceLibrary.setBaseUrl(`https://api.ayamel.org/api/v1/`)
 	}
 
-	componentDidMount= async () => {
+	componentDidMount = async () => {
 
 		const { getCollections, getRecent, loaded } = this.props
 
@@ -94,7 +94,9 @@ class Player extends Component {
 	}
 
 	render() {
-		const { recent, collections } = this.props
+		const { recent, collectionsCache } = this.props
+
+		const collections = Object.keys(collectionsCache.collections).map(key => collectionsCache.collections[key])
 
 		const modRec = recent.slice(0, 4)
 		const modColl = collections.slice(0, 4)
@@ -109,7 +111,7 @@ class Player extends Component {
 				<Content>
 					{
 						modRec !== undefined && modRec.length !== 0 ?
-							modRec.map(item => <PreviewVideo key={item.contentId} data={item} />)
+							modRec.map((item, key) => <PreviewVideo key={key} data={item} />)
 							:
 							<PreviewEmpty>no videos :(</PreviewEmpty>
 					}
@@ -120,7 +122,7 @@ class Player extends Component {
 				<Content>
 					{
 						modColl !== undefined && modColl.length !== 0 ?
-							modColl.map(item => <PreviewCollection key={item.id} data={item} />)
+							modColl.map((item, key) => <PreviewCollection key={key} data={item} />)
 							:
 							<PreviewEmpty>no collections :(</PreviewEmpty>
 					}
@@ -130,11 +132,7 @@ class Player extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	userInfo: state.userInfo,
-	collections: state.collections,
-	recent: state.recent
-})
+const mapStateToProps = ({ userInfo, collectionsCache, recent }) => ({ userInfo, collectionsCache, recent })
 
 const mapDispatchToProps = {
 	load,
