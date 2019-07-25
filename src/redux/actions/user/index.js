@@ -1,6 +1,8 @@
 import { GET_USER, GET_USER_INFO, GET_RECENT } from './types'
 import axios from 'axios'
-import { cookies } from '../../../js/util'
+import { cookies } from 'js/util'
+
+// TODO: add functionality to ALL actions to handle 403 and 401, deleting auth cookie if any request returns that
 
 export const getUser = callback => {
 	return async dispatch => {

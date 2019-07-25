@@ -1,5 +1,5 @@
 import { LOGIN, LOGOUT } from './types'
-import { cookies } from '../../../js/util'
+import { cookies } from 'js/util'
 
 export const login = () => {
 	return async dispatch => {

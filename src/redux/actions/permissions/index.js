@@ -20,15 +20,30 @@ export const getCollectionPermissions = (collectionId, force = false) => {
 			const results = await axios(`${REACT_APP_YVIDEO_SERVER}/api/collection/${collectionId}/permissions`, { withCredentials: true })
 				.catch(err => dispatch({ type: ERROR_PERMISSIONS, error: err }))
 
-			console.log(`action creator`, results)
+			const { data = {} } = results
 
-			// const data = results.data.reduce((map, item) => {
-			// 	map[item.id] = item
-			// 	return map
-			// }, {})
-
-			// dispatch({ type: UPDATE_PERMISSIONS, payload: data })
+			dispatch({ type: UPDATE_PERMISSIONS, payload: { [collectionId]: data } })
 
 		} else dispatch({ type: ABORT_PERMISSIONS })
+	}
+}
+
+export const updateCollectionPermissions = (body, endpoint) => {
+	return async dispatch => {
+
+		dispatch({ type: START_PERMISSIONS })
+
+		const results = await axios(`${REACT_APP_YVIDEO_SERVER}${endpoint}`, {
+			method: `POST`,
+			data: JSON.stringify(body),
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`
+			}
+		}).catch(err => dispatch({ type: ERROR_PERMISSIONS, error: err }))
+
+		const { data = {} } = results
+
+		dispatch({ type: UPDATE_PERMISSIONS, payload: { [collectionId]: data } })
 	}
 }

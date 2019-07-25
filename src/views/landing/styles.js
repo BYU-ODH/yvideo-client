@@ -5,19 +5,19 @@ import RComets from 'assets/landing/CometsRight.svg'
 import HexLogo from 'assets/hexborder.svg'
 
 export const Container = styled.div`
-width: 100%;
-height: 100vh;
-display: flex;
+	width: 100%;
+	height: 100vh;
+	display: flex;
 `
 
 export const Comets = styled.div`
-	width: 50%;
+	flex: 1;
 	height: 100vh;
 	margin: 0;
 	background-color: transparent;
 
-	@media (max-width: 800px) {
-		background-size: contain;
+	@media (max-width: 780px) {
+		background-size: contain !important;
 	}
 
 	&.left{
