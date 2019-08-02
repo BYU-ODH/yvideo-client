@@ -70,10 +70,6 @@
 			"error",
 			"never"
 		],
-		"function-paren-newline": [
-			"error",
-			"never"
-		],
 		"jsx-quotes": [
 			"error",
 			"prefer-single"

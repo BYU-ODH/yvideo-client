@@ -28,12 +28,12 @@ export const getCollectionPermissions = (collectionId, force = false) => {
 	}
 }
 
-export const updateCollectionPermissions = (body, endpoint) => {
-	return async dispatch => {
+export const updateCollectionPermissions = (body, endpoint, collectionId) => {
+	return async (dispatch, getState) => {
 
 		dispatch({ type: START_PERMISSIONS })
 
-		const results = await axios(`${REACT_APP_YVIDEO_SERVER}${endpoint}`, {
+		const results = await axios(`${REACT_APP_YVIDEO_SERVER}/collection/${collectionId}/${endpoint}`, {
 			method: `POST`,
 			data: JSON.stringify(body),
 			withCredentials: true,
@@ -44,6 +44,36 @@ export const updateCollectionPermissions = (body, endpoint) => {
 
 		const { data = {} } = results
 
-		dispatch({ type: UPDATE_PERMISSIONS, payload: { [collectionId]: data } })
+		const newPermissions = getState().permissionsCache.permissions[collectionId]
+
+		switch (endpoint) {
+
+			case `linkCourses`:
+				newPermissions.courses = [...newPermissions.courses, data[0]]
+				break
+			case `addTA`:
+				newPermissions.admins = [...newPermissions.admins, data]
+				newPermissions.exceptions = [...newPermissions.exceptions, data]
+				break
+			case `addException`:
+				newPermissions.exceptions = [...newPermissions.exceptions, data]
+				break
+
+			case `unlinkCourses`:
+				newPermissions.courses = newPermissions.courses.filter(item => item.id !== body[0].id)
+				break
+			case `removeTA`:
+				newPermissions.admins = newPermissions.admins.filter(item => item.username !== body)
+				newPermissions.exceptions = newPermissions.exceptions.filter(item => item.username !== body)
+				break
+			case `removeException`:
+				newPermissions.exceptions = newPermissions.exceptions.filter(item => item.username !== body)
+				break
+
+			default:
+				break
+		}
+
+		dispatch({ type: UPDATE_PERMISSIONS, payload: { [collectionId]: newPermissions } })
 	}
 }

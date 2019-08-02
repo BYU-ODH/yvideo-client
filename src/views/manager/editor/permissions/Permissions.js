@@ -100,6 +100,7 @@ class Permissions extends Component {
 	}
 
 	addCourse = e => {
+		e.preventDefault()
 		const { department, catalog, section } = this.state
 
 		const body = { department }
@@ -107,18 +108,70 @@ class Permissions extends Component {
 		if (catalog) body.catalogNumber = catalog
 		if (section) body.sectionNumber = section
 
+		this.props.updateCollectionPermissions([body], `linkCourses`, this.props.collection.id)
+		this.setState({
+			department: `*`,
+			catalog: ``,
+			section: ``
+		})
+	}
+
+	removeCourse = e => {
 		e.preventDefault()
-		this.props.updateCollectionPermissions(body, `/api/collection/${this.props.collection.id}/linkCourses`)
+
+		const data = JSON.parse(e.target.dataset.item)
+
+		const body = {
+			id: data.id || null,
+			department: data.Department || null
+		}
+
+		if (data.Catalog) body.catalogNumber = data.Catalog
+		if (data.Section) body.sectionNumber = data.Section
+
+		if (body.department !== null && body.id !== null)
+			this.props.updateCollectionPermissions([body], `unlinkCourses`, this.props.collection.id)
+		else alert(`Error, department not found`)
 	}
 
 	addTaFaculty = e => {
 		e.preventDefault()
-		this.props.updateCollectionPermissions(this.state.tafaculty, `/api/collection/${this.props.collection.id}/addTA`)
+		this.props.updateCollectionPermissions(this.state.tafaculty, `addTA`, this.props.collection.id)
+		this.setState({
+			tafaculty: ``
+		})
+	}
+
+	removeFaculty = e => {
+		e.preventDefault()
+
+		const data = JSON.parse(e.target.dataset.item)
+		const body = data.NetID || null
+
+		if (body !== null)
+			this.props.updateCollectionPermissions(body, `removeTA`, this.props.collection.id)
+		else alert(`Error, netId not found`)
+
 	}
 
 	addException = e => {
 		e.preventDefault()
-		this.props.updateCollectionPermissions(this.state.exception, `/api/collection/${this.props.collection.id}/addException`)
+		this.props.updateCollectionPermissions(this.state.exception, `addException`, this.props.collection.id)
+		this.setState({
+			exception: ``
+		})
+	}
+
+	removeException = e => {
+		e.preventDefault()
+
+		const data = JSON.parse(e.target.dataset.item)
+		const body = data.NetID || null
+
+		if (body !== null)
+			this.props.updateCollectionPermissions(body, `removeException`, this.props.collection.id)
+		else alert(`Error, netId not found`)
+
 	}
 
 	render() {
@@ -130,13 +183,22 @@ class Permissions extends Component {
 
 		const { admins = [], courses = [], exceptions = [] } = permissions[collection.id]
 
-		const reducedCourses = courses.map(item => ({
+		const reducedCourses = courses.map(item => item !== undefined && {
+			id: item.id,
 			Department: item.department,
 			Catalog: item.catalogNumber,
 			Section: item.sectionNumber
-		}))
+		})
 
 		const reducedAdmins = admins.map(item => ({
+			id: item.id,
+			Name: item.name,
+			NetID: item.username,
+			Email: item.email
+		}))
+
+		const reducedExceptions = exceptions.map(item => ({
+			id: item.id,
 			Name: item.name,
 			NetID: item.username,
 			Email: item.email
@@ -155,13 +217,14 @@ class Permissions extends Component {
 						{departments.map((item, index) =>
 							<option value={item.code} key={index}>
 								{`${item.code} - ${item.name}`}
-							</option>)}
+							</option>
+						)}
 					</DepartmentSelect>
 					<CatalogInput type='number' min='0' onChange={this.handleCatalogChange} value={catalog} placeholder='Enter Catalog Number' disabled={disabled.catalog} />
 					<SectionInput type='number' min='0' onChange={this.handleSectionChange} value={section} placeholder='Enter Section Number' disabled={disabled.section} />
 					<AddButton type='submit' disabled={disabled.submit}>Add</AddButton>
 				</form>
-				<PermissionTable placeholder={`Enter courseID`} data={reducedCourses} />
+				<PermissionTable placeholder={`Enter courseID`} data={reducedCourses} removeFunc={this.removeCourse} />
 
 				<h4>TA / Faculty</h4>
 
@@ -169,7 +232,7 @@ class Permissions extends Component {
 					<input type='search' placeholder={`Enter netID or name`} onChange={this.handleTaFacultyChange} value={tafaculty} />
 					<AddButton type='submit' disabled={disabled.tafaculty}>Add</AddButton>
 				</Search>
-				<PermissionTable data={reducedAdmins} />
+				<PermissionTable data={reducedAdmins} removeFunc={this.removeFaculty} />
 
 				<h4>Audit Exceptions</h4>
 
@@ -177,7 +240,7 @@ class Permissions extends Component {
 					<input type='search' placeholder={`Enter netID or name`} onChange={this.handleExceptionChange} value={exception} />
 					<AddButton type='submit' disabled={disabled.exception}>Add</AddButton>
 				</Search>
-				<PermissionTable data={exceptions} />
+				<PermissionTable data={reducedExceptions} removeFunc={this.removeException} />
 
 			</Container>
 		)
