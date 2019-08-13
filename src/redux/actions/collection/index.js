@@ -27,3 +27,40 @@ export const getCollections = (authorized = false, force = false) => {
 		} else dispatch({ type: ABORT_COLLECTIONS })
 	}
 }
+
+export const updateCollectionStatus = (collectionId, action) => {
+	return async (dispatch, getState) => {
+
+		dispatch({ type: START_COLLECTIONS })
+
+		const currentState = getState().collectionsCache.collections[collectionId]
+
+		console.log(currentState)
+
+		switch (action) {
+			case `publish`:
+				currentState.published = true
+				break
+
+			case `unpublish`:
+				currentState.published = false
+				break
+
+			case `archive`:
+				currentState.archived = true
+				break
+
+			case `unarchive`:
+				currentState.published = false
+				break
+
+			default:
+				break
+		}
+
+		await axios(`${REACT_APP_YVIDEO_SERVER}/collection/${collectionId}/${action}`, { withCredentials: true })
+			.catch(err => dispatch({ type: ERROR_COLLECTIONS, error: err }))
+
+		dispatch({ type: UPDATE_COLLECTIONS, paload: { [collectionId]: currentState } })
+	}
+}

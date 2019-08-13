@@ -15,6 +15,15 @@ export const InnerContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr 2fr;
 	grid-gap: 2rem;
+
+	& .tags {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	& .tag-input {
+		width: calc(100% - 4px);
+	}
 `
 
 export const Column = styled.div`

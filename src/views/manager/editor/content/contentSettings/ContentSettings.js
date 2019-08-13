@@ -1,14 +1,25 @@
 import React, { Component } from 'react'
 
 import SwitchToggle from 'components/toggle/SwitchToggle'
+import Tag from 'components/bits/Tag'
 
 import { Wrapper, InnerContainer, Column, Setting, RatioList, RadioButton } from './styles'
 
 class ContentSettings extends Component {
 
+	state = {
+		tag: ``
+	}
+
+	changeTag = e => {
+		this.setState({
+			tag: e.target.value
+		})
+	}
+
 	render() {
 		const { handlers, content, editing } = this.props
-		const { handleToggle, handleDescription, handleRatio } = handlers
+		const { handleToggle, handleDescription, handleRatio, addTag, removeTag } = handlers
 		const {
 			allowDefinitions,
 			showCaptions,
@@ -16,8 +27,9 @@ class ContentSettings extends Component {
 			aspectRatio,
 			showWordList
 		} = content.settings
+		const { resource = {} } = content
 
-		if (content.resource !== undefined) console.log(content)
+		const { keywords = [] } = resource
 
 		return <Wrapper active={editing}>
 			<InnerContainer>
@@ -35,6 +47,16 @@ class ContentSettings extends Component {
 
 				<Column>
 					<h4>Tags</h4>
+					<div className='tags'>
+						{keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
+					</div>
+					<form onSubmit={e => {
+						e.preventDefault()
+						addTag(this.state.tag.split(/[ ,]+/))
+						this.setState({ tag: `` })
+					}}>
+						<input type='text' placeholder='Add tags...' onChange={this.changeTag} value={this.state.tag} className='tag-input' />
+					</form>
 				</Column>
 
 				<Column>

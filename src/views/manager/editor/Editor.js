@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
 
-import { getContent, toggleModal } from 'redux/actions'
+import { getContent, toggleModal, updateCollectionStatus } from 'redux/actions'
 
 import Overview from './content/Overview'
 import Permissions from './permissions/Permissions'
@@ -27,7 +27,7 @@ class Editor extends Component {
 		super(props)
 
 		this.state = {
-			isContent: false,
+			isContent: true,
 			collection: {
 				id: null,
 				content: []
@@ -42,8 +42,16 @@ class Editor extends Component {
 		this.fetchContent()
 	}
 
+	shouldComponentUpdate = nextProps => {
+		return this.props.collection.content !== nextProps.collection.content || this.props.contentCache !== nextProps.contentCache
+	}
+
 	componentDidUpdate = prevProps => {
-		if (prevProps.collection.id !== this.props.collection.id) {
+		const idChanged = prevProps.collection.id !== this.props.collection.id
+		const contentChanged = prevProps.collection.content !== this.props.collection.content
+		const cacheChanged = prevProps.collection.contentCache !== this.props.collection.contentCache
+
+		if (idChanged || contentChanged || cacheChanged) {
 			this.fetchContent()
 			this.setState({
 				collection: this.props.collection
@@ -57,8 +65,10 @@ class Editor extends Component {
 	}
 
 	togglePublish = e => {
+		const { updateCollectionStatus, collection } = this.props
 		e.preventDefault()
-		alert(`This isn't ready yet!`)
+		updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
+		this.fetchContent()
 	}
 
 	createContent = () => {
@@ -69,8 +79,10 @@ class Editor extends Component {
 	}
 
 	archive = e => {
+		const { updateCollectionStatus, collection } = this.props
 		e.preventDefault()
-		alert(`This isn't ready yet!`)
+		updateCollectionStatus(collection.id, `archive`)
+		this.fetchContent()
 	}
 
 	render() {
@@ -119,7 +131,8 @@ const mapStateToProps = ({ contentCache }) => ({ contentCache })
 
 const mapDispatchToProps = {
 	getContent,
-	toggleModal
+	toggleModal,
+	updateCollectionStatus
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor)

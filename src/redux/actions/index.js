@@ -2,9 +2,9 @@ export { getUser, getUserInfo, getRecent } from './user'
 export { login, logout, getAuthCookie } from './auth'
 
 export { getCollectionPermissions, updateCollectionPermissions } from './permissions'
-export { getCollections } from './collection'
-export { getResources } from './resource'
-export { getContent } from './content'
+export { getCollections, updateCollectionStatus } from './collection'
+export { getContent, updateContent } from './content'
+export { getResources, addResource } from './resource'
 
 export {
 	toggleMenu,

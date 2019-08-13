@@ -29,3 +29,70 @@ export const getContent = (contentIds = [], force = false) => {
 		} else dispatch({ type: ABORT_CONTENT })
 	}
 }
+
+export const updateContent = content => {
+	return async (dispatch) => {
+
+		const { id } = content
+
+		const {
+			title,
+			description,
+			keywords
+		} = content.resource
+
+		const {
+			captionTrack,
+			annotationDocument,
+			targetLanguages,
+			aspectRatio,
+			showCaptions,
+			showAnnotations,
+			allowDefinitions,
+			showTranscripts,
+			showWordList
+		} = content.settings
+
+		const settings = {
+			captionTrack,
+			annotationDocument,
+			targetLanguages,
+			aspectRatio,
+			showCaptions,
+			showAnnotations,
+			allowDefinitions,
+			showTranscripts,
+			showWordList
+		}
+
+		const metadata = {
+			title,
+			description,
+			keywords
+		}
+
+		const settingsResult = await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
+			method: `POST`,
+			data: JSON.stringify(settings),
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`
+			}
+		})
+			.catch(err => console.error(err))
+
+		const metaResult = await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
+			method: `POST`,
+			data: JSON.stringify(metadata),
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`
+			}
+		})
+			.catch(err => console.error(err))
+
+		console.log(`settings`, settingsResult)
+		console.log(`meta`, metaResult)
+
+	}
+}

@@ -41,13 +41,15 @@ class Manager extends Component {
 
 		const sideLists = {
 			published: [],
-			unpublished: []
+			unpublished: [],
+			archived: []
 		}
 
 		Object.keys(collections).forEach(id => {
-			const { published, name } = collections[id]
+			const { archived, published, name } = collections[id]
 			if (id === match.params.id) selectedCollection = collections[id]
-			if (published) sideLists.published.push({ id, name })
+			if (archived) sideLists.archived.push({ id, name })
+			else if (published) sideLists.published.push({ id, name })
 			else sideLists.unpublished.push({ id, name })
 		})
 
@@ -66,6 +68,12 @@ class Manager extends Component {
 					<AccordionMenu header={`Unpublished`} active>
 						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
 					</AccordionMenu>
+
+					{
+						this.props.user.permissions.includes(`admin`) && <AccordionMenu header={`Archived`}>
+							{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
+						</AccordionMenu>
+					}
 
 					<CreateButton onClick={this.createNew}><Plus src={plus} />Create New Collection</CreateButton>
 

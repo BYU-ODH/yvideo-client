@@ -34,3 +34,10 @@ export const getResources = (resourceId = null, callback = () => { }) => {
 		} else dispatch({ type: ABORT_RESOURCES })
 	}
 }
+
+export const addResource = (resource, callback = () => { }) => {
+	return async dispatch => {
+		dispatch({ type: UPDATE_RESOURCES, payload: resource })
+		callback(resource)
+	}
+}

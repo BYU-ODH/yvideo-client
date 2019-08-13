@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { getResources } from 'redux/actions'
+import { getResources, updateContent } from 'redux/actions'
 
 import ContentSettings from './contentSettings/ContentSettings'
 
@@ -39,6 +39,9 @@ class Overview extends Component {
 				resourceId: ``,
 				thumbnail: ``,
 				views: 0,
+				resource: {
+					keywords: []
+				},
 				settings: {
 					allowDefinitions: false,
 					annotationDocument: [],
@@ -90,25 +93,41 @@ class Overview extends Component {
 
 			const { content, editing } = this.state
 
+			if (editing) this.props.updateContent(content)
+			else {
+				this.props.getResources(content.resourceId, resource => {
+
+					const { keywords } = resource
+
+					const keywordsArr = keywords === `` ? [] : keywords.split(/[ ,]+/)
+
+					this.setState({
+						content: {
+							...content,
+							description: resource.description,
+							resource: {
+								...resource,
+								keywords: keywordsArr
+							}
+						}
+					})
+				})
+			}
+
 			this.setState({
 				editing: !editing
 			})
 
-			this.props.getResources(content.resourceId, resource => {
-				this.setState({
-					content: {
-						...content,
-						description: resource.description,
-						resource
-					}
-				})
-			})
 		},
 		handleNameChange: e => {
 			this.setState({
 				content: {
 					...this.state.content,
-					name: e.target.value
+					name: e.target.value,
+					resource: {
+						...this.state.content.resource,
+						title: e.target.value
+					}
 				}
 			})
 		},
@@ -133,6 +152,10 @@ class Overview extends Component {
 					resource: {
 						...content.resource,
 						description: e.target.value
+					},
+					settings: {
+						...content.settings,
+						description: e.target.value
 					}
 				}
 			})
@@ -147,6 +170,31 @@ class Overview extends Component {
 					settings: {
 						...settings,
 						aspectRatio: e.target.value
+					}
+				}
+			})
+		},
+		addTag: newTags => {
+			const { keywords } = this.state.content.resource
+			const tags = [...newTags, ...keywords]
+			this.setState({
+				content: {
+					...this.state.content,
+					resource: {
+						...this.state.content.resource,
+						keywords: tags
+					}
+				}
+			})
+		},
+		removeTag: e => {
+			e.preventDefault()
+			this.setState({
+				content: {
+					...this.state.content,
+					resource: {
+						...this.state.content.resource,
+						keywords: this.state.content.resource.keywords.filter(item => item !== e.target.dataset.value)
 					}
 				}
 			})
@@ -214,7 +262,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-	getResources
+	getResources,
+	updateContent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview)
