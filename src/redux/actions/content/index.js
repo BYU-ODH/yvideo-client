@@ -31,9 +31,9 @@ export const getContent = (contentIds = [], force = false) => {
 }
 
 export const updateContent = content => {
-	return async (dispatch) => {
+	return async dispatch => {
 
-		const { id } = content
+		const { id, published } = content
 
 		const {
 			title,
@@ -68,7 +68,8 @@ export const updateContent = content => {
 		const metadata = {
 			title,
 			description,
-			keywords
+			keywords,
+			published
 		}
 
 		const settingsResult = await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
@@ -79,7 +80,7 @@ export const updateContent = content => {
 				'Content-Type': `application/json`
 			}
 		})
-			.catch(err => console.error(err))
+			.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
 		const metaResult = await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
 			method: `POST`,
@@ -89,7 +90,7 @@ export const updateContent = content => {
 				'Content-Type': `application/json`
 			}
 		})
-			.catch(err => console.error(err))
+			.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
 		console.log(`settings`, settingsResult)
 		console.log(`meta`, metaResult)

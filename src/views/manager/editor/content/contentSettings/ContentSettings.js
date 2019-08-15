@@ -31,6 +31,8 @@ class ContentSettings extends Component {
 
 		const { keywords = [] } = resource
 
+		// console.log(`is this defined?`, keywords)
+
 		return <Wrapper active={editing}>
 			<InnerContainer>
 				<Column>

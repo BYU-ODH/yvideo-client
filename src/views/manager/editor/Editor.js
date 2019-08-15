@@ -42,16 +42,20 @@ class Editor extends Component {
 		this.fetchContent()
 	}
 
-	shouldComponentUpdate = nextProps => {
-		return this.props.collection.content !== nextProps.collection.content || this.props.contentCache !== nextProps.contentCache
+	shouldComponentUpdate = (nextProps, nextState) => {
+		const idChanged = this.props.collection.id !== nextProps.collection.id
+		const contentChanged = this.props.collection.content !== nextProps.collection.content
+		const cacheChanged = this.props.contentCache !== nextProps.contentCache
+		const tabChanged = this.state.isContent !== nextState.isContent
+
+		return idChanged || contentChanged || cacheChanged || tabChanged
 	}
 
 	componentDidUpdate = prevProps => {
 		const idChanged = prevProps.collection.id !== this.props.collection.id
 		const contentChanged = prevProps.collection.content !== this.props.collection.content
-		const cacheChanged = prevProps.collection.contentCache !== this.props.collection.contentCache
 
-		if (idChanged || contentChanged || cacheChanged) {
+		if (idChanged || contentChanged) {
 			this.fetchContent()
 			this.setState({
 				collection: this.props.collection
@@ -85,6 +89,12 @@ class Editor extends Component {
 		this.fetchContent()
 	}
 
+	setTab = isContent => {
+		console.log(this.state.isContent)
+		console.log(isContent ? `content` : `permissions`)
+		this.setState({ isContent })
+	}
+
 	render() {
 
 		const { content, isFetching } = this.props.contentCache
@@ -102,8 +112,8 @@ class Editor extends Component {
 					</div>
 				</header>
 				<TabHeader>
-					<button onClick={() => this.setState({ isContent: true })}>Content</button>
-					<button onClick={() => this.setState({ isContent: false })}>Permissions</button>
+					<button onClick={() => this.setTab(true)}>Content</button>
+					<button onClick={() => this.setTab(false)}>Permissions</button>
 					<Selector isContent={isContent} />
 				</TabHeader>
 				<Tab>
