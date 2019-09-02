@@ -23,63 +23,28 @@ import {
 import plus from 'assets/collections/plus_gray.svg'
 
 class Editor extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			isContent: true,
-			collection: {
-				id: null,
-				content: []
-			}
+	state = {
+		isContent: true
+	}
+
+	componentDidUpdate = prevProps => {
+		if (this.props.collectionId !== prevProps.collectionId) {
+			const collection = this.props.collectionsCache.collections[this.props.collectionId]
+			if (collection !== undefined) this.fetchContent(collection)
 		}
 	}
 
-	componentDidMount = () => {
-		this.setState({
-			collection: this.props.collection
-		})
-		this.fetchContent()
-	}
-
-	shouldComponentUpdate = (nextProps, nextState) => {
-		const idChanged = this.props.collection.id !== nextProps.collection.id
-		const contentChanged = this.props.collection.content !== nextProps.collection.content
-		const cacheChanged = this.props.contentCache !== nextProps.contentCache
-		const tabChanged = this.state.isContent !== nextState.isContent
-
-		const update = idChanged || contentChanged || cacheChanged || tabChanged
-
-		return update
-	}
-
-	componentDidUpdate = async prevProps => {
-
-		const idChanged = this.props.collection.id !== prevProps.collection.id
-		const contentChanged = this.props.collection.content !== prevProps.collection.content
-
-		const updated = idChanged || contentChanged
-
-		if (updated) {
-			await this.fetchContent()
-			this.setState({
-				collection: this.props.collection
-			}, () => {
-				this.forceUpdate()
-			})
-		}
-	}
-
-	fetchContent = async () => {
-		const contentIds = this.props.collection.content.map(item => item.id)
-		await this.props.getContent(contentIds)
+	fetchContent = collection => {
+		const contentIds = collection.content.map(item => item.id)
+		if (contentIds.length > 0) this.props.getContent(contentIds)
 	}
 
 	togglePublish = e => {
-		const { updateCollectionStatus, collection } = this.props
 		e.preventDefault()
-		updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
-		this.fetchContent()
+		const collection = this.props.collectionsCache.collections[this.props.collectionId]
+		this.props.updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
+		this.fetchContent(collection)
 	}
 
 	createContent = () => {
@@ -90,23 +55,24 @@ class Editor extends Component {
 	}
 
 	archive = e => {
-		const { updateCollectionStatus, collection } = this.props
 		e.preventDefault()
-		updateCollectionStatus(collection.id, `archive`)
-		this.fetchContent()
+		const collection = this.props.collectionsCache.collections[this.props.collectionId]
+		this.props.updateCollectionStatus(collection.id, `archive`)
+		this.fetchContent(collection)
 	}
 
 	setTab = isContent => {
-		// console.log(this.state.isContent)
-		// console.log(isContent ? `content` : `permissions`)
 		this.setState({ isContent })
 	}
 
 	render() {
 
-		const { content, isFetching } = this.props.contentCache
-		const { collection, isContent } = this.state
+		const { isContent } = this.state
 
+		const { collections } = this.props.collectionsCache
+		const collection = collections[this.props.collectionId]
+
+		if (collection === undefined) return null
 		return (
 			<Container>
 				<header>
@@ -126,11 +92,9 @@ class Editor extends Component {
 				<Tab>
 					{
 						isContent ?
-							!isFetching ?
-								collection.content.map((item, index) => {
-									return <Overview key={index} collectionId={collection.id} content={content[item.id]} />
-								})
-								: null
+							collection.content.map((item, index) => {
+								return <Overview key={index} collectionId={collection.id} contentId={item.id} />
+							})
 							:
 							<Permissions collection={collection} />
 					}
@@ -141,10 +105,11 @@ class Editor extends Component {
 			</Container>
 		)
 	}
-
 }
 
-const mapStateToProps = ({ contentCache }) => ({ contentCache })
+const mapStateToProps = state => ({
+	collectionsCache: state.collectionsCache
+})
 
 const mapDispatchToProps = {
 	getContent,

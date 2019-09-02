@@ -103,9 +103,10 @@ export const Placeholder = styled.div`
 export const Thumbnail = styled.div`
 	width: 10rem;
 	height: 6.1rem;
-	background-color: gray;
-	background-image: url(${props => props.src});
+	background-color: #eee;
+	background-size: no-repeat;
 	background-size: cover;
+	background-image: url(${props => props.src});
 `
 
 export const TitleEdit = styled.input`

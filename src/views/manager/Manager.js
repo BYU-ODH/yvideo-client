@@ -38,8 +38,6 @@ class Manager extends Component {
 		const { collectionsCache, match, loaded } = this.props
 		const { collections } = collectionsCache
 
-		let selectedCollection
-
 		const sideLists = {
 			published: [],
 			unpublished: [],
@@ -48,7 +46,7 @@ class Manager extends Component {
 
 		Object.keys(collections).forEach(id => {
 			const { archived, published, name } = collections[id]
-			if (id === match.params.id) selectedCollection = collections[id]
+
 			if (archived) sideLists.archived.push({ id, name })
 			else if (published) sideLists.published.push({ id, name })
 			else sideLists.unpublished.push({ id, name })
@@ -80,10 +78,10 @@ class Manager extends Component {
 
 				</SideMenu>
 				<Body>
-					{selectedCollection === null || selectedCollection === undefined ?
+					{match.params.id === null || match.params.id === undefined ?
 						<NoCollection>Select a Collection to get started.</NoCollection>
 						:
-						<Editor collection={selectedCollection} />
+						<Editor collectionId={match.params.id} />
 					}
 				</Body>
 			</Container>

@@ -31,7 +31,17 @@ export const getContent = (contentIds = [], force = false) => {
 }
 
 export const updateContent = content => {
+	console.log(`updateContent called`)
 	return async dispatch => {
+
+		// delete these once you fix it
+		if (content === undefined) {
+			dispatch({ type: ABORT_CONTENT })
+			return
+		} else if (content.resource === undefined) {
+			dispatch({ type: ABORT_CONTENT })
+			return
+		}
 
 		const { id, published } = content
 
@@ -92,8 +102,10 @@ export const updateContent = content => {
 		})
 			.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
-		console.log(`settings`, settingsResult)
-		console.log(`meta`, metaResult)
+		// dispatch({ type: UPDATE_CONTENT, payload: content })
+
+		// console.log(`settings`, settingsResult)
+		// console.log(`meta`, metaResult)
 
 	}
 }

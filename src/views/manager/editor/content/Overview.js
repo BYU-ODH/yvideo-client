@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { getResources, updateContent } from 'redux/actions'
-
-import LazyImage from 'components/lazyImage/LazyImage'
+import { getContent, getResources, updateContent } from 'redux/actions'
 
 import ContentSettings from './contentSettings/ContentSettings'
+import Content from 'models/Content'
 
 import {
 	Container,
@@ -13,85 +12,34 @@ import {
 	EditButton,
 	Icon,
 	TitleEdit,
-	PublishButton
+	PublishButton,
+	Thumbnail
 } from './styles'
 
 class Overview extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			editing: false,
-			content: {
-				authKey: ``,
-				collectionId: -1,
-				contentType: ``,
-				dateValidated: ``,
-				description: ``,
-				expired: false,
-				fullVideo: false,
-				id: null,
-				isCopyrighted: false,
-				name: ``,
-				physicalCopyExists: false,
-				published: false,
-				requester: ``,
-				resourceId: ``,
-				thumbnail: ``,
-				views: 0,
-				resource: {
-					keywords: []
-				},
-				settings: {
-					allowDefinitions: false,
-					annotationDocument: [],
-					aspectRatio: `1.77`,
-					captionTrack: [],
-					description: ``,
-					showAnnotations: false,
-					showCaptions: false,
-					showTranscripts: false,
-					showWordList: false,
-					targetLanguages: []
-				}
-			}
-		}
+	state = {
+		editing: false,
+		content: new Content()
 	}
 
 	componentDidMount = () => {
-		const { content } = this.props
-
-		this.setState({
-			content
-		})
-	}
-
-	shouldComponentUpdate = nextProps => {
-		const contentPropChanged = this.props.content !== nextProps.content
-		const contentStateChanged = this.props.content !== this.state.content
-
-		const update = contentPropChanged || contentStateChanged
-
-		return update
+		const { getContent, contentId } = this.props
+		getContent([contentId])
 	}
 
 	componentDidUpdate = prevProps => {
-		const contentPropChanged = this.props.content !== prevProps.content
-		// const contentStateChanged = this.props.content !== this.state.content
-		// const contentDefined = this.props.content !== undefined
 
-		const update =
-			contentPropChanged
-		// || contentStateChanged
-		// || contentDefined
+		const { contentId, contentCache } = this.props
 
-		const { content, resourceCache } = this.props
-		if (update) {
+		const idChanged = contentId !== prevProps.contentId
+		const cacheChanged = contentCache.content[contentId] !== prevProps.contentCache.content[prevProps.contentId]
+
+		const changed = idChanged || cacheChanged
+
+		if (changed) {
 			this.setState({
-				content: {
-					...content,
-					resource: resourceCache.resources[content.resourceId]
-				},
+				content: this.props.contentCache.content[this.props.contentId],
 				editing: false
 			})
 		}
@@ -224,7 +172,7 @@ class Overview extends Component {
 
 		const { editing, content } = this.state
 
-		console.log(content.name)
+		if (content === undefined) return null
 
 		const { handleNameChange, handleEdit, togglePublish } = this.handlers
 
@@ -240,7 +188,7 @@ class Overview extends Component {
 			<Container>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail} />
+						<Thumbnail src={content.thumbnail} />
 					</div>
 					<div>
 						{editing ?
@@ -258,7 +206,6 @@ class Overview extends Component {
 								:
 								<em>{content.published ? `Published` : `Unpublished`}</em>
 						}
-
 					</div>
 					<div>
 						<EditButton onClick={handleEdit}>{editing ? `Save` : `Edit`}</EditButton>
@@ -271,10 +218,12 @@ class Overview extends Component {
 }
 
 const mapStateToProps = state => ({
-	resourceCache: state.resourceCache
+	resourceCache: state.resourceCache,
+	contentCache: state.contentCache
 })
 
 const mapDispatchToProps = {
+	getContent,
 	getResources,
 	updateContent
 }
