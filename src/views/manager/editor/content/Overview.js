@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 
 import { getResources, updateContent } from 'redux/actions'
 
+import LazyImage from 'components/lazyImage/LazyImage'
+
 import ContentSettings from './contentSettings/ContentSettings'
 
 import {
 	Container,
 	Preview,
-	Thumbnail,
 	EditButton,
 	Icon,
 	TitleEdit,
@@ -20,7 +21,6 @@ class Overview extends Component {
 		super(props)
 
 		this.state = {
-			loaded: false,
 			editing: false,
 			content: {
 				authKey: ``,
@@ -59,24 +59,34 @@ class Overview extends Component {
 	}
 
 	componentDidMount = () => {
-		const { content = this.state.content } = this.props
+		const { content } = this.props
 
 		this.setState({
 			content
 		})
-
-		const temp = new Image()
-		temp.src = content.thumbnail
-		temp.onload = () => {
-			this.setState({
-				loaded: true
-			})
-		}
 	}
 
-	componentDidUpdate = (prevProps) => {
+	shouldComponentUpdate = nextProps => {
+		const contentPropChanged = this.props.content !== nextProps.content
+		const contentStateChanged = this.props.content !== this.state.content
+
+		const update = contentPropChanged || contentStateChanged
+
+		return update
+	}
+
+	componentDidUpdate = prevProps => {
+		const contentPropChanged = this.props.content !== prevProps.content
+		// const contentStateChanged = this.props.content !== this.state.content
+		// const contentDefined = this.props.content !== undefined
+
+		const update =
+			contentPropChanged
+		// || contentStateChanged
+		// || contentDefined
+
 		const { content, resourceCache } = this.props
-		if (content !== prevProps.content && content !== this.state.content && content !== undefined) {
+		if (update) {
 			this.setState({
 				content: {
 					...content,
@@ -211,7 +221,10 @@ class Overview extends Component {
 	}
 
 	render() {
-		const { loaded, editing, content } = this.state
+
+		const { editing, content } = this.state
+
+		console.log(content.name)
 
 		const { handleNameChange, handleEdit, togglePublish } = this.handlers
 
@@ -227,7 +240,7 @@ class Overview extends Component {
 			<Container>
 				<Preview>
 					<div>
-						<Thumbnail src={content.thumbnail} loaded={loaded} />
+						<LazyImage src={content.thumbnail} />
 					</div>
 					<div>
 						{editing ?

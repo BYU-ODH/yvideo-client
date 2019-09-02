@@ -19,7 +19,8 @@ class Manager extends Component {
 
 	shouldComponentUpdate = nextProps => {
 		const { collectionsCache, match } = this.props
-		return collectionsCache !== nextProps.collectionsCache || match.params.id !== nextProps.match.params.id
+		const update = collectionsCache !== nextProps.collectionsCache || match.params.id !== nextProps.match.params.id
+		return update
 	}
 
 	componentWillUnmount() {

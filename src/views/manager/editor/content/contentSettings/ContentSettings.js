@@ -29,9 +29,9 @@ class ContentSettings extends Component {
 		} = content.settings
 		const { resource = {} } = content
 
-		const { keywords = [] } = resource
+		let { keywords = [] } = resource
 
-		// console.log(`is this defined?`, keywords)
+		if (typeof keywords === `string`) keywords = keywords.split(`,`)
 
 		return <Wrapper active={editing}>
 			<InnerContainer>

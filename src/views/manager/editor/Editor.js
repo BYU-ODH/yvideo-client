@@ -48,24 +48,31 @@ class Editor extends Component {
 		const cacheChanged = this.props.contentCache !== nextProps.contentCache
 		const tabChanged = this.state.isContent !== nextState.isContent
 
-		return idChanged || contentChanged || cacheChanged || tabChanged
+		const update = idChanged || contentChanged || cacheChanged || tabChanged
+
+		return update
 	}
 
-	componentDidUpdate = prevProps => {
-		const idChanged = prevProps.collection.id !== this.props.collection.id
-		const contentChanged = prevProps.collection.content !== this.props.collection.content
+	componentDidUpdate = async prevProps => {
 
-		if (idChanged || contentChanged) {
-			this.fetchContent()
+		const idChanged = this.props.collection.id !== prevProps.collection.id
+		const contentChanged = this.props.collection.content !== prevProps.collection.content
+
+		const updated = idChanged || contentChanged
+
+		if (updated) {
+			await this.fetchContent()
 			this.setState({
 				collection: this.props.collection
+			}, () => {
+				this.forceUpdate()
 			})
 		}
 	}
 
-	fetchContent = () => {
+	fetchContent = async () => {
 		const contentIds = this.props.collection.content.map(item => item.id)
-		this.props.getContent(contentIds)
+		await this.props.getContent(contentIds)
 	}
 
 	togglePublish = e => {
@@ -90,8 +97,8 @@ class Editor extends Component {
 	}
 
 	setTab = isContent => {
-		console.log(this.state.isContent)
-		console.log(isContent ? `content` : `permissions`)
+		// console.log(this.state.isContent)
+		// console.log(isContent ? `content` : `permissions`)
 		this.setState({ isContent })
 	}
 

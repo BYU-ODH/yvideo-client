@@ -19,6 +19,11 @@ export const getResources = (resourceId = null, callback = () => { }) => {
 			const result = await axios(`${REACT_APP_RESOURCE_LIB}/resources/${resourceId}?${Date.now().toString(36)}`, { includeCredentials: true })
 				.catch(err => dispatch({ type: ERROR_RESOURCES, payload: err }))
 
+			if (result.type === `ERROR_RESOURCES`) {
+				dispatch({ type: ERROR_RESOURCES })
+				return
+			}
+
 			const resource = result.data.resource
 			resource.resources = {}
 			resource.relations.forEach(item => resource.resources[item.type] = [])
