@@ -31,7 +31,6 @@ export const getContent = (contentIds = [], force = false) => {
 }
 
 export const updateContent = content => {
-	console.log(`updateContent called`)
 	return async dispatch => {
 
 		// delete these once you fix it
@@ -82,7 +81,8 @@ export const updateContent = content => {
 			published
 		}
 
-		const settingsResult = await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
+		// const settingsResult =
+		await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
 			method: `POST`,
 			data: JSON.stringify(settings),
 			withCredentials: true,
@@ -92,7 +92,8 @@ export const updateContent = content => {
 		})
 			.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
-		const metaResult = await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
+		// const metaResult =
+		await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
 			method: `POST`,
 			data: JSON.stringify(metadata),
 			withCredentials: true,

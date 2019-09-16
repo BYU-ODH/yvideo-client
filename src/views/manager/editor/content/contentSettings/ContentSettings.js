@@ -11,6 +11,10 @@ class ContentSettings extends Component {
 		tag: ``
 	}
 
+	componentDidMount = () => {
+		console.log(this.props.content)
+	}
+
 	changeTag = e => {
 		this.setState({
 			tag: e.target.value
@@ -20,6 +24,7 @@ class ContentSettings extends Component {
 	render() {
 		const { handlers, content, editing } = this.props
 		const { handleToggle, handleDescription, handleRatio, addTag, removeTag } = handlers
+
 		const {
 			allowDefinitions,
 			showCaptions,
@@ -27,9 +32,8 @@ class ContentSettings extends Component {
 			aspectRatio,
 			showWordList
 		} = content.settings
-		const { resource = {} } = content
 
-		let { keywords = [] } = resource
+		let { keywords } = content.resource
 
 		if (typeof keywords === `string`) keywords = keywords.split(`,`)
 

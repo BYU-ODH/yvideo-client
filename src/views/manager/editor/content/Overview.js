@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { getContent, getResources, updateContent } from 'redux/actions'
+import { getResources, updateContent } from 'redux/actions'
 
 import ContentSettings from './contentSettings/ContentSettings'
 import Content from 'models/Content'
@@ -24,23 +24,39 @@ class Overview extends Component {
 	}
 
 	componentDidMount = () => {
-		const { getContent, contentId } = this.props
-		getContent([contentId])
+		this.setState({
+			content: this.props.content,
+			editing: false
+		})
 	}
 
 	componentDidUpdate = prevProps => {
 
-		const { contentId, contentCache } = this.props
+		const { content, contentCache, resourceCache } = this.props
 
-		const idChanged = contentId !== prevProps.contentId
-		const cacheChanged = contentCache.content[contentId] !== prevProps.contentCache.content[prevProps.contentId]
+		const idChanged = content !== prevProps.content
+		const contentCacheChanged = contentCache !== prevProps.contentCache
+		const resourceCacheChanged = resourceCache !== prevProps.resourceCache
 
-		const changed = idChanged || cacheChanged
+		const changed = idChanged || contentCacheChanged || resourceCacheChanged
 
 		if (changed) {
+
+			const newContent = content
+			let newEditing = false
+
+			if (resourceCacheChanged) {
+				const newResource = resourceCache.resources[newContent.resourceId]
+				if (newResource !== undefined) {
+					newContent.description = newResource.description
+					newContent.resource = newResource
+					newEditing = true
+				}
+			}
+
 			this.setState({
-				content: this.props.contentCache.content[this.props.contentId],
-				editing: false
+				content: newContent,
+				editing: newEditing
 			})
 		}
 	}
@@ -52,25 +68,8 @@ class Overview extends Component {
 			const { content, editing } = this.state
 
 			if (editing) this.props.updateContent(content)
-			else {
-				this.props.getResources(content.resourceId, resource => {
 
-					const { keywords } = resource
-
-					const keywordsArr = keywords === `` ? [] : keywords.split(/[ ,]+/)
-
-					this.setState({
-						content: {
-							...content,
-							description: resource.description,
-							resource: {
-								...resource,
-								keywords: keywordsArr
-							}
-						}
-					})
-				})
-			}
+			else this.props.getResources(this.props.content.resourceId)
 
 			this.setState({
 				editing: !editing
@@ -211,7 +210,11 @@ class Overview extends Component {
 						<EditButton onClick={handleEdit}>{editing ? `Save` : `Edit`}</EditButton>
 					</div>
 				</Preview>
-				{isFetching || <ContentSettings handlers={this.handlers} content={this.state.content} editing={editing} />}
+				{
+					editing ?
+						isFetching || <ContentSettings handlers={this.handlers} content={this.state.content} editing={editing} />
+						: null
+				}
 			</Container>
 		)
 	}
@@ -223,7 +226,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-	getContent,
 	getResources,
 	updateContent
 }

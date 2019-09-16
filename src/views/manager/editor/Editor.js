@@ -29,7 +29,12 @@ class Editor extends Component {
 	}
 
 	componentDidUpdate = prevProps => {
-		if (this.props.collectionId !== prevProps.collectionId) {
+		const idChanged = this.props.collectionId !== prevProps.collectionId
+		const cacheChanged = this.props.collectionsCache !== prevProps.collectionsCache
+
+		const changed = idChanged || cacheChanged
+
+		if (changed) {
 			const collection = this.props.collectionsCache.collections[this.props.collectionId]
 			if (collection !== undefined) this.fetchContent(collection)
 		}
@@ -50,7 +55,7 @@ class Editor extends Component {
 	createContent = () => {
 		this.props.toggleModal({
 			component: CreateContent,
-			collectionId: this.props.collection.id
+			collectionId: this.props.collectionId
 		})
 	}
 
@@ -72,7 +77,10 @@ class Editor extends Component {
 		const { collections } = this.props.collectionsCache
 		const collection = collections[this.props.collectionId]
 
+		const { content } = this.props.contentCache
+
 		if (collection === undefined) return null
+
 		return (
 			<Container>
 				<header>
@@ -93,7 +101,9 @@ class Editor extends Component {
 					{
 						isContent ?
 							collection.content.map((item, index) => {
-								return <Overview key={index} collectionId={collection.id} contentId={item.id} />
+								const thisContent = content[item.id]
+								if (thisContent === undefined) return null
+								return <Overview key={index} collectionId={collection.id} content={thisContent} />
 							})
 							:
 							<Permissions collection={collection} />
@@ -108,7 +118,8 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
-	collectionsCache: state.collectionsCache
+	collectionsCache: state.collectionsCache,
+	contentCache: state.contentCache
 })
 
 const mapDispatchToProps = {
