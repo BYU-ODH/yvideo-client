@@ -23,22 +23,38 @@ import Error from 'views/error/Error'
 
 import { MainBody } from './styles'
 
+import { diff } from 'js/util'
+
 class App extends Component {
 
-	componentDidMount = async () => {
-		const { load, getUserInfo, getUser, getAuthCookie } = this.props
-		load()
-		try {
-			await getUserInfo(async () => {
-				await getUser()
-				await getAuthCookie()
-			})
-		} catch (message) {
-			console.log(message)
-		}
+	log = false
+
+	shouldComponentUpdate = (nextProps, nextState) => {
+
+		if (this.log) console.groupCollapsed(`App: shouldComponentUpdate`)
+
+		const propsDiff = diff(this.props, nextProps)
+		const stateDiff = diff(this.state, nextState)
+
+		if (this.log) console.log(`props changes:`, propsDiff)
+		if (this.log) console.log(`state changes:`, stateDiff)
+
+		const authorizedChanged = propsDiff.hasOwnProperty(`authorized`)
+		const loadingChanged = propsDiff.hasOwnProperty(`loading`)
+
+		const changed = authorizedChanged || loadingChanged
+
+		if (this.log) console.log(`%c ${changed ? `RENDER` : `NO RENDER`} `, `background: ${changed ? `Maroon` : `Teal`}`)
+
+		if (this.log) console.groupEnd(`App: shouldComponentUpdate`)
+
+		return changed
 	}
 
 	render = () => {
+
+		if (this.log) console.error(`App: render`)
+
 		const { authorized, loading, done, modal } = this.props
 		return (
 			<MainBody>
@@ -71,10 +87,29 @@ class App extends Component {
 			</MainBody>
 		)
 	}
+
+	componentDidMount = async () => {
+		if (this.log) console.warn(`App: componentDidMount`)
+
+		const { load, getUserInfo, getUser, getAuthCookie } = this.props
+
+		load()
+
+		try {
+			await getUserInfo(async () => {
+				await getUser()
+				await getAuthCookie()
+			})
+		} catch (message) {
+			console.log(message)
+		}
+	}
+
 }
 
-const mapStateToProps = ({ authorized, loading, done, userInfo, modal }) =>
-	({ authorized, loading, done, userInfo, modal })
+const mapStateToProps =
+	({ authorized, loading, done, modal }) =>
+		({ authorized, loading, done, modal })
 
 const mapDispatchToProps = {
 	getUser,

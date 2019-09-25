@@ -7,12 +7,10 @@ import { Wrapper, InnerContainer, Column, Setting, RatioList, RadioButton } from
 
 class ContentSettings extends Component {
 
+	log = true
+
 	state = {
 		tag: ``
-	}
-
-	componentDidMount = () => {
-		console.log(this.props.content)
 	}
 
 	changeTag = e => {
@@ -22,6 +20,9 @@ class ContentSettings extends Component {
 	}
 
 	render() {
+
+		if (this.log) console.error(`ContentSettings: render`)
+
 		const { handlers, content, editing } = this.props
 		const { handleToggle, handleDescription, handleRatio, addTag, removeTag } = handlers
 
@@ -32,6 +33,8 @@ class ContentSettings extends Component {
 			aspectRatio,
 			showWordList
 		} = content.settings
+
+		if (content.resource === undefined) return null
 
 		let { keywords } = content.resource
 
@@ -105,6 +108,7 @@ class ContentSettings extends Component {
 			</InnerContainer>
 		</Wrapper>
 	}
+
 }
 
 export default ContentSettings

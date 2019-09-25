@@ -49,3 +49,9 @@ export const getInitials = fullName => {
 	initials = ((initials.shift() || ``) + (initials.pop() || ``)).toUpperCase()
 	return initials
 }
+
+export { diff } from 'deep-object-diff'
+
+export const objectIsEmpty = o => {
+	return Object.entries(o).length === 0 && o.constructor === Object
+}

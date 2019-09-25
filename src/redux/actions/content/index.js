@@ -30,6 +30,12 @@ export const getContent = (contentIds = [], force = false) => {
 	}
 }
 
+export const abortGetContent = () => {
+	return dispatch => {
+		dispatch({ type: ABORT_CONTENT })
+	}
+}
+
 export const updateContent = content => {
 	return async dispatch => {
 
