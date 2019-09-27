@@ -16,7 +16,7 @@ import { diff } from 'js/util'
 
 class Manager extends Component {
 
-	log = false
+	log = true
 
 	createNew = async () => {
 		this.props.toggleModal({ component: CreateCollection })

@@ -7,7 +7,7 @@ import { Wrapper, InnerContainer, Column, Setting, RatioList, RadioButton } from
 
 class ContentSettings extends Component {
 
-	log = false
+	log = true
 
 	state = {
 		tag: ``,

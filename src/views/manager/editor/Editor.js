@@ -36,7 +36,7 @@ class Editor extends Component {
 			isContent: true
 		}
 
-		this.log = false
+		this.log = true
 
 		if (this.log) console.warn(`Editor: constructor`)
 	}

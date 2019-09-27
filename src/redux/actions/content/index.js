@@ -39,14 +39,16 @@ export const abortGetContent = () => {
 export const updateContent = content => {
 	return async dispatch => {
 
+		console.log(content)
+
 		// delete these once you fix it
-		// if (content === undefined) {
-		// 	dispatch({ type: ABORT_CONTENT })
-		// 	return
-		// } else if (content.resource === undefined) {
-		// 	dispatch({ type: ABORT_CONTENT })
-		// 	return
-		// }
+		if (content === undefined) {
+			dispatch({ type: ABORT_CONTENT })
+			return
+		} else if (content.resource === undefined) {
+			dispatch({ type: ABORT_CONTENT })
+			return
+		}
 
 		const { id, published } = content
 

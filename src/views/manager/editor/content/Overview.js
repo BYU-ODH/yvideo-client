@@ -29,10 +29,11 @@ class Overview extends Component {
 
 		this.state = {
 			editing: false,
+			content: props.content,
 			resource: null
 		}
 
-		this.log = false
+		this.log = true
 
 		if (this.log) console.warn(`Overview: constructor`)
 	}
@@ -57,16 +58,19 @@ class Overview extends Component {
 
 		},
 		handleNameChange: e => {
+			const { value } = e.target
 			this.setState(prevState => ({
 				content: {
 					...prevState.content,
-					name: e.target.value,
+					name: value,
 					resource: {
 						...prevState.content.resource,
-						title: e.target.value
+						title: value
 					}
 				}
-			}))
+			}), t => {
+				console.log(this.state.content)
+			})
 		},
 		handleToggle: e => {
 			const { key } = e.target.dataset
@@ -154,6 +158,7 @@ class Overview extends Component {
 		const resourcesFetched = this.props.resourceCache.lastFetched !== nextProps.resourceCache.lastFetched
 		const resourceStateChanged = stateDiff.hasOwnProperty(`resource`)
 		const editingChanged = stateDiff.hasOwnProperty(`editing`)
+		const stateContentChanged = stateDiff.hasOwnProperty(`content`)
 
 		if (this.log) {
 			console.table({
@@ -165,6 +170,9 @@ class Overview extends Component {
 				},
 				editingChanged: {
 					value: editingChanged
+				},
+				stateContentChanged: {
+					value: stateContentChanged
 				}
 			})
 		}
@@ -172,6 +180,7 @@ class Overview extends Component {
 		const changed = resourcesFetched
 			|| resourceStateChanged
 			|| editingChanged
+			|| stateContentChanged
 
 		if (this.log) console.log(`%c ${changed ? `RENDER` : `NO RENDER`} `, `background: ${changed ? `Maroon` : `Teal`}`)
 
@@ -185,7 +194,7 @@ class Overview extends Component {
 		if (this.log) console.error(`Overveiw: render`)
 
 		const { editing } = this.state
-		const { content } = this.props
+		const { content } = this.state
 
 		if (content === undefined) return null
 
