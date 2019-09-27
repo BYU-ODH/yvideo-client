@@ -14,7 +14,7 @@ class ListCollection extends Component {
 	}
 
 	togglePanel = () => {
-		this.setState({ isOpen: !this.state.isOpen })
+		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
 
 	render() {

@@ -29,9 +29,9 @@ class Landing extends Component {
 	}
 
 	toggleAbout = () => {
-		this.setState({
-			overlay: !this.state.overlay
-		})
+		this.setState(prevState => ({
+			overlay: !prevState.overlay
+		}))
 	}
 
 	render() {

@@ -43,9 +43,9 @@ export class Collections extends Component {
 
 	toggleBlock = () => {
 		localStorage.setItem(`blockmode`, !this.state.block)
-		this.setState({
-			block: !this.state.block
-		})
+		this.setState(prevState => ({
+			block: !prevState.block
+		}))
 	}
 
 	render() {

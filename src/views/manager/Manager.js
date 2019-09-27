@@ -3,7 +3,7 @@ import AccordionMenu from 'components/accordionMenu/AccordionMenu'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { adminOff, adminOn, getCollections, load, loaded, toggleModal } from 'redux/actions'
+import { adminOff, adminOn, getCollections, getContent, load, loaded, toggleModal } from 'redux/actions'
 import Editor from './editor/Editor'
 import CreateCollection from 'components/forms/CreateCollection'
 import { Body, Container, CreateButton, NoCollection, Plus, SideMenu } from './styles'
@@ -54,7 +54,9 @@ class Manager extends Component {
 			})
 		}
 
-		const changed = collectionsChanged || collectionsFetched || pageChanged
+		const changed = collectionsChanged
+			|| collectionsFetched
+			|| pageChanged
 
 		if (this.log) console.log(`%c ${changed ? `RENDER` : `NO RENDER`} `, `background: ${changed ? `Maroon` : `Teal`}`)
 
@@ -76,6 +78,8 @@ class Manager extends Component {
 			archived: []
 		}
 
+		loaded()
+
 		Object.keys(collections).forEach(id => {
 			const { archived, published, name } = collections[id]
 
@@ -83,8 +87,6 @@ class Manager extends Component {
 			else if (published) sideLists.published.push({ id, name })
 			else sideLists.unpublished.push({ id, name })
 		})
-
-		if (!collectionsCache.isFetching) loaded()
 
 		const selectedCollection = this.props.collectionsCache.collections[match.params.id]
 
@@ -135,6 +137,38 @@ class Manager extends Component {
 		adminOn()
 	}
 
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.log) console.warn(`Manager: componentDidUpdate`)
+
+		if (this.log) console.groupCollapsed(`Manager: componentDidUpdate`)
+
+		const propDiff = diff(prevProps, this.props)
+		const stateDiff = diff(prevState, this.state)
+
+		if (this.log) console.log(`props changes:`, propDiff)
+		if (this.log) console.log(`state changes:`, stateDiff)
+
+		const pageChanged = prevProps.match.params.id !== this.props.match.params.id
+
+		if (this.log) {
+			console.table({
+				pageChanged: {
+					value: pageChanged
+				}
+			})
+		}
+
+		if (pageChanged) {
+			if (this.log) console.log(`%c FETCHING CONTENT `, `background: Maroon`)
+			const contentIds = this.props.collectionsCache.collections[this.props.match.params.id].content.map(item => item.id)
+			if (contentIds.length > 0)
+				this.props.getContent(contentIds)
+		} else if (this.log) console.log(`%c NO ACTION `, `background: Gray`)
+
+		if (this.log) console.groupEnd(`Manager: componentDidUpdate`)
+
+	}
+
 	componentWillUnmount() {
 		const { adminOff, load } = this.props
 		load()
@@ -148,6 +182,7 @@ const mapStateToProps = ({ collectionsCache, editMode, user }) => ({ collections
 const mapDispatchToProps = {
 	toggleModal,
 	getCollections,
+	getContent,
 	load,
 	loaded,
 	adminOn,

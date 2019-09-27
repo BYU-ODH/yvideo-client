@@ -33,8 +33,7 @@ class Editor extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isContent: true,
-			collection: props.collection
+			isContent: true
 		}
 
 		this.log = false
@@ -57,7 +56,7 @@ class Editor extends Component {
 
 		togglePublish: e => {
 			e.preventDefault()
-			const collection = this.props.collectionsCache.collections[this.props.collectionId]
+			const { collection } = this.props
 			this.props.updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
 			this.functions.fetchContent(collection)
 		},
@@ -65,18 +64,18 @@ class Editor extends Component {
 		createContent: () => {
 			this.props.toggleModal({
 				component: CreateContent,
-				collectionId: this.props.collectionId
+				collectionId: this.props.collection.id
 			})
 		},
 
 		archive: e => {
 			e.preventDefault()
-			const collection = this.props.collectionsCache.collections[this.props.collectionId]
+			const { collection } = this.props
 			this.props.updateCollectionStatus(collection.id, `archive`)
 			this.functions.fetchContent(collection)
 		},
 
-		setTab: isContent => {
+		setTab: isContent => _e => {
 			this.setState({ isContent })
 		}
 	}
@@ -128,13 +127,13 @@ class Editor extends Component {
 
 		const { isContent } = this.state
 
-		const { collection } = this.state
+		const { collection } = this.props
 		const { content } = this.props.contentCache
 
 		// if (this.log) console.log(`Editor: render: state collection: `, { collection })
 
-		if (collection === undefined || collection === null) return `loading...`
-
+		if (collection === undefined || collection === null)
+			return `loading...`
 		else {
 			return (
 				<Container>
@@ -143,13 +142,13 @@ class Editor extends Component {
 							<h6>{collection.name}</h6>
 						</div>
 						<div>
-							<PublishButton published={collection.published} onClick={this.togglePublish}>{collection.published ? `Unpublish` : `Publish`}</PublishButton>
-							<ArchiveButton onClick={this.archive}>Archive</ArchiveButton>
+							<PublishButton published={collection.published} onClick={this.functions.togglePublish}>{collection.published ? `Unpublish` : `Publish`}</PublishButton>
+							<ArchiveButton onClick={this.functions.archive}>Archive</ArchiveButton>
 						</div>
 					</header>
 					<TabHeader>
-						<button onClick={() => this.setTab(true)}>Content</button>
-						<button onClick={() => this.setTab(false)}>Permissions</button>
+						<button onClick={this.functions.setTab(true)}>Content</button>
+						<button onClick={this.functions.setTab(false)}>Permissions</button>
 						<Selector isContent={isContent} />
 					</TabHeader>
 					<Tab>
@@ -157,16 +156,14 @@ class Editor extends Component {
 							isContent ?
 								collection.content.map(item => {
 									const thisContent = content[item.id]
-									return thisContent === undefined ?
-										null
-										:
+									return thisContent === undefined ||
 										<Overview key={item.id} collectionId={collection.id} content={thisContent} />
 								})
 								:
 								<Permissions collection={collection} />
 						}
 						{isContent &&
-							<NewContent onClick={this.createContent}><Icon src={plus} /></NewContent>
+							<NewContent onClick={this.functions.createContent}><Icon src={plus} /></NewContent>
 						}
 					</Tab>
 				</Container>
@@ -196,8 +193,8 @@ class Editor extends Component {
 		const collectionPropDiff = diff(this.props.collection, prevProps.collection)
 		const collectionStateDiff = diff(this.state.collection, prevState.collection)
 
-		if (this.log) console.log(`collection prop changes:`, { collectionPropDiff })
-		if (this.log) console.log(`collection state changes:`, { collectionStateDiff })
+		if (this.log) console.log(`collection prop changes:`, collectionPropDiff)
+		if (this.log) console.log(`collection state changes:`, collectionStateDiff)
 
 		const collectionPropChanged = !objectIsEmpty(collectionPropDiff)
 		const collectionStateChanged = !objectIsEmpty(collectionStateDiff)
@@ -213,20 +210,10 @@ class Editor extends Component {
 			})
 		}
 
-		if (collectionPropChanged) {
-			if (this.log) console.log(`%c SETTING STATE `, `background: Teal`)
-			this.setState({
-				collection: this.props.collection
-			})
-		}
-
 		if (collectionStateChanged) {
 			if (this.log) console.log(`%c FETCHING CONTENT `, `background: Maroon`)
 			this.functions.fetchContent(this.state.collection)
-		}
-
-		if (!collectionPropChanged && !collectionStateChanged)
-			if (this.log) console.log(`%c NO ACTION `, `background: Gray`)
+		} else if (this.log) console.log(`%c NO ACTION `, `background: Gray`)
 
 		if (this.log) console.groupEnd(`Editor: componentDidUpdate`)
 
@@ -235,7 +222,8 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
-	contentCache: state.contentCache
+	contentCache: state.contentCache,
+	collectionsCache: state.collectionsCache
 })
 
 const mapDispatchToProps = {

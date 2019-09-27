@@ -23,7 +23,10 @@ import Error from 'views/error/Error'
 
 import { MainBody } from './styles'
 
-import { diff } from 'js/util'
+import {
+	// objectIsEmpty,
+	diff
+} from 'js/util'
 
 class App extends Component {
 
@@ -41,8 +44,25 @@ class App extends Component {
 
 		const authorizedChanged = propsDiff.hasOwnProperty(`authorized`)
 		const loadingChanged = propsDiff.hasOwnProperty(`loading`)
+		const modalChanged = propsDiff.hasOwnProperty(`modal`)
 
-		const changed = authorizedChanged || loadingChanged
+		if (this.log) {
+			console.table({
+				authorizedChanged: {
+					value: authorizedChanged
+				},
+				loadingChanged: {
+					value: loadingChanged
+				},
+				modalChanged: {
+					value: modalChanged
+				}
+			})
+		}
+
+		const changed = authorizedChanged
+			|| loadingChanged
+			|| modalChanged
 
 		if (this.log) console.log(`%c ${changed ? `RENDER` : `NO RENDER`} `, `background: ${changed ? `Maroon` : `Teal`}`)
 

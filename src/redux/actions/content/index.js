@@ -40,13 +40,13 @@ export const updateContent = content => {
 	return async dispatch => {
 
 		// delete these once you fix it
-		if (content === undefined) {
-			dispatch({ type: ABORT_CONTENT })
-			return
-		} else if (content.resource === undefined) {
-			dispatch({ type: ABORT_CONTENT })
-			return
-		}
+		// if (content === undefined) {
+		// 	dispatch({ type: ABORT_CONTENT })
+		// 	return
+		// } else if (content.resource === undefined) {
+		// 	dispatch({ type: ABORT_CONTENT })
+		// 	return
+		// }
 
 		const { id, published } = content
 
@@ -87,32 +87,35 @@ export const updateContent = content => {
 			published
 		}
 
-		// const settingsResult =
-		await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
-			method: `POST`,
-			data: JSON.stringify(settings),
-			withCredentials: true,
-			headers: {
-				'Content-Type': `application/json`
-			}
-		})
-			.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
+		console.log(settings)
+		console.log(metadata)
 
-		// const metaResult =
-		await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
-			method: `POST`,
-			data: JSON.stringify(metadata),
-			withCredentials: true,
-			headers: {
-				'Content-Type': `application/json`
-			}
-		})
-			.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
+		const settingsResult =
+			await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
+				method: `POST`,
+				data: JSON.stringify(settings),
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`
+				}
+			})
+				.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
-		// dispatch({ type: UPDATE_CONTENT, payload: content })
+		const metaResult =
+			await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
+				method: `POST`,
+				data: JSON.stringify(metadata),
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`
+				}
+			})
+				.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
-		// console.log(`settings`, settingsResult)
-		// console.log(`meta`, metaResult)
+		dispatch({ type: UPDATE_CONTENT, payload: content })
+
+		console.log(`settings`, settingsResult)
+		console.log(`meta`, metaResult)
 
 	}
 }
