@@ -7,7 +7,7 @@ import { Wrapper, InnerContainer, Column, Setting, RatioList, RadioButton } from
 
 class ContentSettings extends Component {
 
-	log = true
+	log = false
 
 	state = {
 		tag: ``,
@@ -37,9 +37,7 @@ class ContentSettings extends Component {
 
 		if (content.resource === undefined) return null
 
-		let { keywords } = content.resource
-
-		if (typeof keywords === `string`) keywords = keywords.split(`,`)
+		const { keywords, description } = content.resource
 
 		return <Wrapper active={editing}>
 			<InnerContainer>
@@ -71,7 +69,7 @@ class ContentSettings extends Component {
 
 				<Column>
 					<h4>Description</h4>
-					<textarea rows={4} onChange={handleDescription} value={content.description} />
+					<textarea rows={4} onChange={handleDescription} value={description} />
 				</Column>
 
 				<Column>

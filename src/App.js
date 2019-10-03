@@ -30,7 +30,7 @@ import {
 
 class App extends Component {
 
-	log = true
+	log = false
 
 	shouldComponentUpdate = (nextProps, nextState) => {
 

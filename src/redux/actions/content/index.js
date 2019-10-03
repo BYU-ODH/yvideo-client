@@ -1,5 +1,7 @@
 import { ABORT_CONTENT, ERROR_CONTENT, START_CONTENT, UPDATE_CONTENT } from 'redux/actions/types'
 
+import { diff, objectIsEmpty } from 'js/util'
+
 import axios from 'axios'
 
 const { REACT_APP_STALE_TIME, REACT_APP_YVIDEO_SERVER } = process.env
@@ -37,9 +39,7 @@ export const abortGetContent = () => {
 }
 
 export const updateContent = content => {
-	return async dispatch => {
-
-		console.log(content)
+	return async (dispatch, getState) => {
 
 		// delete these once you fix it
 		if (content === undefined) {
@@ -50,50 +50,56 @@ export const updateContent = content => {
 			return
 		}
 
-		const { id, published } = content
+		const prevState = getState()
 
-		const {
-			title,
-			description,
-			keywords
-		} = content.resource
+		const contentDiff = diff(prevState.contentCache.content[content.id], content)
 
-		const {
-			captionTrack,
-			annotationDocument,
-			targetLanguages,
-			aspectRatio,
-			showCaptions,
-			showAnnotations,
-			allowDefinitions,
-			showTranscripts,
-			showWordList
-		} = content.settings
+		if (!objectIsEmpty(contentDiff)) {
 
-		const settings = {
-			captionTrack,
-			annotationDocument,
-			targetLanguages,
-			aspectRatio,
-			showCaptions,
-			showAnnotations,
-			allowDefinitions,
-			showTranscripts,
-			showWordList
-		}
+			const { id, published } = content
 
-		const metadata = {
-			title,
-			description,
-			keywords,
-			published
-		}
+			const {
+				title,
+				description,
+				keywords
+			} = content.resource
 
-		console.log(settings)
-		console.log(metadata)
+			const {
+				captionTrack,
+				annotationDocument,
+				targetLanguages,
+				aspectRatio,
+				showCaptions,
+				showAnnotations,
+				allowDefinitions,
+				showTranscripts,
+				showWordList
+			} = content.settings
 
-		const settingsResult =
-			await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
+			const settings = {
+				captionTrack,
+				annotationDocument,
+				targetLanguages,
+				aspectRatio,
+				showCaptions,
+				showAnnotations,
+				allowDefinitions,
+				showTranscripts,
+				showWordList
+			}
+
+			const metadata = {
+				title,
+				description,
+				keywords,
+				published
+			}
+
+			// console.log(`settings request: `, settings)
+			// console.log(`metadata request: `, metadata)
+
+			// const settingsResult = await
+			axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, {
 				method: `POST`,
 				data: JSON.stringify(settings),
 				withCredentials: true,
@@ -103,8 +109,8 @@ export const updateContent = content => {
 			})
 				.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
-		const metaResult =
-			await axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
+			// const metaResult = await
+			axios(`${REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, {
 				method: `POST`,
 				data: JSON.stringify(metadata),
 				withCredentials: true,
@@ -114,10 +120,14 @@ export const updateContent = content => {
 			})
 				.catch(err => dispatch({ type: ERROR_CONTENT, error: err }))
 
-		dispatch({ type: UPDATE_CONTENT, payload: content })
+			dispatch({ type: UPDATE_CONTENT, payload: content })
 
-		console.log(`settings`, settingsResult)
-		console.log(`meta`, metaResult)
+			console.log(`Content Updated.`)
+
+			// console.log(`settings response: `, settingsResult)
+			// console.log(`metadata response: `, metaResult)
+
+		} else console.warn(`No changes detected. Update Aborted.`)
 
 	}
 }

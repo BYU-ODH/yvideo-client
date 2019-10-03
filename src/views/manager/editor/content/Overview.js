@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { getResources, updateContent } from 'redux/actions'
 
 import ContentSettings from './contentSettings/ContentSettings'
-// import Content from 'models/Content'
 
 import {
 	Container,
@@ -33,7 +32,7 @@ class Overview extends Component {
 			resource: null
 		}
 
-		this.log = true
+		this.log = false
 
 		if (this.log) console.warn(`Overview: constructor`)
 	}
@@ -85,28 +84,29 @@ class Overview extends Component {
 			}))
 		},
 		handleDescription: e => {
+			const { value } = e.target
 			this.setState(prevState => ({
 				content: {
 					...prevState.content,
-					description: e.target.value,
 					resource: {
 						...prevState.content.resource,
-						description: e.target.value
-					},
-					settings: {
-						...prevState.content.settings,
-						description: e.target.value
+						description: value
 					}
+					// settings: {
+					// 	...prevState.content.settings,
+					// 	description: value
+					// }
 				}
 			}))
 		},
 		handleRatio: e => {
+			const { value } = e.target
 			this.setState(prevState => ({
 				content: {
 					...prevState.content,
 					settings: {
 						...prevState.content.settings,
-						aspectRatio: e.target.value
+						aspectRatio: value
 					}
 				}
 			}))
@@ -124,12 +124,13 @@ class Overview extends Component {
 		},
 		removeTag: e => {
 			e.preventDefault()
+			const { value } = e.target.dataset
 			this.setState(prevState => ({
 				content: {
 					...prevState.content,
 					resource: {
 						...prevState.content.resource,
-						keywords: prevState.content.resource.keywords.filter(item => item !== e.target.dataset.value)
+						keywords: prevState.content.resource.keywords.filter(item => item !== value)
 					}
 				}
 			}))
@@ -156,31 +157,38 @@ class Overview extends Component {
 		if (this.log) console.log(`state changes:`, stateDiff)
 
 		const resourcesFetched = this.props.resourceCache.lastFetched !== nextProps.resourceCache.lastFetched
-		const resourceStateChanged = stateDiff.hasOwnProperty(`resource`)
 		const editingChanged = stateDiff.hasOwnProperty(`editing`)
+
+		const stateResourceChanged = stateDiff.hasOwnProperty(`resource`)
 		const stateContentChanged = stateDiff.hasOwnProperty(`content`)
+
+		const contentPropChanged = propDiff.hasOwnProperty(`content`)
 
 		if (this.log) {
 			console.table({
 				resourcesFetched: {
 					value: resourcesFetched
 				},
-				resourceStateChanged: {
-					value: resourceStateChanged
-				},
 				editingChanged: {
 					value: editingChanged
 				},
+				stateResourceChanged: {
+					value: stateResourceChanged
+				},
 				stateContentChanged: {
 					value: stateContentChanged
+				},
+				contentPropChanged: {
+					value: contentPropChanged
 				}
 			})
 		}
 
 		const changed = resourcesFetched
-			|| resourceStateChanged
+			|| stateResourceChanged
 			|| editingChanged
 			|| stateContentChanged
+			|| contentPropChanged
 
 		if (this.log) console.log(`%c ${changed ? `RENDER` : `NO RENDER`} `, `background: ${changed ? `Maroon` : `Teal`}`)
 
@@ -207,8 +215,6 @@ class Overview extends Component {
 		} = content.settings
 
 		const { isFetching } = this.props.resourceCache
-
-		if (isFetching) return null
 
 		return (
 			<Container>
@@ -259,11 +265,15 @@ class Overview extends Component {
 		if (this.log) console.log(`state changes:`, stateDiff)
 
 		const resourcesFetched = prevProps.resourceCache.lastFetched !== this.props.resourceCache.lastFetched
+		const contentPropChanged = propDiff.hasOwnProperty(`content`)
 
 		if (this.log) {
 			console.table({
 				resourcesFetched: {
 					value: resourcesFetched
+				},
+				contentPropChanged: {
+					value: contentPropChanged
 				}
 			})
 		}
@@ -276,7 +286,17 @@ class Overview extends Component {
 			this.setState((_prevState, props) => ({
 				resource: props.resourceCache.resources[props.content.resourceId]
 			}))
-		} else if (this.log) console.log(`%c NO ACTION `, `background: Gray`)
+		}
+
+		if (contentPropChanged) {
+			if (this.log) console.log(`%c SETTING STATE `, `background: Teal`)
+			this.setState((_prevState, props) => ({
+				content: props.content
+			}))
+		}
+
+		if (!resourcesFetched && !contentPropChanged)
+			if (this.log) console.log(`%c NO ACTION `, `background: Gray`)
 
 		if (this.log) console.groupEnd(`Overview: componentDidUpdate`)
 
@@ -285,8 +305,7 @@ class Overview extends Component {
 }
 
 const mapStateToProps = state => ({
-	resourceCache: state.resourceCache,
-	contentCache: state.contentCache
+	resourceCache: state.resourceCache
 })
 
 const mapDispatchToProps = {

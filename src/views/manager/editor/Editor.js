@@ -36,7 +36,7 @@ class Editor extends Component {
 			isContent: true
 		}
 
-		this.log = true
+		this.log = false
 
 		if (this.log) console.warn(`Editor: constructor`)
 	}
@@ -130,20 +130,24 @@ class Editor extends Component {
 		const { collection } = this.props
 		const { content } = this.props.contentCache
 
-		// if (this.log) console.log(`Editor: render: state collection: `, { collection })
-
 		if (collection === undefined || collection === null)
 			return `loading...`
 		else {
 			return (
 				<Container>
 					<header>
-						<div>
+						<div className='title'>
 							<h6>{collection.name}</h6>
 						</div>
 						<div>
-							<PublishButton published={collection.published} onClick={this.functions.togglePublish}>{collection.published ? `Unpublish` : `Publish`}</PublishButton>
-							<ArchiveButton onClick={this.functions.archive}>Archive</ArchiveButton>
+							{collection.archived ?
+								<p>(archived)</p>
+								:
+								<>
+									<PublishButton published={collection.published} onClick={this.functions.togglePublish}>{collection.published ? `Unpublish` : `Publish`}</PublishButton>
+									<ArchiveButton onClick={this.functions.archive}>Archive</ArchiveButton>
+								</>
+							}
 						</div>
 					</header>
 					<TabHeader>
@@ -156,8 +160,7 @@ class Editor extends Component {
 							isContent ?
 								collection.content.map(item => {
 									const thisContent = content[item.id]
-									return thisContent === undefined ||
-										<Overview key={item.id} collectionId={collection.id} content={thisContent} />
+									return <Overview key={item.id} collectionId={collection.id} content={thisContent} />
 								})
 								:
 								<Permissions collection={collection} />

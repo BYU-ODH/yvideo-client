@@ -33,6 +33,8 @@ export const getResources = (resourceId = null, callback = () => { }) => {
 				resource.resources[item.type].push(result.data.resource)
 			}))
 
+			resource.keywords = resource.keywords.split(`,`)
+
 			dispatch({ type: UPDATE_RESOURCES, payload: resource })
 			callback(resource)
 
