@@ -1,31 +1,16 @@
 import React, { Component } from 'react'
 
-import { Container, Icon, Preview } from './styles'
+import { Container, Icon } from './styles'
+import LazyImage from 'components/lazyImg/LazyImage'
 
 class ListItem extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			img: props.data.thumbnail,
-			loaded: false
-		}
-	}
-
-	componentDidMount = () => {
-		const temp = new Image()
-		temp.src = this.state.img
-		temp.onload = () => {
-			this.setState({ loaded: true })
-		}
-	}
-
 	render() {
+
 		const { id, name, thumbnail, translation, captions, annotations } = this.props.data
-		const { loaded } = this.state
 
 		return (
 			<Container to={`/player/${id}`}>
-				<Preview src={thumbnail} loaded={loaded} />
+				<LazyImage src={thumbnail} height='3.5rem' width='5.5rem' heightSm='3.5rem' widthSm='5.5rem' />
 				<div className='name'>
 					<h4>{name}</h4>
 					<ul>

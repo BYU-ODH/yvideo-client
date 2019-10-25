@@ -60,7 +60,7 @@ export class Dashboard extends Component {
 				<Content>
 					{
 						modRec !== undefined && modRec.length !== 0 ?
-						modRec.map(item => <PreviewVideo key={item.id} data={item} />)
+							modRec.map(item => <PreviewVideo key={item.id} data={item} />)
 							:
 							<PreviewEmpty>no videos :(</PreviewEmpty>
 					}

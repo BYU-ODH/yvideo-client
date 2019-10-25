@@ -1,17 +1,8 @@
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 import translation from 'assets/collections/videoOptions/translation.svg'
 import captions from 'assets/collections/videoOptions/captions.svg'
 import annotations from 'assets/collections/videoOptions/annotations.svg'
-
-const shimmer = keyframes`
-	0% {
-	background-position: -30rem 0;
-	}
-	100% {
-		background-position: 30rem 0;
-	}
-`
 
 export const Container = styled.div`
 	padding: 2rem;
@@ -87,26 +78,6 @@ export const Icon = styled.li`
 		background: url(${annotations}) center no-repeat;
 		display: ${props => props.checked ? `block` : `none`};
 	}
-`
-
-export const Placeholder = styled.div`
-	width: 10rem;
-	height: 6.1rem;
-	background-color: #eee;
-	background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
-	background-repeat: no-repeat;
-
-	animation: ${shimmer} 2s linear infinite;
-	animation-fill-mode: forwards;
-`
-
-export const Thumbnail = styled.div`
-	width: 10rem;
-	height: 6.1rem;
-	background-color: #eee;
-	background-size: no-repeat;
-	background-size: cover;
-	background-image: url(${props => props.src});
 `
 
 export const TitleEdit = styled.input`
