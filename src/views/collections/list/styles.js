@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
+import styled from 'styled-components'
 
 import { Link } from 'react-router-dom'
 
@@ -51,15 +51,6 @@ export const Body = styled.div`
 	overflow: hidden;
 `
 
-const shimmer = keyframes`
-	0% {
-		background-position: -10rem 0;
-	}
-	100% {
-			background-position: 10rem 0;
-	}
-`
-
 export const Container = styled(Link)`
 	display: grid;
 	grid-template-columns: 18rem auto;
@@ -86,28 +77,6 @@ export const Container = styled(Link)`
 		display: grid;
 		grid-template-columns: repeat(3, 2rem);
 		grid-gap: .5rem;
-	}
-`
-
-export const Preview = styled.div`
-	height: 3.5rem;
-	width: 5.5rem;
-
-	${
-	props => !props.loaded ?
-		css`
-			animation: ${shimmer} 2s linear 1s infinite;
-			animation-fill-mode: forwards;
-			background-color: #eee;
-			background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
-			background-repeat: no-repeat;
-		`
-		:
-		css`
-			background: url(${props => props.src}) center no-repeat;
-			background-color: gray;
-			background-size: cover;
-		`
 	}
 `
 

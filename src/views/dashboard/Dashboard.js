@@ -12,6 +12,7 @@ import { Container, Content, PreviewEmpty } from "./styles";
 import { Agent } from "https";
 
 export class Dashboard extends Component {
+
   constructor(props) {
     super(props);
     this.state = {

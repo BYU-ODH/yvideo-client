@@ -1,34 +1,19 @@
 import React, { Component } from 'react'
 
-import { Preview, PreviewBackground } from './styles'
+import { Preview } from './styles'
 
 import { Link } from 'react-router-dom'
 
+import LazyImage from 'components/lazyImg/LazyImage'
+
 class PreviewVideo extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			img: props.data.thumbnail,
-			title: props.data.title,
-			loaded: false
-		}
-	}
-
-	componentWillMount() {
-		const temp = new Image()
-		temp.src = this.state.img
-		temp.onload = () => {
-			this.setState({ loaded: true })
-		}
-	}
-
 	render() {
-		const { thumbnail, name, collection, contentId } = this.props.data
-		const { loaded } = this.state
+		const { thumbnail, name, collection, id } = this.props.data
+
 		return (
-			<Link to={`/player/${contentId}`}>
+			<Link to={`/player/${id}`}>
 				<Preview>
-					<PreviewBackground src={thumbnail} loaded={loaded} />
+					<LazyImage src={thumbnail} />
 					<p>{name}</p>
 					<p className='gray'>{collection}</p>
 				</Preview>
