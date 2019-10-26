@@ -1,3 +1,26 @@
 {
-	"workbench.colorCustomizations": {}
+	"eslint.alwaysShowStatus": true,
+	"eslint.autoFixOnSave": true,
+	"eslint.packageManager": "npm",
+	"eslint.validate": [
+		{
+			"language": "javascript",
+			"autoFix": true
+		},
+		{
+			"language": "javascriptreact",
+			"autoFix": true
+		}
+	],
+	"eslint.lintTask.enable": true,
+	"editor.renderWhitespace": "all",
+	"files.trimTrailingWhitespace": true,
+	"editor.minimap.renderCharacters": false,
+	"emmet.showSuggestionsAsSnippets": true,
+	"editor.tabSize": 2,
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"javascript.format.semicolons": "remove",
+	"npm.enableScriptExplorer": true,
+	"typescript.format.enable": false
 }

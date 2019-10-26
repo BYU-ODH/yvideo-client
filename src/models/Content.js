@@ -29,26 +29,26 @@ export default class Content {
 
 	constructor() {
 
-			this.authKey = ``
-			this.collectionId = -1
-			this.contentType = ``
-			this.dateValidated = ``
-			this.description = ``
-			this.expired = false
-			this.fullVideo = false
-			this.id = null
-			this.isCopyrighted = false
-			this.name = ``
-			this.physicalCopyExists = false
-			this.published = false
-			this.requester = ``
-			this.resourceId = ``
-			this.thumbnail = ``
-			this.views = 0
-			this.resource = {
-				keywords: []
-			}
-			this.settings = new ContentSettings()
+		this.authKey = ``
+		this.collectionId = -1
+		this.contentType = ``
+		this.dateValidated = ``
+		this.description = ``
+		this.expired = false
+		this.fullVideo = false
+		this.id = null
+		this.isCopyrighted = false
+		this.name = ``
+		this.physicalCopyExists = false
+		this.published = false
+		this.requester = ``
+		this.resourceId = ``
+		this.thumbnail = ``
+		this.views = 0
+		this.resource = {
+			keywords: []
+		}
+		this.settings = new ContentSettings()
 	}
 
 	authKey = String

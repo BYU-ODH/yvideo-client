@@ -2,27 +2,10 @@
 	"name": "yvideo-client-restart",
 	"version": "0.1.0",
 	"private": true,
-	"dependencies": {
-		"@types/react-redux": "^7.0.6",
-		"axios": "^0.19.0",
-		"deep-object-diff": "^1.1.0",
-		"eslint-plugin-react-hooks": "^1.5.0",
-		"js-cookie": "^2.2.0",
-		"react": "^16.8.6",
-		"react-dom": "^16.8.6",
-		"react-redux": "^7.1.0",
-		"react-scripts": "3.0.0",
-		"redux": "^4.0.1",
-		"redux-thunk": "^2.3.0",
-		"uuid": "^3.3.2",
-		"yvideo-editorwidgets": "^1.0.4",
-		"yvideojs": "^1.1.8"
-	},
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"test": "react-scripts test"
 	},
 	"browserslist": [
 		">0.2%",
@@ -30,107 +13,25 @@
 		"not ie <= 11",
 		"not op_mini all"
 	],
-	"devDependencies": {
-		"react-router-dom": "^4.3.1",
-		"styled-components": "^4.2.0"
+	"dependencies": {
+		"axios": "^0.19.0",
+		"deep-object-diff": "^1.1.0",
+		"js-cookie": "^2.2.0",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6",
+		"react-redux": "^7.1.0",
+		"react-router-dom": "^5.1.2",
+		"react-scripts": "3.0.0",
+		"redux": "^4.0.1",
+		"redux-thunk": "^2.3.0",
+		"styled-components": "^4.4.0",
+		"uuid": "^3.3.2",
+		"yvideo-editorwidgets": "^1.0.4",
+		"yvideojs": "^1.1.8"
 	},
-	"eslintConfig": {
-		"extends": "react-app",
-		"parser": "babel-eslint",
-		"env": {
-			"es6": true
-		},
-		"plugins": [
-			"react",
-			"react-hooks"
-		],
-		"parserOptions": {
-			"ecmaFeatures": {
-				"jsx": true,
-				"modules": true
-			}
-		},
-		"rules": {
-			"semi": [
-				"error",
-				"never"
-			],
-			"quotes": [
-				"error",
-				"backtick"
-			],
-			"comma-dangle": [
-				"error",
-				"never"
-			],
-			"no-extra-parens": [
-				"error",
-				"all"
-			],
-			"curly": [
-				"error",
-				"multi-or-nest"
-			],
-			"dot-location": [
-				"error",
-				"property"
-			],
-			"eqeqeq": [
-				"error",
-				"always"
-			],
-			"no-extra-bind": "error",
-			"no-multi-spaces": "error",
-			"yoda": [
-				"error",
-				"never"
-			],
-			"array-bracket-newline": [
-				"error",
-				{
-					"multiline": true
-				}
-			],
-			"array-bracket-spacing": [
-				"error",
-				"never"
-			],
-			"array-element-newline": [
-				"error",
-				{
-					"multiline": true
-				}
-			],
-			"block-spacing": "error",
-			"brace-style": "error",
-			"func-call-spacing": [
-				"error",
-				"never"
-			],
-			"jsx-quotes": [
-				"error",
-				"prefer-single"
-			],
-			"no-multiple-empty-lines": [
-				"error",
-				{
-					"max": 1,
-					"maxEOF": 1
-				}
-			],
-			"no-trailing-spaces": "warn",
-			"no-unneeded-ternary": "error",
-			"spaced-comment": [
-				"error",
-				"always"
-			],
-			"constructor-super": "error",
-			"no-var": "error",
-			"object-shorthand": "error",
-			"prefer-arrow-callback": "error",
-			"prefer-const": "error",
-			"react-hooks/rules-of-hooks": "error",
-			"react-hooks/exhaustive-deps": "warn"
-		}
+	"devDependencies": {
+		"eslint-plugin-import-quotes": "0.0.1",
+		"eslint-plugin-react-hooks": "^2.2.0",
+		"redux-devtools-extension": "^2.13.8"
 	}
 }

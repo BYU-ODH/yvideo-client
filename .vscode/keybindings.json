@@ -1,0 +1,28 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+	{
+		"key": "shift+alt+f",
+		"command": "-filesExplorer.findInFolder",
+		"when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
+	},
+	{
+		"key": "shift+alt+f",
+		"command": "-editor.action.formatDocument.none",
+		"when": "editorTextFocus && !editorHasDocumentFormattingProvider && !editorHasDocumentFormattingProvider && !editorReadonly"
+	},
+	{
+		"key": "shift+alt+f",
+		"command": "-editor.action.formatDocument",
+		"when": "editorHasDocumentFormattingProvider && editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly"
+	},
+	{
+		"key": "shift+alt+f",
+		"command": "eslint.executeAutofix",
+		"when": " editorLangId == javascript || editorLangId == javascriptreact || editorLangId == typescript || editorLangId == typescriptreact"
+	},
+	{
+		"key": "shift+alt+f",
+		"command": "editor.action.formatDocument",
+		"when": "editorLangId != 'javascript' && editorLangId != 'javascriptreact' && editorLangId != 'typescript' && editorLangId != 'typescriptreact'"
+	}
+]
