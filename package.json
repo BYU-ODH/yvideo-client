@@ -3,18 +3,18 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@types/react-redux": "^7.0.6",
+		"@types/react-redux": "^7.1.5",
 		"axios": "^0.19.0",
 		"deep-object-diff": "^1.1.0",
-		"eslint-plugin-react-hooks": "^1.5.0",
-		"js-cookie": "^2.2.0",
-		"react": "^16.8.6",
-		"react-dom": "^16.8.6",
-		"react-redux": "^7.1.0",
+		"eslint-plugin-react-hooks": "^1.7.0",
+		"js-cookie": "^2.2.1",
+		"react": "^16.11.0",
+		"react-dom": "^16.11.0",
+		"react-redux": "^7.1.1",
 		"react-scripts": "3.0.0",
-		"redux": "^4.0.1",
+		"redux": "^4.0.4",
 		"redux-thunk": "^2.3.0",
-		"uuid": "^3.3.2",
+		"uuid": "^3.3.3",
 		"yvideo-editorwidgets": "^1.0.4",
 		"yvideojs": "^1.1.8"
 	},
@@ -32,7 +32,7 @@
 	],
 	"devDependencies": {
 		"react-router-dom": "^4.3.1",
-		"styled-components": "^4.2.0"
+		"styled-components": "^4.4.0"
 	},
 	"eslintConfig": {
 		"extends": "react-app",
