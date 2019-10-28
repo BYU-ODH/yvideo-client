@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-
 	& > header {
-
 		height: 12rem;
 		padding: 0 3.8rem;
 
@@ -22,29 +20,42 @@ export const Container = styled.div`
 		}
 	}
 `
+export const TitleEdit = styled.input`
+	margin-left: -0.3rem;
+	font-size: 1.8rem;
+	font-weight: bold;
+`
+
+export const TitleEditButton = styled.div`
+	color: ${props => props.editing ? `#0582CA` : `#a4a4a4;`};
+	font-weight: bold;
+	cursor: pointer;
+	margin-top: 0;
+	margin-left: 1rem;
+`
 
 export const PublishButton = styled.button`
 	color: white;
 	font-weight: bold;
 	background-color: ${props => props.published ? `#FFBF00` : `#0582CA`};
 
-	letter-spacing: .05rem;
+	letter-spacing: 0.05rem;
 
-	padding: .8rem 1.5rem;
+	padding: 0.8rem 1.5rem;
 	margin-right: 3rem;
 
 	border: none;
-	border-radius: .3rem;
+	border-radius: 0.3rem;
 
 	cursor: pointer;
 	outline: none;
 `
 
 export const ArchiveButton = styled.button`
-	color: #FF4C4C;
+	color: #ff4c4c;
 	font-weight: bold;
 
-	letter-spacing: .05rem;
+	letter-spacing: 0.05rem;
 
 	padding: 0;
 	background: transparent;
@@ -66,7 +77,6 @@ export const Tab = styled.div`
 `
 
 export const TabHeader = styled.div`
-
 	position: absolute;
 	top: 18rem;
 
@@ -84,7 +94,6 @@ export const TabHeader = styled.div`
 		outline: none;
 		cursor: pointer;
 	}
-
 `
 
 export const Selector = styled.div`
@@ -93,12 +102,12 @@ export const Selector = styled.div`
 	bottom: 0;
 	left: ${props => props.isContent ? `2rem` : `12rem`};
 
-	transition: left .3s ease-in-out;
+	transition: left 0.3s ease-in-out;
 
-	height: .25rem;
+	height: 0.25rem;
 	width: 10rem;
 
-	background-color: #0582CA;
+	background-color: #0582ca;
 `
 
 export const NewContent = styled.button`
@@ -108,7 +117,7 @@ export const NewContent = styled.button`
 	margin: 2rem;
 
 	border: none;
-	border-radius: .3rem;
+	border-radius: 0.3rem;
 
 	background-color: #eee;
 

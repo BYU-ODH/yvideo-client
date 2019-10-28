@@ -11,6 +11,8 @@ import CreateContent from 'components/forms/CreateContent'
 
 import {
 	Container,
+	TitleEdit,
+	TitleEditButton,
 	PublishButton,
 	ArchiveButton,
 	TabHeader,
@@ -29,38 +31,53 @@ import { objectIsEmpty, diff } from 'js/util'
  */
 
 class Editor extends Component {
-
 	constructor(props) {
 		super(props)
 		this.state = {
-			isContent: true
+			isContent: true,
+			editing: false,
+			collectionName: props.collection.name
 		}
 
 		this.log = false
 
 		if (this.log) console.warn(`Editor: constructor`)
+		console.warn(`Props:`, props)
 	}
+
+	handlers = {
+		toggleEdit: e => {
+			//   e.preventDefault();
+			console.log(`clicked`)
+			const editing = this.state.editing
+			this.setState({ editing: !editing })
+			// TODO Add validation for collection name
+		},
+		handleNameChange: e => {
+			const { value } = e.target
+			this.setState({ collectionName: value })
+		}
+	};
 
 	functions = {
 		fetchContent: collection => {
 			if (this.log) console.log(`Editor: fetchContent`)
 
 			if (collection !== null) {
-
 				const contentIds = collection.content.map(item => item.id)
 
-				if (contentIds.length > 0)
-					this.props.getContent(contentIds)
+				if (contentIds.length > 0) this.props.getContent(contentIds)
 			}
 		},
-
 		togglePublish: e => {
 			e.preventDefault()
 			const { collection } = this.props
-			this.props.updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
+			this.props.updateCollectionStatus(
+				collection.id,
+				collection.published ? `unpublish` : `publish`
+			)
 			this.functions.fetchContent(collection)
 		},
-
 		createContent: () => {
 			this.props.toggleModal({
 				component: CreateContent,
@@ -78,74 +95,121 @@ class Editor extends Component {
 		setTab: isContent => _e => {
 			this.setState({ isContent })
 		}
-	}
+	};
 
-	shouldComponentUpdate = (nextProps, nextState) => {
+	//   shouldComponentUpdate = (nextProps, nextState) => {
+	//     if (this.log) console.groupCollapsed(`Editor: shouldComponentUpdate`);
 
-		if (this.log) console.groupCollapsed(`Editor: shouldComponentUpdate`)
+	//     const propDiff = diff(this.props, nextProps);
+	//     const stateDiff = diff(this.state, nextState);
 
-		const propDiff = diff(this.props, nextProps)
-		const stateDiff = diff(this.state, nextState)
+	//     if (this.log) console.log(`props changes:`, propDiff);
+	//     if (this.log) console.log(`state changes:`, stateDiff);
 
-		if (this.log) console.log(`props changes:`, propDiff)
-		if (this.log) console.log(`state changes:`, stateDiff)
+	//     const collectionPropDiff = diff(
+	//       this.props.collection,
+	//       nextProps.collection
+	//     );
+	//     const collectionStateDiff = diff(
+	//       this.state.collection,
+	//       nextState.collection
+	//     );
+	//     const collectionChanged =
+	//       !objectIsEmpty(collectionPropDiff) || !objectIsEmpty(collectionStateDiff);
 
-		const collectionPropDiff = diff(this.props.collection, nextProps.collection)
-		const collectionStateDiff = diff(this.state.collection, nextState.collection)
-		const collectionChanged = !objectIsEmpty(collectionPropDiff) || !objectIsEmpty(collectionStateDiff)
+	//     const contentFetched =
+	//       this.props.contentCache.lastFetched !==
+	//       nextProps.contentCache.lastFetched;
 
-		const contentFetched = this.props.contentCache.lastFetched !== nextProps.contentCache.lastFetched
+	//     const isContentChanged = stateDiff.hasOwnProperty(`isContent`);
 
-		const isContentChanged = stateDiff.hasOwnProperty(`isContent`)
+	//     if (this.log) {
+	//       console.table({
+	//         collectionChanged: {
+	//           value: collectionChanged
+	//         },
+	//         contentFetched: {
+	//           value: contentFetched
+	//         },
+	//         isContentChanged: {
+	//           value: isContentChanged
+	//         }
+	//       });
+	//     }
 
-		if (this.log) {
-			console.table({
-				collectionChanged: {
-					value: collectionChanged
-				},
-				contentFetched: {
-					value: contentFetched
-				},
-				isContentChanged: {
-					value: isContentChanged
-				}
-			})
-		}
+	//     const changed = collectionChanged || contentFetched || isContentChanged;
 
-		const changed = collectionChanged || contentFetched || isContentChanged
+	//     if (this.log)
+	//       console.log(
+	//         `%c ${changed ? `RENDER` : `NO RENDER`} `,
+	//         `background: ${changed ? `Maroon` : `Teal`}`
+	//       );
 
-		if (this.log) console.log(`%c ${changed ? `RENDER` : `NO RENDER`} `, `background: ${changed ? `Maroon` : `Teal`}`)
+	//     if (this.log) console.groupEnd(`Editor: shouldComponentUpdate`);
 
-		if (this.log) console.groupEnd(`Editor: shouldComponentUpdate`)
-
-		return changed
-	}
+	//     return changed;
+	//   };
 
 	render() {
-
 		if (this.log) console.error(`Editor: render`)
 
-		const { isContent } = this.state
+		const { isContent, editing, collectionName } = this.state
 
 		const { collection } = this.props
 		const { content } = this.props.contentCache
 
-		if (collection === undefined || collection === null)
-			return `loading...`
+		if (collection === undefined || collection === null) return `loading...`
 		else {
 			return (
 				<Container>
 					<header>
-						<div className='title'>
-							<h6>{collection.name}</h6>
+						<div
+							className='title'
+							style={{
+								display: `flex`,
+								alignItems: `center`
+								// TODO Make div align center if editing
+							}}
+						>
+							{editing ?
+								<TitleEdit
+									type='text'
+									value={collectionName}
+									contenteditable='true'
+									onChange={this.handlers.handleNameChange}
+									onKeyPress={event => {
+										if (event.key === `Enter`)
+											this.handlers.toggleEdit()
+
+									}}
+									size={collectionName.length}
+									autoFocus
+								// onChange={handleNameChange}
+								/>
+								:
+								<h6 onClick={this.handlers.toggleEdit}>{collectionName}</h6>
+							}
+							<TitleEditButton
+								editing={editing}
+								onClick={this.handlers.toggleEdit}
+							>
+								{editing ? `Save` : `Edit`}
+							</TitleEditButton>
 						</div>
 						<div>
 							{collection.archived ?
 								<p>(archived)</p>
 								:
 								<>
-									<PublishButton published={collection.published} onClick={this.functions.togglePublish}>{collection.published ? `Unpublish` : `Publish`}</PublishButton>
-									<ArchiveButton onClick={this.functions.archive}>Archive</ArchiveButton>
+									<PublishButton
+										published={collection.published}
+										onClick={this.functions.togglePublish}
+									>
+										{collection.published ? `Unpublish` : `Publish`}
+									</PublishButton>
+									<ArchiveButton onClick={this.functions.archive}>
+										Archive
+									</ArchiveButton>
 								</>
 							}
 						</div>
@@ -156,17 +220,24 @@ class Editor extends Component {
 						<Selector isContent={isContent} />
 					</TabHeader>
 					<Tab>
-						{
-							isContent ?
-								collection.content.map(item => {
-									const thisContent = content[item.id]
-									return <Overview key={item.id} collectionId={collection.id} content={thisContent} />
-								})
-								:
-								<Permissions collection={collection} />
+						{isContent ?
+							collection.content.map(item => {
+								const thisContent = content[item.id]
+								return (
+									<Overview
+										key={item.id}
+										collectionId={collection.id}
+										content={thisContent}
+									/>
+								)
+							})
+							:
+							<Permissions collection={collection} />
 						}
 						{isContent &&
-							<NewContent onClick={this.functions.createContent}><Icon src={plus} /></NewContent>
+							<NewContent onClick={this.functions.createContent}>
+								<Icon src={plus} />
+							</NewContent>
 						}
 					</Tab>
 				</Container>
@@ -179,10 +250,9 @@ class Editor extends Component {
 
 		if (this.props.collection !== undefined)
 			this.functions.fetchContent(this.props.collection)
-	}
+	};
 
 	componentDidUpdate = (prevProps, prevState) => {
-
 		if (this.log) console.warn(`Editor: componentDidUpdate`)
 
 		if (this.log) console.groupCollapsed(`Editor: componentDidUpdate`)
@@ -193,8 +263,14 @@ class Editor extends Component {
 		if (this.log) console.log(`props changes:`, propDiff)
 		if (this.log) console.log(`state changes:`, stateDiff)
 
-		const collectionPropDiff = diff(this.props.collection, prevProps.collection)
-		const collectionStateDiff = diff(this.state.collection, prevState.collection)
+		const collectionPropDiff = diff(
+			this.props.collection,
+			prevProps.collection
+		)
+		const collectionStateDiff = diff(
+			this.state.collection,
+			prevState.collection
+		)
 
 		if (this.log) console.log(`collection prop changes:`, collectionPropDiff)
 		if (this.log) console.log(`collection state changes:`, collectionStateDiff)
@@ -219,9 +295,7 @@ class Editor extends Component {
 		} else if (this.log) console.log(`%c NO ACTION `, `background: Gray`)
 
 		if (this.log) console.groupEnd(`Editor: componentDidUpdate`)
-
-	}
-
+	};
 }
 
 const mapStateToProps = state => ({
@@ -235,4 +309,7 @@ const mapDispatchToProps = {
 	updateCollectionStatus
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Editor)
