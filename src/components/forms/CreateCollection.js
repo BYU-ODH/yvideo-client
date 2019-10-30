@@ -62,7 +62,7 @@ export class CreateCollection extends Component {
 		}).catch(err => console.error(err))
 			.then(() => {
 				toggleModal()
-				const privileged = user.permissions.includes(`admin`)
+				const privileged = user.roles.includes(`admin`)
 				getCollections(privileged, true)
 				getCollections()
 			})

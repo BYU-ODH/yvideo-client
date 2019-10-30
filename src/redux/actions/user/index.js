@@ -22,7 +22,7 @@ export const getUser = callback => {
 
 export const getUserInfo = callback => {
 	return async dispatch => {
-		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/auth`, { withCredentials: true })
+		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user`, { withCredentials: true })
 			.then(result => {
 				const json = result.data
 				dispatch({ type: GET_USER_INFO, payload: json })
@@ -47,7 +47,7 @@ export const getRecent = callback => {
 				typeof callback === `function` && callback(json)
 			})
 			.catch(err => {
-				dispatch({type: GET_RECENT, payload: fakedata})
+				dispatch({ type: GET_RECENT, payload: fakedata })
 				throw err
 			})
 	}

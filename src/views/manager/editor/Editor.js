@@ -6,13 +6,12 @@ import { getContent, toggleModal, updateCollectionStatus } from 'redux/actions'
 
 import Overview from './content/Overview'
 import Permissions from './permissions/Permissions'
+import TitleEdit from './title/TitleEdit'
 
 import CreateContent from 'components/forms/CreateContent'
 
 import {
 	Container,
-	TitleEdit,
-	TitleEditButton,
 	PublishButton,
 	ArchiveButton,
 	TabHeader,
@@ -34,9 +33,7 @@ class Editor extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isContent: true,
-			editing: false,
-			collectionName: props.collection.name
+			isContent: true
 		}
 
 		this.log = false
@@ -46,13 +43,6 @@ class Editor extends Component {
 	}
 
 	handlers = {
-		toggleEdit: e => {
-			//   e.preventDefault();
-			console.log(`clicked`)
-			const editing = this.state.editing
-			this.setState({ editing: !editing })
-			// TODO Add validation for collection name
-		},
 		handleNameChange: e => {
 			const { value } = e.target
 			this.setState({ collectionName: value })
@@ -153,7 +143,7 @@ class Editor extends Component {
 	render() {
 		if (this.log) console.error(`Editor: render`)
 
-		const { isContent, editing, collectionName } = this.state
+		const { isContent } = this.state
 
 		const { collection } = this.props
 		const { content } = this.props.contentCache
@@ -164,39 +154,15 @@ class Editor extends Component {
 				<Container>
 					<header>
 						<div
-							className='title'
 							style={{
 								display: `flex`,
 								alignItems: `center`
 								// TODO Make div align center if editing
-							}}
-						>
-							{editing ?
-								<TitleEdit
-									type='text'
-									value={collectionName}
-									contenteditable='true'
-									onChange={this.handlers.handleNameChange}
-									onKeyPress={event => {
-										if (event.key === `Enter`)
-											this.handlers.toggleEdit()
-
-									}}
-									size={collectionName.length}
-									autoFocus
-								// onChange={handleNameChange}
-								/>
-								:
-								<h6 onClick={this.handlers.toggleEdit}>{collectionName}</h6>
-							}
-							<TitleEditButton
-								editing={editing}
-								onClick={this.handlers.toggleEdit}
+							}}>
+							<TitleEdit
+								collection={collection}
 							>
-								{editing ? `Save` : `Edit`}
-							</TitleEditButton>
-						</div>
-						<div>
+							</TitleEdit>
 							{collection.archived ?
 								<p>(archived)</p>
 								:
