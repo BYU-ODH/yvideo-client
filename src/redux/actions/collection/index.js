@@ -30,16 +30,24 @@ export const getCollections = (authorized = false, force = false) => {
 
 export const updateCollectionName = (collectionId, collectionName) => {
 	return async (dispatch, getState) => {
-		// dispatch({ type: UPDATE_COLLECTIONS })
+		dispatch({ type: START_COLLECTIONS })
+
 		const currentState = getState().collectionsCache.collections[collectionId]
+
 		console.group()
 		console.warn(`Update Collection Name:`)
 		console.warn(`collection name:`, collectionName)
 		console.warn(`collection id:`, collectionId)
 		console.groupEnd()
 
+		currentState.name = collectionName
+
 		await axios(`${REACT_APP_YVIDEO_SERVER}/collection/${collectionId}`, { method: `post`, data: { name: collectionName }, withCredentials: true })
 			.catch(err => dispatch({ type: ERROR_COLLECTIONS, error: err }))
+
+		console.warn(`About to update state:`, currentState)
+
+		dispatch({ type: UPDATE_COLLECTIONS, payload: { [collectionId]: currentState } })
 
 	}
 }
@@ -77,6 +85,6 @@ export const updateCollectionStatus = (collectionId, action) => {
 		await axios(`${REACT_APP_YVIDEO_SERVER}/collection/${collectionId}/${action}`, { withCredentials: true })
 			.catch(err => dispatch({ type: ERROR_COLLECTIONS, error: err }))
 
-		dispatch({ type: UPDATE_COLLECTIONS, paload: { [collectionId]: currentState } })
+		dispatch({ type: UPDATE_COLLECTIONS, payload: { [collectionId]: currentState } })
 	}
 }
