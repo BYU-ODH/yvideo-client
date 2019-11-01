@@ -220,7 +220,7 @@ export class CreateContent extends Component {
 
 		toggleModal()
 
-		const privileged = user.permissions.includes(`admin`)
+		const privileged = user.roles.includes(`admin`)
 		await getCollections(privileged, true)
 
 		const contentIds = collectionsCache.collections[modal.collectionId].content.map(item => item.id)
@@ -249,7 +249,7 @@ export class CreateContent extends Component {
 
 		toggleModal()
 
-		const privileged = user.permissions.includes(`admin`)
+		const privileged = user.roles.includes(`admin`)
 		await getCollections(privileged, true)
 
 		const contentIds = [...collectionsCache.collections[modal.collectionId].content.map(item => item.id), results.data.id]

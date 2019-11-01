@@ -105,7 +105,7 @@ class Manager extends Component {
 					</AccordionMenu>
 
 					{
-						this.props.user.permissions.includes(`admin`) && <AccordionMenu header={`Archived`}>
+						this.props.user.roles.includes(`admin`) && <AccordionMenu header={`Archived`}>
 							{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
 						</AccordionMenu>
 					}
@@ -131,8 +131,8 @@ class Manager extends Component {
 
 		if (this.log) console.warn(`Manager: componentDidMount`)
 
-		const { getCollections, adminOn, user = { permissions: [] } } = this.props
-		const privileged = user.permissions.includes(`admin`)
+		const { getCollections, adminOn, user = { roles: [] } } = this.props
+		const privileged = user.roles.includes(`admin`)
 		getCollections(privileged)
 		adminOn()
 	}

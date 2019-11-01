@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { getContent, toggleModal, updateCollectionStatus } from 'redux/actions'
 
 import Overview from './content/Overview'
-import Permissions from './permissions/Permissions'
+import Roles from './roles/Roles'
 import TitleEdit from './title/TitleEdit'
 
 import CreateContent from 'components/forms/CreateContent'
@@ -182,7 +182,7 @@ class Editor extends Component {
 					</header>
 					<TabHeader>
 						<button onClick={this.functions.setTab(true)}>Content</button>
-						<button onClick={this.functions.setTab(false)}>Permissions</button>
+						<button onClick={this.functions.setTab(false)}>Roles</button>
 						<Selector isContent={isContent} />
 					</TabHeader>
 					<Tab>
@@ -198,7 +198,7 @@ class Editor extends Component {
 								)
 							})
 							:
-							<Permissions collection={collection} />
+							<Roles collection={collection} />
 						}
 						{isContent &&
 							<NewContent onClick={this.functions.createContent}>
