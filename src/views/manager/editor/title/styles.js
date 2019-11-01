@@ -14,9 +14,11 @@ export const TitleEditButton = styled.div`
 	margin-left: 1rem;
 `
 
-export const TitleWarning = styled.div`
-color: #ff0000;
+export const TitleWarning = styled.p`
+&& {color: #ff0000;
 position: absolute;
+margin: 0;
 top: 2.9rem;
 z-index: 100;
+}
 `

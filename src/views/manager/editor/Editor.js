@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
 
-import { getContent, toggleModal, updateCollectionStatus } from 'redux/actions'
+import { getContent, toggleModal, updateCollectionStatus, updateCollectionName } from 'redux/actions'
 
 import Overview from './content/Overview'
 import Roles from './roles/Roles'
@@ -58,6 +58,10 @@ class Editor extends Component {
 
 				if (contentIds.length > 0) this.props.getContent(contentIds)
 			}
+		},
+		updateCollectionName: collectionName => {
+			const { collection } = this.props
+			this.props.updateCollectionName(collection.id, collectionName)
 		},
 		togglePublish: e => {
 			e.preventDefault()
@@ -153,9 +157,9 @@ class Editor extends Component {
 			return (
 				<Container>
 					<header>
-
 						<TitleEdit
 							collection={collection}
+							save={this.functions.updateCollectionName}
 						>
 						</TitleEdit>
 						<div>
@@ -268,7 +272,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	getContent,
 	toggleModal,
-	updateCollectionStatus
+	updateCollectionStatus,
+	updateCollectionName
 }
 
 export default connect(

@@ -21,8 +21,10 @@ class TitleEdit extends Component {
 			//   e.preventDefault();
 			// console.log(`clicked`)
 			const editing = this.state.editing
+			if (editing === true)
+				this.props.save(this.state.collectionName)
+
 			this.setState({ editing: !editing })
-			// TODO Add validation for collection name
 		},
 		handleNameChange: e => {
 			const { value } = e.target
@@ -64,13 +66,14 @@ class TitleEdit extends Component {
 							onClick={this.handlers.toggleEdit}
 						>
 							{editing ? `Save` : `Edit`}
+							{/* //TODO Change button to include save method */}
 						</TitleEditButton>
 						: null
 					}
 
 					{collectionName.length === 0 ?
 						<TitleWarning>
-							Collection title can not be empty
+							Collection name can not be empty
 						</TitleWarning>
 						: null
 					}
