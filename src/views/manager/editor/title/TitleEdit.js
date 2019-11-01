@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 
 import {
 	Title,
-	TitleEditButton
+	TitleEditButton,
+	TitleWarning
 }
 	from './styles'
 
@@ -18,47 +19,65 @@ class TitleEdit extends Component {
 	handlers = {
 		toggleEdit: e => {
 			//   e.preventDefault();
-			console.log(`clicked`)
+			// console.log(`clicked`)
 			const editing = this.state.editing
 			this.setState({ editing: !editing })
 			// TODO Add validation for collection name
+		},
+		handleNameChange: e => {
+			const { value } = e.target
+			this.setState({ collectionName: value })
 		}
 	}
 
 	render() {
-		const { editing } = this.state
-		const { collectionName } = this.props
+		const { editing, collectionName } = this.state
 
 		return (
-			<header>
-				{editing ?
-					<Title
-						type='text'
-						value={collectionName}
-						contenteditable='true'
-						onChange={this.handlers.handleNameChange}
-						onKeyPress={event => {
-							if (event.key === `Enter`)
-								this.handlers.toggleEdit()
+			<div>
+				<div style={{
+					display: `flex`,
+					alignItems: `center`,
+					position: `relative`
+					// TODO Make div align center if editing
+				}}>
+					{editing ?
+						<Title
+							type='text'
+							value={collectionName}
+							contenteditable='true'
+							onChange={this.handlers.handleNameChange}
+							onKeyPress={event => {
+								if (event.key === `Enter` && collectionName.length > 0)
+									this.handlers.toggleEdit()
+							}}
+							size={collectionName.length}
+							autoFocus
+						// onChange={handleNameChange}
+						/>
+						:
+						<h6 onClick={this.handlers.toggleEdit}>{collectionName}</h6>
+					}
+					{collectionName.length > 0 ?
+						<TitleEditButton
+							editing={editing}
+							onClick={this.handlers.toggleEdit}
+						>
+							{editing ? `Save` : `Edit`}
+						</TitleEditButton>
+						: null
+					}
 
-						}}
-						size={collectionName.length}
-						autoFocus
-					// onChange={handleNameChange}
-					/>
-					:
-					<h6 onClick={this.handlers.toggleEdit}>{collectionName}</h6>
-				}
-				<TitleEditButton
-					editing={editing}
-					onClick={this.handlers.toggleEdit}
-				>
-					{editing ? `Save` : `Edit`}
-				</TitleEditButton>
-			</header>
+					{collectionName.length === 0 ?
+						<TitleWarning>
+							Collection title can not be empty
+						</TitleWarning>
+						: null
+					}
+				</div>
+			</div>
 		)
 	}
-
 }
 
 export default TitleEdit

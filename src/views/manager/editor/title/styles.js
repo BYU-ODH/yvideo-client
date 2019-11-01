@@ -12,4 +12,11 @@ export const TitleEditButton = styled.div`
 	cursor: pointer;
 	margin-top: 0;
 	margin-left: 1rem;
-	`
+`
+
+export const TitleWarning = styled.div`
+color: #ff0000;
+position: absolute;
+top: 2.9rem;
+z-index: 100;
+`

@@ -153,16 +153,12 @@ class Editor extends Component {
 			return (
 				<Container>
 					<header>
-						<div
-							style={{
-								display: `flex`,
-								alignItems: `center`
-								// TODO Make div align center if editing
-							}}>
-							<TitleEdit
-								collection={collection}
-							>
-							</TitleEdit>
+
+						<TitleEdit
+							collection={collection}
+						>
+						</TitleEdit>
+						<div>
 							{collection.archived ?
 								<p>(archived)</p>
 								:
