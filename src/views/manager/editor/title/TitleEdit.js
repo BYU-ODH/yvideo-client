@@ -18,17 +18,20 @@ class TitleEdit extends Component {
 
 	handlers = {
 		toggleEdit: e => {
-			//   e.preventDefault();
-			// console.log(`clicked`)
-			const editing = this.state.editing
+			const { editing } = this.state
 			if (editing === true)
-				this.props.save(this.state.collectionName)
-
+				this.functions.saveCollectionName()
 			this.setState({ editing: !editing })
 		},
 		handleNameChange: e => {
 			const { value } = e.target
 			this.setState({ collectionName: value })
+		}
+	}
+
+	functions = {
+		saveCollectionName: e => {
+			this.props.save(this.state.collectionName)
 		}
 	}
 
@@ -41,7 +44,6 @@ class TitleEdit extends Component {
 					display: `flex`,
 					alignItems: `center`,
 					position: `relative`
-					// TODO Make div align center if editing
 				}}>
 					{editing ?
 						<Title
@@ -66,11 +68,9 @@ class TitleEdit extends Component {
 							onClick={this.handlers.toggleEdit}
 						>
 							{editing ? `Save` : `Edit`}
-							{/* //TODO Change button to include save method */}
 						</TitleEditButton>
 						: null
 					}
-
 					{collectionName.length === 0 ?
 						<TitleWarning>
 							Collection name can not be empty
@@ -80,6 +80,13 @@ class TitleEdit extends Component {
 				</div>
 			</div>
 		)
+	}
+
+	componentDidUpdate(prevProps) {
+		const { collection } = this.props
+		if (prevProps.collection.name !== collection.name)
+			this.setState({ collectionName: collection.name, editing: false })
+
 	}
 }
 

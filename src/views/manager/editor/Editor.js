@@ -91,58 +91,59 @@ class Editor extends Component {
 		}
 	};
 
-	//   shouldComponentUpdate = (nextProps, nextState) => {
-	//     if (this.log) console.groupCollapsed(`Editor: shouldComponentUpdate`);
+	shouldComponentUpdate = (nextProps, nextState) => {
+		if (this.log) console.groupCollapsed(`Editor: shouldComponentUpdate`)
 
-	//     const propDiff = diff(this.props, nextProps);
-	//     const stateDiff = diff(this.state, nextState);
+		const propDiff = diff(this.props, nextProps)
+		const stateDiff = diff(this.state, nextState)
 
-	//     if (this.log) console.log(`props changes:`, propDiff);
-	//     if (this.log) console.log(`state changes:`, stateDiff);
+		if (this.log) console.log(`props changes:`, propDiff)
+		if (this.log) console.log(`state changes:`, stateDiff)
 
-	//     const collectionPropDiff = diff(
-	//       this.props.collection,
-	//       nextProps.collection
-	//     );
-	//     const collectionStateDiff = diff(
-	//       this.state.collection,
-	//       nextState.collection
-	//     );
-	//     const collectionChanged =
-	//       !objectIsEmpty(collectionPropDiff) || !objectIsEmpty(collectionStateDiff);
+		const collectionPropDiff = diff(
+			this.props.collection,
+			nextProps.collection
+		)
+		const collectionStateDiff = diff(
+			this.state.collection,
+			nextState.collection
+		)
+		const collectionChanged =
+			!objectIsEmpty(collectionPropDiff) || !objectIsEmpty(collectionStateDiff)
 
-	//     const contentFetched =
-	//       this.props.contentCache.lastFetched !==
-	//       nextProps.contentCache.lastFetched;
+		const contentFetched =
+			this.props.contentCache.lastFetched !==
+			nextProps.contentCache.lastFetched
 
-	//     const isContentChanged = stateDiff.hasOwnProperty(`isContent`);
+		const isContentChanged = stateDiff.hasOwnProperty(`isContent`)
 
-	//     if (this.log) {
-	//       console.table({
-	//         collectionChanged: {
-	//           value: collectionChanged
-	//         },
-	//         contentFetched: {
-	//           value: contentFetched
-	//         },
-	//         isContentChanged: {
-	//           value: isContentChanged
-	//         }
-	//       });
-	//     }
+		if (this.log) {
+			console.table({
+				collectionChanged: {
+					value: collectionChanged
+				},
+				contentFetched: {
+					value: contentFetched
+				},
+				isContentChanged: {
+					value: isContentChanged
+				}
+			})
+		}
 
-	//     const changed = collectionChanged || contentFetched || isContentChanged;
+		const changed = collectionChanged || contentFetched || isContentChanged
 
-	//     if (this.log)
-	//       console.log(
-	//         `%c ${changed ? `RENDER` : `NO RENDER`} `,
-	//         `background: ${changed ? `Maroon` : `Teal`}`
-	//       );
+		if (this.log) {
+			console.log(
+				`%c ${changed ? `RENDER` : `NO RENDER`} `,
+				`background: ${changed ? `Maroon` : `Teal`}`
+			)
+		}
 
-	//     if (this.log) console.groupEnd(`Editor: shouldComponentUpdate`);
+		if (this.log) console.groupEnd(`Editor: shouldComponentUpdate`)
 
-	//     return changed;
-	//   };
+		return changed
+	};
 
 	render() {
 		if (this.log) console.error(`Editor: render`)
@@ -160,6 +161,7 @@ class Editor extends Component {
 						<TitleEdit
 							collection={collection}
 							save={this.functions.updateCollectionName}
+							key={collection}
 						>
 						</TitleEdit>
 						<div>

@@ -88,3 +88,4 @@ export const updateCollectionStatus = (collectionId, action) => {
 		dispatch({ type: UPDATE_COLLECTIONS, payload: { [collectionId]: currentState } })
 	}
 }
+
