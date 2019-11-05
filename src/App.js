@@ -20,6 +20,7 @@ import Admin from 'views/admin/Admin'
 import Manager from 'views/manager/Manager'
 
 import Error from 'views/error/Error'
+import BasicError from 'views/error/BasicError'
 
 import { MainBody } from './styles'
 
@@ -90,6 +91,8 @@ class App extends Component {
 									<Route path={`/admin/:page`} component={Admin} />
 
 									<Route path={`/manager/:id?`} component={Manager} />
+
+									<Route path='/error/:status' component={BasicError} />
 
 									<Route render={() => <Error error='404' message={`You've wandered too far`} />} />
 								</Switch>

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 
-import { Preview, Wrapper, IconBox } from './styles'
+import { Preview, IconBox } from './styles'
+
+import { Link } from 'react-router-dom'
 
 import PreviewIcon from 'assets/icon.svg'
+import LazyImage from 'components/lazyImg/LazyImage'
 
 class PreviewCollection extends Component {
 	constructor(props) {
@@ -25,16 +28,20 @@ class PreviewCollection extends Component {
 	render() {
 		const { thumbnail, name, content } = this.props.data
 		const contentCount = content.length
+
 		return (
-			<Preview>
-				<Wrapper src={thumbnail} loaded={this.state.loaded}>
+			<Link to={`/collections`}>
+				<Preview>
+					<LazyImage src={thumbnail} />
+
 					<IconBox>
 						<embed src={PreviewIcon} />
 					</IconBox>
-				</Wrapper>
-				<p>{name}</p>
-				<p className='gray'>{contentCount} Video{contentCount === 1 || `s`}</p>
-			</Preview>
+
+					<p>{name}</p>
+					<p className='gray'>{contentCount} Video{contentCount === 1 || `s`}</p>
+				</Preview>
+			</Link>
 		)
 	}
 }

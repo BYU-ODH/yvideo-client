@@ -5,6 +5,7 @@ import { getCollections, getContent, toggleModal, getResources, addResource } fr
 
 import axios from 'axios'
 import styled from 'styled-components'
+import Url from 'url'
 
 import plus from 'assets/collections/plus_blue.svg'
 
@@ -132,6 +133,7 @@ export class CreateContent extends Component {
 		data: {
 			url: ``,
 			file: ``,
+			thumbnail: ``,
 			resourceId: ``,
 			contentType: `video`,
 			title: ``,
@@ -156,6 +158,22 @@ export class CreateContent extends Component {
 			data: {
 				...this.state.data,
 				[e.target.name]: e.target.value
+			}
+		})
+	}
+
+	handleUrlChange = e => {
+		e.preventDefault()
+
+		const url = Url.parse(e.target.value)
+
+		const thumbnail = url.query ? `https://i.ytimg.com/vi/${url.query.split(`=`)[1]}/hqdefault.jpg` : ``
+
+		this.setState({
+			data: {
+				...this.state.data,
+				url: url.href,
+				thumbnail
 			}
 		})
 	}
@@ -275,64 +293,69 @@ export class CreateContent extends Component {
 			description,
 			keywords,
 			file,
-			resourceId
+			resourceId,
+			thumbnail
 		} = this.state.data
 
 		return (
-			<>
-				<h2>Create New Content</h2>
+				<>
+					<h2>Create New Content</h2>
 
-				<Tabs>
-					<Tab selected={tab === `url`} onClick={this.changeTab} name={`url`}>From URL</Tab>
-					<Tab selected={tab === `file`} onClick={this.changeTab} name={`file`}>From Computer</Tab>
-					<Tab selected={tab === `resource`} onClick={this.changeTab} name={`resource`}>From Resource</Tab>
-				</Tabs>
+					<Tabs>
+						<Tab selected={tab === `url`} onClick={this.changeTab} name={`url`}>From URL</Tab>
+						<Tab selected={tab === `file`} onClick={this.changeTab} name={`file`}>From Computer</Tab>
+						<Tab selected={tab === `resource`} onClick={this.changeTab} name={`resource`}>From Resource</Tab>
+					</Tabs>
 
-				{tab === `url` &&
-					<Form onKeyPress={this.onKeyPress} onSubmit={this.handleSubmit} id='create-content-form' >
-						<label htmlFor='create-content-title'>
-							<span>Title</span>
-							<input id='create-content-title' type='text' name='title' value={title} onChange={this.handleTextChange} required />
-						</label>
+					{tab === `url` &&
+					<>
+						<Form onKeyPress={this.onKeyPress} onSubmit={this.handleSubmit} id='create-content-form' >
+							<label htmlFor='create-content-title'>
+								<span>Title</span>
+								<input id='create-content-title' type='text' name='title' value={title} onChange={this.handleTextChange} required />
+							</label>
 
-						<label htmlFor='create-content-type'>
-							<span>Type</span>
-							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton type='button' selected={contentType === `video`} onClick={this.handleTypeChange} data-type='video'>Video</TypeButton>
-								<TypeButton type='button' selected={contentType === `audio`} onClick={this.handleTypeChange} data-type='audio'>Audio</TypeButton>
-								<TypeButton type='button' selected={contentType === `image`} onClick={this.handleTypeChange} data-type='image'>Image</TypeButton>
-								<TypeButton type='button' selected={contentType === `text`} onClick={this.handleTypeChange} data-type='text'>Text</TypeButton>
+							<label htmlFor='create-content-type'>
+								<span>Type</span>
+								<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
+									<TypeButton type='button' selected={contentType === `video`} onClick={this.handleTypeChange} data-type='video'>Video</TypeButton>
+									<TypeButton type='button' selected={contentType === `audio`} onClick={this.handleTypeChange} data-type='audio'>Audio</TypeButton>
+									<TypeButton type='button' selected={contentType === `image`} onClick={this.handleTypeChange} data-type='image'>Image</TypeButton>
+									<TypeButton type='button' selected={contentType === `text`} onClick={this.handleTypeChange} data-type='text'>Text</TypeButton>
+								</div>
+							</label>
+
+							<label htmlFor='create-content-url'>
+								<span>URL</span>
+								<input id='create-content-url' type='text' name='url' value={url} onChange={this.handleUrlChange} required />
+							</label>
+
+							{thumbnail !== `` && <img src={thumbnail} alt={thumbnail} />}
+
+							<label htmlFor='create-content-description'>
+								<span>Description</span>
+							</label>
+							<textarea id='create-content-description' name='description' value={description} onChange={this.handleTextChange} rows={4} required />
+
+							<label htmlFor='create-content-keywords'>
+								<span>Tags</span>
+							</label>
+
+							<div className='keywords-list'>
+								{keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword src={plus} onClick={this.remove} type='button' data-keyword={keyword} /></span>)}
 							</div>
-						</label>
 
-						<label htmlFor='create-content-url'>
-							<span>URL</span>
-							<input id='create-content-url' type='text' name='url' value={url} onChange={this.handleTextChange} required />
-						</label>
+							<input id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add a tag...' />
+							<datalist id='create-content-keywords'>
+								{keywords.map((keyword, index) => <option key={index} value={keyword} />)}
+							</datalist>
 
-						<label htmlFor='create-content-description'>
-							<span>Description</span>
-						</label>
-						<textarea id='create-content-description' name='description' value={description} onChange={this.handleTextChange} rows={4} required />
-
-						<label htmlFor='create-content-keywords'>
-							<span>Tags</span>
-						</label>
-
-						<div className='keywords-list'>
-							{keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword src={plus} onClick={this.remove} type='button' data-keyword={keyword} /></span>)}
-						</div>
-
-						<input id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add a tag...' />
-						<datalist id='create-content-keywords'>
-							{keywords.map((keyword, index) => <option key={index} value={keyword} />)}
-						</datalist>
-
-						<div>
-							<Button type='button' onClick={this.props.toggleModal}>Cancel</Button>
-							<Button type='submit' color={`#0582CA`}>Create</Button>
-						</div>
-					</Form>
+							<div>
+								<Button type='button' onClick={this.props.toggleModal}>Cancel</Button>
+								<Button type='submit' color={`#0582CA`}>Create</Button>
+							</div>
+						</Form>
+					</>
 				}
 
 				{tab === `file` &&
