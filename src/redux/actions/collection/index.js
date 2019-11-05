@@ -28,6 +28,30 @@ export const getCollections = (authorized = false, force = false) => {
 	}
 }
 
+export const updateCollectionName = (collectionId, collectionName) => {
+	return async (dispatch, getState) => {
+		dispatch({ type: START_COLLECTIONS })
+
+		const currentState = getState().collectionsCache.collections[collectionId]
+
+		console.group()
+		console.warn(`Update Collection Name:`)
+		console.warn(`collection name:`, collectionName)
+		console.warn(`collection id:`, collectionId)
+		console.groupEnd()
+
+		currentState.name = collectionName
+
+		await axios(`${REACT_APP_YVIDEO_SERVER}/collection/${collectionId}`, { method: `post`, data: { name: collectionName }, withCredentials: true })
+			.catch(err => dispatch({ type: ERROR_COLLECTIONS, error: err }))
+
+		console.warn(`About to update state:`, currentState)
+
+		dispatch({ type: UPDATE_COLLECTIONS, payload: { [collectionId]: currentState } })
+
+	}
+}
+
 export const updateCollectionStatus = (collectionId, action) => {
 	return async (dispatch, getState) => {
 
@@ -38,29 +62,30 @@ export const updateCollectionStatus = (collectionId, action) => {
 		console.log(currentState)
 
 		switch (action) {
-			case `publish`:
-				currentState.published = true
-				break
+		case `publish`:
+			currentState.published = true
+			break
 
-			case `unpublish`:
-				currentState.published = false
-				break
+		case `unpublish`:
+			currentState.published = false
+			break
 
-			case `archive`:
-				currentState.archived = true
-				break
+		case `archive`:
+			currentState.archived = true
+			break
 
-			case `unarchive`:
-				currentState.published = false
-				break
+		case `unarchive`:
+			currentState.published = false
+			break
 
-			default:
-				break
+		default:
+			break
 		}
 
 		await axios(`${REACT_APP_YVIDEO_SERVER}/collection/${collectionId}/${action}`, { withCredentials: true })
 			.catch(err => dispatch({ type: ERROR_COLLECTIONS, error: err }))
 
-		dispatch({ type: UPDATE_COLLECTIONS, paload: { [collectionId]: currentState } })
+		dispatch({ type: UPDATE_COLLECTIONS, payload: { [collectionId]: currentState } })
 	}
 }
+

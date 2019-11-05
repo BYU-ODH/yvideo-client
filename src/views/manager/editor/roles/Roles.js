@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { getCollectionPermissions, updateCollectionPermissions } from 'redux/actions'
+import { getCollectionRoles, updateCollectionRoles } from 'redux/actions'
 
 import { Container, Search, DepartmentSelect, CatalogInput, SectionInput, AddButton } from './styles'
 
-import PermissionTable from './permissionTable/PermissionTable'
+import PermissionTable from './rolesTable/RolesTable'
 
-class Permissions extends Component {
+class Roles extends Component {
 
 	state = {
 		department: `*`,
@@ -25,14 +25,14 @@ class Permissions extends Component {
 	}
 
 	componentDidMount = () => {
-		const { collection, getCollectionPermissions } = this.props
-		if (collection.id !== null) getCollectionPermissions(this.props.collection.id)
+		const { collection, getCollectionRoles } = this.props
+		if (collection.id !== null) getCollectionRoles(this.props.collection.id)
 	}
 
 	componentDidUpdate = prevProps => {
-		const { collection, getCollectionPermissions } = this.props
+		const { collection, getCollectionRoles } = this.props
 		if (collection !== prevProps.collection && collection !== undefined)
-			getCollectionPermissions(this.props.collection.id)
+			getCollectionRoles(this.props.collection.id)
 	}
 
 	handleDepartmentChange = e => {
@@ -108,7 +108,7 @@ class Permissions extends Component {
 		if (catalog) body.catalogNumber = catalog
 		if (section) body.sectionNumber = section
 
-		this.props.updateCollectionPermissions([body], `linkCourses`, this.props.collection.id)
+		this.props.updateCollectionRoles([body], `linkCourses`, this.props.collection.id)
 		this.setState({
 			department: `*`,
 			catalog: ``,
@@ -130,13 +130,13 @@ class Permissions extends Component {
 		if (data.Section) body.sectionNumber = data.Section
 
 		if (body.department !== null && body.id !== null)
-			this.props.updateCollectionPermissions([body], `unlinkCourses`, this.props.collection.id)
+			this.props.updateCollectionRoles([body], `unlinkCourses`, this.props.collection.id)
 		else alert(`Error, department not found`)
 	}
 
 	addTaFaculty = e => {
 		e.preventDefault()
-		this.props.updateCollectionPermissions(this.state.tafaculty, `addTA`, this.props.collection.id)
+		this.props.updateCollectionRoles(this.state.tafaculty, `addTA`, this.props.collection.id)
 		this.setState({
 			tafaculty: ``
 		})
@@ -149,14 +149,14 @@ class Permissions extends Component {
 		const body = data.NetID || null
 
 		if (body !== null)
-			this.props.updateCollectionPermissions(body, `removeTA`, this.props.collection.id)
+			this.props.updateCollectionRoles(body, `removeTA`, this.props.collection.id)
 		else alert(`Error, netId not found`)
 
 	}
 
 	addException = e => {
 		e.preventDefault()
-		this.props.updateCollectionPermissions(this.state.exception, `addException`, this.props.collection.id)
+		this.props.updateCollectionRoles(this.state.exception, `addException`, this.props.collection.id)
 		this.setState({
 			exception: ``
 		})
@@ -169,7 +169,7 @@ class Permissions extends Component {
 		const body = data.NetID || null
 
 		if (body !== null)
-			this.props.updateCollectionPermissions(body, `removeException`, this.props.collection.id)
+			this.props.updateCollectionRoles(body, `removeException`, this.props.collection.id)
 		else alert(`Error, netId not found`)
 
 	}
@@ -177,11 +177,11 @@ class Permissions extends Component {
 	render() {
 
 		const { collection } = this.props
-		const { permissions = {} } = this.props.permissionsCache
+		const { roles = {} } = this.props.rolesCache
 
-		if (permissions[collection.id] === undefined) return null
+		if (roles[collection.id] === undefined) return null
 
-		const { admins = [], courses = [], exceptions = [] } = permissions[collection.id]
+		const { admins = [], courses = [], exceptions = [] } = roles[collection.id]
 
 		const reducedCourses = courses.map(item => item !== undefined && {
 			id: item.id,
@@ -249,15 +249,15 @@ class Permissions extends Component {
 
 const mapStateToProps = state => ({
 	state,
-	permissionsCache: state.permissionsCache
+	rolesCache: state.rolesCache
 })
 
 const mapDispatchToProps = {
-	getCollectionPermissions,
-	updateCollectionPermissions
+	getCollectionRoles,
+	updateCollectionRoles
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Permissions)
+export default connect(mapStateToProps, mapDispatchToProps)(Roles)
 
 const departments = [
 	{

@@ -1,8 +1,8 @@
 export { getUser, getUserInfo, getRecent } from './user'
 export { login, logout, getAuthCookie } from './auth'
 
-export { getCollectionPermissions, updateCollectionPermissions } from './permissions'
-export { getCollections, updateCollectionStatus } from './collection'
+export { getCollectionRoles, updateCollectionRoles } from './roles'
+export { getCollections, updateCollectionStatus, updateCollectionName } from './collection'
 export { getContent, abortGetContent, updateContent } from './content'
 export { getResources, addResource } from './resource'
 
