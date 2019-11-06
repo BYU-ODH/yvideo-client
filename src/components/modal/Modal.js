@@ -26,8 +26,9 @@ const Container = styled.div`
 		border-radius: .3rem;
 		padding: 4rem 5rem;
 		background: white;
-
 		position: relative;
+		max-height: 80vh;
+		overflow: auto;
 	}
 `
 
@@ -54,7 +55,7 @@ class Modal extends Component {
 				<Component toggleModal={this.props.toggleModal} />
 			</div>
 		</Container>,
-			this.el)
+		this.el)
 	}
 }
 
