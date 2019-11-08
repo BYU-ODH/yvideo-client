@@ -1,30 +1,23 @@
-import React, { Component } from 'src/components/c/Landing/node_modules/react'
+import React, { PureComponent } from 'react'
 import { Wrapper } from './styles'
 
-class Overlay extends Component {
-	constructor(props) {
-		super(props)
+class OverlayComponent extends PureComponent {
 
-		this.state = {
-			visible: false,
-		}
-
-		this.closeModal = this.closeModal.bind(this)
+	state = {
+		visible: false,
 	}
 
-	componentDidMount = () => {
-		this.setState({
-			visible: true,
-		})
-	}
+	closeModal = e => {
+		e.preventDefault()
 
-	closeModal = () => {
 		this.setState({
 			visible: false,
 		})
+
 		setTimeout(() => {
-			this.props.toggleAbout()
+			this.props.toggleOverlay()
 		}, 250)
+
 	}
 
 	render() {
@@ -48,6 +41,12 @@ class Overlay extends Component {
 			</Wrapper>
 		)
 	}
+
+	componentDidMount = () => {
+		this.setState({
+			visible: true,
+		})
+	}
 }
 
-export default Overlay
+export const Overlay = OverlayComponent

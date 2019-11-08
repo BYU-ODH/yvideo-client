@@ -46,8 +46,8 @@ class xApi {
 			verb: `ended`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -56,8 +56,8 @@ class xApi {
 			verb: `played`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -66,8 +66,8 @@ class xApi {
 			verb: `paused`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -77,8 +77,8 @@ class xApi {
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
-				[`${this.baseUri}playRate`]: rate
-			}
+				[`${this.baseUri}playRate`]: rate,
+			},
 		})
 	}
 
@@ -88,8 +88,8 @@ class xApi {
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
-				[`${this.baseUri}volume`]: volume
-			}
+				[`${this.baseUri}volume`]: volume,
+			},
 		})
 	}
 
@@ -99,8 +99,8 @@ class xApi {
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
 				[`${this.baseUri}oldTime`]: oldTime,
-				[`${this.baseUri}newTime`]: newTime
-			}
+				[`${this.baseUri}newTime`]: newTime,
+			},
 		})
 	}
 
@@ -109,8 +109,8 @@ class xApi {
 			verb: `repeated_caption`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -121,8 +121,8 @@ class xApi {
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
 				[`${this.baseUri}cueNumber`]: cueNumber,
-				[`${this.baseUri}captionTrackId`]: captionTrackId
-			}
+				[`${this.baseUri}captionTrackId`]: captionTrackId,
+			},
 		})
 	}
 
@@ -133,8 +133,8 @@ class xApi {
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
 				[`${this.baseUri}captionTrackId`]: captionTrackId,
-				[`${this.baseUri}text`]: `"${text}"`
-			}
+				[`${this.baseUri}text`]: `"${text}"`,
+			},
 		})
 	}
 
@@ -146,8 +146,8 @@ class xApi {
 				[`${this.baseUri}captionTrackId`]: captionTrackId,
 				[`${this.baseUri}cueNumber`]: cueNumber,
 				[`${this.baseUri}playerTime`]: time,
-				[`${this.baseUri}text`]: `"${text}"`
-			}
+				[`${this.baseUri}text`]: `"${text}"`,
+			},
 		})
 	}
 
@@ -158,8 +158,8 @@ class xApi {
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
 				[`${this.baseUri}text`]: text,
-				[`${this.baseUri}annotationDocId`]: annotationDocId
-			}
+				[`${this.baseUri}annotationDocId`]: annotationDocId,
+			},
 		})
 	}
 
@@ -168,8 +168,8 @@ class xApi {
 			verb: `enter_fullscreen`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -178,8 +178,8 @@ class xApi {
 			verb: `exit_fullscreen`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -189,8 +189,8 @@ class xApi {
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
-				[`${this.baseUri}captionTrack`]: captionTrack.label
-			}
+				[`${this.baseUri}captionTrack`]: captionTrack.label,
+			},
 		})
 	}
 
@@ -200,8 +200,8 @@ class xApi {
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
-				[`${this.baseUri}captionTrack`]: captionTrack.label
-			}
+				[`${this.baseUri}captionTrack`]: captionTrack.label,
+			},
 		})
 	}
 
@@ -211,8 +211,8 @@ class xApi {
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
 				[`${this.baseUri}playerTime`]: time,
-				[`${this.baseUri}speedLevel`]: speedLevel
-			}
+				[`${this.baseUri}speedLevel`]: speedLevel,
+			},
 		})
 	}
 
@@ -221,8 +221,8 @@ class xApi {
 			verb: `muted`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -231,8 +231,8 @@ class xApi {
 			verb: `unmuted`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -241,8 +241,8 @@ class xApi {
 			verb: `changed_resolution`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 
@@ -251,8 +251,8 @@ class xApi {
 			verb: `watched`,
 			type: `${this.baseUri}mediaPlayer`,
 			extensions: {
-				[`${this.baseUri}playerTime`]: time
-			}
+				[`${this.baseUri}playerTime`]: time,
+			},
 		})
 	}
 

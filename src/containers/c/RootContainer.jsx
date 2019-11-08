@@ -1,164 +1,48 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+/* eslint-disable no-prototype-builtins */
+
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-// import { getUser, getUserInfo, load, loaded, getAuthCookie } from 'redux/actions'
-
-import { interfaceService } from 'services'
-
 import {
-	HeaderRoute,
-	Login,
-	// Load,
-	// Modal,
-} from 'components'
+	userService,
+} from 'services'
 
-// import Dashboard from 'views/dashboard/Dashboard'
-// import Landing from 'views/landing/Landing'
-// import Collections from 'views/collections/Collections'
-// import VideoPage from 'views/player/VideoPage'
-// import Admin from 'views/admin/Admin'
-// import Manager from 'views/manager/Manager'
+import { Root } from 'components'
 
-// import Error from 'views/error/Error'
-// import BasicError from 'views/error/BasicError'
+const RootContainerComponent = props => {
 
-// import { MainBody } from './styles'
+	// store
+	const {
+		user,
+		loading,
+		tried,
+	} = props
 
-import {
-	diff,
-} from 'lib/util'
+	// thunks
+	const {
+		getUser,
+	} = props
 
-class RootContainer extends Component {
+	useEffect(() => {
+		if (!user && !tried) getUser()
+	}, [getUser, tried, user])
 
-	log = false
-
-	shouldComponentUpdate = (nextProps, nextState) => {
-
-		// return didChange(
-		// 	this.log,
-		// 	`[INFO: RootContainer] shouldComponentUpdate()`,
-		// 	this.props,
-		// 	nextProps,
-		// 	[`authorized`, `loading`, `modal`]
-		// )
-
-		if (this.log) console.groupCollapsed(`App: shouldComponentUpdate`)
-
-		const propsDiff = diff(this.props, nextProps)
-		const stateDiff = diff(this.state, nextState)
-
-		if (this.log) console.log(`props changes:`, propsDiff)
-		if (this.log) console.log(`state changes:`, stateDiff)
-
-		const authorizedChanged = propsDiff.hasOwnProperty(`authorized`)
-		const loadingChanged = propsDiff.hasOwnProperty(`loading`)
-		const modalChanged = propsDiff.hasOwnProperty(`modal`)
-
-		if (this.log) {
-			console.table({
-				authorizedChanged: {
-					value: authorizedChanged,
-				},
-				loadingChanged: {
-					value: loadingChanged,
-				},
-				modalChanged: {
-					value: modalChanged,
-				},
-			})
-		}
-
-		const changed = authorizedChanged
-		|| loadingChanged
-		|| modalChanged
-
-		if (this.log) console.log(`%c ${changed ? `RENDER` : `NO RENDER`} `, `background: ${changed ? `Maroon` : `Teal`}`)
-
-		if (this.log) console.groupEnd(`App: shouldComponentUpdate`)
-
-		return changed
+	const viewstate = {
+		user,
+		loading,
 	}
 
-	render = () => {
-
-		// if (this.log) console.error(`App: render`)
-
-		const {
-			authorized,
-			// loading,
-			// done,
-			// modal
-		} = this.props
-
-		return (
-			// <MainBody>
-			<main>
-				<Router>
-					{
-						authorized ?
-							<HeaderRoute>
-								<Switch>
-									{/* <Route exact path={`/`} component={Dashboard} />
-									<Route path={`/collections`} component={Collections} />
-									<Route path={`/player/:videoId`} component={VideoPage} />
-
-									<Route path={`/admin/:page`} component={Admin} />
-
-									<Route path={`/manager/:id?`} component={Manager} />
-
-									<Route path='/error/:status' component={BasicError} />
-
-									<Route render={() => <Error error='404' message={`You've wandered too far`} />} /> */}
-								</Switch>
-							</HeaderRoute>
-							:
-							<Switch>
-								{/* <Route exact path={`/`} component={Landing} /> */}
-								<Route component={Login} />
-							</Switch>
-					}
-				</Router>
-
-				{/* {loading && <Load loading={loading} done={done} />} */}
-				{/* {modal.active && <Modal active={modal.active} />} */}
-			</main>
-			// </MainBody>
-		)
-	}
-
-	componentDidMount = async () => {
-		// if (this.log) console.warn(`App: componentDidMount`)
-
-		const { load, getUserInfo, getUser, getAuthCookie } = this.props
-
-		load()
-
-		try {
-			await getUserInfo(async () => {
-				await getUser()
-				await getAuthCookie()
-			})
-		} catch (message) {
-			console.log(message)
-		}
-	}
-
+	return <Root viewstate={viewstate} />
 }
 
-const mapStoreToProps = store => ({
-	authorized: store.authorized,
-	loading: store.loading,
-	done: store.done,
-	modal: store.modal,
+const mapStoreToProps = ({ authStore, userStore }) => ({
+	user: userStore.user,
+	loading: authStore.loading || userStore.loading,
+	tried: userStore.tried,
 })
 
 const mapDispatchToProps = {
-	startLoading: interfaceService.startLoading,
-	stopLoading: interfaceService.stopLoading,
-	// getUser,
-	// getUserInfo,
-	// getAuthCookie,
+	getUser: userService.getUser,
 }
 
-export default connect(mapStoreToProps, mapDispatchToProps)(RootContainer)
+export const RootContainer = connect(mapStoreToProps, mapDispatchToProps)(RootContainerComponent)

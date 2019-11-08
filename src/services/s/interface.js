@@ -1,26 +1,24 @@
 export default class InterfaceService {
 
 	types = {
-		LOAD_START: `LOAD_START`,
-		LOAD_STOP: `LOAD_STOP`,
+		MENU_TOGGLE: `MENU_TOGGLE`,
+	}
+
+	actions = {
+		menuToggle: () => ({ type: this.types.MENU_TOGGLE }),
 	}
 
 	store = {
-		loading: true,
+		menuActive: false,
 	}
 
 	reducer = (store = this.store, action) => {
 		switch (action.type) {
-		case this.types.LOAD_START:
-			return {
-				...store,
-				loading: true,
-			}
 
-		case this.types.LOAD_STOP:
+		case this.types.MENU_TOGGLE:
 			return {
 				...store,
-				loading: false,
+				menuActive: !store.menuActive,
 			}
 
 		default:
@@ -28,11 +26,7 @@ export default class InterfaceService {
 		}
 	}
 
-	startLoading = () => async dispatch => {
-		dispatch({ type: this.types.LOAD_START })
-	}
-
-	stopLoading = () => async dispatch => {
-		dispatch({ type: this.types.LOAD_STOP })
+	toggleMenu = () => async dispatch => {
+		dispatch(this.actions.menuToggle())
 	}
 }

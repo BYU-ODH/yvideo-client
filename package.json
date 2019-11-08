@@ -30,7 +30,12 @@
 		"yvideojs": "^1.1.8"
 	},
 	"devDependencies": {
-		"eslint-plugin-import-quotes": "0.0.1",
+		"eslint-config-react-app": "^5.0.2",
+		"eslint-plugin-flowtype": "^4.3.0",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-import-quotes": "^0.0.1",
+		"eslint-plugin-jsx-a11y": "^6.2.3",
+		"eslint-plugin-react": "^7.16.0",
 		"eslint-plugin-react-hooks": "^2.2.0",
 		"redux-devtools-extension": "^2.13.8"
 	}

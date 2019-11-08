@@ -1,64 +1,45 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { PureComponent } from 'react'
 
-import { Link, withRouter } from 'react-router-dom'
-
-import Overlay from 'components'
+import { Overlay } from 'components'
 
 import { Wrapper, Comets, Welcome, Logo, Button } from './styles'
 
-class Landing extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			overlay: false,
-		}
-	}
-
-	componentDidMount = () => {
-		setTimeout(() => {
-			this.props.loaded()
-		}, 500)
-	}
-
-	componentWillUnmount = () => {
-		this.props.load()
-	}
-
-	toggleAbout = () => {
-		this.setState(prevState => ({
-			overlay: !prevState.overlay,
-		}))
-	}
-
+class LandingComponent extends PureComponent {
 	render() {
+
+		const {
+			overlay,
+		} = this.props.viewstate
+
+		const {
+			toggleOverlay,
+			handleLogin,
+		} = this.props.handlers
+
 		return (
 			<Wrapper>
 				<Comets className='left' />
 				<Comets className='right' />
+
 				<Welcome>
+
 					<div>
 						<Logo />
 						<h1>YVIDEO</h1>
 					</div>
+
 					<div className='button-wrapper'>
-						<Button as={Link} to={`/login`} className='primary'>Sign In</Button>
-						<Button className='secondary' onClick={this.toggleAbout}>About</Button>
+						<Button className='primary' onClick={handleLogin}>Sign In</Button>
+						<Button className='secondary' onClick={toggleOverlay}>About</Button>
 					</div>
+
 				</Welcome>
-				{
-					this.state.overlay ?
-						<Overlay toggleAbout={this.toggleAbout} />
-						:
-						``
-				}
+
+				{ overlay && <Overlay toggleOverlay={toggleOverlay} /> }
+
 			</Wrapper>
 		)
 	}
 }
 
-const mapDispatchToProps = {
-}
-
-export default withRouter(connect(null, mapDispatchToProps)(Landing))
+export const Landing = LandingComponent

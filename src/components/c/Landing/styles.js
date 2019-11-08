@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import LComets from 'assets/landing/CometsLeft.svg'
-import RComets from 'assets/landing/CometsRight.svg'
+import LComets from 'assets/CometsLeft.svg'
+import RComets from 'assets/CometsRight.svg'
 import HexLogo from 'assets/hexborder.svg'
 
 export const Wrapper = styled.div`
@@ -53,6 +53,7 @@ export const Welcome = styled.div`
 			line-height: 4.8rem;
 
 			background: linear-gradient(to right, #0582CA 0%, #002E5D 100%);
+			background-clip: text;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
 		}

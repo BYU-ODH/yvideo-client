@@ -14,7 +14,7 @@ class Landing extends Component {
 		super(props)
 
 		this.state = {
-			overlay: false
+			overlay: false,
 		}
 	}
 
@@ -30,7 +30,7 @@ class Landing extends Component {
 
 	toggleAbout = () => {
 		this.setState(prevState => ({
-			overlay: !prevState.overlay
+			overlay: !prevState.overlay,
 		}))
 	}
 
@@ -62,7 +62,7 @@ class Landing extends Component {
 
 const mapDispatchToProps = {
 	load,
-	loaded
+	loaded,
 }
 
 export default withRouter(connect(null, mapDispatchToProps)(Landing))

@@ -71,7 +71,7 @@ class ContentSettings {
 			classes: `btn-blue`,
 			include: () => true,
 			setting: () => { },
-			items: () => { }
+			items: () => { },
 		},
 
 		aspectRatio: {
@@ -82,7 +82,7 @@ class ContentSettings {
 			setting: content => content.settings.aspectRatio,
 			items: () => Object.keys(Ayamel.aspectRatios).map(name => (
 				{ text: name, value: Ayamel.aspectRatios[name] }
-			))
+			)),
 		},
 
 		showCaptions: {
@@ -92,7 +92,7 @@ class ContentSettings {
 			none: `No captions to show`,
 			include: content => !!content.enableableCaptionTracks.length,
 			setting: content => content.settings.showCaptions === `true`,
-			items: () => { }
+			items: () => { },
 		},
 
 		showAnnotations: {
@@ -102,7 +102,7 @@ class ContentSettings {
 			none: `No annotations to show`,
 			include: content => !!content.enableableAnnotationDocuments.length,
 			setting: content => content.settings.showAnnotations === `true`,
-			items: () => { }
+			items: () => { },
 		},
 
 		allowDefinitions: {
@@ -112,7 +112,7 @@ class ContentSettings {
 			none: `No tracks available`,
 			include: content => !!content.enableableCaptionTracks.length,
 			setting: content => content.settings.allowDefinitions === `true`,
-			items: () => { }
+			items: () => { },
 		},
 
 		targetLanguages: {
@@ -122,7 +122,7 @@ class ContentSettings {
 			include: content => !!content.enableableCaptionTracks.length,
 			setting: content => (content.settings.targetLanguages || ``).split(`,`).filter(s => !!s),
 			items: () => {
-				langList = Object.keys(Ayamel.utils.p1map).map(p1 => {
+				const langList = Object.keys(Ayamel.utils.p1map).map(p1 => {
 					const code = Ayamel.utils.p1map[p1],
 						engname = Ayamel.utils.getLangName(code, `eng`),
 						localname = Ayamel.utils.getLangName(code, code)
@@ -132,7 +132,7 @@ class ContentSettings {
 						desc: localname !== engname ?
 							localname
 							:
-							void 0
+							void 0,
 					}
 				})
 
@@ -140,7 +140,7 @@ class ContentSettings {
 				langList.push({ value: `arz`, text: `Egyptian Arabic` })
 
 				return langList.sort((a, b) => a.text.localeCompare(b.text))
-			}
+			},
 		},
 
 		showTranscripts: {
@@ -150,7 +150,7 @@ class ContentSettings {
 			none: `No transcripts to show`,
 			include: content => !!content.enableableCaptionTracks.length,
 			setting: content => content.settings.showTranscripts === `true`,
-			items: () => { }
+			items: () => { },
 		},
 
 		showWordList: {
@@ -160,7 +160,7 @@ class ContentSettings {
 			none: `No wordlists to show`,
 			include: content => !!content.enableableCaptionTracks.length,
 			setting: content => content.settings.showWordList === `true`,
-			items: () => { }
+			items: () => { },
 		},
 
 		enabledCaptionTracks: {
@@ -172,8 +172,8 @@ class ContentSettings {
 			setting: content => (content.settings.captionTrack || ``).split(`,`).filter(s => !!s),
 			items: content => content.enableableCaptionTracks.map(resource => ({
 				text: `${resource.title} (${Ayamel.utils.getLangName(resource.languages.iso639_3[0])})`,
-				value: resource.id
-			}))
+				value: resource.id,
+			})),
 		},
 
 		enabledAnnotations: {
@@ -185,8 +185,8 @@ class ContentSettings {
 			setting: content => (content.settings.annotationDocument || ``).split(`,`).filter(s => !!s),
 			items: content => content.enableableAnnotationDocuments.map(resource => ({
 				text: `${resource.title} (${Ayamel.utils.getLangName(resource.languages.iso639_3[0])})`,
-				value: resource.id
-			}))
+				value: resource.id,
+			})),
 		},
 
 		visibility: {
@@ -200,38 +200,38 @@ class ContentSettings {
 			items: () => [
 				{
 					text: `Private`,
-					value: 1
+					value: 1,
 				},
 				{
 					text: `Tightly Restricted (Me and courses I add this to can see this)`,
-					value: 2
+					value: 2,
 				},
 				{
 					text: `Loosely Restricted (Me, teachers, and courses we add this to can see this)`,
-					value: 3
+					value: 3,
 				},
 				{
 					text: `Public (Everybody can see this)`,
-					value: 4
-				}
-			]
-		}
+					value: 4,
+				},
+			],
+		},
 	}
 
 	settings = {
-		video: [predefined.aspectRatio, predefined.allowDefinitions, predefined.targetLanguages, predefined.showTranscripts, predefined.showWordList, predefined.showCaptions, predefined.enabledCaptionTracks, predefined.showAnnotations, predefined.enabledAnnotations, predefined.visibility, predefined.saveButton],
-		audio: [predefined.aspectRatio, predefined.showCaptions, predefined.allowDefinitions, predefined.targetLanguages, predefined.showAnnotations, predefined.showTranscripts, predefined.enabledCaptionTracks, predefined.enabledAnnotations, predefined.visibility, predefined.saveButton],
-		image: [predefined.aspectRatio, predefined.showCaptions, predefined.allowDefinitions, predefined.targetLanguages, predefined.showAnnotations, predefined.showTranscripts, predefined.enabledCaptionTracks, predefined.enabledAnnotations, predefined.visibility, predefined.saveButton],
-		text: [predefined.aspectRatio, predefined.allowDefinitions, predefined.targetLanguages, predefined.showAnnotations, predefined.enabledAnnotations, predefined.visibility, predefined.saveButton]
+		video: [this.predefined.aspectRatio, this.predefined.allowDefinitions, this.predefined.targetLanguages, this.predefined.showTranscripts, this.predefined.showWordList, this.predefined.showCaptions, this.predefined.enabledCaptionTracks, this.predefined.showAnnotations, this.predefined.enabledAnnotations, this.predefined.visibility, this.predefined.saveButton],
+		audio: [this.predefined.aspectRatio, this.predefined.showCaptions, this.predefined.allowDefinitions, this.predefined.targetLanguages, this.predefined.showAnnotations, this.predefined.showTranscripts, this.predefined.enabledCaptionTracks, this.predefined.enabledAnnotations, this.predefined.visibility, this.predefined.saveButton],
+		image: [this.predefined.aspectRatio, this.predefined.showCaptions, this.predefined.allowDefinitions, this.predefined.targetLanguages, this.predefined.showAnnotations, this.predefined.showTranscripts, this.predefined.enabledCaptionTracks, this.predefined.enabledAnnotations, this.predefined.visibility, this.predefined.saveButton],
+		text: [this.predefined.aspectRatio, this.predefined.allowDefinitions, this.predefined.targetLanguages, this.predefined.showAnnotations, this.predefined.enabledAnnotations, this.predefined.visibility, this.predefined.saveButton],
 	}
 
 	getResources = async ids => await ids.map(id => ResourceLibrary.load(id))
 
-	getCaptionTracks = resource => getResources(resource.relations
+	getCaptionTracks = resource => this.getResources(resource.relations
 		.filter(r => r.type === `transcript_of`)
 		.map(r => r.subjectId))
 
-	getAnnotationDocs = resource => getResources(resource.relations
+	getAnnotationDocs = resource => this.getResources(resource.relations
 		.filter(r => r.type === `references`)
 		.map(r => r.subjectId))
 
@@ -242,7 +242,7 @@ class ContentSettings {
 		none: config.none,
 		classes: config.classes,
 		setting: config.setting(context, content),
-		items: config.items(context, content)
+		items: config.items(context, content),
 	})
 
 	/* args: courseId, owner, userId, content, resource, holder, action */
@@ -252,15 +252,15 @@ class ContentSettings {
 		const context = {
 			courseId: args.courseId || 0,
 			owner: args.owner || false,
-			userId: args.userId || 0
+			userId: args.userId || 0,
 		}
 
-		args.content.enableableCaptionTracks = await getCaptionTracks(args.resource)
-		args.content.enableableAnnotationDocuments = await getAnnotationDocs(args.resource)
+		args.content.enableableCaptionTracks = await this.getCaptionTracks(args.resource)
+		args.content.enableableAnnotationDocuments = await this.getAnnotationDocs(args.resource)
 
 		// Create the form
-		const controlsSettings = settings[args.content.contentType],
-			controls = controlsSettings.map(config => createControls(config, context, args.content)),
+		const controlsSettings = this.settings[args.content.contentType],
+			controls = controlsSettings.map(config => this.createControls(config, context, args.content)),
 			ractive = new Ractive({
 				el: args.holder,
 				template: settingsTemplate,
@@ -268,8 +268,8 @@ class ContentSettings {
 					controls,
 					content: args.content,
 					context,
-					controlsSettings
-				}
+					controlsSettings,
+				},
 			})
 
 		ractive.on(`click`, (evt, which) => {
@@ -280,7 +280,7 @@ class ContentSettings {
 			const xhr = new XMLHttpRequest(),
 				fd = new FormData()
 
-			fd.append(`contentType`, content.contentType)
+			fd.append(`contentType`, this.content.contentType)
 
 			ractive.get(`controls`).forEach((control, index) => {
 				if (control.type === `button`) return
