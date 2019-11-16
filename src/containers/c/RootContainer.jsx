@@ -3,13 +3,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import {
-	userService,
-} from 'services'
+import services from 'services'
 
 import { Root } from 'components'
 
-const RootContainerComponent = props => {
+const RootContainer = props => {
 
 	// store
 	const {
@@ -20,12 +18,12 @@ const RootContainerComponent = props => {
 
 	// thunks
 	const {
-		getUser,
+		checkAuth,
 	} = props
 
 	useEffect(() => {
-		if (!user && !tried) getUser()
-	}, [getUser, tried, user])
+		if (!user && !tried) checkAuth()
+	}, [checkAuth, tried, user])
 
 	const viewstate = {
 		user,
@@ -35,14 +33,14 @@ const RootContainerComponent = props => {
 	return <Root viewstate={viewstate} />
 }
 
-const mapStoreToProps = ({ authStore, userStore }) => ({
-	user: userStore.user,
-	loading: authStore.loading || userStore.loading,
-	tried: userStore.tried,
+const mapStoreToProps = ({ authStore }) => ({
+	user: authStore.user,
+	loading: authStore.loading,
+	tried: authStore.tried,
 })
 
 const mapDispatchToProps = {
-	getUser: userService.getUser,
+	checkAuth: services.authService.checkAuth,
 }
 
-export const RootContainer = connect(mapStoreToProps, mapDispatchToProps)(RootContainerComponent)
+export default connect(mapStoreToProps, mapDispatchToProps)(RootContainer)

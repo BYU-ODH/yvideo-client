@@ -1,4 +1,4 @@
-export const cookies = {
+const cookies = {
 	set: (cookieName, cookieValue, maxDays, path = ``, domain = ``) => {
 		const date = new Date()
 		date.setTime(date.getTime() + maxDays * 24 * 60 * 60 * 1000)
@@ -38,3 +38,5 @@ export const cookies = {
 			document.cookie = `${cookieName}=${path && `;path=${path}`}${domain && `;domain=${domain}`};expires=Thu, 01 Jan 1970 00:00:01 GMT`
 	},
 }
+
+export default cookies

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import { Wrapper, Spinner } from './styles'
 
-class LoadComponent extends Component {
+class Load extends Component {
 
 	wrapper = createRef()
 
@@ -39,4 +39,4 @@ class LoadComponent extends Component {
 
 }
 
-export const Load = LoadComponent
+export default Load

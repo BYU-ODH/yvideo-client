@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { Wrapper, LogoWrapper, Name, Shadow, Logo} from './styles'
 
-export class HeaderComponent extends PureComponent {
+export class Header extends PureComponent {
 	render() {
 
 		const {
@@ -22,4 +22,4 @@ export class HeaderComponent extends PureComponent {
 	}
 }
 
-export const Header = HeaderComponent
+export default Header

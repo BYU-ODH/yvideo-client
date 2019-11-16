@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { authService } from 'services'
 
 import { Landing } from 'components'
 
-const LandingContainerComponent = props => {
+const LandingContainer = props => {
 
 	const {
 		login,
@@ -18,12 +17,9 @@ const LandingContainerComponent = props => {
 		setOverlay(!overlay)
 	}
 
-	const history = useHistory()
-
 	const handleLogin = e => {
 		e.preventDefault()
 		login()
-		history.push(`/`)
 	}
 
 	const viewstate = {
@@ -43,4 +39,4 @@ const mapDispatchToProps = {
 	login: authService.login,
 }
 
-export const LandingContainer = connect(null, mapDispatchToProps)(LandingContainerComponent)
+export default connect(null, mapDispatchToProps)(LandingContainer)

@@ -1,15 +1,15 @@
-import AuthService from './s/auth'
-import UserService from './s/user'
-import InterfaceService from './s/interface'
+import AuthService from './s/auth.redux'
+import InterfaceService from './s/interface.redux'
+import CollectionService from './s/collections.redux'
 
 export const authService = new AuthService()
-export const userService = new UserService()
 export const interfaceService = new InterfaceService()
+export const collectionService = new CollectionService()
 
 const services = {
 	authService,
-	userService,
 	interfaceService,
+	collectionService,
 }
 
 export default services

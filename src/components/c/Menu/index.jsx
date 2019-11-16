@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Wrapper, LinkStyled, Header, UserPic, LogoutButton } from './styles'
 
-class MenuComponent extends Component {
+class Menu extends PureComponent {
 	render() {
 
 		const {
@@ -62,4 +62,4 @@ class MenuComponent extends Component {
 	}
 }
 
-export const Menu = MenuComponent
+export default Menu

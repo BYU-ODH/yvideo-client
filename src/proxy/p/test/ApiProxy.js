@@ -10,21 +10,23 @@ export const testuser = new User({
 	username: `zgrant12`,
 })
 
-export const apiProxy = {
+const apiProxy = {
 	user: {
 
 		/**
 		 * endpoint: /api/user
-		 * @returns a user object
+		 * @param broken if true, will throw an error
+		 * @returns a User object
 		 */
-		get: async () => {
+		get: async (broken = false) => {
 			console.warn(`Warning: You are using the a mock version of apiProxy. To see actual data, change the export in src/proxy/index.js from: './p/test/ApiProxy' to './p/ApiProxy'`)
-			console.log(`fake:`, testuser)
-			return testuser
-		},
-		get_broken: async () => {
-			console.warn(`Warning: You are using the a mock version of apiProxy. To see actual data, change the export in src/proxy/index.js from: './p/test/ApiProxy' to './p/ApiProxy'`)
-			throw new Error(`No User Logged In`)
+			if (broken) throw new Error(`No User Logged In`)
+			else {
+				console.log(`fake:`, testuser)
+				return testuser
+			}
 		},
 	},
 }
+
+export default apiProxy

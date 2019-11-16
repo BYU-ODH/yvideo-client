@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { Wrapper, Content, PreviewEmpty } from './styles'
 
-class DashboardComponent extends PureComponent {
+class Dashboard extends PureComponent {
 	render() {
 
 		const {
@@ -43,4 +43,4 @@ class DashboardComponent extends PureComponent {
 	}
 }
 
-export const Dashboard = DashboardComponent
+export default Dashboard

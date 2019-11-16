@@ -4,7 +4,7 @@ import {
 	authService,
 } from 'services'
 
-class LoginContainerComponent extends Component {
+class LoginContainer extends Component {
 
 	// caslogin = () => {
 	// 	const url = `${process.env.REACT_APP_YVIDEO_SERVER}/auth/cas/redirect${window.location.origin}/success`
@@ -48,4 +48,4 @@ const mapDispatchToProps = {
 	login: authService.login,
 }
 
-export const LoginContainer = connect(mapStoreToProps, mapDispatchToProps)(LoginContainerComponent)
+export default connect(mapStoreToProps, mapDispatchToProps)(LoginContainer)

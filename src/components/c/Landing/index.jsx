@@ -4,7 +4,7 @@ import { Overlay } from 'components'
 
 import { Wrapper, Comets, Welcome, Logo, Button } from './styles'
 
-class LandingComponent extends PureComponent {
+class Landing extends PureComponent {
 	render() {
 
 		const {
@@ -42,4 +42,4 @@ class LandingComponent extends PureComponent {
 	}
 }
 
-export const Landing = LandingComponent
+export default Landing

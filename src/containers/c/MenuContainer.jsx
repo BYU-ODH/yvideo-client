@@ -7,7 +7,7 @@ import { Menu } from 'components'
 
 import { getInitials } from 'lib/util'
 
-const MenuContainerComponent = props => {
+const MenuContainer = props => {
 
 	const {
 		user,
@@ -45,11 +45,11 @@ const MenuContainerComponent = props => {
 	return <Menu viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStoreToProps = ({ userStore, interfaceStore }) => ({
-	user: userStore.user,
-	isProf: userStore.user.roles.includes(`professor`),
-	isAdmin: userStore.user.roles.includes(`admin`),
-	isStudent: userStore.user.roles.includes(`student`),
+const mapStoreToProps = ({ authStore, interfaceStore }) => ({
+	user: authStore.user,
+	isProf: authStore.user.roles.includes(`professor`),
+	isAdmin: authStore.user.roles.includes(`admin`),
+	isStudent: authStore.user.roles.includes(`student`),
 	menuActive: interfaceStore.menuActive,
 })
 
@@ -59,4 +59,4 @@ const mapDispatchToProps = {
 	// toggleModal: services.interfaceService.toggleModal,
 }
 
-export const MenuContainer = connect(mapStoreToProps, mapDispatchToProps)(MenuContainerComponent)
+export default connect(mapStoreToProps, mapDispatchToProps)(MenuContainer)

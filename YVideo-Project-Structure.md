@@ -2,7 +2,7 @@
 
 ## Intro - Layered Architecture
 
-Layered Architecture is a way of organizing a code base which allows developers to better separate functionality of the project. In YVideo, we have 4 basic layers:
+Layered Architecture is a way of organizing a code base which allows developers to better separate functionality of the project. In YVideo, we have 5 basic layers:
 
 1. Components (UI)
 2. Containers (View Models)
@@ -31,7 +31,7 @@ The `viewstate` contains hard and computed properties. A "hard property" is a si
 {
   firstName: `Teddy`,
   lastName: `Roosevelt`,
-  birthdate: new Date(`October 27, 1858`)
+  birthday: new Date(`October 27, 1858`)
 }
 ```
 
@@ -43,7 +43,7 @@ A "computed property" is a function that returns a hard property, which is based
     return `${this.firstName} ${this.lastName}`
   },
   age: () => {
-    const timeDiff = Date.now().getTime() - this.birthdate.getTime()
+    const timeDiff = Date.now().getTime() - this.birthday.getTime()
     return Math.floor(timeDiff / (1000 * 3600 * 24 * 365))
   }
 }
@@ -51,7 +51,7 @@ A "computed property" is a function that returns a hard property, which is based
 
 #### Handlers
 
-The `handlers` object contains any event handlers for user input. If the handlers are used on elements which emit an `Event` object, it may be useful to use "Courrier Functions", which allow a custom parameter, while keeping the `Event` object in order to prevent the default action:
+The `handlers` object contains any event handlers for user input. If the handlers are used on elements which emit an `Event` object, it may be useful to use "Courier Functions", which allow a custom parameter, while keeping the `Event` object in order to prevent the default action:
 
 ```js
 handleTextChange: e => text => {
@@ -95,7 +95,7 @@ Redux is built on what's called the "Flux" pattern. Essentially, you have 3 impo
     You may have noticed that an Action is just a plain object, and you may have wondered how that's supposed to change the database. The answer is through Reducers. A reducer is basically a big `switch` statement on an action's `type`. A very basic reducer may look like this:
 
     ```js
-    import initalStore from 'store'
+    import initialStore from 'store'
 
     const dataReducer = (store = initialStore, action) => {
       switch(action.type) {
@@ -198,7 +198,7 @@ const AppContainer = props => {
   // deconstructing the `props` variable
   const { fetchData, data } = props
 
-  // lifecycle methods
+  // life cycle methods
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)

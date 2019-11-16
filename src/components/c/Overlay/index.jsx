@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Wrapper } from './styles'
 
-class OverlayComponent extends PureComponent {
+class Overlay extends PureComponent {
 
 	state = {
 		visible: false,
@@ -49,4 +49,4 @@ class OverlayComponent extends PureComponent {
 	}
 }
 
-export const Overlay = OverlayComponent
+export default Overlay

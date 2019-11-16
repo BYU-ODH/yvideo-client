@@ -6,7 +6,7 @@
 
 ### Global Packages
 
-Esure you have Node.js installed, then run:
+Ensure you have Node.js installed, then run:
 
 ```sh
 npm install -g yarn
@@ -64,7 +64,7 @@ It's recommended to use VSCode to work on YVideo. The project includes a `.vscod
 
 ## TypeScript Errors
 
-VSCode comes with TypeScript validation built-in. Since TypeScript is a superset of JavaScript, it also validates JavaScript. Sometimes, this results in clashing when using a linter like ESLint, as we do in this project. In order to get VSCode to cooperate, you may have to disable a built in JS/TS validation tool.
+VSCode comes with TypeScript validation built-in. Since TypeScript is a super-set of JavaScript, it also validates JavaScript. Sometimes, this results in clashing when using a linter like ESLint, as we do in this project. In order to get VSCode to cooperate, you may have to disable a built in JS/TS validation tool.
 
 1. Type the following into the search bar in the extensions tab:
 

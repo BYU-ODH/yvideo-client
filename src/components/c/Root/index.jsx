@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import {
 	LandingContainer,
-	DashboardContainer,
+	CollectionsContainer,
 	HeaderContainer,
 	MenuContainer,
 } from 'containers'
 
 import { Load } from 'components'
 
-class RootComponent extends PureComponent {
+class Root extends PureComponent {
 
 	render() {
 
@@ -29,12 +29,7 @@ class RootComponent extends PureComponent {
 						<Switch>
 
 							<Route exact path='/' >
-								<DashboardContainer />
-							</Route>
-
-							<Route path='/collections'>
-								<span style={{ position: `relative`, top: `10rem` }}>Collections</span>
-								{/* <Collections /> */}
+								<CollectionsContainer />
 							</Route>
 
 							<Route path='player/:id'>
@@ -50,10 +45,6 @@ class RootComponent extends PureComponent {
 							<Route path='/admin/:page'>
 								<span style={{ position: `relative`, top: `10rem` }}>Admin</span>
 								{/* <Admin /> */}
-							</Route>
-
-							<Route path='/success'>
-								<PostMessage />
 							</Route>
 
 							<Route>
@@ -74,9 +65,4 @@ class RootComponent extends PureComponent {
 	}
 }
 
-const PostMessage = () => {
-	window.postMessage(`done`, window.location.origin)
-	return <span style={{ position: `relative`, top: `10rem` }}>Success</span>
-}
-
-export const Root = RootComponent
+export default Root

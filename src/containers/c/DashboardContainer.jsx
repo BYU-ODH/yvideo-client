@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import {
-	interfaceService,
-} from 'services'
 
 import { Dashboard } from 'components'
 
-class DashboardContainerComponent extends Component {
+class DashboardContainer extends Component {
 
 	render() {
 		// const { recent = [], collectionsCache } = this.props
@@ -63,15 +60,11 @@ class DashboardContainerComponent extends Component {
 
 }
 
-const mapStateToProps = ({ interfaceStore }) => ({
-	loading: interfaceStore.loading,
+const mapStateToProps = () => ({
+
 })
 
 const mapDispatchToProps = {
-	startLoading: interfaceService.startLoading,
-	stopLoading: interfaceService.stopLoading,
-	// getCollections,
-	// getRecent,
 }
 
-export const DashboardContainer = connect(mapStateToProps, mapDispatchToProps)(DashboardContainerComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer)

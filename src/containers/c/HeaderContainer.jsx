@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { Header } from 'components'
 
-export class HeaderContainerComponent extends Component {
+export class HeaderContainer extends Component {
 	render() {
 
 		const {
@@ -25,4 +25,4 @@ const mapStateToProps = state => ({
 	onAdmin: state.onAdmin,
 })
 
-export const HeaderContainer = connect(mapStateToProps)(HeaderContainerComponent)
+export default connect(mapStateToProps)(HeaderContainer)
