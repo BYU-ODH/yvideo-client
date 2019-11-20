@@ -2,16 +2,16 @@ import React, { PureComponent } from 'react'
 
 import { Wrapper, LogoWrapper, Name, Shadow, Logo} from './styles'
 
-export class Header extends PureComponent {
+export default class Header extends PureComponent {
 	render() {
 
 		const {
 			lost,
-			onAdmin,
+			border,
 		} = this.props.viewstate
 
 		return (
-			<Wrapper lost={lost} border={onAdmin}>
+			<Wrapper lost={lost} border={border}>
 				<LogoWrapper to='/'>
 					<Logo />
 					<Name>YVIDEO</Name>
@@ -21,5 +21,3 @@ export class Header extends PureComponent {
 		)
 	}
 }
-
-export default Header

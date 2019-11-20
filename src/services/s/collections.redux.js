@@ -8,6 +8,7 @@ export default class CollectionService {
 		COLLECTIONS_CLEAN: `COLLECTIONS_CLEAN`,
 		COLLECTIONS_ERROR: `COLLECTIONS_ERROR`,
 		COLLECTIONS_GET: `COLLECTIONS_GET`,
+		COLLECTION_EDIT: `COLLECTION_EDIT`,
 	}
 
 	// action creators
@@ -17,7 +18,8 @@ export default class CollectionService {
 		collectionsAbort: () => ({ type: this.types.COLLECTIONS_ABORT }),
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
-		collectionsGet: payload => ({ type: this.types.COLLECTIONS_GET, payload }),
+		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
+		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 	}
 
 	// default store
@@ -38,6 +40,7 @@ export default class CollectionService {
 			COLLECTIONS_CLEAN,
 			COLLECTIONS_ERROR,
 			COLLECTIONS_GET,
+			COLLECTION_EDIT,
 		} = this.types
 
 		switch (action.type) {
@@ -72,10 +75,20 @@ export default class CollectionService {
 				...store,
 				cache: {
 					...store.cache,
-					...action.payload,
+					...action.payload.collections,
 				},
 				loading: false,
 				lastFetched: Date.now(),
+			}
+
+		case COLLECTION_EDIT:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collection.id]: action.payload.collection,
+				},
+				loading: false,
 			}
 
 		default:
@@ -85,9 +98,7 @@ export default class CollectionService {
 
 	// thunks
 
-	getCollections = force => async (dispatch, getState, { apiProxy }) => {
-
-		console.log(`getCollections thunk`)
+	getCollections = (force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().collectionStore.lastFetched
 
@@ -99,8 +110,9 @@ export default class CollectionService {
 
 			try {
 
-				const result = await apiProxy.user.collections()
-				console.log(result)
+				const result = await apiProxy.user.collections.get()
+
+				dispatch(this.actions.collectionsGet(result))
 
 			} catch (error) {
 				console.error(error.message)
@@ -110,4 +122,49 @@ export default class CollectionService {
 		} else dispatch(this.actions.collectionsAbort())
 	}
 
+	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		const currentState = getState().collectionStore.cache[id]
+
+		let abort = false
+
+		switch (action) {
+		case `publish`:
+			currentState.published = true
+			break
+
+		case `unpublish`:
+			currentState.published = false
+			break
+
+		case `archive`:
+			currentState.archived = true
+			break
+
+		case `unarchive`:
+			currentState.published = false
+			break
+
+		default:
+			abort = true
+			break
+		}
+
+		if (abort) dispatch(this.actions.collectionsAbort())
+		else {
+			try {
+				const result = await apiProxy.collection.edit(id, action)
+
+				console.log(result)
+
+				dispatch(this.actions.collectionEdit(currentState))
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+
+	}
 }

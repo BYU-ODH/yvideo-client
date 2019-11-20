@@ -11,19 +11,21 @@ const LazyImage =
 		heightSm = `50.5vw`,
 		widthSm = `90vw`,
 	}) => {
-		return src ? (
+		return (
 			<Style
 				height={height}
 				width={width}
 				heightSm={heightSm}
 				widthSm={widthSm}
 			>
-				<img
-					src={src}
-					alt={alt}
-				/>
+				{src &&
+					<img
+						src={src}
+						alt={alt}
+					/>
+				}
 			</Style>
-		) : null
+		)
 	}
 
 export default LazyImage

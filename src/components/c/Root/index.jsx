@@ -6,9 +6,17 @@ import {
 	CollectionsContainer,
 	HeaderContainer,
 	MenuContainer,
+	ManagerContainer,
 } from 'containers'
 
-import { Load } from 'components'
+import {
+	Load,
+	Error,
+} from 'components'
+
+import {
+	Modal,
+} from 'components/bits'
 
 class Root extends PureComponent {
 
@@ -17,7 +25,7 @@ class Root extends PureComponent {
 		const {
 			user,
 			loading,
-			// modal,
+			modal,
 		} = this.props.viewstate
 
 		return (
@@ -38,8 +46,7 @@ class Root extends PureComponent {
 							</Route>
 
 							<Route path='/manager/:id?'>
-								<span style={{ position: `relative`, top: `10rem` }}>Manager</span>
-								{/* <Manager /> */}
+								<ManagerContainer />
 							</Route>
 
 							<Route path='/admin/:page'>
@@ -48,8 +55,7 @@ class Root extends PureComponent {
 							</Route>
 
 							<Route>
-								<span style={{ position: `relative`, top: `10rem` }}>Error</span>
-								{/* <Error error='404' message={`You've wandered too far`} /> */}
+								<Error error='404' message={`You've wandered too far`} />
 							</Route>
 
 						</Switch>
@@ -59,7 +65,7 @@ class Root extends PureComponent {
 				}
 
 				<Load loading={loading} />
-				{/* <Modal active={modal.active} /> */}
+				<Modal active={modal.active} />
 			</Router>
 		)
 	}

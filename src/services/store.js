@@ -1,8 +1,18 @@
-import proxies from 'proxy'
 import { applyMiddleware, combineReducers, createStore } from 'redux'
+
 import { composeWithDevTools } from 'redux-devtools-extension'
+
 import thunk from 'redux-thunk'
-import { authService, collectionService, interfaceService } from 'services'
+
+import proxies from 'proxy'
+
+import {
+	authService,
+	collectionService,
+	interfaceService,
+	contentService,
+	resourceService,
+} from 'services'
 
 // Use this const to change the settings in Redux Dev Tools. Set
 // the options here, and then replace `composeWithDevTools` with
@@ -17,15 +27,19 @@ const store = createStore(
 	// This is what the store looks like
 	combineReducers({
 		authStore: authService.reducer,
-		interfaceStore: interfaceService.reducer,
 		collectionStore: collectionService.reducer,
+		contentStore: contentService.reducer,
+		interfaceStore: interfaceService.reducer,
+		resourceStore: resourceService.reducer,
 	}),
 
 	// This is the initial state of the store
 	{
 		authStore: authService.store,
-		interfaceStore: interfaceService.store,
 		collectionStore: collectionService.store,
+		contentStore: contentService.store,
+		interfaceStore: interfaceService.store,
+		resourceStore: resourceService.store,
 	},
 
 	composeWithDevTools(

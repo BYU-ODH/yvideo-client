@@ -18,14 +18,16 @@ class Load extends Component {
 		)
 	}
 
-	shouldComponentUpdate = nextProps => {
+	componentDidUpdate = prevProps => {
 
-		if (!this.props.loading && nextProps.loading) {
+		if (!this.wrapper.current) return
+
+		if (!prevProps.loading && this.props.loading) {
 			this.wrapper.current.classList.add(`active`)
 			this.wrapper.current.classList.remove(`hidden`)
 		}
 
-		if (this.props.loading && !nextProps.loading) {
+		if (prevProps.loading && !this.props.loading) {
 			setTimeout(() => {
 				this.wrapper.current.classList.remove(`active`)
 				setTimeout(() => {
@@ -33,8 +35,6 @@ class Load extends Component {
 				}, 250)
 			}, 1000)
 		}
-
-		return false
 	}
 
 }

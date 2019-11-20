@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { collectionService } from 'services'
+import { collectionService, interfaceService } from 'services'
 
 import { roles } from 'models/User'
 
 import { Collections } from 'components'
 
-import { objectIsEmpty } from 'lib/util'
+// import { objectIsEmpty } from 'lib/util'
 
 const CollectionsContainer = props => {
 
@@ -17,14 +17,11 @@ const CollectionsContainer = props => {
 		displayBlocks,
 		collections,
 		getCollections,
+		toggleCollectionsDisplay,
 	} = props
 
-	const toggleCollectionsDisplay = () => {
-		console.log(`handling collections display`)
-	}
-
 	useEffect(() => {
-		if (objectIsEmpty(collections)) getCollections()
+		getCollections()
 	}, [collections, getCollections])
 
 	const viewstate = {
@@ -50,6 +47,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore }) => ({
 
 const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
+	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

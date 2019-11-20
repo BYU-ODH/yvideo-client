@@ -1,8 +1,8 @@
 import { AyamelPlayer, Translator, LangUtils } from 'yvideojs'
-import xApi from '../xApi.js'
-import ContentLoader from './ContentLoader.js'
-import ContentCache from './ContentCache.js'
-import TranscriptPlayer from './TranscriptPlayer.js'
+import xApi from '../xApi.js.js'
+import ContentLoader from './ContentLoader.js.js'
+import ContentCache from './ContentCache.js.js'
+import TranscriptPlayer from './TranscriptPlayer.js.js'
 import EditorWidgets from 'yvideo-editorwidgets'
 import axios from 'axios'
 
@@ -45,7 +45,7 @@ const ContentRenderer = {
 					resource: args.resource,
 					courseId: args.courseId,
 					contentId: args.contentId,
-					permission: args.permission
+					permission: args.permission,
 				}) : [],
 			annotations:
 				await showAnnotations(args.content) ?
@@ -53,9 +53,9 @@ const ContentRenderer = {
 						resource: args.resource,
 						courseId: args.courseId,
 						contentId: args.contentId,
-						permission: args.permission
+						permission: args.permission,
 					}) : [],
-			callback: args.callback
+			callback: args.callback,
 		})
 
 		player.then(() => {
@@ -68,11 +68,11 @@ const ContentRenderer = {
 			e.stopPropagation()
 			document.getElementById(`makeThumbnail`).dispatchEvent(new CustomEvent(`timeUpdate`, {
 				bubbles: true,
-				detail: { currentTime: player.currentTime }
+				detail: { currentTime: player.currentTime },
 			}))
 		}, false)
 
-	}
+	},
 }
 
 const showTranscript = content => {
@@ -131,13 +131,13 @@ const setupTranslatorPane = (tab, player, content, resourceMap) => {
 		id: `transLang`,
 		value: [
 			codes.indexOf(`eng`) !== -1 ?
-				`eng` : codes[0]
+				`eng` : codes[0],
 		],
 		icon: `icon-globe`,
 		button: `left`,
 		text: `Select Language`,
 		options: targetLanguages,
-		multiple: false
+		multiple: false,
 	})).addEventListener(`valuechange`, () => {
 		player.targetLang = this.value[0]
 	})
@@ -150,11 +150,11 @@ const setupTranslatorPane = (tab, player, content, resourceMap) => {
 			data = detail.data
 		let activityType
 		switch (data.sourceType) {
-			case `caption`: activityType = `captionTranslation`
-				break
-			case `transcript`: activityType = `transcriptionTranslation`
-				break
-			default: return
+		case `caption`: activityType = `captionTranslation`
+			break
+		case `transcript`: activityType = `transcriptionTranslation`
+			break
+		default: return
 		}
 		xApi.predefined[activityType](resourceMap.get(data.cue.track).id, data.cue.id, detail.text)
 		player.pause()
@@ -192,7 +192,7 @@ const setupTranslatorPane = (tab, player, content, resourceMap) => {
 					error() {
 						alert(`Error adding to word list`)
 						addWord.parentNode.removeChild(addWord)
-					}
+					},
 				})
 			})
 		}
@@ -227,7 +227,7 @@ const setupTranscriptPane = (tab, player, content, trackResources, trackMimes) =
 			captionTracks: [],
 			holder: DOM,
 			sync: true,
-			annotator: null
+			annotator: null,
 		})
 
 	// Cue clicking
@@ -284,42 +284,42 @@ const setupAnnotatorPane = (tab, player) => {
 			}
 
 			switch (event.detail.data.type) {
-				case `text`:
-					display.innerHTML = event.detail.data.value;
-					[].forEach.call(display.querySelectorAll(`a`), (link) => {
-						link.target = `_blank`
-					})
-					break
-				case `image`:
-					display.innerHTML = `<img src='${event.detail.data.value}'>`
-					break
-				case `content`:
-					ContentCache.load(event.detail.data.value, content => {
-						display.innerHTML = ``
-						// Don't allow annotations, transcriptions, or certain controls
-						content.settings.showTranscripts = `false`
-						content.settings.showAnnotations = `false`
-						content.settings.allowDefinitions = `false`
+			case `text`:
+				display.innerHTML = event.detail.data.value;
+				[].forEach.call(display.querySelectorAll(`a`), (link) => {
+					link.target = `_blank`
+				})
+				break
+			case `image`:
+				display.innerHTML = `<img src='${event.detail.data.value}'>`
+				break
+			case `content`:
+				ContentCache.load(event.detail.data.value, content => {
+					display.innerHTML = ``
+					// Don't allow annotations, transcriptions, or certain controls
+					content.settings.showTranscripts = `false`
+					content.settings.showAnnotations = `false`
+					content.settings.allowDefinitions = `false`
 
-						ContentLoader.render({
-							content,
-							holder: display,
-							annotate: false,
-							screenAdaption: {
-								fit: false
-							},
-							aspectRatio: window.Ayamel.aspectRatios.hdVideo,
-							components: {
-								left: [`play`],
-								right: [`captions`, `timeCode`]
-							},
-							callback(args) {
-								newplayer = args.mainPlayer
-							}
-						})
+					ContentLoader.render({
+						content,
+						holder: display,
+						annotate: false,
+						screenAdaption: {
+							fit: false,
+						},
+						aspectRatio: window.Ayamel.aspectRatios.hdVideo,
+						components: {
+							left: [`play`],
+							right: [`captions`, `timeCode`],
+						},
+						callback(args) {
+							newplayer = args.mainPlayer
+						},
 					})
-					break
-				default: break
+				})
+				break
+			default: break
 			}
 		}
 		// Find the annotation doc
@@ -358,7 +358,7 @@ const setupMainPlayer = args => {
 		transcriptPlayer = null,
 		components = args.components || {
 			left: [`play`, `lastCaption`, `volume`, `captions`, `annotations`],
-			right: [`rate`, `fullScreen`, `sideToggle`, `timeCode`]
+			right: [`rate`, `fullScreen`, `sideToggle`, `timeCode`],
 		}
 
 	if (!showCaptions(args.content)) {
@@ -413,7 +413,7 @@ const setupMainPlayer = args => {
 			title: `Definitions`,
 			content(tab, player) {
 				return setupTranslatorPane(tab, player, content, trackResources)
-			}
+			},
 		})
 	}
 
@@ -422,21 +422,21 @@ const setupMainPlayer = args => {
 			title: `Transcripts`,
 			content(tab, player) {
 				return setupTranscriptPane(tab, player, content, trackResources, trackMimes)
-			}
+			},
 		})
 	}
 
 	if (args.annotations.length) {
 		tabs.push({
 			title: `Annotations`,
-			content: setupAnnotatorPane
+			content: setupAnnotatorPane,
 		})
 	}
 
 	if (showWordList(content)) {
 		tabs.push({
 			title: `Word List`,
-			content: setupWordListPane
+			content: setupWordListPane,
 		})
 	}
 
@@ -446,22 +446,22 @@ const setupMainPlayer = args => {
 		resource: args.resource,
 		captions: {
 			renderCue: args.renderCue,
-			whitelist: args.transcripts
+			whitelist: args.transcripts,
 		},
 		annotations: {
 			classList: [`annotation`],
-			whitelist: args.annotations
+			whitelist: args.annotations,
 		},
 		translator: args.translate ? {
 			endpoint: Translator.endpoint,
 			key: Translator.key,
-			targetLang: `eng`
+			targetLang: `eng`,
 		} : null,
 		startTime: args.startTime,
 		endTime: args.endTime,
 		translate: args.translate,
 		aspectRatio: parseFloat(args.content.settings.aspectRatio) || window.Ayamel.aspectRatios.hdVideo,
-		tabs
+		tabs,
 	})
 
 	player.addEventListener(`play`, () => {
@@ -474,7 +474,7 @@ const setupMainPlayer = args => {
 				mainPlayer: player,
 				transcriptPlayer,
 				trackResources,
-				trackMimes
+				trackMimes,
 			})
 		}, 1)
 	}

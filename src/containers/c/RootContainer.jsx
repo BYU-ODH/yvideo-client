@@ -9,15 +9,11 @@ import { Root } from 'components'
 
 const RootContainer = props => {
 
-	// store
 	const {
 		user,
 		loading,
 		tried,
-	} = props
-
-	// thunks
-	const {
+		modal,
 		checkAuth,
 	} = props
 
@@ -28,15 +24,17 @@ const RootContainer = props => {
 	const viewstate = {
 		user,
 		loading,
+		modal,
 	}
 
 	return <Root viewstate={viewstate} />
 }
 
-const mapStoreToProps = ({ authStore }) => ({
+const mapStoreToProps = ({ authStore, interfaceStore, collectionStore, contentStore, resourceStore }) => ({
 	user: authStore.user,
-	loading: authStore.loading,
+	loading: authStore.loading || collectionStore.loading || contentStore.loading || resourceStore.loading,
 	tried: authStore.tried,
+	modal: interfaceStore.modal,
 })
 
 const mapDispatchToProps = {

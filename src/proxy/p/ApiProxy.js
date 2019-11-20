@@ -18,18 +18,19 @@ const apiProxy = {
 			}
 		},
 		collections: {
+			/**
+			 * Retrieves the collections for the current user
+			 *
+			 * @returns a map of the collections, where the key is the collection's ID
+			 */
 			get: async () => {
 
-				console.log(`apiProxy.user.collections`)
+				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true }).then(res => res.data)
 
-				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true })
-
-				const data = result.data.reduce((map, item) => {
+				return result.reduce((map, item) => {
 					map[item.id] = item
 					return map
 				}, {})
-
-				console.log(data)
 			},
 		},
 	},
@@ -53,18 +54,36 @@ const apiProxy = {
 		 *
 		 * @param id The ID of the collection
 		 * @param name The new name of the collection
-		 *
-		 * @returns nothing yet
 		 */
-		post: async (id, name) => {
-			try {
-				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}`
-				const result = await axios.post(url, { name }, { withCredentials: true })
-				console.log(result)
-			} catch (error) {
-				console.error(error)
-			}
+		post: async (id, name) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}`, { name }, { withCredentials: true }),
+		/**
+		 * Publishes, Unpublishes, Archives, or Unarchives a collection
+		 *
+		 * @param id The ID of the collection
+		 * @param action The action to perform, must be one of `archive`, `unarchive`, `publish`, `unpublish`
+		 */
+		edit: async (id, action) => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}/${action}`, { withCredentials: true }).then(res => res.data),
+	},
+	content: {
+		/**
+		 * Retrieves content from a list of content IDs
+		 *
+		 * @param ids the set of IDs of content you wish to retrieve
+		 *
+		 * @returns a map of the content, where the key is the content's ID
+		 */
+		get: async ids => {
+
+			const results = await Promise.all(ids.map(id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`, { withCredentials: true }).then(res => res.data)))
+
+			return results.reduce((map, item) => {
+				map[item.id] = item
+				return map
+			}, {})
 		},
+	},
+	resources: {
+		get: id => axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${id}?${Date.now().toString(36)}`, { withCredentials: true }),
 	},
 }
 

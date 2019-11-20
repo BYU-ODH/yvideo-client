@@ -8,21 +8,21 @@ export class HeaderContainer extends Component {
 
 		const {
 			lost,
-			onAdmin,
+			border,
 		} = this.props
 
 		const viewstate = {
 			lost,
-			onAdmin,
+			border,
 		}
 
 		return <Header viewstate={viewstate} />
 	}
 }
 
-const mapStateToProps = state => ({
-	lost: state.lost,
-	onAdmin: state.onAdmin,
+const mapStateToProps = store => ({
+	lost: store.interfaceStore.lost,
+	border: store.interfaceStore.headerBorder,
 })
 
 export default connect(mapStateToProps)(HeaderContainer)

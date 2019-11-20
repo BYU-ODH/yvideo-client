@@ -38,10 +38,10 @@ export default class Collections extends PureComponent {
 					</div>
 				</header>
 				<div className='list'>
-					{
-						Object.keys(collections).map(item => {
-							return displayBlocks ? <BlockCollection key={item.id} data={item} /> : <ListCollection key={item.id} data={item} />
-						})
+					{displayBlocks ?
+						Object.keys(collections).map(key => <BlockCollection key={key} data={collections[key]} />)
+						:
+						Object.keys(collections).map(key => <ListCollection key={key} data={collections[key]} />)
 					}
 				</div>
 			</Style>

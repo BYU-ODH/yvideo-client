@@ -65,8 +65,8 @@ class BoxDrawingCanvas {
 				set(val) {
 					drawable = val
 					element.classList[drawable ? `add` : `remove`](`drawable`)
-				}
-			}
+				},
+			},
 		})
 	}
 
@@ -92,7 +92,7 @@ class BoxDrawingCanvas {
 			width,
 			height,
 			top,
-			left
+			left,
 		}
 	}
 
@@ -235,7 +235,7 @@ class Box {
 				x1,
 				y1,
 				x2,
-				y2
+				y2,
 			}
 
 			element.dispatchEvent(newEvent)
@@ -257,7 +257,7 @@ class Box {
 				x1,
 				y1,
 				x2,
-				y2
+				y2,
 			}
 
 			element.dispatchEvent(newEvent)
@@ -287,7 +287,7 @@ class Box {
 			x1: this.x1,
 			y1: this.y1,
 			x2: this.x2,
-			y2: this.y2
+			y2: this.y2,
 		}
 	}
 

@@ -23,6 +23,8 @@ class ListCollection extends PureComponent {
 			content,
 		} = this.props.data
 
+		if (!content) return null
+
 		return (
 			<div>
 				<Header isOpen={isOpen} onClick={this.togglePanel} >
