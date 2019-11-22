@@ -104,7 +104,7 @@ class CreateContent extends PureComponent {
 
 	handleSubmit = async e => {
 		const { data } = this.state
-		const { modal, toggleModal, getCollections, getContent, admin, collectionsCache } = this.props
+		const { modal, toggleModal, getCollections, getContent, admin, collections } = this.props
 
 		e.preventDefault()
 
@@ -121,7 +121,7 @@ class CreateContent extends PureComponent {
 
 		await getCollections(admin, true)
 
-		const contentIds = collectionsCache.collections[modal.collectionId].content.map(item => item.id)
+		const contentIds = collections[modal.collectionId].content.map(item => item.id)
 		getContent(contentIds, true)
 	}
 
@@ -131,7 +131,7 @@ class CreateContent extends PureComponent {
 	}
 
 	submitFile = async e => {
-		const { modal, toggleModal, getCollections, getContent, admin, collectionsCache } = this.props
+		const { modal, toggleModal, getCollections, getContent, admin, collections } = this.props
 
 		e.preventDefault()
 
@@ -149,7 +149,7 @@ class CreateContent extends PureComponent {
 
 		await getCollections(admin, true)
 
-		const contentIds = [...collectionsCache.collections[modal.collectionId].content.map(item => item.id), results.data.id]
+		const contentIds = [...collections[modal.collectionId].content.map(item => item.id), results.data.id]
 		await getContent(contentIds, true)
 	}
 
@@ -304,8 +304,8 @@ class CreateContent extends PureComponent {
 const mapStateToProps = store => ({
 	modal: store.interfaceStore.modal,
 	admin: store.authStore.user.roles.includes(roles.admin),
-	collectionsCache: store.collectionStore.cache,
-	contentCache: store.contentStore.cache,
+	collections: store.collectionStore.cache,
+	content: store.contentStore.cache,
 })
 
 const mapDispatchToProps = {

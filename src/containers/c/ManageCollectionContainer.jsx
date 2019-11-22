@@ -29,11 +29,14 @@ const ManageCollectionContainer = props => {
 
 	const [isContent, setIsContent] = useState(true)
 
-	useEffect(() => {
-		if (objectIsEmpty(content)) getContent(collection.content.map(item => parseInt(item.id)))
-	}, [collection.content, content, getContent])
+	console.log(collection.content)
 
-	if (objectIsEmpty(content)) return null
+	useEffect(() => {
+		if (objectIsEmpty(content)) {
+			const ids = collection.content.map(item => parseInt(item.id))
+			getContent(ids)
+		}
+	}, [collection.content, content, getContent])
 
 	const togglePublish = e => {
 		e.preventDefault()
@@ -55,6 +58,8 @@ const ManageCollectionContainer = props => {
 	const setTab = isContent => _e => {
 		setIsContent(isContent)
 	}
+
+	if (objectIsEmpty(content) && collection.content.length) return null
 
 	const viewstate = {
 		collection,

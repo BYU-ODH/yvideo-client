@@ -87,6 +87,8 @@ export default class ContentService {
 
 	getContent = (contentIds = [], force = false) => async (dispatch, getState, { apiProxy }) => {
 
+		console.log(contentIds)
+
 		const time = Date.now() - getState().contentStore.lastFetched
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
