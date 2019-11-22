@@ -1,154 +1,221 @@
 import ContentLoader from 'lib/js/contentRendering/ContentLoader'
+import ContentRenderer from 'lib/js/contentRendering/ContentRenderer'
+import { Ayamel, ResourceLibrary } from 'yvideojs'
+import { CaptionEditor, Timeline } from 'yvideo-subtitle-timeline-editor'
+import { EditorWidgets } from 'yvideo-editorwidgets'
 
-const getCaptionAider = (content, contentHolder) => {
-	const loader = ContentLoader.castContentObject(content).then((content) => {
-		return ResourceLibrary.load(content.resourceId).then(function (resource) {
-			content.settings.showCaptions = "true";
+import {
+	NewTrackData,
+} from './modals'
+
+const getCaptionAider = (content, contentHolder, renderModal) => {
+
+	ContentLoader.castContentObject(content).then((content) => {
+		return ResourceLibrary.load(content.resourceId).then((resource) => {
+			content.settings.showCaptions = `true`
 			return {
-				content: content,
-				resource: resource,
+				content,
+				resource,
 				contentId: content.id,
 				holder: contentHolder,
-				permission: "edit",
+				permission: `edit`,
 				screenAdaption: {
 					fit: true,
 					scroll: true,
-					padding: 61
+					padding: 61,
 				},
 				startTime: 0,
 				endTime: -1,
-				renderCue: renderCue,
-				//noUpdate: true, // Disable transcript player updating for now
-				callback: callback
-			};
-		});
-	}).then(ContentRenderer.render)
+				renderCue: CaptionEditor.make,
+				// noUpdate: true, // Disable transcript player updating for now
+				callback: args => {
+					const translator = new Ayamel.classes.Translator()
 
-	function callback(args) {
-		let translator = new Ayamel.classes.Translator()
+					const commandStack = new EditorWidgets.CommandStack()
+					const trackMimes = args.trackMimes
+					const videoPlayer = args.mainPlayer
 
-		commandStack = new EditorWidgets.CommandStack()
-		trackResources = args.trackResources
-		trackMimes = args.trackMimes
-		videoPlayer = args.mainPlayer
-
-		timeline = new Timeline(document.getElementById(`timeline`), {
-			stack: commandStack,
-			syncWith: videoPlayer,
-			saveLocation: `server`,
-			dropLocation: `file`,
-			width: document.body.clientWidth || window.innerWidth,
-			length: 3600, start: 0, end: 240,
-			trackMode: `showing`,
-			tool: Timeline.SELECT,
-			showControls: true,
-			canGetFor,
-			getFor,
-		})
-
-		updateSpacing()
-
-		captionEditor = CaptionEditor({
-			stack: commandStack,
-			refresh () { videoPlayer.refreshLayout(); },
-			rebuild () { videoPlayer.rebuildCaptions(); },
-			timeline,
-		})
-
-		// Check for unsaved tracks before leaving
-		window.addEventListener(`beforeunload`, (e) => {
-			var warning = "You have unsaved tracks. Your unsaved changes will be lost.";
-			if (!commandStack.isSavedAt(timeline.saveLocation)) {
-				e.returnValue = warning;
-				return warning;
-			}
-		}, false)
-
-		window.addEventListener(`resize`, () => {
-			timeline.width = window.innerWidth;
-		}, false)
-
-		//Preload tracks into the editor
-		videoPlayer.addEventListener(`addtexttrack`, (event) => {
-			var track = event.detail.track;
-			if (timeline.hasCachedTextTrack(track)) { return; }
-			timeline.cacheTextTrack(track, trackMimes.get(track), 'server');
-		})
-
-		// EVENT TRACK EDITOR event listeners
-		timeline.on(`select`, (selected) => {
-			selected.segments[0].makeEventTrackEditor(selected.segments[0].cue, videoPlayer);
-		})
-
-		timeline.on(`unselect`, (deselected) => { deselected.segments[0].destroyEventTrackEditor(); })
-
-		// Auto delete eventTrackEditor when track is deleted
-		timeline.on(`delete`, (deleted) => { deleted.segments[0].destroyEventTrackEditor(); })
-
-		// keep the editor and the player menu in sync
-		timeline.on(`altertrack`, () => { videoPlayer.refreshCaptionMenu(); })
-
-		//TODO: Integrate the next listener into the timeline editor
-		timeline.on(`activechange`, () => { videoPlayer.rebuildCaptions(); })
-
-		timeline.on(`cuechange`, (evt) => {
-			if (evt.fields.indexOf('text') === -1) { return; }
-		})
-
-		timeline.on(`addtrack`, (evt) => {
-			videoPlayer.addTextTrack(evt.track.textTrack);
-			updateSpacing();
-		})
-
-		timeline.on(`removetrack`, (evt) => {
-			updateSpacing();
-		})
-
-		timeline.addMenuItem([`Track`, `Clone`, `Clone with Translation`], {
-			name: `Clone with Translation`,
-			action () {
-				var tl = this.timeline,
-					tid = this.track.id;
-				tl.getFor('newtrack',
-					['kind', 'lang', 'name', 'mime', 'overwrite'],
-					{
-						kind: void 0,
-						lang: void 0,
-						mime: void 0,
-						overwrite: false
-					}
-				).then(function (values) {
-					tl.cloneTrack(
-						tid,
-						{
-							kind: values[0],
-							lang: values[1],
-							name: values[2],
-							mime: values[3]
-						},
-						function (cue, ott, ntt, mime) {
-							var txt = Ayamel.utils.extractPlainText(cue.getCueAsHTML());
-
-							if (ott.language === ntt.language) {
-								return txt;
+					const timeline = new Timeline(document.getElementById(`timeline`), {
+						stack: commandStack,
+						syncWith: videoPlayer,
+						saveLocation: `server`,
+						dropLocation: `file`,
+						width: document.body.clientWidth || window.innerWidth,
+						length: 3600, start: 0, end: 240,
+						trackMode: `showing`,
+						tool: Timeline.SELECT,
+						showControls: true,
+						canGetFor: key => {
+							switch(key) {
+							case `newtrack`:
+							case `edittrack`:
+							case `savetrack`:
+							case `loadtrack`:
+							case `showtrack`:
+							case `loadlines`:
+							case `loadaudio`:
+							case `location`:
+							case `locationNames`: return true
+							default:
+								return false
 							}
-
-							return translator.translate({
-								srcLang: ott.language,
-								destLang: ntt.language,
-								text: txt
-							}).then(function (data) {
-								return data.translations[0].text;
-							}).catch(function () {
-								return txt;
-							});
 						},
-						values[4]
-					);
-				});
-			},
+						getFor: (key, datalist) => {
+							switch (key) {
+							case `newtrack`:
+
+								// TODO: Create a component that renders what newTrackData() rendered, which you can see on the github repo:
+								// https://github.com/BYU-ODH/yvideo/blob/master/public/javascripts/pageScripts/captionAider.js
+								// TODO: Import that component here, and pass it into the renderModal() function.
+								// TODO: Learn how to add props to the component before passing it on to the toggleModal() redux thunk method
+								// (hint: you might be able to do it with something called the "render prop". Google that.)
+
+								// TODO: So i didn't account for what newTrackData() actually returns, so check to see what that is, and see if there's any way to copy it the Reactful way :)
+
+								// return newTrackData(datalist)
+								renderModal(NewTrackData, { datalist })
+								break
+							// case `edittrack`:
+								// return editTrackData(datalist)
+							// case `savetrack`:
+								// return saveTrackData(datalist)
+							// case `loadtrack`:
+								// return loadTrackData(datalist)
+							// case `showtrack`:
+								// return showTrackData(datalist)
+							// case `loadlines`:
+								// return loadTranscript(datalist)
+							// case `loadaudio`:
+								// return loadAudio(datalist)
+							// case `location`:
+								// return getLocation(datalist)
+							// case `locationNames`:
+								// return getLocationNames(datalist)
+							default:
+								return Promise.reject(new Error(`Can't get data for ${key}`))
+							}
+						},
+					})
+
+					const updateSpacing = () => {
+						document.getElementById(`bottomSpacer`).style.marginTop = `${document.getElementById(`bottomContainer`).clientHeight}px`
+					}
+
+					// const captionEditor = CaptionEditor({
+					// 	stack: commandStack,
+					// 	refresh() {
+					// 		videoPlayer.refreshLayout()
+					// 	},
+					// 	rebuild() {
+					// 		videoPlayer.rebuildCaptions()
+					// 	},
+					// 	timeline,
+					// })
+
+					// Check for unsaved tracks before leaving
+					window.addEventListener(`beforeunload`, (e) => {
+						const warning = `You have unsaved tracks. Your unsaved changes will be lost.`
+						if (!commandStack.isSavedAt(timeline.saveLocation)) {
+							e.returnValue = warning
+							return warning
+						}
+					}, false)
+
+					window.addEventListener(`resize`, () => {
+						timeline.width = window.innerWidth
+					}, false)
+
+					// Preload tracks into the editor
+					videoPlayer.addEventListener(`addtexttrack`, (event) => {
+						const track = event.detail.track
+						if (timeline.hasCachedTextTrack(track)) return
+						timeline.cacheTextTrack(track, trackMimes.get(track), `server`)
+					})
+
+					// EVENT TRACK EDITOR event listeners
+					timeline.on(`select`, (selected) => {
+						selected.segments[0].makeEventTrackEditor(selected.segments[0].cue, videoPlayer)
+					})
+
+					timeline.on(`unselect`, (deselected) => {
+						deselected.segments[0].destroyEventTrackEditor()
+					})
+
+					// Auto delete eventTrackEditor when track is deleted
+					timeline.on(`delete`, (deleted) => {
+						deleted.segments[0].destroyEventTrackEditor()
+					})
+
+					// keep the editor and the player menu in sync
+					timeline.on(`altertrack`, () => {
+						videoPlayer.refreshCaptionMenu()
+					})
+
+					// TODO: Integrate the next listener into the timeline editor
+					timeline.on(`activechange`, () => {
+						videoPlayer.rebuildCaptions()
+					})
+
+					timeline.on(`cuechange`, (evt) => {
+						if (evt.fields.indexOf(`text`) === -1) return
+					})
+
+					timeline.on(`addtrack`, (evt) => {
+						videoPlayer.addTextTrack(evt.track.textTrack)
+						updateSpacing()
+					})
+
+					timeline.on(`removetrack`, (evt) => {
+						updateSpacing()
+					})
+
+					timeline.addMenuItem([`Track`, `Clone`, `Clone with Translation`], {
+						name: `Clone with Translation`,
+						action() {
+							const tl = this.timeline,
+								tid = this.track.id
+							tl.getFor(`newtrack`,
+								[`kind`, `lang`, `name`, `mime`, `overwrite`],
+								{
+									kind: void 0,
+									lang: void 0,
+									mime: void 0,
+									overwrite: false,
+								}
+							).then((values) => {
+								tl.cloneTrack(
+									tid,
+									{
+										kind: values[0],
+										lang: values[1],
+										name: values[2],
+										mime: values[3],
+									},
+									(cue, ott, ntt, mime) => {
+										const txt = Ayamel.utils.extractPlainText(cue.getCueAsHTML())
+
+										if (ott.language === ntt.language)
+											return txt
+
+										return translator.translate({
+											srcLang: ott.language,
+											destLang: ntt.language,
+											text: txt,
+										}).then((data) => {
+											return data.translations[0].text
+										}).catch(() => {
+											return txt
+										})
+									},
+									values[4]
+								)
+							})
+						},
+					})
+				},
+			}
 		})
-	}
+	}).then(ContentRenderer.render)
 }
 
 export default getCaptionAider

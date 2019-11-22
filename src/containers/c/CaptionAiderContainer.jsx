@@ -1,14 +1,23 @@
-import React, { useEffect, useRef } from 'react'
-import { Timeline } from 'subtitle-timeline-editor'
-import ContentLoader from 'js/yvideojs/contentRendering/ContentLoader'
+import React, { useRef } from 'react'
+import { connect } from 'react-redux'
+
+import getCaptionAider from 'lib/js/captionAider'
+import { interfaceService } from 'src/services'
 
 const CaptionAiderContainer = props => {
 	const target = useRef()
-	const timeline = new Timeline(target, {})
 
+	const renderModal = (component, props) => {
+		props.toggleModal(component)
+	}
 
+	getCaptionAider(props.content, target, renderModal)
 
 	return <div id='timeline' ref={target} />
 }
 
-export default CaptionAiderContainer
+const mapDispatchToProps = {
+	toggleModal: interfaceService.toggleModal,
+}
+
+export default connect(null, mapDispatchToProps)(CaptionAiderContainer)
