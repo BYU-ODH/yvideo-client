@@ -10,7 +10,7 @@ import {
 
 import { ManageCollection } from 'components'
 
-import { CreateContent } from 'src/components/modals'
+import { CreateContent } from 'components/modals'
 
 import { objectIsEmpty } from 'lib/util'
 

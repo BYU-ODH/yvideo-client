@@ -8,7 +8,7 @@ import { collectionService, interfaceService } from 'services'
 
 import { Manager } from 'components'
 
-import { CreateCollection } from 'src/components/modals'
+import { CreateCollection } from 'components/modals'
 
 import { objectIsEmpty } from 'lib/util'
 
