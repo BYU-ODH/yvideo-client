@@ -1,9 +1,43 @@
 import React from 'react'
 
-const EditTrackData = () => {
+import Dialog from './modalTools/Dialog'
+import { EditTrackTemplate } from './modalTools/ModalTemplates'
+
+const EditTrackData = (datalist) => {
+
+	const actions = {
+		/* save: (event) => {
+			const that = this
+			if(this.get(`trackToEdit`) === `` || this.get(`trackName`) === ``){
+				failer(`cancel`)
+				return
+			}
+
+			$(`#editTrackModal`).modal(`hide`)
+			this.set({selectOpen: false})
+
+			resolver(datalist.map((key) => {
+				switch(key){
+				case `tid`: return that.get(`trackToEdit`)
+				case `kind`: return that.get(`trackKind`)
+				case `name`: return that.get(`trackName`) || `Untitled`
+					case `lang`: return that.get(`trackLang`)[0]
+				case `overwrite`: return true
+				}
+			}))
+		},*/
+	}
+
+	const trackList = []
+	const trackToEdit = ``
+
+	const dialogBody = EditTrackTemplate({trackList, trackToEdit})
+
+	const buttons = [{ event: `save`, label: `Save`}]
+
 	return (
 		<div>
-
+			<Dialog actions={actions} dialogTitle='Edit Tracks' dialogBody={dialogBody} buttons={buttons} />
 		</div>
 	)
 }
@@ -28,28 +62,29 @@ const editTrackData = (function(){
 		},
 		partials:{ dialogBody: document.getElementById(`editTrackTemplate`).textContent },
 		actions: {
-			save(event){
+			save(event) {
 				let that = this
-							if(this.get(`trackToEdit`) === `` || this.get(`trackName`) === ``){
+				if(this.get(`trackToEdit`) === `` || this.get(`trackName`) === ``){
 					failer(`cancel`)
-									return;
+					return;
 				}
 
 				$(`#editTrackModal`).modal(`hide`)
-							this.set({selectOpen: false})
+				this.set({selectOpen: false})
 
-							resolver(datalist.map((key) => {
-									switch(key){
-									case 'tid': return that.get("trackToEdit");
-									case 'kind': return that.get("trackKind");
-									case 'name': return that.get("trackName") || "Untitled";
-									case 'lang': return that.get("trackLang")[0];
-									case 'overwrite': return true;
-									}
-							}))
-					},
+				resolver(datalist.map((key) => {
+					switch(key){
+						case 'tid': return that.get("trackToEdit");
+						case 'kind': return that.get("trackKind");
+						case 'name': return that.get("trackName") || "Untitled";
+						case 'lang': return that.get("trackLang")[0];
+						case 'overwrite': return true;
+					}
+				}))
+			},
 		},
 	})
+
 	$(`#editTrackModal`).on(`shown.bs.modal`, () => {
 		let trackList = timeline.trackNames.slice()
 			ractive.set({

@@ -5,7 +5,15 @@ import { CaptionEditor, Timeline } from 'yvideo-subtitle-timeline-editor'
 import { EditorWidgets } from 'yvideo-editorwidgets'
 
 import {
+	EditTrackData,
+	GetLocation,
+	GetLocationNames,
+	LoadAudio,
+	LoadTrackData,
+	LoadTranscript,
 	NewTrackData,
+	SaveTrackData,
+	ShowTrackData,
 } from './modals'
 
 const getCaptionAider = (content, contentHolder, renderModal) => {
@@ -75,22 +83,30 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 								// return newTrackData(datalist)
 								renderModal(NewTrackData, { datalist })
 								break
-							// case `edittrack`:
-								// return editTrackData(datalist)
-							// case `savetrack`:
-								// return saveTrackData(datalist)
-							// case `loadtrack`:
-								// return loadTrackData(datalist)
-							// case `showtrack`:
-								// return showTrackData(datalist)
-							// case `loadlines`:
-								// return loadTranscript(datalist)
-							// case `loadaudio`:
-								// return loadAudio(datalist)
-							// case `location`:
-								// return getLocation(datalist)
-							// case `locationNames`:
-								// return getLocationNames(datalist)
+							case `edittrack`:
+								renderModal(EditTrackData, { datalist })
+								break
+							case `savetrack`:
+								renderModal(SaveTrackData, { datalist })
+								break
+							case `loadtrack`:
+								renderModal(LoadTrackData, { datalist })
+								break
+							case `showtrack`:
+								renderModal(ShowTrackData, { datalist })
+								break
+							case `loadlines`:
+								renderModal(LoadTranscript, { datalist })
+								break
+							case `loadaudio`:
+								renderModal(LoadAudio, { datalist })
+								break
+							case `location`:
+								renderModal(GetLocation, { datalist })
+								break
+							case `locationNames`:
+								renderModal(GetLocationNames, { datalist })
+								break
 							default:
 								return Promise.reject(new Error(`Can't get data for ${key}`))
 							}

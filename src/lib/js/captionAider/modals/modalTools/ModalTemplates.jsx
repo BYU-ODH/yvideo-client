@@ -73,7 +73,54 @@ const EditTrackDataTemplate = (props) => {
 </script>
 */
 
-const LoadTrackDataTemplate = (props) => {
+const SetLocationTemplate = props => {
+	<span class='form-horizontal'>
+		<div class='container'>
+			<div class='control-group'>
+				<label class='control-label'>Current Save Location</label>
+				<div class='controls'>
+					<div id='saveLocation'>
+						<label class='radio'>
+							<input type='radio' names={props.saveLocation} value='server'/>Server
+						</label>
+						{props.saveLocations.map( saveLocation => {
+							<label class='radio'>
+								<input type='radio' name={props.saveLocation} value={saveLocation.value}/>{saveLocation.name}
+							</label>
+						})}
+					</div>
+				</div>
+			</div>
+		</div>
+	</span>
+}
+
+/*
+<script id='setLocTemplate' type='text/ractive'>
+	<span class="form-horizontal">
+			<div class="container">
+					<div class="control-group">
+							<label class="control-label">Current Save Location</label>
+							<div class="controls">
+									<div id="saveLocation">
+
+											<label class="radio">
+													<input type="radio" name="{{saveLocation}}" value="server">Server
+											</label>
+											{{#saveLocations}}
+											<label class="radio">
+													<input type="radio" name="{{saveLocation}}" value="{{.value}}">{{.name}}
+											</label>
+											{{/saveLocations}}
+									</div>
+							</div>
+					</div>
+			</div>
+	</span>
+</script>
+*/
+
+const LoadTrackDataTemplate = props => {
 	return (
 		<span class='form-horizontal'>
 			<TrackKindSelect trackKind={props.track.trackKind}/>
@@ -190,6 +237,7 @@ const ShowTrackTemplate = props => {
 
 export default {
 	EditTrackDataTemplate,
+	SetLocationTemplate,
 	LoadTrackDataTemplate,
 	CreateTrackTemplate,
 	SaveTrackTemplate,
