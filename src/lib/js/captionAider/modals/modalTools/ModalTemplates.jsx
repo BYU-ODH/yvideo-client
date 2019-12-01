@@ -1,5 +1,4 @@
 import React from 'react'
-import { TrackKindSelect, TrackLangSelect } from './ModalHelpers'
 // TODO: Where is SuperSelect from?
 import { SuperSelect } from 'yvideo-editorwidgets' // or 'editor-widgets'
 
@@ -12,8 +11,8 @@ const EditTrackDataTemplate = (props) => {
 			<div class='control-group'>
 				<label class='control-label'>Which Track</label>
 				<div class='controls'>
-					<select value={props.trackToEdit}>
-						{props.trackList.map( track => <option value={track}>track</option> )}
+					<select onChange={props.changeTrackToEdit} value={props.trackToEdit}>
+						{props.trackList.map( track => <option value={track}>{track}</option> )}
 					</select>
 				</div>
 			</div>
@@ -23,20 +22,16 @@ const EditTrackDataTemplate = (props) => {
 	return (
 		<span class='form-horizontal'>
 			{trackSelect}
-			{props.trackList.map( track => {
-				return (
-					<div style={{display: track.trackToEdit === `` ? `none` : `block`}}>
-						<div class='control-group'>
-							<label class='control-label'>Name</label>
-							<div class='controls'>
-								<input type='text' value={track.trackName} placeholder='Name' id='editTrackAutoFocus'/>
-							</div>
-						</div>
-						<TrackKindSelect trackKind={track.trackKind}/>
-						<TrackLangSelect track={track}/>
+			<div style={{display: props.trackToEdit === `` ? `none` : `block`}}>
+				<div class='control-group'>
+					<label class='control-label'>Name</label>
+					<div class='controls'>
+						<input type='text' value={props.trackName} placeholder='Name' id='editTrackAutoFocus'/>
 					</div>
-				)
-			})}
+				</div>
+				<TrackKindSelect trackKind={props.trackKind}/>
+				<TrackLangSelect track={props.track}/>
+			</div>
 		</span>
 	)
 }
@@ -233,6 +228,58 @@ const ShowTrackTemplate = props => {
         <SuperSelect icon="icon-laptop" text="Select Track" value="{{selectedTracks}}" button="left" open="{{selectOpen}}" multiple="true" options="{{tracks}}" modal="{{modalId}}">
     </span>
 </script>
+*/
+
+const TrackKindSelect = ({ trackKind }) => {
+	return (
+		<div class='form-group'>
+			<label class='control-label'>Kind</label>
+			<div class='controls'>
+				<select value={trackKind}>
+					<option value='subtitles' selected>Subtitles</option>
+					<option value='captions'>Captions</option>
+					<option value='descriptions'>Descriptions</option>
+					<option value='chapters'>Chapters</option>
+					<option value='metadata'>Metadata</option>
+				</select>
+			</div>
+		</div>
+	)
+}
+
+/*
+Ractive.partials.trackKindSelect = '<div class="form-group">\
+    <label class="control-label">Kind</label>\
+    <div class="controls">\
+        <select value="{{trackKind}}">\
+            <option value="subtitles" selected>Subtitles</option>\
+            <option value="captions">Captions</option>\
+            <option value="descriptions">Descriptions</option>\
+            <option value="chapters">Chapters</option>\
+            <option value="metadata">Metadata</option>\
+        </select>\
+    </div>\
+</div>';
+*/
+
+const TrackLangSelect = ({ track }) => {
+	return (
+		<div class='form-group'>
+			<label class='control-label'>Language</label>
+			<div class='controls'>
+				<SuperSelect icon='icon-globe' text='Select Language' value={track.trackLang} button='left' open={track.selectOpen} multiple='false' options={track.languages} modal={track.modalId} defaultOption={{value:`zxx`,text:`No Linguistic Content`}}/>
+			</div>
+		</div>
+	)
+}
+
+/*
+Ractive.partials.trackLangSelect = '<div class="form-group">\
+    <label class="control-label">Language</label>\
+    <div class="controls">\
+        <SuperSelect icon="icon-globe" text="Select Language" value="{{trackLang}}" button="left" open="{{selectOpen}}" multiple="false" options="{{languages}}" modal="{{modalId}}" defaultOption={{defaultOption}}>\
+    </div>\
+</div>';
 */
 
 export default {

@@ -84,7 +84,7 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 								renderModal(NewTrackData, { datalist })
 								break
 							case `edittrack`:
-								renderModal(EditTrackData, { datalist })
+								renderModal(EditTrackData, { datalist, timeline })
 								break
 							case `savetrack`:
 								renderModal(SaveTrackData, { datalist })

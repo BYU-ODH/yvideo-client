@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Modal, Button } from 'react-bootstrap'
+
 const Dialog = (props) => {
 
 	const actions = props.actions
@@ -10,6 +12,31 @@ const Dialog = (props) => {
 	}
 
 	return (
+		<Modal show={props.show} onShow={props.handleShow} onHide={props.handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>{props.dialogTitle}</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<div class='container-fluid'>
+					{props.dialogBody}
+				</div>
+			</Modal.Body>
+			<Modal.Footer>
+				{props.buttons.map( button => {
+					return <Button variant='secondary' class='btn btn-gray' on-tap={buttonpress(button.event)}>{button.label}</Button>
+				})}
+				<Button variant='primary' onClick={props.handleClose}>
+            Close
+				</Button>
+			</Modal.Footer>
+		</Modal>
+	)
+}
+
+export default Dialog
+
+/*  Without Bootstrap
+return (
 		<div class='modal-dialog'>
 			<div class='modal-content'>
 				<div class='modal-header'>
@@ -27,10 +54,7 @@ const Dialog = (props) => {
 				</div>
 			</div>
 		</div>
-	)
-}
-
-export default Dialog
+	)*/
 
 /* Dialog = Ractive.extend({
 	template: '<div class="modal-dialog">\
