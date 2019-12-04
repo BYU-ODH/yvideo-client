@@ -1,6 +1,5 @@
 import React from 'react'
-// TODO: Where is SuperSelect from?
-import { SuperSelect } from 'yvideo-editorwidgets' // or 'editor-widgets'
+import { SuperSelect } from 'yvideo-editorwidgets'
 
 const EditTrackDataTemplate = (props) => {
 
@@ -30,7 +29,7 @@ const EditTrackDataTemplate = (props) => {
 					</div>
 				</div>
 				<TrackKindSelect trackKind={props.trackInfo.trackKind}/>
-				<TrackLangSelect trackInfo={props.trackInfo} languages={props.languages} modalId={props.modalId} selectOpen={props.selectOpen}/>
+				<TrackLangSelect trackInfo={props.trackInfo} langList={props.langList} modalId={props.modalId} selectOpen={props.selectOpen}/>
 			</div>
 		</span>
 	)
@@ -118,15 +117,15 @@ const SetLocationTemplate = props => {
 const LoadTrackDataTemplate = props => {
 	return (
 		<span class='form-horizontal'>
-			<TrackKindSelect trackKind={props.track.trackKind}/>
-			<TrackLangSelect track={props.track}/>
+			<TrackKindSelect />
+			<TrackLangSelect langList={props.langList} />
 			<div class='control-group'>
 				<label class='control-label'>Source</label>
 				<div class='controls'>
-					{props.sources.map( source => {
+					{props.sources.map(source => {
 						return (
 							<label class='radio'>
-								<input type='radio' name={props.loadSource} value={source.name}>{source.label}</input>
+								<input type='radio' value={source.name} onChange={props.changeSource}>{source.label}</input>
 							</label>
 						)
 					})}
@@ -262,12 +261,12 @@ Ractive.partials.trackKindSelect = '<div class="form-group">\
 </div>';
 */
 
-const TrackLangSelect = ({ trackInfo, languages, modalId, selectOpen }) => {
+const TrackLangSelect = ({ trackInfo, langList, modalId, selectOpen }) => {
 	return (
 		<div class='form-group'>
 			<label class='control-label'>Language</label>
 			<div class='controls'>
-				<SuperSelect icon='icon-globe' text='Select Language' value={trackInfo.trackLang} button='left' open={selectOpen} multiple='false' options={languages} modal={modalId} defaultOption={{value:`zxx`, text:`No Linguistic Content`}}/>
+				<SuperSelect icon='icon-globe' text='Select Language' value={trackInfo.trackLang} button='left' open={selectOpen} multiple='false' options={langList} modal={modalId} defaultOption={{value:`zxx`, text:`No Linguistic Content`}}/>
 			</div>
 		</div>
 	)

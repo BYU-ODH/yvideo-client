@@ -4,30 +4,15 @@ import Dialog from './modalTools/Dialog'
 import { EditTrackTemplate } from './modalTools/ModalTemplates'
 
 const EditTrackData = ({ datalist, timeline, langList }) => {
-
-	/*
-	dialogTitle: `Edit tracks`,
-	languages: langList,
-
-	trackLang: [],
-	trackKind: `subtitles`,
-	trackName: ``,
-
-	modalId: `editTrackModal`,
-	buttons: [{event:`save`,label:`Save`}],
-	defaultOption: {value:`zxx`,text:`No Linguistic Content`},
-	*/
-
 	const [show, setShow] = useState(false)
 	const [trackInfo, setTrackInfo] = useState({ trackName: ``, trackKind: `subtitles`, trackLang: [] })
 	const [trackToEdit, setTrackToEdit] = useState(``)
 	const [selectOpen, setSelectOpen] = useState(false)
-	const languages = langList
 	const modalId = `editTrackModal`
-
-	const dialogBody = EditTrackTemplate({trackList, trackInfo, trackToEdit, changeTrackToEdit, languages, modalId, selectOpen})
-	const buttons = [{ event: `save`, label: `Save`}]
 	let trackList = []
+
+	const dialogBody = EditTrackTemplate({trackList, trackInfo, trackToEdit, changeTrackToEdit, langList, modalId, selectOpen})
+	const buttons = [{ event: `save`, label: `Save`}]
 
 	const handleShow = () => {
 		setShow(true)
