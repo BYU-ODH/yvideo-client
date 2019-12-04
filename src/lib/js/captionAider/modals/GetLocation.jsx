@@ -5,6 +5,7 @@ import { SetLocationTemplate } from './modalTools/ModalTemplates'
 
 const GetLocation = ({ targets }) => {
 	const [show, setShow] = useState(false)
+	const buttons = [{event: `save`, label: `Set Location`}]
 
 	const dialogBody = SetLocationTemplate({ saveLocations: Object.keys(targets).map((key) => {
 		return {
@@ -12,6 +13,23 @@ const GetLocation = ({ targets }) => {
 			name: targets[key].label,
 		}
 	}), saveLocation: `server`})
+
+	const handleShow = () => {
+		setShow(true)
+	}
+
+	const handleClose = () => {
+		setShow(false)
+	}
+
+	const actions = {
+		save: (event) => {
+			handleClose()
+			/* resolver(datalist.map(function(key){
+					return key === 'location'?that.get("saveLocation"):void 0;
+			}));*/
+		},
+	}
 
 	return (
 		<Dialog show={show} handleShow={handleShow} handleClose={handleClose} actions={actions} dialogTitle='Set Save Location' dialogBody={dialogBody} buttons={buttons} />
