@@ -81,7 +81,7 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 								// TODO: So i didn't account for what newTrackData() actually returns, so check to see what that is, and see if there's any way to copy it the Reactful way :)
 
 								// return newTrackData(datalist)
-								renderModal(NewTrackData, { datalist })
+								renderModal(NewTrackData, { datalist, timeline, langList })
 								break
 							case `edittrack`:
 								renderModal(EditTrackData, { datalist, timeline })

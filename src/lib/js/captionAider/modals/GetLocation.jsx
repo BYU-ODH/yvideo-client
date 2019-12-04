@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const GetLocation = props => {
+import Dialog from './modalTools/Dialog'
+import { SetLocationTemplate } from './modalTools/ModalTemplates'
+
+const GetLocation = ({ targets }) => {
+	const [show, setShow] = useState(false)
+
+	const dialogBody = SetLocationTemplate({ saveLocations: Object.keys(targets).map((key) => {
+		return {
+			value: key,
+			name: targets[key].label,
+		}
+	}), saveLocation: `server`})
+
 	return (
-		<div></div>
+		<Dialog show={show} handleShow={handleShow} handleClose={handleClose} actions={actions} dialogTitle='Set Save Location' dialogBody={dialogBody} buttons={buttons} />
 	)
 }
 

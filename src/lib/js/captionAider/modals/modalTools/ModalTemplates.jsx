@@ -26,11 +26,11 @@ const EditTrackDataTemplate = (props) => {
 				<div class='control-group'>
 					<label class='control-label'>Name</label>
 					<div class='controls'>
-						<input type='text' value={props.trackName} placeholder='Name' id='editTrackAutoFocus'/>
+						<input type='text' value={props.trackInfo.trackName} placeholder='Name' id='editTrackAutoFocus'/>
 					</div>
 				</div>
-				<TrackKindSelect trackKind={props.trackKind}/>
-				<TrackLangSelect track={props.track}/>
+				<TrackKindSelect trackKind={props.trackInfo.trackKind}/>
+				<TrackLangSelect trackInfo={props.trackInfo} languages={props.languages} modalId={props.modalId} selectOpen={props.selectOpen}/>
 			</div>
 		</span>
 	)
@@ -262,12 +262,12 @@ Ractive.partials.trackKindSelect = '<div class="form-group">\
 </div>';
 */
 
-const TrackLangSelect = ({ track }) => {
+const TrackLangSelect = ({ trackInfo, languages, modalId, selectOpen }) => {
 	return (
 		<div class='form-group'>
 			<label class='control-label'>Language</label>
 			<div class='controls'>
-				<SuperSelect icon='icon-globe' text='Select Language' value={track.trackLang} button='left' open={track.selectOpen} multiple='false' options={track.languages} modal={track.modalId} defaultOption={{value:`zxx`,text:`No Linguistic Content`}}/>
+				<SuperSelect icon='icon-globe' text='Select Language' value={trackInfo.trackLang} button='left' open={selectOpen} multiple='false' options={languages} modal={modalId} defaultOption={{value:`zxx`, text:`No Linguistic Content`}}/>
 			</div>
 		</div>
 	)
