@@ -11,7 +11,7 @@ const EditTrackData = ({ datalist, timeline, langList }) => {
 	const modalId = `editTrackModal`
 	let trackList = []
 
-	const dialogBody = EditTrackTemplate({trackList, trackInfo, trackToEdit, changeTrackToEdit, langList, modalId, selectOpen})
+	const dialogBody = EditTrackTemplate({trackList, trackInfo, trackToEdit, changeTrackToEdit, changeTrackKind, langList, modalId, selectOpen})
 	const buttons = [{ event: `save`, label: `Save`}]
 
 	const handleShow = () => {
@@ -31,6 +31,10 @@ const EditTrackData = ({ datalist, timeline, langList }) => {
 		const track = timeline.getTrack(newTrackName)
 		setTrackInfo({ trackName: newTrackName, trackKind: track.kind, trackLang: [track.language] })
 		setTrackToEdit(trackToEdit)
+	}
+
+	const changeTrackKind = (event) => {
+		setTrackInfo({ trackName: trackInfo.trackName, trackKind: event.target.value, trackLang: trackInfo.trackLang })
 	}
 
 	const actions = {

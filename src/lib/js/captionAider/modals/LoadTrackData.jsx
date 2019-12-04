@@ -18,7 +18,11 @@ const LoadTrackData = ({ langList }) => {
 		setSource(event.target.value)
 	}
 
-	const dialogBody = LoadTrackDataTemplate({ sources, langList, source, changeSource })
+	const changeTrackKind = (event) => {
+		setTrackInfo({ trackName: trackInfo.trackName, trackKind: event.target.value, trackLang: trackInfo.trackLang })
+	}
+
+	const dialogBody = LoadTrackDataTemplate({ sources, langList, source, changeSource, changeTrackKind })
 
 	const handleShow = () => {
 		setShow(true)

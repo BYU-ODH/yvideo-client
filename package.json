@@ -27,9 +27,9 @@
 		"redux": "^4.0.1",
 		"redux-thunk": "^2.3.0",
 		"styled-components": "^4.4.0",
-		"subtitle-timeline-editor": "^0.1.1",
 		"uuid": "^3.3.2",
 		"yvideo-editorwidgets": "^1.0.4",
+		"yvideo-subtitle-timeline-editor": "^0.1.0",
 		"yvideojs": "^1.1.8"
 	},
 	"devDependencies": {

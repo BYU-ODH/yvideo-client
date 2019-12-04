@@ -28,7 +28,7 @@ const EditTrackDataTemplate = (props) => {
 						<input type='text' value={props.trackInfo.trackName} placeholder='Name' id='editTrackAutoFocus'/>
 					</div>
 				</div>
-				<TrackKindSelect trackKind={props.trackInfo.trackKind}/>
+				<TrackKindSelect trackKind={props.trackInfo.trackKind} changeTrackKind={props.changeTrackKind}/>
 				<TrackLangSelect trackInfo={props.trackInfo} langList={props.langList} modalId={props.modalId} selectOpen={props.selectOpen}/>
 			</div>
 		</span>
@@ -117,15 +117,15 @@ const SetLocationTemplate = props => {
 const LoadTrackDataTemplate = props => {
 	return (
 		<span class='form-horizontal'>
-			<TrackKindSelect />
+			<TrackKindSelect changeTrackKind={props.changeTrackKind} />
 			<TrackLangSelect langList={props.langList} />
 			<div class='control-group'>
 				<label class='control-label'>Source</label>
-				<div class='controls'>
+				<div class='controls' onChange={props.changeSource}>
 					{props.sources.map(source => {
 						return (
 							<label class='radio'>
-								<input type='radio' value={source.name} onChange={props.changeSource}>{source.label}</input>
+								<input type='radio' value={source.name}>{source.label}</input>
 							</label>
 						)
 					})}
@@ -229,12 +229,12 @@ const ShowTrackTemplate = props => {
 </script>
 */
 
-const TrackKindSelect = ({ trackKind }) => {
+const TrackKindSelect = ({ trackKind, changeTrackKind }) => {
 	return (
 		<div class='form-group'>
 			<label class='control-label'>Kind</label>
 			<div class='controls'>
-				<select value={trackKind}>
+				<select value={trackKind} onChange={changeTrackKind}>
 					<option value='subtitles' selected>Subtitles</option>
 					<option value='captions'>Captions</option>
 					<option value='descriptions'>Descriptions</option>
