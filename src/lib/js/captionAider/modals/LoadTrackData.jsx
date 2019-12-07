@@ -5,7 +5,7 @@ import EditorWidgets from 'yvideo-editorwidgets'
 import Dialog from './modalTools/Dialog'
 import LoadTrackDataTemplate from './modalTools/ModalTemplates'
 
-const LoadTrackData = ({ langList }) => {
+const LoadTrackData = ({ datalist, langList }) => {
 	const [show, setShow] = useState(false)
 	const [source, setSource] = useState(``)
 	const [trackInfo, setTrackInfo] = useState({ trackName: ``, trackKind: `subtitles`, trackLang: [] })

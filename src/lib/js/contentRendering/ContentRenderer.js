@@ -1,8 +1,8 @@
 import { AyamelPlayer, Translator, LangUtils } from 'yvideojs'
-import xApi from '../xApi.js.js'
-import ContentLoader from './ContentLoader.js.js'
-import ContentCache from './ContentCache.js.js'
-import TranscriptPlayer from './TranscriptPlayer.js.js'
+import xApi from '../xApi.js'
+import ContentLoader from './ContentLoader.js'
+import ContentCache from './ContentCache.js'
+import TranscriptPlayer from './TranscriptPlayer.js'
 import EditorWidgets from 'yvideo-editorwidgets'
 import axios from 'axios'
 

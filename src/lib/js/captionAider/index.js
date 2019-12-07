@@ -7,17 +7,23 @@ import { EditorWidgets } from 'yvideo-editorwidgets'
 
 import {
 	EditTrackData,
-	GetLocation,
+	/* GetLocation,
 	GetLocationNames,
 	LoadAudio,
 	LoadTrackData,
 	LoadTranscript,
 	NewTrackData,
 	SaveTrackData,
-	ShowTrackData,
+	ShowTrackData,*/
 } from './modals'
 
 const getCaptionAider = (content, contentHolder, renderModal) => {
+	const langList = Object.keys(Ayamel.utils.p1map).map((p1) => {
+		const code = Ayamel.utils.p1map[p1]
+		const engname = Ayamel.utils.getLangName(code,`eng`)
+		const localname = Ayamel.utils.getLangName(code,code)
+		return {value: code, text: engname, desc: localname !== engname ? localname : void 0}
+	})
 
 	ContentLoader.castContentObject(content).then((content) => {
 		return ResourceLibrary.load(content.resourceId).then((resource) => {
@@ -71,7 +77,7 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 						},
 						getFor: (key, datalist) => {
 							switch (key) {
-							case `newtrack`:
+							/* case `newtrack`:
 
 								// TODO: Create a component that renders what newTrackData() rendered, which you can see on the github repo:
 								// https://github.com/BYU-ODH/yvideo/blob/master/public/javascripts/pageScripts/captionAider.js
@@ -82,32 +88,23 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 								// TODO: So i didn't account for what newTrackData() actually returns, so check to see what that is, and see if there's any way to copy it the Reactful way :)
 
 								// return newTrackData(datalist)
-								renderModal(NewTrackData, { datalist, timeline, langList })
-								break
+								return NewTrackData(datalist, timeline, langList)*/
 							case `edittrack`:
-								renderModal(EditTrackData, { datalist, timeline })
-								break
-							case `savetrack`:
-								renderModal(SaveTrackData, { datalist })
-								break
+								return EditTrackData(datalist, timeline, langList)
+							/* case `savetrack`:
+								return SaveTrackData(datalist, timeline, langList)
 							case `loadtrack`:
-								renderModal(LoadTrackData, { datalist })
-								break
+								return LoadTrackData(datalist, timeline, langList)
 							case `showtrack`:
-								renderModal(ShowTrackData, { datalist })
-								break
+								return ShowTrackData(datalist, timeline, langList)
 							case `loadlines`:
-								renderModal(LoadTranscript, { datalist })
-								break
+								return LoadTranscript(datalist, timeline, langList)
 							case `loadaudio`:
-								renderModal(LoadAudio, { datalist })
-								break
+								return LoadAudio(datalist, timeline, langList)
 							case `location`:
-								renderModal(GetLocation, { datalist })
-								break
+								return GetLocation(datalist, timeline, langList)
 							case `locationNames`:
-								renderModal(GetLocationNames, { datalist })
-								break
+								return GetLocationNames(datalist, timeline, langList)*/
 							default:
 								return Promise.reject(new Error(`Can't get data for ${key}`))
 							}

@@ -8,7 +8,7 @@ const Dialog = (props) => {
 
 	const buttonpress = (event, eventType) => {
 		if(typeof actions[eventType] !== `function`) return
-		actions[eventType].call(this, event)
+		actions[eventType].call(event)
 	}
 
 	return (

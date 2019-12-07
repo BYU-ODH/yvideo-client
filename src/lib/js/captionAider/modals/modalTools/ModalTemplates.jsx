@@ -2,7 +2,6 @@ import React from 'react'
 import { SuperSelect } from 'yvideo-editorwidgets'
 
 const EditTrackDataTemplate = (props) => {
-
 	let trackSelect = ``
 	if(props.trackList === 0) trackSelect = `There are no tracks loaded for editing`
 	else if (props.trackList > 1) {
@@ -68,25 +67,29 @@ const EditTrackDataTemplate = (props) => {
 */
 
 const SetLocationTemplate = props => {
-	<span class='form-horizontal'>
-		<div class='container'>
-			<div class='control-group'>
-				<label class='control-label'>Current Save Location</label>
-				<div class='controls'>
-					<div id='saveLocation'>
-						<label class='radio'>
-							<input type='radio' names={props.saveLocation} value='server'/>Server
-						</label>
-						{props.saveLocations.map( saveLocation => {
+	return (
+		<span class='form-horizontal'>
+			<div class='container'>
+				<div class='control-group'>
+					<label class='control-label'>Current Save Location</label>
+					<div class='controls'>
+						<div id='saveLocation'>
 							<label class='radio'>
-								<input type='radio' name={props.saveLocation} value={saveLocation.value}/>{saveLocation.name}
+								<input type='radio' names={props.saveLocation} value='server'/>Server
 							</label>
-						})}
+							{props.saveLocations.map( saveLocation => {
+								return (
+									<label class='radio'>
+										<input type='radio' name={props.saveLocation} value={saveLocation.value}/>{saveLocation.name}
+									</label>
+								)
+							})}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</span>
+		</span>
+	)
 }
 
 /*
@@ -261,6 +264,8 @@ Ractive.partials.trackKindSelect = '<div class="form-group">\
 </div>';
 */
 
+// TODO: trackLang is part of the state of the modals, so SuperSelect needs use a
+// function from the modal to change the state
 const TrackLangSelect = ({ trackInfo, langList, modalId, selectOpen }) => {
 	return (
 		<div class='form-group'>
@@ -281,7 +286,7 @@ Ractive.partials.trackLangSelect = '<div class="form-group">\
 </div>';
 */
 
-export default {
+export {
 	EditTrackDataTemplate,
 	SetLocationTemplate,
 	LoadTrackDataTemplate,
