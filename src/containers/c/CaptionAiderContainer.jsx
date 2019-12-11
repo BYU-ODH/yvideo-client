@@ -17,7 +17,7 @@ const CaptionAiderContainer = props => {
 
 	return (
 		<div id='bottomContainer' ref={target}>
-			Hello
+			CaptionAiderContainer
 			<div id='timeline'></div>
 		</div>
 	)

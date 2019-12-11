@@ -6,7 +6,6 @@ import { collectionService, interfaceService } from 'services'
 import { roles } from 'models/User'
 
 import { Collections } from 'components'
-import CaptionAiderContainer from './CaptionAiderContainer'
 
 // import { objectIsEmpty } from 'lib/util'
 
@@ -36,12 +35,7 @@ const CollectionsContainer = props => {
 		toggleCollectionsDisplay,
 	}
 
-	return (
-		<div>
-			<Collections viewstate={viewstate} handlers={handlers} />
-			<CaptionAiderContainer />
-		</div>
-	)
+	return <Collections viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore }) => ({

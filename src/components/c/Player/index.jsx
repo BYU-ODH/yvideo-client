@@ -23,28 +23,14 @@ export default class Player extends PureComponent {
 			toggleCollectionsDisplay,
 		} = this.props.handlers
 
+		// console.error(`Player: render`)
+
+		// const modRec = recent.slice(0, 4)
+		// const modColl = collections.slice(0, 4)
+
 		return (
-			<Style>
-				<header>
-					<div>
-						<h3>Collections</h3>
-					</div>
-					<div>
-						{
-							(isProf || isAdmin) &&
-							<Link to={`/manager`} >Manage Collections</Link>
-						}
-						<ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} />
-					</div>
-				</header>
-				<div className='list'>
-					{displayBlocks ?
-						Object.keys(collections).map(key => <BlockCollection key={key} data={collections[key]} />)
-						:
-						Object.keys(collections).map(key => <ListCollection key={key} data={collections[key]} />)
-					}
-				</div>
-			</Style>
+			<Style id='contentHolder' />
 		)
+
 	}
 }
