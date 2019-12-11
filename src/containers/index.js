@@ -8,6 +8,7 @@ import LoginContainer from './c/LoginContainer'
 import ManageCollectionContainer from './c/ManageCollectionContainer'
 import ManagerContainer from './c/ManagerContainer'
 import MenuContainer from './c/MenuContainer'
+import PlayerContainer from './c/PlayerContainer'
 import RootContainer from './c/RootContainer'
 
 export {
@@ -21,5 +22,6 @@ export {
 	ManageCollectionContainer,
 	ManagerContainer,
 	MenuContainer,
+	PlayerContainer,
 	RootContainer,
 }

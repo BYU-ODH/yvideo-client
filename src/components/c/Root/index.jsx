@@ -7,6 +7,7 @@ import {
 	HeaderContainer,
 	MenuContainer,
 	ManagerContainer,
+	PlayerContainer,
 } from 'containers'
 
 import {
@@ -43,6 +44,7 @@ class Root extends PureComponent {
 							<Route path='player/:id'>
 								<span style={{ position: `relative`, top: `10rem` }}>Player</span>
 								{/* <Player /> */}
+								<PlayerContainer />
 							</Route>
 
 							<Route path='/manager/:id?'>
