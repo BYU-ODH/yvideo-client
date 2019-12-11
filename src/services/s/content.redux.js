@@ -8,6 +8,7 @@ export default class ContentService {
 		CONTENT_CLEAN: `CONTENT_CLEAN`,
 		CONTENT_ERROR: `CONTENT_ERROR`,
 		CONTENT_GET: `CONTENT_GET`,
+		CONTENT_ADD_VIEW: `CONTENT_ADD_VIEW`,
 	}
 
 	// action creators
@@ -18,6 +19,7 @@ export default class ContentService {
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
+		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
 	}
 
 	// default store
@@ -38,6 +40,7 @@ export default class ContentService {
 			CONTENT_CLEAN,
 			CONTENT_ERROR,
 			CONTENT_GET,
+			CONTENT_ADD_VIEW,
 		} = this.types
 
 		switch (action.type) {
@@ -78,6 +81,27 @@ export default class ContentService {
 				lastFetched: Date.now(),
 			}
 
+		case CONTENT_ADD_VIEW:
+			return {
+				...store,
+				cache: store.cache.map(item => {
+					if(item.id !== action.payload.id)
+						return item
+					else {
+						return {
+							...item,
+							content: [
+								{
+									...item.content,
+									views: item.content.views + 1,
+								},
+							],
+						}
+					}
+				}),
+				loading:false,
+			}
+
 		default:
 			return store
 		}
@@ -104,6 +128,30 @@ export default class ContentService {
 				const result = await apiProxy.content.get(notCached)
 
 				dispatch(this.actions.contentGet(result))
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.contentError(error))
+			}
+
+		} else dispatch(this.actions.contentAbort())
+	}
+
+	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().contentStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.contentStart())
+
+			try {
+
+				await apiProxy.content.addview(id)
+
+				dispatch(this.actions.addView(id))
 
 			} catch (error) {
 				console.error(error.message)

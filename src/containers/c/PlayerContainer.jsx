@@ -13,6 +13,7 @@ import CaptionAiderContainer from './CaptionAiderContainer'
 const PlayerContainer = props => {
 
 	const {
+		match,
 		isProf,
 		isAdmin,
 		displayBlocks,
@@ -38,7 +39,7 @@ const PlayerContainer = props => {
 
 	return (
 		<div>
-			<Player viewstate={viewstate} handlers={handlers} />
+			<Player videoId={match.params.videoId} viewstate={viewstate} handlers={handlers} />
 			{
 				(isProf || isAdmin) &&
 				<CaptionAiderContainer />
