@@ -33,6 +33,7 @@ const EditTrackData = (datalist, timeline, langList) => {
 				case `name`: return trackInfo.trackName || `Untitled`
 				case `lang`: return trackInfo.trackLang[0]
 				case `overwrite`: return true
+				default : return ``
 				}
 			}))
 		},

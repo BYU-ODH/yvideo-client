@@ -115,16 +115,17 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 						document.getElementById(`bottomSpacer`).style.marginTop = `${document.getElementById(`bottomContainer`).clientHeight}px`
 					}
 
-					// const captionEditor = CaptionEditor({
-					// 	stack: commandStack,
-					// 	refresh() {
-					// 		videoPlayer.refreshLayout()
-					// 	},
-					// 	rebuild() {
-					// 		videoPlayer.rebuildCaptions()
-					// 	},
-					// 	timeline,
-					// })
+					/* Never used
+					const captionEditor = CaptionEditor({
+						stack: commandStack,
+						refresh() {
+							videoPlayer.refreshLayout()
+						},
+						rebuild() {
+							videoPlayer.rebuildCaptions()
+						},
+						timeline,
+					})*/
 
 					// Check for unsaved tracks before leaving
 					window.addEventListener(`beforeunload`, (e) => {
@@ -230,6 +231,7 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 			}
 		})
 	}).then(ContentRenderer.render)
+		.catch(err => console.log(`There was an error: ${err}`))
 }
 
 export default getCaptionAider

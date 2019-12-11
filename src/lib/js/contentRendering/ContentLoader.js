@@ -13,20 +13,20 @@ const ContentLoader = (() => {
 			contentId: args.contentId,
 			permission: args.permission || `view`,
 			documentType: type,
-			ids: ids.join(`,`)
+			ids: ids.join(`,`),
 		}
 
-		const formBody = Object.keys(data).map(key => encodeURIComponent(key) +
-			`=` + encodeURIComponent(data[key])).join(`&`)
+		const formBody = Object.keys(data).map(key => `${encodeURIComponent(key) 
+			}=${  encodeURIComponent(data[key])}`).join(`&`)
 
 		return axios(`${process.env.REACT_APP_YVIDEO_SERVER}/ajax/permissionChecker`, {
 			method: `post`,
 			mode: `cors`,
 			credentials: `include`,
 			headers: {
-				"Content-Type": `application/x-www-form-urlencoded`
+				"Content-Type": `application/x-www-form-urlencoded`,
 			},
-			body: formBody
+			body: formBody,
 		})
 	}
 
@@ -65,7 +65,7 @@ const ContentLoader = (() => {
 					endTime: args.endTime,
 					renderCue: args.renderCue,
 					permission: args.permission,
-					callback: args.callback
+					callback: args.callback,
 				})
 			}).catch(err => console.log(err))
 		} else if (args.content.contentType === `playlist`)
@@ -75,12 +75,12 @@ const ContentLoader = (() => {
 
 	const castContentObject = content => {
 		switch (typeof content) {
-			case `number`:
-				return axios(`/content/${content}/json?${Date.now().toString(36)}`)
-			case `object`:
-				return Promise.resolve(content)
-			default:
-				return Promise.reject(new Error(`Invalid Type`))
+		case `number`:
+			return axios(`/content/${content}/json?${Date.now().toString(36)}`)
+		case `object`:
+			return Promise.resolve(content)
+		default:
+			return Promise.reject(new Error(`Invalid Content Type`))
 		}
 	}
 
@@ -91,7 +91,7 @@ const ContentLoader = (() => {
 				args.content = data
 				renderContent(args)
 			})
-		}
+		},
 	}
 })()
 
