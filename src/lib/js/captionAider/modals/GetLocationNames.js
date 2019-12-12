@@ -1,9 +1,16 @@
-import React from 'react'
+import { Save } from 'yvideo-editorwidgets'
 
-const GetLocationNames = props => {
-	return (
-		<div></div>
-	)
+const GetLocationNames = ( datalist ) => {
+	const names = {server:`Server`}
+	const targets = Save.targets
+	Object.keys(targets).forEach((key) => {
+		names[key] = targets[key].label
+	})
+	return new Promise((resolve,reject) => {
+		resolve(datalist.map(key => {
+			return key === `names` ? names : void 0
+		}))
+	})
 }
 
 export default GetLocationNames

@@ -7,17 +7,14 @@ import { interfaceService } from 'services'
 const CaptionAiderContainer = props => {
 	const target = useRef()
 
-	const renderModal = (component, props) => {
+	/* const renderModal = (component, props) => {
 		props.toggleModal(component)
-	}
+	}*/
 
-	console.log(props.content)
-
-	getCaptionAider(props.content, target, renderModal)
+	getCaptionAider(props.content, target[`current`])
 
 	return (
 		<div id='bottomContainer' ref={target}>
-			CaptionAiderContainer
 			<div id='timeline'></div>
 		</div>
 	)

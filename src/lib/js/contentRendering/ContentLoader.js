@@ -16,8 +16,8 @@ const ContentLoader = (() => {
 			ids: ids.join(`,`),
 		}
 
-		const formBody = Object.keys(data).map(key => `${encodeURIComponent(key) 
-			}=${  encodeURIComponent(data[key])}`).join(`&`)
+		const formBody = Object.keys(data).map(key => `${encodeURIComponent(key)
+		}=${encodeURIComponent(data[key])}`).join(`&`)
 
 		return axios(`${process.env.REACT_APP_YVIDEO_SERVER}/ajax/permissionChecker`, {
 			method: `post`,
@@ -70,7 +70,6 @@ const ContentLoader = (() => {
 			}).catch(err => console.log(err))
 		} else if (args.content.contentType === `playlist`)
 			console.error(`Playlists are not supported.`)
-
 	}
 
 	const castContentObject = content => {

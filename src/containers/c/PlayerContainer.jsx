@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { collectionService, interfaceService } from 'services'
+import { contentService } from 'services'
+import styled from 'styled-components'
 
 import { roles } from 'models/User'
 
@@ -10,54 +12,47 @@ import CaptionAiderContainer from './CaptionAiderContainer'
 
 // import { objectIsEmpty } from 'lib/util'
 
+const Container = styled.div`
+	overflow-y: scroll;
+`
+
 const PlayerContainer = props => {
 
 	const {
-		match,
 		isProf,
 		isAdmin,
-		displayBlocks,
-		collections,
-		getCollections,
-		toggleCollectionsDisplay,
+		userId,
+		content,
+		getContent,
 	} = props
 
+	const params = useParams()
+
 	useEffect(() => {
-		getCollections()
-	}, [collections, getCollections])
-
-	const viewstate = {
-		isProf,
-		isAdmin,
-		displayBlocks,
-		collections,
-	}
-
-	const handlers = {
-		toggleCollectionsDisplay,
-	}
+		console.log(`Running effect`)
+		getContent([params.id])
+	}, [getContent, params.id])
 
 	return (
-		<div>
-			<Player videoId={match.params.videoId} viewstate={viewstate} handlers={handlers} />
+		<Container id='some-id'>
+			<Player videoId={params.id} content={content[params.id]} userId={userId} />
 			{
 				(isProf || isAdmin) &&
-				<CaptionAiderContainer />
+				<CaptionAiderContainer content={content[params.id]} />
 			}
-		</div>
+		</Container>
 	)
 }
 
-const mapStateToProps = ({ authStore, interfaceStore, collectionStore }) => ({
+const mapStateToProps = ({ authStore, contentStore }) => ({
 	isProf: authStore.user.roles.includes(roles.teacher),
 	isAdmin: authStore.user.roles.includes(roles.admin),
-	displayBlocks: interfaceStore.displayBlocks,
-	collections: collectionStore.cache,
+	userId: authStore.user.id,
+	content: contentStore.cache,
 })
 
 const mapDispatchToProps = {
-	getCollections: collectionService.getCollections,
-	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
+	getContent: contentService.getContent,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

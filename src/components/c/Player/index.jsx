@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
 
 import { Ayamel, ResourceLibrary } from 'yvideojs'
+import 'yvideojs/css/player.css'
 
 import ContentLoader from 'lib/js/contentRendering/ContentLoader'
 
-import Style from './styles'
+import Style, { Container } from './styles'
 
 export default class Player extends PureComponent {
 	constructor(props) {
@@ -22,19 +23,21 @@ export default class Player extends PureComponent {
 	render() {
 
 		return (
-			<Style id='contentHolder' />
+			<Container>
+				<Style id='contentHolder' />
+			</Container>
 		)
 	}
 
-	componentDidMount = async () => {
-		const { loaded } = this.props
+	componentDidUpdate = async () => {
+		// const { loaded } = this.props
 
 		try {
 			// Render the content
 			ContentLoader.render({
 				ContentLoader,
-				content: this.state.content,
-				userId: this.state.userId.toString(),
+				content: this.props.content,
+				userId: this.props.userId,
 				owner: true,
 				teacher: false,
 				collectionId: 0,
@@ -48,7 +51,7 @@ export default class Player extends PureComponent {
 				callback(test) {
 					console.log(`test`, test)
 					setTimeout(() => {
-						loaded()
+						// loaded()
 					}, 500)
 				},
 			})

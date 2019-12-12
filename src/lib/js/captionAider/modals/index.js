@@ -1,7 +1,7 @@
 import EditTrackData from './EditTrackData'
-/* import GetLocation from './GetLocation'
+/* import GetLocation from './GetLocation'*/
 import GetLocationNames from './GetLocationNames'
-import LoadAudio from './LoadAudio'
+/* import LoadAudio from './LoadAudio'
 import LoadTrackData from './LoadTrackData'
 import LoadTranscript from './LoadTranscript'
 import NewTrackData from './NewTrackData'
@@ -10,9 +10,9 @@ import ShowTrackData from './ShowTrackData'*/
 
 export {
 	EditTrackData,
-	/* GetLocation,
+	/* GetLocation,*/
 	GetLocationNames,
-	LoadAudio,
+	/* LoadAudio,
 	LoadTrackData,
 	LoadTranscript,
 	NewTrackData,

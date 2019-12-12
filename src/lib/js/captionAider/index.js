@@ -1,15 +1,15 @@
 import ContentLoader from 'lib/js/contentRendering/ContentLoader'
 import ContentRenderer from 'lib/js/contentRendering/ContentRenderer'
-import { Ayamel, ResourceLibrary } from 'yvideojs'
+import { Ayamel, ResourceLibrary, Translator } from 'yvideojs'
 import { CaptionEditor, Timeline } from 'yvideo-subtitle-timeline-editor'
 // import { AudioTrack, CaptionEditor, Resampler, Slider, TextTrack, Timeline, TimelineControls, TimelineMenus, TimelineShortcuts, TimelineSkin, TimelineView, WaveForm } from 'yvideo-subtitle-timeline-editor'
-import { EditorWidgets } from 'yvideo-editorwidgets'
+import { CommandStack } from 'yvideo-editorwidgets'
 
 import {
 	EditTrackData,
-	/* GetLocation,
+	/* GetLocation,*/
 	GetLocationNames,
-	LoadAudio,
+	/* LoadAudio,
 	LoadTrackData,
 	LoadTranscript,
 	NewTrackData,
@@ -17,7 +17,7 @@ import {
 	ShowTrackData,*/
 } from './modals'
 
-const getCaptionAider = (content, contentHolder, renderModal) => {
+const getCaptionAider = (content, contentHolder) => {
 	const langList = Object.keys(Ayamel.utils.p1map).map((p1) => {
 		const code = Ayamel.utils.p1map[p1]
 		const engname = Ayamel.utils.getLangName(code,`eng`)
@@ -31,6 +31,9 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 			return {
 				content,
 				resource,
+				getTranscriptWhitelist: () => {
+					return Promise.resolve([])
+				},
 				contentId: content.id,
 				holder: contentHolder,
 				permission: `edit`,
@@ -44,9 +47,9 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 				renderCue: CaptionEditor.make,
 				// noUpdate: true, // Disable transcript player updating for now
 				callback: args => {
-					const translator = new Ayamel.classes.Translator()
+					const translator = new Translator()
 
-					const commandStack = new EditorWidgets.CommandStack()
+					const commandStack = new CommandStack()
 					const trackMimes = args.trackMimes
 					const videoPlayer = args.mainPlayer
 
@@ -102,9 +105,9 @@ const getCaptionAider = (content, contentHolder, renderModal) => {
 							case `loadaudio`:
 								return LoadAudio(datalist, timeline, langList)
 							case `location`:
-								return GetLocation(datalist, timeline, langList)
+								return GetLocation(datalist, timeline, langList)*/
 							case `locationNames`:
-								return GetLocationNames(datalist, timeline, langList)*/
+								return GetLocationNames(datalist)
 							default:
 								return Promise.reject(new Error(`Can't get data for ${key}`))
 							}
