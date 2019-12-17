@@ -7,6 +7,7 @@ import {
 import { objectIsEmpty } from 'lib/util'
 
 const ContentOverviewContainer = props => {
+
 	const {
 		content,
 	} = props

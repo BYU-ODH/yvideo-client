@@ -91,8 +91,8 @@ export default class ResourceService {
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
-		const { resources } = getState().resourceCache
-		const cachedIds = Object.keys(resources)
+		const { cache } = getState().resourceStore
+		const cachedIds = Object.keys(cache)
 		const cached = cachedIds.includes(id)
 
 		if (stale || !cached || force) {
@@ -102,6 +102,8 @@ export default class ResourceService {
 			try {
 
 				const result = await apiProxy.resources.get(id)
+
+				console.log(result)
 
 				const resource = result.data.resource
 				resource.resources = {}
@@ -113,8 +115,6 @@ export default class ResourceService {
 				}))
 
 				if (typeof resource.keywords === `string`) resource.keywords = resource.keywords.split(`,`)
-
-				console.log(resource)
 
 				dispatch(this.actions.resourcesGet(resource))
 

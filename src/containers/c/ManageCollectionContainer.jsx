@@ -29,8 +29,6 @@ const ManageCollectionContainer = props => {
 
 	const [isContent, setIsContent] = useState(true)
 
-	console.log(collection.content)
-
 	useEffect(() => {
 		if (objectIsEmpty(content)) {
 			const ids = collection.content.map(item => parseInt(item.id))
