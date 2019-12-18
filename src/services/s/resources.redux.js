@@ -17,7 +17,7 @@ export default class ResourceService {
 		resourcesAbort: () => ({ type: this.types.RESOURCE_ABORT }),
 		resourcesClean: () => ({ type: this.types.RESOURCE_CLEAN }),
 		resourcesError: error => ({ type: this.types.RESOURCE_ERROR, payload: { error } }),
-		resourcesGet: resources => ({ type: this.types.RESOURCE_GET, payload: { resources } }),
+		resourcesGet: resource => ({ type: this.types.RESOURCE_GET, payload: { resource } }),
 	}
 
 	// default store
@@ -70,9 +70,9 @@ export default class ResourceService {
 		case RESOURCE_GET:
 			return {
 				...store,
-				resources: {
-					...store.resources,
-					[action.payload.id]: action.payload,
+				cache: {
+					...store.cache,
+					[action.payload.resource.id]: action.payload.resource,
 				},
 				loading: false,
 				lastFetched: Date.now(),
@@ -87,12 +87,14 @@ export default class ResourceService {
 
 	getResources = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		const time = Date.now() - getState().resourceStore.lastFetched
+		const { resourceStore } = getState()
+
+		const time = Date.now() - resourceStore.lastFetched
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
-		const { resources } = getState().resourceCache
-		const cachedIds = Object.keys(resources)
+		const { cache } = resourceStore
+		const cachedIds = Object.keys(cache)
 		const cached = cachedIds.includes(id)
 
 		if (stale || !cached || force) {
@@ -103,7 +105,7 @@ export default class ResourceService {
 
 				const result = await apiProxy.resources.get(id)
 
-				const resource = result.data.resource
+				const { resource } = result.data
 				resource.resources = {}
 				resource.relations.forEach(item => resource.resources[item.type] = [])
 
@@ -113,8 +115,6 @@ export default class ResourceService {
 				}))
 
 				if (typeof resource.keywords === `string`) resource.keywords = resource.keywords.split(`,`)
-
-				console.log(resource)
 
 				dispatch(this.actions.resourcesGet(resource))
 

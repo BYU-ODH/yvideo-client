@@ -82,24 +82,16 @@ export default class ContentService {
 			}
 
 		case CONTENT_ADD_VIEW:
+			console.log(`addView`, action.payload)
 			return {
 				...store,
-				cache: store.cache.map(item => {
-					if(item.id !== action.payload.id)
-						return item
-					else {
-						return {
-							...item,
-							content: [
-								{
-									...item.content,
-									views: item.content.views + 1,
-								},
-							],
-						}
-					}
-				}),
-				loading:false,
+				cache: {
+					[action.payload.id]: {
+						...store.cache[action.payload.id],
+						views: store.cache[action.payload.id].views + 1,
+					},
+				},
+				loading: false,
 			}
 
 		default:
@@ -149,7 +141,7 @@ export default class ContentService {
 
 			try {
 
-				await apiProxy.content.addview(id)
+				await apiProxy.content.addView.get(id)
 
 				dispatch(this.actions.addView(id))
 

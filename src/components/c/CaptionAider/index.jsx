@@ -4,13 +4,10 @@ import { Ayamel, ResourceLibrary } from 'yvideojs'
 
 import ContentLoader from 'lib/js/contentRendering/ContentLoader'
 
-import { CollectionsContainer } from 'containers'
-
 import Style from './styles'
 import 'yvideojs/css/player.css'
 
-export default class Player extends PureComponent {
-
+export default class CaptionAider extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -29,7 +26,6 @@ export default class Player extends PureComponent {
 		return (
 			<Style>
 				<div ref={this.contentHolder} />
-				<CollectionsContainer />
 			</Style>
 		)
 	}

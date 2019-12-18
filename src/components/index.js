@@ -1,3 +1,4 @@
+import CaptionAider from './c/CaptionAider'
 import Collections from './c/Collections'
 import ContentOverview from './c/ContentOverview'
 import Error from './c/Error'
@@ -12,6 +13,7 @@ import Player from './c/Player'
 import Root from './c/Root'
 
 export {
+	CaptionAider,
 	Collections,
 	ContentOverview,
 	Error,
