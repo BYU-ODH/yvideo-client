@@ -2,9 +2,10 @@ import React, { PureComponent } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import {
-	LandingContainer,
+	CaptionAiderContainer,
 	CollectionsContainer,
 	HeaderContainer,
+	LandingContainer,
 	MenuContainer,
 	ManagerContainer,
 	PlayerContainer,
@@ -43,6 +44,10 @@ class Root extends PureComponent {
 
 							<Route path='/player/:id'>
 								<PlayerContainer />
+							</Route>
+
+							<Route path='/captionaider/:id'>
+								<CaptionAiderContainer />
 							</Route>
 
 							<Route path='/manager/:id?'>

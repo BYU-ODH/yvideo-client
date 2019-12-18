@@ -81,15 +81,24 @@ const apiProxy = {
 				return map
 			}, {})
 		},
-		/**
-		 * Increments number of views from a content ID
-		 *
-		 * @param id the ID of the content you wish to increment the number of views for
-		 */
-		addview: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/addview`, { withCredentials: true }),
+		addView: {
+			/**
+			 * Increments number of views from a content ID
+			 *
+			 * @param id the ID of the content you wish to increment the number of views for
+			 */
+			get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/addview`, { withCredentials: true }),
+		},
 	},
 	resources: {
-		get: id => axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${id}?${Date.now().toString(36)}`, { withCredentials: true }),
+		/**
+		 * Gets a resource from the resource library
+		 *
+		 * @param id the ID of the resource you want
+		 *
+		 * @returns the resource object
+		 */
+		get: id => axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${id}?${Date.now().toString(36)}`),
 	},
 }
 

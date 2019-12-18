@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { roles } from 'models/User'
 
 import { Player } from 'components'
-import CaptionAiderContainer from './CaptionAiderContainer'
+// import CaptionAiderContainer from './CaptionAiderContainer'
 
 // import { objectIsEmpty } from 'lib/util'
 
@@ -19,8 +19,8 @@ const Container = styled.div`
 const PlayerContainer = props => {
 
 	const {
-		isProf,
-		isAdmin,
+		// isProf,
+		// isAdmin,
 		userId,
 		content,
 		getContent,
@@ -36,10 +36,10 @@ const PlayerContainer = props => {
 	return (
 		<Container id='some-id'>
 			<Player videoId={params.id} content={content[params.id]} userId={userId} />
-			{
+			{/* {
 				(isProf || isAdmin) &&
 				<CaptionAiderContainer content={content[params.id]} />
-			}
+			} */}
 		</Container>
 	)
 }

@@ -1,3 +1,4 @@
+import CaptionAiderContainer from './c/CaptionAiderContainer'
 import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
 import ContentPermissionsContainer from './c/ContentPermissionsContainer'
@@ -12,6 +13,7 @@ import PlayerContainer from './c/PlayerContainer'
 import RootContainer from './c/RootContainer'
 
 export {
+	CaptionAiderContainer,
 	CollectionsContainer,
 	ContentOverviewContainer,
 	ContentPermissionsContainer,

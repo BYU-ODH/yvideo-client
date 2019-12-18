@@ -30,7 +30,7 @@ const ContentRenderer = {
 		args.holder.appendChild(container)
 
 		// Set up the video player
-		const player = setupMainPlayer({
+		const params = {
 			content: args.content,
 			components: args.components,
 			screenAdaption: args.screenAdaption,
@@ -56,7 +56,9 @@ const ContentRenderer = {
 						permission: args.permission,
 					}) : [],
 			callback: args.callback,
-		})
+		}
+
+		const player = setupMainPlayer(params)
 
 		player.then(() => {
 			// Resize the panes' content to be correct size onload
@@ -334,7 +336,8 @@ const setupAnnotatorPane = (tab, player) => {
 
 const setupWordListPane = (tab, player) => {
 	const display = document.createElement(`div`)
-	axios(`${process.env.REACT_APP_YVIDEO_SERVER}/wordList`, { withCredentials: true, mode: `cors` })
+	axios(`${process.env.REACT_APP_YVIDEO_SERVER}/wordList`)
+	// , { withCredentials: true, mode: `cors` }
 		.then(res => res.json()).then(json => {
 			json.wordlist.forEach(myWord => {
 				const element = document.createElement(`p`)
