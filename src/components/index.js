@@ -1,3 +1,4 @@
+import CollectionPermissions from './c/CollectionPermissions'
 import Collections from './c/Collections'
 import ContentOverview from './c/ContentOverview'
 import ContentSettings from './c/ContentSettings'
@@ -12,6 +13,7 @@ import Overlay from './c/Overlay'
 import Root from './c/Root'
 
 export {
+	CollectionPermissions,
 	Collections,
 	ContentOverview,
 	ContentSettings,

@@ -40,7 +40,7 @@ class Root extends PureComponent {
 								<CollectionsContainer />
 							</Route>
 
-							<Route path='player/:id'>
+							<Route path='/player/:id'>
 								<span style={{ position: `relative`, top: `10rem` }}>Player</span>
 								{/* <Player /> */}
 							</Route>

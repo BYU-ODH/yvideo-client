@@ -23,12 +23,15 @@ class ContentOverview extends PureComponent {
 		const {
 			editing,
 			content,
+			showing,
 		} = this.props.viewstate
 
 		const {
 			handleNameChange,
 			handleToggleEdit,
 			handleTogglePublish,
+			setContentState,
+			setShowing,
 		} = this.props.handlers
 
 		const {
@@ -36,6 +39,11 @@ class ContentOverview extends PureComponent {
 			showCaptions,
 			showAnnotations,
 		} = content.settings
+
+		const handlers = {
+			setContentState,
+			setShowing,
+		}
 
 		return (
 			<Style>
@@ -64,7 +72,7 @@ class ContentOverview extends PureComponent {
 					</div>
 				</Preview>
 				{editing &&
-					<ContentSettingsContainer handlers={this.handlers} content={content} editing={editing} />
+					<ContentSettingsContainer content={content} showing={showing} handlers={handlers} />
 				}
 			</Style>
 		)

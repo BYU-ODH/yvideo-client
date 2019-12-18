@@ -8,6 +8,7 @@ export default class ContentService {
 		CONTENT_CLEAN: `CONTENT_CLEAN`,
 		CONTENT_ERROR: `CONTENT_ERROR`,
 		CONTENT_GET: `CONTENT_GET`,
+		CONTENT_UPDATE: `CONTENT_UPDATE`,
 	}
 
 	// action creators
@@ -18,6 +19,7 @@ export default class ContentService {
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
+		contentUpdate: content => ({ type: this.types.CONTENT_UPDATE, payload: { content }}),
 	}
 
 	// default store
@@ -38,6 +40,7 @@ export default class ContentService {
 			CONTENT_CLEAN,
 			CONTENT_ERROR,
 			CONTENT_GET,
+			CONTENT_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -78,6 +81,16 @@ export default class ContentService {
 				lastFetched: Date.now(),
 			}
 
+		case CONTENT_UPDATE:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.content.id]: action.payload.content,
+				},
+				loading: false,
+			}
+
 		default:
 			return store
 		}
@@ -111,6 +124,65 @@ export default class ContentService {
 			}
 
 		} else dispatch(this.actions.contentAbort())
+	}
+
+	updateContent = content => async (dispatch, _getState, { apiProxy }) => {
+
+		dispatch(this.actions.contentStart())
+
+		try {
+
+			const { id, published } = content
+
+			const {
+				title,
+				description,
+				keywords,
+			} = content.resource
+
+			const {
+				captionTrack,
+				annotationDocument,
+				targetLanguages,
+				aspectRatio,
+				showCaptions,
+				showAnnotations,
+				allowDefinitions,
+				showTranscripts,
+				showWordList,
+			} = content.settings
+
+			const settings = {
+				captionTrack,
+				annotationDocument,
+				targetLanguages,
+				aspectRatio,
+				showCaptions,
+				showAnnotations,
+				allowDefinitions,
+				showTranscripts,
+				showWordList,
+			}
+
+			const metadata = {
+				title,
+				description,
+				keywords,
+				published,
+			}
+
+			const settingsResult = await apiProxy.content.settings.post(id, settings)
+
+			const metaResult = await apiProxy.content.metadata.post(id, metadata)
+
+			console.log(settingsResult)
+			console.log(metaResult)
+
+			dispatch(this.actions.contentUpdate(content))
+
+		} catch (error) {
+			dispatch(this.actions.contentError(error))
+		}
 	}
 
 }

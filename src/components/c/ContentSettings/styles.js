@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-	height: ${props => props.active ? `30rem` : `0`};
-	transition: all .5s ease-in-out;
 	overflow: hidden;
+	transition: max-height .5s ease-in-out;
+	height: auto;
+	max-height: ${props => props.active ? `400px` : `0`};
 `
 
 export default Style

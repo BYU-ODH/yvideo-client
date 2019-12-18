@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import services from 'services'
 
@@ -7,31 +7,106 @@ import { ContentSettings } from 'components'
 const ContentSettingsContainer = props => {
 
 	const {
+		showing,
 		content,
 		resources,
 		getResources,
 	} = props
 
-	const resource = resources[content.resourceId]
+	const {
+		setContentState,
+		setShowing,
+	} = props.handlers
 
-	console.log(`content`, content)
-	console.log(`resource`, resource)
+	const [tag, setTag] = useState(``)
 
 	useEffect(
 		() => {
-			if (!resource) getResources(content.resourceId)
+			console.log(content)
+			if (!resources[content.resourceId]) getResources(content.resourceId)
+			else if (!content.resource) {
+				setContentState({
+					...content,
+					resource: resources[content.resourceId],
+				})
+			} else setShowing(true)
 		},
-		[content.resourceId, getResources, resource]
+		[content, getResources, resources, setContentState, setShowing]
 	)
 
-	const viewstate = {
-		content,
-		tag: [],
+	if (!content || !content.resource) return null
+
+	const handleToggle = e => {
+		const { key } = e.target.dataset
+		setContentState({
+			...content,
+			settings: {
+				...content.settings,
+				[key]: !content.settings[key],
+			},
+		})
 	}
 
-	const handlers = {}
+	const handleRatio = e => {
+		setContentState({
+			...content,
+			settings: {
+				...content.settings,
+				aspectRatio: e.target.value,
+			},
+		})
+	}
 
-	if (!resource || !content) return null
+	const handleDescription = e => {
+		setContentState({
+			...content,
+			resource: {
+				...content.resource,
+				description: e.target.value,
+			},
+		})
+	}
+
+	const addTag = () => {
+		const newTags = tag.split(/[ ,]+/)
+		setContentState({
+			...content,
+			resource: {
+				...content.resource,
+				keywords: [...newTags, ...content.resource.keywords],
+			},
+		})
+		setTag(``)
+	}
+
+	const removeTag = e => {
+		setContentState({
+			...content,
+			resource: {
+				...content.resource,
+				keywords: content.resource.keywords.filter(item => item !== e.target.dataset.value),
+			},
+		})
+	}
+
+	const changeTag = e => {
+		setTag(e.target.value)
+	}
+
+	const viewstate = {
+		showing,
+		content,
+		tag,
+	}
+
+	const handlers = {
+		handleToggle,
+		handleRatio,
+		handleDescription,
+		addTag,
+		removeTag,
+		changeTag,
+	}
 
 	return <ContentSettings viewstate={viewstate} handlers={handlers} />
 }

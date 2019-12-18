@@ -9,6 +9,17 @@ export default class CollectionService {
 		COLLECTIONS_ERROR: `COLLECTIONS_ERROR`,
 		COLLECTIONS_GET: `COLLECTIONS_GET`,
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
+		COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
+		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
+	}
+
+	roleEndpoints = {
+		linkCourses: `linkCourses`,
+		addTA: `addTA`,
+		addException: `addException`,
+		unlinkCourses: `unlinkCourses`,
+		removeTA: `removeTA`,
+		removeException: `removeException`,
 	}
 
 	// action creators
@@ -20,11 +31,14 @@ export default class CollectionService {
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
+		collectionRolesGet: data => ({ type: this.types.COLLECTION_ROLES_GET, payload: { ...data }}),
+		collectionRolesUpdate: data => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { ...data }}),
 	}
 
 	// default store
 
 	store = {
+		roles: {},
 		cache: {},
 		loading: false,
 		lastFetched: 0,
@@ -41,6 +55,8 @@ export default class CollectionService {
 			COLLECTIONS_ERROR,
 			COLLECTIONS_GET,
 			COLLECTION_EDIT,
+			COLLECTION_ROLES_GET,
+			COLLECTION_ROLES_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -89,6 +105,24 @@ export default class CollectionService {
 					[action.payload.collection.id]: action.payload.collection,
 				},
 				loading: false,
+			}
+
+		case COLLECTION_ROLES_GET:
+			return {
+				...store,
+				roles: {
+					...store.roles,
+					...action.payload,
+				},
+			}
+
+		case COLLECTION_ROLES_UPDATE:
+			return {
+				...store,
+				roles: {
+					...store.roles,
+					...action.payload,
+				},
 			}
 
 		default:
@@ -164,6 +198,75 @@ export default class CollectionService {
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}
+		}
+	}
+
+	getCollectionRoles = (collectionId, force = false) => {
+		return async (dispatch, getState, { apiProxy }) => {
+
+			const store = getState().collectionStore
+
+			const time = Date.now() - store.lastFetched
+
+			const stale = time >= process.env.REACT_APP_STALE_TIME
+
+			const { roles } = store
+			const cached = Object.keys(roles).includes(collectionId)
+
+			if (stale || !cached || force) {
+
+				dispatch(this.actions.collectionsStart())
+
+				try {
+
+					const { data = {} } = await apiProxy.collection.permissions.get(collectionId)
+					dispatch(this.actions.collectionRolesGet({ [collectionId]: data }))
+
+				} catch (error) {
+					dispatch(this.actions.collectionsError(error))
+				}
+
+			} else dispatch(this.actions.collectionsAbort())
+		}
+	}
+
+	updateCollectionRoles = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+			const { data = {} } = await apiProxy.collection.permissions.post(collectionId, endpoint, body)
+
+			const newRoles = getState().collectionStore.roles[collectionId]
+
+			switch (endpoint) {
+			case this.roleEndpoints.linkCourses:
+				newRoles.courses = [...newRoles.courses, data[0]]
+				break
+			case this.roleEndpoints.unlinkCourses:
+				newRoles.courses = newRoles.courses.filter(item => item.id !== body[0].id)
+				break
+			case this.roleEndpoints.addTA:
+				newRoles.admins = [...newRoles.admins, data]
+				newRoles.exceptions = [...newRoles.exceptions, data]
+				break
+			case this.roleEndpoints.removeTA:
+				newRoles.admins = newRoles.admins.filter(item => item.username !== body)
+				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
+				break
+			case this.roleEndpoints.addException:
+				newRoles.exceptions = [...newRoles.exceptions, data]
+				break
+			case this.roleEndpoints.removeException:
+				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
+				break
+			default:
+				break
+			}
+
+			dispatch(this.actions.collectionRolesUpdate({ [collectionId]: newRoles }))
+		} catch (error) {
+			dispatch(this.actions.collectionsError(error))
 		}
 
 	}

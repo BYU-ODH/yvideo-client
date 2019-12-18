@@ -63,6 +63,31 @@ const apiProxy = {
 		 * @param action The action to perform, must be one of `archive`, `unarchive`, `publish`, `unpublish`
 		 */
 		edit: async (id, action) => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}/${action}`, { withCredentials: true }).then(res => res.data),
+		permissions: {
+			/**
+			 * Gets the current roles/permissions for the specified collection
+			 *
+			 * @param id the ID of the collection
+			 *
+			 * @returns a set of roles for a collection
+			 */
+			get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/permissions`, { withCredentials: true }),
+			/**
+			 * Edits a collections roles/permissions
+			 *
+			 * @param id the ID of the collection
+			 * @param endpoint which permissions endpoint you want to change, can be one of: ['linkCourses', 'addTA', 'addException', 'unlinkCourses', 'removeTA', 'removeException']
+			 * @param body contains the data which will overwrite the old data
+			 *
+			 * @returns nothing, idk
+			 */
+			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}/${endpoint}`, JSON.stringify(body), {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+				},
+			}),
+		},
 	},
 	content: {
 		/**
@@ -81,9 +106,32 @@ const apiProxy = {
 				return map
 			}, {})
 		},
+		metadata: {
+			post: async (id, metadata) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, JSON.stringify(metadata), {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+				},
+			}),
+		},
+		settings: {
+			post: async (id, settings) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/${id}/settings`, JSON.stringify(settings), {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+				},
+			}),
+		},
 	},
 	resources: {
-		get: id => axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${id}?${Date.now().toString(36)}`, { withCredentials: true }),
+		/**
+		 * Retrieves a single resource from a resource ID
+		 *
+		 * @param id the resource ID of the requested resource
+		 *
+		 * @returns a resource object
+		 */
+		get: id => axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${id}?${Date.now().toString(36)}`),
 	},
 }
 

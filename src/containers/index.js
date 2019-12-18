@@ -1,6 +1,6 @@
 import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
-import ContentPermissionsContainer from './c/ContentPermissionsContainer'
+import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
 import ContentSettingsContainer from './c/ContentSettingsContainer'
 import HeaderContainer from './c/HeaderContainer'
 import LandingContainer from './c/LandingContainer'
@@ -13,7 +13,7 @@ import RootContainer from './c/RootContainer'
 export {
 	CollectionsContainer,
 	ContentOverviewContainer,
-	ContentPermissionsContainer,
+	CollectionPermissionsContainer,
 	ContentSettingsContainer,
 	HeaderContainer,
 	LandingContainer,

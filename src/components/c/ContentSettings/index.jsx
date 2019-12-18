@@ -5,10 +5,11 @@ import { SwitchToggle, AspectRadio, Tag } from 'components/bits'
 import Style, { InnerContainer, Column, Setting, RatioList } from './styles'
 
 export class ContentSettings extends PureComponent {
+
 	render() {
 
 		const {
-			editing,
+			showing,
 			content,
 			tag,
 		} = this.props.viewstate
@@ -32,10 +33,11 @@ export class ContentSettings extends PureComponent {
 			handleRatio,
 			addTag,
 			removeTag,
+			changeTag,
 		} = this.props.handlers
 
 		return (
-			<Style active={editing}>
+			<Style active={showing}>
 				<InnerContainer>
 					<Column>
 						<h4>General</h4>
@@ -54,12 +56,8 @@ export class ContentSettings extends PureComponent {
 						<div className='tags'>
 							{keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
 						</div>
-						<form onSubmit={e => {
-							e.preventDefault()
-							addTag(tag.split(/[ ,]+/))
-							this.setState({ tag: `` })
-						}}>
-							<input type='text' placeholder='Add tags...' onChange={this.changeTag} value={tag} className='tag-input' />
+						<form onSubmit={addTag}>
+							<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} className='tag-input' />
 						</form>
 					</Column>
 

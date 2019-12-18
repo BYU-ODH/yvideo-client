@@ -17,7 +17,7 @@ export default class ResourceService {
 		resourcesAbort: () => ({ type: this.types.RESOURCE_ABORT }),
 		resourcesClean: () => ({ type: this.types.RESOURCE_CLEAN }),
 		resourcesError: error => ({ type: this.types.RESOURCE_ERROR, payload: { error } }),
-		resourcesGet: resources => ({ type: this.types.RESOURCE_GET, payload: { resources } }),
+		resourcesGet: resource => ({ type: this.types.RESOURCE_GET, payload: { resource } }),
 	}
 
 	// default store
@@ -70,9 +70,9 @@ export default class ResourceService {
 		case RESOURCE_GET:
 			return {
 				...store,
-				resources: {
-					...store.resources,
-					[action.payload.id]: action.payload,
+				cache: {
+					...store.cache,
+					[action.payload.resource.id]: action.payload.resource,
 				},
 				loading: false,
 				lastFetched: Date.now(),
@@ -102,8 +102,6 @@ export default class ResourceService {
 			try {
 
 				const result = await apiProxy.resources.get(id)
-
-				console.log(result)
 
 				const resource = result.data.resource
 				resource.resources = {}
