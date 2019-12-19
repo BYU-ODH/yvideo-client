@@ -107,7 +107,6 @@ export default class CollectionService {
 		// TODO : This isn't running correctly
 		if (stale || force) {
 
-			console.log(`dispatches`)
 			dispatch(this.actions.collectionsStart())
 
 			try {
