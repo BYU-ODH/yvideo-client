@@ -3,14 +3,8 @@
 	"eslint.autoFixOnSave": true,
 	"eslint.packageManager": "yarn",
 	"eslint.validate": [
-		{
-			"language": "javascript",
-			"autoFix": true
-		},
-		{
-			"language": "javascriptreact",
-			"autoFix": true
-		}
+		"javascript",
+		"javascriptreact"
 	],
 	"eslint.lintTask.enable": true,
 	"editor.renderWhitespace": "all",

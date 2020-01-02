@@ -47,7 +47,7 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 			contentId: content.id,
 			holder: contentHolder,
 			permission: `edit`,
-			screenAdaption: {
+			screenAdaptation: {
 				fit: true,
 				scroll: true,
 				padding: 61,
@@ -72,8 +72,10 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 					syncWith: mainPlayer,
 					saveLocation: `server`,
 					dropLocation: `file`,
-					width: document.body.clientWidth || window.innerWidth,
+
+					width: document.getElementById(`timeline`).offsetWidth || window.innerWidth - 100,
 					length: 3600, start: 0, end: 240,
+
 					trackMode: `showing`,
 					tool: Timeline.SELECT,
 					showControls: true,
@@ -87,7 +89,8 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 						case `loadlines`:
 						case `loadaudio`:
 						case `location`:
-						case `locationNames`: return true
+						case `locationNames`:
+							return true
 						default:
 							return false
 						}
@@ -132,17 +135,17 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 					document.getElementById(`bottomSpacer`).style.marginTop = `${document.getElementById(`bottomContainer`).clientHeight}px`
 				}
 
-				/* Never used
-				const captionEditor = CaptionEditor({
+				// Never used
+				CaptionEditor({
 					stack: commandStack,
 					refresh() {
-						videoPlayer.refreshLayout()
+						mainPlayer.refreshLayout()
 					},
 					rebuild() {
-						videoPlayer.rebuildCaptions()
+						mainPlayer.rebuildCaptions()
 					},
 					timeline,
-				})*/
+				})
 
 				// Check for unsaved tracks before leaving
 				window.addEventListener(`beforeunload`, (e) => {

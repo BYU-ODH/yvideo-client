@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import services from 'services'
-import styled from 'styled-components'
 
 import getCaptionAider from 'lib/js/captionAider'
+import { CaptionAider } from 'components'
 
 const CaptionAiderContainer = props => {
 
@@ -40,35 +40,13 @@ const CaptionAiderContainer = props => {
 		props.toggleModal(component)
 	}*/
 
-	const Style = styled.div`
-	padding-top: 8.4rem;
-	padding-bottom: 15rem;
-	overflow-y: scroll;
-	height: calc(100vh - 23.4rem);
-
-	& > div {
-		& .ayamelPlayer,
-		& .videoBox,
-		& .mediaPlayer {
-			width: 100% !important;
-			height: 70vh;
-		}
-		& .sliderContainer {
-			padding-bottom: 0 !important;
-		}
-	}
-`
-
 	if (content === undefined || resource === undefined) return null
 
-	return (
-		<Style>
-			<div id='bottomContainer' ref={target}>
-				<div id='timeline'></div>
-			</div>
-		</Style>
+	const viewstate = {
+		target,
+	}
 
-	)
+	return <CaptionAider viewstate={viewstate} />
 }
 
 const mapStoreToProps = store => ({
