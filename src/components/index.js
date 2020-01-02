@@ -1,3 +1,4 @@
+import Admin from './c/Admin'
 import CollectionPermissions from './c/CollectionPermissions'
 import Collections from './c/Collections'
 import ContentOverview from './c/ContentOverview'
@@ -13,6 +14,7 @@ import Overlay from './c/Overlay'
 import Root from './c/Root'
 
 export {
+	Admin,
 	CollectionPermissions,
 	Collections,
 	ContentOverview,

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import {
+	AdminContainer,
 	LandingContainer,
 	CollectionsContainer,
 	HeaderContainer,
@@ -42,7 +43,7 @@ class Root extends PureComponent {
 
 							<Route path='/player/:id'>
 								<span style={{ position: `relative`, top: `10rem` }}>Player</span>
-								{/* <Player /> */}
+								{/* <PlayerContainer /> */}
 							</Route>
 
 							<Route path='/manager/:id?'>
@@ -50,8 +51,7 @@ class Root extends PureComponent {
 							</Route>
 
 							<Route path='/admin/:page'>
-								<span style={{ position: `relative`, top: `10rem` }}>Admin</span>
-								{/* <Admin /> */}
+								<AdminContainer />
 							</Route>
 
 							<Route>
