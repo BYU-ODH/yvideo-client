@@ -161,14 +161,14 @@ const CreateTrackTemplate = props => {
 			<div class='control-group'>
 				<label class='control-label'>Name</label>
 				<div class='controls'>
-					<input type='text' value={props.trackName} placeholder='Name' id='createTrackAutofocus' />
+					<input type='text' value={props.trackInfo.trackName} placeholder='Name' id='createTrackAutofocus' />
 				</div>
 			</div>
-			<TrackKindSelect />
+			<TrackKindSelect trackKind={props.trackInfo.trackKind} changeTrackKind={props.changeTrackKind}/>
 			<div class='control-group'>
 				<label class='control-label'>Format</label>
 				<div class='controls'>
-					<select value={props.trackMime}>
+					<select onChange={props.changeTrackMime} value={props.trackMime}>
 						{props.types.map( type => <option value={type.mime}>{type.name}</option> )}
 					</select>
 				</div>

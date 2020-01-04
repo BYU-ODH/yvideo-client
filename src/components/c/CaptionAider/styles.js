@@ -163,7 +163,7 @@ const Style = styled.div`
 	& .tl-toolbar-holder {
 		display: flex;
 		justify-content: space-evenly;
-		margin: 4rem 0;
+		margin: 2rem 0;
 	}
 
 	& .tl-toolbar {

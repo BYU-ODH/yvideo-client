@@ -10,9 +10,9 @@ import {
 	GetLocationNames,
 	/* LoadAudio,
 	LoadTrackData,
-	LoadTranscript,
+	LoadTranscript,*/
 	NewTrackData,
-	SaveTrackData,
+	/* SaveTrackData,
 	ShowTrackData,*/
 } from './modals'
 
@@ -97,7 +97,7 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 					},
 					getFor: (key, datalist) => {
 						switch (key) {
-						/* case `newtrack`:
+						case `newtrack`:
 
 							// TODO: Create a component that renders what newTrackData() rendered, which you can see on the github repo:
 							// https://github.com/BYU-ODH/yvideo/blob/master/public/javascripts/pageScripts/captionAider.js
@@ -108,7 +108,7 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 							// TODO: So i didn't account for what newTrackData() actually returns, so check to see what that is, and see if there's any way to copy it the Reactful way :)
 
 							// return newTrackData(datalist)
-							return NewTrackData(datalist, timeline, langList)*/
+							return NewTrackData(datalist)
 						case `edittrack`:
 							return EditTrackData(datalist, timeline, langList)
 							/* case `savetrack`:
