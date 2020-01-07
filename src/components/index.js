@@ -11,6 +11,7 @@ import ManageCollection from './c/ManageCollection'
 import Manager from './c/Manager'
 import Menu from './c/Menu'
 import Overlay from './c/Overlay'
+import Player from './c/Player'
 import Root from './c/Root'
 
 export {
@@ -27,5 +28,6 @@ export {
 	Manager,
 	Menu,
 	Overlay,
+	Player,
 	Root,
 }

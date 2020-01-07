@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const ContentLoader = (() => {
 
-	const getDocumentWhitelist = (args, type, ids) => {
+	const getDocumentWhitelist = async (args, type, ids) => {
 
 		if (ids.length === 0) return Promise.resolve([])
 
@@ -13,21 +13,27 @@ const ContentLoader = (() => {
 			contentId: args.contentId,
 			permission: args.permission || `view`,
 			documentType: type,
-			ids: ids.join(`,`)
+			ids: ids.join(`,`),
 		}
 
-		const formBody = Object.keys(data).map(key => encodeURIComponent(key) +
-			`=` + encodeURIComponent(data[key])).join(`&`)
+		const formBody = Object.keys(data).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`).join(`&`)
 
-		return axios(`${process.env.REACT_APP_YVIDEO_SERVER}/ajax/permissionChecker`, {
-			method: `post`,
-			mode: `cors`,
-			credentials: `include`,
-			headers: {
-				"Content-Type": `application/x-www-form-urlencoded`
-			},
-			body: formBody
-		})
+		console.log(formBody)
+
+		try {
+
+			const test = await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/ajax/permissionChecker?${formBody}`, {
+				headers: {
+					"Content-Type": `application/x-www-form-urlencoded`,
+				},
+			})
+
+			console.log(`test`)
+
+			return test
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	/* args: resource, courseId, contentId, permission */
@@ -44,13 +50,18 @@ const ContentLoader = (() => {
 			args.resource.getAnnotationIds())
 	}
 
-	const renderContent = args => {
+	const renderContent = async args => {
+
 		// Check if we are rendering something from the resource library
 		if ([`video`, `audio`, `image`, `text`].indexOf(args.content.contentType) >= 0) {
 			ResourceLibrary.setBaseUrl(`https://api.ayamel.org/api/v1/`)
 
-			ResourceLibrary.load(args.content.resourceId, resource => {
+			try {
+
+				const resource = await ResourceLibrary.load(args.content.resourceId)
+
 				args.resource = resource
+
 				ContentRenderer.render({
 					getTranscriptWhitelist,
 					getAnnotationWhitelist,
@@ -65,33 +76,36 @@ const ContentLoader = (() => {
 					endTime: args.endTime,
 					renderCue: args.renderCue,
 					permission: args.permission,
-					callback: args.callback
+					callback: args.callback,
 				})
-			}).catch(err => console.log(err))
+
+			} catch (error) {
+				console.error(error)
+			}
+
 		} else if (args.content.contentType === `playlist`)
 			console.error(`Playlists are not supported.`)
-
 	}
 
 	const castContentObject = content => {
 		switch (typeof content) {
-			case `number`:
-				return axios(`/content/${content}/json?${Date.now().toString(36)}`)
-			case `object`:
-				return Promise.resolve(content)
-			default:
-				return Promise.reject(new Error(`Invalid Type`))
+		case `number`:
+			return axios(`/content/${content}/json?${Date.now().toString(36)}`)
+		case `object`:
+			return Promise.resolve(content)
+		default:
+			return Promise.reject(new Error(`Invalid Content Type`))
 		}
 	}
 
 	return {
 		castContentObject,
 		render(args) {
-			castContentObject(args.content).then((data) => {
+			castContentObject(args.content).then(async data => {
 				args.content = data
-				renderContent(args)
+				await	renderContent(args)
 			})
-		}
+		},
 	}
 })()
 
