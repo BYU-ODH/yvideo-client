@@ -1,3 +1,4 @@
+import AdminContainer from './c/AdminContainer'
 import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
 import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
@@ -8,9 +9,11 @@ import LoginContainer from './c/LoginContainer'
 import ManageCollectionContainer from './c/ManageCollectionContainer'
 import ManagerContainer from './c/ManagerContainer'
 import MenuContainer from './c/MenuContainer'
+import PlayerContainer from './c/PlayerContainer'
 import RootContainer from './c/RootContainer'
 
 export {
+	AdminContainer,
 	CollectionsContainer,
 	ContentOverviewContainer,
 	CollectionPermissionsContainer,
@@ -21,5 +24,6 @@ export {
 	ManageCollectionContainer,
 	ManagerContainer,
 	MenuContainer,
+	PlayerContainer,
 	RootContainer,
 }
