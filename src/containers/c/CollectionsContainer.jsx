@@ -28,7 +28,7 @@ const CollectionsContainer = props => {
 		isProf,
 		isAdmin,
 		displayBlocks,
-		collections,
+		collections: Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published)),
 	}
 
 	const handlers = {

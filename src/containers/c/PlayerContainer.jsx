@@ -6,6 +6,7 @@ import { contentService } from 'services'
 import styled from 'styled-components'
 
 import { roles } from 'models/User'
+import { objectIsEmpty } from 'lib/util'
 
 import { Player } from 'components'
 const Container = styled.div`
@@ -18,6 +19,7 @@ const PlayerContainer = props => {
 		userId,
 		content,
 		getContent,
+		addView,
 	} = props
 
 	const params = useParams()
@@ -27,7 +29,9 @@ const PlayerContainer = props => {
 		getContent([params.id])
 	}, [getContent, params.id])
 
-	console.log(params.id, content, userId)
+	if(!objectIsEmpty(content))
+		addView(params.id)
+
 	return (
 		<Container id='some-id'>
 			<Player videoId={params.id} content={content[params.id]} userId={userId} />
@@ -44,6 +48,7 @@ const mapStateToProps = ({ authStore, contentStore }) => ({
 
 const mapDispatchToProps = {
 	getContent: contentService.getContent,
+	addView: contentService.addView,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

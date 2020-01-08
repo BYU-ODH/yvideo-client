@@ -25,7 +25,6 @@ export default class Player extends PureComponent {
 	contentHolder = createRef(null)
 
 	render() {
-
 		return (
 			<Style>
 				<div ref={this.contentHolder} />

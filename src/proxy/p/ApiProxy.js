@@ -106,6 +106,14 @@ const apiProxy = {
 				return map
 			}, {})
 		},
+		addView: {
+			/**
+			 * Increments number of views from a content ID
+			 *
+			 * @param id the ID of the content you wish to increment the number of views for
+			 */
+			get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/addview`, { withCredentials: true }),
+		},
 		metadata: {
 			post: async (id, metadata) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/${id}/metadata`, JSON.stringify(metadata), {
 				withCredentials: true,

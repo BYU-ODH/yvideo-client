@@ -9,6 +9,7 @@ export default class ContentService {
 		CONTENT_ERROR: `CONTENT_ERROR`,
 		CONTENT_GET: `CONTENT_GET`,
 		CONTENT_UPDATE: `CONTENT_UPDATE`,
+		CONTENT_ADD_VIEW: `CONTENT_ADD_VIEW`,
 	}
 
 	// action creators
@@ -20,6 +21,7 @@ export default class ContentService {
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentUpdate: content => ({ type: this.types.CONTENT_UPDATE, payload: { content }}),
+		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
 	}
 
 	// default store
@@ -41,6 +43,7 @@ export default class ContentService {
 			CONTENT_ERROR,
 			CONTENT_GET,
 			CONTENT_UPDATE,
+			CONTENT_ADD_VIEW,
 		} = this.types
 
 		switch (action.type) {
@@ -87,6 +90,18 @@ export default class ContentService {
 				cache: {
 					...store.cache,
 					[action.payload.content.id]: action.payload.content,
+				},
+				loading: false,
+			}
+
+		case CONTENT_ADD_VIEW:
+			return {
+				...store,
+				cache: {
+					[action.payload.id]: {
+						...store.cache[action.payload.id],
+						views: store.cache[action.payload.id].views + 1,
+					},
 				},
 				loading: false,
 			}
@@ -183,6 +198,30 @@ export default class ContentService {
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}
+	}
+
+	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().contentStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.contentStart())
+
+			try {
+
+				await apiProxy.content.addView.get(id)
+
+				dispatch(this.actions.contentAddView(id))
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.contentError(error))
+			}
+
+		} else dispatch(this.actions.contentAbort())
 	}
 
 }
