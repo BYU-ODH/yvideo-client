@@ -18,11 +18,6 @@ const MenuContainer = props => {
 		toggleMenu,
 	} = props
 
-	const createCollection = e => {
-		e.preventDefault()
-		// props.toggleModal({ component: CreateCollection })
-	}
-
 	const handleLogout = async e => {
 		e.preventDefault()
 		await logout()
@@ -38,7 +33,6 @@ const MenuContainer = props => {
 
 	const handlers = {
 		toggleMenu,
-		createCollection,
 		handleLogout,
 	}
 
@@ -56,7 +50,6 @@ const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 const mapDispatchToProps = {
 	logout: services.authService.logout,
 	toggleMenu: services.interfaceService.toggleMenu,
-	// toggleModal: services.interfaceService.toggleModal,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(MenuContainer)
