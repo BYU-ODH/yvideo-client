@@ -1,13 +1,40 @@
 import React, { PureComponent } from 'react'
 
-import Style from './styles'
+import { AdminTable } from 'components/bits'
+
+import { Container, Search, SearchIcon, CategorySelect } from './styles'
 
 export class Admin extends PureComponent {
 	render() {
+
+		const {
+			category,
+			data,
+			headers,
+			placeholder,
+		} = this.props.viewstate
+
+		const {
+			search,
+			updateCategory,
+			updateSearchBar,
+		} = this.props.handlers
+
 		return (
-			<Style>
-				Admin Component
-			</Style>
+			<Container>
+				<CategorySelect onChange={updateCategory}>
+					{Object.keys(category).map((c, index) =>
+						<option value={category[c].name} key={index}>
+							{category[c].name}
+						</option>
+					)}
+				</CategorySelect>
+				<Search onSubmit={search}>
+					<SearchIcon />
+					<input type='search' placeholder={placeholder} onChange={updateSearchBar} />
+				</Search>
+				<AdminTable headers={headers} data={data} />
+			</Container>
 		)
 	}
 }

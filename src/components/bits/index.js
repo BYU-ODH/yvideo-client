@@ -1,4 +1,5 @@
 import Accordion from './Accordion'
+import AdminTable from './AdminTable'
 import AspectRadio from './AspectRadio'
 import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
@@ -12,6 +13,7 @@ import Tag from './Tag'
 
 export {
 	Accordion,
+	AdminTable,
 	AspectRadio,
 	BlockCollection,
 	BlockItem,
