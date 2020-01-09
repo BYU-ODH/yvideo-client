@@ -18,11 +18,17 @@ const CollectionsContainer = props => {
 		collections,
 		getCollections,
 		toggleCollectionsDisplay,
+		setHeaderBorder,
 	} = props
 
 	useEffect(() => {
 		getCollections()
-	}, [collections, getCollections])
+		setHeaderBorder(false)
+
+		return () => {
+			setHeaderBorder(true)
+		}
+	}, [collections, getCollections, setHeaderBorder])
 
 	const viewstate = {
 		isProf,
@@ -48,6 +54,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore }) => ({
 const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
+	setHeaderBorder: interfaceService.setHeaderBorder,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

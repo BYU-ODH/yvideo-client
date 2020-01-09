@@ -8,10 +8,12 @@ import { SError, SLink } from './styles'
 class Error extends PureComponent {
 	componentDidMount = () => {
 		this.props.setLost(true)
+		this.props.setHeaderBorder(false)
 	}
 
 	componentWillUnmount = () => {
 		this.props.setLost(false)
+		this.props.setHeaderBorder(true)
 	}
 
 	render() {
@@ -28,6 +30,7 @@ class Error extends PureComponent {
 
 const mapDispatchToProps = {
 	setLost: interfaceService.setLost,
+	setHeaderBorder: interfaceService.setHeaderBorder,
 }
 
 export default connect(null, mapDispatchToProps)(Error)

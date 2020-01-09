@@ -1,6 +1,6 @@
-import React, { PureComponent, createRef } from 'react'
+import React, { Component } from 'react'
 
-import { Ayamel, ResourceLibrary } from 'yvideojs'
+import { Ayamel } from 'yvideojs'
 
 import ContentLoader from 'lib/js/contentRendering/ContentLoader'
 
@@ -9,41 +9,34 @@ import { CollectionsContainer } from 'containers'
 import Style from './styles'
 import 'yvideojs/css/player.css'
 
-export default class Player extends PureComponent {
-
-	constructor(props) {
-		super(props)
-		this.state = {
-			owner: false,
-			userId: 0,
-			collectionId: 0,
-			content: null,
-		}
-		ResourceLibrary.setBaseUrl(`https://api.ayamel.org/api/v1/`)
-	}
-
-	contentHolder = createRef(null)
-
+export default class Player extends Component {
 	render() {
+		const { ref } = this.props.viewstate
 		return (
 			<Style>
-				<div ref={this.contentHolder} />
+				<div ref={ref} />
 				<CollectionsContainer />
 			</Style>
 		)
 	}
 
 	componentDidUpdate = async () => {
+		const {
+			content,
+			userId,
+			ref,
+		} = this.props.viewstate
+
 		try {
 			// Render the content
 			ContentLoader.render({
 				ContentLoader,
-				content: this.props.content,
-				userId: this.props.userId,
+				content,
+				userId,
 				owner: true,
 				teacher: false,
 				collectionId: 0,
-				holder: this.contentHolder.current,
+				holder: ref.current,
 				annotate: true,
 				open: true,
 				screenAdaption: false,
