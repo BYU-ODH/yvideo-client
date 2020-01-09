@@ -88,9 +88,9 @@ export class ContentSettings extends PureComponent {
 								<AspectRadio id={1} ratio='2.39' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `2.39`}>Widescreen</AspectRadio>
 								<AspectRadio id={2} ratio='1.66' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `1.66`}>European Widescreen</AspectRadio>
 								<AspectRadio id={3} ratio='1.85' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `1.85`}>US Widescreen</AspectRadio>
+								<AspectRadio id={4} ratio='1.4142' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `1.4142`}>Lichtenberg</AspectRadio>
 							</div>
 							<div>
-								<AspectRadio id={4} ratio='1.4142' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `1.4142`}>Lichtenberg</AspectRadio>
 								<AspectRadio id={5} ratio='1.5' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `1.5`}>Classic Film</AspectRadio>
 								<AspectRadio id={6} ratio='1.6' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `1.6`}>Credit Card</AspectRadio>
 								<AspectRadio id={7} ratio='1.77' onChange={handleRatio} contentId={content.id} selected={aspectRatio === `1.77`}>HD Video</AspectRadio>

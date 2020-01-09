@@ -55,12 +55,14 @@ export const Setting = styled.div`
 
 export const RatioList = styled.div`
 	display: flex;
-	& > label {
+
+	& > div {
+		flex: 1;
+	}
+
+	& > div > label {
 		cursor: pointer;
 		display: flex;
-		display: flex;
-		flex-direction: column;
-		flex: 1;
 		margin: .5rem 0;
 	}
 `
