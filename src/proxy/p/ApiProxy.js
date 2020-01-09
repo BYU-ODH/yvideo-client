@@ -2,36 +2,12 @@ import axios from 'axios'
 import User from 'models/User'
 
 const apiProxy = {
-	user: {
-		/**
-		 * Retrieves the currently logged-in user from the API
-		 *
-		 * @returns a User object
-		 */
-		get: async () => {
-			try {
-				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
-				const result = await axios.get(url, { withCredentials: true })
-				return new User(result.data)
-			} catch (error) {
-				console.error(error)
-			}
-		},
-		collections: {
+	admin: {
+		search: {
 			/**
-			 * Retrieves the collections for the current user
-			 *
-			 * @returns a map of the collections, where the key is the collection's ID
+			 * Retrieves an array of users, collections, or content depending on the category and search word
 			 */
-			get: async () => {
-
-				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true }).then(res => res.data)
-
-				return result.reduce((map, item) => {
-					map[item.id] = item
-					return map
-				}, {})
-			},
+			get: async (searchCategory, searchQuery) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/${searchCategory}/${searchQuery}`, { withCredentials: true }).then(res => res.data),
 		},
 	},
 	auth: {
@@ -132,6 +108,38 @@ const apiProxy = {
 		 * @returns a resource object
 		 */
 		get: id => axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${id}?${Date.now().toString(36)}`),
+	},
+	user: {
+		/**
+		 * Retrieves the currently logged-in user from the API
+		 *
+		 * @returns a User object
+		 */
+		get: async () => {
+			try {
+				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
+				const result = await axios.get(url, { withCredentials: true })
+				return new User(result.data)
+			} catch (error) {
+				console.error(error)
+			}
+		},
+		collections: {
+			/**
+			 * Retrieves the collections for the current user
+			 *
+			 * @returns a map of the collections, where the key is the collection's ID
+			 */
+			get: async () => {
+
+				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true }).then(res => res.data)
+
+				return result.reduce((map, item) => {
+					map[item.id] = item
+					return map
+				}, {})
+			},
+		},
 	},
 }
 

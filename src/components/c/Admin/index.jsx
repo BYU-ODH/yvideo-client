@@ -15,7 +15,6 @@ export class Admin extends PureComponent {
 		} = this.props.viewstate
 
 		const {
-			search,
 			updateCategory,
 			updateSearchBar,
 		} = this.props.handlers
@@ -29,7 +28,7 @@ export class Admin extends PureComponent {
 						</option>
 					)}
 				</CategorySelect>
-				<Search onSubmit={search}>
+				<Search>
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} />
 				</Search>
