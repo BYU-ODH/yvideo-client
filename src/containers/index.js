@@ -1,7 +1,7 @@
-import CaptionAiderContainer from './c/CaptionAiderContainer'
+import AdminContainer from './c/AdminContainer'
 import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
-import ContentPermissionsContainer from './c/ContentPermissionsContainer'
+import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
 import ContentSettingsContainer from './c/ContentSettingsContainer'
 import HeaderContainer from './c/HeaderContainer'
 import LandingContainer from './c/LandingContainer'
@@ -13,10 +13,10 @@ import PlayerContainer from './c/PlayerContainer'
 import RootContainer from './c/RootContainer'
 
 export {
-	CaptionAiderContainer,
+	AdminContainer,
 	CollectionsContainer,
 	ContentOverviewContainer,
-	ContentPermissionsContainer,
+	CollectionPermissionsContainer,
 	ContentSettingsContainer,
 	HeaderContainer,
 	LandingContainer,

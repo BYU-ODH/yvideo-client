@@ -9,6 +9,7 @@ export default class ContentService {
 		CONTENT_ERROR: `CONTENT_ERROR`,
 		CONTENT_GET: `CONTENT_GET`,
 		CONTENT_ADD_VIEW: `CONTENT_ADD_VIEW`,
+		CONTENT_UPDATE: `CONTENT_UPDATE`,
 	}
 
 	// action creators
@@ -20,6 +21,7 @@ export default class ContentService {
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
+		contentUpdate: content => ({ type: this.types.CONTENT_UPDATE, payload: { content }}),
 	}
 
 	// default store
@@ -41,6 +43,7 @@ export default class ContentService {
 			CONTENT_ERROR,
 			CONTENT_GET,
 			CONTENT_ADD_VIEW,
+			CONTENT_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -90,6 +93,15 @@ export default class ContentService {
 						...store.cache[action.payload.id],
 						views: store.cache[action.payload.id].views + 1,
 					},
+				},
+			}
+
+		case CONTENT_UPDATE:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.content.id]: action.payload.content,
 				},
 				loading: false,
 			}
@@ -153,4 +165,64 @@ export default class ContentService {
 		} else dispatch(this.actions.contentAbort())
 	}
 
+	updateContent = content => async (dispatch, _getState, { apiProxy }) => {
+
+		dispatch(this.actions.contentStart())
+
+		try {
+
+			const { id, published } = content
+
+			const {
+				title,
+				description,
+				keywords,
+			} = content.resource
+
+			const {
+				captionTrack,
+				annotationDocument,
+				targetLanguages,
+				aspectRatio,
+				showCaptions,
+				showAnnotations,
+				allowDefinitions,
+				showTranscripts,
+				showWordList,
+			} = content.settings
+
+			const settings = {
+				captionTrack,
+				annotationDocument,
+				targetLanguages,
+				aspectRatio,
+				showCaptions,
+				showAnnotations,
+				allowDefinitions,
+				showTranscripts,
+				showWordList,
+			}
+
+			const metadata = {
+				title,
+				description,
+				keywords,
+				published,
+			}
+
+			// const settingsResult =
+			await apiProxy.content.settings.post(id, settings)
+
+			// const metaResult =
+			await apiProxy.content.metadata.post(id, metadata)
+
+			// console.log(settingsResult)
+			// console.log(metaResult)
+
+			dispatch(this.actions.contentUpdate(content))
+
+		} catch (error) {
+			dispatch(this.actions.contentError(error))
+		}
+	}
 }

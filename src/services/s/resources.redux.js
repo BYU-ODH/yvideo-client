@@ -93,7 +93,7 @@ export default class ResourceService {
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
-		const { cache } = resourceStore
+		const { cache } = getState().resourceStore
 		const cachedIds = Object.keys(cache)
 		const cached = cachedIds.includes(id)
 

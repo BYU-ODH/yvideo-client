@@ -32,7 +32,7 @@ const RootContainer = props => {
 
 const mapStoreToProps = ({ authStore, interfaceStore, collectionStore, contentStore, resourceStore }) => ({
 	user: authStore.user,
-	loading: authStore.loading || collectionStore.loading || contentStore.loading || resourceStore.loading,
+	loading: authStore.loading,
 	tried: authStore.tried,
 	modal: interfaceStore.modal,
 })

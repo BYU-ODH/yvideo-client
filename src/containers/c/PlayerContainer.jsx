@@ -1,47 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { contentService } from 'services'
-import styled from 'styled-components'
 
 import { roles } from 'models/User'
 
 import { Player } from 'components'
-// import CaptionAiderContainer from './CaptionAiderContainer'
-
-// import { objectIsEmpty } from 'lib/util'
-
-const Container = styled.div`
-	overflow-y: scroll;
-`
 
 const PlayerContainer = props => {
 
 	const {
-		// isProf,
-		// isAdmin,
 		userId,
 		content,
 		getContent,
 	} = props
 
 	const params = useParams()
+	const ref = useRef(null)
 
 	useEffect(() => {
-		console.log(`Running effect`)
 		getContent([params.id])
 	}, [getContent, params.id])
 
-	return (
-		<Container id='some-id'>
-			<Player videoId={params.id} content={content[params.id]} userId={userId} />
-			{/* {
-				(isProf || isAdmin) &&
-				<CaptionAiderContainer content={content[params.id]} />
-			} */}
-		</Container>
-	)
+	const viewstate = {
+		ref,
+		userId,
+		videoId: params.id,
+		content: content[params.id],
+	}
+
+	return <Player viewstate={viewstate} />
 }
 
 const mapStateToProps = ({ authStore, contentStore }) => ({

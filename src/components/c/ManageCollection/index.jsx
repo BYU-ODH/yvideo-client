@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import {
 	ContentOverviewContainer,
-	ContentPermissionsContainer,
+	CollectionPermissionsContainer,
 } from 'containers'
 
 import Style, {
@@ -59,7 +59,7 @@ export default class ManageCollection extends PureComponent {
 					{isContent ?
 						content.map(item => <ContentOverviewContainer key={item.id} content={item} />)
 						:
-						<ContentPermissionsContainer collection={collection} />
+						<CollectionPermissionsContainer collection={collection} />
 					}
 
 					{isContent &&

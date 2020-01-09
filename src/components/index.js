@@ -1,6 +1,8 @@
-import CaptionAider from './c/CaptionAider'
+import Admin from './c/Admin'
+import CollectionPermissions from './c/CollectionPermissions'
 import Collections from './c/Collections'
 import ContentOverview from './c/ContentOverview'
+import ContentSettings from './c/ContentSettings'
 import Error from './c/Error'
 import Header from './c/Header'
 import Landing from './c/Landing'
@@ -13,9 +15,11 @@ import Player from './c/Player'
 import Root from './c/Root'
 
 export {
-	CaptionAider,
+	Admin,
+	CollectionPermissions,
 	Collections,
 	ContentOverview,
+	ContentSettings,
 	Error,
 	Header,
 	Landing,

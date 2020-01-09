@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import {
-	CaptionAiderContainer,
+	AdminContainer,
 	CollectionsContainer,
 	HeaderContainer,
 	LandingContainer,
@@ -46,17 +46,12 @@ class Root extends PureComponent {
 								<PlayerContainer />
 							</Route>
 
-							<Route path='/captionaider/:id'>
-								<CaptionAiderContainer />
-							</Route>
-
 							<Route path='/manager/:id?'>
 								<ManagerContainer />
 							</Route>
 
 							<Route path='/admin/:page'>
-								<span style={{ position: `relative`, top: `10rem` }}>Admin</span>
-								{/* <Admin /> */}
+								<AdminContainer />
 							</Route>
 
 							<Route>

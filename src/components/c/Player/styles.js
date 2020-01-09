@@ -5,7 +5,6 @@ export const Style = styled.div`
 	padding-bottom: 15rem;
 	overflow-y: scroll;
 	height: calc(100vh - 23.4rem);
-
 	& > div {
 		& .ayamelPlayer,
 		& .videoBox,

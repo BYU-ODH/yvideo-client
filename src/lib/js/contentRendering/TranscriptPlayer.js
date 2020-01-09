@@ -104,7 +104,7 @@ const TranscriptPlayer = args => {
 			},
 			get() {
 				return sync
-			}
+			},
 		},
 		activeTranscript: {
 			set(value) {
@@ -112,12 +112,12 @@ const TranscriptPlayer = args => {
 			},
 			get() {
 				return activeIndex
-			}
+			},
 		},
 		addEventListener: {
 			value(event, callback, capture) {
 				element.addEventListener(event, callback, capture || false)
-			}
+			},
 		},
 		addTrack: {
 			value(track) {
@@ -128,13 +128,13 @@ const TranscriptPlayer = args => {
 				if (~tracks.indexOf(track)) return
 				tracks.push(track)
 				return addTrack(tracks.indexOf(track))
-			}
+			},
 		},
 		updateTrack: {
 			value(track) {
 				const i = tracks.indexOf(track)
 				if (~i) console.log(`updateTrack not implemented. Report this if the Transcripts are not loading correctly.`)
-			}
+			},
 		},
 		currentTime: {
 			get() {
@@ -146,14 +146,14 @@ const TranscriptPlayer = args => {
 				const track = tracks[activeIndex]
 
 				currentTime = +value;
-				[].forEach.call(document.querySelectorAll(`.transcriptContent[data-trackindex="` + activeIndex + `"] > .transcriptCue`),
+				[].forEach.call(document.querySelectorAll(`.transcriptContent[data-trackindex="${activeIndex}"] > .transcriptCue`),
 					(node) => {
 						const cue = track.cues[node.dataset.cueindex]
 						node.classList[currentTime >= cue.startTime && currentTime <= cue.endTime ? `add` : `remove`](`active`)
 					})
 				// Possibly scroll
 				if (!sync) return
-				const activeCues = document.querySelectorAll(`.transcriptContent[data-trackindex="` + activeIndex + `"] > .active`)
+				const activeCues = document.querySelectorAll(`.transcriptContent[data-trackindex="${activeIndex}"] > .active`)
 				if (activeCues.length === 0) return;
 				[].forEach.call(activeCues, (activeCue) => {
 					top = Math.min(top, activeCue.offsetTop)
@@ -162,13 +162,13 @@ const TranscriptPlayer = args => {
 
 				const parent = document.querySelector(`.transcriptContentHolder`)
 				parent.scrollTop = (top - parent.offsetHeight + bottom) / 2 - parent.offsetTop
-			}
+			},
 		},
 		update: {
 			value() {
 				console.log(`Transcript Player Update all tracks not implemented. Report this if the transcripts are not loading correctly.`)
-			}
-		}
+			},
+		},
 	})
 }
 
