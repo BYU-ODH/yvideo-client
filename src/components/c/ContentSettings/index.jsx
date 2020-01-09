@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { SwitchToggle, AspectRadio, Tag } from 'components/bits'
+import { SwitchToggle, AspectRadio, Tag, Spinner } from 'components/bits'
 
 import Style, { InnerContainer, Column, Setting, RatioList } from './styles'
 
@@ -12,6 +12,7 @@ export class ContentSettings extends PureComponent {
 			showing,
 			content,
 			tag,
+			loading,
 		} = this.props.viewstate
 
 		const {
@@ -35,6 +36,8 @@ export class ContentSettings extends PureComponent {
 			removeTag,
 			changeTag,
 		} = this.props.handlers
+
+		if (loading) return <Spinner/>
 
 		return (
 			<Style active={showing}>

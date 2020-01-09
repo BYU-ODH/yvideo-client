@@ -171,12 +171,14 @@ export default class ContentService {
 				published,
 			}
 
-			const settingsResult = await apiProxy.content.settings.post(id, settings)
+			// const settingsResult =
+			await apiProxy.content.settings.post(id, settings)
 
-			const metaResult = await apiProxy.content.metadata.post(id, metadata)
+			// const metaResult =
+			await apiProxy.content.metadata.post(id, metadata)
 
-			console.log(settingsResult)
-			console.log(metaResult)
+			// console.log(settingsResult)
+			// console.log(metaResult)
 
 			dispatch(this.actions.contentUpdate(content))
 
