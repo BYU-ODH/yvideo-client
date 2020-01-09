@@ -84,8 +84,17 @@ export default class ContentService {
 				lastFetched: Date.now(),
 			}
 
+		case CONTENT_UPDATE:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.content.id]: action.payload.content,
+				},
+				loading: false,
+			}
+
 		case CONTENT_ADD_VIEW:
-			console.log(`addView`, action.payload)
 			return {
 				...store,
 				cache: {
@@ -93,15 +102,6 @@ export default class ContentService {
 						...store.cache[action.payload.id],
 						views: store.cache[action.payload.id].views + 1,
 					},
-				},
-			}
-
-		case CONTENT_UPDATE:
-			return {
-				...store,
-				cache: {
-					...store.cache,
-					[action.payload.content.id]: action.payload.content,
 				},
 				loading: false,
 			}
@@ -225,4 +225,29 @@ export default class ContentService {
 			dispatch(this.actions.contentError(error))
 		}
 	}
+
+	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().contentStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.contentStart())
+
+			try {
+
+				await apiProxy.content.addView.get(id)
+
+				dispatch(this.actions.contentAddView(id))
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.contentError(error))
+			}
+
+		} else dispatch(this.actions.contentAbort())
+	}
+
 }

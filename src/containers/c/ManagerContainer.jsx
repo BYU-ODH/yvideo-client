@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { roles } from 'models/User'
@@ -26,12 +26,19 @@ const ManagerContainer = props => {
 		toggleModal,
 	} = props
 
+	const params = useParams()
+	const location = useLocation()
+
 	useEffect(() => {
 		setHeaderBorder(true)
 		getCollections()
-	}, [getCollections, setHeaderBorder])
 
-	const params = useParams()
+		if(location.createCollection) {
+			toggleModal({
+				component: CreateCollection,
+			})
+		}
+	}, [getCollections, setHeaderBorder, location.createCollection, toggleModal])
 
 	if (objectIsEmpty(collections)) return null
 

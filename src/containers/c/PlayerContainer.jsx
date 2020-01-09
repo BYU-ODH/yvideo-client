@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { contentService } from 'services'
 
 import { roles } from 'models/User'
+import { objectIsEmpty } from 'lib/util'
 
 import { Player } from 'components'
 
@@ -14,6 +15,7 @@ const PlayerContainer = props => {
 		userId,
 		content,
 		getContent,
+		addView,
 	} = props
 
 	const params = useParams()
@@ -22,6 +24,8 @@ const PlayerContainer = props => {
 	useEffect(() => {
 		getContent([params.id])
 	}, [getContent, params.id])
+
+	if(!objectIsEmpty(content)) addView(params.id)
 
 	const viewstate = {
 		ref,
@@ -42,6 +46,7 @@ const mapStateToProps = ({ authStore, contentStore }) => ({
 
 const mapDispatchToProps = {
 	getContent: contentService.getContent,
+	addView: contentService.addView,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)
