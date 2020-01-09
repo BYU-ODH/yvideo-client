@@ -138,6 +138,7 @@ export default class CollectionService {
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
+		// TODO : This isn't running correctly
 		if (stale || force) {
 
 			dispatch(this.actions.collectionsStart())

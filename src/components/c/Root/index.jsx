@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import {
 	AdminContainer,
-	LandingContainer,
 	CollectionsContainer,
 	HeaderContainer,
+	LandingContainer,
 	MenuContainer,
 	ManagerContainer,
 	PlayerContainer,
