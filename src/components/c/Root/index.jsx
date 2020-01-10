@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import {
 	AdminContainer,
-	LandingContainer,
 	CollectionsContainer,
 	HeaderContainer,
+	LandingContainer,
 	MenuContainer,
 	ManagerContainer,
 	PlayerContainer,
@@ -42,8 +42,12 @@ class Root extends PureComponent {
 								<CollectionsContainer />
 							</Route>
 
-							<Route path='/player/:id'>
-								<PlayerContainer />
+							<Route path='/admin/:page'>
+								<AdminContainer />
+							</Route>
+
+							<Route path='/collections'>
+								<CollectionsContainer />
 							</Route>
 
 							<Route path='/manager/:id?'>
@@ -52,6 +56,11 @@ class Root extends PureComponent {
 
 							<Route path='/admin'>
 								<AdminContainer />
+							</Route>
+
+								<Route path='/player/:id'>
+									<PlayerContainer />
+	>>>>>>> master
 							</Route>
 
 							<Route>

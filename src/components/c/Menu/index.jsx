@@ -14,7 +14,6 @@ class Menu extends PureComponent {
 
 		const {
 			toggleMenu,
-			createCollection,
 			handleLogout,
 		} = this.props.handlers
 
@@ -44,9 +43,9 @@ class Menu extends PureComponent {
 					<>
 						<Header>Collections</Header>
 						<hr />
-						<LinkStyled to='/collections'>View Collections</LinkStyled>
+						<LinkStyled to='/'>View Collections</LinkStyled>
 						<LinkStyled to='/manager'>Manage Collections</LinkStyled>
-						<LinkStyled to='/manager' onClick={createCollection}>Create New Collection</LinkStyled>
+						<LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled>
 					</>
 				}
 

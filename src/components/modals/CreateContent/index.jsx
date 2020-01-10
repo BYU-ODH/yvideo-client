@@ -7,6 +7,7 @@ import { roles } from 'models/User'
 
 import {
 	collectionService,
+	contentService,
 	interfaceService,
 	resourceService,
 } from 'services'
@@ -310,6 +311,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
+	getContent: contentService.getContent,
 	toggleModal: interfaceService.toggleModal,
 	getResources: resourceService.getResources,
 	addResource: resourceService.addResource,

@@ -8,6 +8,7 @@ export default class ContentService {
 		CONTENT_CLEAN: `CONTENT_CLEAN`,
 		CONTENT_ERROR: `CONTENT_ERROR`,
 		CONTENT_GET: `CONTENT_GET`,
+		CONTENT_ADD_VIEW: `CONTENT_ADD_VIEW`,
 		CONTENT_UPDATE: `CONTENT_UPDATE`,
 	}
 
@@ -19,6 +20,7 @@ export default class ContentService {
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
+		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
 		contentUpdate: content => ({ type: this.types.CONTENT_UPDATE, payload: { content }}),
 	}
 
@@ -40,6 +42,7 @@ export default class ContentService {
 			CONTENT_CLEAN,
 			CONTENT_ERROR,
 			CONTENT_GET,
+			CONTENT_ADD_VIEW,
 			CONTENT_UPDATE,
 		} = this.types
 
@@ -91,6 +94,18 @@ export default class ContentService {
 				loading: false,
 			}
 
+		case CONTENT_ADD_VIEW:
+			return {
+				...store,
+				cache: {
+					[action.payload.id]: {
+						...store.cache[action.payload.id],
+						views: store.cache[action.payload.id].views + 1,
+					},
+				},
+				loading: false,
+			}
+
 		default:
 			return store
 		}
@@ -117,6 +132,30 @@ export default class ContentService {
 				const result = await apiProxy.content.get(notCached)
 
 				dispatch(this.actions.contentGet(result))
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.contentError(error))
+			}
+
+		} else dispatch(this.actions.contentAbort())
+	}
+
+	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().contentStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.contentStart())
+
+			try {
+
+				await apiProxy.content.addView.get(id)
+
+				dispatch(this.actions.addView(id))
 
 			} catch (error) {
 				console.error(error.message)
@@ -171,18 +210,44 @@ export default class ContentService {
 				published,
 			}
 
-			const settingsResult = await apiProxy.content.settings.post(id, settings)
+			// const settingsResult =
+			await apiProxy.content.settings.post(id, settings)
 
-			const metaResult = await apiProxy.content.metadata.post(id, metadata)
+			// const metaResult =
+			await apiProxy.content.metadata.post(id, metadata)
 
-			console.log(settingsResult)
-			console.log(metaResult)
+			// console.log(settingsResult)
+			// console.log(metaResult)
 
 			dispatch(this.actions.contentUpdate(content))
 
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}
+	}
+
+	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().contentStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.contentStart())
+
+			try {
+
+				await apiProxy.content.addView.get(id)
+
+				dispatch(this.actions.contentAddView(id))
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.contentError(error))
+			}
+
+		} else dispatch(this.actions.contentAbort())
 	}
 
 }

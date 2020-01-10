@@ -87,7 +87,9 @@ export default class ResourceService {
 
 	getResources = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		const time = Date.now() - getState().resourceStore.lastFetched
+		const { resourceStore } = getState()
+
+		const time = Date.now() - resourceStore.lastFetched
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
@@ -103,7 +105,7 @@ export default class ResourceService {
 
 				const result = await apiProxy.resources.get(id)
 
-				const resource = result.data.resource
+				const { resource } = result.data
 				resource.resources = {}
 				resource.relations.forEach(item => resource.resources[item.type] = [])
 
