@@ -33,6 +33,10 @@ class Menu extends PureComponent {
 					<LinkStyled to='/collections'>Collections</LinkStyled>
 				}
 
+				{
+					isAdmin && <LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
+				}
+
 				<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
 
 				{
@@ -43,17 +47,6 @@ class Menu extends PureComponent {
 						<LinkStyled to='/collections'>View Collections</LinkStyled>
 						<LinkStyled to='/manager'>Manage Collections</LinkStyled>
 						<LinkStyled to='/manager' onClick={createCollection}>Create New Collection</LinkStyled>
-					</>
-				}
-
-				{
-					isAdmin &&
-					<>
-						<Header>Admin</Header>
-						<hr />
-						<LinkStyled to='/admin/users'>Users</LinkStyled>
-						<LinkStyled to='/admin/collections'>Collections</LinkStyled>
-						<LinkStyled to='/admin/content'>Content</LinkStyled>
 					</>
 				}
 

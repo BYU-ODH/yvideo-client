@@ -50,7 +50,7 @@ class Root extends PureComponent {
 								<ManagerContainer />
 							</Route>
 
-							<Route path='/admin/:page'>
+							<Route path='/admin'>
 								<AdminContainer />
 							</Route>
 

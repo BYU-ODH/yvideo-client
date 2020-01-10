@@ -28,7 +28,7 @@ class ListCollection extends PureComponent {
 		return (
 			<div>
 				<Header isOpen={isOpen} onClick={this.togglePanel} >
-					<h4>{name}</h4>
+					<h3>{name}</h3>
 					<p>{content.length} Videos</p>
 					<div />
 				</Header>

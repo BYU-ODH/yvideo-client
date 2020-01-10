@@ -23,6 +23,7 @@ export default class AdminService {
 	// default store
 
 	store = {
+		data: null,
 		cache: {},
 		loading: false,
 		lastFetched: 0,
@@ -51,12 +52,14 @@ export default class AdminService {
 		case ADMIN_ABORT:
 			return {
 				...store,
+				data: null,
 				loading: false,
 			}
 
 		case ADMIN_CLEAN:
 			return {
 				...store,
+				data: null,
 				cache: {},
 			}
 
@@ -64,13 +67,14 @@ export default class AdminService {
 			console.error(action.payload.error)
 			return {
 				...store,
+				data: null,
 				loading: false,
 			}
 
 		case ADMIN_SEARCH:
-			console.log(action.payload.results)
 			return {
 				...store,
+				data: action.payload.results,
 				cache: {
 					...action.payload.results,
 				},
@@ -87,7 +91,7 @@ export default class AdminService {
 
 	search = (searchCategory, searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		console.log(searchCategory, searchQuery)
+		// console.log(searchCategory, searchQuery)
 
 		const time = Date.now() - getState().adminStore.lastFetched
 
