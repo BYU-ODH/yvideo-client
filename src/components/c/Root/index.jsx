@@ -42,7 +42,7 @@ class Root extends PureComponent {
 								<CollectionsContainer />
 							</Route>
 
-							<Route path='/admin/:page'>
+							<Route path='/admin'>
 								<AdminContainer />
 							</Route>
 
@@ -54,13 +54,8 @@ class Root extends PureComponent {
 								<ManagerContainer />
 							</Route>
 
-							<Route path='/admin'>
-								<AdminContainer />
-							</Route>
-
-								<Route path='/player/:id'>
-									<PlayerContainer />
-	>>>>>>> master
+							<Route path='/player/:id'>
+								<PlayerContainer />
 							</Route>
 
 							<Route>
