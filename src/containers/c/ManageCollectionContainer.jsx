@@ -30,10 +30,8 @@ const ManageCollectionContainer = props => {
 	const [isContent, setIsContent] = useState(true)
 
 	useEffect(() => {
-		if (objectIsEmpty(content)) {
-			const ids = collection.content.map(item => parseInt(item.id))
-			getContent(ids)
-		}
+		const ids = collection.content.map(item => parseInt(item.id))
+		getContent(ids)
 	}, [collection.content, content, getContent])
 
 	const togglePublish = e => {
@@ -58,6 +56,11 @@ const ManageCollectionContainer = props => {
 	}
 
 	if (objectIsEmpty(content) && collection.content.length) return null
+
+	// Forces rerender when content and collection.content don't contain the same content, and when creating new content
+	const contentCheck = collection.content.map(item => content[item.id])
+	if (contentCheck.length > 0 && (contentCheck[0] === undefined || contentCheck[contentCheck.length - 1] === undefined))
+		return null
 
 	const viewstate = {
 		collection,
