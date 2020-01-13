@@ -21,7 +21,9 @@ class ListCollection extends PureComponent {
 		const {
 			name,
 			content,
-		} = this.props.data
+		} = this.props.collection
+
+		const contentIds = this.props.contentIds
 
 		if (!content) return null
 
@@ -35,6 +37,7 @@ class ListCollection extends PureComponent {
 				<Body isOpen={isOpen} count={content.length}>
 					{
 						content.map(item => {
+							if(!contentIds.includes(item.id)) return null
 							return <ListItem key={item.id} data={item} />
 						})
 					}

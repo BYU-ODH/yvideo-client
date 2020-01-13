@@ -17,6 +17,7 @@ export default class Collections extends PureComponent {
 			isAdmin,
 			displayBlocks,
 			collections,
+			contentIds,
 		} = this.props.viewstate
 
 		const {
@@ -39,9 +40,9 @@ export default class Collections extends PureComponent {
 				</header>
 				<div className='list'>
 					{displayBlocks ?
-						Object.keys(collections).map(key => <BlockCollection key={key} data={collections[key]} />)
+						Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]} contentIds={contentIds} />)
 						:
-						Object.keys(collections).map(key => <ListCollection key={key} data={collections[key]} />)
+						Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]} contentIds={contentIds} />)
 					}
 				</div>
 			</Style>

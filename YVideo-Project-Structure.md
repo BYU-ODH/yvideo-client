@@ -234,6 +234,7 @@ The "Proxy" pattern is when you have a class or module of your application that'
 
 2. Rewrite the Player in 100% React using the react-player library
 3. Fix bugs in managing content, make sure professors mp4 files can be viewed correctly
+		* I think that managing content is fixed
 
 ### v0.2
 1. Make sure all types of content can be viewed/edited properly
@@ -243,3 +244,4 @@ The "Proxy" pattern is when you have a class or module of your application that'
 
 ### v0.3
 1. Rewrite the backend (databases, servers, etc.)
+		* with getCollections(), add published to collections.content.published = true || false. This will take care of TODOs in CollectionsContaienr
