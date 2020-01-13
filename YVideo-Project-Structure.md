@@ -212,29 +212,47 @@ The "Proxy" pattern is when you have a class or module of your application that'
 
 # TODO
 
-### v0.1
-1. Define the actions for the front end: How will people use this?
+#### Behaviors for Each Role
+	Students
+		* Watch videos
+	TAs
+		* Manage:
+			- Edit collections (Settings & Permissions: They can't add TAs)
+			- Create (only links)
+		* CaptionAider
+		* Annotator
+	Professors
+		* TA Roles
+		* Add TA to collection
+	Lab Assistant
+		* Manage content in a collection
+		* Search content and add it to a collection
+		? Maybe create collection
+	Admin
+		* Everything
 
-	* #### Behaviors
+### v0.1
+1. Define the actions for the front end: How will people use this? What behaviors are MVP?
+
+		MVP Behaviors
 		* Students
 			* Watch videos
 		* TAs
 			* Manage:
-				* Edit collections (Settings & Permissions: They can't add TAs)
-				* Create (only links)
-			* CaptionAider
-			* Annotator
+				- Edit collections (Settings & Permissions: They can't add TAs)
+				- Create (only links)
 		* Professors
 			* TA Roles
 			* Add TA to collection
 		* Lab Assistant
 			* Manage content in a collection
-			* ? Maybe create collection
 			* Search content and add it to a collection
+			? Maybe create collection
 
 2. Rewrite the Player in 100% React using the react-player library
-3. Fix bugs in managing content, make sure professors mp4 files can be viewed correctly
-		* I think that managing content is fixed
+3. Fix bugs in managing content, Fix bugs in permissions, make sure professors mp4 files can be viewed correctly
+
+		* I think that managing collections is fixed
 
 ### v0.2
 1. Make sure all types of content can be viewed/edited properly
@@ -242,6 +260,6 @@ The "Proxy" pattern is when you have a class or module of your application that'
 3. Rewrite Annotator in 100% React
 4. Add useful functionality to the Admin page
 
-### v0.3
+### v1.0
 1. Rewrite the backend (databases, servers, etc.)
-		* with getCollections(), add published to collections.content.published = true || false. This will take care of TODOs in CollectionsContaienr
+	* with getCollections(), add published to collections.content.published = true || false. This will take care of TODOs in CollectionsContaienr
