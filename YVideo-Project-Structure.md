@@ -209,3 +209,37 @@ As you can see, first you have to import the services that you want to use, and 
 ### 5. Proxy
 
 The "Proxy" pattern is when you have a class or module of your application that's sole purpose is to represent something that's remote. For example, if your application accesses an API via endpoints, you'll want to create a proxy called `apiProxy` that handles those interactions exclusively, essentially transforming endpoints to functions on a class. The only place you should use `fetch()` in YVideo is in some kind of proxy class.
+
+# TODO
+
+### v0.1
+1. Define the actions for the front end: How will people use this?
+
+	* #### Behaviors
+		* Students
+			* Watch videos
+		* TAs
+			* Manage:
+				* Edit collections (Settings & Permissions: They can't add TAs)
+				* Create (only links)
+			* CaptionAider
+			* Annotator
+		* Professors
+			* TA Roles
+			* Add TA to collection
+		* Lab Assistant
+			* Manage content in a collection
+			* ? Maybe create collection
+			* Search content and add it to a collection
+
+2. Rewrite the Player in 100% React using the react-player library
+3. Fix bugs in managing content, make sure professors mp4 files can be viewed correctly
+
+### v0.2
+1. Make sure all types of content can be viewed/edited properly
+2. Rewrite CaptionAider in 100% React
+3. Rewrite Annotator in 100% React
+4. Add useful functionality to the Admin page
+
+### v0.3
+1. Rewrite the backend (databases, servers, etc.)

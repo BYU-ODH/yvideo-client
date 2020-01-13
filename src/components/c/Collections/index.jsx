@@ -23,8 +23,6 @@ export default class Collections extends PureComponent {
 			toggleCollectionsDisplay,
 		} = this.props.handlers
 
-		console.log(collections)
-
 		return (
 			<Style>
 				<header>
