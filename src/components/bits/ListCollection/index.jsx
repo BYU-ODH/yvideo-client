@@ -21,20 +21,23 @@ class ListCollection extends PureComponent {
 		const {
 			name,
 			content,
-		} = this.props.data
+		} = this.props.collection
+
+		const contentIds = this.props.contentIds
 
 		if (!content) return null
 
 		return (
 			<div>
 				<Header isOpen={isOpen} onClick={this.togglePanel} >
-					<h4>{name}</h4>
+					<h3>{name}</h3>
 					<p>{content.length} Videos</p>
 					<div />
 				</Header>
 				<Body isOpen={isOpen} count={content.length}>
 					{
 						content.map(item => {
+							if(!contentIds.includes(item.id)) return null
 							return <ListItem key={item.id} data={item} />
 						})
 					}

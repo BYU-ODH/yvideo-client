@@ -23,7 +23,7 @@ export const Header = styled.div`
 		transition: transform .25s ease-in-out;
 	}
 
-	& > h4 {
+	& > h3 {
 		flex: 2;
 		font-weight: 500;
 	}

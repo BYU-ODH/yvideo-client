@@ -6,6 +6,8 @@ import arrowRight from 'assets/arrow-right.svg'
 export const Container = styled.div`
 	padding: 2rem;
 
+	border-top: 1px solid #ccc;
+
 	& > div {
 		position: relative;
 	}
@@ -23,6 +25,8 @@ export const Header = styled.div`
 
 	& a {
 		color: black;
+		font-weight: 500;
+		font-size: 1.17em;
 		text-decoration: none;
 	}
 `

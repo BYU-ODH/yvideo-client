@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import proxies from 'proxy'
 
 import {
+	adminService,
 	authService,
 	collectionService,
 	interfaceService,
@@ -26,6 +27,7 @@ const store = createStore(
 
 	// This is what the store looks like
 	combineReducers({
+		adminStore: adminService.reducer,
 		authStore: authService.reducer,
 		collectionStore: collectionService.reducer,
 		contentStore: contentService.reducer,
@@ -35,6 +37,7 @@ const store = createStore(
 
 	// This is the initial state of the store
 	{
+		adminStore: adminService.store,
 		authStore: authService.store,
 		collectionStore: collectionService.store,
 		contentStore: contentService.store,
