@@ -25,6 +25,8 @@ const PlayerContainer = props => {
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
+	const [fullscreen, setFullscreen] = useState(false)
+	const [hovering, setHovering] = useState(false)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
@@ -55,6 +57,14 @@ const PlayerContainer = props => {
 
 	const handleDuration = duration => {
 		setDuration(duration)
+	}
+
+	const handleMouseOver = e => {
+		setHovering(true)
+	}
+
+	const handleMouseOut = e => {
+		setHovering(false)
 	}
 
 	const handlePause = () => {
@@ -94,6 +104,7 @@ const PlayerContainer = props => {
 
 	const handleToggleFullscreen = () => {
 		// screenfull.request(findDOMNode(this.player))
+		setFullscreen(!fullscreen)
 	}
 
 	const handleToggleMuted = () => {
@@ -108,17 +119,21 @@ const PlayerContainer = props => {
 
 	const viewstate = {
 		duration,
+		fullscreen,
+		hovering,
+		muted,
+		playbackRate,
+		playing,
+		progress,
 		ref,
 		url,
-		playing,
-		playbackRate,
-		progress,
 		volume,
-		muted,
 	}
 
 	const handlers = {
 		handleDuration,
+		handleMouseOut,
+		handleMouseOver,
 		handlePause,
 		handlePlay,
 		handlePlaybackRateChange,

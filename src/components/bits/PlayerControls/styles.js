@@ -1,7 +1,10 @@
 import styled from 'styled-components'
 
-// import pauseButton from 'assets/controls_pause.svg'
-// import playButton from 'assets/controls_play.svg'
+import closedCaption from 'assets/controls_closed_captions.svg'
+import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
+import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
+import pauseIcon from 'assets/controls_pause.svg'
+import playIcon from 'assets/controls_play.svg'
 
 const Style = styled.div`
 	position: absolute;
@@ -34,6 +37,16 @@ const Style = styled.div`
 export default Style
 
 export const PlayPause = styled.button`
-	/* background: url() center no-repeat; */
+	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
+	background-size: contain;
+`
+
+export const ClosedCaptions = styled.button`
+	background: url(${closedCaption}) center no-repeat;
+	background-size: contain;
+`
+
+export const Fullscreen = styled.button`
+	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
 	background-size: contain;
 `

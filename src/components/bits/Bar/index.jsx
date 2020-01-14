@@ -6,7 +6,7 @@ const Bar = props => {
 
 	const clickHandler = e => {
 		// https://stackoverflow.com/questions/16154857/how-can-i-get-the-mouse-coordinates-relative-to-a-parent-div-javascript
-		props.changePosition(x)
+		// props.changePosition(x)
 	}
 
 	return (

@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Scrubber } from 'components/bits'
 
-import Style, { PlayPause } from './styles'
+import Style, { PlayPause, ClosedCaptions, Fullscreen } from './styles'
 
 const PlayerControls = props => {
 
 	const {
 		// duration,
+		fullscreen,
+		hovering,
 		progress,
 		// volume,
 		// muted,
@@ -17,27 +19,17 @@ const PlayerControls = props => {
 	const {
 		handlePause,
 		handlePlay,
-	// handlePlaybackRateChange,
-	// handleSeekChange,
-	// handleSeekMouseDown,
-	// handleSeekMouseUp,
-	// handleToggleFullscreen,
-	// handleToggleMuted,
-	// handleVolumeChange,
+		// handlePlaybackRateChange,
+		// handleSeekChange,
+		// handleSeekMouseDown,
+		// handleSeekMouseUp,
+		handleToggleFullscreen,
+		// handleToggleMuted,
+		// handleVolumeChange,
 	} = props.handlers
 
-	const [hovering, setHovering] = useState(false)
-
-	const handleMouseOver = e => {
-		setHovering(true)
-	}
-
-	const handleMouseOut = e => {
-		setHovering(false)
-	}
-
 	return (
-		<Style playing={playing} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+		<Style playing={playing} >
 
 			<Scrubber progress={progress.played} active={hovering} />
 
@@ -46,11 +38,11 @@ const PlayerControls = props => {
 				{/* <Volume /> */}
 			</div>
 			<div className='right'>
-				{/* <Notes /> */}
-				{/* <Captions /> */}
-				{/* <Speed /> */}
+				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
 				{/* <SideBarToggle /> */}
-				{/* <Fullscreen onClick={handleToggleFullscreen} /> */}
+				{/* <Speed /> */}
+				<ClosedCaptions />
+				{/* <Notes /> */}
 			</div>
 		</Style>
 	)

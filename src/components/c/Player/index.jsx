@@ -21,6 +21,8 @@ export default class Player extends Component {
 
 		const {
 			handleDuration,
+			handleMouseOut,
+			handleMouseOver,
 			handlePause,
 			handlePlay,
 			handleProgress,
@@ -28,7 +30,7 @@ export default class Player extends Component {
 
 		return (
 			<Style>
-				<div className='player-wrapper'>
+				<div className='player-wrapper' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
 					<ReactPlayer
 						ref={ref}
 						className='react-player'
