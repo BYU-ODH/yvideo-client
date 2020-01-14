@@ -6,7 +6,6 @@ import { CollectionsContainer } from 'containers'
 import { PlayerControls } from 'components/bits'
 
 import Style from './styles'
-// import 'yvideojs/css/player.css'
 
 export default class Player extends Component {
 
@@ -34,7 +33,7 @@ export default class Player extends Component {
 						ref={ref}
 						className='react-player'
 						width='100%'
-						height='100%'
+						height='50rem'
 						url={url}
 						playing={playing}
 						controls={false}

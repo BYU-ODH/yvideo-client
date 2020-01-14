@@ -1,31 +1,57 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import Style from './styles'
+import { Scrubber } from 'components/bits'
+
+import Style, { PlayPause } from './styles'
 
 const PlayerControls = props => {
 
 	const {
-		duration,
+		// duration,
 		progress,
-		volume,
-		muted,
+		// volume,
+		// muted,
+		playing,
 	} = props.viewstate
 
 	const {
 		handlePause,
 		handlePlay,
-		handlePlaybackRateChange,
-		handleSeekChange,
-		handleSeekMouseDown,
-		handleSeekMouseUp,
-		handleToggleFullscreen,
-		handleToggleMuted,
-		handleVolumeChange,
+	// handlePlaybackRateChange,
+	// handleSeekChange,
+	// handleSeekMouseDown,
+	// handleSeekMouseUp,
+	// handleToggleFullscreen,
+	// handleToggleMuted,
+	// handleVolumeChange,
 	} = props.handlers
 
-	return (
-		<Style>
+	const [hovering, setHovering] = useState(false)
 
+	const handleMouseOver = e => {
+		setHovering(true)
+	}
+
+	const handleMouseOut = e => {
+		setHovering(false)
+	}
+
+	return (
+		<Style playing={playing} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+
+			<Scrubber progress={progress.played} active={hovering} />
+
+			<div className='left'>
+				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
+				{/* <Volume /> */}
+			</div>
+			<div className='right'>
+				{/* <Notes /> */}
+				{/* <Captions /> */}
+				{/* <Speed /> */}
+				{/* <SideBarToggle /> */}
+				{/* <Fullscreen onClick={handleToggleFullscreen} /> */}
+			</div>
 		</Style>
 	)
 

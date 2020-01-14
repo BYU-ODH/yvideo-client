@@ -2,22 +2,26 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { contentService } from 'services'
+import { contentService, resourceService } from 'services'
 
 import { roles } from 'models/User'
-import { objectIsEmpty } from 'lib/util'
 
 import { Player } from 'components'
 
 const PlayerContainer = props => {
 
 	const {
-		content,
+		contentCache,
 		getContent,
+		resourceCache,
+		getResources,
 		addView,
 	} = props
 
 	const params = useParams()
+
+	const [content, setContent] = useState()
+	const [resource, setResource] = useState()
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -34,11 +38,20 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		getContent([params.id])
-		setUrl(`https://api.ayamel.org/api/v1/resources/${content.id}?${Date.now().toString(36)}`)
-	}, [content.id, getContent, params.id])
+		if (!contentCache[params.id]) getContent([params.id])
+		else setContent(contentCache[params.id])
 
-	if(!objectIsEmpty(content)) addView(params.id)
+		if (content) {
+			if (!resourceCache[content.resourceId]) getResources(content.resourceId)
+			else setResource(resourceCache[content.resourceId])
+		}
+
+		if (resource)
+			setUrl(resource.content.files[0].streamUri)
+
+	}, [content, contentCache, getContent, getResources, params.id, resource, resourceCache])
+
+	if(content) addView(params.id)
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -91,6 +104,8 @@ const PlayerContainer = props => {
 		setVolume(volume)
 	}
 
+	if (!resource) return null
+
 	const viewstate = {
 		duration,
 		ref,
@@ -119,14 +134,16 @@ const PlayerContainer = props => {
 	return <Player viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, contentStore }) => ({
+const mapStateToProps = ({ authStore, contentStore, resourceStore }) => ({
 	isProf: authStore.user.roles.includes(roles.teacher),
 	isAdmin: authStore.user.roles.includes(roles.admin),
-	content: contentStore.cache,
+	contentCache: contentStore.cache,
+	resourceCache: resourceStore.cache,
 })
 
 const mapDispatchToProps = {
 	getContent: contentService.getContent,
+	getResources: resourceService.getResources,
 	addView: contentService.addView,
 }
 

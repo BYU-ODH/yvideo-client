@@ -1,6 +1,7 @@
 import Accordion from './Accordion'
 import AdminTable from './AdminTable'
 import AspectRadio from './AspectRadio'
+import Bar from './Bar'
 import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
 import LazyImage from './LazyImage'
@@ -9,6 +10,7 @@ import ListItem from './ListItem'
 import Modal from './Modal'
 import PermissionTable from './PermissionTable'
 import PlayerControls from './PlayerControls'
+import Scrubber from './Scrubber'
 import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
@@ -17,6 +19,7 @@ export {
 	Accordion,
 	AdminTable,
 	AspectRadio,
+	Bar,
 	BlockCollection,
 	BlockItem,
 	LazyImage,
@@ -25,6 +28,7 @@ export {
 	Modal,
 	PermissionTable,
 	PlayerControls,
+	Scrubber,
 	Spinner,
 	SwitchToggle,
 	Tag,
