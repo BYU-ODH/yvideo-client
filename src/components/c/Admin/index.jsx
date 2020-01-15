@@ -31,7 +31,7 @@ export class Admin extends PureComponent {
 						{Object.keys(category).map((c, index) =>
 							<option value={category[c].name} key={index}>
 								{category[c].name}
-							</option>
+							</option>,
 						)}
 					</CategorySelect>
 

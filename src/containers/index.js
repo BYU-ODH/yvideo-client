@@ -4,6 +4,7 @@ import ContentOverviewContainer from './c/ContentOverviewContainer'
 import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
 import ContentSettingsContainer from './c/ContentSettingsContainer'
 import HeaderContainer from './c/HeaderContainer'
+import LabAssistantContainer from './c/LabAssistantContainer'
 import LandingContainer from './c/LandingContainer'
 import LoginContainer from './c/LoginContainer'
 import ManageCollectionContainer from './c/ManageCollectionContainer'
@@ -19,6 +20,7 @@ export {
 	CollectionPermissionsContainer,
 	ContentSettingsContainer,
 	HeaderContainer,
+	LabAssistantContainer,
 	LandingContainer,
 	LoginContainer,
 	ManageCollectionContainer,
