@@ -204,10 +204,10 @@ export default class AdminTable extends PureComponent {
 								{headers.map(
 									(header, index) => <td key={`${header}-${index}`}>
 										{item[header]}
-									</td>
+									</td>,
 								)}
 								<td><ItemEdit /></td>
-							</tr>
+							</tr>,
 						)}
 					</tbody>
 				</Table>

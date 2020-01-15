@@ -3,6 +3,7 @@ import AdminTable from './AdminTable'
 import AspectRadio from './AspectRadio'
 import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
+import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
 import ListCollection from './ListCollection'
 import ListItem from './ListItem'
@@ -18,6 +19,7 @@ export {
 	AspectRadio,
 	BlockCollection,
 	BlockItem,
+	LabAssistantTable,
 	LazyImage,
 	ListCollection,
 	ListItem,
