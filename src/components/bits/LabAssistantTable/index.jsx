@@ -5,7 +5,7 @@ import Style, { Table, ItemEdit } from './styles'
 export default class LabAssistantTable extends PureComponent {
 
 	render() {
-		const { data } = this.props
+		const { data, viewCollections } = this.props
 
 		if (data === null || !data.length || data[0] === undefined) return null
 
@@ -25,7 +25,7 @@ export default class LabAssistantTable extends PureComponent {
 						{data.map((item, index) =>
 							<tr key={item.id}>
 								<td>{item.name}</td>
-								<td><ItemEdit /></td>
+								<td><ItemEdit onClick={() => viewCollections(item)}/></td>
 							</tr>,
 						)}
 					</tbody>

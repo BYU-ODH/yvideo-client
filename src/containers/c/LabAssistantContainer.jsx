@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { LabAssistant } from 'components'
+import { ViewCollections } from 'components/modals'
 
 import { adminService, interfaceService } from 'services'
 
@@ -12,6 +13,7 @@ const LabAssistantContainer = props => {
 		search,
 		// clean,
 		setHeaderBorder,
+		toggleViewCollectionsModal,
 	} = props
 
 	const category = {
@@ -19,6 +21,11 @@ const LabAssistantContainer = props => {
 			name: `Professors`,
 			placeholder: `Search for a professor`,
 			url: `user`,
+		},
+		Collections: {
+			name: `Collections`,
+			placeholder: `Search for a collection`,
+			url: `collection`,
 		},
 	}
 
@@ -41,6 +48,16 @@ const LabAssistantContainer = props => {
 		e.preventDefault()
 	}
 
+	const viewCollections = user => {
+
+		search(category.Collections.url, user.id, true)
+
+		toggleViewCollectionsModal({
+			component: ViewCollections,
+			user,
+		})
+	}
+
 	const viewstate = {
 		searchCategory: category.Users.name,
 		searchQuery,
@@ -51,6 +68,7 @@ const LabAssistantContainer = props => {
 	const handlers = {
 		updateSearchBar,
 		handleSubmit,
+		viewCollections,
 	}
 
 	return <LabAssistant viewstate={viewstate} handlers={handlers} />
@@ -64,6 +82,7 @@ const mapDispatchToProps = {
 	search: adminService.search,
 	// clean: adminService.clean,
 	setHeaderBorder: interfaceService.setHeaderBorder,
+	toggleViewCollectionsModal: interfaceService.toggleViewCollectionsModal,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantContainer)

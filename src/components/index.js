@@ -6,6 +6,7 @@ import ContentSettings from './c/ContentSettings'
 import Error from './c/Error'
 import Header from './c/Header'
 import LabAssistant from './c/LabAssistant'
+import LabManager from './c/LabManager'
 import Landing from './c/Landing'
 import Load from './c/Load'
 import ManageCollection from './c/ManageCollection'
@@ -24,6 +25,7 @@ export {
 	Error,
 	Header,
 	LabAssistant,
+	LabManager,
 	Landing,
 	Load,
 	ManageCollection,
