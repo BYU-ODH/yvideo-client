@@ -17,6 +17,7 @@ export class LabAssistant extends PureComponent {
 		const {
 			updateSearchBar,
 			handleSubmit,
+			viewCollections,
 		} = this.props.handlers
 
 		return (
@@ -36,7 +37,7 @@ export class LabAssistant extends PureComponent {
 
 				</div>
 
-				<LabAssistantTable category={searchCategory} data={data} />
+				<LabAssistantTable data={data} viewCollections={viewCollections} />
 			</Style>
 		)
 	}
