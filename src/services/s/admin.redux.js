@@ -96,6 +96,7 @@ export default class AdminService {
 				...store,
 				lacache: {
 					professors: action.payload.results,
+					collections: [],
 				},
 				loading: false,
 				lastFetchedProfessors: Date.now(),
@@ -156,7 +157,7 @@ export default class AdminService {
 			try {
 
 				const results = await apiProxy.admin.search.get(`user`, searchQuery)
-				console.log(results)
+				console.log(`searchProfessors`, results)
 				dispatch(this.actions.adminSearchProfessors(results))
 
 			} catch (error) {
@@ -178,9 +179,9 @@ export default class AdminService {
 			dispatch(this.actions.adminStart())
 
 			try {
-
+				console.log(searchQuery)
 				const results = await apiProxy.admin.search.get(`collection`, searchQuery)
-
+				console.log(`searchCollections`, results)
 				dispatch(this.actions.adminSearchCollections(results))
 
 			} catch (error) {

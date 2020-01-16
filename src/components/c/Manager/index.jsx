@@ -23,6 +23,7 @@ export default class Manager extends PureComponent {
 			collection,
 			sideLists,
 			admin,
+			user,
 		} = this.props.viewstate
 
 		const {
@@ -33,7 +34,7 @@ export default class Manager extends PureComponent {
 			<Container>
 				<SideMenu>
 
-					<h4>My Collections</h4>
+					<h4>{user ? `Collections for ${user.name}` : `My Collections`}</h4>
 
 					<Accordion header={`Published`} active>
 						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
