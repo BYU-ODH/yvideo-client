@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 
 import ReactPlayer from 'react-player'
 
@@ -7,7 +7,7 @@ import { PlayerControls } from 'components/bits'
 
 import Style from './styles'
 
-export default class Player extends Component {
+export default class Player extends PureComponent {
 
 	render() {
 		const {
@@ -49,6 +49,7 @@ export default class Player extends Component {
 						onBuffer={() => console.log(`onBuffer`)}
 						onSeek={e => console.log(`onSeek`, e)}
 						onError={e => console.log(`onError`, e)}
+						progressInterval={100}
 						onProgress={handleProgress}
 						onDuration={handleDuration}
 					/>

@@ -7,7 +7,7 @@ import Style from './styles'
 const Scrubber = props => {
 	return (
 		<Style>
-			<Bar position={props.progress} active={props.active} />
+			<Bar position={props.progress} active={props.active} handleClick={props.handleClick} />
 		</Style>
 	)
 }

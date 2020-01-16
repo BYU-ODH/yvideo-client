@@ -30,7 +30,7 @@ const PlayerContainer = props => {
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
-	const [progress, setProgress] = useState({played: 0.12, playedSeconds: 11.3, loaded: 0.34, loadedSeconds: 16.7})
+	const [progress, setProgress] = useState({played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0})
 	const [seeking, setSeeking] = useState(false) // Set to true or false, is player seeking
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
@@ -80,24 +80,25 @@ const PlayerContainer = props => {
 	}
 
 	// Potentially use to update current time and maybe progress bar, but only if not seeking?
-	// progression = { played: 0.12, playedSeconds: 11.3, loaded: 0.34, loadedSeconds: 16.7 }
+	// progression = { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 }
 	const handleProgress = progression => {
 		if (!seeking)
 			setProgress(progression)
 	}
 
 	const handleSeekChange = e => {
-		setProgress({
-			...progress,
-			played: parseFloat(e.target.value),
-		})
+		const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
+		console.log(played)
+		player.seekTo(played)
 	}
 
 	const handleSeekMouseDown = e => {
+		console.log(`handleSeekMouseDown`)
 		setSeeking(true)
 	}
 
 	const handleSeekMouseUp = e => {
+		console.log(`handleSeekMouseDown`)
 		setSeeking(false)
 		player.seekTo(parseFloat(e.target.value))
 	}

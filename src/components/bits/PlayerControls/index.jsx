@@ -20,7 +20,7 @@ const PlayerControls = props => {
 		handlePause,
 		handlePlay,
 		// handlePlaybackRateChange,
-		// handleSeekChange,
+		handleSeekChange,
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
 		handleToggleFullscreen,
@@ -31,7 +31,7 @@ const PlayerControls = props => {
 	return (
 		<Style playing={playing} >
 
-			<Scrubber progress={progress.played} active={hovering} />
+			<Scrubber progress={progress.played} active={hovering} handleClick={handleSeekChange} />
 
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />

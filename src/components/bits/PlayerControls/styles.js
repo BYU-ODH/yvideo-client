@@ -26,11 +26,22 @@ const Style = styled.div`
 		grid-area: right;
 		display: flex;
 		flex-direction: row-reverse;
+		align-items: center;
 	}
 
 	& .left {
 		grid-area: left;
 		display: flex;
+		align-items: center;
+	}
+
+	& > div > button {
+		height: 2rem;
+		width: 2rem;
+		background-size: contain;
+		border: none;
+		margin: 1rem;
+		outline: none;
 	}
 `
 
@@ -38,15 +49,12 @@ export default Style
 
 export const PlayPause = styled.button`
 	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
-	background-size: contain;
 `
 
 export const ClosedCaptions = styled.button`
 	background: url(${closedCaption}) center no-repeat;
-	background-size: contain;
 `
 
 export const Fullscreen = styled.button`
 	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
-	background-size: contain;
 `

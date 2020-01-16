@@ -20,6 +20,7 @@ export const Style = styled.div`
 
 	& .player-wrapper {
 		position: relative;
+		background-color: black;
 	}
 `
 
