@@ -2,18 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { LabAssistant } from 'components'
-import { ViewCollections } from 'components/modals'
 
 import { adminService, interfaceService } from 'services'
 
 const LabAssistantContainer = props => {
 
 	const {
-		data,
-		search,
-		// clean,
+		professors,
+		searchProfessors,
 		setHeaderBorder,
-		toggleViewCollectionsModal,
 	} = props
 
 	const category = {
@@ -41,48 +38,36 @@ const LabAssistantContainer = props => {
 	const updateSearchBar = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 1) search(category.Users.url, value, true)
+		if (value.length > 1) searchProfessors(value, true)
 	}
 
 	const handleSubmit = e => {
 		e.preventDefault()
 	}
 
-	const viewCollections = user => {
-
-		search(category.Collections.url, user.id, true)
-
-		toggleViewCollectionsModal({
-			component: ViewCollections,
-			user,
-		})
-	}
-
 	const viewstate = {
 		searchCategory: category.Users.name,
 		searchQuery,
-		data,
+		// TODO: Admins who are also Profs, should have `prof` included in their roles because we will only search for that, not admin
+		data: professors ? professors.filter(item => item.roles.includes(`prof`) || item.roles.includes(`admin`)) : [],
 		placeholder: category.Users.placeholder,
 	}
 
 	const handlers = {
 		updateSearchBar,
 		handleSubmit,
-		viewCollections,
 	}
 
 	return <LabAssistant viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = store => ({
-	data: store.adminStore.data,
+	professors: store.adminStore.lacache.professors,
 })
 
 const mapDispatchToProps = {
-	search: adminService.search,
-	// clean: adminService.clean,
+	searchProfessors: adminService.searchProfessors,
 	setHeaderBorder: interfaceService.setHeaderBorder,
-	toggleViewCollectionsModal: interfaceService.toggleViewCollectionsModal,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantContainer)

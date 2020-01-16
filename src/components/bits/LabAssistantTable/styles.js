@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-import iconEdit from 'assets/admin-icon-edit.svg'
-
 const Style = styled.div`
 	padding: 3rem 5rem;
 	margin: 0 2rem;
@@ -24,12 +22,4 @@ export const Table = styled.table`
 		padding: 1rem;
 		text-align: left;
 	}
-`
-
-export const ItemEdit = styled.button`
-	background: url(${iconEdit}) center no-repeat;
-	border: none;
-	width: 2.5rem;
-  height: .5rem;
-	cursor: pointer;
 `
