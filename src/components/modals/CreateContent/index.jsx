@@ -10,6 +10,7 @@ import {
 	contentService,
 	interfaceService,
 	resourceService,
+	adminService,
 } from 'services'
 
 import {
@@ -183,7 +184,7 @@ class CreateContent extends PureComponent {
 				<Tabs>
 					<Tab selected={tab === `url`} onClick={this.changeTab} name={`url`}>From URL</Tab>
 					<Tab selected={tab === `file`} onClick={this.changeTab} name={`file`}>From Computer</Tab>
-					<Tab selected={tab === `resource`} onClick={this.changeTab} name={`resource`}>From Resource</Tab>
+					<Tab selected={tab === `resource`} onClick={this.changeTab} name={`resource`}>Search Resources</Tab>
 				</Tabs>
 
 				{tab === `url` &&
@@ -294,6 +295,7 @@ class CreateContent extends PureComponent {
 
 				{tab === `resource` &&
 					<Form>
+						{console.log(this.props.adminContent)}
 						<input type='text' name='resourceId' value={resourceId} onChange={this.handleTextChange} />
 					</Form>
 				}
@@ -303,6 +305,7 @@ class CreateContent extends PureComponent {
 }
 
 const mapStateToProps = store => ({
+	adminContent: store.adminStore.data,
 	modal: store.interfaceStore.modal,
 	admin: store.authStore.user.roles.includes(roles.admin),
 	collections: store.collectionStore.cache,
@@ -310,6 +313,7 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = {
+	search: adminService.search,
 	getCollections: collectionService.getCollections,
 	getContent: contentService.getContent,
 	toggleModal: interfaceService.toggleModal,
