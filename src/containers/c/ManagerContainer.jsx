@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { roles } from 'models/User'
 
-import { collectionService, interfaceService } from 'services'
+import { collectionService, interfaceService, adminService } from 'services'
 
 import { Manager } from 'components'
 
@@ -20,8 +20,10 @@ const ManagerContainer = props => {
 
 	const {
 		admin,
-		collections,
+		adminCollections,
+		collectionStoreCollections,
 		getCollections,
+		searchCollections,
 		setHeaderBorder,
 		toggleModal,
 	} = props
@@ -29,18 +31,34 @@ const ManagerContainer = props => {
 	const params = useParams()
 	const location = useLocation()
 
+	const [collections, setCollections] = useState([])
+
 	useEffect(() => {
 		setHeaderBorder(true)
-		getCollections()
+		if (location.user) searchCollections(location.user.id, true)
+		else getCollections()
 
-		if(location.createCollection) {
+		if (location.createCollection) {
 			toggleModal({
 				component: CreateCollection,
 			})
 		}
-	}, [getCollections, setHeaderBorder, location.createCollection, toggleModal])
 
-	if (objectIsEmpty(collections)) return null
+		return () => {
+			setHeaderBorder(false)
+		}
+	}, [getCollections, searchCollections, setHeaderBorder, location.createCollection, toggleModal, location.user])
+
+	console.log(adminCollections)
+
+	if (location.user && adminCollections) return null
+	else if (!location.user && objectIsEmpty(collectionStoreCollections)) return null
+
+	console.log(adminCollections)
+	console.log(collectionStoreCollections)
+
+	if (location.user) setCollections(adminCollections.filter(item => item.owner === location.user.id))
+	else setCollections(Object.values(collectionStoreCollections))
 
 	const sideLists = {
 		published: [],
@@ -48,8 +66,10 @@ const ManagerContainer = props => {
 		archived: [],
 	}
 
-	Object.keys(collections).forEach(id => {
-		const { archived, published, name } = collections[id]
+	console.log(collections)
+
+	collections.forEach(collection => {
+		const { archived, published, name, id } = collection
 
 		if (archived) sideLists.archived.push({ id, name })
 		else if (published) sideLists.published.push({ id, name })
@@ -76,11 +96,13 @@ const ManagerContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	collections: store.collectionStore.cache,
+	adminCollections: store.adminStore.lacache.collections,
+	collectionStoreCollections: store.collectionStore.cache,
 	admin: store.authStore.user.roles.includes(roles.admin),
 })
 
 const mapDispatchToProps = {
+	searchCollections: adminService.searchCollections,
 	getCollections: collectionService.getCollections,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
