@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { connect } from 'react-redux'
 
-import {
-	collectionService,
-	contentService,
-	interfaceService,
-} from 'services'
+import { collectionService, contentService, interfaceService } from 'services'
 
 import { ManageCollection } from 'components'
 
@@ -15,24 +11,38 @@ import CreateContentContainer from 'components/modals/containers/CreateContentCo
 import { objectIsEmpty } from 'lib/util'
 
 const ManageCollectionContainer = props => {
-
-	const {
-		collection,
-		content,
-		getContent,
-		updateCollectionStatus,
-	} = props
+	const { collection, content, getContent, updateCollectionStatus } = props
 
 	const [isContent, setIsContent] = useState(true)
+	const [
+		isEditingCollectionName = false,
+		setIsEditingCollectionName,
+	] = useState(false)
+	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
 		const ids = collection.content.map(item => parseInt(item.id))
 		getContent(ids)
-	}, [collection.content, content, getContent])
+		setCollectionName(collection.name)
+	}, [collection.content, collection.name, content, getContent])
+
+	const toggleEdit = e => {
+		setIsEditingCollectionName(!isEditingCollectionName)
+		if (isEditingCollectionName)
+			props.updateCollectionName(collection.id, collectionName)
+	}
+
+	const handleNameChange = e => {
+		const { value } = e.target
+		setCollectionName(value)
+	}
 
 	const togglePublish = e => {
 		e.preventDefault()
-		updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
+		updateCollectionStatus(
+			collection.id,
+			collection.published ? `unpublish` : `publish`
+		)
 	}
 
 	const createContent = () => {
@@ -55,16 +65,24 @@ const ManageCollectionContainer = props => {
 
 	// Forces rerender when content and collection.content don't contain the same content, and when creating new content
 	const contentCheck = collection.content.map(item => content[item.id])
-	if (contentCheck.length > 0 && (contentCheck[0] === undefined || contentCheck[contentCheck.length - 1] === undefined))
+	if (
+		contentCheck.length > 0 &&
+		(contentCheck[0] === undefined ||
+			contentCheck[contentCheck.length - 1] === undefined)
+	)
 		return null
 
 	const viewstate = {
+		isEditingCollectionName,
 		collection,
+		collectionName,
 		content: collection.content.map(item => content[item.id]),
 		isContent,
 	}
 
 	const handlers = {
+		toggleEdit,
+		handleNameChange,
 		togglePublish,
 		createContent,
 		archive,
@@ -81,7 +99,11 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	getContent: contentService.getContent,
 	toggleModal: interfaceService.toggleModal,
+	updateCollectionName: collectionService.updateCollectionName,
 	updateCollectionStatus: collectionService.updateCollectionStatus,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCollectionContainer)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ManageCollectionContainer)
