@@ -1,6 +1,5 @@
 {
 	"eslint.alwaysShowStatus": true,
-	"eslint.autoFixOnSave": true,
 	"eslint.packageManager": "yarn",
 	"eslint.validate": [
 		"javascript",
@@ -8,6 +7,7 @@
 	],
 	"eslint.lintTask.enable": true,
 	"editor.renderWhitespace": "all",
+	"editor.formatOnSave": false,
 	"files.trimTrailingWhitespace": true,
 	"emmet.showSuggestionsAsSnippets": true,
 	"editor.tabSize": 2,
@@ -27,4 +27,6 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
+	"eslint.autoFixOnSave": true,
+	"eslint.format.enable": true,
 }
