@@ -10,7 +10,6 @@ export class LabAssistant extends PureComponent {
 		const {
 			data,
 			placeholder,
-			searchCategory,
 			searchQuery,
 		} = this.props.viewstate
 
@@ -22,20 +21,10 @@ export class LabAssistant extends PureComponent {
 		return (
 			<Style>
 				<h1>Lab Assistant Dashboard</h1>
-
-				<div>
-
-					<Category >
-						{searchCategory}
-					</Category>
-
-					<Search onSubmit={handleSubmit}>
-						<SearchIcon />
-						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
-					</Search>
-
-				</div>
-
+				<Search onSubmit={handleSubmit}>
+					<SearchIcon />
+					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
+				</Search>
 				<LabAssistantTable data={data} />
 			</Style>
 		)
