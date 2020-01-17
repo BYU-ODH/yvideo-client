@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { Link } from 'react-router-dom'
+
 const Style = styled.div`
 	padding: 3rem 5rem;
 	margin: 0 2rem;
@@ -22,4 +24,8 @@ export const Table = styled.table`
 		padding: 1rem;
 		text-align: left;
 	}
+`
+
+export const StyledLink = styled(Link)`
+	color: #0582CA;
 `

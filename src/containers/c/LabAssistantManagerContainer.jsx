@@ -37,7 +37,7 @@ const ManagerContainer = props => {
 		setHeaderBorder(true)
 		if (location.user)
 			searchCollections(location.user.id, true)
-		else getCollections()
+		 else getCollections()
 
 		return () => {
 			setHeaderBorder(false)
@@ -51,7 +51,7 @@ const ManagerContainer = props => {
 	}
 
 	if (location.user && !adminCollections) return null
-	else if (!location.user && objectIsEmpty(collectionStoreCollections)) return null
+	 else if (!location.user && objectIsEmpty(collectionStoreCollections)) return null
 
 	let collections = {}
 	if (location.user) adminCollections.filter(item => item.owner === location.user.id).forEach(item => collections[item.id] = item)
@@ -93,14 +93,11 @@ const ManagerContainer = props => {
 
 const mapStateToProps = store => ({
 	adminCollections: store.adminStore.lacache.collections,
-	collectionStoreCollections: store.collectionStore.cache,
 	admin: store.authStore.user.roles.includes(roles.admin),
-	user: store.adminStore.
 })
 
 const mapDispatchToProps = {
 	searchCollections: adminService.searchCollections,
-	getCollections: collectionService.getCollections,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
 }
