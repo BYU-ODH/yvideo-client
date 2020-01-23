@@ -44,7 +44,7 @@ const LabAssistantContainer = props => {
 	const viewstate = {
 		searchQuery,
 		// TODO: Admins who are also Profs, should have `prof` included in their roles because we will only search for that, not admin
-		data: professors ? professors.filter(item => item.roles.includes(`prof`) || item.roles.includes(`admin`)) : [],
+		data: professors ? Object.keys(professors).map(key => professors[key]).filter(item => item.roles.includes(`prof`) || item.roles.includes(`admin`)) : [],
 		placeholder: category.Users.placeholder,
 	}
 
