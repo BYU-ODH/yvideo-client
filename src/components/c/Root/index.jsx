@@ -6,6 +6,7 @@ import {
 	CollectionsContainer,
 	HeaderContainer,
 	LabAssistantContainer,
+	LabAssistantManagerContainer,
 	LandingContainer,
 	MenuContainer,
 	ManagerContainer,
@@ -53,6 +54,10 @@ class Root extends PureComponent {
 
 							<Route path='/lab-assistant'>
 								<LabAssistantContainer />
+							</Route>
+
+							<Route path='/lab-assistant-manager/:id?'>
+								<LabAssistantManagerContainer />
 							</Route>
 
 							<Route path='/manager/:id?'>

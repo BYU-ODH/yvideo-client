@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { roles } from 'models/User'
 
-import { collectionService, interfaceService, adminService } from 'services'
+import { collectionService, interfaceService } from 'services'
 
 import { Manager } from 'components'
 
@@ -20,10 +20,8 @@ const ManagerContainer = props => {
 
 	const {
 		admin,
-		adminCollections,
-		collectionStoreCollections,
+		collections,
 		getCollections,
-		searchCollections,
 		setHeaderBorder,
 		toggleModal,
 	} = props
@@ -31,31 +29,18 @@ const ManagerContainer = props => {
 	const params = useParams()
 	const location = useLocation()
 
-	// const [collections, setCollections] = useState([])
-
 	useEffect(() => {
 		setHeaderBorder(true)
-		if (location.user)
-			searchCollections(location.user.id, true)
-		else getCollections()
+		getCollections()
 
-		return () => {
-			setHeaderBorder(false)
+		if(location.createCollection) {
+			toggleModal({
+				component: CreateCollection,
+			})
 		}
-	}, [getCollections, searchCollections, setHeaderBorder, location.user])
+	}, [getCollections, setHeaderBorder, location.createCollection, toggleModal])
 
-	if (location.createCollection) {
-		toggleModal({
-			component: CreateCollection,
-		})
-	}
-
-	if (location.user && !adminCollections) return null
-	else if (!location.user && objectIsEmpty(collectionStoreCollections)) return null
-
-	let collections = {}
-	if (location.user) adminCollections.filter(item => item.owner === location.user.id).forEach(item => collections[item.id] = item)
-	else collections = Object.values(collectionStoreCollections)
+	if (objectIsEmpty(collections)) return null
 
 	const sideLists = {
 		published: [],
@@ -78,10 +63,10 @@ const ManagerContainer = props => {
 	}
 
 	const viewstate = {
-		collection: collections[params.id],
-		sideLists,
 		admin,
-		user: location.user,
+		collection: collections[params.id],
+		path: `manager`,
+		sideLists,
 	}
 
 	const handlers = {
@@ -92,14 +77,11 @@ const ManagerContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	adminCollections: store.adminStore.lacache.collections,
-	collectionStoreCollections: store.collectionStore.cache,
+	collections: store.collectionStore.cache,
 	admin: store.authStore.user.roles.includes(roles.admin),
-	user: store.adminStore.
 })
 
 const mapDispatchToProps = {
-	searchCollections: adminService.searchCollections,
 	getCollections: collectionService.getCollections,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
