@@ -20,11 +20,14 @@ export default class Manager extends PureComponent {
 	render() {
 
 		const {
-			collection,
-			sideLists,
 			admin,
+			collection,
+			path,
+			sideLists,
 			user,
 		} = this.props.viewstate
+
+		console.log(collection)
 
 		const {
 			createNew,
@@ -34,19 +37,19 @@ export default class Manager extends PureComponent {
 			<Container>
 				<SideMenu>
 
-					<h4>{user ? `Collections for ${user.name}` : `My Collections`}</h4>
+					<h4>{user ? `${user.name.endsWith(`s`) ? `${user.name}'` : `${user.name}'s`} Collections` : `My Collections`}</h4>
 
 					<Accordion header={`Published`} active>
-						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
+						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
 					</Accordion>
 
 					<Accordion header={`Unpublished`} active>
-						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
+						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
 					</Accordion>
 
 					{
 						admin && <Accordion header={`Archived`}>
-							{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
+							{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
 						</Accordion>
 					}
 

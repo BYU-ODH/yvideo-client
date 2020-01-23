@@ -56,20 +56,3 @@ export const SearchIcon = styled.span`
 	height: 2rem;
 	width: 2rem;
 `
-
-export const Category = styled.div`
-	background: white;
-
-	height: 4rem;
-	width: 12rem;
-
-	font-size: 1.5rem;
-
-	border: none;
-	border-radius: 2rem;
-
-	padding: 0 1.25rem;
-
-	outline: none;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
-`

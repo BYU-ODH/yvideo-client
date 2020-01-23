@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { LabAssistantTable } from 'components/bits'
 
-import Style, { Search, SearchIcon, Category } from './styles'
+import Style, { Search, SearchIcon } from './styles'
 
 export class LabAssistant extends PureComponent {
 	render() {
@@ -16,6 +16,7 @@ export class LabAssistant extends PureComponent {
 		const {
 			updateSearchBar,
 			handleSubmit,
+			setProfessor,
 		} = this.props.handlers
 
 		return (
@@ -25,7 +26,7 @@ export class LabAssistant extends PureComponent {
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
 				</Search>
-				<LabAssistantTable data={data} />
+				<LabAssistantTable data={data} setProfessor={setProfessor}/>
 			</Style>
 		)
 	}
