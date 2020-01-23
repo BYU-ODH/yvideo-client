@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { ManageCollectionContainer } from 'containers'
+import { LabAssistantManageCollectionContainer, ManageCollectionContainer } from 'containers'
 
 import { Accordion } from 'components/bits'
 
@@ -26,8 +26,6 @@ export default class Manager extends PureComponent {
 			sideLists,
 			user,
 		} = this.props.viewstate
-
-		console.log(collection)
 
 		const {
 			createNew,
@@ -57,10 +55,13 @@ export default class Manager extends PureComponent {
 
 				</SideMenu>
 				<Body>
-					{collection ?
-						<ManageCollectionContainer collection={collection} />
-						:
+					{!collection ?
 						<NoCollection>Select a Collection to get started.</NoCollection>
+						:
+						user ?
+							<LabAssistantManageCollectionContainer collection={collection} />
+							:
+							<ManageCollectionContainer collection={collection} />
 					}
 				</Body>
 			</Container>

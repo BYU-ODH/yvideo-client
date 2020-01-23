@@ -9,6 +9,20 @@ const apiProxy = {
 			 */
 			get: async (searchCategory, searchQuery) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/${searchCategory}/${searchQuery}`, { withCredentials: true }).then(res => res.data),
 		},
+		collection: {
+			get: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}`, { withCredentials: true }).then(res => res.data),
+			content: {
+				get: async (id) => {
+					const results = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/content`, { withCredentials: true }).then(res => res.data)
+
+					return results.reduce((map, item) => {
+						map[item.id] = item
+						return map
+					}, {})
+				},
+			},
+		},
+
 	},
 	auth: {
 		/**

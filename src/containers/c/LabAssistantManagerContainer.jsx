@@ -41,8 +41,6 @@ const ManagerContainer = props => {
 	const professorCollections = {}
 	collections.filter(collection => collection.owner === professor.id).forEach(collection => professorCollections[collection.id] = collection)
 
-	console.log(professorCollections)
-
 	const sideLists = {
 		published: [],
 		unpublished: [],
