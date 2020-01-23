@@ -56,7 +56,7 @@ class Root extends PureComponent {
 								<LabAssistantContainer />
 							</Route>
 
-							<Route path='/lab-assistant-manager/:id?'>
+							<Route path='/lab-assistant-manager/:profId/:id?'>
 								<LabAssistantManagerContainer />
 							</Route>
 
