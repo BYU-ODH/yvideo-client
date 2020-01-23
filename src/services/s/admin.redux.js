@@ -7,6 +7,7 @@ export default class AdminService {
 		ADMIN_ABORT: `ADMIN_ABORT`,
 		ADMIN_CLEAN: `ADMIN_CLEAN`,
 		ADMIN_ERROR: `ADMIN_ERROR`,
+		ADMIN_GET_COLLECTION_CONTENT: `ADMIN_GET_COLLECTION_CONTENT`,
 		ADMIN_SEARCH: `ADMIN_SEARCH`,
 		ADMIN_SEARCH_PROFESSORS: `ADMIN_SEARCH_PROFESSORS`,
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
@@ -20,6 +21,7 @@ export default class AdminService {
 		adminAbort: () => ({ type: this.types.ADMIN_ABORT }),
 		adminClean: () => ({ type: this.types.ADMIN_CLEAN }),
 		adminError: error => ({ type: this.types.ADMIN_ERROR, payload: { error } }),
+		adminGetCollectionContent: content => ({ type: this.types.ADMIN_GET_COLLECTION_CONTENT, payload: { content }}),
 		adminSearch: results => ({ type: this.types.ADMIN_SEARCH, payload: { results } }),
 		adminSearchProfessors: results => ({ type: this.types.ADMIN_SEARCH_PROFESSORS, payload: { results }}),
 		adminSetProfessor: professor => ({ type: this.types.ADMIN_SET_PROFESSOR, payload: { professor }}),
@@ -34,8 +36,10 @@ export default class AdminService {
 		professors: [],
 		professor: {},
 		professorCollections: [],
+		profCollectionContent: null,
 		loading: false,
 		lastFetched: 0,
+		lastFetchedProfContent: 0,
 		lastFetchedProfessors: 0,
 		lastFetchedCollections: 0,
 	}
@@ -49,6 +53,7 @@ export default class AdminService {
 			ADMIN_ABORT,
 			ADMIN_CLEAN,
 			ADMIN_ERROR,
+			ADMIN_GET_COLLECTION_CONTENT,
 			ADMIN_SEARCH,
 			ADMIN_SEARCH_PROFESSORS,
 			ADMIN_SET_PROFESSOR,
@@ -85,6 +90,13 @@ export default class AdminService {
 				loading: false,
 			}
 
+		case ADMIN_GET_COLLECTION_CONTENT:
+			return {
+				...store,
+				profCollectionContent: action.payload.content,
+				lastFetchedProfContent: Date.now(),
+			}
+
 		case ADMIN_SEARCH:
 			return {
 				...store,
@@ -102,6 +114,7 @@ export default class AdminService {
 				professors: action.payload.results,
 				professor: {},
 				professorCollections: [],
+				profCollectionContent: null,
 				loading: false,
 				lastFetchedProfessors: Date.now(),
 			}
@@ -166,7 +179,7 @@ export default class AdminService {
 			try {
 
 				const results = await apiProxy.admin.search.get(`user`, searchQuery)
-				console.log(`searchProfessors`, results)
+
 				dispatch(this.actions.adminSearchProfessors(results))
 
 			} catch (error) {
@@ -178,7 +191,6 @@ export default class AdminService {
 	}
 
 	setProfessor = (professor, force = false) => async (dispatch, getState, { apiProxy }) => {
-		console.log(`settingProfessor`, professor)
 		const time = Date.now() - getState().adminStore.lastFetchedProfessors
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
@@ -190,7 +202,31 @@ export default class AdminService {
 			try {
 
 				dispatch(this.actions.adminSetProfessor(professor))
-				console.log(`setProfessor`, professor)
+
+			} catch (error) {
+
+				dispatch(this.actions.adminError(error))
+			}
+
+		} else dispatch(this.actions.adminAbort())
+	}
+
+	getCollectionContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().adminStore.lastFetchedProfContent
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.adminStart())
+
+			try {
+
+				const content = await apiProxy.admin.collection.content.get(id)
+
+				dispatch(this.actions.adminGetCollectionContent(content))
+
 			} catch (error) {
 				console.error(error.message)
 				dispatch(this.actions.adminError(error))
@@ -210,9 +246,9 @@ export default class AdminService {
 			dispatch(this.actions.adminStart())
 
 			try {
-				console.log(searchQuery)
+
 				const results = await apiProxy.admin.search.get(`collection`, searchQuery)
-				console.log(`searchCollections`, results)
+
 				dispatch(this.actions.adminSearchCollections(results))
 
 			} catch (error) {
