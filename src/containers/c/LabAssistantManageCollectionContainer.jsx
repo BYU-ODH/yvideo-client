@@ -10,7 +10,7 @@ import {
 
 import { ManageCollection } from 'components'
 
-import { CreateContent } from 'components/modals'
+import CreateContentContainer from 'components/modals/containers/CreateContentContainer'
 
 const LabAssistantManageCollectionContainer = props => {
 
@@ -34,7 +34,7 @@ const LabAssistantManageCollectionContainer = props => {
 
 	const createContent = () => {
 		props.toggleModal({
-			component: CreateContent,
+			component: CreateContentContainer,
 			collectionId: collection.id,
 		})
 	}

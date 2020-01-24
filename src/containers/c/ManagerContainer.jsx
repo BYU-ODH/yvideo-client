@@ -8,7 +8,7 @@ import { collectionService, interfaceService } from 'services'
 
 import { Manager } from 'components'
 
-import { CreateCollection } from 'components/modals'
+import CreateCollectionContainer from 'components/modals/containers/CreateCollectionContainer'
 
 import { objectIsEmpty } from 'lib/util'
 
@@ -35,7 +35,7 @@ const ManagerContainer = props => {
 
 		if(location.createCollection) {
 			toggleModal({
-				component: CreateCollection,
+				component: CreateCollectionContainer,
 			})
 		}
 	}, [getCollections, setHeaderBorder, location.createCollection, toggleModal])
@@ -58,7 +58,7 @@ const ManagerContainer = props => {
 
 	const createNew = () => {
 		toggleModal({
-			component: CreateCollection,
+			component: CreateCollectionContainer,
 		})
 	}
 

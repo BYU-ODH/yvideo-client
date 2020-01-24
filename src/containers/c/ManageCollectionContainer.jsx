@@ -10,7 +10,7 @@ import {
 
 import { ManageCollection } from 'components'
 
-import { CreateContent } from 'components/modals'
+import CreateContentContainer from 'components/modals/containers/CreateContentContainer'
 
 import { objectIsEmpty } from 'lib/util'
 
@@ -41,7 +41,7 @@ const ManageCollectionContainer = props => {
 
 	const createContent = () => {
 		props.toggleModal({
-			component: CreateContent,
+			component: CreateContentContainer,
 			collectionId: collection.id,
 		})
 	}
