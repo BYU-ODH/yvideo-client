@@ -33,7 +33,7 @@ export default class AdminService {
 	store = {
 		data: null,
 		cache: {},
-		professors: {},
+		professors: [],
 		professor: {},
 		professorCollections: [],
 		profCollectionContent: null,
@@ -129,7 +129,7 @@ export default class AdminService {
 		case ADMIN_SEARCH_COLLECTIONS:
 			return {
 				...store,
-				professors: {},
+				professors: [],
 				professorCollections: action.payload.results,
 				loading: false,
 				lastFetchedCollections: Date.now(),
@@ -180,12 +180,7 @@ export default class AdminService {
 
 				const results = await apiProxy.admin.search.get(`user`, searchQuery)
 
-				const resultsMap = results.reduce((map, item) => {
-					map[item.id] = item
-					return map
-				}, {})
-
-				dispatch(this.actions.adminSearchProfessors(resultsMap))
+				dispatch(this.actions.adminSearchProfessors(results))
 
 			} catch (error) {
 				console.error(error.message)
@@ -195,7 +190,7 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
-	setProfessor = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+	setProfessor = (professor, force = false) => async (dispatch, getState, { apiProxy }) => {
 		const time = Date.now() - getState().adminStore.lastFetchedProfessors
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
@@ -205,14 +200,6 @@ export default class AdminService {
 			dispatch(this.actions.adminStart())
 
 			try {
-				console.log(getState().adminStore.professors)
-				console.log(getState().adminStore.professors[id])
-
-				let professor = getState().adminStore.professors[id]
-				if(!professor) {
-					const results = await apiProxy.admin.search.get(`user`, id)
-					professor = results.filter(result => result.id === id)[0]
-				}
 
 				dispatch(this.actions.adminSetProfessor(professor))
 
