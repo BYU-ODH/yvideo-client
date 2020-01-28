@@ -16,7 +16,6 @@ export class LabAssistant extends PureComponent {
 		const {
 			updateSearchBar,
 			handleSubmit,
-			setProfessor,
 		} = this.props.handlers
 
 		return (
@@ -26,7 +25,7 @@ export class LabAssistant extends PureComponent {
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
 				</Search>
-				<LabAssistantTable data={data} setProfessor={setProfessor}/>
+				<LabAssistantTable data={data} />
 			</Style>
 		)
 	}

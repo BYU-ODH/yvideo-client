@@ -227,7 +227,8 @@ The "Proxy" pattern is when you have a class or module of your application that'
 	Lab Assistant
 		* Manage content in a collection
 		* Search content and add it to a collection
-		? Maybe create collection
+		* Create collection
+		* LAs should be able to search collections so that they can add content to it
 	Admin
 		* Everything
 
@@ -247,7 +248,8 @@ The "Proxy" pattern is when you have a class or module of your application that'
 		* Lab Assistant
 			* Manage content in a collection
 			* Search content and add it to a collection
-			? Maybe create collection
+			* Create collection
+			* LAs should be able to search collections so that they can add content to it
 
 2. Rewrite the Player in 100% React using the react-player library
 3. Fix bugs in managing content, Fix bugs in permissions, make sure professors mp4 files can be viewed correctly

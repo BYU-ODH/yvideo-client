@@ -22,7 +22,7 @@ const CreateCollectionContainer = props => {
 	} = props
 
 	const [name, setName] = useState(``)
-	const [ownerId, setOwnerId] = useState(``)
+	const [ownerId, setOwnerId] = useState(null)
 
 	const handleNameChange = e => {
 		setName(e.target.value)
@@ -44,8 +44,13 @@ const CreateCollectionContainer = props => {
 			},
 		}).then(() => {
 			toggleModal()
-			getCollections(isAdmin, true)
-			getCollections()
+			if(!professor && !objectIsEmpty(professor)) {
+				// setOwnerId(professor.id)
+				// TODO: Do we need to getProfessorCollections()
+			} else {
+				getCollections(isAdmin, true)
+				getCollections()
+			}
 		}).catch(err => console.error(err))
 
 	}

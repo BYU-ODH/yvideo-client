@@ -11,7 +11,6 @@ const LabAssistantContainer = props => {
 		professors,
 		searchProfessors,
 		setHeaderBorder,
-		setProfessor,
 	} = props
 
 	const category = {
@@ -51,7 +50,6 @@ const LabAssistantContainer = props => {
 	const handlers = {
 		updateSearchBar,
 		handleSubmit,
-		setProfessor,
 	}
 
 	return <LabAssistant viewstate={viewstate} handlers={handlers} />
@@ -63,7 +61,6 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
 	searchProfessors: adminService.searchProfessors,
-	setProfessor: adminService.setProfessor,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 }
 
