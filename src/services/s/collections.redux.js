@@ -145,7 +145,7 @@ export default class CollectionService {
 			try {
 
 				const result = await apiProxy.user.collections.get()
-				console.log(result)
+
 				dispatch(this.actions.collectionsGet(result))
 
 			} catch (error) {

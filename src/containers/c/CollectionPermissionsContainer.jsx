@@ -37,7 +37,7 @@ const CollectionPermissionsContainer = props => {
 		() => {
 			if (!collectionRoles) getCollectionRoles(collection.id)
 		},
-		[collection.id, collectionRoles, getCollectionRoles]
+		[collection.id, collectionRoles, getCollectionRoles],
 	)
 
 	if (!collectionRoles) return null
@@ -125,6 +125,11 @@ const CollectionPermissionsContainer = props => {
 				department: `*`,
 				catalog: ``,
 				section: ``,
+				disabled: {
+					...state.disabled,
+					catalog: true,
+					section: true,
+				},
 			})
 		},
 		removeCourse: e => {

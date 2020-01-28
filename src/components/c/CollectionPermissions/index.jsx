@@ -66,11 +66,11 @@ export class CollectionPermissions extends PureComponent {
 						{departments.map((item, index) =>
 							<option value={item.code} key={index}>
 								{`${item.code} - ${item.name}`}
-							</option>
+							</option>,
 						)}
 					</DepartmentSelect>
-					<CatalogInput type='number' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Enter Catalog Number' disabled={disabled.catalog} />
-					<SectionInput type='number' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Enter Section Number' disabled={disabled.section} />
+					<CatalogInput min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Enter Catalog Number' disabled={disabled.catalog} />
+					<SectionInput min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Enter Section Number' disabled={disabled.section} />
 					<AddButton type='submit' disabled={disabled.submit}>Add</AddButton>
 				</form>
 

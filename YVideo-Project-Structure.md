@@ -227,7 +227,8 @@ The "Proxy" pattern is when you have a class or module of your application that'
 	Lab Assistant
 		* Manage content in a collection
 		* Search content and add it to a collection
-		? Maybe create collection
+		* Create collection
+		* LAs should be able to search collections so that they can add content to it
 	Admin
 		* Everything
 
@@ -248,7 +249,7 @@ The "Proxy" pattern is when you have a class or module of your application that'
 		* Manage content in a collection
 		* Search content and add it to a collection
 		* Create collection
-			* LAs should be able to search collections so that they can add content to it
+		* LAs should be able to search collections so that they can add content to it
 
 2. Rewrite the Player in 100% React using the react-player library
 	* Finish controls
