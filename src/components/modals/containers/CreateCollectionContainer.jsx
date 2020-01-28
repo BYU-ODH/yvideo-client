@@ -14,6 +14,8 @@ import axios from 'axios'
 
 const CreateCollectionContainer = props => {
 
+	console.clear()
+
 	const {
 		isAdmin,
 		getCollections,
@@ -22,7 +24,7 @@ const CreateCollectionContainer = props => {
 	} = props
 
 	const [name, setName] = useState(``)
-	const [ownerId, setOwnerId] = useState(null)
+	let ownerId = null
 
 	const handleNameChange = e => {
 		setName(e.target.value)
@@ -31,13 +33,16 @@ const CreateCollectionContainer = props => {
 	const handleSubmit = async e => {
 		e.preventDefault()
 
-		if(!professor && !objectIsEmpty(professor))
-			setOwnerId(professor.id)
+		if(professor && professor.id)
+			ownerId = professor.id
+
+		const data = JSON.stringify({ name, ownerId })
+		console.log(data)
 
 		// TODO: Edit this so it doesn't break the container pattern
 		await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/create`, {
 			method: `POST`,
-			data: JSON.stringify({ name, ownerId }),
+			data,
 			withCredentials: true,
 			headers: {
 				'Content-Type': `application/json`,
@@ -52,7 +57,6 @@ const CreateCollectionContainer = props => {
 				getCollections()
 			}
 		}).catch(err => console.error(err))
-
 	}
 
 	const viewstate = {
