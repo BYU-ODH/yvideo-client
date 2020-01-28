@@ -12,6 +12,7 @@ export default class AdminService {
 		ADMIN_SEARCH_PROFESSORS: `ADMIN_SEARCH_PROFESSORS`,
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
+		ADMIN_CREATE_COLLECTION: `ADMIN_CREATE_COLLECTION`,
 	}
 
 	// action creators
@@ -26,6 +27,7 @@ export default class AdminService {
 		adminSearchProfessors: results => ({ type: this.types.ADMIN_SEARCH_PROFESSORS, payload: { results }}),
 		adminSetProfessor: professor => ({ type: this.types.ADMIN_SET_PROFESSOR, payload: { professor }}),
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
+		adminCreateCollection: () => ({ type: this.types.ADMIN_CREATE_COLLECTION}),
 	}
 
 	// default store
