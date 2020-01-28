@@ -33,13 +33,15 @@ const ManagerContainer = props => {
 
 	useEffect(() => {
 		setHeaderBorder(true)
-		setProfessor(professorId)
-		searchCollections(professorId, true)
+		if(objectIsEmpty(professor)) {
+			setProfessor(professorId)
+			searchCollections(professorId, true)
+		}
 
 		return () => {
 			setHeaderBorder(false)
 		}
-	}, [professorId, searchCollections, setHeaderBorder, setProfessor])
+	}, [professor, professorId, searchCollections, setHeaderBorder, setProfessor])
 
 	console.log(professor)
 	if(!professor || objectIsEmpty(professor)) return null
