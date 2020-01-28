@@ -27,27 +27,34 @@ const ManagerContainer = props => {
 		toggleModal,
 	} = props
 
-	const params = useParams()
-
-	const professorId = params.professorId
+	const { professorId, collectionId } = useParams()
 
 	useEffect(() => {
 		setHeaderBorder(true)
-		if(objectIsEmpty(professor)) {
-			setProfessor(professorId)
-			searchCollections(professorId, true)
-		}
 
+		if(objectIsEmpty(professor)){
+			setProfessor(professorId)
+
+			if (!collections)
+				searchCollections(professorId, true)
+			else console.log(collections)
+		}
 		return () => {
 			setHeaderBorder(false)
 		}
-	}, [professor, professorId, searchCollections, setHeaderBorder, setProfessor])
+	}, [collections, professor, professorId, searchCollections, setHeaderBorder, setProfessor])
 
-	console.log(professor)
-	if(!professor || objectIsEmpty(professor)) return null
+	if(!professor || objectIsEmpty(professor) || !collections) return null
 
-	const professorCollections = {}
-	collections.filter(collection => collection.owner === professor.id).forEach(collection => professorCollections[collection.id] = collection)
+	const professorCollections = collections.reduce((accumulator, collection) => {
+		if (collection.owner === parseInt(professor.id)) {
+			return {
+				...accumulator,
+				[collection.id]: collection,
+			}
+		}
+		return accumulator
+	}, {})
 
 	const sideLists = {
 		published: [],
@@ -71,7 +78,7 @@ const ManagerContainer = props => {
 
 	const viewstate = {
 		admin,
-		collection: professorCollections[params.collectionId],
+		collection: professorCollections[collectionId],
 		path: `lab-assistant-manager/${professor.id}`,
 		sideLists,
 		user: professor,
