@@ -1,5 +1,4 @@
 export default class CollectionService {
-
 	// types
 
 	types = {
@@ -258,6 +257,26 @@ export default class CollectionService {
 			} else dispatch(this.actions.collectionsAbort())
 		}
 	}
+
+	updateCollectionName = (collectionId, collectionName) => {
+		return async (dispatch, getState, { apiProxy }) => {
+			dispatch(this.actions.collectionsStart())
+
+			const currentState = getState().collectionStore.cache[collectionId]
+
+			try {
+
+				currentState.name = collectionName
+
+				await apiProxy.collection.post(collectionId, collectionName)
+
+				dispatch(this.actions.collectionEdit(currentState))
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+	};
 
 	updateCollectionRoles = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
 
