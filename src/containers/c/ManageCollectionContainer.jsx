@@ -11,13 +11,16 @@ import CreateContentContainer from 'components/modals/containers/CreateContentCo
 import { objectIsEmpty } from 'lib/util'
 
 const ManageCollectionContainer = props => {
-	const { collection, content, getContent, updateCollectionStatus } = props
+	const {
+		collection,
+		content,
+		getContent,
+		updateCollectionName,
+		updateCollectionStatus,
+	} = props
 
 	const [isContent, setIsContent] = useState(true)
-	const [
-		isEditingCollectionName = false,
-		setIsEditingCollectionName,
-	] = useState(false)
+	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
@@ -29,7 +32,7 @@ const ManageCollectionContainer = props => {
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
 		if (isEditingCollectionName)
-			props.updateCollectionName(collection.id, collectionName)
+			updateCollectionName(collection.id, collectionName)
 	}
 
 	const handleNameChange = e => {
@@ -39,10 +42,7 @@ const ManageCollectionContainer = props => {
 
 	const togglePublish = e => {
 		e.preventDefault()
-		updateCollectionStatus(
-			collection.id,
-			collection.published ? `unpublish` : `publish`
-		)
+		updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
 	}
 
 	const createContent = () => {
@@ -65,11 +65,8 @@ const ManageCollectionContainer = props => {
 
 	// Forces rerender when content and collection.content don't contain the same content, and when creating new content
 	const contentCheck = collection.content.map(item => content[item.id])
-	if (
-		contentCheck.length > 0 &&
-		(contentCheck[0] === undefined ||
-			contentCheck[contentCheck.length - 1] === undefined)
-	)
+	if (contentCheck.length > 0 &&
+		(contentCheck[0] === undefined || contentCheck[contentCheck.length - 1] === undefined))
 		return null
 
 	const viewstate = {
@@ -105,5 +102,5 @@ const mapDispatchToProps = {
 
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps
+	mapDispatchToProps,
 )(ManageCollectionContainer)
