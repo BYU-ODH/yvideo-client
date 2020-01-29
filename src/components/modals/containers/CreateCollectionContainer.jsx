@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { roles } from 'models/User'
-
 import CreateCollection from 'components/modals/components/CreateCollection'
 
 import { interfaceService, collectionService, adminService } from 'services'
@@ -12,7 +10,7 @@ const CreateCollectionContainer = props => {
 	const {
 		adminCreateCollection,
 		createCollection,
-		professor,
+		route,
 		toggleModal,
 	} = props
 
@@ -25,7 +23,7 @@ const CreateCollectionContainer = props => {
 	const handleSubmit = async e => {
 		e.preventDefault()
 
-		if(professor && professor.id) adminCreateCollection(name, professor.id)
+		if(route === `lab-assistant-manager`) adminCreateCollection(name)
 		else createCollection(name)
 		toggleModal()
 	}
@@ -44,8 +42,7 @@ const CreateCollectionContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	isAdmin: store.authStore.user.roles.includes(roles.admin),
-	professor: store.adminStore.professor,
+	route: store.interfaceStore.modal.route,
 })
 
 const mapDispatchToProps = {

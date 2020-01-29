@@ -7,6 +7,7 @@ export default class AdminService {
 		ADMIN_ABORT: `ADMIN_ABORT`,
 		ADMIN_CLEAN: `ADMIN_CLEAN`,
 		ADMIN_CREATE_COLLECTION: `ADMIN_CREATE_COLLECTION`,
+		ADMIN_CREATE_CONTENT: `ADMIN_CREATE_CONTENT`,
 		ADMIN_ERROR: `ADMIN_ERROR`,
 		ADMIN_GET_COLLECTION_CONTENT: `ADMIN_GET_COLLECTION_CONTENT`,
 		ADMIN_SEARCH: `ADMIN_SEARCH`,
@@ -21,7 +22,8 @@ export default class AdminService {
 		adminStart: () => ({ type: this.types.ADMIN_START }),
 		adminAbort: () => ({ type: this.types.ADMIN_ABORT }),
 		adminClean: () => ({ type: this.types.ADMIN_CLEAN }),
-		adminCreateCollection: () => ({ type: this.types.ADMIN_CREATE_COLLECTION}),
+		adminCreateCollection: () => ({ type: this.types.ADMIN_CREATE_COLLECTION }),
+		adminCreateContent: (content) => ({ type: this.types.ADMIN_CREATE_CONTENT, payload: { content } }),
 		adminError: error => ({ type: this.types.ADMIN_ERROR, payload: { error } }),
 		adminGetCollectionContent: content => ({ type: this.types.ADMIN_GET_COLLECTION_CONTENT, payload: { content }}),
 		adminSearch: results => ({ type: this.types.ADMIN_SEARCH, payload: { results } }),
@@ -55,6 +57,7 @@ export default class AdminService {
 			ADMIN_ABORT,
 			ADMIN_CLEAN,
 			ADMIN_CREATE_COLLECTION,
+			ADMIN_CREATE_CONTENT,
 			ADMIN_ERROR,
 			ADMIN_GET_COLLECTION_CONTENT,
 			ADMIN_SEARCH,
@@ -91,6 +94,16 @@ export default class AdminService {
 				professor: {},
 				professorCollections: null,
 				profCollectionContent: null,
+				loading: false,
+			}
+
+		case ADMIN_CREATE_CONTENT:
+			return {
+				...store,
+				profCollectionContent: {
+					...store.profCollectionContent,
+					...action.payload.content,
+				},
 				loading: false,
 			}
 
@@ -203,28 +216,21 @@ export default class AdminService {
 	}
 
 	setProfessor = (professorId, force = false) => async (dispatch, getState, { apiProxy }) => {
-		const time = Date.now() - getState().adminStore.lastFetchedProfessors
 
-		const stale = time >= process.env.REACT_APP_STALE_TIME
+		dispatch(this.actions.adminStart())
 
-		if (stale || force) {
+		try {
 
-			dispatch(this.actions.adminStart())
+			const results = await apiProxy.admin.search.get(`user`, professorId)
 
-			try {
-				console.log(professorId)
-				const results = await apiProxy.admin.search.get(`user`, professorId)
-				console.log(results)
-				const professor = results.filter(user => user.id = professorId)[0] || {}
-				console.log(professor)
-				dispatch(this.actions.adminSetProfessor(professor))
+			const professor = results.filter(user => user.id = professorId)[0] || {}
 
-			} catch (error) {
+			dispatch(this.actions.adminSetProfessor(professor))
 
-				dispatch(this.actions.adminError(error))
-			}
-
-		} else dispatch(this.actions.adminAbort())
+		} catch (error) {
+			console.error(error.message)
+			dispatch(this.actions.adminError(error))
+		}
 	}
 
 	getCollectionContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
@@ -251,11 +257,13 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
-	createCollection = (name, ownerId) => async (dispatch, getState, { apiProxy }) => {
+	createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.adminStart())
 
 		try {
+
+			const ownerId = getState().adminStore.professor.id
 
 			const result = await apiProxy.admin.collection.create(name, parseInt(ownerId))
 
@@ -267,6 +275,23 @@ export default class AdminService {
 
 		} catch (error) {
 			console.log(error.message)
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	createContent = (content, collectionId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.collection.content.post(content, collectionId)
+
+			const data = { [result.data.id]: result.data }
+
+			dispatch(this.actions.adminCreateContent(data))
+
+		} catch (error) {
 			dispatch(this.actions.adminError(error))
 		}
 	}

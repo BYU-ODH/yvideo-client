@@ -38,6 +38,18 @@ const apiProxy = {
 						return map
 					}, {})
 				},
+				/**
+				 * Create content for collection
+				 *
+				 * @param data the content data
+				 * @param collectionId the collection id
+				 */
+				post: async (data, collectionId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/create/url?collectionId=${collectionId}&annotations=false`, JSON.stringify(data), {
+					withCredentials: true,
+					headers: {
+						'Content-Type': `application/json`,
+					},
+				}),
 			},
 		},
 
@@ -125,6 +137,18 @@ const apiProxy = {
 				return map
 			}, {})
 		},
+		/**
+		 * Create content for collection
+		 *
+		 * @param data the content data
+		 * @param collectionId the collection id
+		 */
+		post: async (data, collectionId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/create/url?collectionId=${collectionId}&annotations=false`, JSON.stringify(data), {
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`,
+			},
+		}),
 		addView: {
 			/**
 			 * Increments number of views from a content ID

@@ -73,9 +73,6 @@ export const RemoveKeyword = styled.button`
 export const Tabs = styled.div`
 	margin: 2rem 0;
 	padding: 0;
-
-	display: flex;
-	justify-content: space-between;
 `
 
 export const Tab = styled.button`
@@ -99,20 +96,4 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
-`
-
-export const FileButton = styled.div`
-	font-size: 1.2rem;
-	color: #0582CA;
-	background: transparent;
-	border: none;
-	outline: none;
-	cursor: pointer;
-`
-
-export const FileName = styled.span`
-	text-align: right;
-	font-size: 1.2rem;
-	color: #0582CA;
-	cursor: pointer;
 `

@@ -36,6 +36,7 @@ const LabAssistantManageCollectionContainer = props => {
 		props.toggleModal({
 			component: CreateContentContainer,
 			collectionId: collection.id,
+			route: `lab-assistant-manager`,
 		})
 	}
 
