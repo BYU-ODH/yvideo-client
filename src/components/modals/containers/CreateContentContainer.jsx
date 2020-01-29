@@ -70,7 +70,7 @@ const CreateContentContainer = props => {
 
 	const handleSubmit = async e => {
 		e.preventDefault()
-		if(modal.route === `lab-assistant-manager`) adminCreateContent(data, modal.collectionId)
+		if(modal.isLabAssistantRoute) adminCreateContent(data, modal.collectionId)
 		else createContent(data, modal.collectionId)
 		toggleModal()
 	}

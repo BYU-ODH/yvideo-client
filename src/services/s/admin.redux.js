@@ -265,9 +265,7 @@ export default class AdminService {
 
 			const ownerId = getState().adminStore.professor.id
 
-			const result = await apiProxy.admin.collection.create(name, parseInt(ownerId))
-
-			console.log(result)
+			await apiProxy.admin.collection.create(name, parseInt(ownerId))
 
 			dispatch(this.actions.adminCreateCollection())
 

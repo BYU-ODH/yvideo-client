@@ -189,6 +189,7 @@ export default class ContentService {
 
 			const data = { [result.data.id]: result.data }
 
+			// TODO: Why doesn't this update to state cause it to rerender?
 			dispatch(this.actions.contentCreate(data))
 
 		} catch (error) {
