@@ -70,15 +70,15 @@ export default class ManageCollection extends PureComponent {
 						{collection.archived ? (
 							<p>(archived)</p>
 						) : (
-								<>
-									<PublishButton
-										published={collection.published}
-										onClick={togglePublish}
-									>
-										{collection.published ? `Unpublish` : `Publish`}
-									</PublishButton>
-									<ArchiveButton onClick={archive}>Archive</ArchiveButton>
-								</>
+							<>
+								<PublishButton
+									published={collection.published}
+									onClick={togglePublish}
+								>
+									{collection.published ? `Unpublish` : `Publish`}
+								</PublishButton>
+								<ArchiveButton onClick={archive}>Archive</ArchiveButton>
+							</>
 						)}
 					</div>
 				</header>
