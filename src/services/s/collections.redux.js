@@ -82,6 +82,12 @@ export default class CollectionService {
 				cache: {},
 			}
 
+		case COLLECTION_CREATE:
+			return {
+				...store,
+				loading: false,
+			}
+
 		case COLLECTIONS_ERROR:
 			console.error(action.payload.error)
 			return {
@@ -98,12 +104,6 @@ export default class CollectionService {
 				},
 				loading: false,
 				lastFetched: Date.now(),
-			}
-
-		case COLLECTION_CREATE:
-			return {
-				...store,
-				loading: false,
 			}
 
 		case COLLECTION_EDIT:
@@ -171,13 +171,12 @@ export default class CollectionService {
 
 		try {
 
-			const result = await apiProxy.collection.create(name)
+			await apiProxy.collection.create(name)
 
-			console.log(result)
+			// const results = await apiProxy.user.collections.get()
 
+			// TODO: We need to update state
 			dispatch(this.actions.collectionCreate())
-
-			this.getCollections(true)
 
 		} catch (error) {
 			console.log(error.message)
@@ -222,7 +221,7 @@ export default class CollectionService {
 				const result = await apiProxy.collection.edit(id, action)
 
 				console.log(result)
-
+				// TODO: This doesn't cause a rerender of the collection, so it still looks like it is unarchived
 				dispatch(this.actions.collectionEdit(currentState))
 
 			} catch (error) {

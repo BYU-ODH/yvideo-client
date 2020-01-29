@@ -69,7 +69,7 @@ const LabAssistantManagerContainer = props => {
 	const createNew = () => {
 		toggleModal({
 			component: CreateCollectionContainer,
-			route: `lab-assistant-manager`,
+			isLabAssistantRoute: true,
 		})
 	}
 

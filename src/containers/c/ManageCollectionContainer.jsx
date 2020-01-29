@@ -39,7 +39,6 @@ const ManageCollectionContainer = props => {
 		props.toggleModal({
 			component: CreateContentContainer,
 			collectionId: collection.id,
-			route: `manager`,
 		})
 	}
 

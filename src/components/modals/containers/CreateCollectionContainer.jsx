@@ -10,7 +10,7 @@ const CreateCollectionContainer = props => {
 	const {
 		adminCreateCollection,
 		createCollection,
-		route,
+		isLabAssistantRoute,
 		toggleModal,
 	} = props
 
@@ -23,7 +23,7 @@ const CreateCollectionContainer = props => {
 	const handleSubmit = async e => {
 		e.preventDefault()
 
-		if(route === `lab-assistant-manager`) adminCreateCollection(name)
+		if(isLabAssistantRoute) adminCreateCollection(name)
 		else createCollection(name)
 		toggleModal()
 	}
@@ -42,7 +42,7 @@ const CreateCollectionContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	route: store.interfaceStore.modal.route,
+	isLabAssistantRoute: store.interfaceStore.modal.isLabAssistantRoute,
 })
 
 const mapDispatchToProps = {
