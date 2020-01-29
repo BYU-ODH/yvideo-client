@@ -6,13 +6,13 @@ export default class AdminService {
 		ADMIN_START: `ADMIN_START`,
 		ADMIN_ABORT: `ADMIN_ABORT`,
 		ADMIN_CLEAN: `ADMIN_CLEAN`,
+		ADMIN_CREATE_COLLECTION: `ADMIN_CREATE_COLLECTION`,
 		ADMIN_ERROR: `ADMIN_ERROR`,
 		ADMIN_GET_COLLECTION_CONTENT: `ADMIN_GET_COLLECTION_CONTENT`,
 		ADMIN_SEARCH: `ADMIN_SEARCH`,
 		ADMIN_SEARCH_PROFESSORS: `ADMIN_SEARCH_PROFESSORS`,
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
-		ADMIN_CREATE_COLLECTION: `ADMIN_CREATE_COLLECTION`,
 	}
 
 	// action creators
@@ -21,13 +21,13 @@ export default class AdminService {
 		adminStart: () => ({ type: this.types.ADMIN_START }),
 		adminAbort: () => ({ type: this.types.ADMIN_ABORT }),
 		adminClean: () => ({ type: this.types.ADMIN_CLEAN }),
+		adminCreateCollection: () => ({ type: this.types.ADMIN_CREATE_COLLECTION}),
 		adminError: error => ({ type: this.types.ADMIN_ERROR, payload: { error } }),
 		adminGetCollectionContent: content => ({ type: this.types.ADMIN_GET_COLLECTION_CONTENT, payload: { content }}),
 		adminSearch: results => ({ type: this.types.ADMIN_SEARCH, payload: { results } }),
 		adminSearchProfessors: results => ({ type: this.types.ADMIN_SEARCH_PROFESSORS, payload: { results }}),
 		adminSetProfessor: professor => ({ type: this.types.ADMIN_SET_PROFESSOR, payload: { professor }}),
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
-		adminCreateCollection: () => ({ type: this.types.ADMIN_CREATE_COLLECTION}),
 	}
 
 	// default store
@@ -54,6 +54,7 @@ export default class AdminService {
 			ADMIN_START,
 			ADMIN_ABORT,
 			ADMIN_CLEAN,
+			ADMIN_CREATE_COLLECTION,
 			ADMIN_ERROR,
 			ADMIN_GET_COLLECTION_CONTENT,
 			ADMIN_SEARCH,
@@ -82,6 +83,15 @@ export default class AdminService {
 				...store,
 				data: null,
 				cache: {},
+			}
+
+		case ADMIN_CREATE_COLLECTION:
+			return {
+				...store,
+				professor: {},
+				professorCollections: null,
+				profCollectionContent: null,
+				loading: false,
 			}
 
 		case ADMIN_ERROR:
@@ -239,6 +249,26 @@ export default class AdminService {
 			}
 
 		} else dispatch(this.actions.adminAbort())
+	}
+
+	createCollection = (name, ownerId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.collection.create(name, parseInt(ownerId))
+
+			console.log(result)
+
+			dispatch(this.actions.adminCreateCollection())
+
+			this.searchCollections(ownerId)
+
+		} catch (error) {
+			console.log(error.message)
+			dispatch(this.actions.adminError(error))
+		}
 	}
 
 	searchCollections = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {

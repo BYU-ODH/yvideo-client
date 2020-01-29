@@ -31,7 +31,6 @@ const ManagerContainer = props => {
 
 	useEffect(() => {
 		setHeaderBorder(true)
-
 		if(objectIsEmpty(professor)){
 			setProfessor(professorId)
 

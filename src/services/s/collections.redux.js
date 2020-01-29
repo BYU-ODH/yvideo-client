@@ -8,6 +8,7 @@ export default class CollectionService {
 		COLLECTIONS_CLEAN: `COLLECTIONS_CLEAN`,
 		COLLECTIONS_ERROR: `COLLECTIONS_ERROR`,
 		COLLECTIONS_GET: `COLLECTIONS_GET`,
+		COLLECTION_CREATE: `COLLECTION_CREATE`,
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
 		COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
@@ -30,6 +31,7 @@ export default class CollectionService {
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
+		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 		collectionRolesGet: data => ({ type: this.types.COLLECTION_ROLES_GET, payload: { ...data }}),
 		collectionRolesUpdate: data => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { ...data }}),
@@ -54,6 +56,7 @@ export default class CollectionService {
 			COLLECTIONS_CLEAN,
 			COLLECTIONS_ERROR,
 			COLLECTIONS_GET,
+			COLLECTION_CREATE,
 			COLLECTION_EDIT,
 			COLLECTION_ROLES_GET,
 			COLLECTION_ROLES_UPDATE,
@@ -95,6 +98,12 @@ export default class CollectionService {
 				},
 				loading: false,
 				lastFetched: Date.now(),
+			}
+
+		case COLLECTION_CREATE:
+			return {
+				...store,
+				loading: false,
 			}
 
 		case COLLECTION_EDIT:
@@ -154,6 +163,27 @@ export default class CollectionService {
 			}
 
 		} else dispatch(this.actions.collectionsAbort())
+	}
+
+	createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+
+			const result = await apiProxy.collection.create(name)
+
+			console.log(result)
+
+			dispatch(this.actions.collectionCreate())
+
+			this.getCollections(true)
+
+		} catch (error) {
+			console.log(error.message)
+			dispatch(this.actions.collectionsError(error))
+		}
+
 	}
 
 	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {
