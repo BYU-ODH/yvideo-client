@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import searchIcon from 'assets/search.svg'
+
 export const Form = styled.form`
 	display: grid;
 	grid: repeat(3, 1fr) / 1fr;
@@ -48,6 +50,14 @@ export const Form = styled.form`
 	}
 `
 
+export const ResourceTab = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+`
+
 export const Button = styled.button`
 	font-size: 1.5rem;
 	color: ${props => props.color || `black`};
@@ -55,6 +65,41 @@ export const Button = styled.button`
 	border: none;
 	outline: none;
 	cursor: pointer;
+`
+
+export const Search = styled.form`
+	position: relative;
+
+	& > input {
+		z-index: 1;
+		background: white;
+
+		height: 4rem;
+		width: 30rem;
+
+		font-size: 1.5rem;
+
+		border: none;
+		border-radius: 2rem;
+
+		margin-left: 1rem;
+
+		padding: 0 1.25rem 0 3.25rem;
+
+		outline: none;
+		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	}
+	`
+
+export const SearchIcon = styled.span`
+	position: absolute;
+	z-index: 10;
+	top: 1rem;
+	left: 2rem;
+	background: url(${searchIcon}) center no-repeat;
+	background-size: contain;
+	height: 2rem;
+	width: 2rem;
 `
 
 export const RemoveKeyword = styled.button`

@@ -9,6 +9,7 @@ import ListCollection from './ListCollection'
 import ListItem from './ListItem'
 import Modal from './Modal'
 import PermissionTable from './PermissionTable'
+import ResourceTable from './ResourceTable'
 import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
@@ -25,6 +26,7 @@ export {
 	ListItem,
 	Modal,
 	PermissionTable,
+	ResourceTable,
 	Spinner,
 	SwitchToggle,
 	Tag,
