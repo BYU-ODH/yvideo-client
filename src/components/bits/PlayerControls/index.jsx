@@ -1,8 +1,13 @@
 import React from 'react'
 
-import { Scrubber } from 'components/bits'
+import { Scrubber, VolumeScrubber } from 'components/bits'
 
-import Style, { PlayPause, ClosedCaptions, Fullscreen } from './styles'
+import Style, {
+	PlayPause,
+	ClosedCaptions,
+	Fullscreen,
+	Volume,
+} from './styles'
 
 const PlayerControls = props => {
 
@@ -11,8 +16,8 @@ const PlayerControls = props => {
 		fullscreen,
 		hovering,
 		progress,
-		// volume,
-		// muted,
+		volume,
+		muted,
 		playing,
 	} = props.viewstate
 
@@ -24,8 +29,8 @@ const PlayerControls = props => {
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
 		handleToggleFullscreen,
-		// handleToggleMuted,
-		// handleVolumeChange,
+		handleToggleMuted,
+		handleVolumeChange,
 	} = props.handlers
 
 	return (
@@ -35,7 +40,8 @@ const PlayerControls = props => {
 
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
-				{/* <Volume /> */}
+				<Volume onClick={handleToggleMuted}/>
+				<VolumeScrubber volume={volume} muted={muted} handleClick={handleVolumeChange}/>
 			</div>
 			<div className='right'>
 				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />

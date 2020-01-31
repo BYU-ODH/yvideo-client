@@ -14,6 +14,8 @@ import Scrubber from './Scrubber'
 import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
+import VolumeBar from './VolumeBar'
+import VolumeScrubber from './VolumeScrubber'
 
 export {
 	Accordion,
@@ -32,4 +34,6 @@ export {
 	Spinner,
 	SwitchToggle,
 	Tag,
+	VolumeBar,
+	VolumeScrubber,
 }

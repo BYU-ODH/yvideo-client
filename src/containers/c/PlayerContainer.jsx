@@ -44,6 +44,7 @@ const PlayerContainer = props => {
 		else setContent(contentCache[params.id])
 
 		if (content) {
+			addView(params.id)
 			if (!resourceCache[content.resourceId]) getResources(content.resourceId)
 			else setResource(resourceCache[content.resourceId])
 		}
@@ -51,9 +52,7 @@ const PlayerContainer = props => {
 		if (resource)
 			setUrl(resource.content.files[0].streamUri)
 
-	}, [content, contentCache, getContent, getResources, params.id, resource, resourceCache])
-
-	if(content) addView(params.id)
+	}, [addView, content, contentCache, getContent, getResources, params.id, resource, resourceCache])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -112,8 +111,9 @@ const PlayerContainer = props => {
 		setMuted(!muted)
 	}
 
-	const handleVolumeChange = volume => {
-		setVolume(volume)
+	const handleVolumeChange = e => {
+		console.log(e.target)
+		// setVolume(volume)
 	}
 
 	if (!resource) return null
