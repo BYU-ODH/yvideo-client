@@ -234,25 +234,31 @@ The "Proxy" pattern is when you have a class or module of your application that'
 ### v0.1
 1. Define the actions for the front end: How will people use this? What behaviors are MVP?
 
-		MVP Behaviors
-		* Students
-			* Watch videos
-		* TAs
-			* Manage:
-				- Edit collections (Settings & Permissions: They can't add TAs)
-				- Create (only links)
-		* Professors
-			* TA Roles
-			* Add TA to collection
-		* Lab Assistant
-			* Manage content in a collection
-			* Search content and add it to a collection
-			? Maybe create collection
+* MVP Behaviors
+	* [x] Students
+		* [x] Watch videos
+	* TAs
+		* Manage:
+			- Edit collections (Settings & Permissions: They can't add TAs)
+			- Create (only links)
+	* Professors
+		* TA Roles
+		* Add TA to collection
+	* Lab Assistant
+		* Manage content in a collection
+		* Search content and add it to a collection
+		* Create collection
+			* LAs should be able to search collections so that they can add content to it
 
 2. Rewrite the Player in 100% React using the react-player library
+	* Finish controls
+	* Test MP4 file
+	* Subtitles
+	* Annotations (Side bar/menu)
+	* Filters
 3. Fix bugs in managing content, Fix bugs in permissions, make sure professors mp4 files can be viewed correctly
 
-		* I think that managing collections is fixed
+	* Adding resources to collection
 
 ### v0.2
 1. Make sure all types of content can be viewed/edited properly
@@ -263,3 +269,5 @@ The "Proxy" pattern is when you have a class or module of your application that'
 ### v1.0
 1. Rewrite the backend (databases, servers, etc.)
 	* with getCollections(), add published to collections.content.published = true || false. This will take care of TODOs in CollectionsContaienr
+
+* Rip YouTube mp4s
