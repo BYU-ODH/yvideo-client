@@ -50,6 +50,18 @@ const apiProxy = {
 						'Content-Type': `application/json`,
 					},
 				}),
+				/**
+				 * Create content from resource id
+				 *
+				 * @param collectionId the collection id
+				 * @param resourceId the resource id
+				 */
+				createFromResource: async (collectionId, resourceId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/create/resource?collectionId=${collectionId}`, JSON.stringify({ resourceId }), {
+					withCredentials: true,
+					headers: {
+						'Content-Type': `application/json`,
+					},
+				}),
 			},
 		},
 
