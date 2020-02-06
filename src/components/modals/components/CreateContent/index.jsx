@@ -4,6 +4,7 @@ import {
 	Form,
 	Button,
 	RemoveKeyword,
+	Table,
 	Tabs,
 	Tab,
 	TypeButton,
@@ -105,12 +106,18 @@ export default class CreateContent extends PureComponent {
 							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
 						</label>
 
-						<div id='create-content-resources'>
-							{
-								adminContent &&
-							adminContent.map((content, index) => <span key={index} value={content.id}>{content.name}</span>)
-							}
-						</div>
+						<Table>
+							<tbody>
+								{
+									adminContent &&
+									adminContent.map(content =>
+										<tr key={content.id}>
+											<td><input type='checkbox' >{content.name}</input></td>
+										</tr>,
+									)
+								}
+							</tbody>
+						</Table>
 
 						<div>
 							<Button type='button' onClick={toggleModal}>Cancel</Button>

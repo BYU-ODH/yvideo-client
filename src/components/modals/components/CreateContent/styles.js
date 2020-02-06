@@ -67,30 +67,6 @@ export const Button = styled.button`
 	cursor: pointer;
 `
 
-export const Search = styled.form`
-	position: relative;
-
-	& > input {
-		z-index: 1;
-		background: white;
-
-		height: 4rem;
-		width: 30rem;
-
-		font-size: 1.5rem;
-
-		border: none;
-		border-radius: 2rem;
-
-		margin-left: 1rem;
-
-		padding: 0 1.25rem 0 3.25rem;
-
-		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
-	}
-	`
-
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 10;
@@ -113,6 +89,26 @@ export const RemoveKeyword = styled.button`
 	cursor: pointer;
 	padding: 0;
 	margin: 0 -.25rem 0 .25rem;
+`
+
+export const Table = styled.table`
+	background: white;
+	flex: 0;
+	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
+
+	& th {
+		padding: 1rem;
+		text-align: left;
+	}
+
+	& tr {
+		box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
+	}
+
+	& td {
+		padding: 1rem;
+		text-align: left;
+	}
 `
 
 export const Tabs = styled.div`
