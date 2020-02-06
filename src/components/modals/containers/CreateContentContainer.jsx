@@ -25,6 +25,7 @@ const CreateContentContainer = props => {
 
 	const [tab, setTab] = useState(`url`)
 	const [searchQuery, setSearchQuery] = useState(``)
+	const [selectedResource, setSelectedResource] = useState(``)
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -58,6 +59,12 @@ const CreateContentContainer = props => {
 		if (value.length > 1) search(`content`, value, true)
 	}
 
+	const handleSelectResourceChange = e => {
+		const { target } = e
+		console.log(target.value)
+		setSelectedResource(target.value)
+	}
+
 	const handleTypeChange = e => {
 		const contentType = e.target.dataset.type
 		setData({
@@ -86,8 +93,7 @@ const CreateContentContainer = props => {
 
 	const handleAddResourceSubmit = e => {
 		e.preventDefault()
-		console.log(e)
-		// adminCreateContentFromResource(modal.collectionId, e.target.resourceId)
+		adminCreateContentFromResource(modal.collectionId, selectedResource)
 		toggleModal()
 	}
 
@@ -110,6 +116,7 @@ const CreateContentContainer = props => {
 		changeTab,
 		handleAddResourceSubmit,
 		handleSearchTextChange,
+		handleSelectResourceChange,
 		handleSubmit,
 		handleTextChange,
 		handleTypeChange,

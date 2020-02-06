@@ -34,6 +34,7 @@ export default class CreateContent extends PureComponent {
 			changeTab,
 			handleAddResourceSubmit,
 			handleSearchTextChange,
+			handleSelectResourceChange,
 			handleSubmit,
 			handleTextChange,
 			handleTypeChange,
@@ -112,7 +113,10 @@ export default class CreateContent extends PureComponent {
 									adminContent &&
 									adminContent.map(content =>
 										<tr key={content.id}>
-											<td><input type='checkbox' >{content.name}</input></td>
+											<td>
+												<input type='radio' value={content.id} name='resource' onChange={handleSelectResourceChange}/>
+												<label>{content.name}</label>
+											</td>
 										</tr>,
 									)
 								}

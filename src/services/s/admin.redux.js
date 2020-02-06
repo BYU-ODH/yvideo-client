@@ -294,13 +294,13 @@ export default class AdminService {
 		}
 	}
 
-	createContentFromResource = (collectionId, resourceId) => async (dispatch, { apiProxy }) => {
+	createContentFromResource = (collectionId, resourceId) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.adminStart())
 
 		try {
 
-			const result = await apiProxy.admin.collection.content.createContentFromResource(collectionId, resourceId)
+			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
 
 			console.log(result.data)
 

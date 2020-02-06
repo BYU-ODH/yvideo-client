@@ -92,7 +92,7 @@ export const RemoveKeyword = styled.button`
 `
 
 export const Table = styled.table`
-	background: white;
+	/*background: white;*/
 	flex: 0;
 	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
 
@@ -102,6 +102,7 @@ export const Table = styled.table`
 	}
 
 	& tr {
+		background: white;
 		box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
 	}
 
