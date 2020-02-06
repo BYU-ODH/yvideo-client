@@ -4,10 +4,12 @@ import searchIcon from 'assets/search.svg'
 
 export const Form = styled.form`
 	display: grid;
-	grid: repeat(3, 1fr) / 1fr;
+	/* grid: repeat(3, 1fr) / 1fr; */
 	grid-gap: 2rem;
 
 	min-width: 30rem;
+	min-height: 35rem;
+
 
 	& input, select {
 		flex: 5;
@@ -50,14 +52,6 @@ export const Form = styled.form`
 	}
 `
 
-export const ResourceTab = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-
-`
-
 export const Button = styled.button`
 	font-size: 1.5rem;
 	color: ${props => props.color || `black`};
@@ -91,10 +85,15 @@ export const RemoveKeyword = styled.button`
 	margin: 0 -.25rem 0 .25rem;
 `
 
+export const TableContainer = styled.div`
+	height: 25rem;
+	overflow-y: scroll;
+`
+
 export const Table = styled.table`
 	/*background: white;*/
-	flex: 0;
 	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
+	width: 100%;
 
 	& th {
 		padding: 1rem;
@@ -109,6 +108,9 @@ export const Table = styled.table`
 	& td {
 		padding: 1rem;
 		text-align: left;
+		& label {
+			padding: 1rem;
+		}
 	}
 `
 

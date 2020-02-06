@@ -5,6 +5,7 @@ import {
 	Button,
 	RemoveKeyword,
 	Table,
+	TableContainer,
 	Tabs,
 	Tab,
 	TypeButton,
@@ -106,11 +107,11 @@ export default class CreateContent extends PureComponent {
 							<span>Title</span>
 							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
 						</label>
-
-						<Table>
-							<tbody>
-								{
-									adminContent &&
+						<TableContainer>
+							<Table>
+								<tbody>
+									{
+										adminContent &&
 									adminContent.map(content =>
 										<tr key={content.id}>
 											<td>
@@ -119,9 +120,10 @@ export default class CreateContent extends PureComponent {
 											</td>
 										</tr>,
 									)
-								}
-							</tbody>
-						</Table>
+									}
+								</tbody>
+							</Table>
+						</TableContainer>
 
 						<div>
 							<Button type='button' onClick={toggleModal}>Cancel</Button>
