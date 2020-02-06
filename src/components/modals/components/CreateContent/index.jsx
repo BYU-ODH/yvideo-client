@@ -115,7 +115,7 @@ export default class CreateContent extends PureComponent {
 									adminContent.map(content =>
 										<tr key={content.id}>
 											<td>
-												<input type='radio' value={content.id} name='resource' onChange={handleSelectResourceChange}/>
+												<input type='radio' value={content.resourceId} name='resource' onChange={handleSelectResourceChange}/>
 												<label>{content.name}</label>
 											</td>
 										</tr>,

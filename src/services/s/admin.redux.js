@@ -300,6 +300,7 @@ export default class AdminService {
 
 		try {
 
+			console.log(resourceId)
 			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
 
 			console.log(result.data)
