@@ -9,6 +9,50 @@ const apiProxy = {
 			 */
 			get: async (searchCategory, searchQuery) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/${searchCategory}/${searchQuery}`, { withCredentials: true }).then(res => res.data),
 		},
+		collection: {
+			get: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}`, { withCredentials: true }).then(res => res.data),
+			/**
+			 * Create a new collection
+			 *
+			 * @param name The name of the new collection
+			 * @param ownerId The id of the owner of the collection (null if owner is the user, defined if the owner is someone other than user)
+			 */
+			create: async (name, ownerId) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/create`, JSON.stringify({ name, ownerId }), {
+				withCredentials: true ,
+				headers: {
+					'Content-Type': `application/json`,
+				},
+			}),
+			content: {
+				/**
+				 * Get content for collection
+				 *
+				 * @param id The id of a collection
+				 * @returns A map of { contentId: content } pairs for the collection
+				 */
+				get: async (id) => {
+					const results = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/content`, { withCredentials: true }).then(res => res.data)
+
+					return results.reduce((map, item) => {
+						map[item.id] = item
+						return map
+					}, {})
+				},
+				/**
+				 * Create content for collection
+				 *
+				 * @param data the content data
+				 * @param collectionId the collection id
+				 */
+				post: async (data, collectionId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/create/url?collectionId=${collectionId}&annotations=false`, JSON.stringify(data), {
+					withCredentials: true,
+					headers: {
+						'Content-Type': `application/json`,
+					},
+				}),
+			},
+		},
+
 	},
 	auth: {
 		/**
@@ -25,6 +69,17 @@ const apiProxy = {
 		},
 	},
 	collection: {
+		/**
+		 * Create a new collection
+		 *
+		 * @param name The name of the new collection
+		 */
+		create: async (name) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/create`, JSON.stringify({ name }), {
+			withCredentials: true ,
+			headers: {
+				'Content-Type': `application/json`,
+			},
+		}),
 		/**
 		 * Changes the name of a specified collection
 		 *
@@ -82,6 +137,18 @@ const apiProxy = {
 				return map
 			}, {})
 		},
+		/**
+		 * Create content for collection
+		 *
+		 * @param data the content data
+		 * @param collectionId the collection id
+		 */
+		post: async (data, collectionId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/create/url?collectionId=${collectionId}&annotations=false`, JSON.stringify(data), {
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`,
+			},
+		}),
 		addView: {
 			/**
 			 * Increments number of views from a content ID

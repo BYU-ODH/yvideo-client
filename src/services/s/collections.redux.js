@@ -1,324 +1,321 @@
 export default class CollectionService {
 	// types
 
-  types = {
-  	COLLECTIONS_START: `COLLECTIONS_START`,
-  	COLLECTIONS_ABORT: `COLLECTIONS_ABORT`,
-  	COLLECTIONS_CLEAN: `COLLECTIONS_CLEAN`,
-  	COLLECTIONS_ERROR: `COLLECTIONS_ERROR`,
-  	COLLECTIONS_GET: `COLLECTIONS_GET`,
-  	COLLECTION_EDIT: `COLLECTION_EDIT`,
-  	COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
-  	COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
-  };
+	types = {
+		COLLECTIONS_START: `COLLECTIONS_START`,
+		COLLECTIONS_ABORT: `COLLECTIONS_ABORT`,
+		COLLECTIONS_CLEAN: `COLLECTIONS_CLEAN`,
+		COLLECTIONS_ERROR: `COLLECTIONS_ERROR`,
+		COLLECTIONS_GET: `COLLECTIONS_GET`,
+		COLLECTION_CREATE: `COLLECTION_CREATE`,
+		COLLECTION_EDIT: `COLLECTION_EDIT`,
+		COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
+		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
+	}
 
-  roleEndpoints = {
-  	linkCourses: `linkCourses`,
-  	addTA: `addTA`,
-  	addException: `addException`,
-  	unlinkCourses: `unlinkCourses`,
-  	removeTA: `removeTA`,
-  	removeException: `removeException`,
-  };
+	roleEndpoints = {
+		linkCourses: `linkCourses`,
+		addTA: `addTA`,
+		addException: `addException`,
+		unlinkCourses: `unlinkCourses`,
+		removeTA: `removeTA`,
+		removeException: `removeException`,
+	}
 
-  // action creators
+	// action creators
 
-  actions = {
-  	collectionsStart: () => ({ type: this.types.COLLECTIONS_START }),
-  	collectionsAbort: () => ({ type: this.types.COLLECTIONS_ABORT }),
-  	collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
-  	collectionsError: error => ({
-  		type: this.types.COLLECTIONS_ERROR,
-  		payload: { error },
-  	}),
-  	collectionsGet: collections => ({
-  		type: this.types.COLLECTIONS_GET,
-  		payload: { collections },
-  	}),
-  	collectionEdit: collection => ({
-  		type: this.types.COLLECTION_EDIT,
-  		payload: { collection },
-  	}),
-  	collectionRolesGet: data => ({
-  		type: this.types.COLLECTION_ROLES_GET,
-  		payload: { ...data },
-  	}),
-  	collectionRolesUpdate: data => ({
-  		type: this.types.COLLECTION_ROLES_UPDATE,
-  		payload: { ...data },
-  	}),
-  };
+	actions = {
+		collectionsStart: () => ({ type: this.types.COLLECTIONS_START }),
+		collectionsAbort: () => ({ type: this.types.COLLECTIONS_ABORT }),
+		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
+		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
+		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
+		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
+		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
+		collectionRolesGet: data => ({ type: this.types.COLLECTION_ROLES_GET, payload: { ...data }}),
+		collectionRolesUpdate: data => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { ...data }}),
+	}
 
-  // default store
+	// default store
 
-  store = {
-  	roles: {},
-  	cache: {},
-  	loading: false,
-  	lastFetched: 0,
-  };
+	store = {
+		roles: {},
+		cache: {},
+		loading: false,
+		lastFetched: 0,
+	}
 
-  // reducer
+	// reducer
 
-  reducer = (store = this.store, action) => {
-  	const {
-  		COLLECTIONS_START,
-  		COLLECTIONS_ABORT,
-  		COLLECTIONS_CLEAN,
-  		COLLECTIONS_ERROR,
-  		COLLECTIONS_GET,
-  		COLLECTION_EDIT,
-  		COLLECTION_ROLES_GET,
-  		COLLECTION_ROLES_UPDATE,
-  	} = this.types
+	reducer = (store = this.store, action) => {
 
-  	switch (action.type) {
-  	case COLLECTIONS_START:
-  		return {
-  			...store,
-  			loading: true,
-  		}
+		const {
+			COLLECTIONS_START,
+			COLLECTIONS_ABORT,
+			COLLECTIONS_CLEAN,
+			COLLECTIONS_ERROR,
+			COLLECTIONS_GET,
+			COLLECTION_CREATE,
+			COLLECTION_EDIT,
+			COLLECTION_ROLES_GET,
+			COLLECTION_ROLES_UPDATE,
+		} = this.types
 
-  	case COLLECTIONS_ABORT:
-  		return {
-  			...store,
-  			loading: false,
-  		}
+		switch (action.type) {
 
-  	case COLLECTIONS_CLEAN:
-  		return {
-  			...store,
-  			cache: {},
-  		}
+		case COLLECTIONS_START:
+			return {
+				...store,
+				loading: true,
+			}
 
-  	case COLLECTIONS_ERROR:
-  		console.error(action.payload.error)
-  		return {
-  			...store,
-  			loading: false,
-  		}
+		case COLLECTIONS_ABORT:
+			return {
+				...store,
+				loading: false,
+			}
 
-  	case COLLECTIONS_GET:
-  		return {
-  			...store,
-  			cache: {
-  				...store.cache,
-  				...action.payload.collections,
-  			},
-  			loading: false,
-  			lastFetched: Date.now(),
-  		}
+		case COLLECTIONS_CLEAN:
+			return {
+				...store,
+				cache: {},
+			}
 
-  	case COLLECTION_EDIT:
-  		return {
-  			...store,
-  			cache: {
-  				...store.cache,
-  				[action.payload.collection.id]: action.payload.collection,
-  			},
-  			loading: false,
-  		}
+		case COLLECTION_CREATE:
+			return {
+				...store,
+				loading: false,
+			}
 
-  	case COLLECTION_ROLES_GET:
-  		return {
-  			...store,
-  			roles: {
-  				...store.roles,
-  				...action.payload,
-  			},
-  		}
+		case COLLECTIONS_ERROR:
+			console.error(action.payload.error)
+			return {
+				...store,
+				loading: false,
+			}
 
-  	case COLLECTION_ROLES_UPDATE:
-  		return {
-  			...store,
-  			roles: {
-  				...store.roles,
-  				...action.payload,
-  			},
-  		}
+		case COLLECTIONS_GET:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					...action.payload.collections,
+				},
+				loading: false,
+				lastFetched: Date.now(),
+			}
 
-  	default:
-  		return store
-  	}
-  };
+		case COLLECTION_EDIT:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collection.id]: action.payload.collection,
+				},
+				loading: false,
+			}
 
-  // thunks
+		case COLLECTION_ROLES_GET:
+			return {
+				...store,
+				roles: {
+					...store.roles,
+					...action.payload,
+				},
+			}
 
-  getCollections = (force = false) => async (
-  	dispatch,
-  	getState,
-  	{ apiProxy }
-  ) => {
-  	const time = Date.now() - getState().collectionStore.lastFetched
+		case COLLECTION_ROLES_UPDATE:
+			return {
+				...store,
+				roles: {
+					...store.roles,
+					...action.payload,
+				},
+			}
 
-  	const stale = time >= process.env.REACT_APP_STALE_TIME
+		default:
+			return store
+		}
+	}
 
-  	// TODO : This isn't running correctly
-  	if (stale || force) {
-  		dispatch(this.actions.collectionsStart())
+	// thunks
 
-  		try {
-  			const result = await apiProxy.user.collections.get()
+	getCollections = (force = false) => async (dispatch, getState, { apiProxy }) => {
 
-  			dispatch(this.actions.collectionsGet(result))
-  		} catch (error) {
-  			console.error(error.message)
-  			dispatch(this.actions.collectionsError(error))
-  		}
-  	} else dispatch(this.actions.collectionsAbort())
-  };
+		const time = Date.now() - getState().collectionStore.lastFetched
 
-  updateCollectionStatus = (id, action) => async (
-  	dispatch,
-  	getState,
-  	{ apiProxy }
-  ) => {
-  	dispatch(this.actions.collectionsStart())
+		const stale = time >= process.env.REACT_APP_STALE_TIME
 
-  	const currentState = getState().collectionStore.cache[id]
+		if (stale || force) {
 
-  	let abort = false
+			dispatch(this.actions.collectionsStart())
 
-  	switch (action) {
-  	case `publish`:
-  		currentState.published = true
-  		break
+			try {
 
-  	case `unpublish`:
-  		currentState.published = false
-  		break
+				const result = await apiProxy.user.collections.get()
 
-  	case `archive`:
-  		currentState.archived = true
-  		break
+				dispatch(this.actions.collectionsGet(result))
 
-  	case `unarchive`:
-  		currentState.published = false
-  		break
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.collectionsError(error))
+			}
 
-  	default:
-  		abort = true
-  		break
-  	}
+		} else dispatch(this.actions.collectionsAbort())
+	}
 
-  	if (abort) dispatch(this.actions.collectionsAbort())
-  	else {
-  		try {
-  			const result = await apiProxy.collection.edit(id, action)
+	createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
 
-  			console.log(result)
+		dispatch(this.actions.collectionsStart())
 
-  			dispatch(this.actions.collectionEdit(currentState))
-  		} catch (error) {
-  			dispatch(this.actions.collectionsError(error))
-  		}
-  	}
-  };
+		try {
 
-  updateCollectionName = (collectionId, collectionName) => {
-  	return async (dispatch, getState, { apiProxy }) => {
-  		dispatch(this.actions.collectionsStart())
+			await apiProxy.collection.create(name)
 
-  		const currentState = getState().collectionStore.cache[collectionId]
+			// const results = await apiProxy.user.collections.get()
 
-  		currentState.name = collectionName
+			// TODO: We need to update state
+			dispatch(this.actions.collectionCreate())
 
-  		try {
-  			const result = await apiProxy.collection.post(
-  				collectionId,
-  				collectionName
-  			)
+		} catch (error) {
+			console.log(error.message)
+			dispatch(this.actions.collectionsError(error))
+		}
 
-  			console.log(result)
-  			// console.warn(`About to update state:`, currentState);
+	}
 
-  			dispatch(this.actions.collectionEdit(currentState))
-  		} catch (error) {
-  			dispatch(this.actions.collectionsError(error))
-  		}
-  	}
-  };
+	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {
 
-  getCollectionRoles = (collectionId, force = false) => {
-  	return async (dispatch, getState, { apiProxy }) => {
-  		const store = getState().collectionStore
+		dispatch(this.actions.collectionsStart())
 
-  		const time = Date.now() - store.lastFetched
+		const currentState = getState().collectionStore.cache[id]
 
-  		const stale = time >= process.env.REACT_APP_STALE_TIME
+		let abort = false
 
-  		const { roles } = store
-  		const cached = Object.keys(roles).includes(collectionId)
+		switch (action) {
+		case `publish`:
+			currentState.published = true
+			break
 
-  		if (stale || !cached || force) {
-  			dispatch(this.actions.collectionsStart())
+		case `unpublish`:
+			currentState.published = false
+			break
 
-  			try {
-  				const { data = {} } = await apiProxy.collection.permissions.get(
-  					collectionId
-  				)
-  				dispatch(this.actions.collectionRolesGet({ [collectionId]: data }))
-  			} catch (error) {
-  				dispatch(this.actions.collectionsError(error))
-  			}
-  		} else dispatch(this.actions.collectionsAbort())
-  	}
-  };
+		case `archive`:
+			currentState.archived = true
+			break
 
-  updateCollectionRoles = (collectionId, endpoint, body) => async (
-  	dispatch,
-  	getState,
-  	{ apiProxy }
-  ) => {
-  	dispatch(this.actions.collectionsStart())
+		case `unarchive`:
+			currentState.published = false
+			break
 
-  	try {
-  		const { data = {} } = await apiProxy.collection.permissions.post(
-  			collectionId,
-  			endpoint,
-  			body
-  		)
+		default:
+			abort = true
+			break
+		}
 
-  		const newRoles = getState().collectionStore.roles[collectionId]
+		if (abort) dispatch(this.actions.collectionsAbort())
+		else {
+			try {
+				const result = await apiProxy.collection.edit(id, action)
 
-  		switch (endpoint) {
-  		case this.roleEndpoints.linkCourses:
-  			newRoles.courses = [...newRoles.courses, data[0]]
-  			break
-  		case this.roleEndpoints.unlinkCourses:
-  			newRoles.courses = newRoles.courses.filter(
-  				item => item.id !== body[0].id
-  			)
-  			break
-  		case this.roleEndpoints.addTA:
-  			newRoles.admins = [...newRoles.admins, data]
-  			newRoles.exceptions = [...newRoles.exceptions, data]
-  			break
-  		case this.roleEndpoints.removeTA:
-  			newRoles.admins = newRoles.admins.filter(
-  				item => item.username !== body
-  			)
-  			newRoles.exceptions = newRoles.exceptions.filter(
-  				item => item.username !== body
-  			)
-  			break
-  		case this.roleEndpoints.addException:
-  			newRoles.exceptions = [...newRoles.exceptions, data]
-  			break
-  		case this.roleEndpoints.removeException:
-  			newRoles.exceptions = newRoles.exceptions.filter(
-  				item => item.username !== body
-  			)
-  			break
-  		default:
-  			break
-  		}
+				console.log(result)
+				// TODO: This doesn't cause a rerender of the collection, so it still looks like it is unarchived
+				dispatch(this.actions.collectionEdit(currentState))
 
-  		dispatch(
-  			this.actions.collectionRolesUpdate({ [collectionId]: newRoles })
-  		)
-  	} catch (error) {
-  		dispatch(this.actions.collectionsError(error))
-  	}
-  };
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+	}
+
+	getCollectionRoles = (collectionId, force = false) => {
+		return async (dispatch, getState, { apiProxy }) => {
+
+			const store = getState().collectionStore
+
+			const time = Date.now() - store.lastFetched
+
+			const stale = time >= process.env.REACT_APP_STALE_TIME
+
+			const { roles } = store
+			const cached = Object.keys(roles).includes(collectionId)
+
+			if (stale || !cached || force) {
+
+				dispatch(this.actions.collectionsStart())
+
+				try {
+
+					const { data = {} } = await apiProxy.collection.permissions.get(collectionId)
+					dispatch(this.actions.collectionRolesGet({ [collectionId]: data }))
+
+				} catch (error) {
+					dispatch(this.actions.collectionsError(error))
+				}
+
+			} else dispatch(this.actions.collectionsAbort())
+		}
+	}
+
+	updateCollectionName = (collectionId, collectionName) => {
+		return async (dispatch, getState, { apiProxy }) => {
+			dispatch(this.actions.collectionsStart())
+
+			const currentState = getState().collectionStore.cache[collectionId]
+
+			try {
+
+				currentState.name = collectionName
+
+				await apiProxy.collection.post(collectionId, collectionName)
+
+				dispatch(this.actions.collectionEdit(currentState))
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+	};
+
+	updateCollectionRoles = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+			const { data = {} } = await apiProxy.collection.permissions.post(collectionId, endpoint, body)
+
+			const newRoles = getState().collectionStore.roles[collectionId]
+
+			switch (endpoint) {
+			case this.roleEndpoints.linkCourses:
+				newRoles.courses = [...newRoles.courses, data[0]]
+				break
+			case this.roleEndpoints.unlinkCourses:
+				newRoles.courses = newRoles.courses.filter(item => item.id !== body[0].id)
+				break
+			case this.roleEndpoints.addTA:
+				newRoles.admins = [...newRoles.admins, data]
+				newRoles.exceptions = [...newRoles.exceptions, data]
+				break
+			case this.roleEndpoints.removeTA:
+				newRoles.admins = newRoles.admins.filter(item => item.username !== body)
+				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
+				break
+			case this.roleEndpoints.addException:
+				newRoles.exceptions = [...newRoles.exceptions, data]
+				break
+			case this.roleEndpoints.removeException:
+				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
+				break
+			default:
+				break
+			}
+
+			dispatch(this.actions.collectionRolesUpdate({ [collectionId]: newRoles }))
+		} catch (error) {
+			dispatch(this.actions.collectionsError(error))
+		}
+
+	}
 }

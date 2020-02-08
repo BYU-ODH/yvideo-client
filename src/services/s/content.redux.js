@@ -6,6 +6,7 @@ export default class ContentService {
 		CONTENT_START: `CONTENT_START`,
 		CONTENT_ABORT: `CONTENT_ABORT`,
 		CONTENT_CLEAN: `CONTENT_CLEAN`,
+		CONTENT_CREATE: `CONTENT_CREATE`,
 		CONTENT_ERROR: `CONTENT_ERROR`,
 		CONTENT_GET: `CONTENT_GET`,
 		CONTENT_ADD_VIEW: `CONTENT_ADD_VIEW`,
@@ -18,6 +19,7 @@ export default class ContentService {
 		contentStart: () => ({ type: this.types.CONTENT_START }),
 		contentAbort: () => ({ type: this.types.CONTENT_ABORT }),
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
+		contentCreate: (content) => ({ type: this.types.CONTENT_CREATE, payload: { content }}),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
@@ -40,6 +42,7 @@ export default class ContentService {
 			CONTENT_START,
 			CONTENT_ABORT,
 			CONTENT_CLEAN,
+			CONTENT_CREATE,
 			CONTENT_ERROR,
 			CONTENT_GET,
 			CONTENT_ADD_VIEW,
@@ -64,6 +67,16 @@ export default class ContentService {
 			return {
 				...store,
 				cache: {},
+			}
+
+		case CONTENT_CREATE:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					...action.payload.content,
+				},
+				loading: false,
 			}
 
 		case CONTENT_ERROR:
@@ -155,6 +168,7 @@ export default class ContentService {
 
 				await apiProxy.content.addView.get(id)
 
+				// TODO: This isn't a real function
 				dispatch(this.actions.addView(id))
 
 			} catch (error) {
@@ -163,6 +177,24 @@ export default class ContentService {
 			}
 
 		} else dispatch(this.actions.contentAbort())
+	}
+
+	createContent = (content, collectionId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.contentStart())
+
+		try {
+
+			const result = await apiProxy.content.post(content, collectionId)
+
+			const data = { [result.data.id]: result.data }
+
+			// TODO: Why doesn't this update to state cause it to rerender?
+			dispatch(this.actions.contentCreate(data))
+
+		} catch (error) {
+			dispatch(this.actions.contentError(error))
+		}
 	}
 
 	updateContent = content => async (dispatch, _getState, { apiProxy }) => {

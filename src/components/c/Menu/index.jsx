@@ -33,7 +33,11 @@ class Menu extends PureComponent {
 				}
 
 				{
-					isAdmin && <LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
+					isAdmin &&
+					<>
+						<LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
+						<LinkStyled to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
+					</>
 				}
 
 				<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
