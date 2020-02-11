@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Table, ItemEdit } from './styles'
+import Style, { Table, ItemEdit, Filter } from './styles'
 
 export default class AdminTable extends PureComponent {
 
@@ -157,7 +157,7 @@ export default class AdminTable extends PureComponent {
 				<Table>
 					<thead>
 						<tr>
-							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && `f`}</th>)}
+							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}</th>)}
 							<th/>
 						</tr>
 					</thead>

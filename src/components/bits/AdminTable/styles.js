@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import iconEdit from 'assets/admin-icon-edit.svg'
+import iconFilter from 'assets/admin-icon-filter.svg'
 
 const Style = styled.div`
 	padding: 3rem 5rem;
@@ -31,5 +32,11 @@ export const ItemEdit = styled.button`
 	border: none;
 	width: 2.5rem;
   height: .5rem;
+	cursor: pointer;
+`
+
+export const Filter = styled.button`
+	background: url(${iconFilter}) center no-repeat;
+	border: none;
 	cursor: pointer;
 `
