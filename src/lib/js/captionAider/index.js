@@ -6,14 +6,15 @@ import { CommandStack } from 'yvideo-editorwidgets'
 
 import {
 	EditTrackData,
-	/* GetLocation,*/
+	// GetLocation,
 	GetLocationNames,
-	/* LoadAudio,
-	LoadTrackData,
-	LoadTranscript,*/
+	// LoadAudio,
+	// LoadTrackData,
+	// LoadTranscript,
 	NewTrackData,
-	/* SaveTrackData,
-	ShowTrackData,*/
+	// newTrackData,
+	// SaveTrackData,
+	// ShowTrackData,
 } from './modals'
 
 const getCaptionAider = async (content, resource, contentHolder) => {
@@ -68,17 +69,21 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 				} = args
 
 				const timeline = new Timeline(document.getElementById(`timeline`), {
+
 					stack: commandStack,
 					syncWith: mainPlayer,
 					saveLocation: `server`,
 					dropLocation: `file`,
 
 					width: document.getElementById(`timeline`).offsetWidth || window.innerWidth - 100,
-					length: 3600, start: 0, end: 240,
+					length: 3600,
+					start: 0,
+					end: 240,
 
 					trackMode: `showing`,
 					tool: Timeline.SELECT,
 					showControls: true,
+
 					canGetFor: key => {
 						switch(key) {
 						case `newtrack`:
@@ -95,6 +100,7 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 							return false
 						}
 					},
+
 					getFor: (key, datalist) => {
 						switch (key) {
 						case `newtrack`:
@@ -109,6 +115,7 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 
 							// return newTrackData(datalist)
 							return NewTrackData(datalist)
+
 						case `edittrack`:
 							return EditTrackData(datalist, timeline, langList)
 							/* case `savetrack`:
@@ -206,45 +213,59 @@ const getCaptionAider = async (content, resource, contentHolder) => {
 
 				timeline.addMenuItem([`Track`, `Clone`, `Clone with Translation`], {
 					name: `Clone with Translation`,
-					action() {
+					async action() {
 						const tl = this.timeline,
 							tid = this.track.id
-						tl.getFor(`newtrack`,
+
+						const comp = tl.getFor(
+							`newtrack`,
 							[`kind`, `lang`, `name`, `mime`, `overwrite`],
 							{
 								kind: void 0,
 								lang: void 0,
 								mime: void 0,
 								overwrite: false,
-							}
-						).then((values) => {
-							tl.cloneTrack(
-								tid,
-								{
-									kind: values[0],
-									lang: values[1],
-									name: values[2],
-									mime: values[3],
-								},
-								(cue, ott, ntt, mime) => {
-									const txt = Ayamel.utils.extractPlainText(cue.getCueAsHTML())
+							},
+						)
 
-									if (ott.language === ntt.language)
-										return txt
+						const values = await tl.getFor(
+							`newtrack`,
+							[`kind`, `lang`, `name`, `mime`, `overwrite`],
+							{
+								kind: void 0,
+								lang: void 0,
+								mime: void 0,
+								overwrite: false,
+							},
+						)
 
-									return translator.translate({
-										srcLang: ott.language,
-										destLang: ntt.language,
-										text: txt,
-									}).then((data) => {
-										return data.translations[0].text
-									}).catch(() => {
-										return txt
-									})
-								},
-								values[4]
-							)
-						})
+						tl.cloneTrack(
+							tid,
+							{
+								kind: values[0],
+								lang: values[1],
+								name: values[2],
+								mime: values[3],
+							},
+							(cue, ott, ntt, mime) => {
+								const txt = Ayamel.utils.extractPlainText(cue.getCueAsHTML())
+
+								if (ott.language === ntt.language)
+									return txt
+
+								return translator.translate({
+									srcLang: ott.language,
+									destLang: ntt.language,
+									text: txt,
+								}).then((data) => {
+									return data.translations[0].text
+								}).catch(() => {
+									return txt
+								})
+							},
+							values[4],
+						)
+
 					},
 				})
 			},

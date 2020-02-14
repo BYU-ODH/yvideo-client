@@ -16,7 +16,7 @@ export default class InterfaceService {
 
 	actions = {
 		menuToggle: () => ({ type: this.types.MENU_TOGGLE }),
-		modalToggle: (payload = { component: null, id: -1 }) => ({ type: this.types.MODAL_TOGGLE, payload }),
+		modalToggle: (payload = { component: null, id: -1, props: {} }) => ({ type: this.types.MODAL_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
 		setHeaderBorder: active => ({ type: this.types.SET_HEADER_BORDER, payload: { active }}),
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),
@@ -30,6 +30,7 @@ export default class InterfaceService {
 			active: false,
 			component: null,
 			collectionId: -1,
+			props: {},
 		},
 		displayBlocks: browserStorage.displayBlocks,
 		headerBorder: false,
@@ -54,6 +55,7 @@ export default class InterfaceService {
 					active: !store.modal.active,
 					component: action.payload.component,
 					collectionId: action.payload.collectionId,
+					props: action.payload.props,
 				},
 			}
 

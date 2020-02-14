@@ -14,6 +14,7 @@ const CaptionAiderContainer = props => {
 		getContent,
 		resourceCache,
 		getResources,
+		toggleModal,
 	} = props
 
 	const target = useRef(null)
@@ -33,12 +34,12 @@ const CaptionAiderContainer = props => {
 			if (target.current) getCaptionAider(content, resource, target.current)
 
 		},
-		[content, getContent, getResources, id, resource, resourceCache, target]
+		[content, getContent, getResources, id, resource, resourceCache, target],
 	)
 
-	/* const renderModal = (component, props) => {
-		props.toggleModal(component)
-	}*/
+	// const renderModal = (component, props) => {
+	// 	props.toggleModal(component)
+	// }
 
 	if (content === undefined || resource === undefined) return null
 
