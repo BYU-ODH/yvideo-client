@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Table, ItemEdit, Filter } from './styles'
+import Style, { Table, ItemEdit, Filter, Sort } from './styles'
 
 export default class AdminTable extends PureComponent {
 
@@ -14,12 +14,18 @@ export default class AdminTable extends PureComponent {
 				columns: [
 					{
 						title: `ID`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `NetID`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `Name`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `Roles`,
@@ -36,6 +42,8 @@ export default class AdminTable extends PureComponent {
 					},
 					{
 						title: `Last Login`,
+						sort: true,
+						descending: false,
 					},
 				],
 			},
@@ -157,7 +165,7 @@ export default class AdminTable extends PureComponent {
 				<Table>
 					<thead>
 						<tr>
-							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}</th>)}
+							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}<Sort /></th>)}
 							<th/>
 						</tr>
 					</thead>
