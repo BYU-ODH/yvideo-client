@@ -15,6 +15,7 @@ import Style, {
 	Icon,
 	PublishButton,
 	EditButton,
+	LinkStyled,
 } from './styles'
 
 class ContentOverview extends PureComponent {
@@ -61,6 +62,9 @@ class ContentOverview extends PureComponent {
 							<Icon className='captions' checked={showCaptions} />
 							<Icon className='annotations' checked={showAnnotations} />
 						</ul>
+						{editing ||
+							<LinkStyled to={`/track-editor/${content.id}`}>Track Editor</LinkStyled>
+						}
 						{editing ?
 							<PublishButton published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
 							:

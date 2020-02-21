@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components'
+import { Link } from 'react-router-dom'
 
 import translation from 'assets/translation.svg'
 import captions from 'assets/captions.svg'
@@ -132,4 +133,13 @@ export const PublishButton = styled.button`
 
 	cursor: pointer;
 	outline: none;
+`
+
+export const LinkStyled = styled(Link)`
+	background: transparent;
+	border: none;
+	color: #0582CA;
+	outline: none;
+	height: fit-content;
+	cursor: pointer;
 `
