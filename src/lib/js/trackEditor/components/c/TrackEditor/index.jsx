@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import {
 	EditorAreaContainer,
 	PlayerContainer,
-	TimelineAreaContainer,
+	TrayAreaContainer,
 } from 'lib/js/trackEditor/containers'
 
 import Style, { LeftStyle } from './styles'
@@ -18,7 +18,7 @@ class TrackEditor extends PureComponent {
 			<Style>
 				<LeftStyle>
 					<PlayerContainer contentId={contentId} />
-					<TimelineAreaContainer />
+					<TrayAreaContainer />
 				</LeftStyle>
 				<EditorAreaContainer />
 			</Style>

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import Style from './styles'
 
-class TimelineArea extends PureComponent {
+class TrayArea extends PureComponent {
 	render() {
 		return (
 			<Style />
@@ -10,4 +10,4 @@ class TimelineArea extends PureComponent {
 	}
 }
 
-export default TimelineArea
+export default TrayArea
