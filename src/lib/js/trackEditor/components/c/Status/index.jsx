@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { Controls, TimeBar } from './../bits'
+import { Controls, TimeBar } from '../../bits'
 
 import Style, { ToggleButton } from './styles'
 
