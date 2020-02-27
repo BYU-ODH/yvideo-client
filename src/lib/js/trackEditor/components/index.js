@@ -1,4 +1,5 @@
-import EditorArea from './c/EditorArea'
+import Caption from './c/Caption'
+import EventEditor from './c/EventEditor'
 import Player from './c/Player'
 import Status from './c/Status'
 import SuperScrollbar from './c/SuperScrollbar'
@@ -6,10 +7,11 @@ import Timeline from './c/Timeline'
 import TrackEditor from './c/TrackEditor'
 import TrackHandler from './c/TrackHandler'
 import TrackMedia from './c/TrackMedia'
-import TrayArea from './c/TrayArea'
+import TimelineEditor from './c/TimelineEditor'
 
 export {
-	EditorArea,
+	Caption,
+	EventEditor,
 	Player,
 	Status,
 	SuperScrollbar,
@@ -17,5 +19,5 @@ export {
 	TrackEditor,
 	TrackHandler,
 	TrackMedia,
-	TrayArea,
+	TimelineEditor,
 }

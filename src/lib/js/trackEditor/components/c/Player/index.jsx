@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import { PlayerControls } from 'components/bits'
+import { Caption } from './../..'
 
 import Style from './styles'
 
@@ -52,7 +52,7 @@ export default class Player extends PureComponent {
 						onProgress={handleProgress}
 						onDuration={handleDuration}
 					/>
-					<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
+					<Caption />
 				</div>
 			</Style>
 		)

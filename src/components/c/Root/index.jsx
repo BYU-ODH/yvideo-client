@@ -15,7 +15,7 @@ import {
 
 import {
 	TrackEditorContainer,
-} from 'lib/js/trackEditor/containers'
+} from 'lib/js/trackEditor/containers/TrackEditorContainer'
 
 import {
 	Load,
