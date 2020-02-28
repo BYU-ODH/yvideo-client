@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
 import {
-	EditorAreaContainer,
-	PlayerContainer,
-	TrayAreaContainer,
-} from 'lib/js/trackEditor/containers'
+	EventEditor,
+	Player,
+	TimelineEditor,
+} from './../..'
 
 import Style, { LeftStyle } from './styles'
 
@@ -11,16 +11,29 @@ class TrackEditor extends PureComponent {
 	render() {
 
 		const {
-			contentId,
+			content,
 		} = this.props.viewstate
+
+		const playerViewstate = {
+			content,
+
+		}
+
+		const timelineEditorViewstate = {
+
+		}
+
+		const eventEditorViewstate = {
+
+		}
 
 		return (
 			<Style>
 				<LeftStyle>
-					<PlayerContainer contentId={contentId} />
-					<TrayAreaContainer />
+					<Player viewstate={playerViewstate} />
+					<TimelineEditor viewstate={timelineEditorViewstate} />
 				</LeftStyle>
-				<EditorAreaContainer />
+				<EventEditor viewstate={eventEditorViewstate} />
 			</Style>
 		)
 	}

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import Style from './styles'
 
-class EditorArea extends PureComponent {
+class EventEditor extends PureComponent {
 	render() {
 		return (
 			<Style />
@@ -10,4 +10,4 @@ class EditorArea extends PureComponent {
 	}
 }
 
-export default EditorArea
+export default EventEditor
