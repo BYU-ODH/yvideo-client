@@ -8,7 +8,7 @@ import Style from './styles'
 
 export default class Player extends PureComponent {
 
-	render() {
+	render() { /*
 		const {
 			ref,
 			url,
@@ -55,6 +55,9 @@ export default class Player extends PureComponent {
 					<Caption />
 				</div>
 			</Style>
+		)*/
+		return (
+			<Style />
 		)
 	}
 }

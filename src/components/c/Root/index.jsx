@@ -13,9 +13,7 @@ import {
 	PlayerContainer,
 } from 'containers'
 
-import {
-	TrackEditorContainer,
-} from 'lib/js/trackEditor/containers/TrackEditorContainer'
+import TrackEditorContainer from 'lib/js/trackEditor/containers/TrackEditorContainer'
 
 import {
 	Load,
