@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import Style from './styles'
 
-class TrackHandlerTrack extends PureComponent {
+class TrackItemHandler extends PureComponent {
 	render() {
 		return (
 			<Style />
@@ -10,4 +10,4 @@ class TrackHandlerTrack extends PureComponent {
 	}
 }
 
-export default TrackHandlerTrack
+export default TrackItemHandler
