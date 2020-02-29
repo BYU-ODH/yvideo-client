@@ -6,9 +6,27 @@ import Style, { ToggleButton } from './styles'
 
 class Status extends PureComponent {
 	render() {
+		const {
+			playing,
+			time,
+		} = this.props.viewstate
+
+		const {
+			togglePlay,
+		} = this.props.handlers
+
+		const controlsViewState = {
+			playing,
+			time,
+		}
+
+		const controlsHandlers = {
+			togglePlay,
+		}
+
 		return (
 			<Style >
-				<Controls />
+				<Controls viewstate={controlsViewState} handlers={controlsHandlers}/>
 				<TimeBar />
 				<ToggleButton />
 			</Style>
@@ -17,3 +35,4 @@ class Status extends PureComponent {
 }
 
 export default Status
+

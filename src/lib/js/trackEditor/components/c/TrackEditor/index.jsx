@@ -12,15 +12,25 @@ class TrackEditor extends PureComponent {
 
 		const {
 			content,
+			playing,
+			time,
 		} = this.props.viewstate
+
+		const {
+			togglePlay,
+		} = this.props.handlers
 
 		const playerViewstate = {
 			content,
-
 		}
 
 		const timelineEditorViewstate = {
+			playing,
+			time,
+		}
 
+		const timelineEditorHandlers = {
+			togglePlay,
 		}
 
 		const eventEditorViewstate = {
@@ -31,7 +41,7 @@ class TrackEditor extends PureComponent {
 			<Style>
 				<LeftStyle>
 					<Player viewstate={playerViewstate} />
-					<TimelineEditor viewstate={timelineEditorViewstate} />
+					<TimelineEditor viewstate={timelineEditorViewstate} handlers={timelineEditorHandlers}/>
 				</LeftStyle>
 				<EventEditor viewstate={eventEditorViewstate} />
 			</Style>
