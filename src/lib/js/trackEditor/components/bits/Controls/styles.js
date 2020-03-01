@@ -7,7 +7,11 @@ import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
 import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
-import volumeIcon from 'assets/controls_volume.svg'
+import volumeIcon from 'assets/volume_up-rounded.svg'
+import visibiltyOnIcon from 'assets/visibility_on-outlined.svg'
+import visibiltyOffIcon from 'assets/visibility_off-outlined.svg'
+
+// import { Icon } from 'src/components/bits/ListItem/styles'
 
 const Style = styled.div`
 	position: inline-block;
@@ -16,25 +20,22 @@ const Style = styled.div`
 	height: 5rem;
 	width: 100%;
 
-  /* TODO: Find better background color */
-	background: rgb(241, 241, 241);
+	/* display: grid; */
 
-	display: grid;
-
-	grid-template-rows: .5rem auto;
+	/* grid-template-rows: .5rem auto;
 	grid-template-areas:
 		"scrubber scrubber"
-		"left right";
+		"left right"; */
 
-	& .right {
+	/* & .right {
 		grid-area: right;
 		display: flex;
 		flex-direction: row-reverse;
 		align-items: center;
-	}
+	} */
 
 	& .left {
-		grid-area: left;
+		/* grid-area: left; */
 		display: flex;
 		align-items: center;
 	}
@@ -44,13 +45,14 @@ const Style = styled.div`
 		height: 2rem;
 		width: 2rem;
 		/* background-size: contain; */
-		border: none;
+		border: 1px black solid;
+		/* border: none; */
 		margin: .5rem;
 		margin-left: 1.5rem;
 		outline: none;
 		padding: 1.5rem;
 		background-color: #0157b8;
-		box-shadow: 1px
+		box-shadow: 1px;
 	}
 `
 
@@ -67,13 +69,36 @@ export const PlayPause = styled.button`
 `
 
 export const Time = styled.div`
-	margin-left: 2rem;
-	color: #606060
+	margin-left: 1.5rem;
+	color: #606060;
 `
 
-export const Volume = styled.button`
-	background: url(${volumeIcon}) center no-repeat;
+const IconButton = styled.div`
+height: 2rem;
+width: 2rem;
+cursor: pointer;
+/* background-color: blue; */
 `
+// Based off of IconButton
+// TODO: Toggle on visible setting?
+export const Visible = styled(IconButton)`
+margin-left: 1.25rem;
+background: url(${visibiltyOnIcon}) center no-repeat;
+background-size: 1.75rem;
+/* padding: .02rem; */
+border: 1px rgba(209, 209, 209, 0.8)solid;
+border-radius:.35rem;
+`
+
+export const Volume = styled(IconButton)`
+margin-left: 1.25rem;
+background: url(${volumeIcon}) center no-repeat;
+background-size: 2rem;
+`
+
+// export const Volume = styled.button`
+// 	background: url(${volumeIcon}) center no-repeat;
+// `
 
 export const ClosedCaptions = styled.button`
 	background: url(${closedCaption}) center no-repeat;

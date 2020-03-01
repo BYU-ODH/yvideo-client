@@ -26,7 +26,7 @@ class Status extends PureComponent {
 
 		return (
 			<Style >
-				<Controls viewstate={controlsViewState} handlers={controlsHandlers}/>
+				<Controls style={`width: 505`} viewstate={controlsViewState} handlers={controlsHandlers}/>
 				<TimeBar />
 				<ToggleButton />
 			</Style>
