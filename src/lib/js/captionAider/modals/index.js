@@ -4,7 +4,7 @@ import GetLocationNames from './GetLocationNames'
 // import LoadAudio from './LoadAudio'
 // import LoadTrackData from './LoadTrackData'
 // import LoadTranscript from './LoadTranscript'
-import NewTrackData from './NewTrackData'
+import newTrackData from './newTrackData'
 // import SaveTrackData from './SaveTrackData'
 // import ShowTrackData from './ShowTrackData'
 
@@ -17,8 +17,8 @@ export {
 	// LoadAudio,
 	// LoadTrackData,
 	// LoadTranscript,
-	NewTrackData,
-	// newTrackData,
+	// NewTrackData,
+	newTrackData,
 	// SaveTrackData,
 	// ShowTrackData,
 }
