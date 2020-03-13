@@ -55,14 +55,13 @@ export default class Manager extends PureComponent {
 
 				</SideMenu>
 				<Body>
-					{!collection ?
-						<NoCollection>Select a Collection to get started.</NoCollection>
-						:
+					{collection ?
 						user ?
-							<LabAssistantManageCollectionContainer collection={collection} />
+							<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 							:
-							<ManageCollectionContainer collection={collection} />
-					}
+							<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+						:
+						<NoCollection>Select a Collection to get started.</NoCollection>}
 				</Body>
 			</Container>
 		)
