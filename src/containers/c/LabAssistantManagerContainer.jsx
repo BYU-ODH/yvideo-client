@@ -42,15 +42,16 @@ const LabAssistantManagerContainer = props => {
 
 	if(!professor || objectIsEmpty(professor) || !collections) return null
 
-	const professorCollections = collections.reduce((accumulator, collection) => {
-		if (collection.owner === parseInt(professor.id)) {
-			return {
-				...accumulator,
-				[collection.id]: collection,
-			}
-		}
-		return accumulator
-	}, {})
+	// const professorCollections = Object.keys(collections).reduce((accumulator, key) => {
+	// 	const collection = collections[key]
+	// 	if (collection.owner === parseInt(professor.id)) {
+	// 		return {
+	// 			...accumulator,
+	// 			[collection.id]: collection,
+	// 		}
+	// 	}
+	// 	return accumulator
+	// }, {})
 
 	const sideLists = {
 		published: [],
@@ -58,12 +59,13 @@ const LabAssistantManagerContainer = props => {
 		archived: [],
 	}
 
-	Object.keys(professorCollections).forEach(id => {
-		const { archived, published, name } = professorCollections[id]
-
-		if (archived) sideLists.archived.push({ id, name })
-		else if (published) sideLists.published.push({ id, name })
-		else sideLists.unpublished.push({ id, name })
+	Object.keys(collections).forEach(id => {
+		const { owner, archived, published, name } = collections[id]
+		if (`${owner}` === professor.id) {
+			if (archived) sideLists.archived.push({ id, name })
+			else if (published) sideLists.published.push({ id, name })
+			else sideLists.unpublished.push({ id, name })
+		}
 	})
 
 	const createNew = () => {
@@ -75,7 +77,7 @@ const LabAssistantManagerContainer = props => {
 
 	const viewstate = {
 		admin,
-		collection: professorCollections[collectionId],
+		collection: collections[collectionId],
 		path: `lab-assistant-manager/${professor.id}`,
 		sideLists,
 		user: professor,

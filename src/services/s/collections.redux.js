@@ -115,6 +115,7 @@ export default class CollectionService {
 			}
 
 		case COLLECTION_EDIT:
+			console.log(`editing collections: `)
 			return {
 				...store,
 				cache: {
@@ -216,7 +217,7 @@ export default class CollectionService {
 
 		dispatch(this.actions.collectionsStart())
 
-		const currentState = getState().collectionStore.cache[id]
+		const currentState = { ...getState().collectionStore.cache[id] }
 
 		let abort = false
 
@@ -246,11 +247,7 @@ export default class CollectionService {
 		else {
 			try {
 				const result = await apiProxy.collection.edit(id, action)
-
-				console.log(result)
-				// TODO: This doesn't cause a rerender of the collection, so it still looks like it is unarchived
-				dispatch(this.actions.collectionEdit(currentState))
-
+				dispatch(this.actions.collectionEdit(result))
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}
@@ -304,7 +301,7 @@ export default class CollectionService {
 				dispatch(this.actions.collectionsError(error))
 			}
 		}
-	};
+	}
 
 	updateCollectionRoles = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
 

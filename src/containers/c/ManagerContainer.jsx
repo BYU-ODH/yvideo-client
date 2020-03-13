@@ -35,7 +35,7 @@ const ManagerContainer = props => {
 				route: `manager`,
 			})
 		}
-	}, [getCollections, setHeaderBorder, location.createCollection, toggleModal])
+	}, [getCollections, location.createCollection, setHeaderBorder, toggleModal])
 
 	if (objectIsEmpty(collections)) return null
 
