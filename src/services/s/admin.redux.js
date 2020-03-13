@@ -277,7 +277,7 @@ export default class AdminService {
 		}
 	}
 
-	createContent = (content, collectionId) => async (dispatch, getState, { apiProxy }) => {
+	createContent = (content, collectionId) => async (dispatch, { apiProxy }) => {
 
 		dispatch(this.actions.adminStart())
 
@@ -288,6 +288,26 @@ export default class AdminService {
 			const data = { [result.data.id]: result.data }
 
 			dispatch(this.actions.adminCreateContent(data))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	createContentFromResource = (collectionId, resourceId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			console.log(resourceId)
+			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
+
+			console.log(result.data)
+
+			// const data = { [result.data.id]: result.data }
+
+			// dispatch(this.actions.adminCreateContent(data))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))

@@ -4,6 +4,8 @@ import {
 	Form,
 	Button,
 	RemoveKeyword,
+	Table,
+	TableContainer,
 	Tabs,
 	Tab,
 	TypeButton,
@@ -15,7 +17,11 @@ export default class CreateContent extends PureComponent {
 
 	render() {
 
-		const { adminContent, tab } = this.props.viewstate
+		const {
+			adminContent,
+			searchQuery,
+			tab,
+		} = this.props.viewstate
 
 		const {
 			title,
@@ -23,11 +29,13 @@ export default class CreateContent extends PureComponent {
 			url,
 			description,
 			keywords,
-			resourceId,
 		} = this.props.viewstate.data
 
 		const {
 			changeTab,
+			handleAddResourceSubmit,
+			handleSearchTextChange,
+			handleSelectResourceChange,
 			handleSubmit,
 			handleTextChange,
 			handleTypeChange,
@@ -93,9 +101,34 @@ export default class CreateContent extends PureComponent {
 				}
 
 				{tab === `resource` &&
-					<Form>
+					<Form onSubmit={handleAddResourceSubmit}>
 						{console.log(adminContent)}
-						<input type='text' name='resourceId' value={resourceId} onChange={handleTextChange} />
+						<label htmlFor='create-content-resource-search'>
+							<span>Title</span>
+							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
+						</label>
+						<TableContainer>
+							<Table>
+								<tbody>
+									{
+										adminContent &&
+									adminContent.map(content =>
+										<tr key={content.id}>
+											<td>
+												<input type='radio' value={content.resourceId} name='resource' onChange={handleSelectResourceChange}/>
+												<label>{content.name}</label>
+											</td>
+										</tr>,
+									)
+									}
+								</tbody>
+							</Table>
+						</TableContainer>
+
+						<div>
+							<Button type='button' onClick={toggleModal}>Cancel</Button>
+							<Button type='submit' color={`#0582CA`}>Create</Button>
+						</div>
 					</Form>
 				}
 			</>

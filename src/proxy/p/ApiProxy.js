@@ -50,6 +50,15 @@ const apiProxy = {
 						'Content-Type': `application/json`,
 					},
 				}),
+				/**
+				 * Create content from resource id
+				 *
+				 * @param collectionId the collection id
+				 * @param resourceId the resource id
+				 */
+				createFromResource: async (collectionId, resourceId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/create/resource?collectionId=${collectionId}`, JSON.stringify({ resourceId }), {
+					withCredentials: true,
+				}),
 			},
 		},
 
@@ -94,6 +103,19 @@ const apiProxy = {
 		 * @param action The action to perform, must be one of `archive`, `unarchive`, `publish`, `unpublish`
 		 */
 		edit: async (id, action) => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}/${action}`, { withCredentials: true }).then(res => res.data),
+		/**
+		 * Removes a list of content ids from a collection
+		 *
+		 * @param id The ID of the collection
+		 * @param contentIds List of content ids
+		 */
+		remove: async (id, contentIds) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}/removeContent`,
+			JSON.stringify({ removeContent: contentIds}), {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+				},
+			}),
 		permissions: {
 			/**
 			 * Gets the current roles/permissions for the specified collection

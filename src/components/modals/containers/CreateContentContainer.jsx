@@ -16,12 +16,16 @@ const CreateContentContainer = props => {
 	const {
 		adminContent,
 		adminCreateContent,
+		adminCreateContentFromResource,
 		createContent,
 		modal,
+		search,
 		toggleModal,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
+	const [searchQuery, setSearchQuery] = useState(``)
+	const [selectedResource, setSelectedResource] = useState(``)
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -49,6 +53,18 @@ const CreateContentContainer = props => {
 		})
 	}
 
+	const handleSearchTextChange = e => {
+		const { value } = e.target
+		setSearchQuery(value)
+		if (value.length > 1) search(`content`, value, true)
+	}
+
+	const handleSelectResourceChange = e => {
+		const { target } = e
+		console.log(target.value)
+		setSelectedResource(target.value)
+	}
+
 	const handleTypeChange = e => {
 		const contentType = e.target.dataset.type
 		setData({
@@ -68,10 +84,16 @@ const CreateContentContainer = props => {
 		document.getElementById(`create-content-form`).reset()
 	}
 
-	const handleSubmit = async e => {
+	const handleSubmit = e => {
 		e.preventDefault()
 		if(modal.isLabAssistantRoute) adminCreateContent(data, modal.collectionId)
 		else createContent(data, modal.collectionId)
+		toggleModal()
+	}
+
+	const handleAddResourceSubmit = e => {
+		e.preventDefault()
+		adminCreateContentFromResource(modal.collectionId, selectedResource)
 		toggleModal()
 	}
 
@@ -86,11 +108,15 @@ const CreateContentContainer = props => {
 	const viewstate = {
 		adminContent,
 		data,
+		searchQuery,
 		tab,
 	}
 
 	const handlers = {
 		changeTab,
+		handleAddResourceSubmit,
+		handleSearchTextChange,
+		handleSelectResourceChange,
 		handleSubmit,
 		handleTextChange,
 		handleTypeChange,
@@ -111,8 +137,10 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
 	adminCreateContent: adminService.createContent,
+	adminCreateContentFromResource: adminService.createContentFromResource,
 	createContent: contentService.createContent,
 	toggleModal: interfaceService.toggleModal,
+	search: adminService.search,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)

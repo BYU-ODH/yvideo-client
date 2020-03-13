@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import services from 'services'
+import {
+	collectionService,
+	contentService,
+} from 'services'
 
 import {
 	ContentOverview,
@@ -13,6 +16,7 @@ const ContentOverviewContainer = props => {
 
 	const {
 		content,
+		removeCollectionContent,
 		updateContent,
 	} = props
 
@@ -44,6 +48,10 @@ const ContentOverviewContainer = props => {
 		})
 	}
 
+	const handleRemoveContent = e => {
+		removeCollectionContent(content.collectionId, content.id)
+	}
+
 	const handleTogglePublish = e => {
 		setContentState({
 			...contentState,
@@ -58,8 +66,9 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handlers = {
-		handleToggleEdit,
 		handleNameChange,
+		handleRemoveContent,
+		handleToggleEdit,
 		handleTogglePublish,
 		setContentState,
 		setShowing,
@@ -69,7 +78,8 @@ const ContentOverviewContainer = props => {
 }
 
 const mapDispatchToProps = {
-	updateContent: services.contentService.updateContent,
+	removeCollectionContent: collectionService.removeCollectionContent,
+	updateContent: contentService.updateContent,
 }
 
 export default connect(null, mapDispatchToProps)(ContentOverviewContainer)

@@ -133,3 +133,19 @@ export const PublishButton = styled.button`
 	cursor: pointer;
 	outline: none;
 `
+
+export const RemoveButton = styled.button`
+	color: #ff4c4c;
+	font-weight: bold;
+	line-height: 1.5rem;
+	letter-spacing: .05rem;
+
+	background: transparent;
+	width: fit-content;
+
+	border: none;
+	padding-left: 20px;
+
+	cursor: pointer;
+	outline: none;
+`
