@@ -2,6 +2,9 @@ import { ResourceLibrary } from 'yvideojs'
 import ContentRenderer from './ContentRenderer.js'
 import axios from 'axios'
 
+// ResourceLibrary.setBaseUrl(process.env.REACT_APP_YVIDEO_SERVER)
+ResourceLibrary.setBaseUrl(`${process.env.REACT_APP_RESOURCE_LIB}/`)
+
 const ContentLoader = (() => {
 
 	const getDocumentWhitelist = async (args, type, ids) => {
@@ -99,6 +102,8 @@ const ContentLoader = (() => {
 	}
 
 	return {
+		getTranscriptWhitelist,
+		getAnnotationWhitelist,
 		castContentObject,
 		render(args) {
 			castContentObject(args.content).then(async data => {

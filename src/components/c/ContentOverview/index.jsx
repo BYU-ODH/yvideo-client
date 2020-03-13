@@ -10,11 +10,12 @@ import {
 import { LazyImage } from 'components/bits'
 
 import Style, {
-	Preview,
-	TitleEdit,
-	Icon,
-	PublishButton,
 	EditButton,
+	Icon,
+	Preview,
+	PublishButton,
+	RemoveButton,
+	TitleEdit,
 } from './styles'
 
 class ContentOverview extends PureComponent {
@@ -28,6 +29,7 @@ class ContentOverview extends PureComponent {
 
 		const {
 			handleNameChange,
+			handleRemoveContent,
 			handleToggleEdit,
 			handleTogglePublish,
 			setContentState,
@@ -62,7 +64,10 @@ class ContentOverview extends PureComponent {
 							<Icon className='annotations' checked={showAnnotations} />
 						</ul>
 						{editing ?
-							<PublishButton published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
+							<div>
+								<PublishButton published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
+								<RemoveButton onClick={handleRemoveContent}>Delete</RemoveButton>
+							</div>
 							:
 							<em>{content.published ? `Published` : `Unpublished`}</em>
 						}

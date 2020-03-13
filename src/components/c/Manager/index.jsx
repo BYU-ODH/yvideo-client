@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { ManageCollectionContainer } from 'containers'
+import { LabAssistantManageCollectionContainer, ManageCollectionContainer } from 'containers'
 
 import { Accordion } from 'components/bits'
 
@@ -20,9 +20,11 @@ export default class Manager extends PureComponent {
 	render() {
 
 		const {
-			collection,
-			sideLists,
 			admin,
+			collection,
+			path,
+			sideLists,
+			user,
 		} = this.props.viewstate
 
 		const {
@@ -33,19 +35,19 @@ export default class Manager extends PureComponent {
 			<Container>
 				<SideMenu>
 
-					<h4>My Collections</h4>
+					<h4>{user ? `${user.name.endsWith(`s`) ? `${user.name}'` : `${user.name}'s`} Collections` : `My Collections`}</h4>
 
 					<Accordion header={`Published`} active>
-						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
+						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
 					</Accordion>
 
 					<Accordion header={`Unpublished`} active>
-						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
+						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
 					</Accordion>
 
 					{
 						admin && <Accordion header={`Archived`}>
-							{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/manager/${id}`}>{name}</Link>)}
+							{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
 						</Accordion>
 					}
 
@@ -53,10 +55,13 @@ export default class Manager extends PureComponent {
 
 				</SideMenu>
 				<Body>
-					{collection ?
-						<ManageCollectionContainer collection={collection} />
-						:
+					{!collection ?
 						<NoCollection>Select a Collection to get started.</NoCollection>
+						:
+						user ?
+							<LabAssistantManageCollectionContainer collection={collection} />
+							:
+							<ManageCollectionContainer collection={collection} />
 					}
 				</Body>
 			</Container>

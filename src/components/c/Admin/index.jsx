@@ -21,6 +21,8 @@ export class Admin extends PureComponent {
 			handleSubmit,
 		} = this.props.handlers
 
+		console.log(data)
+
 		return (
 			<Style>
 				<h1>Admin Dashboard</h1>
@@ -31,7 +33,7 @@ export class Admin extends PureComponent {
 						{Object.keys(category).map((c, index) =>
 							<option value={category[c].name} key={index}>
 								{category[c].name}
-							</option>
+							</option>,
 						)}
 					</CategorySelect>
 

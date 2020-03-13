@@ -54,7 +54,7 @@ const AdminContainer = props => {
 	const updateSearchBar = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 2) search(category[searchCategory].url, value, true)
+		if (value.length > 1) search(category[searchCategory].url, value, true)
 	}
 
 	const handleSubmit = e => {

@@ -6,6 +6,9 @@ import {
 } from 'containers'
 
 import Style, {
+	Title,
+	TitleEdit,
+	TitleEditButton,
 	PublishButton,
 	ArchiveButton,
 	TabHeader,
@@ -19,14 +22,17 @@ import plus from 'assets/plus_gray.svg'
 
 export default class ManageCollection extends PureComponent {
 	render() {
-
 		const {
 			collection,
+			collectionName,
+			isEditingCollectionName,
 			isContent,
 			content,
 		} = this.props.viewstate
 
 		const {
+			toggleEdit,
+			handleNameChange,
 			togglePublish,
 			archive,
 			setTab,
@@ -36,18 +42,44 @@ export default class ManageCollection extends PureComponent {
 		return (
 			<Style>
 				<header>
-					<div className='title'>
-						<h6>{collection.name}</h6>
-					</div>
+					<Title>
+						{isEditingCollectionName ? (
+							// TODO When switching between collections, it uses the same value
+							<TitleEdit
+								type='text'
+								value={collectionName}
+								contenteditable='true'
+								onChange={handleNameChange}
+								onKeyPress={event => {
+									if (event.key === `Enter`) toggleEdit()
+								}}
+								size={collectionName.length > 0 ? collectionName.length : 1}
+								autoFocus
+							/>
+						) : (
+							<h6 onClick={toggleEdit}>{collection.name}</h6>
+						)}
+						<TitleEditButton
+							editing={isEditingCollectionName}
+							onClick={toggleEdit}
+						>
+							{isEditingCollectionName ? `Save` : `Edit`}
+						</TitleEditButton>
+					</Title>
 					<div>
-						{collection.archived ?
+						{collection.archived ? (
 							<p>(archived)</p>
-							:
+						) : (
 							<>
-								<PublishButton published={collection.published} onClick={togglePublish}>{collection.published ? `Unpublish` : `Publish`}</PublishButton>
+								<PublishButton
+									published={collection.published}
+									onClick={togglePublish}
+								>
+									{collection.published ? `Unpublish` : `Publish`}
+								</PublishButton>
 								<ArchiveButton onClick={archive}>Archive</ArchiveButton>
 							</>
-						}
+						)}
 					</div>
 				</header>
 				<TabHeader>
@@ -57,17 +89,20 @@ export default class ManageCollection extends PureComponent {
 				</TabHeader>
 				<Tab>
 					{isContent ?
-						content.map(item => <ContentOverviewContainer key={item.id} content={item} />)
-						:
-						<CollectionPermissionsContainer collection={collection} />
-					}
+						content.map(item => (
+							<ContentOverviewContainer key={item.id} content={item} />
+						))
+						: (
+							<CollectionPermissionsContainer collection={collection} />
+						)}
 
-					{isContent &&
-						<NewContent onClick={createContent} ><Icon src={plus} /></NewContent>
-					}
+					{isContent && (
+						<NewContent onClick={createContent}>
+							<Icon src={plus} />
+						</NewContent>
+					)}
 				</Tab>
 			</Style>
 		)
-
 	}
 }

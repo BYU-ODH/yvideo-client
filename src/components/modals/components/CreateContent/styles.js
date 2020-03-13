@@ -1,11 +1,15 @@
 import styled from 'styled-components'
 
+import searchIcon from 'assets/search.svg'
+
 export const Form = styled.form`
 	display: grid;
-	grid: repeat(3, 1fr) / 1fr;
+	/* grid: repeat(3, 1fr) / 1fr; */
 	grid-gap: 2rem;
 
 	min-width: 30rem;
+	min-height: 35rem;
+
 
 	& input, select {
 		flex: 5;
@@ -57,6 +61,17 @@ export const Button = styled.button`
 	cursor: pointer;
 `
 
+export const SearchIcon = styled.span`
+	position: absolute;
+	z-index: 10;
+	top: 1rem;
+	left: 2rem;
+	background: url(${searchIcon}) center no-repeat;
+	background-size: contain;
+	height: 2rem;
+	width: 2rem;
+`
+
 export const RemoveKeyword = styled.button`
 	height: 1.5rem;
 	width: 1.5rem;
@@ -70,12 +85,38 @@ export const RemoveKeyword = styled.button`
 	margin: 0 -.25rem 0 .25rem;
 `
 
+export const TableContainer = styled.div`
+	height: 25rem;
+	overflow-y: scroll;
+`
+
+export const Table = styled.table`
+	/*background: white;*/
+	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
+	width: 100%;
+
+	& th {
+		padding: 1rem;
+		text-align: left;
+	}
+
+	& tr {
+		background: white;
+		box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
+	}
+
+	& td {
+		padding: 1rem;
+		text-align: left;
+		& label {
+			padding: 1rem;
+		}
+	}
+`
+
 export const Tabs = styled.div`
 	margin: 2rem 0;
 	padding: 0;
-
-	display: flex;
-	justify-content: space-between;
 `
 
 export const Tab = styled.button`
@@ -99,20 +140,4 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
-`
-
-export const FileButton = styled.div`
-	font-size: 1.2rem;
-	color: #0582CA;
-	background: transparent;
-	border: none;
-	outline: none;
-	cursor: pointer;
-`
-
-export const FileName = styled.span`
-	text-align: right;
-	font-size: 1.2rem;
-	color: #0582CA;
-	cursor: pointer;
 `
