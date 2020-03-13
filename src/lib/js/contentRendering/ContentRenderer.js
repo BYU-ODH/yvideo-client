@@ -41,15 +41,15 @@ const ContentRenderer = {
 			holder: container,
 			translate: allowDefinitions(args.content),
 			transcripts: showCaptions(args.content) || showTranscript(args.content) ?
-				await args.getTranscriptWhitelist({
+				await ContentLoader.getTranscriptWhitelist({
 					resource: args.resource,
 					courseId: args.courseId,
 					contentId: args.contentId,
 					permission: args.permission,
 				}) : [],
 			annotations:
-				await showAnnotations(args.content) ?
-					args.getAnnotationWhitelist({
+				showAnnotations(args.content) ?
+					ContentLoader.getAnnotationWhitelist({
 						resource: args.resource,
 						courseId: args.courseId,
 						contentId: args.contentId,
@@ -73,7 +73,6 @@ const ContentRenderer = {
 				detail: { currentTime: player.currentTime },
 			}))
 		}, false)
-
 	},
 }
 
@@ -127,8 +126,8 @@ const setupTranslatorPane = (tab, player, content, resourceMap) => {
 		return a.text.localeCompare(b.text)
 	})
 
-	translationsHolder.className = `definitionsContent`;
-	(new EditorWidgets.SuperSelect({
+	translationsHolder.className = `definitionsContent`
+	new EditorWidgets.SuperSelect({
 		el: selectHolder,
 		id: `transLang`,
 		value: [
@@ -140,7 +139,7 @@ const setupTranslatorPane = (tab, player, content, resourceMap) => {
 		text: `Select Language`,
 		options: targetLanguages,
 		multiple: false,
-	})).addEventListener(`valuechange`, () => {
+	}).addEventListener(`valuechange`, () => {
 		player.targetLang = this.value[0]
 	})
 
