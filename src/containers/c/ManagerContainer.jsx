@@ -19,7 +19,7 @@ const ManagerContainer = props => {
 		collections,
 		getCollections,
 		setHeaderBorder,
-		toggleModal,
+		toggleModal
 	} = props
 
 	const params = useParams()
@@ -32,17 +32,17 @@ const ManagerContainer = props => {
 		if(location.createCollection) {
 			toggleModal({
 				component: CreateCollectionContainer,
-				route: `manager`,
+				route: 'manager'
 			})
 		}
-	}, [getCollections, location.createCollection, setHeaderBorder, toggleModal])
+	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal])
 
 	if (objectIsEmpty(collections)) return null
 
 	const sideLists = {
 		published: [],
 		unpublished: [],
-		archived: [],
+		archived: []
 	}
 
 	Object.keys(collections).forEach(id => {
@@ -55,19 +55,19 @@ const ManagerContainer = props => {
 
 	const createNew = () => {
 		toggleModal({
-			component: CreateCollectionContainer,
+			component: CreateCollectionContainer
 		})
 	}
 
 	const viewstate = {
 		admin,
 		collection: collections[params.id],
-		path: `manager`,
-		sideLists,
+		path: 'manager',
+		sideLists
 	}
 
 	const handlers = {
-		createNew,
+		createNew
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />
@@ -75,13 +75,13 @@ const ManagerContainer = props => {
 
 const mapStateToProps = store => ({
 	collections: store.collectionStore.cache,
-	admin: store.authStore.user.roles.includes(roles.admin),
+	admin: store.authStore.user.roles.includes(roles.admin)
 })
 
 const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
 	setHeaderBorder: interfaceService.setHeaderBorder,
-	toggleModal: interfaceService.toggleModal,
+	toggleModal: interfaceService.toggleModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerContainer)
