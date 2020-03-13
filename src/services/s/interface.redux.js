@@ -31,6 +31,7 @@ export default class InterfaceService {
 			component: null,
 			collectionId: -1,
 			isLabAssistantRoute: false,
+			props: {},
 		},
 		displayBlocks: browserStorage.displayBlocks,
 		headerBorder: false,
@@ -57,6 +58,7 @@ export default class InterfaceService {
 					component: action.payload.component,
 					collectionId: action.payload.collectionId,
 					isLabAssistantRoute: action.payload.isLabAssistantRoute,
+					props: action.payload.props,
 				},
 			}
 
