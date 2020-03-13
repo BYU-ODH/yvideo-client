@@ -245,12 +245,8 @@ export default class CollectionService {
 		if (abort) dispatch(this.actions.collectionsAbort())
 		else {
 			try {
-				const result = await apiProxy.collection.edit(id, action)
-
-				console.log(result)
-				// TODO: This doesn't cause a rerender of the collection, so it still looks like it is unarchived
+				await apiProxy.collection.edit(id, action)
 				dispatch(this.actions.collectionEdit(currentState))
-
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}

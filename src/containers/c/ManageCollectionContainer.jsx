@@ -11,6 +11,7 @@ import CreateContentContainer from 'components/modals/containers/CreateContentCo
 import { objectIsEmpty } from 'lib/util'
 
 const ManageCollectionContainer = props => {
+
 	const {
 		collection,
 		content,
@@ -100,7 +101,4 @@ const mapDispatchToProps = {
 	updateCollectionStatus: collectionService.updateCollectionStatus,
 }
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(ManageCollectionContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ManageCollectionContainer)
