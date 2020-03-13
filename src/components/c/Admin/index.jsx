@@ -21,6 +21,8 @@ export class Admin extends PureComponent {
 			handleSubmit,
 		} = this.props.handlers
 
+		console.log(data)
+
 		return (
 			<Style>
 				<h1>Admin Dashboard</h1>
