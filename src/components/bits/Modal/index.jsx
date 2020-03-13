@@ -19,11 +19,11 @@ class Modal extends Component {
 			(
 				<Wrapper ref={this.wrapper} className=''>
 					<div>
-						<Comp />
+						<Comp {...this.props.modal.props} />
 					</div>
 				</Wrapper>
 			),
-			document.getElementById(`modal`)
+			document.getElementById(`modal`),
 		)
 	}
 

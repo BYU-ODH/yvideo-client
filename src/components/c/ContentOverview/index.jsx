@@ -10,12 +10,12 @@ import {
 import { LazyImage } from 'components/bits'
 
 import Style, {
-	Preview,
-	TitleEdit,
-	Icon,
-	PublishButton,
 	EditButton,
-	LinkStyled,
+	Icon,
+	Preview,
+	PublishButton,
+	RemoveButton,
+	TitleEdit,
 } from './styles'
 
 class ContentOverview extends PureComponent {
@@ -29,6 +29,7 @@ class ContentOverview extends PureComponent {
 
 		const {
 			handleNameChange,
+			handleRemoveContent,
 			handleToggleEdit,
 			handleTogglePublish,
 			setContentState,
@@ -66,7 +67,10 @@ class ContentOverview extends PureComponent {
 							<LinkStyled to={`/track-editor/${content.id}`}>Track Editor</LinkStyled>
 						}
 						{editing ?
-							<PublishButton published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
+							<div>
+								<PublishButton published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
+								<RemoveButton onClick={handleRemoveContent}>Delete</RemoveButton>
+							</div>
 							:
 							<em>{content.published ? `Published` : `Unpublished`}</em>
 						}

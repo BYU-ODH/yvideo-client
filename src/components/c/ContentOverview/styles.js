@@ -135,11 +135,18 @@ export const PublishButton = styled.button`
 	outline: none;
 `
 
-export const LinkStyled = styled(Link)`
+export const RemoveButton = styled.button`
+	color: #ff4c4c;
+	font-weight: bold;
+	line-height: 1.5rem;
+	letter-spacing: .05rem;
+
 	background: transparent;
+	width: fit-content;
+
 	border: none;
-	color: #0582CA;
-	outline: none;
-	height: fit-content;
+	padding-left: 20px;
+
 	cursor: pointer;
+	outline: none;
 `

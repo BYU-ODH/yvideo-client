@@ -235,21 +235,21 @@ The "Proxy" pattern is when you have a class or module of your application that'
 ### v0.1
 1. Define the actions for the front end: How will people use this? What behaviors are MVP?
 
-* MVP Behaviors
-	* [x] Students
-		* [x] Watch videos
-	* TAs
-		* Manage:
-			- Edit collections (Settings & Permissions: They can't add TAs)
-			- Create (only links)
-	* Professors
-		* TA Roles
-		* Add TA to collection
-	* Lab Assistant
-		* Manage content in a collection
-		* Search content and add it to a collection
-		* Create collection
-		* LAs should be able to search collections so that they can add content to it
+		MVP Behaviors
+		* Students
+			* Watch videos
+		* TAs
+			* Manage:
+				- Edit collections (Settings & Permissions: They can't add TAs)
+				- Create (only links)
+		* Professors
+			* TA Roles
+			* Add TA to collection
+		* Lab Assistant
+			* Manage content in a collection
+			* Search content and add it to a collection
+			* Create collection
+			* LAs should be able to search collections so that they can add content to it
 
 2. Rewrite the Player in 100% React using the react-player library
 	* Finish controls

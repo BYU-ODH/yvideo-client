@@ -1,0 +1,15 @@
+@import url('Fonts/fonts.css');
+* {
+	margin: 0;
+}
+
+html {
+	font-family: 'Roboto';
+	font-size: 10px;
+	line-height: 10px;
+}
+
+body {
+	font-size: 1.2rem;
+	line-height: 1.4rem;
+}
