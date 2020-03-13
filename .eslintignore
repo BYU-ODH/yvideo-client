@@ -1,1 +1,3 @@
-# */**/aurora/**
+node_modules/*
+**/vendor/*.js
+build/*
