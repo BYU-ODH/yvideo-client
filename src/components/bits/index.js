@@ -10,7 +10,9 @@ import ListCollection from './ListCollection'
 import ListItem from './ListItem'
 import Modal from './Modal'
 import PermissionTable from './PermissionTable'
+import PlayerControls from './PlayerControls'
 import ResourceTable from './ResourceTable'
+import Scrubber from './Scrubber'
 import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
@@ -30,7 +32,9 @@ export {
 	ListItem,
 	Modal,
 	PermissionTable,
+	PlayerControls,
 	ResourceTable,
+	Scrubber,
 	Spinner,
 	SwitchToggle,
 	Tag,

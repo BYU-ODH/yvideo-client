@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css} from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import translation from 'assets/translation.svg'
@@ -61,13 +61,16 @@ export const Preview = styled.div`
 	}
 `
 
-export const EditButton = styled.button`
+const TextButton = css`
 	background: transparent;
 	border: none;
 	color: #0582CA;
 	outline: none;
 	height: fit-content;
 	cursor: pointer;
+`
+export const EditButton = styled.button`
+	${TextButton}
 `
 
 export const Icon = styled.li`
@@ -114,6 +117,7 @@ export const Thumbnail = styled.div`
 
 export const TitleEdit = styled.input`
 	position: relative;
+	display: inline-block;
 	top: -.3rem;
 	left: -.2rem;
 	margin-bottom: -.6rem;
@@ -149,4 +153,8 @@ export const RemoveButton = styled.button`
 
 	cursor: pointer;
 	outline: none;
+`
+
+export const StyledLink = styled(Link)`
+${TextButton} //reuses TextButton css
 `
