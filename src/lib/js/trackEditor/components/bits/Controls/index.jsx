@@ -6,14 +6,16 @@ class Controls extends PureComponent {
 	render() {
 		const {
 			playing,
-			time,
+			currentTime,
+			totalTime,
 		} = this.props.viewstate
 
 		const {
 			togglePlay,
 		} = this.props.handlers
 
-		let stringifiedTime = time.toFixed(2)
+		// Because of the nature of the toFixed method, it will round the last digit after decimal
+		let stringifiedTime = currentTime.toFixed(2)
 		// Changes decimal of float to colon
 		stringifiedTime = stringifiedTime.replace(`.`, `:`)
 

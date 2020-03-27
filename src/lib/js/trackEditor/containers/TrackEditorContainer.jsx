@@ -8,18 +8,26 @@ const TrackEditorContainer = () => {
 	const params = useParams()
 
 	const [playing, setPlaying] = useState(false)
-	const [time, setTime] = useState(12.55)
+	const [currentTime, setCurrentTime] = useState(3.55)
+	const [totalTime, setTotalTime] = useState(12.55)
 
 	const viewstate = {
 		contentId: params.id,
 		playing,
-		time,
+		currentTime,
+		totalTime,
 	}
 
 	const handlers = {
 		togglePlay() {
 			setPlaying(!playing)
 			// alert(`hello`)
+		},
+		handleVideoScrubChange(value) {
+			console.log(value)
+			const adjustedTime = totalTime * (value / 100)
+			setCurrentTime(adjustedTime)
+			console.log(`Adjusted time: `, adjustedTime)
 		},
 	}
 

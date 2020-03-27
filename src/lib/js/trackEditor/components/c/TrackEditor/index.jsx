@@ -13,11 +13,13 @@ class TrackEditor extends PureComponent {
 		const {
 			content,
 			playing,
-			time,
+			currentTime,
+			totalTime,
 		} = this.props.viewstate
 
 		const {
 			togglePlay,
+			handleVideoScrubChange,
 		} = this.props.handlers
 
 		const playerViewstate = {
@@ -25,12 +27,13 @@ class TrackEditor extends PureComponent {
 		}
 
 		const timelineEditorViewstate = {
-			playing,
-			time,
+			currentTime,
+			totalTime,
 		}
 
 		const timelineEditorHandlers = {
 			togglePlay,
+			handleVideoScrubChange,
 		}
 
 		const eventEditorViewstate = {

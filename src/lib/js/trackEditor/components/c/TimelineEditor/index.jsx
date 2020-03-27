@@ -8,20 +8,24 @@ class TimelineEditor extends PureComponent {
 
 		const {
 			playing,
-			time,
+			currentTime,
+			totalTime,
 		} = this.props.viewstate
 
 		const {
 			togglePlay,
+			handleVideoScrubChange,
 		} = this.props.handlers
 
 		const statusViewState = {
 			playing,
-			time,
+			currentTime,
+			totalTime,
 		}
 
 		const statusHandlers = {
 			togglePlay,
+			handleVideoScrubChange,
 		}
 
 		return (

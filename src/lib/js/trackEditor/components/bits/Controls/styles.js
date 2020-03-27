@@ -15,6 +15,8 @@ import visibiltyOffIcon from 'assets/visibility_off-outlined.svg'
 
 const Style = styled.div`
 	position: inline-block;
+	/* display: flex;
+	justify-content: center; */
 	bottom: 0;
 
 	height: 5rem;

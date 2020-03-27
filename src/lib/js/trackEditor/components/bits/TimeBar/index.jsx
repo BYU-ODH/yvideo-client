@@ -15,12 +15,26 @@ class TimeBar extends PureComponent {
 			color: `purple`,
 		}
 
-		const handleScrubChange = value => {
-			// alert(value)
-			console.log(value)
-		}
+		// const handleScrubChange = value => {
+		// 	// alert(value)
+		// 	console.log(value)
+		// 	const totalTime = 30
+		// 	console.log(`Adjusted time: `, totalTime * (value / 100))
+		// 	// Get time based on percentage
+		// }
 
-		const value = 50
+		const {
+			currentTime,
+			totalTime,
+		} = this.props.viewstate
+
+		const {
+			handleVideoScrubChange,
+		} = this.props.handlers
+
+		// const value = 50
+
+		const percentageComplete = currentTime / totalTime * 100
 
 		return (
 			<Style>
@@ -31,10 +45,10 @@ class TimeBar extends PureComponent {
 					<Scrubber
 						min={0}
 						max={100}
-						value={value}
+						value={percentageComplete}
 						// onScrubStart={this.handleScrubStart}
 						// onScrubEnd={this.handleScrubEnd}
-						onScrubChange={handleScrubChange}
+						onScrubChange={handleVideoScrubChange}
 					/>
 				</div>
 			</Style>

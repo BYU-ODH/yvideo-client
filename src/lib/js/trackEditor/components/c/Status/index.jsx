@@ -8,26 +8,38 @@ class Status extends PureComponent {
 	render() {
 		const {
 			playing,
-			time,
+			currentTime,
+			totalTime,
 		} = this.props.viewstate
 
 		const {
 			togglePlay,
+			handleVideoScrubChange,
 		} = this.props.handlers
 
 		const controlsViewState = {
 			playing,
-			time,
+			currentTime,
+			totalTime,
 		}
 
 		const controlsHandlers = {
 			togglePlay,
 		}
 
+		const timebarViewState = {
+			currentTime,
+			totalTime,
+		}
+
+		const timebarHandlers = {
+			handleVideoScrubChange,
+		}
+
 		return (
 			<Style >
 				<Controls style={`width: 505`} viewstate={controlsViewState} handlers={controlsHandlers}/>
-				<TimeBar />
+				<TimeBar viewstate={timebarViewState} handlers={ timebarHandlers } />
 				<ToggleButton />
 			</Style>
 		)
