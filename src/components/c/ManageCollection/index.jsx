@@ -113,3 +113,5 @@ export default class ManageCollection extends PureComponent {
 		)
 	}
 }
+
+/* Esdras 3/31/2020 - Admin and professor can archive/unarchive */

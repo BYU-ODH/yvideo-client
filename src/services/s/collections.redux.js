@@ -344,3 +344,5 @@ export default class CollectionService {
 
 	}
 }
+
+/* Esdras 3/31/2020 - Admin and professor can archive/unarchive */

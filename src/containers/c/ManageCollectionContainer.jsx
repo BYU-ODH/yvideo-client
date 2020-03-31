@@ -112,3 +112,5 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCollectionContainer)
+
+/* Esdras 3/31/2020 - Admin and professor can archive/unarchive */
