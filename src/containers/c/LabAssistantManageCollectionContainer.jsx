@@ -74,7 +74,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	getCollectionContent: adminService.getCollectionContent,
 	toggleModal: interfaceService.toggleModal,
-	updateCollectionStatus: collectionService.updateCollectionStatus,
+	updateCollectionStatus: adminService.updateCollectionStatus,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManageCollectionContainer)

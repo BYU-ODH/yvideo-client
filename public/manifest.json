@@ -1,6 +1,6 @@
 {
-	"short_name": "YVideo",
-	"name": "YVideo Web Client",
+	"short_name": "Y Video",
+	"name": "Helping Teachers Teach Film",
 	"icons": [
 		{
 			"src": "favicon.ico",
@@ -10,6 +10,6 @@
 	],
 	"start_url": ".",
 	"display": "standalone",
-	"theme_color": "#ffffff",
+	"theme_color": "#000000",
 	"background_color": "#ffffff"
 }
