@@ -235,6 +235,7 @@ export default class CollectionService {
 
 		case `unarchive`:
 			currentState.published = false
+			currentState.archived = false
 			break
 
 		default:
