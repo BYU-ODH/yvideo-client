@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import {
 	ContentOverviewContainer,
-	CollectionPermissionsContainer
+	CollectionPermissionsContainer,
 } from 'containers'
 
 import Style, {
@@ -15,7 +15,7 @@ import Style, {
 	Selector,
 	Tab,
 	NewContent,
-	Icon
+	Icon,
 } from './styles'
 
 import plus from 'assets/plus_gray.svg'
@@ -28,7 +28,7 @@ export default class ManageCollection extends PureComponent {
 			collectionName,
 			isEditingCollectionName,
 			isContent,
-			content
+			content,
 		} = this.props.viewstate
 
 		const {
@@ -38,7 +38,7 @@ export default class ManageCollection extends PureComponent {
 			togglePublish,
 			archive,
 			setTab,
-			createContent
+			createContent,
 		} = this.props.handlers
 
 		console.log(admin)
@@ -47,7 +47,7 @@ export default class ManageCollection extends PureComponent {
 			<Style>
 				<header>
 					<Title>
-						{isEditingCollectionName ?
+						{isEditingCollectionName ? (
 							// TODO When switching between collections, it uses the same value
 							<TitleEdit
 								type='text'
@@ -55,38 +55,38 @@ export default class ManageCollection extends PureComponent {
 								contenteditable='true'
 								onChange={handleNameChange}
 								onKeyPress={event => {
-									if (event.key === 'Enter') toggleEdit()
+									if (event.key === `Enter`) toggleEdit()
 								}}
 								size={collectionName.length > 0 ? collectionName.length : 1}
 								autoFocus
 							/>
-						 :
+						) : (
 							<h6 onClick={toggleEdit}>{collection.name}</h6>
-						}
+						)}
 						<TitleEditButton
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
 						>
-							{isEditingCollectionName ? 'Save' : 'Edit'}
+							{isEditingCollectionName ? `Save` : `Edit`}
 						</TitleEditButton>
 					</Title>
 					<div>
-						{collection.archived ?
-							<>{admin[0] === 'admin' || admin[0] === 'professor' ?
+						{collection.archived ? (
+							<>{admin[0] === `admin` || admin[0] === `professor` ? (
 								<ArchiveButton onClick={unarchive}>Unarchive</ArchiveButton>
-							 : <p>Cannot unarchive</p> }
+							) : ( <p>Cannot unarchive</p> )}
 							</>
-						 :
+						) : (
 							<>
 								<PublishButton
 									published={collection.published}
 									onClick={togglePublish}
 								>
-									{collection.published ? 'Unpublish' : 'Publish'}
+									{collection.published ? `Unpublish` : `Publish`}
 								</PublishButton>
 								<ArchiveButton onClick={archive}>Archive</ArchiveButton>
 							</>
-						}
+						)}
 					</div>
 				</header>
 				<TabHeader>
@@ -96,21 +96,20 @@ export default class ManageCollection extends PureComponent {
 				</TabHeader>
 				<Tab>
 					{isContent ?
-						content.map(item =>
-							<ContentOverviewContainer key={item.id} content={item} />)
-						:
+						content.map(item => (
+							<ContentOverviewContainer key={item.id} content={item} />
+						))
+						: (
 							<CollectionPermissionsContainer collection={collection} />
-						}
+						)}
 
-					{isContent &&
+					{isContent && (
 						<NewContent onClick={createContent}>
 							<Icon src={plus} />
 						</NewContent>
-					}
+					)}
 				</Tab>
 			</Style>
 		)
 	}
 }
-
-/* Esdras 3/31/2020 - Admin and professor can archive/unarchive */

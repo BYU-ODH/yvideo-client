@@ -1,26 +1,19 @@
 export default class AdminService {
 
-	// TODO: Move all functionality from this service into appropriate services
-
-	// This whole service doesn't make sense. There is no object in the database called an "admin". That's just a role.
-	// So all of the collection stuff should be put into the collections service, all the search_professor stuff should
-	// be in some kind of user service, etc.
-
 	// types
 
 	types = {
 		ADMIN_START: `ADMIN_START`,
 		ADMIN_ABORT: `ADMIN_ABORT`,
 		ADMIN_CLEAN: `ADMIN_CLEAN`,
-		ADMIN_ERROR: `ADMIN_ERROR`,
-		ADMIN_SEARCH: `ADMIN_SEARCH`,
 		ADMIN_CREATE_COLLECTION: `ADMIN_CREATE_COLLECTION`,
 		ADMIN_CREATE_CONTENT: `ADMIN_CREATE_CONTENT`,
+		ADMIN_ERROR: `ADMIN_ERROR`,
 		ADMIN_GET_COLLECTION_CONTENT: `ADMIN_GET_COLLECTION_CONTENT`,
+		ADMIN_SEARCH: `ADMIN_SEARCH`,
 		ADMIN_SEARCH_PROFESSORS: `ADMIN_SEARCH_PROFESSORS`,
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
-		ADMIN_COLLECTION_EDIT: `ADMIN_COLLECTION_EDIT`,
 	}
 
 	// action creators
@@ -37,7 +30,6 @@ export default class AdminService {
 		adminSearchProfessors: results => ({ type: this.types.ADMIN_SEARCH_PROFESSORS, payload: { results }}),
 		adminSetProfessor: professor => ({ type: this.types.ADMIN_SET_PROFESSOR, payload: { professor }}),
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
-		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 	}
 
 	// default store
@@ -72,7 +64,6 @@ export default class AdminService {
 			ADMIN_SEARCH_PROFESSORS,
 			ADMIN_SET_PROFESSOR,
 			ADMIN_SEARCH_COLLECTIONS,
-			ADMIN_COLLECTION_EDIT,
 		} = this.types
 
 		switch (action.type) {
@@ -167,16 +158,6 @@ export default class AdminService {
 				professorCollections: action.payload.results,
 				loading: false,
 				lastFetchedCollections: Date.now(),
-			}
-
-		case ADMIN_COLLECTION_EDIT:
-			return {
-				...store,
-				professorCollections: {
-					...store.professorCollections,
-					[action.payload.collection.id]: action.payload.collection,
-				},
-				loading: false,
 			}
 
 		default:
@@ -355,47 +336,6 @@ export default class AdminService {
 			}
 
 		} else dispatch(this.actions.adminAbort())
-	}
-
-	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {
-
-		dispatch(this.actions.adminStart())
-
-		const currentState = { ...getState().collectionStore.cache[id] }
-
-		let abort = false
-
-		switch (action) {
-		case `publish`:
-			currentState.published = true
-			break
-
-		case `unpublish`:
-			currentState.published = false
-			break
-
-		case `archive`:
-			currentState.archived = true
-			break
-
-		case `unarchive`:
-			currentState.published = false
-			break
-
-		default:
-			abort = true
-			break
-		}
-
-		if (abort) dispatch(this.actions.adminAbort())
-		else {
-			try {
-				const result = await apiProxy.collection.edit(id, action)
-				dispatch(this.actions.adminCollectionEdit(result))
-			} catch (error) {
-				dispatch(this.actions.adminError(error))
-			}
-		}
 	}
 
 	clean = () => async (dispatch) => {

@@ -8,11 +8,14 @@ class Load extends Component {
 	wrapper = createRef()
 
 	render() {
-		return ReactDOM.createPortal(<Wrapper ref={this.wrapper} className='active'>
+		return ReactDOM.createPortal(
+			(
+				<Wrapper ref={this.wrapper} className='active'>
 					<Spinner />
 				</Wrapper>
-			,
-			document.getElementById('load'))
+			),
+			document.getElementById(`load`)
+		)
 	}
 
 	componentDidUpdate = prevProps => {
@@ -20,15 +23,15 @@ class Load extends Component {
 		if (!this.wrapper.current) return
 
 		if (!prevProps.loading && this.props.loading) {
-			this.wrapper.current.classList.add('active')
-			this.wrapper.current.classList.remove('hidden')
+			this.wrapper.current.classList.add(`active`)
+			this.wrapper.current.classList.remove(`hidden`)
 		}
 
 		if (prevProps.loading && !this.props.loading) {
 			setTimeout(() => {
-				this.wrapper.current.classList.remove('active')
+				this.wrapper.current.classList.remove(`active`)
 				setTimeout(() => {
-					this.wrapper.current.classList.add('hidden')
+					this.wrapper.current.classList.add(`hidden`)
 				}, 250)
 			}, 1000)
 		}
