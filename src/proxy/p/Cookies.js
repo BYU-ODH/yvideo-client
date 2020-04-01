@@ -2,7 +2,7 @@ const cookies = {
 	set: (cookieName, cookieValue, maxDays, path = ``, domain = ``) => {
 		const date = new Date()
 		date.setTime(date.getTime() + maxDays * 24 * 60 * 60 * 1000)
-		document.cookie = `${cookieName}=${cookieValue};path=${path};domain=${domain};expires=${date.toUTCString()}`
+		document.cookie = `${cookieName}=${cookieValue};path=${path};domain=${domain};expires=${date.toUTCString()};SameSite="Lax"`
 	},
 
 	get: cookieName => {
