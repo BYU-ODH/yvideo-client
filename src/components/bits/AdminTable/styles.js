@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
 import iconEdit from 'assets/admin-icon-edit.svg'
+import iconFilter from 'assets/admin-icon-filter.svg'
+import iconSort from 'assets/admin-icon-sort.svg'
 
 const Style = styled.div`
 	padding: 3rem 5rem;
@@ -24,12 +26,23 @@ export const Table = styled.table`
 		padding: 1rem;
 		text-align: left;
 	}
-`
+	`
+
+export const Filter = styled.button`
+	background: url(${iconFilter}) center no-repeat;
+	border: none;
+	height: 1.5rem;
+	cursor: pointer;`
+
+export const Sort = styled.button`
+	background: url(${iconSort}) center no-repeat;
+	border: none;
+	height: 1.5rem;
+	cursor: pointer;`
 
 export const ItemEdit = styled.button`
 	background: url(${iconEdit}) center no-repeat;
 	border: none;
 	width: 2.5rem;
   height: .5rem;
-	cursor: pointer;
-`
+	cursor: pointer;`
