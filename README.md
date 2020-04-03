@@ -4,20 +4,6 @@
 
 ## Development Environment
 
-### Global Packages
-
-Ensure you have Node.js installed, then run:
-
-```sh
-npm install -g yarn
-```
-
-Once installed, restart your terminal and run:
-
-```sh
-yarn global add eslint
-```
-
 ### ESLint
 
 This project includes an `.eslintrc` file which contains the linting rules that the project must abide by.
@@ -36,7 +22,7 @@ It's recommended to use VSCode to work on YVideo. The project includes a `.vscod
 ### `settings.json`
 - Selected Settings:
     - Auto-fix on save
-    - Package Manager: Yarn
+    - Package Manager: npm
     - Lint Task Enabled
     - Render all whitespace ([We use tabs, not spaces](https://pics.me.me/tabs-spaces-may-6-2016-37939459.png))
     - and more..
@@ -78,7 +64,7 @@ VSCode comes with TypeScript validation built-in. Since TypeScript is a super-se
 
 In the project directory, you can run:
 
-### `yarn start`
+### `npm start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -86,12 +72,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `yarn test`
+### `npm test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+### `npm build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
