@@ -34,8 +34,6 @@ class TimeBar extends PureComponent {
 
 		// const value = 50
 
-		const percentageComplete = currentTime / totalTime * 100
-
 		return (
 			<Style>
 				{/* <Scrubber />
@@ -44,8 +42,8 @@ class TimeBar extends PureComponent {
 				<div className='scrubber-container' style={{ height:  `20px` }}>
 					<Scrubber
 						min={0}
-						max={100}
-						value={percentageComplete}
+						max={totalTime}
+						value={currentTime}
 						// onScrubStart={this.handleScrubStart}
 						// onScrubEnd={this.handleScrubEnd}
 						onScrubChange={handleVideoScrubChange}

@@ -8,8 +8,10 @@ const TrackEditorContainer = () => {
 	const params = useParams()
 
 	const [playing, setPlaying] = useState(false)
-	const [currentTime, setCurrentTime] = useState(3.55)
-	const [totalTime, setTotalTime] = useState(12.55)
+	const [currentTime, setCurrentTime] = useState(0)
+	const [totalTime, setTotalTime] = useState(0)
+	// React Video Player ref (Child)
+	const [playerRef, setPlayerRef]= useState(null)
 
 	const viewstate = {
 		contentId: params.id,
@@ -19,15 +21,31 @@ const TrackEditorContainer = () => {
 	}
 
 	const handlers = {
-		togglePlay() {
-			setPlaying(!playing)
+		togglePlay(playBool) {
+			setPlaying(playBool)
 			// alert(`hello`)
 		},
 		handleVideoScrubChange(value) {
 			console.log(value)
-			const adjustedTime = totalTime * (value / 100)
-			setCurrentTime(adjustedTime)
-			console.log(`Adjusted time: `, adjustedTime)
+			// const adjustedTime = totalTime * (value / 100)
+			// const adjustedTime = totalTime * (value / 100)
+			setCurrentTime(value)
+			// console.log(`Ref: `, playerRef)
+			playerRef.seekTo(value, {type: `seconds`})
+
+			// console.log(`Adjusted time: `, adjustedTime)
+		},
+
+		handleTotalTimeChange(value) {
+			setTotalTime(value)
+		},
+		handleCurrentTimeChange(value) {
+			console.log(`handleCurrentTimeChange: `, value)
+			console.log(`handleCurrentTimeChange (totalTime): `, totalTime)
+			setCurrentTime(value)
+		},
+		handleSetPlayerRef(ref) {
+			setPlayerRef(ref)
 		},
 	}
 

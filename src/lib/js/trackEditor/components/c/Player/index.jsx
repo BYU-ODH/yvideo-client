@@ -8,10 +8,11 @@ import Style from './styles'
 
 export default class Player extends PureComponent {
 
-	render() { /*
+	render() {
+
 		const {
 			ref,
-			url,
+			url, // TODO: Add
 			playing,
 			playbackRate,
 			volume,
@@ -19,23 +20,40 @@ export default class Player extends PureComponent {
 		} = this.props.viewstate
 
 		const {
-			handleDuration,
-			handleMouseOut,
-			handleMouseOver,
-			handlePause,
-			handlePlay,
-			handleProgress,
+			// handleDuration,
+			// handleMouseOut,
+			// handleMouseOver,
+			// handlePause,
+			// handlePlay,
+			// handleProgress,
+
+			togglePlay,
+			handleSetPlayerRef,
+			handleTotalTimeChange,
+			handleCurrentTimeChange,
 		} = this.props.handlers
 
 		return (
 			<Style>
-				<div className='player-wrapper' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+				{/* // onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} */}
+				<div className='player-wrapper'>
 					<ReactPlayer
-						ref={ref}
+						ref={(ref) => handleSetPlayerRef(ref)}
 						className='react-player'
+						// config={{
+						// 	youtube: {
+						// 		playerVars: { showInfo: 0, controls: 0, modestbranding: 1},
+						// 	},
+						// }}
+						config={{
+							youtube: {
+								playerVars: { modestbranding: 1, controls: 0, rel: 0, enablejsapi:1 },
+								preload: true,
+							},
+						}}
 						width='100%'
 						height='50rem'
-						url={url}
+						url={`https://www.youtube.com/watch?v=klWwZxQe-ps`}
 						playing={playing}
 						controls={false}
 						playbackRate={playbackRate}
@@ -43,21 +61,19 @@ export default class Player extends PureComponent {
 						muted={muted}
 						onReady={() => console.log(`onReady`)}
 						onStart={() => console.log(`onStart`)}
-						onPlay={handlePlay}
-						onPause={handlePause}
+						// Might want to
+						onPlay={() => togglePlay(true)}
+						onPause={() => togglePlay(false)}
 						onBuffer={() => console.log(`onBuffer`)}
 						onSeek={e => console.log(`onSeek`, e)}
 						onError={e => console.log(`onError`, e)}
 						progressInterval={100}
-						onProgress={handleProgress}
-						onDuration={handleDuration}
+						onProgress={(progress) => handleCurrentTimeChange(progress.playedSeconds)} // handleProgress //handleCurrentTimeChange(progress * 100
+						onDuration={(duration) => handleTotalTimeChange(duration)} // TODO: Might want to switch back to seconds (React Player uses seconds) we are converting to milliseconds
 					/>
 					<Caption />
 				</div>
 			</Style>
-		)*/
-		return (
-			<Style />
 		)
 	}
 }

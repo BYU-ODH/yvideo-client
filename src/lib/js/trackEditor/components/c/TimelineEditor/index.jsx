@@ -28,6 +28,8 @@ class TimelineEditor extends PureComponent {
 			handleVideoScrubChange,
 		}
 
+		console.log(`Playing, timeline editor: `, playing)
+
 		return (
 			<Style>
 				<Status viewstate={statusViewState} handlers={statusHandlers}/>
