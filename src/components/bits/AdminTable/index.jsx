@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Table, ItemEdit } from './styles'
+import Style, { Table, ItemEdit, Filter, Sort } from './styles'
 
 export default class AdminTable extends PureComponent {
 
@@ -14,12 +14,18 @@ export default class AdminTable extends PureComponent {
 				columns: [
 					{
 						title: `ID`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `NetID`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `Name`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `Roles`,
@@ -36,6 +42,8 @@ export default class AdminTable extends PureComponent {
 					},
 					{
 						title: `Last Login`,
+						sort: true,
+						descending: false,
 					},
 				],
 			},
@@ -76,9 +84,9 @@ export default class AdminTable extends PureComponent {
 					{
 						title: `Collection`,
 					},
-					{
-						title: `Requester`,
-					},
+					// {
+					// 	title: `Requester`,
+					// },
 					// {
 					// 	title: `Language`,
 					// 	filter: {},
@@ -134,10 +142,10 @@ export default class AdminTable extends PureComponent {
 						ID: item.id,
 						Name: item.name,
 						Collection: item.collectionId,
-						Requester: item.requester,
+						// Requester: item.requester,
 						// Language: lang || ``,
 						Type: item.contentType,
-						Expired: item.expired,
+						Expired: item.expired.toString(),
 						ResourceID: item.resourceId,
 					}
 				} else return item
@@ -150,43 +158,6 @@ export default class AdminTable extends PureComponent {
 		const { data } = this.state
 		if (!data.length || data[0] === undefined) return null
 
-		// const mappedData = data.map(item => {
-		// 	if (this.props.category === `Users`) {
-		// 		return {
-		// 			ID: item.id,
-		// 			NetID: item.username,
-		// 			Name: item.name,
-		// 			Roles: item.roles,
-		// 			Email: item.email,
-		// 			"Last Login": new Date(item.lastLogin).toDateString(),
-		// 		}
-		// 	} else if (this.props.category === `Collections`) {
-		// 		return {
-		// 			ID: item.id,
-		// 			Name: item.name,
-		// 			Owner: item.owner,
-		// 			// "# Students",
-		// 			// "# Content",
-		// 			// Email,
-		// 		}
-		// 	} else if (this.props.category === `Content`){
-
-		// 		// const lang = item.settings.targetLanguages[0]
-		// 		// if (lang && !langs.includes(lang)) langs.push(lang)
-
-		// 		return {
-		// 			ID: item.id,
-		// 			Name: item.name,
-		// 			Collection: item.collectionId,
-		// 			Requester: item.requester,
-		// 			// Language: lang || ``,
-		// 			Type: item.contentType,
-		// 			Expired: item.expired,
-		// 			ResourceID: item.resourceId,
-		// 		}
-		// 	} else return item
-		// })
-
 		const headers = this.state[category].columns
 
 		return (
@@ -194,7 +165,7 @@ export default class AdminTable extends PureComponent {
 				<Table>
 					<thead>
 						<tr>
-							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && `f`}</th>)}
+							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}<Sort /></th>)}
 							<th/>
 						</tr>
 					</thead>
