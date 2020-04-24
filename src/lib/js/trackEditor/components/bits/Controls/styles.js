@@ -7,7 +7,8 @@ import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
 import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
-import volumeIcon from 'assets/volume_up-rounded.svg'
+import volumeUpIcon from 'assets/controls_volume_up-rounded.svg'
+import volumeMutedIcon from 'assets/controls_volume_mute-rounded.svg'
 import visibiltyOnIcon from 'assets/visibility_on-outlined.svg'
 import visibiltyOffIcon from 'assets/visibility_off-outlined.svg'
 
@@ -94,7 +95,9 @@ border-radius:.35rem;
 
 export const Volume = styled(IconButton)`
 margin-left: 1.25rem;
-background: url(${volumeIcon}) center no-repeat;
+/* background: url(${volumeUpIcon}) center no-repeat; */
+background: url(${props => props.muted ? volumeMutedIcon : volumeUpIcon}) center no-repeat;
+
 background-size: 2rem;
 `
 
@@ -102,12 +105,12 @@ background-size: 2rem;
 // 	background: url(${volumeIcon}) center no-repeat;
 // `
 
-export const ClosedCaptions = styled.button`
-	background: url(${closedCaption}) center no-repeat;
-`
+// export const ClosedCaptions = styled.button`
+// 	background: url(${closedCaption}) center no-repeat;
+// `
 
-export const Fullscreen = styled.button`
-	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
-`
+// export const Fullscreen = styled.button`
+// 	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
+// `
 
 export { Style }

@@ -11,12 +11,14 @@ class Controls extends PureComponent {
 	render() {
 		const {
 			playing,
+			muted,
 			currentTime,
 			totalTime,
 		} = this.props.viewstate
 
 		const {
 			togglePlay,
+			toggleMuted,
 		} = this.props.handlers
 
 		// Because of the nature of the toFixed method, it will round the last digit after decimal
@@ -52,8 +54,6 @@ class Controls extends PureComponent {
 				<div className='left'>
 					<PlayPause playing={playing} onClick={() => togglePlay(!playing)}/>
 
-					{/* //TODO: Remove left and right divs */}
-					{/* //TODO: Time needs to move left instead of right when it grows into hours */}
 					<Time>
 						{ timeDurationString() }
 					</Time>
@@ -61,7 +61,7 @@ class Controls extends PureComponent {
 					<Visible />
 					{/* <Volume onClick={handleToggleMuted}/> */}
 					{/* //TODO: Add on hover to pop up volume controls */}
-					<Volume />
+					<Volume muted={muted} onClick={() => toggleMuted(!muted)} />
 					{/* <VolumeScrubber volume={volume} muted={muted} handleClick={handleVolumeChange}/> */}
 				</div>
 			</Style>

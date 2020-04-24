@@ -9,6 +9,7 @@ class Status extends PureComponent {
 	render() {
 		const {
 			playing,
+			muted,
 			currentTime,
 			totalTime,
 			minimized,
@@ -16,18 +17,21 @@ class Status extends PureComponent {
 
 		const {
 			togglePlay,
+			toggleMuted,
 			toggleMinimize,
 			handleVideoScrubChange,
 		} = this.props.handlers
 
 		const controlsViewState = {
 			playing,
+			muted,
 			currentTime,
 			totalTime,
 		}
 
 		const controlsHandlers = {
 			togglePlay,
+			toggleMuted,
 		}
 
 		const timebarViewState = {
