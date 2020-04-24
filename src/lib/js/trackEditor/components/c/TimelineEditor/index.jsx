@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style from './styles'
+import Style, { TimelineContainer, StatusContainer } from './styles'
 import { Status, SuperScrollbar, Timeline } from './../..'
 
 class TimelineEditor extends PureComponent {
@@ -8,23 +8,27 @@ class TimelineEditor extends PureComponent {
 
 		const {
 			playing,
+			minimized,
 			currentTime,
 			totalTime,
 		} = this.props.viewstate
 
 		const {
 			togglePlay,
+			toggleMinimize,
 			handleVideoScrubChange,
 		} = this.props.handlers
 
 		const statusViewState = {
 			playing,
+			minimized,
 			currentTime,
 			totalTime,
 		}
 
 		const statusHandlers = {
 			togglePlay,
+			toggleMinimize,
 			handleVideoScrubChange,
 		}
 
@@ -32,9 +36,13 @@ class TimelineEditor extends PureComponent {
 
 		return (
 			<Style>
-				<Status viewstate={statusViewState} handlers={statusHandlers}/>
-				<Timeline />
-				<SuperScrollbar />
+				<StatusContainer>
+					<Status viewstate={statusViewState} handlers={statusHandlers}/>
+				</StatusContainer>
+				<TimelineContainer minimized={minimized}>
+					<Timeline />
+					<SuperScrollbar />
+				</TimelineContainer>
 			</Style>
 		)
 	}

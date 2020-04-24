@@ -8,6 +8,7 @@ const TrackEditorContainer = () => {
 	const params = useParams()
 
 	const [playing, setPlaying] = useState(false)
+	const [minimized, setMinimized] = useState(false)
 	const [currentTime, setCurrentTime] = useState(0)
 	const [totalTime, setTotalTime] = useState(0)
 	// React Video Player ref (Child)
@@ -16,6 +17,7 @@ const TrackEditorContainer = () => {
 	const viewstate = {
 		contentId: params.id,
 		playing,
+		minimized,
 		currentTime,
 		totalTime,
 	}
@@ -23,6 +25,10 @@ const TrackEditorContainer = () => {
 	const handlers = {
 		togglePlay(playBool) {
 			setPlaying(playBool)
+			// alert(`hello`)
+		},
+		toggleMinimize(minimizeBool) {
+			setMinimized(minimizeBool)
 			// alert(`hello`)
 		},
 		handleVideoScrubChange(value) {

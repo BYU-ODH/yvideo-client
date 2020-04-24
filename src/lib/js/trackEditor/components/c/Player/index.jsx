@@ -52,7 +52,7 @@ export default class Player extends PureComponent {
 							},
 						}}
 						width='100%'
-						height='50rem'
+						height='100%'
 						url={`https://www.youtube.com/watch?v=klWwZxQe-ps`}
 						playing={playing}
 						controls={false}
