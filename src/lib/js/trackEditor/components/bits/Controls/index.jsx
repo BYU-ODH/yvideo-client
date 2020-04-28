@@ -25,11 +25,11 @@ class Controls extends PureComponent {
 		// let stringifiedTime = currentTime.toFixed(2)
 		// Changes decimal of float to colon
 		// stringifiedTime = stringifiedTime.replace(`.`, `:`)
-		console.log(`Playing: `, playing)
+		// console.log(`Playing: `, playing)
 		// TODO: Might want to consider moving this into ./utils if it's going to be used elsewhere
 		const timeDurationString = function() {
 			// Does not work if time duration is longer than 24 hours
-			console.log(`Current Time: `, currentTime)
+			// console.log(`Current Time: `, currentTime)
 			const duration = Duration.fromObject({seconds: currentTime})
 			// console.log(`Seconds: `, duration.as(`seconds`))
 			// console.log(`Minutes: `, duration.as(`minutes`))

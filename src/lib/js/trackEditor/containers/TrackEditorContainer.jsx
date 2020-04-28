@@ -40,7 +40,7 @@ const TrackEditorContainer = () => {
 			// alert(`hello`)
 		},
 		handleVideoScrubChange(value) {
-			console.log(value)
+			// console.log(value)
 			// const adjustedTime = totalTime * (value / 100)
 			// const adjustedTime = totalTime * (value / 100)
 			setCurrentTime(value)
@@ -54,8 +54,8 @@ const TrackEditorContainer = () => {
 			setTotalTime(value)
 		},
 		handleCurrentTimeChange(value) {
-			console.log(`handleCurrentTimeChange: `, value)
-			console.log(`handleCurrentTimeChange (totalTime): `, totalTime)
+			// console.log(`handleCurrentTimeChange: `, value)
+			// console.log(`handleCurrentTimeChange (totalTime): `, totalTime)
 			setCurrentTime(value)
 		},
 		handleSetPlayerRef(ref) {

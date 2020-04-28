@@ -5,7 +5,9 @@ import Style from './styles'
 class TrackItemHandler extends PureComponent {
 	render() {
 		return (
-			<Style />
+			<Style>
+				<h1>Track Item</h1>
+			</Style>
 		)
 	}
 }
