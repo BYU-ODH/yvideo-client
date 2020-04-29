@@ -11,9 +11,10 @@ import {
 	MenuContainer,
 	ManagerContainer,
 	PlayerContainer,
-} from 'containers'
+	TrackEditorContainer,
 
-import TrackEditorContainer from 'lib/js/trackEditor/containers/TrackEditorContainer'
+	TestContainer,
+} from 'containers'
 
 import {
 	Load,
@@ -70,8 +71,12 @@ class Root extends PureComponent {
 								<PlayerContainer />
 							</Route>
 
-							<Route path='/track-editor/:id'>
+							<Route path='/trackeditor/:id'>
 								<TrackEditorContainer />
+							</Route>
+
+							<Route path='/test'>
+								<TestContainer />
 							</Route>
 
 							<Route>

@@ -25,7 +25,7 @@ const TrackEditorContainer = () => {
 	}
 
 	const handlers = {
-		togglePlay(playBool) {
+		togglePlay: () => (playBool) => {
 			setPlaying(playBool)
 			// alert(`hello`)
 		},

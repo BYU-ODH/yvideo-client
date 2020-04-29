@@ -63,7 +63,7 @@ export default class Player extends PureComponent {
 						onReady={() => console.log(`onReady`)}
 						onStart={() => console.log(`onStart`)}
 						// Might want to
-						onPlay={() => togglePlay(true)}
+						onPlay={togglePlay(true)}
 						onPause={() => togglePlay(false)}
 						onBuffer={() => console.log(`onBuffer`)}
 						onSeek={e => console.log(`onSeek`, e)}
