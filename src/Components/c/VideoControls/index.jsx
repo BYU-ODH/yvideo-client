@@ -6,7 +6,6 @@ const VideoControls = props => {
 
 	return (
 		<Style>
-
 		</Style>
 	)
 }

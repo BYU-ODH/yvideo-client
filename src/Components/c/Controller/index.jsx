@@ -34,9 +34,7 @@ const Controller = props => {
 
 		// handlers
 
-		togglePlay: playing => setPlaying(playing),
 		toggleMute: state => setMuted(state),
-
 		setVolume: volume => setVolumeState(volume),
 
 		handleReady: reactPlayer => {
@@ -52,7 +50,6 @@ const Controller = props => {
 			setMuted(muted)
 			setPlaybackRate(playbackRate)
 		},
-
 		handleProgress: ({ played, playedSeconds }) => {
 			setPlayed(played)
 			setElapsed(playedSeconds)
@@ -62,6 +59,12 @@ const Controller = props => {
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
+		},
+		handlePause: () => {
+			setPlaying(false)
+		},
+		handlePlay: () => {
+			setPlaying(true)
 		},
 
 	}
@@ -73,45 +76,44 @@ const Controller = props => {
 		},
 	}
 
-	return <Style>
-		<ReactPlayer ref={ref} config={config} url={url}
+	const Layout = props.trackeditor ? props.trackeditor : props.videocontrols
 
-			// constants
+	return (
+		<Style editing={!!props.trackEditor}>
+			<Layout video={video}>
+				<ReactPlayer ref={ref} config={config} url={url}
 
-			className='react-player'
-			width='100%'
-			height='100%'
-			controls={true}
-			progressInterval={100}
+					// constants
 
-			// state
+					className='react-player'
+					width='100%'
+					height='100%'
+					controls={true}
+					progressInterval={100}
 
-			playing={playing}
-			volume={volume}
-			muted={muted}
-			playbackRate={playbackRate}
+					// state
 
-			// handlers
+					playing={playing}
+					volume={volume}
+					muted={muted}
+					playbackRate={playbackRate}
 
-			onReady={video.handleReady}
-			// onStart={() => console.log(`onStart`)}
-			// onBuffer={() => console.log(`onBuffer`)}
-			onError={console.error}
+					// handlers
 
-			onPlay={video.togglePlay}
-			onPause={video.togglePlay}
+					onReady={video.handleReady}
+					// onStart={() => console.log(`onStart`)}
+					// onBuffer={() => console.log(`onBuffer`)}
+					onError={console.error}
 
-			onProgress={video.handleProgress}
-			onDuration={video.handleDuration}
+					onPlay={video.handlePlay}
+					onPause={video.handlePause}
 
-		/>
-
-		{props.trackEditor ?
-			<props.trackEditor video={video} />
-			:
-			<props.videocontrols video={video} />
-		}
-	</Style>
+					onProgress={video.handleProgress}
+					onDuration={video.handleDuration}
+				/>
+			</Layout>
+		</Style>
+	)
 }
 
 export default Controller
