@@ -65,7 +65,7 @@ class ContentOverview extends PureComponent {
 							<Icon className='annotations' checked={showAnnotations} />
 						</ul>
 						{editing ||
-							<StyledLink to={`/track-editor/${content.id}`}>Track Editor</StyledLink>
+							<StyledLink to={`/trackeditor/${content.id}`}>Track Editor</StyledLink>
 						}
 						{editing ?
 							<div>

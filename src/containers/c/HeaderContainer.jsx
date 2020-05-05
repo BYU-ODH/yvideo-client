@@ -9,11 +9,13 @@ export class HeaderContainer extends Component {
 		const {
 			lost,
 			border,
+			editorStyle,
 		} = this.props
 
 		const viewstate = {
 			lost,
 			border,
+			editorStyle,
 		}
 
 		return <Header viewstate={viewstate} />
@@ -23,6 +25,7 @@ export class HeaderContainer extends Component {
 const mapStateToProps = store => ({
 	lost: store.interfaceStore.lost,
 	border: store.interfaceStore.headerBorder,
+	editorStyle: store.interfaceStore.editorStyle,
 })
 
 export default connect(mapStateToProps)(HeaderContainer)

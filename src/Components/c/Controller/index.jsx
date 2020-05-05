@@ -1,5 +1,8 @@
 import React, { useRef, useState } from 'react'
 
+import { DndProvider } from 'react-dnd'
+import Backend from 'react-dnd-html5-backend'
+
 import ReactPlayer from 'react-player'
 
 import Style from './styles'
@@ -20,6 +23,10 @@ const Controller = props => {
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 
+	// for track-editor
+
+	const [selectedEvent, setSelectedEvent] = useState(``)
+
 	const video = {
 
 		// state
@@ -32,9 +39,14 @@ const Controller = props => {
 		elapsed,
 		playbackRate,
 
+		// for track-editor
+
+		selectedEvent,
+		setSelectedEvent,
+
 		// handlers
 
-		toggleMute: state => setMuted(state),
+		toggleMute: () => setMuted(!muted),
 		setVolume: volume => setVolumeState(volume),
 
 		handleReady: reactPlayer => {
@@ -60,6 +72,12 @@ const Controller = props => {
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
 		},
+		handleSeek: e => {
+			const scrubber = e.currentTarget.getBoundingClientRect()
+			const newPlayed = (e.pageX - scrubber.left) / scrubber.width
+			console.log(newPlayed)
+			ref.current.seekTo(newPlayed, `fraction`)
+		},
 		handlePause: () => {
 			setPlaying(false)
 		},
@@ -71,7 +89,14 @@ const Controller = props => {
 
 	const config = {
 		youtube: {
-			playerVars: { modestbranding: 1, rel: 0, enablejsapi:1 },
+			playerVars: {
+				autoplay: 0,
+				controls: 0,
+				iv_load_policy: 3,
+				modestbranding: 1,
+				rel: 0,
+				enablejsapi: 1,
+			},
 			preload: true,
 		},
 	}
@@ -80,38 +105,40 @@ const Controller = props => {
 
 	return (
 		<Style editing={!!props.trackEditor}>
-			<Layout video={video}>
-				<ReactPlayer ref={ref} config={config} url={url}
+			<DndProvider backend={Backend}>
+				<Layout video={video}>
+					<ReactPlayer ref={ref} config={config} url={url}
 
-					// constants
+						// constants
 
-					className='react-player'
-					width='100%'
-					height='100%'
-					controls={true}
-					progressInterval={100}
+						className='react-player'
+						width='100%'
+						height='100%'
+						controls={true}
+						progressInterval={100}
 
-					// state
+						// state
 
-					playing={playing}
-					volume={volume}
-					muted={muted}
-					playbackRate={playbackRate}
+						playing={playing}
+						volume={volume}
+						muted={muted}
+						playbackRate={playbackRate}
 
-					// handlers
+						// handlers
 
-					onReady={video.handleReady}
-					// onStart={() => console.log(`onStart`)}
-					// onBuffer={() => console.log(`onBuffer`)}
-					onError={console.error}
+						onReady={video.handleReady}
+						// onStart={() => console.log(`onStart`)}
+						// onBuffer={() => console.log(`onBuffer`)}
+						onError={console.error}
 
-					onPlay={video.handlePlay}
-					onPause={video.handlePause}
+						onPlay={video.handlePlay}
+						onPause={video.handlePause}
 
-					onProgress={video.handleProgress}
-					onDuration={video.handleDuration}
-				/>
-			</Layout>
+						onProgress={video.handleProgress}
+						onDuration={video.handleDuration}
+					/>
+				</Layout>
+			</DndProvider>
 		</Style>
 	)
 }

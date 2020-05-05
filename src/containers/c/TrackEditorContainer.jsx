@@ -9,7 +9,7 @@ import { interfaceService } from 'services'
 const TrackEditorContainer = props => {
 
 	const {
-		setHeaderBorder,
+		setEditorStyle,
 	} = props
 
 	const viewstate = {
@@ -17,11 +17,11 @@ const TrackEditorContainer = props => {
 	}
 
 	useEffect(() => {
-		setHeaderBorder(true)
+		setEditorStyle(true)
 		return () => {
-			setHeaderBorder(false)
+			setEditorStyle(false)
 		}
-	}, [setHeaderBorder])
+	}, [setEditorStyle])
 
 	return <Controller videocontrols={VideoControls} trackeditor={TrackEditor} viewstate={viewstate} />
 }
@@ -31,7 +31,7 @@ const mapStoreToProps = () => ({
 })
 
 const mapThunksToProps = {
-	setHeaderBorder: interfaceService.setHeaderBorder,
+	setEditorStyle: interfaceService.setEditorStyle,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

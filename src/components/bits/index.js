@@ -4,6 +4,7 @@ import AspectRadio from './AspectRadio'
 import Bar from './Bar'
 import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
+import Draggable from './Draggable'
 import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
 import ListCollection from './ListCollection'
@@ -26,6 +27,7 @@ export {
 	Bar,
 	BlockCollection,
 	BlockItem,
+	Draggable,
 	LabAssistantTable,
 	LazyImage,
 	ListCollection,
