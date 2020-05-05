@@ -13,13 +13,32 @@ export class Admin extends PureComponent {
 			placeholder,
 			searchQuery,
 			searchCategory,
+			menuId,
+			menuActive,
+			mousePos,
 		} = this.props.viewstate
 
 		const {
 			updateCategory,
 			updateSearchBar,
 			handleSubmit,
+			toggleMenu,
+			handleConfirmDelete,
 		} = this.props.handlers
+
+		const viewstate = {
+			searchCategory,
+			menuId,
+			menuActive,
+			category,
+			data,
+			mousePos,
+		}
+
+		const handlers = {
+			handleConfirmDelete,
+			toggleMenu,
+		}
 
 		return (
 			<Style>
@@ -28,11 +47,11 @@ export class Admin extends PureComponent {
 				<div>
 
 					<CategorySelect onChange={updateCategory}>
-						{Object.keys(category).map((c, index) =>
+						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
 								{category[c].name}
-							</option>,
-						)}
+							</option>
+						))}
 					</CategorySelect>
 
 					<Search onSubmit={handleSubmit}>
@@ -41,11 +60,15 @@ export class Admin extends PureComponent {
 					</Search>
 
 				</div>
-				{ data !== null ? (
-					<>
-						{ data.length < 1 ? (<FeedbackMessage><p>The are no results</p></FeedbackMessage>) : (<AdminTable category={searchCategory} data={data} />)}
-					</>
-				) : (<FeedbackMessage><p></p></FeedbackMessage>) }
+
+				{ data !== null ?
+					data.length < 1 ?
+						<FeedbackMessage><p>The are no results</p></FeedbackMessage>
+						:
+						<AdminTable viewstate={viewstate} handlers={handlers}/>
+					:
+					<FeedbackMessage><p></p></FeedbackMessage>
+				}
 
 			</Style>
 		)

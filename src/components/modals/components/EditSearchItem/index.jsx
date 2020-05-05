@@ -10,33 +10,32 @@ export default class EditSearchItem extends PureComponent {
 
 		this.state = {
 			confirmDelete: false,
-			positionY: 0
+			positionY: 0,
 		}
 		this.handleConfirmDelete = this.handleConfirmDelete.bind(this)
 	}
 
 	componentDidMount(){
 		const { lowClick, position } = this.props.viewstate
-		let heightDifference = window.innerHeight - (this.modalHeight.clientHeight + position.top)
+		const heightDifference = window.innerHeight - (this.modalHeight.clientHeight + position.top)
 
 		if (lowClick && Math.sign(heightDifference) === -1){
 
 			let newPosition = position.top - this.modalHeight.clientHeight
-			newPosition = newPosition.toFixed(0) + 'px'
+			newPosition = `${newPosition.toFixed(0)}px`
 			this.setState({
-				positionY: newPosition
+				positionY: newPosition,
 			})
-		}
-		else {
+		} else {
 			this.setState({
-				positionY: this.props.viewstate.position.top
+				positionY: this.props.viewstate.position.top,
 			})
 		}
 	}
 
 	handleConfirmDelete(){
 		this.setState({
-			confirmDelete: !this.state.confirmDelete
+			confirmDelete: !this.state.confirmDelete,
 		})
 	}
 
@@ -47,50 +46,52 @@ export default class EditSearchItem extends PureComponent {
 
 		return (
 			<>
-					<Center
-						style={{position: "absolute", top: positionY, left: position.right}}
-						onMouseLeave={close}
-						ref={ (modalHeight) => { this.modalHeight = modalHeight }}>
-						<Modal>
-							<h2><Close onClick={close}>x</Close></h2>
-							<br/>
-							<br/>
-							<div>
-								{ category === 'Users' ?
-									(
-										<Options>
-											<button>
-												<Link to={`/lab-assistant-manager/${data.ID}`} target="_blank"></Link>Collections
-											</button>
-											<Delete onClick={this.handleConfirmDelete}> Delete </Delete>
-										</Options>
-									)
+				<Center
+					style={{position: `absolute`, top: positionY, left: position.right}}
+					onMouseLeave={close}
+					ref={ (modalHeight) => {
+						this.modalHeight = modalHeight
+					}}>
+					<Modal>
+						<h2><Close onClick={close}>x</Close></h2>
+						<br/>
+						<br/>
+						<div>
+							{ category === `Users` ?
+								(
+									<Options>
+										<button>
+											<Link to={`/lab-assistant-manager/${data.ID}`} target='_blank'></Link>Collections
+										</button>
+										<Delete onClick={this.handleConfirmDelete}> Delete </Delete>
+									</Options>
+								)
+								:
+								category === `Collections` ? (
+									<Options>
+										<button>
+											<Link to={`/lab-assistant-manager/${data.Owner}/${data.ID}`} target='_blank'></Link>View/Edit
+										</button>
+										<Delete onClick={this.handleConfirmDelete}> Delete </Delete>
+									</Options>
+								)
 									:
-									category === 'Collections' ? (
-										<Options>
-											<button>
-												<Link to={`/lab-assistant-manager/${data.Owner}/${data.ID}`} target="_blank"></Link>View/Edit
-											</button>
-											<Delete onClick={this.handleConfirmDelete}> Delete </Delete>
-										</Options>
-									)
-									:
-									category === 'Content' ? (
+									category === `Content` ? (
 										<div>
 											<Options>
-												<button> <Link to={`/player/${data.ID}`} target="_blank"></Link> View </button>
+												<button> <Link to={`/player/${data.ID}`} target='_blank'></Link> View </button>
 												<button> Edit </button>
 												<button> Disable </button>
 												<Delete onClick={this.handleConfirmDelete}> Delete </Delete>
 											</Options>
 										</div>
 									)
-									: null
-								}
-							</div>
-						</Modal>
-						{
-							confirmDelete && (
+										: null
+							}
+						</div>
+					</Modal>
+					{
+						confirmDelete && (
 							<ConfirmDelete>
 								<ConfirmBox>
 									<Logo></Logo>
@@ -101,8 +102,8 @@ export default class EditSearchItem extends PureComponent {
 									</div>
 								</ConfirmBox>
 							</ConfirmDelete>)
-						}
-					</Center>
+					}
+				</Center>
 			</>
 		)
 	}

@@ -23,35 +23,35 @@ const EditSearchItemContainer = props => {
 
 	const deleteConfirmed = () => {
 		switch (category) {
-			case 'Users':
-				handleDeleteUser()
-				break;
+		case `Users`:
+			handleDeleteUser()
+			break
 
-			case 'Collections':
-				handleDeleteCollection()
-				break;
+		case `Collections`:
+			handleDeleteCollection()
+			break
 
-			case 'Content':
-				handleDeleteContent()
-				break;
+		case `Content`:
+			handleDeleteContent()
+			break
 
-			default:
-				break;
+		default:
+			break
 		}
 	}
 
 	const handleDeleteCollection = () => {
-		console.log(data, 'Called delete collection')
+		console.log(data, `Called delete collection`)
 		adminDeleteCollection(data.ID)
 	}
 
 	const handleDeleteUser = () => {
-		console.log(data, 'Called delete user')
+		console.log(data, `Called delete user`)
 		adminDeleteUser(data.ID)
 	}
 
 	const handleDeleteContent = () => {
-		console.log(data, 'Called delete content')
+		console.log(data, `Called delete content`)
 	}
 
 	const handlers = {
@@ -60,7 +60,7 @@ const EditSearchItemContainer = props => {
 	}
 
 	const viewstate = {
-		data, category, position, lowClick
+		data, category, position, lowClick,
 	}
 
 	return <EditSearchItem viewstate={viewstate} handlers={handlers} />

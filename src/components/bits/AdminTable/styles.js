@@ -56,3 +56,39 @@ export const ItemEdit = styled.button`
 		outline: 0;
 	}
 `
+
+export const ItemMenu = styled.div`
+	position: fixed;
+	top: ${props => props.mousePos.y}px;
+	left: ${props => props.mousePos.x}px;
+
+	background: white;
+	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.3);
+
+	width: 12rem;
+	font-size: 1.25rem;
+	padding: 2rem;
+
+	& > ul {
+		list-style: none;
+		padding: 0;
+
+		& > li {
+			margin-bottom: 1.5rem;
+
+			&:last-child {
+				margin: 0;
+			}
+		}
+	}
+
+	& button {
+		border: none;
+		background: transparent;
+		color: red;
+		margin: 0;
+		padding: 0;
+		outline: none;
+		cursor: pointer;
+	}
+`
