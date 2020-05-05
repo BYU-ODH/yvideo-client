@@ -41,8 +41,6 @@ export default class ManageCollection extends PureComponent {
 			createContent,
 		} = this.props.handlers
 
-		console.log(admin)
-
 		return (
 			<Style>
 				<header>
@@ -72,9 +70,13 @@ export default class ManageCollection extends PureComponent {
 					</Title>
 					<div>
 						{collection.archived ? (
-							<>{admin[0] === `admin` || admin[0] === `professor` ? (
-								<ArchiveButton onClick={unarchive}>Unarchive</ArchiveButton>
-							) : ( <p>Cannot unarchive</p> )}
+							<>
+								{ admin !== undefined ? (
+									<>{admin[0] === `admin` || admin[0] === `professor` ? (
+										<ArchiveButton onClick={unarchive}>Unarchive</ArchiveButton>
+									) : ( <p>Cannot unarchive</p> )}
+									</>
+								) : null }
 							</>
 						) : (
 							<>

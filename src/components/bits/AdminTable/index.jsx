@@ -2,12 +2,22 @@ import React, { PureComponent } from 'react'
 
 import Style, { Table, ItemEdit, Filter, Sort } from './styles'
 
+import EditItemContainer from 'components/modals/containers/EditSearchItemContainer'
+
 export default class AdminTable extends PureComponent {
 
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			showModal: false,
+			modalItemInfo: {},
+			modalPosition: {
+				position: 'absolute',
+				top: 0,
+			},
+			data: [],
+			lowClick: false,
 			Users: {
 				sortBy: ``,
 				descending: false,
@@ -109,6 +119,28 @@ export default class AdminTable extends PureComponent {
 				],
 			},
 		}
+		this.handleShowModal = this.handleShowModal.bind(this)
+		this.closeModal = this.closeModal.bind(this)
+	}
+
+	handleShowModal(){
+		const show = this.state.showModal
+		if (!show){
+				this.setState({
+				showModal: !show
+			})
+		}
+		else {
+				this.setState({
+				showModal: !show,
+			})
+		}
+	}
+
+	closeModal = () => {
+		this.setState({
+			showModal: false
+		})
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -125,6 +157,7 @@ export default class AdminTable extends PureComponent {
 						"Last Login": new Date(item.lastLogin).toDateString(),
 					}
 				} else if (props.category === `Collections`) {
+					//We need to find a way to get the owner from the users data. INNER JOIN
 					return {
 						ID: item.id,
 						Name: item.name,
@@ -155,17 +188,70 @@ export default class AdminTable extends PureComponent {
 
 	render() {
 		const { category } = this.props
-		const { data } = this.state
+		const { data, showModal, modalItemInfo, modalPosition, lowClick } = this.state
 		if (!data.length || data[0] === undefined) return null
 
 		const headers = this.state[category].columns
 
+		const setItemId = (id) => {
+			this.handleShowModal()
+			if(!this.state.showModal){
+				this.setState({
+					currentItemId: id
+				})
+			}
+			data.forEach(item => {
+				if (item.ID === id){
+					this.setState({
+						modalItemInfo: item
+					})
+				}
+			})
+		}
+
+		const handleClickPosition = (e) => {
+			const height = window.innerHeight
+			//console.log(height, e.clientY.toFixed(0), e.nativeEvent)
+			if (e.clientY.toFixed(0) > (height / 2)){
+				//this is in the lower half
+				//lowClick false when it is in the upper side of the screen means position < height / 2
+				//lowClick true when it is in the lower half of the screen means position > height / 2
+				this.setState({
+					lowClick: true
+				})
+			}
+			else {
+				this.setState({
+					lowClick: false
+				})
+			}
+			if (this.state.showModal === false){
+				let yPosition = parseInt(e.clientY.toFixed(0))
+				let xPosition = (e.clientX.toFixed(0) - 180)  + 'px'
+				this.setState({
+					modalPosition: {
+						top: yPosition,
+						right: xPosition
+					}
+				})
+			}
+		}
+
+		const handleSort = (title) => {
+			let sortArray = data.sort((a, b) => (a.title < b.title) ? 1 : -1)
+			console.log(sortArray)
+
+			this.setState({
+				data: sortArray
+			})
+		}
+
 		return (
-			<Style>
+			<Style onClick={(e) => handleClickPosition(e)}>
 				<Table>
 					<thead>
 						<tr>
-							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}<Sort /></th>)}
+							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}<Sort onClick={() => handleSort(header.title)}/></th>)}
 							<th/>
 						</tr>
 					</thead>
@@ -179,11 +265,14 @@ export default class AdminTable extends PureComponent {
 										</td>
 									},
 								)}
-								<td><ItemEdit /></td>
+								<td><ItemEdit onClick={() => setItemId(item.ID)}></ItemEdit></td>
 							</tr>,
 						)}
 					</tbody>
 				</Table>
+				{ showModal && (
+					<EditItemContainer lowClick={lowClick} position={modalPosition} data={modalItemInfo} category={category} close={this.closeModal}>
+					</EditItemContainer> )}
 			</Style>
 		)
 	}

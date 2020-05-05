@@ -28,13 +28,14 @@ const LabAssistantManagerContainer = props => {
 	useEffect(() => {
 		setHeaderBorder(true)
 
+		if (!collections){
+			searchCollections(professorId, true)
+		}
+
 		if(objectIsEmpty(professor)){
 			setProfessor(professorId)
-
-			if (!collections)
-				searchCollections(professorId, true)
-			else console.log(collections)
 		}
+
 		return () => {
 			setHeaderBorder(false)
 		}
@@ -42,29 +43,23 @@ const LabAssistantManagerContainer = props => {
 
 	if(!professor || objectIsEmpty(professor) || !collections) return null
 
-	const professorCollections = collections.reduce((accumulator, collection) => {
-		if (collection.owner === parseInt(professor.id)) {
-			return {
-				...accumulator,
-				[collection.id]: collection,
-			}
-		}
-		return accumulator
-	}, {})
-
 	const sideLists = {
 		published: [],
 		unpublished: [],
 		archived: [],
 	}
 
-	Object.keys(professorCollections).forEach(id => {
-		const { archived, published, name } = professorCollections[id]
+	//This populates the sideList object to display all the collections based on
+	//their current status published, unpublished, and archived
+	Object.keys(collections).forEach(item => {
+		const { archived, published, name, id} = collections[item]
 
 		if (archived) sideLists.archived.push({ id, name })
 		else if (published) sideLists.published.push({ id, name })
 		else sideLists.unpublished.push({ id, name })
 	})
+
+
 
 	const createNew = () => {
 		toggleModal({
@@ -73,19 +68,33 @@ const LabAssistantManagerContainer = props => {
 		})
 	}
 
+	//This is to pass the right collection based on the ID of the collection
+	//instead of the old way that changed the array index and then pointed to the new index
+	//Doing it this way we get the collection from the props and not from a
+	//static new array that will not update after a handler action
+	let singleCollection
+	Object.keys(collections).forEach(item => {
+		const {id} = collections[item]
+		const cId = parseInt(collectionId)
+		if (id === cId){
+			singleCollection = collections[item]
+			return;
+		}
+	});
+
 	const viewstate = {
 		admin,
-		collection: professorCollections[collectionId],
+		collection: singleCollection,
 		path: `lab-assistant-manager/${professor.id}`,
 		sideLists,
-		user: professor,
+		user: professor
 	}
 
 	const handlers = {
 		createNew,
 	}
 
-	return <Manager viewstate={viewstate} handlers={handlers} />
+	return <Manager viewstate={viewstate} handlers={handlers} archived={sideLists.archived} published={sideLists.published} unpublished={sideLists.unpublished}/>
 }
 
 const mapStateToProps = store => ({

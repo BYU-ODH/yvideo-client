@@ -2,7 +2,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Installation
 
-<<<<<<< HEAD
 ## Development Environment
 
 ### ESLint
@@ -60,9 +59,6 @@ VSCode comes with TypeScript validation built-in. Since TypeScript is a super-se
 2. Disable the extension
 
     > Note: It's recommended only to disable the extension in the workspace only, so it doesn't affect your other projects.
-=======
-After pulling the repo to a local file, run `npm i` in the root directory (where this file is). Then you can continue using any of the scripts below.
->>>>>>> 520b9a7084010dcc7cbb4cfc70acec6f77f1fbff
 
 ## Available Scripts
 

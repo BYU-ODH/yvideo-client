@@ -21,6 +21,8 @@ export default class AdminService {
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
 		ADMIN_COLLECTION_EDIT: `ADMIN_COLLECTION_EDIT`,
+		ADMIN_COLLECTION_DELETE: 'ADMIN_COLLECTION_DELETE',
+		ADMIN_USER_DELETE: 'ADMIN_USER_DELETE'
 	}
 
 	// action creators
@@ -38,6 +40,8 @@ export default class AdminService {
 		adminSetProfessor: professor => ({ type: this.types.ADMIN_SET_PROFESSOR, payload: { professor }}),
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
+		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
+		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }})
 	}
 
 	// default store
@@ -73,6 +77,8 @@ export default class AdminService {
 			ADMIN_SET_PROFESSOR,
 			ADMIN_SEARCH_COLLECTIONS,
 			ADMIN_COLLECTION_EDIT,
+			ADMIN_COLLECTION_DELETE,
+			ADMIN_USER_DELETE,
 		} = this.types
 
 		switch (action.type) {
@@ -170,12 +176,27 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_EDIT:
+			console.log('editing collections: ')
 			return {
 				...store,
 				professorCollections: {
 					...store.professorCollections,
 					[action.payload.collection.id]: action.payload.collection,
 				},
+				loading: false,
+			}
+
+		case ADMIN_COLLECTION_DELETE:
+			console.log('delete collection: ')
+			return {
+				...store,
+				loading: false,
+			}
+
+		case ADMIN_USER_DELETE:
+			console.log('delete user: ')
+			return {
+				...store,
 				loading: false,
 			}
 
@@ -357,29 +378,41 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
-	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {
+	updateCollectionStatus = (ID, action) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.adminStart())
 
-		const currentState = { ...getState().collectionStore.cache[id] }
+		//Grab all the collections from the admin store
+		const collections = { ...getState().adminStore.professorCollections}
+		//Grab the current collection from the admin store
+		const professorId = { ...getState().adminStore.professor.id }
+		let currentCollection
+		Object.keys(collections).forEach(item => {
+			const {id} = collections[item]
+			if (id === ID){
+				currentCollection = collections[item]
+				return;
+			}
+		});
 
 		let abort = false
 
 		switch (action) {
 		case `publish`:
-			currentState.published = true
+			currentCollection.published = true
 			break
 
 		case `unpublish`:
-			currentState.published = false
+			currentCollection.published = false
 			break
 
 		case `archive`:
-			currentState.archived = true
+			currentCollection.archived = true
 			break
 
 		case `unarchive`:
-			currentState.published = false
+			currentCollection.published = false
+			currentCollection.archived = false
 			break
 
 		default:
@@ -390,11 +423,47 @@ export default class AdminService {
 		if (abort) dispatch(this.actions.adminAbort())
 		else {
 			try {
-				const result = await apiProxy.collection.edit(id, action)
-				dispatch(this.actions.adminCollectionEdit(result))
+				//Edit the desired collection
+				await apiProxy.collection.edit(ID, action)
+				//Get the updated collection and all the other collections
+				//This fixes the bug that it will add a duplicated collection
+				//to the professorCollections
+				await this.searchCollections(professorId, true)
+				//The result will be the updated professorCollections
+				//This will be the paidload for the adminSeachCollections
+				const result = { ...getState().adminStore.professorCollections}
+				dispatch(this.actions.adminSearchCollections(result))
 			} catch (error) {
 				dispatch(this.actions.adminError(error))
 			}
+		}
+	}
+
+	deleteCollection = (collectionId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.collection.delete(collectionId)
+			console.log(result)
+			dispatch(this.actions.adminCollectionDelete(result))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	deleteUser = (userId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.user.delete(userId)
+			console.log(result)
+			dispatch(this.actions.adminCollectionDelete(result))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
 		}
 	}
 

@@ -97,7 +97,7 @@ const ContentLoader = (() => {
 		case `object`:
 			return Promise.resolve(content)
 		default:
-			return Promise.reject(new Error(`Invalid Content Type`))
+			return Promise.reject((`Invalid Content Type`))
 		}
 	}
 

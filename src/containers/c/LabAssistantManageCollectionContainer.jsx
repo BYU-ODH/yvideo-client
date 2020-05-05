@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 
 import {
 	adminService,
-	interfaceService
+	interfaceService,
+	collectionService
 } from 'services'
 
 import { ManageCollection } from 'components'
@@ -14,6 +15,7 @@ import CreateContentContainer from 'components/modals/containers/CreateContentCo
 const LabAssistantManageCollectionContainer = props => {
 
 	const {
+		admin,
 		collection,
 		content,
 		getCollectionContent,
@@ -44,6 +46,11 @@ const LabAssistantManageCollectionContainer = props => {
 		updateCollectionStatus(collection.id, 'archive')
 	}
 
+	const unarchive = e => {
+		e.preventDefault()
+		updateCollectionStatus(collection.id, `unarchive`)
+	}
+
 	const setTab = isContent => _e => {
 		setIsContent(isContent)
 	}
@@ -51,6 +58,7 @@ const LabAssistantManageCollectionContainer = props => {
 	if(!content) return null
 
 	const viewstate = {
+		admin,
 		collection,
 		content: Object.keys(content).map(key => content[key]),
 		isContent
@@ -60,20 +68,23 @@ const LabAssistantManageCollectionContainer = props => {
 		togglePublish,
 		createContent,
 		archive,
-		setTab
+		setTab,
+		unarchive
 	}
 
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = store => ({
-	content: store.adminStore.profCollectionContent
+	content: store.adminStore.profCollectionContent,
+	admin: store.authStore.user.roles,
 })
 
 const mapDispatchToProps = {
 	getCollectionContent: adminService.getCollectionContent,
 	toggleModal: interfaceService.toggleModal,
-	updateCollectionStatus: adminService.updateCollectionStatus
+	updateCollectionStatus: adminService.updateCollectionStatus,
+	updateCollectionName: collectionService.updateCollectionName,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManageCollectionContainer)

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { AdminTable } from 'components/bits'
 
-import Style, { Search, SearchIcon, CategorySelect } from './styles'
+import Style, { Search, SearchIcon, CategorySelect, FeedbackMessage } from './styles'
 
 export class Admin extends PureComponent {
 	render() {
@@ -21,8 +21,6 @@ export class Admin extends PureComponent {
 			handleSubmit,
 		} = this.props.handlers
 
-		console.log(data)
-
 		return (
 			<Style>
 				<h1>Admin Dashboard</h1>
@@ -39,12 +37,16 @@ export class Admin extends PureComponent {
 
 					<Search onSubmit={handleSubmit}>
 						<SearchIcon />
-						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
+						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
 					</Search>
 
 				</div>
+				{ data !== null ? (
+					<>
+						{ data.length < 1 ? (<FeedbackMessage><p>The are no results</p></FeedbackMessage>) : (<AdminTable category={searchCategory} data={data} />)}
+					</>
+				) : (<FeedbackMessage><p></p></FeedbackMessage>) }
 
-				<AdminTable category={searchCategory} data={data} />
 			</Style>
 		)
 	}
