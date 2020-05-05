@@ -237,21 +237,12 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
-		const handleSort = (title) => {
-			let sortArray = data.sort((a, b) => (a.title < b.title) ? 1 : -1)
-			console.log(sortArray)
-
-			this.setState({
-				data: sortArray
-			})
-		}
-
 		return (
 			<Style onClick={(e) => handleClickPosition(e)}>
 				<Table>
 					<thead>
 						<tr>
-							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}<Sort onClick={() => handleSort(header.title)}/></th>)}
+							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && <Filter />}<Sort/></th>)}
 							<th/>
 						</tr>
 					</thead>
