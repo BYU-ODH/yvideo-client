@@ -26,6 +26,8 @@ const Controller = props => {
 	// for track-editor
 
 	const [selectedEvent, setSelectedEvent] = useState(``)
+	const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
+	const [currentZone, setCurrentZone] = useState([0, duration])
 
 	const video = {
 
@@ -68,6 +70,7 @@ const Controller = props => {
 		},
 		handleDuration: duration => {
 			setDuration(duration)
+			setCurrentZone([0, duration])
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
@@ -83,6 +86,14 @@ const Controller = props => {
 		},
 		handlePlay: () => {
 			setPlaying(true)
+		},
+
+		handleZoomFactor: a => {
+			console.log(a)
+		},
+
+		handleZoneChange: a => {
+			console.log(a)
 		},
 
 	}

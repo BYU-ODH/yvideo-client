@@ -4,7 +4,7 @@ import { useDrag } from 'react-dnd'
 
 import Style, { I } from './styles'
 
-const Draggable = ({ event }) => {
+const EventCard = ({ event }) => {
 
 	const [{ isDragging }, ref] = useDrag({
 
@@ -36,4 +36,4 @@ const Draggable = ({ event }) => {
 	)
 }
 
-export default Draggable
+export default EventCard

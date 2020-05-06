@@ -35,6 +35,8 @@ export default Style
 
 export const Timeline = styled.div`
 
+	--scale: ${props => props.scale};
+
 	--timeline-start: 16rem;
 	--header-height: 5rem;
 
@@ -168,7 +170,6 @@ export const Timeline = styled.div`
 	& > section {
 		flex: 1;
 		width: 100%;
-		background-color: ${props => props.backgroundColor};
 		box-sizing: border-box;
 		border-right: 1px solid #555;
 	}

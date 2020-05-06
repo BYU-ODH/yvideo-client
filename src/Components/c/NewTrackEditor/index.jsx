@@ -4,7 +4,7 @@ import { useDrop } from 'react-dnd'
 
 import Style, { Timeline, EventList, EventListCarat } from './styles'
 
-import { Draggable } from 'components/bits'
+import { EventCard } from 'components/bits'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -49,6 +49,8 @@ const TrackEditor = props => {
 		handleSeek,
 		handlePause,
 		handlePlay,
+
+		// handleZoomFactor,
 
 	} = props.video
 
@@ -97,15 +99,17 @@ const TrackEditor = props => {
 
 	// Drag and Drop
 
-	const [{ canDrop, isOver }, dropRef] = useDrop({
+	const [collectedProps, dropRef] = useDrop({
 		accept: `timeline-event`,
 		drop: item => {
+
+			// TODO: handle the drop action, add an event to the timeline
+			// HINT: The `item` parameter of this method is the event, you can find it in the Draggable component in components/bits
+
 			console.log(`you just dropped:`, item)
 			return { name: `Timeline` }
 		},
 		hover: (item, monitor) => {
-
-			// TODO: handle the drop action, add an event to the timeline
 
 			// const {
 			// 	clientOffset, // current mouse position relative to viewport
@@ -114,19 +118,26 @@ const TrackEditor = props => {
 			// } = monitor.internalMonitor.store.getState().dragOffset
 
 		},
-		collect: monitor => ({
-			isOver: monitor.isOver(),
-			canDrop: monitor.canDrop(),
-		}),
+		// collect: monitor => {
+		// 	return {
+		// 		isOver: monitor.isOver(),
+		// 		canDrop: monitor.canDrop(),
+		// 	}
+		// },
 	})
 
-	const isActive = canDrop && isOver
-
-	// TODO: turn this into a way to tell the timeline to show the current
-	// drop position, according to the mouse position
-	let backgroundColor = `inherit`
-	if (isActive) backgroundColor = `rgba(0,255,0,.1)`
-	else backgroundColor = `rgba(255,0,0,.1)`
+	// delete this when you get the actual layers
+	const layers = [
+		{
+			name: `Layer 0`,
+			events: [
+				{
+					name: `Skip`,
+					icon: `snip`,
+				},
+			],
+		},
+	]
 
 	return (
 		<Style selectedEvent={selectedEvent}>
@@ -139,7 +150,6 @@ const TrackEditor = props => {
 
 				<Timeline
 					minimized={timelineMinimized}
-					backgroundColor={backgroundColor}
 					played={played}
 				>
 
@@ -175,6 +185,30 @@ const TrackEditor = props => {
 					<span className='current-time-dot'></span>
 
 					<section ref={dropRef}>
+
+						<div className='event-layers'>
+							{layers.map((layer, index) => (
+								<div className='layer' key={index}>
+									<span className='handle'>
+										{layer.name}
+									</span>
+									<span className='events'>
+										{/* overflow-x should be like scroll or something */}
+										{layer.events.map((event, index) => (
+											<span className='layer-event' key={index}>
+												{event.icon}
+												{event.name}
+											</span>
+										))}
+									</span>
+								</div>
+							))}
+						</div>
+
+						<div className='zoom-controls'>
+							<span className='zoom-factor'></span>
+							<span className='timeline-zone'></span>
+						</div>
 
 					</section>
 
@@ -213,7 +247,7 @@ const TrackEditor = props => {
 							:
 							<div className='events'>
 								{events.map((event, i) => (
-									<Draggable event={event} key={i} />
+									<EventCard event={event} key={i} />
 								))}
 							</div>
 						}
