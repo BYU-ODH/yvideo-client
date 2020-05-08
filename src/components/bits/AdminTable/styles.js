@@ -29,22 +29,24 @@ export const Table = styled.table`
 
 	& td {
 		padding: 1.5rem;
-		font-size: 1.3rem;
+		font-size: 1.4rem;
 		text-align: left;
 	}
-	`
+`
 
 export const Filter = styled.button`
 	background: url(${iconFilter}) center no-repeat;
 	border: none;
 	height: 1.5rem;
-	cursor: pointer;`
+	cursor: pointer;
+`
 
 export const Sort = styled.button`
 	background: url(${iconSort}) center no-repeat;
 	border: none;
 	height: 1.5rem;
-	cursor: pointer;`
+	cursor: pointer;
+`
 
 export const ItemEdit = styled.button`
 	background: url(${iconEdit}) center no-repeat;
@@ -59,14 +61,15 @@ export const ItemEdit = styled.button`
 
 export const ItemMenu = styled.div`
 	position: fixed;
+	float: right;
 	top: ${props => props.mousePos.y}px;
-	left: ${props => props.mousePos.x}px;
+	left: ${props => props.mousePos.x  - 170}px;
 
 	background: white;
 	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.3);
 
 	width: 12rem;
-	font-size: 1.25rem;
+	font-size: 1.7rem;
 	padding: 2rem;
 
 	& > ul {

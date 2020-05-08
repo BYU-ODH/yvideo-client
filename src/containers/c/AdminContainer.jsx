@@ -23,24 +23,24 @@ const AdminContainer = props => {
 			placeholder: `Search for a user`,
 			url: `user`,
 		},
-		Collections: {
-			name: `Collections`,
-			placeholder: `Search for a collection`,
-			url: `collection`,
-		},
-		Content: {
-			name: `Content`,
-			placeholder: `Search for content`,
-			url: `content`,
-		},
+		// Collections: {
+		// 	name: `Collections`,
+		// 	placeholder: `Search for a collection`,
+		// 	url: `collection`,
+		// },
+		// Content: {
+		// 	name: `Content`,
+		// 	placeholder: `Search for content`,
+		// 	url: `content`,
+		// },
 	}
 
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [searchCategory, setSearchCategory] = useState(category.Users.name)
 	const [placeholder, setPlaceholder] = useState(category.Users.placeholder)
 
+	const [menuItemInfo, setMenuItemInfo] = useState({})
 	const [menuActive, setMenuActive] = useState(false)
-	const [menuId, setMenuId] = useState(null)
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
 	useEffect(() => {
@@ -57,7 +57,7 @@ const AdminContainer = props => {
 		data,
 		placeholder,
 		menuActive,
-		menuId,
+		menuItemInfo,
 		mousePos,
 	}
 
@@ -78,23 +78,23 @@ const AdminContainer = props => {
 			e.preventDefault()
 		},
 		toggleMenu: id => e => {
-			if (!id || id === null) {
-				setMousePos({ x: 0, y: 0 })
-				setMenuId(null)
-				setMenuActive(false)
-			} else {
-				setMousePos({
-					x: e.pageX,
-					y: e.pageY,
-				})
-				setMenuId(id)
-				setMenuActive(true)
-			}
+			data.forEach(item => {
+				if (item.id === id){
+					setMenuItemInfo(item)
+				}
+			})
+			setMenuActive(!menuActive)
+			setMousePos({
+				x: e.pageX,
+				y: e.pageY,
+			})
+
 		},
 		handleConfirmDelete: e => {
 			e.preventDefault()
 			toggleModal({
 				component: ConfirmDeleteContainer,
+				props: { menuItemInfo, searchCategory}
 			})
 		},
 	}

@@ -61,12 +61,11 @@ export const SearchIcon = styled.span`
 	width: 2rem;
 `
 
-export const CategorySelect = styled.select`
+export const CategorySelect = styled.div`
 	background: white;
-
 	height: 4rem;
 	width: 12rem;
-
+	display: flex;
 	font-size: 1.5rem;
 
 	border: none;
@@ -76,6 +75,9 @@ export const CategorySelect = styled.select`
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	& option {
+		margin: auto auto 6px auto;
+	}
 `
 
 export const FeedbackMessage = styled.div`

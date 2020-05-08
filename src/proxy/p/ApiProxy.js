@@ -71,7 +71,10 @@ const apiProxy = {
 			delete: async (id) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/admin/users/${id}/delete`, { withCredentials: true }).then(res => res.data),
 			/* This is to delete a user by just getting the user ID  ^^ */
 		},
-
+		content: {
+			delete: async (id) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/${id}/delete`, { withCredentials: true }).then(res => res.data),
+			/* This is to delete a piece of content by just getting the content ID  ^^ */
+		},
 	},
 	auth: {
 		/**

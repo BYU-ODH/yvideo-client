@@ -22,7 +22,8 @@ export default class AdminService {
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
 		ADMIN_COLLECTION_EDIT: `ADMIN_COLLECTION_EDIT`,
 		ADMIN_COLLECTION_DELETE: 'ADMIN_COLLECTION_DELETE',
-		ADMIN_USER_DELETE: 'ADMIN_USER_DELETE'
+		ADMIN_USER_DELETE: 'ADMIN_USER_DELETE',
+		ADMIN_CONTENT_DELETE: 'ADMIN_CONTENT_DELETE',
 	}
 
 	// action creators
@@ -41,7 +42,8 @@ export default class AdminService {
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
-		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }})
+		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
+		adminContentDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }})
 	}
 
 	// default store
@@ -79,6 +81,7 @@ export default class AdminService {
 			ADMIN_COLLECTION_EDIT,
 			ADMIN_COLLECTION_DELETE,
 			ADMIN_USER_DELETE,
+			ADMIN_CONTENT_DELETE,
 		} = this.types
 
 		switch (action.type) {
@@ -195,6 +198,13 @@ export default class AdminService {
 
 		case ADMIN_USER_DELETE:
 			console.log('delete user: ')
+			return {
+				...store,
+				loading: false,
+			}
+
+		case ADMIN_CONTENT_DELETE:
+			console.log('delete content: ')
 			return {
 				...store,
 				loading: false,
@@ -445,6 +455,20 @@ export default class AdminService {
 		try {
 
 			const result = await apiProxy.admin.collection.delete(collectionId)
+			console.log(result)
+			dispatch(this.actions.adminCollectionDelete(result))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	deleteContent = (contentId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.content.delete(contentId)
 			console.log(result)
 			dispatch(this.actions.adminCollectionDelete(result))
 
