@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import carat from 'assets/carat_white.svg'
 
+import menu from 'assets/menu-white.svg'
+
 const Style = styled.div`
 
 	background-color: #303030;
@@ -39,6 +41,11 @@ export const Timeline = styled.div`
 
 	--timeline-start: 16rem;
 	--header-height: 5rem;
+
+	--dark-gray: #303030;
+	--light-gray: #4F4F4F;
+	--lighter-gray: #565656;
+	/* color: #5F5F5F; */
 
 	position: relative;
 	height: ${props => props.minimized ? `var(--header-height)` : `30vh`};
@@ -172,6 +179,8 @@ export const Timeline = styled.div`
 		width: 100%;
 		box-sizing: border-box;
 		border-right: 1px solid #555;
+		overflow-y: scroll;
+		overflow-x: scroll;
 	}
 
 	& > span {
@@ -196,6 +205,89 @@ export const Timeline = styled.div`
 			border: 2px solid white;
 		}
 	}
+
+	& .event-layers {
+			height: calc(var(--header-height) - 10px)
+	}
+
+	& .layer {
+		width: 100%;
+		height: 100%;
+		display: block;
+
+		background-color: var(--lighter-gray);
+
+		& .handle {
+				width: 160px;
+				background-color: var(--light-gray);
+				height: 100%;
+				display: inline-flex;
+				align-items: center;
+				justify-content: flex-start;
+				position: relative;
+				box-sizing: border-box;
+
+				border-bottom: 1px solid #555;
+				border-right: 1px solid var(--dark-gray);
+				/* border-right: 4px solid var(--royal-blue); */
+
+				& p {
+					padding-left: 2rem;
+					color: white;
+				}
+		}
+
+		& .layer-event {
+				display: inline-flex;
+				border-bottom: 1px dotted #555;
+				box-sizing: border-box;
+				& p {
+					/* padding-left: 2rem; */
+					color: white;
+				}
+		}
+	}
+
+`
+
+export const HandleIcon = styled.div `
+height: 2.5rem;
+width: 2.5rem;
+background: url(${menu}) center no-repeat;
+background-size: contain;
+/* display: inline-block; */
+position: absolute;
+right: 5px;
+margin: auto 0;
+`
+
+export const Icon = styled.div`
+	/* transform: rotate(45deg); */
+  background: url(${props => props.src}) center no-repeat;
+  background-size: contain;
+
+  height: 2rem;
+  width: 2rem;
+`
+
+export const NewLayer = styled.button`
+height: 2.4rem;
+width: 2.5rem;
+
+	margin-top: .75rem;
+  margin-left: 130px;
+
+  border: none;
+  border-radius: 0.3rem;
+
+  background-color: var(--light-gray);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  outline: none;
+  cursor: pointer;
 `
 
 export const EventList = styled.div`
@@ -293,7 +385,6 @@ export const EventList = styled.div`
 
 		}
 	}
-
 `
 
 export const EventListCarat = styled.button`
@@ -313,3 +404,4 @@ export const EventListCarat = styled.button`
 		transform: rotate(90deg);
 	}
 `
+

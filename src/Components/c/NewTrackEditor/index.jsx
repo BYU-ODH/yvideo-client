@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { useDrop } from 'react-dnd'
 
-import Style, { Timeline, EventList, EventListCarat } from './styles'
+import Style, { Timeline, EventList, EventListCarat, HandleIcon, NewLayer, Icon } from './styles'
 
 import { EventCard } from 'components/bits'
 
@@ -13,6 +13,8 @@ import commentIcon from 'assets/event_comment.svg'
 import censorIcon from 'assets/event_censor.svg'
 
 import carat from 'assets/carat_white.svg'
+
+import plus from 'assets/plus-white.svg'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -54,9 +56,24 @@ const TrackEditor = props => {
 
 	} = props.video
 
+	// delete this when you get the actual layers
+	const initialLayers = [
+		{
+			name: `Layer 0`,
+			events: [
+				{
+					name: `Skip`,
+					icon: `snip`,
+				},
+			],
+		},
+	]
+
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
+	// TODO: Replace with dynamic data from server
+	const [layers, setLayers] = useState(initialLayers)
 
 	const dateElapsed = new Date(null)
 	dateElapsed.setSeconds(elapsed)
@@ -72,6 +89,23 @@ const TrackEditor = props => {
 
 	const handleTabChange = tab => () => {
 		setTab(tab)
+	}
+
+	const handleAddLayer = () => {
+		const currentLayers = [...layers]
+
+		const newLayer = {
+			name: `Layer ${currentLayers.length}`,
+			events: [
+				{
+					name: `Skip`,
+					icon: `snip`,
+				},
+			],
+		}
+
+		currentLayers.push(newLayer)
+		setLayers(currentLayers)
 	}
 
 	const events = [
@@ -126,19 +160,6 @@ const TrackEditor = props => {
 		// },
 	})
 
-	// delete this when you get the actual layers
-	const layers = [
-		{
-			name: `Layer 0`,
-			events: [
-				{
-					name: `Skip`,
-					icon: `snip`,
-				},
-			],
-		},
-	]
-
 	return (
 		<Style selectedEvent={selectedEvent}>
 
@@ -154,7 +175,6 @@ const TrackEditor = props => {
 				>
 
 					<header>
-
 						<button className='play-btn' onClick={playing ? handlePause : handlePlay}>
 							<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
 							<span className='carat'></span>
@@ -185,24 +205,29 @@ const TrackEditor = props => {
 					<span className='current-time-dot'></span>
 
 					<section ref={dropRef}>
-
+						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
 								<div className='layer' key={index}>
 									<span className='handle'>
-										{layer.name}
+										<p>{layer.name}</p>
+										<HandleIcon />
 									</span>
 									<span className='events'>
 										{/* overflow-x should be like scroll or something */}
 										{layer.events.map((event, index) => (
 											<span className='layer-event' key={index}>
-												{event.icon}
-												{event.name}
+												{/* //TODO: Change the p tag to be an svg icon */}
+												<p>{event.icon}</p>
+												<p>{event.name}</p>
 											</span>
 										))}
 									</span>
 								</div>
 							))}
+							<NewLayer onClick={handleAddLayer}>
+								<Icon src={plus}/>
+							</NewLayer>
 						</div>
 
 						<div className='zoom-controls'>
