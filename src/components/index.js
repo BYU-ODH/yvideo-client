@@ -3,6 +3,7 @@ import CollectionPermissions from './c/CollectionPermissions'
 import Collections from './c/Collections'
 import ContentOverview from './c/ContentOverview'
 import ContentSettings from './c/ContentSettings'
+import Controller from './c/Controller'
 import Error from './c/Error'
 import Header from './c/Header'
 import LabAssistant from './c/LabAssistant'
@@ -14,6 +15,8 @@ import Menu from './c/Menu'
 import Overlay from './c/Overlay'
 import Player from './c/Player'
 import Root from './c/Root'
+import TrackEditor from './c/NewTrackEditor'
+import VideoControls from './c/VideoControls'
 
 export {
 	Admin,
@@ -21,6 +24,7 @@ export {
 	Collections,
 	ContentOverview,
 	ContentSettings,
+	Controller,
 	Error,
 	Header,
 	LabAssistant,
@@ -32,4 +36,6 @@ export {
 	Overlay,
 	Player,
 	Root,
+	TrackEditor,
+	VideoControls,
 }

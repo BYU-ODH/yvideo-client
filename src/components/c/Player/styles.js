@@ -5,6 +5,7 @@ export const Style = styled.div`
 	padding-bottom: 15rem;
 	overflow-y: scroll;
 	height: calc(100vh - 23.4rem);
+
 	& > div {
 		& .ayamelPlayer,
 		& .videoBox,
@@ -15,6 +16,11 @@ export const Style = styled.div`
 		& .sliderContainer {
 			padding-bottom: 0 !important;
 		}
+	}
+
+	& .player-wrapper {
+		position: relative;
+		background-color: black;
 	}
 `
 

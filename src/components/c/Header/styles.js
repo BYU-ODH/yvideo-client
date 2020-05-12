@@ -4,32 +4,34 @@ import { Link } from 'react-router-dom'
 
 import HexLogo from 'assets/hexborder.svg'
 
-export const Wrapper = styled.div`
-height: 8.4rem;
-width: 100%;
-/* box-shadow: 0 -.5rem 3rem 0 rgba(0,0,0,0.25); */
-/* padding: 0 2.4rem; */
-display: flex;
-align-items: center;
-justify-content: space-between;
+const Style = styled.div`
+	height: 8.4rem;
+	width: 100%;
+	/* box-shadow: 0 -.5rem 3rem 0 rgba(0,0,0,0.25); */
+	/* padding: 0 2.4rem; */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
+	border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
 
-position: fixed;
-background-color: ${props => props.lost ? `transparent` : `white`};
+	position: fixed;
+	background-color: ${props => props.backgroundColor};
 
-z-index: 16;
+	z-index: 16;
 
-& > button {
-	background-color: #0157b8;
-	border: none;
-	color: white;
-	padding: 1rem;
-	border-radius: .3rem;
-	margin-right: 7.4rem;
-	cursor: pointer;
-}
+	& > button {
+		background-color: #0157b8;
+		border: none;
+		color: white;
+		padding: 1rem;
+		border-radius: .3rem;
+		margin-right: 7.4rem;
+		cursor: pointer;
+	}
 `
+
+export default Style
 
 export const LogoWrapper = styled(Link)`
 	display: flex;
