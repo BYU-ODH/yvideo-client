@@ -16,6 +16,7 @@ import Overlay from './c/Overlay'
 import Player from './c/Player'
 import Root from './c/Root'
 import TrackEditor from './c/NewTrackEditor'
+import TrackLayer from './c/TrackLayer'
 import VideoControls from './c/VideoControls'
 
 export {
@@ -37,5 +38,6 @@ export {
 	Player,
 	Root,
 	TrackEditor,
+	TrackLayer,
 	VideoControls,
 }
