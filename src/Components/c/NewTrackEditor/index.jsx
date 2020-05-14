@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-import { useDrop } from 'react-dnd'
-
 import Style, { Timeline, EventList, EventListCarat, HandleIcon, NewLayer, Icon } from './styles'
 
 import { EventCard } from 'components/bits'
+
+import { TrackLayer } from '../../'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -57,13 +57,14 @@ const TrackEditor = props => {
 	} = props.video
 
 	// delete this when you get the actual layers
+	// TODO: Deserialize events into JS objects (Grant made an example)
 	const initialLayers = [
 		{
 			name: `Layer 0`,
 			events: [
 				{
 					name: `Skip`,
-					icon: `snip`,
+					icon: skipIcon,
 				},
 			],
 		},
@@ -96,12 +97,7 @@ const TrackEditor = props => {
 
 		const newLayer = {
 			name: `Layer ${currentLayers.length}`,
-			events: [
-				{
-					name: `Skip`,
-					icon: `snip`,
-				},
-			],
+			events: [],
 		}
 
 		currentLayers.push(newLayer)
@@ -131,34 +127,30 @@ const TrackEditor = props => {
 		},
 	]
 
-	// Drag and Drop
+	const eventDropHandler = (item, index) => {
+		console.log(`Event Drop Handler: `, item, index)
+		addEventToLayer(item, index)
+	}
 
-	const [collectedProps, dropRef] = useDrop({
-		accept: `timeline-event`,
-		drop: item => {
+	const addEventToLayer = (item, index) => {
+		// TODO: Change this to use real JS event objects and insert based on time
+		const currentLayers = [...layers]
+		const targetLayer = currentLayers[index]
+		const matchingEvent = filterValue(events, `name`, item.id)
+		// console.log(matchingEvent)
 
-			// TODO: handle the drop action, add an event to the timeline
-			// HINT: The `item` parameter of this method is the event, you can find it in the Draggable component in components/bits
+		const eventObj = { name: matchingEvent.name, icon: matchingEvent.icon}
 
-			console.log(`you just dropped:`, item)
-			return { name: `Timeline` }
-		},
-		hover: (item, monitor) => {
+		targetLayer.events.push(eventObj)
+		setLayers(currentLayers)
 
-			// const {
-			// 	clientOffset, // current mouse position relative to viewport
-			// 	initialClientOffset, // where the mouse was when you grabbed the original element relative to the viewport
-			// 	initialSourceClientOffset, // where the original drag element is on the page relative to viewport
-			// } = monitor.internalMonitor.store.getState().dragOffset
+	}
 
-		},
-		// collect: monitor => {
-		// 	return {
-		// 		isOver: monitor.isOver(),
-		// 		canDrop: monitor.canDrop(),
-		// 	}
-		// },
-	})
+	const filterValue = (obj, key, value) => {
+		return obj.find((v) => {
+			return v[key] === value
+		})
+	}
 
 	return (
 		<Style selectedEvent={selectedEvent}>
@@ -204,26 +196,12 @@ const TrackEditor = props => {
 					<span className='current-time'></span>
 					<span className='current-time-dot'></span>
 
-					<section ref={dropRef}>
+					<section>
 						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
-								<div className='layer' key={index}>
-									<span className='handle'>
-										<p>{layer.name}</p>
-										<HandleIcon />
-									</span>
-									<span className='events'>
-										{/* overflow-x should be like scroll or something */}
-										{layer.events.map((event, index) => (
-											<span className='layer-event' key={index}>
-												{/* //TODO: Change the p tag to be an svg icon */}
-												<p>{event.icon}</p>
-												<p>{event.name}</p>
-											</span>
-										))}
-									</span>
-								</div>
+								<TrackLayer key={ index } layer={ layer } onDrop={(item) => eventDropHandler(item,index)} />
+								// <p>{index}</p>
 							))}
 							<NewLayer onClick={handleAddLayer}>
 								<Icon src={plus}/>
