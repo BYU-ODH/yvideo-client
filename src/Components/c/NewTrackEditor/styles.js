@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import carat from 'assets/carat_white.svg'
+import carat from '../../../Assets/carat_white.svg'
 
 import menu from 'assets/menu-white.svg'
 
@@ -213,19 +213,19 @@ export const Timeline = styled.div`
 	& .layer {
 		width: 100%;
 		height: 100%;
-		display: block;
+		display: flex;
 
 		background-color: var(--lighter-gray);
 
 		& .handle {
-				width: 160px;
+				width: 194px;
 				background-color: var(--light-gray);
 				height: 100%;
 				display: inline-flex;
 				align-items: center;
 				justify-content: flex-start;
-				position: relative;
 				box-sizing: border-box;
+				position: relative;
 
 				border-bottom: 1px solid #555;
 				border-right: 1px solid var(--dark-gray);
@@ -233,16 +233,6 @@ export const Timeline = styled.div`
 
 				& p {
 					padding-left: 2rem;
-					color: white;
-				}
-		}
-
-		& .layer-event {
-				display: inline-flex;
-				border-bottom: 1px dotted #555;
-				box-sizing: border-box;
-				& p {
-					/* padding-left: 2rem; */
 					color: white;
 				}
 		}

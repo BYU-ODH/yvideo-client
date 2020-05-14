@@ -4,22 +4,22 @@ import Style, { Timeline, EventList, EventListCarat, HandleIcon, NewLayer, Icon 
 
 import { EventCard } from 'components/bits'
 
-import { TrackLayer } from '../../'
+import { TrackLayer } from 'components'
 
-import skipIcon from 'assets/event_skip.svg'
-import muteIcon from 'assets/event_mute.svg'
-import pauseIcon from 'assets/event_pause.svg'
-import commentIcon from 'assets/event_comment.svg'
-import censorIcon from 'assets/event_censor.svg'
+import skipIcon from 'Assets/event_skip.svg'
+import muteIcon from 'Assets/event_mute.svg'
+import pauseIcon from 'Assets/event_pause.svg'
+import commentIcon from 'Assets/event_comment.svg'
+import censorIcon from 'Assets/event_censor.svg'
 
-import carat from 'assets/carat_white.svg'
+import carat from '../../../Assets/carat_white.svg'
 
 import plus from 'assets/plus-white.svg'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
-import mute from 'assets/controls_unmuted.svg'
-import unmute from 'assets/controls_muted.svg'
+import mute from 'Assets/controls_unmuted.svg'
+import unmute from 'Assets/controls_muted.svg'
 
 const TrackEditor = props => {
 
@@ -80,7 +80,7 @@ const TrackEditor = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-	const toggleTimeline = () => {
+	const togglendTimeline = () => {
 		setTimelineMinimized(!timelineMinimized)
 	}
 
@@ -108,22 +108,32 @@ const TrackEditor = props => {
 		{
 			name: `Skip`,
 			icon: skipIcon,
+			beginningTime: 0,
+			endTime: 0
 		},
 		{
 			name: `Mute`,
 			icon: muteIcon,
+			beginningTime: 0,
+			endTime: 0
 		},
 		{
 			name: `Pause`,
 			icon: pauseIcon,
+			beginningTime: 0,
+			endTime: 0
 		},
 		{
 			name: `Comment`,
 			icon: commentIcon,
+			beginningTime: 0,
+			endTime: 0
 		},
 		{
 			name: `Censor`,
 			icon: censorIcon,
+			beginningTime: 0,
+			endTime: 0
 		},
 	]
 
@@ -143,7 +153,6 @@ const TrackEditor = props => {
 
 		targetLayer.events.push(eventObj)
 		setLayers(currentLayers)
-
 	}
 
 	const filterValue = (obj, key, value) => {
@@ -187,7 +196,7 @@ const TrackEditor = props => {
 
 						</div>
 
-						<button className={`toggle-timeline${timelineMinimized ? ` minimized` : ``}`} onClick={toggleTimeline}>
+						<button className={`toggle-timeline${timelineMinimized ? ` minimized` : ``}`} onClick={togglendTimeline}>
 							<img src={carat} alt='Toggle Timeline' />
 						</button>
 
