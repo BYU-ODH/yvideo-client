@@ -10,6 +10,7 @@ export const Icon = styled.div`
 `
 
 export const Style = styled.div`
+
 	& .events {
 		width: 100%;
 		border-bottom: 1px solid var(--light-blue);
@@ -21,14 +22,17 @@ export const Style = styled.div`
 		height: 14% !important;
 		padding: 1px;
 		min-width: 1%;
-		overflow: hidden;
+		overflow: hidden !important;
 		display: flex !important;
 		background-color: white;
+		z-index: 10;
 
 		&	p {
+			font-size: 1rem;
 			text-align: left;
 			margin: auto auto auto 0px;
-			padding: 0px 3px 0px 3px;
+			padding: 1px 3px 1px 3px;
+
 		}
 		&	div{
 			text-align: right;

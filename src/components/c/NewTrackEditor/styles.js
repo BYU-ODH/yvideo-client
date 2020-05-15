@@ -180,7 +180,7 @@ export const Timeline = styled.div`
 		box-sizing: border-box;
 		border-right: 1px solid #555;
 		overflow-y: scroll;
-		overflow-x: scroll;
+		overflow-x: hidden !important;
 	}
 
 	& > span {
@@ -215,11 +215,14 @@ export const Timeline = styled.div`
 	}
 
 	& .layer {
-		width: 100%;
+		width: 100%
 		height: 100%;
+
 		display: flex;
 
 		background-color: var(--lighter-gray);
+		margin: 0px 0px 3px .5px !important;
+
 
 		& .handle {
 				width: 160px !important;
@@ -246,14 +249,14 @@ export const Timeline = styled.div`
 `
 
 export const HandleIcon = styled.div `
-height: 2.5rem;
-width: 2.5rem;
-background: url(${menu}) center no-repeat;
-background-size: contain;
-/* display: inline-block; */
-position: absolute;
-right: 5px;
-margin: auto 0;
+	height: 2.5rem;
+	width: 2.5rem;
+	background: url(${menu}) center no-repeat;
+	background-size: contain;
+	/* display: inline-block; */
+	position: absolute;
+	right: 5px;
+	margin: auto 0;
 `
 
 export const Icon = styled.div`
@@ -266,8 +269,8 @@ export const Icon = styled.div`
 `
 
 export const NewLayer = styled.button`
-height: 2.4rem;
-width: 2.5rem;
+	height: 2.4rem;
+	width: 2.5rem;
 
 	margin-top: .75rem;
   margin-left: 130px;

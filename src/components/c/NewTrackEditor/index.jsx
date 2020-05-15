@@ -56,17 +56,51 @@ const TrackEditor = props => {
 
 	} = props.video
 
+	const events = [
+		{
+			name: `Skip`,
+			icon: skipIcon,
+			beginningTime: 0,
+			endTime: 10,
+			layer: 0
+		},
+		{
+			name: `Mute`,
+			icon: muteIcon,
+			beginningTime: 0,
+			endTime: 10,
+			layer: 0
+		},
+		{
+			name: `Pause`,
+			icon: pauseIcon,
+			beginningTime: 0,
+			endTime: 10,
+			layer: 0
+		},
+		{
+			name: `Comment`,
+			icon: commentIcon,
+			beginningTime: 0,
+			endTime: 10,
+			layer: 0
+		},
+		{
+			name: `Censor`,
+			icon: censorIcon,
+			beginningTime: 0,
+			endTime: 10,
+			layer: 0
+		},
+	]
+
+
 	// delete this when you get the actual layers
 	// TODO: Deserialize events into JS objects (Grant made an example)
 	const initialLayers = [
 		{
 			name: `Layer 0`,
-			events: [
-				{
-					name: `Skip`,
-					icon: skipIcon,
-				},
-			],
+			events: [],
 		},
 	]
 
@@ -104,39 +138,6 @@ const TrackEditor = props => {
 		setLayers(currentLayers)
 	}
 
-	const events = [
-		{
-			name: `Skip`,
-			icon: skipIcon,
-			beginningTime: 0,
-			endTime: 0
-		},
-		{
-			name: `Mute`,
-			icon: muteIcon,
-			beginningTime: 0,
-			endTime: 0
-		},
-		{
-			name: `Pause`,
-			icon: pauseIcon,
-			beginningTime: 0,
-			endTime: 0
-		},
-		{
-			name: `Comment`,
-			icon: commentIcon,
-			beginningTime: 0,
-			endTime: 0
-		},
-		{
-			name: `Censor`,
-			icon: censorIcon,
-			beginningTime: 0,
-			endTime: 0
-		},
-	]
-
 	const eventDropHandler = (item, index) => {
 		console.log(`Event Drop Handler: `, item, index)
 		addEventToLayer(item, index)
@@ -146,10 +147,15 @@ const TrackEditor = props => {
 		// TODO: Change this to use real JS event objects and insert based on time
 		const currentLayers = [...layers]
 		const targetLayer = currentLayers[index]
+		console.log('ADDING EVENT TO LAYER INDEX:', index)
 		const matchingEvent = filterValue(events, `name`, item.id)
-		// console.log(matchingEvent)
 
-		const eventObj = { name: matchingEvent.name, icon: matchingEvent.icon}
+		const eventObj = {
+			name: matchingEvent.name,
+			icon: matchingEvent.icon,
+			beginningTime: matchingEvent.beginningTime,
+			endTime: matchingEvent.endTime
+		}
 
 		targetLayer.events.push(eventObj)
 		setLayers(currentLayers)
@@ -211,7 +217,7 @@ const TrackEditor = props => {
 						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
-								<TrackLayer key={ index } layer={ layer } onDrop={(item) => eventDropHandler(item,index)} />
+								<TrackLayer key={index} layer={layer} index={index} onDrop={(item) => eventDropHandler(item,index)} />
 								// <p>{index}</p>
 							))}
 							<NewLayer onClick={handleAddLayer}>
