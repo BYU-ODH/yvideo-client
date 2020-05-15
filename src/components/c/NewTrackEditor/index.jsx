@@ -12,14 +12,14 @@ import pauseIcon from 'Assets/event_pause.svg'
 import commentIcon from 'Assets/event_comment.svg'
 import censorIcon from 'Assets/event_censor.svg'
 
-import carat from '../../../Assets/carat_white.svg'
+import carat from 'assets/carat_white.svg'
 
 import plus from 'assets/plus-white.svg'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
-import mute from 'Assets/controls_unmuted.svg'
-import unmute from 'Assets/controls_muted.svg'
+import mute from 'assets/controls_unmuted.svg'
+import unmute from 'assets/controls_muted.svg'
 
 const TrackEditor = props => {
 
@@ -160,6 +160,8 @@ const TrackEditor = props => {
 			return v[key] === value
 		})
 	}
+
+	console.log('RENDERED')
 
 	return (
 		<Style selectedEvent={selectedEvent}>

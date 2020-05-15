@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import carat from '../../../Assets/carat_white.svg'
+import carat from 'assets/carat_white.svg'
 
 import menu from 'assets/menu-white.svg'
 
@@ -192,6 +192,10 @@ export const Timeline = styled.div`
 		width: 2px;
 		background-color: red;
 
+		&.current-time {
+			z-index: 20;
+		}
+
 		&.current-time-dot {
 			--dot-size: 12px;
 
@@ -218,7 +222,8 @@ export const Timeline = styled.div`
 		background-color: var(--lighter-gray);
 
 		& .handle {
-				width: 194px;
+				width: 160px !important;
+				min-width: 160px;
 				background-color: var(--light-gray);
 				height: 100%;
 				display: inline-flex;

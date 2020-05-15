@@ -12,7 +12,7 @@ export const Icon = styled.div`
 export const Style = styled.div`
 	& .events {
 		width: 100%;
-		border: 1px solid red;
+		border-bottom: 1px solid var(--light-blue);
 	}
 
 	& .layer-event {
