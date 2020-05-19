@@ -61,7 +61,7 @@ export const SearchIcon = styled.span`
 	width: 2rem;
 `
 
-export const CategorySelect = styled.div`
+export const CategorySelect = styled.select`
 	background: white;
 	height: 4rem;
 	width: 12rem;

@@ -23,16 +23,16 @@ const AdminContainer = props => {
 			placeholder: `Search for a user`,
 			url: `user`,
 		},
-		// Collections: {
-		// 	name: `Collections`,
-		// 	placeholder: `Search for a collection`,
-		// 	url: `collection`,
-		// },
-		// Content: {
-		// 	name: `Content`,
-		// 	placeholder: `Search for content`,
-		// 	url: `content`,
-		// },
+		Collections: {
+			name: `Collections`,
+			placeholder: `Search for a collection`,
+			url: `collection`,
+		},
+		Content: {
+			name: `Content`,
+			placeholder: `Search for content`,
+			url: `content`,
+		},
 	}
 
 	const [searchQuery, setSearchQuery] = useState(``)

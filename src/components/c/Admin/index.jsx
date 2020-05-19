@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { AdminTable } from 'components/bits'
 
-import Style, { Search, SearchIcon, FeedbackMessage } from './styles'
+import Style, { Search, SearchIcon, FeedbackMessage, CategorySelect } from './styles'
 
 export class Admin extends PureComponent {
 	render() {
@@ -15,6 +15,7 @@ export class Admin extends PureComponent {
 			menuActive,
 			menuItemInfo,
 			mousePos,
+			placeholder
 		} = this.props.viewstate
 
 		const {
@@ -22,6 +23,7 @@ export class Admin extends PureComponent {
 			handleSubmit,
 			toggleMenu,
 			handleConfirmDelete,
+			updateCategory
 		} = this.props.handlers
 
 		const viewstate = {
@@ -45,16 +47,16 @@ export class Admin extends PureComponent {
 				<div>
 
 					{/* WE ARE ONLY SEARCHING FOR USERS NOW SO WE DO NOT NEED THE SELECT DROP DOWN */}
-					{/* <CategorySelect onChange={updateCategory}>
+					<CategorySelect onChange={updateCategory}>
 						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
 								{category[c].name}
 							</option>
 						))}
-					</CategorySelect> */}
+					</CategorySelect>
 					<Search onSubmit={handleSubmit}>
 						<SearchIcon />
-						<input type='search' placeholder="Search for a user" onChange={updateSearchBar} value={searchQuery}/>
+						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
 					</Search>
 
 				</div>
