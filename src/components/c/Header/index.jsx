@@ -14,7 +14,7 @@ export default class Header extends PureComponent {
 		let backgroundColor = `white`
 
 		if (lost) backgroundColor = `transparent`
-		else if (editorStyle) backgroundColor = `#303030`
+		else if (editorStyle) backgroundColor = `transparent`
 
 		return (
 			<Style backgroundColor={backgroundColor} border={border}>

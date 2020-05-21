@@ -6,7 +6,7 @@ import menu from 'assets/menu-white.svg'
 
 const Style = styled.div`
 
-	background-color: #303030;
+	background-color: white;
 
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
@@ -41,11 +41,11 @@ export const Timeline = styled.div`
 
 	--timeline-start: 16rem;
 	--header-height: 5rem;
-
+	/*
 	--dark-gray: #303030;
 	--light-gray: #4F4F4F;
 	--lighter-gray: #565656;
-	/* color: #5F5F5F; */
+	color: #5F5F5F; */
 
 	position: relative;
 	height: ${props => props.minimized ? `var(--header-height)` : `30vh`};
@@ -58,14 +58,15 @@ export const Timeline = styled.div`
 	& > header {
 		height: var(--header-height);
 		box-sizing: border-box;
-		border: 1px solid #555;
+		border: 1px solid rgba(255, 255, 255, 0.8);
 		border-left: none;
 
 		display: flex;
 		align-items: center;
+		background-color: var(--navy-blue);
 
 		& .scrubber {
-			color: white;
+			color: black;
 			display: flex;
 			align-items: center;
 			justify-content: space-evenly;
@@ -75,6 +76,7 @@ export const Timeline = styled.div`
 			cursor: pointer;
 
 			& > .time {
+				color: white;
 				position: relative;
 				top: 1px;
 				width: 5rem;
@@ -95,11 +97,11 @@ export const Timeline = styled.div`
 					height: 100%;
 
 					&.total {
-						background-color: #353535;
+						background-color: rgba(255, 255, 255, 0.7);
 						width: 100%;
 					}
 					&.current {
-						background-color: var(--royal-blue);
+						background-color: var(--light-blue);
 						width: ${props => props.played * 100}%;
 					}
 				}
@@ -118,7 +120,7 @@ export const Timeline = styled.div`
 			cursor: pointer;
 			background: transparent;
 			outline: none;
-			color: white;
+			color: black;
 
 			& > img {
 				height: 1.5rem;
@@ -133,11 +135,12 @@ export const Timeline = styled.div`
 				height: var(--header-height);
 				width: var(--header-height);
 				margin: 0 2rem 0 0;
-				border-right: 1px solid #555;
+				border-right: 1px solid rgba(255, 255, 255, 0.8);
 
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				background-color: var(--navy-blue);
 
 				& > img {
 					height: 2rem;
@@ -155,9 +158,9 @@ export const Timeline = styled.div`
 
 					transform-origin: .5rem .5rem;
 					transform: rotate(45deg);
-					border-top: 1px solid #555;
-					border-right: 1px solid #555;
-					background-color: #303030;
+					border-top: 1px solid rgba(255, 255, 255, 0.8);
+					border-right: 1px solid rgba(255, 255, 255, 0.8);
+					background-color: white;
 				}
 			}
 
@@ -211,7 +214,7 @@ export const Timeline = styled.div`
 	}
 
 	& .event-layers {
-			height: calc(var(--header-height) - 10px)
+			height: 4.8rem;
 	}
 
 	& .layer {
@@ -220,14 +223,12 @@ export const Timeline = styled.div`
 
 		display: flex;
 
-		background-color: var(--lighter-gray);
-		margin: 0px 0px 3px .5px !important;
+		margin: 0px 0px 0px 0px !important;
 
 
 		& .handle {
 				width: 160px !important;
 				min-width: 160px;
-				background-color: var(--light-gray);
 				height: 100%;
 				display: inline-flex;
 				align-items: center;
@@ -236,12 +237,11 @@ export const Timeline = styled.div`
 				position: relative;
 
 				border-bottom: 1px solid #555;
-				border-right: 1px solid var(--dark-gray);
-				/* border-right: 4px solid var(--royal-blue); */
+				border-right: 2px solid var(--royal-blue);
 
 				& p {
 					padding-left: 2rem;
-					color: white;
+					color: black;
 				}
 		}
 	}
@@ -277,8 +277,6 @@ export const NewLayer = styled.button`
 
   border: none;
   border-radius: 0.3rem;
-
-  background-color: var(--light-gray);
 
   display: flex;
   align-items: center;
@@ -317,6 +315,7 @@ export const EventList = styled.div`
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			font-size: 1.5rem;
 
 			font-weight: 500;
 
@@ -339,7 +338,7 @@ export const EventList = styled.div`
 
 		border-bottom: 1px solid #555;
 
-		color: white;
+		color: black;
 		font-weight: 500;
 
 		& > span {
@@ -348,6 +347,7 @@ export const EventList = styled.div`
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			font-size: 1.5rem;
 
 			border: none;
 			padding: 0;
@@ -400,6 +400,37 @@ export const EventListCarat = styled.button`
 
 	&.minimized {
 		transform: rotate(90deg);
+	}
+`
+
+export const SideEditor = styled.div`
+	padding: 20px;
+
+	& .closeEditor {
+		width: 100%;
+		text-align: right;
+		cursor: pointer;
+	}
+
+	& .center {
+		width: 100%;
+		display: flex;
+		font-size: 1.5rem;
+
+		& input {
+			margin: auto 10px auto auto !important;
+			padding: 0px 10px;
+			width: 120px;
+			height: 4rem;
+			margin: 10px;
+			border: 1px solid var(--royal-blue);
+		}
+
+		& label {
+			margin: 15px auto 15px auto;
+			width: 150px;
+			text-align: left;
+		}
 	}
 `
 

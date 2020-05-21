@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import Style, { Timeline, EventList, EventListCarat, HandleIcon, NewLayer, Icon } from './styles'
+import Style, { Timeline, EventList, EventListCarat, HandleIcon, NewLayer, Icon, SideEditor } from './styles'
 
 import { EventCard } from 'components/bits'
 
@@ -37,7 +37,7 @@ const TrackEditor = props => {
 
 		// events
 
-		selectedEvent,
+		//selectedEvent,
 		// setSelectedEvent,
 
 		// handlers
@@ -94,6 +94,11 @@ const TrackEditor = props => {
 		},
 	]
 
+	//const searchEvents = [] //array of events
+
+	// forEach(
+	// 	if searchEvents[index].beginningTime >= elapsed && elapsed < searchEvents[index].endTime --> execute this event.
+	// )
 
 	// delete this when you get the actual layers
 	// TODO: Deserialize events into JS objects (Grant made an example)
@@ -101,9 +106,34 @@ const TrackEditor = props => {
 		{
 			name: `Layer 0`,
 			events: [],
-		},
+		}
 	]
 
+	//Pseudo code
+	//Data (Rob wants)
+	//const downloadedJSON = [{events, layerIndex}, {events}, {events},];
+
+	//Visually
+	// const initialLayers = [
+	// 	{
+	// 		name: `Layer 0`,
+	// 		events: [],
+	// 	},
+	// 	{
+	// 		name: `Layer 1`,
+	// 		events: [SkipEvent.exec()],
+	// 	}
+	// ]
+
+	//For executing the video events
+			 // Giving an "order of operations", what events take precedence and then what layer is most important?
+			 // Skip has the highest precendence
+			 // If type of event == "Skip"
+
+
+	//every .1 (interval) sec search through events and see if any of them have a start and end time is between current time
+
+	const [showSideEditor, setSideEditor] = useState(false)
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
@@ -154,11 +184,21 @@ const TrackEditor = props => {
 			name: matchingEvent.name,
 			icon: matchingEvent.icon,
 			beginningTime: matchingEvent.beginningTime,
-			endTime: matchingEvent.endTime
+			endTime: matchingEvent.endTime,
+			layer: index
 		}
 
 		targetLayer.events.push(eventObj)
 		setLayers(currentLayers)
+	}
+
+	const openSideEditor = (layerIndex, eventIndex) => {
+		console.log('Layer', layerIndex, 'Event', eventIndex)
+		setSideEditor(true)
+	}
+
+	const closeSideEditor = () => {
+		setSideEditor(false)
 	}
 
 	const filterValue = (obj, key, value) => {
@@ -170,7 +210,7 @@ const TrackEditor = props => {
 	console.log('RENDERED')
 
 	return (
-		<Style selectedEvent={selectedEvent}>
+		<Style>
 
 			<span>
 
@@ -217,7 +257,7 @@ const TrackEditor = props => {
 						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
-								<TrackLayer key={index} layer={layer} index={index} onDrop={(item) => eventDropHandler(item,index)} />
+								<TrackLayer key={index} layer={layer} index={index} onDrop={(item) => eventDropHandler(item,index)} sideEditor={openSideEditor}/>
 								// <p>{index}</p>
 							))}
 							<NewLayer onClick={handleAddLayer}>
@@ -251,26 +291,39 @@ const TrackEditor = props => {
 					<>
 						<div className='breadcrumbs'>
 							<span>Events</span>
-							{!!selectedEvent &&
+							{showSideEditor &&
 								<>
 									<span className='carat'></span>
-									<span className='current'>{selectedEvent}</span>
+									<span className='current'>Event Type</span>
 								</>
 							}
 							{/* <button className='close'></button> */}
 						</div>
-
-						{selectedEvent !== `` ?
-							<div className='event-details'>
-								{selectedEvent}
-							</div>
-							:
-							<div className='events'>
-								{events.map((event, i) => (
-									<EventCard event={event} key={i} />
-								))}
-							</div>
-						}
+						{ showSideEditor ? (
+							<SideEditor>
+								<div>
+									<p onClick={closeSideEditor} className='closeEditor'>x</p>
+									<div className='center'>
+										<label>Start</label>
+										<label>End</label>
+									</div>
+									<div className='center'>
+										<input type='text' placeholder='bTime'/>
+										<input type='text' placeholder='eTime'/>
+									</div>
+									<br/>
+									<p>Message</p>
+								</div>
+							</SideEditor>
+						) : (
+							<>
+								<div className='events'>
+									{events.map((event, i) => (
+										<EventCard event={event} key={i} />
+									))}
+								</div>
+							</>
+						)}
 					</>
 
 					:

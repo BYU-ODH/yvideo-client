@@ -13,7 +13,7 @@ import {
 
 const TrackLayer = props => {
 
-	const { layer, onDrop} = props
+	const { layer, onDrop, sideEditor} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef =  useRef(null)
@@ -30,7 +30,7 @@ const TrackLayer = props => {
 
 	useEffect(() => {
 		setLayerWidth(layerRef.current.offsetWidth)
-		setLayerHeight(((layerRef.current.offsetHeight+2) * (layerIndex+1)) + 8)
+		setLayerHeight(((layerRef.current.offsetHeight) * (layerIndex+1)))
   });
 
 	//This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
@@ -113,17 +113,18 @@ const TrackLayer = props => {
 				{/* overflow-x should be like scroll or something */}
 				{layer.events.map((event, index) => (
 					<Rnd 	className='layer-event'
-								default={{x: 0, y: layerHeight, width: `${events[index].endTime - events[index].beginningTime}% !important`}}
+								default={{x: 0, y: 0, width: `${events[index].endTime - events[index].beginningTime}%`}}
 								enableResizing={Enable}
 								dragAxis="x"
-								bounds="parent"
+								bounds=".events"
 								onDragStop={(e, d) => handleDrag(e, d, event, index)}
 								onResizeStop={(e, direction, ref, delta, position) => {handleResize(e, direction, ref, event, index, position)}}
 								key={index}
+								onClick={() => sideEditor(layerIndex, index)}
 							>
 						{/* //TODO: Change the p tag to be an svg icon */}
 						<Icon src={event.icon} ref={eventRef}/>
-						<p>{event.name} (Start: {events[index].beginningTime.toFixed(2)}% - End: {events[index].endTime.toFixed(2)}%)</p>
+						<p>{event.name} - From: {events[index].beginningTime.toFixed(1)}% - To: {events[index].endTime.toFixed(1)}%</p>
 					</Rnd>
 				))}
 			</div>
