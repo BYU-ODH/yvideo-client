@@ -13,7 +13,7 @@ import {
 
 const TrackLayer = props => {
 
-	const { layer, onDrop, sideEditor} = props
+	const { layer, onDrop, sideEditor, updateEvents, closeEditor} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef =  useRef(null)
@@ -22,7 +22,8 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	const [events, setEvents] = useState(layer.events)
+	const [events, setEvents] = useState(layer)
+	const [isEditorOpen, setEditorOpen] = useState(false)
 
 	if(shouldUpdate){
 		setShouldUpdate(false)
@@ -35,7 +36,6 @@ const TrackLayer = props => {
 
 	//This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
-
 
 	// Drag and Drop event to the layer
 	const [collectedProps, dropRef] = useDrop({
@@ -79,8 +79,10 @@ const TrackLayer = props => {
 			cEvents[index].beginningTime = 0
 		}
 
-		setEvents(cEvents)
-		setShouldUpdate(true)
+		//call handler from parent
+		// setEvents(cEvents)
+		// setShouldUpdate(true)
+		updateEvents(layerIndex, cEvents[index])
 	}
 	//Resize within the layer
 	const handleResize = (e, direction, ref, event, index, position) => {
@@ -98,29 +100,36 @@ const TrackLayer = props => {
 		const d = {x: beginPixel}
 
 		//LOGIC TO CHANGE THE TIME @params beginTime, endTime
-		setEvents(cEvents)
-		setShouldUpdate(true)
+		// setEvents(cEvents)
+		// setShouldUpdate(true)
+
+		updateEvents(layerIndex, cEvents[index])
+	}
+
+	const toggleEditor = (layerIndex, eventIndex) => {
+		setEditorOpen(true)
+		sideEditor(layerIndex, eventIndex)
 	}
 
 	return (
 		<>
-		<Style className='layer' ref={dropRef} >
+		<Style className='layer' ref={dropRef}>
 			<span className='handle'>
-				<p>{layer.name}</p>
+				<p>Layer {layerIndex}</p>
 				{/* <HandleIcon /> */}
 			</span>
 			<div className='events' ref={layerRef}>
 				{/* overflow-x should be like scroll or something */}
-				{layer.events.map((event, index) => (
-					<Rnd 	className='layer-event'
+				{layer.map((event, index) => (
+					<Rnd 	className={`layer-event`}
 								default={{x: 0, y: 0, width: `${events[index].endTime - events[index].beginningTime}%`}}
 								enableResizing={Enable}
 								dragAxis="x"
 								bounds=".events"
 								onDragStop={(e, d) => handleDrag(e, d, event, index)}
-								onResizeStop={(e, direction, ref, delta, position) => {handleResize(e, direction, ref, event, index, position)}}
+								onResizeStop={(e, direction, ref, delta, position) => handleResize(e, direction, ref, event, index, position)}
 								key={index}
-								onClick={() => sideEditor(layerIndex, index)}
+								onClick={() => toggleEditor(layerIndex, index)}
 							>
 						{/* //TODO: Change the p tag to be an svg icon */}
 						<Icon src={event.icon} ref={eventRef}/>

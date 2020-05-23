@@ -42,4 +42,12 @@ export const Style = styled.div`
 			padding: 0px 3px 0px 3px;
 		}
 	}
+
+	& .event-active {
+		background-color: rgba(5, 130, 202, 0.2);
+		border-top: 3px solid var(--light-blue) !important;
+		border-bottom: 3px solid var(--light-blue) !important;
+		border-right: 4px solid var(--light-blue) !important;
+		border-left: 4px solid var(--light-blue) !important;
+	}
 `

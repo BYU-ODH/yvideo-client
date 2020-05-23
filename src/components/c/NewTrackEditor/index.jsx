@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Style, { Timeline, EventList, EventListCarat, HandleIcon, NewLayer, Icon, SideEditor } from './styles'
 
@@ -94,55 +94,69 @@ const TrackEditor = props => {
 		},
 	]
 
-	//const searchEvents = [] //array of events
+	const eventsArray = [{
+			name: `Skip`,
+			icon: skipIcon,
+			beginningTime: 0,
+			endTime: 10,
+			layer: 0
+		},
+		// {
+		// 	name: `Mute`,
+		// 	icon: skipIcon,
+		// 	beginningTime: 0,
+		// 	endTime: 10,
+		// 	layer: 2
+		// },
+		// {
+		// 	name: `Mute`,
+		// 	icon: skipIcon,
+		// 	beginningTime: 0,
+		// 	endTime: 10,
+		// 	layer: 2
+		// },
+		// {
+		// 	name: `Pause`,
+		// 	icon: skipIcon,
+		// 	beginningTime: 0,
+		// 	endTime: 10,
+		// 	layer: 0
+		// },
+	] // THIS IS GOING TO HAVE EVENTS
 
-	// forEach(
-	// 	if searchEvents[index].beginningTime >= elapsed && elapsed < searchEvents[index].endTime --> execute this event.
-	// )
+	//SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
+	eventsArray.sort((a, b) => (a.layer > b.layer) ? 1 : -1)
 
-	// delete this when you get the actual layers
-	// TODO: Deserialize events into JS objects (Grant made an example)
-	const initialLayers = [
-		{
-			name: `Layer 0`,
-			events: [],
+	//POPULATE INITIAL LAYERS BASED ON EVENTSARRAY INITIAL IS EMPTY
+	const initialLayers = []
+	for(let i = 0; i < eventsArray.length; i++){
+		let index = eventsArray[i].layer
+		if(initialLayers[index] === undefined){
+			initialLayers.push([eventsArray[i]])
 		}
-	]
+		else {
+			initialLayers[index].push(eventsArray[i])
+		}
+	}
 
-	//Pseudo code
-	//Data (Rob wants)
-	//const downloadedJSON = [{events, layerIndex}, {events}, {events},];
-
-	//Visually
-	// const initialLayers = [
-	// 	{
-	// 		name: `Layer 0`,
-	// 		events: [],
-	// 	},
-	// 	{
-	// 		name: `Layer 1`,
-	// 		events: [SkipEvent.exec()],
-	// 	}
-	// ]
-
-	//For executing the video events
-			 // Giving an "order of operations", what events take precedence and then what layer is most important?
-			 // Skip has the highest precendence
-			 // If type of event == "Skip"
-
-
-	//every .1 (interval) sec search through events and see if any of them have a start and end time is between current time
-
+	const [allEvents, setAllEvents] = useState(eventsArray)
+	const [layers, setLayers] = useState(initialLayers)
+	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
+	const [eventToEdit, setEventToEdit] = useState({})
+
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	// TODO: Replace with dynamic data from server
-	const [layers, setLayers] = useState(initialLayers)
 
 	const dateElapsed = new Date(null)
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+
+	if(shouldUpdate){
+		setShouldUpdate(false)
+	}
 
 	const togglendTimeline = () => {
 		setTimelineMinimized(!timelineMinimized)
@@ -159,10 +173,7 @@ const TrackEditor = props => {
 	const handleAddLayer = () => {
 		const currentLayers = [...layers]
 
-		const newLayer = {
-			name: `Layer ${currentLayers.length}`,
-			events: [],
-		}
+		const newLayer = []
 
 		currentLayers.push(newLayer)
 		setLayers(currentLayers)
@@ -174,10 +185,10 @@ const TrackEditor = props => {
 	}
 
 	const addEventToLayer = (item, index) => {
-		// TODO: Change this to use real JS event objects and insert based on time
-		const currentLayers = [...layers]
-		const targetLayer = currentLayers[index]
-		console.log('ADDING EVENT TO LAYER INDEX:', index)
+		//TODO: Change this to use real JS event objects and insert based on time
+		let currentEvents = [...allEvents]
+		let currentLayers = [...layers]
+		console.log('ADDING NEW EVENT')
 		const matchingEvent = filterValue(events, `name`, item.id)
 
 		const eventObj = {
@@ -188,13 +199,64 @@ const TrackEditor = props => {
 			layer: index
 		}
 
-		targetLayer.events.push(eventObj)
+		currentLayers[index].push(eventObj)
+		currentEvents.push(eventObj)
+		setAllEvents(currentEvents)
 		setLayers(currentLayers)
 	}
 
+	const updateLayerEvent = (index, event) => {
+		let currentEvents = allEvents
+
+		for(let i = 0; i < currentEvents.length; i++){
+			if(currentEvents[i] === event){
+				currentEvents[i] = event
+			}
+		}
+
+		setAllEvents(currentEvents)
+		setShouldUpdate(true)
+	}
+
+	const handleEditEventBTimeChange = (e) => {
+		let currentEvents = allEvents
+		for(let i = 0; i < currentEvents.length; i++){
+			if(currentEvents[i] === eventToEdit){
+				currentEvents[i].beginningTime = parseFloat(e.target.value)
+			}
+		}
+		console.log(currentEvents)
+		setAllEvents(currentEvents)
+		setShouldUpdate(true)
+	}
+
+	const handleEditEventETimeChange = (e) => {
+		console.log('edit event end')
+	}
+
 	const openSideEditor = (layerIndex, eventIndex) => {
-		console.log('Layer', layerIndex, 'Event', eventIndex)
+		setEventToEdit(layers[layerIndex][eventIndex])
 		setSideEditor(true)
+	}
+
+	const printSideEditor = () => {
+		return (
+			<SideEditor>
+				<div>
+					<p onClick={closeSideEditor} className='closeEditor'>x</p>
+					<div className='center'>
+						<label>Start</label>
+						<label>End</label>
+					</div>
+					<div className='center'>
+						<input type='text' onChange={e => handleEditEventBTimeChange(e)}/>
+						<input type='text' onChange={e => handleEditEventETimeChange(e)}/>
+					</div>
+					<br/>
+					<p>Message</p>
+				</div>
+			</SideEditor>
+		)
 	}
 
 	const closeSideEditor = () => {
@@ -218,10 +280,7 @@ const TrackEditor = props => {
 					{props.children}
 				</div>
 
-				<Timeline
-					minimized={timelineMinimized}
-					played={played}
-				>
+				<Timeline minimized={timelineMinimized} played={played}>
 
 					<header>
 						<button className='play-btn' onClick={playing ? handlePause : handlePlay}>
@@ -257,7 +316,15 @@ const TrackEditor = props => {
 						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
-								<TrackLayer key={index} layer={layer} index={index} onDrop={(item) => eventDropHandler(item,index)} sideEditor={openSideEditor}/>
+								<TrackLayer
+									key={index}
+									layer={layer}
+									index={index}
+									onDrop={(item) => eventDropHandler(item,index)}
+									sideEditor={openSideEditor}
+									updateEvents={updateLayerEvent}
+									closeEditor={closeSideEditor}
+									/>
 								// <p>{index}</p>
 							))}
 							<NewLayer onClick={handleAddLayer}>
@@ -291,30 +358,16 @@ const TrackEditor = props => {
 					<>
 						<div className='breadcrumbs'>
 							<span>Events</span>
-							{showSideEditor &&
+							{ showSideEditor &&
 								<>
 									<span className='carat'></span>
-									<span className='current'>Event Type</span>
+									<span className='current'>{eventToEdit !== undefined ? `${eventToEdit.name}` : ''}</span>
 								</>
 							}
 							{/* <button className='close'></button> */}
 						</div>
 						{ showSideEditor ? (
-							<SideEditor>
-								<div>
-									<p onClick={closeSideEditor} className='closeEditor'>x</p>
-									<div className='center'>
-										<label>Start</label>
-										<label>End</label>
-									</div>
-									<div className='center'>
-										<input type='text' placeholder='bTime'/>
-										<input type='text' placeholder='eTime'/>
-									</div>
-									<br/>
-									<p>Message</p>
-								</div>
-							</SideEditor>
+							printSideEditor()
 						) : (
 							<>
 								<div className='events'>
