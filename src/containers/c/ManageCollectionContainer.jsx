@@ -13,6 +13,7 @@ import { objectIsEmpty } from 'lib/util'
 const ManageCollectionContainer = props => {
 
 	const {
+		admin,
 		collection,
 		content,
 		getContent,
@@ -58,6 +59,11 @@ const ManageCollectionContainer = props => {
 		updateCollectionStatus(collection.id, `archive`)
 	}
 
+	const unarchive = e => {
+		e.preventDefault()
+		updateCollectionStatus(collection.id, `unarchive`)
+	}
+
 	const setTab = isContent => _e => {
 		setIsContent(isContent)
 	}
@@ -71,6 +77,7 @@ const ManageCollectionContainer = props => {
 		return null
 
 	const viewstate = {
+		admin,
 		isEditingCollectionName,
 		collection,
 		collectionName,
@@ -79,6 +86,7 @@ const ManageCollectionContainer = props => {
 	}
 
 	const handlers = {
+		unarchive,
 		toggleEdit,
 		handleNameChange,
 		togglePublish,
@@ -88,10 +96,12 @@ const ManageCollectionContainer = props => {
 	}
 
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
+
 }
 
 const mapStateToProps = store => ({
 	content: store.contentStore.cache,
+	admin: store.authStore.user.roles,
 })
 
 const mapDispatchToProps = {

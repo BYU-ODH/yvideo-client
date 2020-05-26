@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
+import ConfirmDeleteContainer from 'components/modals/containers/ConfirmDeleteContainer'
+
 import { Admin } from 'components'
 
 import { adminService, interfaceService } from 'services'
@@ -12,6 +14,7 @@ const AdminContainer = props => {
 		search,
 		clean,
 		setHeaderBorder,
+		toggleModal,
 	} = props
 
 	const category = {
@@ -36,6 +39,10 @@ const AdminContainer = props => {
 	const [searchCategory, setSearchCategory] = useState(category.Users.name)
 	const [placeholder, setPlaceholder] = useState(category.Users.placeholder)
 
+	const [menuItemInfo, setMenuItemInfo] = useState({})
+	const [menuActive, setMenuActive] = useState(false)
+	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+
 	useEffect(() => {
 		setHeaderBorder(true)
 		return () => {
@@ -43,36 +50,53 @@ const AdminContainer = props => {
 		}
 	}, [setHeaderBorder])
 
-	const updateCategory = e => {
-		e.preventDefault()
-		clean()
-		setSearchQuery(``)
-		setSearchCategory(e.target.value)
-		setPlaceholder(category[e.target.value].placeholder)
-	}
-
-	const updateSearchBar = e => {
-		const { value } = e.target
-		setSearchQuery(value)
-		if (value.length > 1) search(category[searchCategory].url, value, true)
-	}
-
-	const handleSubmit = e => {
-		e.preventDefault()
-	}
-
 	const viewstate = {
 		searchQuery,
 		searchCategory,
 		category,
 		data,
 		placeholder,
+		menuActive,
+		menuItemInfo,
+		mousePos,
 	}
 
 	const handlers = {
-		updateCategory,
-		updateSearchBar,
-		handleSubmit,
+		updateCategory: e => {
+			e.preventDefault()
+			clean()
+			setSearchQuery(``)
+			setSearchCategory(e.target.value)
+			setPlaceholder(category[e.target.value].placeholder)
+		},
+		updateSearchBar: e => {
+			const { value } = e.target
+			setSearchQuery(value)
+			if (value.length > 1) search(category[searchCategory].url, value, true)
+		},
+		handleSubmit: e => {
+			e.preventDefault()
+		},
+		toggleMenu: id => e => {
+			data.forEach(item => {
+				if (item.id === id){
+					setMenuItemInfo(item)
+				}
+			})
+			setMenuActive(!menuActive)
+			setMousePos({
+				x: e.pageX,
+				y: e.pageY,
+			})
+
+		},
+		handleConfirmDelete: e => {
+			e.preventDefault()
+			toggleModal({
+				component: ConfirmDeleteContainer,
+				props: { menuItemInfo, searchCategory}
+			})
+		},
 	}
 
 	return <Admin viewstate={viewstate} handlers={handlers} />
@@ -86,6 +110,7 @@ const mapDispatchToProps = {
 	search: adminService.search,
 	clean: adminService.clean,
 	setHeaderBorder: interfaceService.setHeaderBorder,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

@@ -23,6 +23,7 @@ import plus from 'assets/plus_gray.svg'
 export default class ManageCollection extends PureComponent {
 	render() {
 		const {
+			admin,
 			collection,
 			collectionName,
 			isEditingCollectionName,
@@ -31,6 +32,7 @@ export default class ManageCollection extends PureComponent {
 		} = this.props.viewstate
 
 		const {
+			unarchive,
 			toggleEdit,
 			handleNameChange,
 			togglePublish,
@@ -68,7 +70,14 @@ export default class ManageCollection extends PureComponent {
 					</Title>
 					<div>
 						{collection.archived ? (
-							<p>(archived)</p>
+							<>
+								{ admin !== undefined ? (
+									<>{admin[0] === `admin` || admin[0] === `professor` ? (
+										<ArchiveButton onClick={unarchive}>Unarchive</ArchiveButton>
+									) : ( <p>Cannot unarchive</p> )}
+									</>
+								) : null }
+							</>
 						) : (
 							<>
 								<PublishButton

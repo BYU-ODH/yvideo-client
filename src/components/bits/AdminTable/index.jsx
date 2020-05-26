@@ -1,25 +1,52 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Table, ItemEdit } from './styles'
+import { Link } from 'react-router-dom'
+
+import Style, { Table, ItemEdit, Filter, Sort, ItemMenu } from './styles'
+
+//AdminTable has a function that returns the pop up menu for the users.
+//Since we are only looking at users part of the code has been commented out
+//Handlers come from the AdminContainer and to call the modal to confirm a delete
+//we use toggleModal from interfaceService from the AdminContainer
 
 export default class AdminTable extends PureComponent {
 
-	constructor(props) {
-		super(props)
+	render() {
 
-		this.state = {
+		const {
+			menuActive,
+			searchCategory,
+			menuItemInfo,
+			data,
+			mousePos,
+		} = this.props.viewstate
+
+		const {
+			handleConfirmDelete,
+			toggleMenu,
+		} = this.props.handlers
+
+		if (!data.length || data[0] === undefined) return null
+
+		const headers = {
 			Users: {
 				sortBy: ``,
 				descending: false,
 				columns: [
 					{
 						title: `ID`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `NetID`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `Name`,
+						sort: true,
+						descending: false,
 					},
 					{
 						title: `Roles`,
@@ -36,6 +63,8 @@ export default class AdminTable extends PureComponent {
 					},
 					{
 						title: `Last Login`,
+						sort: true,
+						descending: false,
 					},
 				],
 			},
@@ -76,9 +105,9 @@ export default class AdminTable extends PureComponent {
 					{
 						title: `Collection`,
 					},
-					{
-						title: `Requester`,
-					},
+					// {
+					// 	title: `Requester`,
+					// },
 					// {
 					// 	title: `Language`,
 					// 	filter: {},
@@ -101,118 +130,117 @@ export default class AdminTable extends PureComponent {
 				],
 			},
 		}
-	}
 
-	static getDerivedStateFromProps(props, state) {
-		return {
-			...state,
-			data: props.data ? props.data.map(item => {
-				if (props.category === `Users`) {
-					return {
-						ID: item.id,
-						NetID: item.username,
-						Name: item.name,
-						Roles: item.roles,
-						Email: item.email,
-						"Last Login": new Date(item.lastLogin).toDateString(),
-					}
-				} else if (props.category === `Collections`) {
-					return {
-						ID: item.id,
-						Name: item.name,
-						Owner: item.owner,
-						// "# Students",
-						// "# Content",
-						// Email,
-					}
-				} else if (props.category === `Content`){
+		const printTableValues = (category, item) => {
+			switch (category) {
+				case 'Users':
+					const date = new Date(item.lastLogin)
+					return (
+						<>
+							<td>{item.id}</td>
+							<td>{item.username}</td>
+							<td>{item.name}</td>
+							<td>{item.roles}</td>
+							<td>{item.email}</td>
+							<td>{date.toString().substring(0, 16)}</td>
+						</>
+					)
+				case 'Collections':
+					return (
+						<>
+							<td>{item.id}</td>
+							<td>{item.name}</td>
+							<td>{item.owner}</td>
+						</>
+					)
+				case 'Content':
+					return (
+						<>
+							<td>{item.id}</td>
+							<td>{item.name}</td>
+							<td>{item.collectionId}</td>
+							<td>{item.contentType}</td>
+							<td>{item.expired.toString()}</td>
+							<td>{item.resourceId}</td>
+						</>
+					)
 
-					// const lang = item.settings.targetLanguages[0]
-					// if (lang && !langs.includes(lang)) langs.push(lang)
-
-					return {
-						ID: item.id,
-						Name: item.name,
-						Collection: item.collectionId,
-						Requester: item.requester,
-						// Language: lang || ``,
-						Type: item.contentType,
-						Expired: item.expired,
-						ResourceID: item.resourceId,
-					}
-				} else return item
-			}) : [],
+				default:
+					break;
+			}
 		}
-	}
 
-	render() {
-		const { category } = this.props
-		const { data } = this.state
-		if (!data.length || data[0] === undefined) return null
+		const menuOptions = (cat, data) => {
+			switch (cat) {
+			case `Users`:
+				return (
+					<ul>
+						<li>
+							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
+						</li>
+						<li>
+							<button onClick={handleConfirmDelete}>Delete</button>
+						</li>
+					</ul>
+				)
 
-		// const mappedData = data.map(item => {
-		// 	if (this.props.category === `Users`) {
-		// 		return {
-		// 			ID: item.id,
-		// 			NetID: item.username,
-		// 			Name: item.name,
-		// 			Roles: item.roles,
-		// 			Email: item.email,
-		// 			"Last Login": new Date(item.lastLogin).toDateString(),
-		// 		}
-		// 	} else if (this.props.category === `Collections`) {
-		// 		return {
-		// 			ID: item.id,
-		// 			Name: item.name,
-		// 			Owner: item.owner,
-		// 			// "# Students",
-		// 			// "# Content",
-		// 			// Email,
-		// 		}
-		// 	} else if (this.props.category === `Content`){
+			case `Collections`:
+				return (
+					<ul>
+						<li>
+							<Link to={`/lab-assistant-manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
+						</li>
+						<li>
+							<button onClick={handleConfirmDelete}>Delete</button>
+						</li>
+					</ul>
+				)
 
-		// 		// const lang = item.settings.targetLanguages[0]
-		// 		// if (lang && !langs.includes(lang)) langs.push(lang)
+			case `Content`:
+				console.log(data)
+				return (
+					<ul>
+						<li>
+							<Link to={`/player/${data.id}`} target='_blank'>View</Link>
+						</li>
+						<li>
+							<Link to={`/linkToTrackEditor`}>Edit</Link>
+						</li>
+						<li>
+							<button>Disable</button>
+						</li>
+						<li>
+							<button onClick={handleConfirmDelete}>Delete</button>
+						</li>
+					</ul>
+				)
 
-		// 		return {
-		// 			ID: item.id,
-		// 			Name: item.name,
-		// 			Collection: item.collectionId,
-		// 			Requester: item.requester,
-		// 			// Language: lang || ``,
-		// 			Type: item.contentType,
-		// 			Expired: item.expired,
-		// 			ResourceID: item.resourceId,
-		// 		}
-		// 	} else return item
-		// })
-
-		const headers = this.state[category].columns
+			default:
+				return null
+			}
+		}
 
 		return (
 			<Style>
 				<Table>
 					<thead>
 						<tr>
-							{headers.map((header, index) => <th key={`${header.title}-${index}`}>{header.title}{header.filter && `f`}</th>)}
+							{headers[searchCategory].columns.map((header, index) => <th key={index}>{header.title}{header.filter && <Filter />}<Sort/></th>)}
 							<th/>
 						</tr>
 					</thead>
 					<tbody>
 						{data.map(
-							item => <tr key={item.ID}>
-								{headers.map(
-									(header, index) => {
-										return <td key={`${header}-${index}`}>
-											{item[header.title]}
-										</td>
-									},
-								)}
-								<td><ItemEdit /></td>
+							item => <tr key={item.id}>
+								{ printTableValues(searchCategory, item) }
+								<td><ItemEdit onClick={toggleMenu(item.id)}></ItemEdit></td>
 							</tr>,
 						)}
 					</tbody>
 				</Table>
+				{menuActive &&
+					<ItemMenu mousePos={mousePos} onMouseLeave={toggleMenu()}>{menuOptions(searchCategory, menuItemInfo)}</ItemMenu>
+				}
 			</Style>
 		)
 	}

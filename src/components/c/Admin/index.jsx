@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { AdminTable } from 'components/bits'
 
-import Style, { Search, SearchIcon, CategorySelect } from './styles'
+import Style, { Search, SearchIcon, FeedbackMessage, CategorySelect } from './styles'
 
 export class Admin extends PureComponent {
 	render() {
@@ -10,18 +10,35 @@ export class Admin extends PureComponent {
 		const {
 			category,
 			data,
-			placeholder,
 			searchQuery,
 			searchCategory,
+			menuActive,
+			menuItemInfo,
+			mousePos,
+			placeholder
 		} = this.props.viewstate
 
 		const {
-			updateCategory,
 			updateSearchBar,
 			handleSubmit,
+			toggleMenu,
+			handleConfirmDelete,
+			updateCategory
 		} = this.props.handlers
 
-		console.log(data)
+		const viewstate = {
+			menuItemInfo,
+			searchCategory,
+			menuActive,
+			category,
+			data,
+			mousePos,
+		}
+
+		const handlers = {
+			handleConfirmDelete,
+			toggleMenu,
+		}
 
 		return (
 			<Style>
@@ -29,22 +46,30 @@ export class Admin extends PureComponent {
 
 				<div>
 
+					{/* WE ARE ONLY SEARCHING FOR USERS NOW SO WE DO NOT NEED THE SELECT DROP DOWN */}
 					<CategorySelect onChange={updateCategory}>
-						{Object.keys(category).map((c, index) =>
+						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
 								{category[c].name}
-							</option>,
-						)}
+							</option>
+						))}
 					</CategorySelect>
-
 					<Search onSubmit={handleSubmit}>
 						<SearchIcon />
-						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
+						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
 					</Search>
 
 				</div>
 
-				<AdminTable category={searchCategory} data={data} />
+				{ data !== null ?
+					data.length < 1 ?
+						<FeedbackMessage><p>The are no results</p></FeedbackMessage>
+						:
+						<AdminTable viewstate={viewstate} handlers={handlers}/>
+					:
+					<FeedbackMessage><p></p></FeedbackMessage>
+				}
+
 			</Style>
 		)
 	}

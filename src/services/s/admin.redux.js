@@ -1,19 +1,29 @@
 export default class AdminService {
 
+	// TODO: Move all functionality from this service into appropriate services
+
+	// This whole service doesn't make sense. There is no object in the database called an "admin". That's just a role.
+	// So all of the collection stuff should be put into the collections service, all the search_professor stuff should
+	// be in some kind of user service, etc.
+
 	// types
 
 	types = {
 		ADMIN_START: `ADMIN_START`,
 		ADMIN_ABORT: `ADMIN_ABORT`,
 		ADMIN_CLEAN: `ADMIN_CLEAN`,
+		ADMIN_ERROR: `ADMIN_ERROR`,
+		ADMIN_SEARCH: `ADMIN_SEARCH`,
 		ADMIN_CREATE_COLLECTION: `ADMIN_CREATE_COLLECTION`,
 		ADMIN_CREATE_CONTENT: `ADMIN_CREATE_CONTENT`,
-		ADMIN_ERROR: `ADMIN_ERROR`,
 		ADMIN_GET_COLLECTION_CONTENT: `ADMIN_GET_COLLECTION_CONTENT`,
-		ADMIN_SEARCH: `ADMIN_SEARCH`,
 		ADMIN_SEARCH_PROFESSORS: `ADMIN_SEARCH_PROFESSORS`,
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
+		ADMIN_COLLECTION_EDIT: `ADMIN_COLLECTION_EDIT`,
+		ADMIN_COLLECTION_DELETE: 'ADMIN_COLLECTION_DELETE',
+		ADMIN_USER_DELETE: 'ADMIN_USER_DELETE',
+		ADMIN_CONTENT_DELETE: 'ADMIN_CONTENT_DELETE',
 	}
 
 	// action creators
@@ -30,6 +40,10 @@ export default class AdminService {
 		adminSearchProfessors: results => ({ type: this.types.ADMIN_SEARCH_PROFESSORS, payload: { results }}),
 		adminSetProfessor: professor => ({ type: this.types.ADMIN_SET_PROFESSOR, payload: { professor }}),
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
+		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
+		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
+		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
+		adminContentDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }})
 	}
 
 	// default store
@@ -64,6 +78,10 @@ export default class AdminService {
 			ADMIN_SEARCH_PROFESSORS,
 			ADMIN_SET_PROFESSOR,
 			ADMIN_SEARCH_COLLECTIONS,
+			ADMIN_COLLECTION_EDIT,
+			ADMIN_COLLECTION_DELETE,
+			ADMIN_USER_DELETE,
+			ADMIN_CONTENT_DELETE,
 		} = this.types
 
 		switch (action.type) {
@@ -158,6 +176,38 @@ export default class AdminService {
 				professorCollections: action.payload.results,
 				loading: false,
 				lastFetchedCollections: Date.now(),
+			}
+
+		case ADMIN_COLLECTION_EDIT:
+			console.log('editing collections: ')
+			return {
+				...store,
+				professorCollections: {
+					...store.professorCollections,
+					[action.payload.collection.id]: action.payload.collection,
+				},
+				loading: false,
+			}
+
+		case ADMIN_COLLECTION_DELETE:
+			console.log('delete collection: ')
+			return {
+				...store,
+				loading: false,
+			}
+
+		case ADMIN_USER_DELETE:
+			console.log('delete user: ')
+			return {
+				...store,
+				loading: false,
+			}
+
+		case ADMIN_CONTENT_DELETE:
+			console.log('delete content: ')
+			return {
+				...store,
+				loading: false,
 			}
 
 		default:
@@ -336,6 +386,109 @@ export default class AdminService {
 			}
 
 		} else dispatch(this.actions.adminAbort())
+	}
+
+	updateCollectionStatus = (ID, action) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		//Grab all the collections from the admin store
+		const collections = { ...getState().adminStore.professorCollections}
+		//Grab the current collection from the admin store
+		const professorId = { ...getState().adminStore.professor.id }
+		let currentCollection
+		Object.keys(collections).forEach(item => {
+			const {id} = collections[item]
+			if (id === ID){
+				currentCollection = collections[item]
+				return;
+			}
+		});
+
+		let abort = false
+
+		switch (action) {
+		case `publish`:
+			currentCollection.published = true
+			break
+
+		case `unpublish`:
+			currentCollection.published = false
+			break
+
+		case `archive`:
+			currentCollection.archived = true
+			break
+
+		case `unarchive`:
+			currentCollection.published = false
+			currentCollection.archived = false
+			break
+
+		default:
+			abort = true
+			break
+		}
+
+		if (abort) dispatch(this.actions.adminAbort())
+		else {
+			try {
+				//Edit the desired collection
+				await apiProxy.collection.edit(ID, action)
+				//Get the updated collection and all the other collections
+				//This fixes the bug that it will add a duplicated collection
+				//to the professorCollections
+				await this.searchCollections(professorId, true)
+				//The result will be the updated professorCollections
+				//This will be the paidload for the adminSeachCollections
+				const result = { ...getState().adminStore.professorCollections}
+				dispatch(this.actions.adminSearchCollections(result))
+			} catch (error) {
+				dispatch(this.actions.adminError(error))
+			}
+		}
+	}
+
+	deleteCollection = (collectionId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.collection.delete(collectionId)
+			console.log(result)
+			dispatch(this.actions.adminCollectionDelete(result))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	deleteContent = (contentId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.content.delete(contentId)
+			console.log(result)
+			dispatch(this.actions.adminCollectionDelete(result))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	deleteUser = (userId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const result = await apiProxy.admin.user.delete(userId)
+			console.log(result)
+			dispatch(this.actions.adminCollectionDelete(result))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
 	}
 
 	clean = () => async (dispatch) => {

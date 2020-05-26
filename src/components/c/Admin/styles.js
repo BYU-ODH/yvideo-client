@@ -43,12 +43,16 @@ export const Search = styled.form`
 
 		outline: none;
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+
+		@media (max-width: 800px){
+			width: 20rem;
+		}
 	}
 `
 
 export const SearchIcon = styled.span`
 	position: absolute;
-	z-index: 10;
+	z-index: 9;
 	top: 1rem;
 	left: 2rem;
 	background: url(${searchIcon}) center no-repeat;
@@ -59,10 +63,9 @@ export const SearchIcon = styled.span`
 
 export const CategorySelect = styled.select`
 	background: white;
-
 	height: 4rem;
 	width: 12rem;
-
+	display: flex;
 	font-size: 1.5rem;
 
 	border: none;
@@ -72,4 +75,19 @@ export const CategorySelect = styled.select`
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	& option {
+		margin: auto auto 6px auto;
+	}
+`
+
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	width: 200px;
+	display: flex;
+
+	& > p {
+		font-weight: 500;
+		font-size: 20px;
+		margin: auto;
+	}
 `

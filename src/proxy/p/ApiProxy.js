@@ -17,6 +17,12 @@ const apiProxy = {
 			 * @param name The name of the new collection
 			 * @param ownerId The id of the owner of the collection (null if owner is the user, defined if the owner is someone other than user)
 			 */
+			delete: async (id) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/admin/collections/${id}/delete`, { withCredentials: true }).then((response) => {
+				console.log('Server response', response)
+			}),
+			/*
+				* Deletes a collection using just the collection ID ^^
+			*/
 			create: async (name, ownerId) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/create`, JSON.stringify({ name, ownerId }), {
 				withCredentials: true ,
 				headers: {
@@ -59,9 +65,16 @@ const apiProxy = {
 				createFromResource: async (collectionId, resourceId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/create/resource?collectionId=${collectionId}`, JSON.stringify({ resourceId }), {
 					withCredentials: true,
 				}),
-			},
+				},
 		},
-
+		user: {
+			delete: async (id) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/admin/users/${id}/delete`, { withCredentials: true }).then(res => res.data),
+			/* This is to delete a user by just getting the user ID  ^^ */
+		},
+		content: {
+			delete: async (id) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/content/${id}/delete`, { withCredentials: true }).then(res => res.data),
+			/* This is to delete a piece of content by just getting the content ID  ^^ */
+		},
 	},
 	auth: {
 		/**
@@ -95,7 +108,7 @@ const apiProxy = {
 		 * @param id The ID of the collection
 		 * @param name The new name of the collection
 		 */
-		post: async (id, name) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/collection/${id}`, { name }, { withCredentials: true }),
+		delete: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/user/${id}/delete`, { withCredentials: true }).then(res => res.data),
 		/**
 		 * Publishes, Unpublishes, Archives, or Unarchives a collection
 		 *
