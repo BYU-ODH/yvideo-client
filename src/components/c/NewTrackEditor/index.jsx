@@ -205,37 +205,74 @@ const TrackEditor = props => {
 		setLayers(currentLayers)
 	}
 
-	const updateLayerEvent = (index, event) => {
-		let currentEvents = allEvents
-
-		for(let i = 0; i < currentEvents.length; i++){
-			if(currentEvents[i] === event){
-				currentEvents[i] = event
-			}
+	const updateEvents = (index, event) => {
+		if(showSideEditor){
+			document.getElementsByClassName('sideTabInput')[0].value=''
+			document.getElementsByClassName('sideTabInput')[1].value=''
+			document.getElementById('sideTabMessage').innerText=''
 		}
+		let currentEvents = Array.from(allEvents)
+
+		currentEvents[index] = event
 
 		setAllEvents(currentEvents)
 		setShouldUpdate(true)
 	}
 
 	const handleEditEventBTimeChange = (e) => {
+		let number = parseFloat(e.target.value)
+		if(isNaN(number)){
+			console.log('IS NAN')
+			number = 0
+		}
+
 		let currentEvents = allEvents
 		for(let i = 0; i < currentEvents.length; i++){
 			if(currentEvents[i] === eventToEdit){
-				currentEvents[i].beginningTime = parseFloat(e.target.value)
+				currentEvents[i].beginningTime = number
+				if(number > currentEvents[i].endTime){
+					currentEvents[i].endTime = number + 5
+					document.getElementsByClassName('sideTabInput')[1].value=''
+				}
 			}
 		}
-		console.log(currentEvents)
+
 		setAllEvents(currentEvents)
 		setShouldUpdate(true)
 	}
 
 	const handleEditEventETimeChange = (e) => {
-		console.log('edit event end')
+		let currentEvents = allEvents
+		let number = parseFloat(e.target.value)
+
+		for(let i = 0; i < currentEvents.length; i++){
+			if(currentEvents[i] === eventToEdit){
+				if(!isNaN(number)){
+					if(number > currentEvents[i].beginningTime){
+						currentEvents[i].endTime = number
+						document.getElementById('sideTabMessage').innerText=''
+					}
+					else {
+						//MESSAGE THE NUMBER NEEDS TO BE BIGGER THAN B TIME
+						document.getElementById('sideTabMessage').innerText='Please enter a number greater than start time'
+						document.getElementById('sideTabMessage').style.color='red'
+					}
+				}
+			}
+
+			if(currentEvents[i].endTime > 100){
+				document.getElementById('sideTabMessage').innerText='End time changed to 100'
+				document.getElementById('sideTabMessage').style.color='red'
+				currentEvents[i].endTime = 100
+			}
+		}
+
+		setAllEvents(currentEvents)
+		setShouldUpdate(true)
 	}
 
 	const openSideEditor = (layerIndex, eventIndex) => {
-		setEventToEdit(layers[layerIndex][eventIndex])
+		setEventToEdit(allEvents[eventIndex])
 		setSideEditor(true)
 	}
 
@@ -249,11 +286,11 @@ const TrackEditor = props => {
 						<label>End</label>
 					</div>
 					<div className='center'>
-						<input type='text' onChange={e => handleEditEventBTimeChange(e)}/>
-						<input type='text' onChange={e => handleEditEventETimeChange(e)}/>
+						<input type='text' className='sideTabInput' placeholder={eventToEdit.beginningTime.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
+						<input type='text' className='sideTabInput' placeholder={eventToEdit.endTime.toFixed(4)} onChange={e => handleEditEventETimeChange(e)}/>
 					</div>
 					<br/>
-					<p>Message</p>
+					<p id='sideTabMessage'></p>
 				</div>
 			</SideEditor>
 		)
@@ -268,8 +305,6 @@ const TrackEditor = props => {
 			return v[key] === value
 		})
 	}
-
-	console.log('RENDERED')
 
 	return (
 		<Style>
@@ -318,11 +353,11 @@ const TrackEditor = props => {
 							{layers.map((layer, index) => (
 								<TrackLayer
 									key={index}
-									layer={layer}
+									events={allEvents}
 									index={index}
 									onDrop={(item) => eventDropHandler(item,index)}
 									sideEditor={openSideEditor}
-									updateEvents={updateLayerEvent}
+									updateEvents={updateEvents}
 									closeEditor={closeSideEditor}
 									/>
 								// <p>{index}</p>

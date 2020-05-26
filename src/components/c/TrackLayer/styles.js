@@ -11,6 +11,8 @@ export const Icon = styled.div`
 
 export const Style = styled.div`
 
+	--leftPosition: ${props => props.leftPosition};
+
 	& .events {
 		width: 100%;
 		border-bottom: 1px solid var(--light-blue);
