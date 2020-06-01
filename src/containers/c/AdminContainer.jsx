@@ -32,16 +32,19 @@ const AdminContainer = props => {
 		},
 	}
 
+	// console.log(props)
+
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [searchCategory, setSearchCategory] = useState(category.Users.name)
 	const [placeholder, setPlaceholder] = useState(category.Users.placeholder)
 
-	useEffect(() => {
-		setHeaderBorder(true)
-		return () => {
-			setHeaderBorder(false)
-		}
-	}, [setHeaderBorder])
+	// need to know what does this do.
+	// useEffect(() => {
+	// 	setHeaderBorder(true)
+	// 	return () => {
+	// 		setHeaderBorder(false)
+	// 	}
+	// }, [setHeaderBorder])
 
 	const updateCategory = e => {
 		e.preventDefault()

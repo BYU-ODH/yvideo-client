@@ -8,7 +8,7 @@ import { roles } from 'models/User'
 import { Collections } from 'components'
 
 // import { objectIsEmpty } from 'lib/util'
-
+// stateless component
 const CollectionsContainer = props => {
 
 	const {
@@ -42,7 +42,7 @@ const CollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		// TODO: When archiving a collection, make sure to unpublish it
-		collections: Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
+		collections,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => parseInt(k)),
 	}

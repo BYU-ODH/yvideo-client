@@ -109,7 +109,7 @@ export default class InterfaceService {
 	}
 
 	setHeaderBorder = active => async dispatch => {
-		dispatch(this.actions.setHeaderBorder(active))
+	  dispatch(this.actions.setHeaderBorder(active))
 	}
 
 	setLost = lost => async dispatch => {

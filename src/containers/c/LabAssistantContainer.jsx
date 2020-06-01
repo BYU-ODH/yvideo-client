@@ -23,12 +23,13 @@ const LabAssistantContainer = props => {
 
 	const [searchQuery, setSearchQuery] = useState(``)
 
-	useEffect(() => {
-		setHeaderBorder(true)
-		return () => {
-			setHeaderBorder(false)
-		}
-	}, [setHeaderBorder])
+	// enzyme mount error: Actions must be plain objects. Use custom middleware for async actions.
+	// useEffect(() => {
+	// 	setHeaderBorder(true)
+	// 	return () => {
+	// 		setHeaderBorder(false)
+	// 	}
+	// }, [setHeaderBorder])
 
 	const updateSearchBar = e => {
 		const { value } = e.target
@@ -51,6 +52,8 @@ const LabAssistantContainer = props => {
 		updateSearchBar,
 		handleSubmit,
 	}
+
+	// console.log(viewstate)
 
 	return <LabAssistant viewstate={viewstate} handlers={handlers} />
 }

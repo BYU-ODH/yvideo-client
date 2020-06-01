@@ -53,22 +53,25 @@ export default class BlockCollection extends Component {
 
 	render() {
 
+		// console.log(this.props)
+
 		const { name, content } = this.props.collection
 		// contentIds is filtered for published content
 		// This way, the number of videos (<p>{content.length} Videos</p>) includes the unpublished ones
 		const contentIds = this.props.contentIds
 
+		// console.log(this.state)
 		return (
 			<Container>
 				<Header>
-					<Link to={`/`}>{name}</Link>
+					<Link className='block-collection-link' to={`/`}>{name}</Link>
 					<p>{content.length} Videos</p>
 				</Header>
 				<div>
 					<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 						<div />
 					</Arrow>
-					<SlideWrapper count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
+					<SlideWrapper className='slide-wrapper' count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 						{
 							content.map(item => {
 								if(!contentIds.includes(item.id)) return null

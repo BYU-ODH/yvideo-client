@@ -21,7 +21,7 @@ export class Admin extends PureComponent {
 			handleSubmit,
 		} = this.props.handlers
 
-		console.log(data)
+		// console.log(this.props.viewstate)
 
 		return (
 			<Style>
@@ -29,7 +29,7 @@ export class Admin extends PureComponent {
 
 				<div>
 
-					<CategorySelect onChange={updateCategory}>
+					<CategorySelect id='categorySelect' onChange={updateCategory}>
 						{Object.keys(category).map((c, index) =>
 							<option value={category[c].name} key={index}>
 								{category[c].name}
@@ -37,7 +37,7 @@ export class Admin extends PureComponent {
 						)}
 					</CategorySelect>
 
-					<Search onSubmit={handleSubmit}>
+					<Search id='searchSubmit' onSubmit={handleSubmit}>
 						<SearchIcon />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
 					</Search>

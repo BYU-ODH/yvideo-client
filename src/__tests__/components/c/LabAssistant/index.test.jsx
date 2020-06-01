@@ -1,0 +1,74 @@
+import React from 'react'
+import { shallow, mount } from 'enzyme'
+import LabAssistant from '../../../../components/c/LabAssistant/index'
+
+import Enzyme from 'enzyme'
+import EnzymeAdapter from 'enzyme-adapter-react-16'
+import { BrowserRouter} from 'react-router-dom'
+
+Enzyme.configure({
+	adapter: new EnzymeAdapter(),
+	disableLifecycleMethods: true,
+})
+
+const viewstate = {
+	data: [
+		{
+			email: `test@email.com`,
+			id: 22,
+			lastLogin: `2020-05-14T19:53:02.807Z`,
+			linked: `-1`,
+			name: `professor testname`,
+			roles: [`admin`],
+			username: `testusername`,
+		},
+		{
+			email: `test2@email.com`,
+			id: 23,
+			lastLogin: `2020-05-14T19:53:02.807Z`,
+			linked: `-1`,
+			name: `professor testname2`,
+			roles: [`admin`],
+			username: `testusername2`,
+		},
+	],
+	placeholder: `Search for a professor`,
+	searchCategory: `testquery`,
+}
+
+const handlers = {
+	handleSubmit: jest.fn(),
+	updateSearchBar: jest.fn(),
+}
+
+const props = {
+	viewstate,
+	handlers,
+}
+
+describe(`admin dashboard test`, () => {
+	it(`should be true`, ()=> {
+		const wrapper = mount(
+			<BrowserRouter>
+				<LabAssistant {...props}/>
+			</BrowserRouter>,
+		)
+
+		// console.log(wrapper.debug())
+		expect(wrapper.contains(<td>professor testname</td>)).toEqual(true)
+		expect(wrapper.contains(<td>professor testname2</td>)).toEqual(true)
+		// href="/lab-assistant-manager/22"
+
+		const testViewstate = wrapper.props().children.props.viewstate.data
+		// console.log(testViewstate)
+		expect(testViewstate[0].email).toBe(`test@email.com`)
+		expect(testViewstate[0].name).toBe(`professor testname`)
+		expect(testViewstate[0].roles[0]).toBe(`admin`)
+		expect(testViewstate[0].username).toBe(`testusername`)
+
+		expect(testViewstate[1].email).toBe(`test2@email.com`)
+		expect(testViewstate[1].name).toBe(`professor testname2`)
+		expect(testViewstate[1].roles[0]).toBe(`admin`)
+		expect(testViewstate[1].username).toBe(`testusername2`)
+	})
+})
