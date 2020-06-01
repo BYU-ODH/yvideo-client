@@ -3,9 +3,7 @@ import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { roles } from 'models/User'
-
 import { interfaceService, adminService } from 'services'
-
 import { Manager } from 'components'
 
 import CreateCollectionContainer from 'components/modals/containers/CreateCollectionContainer'
