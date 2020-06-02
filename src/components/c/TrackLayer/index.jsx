@@ -13,7 +13,7 @@ import {
 
 const TrackLayer = props => {
 
-	const { events, onDrop, sideEditor, updateEvents, closeEditor} = props
+	const { events, onDrop, sideEditor, updateEvents, closeEditor, activeEvent} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef =  useRef(null)
@@ -30,7 +30,6 @@ const TrackLayer = props => {
 	}
 
 	useEffect(() => {
-		// checkEvents()
 		setLayerWidth(layerRef.current.offsetWidth)
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
 		
@@ -63,7 +62,7 @@ parseInt(layerRef.offsetHeight)
 		}
 
 		//call handler from parent
-		updateEvents(index, cEvents[index])
+		updateEvents(index, cEvents[index], layerIndex)
 	}
 	//Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
@@ -89,9 +88,7 @@ parseInt(layerRef.offsetHeight)
 			}
 		}
 
-		// document.getElementById(`event-${index}`)
-
-		updateEvents(index, cEvents[index])
+		updateEvents(index, cEvents[index], layerIndex)
 	}
 
 	const handleResizeAction = (delta, position, index, e) => {
@@ -108,7 +105,7 @@ parseInt(layerRef.offsetHeight)
 	const printEvents = (event, index) => {
 		return (
 			<Rnd
-				className={`layer-event`}
+				className={`layer-event ${activeEvent === index ? 'active-event' : ''}`}
 				id={`event-${index}`}
 				size={{width: `${((event.endTime - event.beginningTime)/100) * layerWidth}px`, height: '46px'}}
 				position={{ x: parseFloat((event.beginningTime / 100) * layerWidth), y: 0}}
@@ -128,15 +125,6 @@ parseInt(layerRef.offsetHeight)
 			</Rnd>
 		)
 	}
-
-	// const checkEvents = () => {
-	// 	if(document.getElementById('eventsBox').innerHTML === ''){
-	// 		document.getElementById('layer-message').innerHTML = '<p>There are no events in this layer. Drop an event here to add it to this layer</p>'
-	// 	}
-	// 	else {
-	// 		document.getElementById('layer-message').innerHTML = '<p>Drop an event here to add an event</p>'
-	// 	}
-	// }
 
 	console.log('TRACK LAYER')
 

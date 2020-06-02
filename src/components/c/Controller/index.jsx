@@ -174,7 +174,11 @@ const Controller = props => {
 							<div onClick={video.handleSeek}>
 								<span className='total'></span>
 								{/* <span className='loaded'></span> */}
-								<span className='current'></span>
+								<span className='current'>
+									<span className='current-time'>
+										<span className='current-time-dot' id='timeDot'></span>
+									</span>
+								</span>
 							</div>
 
 						</div>
@@ -184,9 +188,6 @@ const Controller = props => {
 						</button> */}
 
 					</header>
-
-					<span className='current-time'></span>
-					<span className='current-time-dot'></span>
 				</TimeBar>
 		</Style>
 	)

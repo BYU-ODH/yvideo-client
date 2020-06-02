@@ -64,33 +64,6 @@ export const Timeline = styled.div`
 		overflow-x: hidden !important;
 	}
 
-	& > span {
-		display: block;
-		position: absolute;
-		top: calc(var(--header-height) / 2);
-		left: calc(var(--timeline-start) + ( ${props => props.played} * (100vw - (350px + 45px + var(--timeline-start))) ));
-		height: calc(100% - (var(--header-height) / 2));
-		width: 2px;
-		background-color: red;
-
-		&.current-time {
-			z-index: 20;
-		}
-
-		&.current-time-dot {
-			--dot-size: 12px;
-
-			height: var(--dot-size);
-			width: var(--dot-size);
-
-			top: calc((var(--header-height) / 2) - (var(--dot-size) / 2) + 1px);
-			left: calc(var(--timeline-start) + ( ${props => props.played} * (100vw - (35rem + 4.5rem + var(--timeline-start))) ) - (var(--dot-size) / 2) + 1px);
-			box-sizing: border-box;
-			border-radius: 50%;
-			border: 2px solid white;
-		}
-	}
-
 	& .event-layers {
 			height: 100%;
 			display: block;
@@ -103,34 +76,34 @@ export const Timeline = styled.div`
 		border-right: 1px solid var(--light-blue);
 	}
 
-		& .handle {
-				width: 160px !important;
-				min-width: 160px;
-				height: 46px;
-				display: inline-flex;
-				align-items: center;
-				justify-content: flex-start;
-				box-sizing: border-box;
-				position: relative;
-				cursor: pointer;
+	& .handle {
+			width: 160px !important;
+			min-width: 160px;
+			height: 46px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: flex-start;
+			box-sizing: border-box;
+			position: relative;
+			cursor: pointer;
 
-				border-bottom: 1px solid #555;
-				border-right: 1px solid var(--light-blue);
+			border-bottom: 1px solid #555;
+			border-right: 1px solid var(--light-blue);
 
-				& p {
-					padding-left: 2rem;
-					color: black;
-				}
-				transition: .5s;
-		}
-
-		& .active-layer {
-			background-color: var(--light-blue);
 			& p {
-				color: white;
-				font-size: 1.6rem;
+				padding-left: 2rem;
+				color: black;
 			}
+			transition: .5s;
+	}
+
+	& .active-layer {
+		background-color: rgba(0, 46, 93, 0.1);
+		& p {
+			color: black;
+			font-size: 1.6rem;
 		}
+	}
 
 `
 

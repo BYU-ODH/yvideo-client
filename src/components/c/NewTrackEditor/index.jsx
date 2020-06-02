@@ -165,7 +165,7 @@ const TrackEditor = props => {
 		setDisplayLayer(index)
 	}
 
-	const updateEvents = (index, event) => {
+	const updateEvents = (index, event, layerIndex) => {
 		console.log('Update', event)
 		if(showSideEditor){
 			document.getElementsByClassName('sideTabInput')[0].value=''
@@ -177,6 +177,9 @@ const TrackEditor = props => {
 		currentEvents[index] = event
 
 		setAllEvents(currentEvents)
+		setDisplayLayer(layerIndex)
+		setEventToEdit(index)
+		setSideEditor(true)
 	}
 
 	const getLayerEvents = (index) =>{
@@ -298,13 +301,14 @@ const TrackEditor = props => {
 						<div className='event-layers'>
 							
 								{layers.map((layer, index) => (
-									<div className='layer'>
-										<div className={`handle ${displayLayer === index ? 'active-layer' : ''}`} onClick={() => getLayerEvents(index)}>
+									<div className={`layer ${displayLayer === index ? 'active-layer' : ''}`}>
+										<div className={`handle`} onClick={() => getLayerEvents(index)}>
 											<p>Layer {index}</p>
 										</div>
 											{/* <HandleIcon /> */}
 											<TrackLayer
 												events={allEvents}
+												activeEvent={eventToEdit}
 												index={index}
 												onDrop={(item) => eventDropHandler(item,index)}
 												sideEditor={openSideEditor}
