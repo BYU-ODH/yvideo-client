@@ -176,7 +176,7 @@ const Controller = props => {
 								{/* <span className='loaded'></span> */}
 								<span className='current'>
 									<span className='current-time'>
-										<span className='current-time-dot' id='timeDot'></span>
+										<span id='timeDot'></span>
 									</span>
 								</span>
 							</div>

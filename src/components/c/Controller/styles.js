@@ -100,26 +100,6 @@ export const TimeBar = styled.div`
 									border: 3px solid white;
 									border-radius: 50%;
 								}
-
-								/* &.current-time-dot {
-								--dot-size: 12px;
-								position: relative;
-								top: 0px !important;
-								right: -4px;
-								width: 30px !important;
-								height: 30px !important;
-								
-								height: var(--dot-size) !important;
-								width: var(--dot-size) !important;
-									
-								top: calc((var(--header-height) / 2) - (var(--dot-size) / 2) + 1px);
-								margin-left:var(--timeline-start);
-								left: ${props => props.played * 100}%;
-								left: calc(var(--timeline-start) + ( ${props => props.played} * (100vw - (35rem + 4.5rem + var(--timeline-start))) ) - (var(--dot-size) / 2) + 1px);
-								box-sizing: border-box;
-								border-radius: 50%;
-								border: 2px solid white;
-								} */
 							} 
 						}
 
