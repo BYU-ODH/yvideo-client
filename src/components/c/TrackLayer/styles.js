@@ -11,45 +11,60 @@ export const Icon = styled.div`
 
 export const Style = styled.div`
 
-	--leftPosition: ${props => props.leftPosition};
+	width: 100% !important;
+	height: auto;
+
+	& #layer-message {
+		width: 60%;
+		height: 40px;
+		margin: 20px auto 10px auto;
+		display: flex;
+		border: 1px solid var(--royal-blue);
+		& p {
+			margin: auto;
+			justify-content: center;
+			text-align: center;
+			font-size: 1.5rem;
+			width: 600px;
+		}
+	}
 
 	& .events {
-		width: 100%;
+		width: 100% !important;
 		border-bottom: 1px solid var(--light-blue);
+		border-right: 2px solid red !important;
 		display: flex;
+		height: 45px;
+
 	}
 
 	& .layer-event {
 		border: 1px solid var(--light-blue) !important;
 		border-radius: 3px;
-		height: rem !important;
+		height: 46px !important;
 		padding: 1px;
 		min-width: 1%;
 		overflow: hidden !important;
 		display: flex !important;
 		background-color: white;
-		z-index: 10;
-		position: relative !important;
 
 		&	p {
 			font-size: 1.3rem;
 			text-align: left;
-			margin: auto auto auto 0px;
+			margin: 0px;
 			padding: 1px 3px 1px 3px;
 
 		}
 		&	div{
 			text-align: right;
-			margin: auto 0px auto auto;
+			margin: 0px;
 			padding: 0px 3px 0px 3px;
 		}
-	}
-
-	& .event-active {
-		background-color: rgba(5, 130, 202, 0.2);
-		border-top: 3px solid var(--light-blue) !important;
-		border-bottom: 3px solid var(--light-blue) !important;
-		border-right: 4px solid var(--light-blue) !important;
-		border-left: 4px solid var(--light-blue) !important;
+		& span {
+			background-color: red;
+			:hover{
+				background-color: green;
+			}
+		}
 	}
 `

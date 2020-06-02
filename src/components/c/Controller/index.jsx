@@ -5,13 +5,22 @@ import Backend from 'react-dnd-html5-backend'
 
 import ReactPlayer from 'react-player'
 
-import Style from './styles'
+import Style, {TimeBar } from './styles'
+
+import carat from 'assets/carat_white.svg'
+
+import plus from 'assets/plus-white.svg'
+
+import play from 'assets/controls_play.svg'
+import pause from 'assets/controls_pause.svg'
+import mute from 'assets/controls_unmuted.svg'
+import unmute from 'assets/controls_muted.svg'
 
 const Controller = props => {
 
 	const {
 		url,
-	} = props.viewstate
+	} = props
 
 	const ref = useRef(null)
 
@@ -112,44 +121,73 @@ const Controller = props => {
 		},
 	}
 
-	const Layout = props.trackeditor ? props.trackeditor : props.videocontrols
+	const dateElapsed = new Date(null)
+	dateElapsed.setSeconds(elapsed)
+	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
 	return (
-		<Style editing={!!props.trackEditor}>
-			<DndProvider backend={Backend}>
-				<Layout video={video}>
-					<ReactPlayer ref={ref} config={config} url={url}
+		<Style>
+				<ReactPlayer ref={ref} config={config} url={url}
 
-						// constants
+					// constants
 
-						className='react-player'
-						width='100%'
-						height='100%'
-						controls={true}
-						progressInterval={100}
+					className='video'
+					width='100%'
+					height='91.4%'
+					controls={true}
+					progressInterval={100}
 
-						// state
+					// state
 
-						playing={playing}
-						volume={volume}
-						muted={muted}
-						playbackRate={playbackRate}
+					playing={playing}
+					volume={volume}
+					muted={muted}
+					playbackRate={playbackRate}
 
-						// handlers
+					// handlers
 
-						onReady={video.handleReady}
-						// onStart={() => console.log(`onStart`)}
-						// onBuffer={() => console.log(`onBuffer`)}
-						onError={console.error}
+					onReady={video.handleReady}
+					// onStart={() => console.log(`onStart`)}
+					// onBuffer={() => console.log(`onBuffer`)}
+					onError={console.error}
 
-						onPlay={video.handlePlay}
-						onPause={video.handlePause}
+					onPlay={video.handlePlay}
+					onPause={video.handlePause}
 
-						onProgress={video.handleProgress}
-						onDuration={video.handleDuration}
-					/>
-				</Layout>
-			</DndProvider>
+					onProgress={video.handleProgress}
+					onDuration={video.handleDuration}
+				/>
+				<TimeBar played={video.played}>
+					<header>
+						<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
+							<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
+							<span className='carat'></span>
+						</button>
+
+						<div className='scrubber'>
+							<span className='time'>{formattedElapsed}</span>
+
+							<button className='mute' onClick={video.toggleMute}>
+								<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
+							</button>
+
+							<div onClick={video.handleSeek}>
+								<span className='total'></span>
+								{/* <span className='loaded'></span> */}
+								<span className='current'></span>
+							</div>
+
+						</div>
+
+						{/* <button className={`toggle-timeline${timelineMinimized ? ` minimized` : ``}`} onClick={togglendTimeline}>
+							<img src={carat} alt='Toggle Timeline' />
+						</button> */}
+
+					</header>
+
+					<span className='current-time'></span>
+					<span className='current-time-dot'></span>
+				</TimeBar>
 		</Style>
 	)
 }

@@ -23,7 +23,7 @@ const TrackEditorContainer = props => {
 		}
 	}, [setEditorStyle])
 
-	return <Controller videocontrols={VideoControls} trackeditor={TrackEditor} viewstate={viewstate} />
+	return <TrackEditor viewstate={viewstate} />
 }
 
 const mapStoreToProps = () => ({

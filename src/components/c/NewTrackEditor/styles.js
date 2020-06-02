@@ -7,6 +7,7 @@ import menu from 'assets/menu-white.svg'
 const Style = styled.div`
 
 	background-color: white;
+	overflow: hidden;
 
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
@@ -26,7 +27,6 @@ const Style = styled.div`
 	}
 
 	& video {
-		height: 100%;
 		width: 100%;
 		background-color: navy;
 	}
@@ -54,128 +54,6 @@ export const Timeline = styled.div`
 	cursor: ${props => props.cursor};
 	display: flex;
 	flex-direction: column;
-
-	& > header {
-		height: var(--header-height);
-		box-sizing: border-box;
-		border: 1px solid rgba(255, 255, 255, 0.8);
-		border-left: none;
-
-		display: flex;
-		align-items: center;
-		background-color: var(--navy-blue);
-
-		& .scrubber {
-			color: black;
-			display: flex;
-			align-items: center;
-			justify-content: space-evenly;
-
-			width: 100%;
-
-			cursor: pointer;
-
-			& > .time {
-				color: white;
-				position: relative;
-				top: 1px;
-				width: 5rem;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-
-			& > div {
-				position: relative;
-
-				flex: 1;
-				height: .75rem;
-
-				& > span {
-					position: absolute;
-					display: block;
-					height: 100%;
-
-					&.total {
-						background-color: rgba(255, 255, 255, 0.7);
-						width: 100%;
-					}
-					&.current {
-						background-color: var(--light-blue);
-						width: ${props => props.played * 100}%;
-					}
-				}
-			}
-		}
-
-		& button {
-
-			height: 1.5rem;
-			width: 1.5rem;
-
-			margin: 0 1.5rem;
-			padding: 0;
-
-			border: none;
-			cursor: pointer;
-			background: transparent;
-			outline: none;
-			color: black;
-
-			& > img {
-				height: 1.5rem;
-				width: 1.5rem;
-				object-fit: contain;
-				object-position: center;
-			}
-
-			&.play-btn {
-				position: relative;
-
-				height: var(--header-height);
-				width: var(--header-height);
-				margin: 0 2rem 0 0;
-				border-right: 1px solid rgba(255, 255, 255, 0.8);
-
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background-color: var(--navy-blue);
-
-				& > img {
-					height: 2rem;
-					width: 2rem;
-				}
-
-				& > span.carat {
-					position: absolute;
-					right: -.75rem;
-					top: calc(var(--header-height) / 2);
-					margin-top: -.5rem;
-
-					height: 1rem;
-					width: 1rem;
-
-					transform-origin: .5rem .5rem;
-					transform: rotate(45deg);
-					border-top: 1px solid rgba(255, 255, 255, 0.8);
-					border-right: 1px solid rgba(255, 255, 255, 0.8);
-					background-color: white;
-				}
-			}
-
-			&.toggle-timeline {
-				& > img {
-					transition: transform .5s ease-in-out;
-				}
-				&.minimized {
-					& > img {
-						transform: rotate(-180deg);
-					}
-				}
-			}
-		}
-	}
 
 	& > section {
 		flex: 1;
@@ -214,37 +92,45 @@ export const Timeline = styled.div`
 	}
 
 	& .event-layers {
-			height: 4.8rem;
+			height: 100%;
+			display: block;
 	}
 
 	& .layer {
-		width: 100%
-		height: 100%;
-
 		display: flex;
-
-		margin: 0px 0px 0px 0px !important;
-
+		width: 100%;
+		height: 46px;
+		border-right: 1px solid var(--light-blue);
+	}
 
 		& .handle {
 				width: 160px !important;
 				min-width: 160px;
-				height: 100%;
+				height: 46px;
 				display: inline-flex;
 				align-items: center;
 				justify-content: flex-start;
 				box-sizing: border-box;
 				position: relative;
+				cursor: pointer;
 
 				border-bottom: 1px solid #555;
-				border-right: 2px solid var(--royal-blue);
+				border-right: 1px solid var(--light-blue);
 
 				& p {
 					padding-left: 2rem;
 					color: black;
 				}
+				transition: .5s;
 		}
-	}
+
+		& .active-layer {
+			background-color: var(--light-blue);
+			& p {
+				color: white;
+				font-size: 1.6rem;
+			}
+		}
 
 `
 
@@ -290,6 +176,7 @@ export const EventList = styled.div`
 
 	width: 35rem;
 	height: calc(100vh - var(--navbar-height));
+	background: transparent !important;
 
 	& > header {
 
