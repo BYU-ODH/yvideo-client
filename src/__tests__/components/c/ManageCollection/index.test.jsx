@@ -4,10 +4,8 @@ import Enzyme from 'enzyme'
 import EnzymeAdapter from 'enzyme-adapter-react-16'
 
 import ManageCollection from '../../../../components/c/ManageCollection/index'
-import { Link, BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-import { Provider } from 'react-redux'
-import sinon from 'sinon'
+import {Provider} from 'react-redux'
 
 Enzyme.configure({
 	adapter: new EnzymeAdapter(),
@@ -116,20 +114,15 @@ const store = mockStore({
 	},
 })
 
-describe(`collections test`, () => {
+describe(`manage collection test`, () => {
 	it(`ContentOverviewContainer should be connected`, ()=> {
 
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
 		).dive()
+
 		expect(wrapper.find(`Connect(CollectionPermissionsContainer)`).length).toBe(0)
 		expect(wrapper.find(`Connect(ContentOverviewContainer)`).length).toBe(1)
-
-		// expect(wrapper.find(`Collection 1`)).toEqual(true)
-		// expect(props.handlers.setTab).toHaveBeenCalledWith(false)
-		// wrapper.find(`.content-button`).simulate(`click`)
-		// expect(spy.calledOnce).toBe(true)
-		// expect(props.handlers.setTab).toHaveBeenCalledWith(true)
 	})
 
 	it(`CollectionPermissionsContainer should be connected`, ()=> {
@@ -137,18 +130,18 @@ describe(`collections test`, () => {
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
 		).dive()
-		// console.log(wrapper.debug())
+
 		expect(wrapper.find(`Connect(ContentOverviewContainer)`).length).toBe(0)
 		expect(wrapper.find(`Connect(CollectionPermissionsContainer)`).length).toBe(1)
 	})
 
 	it(`mount`, ()=> {
-
-		// const wrapper = mount(
-		// 	<Provider store={store}>
-		// 		<ManageCollection {...props}/>,
-		// 	</Provider>,
-		// )
+		props.viewstate.isContent = true
+		const wrapper = mount(
+			<Provider store={store}>
+				<ManageCollection {...props}/>,
+			</Provider>,
+		)
 
 		// console.log(wrapper.debug())
 	})
