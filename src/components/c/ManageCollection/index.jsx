@@ -83,8 +83,8 @@ export default class ManageCollection extends PureComponent {
 					</div>
 				</header>
 				<TabHeader>
-					<button onClick={setTab(true)}>Content</button>
-					<button onClick={setTab(false)}>Permissions</button>
+					<button className={`content-button`} onClick={setTab(true)}>Content</button>
+					<button className={`permissions-button`} onClick={setTab(false)}>Permissions</button>
 					<Selector isContent={isContent} />
 				</TabHeader>
 				<Tab>
