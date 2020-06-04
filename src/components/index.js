@@ -5,6 +5,7 @@ import ContentOverview from './c/ContentOverview'
 import ContentSettings from './c/ContentSettings'
 import Controller from './c/Controller'
 import Error from './c/Error'
+import Events from './c/Events'
 import Header from './c/Header'
 import LabAssistant from './c/LabAssistant'
 import Landing from './c/Landing'
@@ -27,6 +28,7 @@ export {
 	ContentSettings,
 	Controller,
 	Error,
+	Events,
 	Header,
 	LabAssistant,
 	Landing,

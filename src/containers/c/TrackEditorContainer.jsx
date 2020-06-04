@@ -1,29 +1,24 @@
-import React, { useEffect } from 'react'
+import React, {  } from 'react'
 
 import { connect } from 'react-redux'
 
-import { Controller, VideoControls, TrackEditor } from 'components'
-
 import { interfaceService } from 'services'
+
+import { TrackEditor } from 'components'
+
+// import { interfaceService } from 'services'
 
 const TrackEditorContainer = props => {
 
 	const {
-		setEditorStyle,
+		setEvents,
 	} = props
 
 	const viewstate = {
 		url: `https://www.youtube.com/watch?v=Enz9qD4bQYo`,
 	}
 
-	useEffect(() => {
-		setEditorStyle(true)
-		return () => {
-			setEditorStyle(false)
-		}
-	}, [setEditorStyle])
-
-	return <TrackEditor viewstate={viewstate} />
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents}/>
 }
 
 const mapStoreToProps = () => ({
@@ -31,7 +26,7 @@ const mapStoreToProps = () => ({
 })
 
 const mapThunksToProps = {
-	setEditorStyle: interfaceService.setEditorStyle,
+	setEvents: interfaceService.setEvents,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

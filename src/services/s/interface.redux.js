@@ -11,6 +11,7 @@ export default class InterfaceService {
 		SET_HEADER_BORDER: `SET_HEADER_BORDER`,
 		SET_EDITOR_STYLE: `SET_EDITOR_STYLE`,
 		SET_LOST: `SET_LOST`,
+		SET_EVENTS: `SET_EVENTS`,
 	}
 
 	// action creators
@@ -22,6 +23,7 @@ export default class InterfaceService {
 		setHeaderBorder: active => ({ type: this.types.SET_HEADER_BORDER, payload: { active }}),
 		setEditorStyle: active => ({ type: this.types.SET_EDITOR_STYLE, payload: { active }}),
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),
+		setEvents: events => ({ type: this.types.SET_EVENTS, payload: {events}}),
 	}
 
 	// default store
@@ -39,6 +41,7 @@ export default class InterfaceService {
 		headerBorder: false,
 		editorStyle: false,
 		lost: false,
+		events: [],
 	}
 
 	// reducer
@@ -90,6 +93,12 @@ export default class InterfaceService {
 				lost: action.payload.lost,
 			}
 
+		case this.types.SET_EVENTS:
+			return {
+				...store,
+				events: action.payload.events,
+			}
+
 		default:
 			return store
 		}
@@ -127,5 +136,9 @@ export default class InterfaceService {
 
 	setEditorStyle = active => async dispatch => {
 		dispatch(this.actions.setEditorStyle(active))
+	}
+
+	setEvents = events => async dispatch => {
+		dispatch(this.actions.setEvents(events))
 	}
 }

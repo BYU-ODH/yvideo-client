@@ -3,6 +3,7 @@ import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
 import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
 import ContentSettingsContainer from './c/ContentSettingsContainer'
+import EventsContainer from './c/EventsContainer'
 import HeaderContainer from './c/HeaderContainer'
 import LabAssistantContainer from './c/LabAssistantContainer'
 import LabAssistantManageCollectionContainer from './c/LabAssistantManageCollectionContainer'
@@ -22,6 +23,7 @@ export {
 	ContentOverviewContainer,
 	CollectionPermissionsContainer,
 	ContentSettingsContainer,
+	EventsContainer,
 	HeaderContainer,
 	LabAssistantContainer,
 	LabAssistantManageCollectionContainer,

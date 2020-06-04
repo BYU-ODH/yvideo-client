@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import Style, { Timeline, EventList, EventListCarat, HandleIcon, NewLayer, Icon, SideEditor } from './styles'
+import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon, SideEditor } from './styles'
 
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
@@ -15,16 +15,10 @@ import pauseIcon from 'Assets/event_pause.svg'
 import commentIcon from 'Assets/event_comment.svg'
 import censorIcon from 'Assets/event_censor.svg'
 
-import carat from 'assets/carat_white.svg'
-
 import plus from 'assets/plus-white.svg'
 
-import play from 'assets/controls_play.svg'
-import pause from 'assets/controls_pause.svg'
-import mute from 'assets/controls_unmuted.svg'
-import unmute from 'assets/controls_muted.svg'
-
 const TrackEditor = props => {
+	const { setEvents } = props
 
 	const events = [
 		{
@@ -53,7 +47,8 @@ const TrackEditor = props => {
 			icon: commentIcon,
 			beginningTime: 0,
 			endTime: 10,
-			layer: 0
+			layer: 0,
+			comment: ''
 		},
 		{
 			name: `Censor`,
@@ -74,14 +69,14 @@ const TrackEditor = props => {
 		},
 		{
 			name: `Skip`,
-			icon: skipIcon,
+			icon: muteIcon,
 			beginningTime: 1,
 			endTime: 10,
 			layer: 0
 		},
 		{
 			name: `Mute`,
-			icon: skipIcon,
+			icon: muteIcon,
 			beginningTime: 0,
 			endTime: 10,
 			layer: 1
@@ -106,24 +101,54 @@ const TrackEditor = props => {
 	const [layers, setLayers] = useState(initialLayers)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
-	const [eventToEdit, setEventToEdit] = useState(0)
+	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [displayLayer, setDisplayLayer] = useState(0)
+	const [videoLength, setVideoLength] = useState(0)
 
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	// TODO: Replace with dynamic data from server
+	const [layerWidth, setWidth] = useState(0)
 
-	if(shouldUpdate){
+	const [dimensions, setDimensions] = useState({
+		height: window.innerHeight,
+		width: window.innerWidth
+	})
+
+	useEffect(() => {
+		function handleResize() {
+			setDimensions({
+				height: window.innerHeight,
+				width: window.innerWidth
+			})
+		}
+		window.addEventListener('resize', handleResize)
+		setEvents(allEvents)
+	})
+
+	if(shouldUpdate === true){
+
 		setShouldUpdate(false)
 	}
 
 	const togglendTimeline = () => {
+
 		setTimelineMinimized(!timelineMinimized)
 	}
 
 	const toggleEventList = () => {
+		if(eventListMinimized){
+			setWidth(31)
+		}
+		else {
+			setWidth(35)
+		}
 		setEventListMinimized(!eventListMinimized)
+	}
+
+	const getVideoDuration = (duration) => {
+		setVideoLength(duration)
 	}
 
 	const handleTabChange = tab => () => {
@@ -142,21 +167,18 @@ const TrackEditor = props => {
 	}
 
 	const eventDropHandler = (item, index) => {
-		console.log(`Event Drop Handler: `, item, index)
+		// console.log(`Event Drop Handler: `, item, index)
 		addEventToLayer(item, index)
 	}
 
 	const addEventToLayer = (item, index) => {
 		//TODO: Change this to use real JS event objects and insert based on time
 		let currentEvents = [...allEvents]
-		console.log('ADDING NEW EVENT')
+		//console.log('ADDING NEW EVENT')
 		const matchingEvent = filterValue(events, `name`, item.id)
 
 		const eventObj = {
-			name: matchingEvent.name,
-			icon: matchingEvent.icon,
-			beginningTime: matchingEvent.beginningTime,
-			endTime: matchingEvent.endTime,
+			...matchingEvent,
 			layer: index
 		}
 
@@ -166,8 +188,8 @@ const TrackEditor = props => {
 	}
 
 	const updateEvents = (index, event, layerIndex) => {
-		console.log('Update', event)
-		if(showSideEditor){
+		//console.log('Update', event)
+		if(showSideEditor && eventListMinimized === false){
 			document.getElementsByClassName('sideTabInput')[0].value=''
 			document.getElementsByClassName('sideTabInput')[1].value=''
 			document.getElementById('sideTabMessage').innerText=''
@@ -182,17 +204,15 @@ const TrackEditor = props => {
 		setSideEditor(true)
 	}
 
-	const getLayerEvents = (index) =>{
-		setDisplayLayer(index)
-	}
-
 	const handleEditEventBTimeChange = (e) => {
 		document.getElementById('sideTabMessage').style.color='red'
 		let number = parseFloat(e.target.value)
 		if(isNaN(number)){
-			console.log('IS NAN')
+			//console.log('IS NAN')
 			number = 0
 		}
+
+		number = (number / videoLength) * 100
 
 		let currentEvents = [...allEvents]
 		let cEvent = currentEvents[eventToEdit]
@@ -226,19 +246,23 @@ const TrackEditor = props => {
 		let cEvent = currentEvents[eventToEdit]
 
 		if(!isNaN(number)){
+			number = (number / videoLength) * 100
 			if(number > cEvent.beginningTime && number <= 100){
+				//console.log('good')
 				cEvent.endTime = number
 				document.getElementById('sideTabMessage').innerText=''
 			}
-			else {
+			if(number > 100){
 				//MESSAGE THE NUMBER NEEDS TO BE BIGGER THAN B TIME
-				document.getElementById('sideTabMessage').innerHTML='Please enter a number greater than start time and less than 100'
+				//console.log('changed to 100')
+				document.getElementById('sideTabMessage').innerHTML=`End time is bigger than video length time. Changed end time to ${videoLength}`
+				document.getElementsByClassName('sideTabInput')[1].value=''
+				cEvent.endTime = 100
 			}
-		}
-
-		if(cEvent.endTime > 100){
-			document.getElementById('sideTabMessage').innerText='End time changed to 100'
-			cEvent.endTime = 100
+			if(number <= cEvent.beginningTime){
+				//console.log('bad')
+				document.getElementById('sideTabMessage').innerHTML=`Please enter a number greater than start`
+			}
 		}
 
 		currentEvents[eventToEdit] = cEvent
@@ -254,6 +278,8 @@ const TrackEditor = props => {
 
 	const printSideEditor = () => {
 		const cEvent = allEvents[eventToEdit]
+		let start = ( cEvent.beginningTime / 100 ) * videoLength
+		let end = ( cEvent.endTime / 100 ) * videoLength
 		return (
 			<SideEditor>
 				<div>
@@ -263,8 +289,8 @@ const TrackEditor = props => {
 						<label>End</label>
 					</div>
 					<div className='center'>
-						<input type='text' className='sideTabInput' placeholder={cEvent.beginningTime.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
-						<input type='text' className='sideTabInput' placeholder={cEvent.endTime.toFixed(4)} onChange={e => handleEditEventETimeChange(e)}/>
+						<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
+						<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)}/>
 					</div>
 					<br/>
 					<p id='sideTabMessage'></p>
@@ -283,7 +309,7 @@ const TrackEditor = props => {
 		})
 	}
 
-	console.log('TRACK EDITOR')
+	//console.log('track-editor ', videoLength)
 
 	return (
 		<Style>
@@ -291,7 +317,7 @@ const TrackEditor = props => {
 
 			<span>
 
-				<Controller className='video'  url={props.viewstate.url}>
+				<Controller className='video' url={props.viewstate.url} handlers={togglendTimeline} minimized={timelineMinimized} getDuration={getVideoDuration}>
 				</Controller>
 
 				<Timeline minimized={timelineMinimized}>
@@ -299,14 +325,17 @@ const TrackEditor = props => {
 					<section>
 						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
-							
+
 								{layers.map((layer, index) => (
-									<div className={`layer ${displayLayer === index ? 'active-layer' : ''}`}>
-										<div className={`handle`} onClick={() => getLayerEvents(index)}>
+									<div className={`layer ${displayLayer === index ? 'active-layer' : ''}`} key={index}>
+										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
 											<p>Layer {index}</p>
 										</div>
 											{/* <HandleIcon /> */}
 											<TrackLayer
+												videoLength={videoLength}
+												minimized={eventListMinimized}
+												width={layerWidth}
 												events={allEvents}
 												activeEvent={eventToEdit}
 												index={index}
@@ -317,17 +346,18 @@ const TrackEditor = props => {
 											/>
 									</div>
 								))}
+
+
 								<NewLayer onClick={handleAddLayer}>
 									<Icon src={plus}/>
 								</NewLayer>
 						</div>
 
-						<div className='zoom-controls'>
-							<span className='zoom-factor'></span>
-							<span className='timeline-zone'></span>
-						</div>
-
 					</section>
+					<div className='zoom-controls'>
+						<span className='zoom-factor'></span>
+						<span className='timeline-zone'></span>
+					</div>
 
 				</Timeline>
 
@@ -336,11 +366,12 @@ const TrackEditor = props => {
 			<EventList minimized={eventListMinimized}>
 
 				<header>
+					{/* <div className='carat'>
+						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
+					</div> */}
 					<div className={`tab${tab === `events` ? ` active` : ``}`} onClick={handleTabChange(`events`)}>Events</div>
 					<div className={`tab${tab === `save` ? ` active` : ``}`} onClick={handleTabChange(`save`)}>Save</div>
-					<div className='carat'>
-						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
-					</div>
+
 				</header>
 
 				{tab === `events` ?
@@ -356,7 +387,7 @@ const TrackEditor = props => {
 							}
 							{/* <button className='close'></button> */}
 						</div>
-						{ showSideEditor ? (
+						{ showSideEditor !== false && eventListMinimized !== true? (
 							printSideEditor()
 						) : (
 							<>

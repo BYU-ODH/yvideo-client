@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { useDrop } from 'react-dnd'
 import { Rnd } from "react-rnd";
@@ -13,33 +13,29 @@ import {
 
 const TrackLayer = props => {
 
-	const { events, onDrop, sideEditor, updateEvents, closeEditor, activeEvent} = props
+	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef =  useRef(null)
-	const eventRef =  useRef(null)
 
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	// const [events, setEvents] = useState(layer)
 	const [isEditorOpen, setEditorOpen] = useState(false)
 
 	if(shouldUpdate){
 		setShouldUpdate(false)
 	}
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		setLayerWidth(layerRef.current.offsetWidth)
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
-		
-  });
-parseInt(layerRef.offsetHeight)
+ 	});
 	//This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
 	// Drag and Drop event to the layer
-	const [collectedProps, dropRef] = useDrop({
+	const [, dropRef] = useDrop({
 		accept: `timeline-event`,
 		drop: onDrop,
 		hover: (item, monitor) => {},
@@ -91,11 +87,6 @@ parseInt(layerRef.offsetHeight)
 		updateEvents(index, cEvents[index], layerIndex)
 	}
 
-	const handleResizeAction = (delta, position, index, e) => {
-		console.log(position)
-		console.log(e)
-	}
-
 	//This opens the side tab editor
 	const toggleEditor = (layerIndex, eventIndex) => {
 		setEditorOpen(true)
@@ -113,7 +104,6 @@ parseInt(layerRef.offsetHeight)
 				dragAxis="x"
 				bounds={`.layer-${layerIndex}`}
 				onDragStop={(e, d) => handleDrag(d, event, index)}
-				// onResizeStart={(e, direction, ref, delta, position) => handleResizeAction(delta, position, index, e)}
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
@@ -121,27 +111,33 @@ parseInt(layerRef.offsetHeight)
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
-				<p>{event.name} - From: {event.beginningTime.toFixed(1)}% - To: {event.endTime.toFixed(1)}%</p>
+				<p>{event.name} - From: {((event.beginningTime / 100) * videoLength).toFixed(1)}s - To: {((event.endTime / 100) * videoLength).toFixed(1)}s</p>
 			</Rnd>
 		)
 	}
 
-	console.log('TRACK LAYER')
-
 	return (
 		<>
-		<Style >
+		<Style>
 				{/* overflow-x should be like scroll or something */}
-				<div ref={layerRef} id='eventsbox'>
+				<div ref={layerRef} className='eventsbox'
+					style={{ width: `${width === 0 ? ('100%') : (
+							width === 31 ? ( `calc(100%)`
+							) : (
+								`calc(${layerRef.current.offsetParent.offsetWidth} + 31rem)`
+							)
+						)}`
+					}}
+					>
 					<div className={`layer-${layerIndex} events`} ref={dropRef}>
 						{events.map((event, index) => (
-							<>
+							<div key={index}>
 							{event.layer === layerIndex ? (
 								<>
-									{printEvents(event, index)}		
+									{printEvents(event, index)}
 								</>
 							) : (null)}
-							</>
+							</div>
 						))}
 					</div>
 				</div>

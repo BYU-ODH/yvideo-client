@@ -1,15 +1,12 @@
-import React, { useRef, useState } from 'react'
-
-import { DndProvider } from 'react-dnd'
-import Backend from 'react-dnd-html5-backend'
+import React, { useRef, useState, useEffect } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import Style, {TimeBar } from './styles'
+import Style, {TimeBar, ToggleCarat } from './styles'
+
+import { EventsContainer } from 'containers'
 
 import carat from 'assets/carat_white.svg'
-
-import plus from 'assets/plus-white.svg'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -20,6 +17,7 @@ const Controller = props => {
 
 	const {
 		url,
+		getDuration,
 	} = props
 
 	const ref = useRef(null)
@@ -32,10 +30,7 @@ const Controller = props => {
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 
-	// for track-editor
-
-	const [selectedEvent, setSelectedEvent] = useState(``)
-	const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
+	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
 
 	const video = {
@@ -49,11 +44,6 @@ const Controller = props => {
 		duration,
 		elapsed,
 		playbackRate,
-
-		// for track-editor
-
-		selectedEvent,
-		setSelectedEvent,
 
 		// handlers
 
@@ -78,16 +68,23 @@ const Controller = props => {
 			setElapsed(playedSeconds)
 		},
 		handleDuration: duration => {
+			getDuration(duration)
 			setDuration(duration)
 			setCurrentZone([0, duration])
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
 		},
-		handleSeek: e => {
-			const scrubber = e.currentTarget.getBoundingClientRect()
-			const newPlayed = (e.pageX - scrubber.left) / scrubber.width
-			console.log(newPlayed)
+		handleSeek: (e, time) => {
+			let newPlayed = 0
+			if(e !== null){
+				const scrubber = e.currentTarget.getBoundingClientRect()
+				newPlayed = (e.pageX - scrubber.left) / scrubber.width
+			}
+			else {
+				newPlayed = time / duration
+			}
+			//console.log(newPlayed)
 			ref.current.seekTo(newPlayed, `fraction`)
 		},
 		handlePause: () => {
@@ -96,13 +93,16 @@ const Controller = props => {
 		handlePlay: () => {
 			setPlaying(true)
 		},
+		handleMute: () => {
+			setMuted(true)
+		},
 
 		handleZoomFactor: a => {
-			console.log(a)
+			//console.log(a)
 		},
 
 		handleZoneChange: a => {
-			console.log(a)
+			//console.log(a)
 		},
 
 	}
@@ -133,7 +133,8 @@ const Controller = props => {
 
 					className='video'
 					width='100%'
-					height='91.4%'
+					height='95%'
+					//height='85%'
 					controls={true}
 					progressInterval={100}
 
@@ -183,12 +184,18 @@ const Controller = props => {
 
 						</div>
 
-						{/* <button className={`toggle-timeline${timelineMinimized ? ` minimized` : ``}`} onClick={togglendTimeline}>
+						<ToggleCarat className={`${props.minimized ? ` minimized` : ``}`} onClick={props.handlers}>
 							<img src={carat} alt='Toggle Timeline' />
-						</button> */}
-
+						</ToggleCarat>
 					</header>
 				</TimeBar>
+				<EventsContainer currentTime={elapsed} duration={video.duration}
+					handleSeek={video.handleSeek}
+					handleMute={video.handleMute}
+					handlePlay={video.handlePlay}
+					handlePause={video.handlePause}
+					toggleMute={video.toggleMute}
+				></EventsContainer>
 		</Style>
 	)
 }

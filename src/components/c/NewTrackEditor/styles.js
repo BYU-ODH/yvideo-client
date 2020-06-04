@@ -30,12 +30,12 @@ const Style = styled.div`
 		width: 100%;
 		background-color: navy;
 	}
-
 `
-
 export default Style
 
 export const Timeline = styled.div`
+
+
 
 	--scale: ${props => props.scale};
 
@@ -48,15 +48,21 @@ export const Timeline = styled.div`
 	color: #5F5F5F; */
 
 	position: relative;
-	height: ${props => props.minimized ? `var(--header-height)` : `30vh`};
+	top: 2rem;
+	height: ${props => props.minimized ? `0vh` : `30vh`};
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
 	display: flex;
-	flex-direction: column;
+	border: 1px solid black;
+
+	& .zoom-controls{
+		width: 48px;
+		height: 100%;
+		float: right;
+	}
 
 	& > section {
-		flex: 1;
 		width: 100%;
 		box-sizing: border-box;
 		border-right: 1px solid #555;
@@ -64,9 +70,11 @@ export const Timeline = styled.div`
 		overflow-x: hidden !important;
 	}
 
+
+
 	& .event-layers {
-			height: 100%;
-			display: block;
+		height: 100%;
+		display: block;
 	}
 
 	& .layer {
@@ -146,10 +154,12 @@ export const NewLayer = styled.button`
 `
 
 export const EventList = styled.div`
+	--minimized: ${props => props.minimized};
 
-	width: 35rem;
+	width: ${ props => props.minimized !== false ? ('4rem') : ('35rem')};
 	height: calc(100vh - var(--navbar-height));
-	background: transparent !important;
+	background: ${ props => props.minimized !== false ? ('var(--navy-blue)') : ('transparent !important')};
+	transition: .5s;
 
 	& > header {
 
@@ -161,14 +171,14 @@ export const EventList = styled.div`
 		border-bottom: 5px solid var(--light-blue);
 
 		& > .carat {
-			flex: 1;
-			display: flex;
-			justify-content: flex-end;
+			float: left;
+			margin: auto 0px auto 1rem;
 			align-items: center;
 			padding-right: 1rem;
 		}
 
 		& > .tab {
+			display: ${ props => props.minimized !== false ? ('none') : ('visible')}
 			height: 5rem;
 			width: 7rem;
 			color: white;
@@ -188,10 +198,10 @@ export const EventList = styled.div`
 	}
 
 	& > .breadcrumbs {
+		display: ${ props => props.minimized !== false ? ('none') : ('flex')}
 
 		height: 5rem;
 
-		display: flex;
 		position: relative;
 
 		box-sizing: border-box;
@@ -235,7 +245,7 @@ export const EventList = styled.div`
 	}
 
 	& > .events {
-
+		display: ${ props => props.minimized !== false ? ('none') : ('visible')}
 		padding: 3rem;
 
 		& .draggable-event {
@@ -264,10 +274,11 @@ export const EventListCarat = styled.button`
 `
 
 export const SideEditor = styled.div`
+	display: ${ props => props.minimized !== false ? ('initial') : ('none')};
 	padding: 20px;
 
 	& .closeEditor {
-		width: 100%;
+		width: 90%;
 		text-align: right;
 		cursor: pointer;
 	}
@@ -291,6 +302,11 @@ export const SideEditor = styled.div`
 			width: 150px;
 			text-align: left;
 		}
+	}
+
+	& #sideTabMessage{
+		margin-left: 10px;
+		font-size: 1.3rem;
 	}
 `
 

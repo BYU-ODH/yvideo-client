@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import carat from 'assets/carat_white.svg'
+
 const Style = styled.div`
 	width: 100%;
 	height: 100%;
@@ -166,4 +168,22 @@ export const TimeBar = styled.div`
 	}
 
 	
+`
+
+export const ToggleCarat = styled.button`
+	height: 2rem;
+	width: 2rem;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	background: url(${carat}) center no-repeat;
+	background-size: contain;
+	padding: 0;
+
+	transform: rotate(-90deg);
+	transition: transform .25s ease-in-out;
+
+	&.minimized {
+		transform: rotate(90deg);
+	}
 `
