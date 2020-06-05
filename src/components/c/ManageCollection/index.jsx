@@ -21,6 +21,7 @@ import Style, {
 import plus from 'assets/plus_gray.svg'
 
 export default class ManageCollection extends PureComponent {
+
 	render() {
 		const {
 			collection,

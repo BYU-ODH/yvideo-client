@@ -16,42 +16,6 @@ const thunk = require(`redux-thunk`).default
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-const store = mockStore({
-	contentStore:{
-		cache: [
-			{
-				id: 115,
-				name: `testname`,
-				contentType: `video`,
-				collectionId: 85,
-				thumbnail: `test@thumbnail.com`,
-				physicalCopyExists:false,
-				isCopyrighted:false,
-				expired:true,
-				dateValidated:``,
-				requester:``,
-				resourceId:`5ebdaef833e57cec218b457c`,
-				published:true,
-				settings: {
-					allowDefinitions:false,
-					showAnnotations:false,
-					showCaptions:false,
-					showTranscripts:false,
-					showWordList:false,
-					aspectRatio:`1.77`,
-					description:``,
-					targetLanguages: [],
-					annotationDocument: [],
-					captionTrack: [],
-				},
-				fullVideo: true,
-				authKey: `5377628e855d31ad4d84a8fdedf5758b`,
-				views: 0,
-			},
-		],
-	},
-})
-
 const content = [
 	{
 		id: 115,
@@ -103,6 +67,45 @@ const props = {
 }
 
 describe(`manage collection container test`, () => {
+	let store
+	beforeEach(() => {
+		store = mockStore({
+			contentStore:{
+				cache: [
+					{
+						id: 115,
+						name: `testname`,
+						contentType: `video`,
+						collectionId: 85,
+						thumbnail: `test@thumbnail.com`,
+						physicalCopyExists:false,
+						isCopyrighted:false,
+						expired:true,
+						dateValidated:``,
+						requester:``,
+						resourceId:`5ebdaef833e57cec218b457c`,
+						published:true,
+						settings: {
+							allowDefinitions:false,
+							showAnnotations:false,
+							showCaptions:false,
+							showTranscripts:false,
+							showWordList:false,
+							aspectRatio:`1.77`,
+							description:``,
+							targetLanguages: [],
+							annotationDocument: [],
+							captionTrack: [],
+						},
+						fullVideo: true,
+						authKey: `5377628e855d31ad4d84a8fdedf5758b`,
+						views: 0,
+					},
+				],
+			},
+		})
+	})
+
 	it(`container shallow render should be success`, ()=> {
 		const wrapper = shallow(
 			<Container store={store}/>,
@@ -120,6 +123,14 @@ describe(`manage collection container test`, () => {
 		expect(content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 
+	it(`container shallow render should be success`, ()=> {
+		const wrapper = shallow(
+			<Container store={store}/>,
+		)
+		// console.log(wrapper.instance())
+		console.log(wrapper.props().children.props.toggleModal.component)
+	})
+
 	it(`container mount should be success`, () => {
 		const wrapper = mount(
 			<Provider store={store}>
@@ -128,7 +139,10 @@ describe(`manage collection container test`, () => {
 				</BrowserRouter>,
 			</Provider>,
 		)
+		const content = wrapper.props().children[0].props.children.props.collection.content
+		// console.log(wrapper.props().children[0].props.children.props.collection.content)
 
+		// console.log(wrapper.find(Container).childAt(0).debug())
 		// Child component does not render even though it is mounted.
 	})
 })

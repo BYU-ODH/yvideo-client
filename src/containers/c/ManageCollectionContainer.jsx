@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { connect } from 'react-redux'
 
-import { collectionService, contentService, interfaceService } from 'services'
+import { collectionService, contentService, interfaceService, adminService } from 'services'
 
 import { ManageCollection } from 'components'
 
@@ -18,17 +18,29 @@ const ManageCollectionContainer = props => {
 		getContent,
 		updateCollectionName,
 		updateCollectionStatus,
+		getCollectionContent,
 	} = props
 
 	const [isContent, setIsContent] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 
+	// console.log(`content`)
+	console.log(content) // this is the one we want
+	// console.log(`collection.content`)
+	console.log(collection.content)
+
+	// console.log(Object.keys(content).length === 0 ? collection.content.map(item => parseInt(item.id)) : Object.keys(content).map(item => parseInt(item)))
+
 	useEffect(() => {
-		const ids = collection.content.map(item => parseInt(item.id))
+		// createContent updates only content not collection.content
+		const ids = Object.keys(content).length === 0 ? collection.content.map(item => parseInt(item.id)) : Object.keys(content).map(item => parseInt(item))
+		// const ids = collection.content.map(item => parseInt(item.id))
+		// console.log(ids)
 		getContent(ids)
+		getCollectionContent(collection.id, true) // collection.content is not updated yet, need to update collection.content first before getting data
 		setCollectionName(collection.name)
-	}, [collection.content, collection.name, content, getContent])
+	}, [collection.content, collection.id, collection.name, content, getCollectionContent, getContent])
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
@@ -70,6 +82,15 @@ const ManageCollectionContainer = props => {
 		(contentCheck[0] === undefined || contentCheck[contentCheck.length - 1] === undefined))
 		return null
 
+	// const tempCheck = () => {
+	// 	const tempContents = []
+	// 	if(Object.keys(content).length !== collection.content.length)
+	// 		Object.keys(content).map(item => tempContents.push(item))
+	// 	else
+	// 		collection.content.map(item => tempContents.push(content[item.id]))
+	// 	return tempContents
+	// }
+
 	const viewstate = {
 		isEditingCollectionName,
 		collection,
@@ -99,6 +120,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	updateCollectionName: collectionService.updateCollectionName,
 	updateCollectionStatus: collectionService.updateCollectionStatus,
+	getCollectionContent: adminService.getCollectionContent,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCollectionContainer)
