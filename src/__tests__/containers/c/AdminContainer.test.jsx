@@ -1,39 +1,13 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import Enzyme from 'enzyme'
-import EnzymeAdapter from 'enzyme-adapter-react-16'
 import Container from '../../../containers/c/AdminContainer'
-import configureMockStore from 'redux-mock-store'
-
+import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
 
-const mockStore = configureMockStore()
-
-Enzyme.configure({
-	adapter: new EnzymeAdapter(),
-	disableLifecycleMethods: true,
-})
-
 describe(`admin container test`, () => {
-	const store = mockStore({
-		adminStore: {
-			data: [
-				{
-					email: `test@email.com`,
-					id: 22,
-					lastLogin: `2020-05-14T19:53:02.807Z`,
-					linked: `-1`,
-					name: `testname`,
-					roles: [`admin`],
-					username: `testusername`,
-				},
-			],
-		},
-	})
-
 	it(`test props should be true`, () => {
 		const wrapper = shallow(
-			<Container store={store}/>,
+			<Container store={testutil.store}/>,
 		).dive()
 
 		const props = wrapper.props()
@@ -48,7 +22,7 @@ describe(`admin container test`, () => {
 	it(`mount admin container`, async() => {
 		const wrapper = mount(
 			<BrowserRouter>
-				<Container store={store}/>
+				<Container store={testutil.store}/>
 			</BrowserRouter>,
 		)
 

@@ -1,15 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-
-import Enzyme from 'enzyme'
-import EnzymeAdapter from 'enzyme-adapter-react-16'
 import BlockCollection from '../../../../components/bits/BlockCollection'
 import { Link, BrowserRouter } from 'react-router-dom'
-
-Enzyme.configure({
-	adapter: new EnzymeAdapter(),
-	disableLifecycleMethods: true,
-})
 
 const collection = {
 	archived: false,

@@ -1,54 +1,19 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import Enzyme from 'enzyme'
-import EnzymeAdapter from 'enzyme-adapter-react-16'
 import Container from '../../../containers/c/LabAssistantContainer'
-import configureMockStore from 'redux-mock-store'
 import { BrowserRouter } from 'react-router-dom'
-
-const mockStore = configureMockStore()
-
-Enzyme.configure({
-	adapter: new EnzymeAdapter(),
-	disableLifecycleMethods: true,
-})
+import * as testutil from '../../testutil/testutil'
 
 describe(`lab assistant container test`, () => {
-	const store = mockStore({
-		adminStore: {
-			professors: [
-				{
-					email: `test1@email.com`,
-					id: 22,
-					lastLogin: `2020-05-14T19:53:02.807Z`,
-					linked: `-1`,
-					name: `testname professor1`,
-					roles: [`admin`],
-					username: `testusername`,
-				},
-				{
-					email: `test2@email.com`,
-					id: 23,
-					lastLogin: `2020-05-14T19:53:02.807Z`,
-					linked: `-1`,
-					name: `testname professor2`,
-					roles: [`admin`],
-					username: `testusername2`,
-				},
-			],
-		},
-	})
 
 	it(`test props should be true`, () => {
 		const wrapper = shallow(
-			<Container store={store}/>,
+			<Container store={testutil.store}/>,
 		).dive()
 
 		const props = wrapper.props()
 		const professor1 = props.professors[0]
 		const professor2 = props.professors[1]
-
-		// console.log(wrapper.debug())
 
 		expect(professor1.email).toBe(`test1@email.com`)
 		expect(professor1.id).toBe(22)
@@ -69,11 +34,10 @@ describe(`lab assistant container test`, () => {
 	it(`render lab asisstant component to check viewstate`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
-				<Container store={store}/>
+				<Container store={testutil.store}/>
 			</BrowserRouter>,
 		)
 
-		// console.log(wrapper.debug())
 		const viewstate = wrapper.find(`LabAssistant`).props().viewstate.data
 		expect(viewstate[0].email).toBe(`test1@email.com`)
 		expect(viewstate[0].id).toBe(22)

@@ -1,15 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import LabAssistant from '../../../../components/c/LabAssistant/index'
-
-import Enzyme from 'enzyme'
-import EnzymeAdapter from 'enzyme-adapter-react-16'
 import { BrowserRouter} from 'react-router-dom'
-
-Enzyme.configure({
-	adapter: new EnzymeAdapter(),
-	disableLifecycleMethods: true,
-})
 
 const viewstate = {
 	data: [

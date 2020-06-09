@@ -3,14 +3,6 @@ import { shallow } from 'enzyme'
 import Root from '../../../../components/c/Root/index'
 import { Route } from 'react-router-dom'
 
-import Enzyme from 'enzyme'
-import EnzymeAdapter from 'enzyme-adapter-react-16'
-
-Enzyme.configure({
-	adapter: new EnzymeAdapter(),
-	disableLifecycleMethods: true,
-})
-
 const viewstate = {
 	loading: false,
 	user: {
@@ -38,7 +30,6 @@ describe(`root route paring test`, () => {
 			return pathMap
 		}, {})
 
-		// console.log(pathMap)
 		expect(pathMap[`/`]).toBe(`CollectionsContainer`)
 		expect(pathMap[`/admin`]).toBe(`AdminContainer`)
 		expect(pathMap[`/collections`]).toBe(`CollectionsContainer`)

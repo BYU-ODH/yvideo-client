@@ -1,15 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-
-import Enzyme from 'enzyme'
-import EnzymeAdapter from 'enzyme-adapter-react-16'
 import BlockItem from '../../../../components/bits/BlockItem/index'
 import { Link, BrowserRouter } from 'react-router-dom'
-
-Enzyme.configure({
-	adapter: new EnzymeAdapter(),
-	disableLifecycleMethods: true,
-})
 
 const props = {
 	data: {
