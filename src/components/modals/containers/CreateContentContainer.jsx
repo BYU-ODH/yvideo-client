@@ -7,6 +7,7 @@ import {
 	contentService,
 	interfaceService,
 	adminService,
+	collectionService,
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
@@ -21,6 +22,8 @@ const CreateContentContainer = props => {
 		modal,
 		search,
 		toggleModal,
+		addCollectionContent,
+		getCollections,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -84,10 +87,15 @@ const CreateContentContainer = props => {
 		document.getElementById(`create-content-form`).reset()
 	}
 
-	const handleSubmit = e => {
+	const handleSubmit = async (e) => {
 		e.preventDefault()
 		if(modal.isLabAssistantRoute) adminCreateContent(data, modal.collectionId)
-		else createContent(data, modal.collectionId)
+		else{
+			await createContent(data, modal.collectionId)
+			// addCollectionContent(modal.collectionId, data)
+			// TODO: should be other way to update Collection object without calling getCollection
+			getCollections(true)
+		}
 		toggleModal()
 	}
 
@@ -141,6 +149,8 @@ const mapDispatchToProps = {
 	createContent: contentService.createContent,
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
+	addCollectionContent: collectionService.addCollectionContent,
+	getCollections: collectionService.getCollections,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)

@@ -8,6 +8,7 @@ export default class CollectionService {
 		COLLECTIONS_ERROR: `COLLECTIONS_ERROR`,
 		COLLECTIONS_GET: `COLLECTIONS_GET`,
 		COLLECTIONS_REMOVE_CONTENT: `COLLECTION_REMOVE_CONTENT`,
+		COLLECTIONS_ADD_CONTENT: `COLLECTION_REMOVE_CONTENT`,
 		COLLECTION_CREATE: `COLLECTION_CREATE`,
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
 		COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
@@ -31,7 +32,8 @@ export default class CollectionService {
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
-		collectionsRemoveContent: () => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT }),
+		collectionsRemoveContent: (id, collection) => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT, payload: {id, collection} }),
+		collectionsAddContent: (id, collection) => ({ type: this.types.COLLECTIONS_ADD_CONTENT, payload: {id, collection} }),
 		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 		collectionRolesGet: data => ({ type: this.types.COLLECTION_ROLES_GET, payload: { ...data }}),
@@ -58,6 +60,7 @@ export default class CollectionService {
 			COLLECTIONS_ERROR,
 			COLLECTIONS_GET,
 			COLLECTIONS_REMOVE_CONTENT,
+			COLLECTIONS_ADD_CONTENT,
 			COLLECTION_CREATE,
 			COLLECTION_EDIT,
 			COLLECTION_ROLES_GET,
@@ -111,6 +114,20 @@ export default class CollectionService {
 		case COLLECTIONS_REMOVE_CONTENT:
 			return {
 				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collection.id]: action.payload.collection,
+				},
+				loading: false,
+			}
+
+		case COLLECTIONS_ADD_CONTENT:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collection.id]: action.payload.collection,
+				},
 				loading: false,
 			}
 
@@ -149,6 +166,11 @@ export default class CollectionService {
 
 	// thunks
 
+	// we do not need this
+	addCollectionContent = (force = false, id, content) => async (dispatch, getState, { apiProxy }) => {
+		this.getCollections(true)
+	}
+
 	getCollections = (force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().collectionStore.lastFetched
@@ -165,8 +187,6 @@ export default class CollectionService {
 
 				dispatch(this.actions.collectionsGet(result))
 
-				console.log(`getCollection is called`)
-
 			} catch (error) {
 				console.error(error.message)
 				dispatch(this.actions.collectionsError(error))
@@ -176,18 +196,25 @@ export default class CollectionService {
 	}
 
 	removeCollectionContent = (id, contentId) => async (dispatch, getState, { apiProxy }) => {
-
 		dispatch(this.actions.collectionsStart())
 
-		try {
+		const currentState = { ...getState().collectionStore.cache[id] }
+		let contentIndex = 0
 
+		currentState.content.forEach((element, index) => {
+			if(element.id === contentId){
+				console.log(true)
+				contentIndex = index
+			}
+		})
+		currentState.content.splice(contentIndex, 1)
+
+		try {
 			const result = await apiProxy.collection.remove(id, [contentId.toString()])
 			console.log(result)
-
 			// TODO: Remove content from cache so that rerendering happens
 			// You also have to be an admin to do this, I'm pretty sure
-			dispatch(this.actions.collectionsRemoveContent(contentId))
-
+			dispatch(this.actions.collectionsRemoveContent(id, currentState))
 		} catch (error) {
 			console.log(error)
 			dispatch(this.actions.collectionsError(error))

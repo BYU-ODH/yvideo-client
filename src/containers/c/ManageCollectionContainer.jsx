@@ -28,21 +28,10 @@ const ManageCollectionContainer = props => {
 
 	useEffect(() => {
 		const ids = collection.content.map(item => parseInt(item.id))
-
 		getContent(ids)
-		// collection.content is not updated yet, need to update collection.content first before getting data
 		getCollectionContent(collection.id, true)
 		setCollectionName(collection.name)
-
-		// need to be better at detecting update
-		if(collection.content.length !== Object.keys(content).length)
-			getCollections(true)
-
-		console.log(`test`)
 	}, [collection.content, collection.id, collection.name, content, getCollectionContent, getCollections, getContent])
-
-	console.log(content)
-	console.log(collection.content)
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)

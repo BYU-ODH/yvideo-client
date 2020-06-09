@@ -78,6 +78,7 @@ export default class ContentService {
 					...action.payload.content,
 				},
 				loading: false,
+				lastFetched: Date.now(),
 			}
 
 		case CONTENT_ERROR:
@@ -180,6 +181,7 @@ export default class ContentService {
 		} else dispatch(this.actions.contentAbort())
 	}
 
+	// update store with the new from DB
 	createContent = (content, collectionId) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.contentStart())
@@ -190,6 +192,7 @@ export default class ContentService {
 
 			const data = { [result.data.id]: result.data }
 
+			console.log(data)
 			// TODO: Why doesn't this update to state cause it to rerender? because it only updates content not collection.content
 			dispatch(this.actions.contentCreate(data))
 
