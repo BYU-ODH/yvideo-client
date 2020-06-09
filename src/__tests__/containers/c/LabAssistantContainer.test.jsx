@@ -73,6 +73,7 @@ describe(`lab assistant container test`, () => {
 			</BrowserRouter>,
 		)
 
+		// console.log(wrapper.debug())
 		const viewstate = wrapper.find(`LabAssistant`).props().viewstate.data
 		expect(viewstate[0].email).toBe(`test1@email.com`)
 		expect(viewstate[0].id).toBe(22)

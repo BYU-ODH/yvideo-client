@@ -19,28 +19,30 @@ const ManageCollectionContainer = props => {
 		updateCollectionName,
 		updateCollectionStatus,
 		getCollectionContent,
+		getCollections,
 	} = props
 
 	const [isContent, setIsContent] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 
-	// console.log(`content`)
-	console.log(content) // this is the one we want
-	// console.log(`collection.content`)
-	console.log(collection.content)
-
-	// console.log(Object.keys(content).length === 0 ? collection.content.map(item => parseInt(item.id)) : Object.keys(content).map(item => parseInt(item)))
-
 	useEffect(() => {
-		// createContent updates only content not collection.content
-		const ids = Object.keys(content).length === 0 ? collection.content.map(item => parseInt(item.id)) : Object.keys(content).map(item => parseInt(item))
-		// const ids = collection.content.map(item => parseInt(item.id))
-		// console.log(ids)
+		const ids = collection.content.map(item => parseInt(item.id))
+
 		getContent(ids)
-		getCollectionContent(collection.id, true) // collection.content is not updated yet, need to update collection.content first before getting data
+		// collection.content is not updated yet, need to update collection.content first before getting data
+		getCollectionContent(collection.id, true)
 		setCollectionName(collection.name)
-	}, [collection.content, collection.id, collection.name, content, getCollectionContent, getContent])
+
+		// need to be better at detecting update
+		if(collection.content.length !== Object.keys(content).length)
+			getCollections(true)
+
+		console.log(`test`)
+	}, [collection.content, collection.id, collection.name, content, getCollectionContent, getCollections, getContent])
+
+	console.log(content)
+	console.log(collection.content)
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
@@ -82,15 +84,6 @@ const ManageCollectionContainer = props => {
 		(contentCheck[0] === undefined || contentCheck[contentCheck.length - 1] === undefined))
 		return null
 
-	// const tempCheck = () => {
-	// 	const tempContents = []
-	// 	if(Object.keys(content).length !== collection.content.length)
-	// 		Object.keys(content).map(item => tempContents.push(item))
-	// 	else
-	// 		collection.content.map(item => tempContents.push(content[item.id]))
-	// 	return tempContents
-	// }
-
 	const viewstate = {
 		isEditingCollectionName,
 		collection,
@@ -121,6 +114,7 @@ const mapDispatchToProps = {
 	updateCollectionName: collectionService.updateCollectionName,
 	updateCollectionStatus: collectionService.updateCollectionStatus,
 	getCollectionContent: adminService.getCollectionContent,
+	getCollections: collectionService.getCollections,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCollectionContainer)

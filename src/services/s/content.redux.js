@@ -47,6 +47,7 @@ export default class ContentService {
 			CONTENT_GET,
 			CONTENT_ADD_VIEW,
 			CONTENT_UPDATE,
+			// COLLECTIONS_GET,
 		} = this.types
 
 		switch (action.type) {
@@ -189,7 +190,7 @@ export default class ContentService {
 
 			const data = { [result.data.id]: result.data }
 
-			// TODO: Why doesn't this update to state cause it to rerender?
+			// TODO: Why doesn't this update to state cause it to rerender? because it only updates content not collection.content
 			dispatch(this.actions.contentCreate(data))
 
 		} catch (error) {
@@ -242,14 +243,9 @@ export default class ContentService {
 				published,
 			}
 
-			// const settingsResult =
 			await apiProxy.content.settings.post(id, settings)
 
-			// const metaResult =
 			await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
-			// console.log(metaResult)
 
 			dispatch(this.actions.contentUpdate(content))
 

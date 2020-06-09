@@ -165,6 +165,8 @@ export default class CollectionService {
 
 				dispatch(this.actions.collectionsGet(result))
 
+				console.log(`getCollection is called`)
+
 			} catch (error) {
 				console.error(error.message)
 				dispatch(this.actions.collectionsError(error))
@@ -184,7 +186,7 @@ export default class CollectionService {
 
 			// TODO: Remove content from cache so that rerendering happens
 			// You also have to be an admin to do this, I'm pretty sure
-			// dispatch(this.actions.collectionsRemoveContent(contentId))
+			dispatch(this.actions.collectionsRemoveContent(contentId))
 
 		} catch (error) {
 			console.log(error)

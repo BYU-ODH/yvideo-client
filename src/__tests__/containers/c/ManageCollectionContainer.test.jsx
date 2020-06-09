@@ -123,14 +123,7 @@ describe(`manage collection container test`, () => {
 		expect(content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 
-	it(`container shallow render should be success`, ()=> {
-		const wrapper = shallow(
-			<Container store={store}/>,
-		)
-		// console.log(wrapper.instance())
-		console.log(wrapper.props().children.props.toggleModal.component)
-	})
-
+	// Child component does not render even though it is mounted.
 	it(`container mount should be success`, () => {
 		const wrapper = mount(
 			<Provider store={store}>
@@ -140,9 +133,9 @@ describe(`manage collection container test`, () => {
 			</Provider>,
 		)
 		const content = wrapper.props().children[0].props.children.props.collection.content
+		// console.log(wrapper.debug())
 		// console.log(wrapper.props().children[0].props.children.props.collection.content)
 
 		// console.log(wrapper.find(Container).childAt(0).debug())
-		// Child component does not render even though it is mounted.
 	})
 })
