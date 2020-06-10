@@ -25,20 +25,16 @@
 
 export default class Event {
 
-	constructor(name, start, end)
+	constructor(type, start, end)
 	{
-		this.name = name
+		this.type = type
 		this.start = start;
 		this.end = end;
 		this.active = false;
 	}
 
 	print(){
-		console.log('executed event: ', this.name)
-	}
-
-	execute(){
-
+		console.log('%c Executing event is: ', 'color: blue; font-weight: bold; text-decoration: underline;', this.type)
 	}
 }
 
@@ -56,22 +52,17 @@ export class PauseEvent extends Event {
 
 export class CommentEvent extends Event {
 
-	constructor(name, start, end, comment) {
-		super(name, start, end);
+	constructor(type, start, end, comment) {
+		super(type, start, end);
 		this.comment = comment;
 	}
-
-	get comment(){
-		return this.comment
-	}
-
-	set comment(val){
-		this.comment = val
-	}
-
 }
 
 export class CensorEvent extends Event {
+
+}
+
+export class BlankEvent extends Event {
 
 }
 

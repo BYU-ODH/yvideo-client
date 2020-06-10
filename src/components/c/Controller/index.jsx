@@ -76,6 +76,7 @@ const Controller = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
+			console.log('handle seek')
 			let newPlayed = 0
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()
@@ -94,9 +95,11 @@ const Controller = props => {
 			setPlaying(true)
 		},
 		handleMute: () => {
+			console.log('mute event')
 			setMuted(true)
 		},
 		handleUnMute: () => {
+			console.log('Unmute event')
 			setMuted(false)
 		},
 

@@ -23,28 +23,29 @@ const EventsContainer = props => {
 	const [eventClassArray, setEventClassArray] = useState(newArray)
 
 	useEffect(() => {
-		//console.log('updated events')
+		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
+		console.log('use effect')
 		let tempArray =[]
 		if(duration !== 0){
 			events.forEach(event => {
 				// debugger;
-				let start = (event.beginningTime / 100) * duration
-				let end = (event.endTime / 100) * duration
-				switch (event.name) {
+				let start = (event.start / 100) * duration
+				let end = (event.end / 100) * duration
+				switch (event.type) {
 					case 'Skip':
-							tempArray.push(new SkipEvent(event.name, start, end))
+							tempArray.push(new SkipEvent(event.type, start, end))
 						break;
 					case 'Mute':
-							tempArray.push(new MuteEvent(event.name, start, end))
+							tempArray.push(new MuteEvent(event.type, start, end))
 						break;
 					case 'Pause':
-							tempArray.push(new PauseEvent(event.name, start, end))
+							tempArray.push(new PauseEvent(event.type, start, end))
 						break;
 					case 'Comment':
-							tempArray.push(new CommentEvent(event.name, start, end))
+							tempArray.push(new CommentEvent(event.type, start, end))
 						break;
 					case 'Censor':
-							tempArray.push(new CensorEvent(event.name, start, end))
+							tempArray.push(new CensorEvent(event.type, start, end))
 						break;
 
 					default:
@@ -57,36 +58,81 @@ const EventsContainer = props => {
 
 	eventClassArray.forEach(element => {
 			if((currentTime >= element.start && currentTime <= element.end) && element.active === false){
+
+				console.log(element)
 				element.active = true
-				if(element.name === 'Skip'){
-					handleSeek(null, element.end)
-					return;
+				switch (element.type) {
+					case 'Skip':
+							handleSeek(null, element.end)
+						break;
+					case 'Mute':
+							handleMute()
+						break;
+					case 'Pause':
+							handlePause()
+						break;
+					case 'Comment':
+							element.print()
+						break;
+					case 'Censor':
+							element.print()
+						break;
+					case 'Blank':
+							element.print()
+						break;
+					default:
+						break;
 				}
-				else if(element.name === 'Mute'){
-					handleMute()
-					return;
-				}
-				else if(element.name === 'Pause'){
-					handlePause()
-					console.log(element.end, element.start)
-					setTimeout(() => {
-						handlePlay()
-					}, (element.end - element.start) * 1000);
-				}
-				else {
-					element.print()
-				}
+				/*
+					if(element.type === 'Skip'){
+						handleSeek(null, element.end)
+						return;
+					}
+					else if(element.type === 'Mute'){
+						handleMute()
+						return;
+					}
+					else if(element.type === 'Pause'){
+						handlePause()
+						console.log(element.end, element.start)
+						setTimeout(() => {
+							handlePlay()
+						}, (element.end - element.start) * 1000);
+					}
+					else {
+						element.print()
+					}
+				*/
 				//COMPLETE FOR ALL OTHER EVENTS
 			}
 			else if (currentTime > element.end && element.active === true){
 				//stop event
+
 				element.active = false
-				if(element.name === 'Mute'){
-					handleUnMute()
+				switch (element.type) {
+					case 'Mute':
+							handleUnMute()
+						break;
+					case 'Comment':
+							element.print()
+						break;
+					case 'Censor':
+							element.print()
+						break;
+					case 'Blank':
+							element.print()
+						break;
+					default:
+						break;
 				}
-				else if(element.name === 'Pause'){
-					handlePlay()
-				}
+				/*
+					if(element.type === 'Mute'){
+						handleUnMute()
+					}
+					else if(element.type === 'Pause'){
+						element.print()
+					}
+				*/
 				//COMPLETE FOR ALL OTHER EVENTS
 			}
 	});

@@ -10,7 +10,7 @@ const EventCard = ({ event }) => {
 
 		// REQUIRED
 		item: {
-			id: event.name,
+			id: event.type,
 			type: `timeline-event`,
 		},
 
@@ -31,7 +31,7 @@ const EventCard = ({ event }) => {
 	return (
 		<Style ref={ref} opacity={opacity} >
 			<I src={event.icon}/>
-			{event.name}
+			{event.type}
 		</Style>
 	)
 }

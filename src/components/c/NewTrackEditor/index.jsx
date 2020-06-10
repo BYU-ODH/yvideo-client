@@ -22,72 +22,79 @@ const TrackEditor = props => {
 
 	const events = [
 		{
-			name: `Skip`,
+			type: `Skip`,
 			icon: skipIcon,
-			beginningTime: 0,
-			endTime: 10,
+			start: 0,
+			end: 10,
 			layer: 0
 		},
 		{
-			name: `Mute`,
+			type: `Mute`,
 			icon: muteIcon,
-			beginningTime: 0,
-			endTime: 10,
+			start: 0,
+			end: 10,
 			layer: 0
 		},
 		{
-			name: `Pause`,
+			type: `Pause`,
 			icon: pauseIcon,
-			beginningTime: 0,
-			endTime: 10,
+			start: 0,
+			end: 10,
 			layer: 0
 		},
 		{
-			name: `Comment`,
+			type: `Comment`,
 			icon: commentIcon,
-			beginningTime: 0,
-			endTime: 10,
+			start: 0,
+			end: 10,
 			layer: 0,
 			comment: ''
 		},
 		{
-			name: `Censor`,
+			type: `Censor`,
 			icon: censorIcon,
-			beginningTime: 0,
-			endTime: 10,
+			start: 0,
+			end: 10,
+			layer: 0
+		},
+		{
+			type: `Blank`,
+			icon: censorIcon,
+			start: 0,
+			end: 10,
 			layer: 0
 		},
 	]
 
 	const eventsArray = [
 		{
-			name: `Mute`,
+			type: `Mute`,
 			icon: skipIcon,
-			beginningTime: 90,
-			endTime: 100,
+			start: 90,
+			end: 100,
 			layer: 0
 		},
 		{
-			name: `Skip`,
+			type: `Skip`,
 			icon: muteIcon,
-			beginningTime: 1,
-			endTime: 10,
+			start: 1,
+			end: 10,
 			layer: 0
 		},
 		{
-			name: `Mute`,
+			type: `Mute`,
 			icon: muteIcon,
-			beginningTime: 0,
-			endTime: 10,
+			start: 0,
+			end: 10,
 			layer: 1
 		},
-		// {
-		// 	name: `Pause`,
-		// 	icon: skipIcon,
-		// 	beginningTime: 0,
-		// 	endTime: 10,
-		// 	layer: 0
-		// },
+		{
+			type: `Pause`,
+			icon: skipIcon,
+			start: 75,
+			end: 80,
+			layer: 2
+		},
 	] // THIS IS GOING TO HAVE EVENTS
 
 	//SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
@@ -175,7 +182,7 @@ const TrackEditor = props => {
 		//TODO: Change this to use real JS event objects and insert based on time
 		let currentEvents = [...allEvents]
 		//console.log('ADDING NEW EVENT')
-		const matchingEvent = filterValue(events, `name`, item.id)
+		const matchingEvent = filterValue(events, `type`, item.id)
 
 		const eventObj = {
 			...matchingEvent,
@@ -216,19 +223,19 @@ const TrackEditor = props => {
 
 		let currentEvents = [...allEvents]
 		let cEvent = currentEvents[eventToEdit]
-		cEvent.beginningTime = number
-		if(number > cEvent.endTime){
-			cEvent.endTime = number + 5
+		cEvent.start = number
+		if(number > cEvent.end){
+			cEvent.end = number + 5
 			document.getElementsByClassName('sideTabInput')[1].value=''
 		}
 
-		if(cEvent.beginningTime < cEvent.endTime && cEvent.beginningTime > 0 ){
+		if(cEvent.start < cEvent.end && cEvent.start > 0 ){
 			document.getElementById('sideTabMessage').innerHTML=''
 		}
 
-		if (number >= 100 || cEvent.endTime > 100){
-			cEvent.endTime = 100
-			cEvent.beginningTime = 99
+		if (number >= 100 || cEvent.end > 100){
+			cEvent.end = 100
+			cEvent.start = 99
 			document.getElementById('sideTabMessage').innerHTML='Changed beginning time to 99<br/>Changed end time to 100<br/>Either beginning time or end time was bigger than 100'
 			document.getElementsByClassName('sideTabInput')[0].value=''
 			document.getElementsByClassName('sideTabInput')[1].value=''
@@ -247,9 +254,9 @@ const TrackEditor = props => {
 
 		if(!isNaN(number)){
 			number = (number / videoLength) * 100
-			if(number > cEvent.beginningTime && number <= 100){
+			if(number > cEvent.start && number <= 100){
 				//console.log('good')
-				cEvent.endTime = number
+				cEvent.end = number
 				document.getElementById('sideTabMessage').innerText=''
 			}
 			if(number > 100){
@@ -257,9 +264,9 @@ const TrackEditor = props => {
 				//console.log('changed to 100')
 				document.getElementById('sideTabMessage').innerHTML=`End time is bigger than video length time. Changed end time to ${videoLength}`
 				document.getElementsByClassName('sideTabInput')[1].value=''
-				cEvent.endTime = 100
+				cEvent.end = 100
 			}
-			if(number <= cEvent.beginningTime){
+			if(number <= cEvent.start){
 				//console.log('bad')
 				document.getElementById('sideTabMessage').innerHTML=`Please enter a number greater than start`
 			}
@@ -278,23 +285,40 @@ const TrackEditor = props => {
 
 	const printSideEditor = () => {
 		const cEvent = allEvents[eventToEdit]
-		let start = ( cEvent.beginningTime / 100 ) * videoLength
-		let end = ( cEvent.endTime / 100 ) * videoLength
+		let start = ( cEvent.start / 100 ) * videoLength
+		let end = ( cEvent.end / 100 ) * videoLength
 		return (
 			<SideEditor>
-				<div>
-					<p onClick={closeSideEditor} className='closeEditor'>x</p>
-					<div className='center'>
-						<label>Start</label>
-						<label>End</label>
+				{ cEvent.type === 'Pause' ? (
+					<div>
+						<p onClick={closeSideEditor} className='closeEditor'>x</p>
+						<div className='center'>
+							<label>Start</label>
+							<label style={{ visibility: 'hidden'}}>End</label>
+						</div>
+						<div className='center'>
+							<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
+							<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: 'hidden'}}/>
+						</div>
+						<br/>
+						<p id='sideTabMessage'></p>
 					</div>
-					<div className='center'>
-						<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
-						<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)}/>
+					) : (
+					<div>
+						<p onClick={closeSideEditor} className='closeEditor'>x</p>
+						<div className='center'>
+							<label>Start</label>
+							<label>End</label>
+						</div>
+						<div className='center'>
+							<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
+							<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)}/>
+						</div>
+						<br/>
+						<p id='sideTabMessage'></p>
 					</div>
-					<br/>
-					<p id='sideTabMessage'></p>
-				</div>
+					)
+				}
 			</SideEditor>
 		)
 	}
@@ -382,7 +406,7 @@ const TrackEditor = props => {
 							{ showSideEditor &&
 								<>
 									<span className='carat'></span>
-									<span className='current'>{eventToEdit !== undefined ? `${allEvents[eventToEdit].name}` : ''}</span>
+									<span className='current'>{eventToEdit !== undefined ? `${allEvents[eventToEdit].type}` : ''}</span>
 								</>
 							}
 							{/* <button className='close'></button> */}

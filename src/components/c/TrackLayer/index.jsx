@@ -44,17 +44,17 @@ const TrackLayer = props => {
 	const handleDrag = (d, event, index) => {
 		let cEvents = events
 		const beginTimePercentage = (d.x / layerWidth) * 100
-		const endTimePercentage = beginTimePercentage + (event.endTime - event.beginningTime)
+		const endPercentage = beginTimePercentage + (event.end - event.start)
 
-		//LOGIC TO CHANGE THE TIME @params beginTime, endTime
-		cEvents[index].beginningTime = beginTimePercentage
-		cEvents[index].endTime = endTimePercentage
+		//LOGIC TO CHANGE THE TIME @params beginTime, end
+		cEvents[index].start = beginTimePercentage
+		cEvents[index].end = endPercentage
 
-		if(cEvents[index].endTime > 100){
-			cEvents[index].endTime = 100
+		if(cEvents[index].end > 100){
+			cEvents[index].end = 100
 		}
-		if(cEvents[index].beginningTime < 0){
-			cEvents[index].beginningTime = 0
+		if(cEvents[index].start < 0){
+			cEvents[index].start = 0
 		}
 
 		//call handler from parent
@@ -65,22 +65,22 @@ const TrackLayer = props => {
 		let cEvents = events
 		const difference = (delta.width / layerWidth) * 100
 		if(direction === 'right'){
-			cEvents[index].endTime += difference
+			cEvents[index].end += difference
 
-			if(cEvents[index].endTime > 100){
-				cEvents[index].endTime = 100
+			if(cEvents[index].end > 100){
+				cEvents[index].end = 100
 			}
 		}
 		else {
-			cEvents[index].beginningTime -= difference
+			cEvents[index].start -= difference
 
 			console.log(cEvents[index])
-			if(cEvents[index].beginningTime < 0){
-				cEvents[index].beginningTime = 0
+			if(cEvents[index].start < 0){
+				cEvents[index].start = 0
 			}
-			else if(cEvents[index].beginningTime > 100){
-				cEvents[index].beginningTime = 99
-				cEvents[index].endTime = 100
+			else if(cEvents[index].start > 100){
+				cEvents[index].start = 99
+				cEvents[index].end = 100
 			}
 		}
 
@@ -98,8 +98,8 @@ const TrackLayer = props => {
 			<Rnd
 				className={`layer-event ${activeEvent === index ? 'active-event' : ''}`}
 				id={`event-${index}`}
-				size={{width: `${((event.endTime - event.beginningTime)/100) * layerWidth}px`, height: '46px'}}
-				position={{ x: parseFloat((event.beginningTime / 100) * layerWidth), y: 0}}
+				size={{width: `${((event.end - event.start)/100) * layerWidth}px`, height: '46px'}}
+				position={{ x: parseFloat((event.start / 100) * layerWidth), y: 0}}
 				enableResizing={Enable}
 				dragAxis="x"
 				bounds={`.layer-${layerIndex}`}
@@ -107,11 +107,16 @@ const TrackLayer = props => {
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
-				style={{ left: `${event.beginningTime}% !important`, top: `-${layerHeight}px !important`}}
+				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
-				<p>{event.name} - From: {((event.beginningTime / 100) * videoLength).toFixed(1)}s - To: {((event.endTime / 100) * videoLength).toFixed(1)}s</p>
+				{ event.type !== 'Pause' ? (
+						<p>{event.type} - From: {((event.start / 100) * videoLength).toFixed(1)}s - To: {((event.end / 100) * videoLength).toFixed(1)}s</p>
+					) : (
+						<p>{event.type} - At: {((event.start / 100) * videoLength).toFixed(1)}s</p>
+					)
+				}
 			</Rnd>
 		)
 	}
