@@ -13,6 +13,8 @@ import {
 
 const TrackLayer = props => {
 
+	console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
+
 	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength} = props
 	const layerIndex = parseInt(props.index)
 

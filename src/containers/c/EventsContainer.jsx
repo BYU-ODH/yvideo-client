@@ -7,6 +7,9 @@ import { interfaceService } from 'services'
 import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, CensorEvent, BlankEvent } from 'models/events/'
 
 const EventsContainer = props => {
+
+	console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
+
 	const {
 		events,
 		currentTime,
@@ -21,13 +24,17 @@ const EventsContainer = props => {
 	} = props
 
 	const newArray = []
+	//const [allEvents, setAllEvents] = useState(events)
 	const [eventClassArray, setEventClassArray] = useState(newArray)
 
 	useEffect(() => {
 		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
+		// let newEvents = getEvents()
+		// console.log('new events', newEvents)
+	 	console.log('use effect')
+
 		handleBlank(false)
 		handleUnMute()
-		console.log('use effect')
 		let tempArray =[]
 		if(duration !== 0){
 			events.forEach(event => {
@@ -59,6 +66,7 @@ const EventsContainer = props => {
 			});
 		}
 		setEventClassArray(tempArray)
+		//setAllEvents(newEvents)
 	}, [duration, events])
 
 	eventClassArray.forEach(element => {
@@ -154,8 +162,8 @@ const mapStateToProps = ({ interfaceStore }) => ({
 	events: interfaceStore.events
 })
 
-// const mapDispatchToProps = {
-// 	events: interfaceService.events
-// }
+const mapDispatchToProps = {
+ 	getEvents: interfaceService.getEvents
+}
 
-export default connect(mapStateToProps)(EventsContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(EventsContainer)

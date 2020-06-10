@@ -21,6 +21,9 @@ import blankIcon from 'Assets/event_blank.svg'
 import plus from 'assets/plus-white.svg'
 
 const TrackEditor = props => {
+
+	console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
+
 	const { setEvents } = props
 
 	const events = [
@@ -211,27 +214,31 @@ const TrackEditor = props => {
 		currentEvents[index] = event
 
 		setAllEvents(currentEvents)
+		setEvents(currentEvents)
 		setDisplayLayer(layerIndex)
 		setEventToEdit(index)
 		setSideEditor(true)
 	}
 
 	const handleEditEventBTimeChange = (e) => {
+
 		document.getElementById('sideTabMessage').style.color='red'
 		let number = parseFloat(e.target.value)
+		let currentEvents = [...allEvents]
+		let cEvent = currentEvents[eventToEdit]
+		let index = eventToEdit
+		let layer = cEvent.layer
+
 		if(isNaN(number)){
-			//console.log('IS NAN')
 			number = 0
 		}
 
 		number = (number / videoLength) * 100
 
-		let currentEvents = [...allEvents]
-		let cEvent = currentEvents[eventToEdit]
 		cEvent.start = number
 		if(number > cEvent.end){
 			cEvent.end = number + 5
-			document.getElementsByClassName('sideTabInput')[1].value=''
+			//document.getElementsByClassName('sideTabInput')[1].value=''
 		}
 
 		if(cEvent.start < cEvent.end && cEvent.start > 0 ){
@@ -241,19 +248,21 @@ const TrackEditor = props => {
 		if (number >= 100 || cEvent.end > 100){
 			cEvent.end = 100
 			cEvent.start = 99
-			document.getElementById('sideTabMessage').innerHTML='Changed beginning time to 99<br/>Changed end time to 100<br/>Either beginning time or end time was bigger than 100'
+			document.getElementById('sideTabMessage').innerHTML=`Changed beginning time to ${videoLength - (videoLength * 0.01) }s<br/>Changed end time to ${videoLength}s<br/>Either beginning time or end time was bigger than 100`
 			document.getElementsByClassName('sideTabInput')[0].value=''
 			document.getElementsByClassName('sideTabInput')[1].value=''
 		}
 
+		//updateEvents(index, cEvent, layer)
 		currentEvents[eventToEdit] = cEvent
 		setAllEvents(currentEvents)
+		setEvents(currentEvents)
 		setShouldUpdate(true)
 	}
 
 	const handleEditEventETimeChange = (e) => {
 		document.getElementById('sideTabMessage').style.color='red'
-		let currentEvents = allEvents
+		let currentEvents = [...allEvents]
 		let number = parseFloat(e.target.value)
 		let cEvent = currentEvents[eventToEdit]
 
@@ -267,8 +276,8 @@ const TrackEditor = props => {
 			if(number > 100){
 				//MESSAGE THE NUMBER NEEDS TO BE BIGGER THAN B TIME
 				//console.log('changed to 100')
-				document.getElementById('sideTabMessage').innerHTML=`End time is bigger than video length time. Changed end time to ${videoLength}`
-				document.getElementsByClassName('sideTabInput')[1].value=''
+				document.getElementById('sideTabMessage').innerHTML=`End time is bigger than video length time. <br/> End time need to be less than ${videoLength}`
+				//document.getElementsByClassName('sideTabInput')[1].value=''
 				cEvent.end = 100
 			}
 			if(number <= cEvent.start){
@@ -279,6 +288,7 @@ const TrackEditor = props => {
 
 		currentEvents[eventToEdit] = cEvent
 		setAllEvents(currentEvents)
+		setEvents(currentEvents)
 		setShouldUpdate(true)
 	}
 

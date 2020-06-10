@@ -4,6 +4,8 @@ import ReactPlayer from 'react-player'
 
 import Style, {TimeBar, ToggleCarat, Blank } from './styles'
 
+//import { interfaceService } from 'services'
+
 import { EventsContainer } from 'containers'
 
 import carat from 'assets/carat_white.svg'
@@ -14,6 +16,8 @@ import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
 
 const Controller = props => {
+
+	console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
 
 	const {
 		url,
@@ -33,6 +37,8 @@ const Controller = props => {
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
+
+	//const [events, setEvents] = useState(interfaceService.getEvents())
 
 	const video = {
 
@@ -135,7 +141,7 @@ const Controller = props => {
 
 	return (
 		<Style>
-					<Blank className='video' blank={blank}>
+					<Blank blank={blank}>
 					</Blank>
 					<ReactPlayer ref={ref} config={config} url={url}
 

@@ -2,7 +2,7 @@ import React, {  } from 'react'
 
 import { connect } from 'react-redux'
 
-import { interfaceService } from 'services'
+import { interfaceService, resourceService } from 'services'
 
 import { TrackEditor } from 'components'
 
@@ -27,6 +27,7 @@ const mapStoreToProps = () => ({
 
 const mapThunksToProps = {
 	setEvents: interfaceService.setEvents,
+	getResource: resourceService.getResources,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)
