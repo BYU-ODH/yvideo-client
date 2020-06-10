@@ -102,11 +102,9 @@ const Controller = props => {
 			console.log('Unmute event')
 			setMuted(false)
 		},
-
 		handleZoomFactor: a => {
 			//console.log(a)
 		},
-
 		handleZoneChange: a => {
 			//console.log(a)
 		},

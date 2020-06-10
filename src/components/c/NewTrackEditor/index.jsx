@@ -125,10 +125,12 @@ const TrackEditor = props => {
 
 	useEffect(() => {
 		function handleResize() {
-			setDimensions({
-				height: window.innerHeight,
-				width: window.innerWidth
-			})
+			setTimeout(() => {
+				setDimensions({
+					height: window.innerHeight,
+					width: window.innerWidth
+				})
+			}, 1000);
 		}
 		window.addEventListener('resize', handleResize)
 		setEvents(allEvents)
