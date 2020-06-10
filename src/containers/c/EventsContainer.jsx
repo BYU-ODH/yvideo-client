@@ -16,7 +16,7 @@ const EventsContainer = props => {
 		handleMute,
 		handlePlay,
 		handlePause,
-		toggleMute,
+		handleUnMute,
 	} = props
 
 	const newArray = []
@@ -68,7 +68,7 @@ const EventsContainer = props => {
 				}
 				else if(element.name === 'Pause'){
 					handlePause()
-					//console.log(element.end * 1000, element.end)
+					console.log(element.end, element.start)
 					setTimeout(() => {
 						handlePlay()
 					}, (element.end - element.start) * 1000);
@@ -82,7 +82,7 @@ const EventsContainer = props => {
 				//stop event
 				element.active = false
 				if(element.name === 'Mute'){
-					toggleMute()
+					handleUnMute()
 				}
 				else if(element.name === 'Pause'){
 					handlePlay()

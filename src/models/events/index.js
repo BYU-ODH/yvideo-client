@@ -21,6 +21,8 @@
 // // if (currentTime >= newArray[i].start && currentTime <= newArray[i].end) && newArray[i].active === false ---> execute ... this.active = true
 // // else if currentTime > newArray[i].end && newArray[i].active === true ---> stop ... this.active = false
 
+//blank and censor and comment
+
 export default class Event {
 
 	constructor(name, start, end)

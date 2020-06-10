@@ -96,6 +96,9 @@ const Controller = props => {
 		handleMute: () => {
 			setMuted(true)
 		},
+		handleUnMute: () => {
+			setMuted(false)
+		},
 
 		handleZoomFactor: a => {
 			//console.log(a)
@@ -194,6 +197,7 @@ const Controller = props => {
 					handleMute={video.handleMute}
 					handlePlay={video.handlePlay}
 					handlePause={video.handlePause}
+					handleUnMute={video.handleUnMute}
 					toggleMute={video.toggleMute}
 				></EventsContainer>
 		</Style>
