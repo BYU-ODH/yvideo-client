@@ -14,6 +14,9 @@ import muteIcon from 'Assets/event_mute.svg'
 import pauseIcon from 'Assets/event_pause.svg'
 import commentIcon from 'Assets/event_comment.svg'
 import censorIcon from 'Assets/event_censor.svg'
+import blankIcon from 'Assets/event_blank.svg'
+
+//ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 
 import plus from 'assets/plus-white.svg'
 
@@ -59,7 +62,7 @@ const TrackEditor = props => {
 		},
 		{
 			type: `Blank`,
-			icon: censorIcon,
+			icon: blankIcon,
 			start: 0,
 			end: 10,
 			layer: 0

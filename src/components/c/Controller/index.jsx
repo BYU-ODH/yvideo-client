@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import Style, {TimeBar, ToggleCarat } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank } from './styles'
 
 import { EventsContainer } from 'containers'
 
@@ -29,6 +29,7 @@ const Controller = props => {
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
+	const [blank, setBlank] = useState(false)
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
@@ -108,6 +109,9 @@ const Controller = props => {
 		handleZoneChange: a => {
 			//console.log(a)
 		},
+		handleBlank: (bool) => {
+			setBlank(bool)
+		},
 
 	}
 
@@ -131,37 +135,41 @@ const Controller = props => {
 
 	return (
 		<Style>
-				<ReactPlayer ref={ref} config={config} url={url}
+					<Blank className='video' blank={blank}>
+					</Blank>
+					<ReactPlayer ref={ref} config={config} url={url}
 
-					// constants
+						// constants
 
-					className='video'
-					width='100%'
-					height='95%'
-					//height='85%'
-					controls={true}
-					progressInterval={100}
+						className='video'
+						width='100%'
+						height='95%'
+						//height='85%'
+						controls={true}
+						progressInterval={100}
 
-					// state
+						// state
 
-					playing={playing}
-					volume={volume}
-					muted={muted}
-					playbackRate={playbackRate}
+						playing={playing}
+						volume={volume}
+						muted={muted}
+						playbackRate={playbackRate}
 
-					// handlers
+						// handlers
 
-					onReady={video.handleReady}
-					// onStart={() => console.log(`onStart`)}
-					// onBuffer={() => console.log(`onBuffer`)}
-					onError={console.error}
+						onReady={video.handleReady}
+						// onStart={() => console.log(`onStart`)}
+						// onBuffer={() => console.log(`onBuffer`)}
+						onError={console.error}
 
-					onPlay={video.handlePlay}
-					onPause={video.handlePause}
+						onPlay={video.handlePlay}
+						onPause={video.handlePause}
 
-					onProgress={video.handleProgress}
-					onDuration={video.handleDuration}
-				/>
+						onProgress={video.handleProgress}
+						onDuration={video.handleDuration}
+
+						//blank style
+					/>
 				<TimeBar played={video.played}>
 					<header>
 						<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
@@ -200,6 +208,7 @@ const Controller = props => {
 					handlePause={video.handlePause}
 					handleUnMute={video.handleUnMute}
 					toggleMute={video.toggleMute}
+					handleBlank={video.handleBlank}
 				></EventsContainer>
 		</Style>
 	)

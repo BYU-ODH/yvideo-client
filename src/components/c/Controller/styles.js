@@ -5,7 +5,7 @@ import carat from 'assets/carat_white.svg'
 const Style = styled.div`
 	width: 100%;
 	height: 100%;
-
+	position: relative;
 `
 
 export default Style
@@ -102,7 +102,7 @@ export const TimeBar = styled.div`
 									border: 3px solid white;
 									border-radius: 50%;
 								}
-							} 
+							}
 						}
 
 					}
@@ -167,7 +167,7 @@ export const TimeBar = styled.div`
 		}
 	}
 
-	
+
 `
 
 export const ToggleCarat = styled.button`
@@ -186,4 +186,12 @@ export const ToggleCarat = styled.button`
 	&.minimized {
 		transform: rotate(90deg);
 	}
+`
+export const Blank = styled.canvas`
+
+	position: absolute;
+	background-color: ${props => props.blank ? ('black') : ('transparent')};
+	z-index: 10;
+	width: 100%;
+	height: 95%;
 `

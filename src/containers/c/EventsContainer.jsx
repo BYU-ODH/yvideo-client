@@ -4,7 +4,7 @@ import { Events } from 'components'
 
 import { interfaceService } from 'services'
 
-import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, CensorEvent } from 'models/events/'
+import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, CensorEvent, BlankEvent } from 'models/events/'
 
 const EventsContainer = props => {
 	const {
@@ -17,6 +17,7 @@ const EventsContainer = props => {
 		handlePlay,
 		handlePause,
 		handleUnMute,
+		handleBlank,
 	} = props
 
 	const newArray = []
@@ -24,6 +25,8 @@ const EventsContainer = props => {
 
 	useEffect(() => {
 		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
+		handleBlank(false)
+		handleUnMute()
 		console.log('use effect')
 		let tempArray =[]
 		if(duration !== 0){
@@ -47,7 +50,9 @@ const EventsContainer = props => {
 					case 'Censor':
 							tempArray.push(new CensorEvent(event.type, start, end))
 						break;
-
+					case 'Blank':
+							tempArray.push(new BlankEvent(event.type, start, end))
+						break;
 					default:
 						break;
 				}
@@ -78,7 +83,7 @@ const EventsContainer = props => {
 							element.print()
 						break;
 					case 'Blank':
-							element.print()
+							handleBlank(true)
 						break;
 					default:
 						break;
@@ -120,7 +125,7 @@ const EventsContainer = props => {
 							element.print()
 						break;
 					case 'Blank':
-							element.print()
+							handleBlank(false)
 						break;
 					default:
 						break;
