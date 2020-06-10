@@ -10,6 +10,7 @@ export default class InterfaceService {
 		COLLECTIONS_DISPLAY_TOGGLE: `COLLECTIONS_DISPLAY_TOGGLE`,
 		SET_HEADER_BORDER: `SET_HEADER_BORDER`,
 		SET_LOST: `SET_LOST`,
+		// INTERFACE_ERROR: `ADMIN_ERROR`,
 	}
 
 	// action creators
@@ -20,6 +21,7 @@ export default class InterfaceService {
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
 		setHeaderBorder: active => ({ type: this.types.SET_HEADER_BORDER, payload: { active }}),
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),
+		// interfaceError: error => ({ type: this.types.INTERFACE_ERROR, payload: { error } }),
 	}
 
 	// default store
@@ -81,6 +83,14 @@ export default class InterfaceService {
 				lost: action.payload.lost,
 			}
 
+			// case this.typesINTERFACE_ERROR:
+			// 	console.error(action.payload.error)
+			// 	return {
+			// 		...store,
+			// 		data: null,
+			// 		loading: false,
+			// 	}
+
 		default:
 			return store
 		}
@@ -101,7 +111,13 @@ export default class InterfaceService {
 	 * @param modal an object representing the modal you want to display. Takes the following properties: `component` (the component to display) and `id` (the id of the collection)
 	 */
 	toggleModal = modal => async dispatch => {
-		dispatch(this.actions.modalToggle(modal))
+		// dispatch(this.actions.modalToggle(modal))
+		try {
+			dispatch(this.actions.modalToggle(modal))
+		} catch (error) {
+			console.error(error.message)
+			dispatch(this.actions.adminError(error))
+		}
 	}
 
 	toggleCollectionsDisplay = () => async dispatch => {

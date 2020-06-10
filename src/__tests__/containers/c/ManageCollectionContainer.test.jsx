@@ -25,6 +25,7 @@ describe(`manage collection container test`, () => {
 	})
 
 	// Child component does not render even though it is mounted.
+	// TODO: need to find out how to test const variables
 	it(`container mount should be success`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -34,9 +35,6 @@ describe(`manage collection container test`, () => {
 			</Provider>,
 		)
 		const content = wrapper.props().children[0].props.children.props.collection.content
-		// console.log(wrapper.debug())
-		// console.log(wrapper.props().children[0].props.children.props.collection.content)
-
-		// console.log(wrapper.find(Container).childAt(0).debug())
+		// console.log(wrapper.find(`ManageCollectionContainer`))
 	})
 })

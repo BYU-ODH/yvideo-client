@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme'
 import Collections from '../../../../components/c/Collections/index'
 import BlockCollection from '../../../../components/bits/BlockCollection'
 import { interfaceService } from 'services'
-import { Link, BrowserRouter} from 'react-router-dom'
+import { Link, BrowserRouter } from 'react-router-dom'
 
 const collection = {
 	archived: false,

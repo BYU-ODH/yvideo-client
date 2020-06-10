@@ -32,8 +32,6 @@ class Root extends PureComponent {
 			modal,
 		} = this.props.viewstate
 
-		// console.log(this.props.viewstate)
-
 		return (
 			<Router>
 				{user ?

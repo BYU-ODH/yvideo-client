@@ -73,7 +73,7 @@ class ContentOverview extends PureComponent {
 						}
 					</div>
 					<div>
-						<EditButton onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}</EditButton>
+						<EditButton className='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}</EditButton>
 					</div>
 				</Preview>
 				{editing &&

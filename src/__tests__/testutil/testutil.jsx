@@ -46,6 +46,8 @@ export const collection = {
 	thumbnail: `test@thumbnail`,
 }
 
+export const collections = [collection]
+
 export const props = {
 	collection,
 	content,
@@ -54,7 +56,66 @@ export const props = {
 	updateCollectionStatus: jest.fn(),
 }
 
+export const professor1 = {
+	email: `test1@email.com`,
+	id: 22,
+	lastLogin: `2020-05-14T19:53:02.807Z`,
+	linked: `-1`,
+	name: `testname professor1`,
+	roles: [`admin`],
+	username: `testusername`,
+}
+
+export const professor2 = {
+	email: `test2@email.com`,
+	id: 23,
+	lastLogin: `2020-05-14T19:53:02.807Z`,
+	linked: `-1`,
+	name: `testname professor2`,
+	roles: [`admin`],
+	username: `testusername2`,
+}
+
 export const store = mockStore({
+	resourceStore: {
+		cache:{
+			loading: false,
+			lastFetched: 1591825599289,
+			resourceId: {
+				id: `resourceId`,
+				title: `resource title`,
+				description: `description`,
+				keywords: [],
+				languages: {
+					iso639_3:[],
+				},
+				type: `video`,
+				dateAdded: `1591672795`,
+				dateModified:`1591672795`,
+				status:`normal`,
+				clientUser: {
+					id: `user:22`,
+				},
+				client:{
+					id: `byu_demo`,
+					name: `BYU Demos`,
+				},
+				content:{
+					files:[
+						{
+							streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
+							bytes:0,
+							representation:`original`,
+							quality:1,
+							mime:`video/x-youtube`,
+							mimeType:`video/x-youtube`,
+							attributes: [],
+						},
+					],
+				},
+			},
+		},
+	},
 	authStore: {
 		user:{
 			roles: `admin`,
@@ -73,24 +134,8 @@ export const store = mockStore({
 			},
 		],
 		professors: [
-			{
-				email: `test1@email.com`,
-				id: 22,
-				lastLogin: `2020-05-14T19:53:02.807Z`,
-				linked: `-1`,
-				name: `testname professor1`,
-				roles: [`admin`],
-				username: `testusername`,
-			},
-			{
-				email: `test2@email.com`,
-				id: 23,
-				lastLogin: `2020-05-14T19:53:02.807Z`,
-				linked: `-1`,
-				name: `testname professor2`,
-				roles: [`admin`],
-				username: `testusername2`,
-			},
+			professor1,
+			professor2,
 		],
 		professorCollections:{
 			archived: false,

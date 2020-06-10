@@ -6,15 +6,7 @@ import * as testutil from '../../../testutil/testutil'
 
 const content = testutil.content
 
-const collection = {
-	archived: false,
-	content,
-	id: 65,
-	name: `Collection 1`,
-	owner: 22,
-	published: true,
-	thumbnail: `test@thumbnail`,
-}
+const collection = testutil.collection
 
 const props = {
 	viewstate : {
@@ -55,7 +47,7 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find(`Connect(CollectionPermissionsContainer)`).length).toBe(1)
 	})
 
-	it(`mount`, ()=> {
+	it(`test viewstate`, ()=> {
 		props.viewstate.isContent = true
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -63,6 +55,15 @@ describe(`manage collection test`, () => {
 			</Provider>,
 		)
 
-		// console.log(wrapper.debug())
+		const viewstate = wrapper.find(`ContentOverviewContainer`).childAt(0).props().viewstate
+		expect(viewstate.content.id).toBe(115)
+		expect(viewstate.content.name).toBe(`testname`)
+		expect(viewstate.content.contentType).toBe(`video`)
+		expect(viewstate.content.collectionId).toBe(85)
+		expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
+		expect(viewstate.content.physicalCopyExists).toBe(false)
+		expect(viewstate.content.isCopyrighted).toBe(false)
+		expect(viewstate.content.expired).toBe(true)
+		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 })
