@@ -8,7 +8,7 @@ import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, CensorEvent, BlankEvent
 
 const EventsContainer = props => {
 
-	console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
+	//console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
 
 	const {
 		events,
@@ -21,24 +21,24 @@ const EventsContainer = props => {
 		handlePause,
 		handleUnMute,
 		handleBlank,
+		handleShowComment,
 	} = props
 
-	const newArray = []
-	//const [allEvents, setAllEvents] = useState(events)
-	const [eventClassArray, setEventClassArray] = useState(newArray)
+	const [eventArray, setEventArray] = useState([])
 
 	useEffect(() => {
-		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
-		// let newEvents = getEvents()
-		// console.log('new events', newEvents)
-	 	console.log('use effect')
-
+		//SORT array from start to end
+		let sortedArray = events //events.sort((a, b) => (a.start > b.start) ? 1 : -1)
+		//after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
+		//If the blank or mute event is active the event will be executed.
 		handleBlank(false)
 		handleUnMute()
+
+		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
 		let tempArray =[]
 		if(duration !== 0){
-			events.forEach(event => {
-				// debugger;
+			sortedArray.forEach(event => {
+				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
 				let start = (event.start / 100) * duration
 				let end = (event.end / 100) * duration
 				switch (event.type) {
@@ -52,7 +52,7 @@ const EventsContainer = props => {
 							tempArray.push(new PauseEvent(event.type, start, end))
 						break;
 					case 'Comment':
-							tempArray.push(new CommentEvent(event.type, start, end))
+							tempArray.push(new CommentEvent(event.type, start, end, event.comment))
 						break;
 					case 'Censor':
 							tempArray.push(new CensorEvent(event.type, start, end))
@@ -65,14 +65,11 @@ const EventsContainer = props => {
 				}
 			});
 		}
-		setEventClassArray(tempArray)
-		//setAllEvents(newEvents)
+		setEventArray(tempArray)
 	}, [duration, events])
 
-	eventClassArray.forEach(element => {
+	eventArray.forEach(element => {
 			if((currentTime >= element.start && currentTime <= element.end) && element.active === false){
-
-				console.log(element)
 				element.active = true
 				switch (element.type) {
 					case 'Skip':
@@ -85,7 +82,7 @@ const EventsContainer = props => {
 							handlePause()
 						break;
 					case 'Comment':
-							element.print()
+							handleShowComment(element.comment)
 						break;
 					case 'Censor':
 							element.print()
@@ -96,38 +93,15 @@ const EventsContainer = props => {
 					default:
 						break;
 				}
-				/*
-					if(element.type === 'Skip'){
-						handleSeek(null, element.end)
-						return;
-					}
-					else if(element.type === 'Mute'){
-						handleMute()
-						return;
-					}
-					else if(element.type === 'Pause'){
-						handlePause()
-						console.log(element.end, element.start)
-						setTimeout(() => {
-							handlePlay()
-						}, (element.end - element.start) * 1000);
-					}
-					else {
-						element.print()
-					}
-				*/
-				//COMPLETE FOR ALL OTHER EVENTS
 			}
 			else if (currentTime > element.end && element.active === true){
-				//stop event
-
 				element.active = false
 				switch (element.type) {
 					case 'Mute':
 							handleUnMute()
 						break;
 					case 'Comment':
-							element.print()
+							handleShowComment('')
 						break;
 					case 'Censor':
 							element.print()
@@ -138,21 +112,12 @@ const EventsContainer = props => {
 					default:
 						break;
 				}
-				/*
-					if(element.type === 'Mute'){
-						handleUnMute()
-					}
-					else if(element.type === 'Pause'){
-						element.print()
-					}
-				*/
-				//COMPLETE FOR ALL OTHER EVENTS
 			}
 	});
 
 	const viewstate = {
 		currentTime,
-		eventClassArray,
+		eventArray,
 	}
 
 	return <Events viewstate={viewstate}></Events>

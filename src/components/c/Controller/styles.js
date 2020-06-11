@@ -6,6 +6,11 @@ const Style = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
+
+	& .video {
+		height: calc(100% - 50px) !important;
+		width: 100% !important;
+	}
 `
 
 export default Style
@@ -187,11 +192,18 @@ export const ToggleCarat = styled.button`
 		transform: rotate(90deg);
 	}
 `
-export const Blank = styled.canvas`
+export const Blank = styled.div`
 
 	position: absolute;
 	background-color: ${props => props.blank ? ('black') : ('transparent')};
 	z-index: 10;
 	width: 100%;
-	height: 95%;
+	height: 91.5%;
+
+
+	& p {
+		margin: 10% 0px 0px 5%;
+		font-size: 2rem;
+		color: white;
+	}
 `

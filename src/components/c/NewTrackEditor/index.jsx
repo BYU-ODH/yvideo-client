@@ -22,7 +22,7 @@ import plus from 'assets/plus-white.svg'
 
 const TrackEditor = props => {
 
-	console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
+	//console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
 
 	const { setEvents } = props
 
@@ -83,23 +83,24 @@ const TrackEditor = props => {
 		{
 			type: `Skip`,
 			icon: muteIcon,
-			start: 1,
-			end: 10,
+			start: 80,
+			end: 90,
 			layer: 0
 		},
 		{
 			type: `Mute`,
 			icon: muteIcon,
-			start: 0,
-			end: 10,
+			start: 50,
+			end: 60,
 			layer: 1
 		},
 		{
-			type: `Pause`,
-			icon: skipIcon,
-			start: 75,
-			end: 80,
-			layer: 2
+			type: `Comment`,
+			icon: commentIcon,
+			start: 0,
+			end: 20,
+			layer: 2,
+			comment: 'New COmment',
 		},
 	] // THIS IS GOING TO HAVE EVENTS
 
@@ -121,8 +122,8 @@ const TrackEditor = props => {
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
-	// TODO: Replace with dynamic data from server
 	const [layerWidth, setWidth] = useState(0)
+	const [editComment, setEditComment] = useState('')
 
 	const [dimensions, setDimensions] = useState({
 		height: window.innerHeight,
@@ -136,7 +137,7 @@ const TrackEditor = props => {
 					height: window.innerHeight,
 					width: window.innerWidth
 				})
-			}, 1000);
+			}, 500);
 		}
 		window.addEventListener('resize', handleResize)
 		setEvents(allEvents)
@@ -292,6 +293,16 @@ const TrackEditor = props => {
 		setShouldUpdate(true)
 	}
 
+	const handleSaveComment = () => {
+		let index = eventToEdit
+		let event = allEvents[index]
+		let layer = event.layer
+		event.comment = editComment
+
+		setEditComment('')
+		updateEvents(index, event, layer)
+	}
+
 	const openSideEditor = (layerIndex, eventIndex) => {
 		setEventToEdit(eventIndex)
 		setDisplayLayer(layerIndex)
@@ -330,6 +341,16 @@ const TrackEditor = props => {
 							<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)}/>
 						</div>
 						<br/>
+						<>
+						{ cEvent.type === 'Comment' ? (
+							<div className='center' style={{ flexDirection: 'column'}}>
+								<label style={{ textAlign: 'left', margin: '15px 5px 5px 5px' }}>Type a comment</label><br/>
+								<textarea style={{ margin: '5px' }} rows='4' cols='50' placeholder={cEvent.comment} onChange={e => setEditComment(e.target.value)}></textarea>
+								<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
+							</div>
+							) : (null)
+						}
+						</>
 						<p id='sideTabMessage'></p>
 					</div>
 					)

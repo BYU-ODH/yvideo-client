@@ -48,7 +48,6 @@ export const Timeline = styled.div`
 	color: #5F5F5F; */
 
 	position: relative;
-	top: 2rem;
 	height: ${props => props.minimized ? `0vh` : `30vh`};
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
@@ -288,7 +287,7 @@ export const SideEditor = styled.div`
 		display: flex;
 		font-size: 1.5rem;
 
-		& input {
+		& .sideTabInput {
 			margin: auto 10px auto auto !important;
 			padding: 0px 10px;
 			width: 120px;
@@ -301,6 +300,23 @@ export const SideEditor = styled.div`
 			margin: 15px auto 15px auto;
 			width: 150px;
 			text-align: left;
+		}
+
+		& .sideButton {
+			width: 50%;
+			margin-left: 25%;
+			border: none;
+			background-color: var(--light-blue);
+			height: 40px;
+			color: white;
+			border-radius: 5px;
+			transition: .5s ease-out;
+
+			&:active {
+				border-radius: 5px;
+				border: none;
+				background-color: var(--navy-blue);
+			}
 		}
 	}
 

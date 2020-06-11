@@ -17,7 +17,7 @@ import unmute from 'assets/controls_muted.svg'
 
 const Controller = props => {
 
-	console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
+	//console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
 
 	const {
 		url,
@@ -34,6 +34,7 @@ const Controller = props => {
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
+	const [videoComment, setVideoComment] = useState('')
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
@@ -118,6 +119,9 @@ const Controller = props => {
 		handleBlank: (bool) => {
 			setBlank(bool)
 		},
+		handleShowComment: (value) => {
+			setVideoComment(value)
+		},
 
 	}
 
@@ -142,15 +146,13 @@ const Controller = props => {
 	return (
 		<Style>
 					<Blank blank={blank}>
+						<p>{videoComment}</p>
 					</Blank>
 					<ReactPlayer ref={ref} config={config} url={url}
 
 						// constants
 
 						className='video'
-						width='100%'
-						height='95%'
-						//height='85%'
 						controls={true}
 						progressInterval={100}
 
@@ -215,6 +217,7 @@ const Controller = props => {
 					handleUnMute={video.handleUnMute}
 					toggleMute={video.toggleMute}
 					handleBlank={video.handleBlank}
+					handleShowComment={video.handleShowComment}
 				></EventsContainer>
 		</Style>
 	)
