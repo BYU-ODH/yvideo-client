@@ -4,6 +4,40 @@ const thunk = require(`redux-thunk`).default
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+export const resource = {
+	id: `resourceId`,
+	title: `resource title`,
+	description: `description`,
+	keywords: [``],
+	languages: {
+		iso639_3:[],
+	},
+	type: `video`,
+	dateAdded: `1591672795`,
+	dateModified:`1591672795`,
+	status:`normal`,
+	clientUser: {
+		id: `user:22`,
+	},
+	client:{
+		id: `byu_demo`,
+		name: `BYU Demos`,
+	},
+	content:{
+		files:[
+			{
+				streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
+				bytes:0,
+				representation:`original`,
+				quality:1,
+				mime:`video/x-youtube`,
+				mimeType:`video/x-youtube`,
+				attributes: [],
+			},
+		],
+	},
+}
+
 export const content = [
 	{
 		id: 115,
@@ -30,6 +64,7 @@ export const content = [
 			annotationDocument: [],
 			captionTrack: [],
 		},
+		resource,
 		fullVideo: true,
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
 		views: 0,
@@ -76,44 +111,48 @@ export const professor2 = {
 	username: `testusername2`,
 }
 
+export const resources = {
+	resourceId: {
+		id: `resourceId`,
+		title: `resource title`,
+		description: `description`,
+		keywords: [],
+		languages: {
+			iso639_3:[],
+		},
+		type: `video`,
+		dateAdded: `1591672795`,
+		dateModified:`1591672795`,
+		status:`normal`,
+		clientUser: {
+			id: `user:22`,
+		},
+		client:{
+			id: `byu_demo`,
+			name: `BYU Demos`,
+		},
+		content:{
+			files:[
+				{
+					streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
+					bytes:0,
+					representation:`original`,
+					quality:1,
+					mime:`video/x-youtube`,
+					mimeType:`video/x-youtube`,
+					attributes: [],
+				},
+			],
+		},
+	},
+}
+
 export const store = mockStore({
 	resourceStore: {
 		cache:{
 			loading: false,
 			lastFetched: 1591825599289,
-			resourceId: {
-				id: `resourceId`,
-				title: `resource title`,
-				description: `description`,
-				keywords: [],
-				languages: {
-					iso639_3:[],
-				},
-				type: `video`,
-				dateAdded: `1591672795`,
-				dateModified:`1591672795`,
-				status:`normal`,
-				clientUser: {
-					id: `user:22`,
-				},
-				client:{
-					id: `byu_demo`,
-					name: `BYU Demos`,
-				},
-				content:{
-					files:[
-						{
-							streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
-							bytes:0,
-							representation:`original`,
-							quality:1,
-							mime:`video/x-youtube`,
-							mimeType:`video/x-youtube`,
-							attributes: [],
-						},
-					],
-				},
-			},
+			resources,
 		},
 	},
 	authStore: {
@@ -216,6 +255,7 @@ export const store = mockStore({
 		},
 	},
 	contentStore:{
+		loading: false,
 		cache: [
 			{
 				id: 115,

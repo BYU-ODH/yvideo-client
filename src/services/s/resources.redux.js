@@ -120,6 +120,9 @@ export default class ResourceService {
 
 			} catch (error) {
 				dispatch(this.actions.resourcesError(error))
+				setTimeout(() => {
+					throw error
+				})
 			}
 
 		} else dispatch(this.actions.resourcesAbort())

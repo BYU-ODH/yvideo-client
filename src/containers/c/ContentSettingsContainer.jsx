@@ -31,7 +31,7 @@ const ContentSettingsContainer = props => {
 				})
 			} else setShowing(true)
 		},
-		[content, getResources, resources, setContentState, setShowing]
+		[content, getResources, resources, setContentState, setShowing],
 	)
 
 	if (!content || !content.resource) return null

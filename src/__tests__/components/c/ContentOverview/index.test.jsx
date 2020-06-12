@@ -29,7 +29,7 @@ const props = {
 }
 
 describe(`content overview test`, () => {
-	it(`mount`, ()=> {
+	it(`mount`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<ContentOverview {...props} />
@@ -50,15 +50,15 @@ describe(`content overview test`, () => {
 
 		// edit button on click re rerendering behavior, click behavior should be tested in ContentOverviewContainer
 		expect(wrapper.find(`.edit-button`).length).toBe(3)
-		// wrapper.find(`.edit-button`).at(2).simulate(`click`)
 		viewstate.editing = true
 		const wrapperRerendered = mount(
 			<Provider store={testutil.store}>
 				<ContentOverview {...props} />
 			</Provider>,
 		)
+		// console.log(wrapperRerendered.debug())
 		expect(wrapperRerendered.find(`ContentSettingsContainer`).length).toBe(1)
-		expect(wrapperRerendered.find(`button`).length).toBe(3)
+		expect(wrapperRerendered.find(`button`).length).toBe(7)
 		expect(wrapperRerendered.find(`button`).at(0).props().children).toBe(`Unpublish`)
 		expect(wrapperRerendered.find(`button`).at(1).props().children).toBe(`Delete`)
 		expect(wrapperRerendered.find(`button`).at(2).props().children).toBe(`Save`)
