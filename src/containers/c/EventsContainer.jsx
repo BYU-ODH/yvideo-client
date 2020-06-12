@@ -22,6 +22,8 @@ const EventsContainer = props => {
 		handleUnMute,
 		handleBlank,
 		handleShowComment,
+		handleCensorPosition,
+		handleCensorActive,
 	} = props
 
 	const [eventArray, setEventArray] = useState([])
@@ -33,6 +35,7 @@ const EventsContainer = props => {
 		//If the blank or mute event is active the event will be executed.
 		handleBlank(false)
 		handleUnMute()
+		handleCensorActive(false)
 
 		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
 		let tempArray =[]
@@ -55,7 +58,7 @@ const EventsContainer = props => {
 							tempArray.push(new CommentEvent(event.type, start, end, event.comment))
 						break;
 					case 'Censor':
-							tempArray.push(new CensorEvent(event.type, start, end))
+							tempArray.push(new CensorEvent(event.type, start, end, event.position))
 						break;
 					case 'Blank':
 							tempArray.push(new BlankEvent(event.type, start, end))
@@ -85,7 +88,11 @@ const EventsContainer = props => {
 							handleShowComment(element.comment)
 						break;
 					case 'Censor':
-							element.print()
+							element.active = false
+							let roundNumber = currentTime.toFixed(0)
+							//console.log(roundNumber)
+							handleCensorActive(true)
+							handleCensorPosition(element.position[roundNumber])
 						break;
 					case 'Blank':
 							handleBlank(true)
@@ -103,15 +110,15 @@ const EventsContainer = props => {
 					case 'Comment':
 							handleShowComment('')
 						break;
-					case 'Censor':
-							element.print()
-						break;
 					case 'Blank':
 							handleBlank(false)
 						break;
 					default:
 						break;
 				}
+			}
+			else if (currentTime > element.end && element.type === 'Censor'){
+				handleCensorActive(false)
 			}
 	});
 

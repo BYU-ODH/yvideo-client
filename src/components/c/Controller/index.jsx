@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import Style, {TimeBar, ToggleCarat, Blank } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor } from './styles'
 
 //import { interfaceService } from 'services'
 
@@ -22,9 +22,11 @@ const Controller = props => {
 	const {
 		url,
 		getDuration,
+		handleLastClick,
 	} = props
 
 	const ref = useRef(null)
+	const videoRef = useRef(null)
 
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
@@ -35,6 +37,8 @@ const Controller = props => {
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState('')
+	const [censorPosition, setCensorPosition] = useState([0,0])
+	const [censorActive, SetCensorActive] = useState(false)
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
@@ -122,6 +126,17 @@ const Controller = props => {
 		handleShowComment: (value) => {
 			setVideoComment(value)
 		},
+		handleCensorPosition: (position) => {
+			//console.log(position)
+			if(position !== undefined){
+				setCensorPosition(
+					position
+				)
+			}
+		},
+		handleCensorActive: (bool) => {
+			SetCensorActive(bool)
+		}
 
 	}
 
@@ -134,6 +149,7 @@ const Controller = props => {
 				modestbranding: 1,
 				rel: 0,
 				enablejsapi: 1,
+				showinfo: 0,
 			},
 			preload: true,
 		},
@@ -145,15 +161,15 @@ const Controller = props => {
 
 	return (
 		<Style>
-					<Blank blank={blank}>
+					<Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}>
 						<p>{videoComment}</p>
+						<Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive}></Censor>
 					</Blank>
 					<ReactPlayer ref={ref} config={config} url={url}
 
 						// constants
 
 						className='video'
-						controls={true}
 						progressInterval={100}
 
 						// state
@@ -218,6 +234,8 @@ const Controller = props => {
 					toggleMute={video.toggleMute}
 					handleBlank={video.handleBlank}
 					handleShowComment={video.handleShowComment}
+					handleCensorPosition={video.handleCensorPosition}
+					handleCensorActive={video.handleCensorActive}
 				></EventsContainer>
 		</Style>
 	)

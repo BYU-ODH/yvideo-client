@@ -60,6 +60,10 @@ export class CommentEvent extends Event {
 
 export class CensorEvent extends Event {
 
+	constructor(type, start, end, position) {
+		super(type, start, end);
+		this.position = position
+	}
 }
 
 export class BlankEvent extends Event {

@@ -43,6 +43,7 @@ export const TimeBar = styled.div`
 
 		display: flex;
 		align-items: center;
+		z-index: 16;
 		background-color: var(--navy-blue);
 
 		& .scrubber {
@@ -202,8 +203,26 @@ export const Blank = styled.div`
 
 
 	& p {
+		position: absolute;
 		margin: 10% 0px 0px 5%;
 		font-size: 2rem;
 		color: white;
 	}
+`
+export const Censor = styled.canvas`
+	--top: ${props => props.y !== 0 ? `${props.y}%` : `50%`};
+	--left: ${props => props.x !== 0 ? `${props.x}%` : `50%`};
+
+	/* TIME X Y WIDTH HEIHT */
+	/* FIND BLUR EFFECT */
+
+	position: absolute;
+	top: calc(var(--top) - 13%) !important;
+	left: calc(var(--left) - 7%) !important;
+	height: 25%;
+	width: 15%;
+	background-color: transparent;
+
+	transition: 2s ease;
+	backdrop-filter: blur(30px);
 `

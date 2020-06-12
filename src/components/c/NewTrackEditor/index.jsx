@@ -15,10 +15,11 @@ import pauseIcon from 'Assets/event_pause.svg'
 import commentIcon from 'Assets/event_comment.svg'
 import censorIcon from 'Assets/event_censor.svg'
 import blankIcon from 'Assets/event_blank.svg'
+import trashIcon from 'Assets/trash_icon.svg'
 
 //ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 
-import plus from 'assets/plus-white.svg'
+import plus from 'Assets/plus-square.svg'
 
 const TrackEditor = props => {
 
@@ -61,7 +62,10 @@ const TrackEditor = props => {
 			icon: censorIcon,
 			start: 0,
 			end: 10,
-			layer: 0
+			layer: 0,
+			position: {
+				0: [0, 0],
+			},
 		},
 		{
 			type: `Blank`,
@@ -74,17 +78,23 @@ const TrackEditor = props => {
 
 	const eventsArray = [
 		{
-			type: `Mute`,
-			icon: skipIcon,
-			start: 90,
-			end: 100,
-			layer: 0
+			type: `Censor`,
+			icon: censorIcon,
+			start: 0,
+			end: 10,
+			layer: 0,
+			position: {
+				"0": [0, 0],
+				"1": [50, 30],
+				"2": [45, 21],
+				"3": [10, 55],
+			},
 		},
 		{
 			type: `Skip`,
 			icon: muteIcon,
-			start: 80,
-			end: 90,
+			start: 60,
+			end: 65,
 			layer: 0
 		},
 		{
@@ -124,6 +134,9 @@ const TrackEditor = props => {
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [editComment, setEditComment] = useState('')
+	const [editCensor, setEditCensor] = useState({})
+	const [deleteTimes, setDeleteTimes] = useState([])
+	const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
 	const [dimensions, setDimensions] = useState({
 		height: window.innerHeight,
@@ -299,8 +312,82 @@ const TrackEditor = props => {
 		let layer = event.layer
 		event.comment = editComment
 
+		//MAKE IT DRAGABLE
+		//PASS X AND Y POSITIONS
+
 		setEditComment('')
 		updateEvents(index, event, layer)
+	}
+
+	const handleCensorRemove = (item) => {
+		let index = eventToEdit
+		let cEvent = allEvents[index]
+		let layer = cEvent.layer
+
+		delete cEvent.position[item]
+
+		updateEvents(index, cEvent, layer)
+		
+	}
+
+	const handleAddCensor = () => {
+		let index = eventToEdit
+		let cEvent = allEvents[index]
+		let layer = cEvent.layer
+
+		cEvent.position["--"] = [0 ,0]
+
+		setEditCensor(cEvent.position)
+		updateEvents(index, cEvent, layer)
+
+		//GET CURRENT TIME OF THE VIDEO TO INSERT
+	}
+
+	const handleEditCensor = (e, item, int) => {
+		let object = editCensor
+		console.log(editCensor)
+
+		let deleteT = deleteTimes
+
+		switch (int) {
+			case 1:
+				deleteT.push(item)
+				let values = object[item]
+				console.log(values)
+				object[e.target.value] = values
+				object[item] = object[e.target.value]
+				break;
+			case 2:
+				object[item][0] = parseInt(e.target.value)
+				break;
+			case 3:
+				object[item][1] = parseInt(e.target.value)
+				break;
+		
+			default:
+				break;
+		}
+
+		setDeleteTimes(deleteT)
+		setEditCensor(object)
+	}
+
+	const handleSaveCensor = () => {
+		console.log('SAVE CENSOR')
+		let positions = editCensor
+		let index = eventToEdit
+		let cEvent = allEvents[index]
+		let layer = cEvent.layer
+
+		deleteTimes.forEach(element => {
+			delete cEvent.position[element]
+		});
+
+		cEvent.position = positions
+
+		console.log(positions)
+		setDeleteTimes([])
+		updateEvents(index, cEvent, layer)
 	}
 
 	const openSideEditor = (layerIndex, eventIndex) => {
@@ -313,6 +400,9 @@ const TrackEditor = props => {
 		const cEvent = allEvents[eventToEdit]
 		let start = ( cEvent.start / 100 ) * videoLength
 		let end = ( cEvent.end / 100 ) * videoLength
+		if(cEvent.type === 'Censor' && editCensor !== cEvent.position){
+			setEditCensor(cEvent.position)
+		}
 		return (
 			<SideEditor>
 				{ cEvent.type === 'Pause' ? (
@@ -350,6 +440,32 @@ const TrackEditor = props => {
 							</div>
 							) : (null)
 						}
+						{ cEvent.type === 'Censor' ? (
+							<div className='censorMenu'>
+								<label>Censor Times</label><br/>
+								<div className='censorList'>
+									<table>
+										<thead><tr><th>Time</th><th>posX</th><th>posY</th><th>Delete</th></tr></thead>
+										<tbody>
+										{
+											Object.keys(cEvent.position).map((item, i) => (
+												<tr key={item}>
+													<td><input type='text' placeholder={`${item}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+													<td><input type='text' placeholder={`${cEvent.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+													<td><input type='text' placeholder={`${cEvent.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+													<td><img className={'trashIcon'} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
+												</tr>
+											)) // "foo: bar", "baz: 42"
+											//Object.entries(cEvent.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
+										}
+										</tbody>
+									</table>
+								</div>
+								<NewLayer className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></NewLayer><br/><br/><br/><br/>
+								<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
+							</div>
+							) : (null)
+						}
 						</>
 						<p id='sideTabMessage'></p>
 					</div>
@@ -369,6 +485,23 @@ const TrackEditor = props => {
 		})
 	}
 
+	const handleLastClick = (height, width, x, y, time) => {
+		console.log(height, width)
+
+		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === 'Censor'){
+			console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
+			let index = eventToEdit
+			let cEvent = allEvents[index]
+			let layer = cEvent.layer
+
+			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
+			cEvent.position[`${time.toFixed(0)}`] = [((x / width) * 100), (((y-86) / height) * 100)]
+
+			//console.log(cEvent.position)
+			updateEvents(index, cEvent, layer)
+		}
+	}
+
 	//console.log('track-editor ', videoLength)
 
 	return (
@@ -377,7 +510,7 @@ const TrackEditor = props => {
 
 			<span>
 
-				<Controller className='video' url={props.viewstate.url} handlers={togglendTimeline} minimized={timelineMinimized} getDuration={getVideoDuration}>
+				<Controller className='video' url={props.viewstate.url} handlers={togglendTimeline} minimized={timelineMinimized} getDuration={getVideoDuration} handleLastClick={handleLastClick}>
 				</Controller>
 
 				<Timeline minimized={timelineMinimized}>

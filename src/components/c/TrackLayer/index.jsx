@@ -13,7 +13,7 @@ import {
 
 const TrackLayer = props => {
 
-	console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
+	//console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
 
 	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength} = props
 	const layerIndex = parseInt(props.index)
@@ -138,13 +138,13 @@ const TrackLayer = props => {
 					>
 					<div className={`layer-${layerIndex} events`} ref={dropRef}>
 						{events.map((event, index) => (
-							<div key={index}>
+							<>
 							{event.layer === layerIndex ? (
-								<>
-									{printEvents(event, index)}
-								</>
+								<div key={index}>
+									{printEvents(event, index)}								
+								</div>
 							) : (null)}
-							</div>
+							</>
 						))}
 					</div>
 				</div>

@@ -54,6 +54,8 @@ export const Timeline = styled.div`
 	cursor: ${props => props.cursor};
 	display: flex;
 	border: 1px solid black;
+	z-index: 15;
+    background-color: white;
 
 	& .zoom-controls{
 		width: 48px;
@@ -128,28 +130,27 @@ export const HandleIcon = styled.div `
 export const Icon = styled.div`
 	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
-  background-size: contain;
-
-  height: 2rem;
-  width: 2rem;
+  width: 20px;
+  height: 15px;
 `
 
 export const NewLayer = styled.button`
 	height: 2.4rem;
 	width: 2.5rem;
+	background-color: #0582ca;
 
 	margin-top: .75rem;
-  margin-left: 130px;
+	margin-left: 130px;
 
-  border: none;
-  border-radius: 0.3rem;
+	border: none;
+	border-radius: 0.3rem;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-  outline: none;
-  cursor: pointer;
+	outline: none;
+	cursor: pointer;
 `
 
 export const EventList = styled.div`
@@ -157,8 +158,10 @@ export const EventList = styled.div`
 
 	width: ${ props => props.minimized !== false ? ('4rem') : ('35rem')};
 	height: calc(100vh - var(--navbar-height));
-	background: ${ props => props.minimized !== false ? ('var(--navy-blue)') : ('transparent !important')};
+	background: ${ props => props.minimized !== false ? ('var(--navy-blue)') : ('white !important')};
 	transition: .5s;
+	z-index: 20;
+	overflow: hidden;
 
 	& > header {
 
@@ -301,28 +304,67 @@ export const SideEditor = styled.div`
 			width: 150px;
 			text-align: left;
 		}
+	}
 
-		& .sideButton {
-			width: 50%;
-			margin-left: 25%;
-			border: none;
-			background-color: var(--light-blue);
-			height: 40px;
-			color: white;
+	& .sideButton {
+		width: 50%;
+		margin-left: 25%;
+		border: none;
+		background-color: var(--light-blue);
+		height: 40px;
+		color: white;
+		border-radius: 5px;
+		transition: .5s ease-out;
+
+		&:active {
 			border-radius: 5px;
-			transition: .5s ease-out;
-
-			&:active {
-				border-radius: 5px;
-				border: none;
-				background-color: var(--navy-blue);
-			}
+			border: none;
+			background-color: var(--navy-blue);
 		}
 	}
 
 	& #sideTabMessage{
 		margin-left: 10px;
 		font-size: 1.3rem;
+	}
+
+	& .censorMenu {
+		font-size: 1.5rem;
+		& label {
+			margin: 15px 5px 15px 15px;
+			width: 150px;
+			text-align: left;
+		}
+	}
+
+	& .censorList {
+		width: 100%;
+		height: 30vh;
+		margin: 10px;
+		overflow-y: scroll;
+		& table {
+			width: 90%;
+			& td, th {
+				display: inline-flex;
+				width: 23% !important;
+				margin: auto;
+				& input {
+					margin: auto;
+					width: 60% !important;
+				}
+
+				& .trashIcon {
+					margin: auto;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+
+	& .addCensor {
+		position: absolute;
+		float: left;
+		margin-left: 20px;
 	}
 `
 
