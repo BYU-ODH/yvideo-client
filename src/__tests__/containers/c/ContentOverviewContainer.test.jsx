@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Container from '../../../containers/c/ContentOverviewContainer'
 import { BrowserRouter } from 'react-router-dom'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
 
 const content = testutil.content[0]
@@ -74,12 +74,14 @@ describe(`manage collection test`, () => {
 		wrapper.find(`button`).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 
-		// TODO: need a test to check if the event handler is called
-		// console.log(wrapper.find(`ContentOverview`).props().handlers)
-		// const spyHandleRemoveContent = jest.spyOn(wrapper.find(`ContentOverview`).props().handlers.handleRemoveContent(), `removeCollectionContent`)
-		// console.log(wrapper.props().children[0].props.children.props.removeCollectionContent)
+		// method should not be called before click
+		expect(props.removeCollectionContent).not.toHaveBeenCalled()
 		wrapper.find(`button`).at(1).simulate(`click`)
-		// expect(spyHandleRemoveContent).toHaveBeenCalled()
+
+		// check to see if clicking button fires the method
+		setTimeout(() => {
+			expect(props.removeCollectionContent).toHaveBeenCalled()
+		}, 500)
 	})
 
 	it(`save event handler test`, ()=> {
