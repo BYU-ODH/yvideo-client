@@ -13,6 +13,7 @@ const props = {
 	updateContent: jest.fn(),
 }
 
+// TODO: need to fix `UnhandledPromiseRejectionWarning`. I think it is from service.
 describe(`manage collection test`, () => {
 	it(`ContentOverviewContainer should render`, ()=> {
 
@@ -102,5 +103,17 @@ describe(`manage collection test`, () => {
 		setTimeout(() => {
 			expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(false)
 		}, 500)
+	})
+
+	it(`test`, ()=> {
+		const wrapper = mount(
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>,
+			</Provider>,
+		)
+
+		console.log(wrapper.debug())
 	})
 })

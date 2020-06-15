@@ -212,7 +212,7 @@ export default class CollectionService {
 		try {
 			const result = await apiProxy.collection.remove(id, [contentId.toString()])
 			console.log(result)
-			// TODO: Remove content from cache so that rerendering happens
+
 			// You also have to be an admin to do this, I'm pretty sure
 			dispatch(this.actions.collectionsRemoveContent(id, currentState))
 		} catch (error) {
