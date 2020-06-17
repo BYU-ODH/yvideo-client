@@ -16,8 +16,10 @@ import commentIcon from 'Assets/event_comment.svg'
 import censorIcon from 'Assets/event_censor.svg'
 import blankIcon from 'Assets/event_blank.svg'
 import trashIcon from 'Assets/trash_icon.svg'
+import closeIcon from 'Assets/close_icon.svg'
 
 //ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
+//TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
 import plus from 'Assets/plus-square.svg'
 
@@ -64,7 +66,7 @@ const TrackEditor = props => {
 			end: 10,
 			layer: 0,
 			position: {
-				0: [0, 0],
+				0: [0, 0, 30, 40],
 			},
 		},
 		{
@@ -84,10 +86,15 @@ const TrackEditor = props => {
 			end: 10,
 			layer: 0,
 			position: {
-				"0": [0, 0],
-				"1": [50, 30],
-				"2": [45, 21],
-				"3": [10, 55],
+				"0": [0, 0, 30, 40],
+				"1": [50, 30, 30, 40],
+				"2": [45, 21, 30, 40],
+				"3": [10, 55, 30, 40],
+				"4": [0, 0, 30, 40],
+				"5": [50, 30, 30, 40],
+				"6": [45, 21, 30, 40],
+				"7": [10, 55, 30, 40],
+				"8": [0, 0, 30, 40],
 			},
 		},
 		{
@@ -135,7 +142,6 @@ const TrackEditor = props => {
 	const [layerWidth, setWidth] = useState(0)
 	const [editComment, setEditComment] = useState('')
 	const [editCensor, setEditCensor] = useState({})
-	const [deleteTimes, setDeleteTimes] = useState([])
 	const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
 	const [dimensions, setDimensions] = useState({
@@ -234,6 +240,16 @@ const TrackEditor = props => {
 		setSideEditor(true)
 	}
 
+	const deleteEvent = () => {
+		let currentEvents = [...allEvents]
+		currentEvents.splice(eventToEdit, 1)
+
+		setAllEvents(currentEvents)
+		setEvents(currentEvents)
+		setEventToEdit(1000)
+		setSideEditor(false)
+	}
+
 	const handleEditEventBTimeChange = (e) => {
 
 		document.getElementById('sideTabMessage').style.color='red'
@@ -327,66 +343,70 @@ const TrackEditor = props => {
 		delete cEvent.position[item]
 
 		updateEvents(index, cEvent, layer)
-		
+
 	}
 
 	const handleAddCensor = () => {
-		let index = eventToEdit
-		let cEvent = allEvents[index]
-		let layer = cEvent.layer
 
-		cEvent.position["--"] = [0 ,0]
+		let temp = editCensor
 
-		setEditCensor(cEvent.position)
-		updateEvents(index, cEvent, layer)
+		const last = Object.keys(temp).length - 1
 
-		//GET CURRENT TIME OF THE VIDEO TO INSERT
+		temp[`${last + 1}`] = [0 ,0, 30, 40]
+
+		console.log('temp', temp)
+		document.getElementById('tableBottom').scrollIntoView(false)
+		setEditCensor(temp)
+		handleSaveCensor()
 	}
 
 	const handleEditCensor = (e, item, int) => {
 		let object = editCensor
-		console.log(editCensor)
-
-		let deleteT = deleteTimes
+		//console.log(editCensor)
+		let value = Math.round(parseInt(e.target.value))
 
 		switch (int) {
 			case 1:
-				deleteT.push(item)
 				let values = object[item]
-				console.log(values)
-				object[e.target.value] = values
-				object[item] = object[e.target.value]
+				object[value] = values
 				break;
 			case 2:
-				object[item][0] = parseInt(e.target.value)
+				object[item][0] = value
 				break;
 			case 3:
-				object[item][1] = parseInt(e.target.value)
+				object[item][1] = value
 				break;
-		
+			case 4:
+				object[item][2] = value
+				break;
+			case 5:
+				object[item][3] = value
+				break;
+
 			default:
 				break;
 		}
-
-		setDeleteTimes(deleteT)
+		if(int === 1){
+			document.getElementById('loader').style.visibility = 'visible'
+			setTimeout(() => {
+				document.getElementById('loader').style.visibility = 'hidden'
+				handleCensorRemove(item)
+			}, 1000);
+		}
 		setEditCensor(object)
 	}
 
 	const handleSaveCensor = () => {
 		console.log('SAVE CENSOR')
-		let positions = editCensor
 		let index = eventToEdit
 		let cEvent = allEvents[index]
 		let layer = cEvent.layer
 
-		deleteTimes.forEach(element => {
-			delete cEvent.position[element]
-		});
+		cEvent.position = editCensor
 
-		cEvent.position = positions
+		delete cEvent.position['NaN']
+		delete cEvent.position['--']
 
-		console.log(positions)
-		setDeleteTimes([])
 		updateEvents(index, cEvent, layer)
 	}
 
@@ -404,34 +424,19 @@ const TrackEditor = props => {
 			setEditCensor(cEvent.position)
 		}
 		return (
-			<SideEditor>
-				{ cEvent.type === 'Pause' ? (
-					<div>
-						<p onClick={closeSideEditor} className='closeEditor'>x</p>
-						<div className='center'>
-							<label>Start</label>
-							<label style={{ visibility: 'hidden'}}>End</label>
+			<SideEditor censor={editCensor}>
+						<div>
+							<img className={'closeEditor'} src={`${closeIcon}`} onClick={closeSideEditor}/>
+							<div className='center'>
+								<label>Start</label>
+								<label style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}>End</label>
+							</div>
+							<div className='center'>
+								<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
+								<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}/>
+							</div>
+							<br/>
 						</div>
-						<div className='center'>
-							<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
-							<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: 'hidden'}}/>
-						</div>
-						<br/>
-						<p id='sideTabMessage'></p>
-					</div>
-					) : (
-					<div>
-						<p onClick={closeSideEditor} className='closeEditor'>x</p>
-						<div className='center'>
-							<label>Start</label>
-							<label>End</label>
-						</div>
-						<div className='center'>
-							<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
-							<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)}/>
-						</div>
-						<br/>
-						<>
 						{ cEvent.type === 'Comment' ? (
 							<div className='center' style={{ flexDirection: 'column'}}>
 								<label style={{ textAlign: 'left', margin: '15px 5px 5px 5px' }}>Type a comment</label><br/>
@@ -442,17 +447,30 @@ const TrackEditor = props => {
 						}
 						{ cEvent.type === 'Censor' ? (
 							<div className='censorMenu'>
-								<label>Censor Times</label><br/>
+								<label>Censor Times</label><br/><br/>
+								<table className='tableHeader'>
+									<thead>
+										<tr>
+											<th align="center">Time</th>
+											<th align="center">X</th>
+											<th align="center">Y</th>
+											<th align="center">Width</th>
+											<th align="center">Height</th>
+											<th align="center">&nbsp;</th>
+										</tr>
+									</thead>
+								</table>
 								<div className='censorList'>
 									<table>
-										<thead><tr><th>Time</th><th>posX</th><th>posY</th><th>Delete</th></tr></thead>
 										<tbody>
 										{
-											Object.keys(cEvent.position).map((item, i) => (
+											Object.keys(editCensor).map((item, i) => (
 												<tr key={item}>
 													<td><input type='text' placeholder={`${item}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-													<td><input type='text' placeholder={`${cEvent.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-													<td><input type='text' placeholder={`${cEvent.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+													<td><input type='text' placeholder={`${editCensor[item][0]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+													<td><input type='text' placeholder={`${editCensor[item][1]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+													<td><input type='text' placeholder={`${editCensor[item][2]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+													<td><input type='text' placeholder={`${editCensor[item][3]}`} onChange={(e) => handleEditCensor(e, item, 5)}/></td>
 													<td><img className={'trashIcon'} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
 												</tr>
 											)) // "foo: bar", "baz: 42"
@@ -460,17 +478,16 @@ const TrackEditor = props => {
 										}
 										</tbody>
 									</table>
+									<div id='loader' style={{visibility: 'hidden'}}>Loading</div><br/><br/>
+									<div id='tableBottom' style={{ width: '90%', marginLeft: '0px' }}></div>
 								</div>
+
 								<NewLayer className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></NewLayer><br/><br/><br/><br/>
 								<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
 							</div>
 							) : (null)
 						}
-						</>
 						<p id='sideTabMessage'></p>
-					</div>
-					)
-				}
 			</SideEditor>
 		)
 	}
@@ -495,7 +512,7 @@ const TrackEditor = props => {
 			let layer = cEvent.layer
 
 			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
-			cEvent.position[`${time.toFixed(0)}`] = [((x / width) * 100), (((y-86) / height) * 100)]
+			cEvent.position[`${time.toFixed(0)}`] = [((x / width) * 100), (((y-86) / height) * 100), 25, 25]
 
 			//console.log(cEvent.position)
 			updateEvents(index, cEvent, layer)
@@ -503,6 +520,7 @@ const TrackEditor = props => {
 	}
 
 	//console.log('track-editor ', videoLength)
+	//change add timer to current time based on skip or pause play
 
 	return (
 		<Style>
@@ -576,9 +594,10 @@ const TrackEditor = props => {
 								<>
 									<span className='carat'></span>
 									<span className='current'>{eventToEdit !== undefined ? `${allEvents[eventToEdit].type}` : ''}</span>
+
+									<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 								</>
 							}
-							{/* <button className='close'></button> */}
 						</div>
 						{ showSideEditor !== false && eventListMinimized !== true? (
 							printSideEditor()

@@ -36,6 +36,7 @@ const EventsContainer = props => {
 		handleBlank(false)
 		handleUnMute()
 		handleCensorActive(false)
+		handleShowComment('')
 
 		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
 		let tempArray =[]
@@ -89,7 +90,7 @@ const EventsContainer = props => {
 						break;
 					case 'Censor':
 							element.active = false
-							let roundNumber = currentTime.toFixed(0)
+							let roundNumber = Math.round(currentTime)
 							//console.log(roundNumber)
 							handleCensorActive(true)
 							handleCensorPosition(element.position[roundNumber])

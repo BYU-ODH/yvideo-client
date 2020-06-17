@@ -217,12 +217,10 @@ export const Censor = styled.canvas`
 	/* FIND BLUR EFFECT */
 
 	position: absolute;
-	top: calc(var(--top) - 13%) !important;
-	left: calc(var(--left) - 7%) !important;
-	height: 25%;
-	width: 15%;
+	top: calc(var(--top) - 20%) !important;
+	left: calc(var(--left) - 15%) !important;
+	height: 40%;
+	width: 30%;
 	background-color: transparent;
-
-	transition: 2s ease;
-	backdrop-filter: blur(30px);
+	backdrop-filter: ${ props => props.active ? ('blur(30px)') : 'blur(0px)' };
 `

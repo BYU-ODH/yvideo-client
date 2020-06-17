@@ -30,12 +30,16 @@ const Style = styled.div`
 		width: 100%;
 		background-color: navy;
 	}
+
+	* {
+		&:focus {
+			outline: none;
+		}
+	}
 `
 export default Style
 
 export const Timeline = styled.div`
-
-
 
 	--scale: ${props => props.scale};
 
@@ -249,10 +253,25 @@ export const EventList = styled.div`
 	& > .events {
 		display: ${ props => props.minimized !== false ? ('none') : ('visible')}
 		padding: 3rem;
+	}
 
-		& .draggable-event {
+	& .deleteEventButton {
+		width: 100px;
+		height: 30px;
+		margin: auto 10px auto auto;
+		border: 2px solid #eb6e79;
+		background-color: #eb6e79;
+		color: white;
+		font-size: 1.5rem;
+		font-weight: 500;
+		border-radius: 5px;
+		cursor: pointer;
 
-
+		&:active{
+			background-color: white;
+			color: #eb6e79;
+			border: 2px solid #eb6e79 !important;
+			outline: none;
 		}
 	}
 `
@@ -280,9 +299,11 @@ export const SideEditor = styled.div`
 	padding: 20px;
 
 	& .closeEditor {
-		width: 90%;
+		width: 2rem;
 		text-align: right;
 		cursor: pointer;
+		float: right;
+		margin-right: 10px;
 	}
 
 	& .center {
@@ -315,6 +336,7 @@ export const SideEditor = styled.div`
 		color: white;
 		border-radius: 5px;
 		transition: .5s ease-out;
+		cursor: pointer;
 
 		&:active {
 			border-radius: 5px;
@@ -335,29 +357,49 @@ export const SideEditor = styled.div`
 			width: 150px;
 			text-align: left;
 		}
+
+		& .tableHeader {
+			width: 90%;
+			margin-left: 10px;
+			& th {
+				width: 50px;
+			}
+		}
 	}
 
 	& .censorList {
 		width: 100%;
 		height: 30vh;
-		margin: 10px;
+		margin-left: 10px;
 		overflow-y: scroll;
-		& table {
-			width: 90%;
-			& td, th {
-				display: inline-flex;
-				width: 23% !important;
-				margin: auto;
-				& input {
-					margin: auto;
-					width: 60% !important;
-				}
+		position: relative;
 
-				& .trashIcon {
-					margin: auto;
-					cursor: pointer;
-				}
+		& td {
+			display: inline-flex;
+			width: 50px !important;
+			margin: auto;
+			& input {
+				margin: auto;
+				width: 90% !important;
 			}
+
+			& .trashIcon {
+				margin: auto;
+				cursor: pointer;
+			}
+		}
+
+		& #loader {
+			background-color: rgba(196, 196, 196, 0.7);
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: bolder;
 		}
 	}
 
@@ -366,5 +408,16 @@ export const SideEditor = styled.div`
 		float: left;
 		margin-left: 20px;
 	}
+
+	& .arrowDown {
+		width: 100%;
+		text-align: center;
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+
 `
 
