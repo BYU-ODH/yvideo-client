@@ -52,16 +52,17 @@ export class PauseEvent extends Event {
 
 export class CommentEvent extends Event {
 
-	constructor(type, start, end, comment) {
-		super(type, start, end);
-		this.comment = comment;
+	constructor(type, start, end, comment, position) {
+		super(type, start, end)
+		this.comment = comment
+		this.position = position
 	}
 }
 
 export class CensorEvent extends Event {
 
 	constructor(type, start, end, position) {
-		super(type, start, end);
+		super(type, start, end)
 		this.position = position
 	}
 }

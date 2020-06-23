@@ -1,10 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react'
 
 import ReactPlayer from 'react-player'
+import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor } from './styles'
-
-//import { interfaceService } from 'services'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment } from './styles'
 
 import { EventsContainer } from 'containers'
 
@@ -23,6 +22,7 @@ const Controller = props => {
 		url,
 		getDuration,
 		handleLastClick,
+		getCurrentTime,
 	} = props
 
 	const ref = useRef(null)
@@ -37,6 +37,7 @@ const Controller = props => {
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState('')
+	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [censorPosition, setCensorPosition] = useState([0,0])
 	const [censorActive, SetCensorActive] = useState(false)
 
@@ -88,7 +89,7 @@ const Controller = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
-			console.log('handle seek')
+			//console.log('handle seek')
 			let newPlayed = 0
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()
@@ -99,19 +100,22 @@ const Controller = props => {
 			}
 			//console.log(newPlayed)
 			ref.current.seekTo(newPlayed, `fraction`)
+			getCurrentTime((newPlayed * duration).toFixed(1))
 		},
 		handlePause: () => {
 			setPlaying(false)
+			getCurrentTime(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
+			getCurrentTime(elapsed.toFixed(1))
 		},
 		handleMute: () => {
-			console.log('mute event')
+			//console.log('mute event')
 			setMuted(true)
 		},
 		handleUnMute: () => {
-			console.log('Unmute event')
+			//console.log('Unmute event')
 			setMuted(false)
 		},
 		handleZoomFactor: a => {
@@ -123,8 +127,12 @@ const Controller = props => {
 		handleBlank: (bool) => {
 			setBlank(bool)
 		},
-		handleShowComment: (value) => {
+		handleShowComment: (value, position) => {
+			console.log(position)
+			console.log(value)
 			setVideoComment(value)
+			setCommentPosition(position)
+
 		},
 		handleCensorPosition: (position) => {
 			//console.log(position)
@@ -162,8 +170,8 @@ const Controller = props => {
 	return (
 		<Style>
 					<Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}>
-						<p>{videoComment}</p>
-						<Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive}></Censor>
+						<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
+						<Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor>
 					</Blank>
 					<ReactPlayer ref={ref} config={config} url={url}
 
@@ -225,7 +233,7 @@ const Controller = props => {
 						</ToggleCarat>
 					</header>
 				</TimeBar>
-				<EventsContainer currentTime={elapsed} duration={video.duration}
+				<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
 					handleSeek={video.handleSeek}
 					handleMute={video.handleMute}
 					handlePlay={video.handlePlay}

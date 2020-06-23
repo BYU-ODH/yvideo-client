@@ -381,6 +381,10 @@ export const SideEditor = styled.div`
 			& input {
 				margin: auto;
 				width: 90% !important;
+				&::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
 			}
 
 			& .trashIcon {

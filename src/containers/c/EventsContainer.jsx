@@ -29,19 +29,18 @@ const EventsContainer = props => {
 	const [eventArray, setEventArray] = useState([])
 
 	useEffect(() => {
-		//SORT array from start to end
-		let sortedArray = events //events.sort((a, b) => (a.start > b.start) ? 1 : -1)
+
 		//after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
 		//If the blank or mute event is active the event will be executed.
 		handleBlank(false)
 		handleUnMute()
 		handleCensorActive(false)
-		handleShowComment('')
+		handleShowComment('', {x: 0, y: 0})
 
 		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
 		let tempArray =[]
 		if(duration !== 0){
-			sortedArray.forEach(event => {
+			events.forEach(event => {
 				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
 				let start = (event.start / 100) * duration
 				let end = (event.end / 100) * duration
@@ -56,7 +55,7 @@ const EventsContainer = props => {
 							tempArray.push(new PauseEvent(event.type, start, end))
 						break;
 					case 'Comment':
-							tempArray.push(new CommentEvent(event.type, start, end, event.comment))
+							tempArray.push(new CommentEvent(event.type, start, end, event.comment, event.position))
 						break;
 					case 'Censor':
 							tempArray.push(new CensorEvent(event.type, start, end, event.position))
@@ -86,14 +85,20 @@ const EventsContainer = props => {
 							handlePause()
 						break;
 					case 'Comment':
-							handleShowComment(element.comment)
+							//console.log(element)
+							handleShowComment(element.comment, element.position)
 						break;
 					case 'Censor':
 							element.active = false
-							let roundNumber = Math.round(currentTime)
-							//console.log(roundNumber)
+							let value = Object.keys(element.position).find(time => time === currentTime || time === (currentTime + .1) || time === (currentTime + .2) || time === (currentTime + .3))
+							//let includes = Object.keys(element.position).includes(currentTime)
+
+							console.log('current Time', currentTime)
+							console.log('value', value)
+
 							handleCensorActive(true)
-							handleCensorPosition(element.position[roundNumber])
+							handleCensorPosition(element.position[value])
+
 						break;
 					case 'Blank':
 							handleBlank(true)
@@ -109,7 +114,7 @@ const EventsContainer = props => {
 							handleUnMute()
 						break;
 					case 'Comment':
-							handleShowComment('')
+							handleShowComment('', {x: 0, y: 0})
 						break;
 					case 'Blank':
 							handleBlank(false)

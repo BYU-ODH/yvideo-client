@@ -194,33 +194,44 @@ export const ToggleCarat = styled.button`
 	}
 `
 export const Blank = styled.div`
-
 	position: absolute;
 	background-color: ${props => props.blank ? ('black') : ('transparent')};
 	z-index: 10;
 	width: 100%;
 	height: 91.5%;
-
-
-	& p {
-		position: absolute;
-		margin: 10% 0px 0px 5%;
-		font-size: 2rem;
-		color: white;
-	}
+	transition: .5s ease;
 `
-export const Censor = styled.canvas`
-	--top: ${props => props.y !== 0 ? `${props.y}%` : `50%`};
-	--left: ${props => props.x !== 0 ? `${props.x}%` : `50%`};
+export const Censor = styled.div`
+	--top: ${props => props.y !== 0 ? `${props.y}%` : `0%`};
+	--left: ${props => props.x !== 0 ? `${props.x}%` : `0%`};
+	--wProp: ${props => props.wProp !== 0 ? `${props.wProp}%` : '0%'};
+	--hProp: ${props => props.hProp !== 0 ? `${props.hProp}%` : '0%'};
 
 	/* TIME X Y WIDTH HEIHT */
 	/* FIND BLUR EFFECT */
 
 	position: absolute;
-	top: calc(var(--top) - 20%) !important;
-	left: calc(var(--left) - 15%) !important;
-	height: 40%;
-	width: 30%;
-	background-color: transparent;
-	backdrop-filter: ${ props => props.active ? ('blur(30px)') : 'blur(0px)' };
+	top: calc((var(--top)) - (var(--hProp)/2)) !important;
+	left: calc(var(--left) - (var(--wProp)/2)) !important;
+	width: var(--wProp);
+	height: var(--hProp);
+	transition: .1s ease;
+	& canvas {
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		backdrop-filter: ${ props => props.active ? ('blur(30px)') : 'blur(0px)' };
+	}
+`
+
+export const Comment = styled.div`
+	--x: ${props => props.commentX !== 0 ? `${props.commentX}%` : `0%`};
+	--y: ${props => props.commentY !== 0 ? `${props.commentY}%` : `0%`};
+
+	position: absolute;
+	top: var(--y);
+	left: calc(var(--x));
+	font-size: 2rem;
+	color: white;
+	z-index: 15;
 `

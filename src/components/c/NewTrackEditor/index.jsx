@@ -57,7 +57,11 @@ const TrackEditor = props => {
 			start: 0,
 			end: 10,
 			layer: 0,
-			comment: ''
+			comment: '',
+			position: {
+				x: 0,
+				y: 0,
+			},
 		},
 		{
 			type: `Censor`,
@@ -86,16 +90,7 @@ const TrackEditor = props => {
 			end: 10,
 			layer: 0,
 			position: {
-				"0": [0, 0, 30, 40],
-				"1": [50, 30, 30, 40],
-				"2": [45, 21, 30, 40],
-				"3": [10, 55, 30, 40],
-				"4": [0, 0, 30, 40],
-				"5": [50, 30, 30, 40],
-				"6": [45, 21, 30, 40],
-				"7": [10, 55, 30, 40],
-				"8": [0, 0, 30, 40],
-			},
+				},
 		},
 		{
 			type: `Skip`,
@@ -118,6 +113,10 @@ const TrackEditor = props => {
 			end: 20,
 			layer: 2,
 			comment: 'New COmment',
+			position: {
+				x: 0,
+				y: 0,
+			},
 		},
 	] // THIS IS GOING TO HAVE EVENTS
 
@@ -135,12 +134,13 @@ const TrackEditor = props => {
 	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [displayLayer, setDisplayLayer] = useState(0)
 	const [videoLength, setVideoLength] = useState(0)
+	const [videoCurrentTime, setCurrentTime] = useState(0)
 
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [editComment, setEditComment] = useState('')
+	const [editComment, setEditComment] = useState({})
 	const [editCensor, setEditCensor] = useState({})
 	const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
@@ -184,6 +184,10 @@ const TrackEditor = props => {
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
+	}
+
+	const getCurrentTime = (time) => {
+		setCurrentTime(parseFloat(time))
 	}
 
 	const handleTabChange = tab => () => {
@@ -326,13 +330,47 @@ const TrackEditor = props => {
 		let index = eventToEdit
 		let event = allEvents[index]
 		let layer = event.layer
-		event.comment = editComment
+		event = editComment
 
-		//MAKE IT DRAGABLE
-		//PASS X AND Y POSITIONS
+		//console.log(event)
 
-		setEditComment('')
+		setEditComment({})
 		updateEvents(index, event, layer)
+	}
+
+	const handleEditComment = (value, cEvent, int) => {
+		let index = eventToEdit
+		let event = allEvents[index]
+		let layer = event.layer
+		switch (int) {
+			case 1:
+					if(editComment.position !== undefined){
+						setEditComment({...editComment, position: { x: parseInt(value), y: editComment.position.y, }})
+					}
+					else {
+						setEditComment({...cEvent, position: { x: parseInt(value), y: cEvent.position.y, }})
+					}
+				break;
+			case 2:
+					if(editComment.position !== undefined){
+						setEditComment({...editComment, position: { x: editComment.position.x, y: parseInt(value), }})
+					}
+					else {
+						setEditComment({...cEvent, position: { x: cEvent.position.x, y: parseInt(value), }})
+					}
+				break;
+			case 3:
+					if(editComment.position !== undefined){
+						setEditComment({...editComment, comment: value })
+					}
+					else {
+						setEditComment({...cEvent, comment: value })
+					}
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	const handleCensorRemove = (item) => {
@@ -349,10 +387,17 @@ const TrackEditor = props => {
 	const handleAddCensor = () => {
 
 		let temp = editCensor
+		const last = Object.keys(temp)
 
-		const last = Object.keys(temp).length - 1
-
-		temp[`${last + 1}`] = [0 ,0, 30, 40]
+		if(videoCurrentTime === 0 && last.length === 0){
+			temp[`0.0`] = [0 ,0, 30, 40]
+		}
+		else if(videoCurrentTime == 0 && last.length > 0){
+			temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
+		}
+		else{
+			temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
+		}
 
 		console.log('temp', temp)
 		document.getElementById('tableBottom').scrollIntoView(false)
@@ -363,36 +408,26 @@ const TrackEditor = props => {
 	const handleEditCensor = (e, item, int) => {
 		let object = editCensor
 		//console.log(editCensor)
-		let value = Math.round(parseInt(e.target.value))
+		let value = (parseFloat(e.target.value)).toFixed(1)
 
 		switch (int) {
 			case 1:
-				let values = object[item]
-				object[value] = values
-				break;
-			case 2:
 				object[item][0] = value
 				break;
-			case 3:
+			case 2:
 				object[item][1] = value
 				break;
-			case 4:
+			case 3:
 				object[item][2] = value
 				break;
-			case 5:
+			case 4:
 				object[item][3] = value
 				break;
 
 			default:
 				break;
 		}
-		if(int === 1){
-			document.getElementById('loader').style.visibility = 'visible'
-			setTimeout(() => {
-				document.getElementById('loader').style.visibility = 'hidden'
-				handleCensorRemove(item)
-			}, 1000);
-		}
+
 		setEditCensor(object)
 	}
 
@@ -404,9 +439,7 @@ const TrackEditor = props => {
 
 		cEvent.position = editCensor
 
-		delete cEvent.position['NaN']
-		delete cEvent.position['--']
-
+		setEditCensor({})
 		updateEvents(index, cEvent, layer)
 	}
 
@@ -425,69 +458,79 @@ const TrackEditor = props => {
 		}
 		return (
 			<SideEditor censor={editCensor}>
-						<div>
-							<img className={'closeEditor'} src={`${closeIcon}`} onClick={closeSideEditor}/>
-							<div className='center'>
-								<label>Start</label>
-								<label style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}>End</label>
-							</div>
-							<div className='center'>
-								<input type='text' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
-								<input type='text' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}/>
-							</div>
-							<br/>
+				<div>
+					<img className={'closeEditor'} src={`${closeIcon}`} onClick={closeSideEditor}/>
+					<div className='center'>
+						<label>Start</label>
+						<label style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}>End</label>
+					</div>
+					<div className='center'>
+						<input type='number' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
+						<input type='number' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}/>
+					</div>
+					<br/>
+				</div>
+				{ cEvent.type === 'Comment' ? (
+					<>
+						<div className='center'>
+							<label>X</label>
+							<label>Y</label>
 						</div>
-						{ cEvent.type === 'Comment' ? (
-							<div className='center' style={{ flexDirection: 'column'}}>
-								<label style={{ textAlign: 'left', margin: '15px 5px 5px 5px' }}>Type a comment</label><br/>
-								<textarea style={{ margin: '5px' }} rows='4' cols='50' placeholder={cEvent.comment} onChange={e => setEditComment(e.target.value)}></textarea>
-								<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
-							</div>
-							) : (null)
-						}
-						{ cEvent.type === 'Censor' ? (
-							<div className='censorMenu'>
-								<label>Censor Times</label><br/><br/>
-								<table className='tableHeader'>
-									<thead>
-										<tr>
-											<th align="center">Time</th>
-											<th align="center">X</th>
-											<th align="center">Y</th>
-											<th align="center">Width</th>
-											<th align="center">Height</th>
-											<th align="center">&nbsp;</th>
+						<div className='center'>
+							<input type='number' className='sideTabInput' placeholder={cEvent.position.x.toFixed(2)} onChange={e => handleEditComment(e.target.value, cEvent, 1)}/>
+							<input type='number' className='sideTabInput' placeholder={cEvent.position.y.toFixed(2)} onChange={e => handleEditComment(e.target.value, cEvent, 2)}/>
+						</div>
+						<div className='center' style={{ flexDirection: 'column'}}>
+							<label style={{ textAlign: 'left', margin: '15px 5px 5px 5px' }}>Type a comment</label>
+							<textarea style={{ margin: '5%', width: '90%'}} rows='4' cols='50' placeholder={cEvent.comment} onChange={e => handleEditComment(e.target.value, cEvent, 3)}></textarea>
+							<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
+						</div>
+					</>
+					) : (null)
+				}
+				{ cEvent.type === 'Censor' ? (
+					<div className='censorMenu'>
+						<label>Censor Times</label><br/><br/>
+						<table className='tableHeader'>
+							<thead>
+								<tr>
+									<th align="center">Time</th>
+									<th align="center">X</th>
+									<th align="center">Y</th>
+									<th align="center">Width</th>
+									<th align="center">Height</th>
+									<th align="center">&nbsp;</th>
+								</tr>
+							</thead>
+						</table>
+						<div className='censorList'>
+							<table>
+								<tbody>
+								{
+									Object.keys(editCensor).sort(((a, b) => (parseFloat(a) > parseFloat(b)) ? 1 : -1)).map((item, i) => (
+										<tr key={item}>
+											<td><input type='number' value={`${item}`}/></td>
+											<td><input type='number' placeholder={`${editCensor[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+											<td><input type='number' placeholder={`${editCensor[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+											<td><input type='number' placeholder={`${editCensor[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+											<td><input type='number' placeholder={`${editCensor[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+											<td><img className={'trashIcon'} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
 										</tr>
-									</thead>
-								</table>
-								<div className='censorList'>
-									<table>
-										<tbody>
-										{
-											Object.keys(editCensor).map((item, i) => (
-												<tr key={item}>
-													<td><input type='text' placeholder={`${item}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-													<td><input type='text' placeholder={`${editCensor[item][0]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-													<td><input type='text' placeholder={`${editCensor[item][1]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-													<td><input type='text' placeholder={`${editCensor[item][2]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
-													<td><input type='text' placeholder={`${editCensor[item][3]}`} onChange={(e) => handleEditCensor(e, item, 5)}/></td>
-													<td><img className={'trashIcon'} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
-												</tr>
-											)) // "foo: bar", "baz: 42"
-											//Object.entries(cEvent.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
-										}
-										</tbody>
-									</table>
-									<div id='loader' style={{visibility: 'hidden'}}>Loading</div><br/><br/>
-									<div id='tableBottom' style={{ width: '90%', marginLeft: '0px' }}></div>
-								</div>
+									)) // "foo: bar", "baz: 42"
+									//Object.entries(cEvent.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
+								}
+								</tbody>
+							</table>
+							<div id='loader' style={{visibility: 'hidden'}}>Loading</div><br/><br/>
+							<div id='tableBottom' style={{ width: '90%', marginLeft: '0px' }}></div>
+						</div>
 
-								<NewLayer className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></NewLayer><br/><br/><br/><br/>
-								<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
-							</div>
-							) : (null)
-						}
-						<p id='sideTabMessage'></p>
+						<NewLayer className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></NewLayer><br/><br/><br/><br/>
+						<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
+					</div>
+					) : (null)
+				}
+				<p id='sideTabMessage'></p>
 			</SideEditor>
 		)
 	}
@@ -512,7 +555,12 @@ const TrackEditor = props => {
 			let layer = cEvent.layer
 
 			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
-			cEvent.position[`${time.toFixed(0)}`] = [((x / width) * 100), (((y-86) / height) * 100), 25, 25]
+			if(cEvent.position[`${(time).toFixed(1)}`] !== undefined){
+				cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
+			}
+			else {
+				cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), 30, 40]
+			}
 
 			//console.log(cEvent.position)
 			updateEvents(index, cEvent, layer)
@@ -528,7 +576,14 @@ const TrackEditor = props => {
 
 			<span>
 
-				<Controller className='video' url={props.viewstate.url} handlers={togglendTimeline} minimized={timelineMinimized} getDuration={getVideoDuration} handleLastClick={handleLastClick}>
+				<Controller className='video'
+					url={props.viewstate.url}
+					handlers={togglendTimeline}
+					minimized={timelineMinimized}
+					getDuration={getVideoDuration}
+					handleLastClick={handleLastClick}
+					getCurrentTime={getCurrentTime}
+					>
 				</Controller>
 
 				<Timeline minimized={timelineMinimized}>
