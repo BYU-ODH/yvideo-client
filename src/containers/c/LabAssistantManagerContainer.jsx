@@ -33,7 +33,7 @@ const LabAssistantManagerContainer = props => {
 
 			if (!collections)
 				searchCollections(professorId, true)
-			else console.log(collections)
+			//else console.log(collections)
 		}
 		return () => {
 			setHeaderBorder(false)
