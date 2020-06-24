@@ -13,13 +13,15 @@ import skipIcon from 'Assets/event_skip.svg'
 import muteIcon from 'Assets/event_mute.svg'
 import pauseIcon from 'Assets/event_pause.svg'
 import commentIcon from 'Assets/event_comment.svg'
-import censorIcon from 'Assets/event_censor.svg'
+//import censorIcon from 'Assets/event_censor.svg'
 import blankIcon from 'Assets/event_blank.svg'
 import trashIcon from 'Assets/trash_icon.svg'
 import closeIcon from 'Assets/close_icon.svg'
 
 //ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 //TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
+
+//MAKE KEYBOARD ERROR LIKE YOUTUBE FUNCTIONALITY - ADD SECOND BACK OR FORWARD BUTTON
 
 import plus from 'Assets/plus-square.svg'
 
@@ -63,16 +65,16 @@ const TrackEditor = props => {
 				y: 0,
 			},
 		},
-		{
-			type: `Censor`,
-			icon: censorIcon,
-			start: 0,
-			end: 10,
-			layer: 0,
-			position: {
-				0: [0, 0, 30, 40],
-			},
-		},
+		// {
+		// 	type: `Censor`,
+		// 	icon: censorIcon,
+		// 	start: 0,
+		// 	end: 10,
+		// 	layer: 0,
+		// 	position: {
+		// 		0: [0, 0, 30, 40],
+		// 	},
+		// },
 		{
 			type: `Blank`,
 			icon: blankIcon,
@@ -83,27 +85,39 @@ const TrackEditor = props => {
 	]
 
 	const eventsArray = [
-		{
-			type: `Censor`,
-			icon: censorIcon,
-			start: 0,
-			end: 10,
-			layer: 0,
-			position: {
-				},
-		},
-		{
-			type: `Skip`,
-			icon: muteIcon,
-			start: 60,
-			end: 65,
-			layer: 0
-		},
+		// {
+		// 	type: `Censor`,
+		// 	icon: censorIcon,
+		// 	start: 0,
+		// 	end: 10,
+		// 	layer: 0,
+		// 	position: {
+		// 		"0.5": [75.94291539245668, 33.70998116760829, 30, 40],
+		// 		"1.2": [40.16309887869521, 38.60640301318267, 30, 40],
+		// 		"2.1": [38.430173292558614, 70.4331450094162, 30, 40],
+		// 		"2.9": [71.1518858307849, 66.85499058380414, 30, 40],
+		// 		"3.8": [70.74413863404689, 33.89830508474576, 30, 40],
+		// 		"4.7": [42.40570846075433, 35.59322033898305, 30, 40],
+		// 		"5.9": [44.342507645259936, 72.88135593220339, 30, 40],
+		// 		"6.6": [69.01121304791029, 73.44632768361582, 30, 40],
+		// 		"7.7": [67.88990825688074, 24.293785310734464, 30, 40],
+		// 		"8.6": [41.284403669724774, 31.45009416195857, 30, 40],
+		// 		"9.8": [37.20693170234455, 67.60828625235405, 30, 40],
+		// 		"10.8": [65.54536187563711, 68.36158192090396, 30, 40],
+		// 	},
+		// },
+		// {
+		// 	type: `Skip`,
+		// 	icon: muteIcon,
+		// 	start: 60,
+		// 	end: 65,
+		// 	layer: 0
+		// },
 		{
 			type: `Mute`,
 			icon: muteIcon,
-			start: 50,
-			end: 60,
+			start: 0,
+			end: 100,
 			layer: 1
 		},
 		{
@@ -134,15 +148,15 @@ const TrackEditor = props => {
 	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [displayLayer, setDisplayLayer] = useState(0)
 	const [videoLength, setVideoLength] = useState(0)
-	const [videoCurrentTime, setCurrentTime] = useState(0)
+	//const [videoCurrentTime, setCurrentTime] = useState(0)
 
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [editComment, setEditComment] = useState({})
-	const [editCensor, setEditCensor] = useState({})
-	const [lastClick, setLastClick] = useState({x: 0, y: 0})
+	//const [editCensor, setEditCensor] = useState({})
+	//const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
 	const [dimensions, setDimensions] = useState({
 		height: window.innerHeight,
@@ -172,23 +186,23 @@ const TrackEditor = props => {
 		setTimelineMinimized(!timelineMinimized)
 	}
 
-	const toggleEventList = () => {
-		if(eventListMinimized){
-			setWidth(31)
-		}
-		else {
-			setWidth(35)
-		}
-		setEventListMinimized(!eventListMinimized)
-	}
+	// const toggleEventList = () => {
+	// 	if(eventListMinimized){
+	// 		setWidth(31)
+	// 	}
+	// 	else {
+	// 		setWidth(35)
+	// 	}
+	// 	setEventListMinimized(!eventListMinimized)
+	// }
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
 	}
 
-	const getCurrentTime = (time) => {
-		setCurrentTime(parseFloat(time))
-	}
+	// const getCurrentTime = (time) => {
+	// 	setCurrentTime(parseFloat(time))
+	// }
 
 	const handleTabChange = tab => () => {
 		setTab(tab)
@@ -260,8 +274,6 @@ const TrackEditor = props => {
 		let number = parseFloat(e.target.value)
 		let currentEvents = [...allEvents]
 		let cEvent = currentEvents[eventToEdit]
-		let index = eventToEdit
-		let layer = cEvent.layer
 
 		if(isNaN(number)){
 			number = 0
@@ -339,9 +351,7 @@ const TrackEditor = props => {
 	}
 
 	const handleEditComment = (value, cEvent, int) => {
-		let index = eventToEdit
-		let event = allEvents[index]
-		let layer = event.layer
+
 		switch (int) {
 			case 1:
 					if(editComment.position !== undefined){
@@ -373,75 +383,75 @@ const TrackEditor = props => {
 		}
 	}
 
-	const handleCensorRemove = (item) => {
-		let index = eventToEdit
-		let cEvent = allEvents[index]
-		let layer = cEvent.layer
+	// const handleCensorRemove = (item) => {
+	// 	let index = eventToEdit
+	// 	let cEvent = allEvents[index]
+	// 	let layer = cEvent.layer
 
-		delete cEvent.position[item]
+	// 	delete cEvent.position[item]
 
-		updateEvents(index, cEvent, layer)
+	// 	updateEvents(index, cEvent, layer)
 
-	}
+	// }
 
-	const handleAddCensor = () => {
+	// const handleAddCensor = () => {
 
-		let temp = editCensor
-		const last = Object.keys(temp)
+	// 	let temp = editCensor
+	// 	const last = Object.keys(temp)
 
-		if(videoCurrentTime === 0 && last.length === 0){
-			temp[`0.0`] = [0 ,0, 30, 40]
-		}
-		else if(videoCurrentTime == 0 && last.length > 0){
-			temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
-		}
-		else{
-			temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
-		}
+	// 	if(videoCurrentTime === 0 && last.length === 0){
+	// 		temp[`0.0`] = [0 ,0, 30, 40]
+	// 	}
+	// 	else if(videoCurrentTime == 0 && last.length > 0){
+	// 		temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
+	// 	}
+	// 	else{
+	// 		temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
+	// 	}
 
-		console.log('temp', temp)
-		document.getElementById('tableBottom').scrollIntoView(false)
-		setEditCensor(temp)
-		handleSaveCensor()
-	}
+	// 	console.log('temp', temp)
+	// 	document.getElementById('tableBottom').scrollIntoView(false)
+	// 	setEditCensor(temp)
+	// 	handleSaveCensor()
+	// }
 
-	const handleEditCensor = (e, item, int) => {
-		let object = editCensor
-		//console.log(editCensor)
-		let value = (parseFloat(e.target.value)).toFixed(1)
+	// const handleEditCensor = (e, item, int) => {
+	// 	let object = editCensor
+	// 	//console.log(editCensor)
+	// 	let value = (parseFloat(e.target.value)).toFixed(1)
 
-		switch (int) {
-			case 1:
-				object[item][0] = value
-				break;
-			case 2:
-				object[item][1] = value
-				break;
-			case 3:
-				object[item][2] = value
-				break;
-			case 4:
-				object[item][3] = value
-				break;
+	// 	switch (int) {
+	// 		case 1:
+	// 			object[item][0] = value
+	// 			break;
+	// 		case 2:
+	// 			object[item][1] = value
+	// 			break;
+	// 		case 3:
+	// 			object[item][2] = value
+	// 			break;
+	// 		case 4:
+	// 			object[item][3] = value
+	// 			break;
 
-			default:
-				break;
-		}
+	// 		default:
+	// 			break;
+	// 	}
 
-		setEditCensor(object)
-	}
+	// 	setEditCensor(object)
+	// }
 
-	const handleSaveCensor = () => {
-		console.log('SAVE CENSOR')
-		let index = eventToEdit
-		let cEvent = allEvents[index]
-		let layer = cEvent.layer
+	// const handleSaveCensor = () => {
+	// 	console.log('SAVE CENSOR')
+	// 	let index = eventToEdit
+	// 	let cEvent = allEvents[index]
+	// 	let layer = cEvent.layer
 
-		cEvent.position = editCensor
+	// 	cEvent.position = editCensor
 
-		setEditCensor({})
-		updateEvents(index, cEvent, layer)
-	}
+	// 	setEditCensor({})
+	// 	updateEvents(index, cEvent, layer)
+	// }
 
 	const openSideEditor = (layerIndex, eventIndex) => {
 		setEventToEdit(eventIndex)
@@ -453,11 +463,11 @@ const TrackEditor = props => {
 		const cEvent = allEvents[eventToEdit]
 		let start = ( cEvent.start / 100 ) * videoLength
 		let end = ( cEvent.end / 100 ) * videoLength
-		if(cEvent.type === 'Censor' && editCensor !== cEvent.position){
-			setEditCensor(cEvent.position)
-		}
+		// if(cEvent.type === 'Censor' && editCensor !== cEvent.position){
+		// 	setEditCensor(cEvent.position)
+		// }
 		return (
-			<SideEditor censor={editCensor}>
+			<SideEditor>
 				<div>
 					<img className={'closeEditor'} src={`${closeIcon}`} onClick={closeSideEditor}/>
 					<div className='center'>
@@ -488,7 +498,7 @@ const TrackEditor = props => {
 					</>
 					) : (null)
 				}
-				{ cEvent.type === 'Censor' ? (
+				{/* { cEvent.type === 'Censor' ? (
 					<div className='censorMenu'>
 						<label>Censor Times</label><br/><br/>
 						<table className='tableHeader'>
@@ -529,7 +539,7 @@ const TrackEditor = props => {
 						<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
 					</div>
 					) : (null)
-				}
+				} */}
 				<p id='sideTabMessage'></p>
 			</SideEditor>
 		)
@@ -545,27 +555,33 @@ const TrackEditor = props => {
 		})
 	}
 
-	const handleLastClick = (height, width, x, y, time) => {
-		console.log(height, width)
-
-		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === 'Censor'){
-			console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
-			let index = eventToEdit
-			let cEvent = allEvents[index]
-			let layer = cEvent.layer
-
-			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
-			if(cEvent.position[`${(time).toFixed(1)}`] !== undefined){
-				cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
-			}
-			else {
-				cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), 30, 40]
-			}
-
-			//console.log(cEvent.position)
-			updateEvents(index, cEvent, layer)
-		}
+	const handleSaveAnnotation = () => {
+		console.log('saved')
 	}
+
+	// const handleLastClick = (height, width, x, y, time) => {
+	// 	//console.log(height, width)
+
+	// 	if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === 'Censor'){
+	// 		//console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
+	// 		let index = eventToEdit
+	// 		let cEvent = allEvents[index]
+	// 		let layer = cEvent.layer
+
+	// 		let value = Object.keys(cEvent.position).find(item => item >= time)
+
+	// 		// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
+	// 		if(cEvent.position[`${(time).toFixed(1)}`] !== undefined){
+	// 			cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
+	// 		}
+	// 		else {
+	// 			cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), 30, 40]
+	// 		}
+
+	// 		//console.log(cEvent.position)
+	// 		updateEvents(index, cEvent, layer)
+	// 	}
+	// }
 
 	//console.log('track-editor ', videoLength)
 	//change add timer to current time based on skip or pause play
@@ -581,8 +597,8 @@ const TrackEditor = props => {
 					handlers={togglendTimeline}
 					minimized={timelineMinimized}
 					getDuration={getVideoDuration}
-					handleLastClick={handleLastClick}
-					getCurrentTime={getCurrentTime}
+					//handleLastClick={handleLastClick}
+					//getCurrentTime={getCurrentTime}
 					>
 				</Controller>
 
@@ -636,7 +652,7 @@ const TrackEditor = props => {
 						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
 					</div> */}
 					<div className={`tab${tab === `events` ? ` active` : ``}`} onClick={handleTabChange(`events`)}>Events</div>
-					<div className={`tab${tab === `save` ? ` active` : ``}`} onClick={handleTabChange(`save`)}>Save</div>
+					<div className={`tab`} onClick={handleSaveAnnotation} style={{ position: 'absolute', float: 'right', right: '10px'}}>Save</div>
 
 				</header>
 
@@ -668,11 +684,7 @@ const TrackEditor = props => {
 					</>
 
 					:
-
-					<>
-						<button onClick={() => {}}>Save</button>
-					</>
-
+					(null)
 				}
 
 			</EventList>

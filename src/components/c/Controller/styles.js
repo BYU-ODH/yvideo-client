@@ -215,7 +215,7 @@ export const Censor = styled.div`
 	left: calc(var(--left) - (var(--wProp)/2)) !important;
 	width: var(--wProp);
 	height: var(--hProp);
-	transition: .1s ease;
+	transition: .5s ease;
 	& canvas {
 		width: 100%;
 		height: 100%;

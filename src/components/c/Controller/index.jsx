@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState } from 'react'
 
 import ReactPlayer from 'react-player'
-import { Rnd } from "react-rnd";
+// import { Rnd } from "react-rnd";
 
 import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment } from './styles'
 
@@ -21,7 +21,7 @@ const Controller = props => {
 	const {
 		url,
 		getDuration,
-		handleLastClick,
+		//handleLastClick,
 		getCurrentTime,
 	} = props
 
@@ -38,13 +38,11 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState('')
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
-	const [censorPosition, setCensorPosition] = useState([0,0])
-	const [censorActive, SetCensorActive] = useState(false)
+	// const [censorPosition, setCensorPosition] = useState([0,0])
+	// const [censorActive, SetCensorActive] = useState(false)
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
-
-	//const [events, setEvents] = useState(interfaceService.getEvents())
 
 	const video = {
 
@@ -100,15 +98,15 @@ const Controller = props => {
 			}
 			//console.log(newPlayed)
 			ref.current.seekTo(newPlayed, `fraction`)
-			getCurrentTime((newPlayed * duration).toFixed(1))
+			//getCurrentTime((newPlayed * duration).toFixed(1))
 		},
 		handlePause: () => {
 			setPlaying(false)
-			getCurrentTime(elapsed.toFixed(1))
+			//getCurrentTime(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
-			getCurrentTime(elapsed.toFixed(1))
+			//getCurrentTime(elapsed.toFixed(1))
 		},
 		handleMute: () => {
 			//console.log('mute event')
@@ -128,24 +126,23 @@ const Controller = props => {
 			setBlank(bool)
 		},
 		handleShowComment: (value, position) => {
-			console.log(position)
-			console.log(value)
+			//console.log(position)
+			//console.log(value)
 			setVideoComment(value)
 			setCommentPosition(position)
 
 		},
-		handleCensorPosition: (position) => {
-			//console.log(position)
-			if(position !== undefined){
-				setCensorPosition(
-					position
-				)
-			}
-		},
-		handleCensorActive: (bool) => {
-			SetCensorActive(bool)
-		}
-
+		// handleCensorPosition: (position) => {
+		// 	//console.log(position)
+		// 	if(position !== undefined){
+		// 		setCensorPosition(
+		// 			position
+		// 		)
+		// 	}
+		// },
+		// handleCensorActive: (bool) => {
+		// 	SetCensorActive(bool)
+		// }
 	}
 
 	const config = {
@@ -169,9 +166,10 @@ const Controller = props => {
 
 	return (
 		<Style>
-					<Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}>
+					{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
+					<Blank blank={blank} >
 						<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-						<Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor>
+						{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 					</Blank>
 					<ReactPlayer ref={ref} config={config} url={url}
 
@@ -242,8 +240,8 @@ const Controller = props => {
 					toggleMute={video.toggleMute}
 					handleBlank={video.handleBlank}
 					handleShowComment={video.handleShowComment}
-					handleCensorPosition={video.handleCensorPosition}
-					handleCensorActive={video.handleCensorActive}
+					// handleCensorPosition={video.handleCensorPosition}
+					// handleCensorActive={video.handleCensorActive}
 				></EventsContainer>
 		</Style>
 	)
