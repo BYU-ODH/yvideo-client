@@ -164,6 +164,19 @@ const Controller = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
+	window.addEventListener('keydown', event => {
+		switch (event.keyCode) {
+			case 37:
+					video.handleSeek(null, elapsed-1)
+				break;
+			case 39:
+					video.handleSeek(null, elapsed+1)
+				break;
+			default:
+				break;
+		}
+	})
+
 	return (
 		<Style>
 					{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
