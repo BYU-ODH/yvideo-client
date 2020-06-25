@@ -137,15 +137,21 @@ const TrackLayer = props => {
 					}}
 					>
 					<div className={`layer-${layerIndex} events`} ref={dropRef}>
-						{events.map((event, index) => (
+						{
+							events !== undefined ? (
 							<>
-							{event.layer === layerIndex ? (
-								<div key={index}>
-									{printEvents(event, index)}								
-								</div>
-							) : (null)}
+								{events.map((event, index) => (
+									<>
+									{event.layer === layerIndex ? (
+										<div key={index}>
+											{printEvents(event, index)}
+										</div>
+									) : (null)}
+									</>
+								))}
 							</>
-						))}
+							) : (null)
+						}
 					</div>
 				</div>
 			{/* <div id='layer-message' ></div> */}

@@ -199,7 +199,6 @@ export const Blank = styled.div`
 	z-index: 10;
 	width: 100%;
 	height: 91.5%;
-	transition: .5s ease;
 `
 export const Censor = styled.div`
 	--top: ${props => props.y !== 0 ? `${props.y}%` : `0%`};
@@ -223,7 +222,6 @@ export const Censor = styled.div`
 		backdrop-filter: ${ props => props.active ? ('blur(30px)') : 'blur(0px)' };
 	}
 `
-
 export const Comment = styled.div`
 	--x: ${props => props.commentX !== 0 ? `${props.commentX}%` : `0%`};
 	--y: ${props => props.commentY !== 0 ? `${props.commentY}%` : `0%`};

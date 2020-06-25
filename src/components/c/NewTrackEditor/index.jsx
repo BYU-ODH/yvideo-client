@@ -29,7 +29,9 @@ const TrackEditor = props => {
 
 	//console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
 
-	const { setEvents } = props
+	const { setEvents, updateContent } = props
+
+	const { eventsArray, currentContent } = props.viewstate
 
 	const events = [
 		{
@@ -84,61 +86,65 @@ const TrackEditor = props => {
 		},
 	]
 
-	const eventsArray = [
-		// {
-		// 	type: `Censor`,
-		// 	icon: censorIcon,
-		// 	start: 0,
-		// 	end: 10,
-		// 	layer: 0,
-		// 	position: {
-		// 		"0.5": [75.94291539245668, 33.70998116760829, 30, 40],
-		// 		"1.2": [40.16309887869521, 38.60640301318267, 30, 40],
-		// 		"2.1": [38.430173292558614, 70.4331450094162, 30, 40],
-		// 		"2.9": [71.1518858307849, 66.85499058380414, 30, 40],
-		// 		"3.8": [70.74413863404689, 33.89830508474576, 30, 40],
-		// 		"4.7": [42.40570846075433, 35.59322033898305, 30, 40],
-		// 		"5.9": [44.342507645259936, 72.88135593220339, 30, 40],
-		// 		"6.6": [69.01121304791029, 73.44632768361582, 30, 40],
-		// 		"7.7": [67.88990825688074, 24.293785310734464, 30, 40],
-		// 		"8.6": [41.284403669724774, 31.45009416195857, 30, 40],
-		// 		"9.8": [37.20693170234455, 67.60828625235405, 30, 40],
-		// 		"10.8": [65.54536187563711, 68.36158192090396, 30, 40],
-		// 	},
-		// },
-		// {
-		// 	type: `Skip`,
-		// 	icon: muteIcon,
-		// 	start: 60,
-		// 	end: 65,
-		// 	layer: 0
-		// },
-		{
-			type: `Mute`,
-			icon: muteIcon,
-			start: 0,
-			end: 100,
-			layer: 1
-		},
-		{
-			type: `Comment`,
-			icon: commentIcon,
-			start: 0,
-			end: 20,
-			layer: 2,
-			comment: 'New COmment',
-			position: {
-				x: 0,
-				y: 0,
-			},
-		},
-	] // THIS IS GOING TO HAVE EVENTS
+	//console.log(currentContent)
 
+	// const eventsArray = [
+	// 	// {
+	// 	// 	type: `Censor`,
+	// 	// 	icon: censorIcon,
+	// 	// 	start: 0,
+	// 	// 	end: 10,
+	// 	// 	layer: 0,
+	// 	// 	position: {
+	// 	// 		"0.5": [75.94291539245668, 33.70998116760829, 30, 40],
+	// 	// 		"1.2": [40.16309887869521, 38.60640301318267, 30, 40],
+	// 	// 		"2.1": [38.430173292558614, 70.4331450094162, 30, 40],
+	// 	// 		"2.9": [71.1518858307849, 66.85499058380414, 30, 40],
+	// 	// 		"3.8": [70.74413863404689, 33.89830508474576, 30, 40],
+	// 	// 		"4.7": [42.40570846075433, 35.59322033898305, 30, 40],
+	// 	// 		"5.9": [44.342507645259936, 72.88135593220339, 30, 40],
+	// 	// 		"6.6": [69.01121304791029, 73.44632768361582, 30, 40],
+	// 	// 		"7.7": [67.88990825688074, 24.293785310734464, 30, 40],
+	// 	// 		"8.6": [41.284403669724774, 31.45009416195857, 30, 40],
+	// 	// 		"9.8": [37.20693170234455, 67.60828625235405, 30, 40],
+	// 	// 		"10.8": [65.54536187563711, 68.36158192090396, 30, 40],
+	// 	// 	},
+	// 	// },
+	// 	// {
+	// 	// 	type: `Skip`,
+	// 	// 	icon: muteIcon,
+	// 	// 	start: 60,
+	// 	// 	end: 65,
+	// 	// 	layer: 0
+	// 	// },
+	// 	{
+	// 		type: `Mute`,
+	// 		icon: muteIcon,
+	// 		start: 0,
+	// 		end: 100,
+	// 		layer: 1
+	// 	},
+	// 	{
+	// 		type: `Comment`,
+	// 		icon: commentIcon,
+	// 		start: 0,
+	// 		end: 20,
+	// 		layer: 2,
+	// 		comment: 'New COmment',
+	// 		position: {
+	// 			x: 0,
+	// 			y: 0,
+	// 		},
+	// 	},
+	// ] // THIS IS GOING TO HAVE EVENTS
+	let largestLayer = 0
 	//SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
-	eventsArray.sort((a, b) => (a.layer > b.layer) ? 1 : -1)
+	if(eventsArray !== undefined && eventsArray.length > 0){
+		eventsArray.sort((a, b) => (a.layer > b.layer) ? 1 : -1)
+		largestLayer = eventsArray[eventsArray.length-1].layer
+	}
 
 	//Find the largets layer number
-	const largestLayer = eventsArray[eventsArray.length-1].layer
 	const initialLayers = new Array(largestLayer+1).fill(0)
 
 	const [allEvents, setAllEvents] = useState(eventsArray)
@@ -226,7 +232,10 @@ const TrackEditor = props => {
 
 	const addEventToLayer = (item, index) => {
 		//TODO: Change this to use real JS event objects and insert based on time
-		let currentEvents = [...allEvents]
+		let currentEvents = []
+		if(allEvents !== undefined){
+			currentEvents = [...allEvents]
+		}
 		//console.log('ADDING NEW EVENT')
 		const matchingEvent = filterValue(events, `type`, item.id)
 
@@ -556,7 +565,9 @@ const TrackEditor = props => {
 	}
 
 	const handleSaveAnnotation = () => {
-		console.log('saved')
+		let content = currentContent
+		currentContent.settings.annotationDocument = [...allEvents]
+		updateContent(content)
 	}
 
 	// const handleLastClick = (height, width, x, y, time) => {
@@ -652,7 +663,7 @@ const TrackEditor = props => {
 						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
 					</div> */}
 					<div className={`tab${tab === `events` ? ` active` : ``}`} onClick={handleTabChange(`events`)}>Events</div>
-					<div className={`tab`} onClick={handleSaveAnnotation} style={{ position: 'absolute', float: 'right', right: '10px'}}>Save</div>
+					<div className={`tab`} onClick={handleSaveAnnotation}>Save</div>
 
 				</header>
 
@@ -686,7 +697,6 @@ const TrackEditor = props => {
 					:
 					(null)
 				}
-
 			</EventList>
 		</DndProvider>
 		</Style>

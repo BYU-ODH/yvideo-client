@@ -17,11 +17,15 @@ const TrackEditorContainer = props => {
 		setEvents,
 		getResource,
 		getContent,
+		updateContent,
 	} = props
 
 	const {id} = useParams()
 
 	const [resourceId, setResourceId] = useState(0)
+	const [eventsArray, setEventsArray] = useState([])
+	const [currentContent, setCurrentContent] = useState({})
+
 	let url = ''
 
 	useEffect(() => {
@@ -31,11 +35,13 @@ const TrackEditorContainer = props => {
 		}
 
 		if(content[id] !== undefined){
+			setCurrentContent(content[id])
+			setEventsArray(content[id].settings.annotationDocument)
 			setResourceId(content[id].resourceId)
 			getResource(content[id].resourceId)
 		}
 
-	}, [content, resource])
+	}, [content, resource, eventsArray, currentContent])
 
 
 	if(resource[resourceId] != undefined){
@@ -43,11 +49,15 @@ const TrackEditorContainer = props => {
 		url = resource[resourceId].content.files[0].streamUri
 	}
 
+	//console.log(currentContent)
+
 	const viewstate = {
+		currentContent,
 		url,
+		eventsArray,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents}/>
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore }) => ({
@@ -59,6 +69,7 @@ const mapThunksToProps = {
 	setEvents: interfaceService.setEvents,
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
+	updateContent: contentService.updateContent,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

@@ -37,7 +37,7 @@ const EventsContainer = props => {
 
 		//We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
 		let tempArray =[]
-		if(duration !== 0){
+		if(duration !== 0 && events !== undefined){
 			events.forEach(event => {
 				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
 				let start = (event.start / 100) * duration

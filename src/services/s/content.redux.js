@@ -199,56 +199,61 @@ export default class ContentService {
 
 	updateContent = content => async (dispatch, _getState, { apiProxy }) => {
 
+		console.log(content)
+
 		dispatch(this.actions.contentStart())
+
+		let title = ''
+		let description = ''
+		let keywords = ''
 
 		try {
 
 			const { id, published } = content
 
-			const {
-				title,
-				description,
-				keywords,
-			} = content.resource
-
-			const {
-				captionTrack,
-				annotationDocument,
-				targetLanguages,
-				aspectRatio,
-				showCaptions,
-				showAnnotations,
-				allowDefinitions,
-				showTranscripts,
-				showWordList,
-			} = content.settings
-
-			const settings = {
-				captionTrack,
-				annotationDocument,
-				targetLanguages,
-				aspectRatio,
-				showCaptions,
-				showAnnotations,
-				allowDefinitions,
-				showTranscripts,
-				showWordList,
+			if(content.resource !== undefined){
+				title = content.resource.title
+				description = content.resource.description
+				keywords = content.resource.keywords
 			}
 
-			const metadata = {
-				title,
-				description,
-				keywords,
-				published,
-			}
+			// const {
+			// 	captionTrack,
+			// 	annotationDocument,
+			// 	targetLanguages,
+			// 	aspectRatio,
+			// 	showCaptions,
+			// 	showAnnotations,
+			// 	allowDefinitions,
+			// 	showTranscripts,
+			// 	showWordList,
+			// } = content.settings
 
-			// const settingsResult =
-			await apiProxy.content.settings.post(id, settings)
+			// const settings = {
+			// 	captionTrack,
+			// 	annotationDocument,
+			// 	targetLanguages,
+			// 	aspectRatio,
+			// 	showCaptions,
+			// 	showAnnotations,
+			// 	allowDefinitions,
+			// 	showTranscripts,
+			// 	showWordList,
+			// }
+
+			// const metadata = {
+			// 	title,
+			// 	description,
+			// 	keywords,
+			// 	published,
+			// }a
+
+			const settingsResult = await apiProxy.content.settings.post(id, content.settings)
 
 			// const metaResult =
-			await apiProxy.content.metadata.post(id, metadata)
+			//await apiProxy.content.metadata.post(id, metadata)
 
-			// console.log(settingsResult)
+			//console.log(settingsResult)
 			// console.log(metaResult)
 
 			dispatch(this.actions.contentUpdate(content))
