@@ -87,7 +87,6 @@ const Controller = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
-			//console.log('handle seek')
 			let newPlayed = 0
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()
@@ -96,9 +95,9 @@ const Controller = props => {
 			else {
 				newPlayed = time / duration
 			}
-			//console.log(newPlayed)
-			ref.current.seekTo(newPlayed, `fraction`)
-			//getCurrentTime((newPlayed * duration).toFixed(1))
+			if(newPlayed !== Infinity){
+				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
+			}
 		},
 		handlePause: () => {
 			setPlaying(false)
