@@ -253,7 +253,7 @@ export default class ContentService {
 			// const metaResult =
 			//await apiProxy.content.metadata.post(id, metadata)
 
-			//console.log(settingsResult)
+			console.log(settingsResult)
 			// console.log(metaResult)
 
 			dispatch(this.actions.contentUpdate(content))

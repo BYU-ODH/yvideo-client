@@ -46,7 +46,8 @@ const TrackEditorContainer = props => {
 
 	if(resource[resourceId] != undefined){
 		//console.log(resource[resourceId].content.files[0].streamUri)
-		url = resource[resourceId].content.files[0].streamUri
+		//url = resource[resourceId].content.files[0].streamUri
+		url = `http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4`
 	}
 
 	//console.log(currentContent)
