@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon, SideEditor } from './styles'
+import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon } from './styles'
 
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 
-import { EventCard } from 'components/bits'
+import { EventCard, TrackEditorSideMenu } from 'components/bits'
 
 import { Controller, TrackLayer } from 'components'
 
@@ -160,7 +160,6 @@ const TrackEditor = props => {
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [editComment, setEditComment] = useState({})
 	//const [editCensor, setEditCensor] = useState({})
 	//const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
@@ -251,12 +250,56 @@ const TrackEditor = props => {
 
 	const updateEvents = (index, event, layerIndex) => {
 		//console.log('Update', event)
+		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
-			document.getElementsByClassName('sideTabInput')[0].value=''
-			document.getElementsByClassName('sideTabInput')[1].value=''
-			document.getElementById('sideTabMessage').innerText=''
+			canAccessDom = true
+			document.getElementById('sideTabMessage').style.color='red'
 		}
+
 		let currentEvents = [...allEvents]
+
+		//check start event times
+		if(event.start < 0){
+			event.start = 0
+			if(canAccessDom){
+				document.getElementById('sideTabExplanation').innerText='Changed start time to 0'
+			}
+		}
+		else if(event.start >= 100) {
+			event.start = 95
+			event.end = 100
+			if(canAccessDom){
+				document.getElementById('sideTabExplanation').innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
+			}
+		}
+		else if(event.start > event.end){
+			if(canAccessDom){
+				document.getElementById('sideTabExplanation').innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
+			}
+		}
+
+		//check end event times
+		if(event.end <= event.start){
+			if(canAccessDom){
+				document.getElementsByClassName('sideTabInput')[1].value=event.end
+				document.getElementById('sideTabMessage').innerHTML='Please, enter a number bigger than star time'
+			}
+		}
+		else if(event.end > 100){
+			//event.end = 100
+			if(canAccessDom){
+				document.getElementById('sideTabMessage').innerHTML=`Please, enter a number less than ${videoLength}`
+				document.getElementById('sideTabExplanation').innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
+			}
+		}
+
+		if(0 <= event.start && event.start < event.end && event.end <= 100){
+			if(canAccessDom){
+				document.getElementById('sideTabMessage').style.color='green'
+				document.getElementById('sideTabMessage').innerHTML='Start and end times have been updated correctly'
+				document.getElementById('sideTabExplanation').innerHTML=``
+			}
+		}
 
 		currentEvents[index] = event
 
@@ -275,121 +318,6 @@ const TrackEditor = props => {
 		setEvents(currentEvents)
 		setEventToEdit(1000)
 		setSideEditor(false)
-	}
-
-	const handleEditEventBTimeChange = (e) => {
-
-		document.getElementById('sideTabMessage').style.color='red'
-		let number = parseFloat(e.target.value)
-		let currentEvents = [...allEvents]
-		let cEvent = currentEvents[eventToEdit]
-
-		if(isNaN(number)){
-			number = 0
-		}
-
-		number = (number / videoLength) * 100
-
-		cEvent.start = number
-		if(number > cEvent.end){
-			cEvent.end = number + 5
-			//document.getElementsByClassName('sideTabInput')[1].value=''
-		}
-
-		if(cEvent.start < cEvent.end && cEvent.start > 0 ){
-			document.getElementById('sideTabMessage').innerHTML=''
-		}
-
-		if (number >= 100 || cEvent.end > 100){
-			cEvent.end = 100
-			cEvent.start = 99
-			document.getElementById('sideTabMessage').innerHTML=`Changed beginning time to ${videoLength - (videoLength * 0.01) }s<br/>Changed end time to ${videoLength}s<br/>Either beginning time or end time was bigger than 100`
-			document.getElementsByClassName('sideTabInput')[0].value=''
-			document.getElementsByClassName('sideTabInput')[1].value=''
-		}
-
-		//updateEvents(index, cEvent, layer)
-		currentEvents[eventToEdit] = cEvent
-		setAllEvents(currentEvents)
-		setEvents(currentEvents)
-		setShouldUpdate(true)
-	}
-
-	const handleEditEventETimeChange = (e) => {
-		document.getElementById('sideTabMessage').style.color='red'
-		let currentEvents = [...allEvents]
-		let number = parseFloat(e.target.value)
-		let cEvent = currentEvents[eventToEdit]
-
-		if(!isNaN(number)){
-			number = (number / videoLength) * 100
-			if(number > cEvent.start && number <= 100){
-				//console.log('good')
-				cEvent.end = number
-				document.getElementById('sideTabMessage').innerText=''
-			}
-			if(number > 100){
-				//MESSAGE THE NUMBER NEEDS TO BE BIGGER THAN B TIME
-				//console.log('changed to 100')
-				document.getElementById('sideTabMessage').innerHTML=`End time is bigger than video length time. <br/> End time need to be less than ${videoLength}`
-				//document.getElementsByClassName('sideTabInput')[1].value=''
-				cEvent.end = 100
-			}
-			if(number <= cEvent.start){
-				//console.log('bad')
-				document.getElementById('sideTabMessage').innerHTML=`Please enter a number greater than start`
-			}
-		}
-
-		currentEvents[eventToEdit] = cEvent
-		setAllEvents(currentEvents)
-		setEvents(currentEvents)
-		setShouldUpdate(true)
-	}
-
-	const handleSaveComment = () => {
-		let index = eventToEdit
-		let event = allEvents[index]
-		let layer = event.layer
-		event = editComment
-
-		//console.log(event)
-
-		setEditComment({})
-		updateEvents(index, event, layer)
-	}
-
-	const handleEditComment = (value, cEvent, int) => {
-
-		switch (int) {
-			case 1:
-					if(editComment.position !== undefined){
-						setEditComment({...editComment, position: { x: parseInt(value), y: editComment.position.y, }})
-					}
-					else {
-						setEditComment({...cEvent, position: { x: parseInt(value), y: cEvent.position.y, }})
-					}
-				break;
-			case 2:
-					if(editComment.position !== undefined){
-						setEditComment({...editComment, position: { x: editComment.position.x, y: parseInt(value), }})
-					}
-					else {
-						setEditComment({...cEvent, position: { x: cEvent.position.x, y: parseInt(value), }})
-					}
-				break;
-			case 3:
-					if(editComment.position !== undefined){
-						setEditComment({...editComment, comment: value })
-					}
-					else {
-						setEditComment({...cEvent, comment: value })
-					}
-				break;
-
-			default:
-				break;
-		}
 	}
 
 	// const handleCensorRemove = (item) => {
@@ -466,92 +394,6 @@ const TrackEditor = props => {
 		setEventToEdit(eventIndex)
 		setDisplayLayer(layerIndex)
 		setSideEditor(true)
-	}
-
-	const printSideEditor = () => {
-		const cEvent = allEvents[eventToEdit]
-		let start = ( cEvent.start / 100 ) * videoLength
-		let end = ( cEvent.end / 100 ) * videoLength
-		// if(cEvent.type === 'Censor' && editCensor !== cEvent.position){
-		// 	setEditCensor(cEvent.position)
-		// }
-		return (
-			<SideEditor>
-				<div>
-					<img className={'closeEditor'} src={`${closeIcon}`} onClick={closeSideEditor}/>
-					<div className='center'>
-						<label>Start</label>
-						<label style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}>End</label>
-					</div>
-					<div className='center'>
-						<input type='number' className='sideTabInput' placeholder={start.toFixed(4)} onChange={e => handleEditEventBTimeChange(e)}/>
-						<input type='number' className='sideTabInput' placeholder={end.toFixed(4)} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: `${cEvent.type !== 'Pause' ? ('visible') : ('hidden') }`}}/>
-					</div>
-					<br/>
-				</div>
-				{ cEvent.type === 'Comment' ? (
-					<>
-						<div className='center'>
-							<label>X</label>
-							<label>Y</label>
-						</div>
-						<div className='center'>
-							<input type='number' className='sideTabInput' placeholder={cEvent.position.x.toFixed(2)} onChange={e => handleEditComment(e.target.value, cEvent, 1)}/>
-							<input type='number' className='sideTabInput' placeholder={cEvent.position.y.toFixed(2)} onChange={e => handleEditComment(e.target.value, cEvent, 2)}/>
-						</div>
-						<div className='center' style={{ flexDirection: 'column'}}>
-							<label style={{ textAlign: 'left', margin: '15px 5px 5px 5px' }}>Type a comment</label>
-							<textarea style={{ margin: '5%', width: '90%'}} rows='4' cols='50' placeholder={cEvent.comment} onChange={e => handleEditComment(e.target.value, cEvent, 3)}></textarea>
-							<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
-						</div>
-					</>
-					) : (null)
-				}
-				{/* { cEvent.type === 'Censor' ? (
-					<div className='censorMenu'>
-						<label>Censor Times</label><br/><br/>
-						<table className='tableHeader'>
-							<thead>
-								<tr>
-									<th align="center">Time</th>
-									<th align="center">X</th>
-									<th align="center">Y</th>
-									<th align="center">Width</th>
-									<th align="center">Height</th>
-									<th align="center">&nbsp;</th>
-								</tr>
-							</thead>
-						</table>
-						<div className='censorList'>
-							<table>
-								<tbody>
-								{
-									Object.keys(editCensor).sort(((a, b) => (parseFloat(a) > parseFloat(b)) ? 1 : -1)).map((item, i) => (
-										<tr key={item}>
-											<td><input type='number' value={`${item}`}/></td>
-											<td><input type='number' placeholder={`${editCensor[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-											<td><input type='number' placeholder={`${editCensor[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-											<td><input type='number' placeholder={`${editCensor[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-											<td><input type='number' placeholder={`${editCensor[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
-											<td><img className={'trashIcon'} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
-										</tr>
-									)) // "foo: bar", "baz: 42"
-									//Object.entries(cEvent.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
-								}
-								</tbody>
-							</table>
-							<div id='loader' style={{visibility: 'hidden'}}>Loading</div><br/><br/>
-							<div id='tableBottom' style={{ width: '90%', marginLeft: '0px' }}></div>
-						</div>
-
-						<NewLayer className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></NewLayer><br/><br/><br/><br/>
-						<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
-					</div>
-					) : (null)
-				} */}
-				<p id='sideTabMessage'></p>
-			</SideEditor>
-		)
 	}
 
 	const closeSideEditor = () => {
@@ -681,8 +523,14 @@ const TrackEditor = props => {
 								</>
 							}
 						</div>
-						{ showSideEditor !== false && eventListMinimized !== true? (
-							printSideEditor()
+						{ showSideEditor !== false && eventListMinimized !== true ? (
+								<TrackEditorSideMenu
+									singleEvent={allEvents[eventToEdit]}
+									index={eventToEdit}
+									videoLength={videoLength}
+									closeSideEditor={closeSideEditor}
+									updateEvents={updateEvents}
+								></TrackEditorSideMenu>
 						) : (
 							<>
 								<div className='events'>

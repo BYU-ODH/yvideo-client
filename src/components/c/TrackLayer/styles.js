@@ -27,7 +27,7 @@ export const Style = styled.div`
 		border-radius: 3px;
 		height: 46px !important;
 		padding: 1px;
-		min-width: 1%;
+		min-width: .01%;
 		overflow: hidden !important;
 		display: flex !important;
 		background-color: white;

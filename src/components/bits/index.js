@@ -17,6 +17,7 @@ import Scrubber from './Scrubber'
 import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
+import TrackEditorSideMenu from './TrackEditorSideMenu'
 import VolumeBar from './VolumeBar'
 import VolumeScrubber from './VolumeScrubber'
 
@@ -40,6 +41,7 @@ export {
 	Spinner,
 	SwitchToggle,
 	Tag,
+	TrackEditorSideMenu,
 	VolumeBar,
 	VolumeScrubber,
 }

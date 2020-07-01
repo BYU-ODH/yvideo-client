@@ -21,6 +21,7 @@ const Controller = props => {
 	const {
 		url,
 		getDuration,
+		minimized,
 		//handleLastClick,
 		getCurrentTime,
 	} = props
@@ -95,7 +96,8 @@ const Controller = props => {
 			else {
 				newPlayed = time / duration
 			}
-			if(newPlayed !== Infinity){
+			if(newPlayed !== Infinity && newPlayed !== -Infinity){
+				//console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 			}
 		},
@@ -163,7 +165,7 @@ const Controller = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-	window.addEventListener('keydown', event => {
+	document.addEventListener('keydown', event => {
 		switch (event.keyCode) {
 			case 37:
 					video.handleSeek(null, elapsed-1)
@@ -177,7 +179,7 @@ const Controller = props => {
 	})
 
 	return (
-		<Style>
+		<Style style={{ maxHeight: `${ !minimized ? ('65vh') : ('100vh')}`}}>
 					{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
 					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 						<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>

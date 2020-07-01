@@ -6,6 +6,7 @@ const Style = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
+	/* max-height: 65vh; */
 
 	& .video {
 		height: calc(100% - 50px) !important;
