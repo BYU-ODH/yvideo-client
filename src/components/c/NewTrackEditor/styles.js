@@ -57,22 +57,42 @@ export const Timeline = styled.div`
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
 	display: flex;
-	border: 1px solid black;
-	z-index: 15;
-    background-color: white;
+  background-color: white;
 
-	& .zoom-controls{
-		width: 48px;
+	& .zoom-controls {
+		width: 46px;
 		height: 100%;
 		float: right;
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		right: 0px;
+		background-color: white;
+		border: 1px solid black;
+
+		& div {
+			margin: auto;
+			width: 50%;
+			height: 90%;
+			border-radius: 10px;
+			background-color: rgba(220, 220, 220, 0.5);
+			overflow-y: scroll;
+			position: relative;
+
+			& .zoom-indicator {
+				width: 100% !important;
+				height: 3rem !important;
+				background-color: var(--light-blue);
+				border-radius: 20px;
+			}
+		}
 	}
 
 	& > section {
 		width: 100%;
 		box-sizing: border-box;
-		border-right: 1px solid #555;
 		overflow-y: scroll;
-		overflow-x: hidden !important;
+		overflow-x: scroll;
 	}
 
 
@@ -90,8 +110,8 @@ export const Timeline = styled.div`
 	}
 
 	& .handle {
-			width: 160px !important;
-			min-width: 160px;
+			width: 163px !important;
+			min-width: 163px;
 			height: 46px;
 			display: inline-flex;
 			align-items: center;

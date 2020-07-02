@@ -7,6 +7,7 @@ const Style = styled.div`
 	height: 100%;
 	position: relative;
 	/* max-height: 65vh; */
+	z-index: 20;
 
 	& .video {
 		height: calc(100% - 50px) !important;
@@ -35,17 +36,19 @@ export const TimeBar = styled.div`
 	cursor: ${props => props.cursor};
 	display: flex;
 	flex-direction: column;
+	z-index: 20;
 
 	& > header {
+		width: 100%;
 		height: var(--header-height);
 		box-sizing: border-box;
 		border: 1px solid rgba(255, 255, 255, 0.8);
 		border-left: none;
-
 		display: flex;
 		align-items: center;
-		z-index: 16;
 		background-color: var(--navy-blue);
+		overflow-x: scroll;
+		overflow-y: hidden;
 
 		& .scrubber {
 			color: black;
@@ -65,54 +68,47 @@ export const TimeBar = styled.div`
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				z-index: 20;
 			}
 
-			& > div {
+			& > #time-bar {
 				position: relative;
-
-				flex: 1;
 				height: .75rem;
+				flex: 1;
+				z-index: 20;
 
-				& > span {
+				& #time-bar-container {
 					position: absolute;
-					display: block;
-					height: 100%;
+					height: .75rem;
+				}
 
-					&.total {
-						background-color: rgba(255, 255, 255, 0.7);
-						width: 100%;
-					}
-					&.current {
-						background-color: var(--light-blue);
-						width: ${props => props.played * 100}%;
+				& .total {
+					position: absolute;
+				}
 
-						& >span {
-							display: block;
-							position: relative;
-							float: right;
-							top: 0;
-							height: 100vh;
-							width: 2px !important;
-							background-color: red;
-							z-index: 20;
+				& #time-dot {
+					position: absolute;
+					float: left;
+					top: -2px;
+					left: ${props => props.played ? (`calc(${props.played * 100}% - 7px)`) : (`calc(${props.played * 100}% - 7px)`)};
+					margin: 0px;
+					width: 12px;
+					height: 12px;
+					background-color: red;
+					border: 2px solid white;
+					border-radius: 50%;
+				}
 
-							&.current-time {
-								z-index: 20;
-
-								& #timeDot {
-									position: absolute;
-									top: -3px;
-									right: -6px;
-									height: 10px !important;
-									width: 10px !important;
-									background-color: red;
-									border: 3px solid white;
-									border-radius: 50%;
-								}
-							}
-						}
-
-					}
+				& #time-indicator {
+					position: absolute;
+					float: left;
+					top: 0px;
+					left: ${props => props.played * 100}%;
+					margin: 0px;
+					width: 2px;
+					height: 100vh;
+					background-color: red;
+					z-index: 20;
 				}
 			}
 		}
@@ -176,24 +172,6 @@ export const TimeBar = styled.div`
 
 
 `
-
-export const ToggleCarat = styled.button`
-	height: 2rem;
-	width: 2rem;
-	border: none;
-	outline: none;
-	cursor: pointer;
-	background: url(${carat}) center no-repeat;
-	background-size: contain;
-	padding: 0;
-
-	transform: rotate(-90deg);
-	transition: transform .25s ease-in-out;
-
-	&.minimized {
-		transform: rotate(90deg);
-	}
-`
 export const Blank = styled.div`
 	position: absolute;
 	background-color: ${props => props.blank ? ('black') : ('transparent')};
@@ -233,4 +211,32 @@ export const Comment = styled.div`
 	font-size: 2rem;
 	color: white;
 	z-index: 15;
+`
+export const ToggleCarat = styled.div`
+	width: 40px !important;
+	height: 48px !important;
+	position: absolute;
+	right: 5px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* background: url(${carat}) center no-repeat; */
+	/* background-size: contain; */
+	padding: 0;
+	background-color: var(--navy-blue);
+	z-index: 20;
+	transform: rotate(-90deg);
+	transition: transform .25s ease-in-out;
+	margin-right: 0px;
+
+	& img {
+		margin: auto;
+	}
+
+	&.minimized {
+		transform: rotate(90deg);
+	}
 `

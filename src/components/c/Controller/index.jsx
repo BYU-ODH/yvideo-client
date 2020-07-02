@@ -7,12 +7,11 @@ import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment } from './styles'
 
 import { EventsContainer } from 'containers'
 
-import carat from 'assets/carat_white.svg'
-
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
+import carat from 'assets/carat_white.svg'
 
 const Controller = props => {
 
@@ -23,6 +22,7 @@ const Controller = props => {
 		getDuration,
 		minimized,
 		//handleLastClick,
+		togglendTimeline,
 		getCurrentTime,
 	} = props
 
@@ -229,19 +229,22 @@ const Controller = props => {
 								<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
 							</button>
 
-							<div onClick={video.handleSeek}>
-								<span className='total'></span>
-								{/* <span className='loaded'></span> */}
-								<span className='current'>
-									<span className='current-time'>
-										<span id='timeDot'></span>
-									</span>
-								</span>
+							<div id='time-bar'>
+								<div id={'time-bar-container'}>
+									{/* <span className='total'></span>
+
+									<span className='current'>
+										<span className='current-time'>
+											<span id='timeDot'></span>
+										</span>
+									</span> */}
+									<progress className="total" value={`${video.played * 100}`} max="100" onClick={video.handleSeek}></progress>
+									<span id='time-dot'></span>
+									<span id='time-indicator'></span>
+								</div>
 							</div>
-
 						</div>
-
-						<ToggleCarat className={`${props.minimized ? ` minimized` : ``}`} onClick={props.handlers}>
+						<ToggleCarat id={'carat-button'} className={`${minimized ? ` minimized` : ``}`} onClick={e => togglendTimeline()}>
 							<img src={carat} alt='Toggle Timeline' />
 						</ToggleCarat>
 					</header>

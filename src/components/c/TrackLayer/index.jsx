@@ -20,6 +20,7 @@ const TrackLayer = props => {
 
 	const layerRef =  useRef(null)
 
+	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
@@ -30,9 +31,23 @@ const TrackLayer = props => {
 	}
 
 	useLayoutEffect(() => {
-		setLayerWidth(layerRef.current.offsetWidth)
+		setInitialWidth(layerRef.current.offsetWidth)
+		if(layerWidth === 0){
+			setLayerWidth(layerRef.current.offsetWidth + width - 50)
+		}
+		else if (width === 0){
+			setLayerWidth(initialWidth - 50)
+		}
+		else {
+			setLayerWidth(layerWidth + width)
+		}
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
- 	});
+ 	}, [width]);
+
+	if(document.getElementsByClassName('total')[0] !== undefined && layerWidth !== 0){
+		document.getElementById('time-bar-container').style.width = `${layerWidth}px`
+		document.getElementsByClassName('total')[0].style.width = `${layerWidth}px`
+	}
 	//This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
@@ -125,17 +140,9 @@ const TrackLayer = props => {
 
 	return (
 		<>
-		<Style>
+		<Style layerWidth={layerWidth}>
 				{/* overflow-x should be like scroll or something */}
-				<div ref={layerRef} className='eventsbox'
-					style={{ width: `${width === 0 ? ('100%') : (
-							width === 31 ? ( `calc(100%)`
-							) : (
-								`calc(${layerRef.current.offsetParent.offsetWidth} + 31rem)`
-							)
-						)}`
-					}}
-					>
+				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events`} ref={dropRef}>
 						{
 							events !== undefined ? (

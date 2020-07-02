@@ -1,4 +1,4 @@
-import React, { useState, } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import trashIcon from 'Assets/trash_icon.svg'
 import closeIcon from 'Assets/close_icon.svg'
@@ -18,6 +18,10 @@ const TrackEditorSideMenu = props => {
 
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
+
+	useEffect(() => {
+		setEvent(singleEvent)
+	}, [index])
 
 	const handleEditEventBTimeChange = (e) => {
 
@@ -179,6 +183,7 @@ const TrackEditorSideMenu = props => {
 				</div>
 				) : (null)
 			} */}
+			<br/>
 			<p id='sideTabMessage'></p>
 			<p id='sideTabExplanation'></p>
 		</Style>

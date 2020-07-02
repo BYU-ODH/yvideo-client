@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon } from './styles'
 
 import { DndProvider } from 'react-dnd'
+import { Rnd } from "react-rnd"
+
 import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
@@ -160,6 +162,7 @@ const TrackEditor = props => {
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
+	const [zoomFactor, setZoomFactor] = useState(0)
 	//const [editCensor, setEditCensor] = useState({})
 	//const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
@@ -448,10 +451,9 @@ const TrackEditor = props => {
 				<Controller className='video'
 					url={props.viewstate.url}
 					handlers={togglendTimeline}
-					minimized={timelineMinimized}
 					getDuration={getVideoDuration}
-					//handleLastClick={handleLastClick}
-					//getCurrentTime={getCurrentTime}
+					minimized={timelineMinimized}
+					togglendTimeline={togglendTimeline}
 					>
 				</Controller>
 
@@ -490,8 +492,33 @@ const TrackEditor = props => {
 
 					</section>
 					<div className='zoom-controls'>
-						<span className='zoom-factor'></span>
-						<span className='timeline-zone'></span>
+						<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<Rnd
+								className={'zoom-indicator'}
+								bounds={'parent'}
+								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								dragAxis="y"
+								onDragStop={(e, d) => {
+									if(d.y < zoomFactor){
+										if(d.y === 0){
+											console.log('zero')
+											setZoomFactor(0)
+											setWidth(0)
+										}
+										else {
+											console.log('smaller')
+											setZoomFactor(d.y)
+											setWidth(-(Math.abs(zoomFactor - d.y) * 20))
+										}
+									}
+									else if(d.y > zoomFactor) {
+										console.log('larger')
+										setZoomFactor(d.y)
+										setWidth((Math.abs(zoomFactor - d.y) * 20))
+									}
+								}}
+							></Rnd>
+						</div>
 					</div>
 
 				</Timeline>
