@@ -58,15 +58,15 @@ export const Timeline = styled.div`
 	cursor: ${props => props.cursor};
 	display: flex;
   background-color: white;
+	overflow: scroll;
 
 	& .zoom-controls {
 		width: 46px;
-		height: 100%;
-		float: right;
+		height: 26%;
 		display: flex;
 		flex-direction: column;
-		position: absolute;
-		right: 0px;
+		position: fixed;
+		left: 0px;
 		background-color: white;
 		border: 1px solid black;
 
@@ -76,7 +76,6 @@ export const Timeline = styled.div`
 			height: 90%;
 			border-radius: 10px;
 			background-color: rgba(220, 220, 220, 0.5);
-			overflow-y: scroll;
 			position: relative;
 
 			& .zoom-indicator {
@@ -89,13 +88,10 @@ export const Timeline = styled.div`
 	}
 
 	& > section {
+		margin-left: 48px;
 		width: 100%;
 		box-sizing: border-box;
-		overflow-y: scroll;
-		overflow-x: scroll;
 	}
-
-
 
 	& .event-layers {
 		height: 100%;
@@ -106,38 +102,28 @@ export const Timeline = styled.div`
 		display: flex;
 		width: 100%;
 		height: 46px;
-		border-right: 1px solid var(--light-blue);
 	}
 
 	& .handle {
-			width: 163px !important;
-			min-width: 163px;
-			height: 46px;
-			display: inline-flex;
-			align-items: center;
-			justify-content: flex-start;
-			box-sizing: border-box;
-			position: relative;
-			cursor: pointer;
+		width: 115px !important;
+		min-width: 115px;
+		height: 46px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		box-sizing: border-box;
+		position: relative;
+		cursor: pointer;
 
-			border-bottom: 1px solid #555;
-			border-right: 1px solid var(--light-blue);
+		border-bottom: 1px solid #555;
+		border-right: 1px solid var(--light-blue);
 
-			& p {
-				padding-left: 2rem;
-				color: black;
-			}
-			transition: .5s;
-	}
-
-	& .active-layer {
-		background-color: rgba(0, 46, 93, 0.1);
 		& p {
+			padding-left: 2rem;
 			color: black;
-			font-size: 1.6rem;
 		}
+		transition: .5s;
 	}
-
 `
 
 export const HandleIcon = styled.div `
@@ -164,7 +150,7 @@ export const NewLayer = styled.button`
 	background-color: #0582ca;
 
 	margin-top: .75rem;
-	margin-left: 130px;
+	margin-left: 90px;
 
 	border: none;
 	border-radius: 0.3rem;

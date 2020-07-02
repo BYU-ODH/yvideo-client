@@ -47,8 +47,6 @@ export const TimeBar = styled.div`
 		display: flex;
 		align-items: center;
 		background-color: var(--navy-blue);
-		overflow-x: scroll;
-		overflow-y: hidden;
 
 		& .scrubber {
 			color: black;
@@ -72,12 +70,15 @@ export const TimeBar = styled.div`
 			}
 
 			& > #time-bar {
+				overflow-x: scroll;
+				overflow-y: hidden;
 				position: relative;
-				height: .75rem;
+				height: 50px;
 				flex: 1;
 				z-index: 20;
 
 				& #time-bar-container {
+					margin-top: 20px;
 					position: absolute;
 					height: .75rem;
 				}

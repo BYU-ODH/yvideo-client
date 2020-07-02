@@ -15,7 +15,7 @@ const TrackLayer = props => {
 
 	//console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
 
-	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength} = props
+	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength, displayLayer} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef =  useRef(null)
@@ -33,10 +33,10 @@ const TrackLayer = props => {
 	useLayoutEffect(() => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0){
-			setLayerWidth(layerRef.current.offsetWidth + width - 50)
+			setLayerWidth(layerRef.current.offsetWidth + width)
 		}
 		else if (width === 0){
-			setLayerWidth(initialWidth - 50)
+			setLayerWidth(initialWidth)
 		}
 		else {
 			setLayerWidth(layerWidth + width)
@@ -143,7 +143,7 @@ const TrackLayer = props => {
 		<Style layerWidth={layerWidth}>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='eventsbox'>
-					<div className={`layer-${layerIndex} events`} ref={dropRef}>
+					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? 'active-layer' : ''}`} ref={dropRef}>
 						{
 							events !== undefined ? (
 							<>

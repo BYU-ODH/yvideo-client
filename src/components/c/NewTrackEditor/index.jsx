@@ -464,7 +464,7 @@ const TrackEditor = props => {
 						<div className='event-layers'>
 
 								{layers.map((layer, index) => (
-									<div className={`layer ${displayLayer === index ? 'active-layer' : ''}`} key={index}>
+									<div className={`layer`} key={index}>
 										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
 											<p>Layer {index}</p>
 										</div>
@@ -480,6 +480,7 @@ const TrackEditor = props => {
 												sideEditor={openSideEditor}
 												updateEvents={updateEvents}
 												closeEditor={closeSideEditor}
+												displayLayer={displayLayer}
 											/>
 									</div>
 								))}

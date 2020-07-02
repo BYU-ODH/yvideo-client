@@ -10,12 +10,11 @@ export const Icon = styled.div`
 
 export const Style = styled.div`
 
-
 	/* width: auto; */
 	width: 100%;
 	height: auto;
 	z-index: 0;
-	overflow-x: scroll;
+	overflow-x: scroll !important;
 
 	& .events {
 		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : (`calc(100%)`)};
@@ -23,6 +22,7 @@ export const Style = styled.div`
 		display: flex;
 		height: 45px;
 		position: absolute;
+		overflow-x: scroll !important;
 	}
 
 	& .layer-event {
@@ -35,6 +35,7 @@ export const Style = styled.div`
 		display: flex !important;
 		background-color: white;
 		box-shadow: 2px 2px 3px rgba(0,0,0, 0.2), -2px -2px 3px rgba(0,0,0, 0.2);
+		overflow-x: scroll !important;
 
 		&	p {
 			font-size: 1.3rem;
@@ -53,5 +54,13 @@ export const Style = styled.div`
 
 	& .active-event {
 		background-color: rgba(106, 199, 252, .5);
+	}
+
+	& .active-layer {
+		background-color: rgba(0, 46, 93, 0.1);
+		& p {
+			color: black;
+			font-size: 1.3rem;
+		}
 	}
 `

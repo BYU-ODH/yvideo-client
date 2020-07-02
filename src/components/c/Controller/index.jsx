@@ -244,9 +244,9 @@ const Controller = props => {
 								</div>
 							</div>
 						</div>
-						<ToggleCarat id={'carat-button'} className={`${minimized ? ` minimized` : ``}`} onClick={e => togglendTimeline()}>
+						{/* <ToggleCarat id={'carat-button'} className={`${minimized ? ` minimized` : ``}`} onClick={e => togglendTimeline()}>
 							<img src={carat} alt='Toggle Timeline' />
-						</ToggleCarat>
+						</ToggleCarat> */}
 					</header>
 				</TimeBar>
 				<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
