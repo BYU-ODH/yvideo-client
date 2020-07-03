@@ -147,7 +147,14 @@ const TrackEditor = props => {
 	}
 
 	//Find the largets layer number
-	const initialLayers = new Array(largestLayer+1).fill(0)
+	const initialLayers = []
+
+	//new Array(largestLayer+1).fill(0)
+
+	for(let i = 0; i < largestLayer + 1; i++){
+		//console.log(i)
+		initialLayers.push([i])
+	}
 
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [layers, setLayers] = useState(initialLayers)
@@ -219,12 +226,42 @@ const TrackEditor = props => {
 	const handleAddLayer = () => {
 		const currentLayers = [...layers]
 
-		const newLayer = 0
+		const newLayer = currentLayers.length
 
 		currentLayers.push(newLayer)
 		setLayers(currentLayers)
 		setSideEditor(false)
 		setDisplayLayer(currentLayers.length-1)
+	}
+
+	const handleRemoveLayer = (e, index) => {
+		//console.log(e)
+		if(e !== null){
+			//console.log('remove layer: ', index)
+			let currentLayers = [...layers]
+			let currentEvents = allEvents
+			let toDelete = []
+
+			currentLayers.splice(index, 1)
+
+			currentEvents.forEach((element, i) => {
+				if(element.layer === index){
+					toDelete.push(i)
+				}
+			});
+
+			toDelete.forEach((element, i) => {
+				currentEvents.splice(element, 1)
+			});
+
+			currentEvents.forEach((element, i) => {
+				currentEvents[i].layer = i
+			});
+
+			setLayers(currentLayers)
+			setSideEditor(false)
+			setDisplayLayer(currentLayers.length-1)
+		}
 	}
 
 	const eventDropHandler = (item, index) => {
@@ -466,7 +503,7 @@ const TrackEditor = props => {
 								{layers.map((layer, index) => (
 									<div className={`layer`} key={index}>
 										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
-											<p>Layer {index}</p>
+											<p>Layer {index} <img className={'layer-delete'} src={trashIcon} width="20px" width="20px" onClick={ e => handleRemoveLayer(e, index)}/></p>
 										</div>
 											{/* <HandleIcon /> */}
 											<TrackLayer

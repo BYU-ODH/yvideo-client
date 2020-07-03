@@ -114,15 +114,24 @@ export const Timeline = styled.div`
 		box-sizing: border-box;
 		position: relative;
 		cursor: pointer;
-
 		border-bottom: 1px solid #555;
 		border-right: 1px solid var(--light-blue);
+		transition: .5s;
 
 		& p {
 			padding-left: 2rem;
 			color: black;
+			font-size: 1.5rem;
+			& .layer-delete {
+				margin: auto auto -3px 15px;
+				opacity: 0.3;
+
+				transition: .5s ease;
+				:hover {
+					opacity: 1;
+				}
+			}
 		}
-		transition: .5s;
 	}
 `
 
@@ -172,6 +181,7 @@ export const EventList = styled.div`
 	transition: .5s;
 	z-index: 20;
 	overflow: hidden;
+	border-left: 1px solid black;
 
 	& > header {
 

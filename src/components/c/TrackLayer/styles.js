@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import timeBarIcon from 'assets/time-bar-icon.svg'
+
 export const Icon = styled.div`
 	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
@@ -16,6 +18,13 @@ export const Style = styled.div`
 	z-index: 0;
 	overflow-x: scroll !important;
 
+	& .eventsbox {
+    position: relative;
+		overflow: scroll;
+    width: 100%;
+    height: 100%;
+	}
+
 	& .events {
 		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : (`calc(100%)`)};
 		border-bottom: 1px dashed var(--light-blue);
@@ -23,6 +32,9 @@ export const Style = styled.div`
 		height: 45px;
 		position: absolute;
 		overflow-x: scroll !important;
+		border-right: 2px solid var(--light-blue);
+		background: url(${timeBarIcon}) center repeat;
+		background-size: 200px 100%;
 	}
 
 	& .layer-event {
@@ -53,7 +65,8 @@ export const Style = styled.div`
 	}
 
 	& .active-event {
-		background-color: rgba(106, 199, 252, .5);
+		background-color: var(--navy-blue);
+		& p { color: white !important; };
 	}
 
 	& .active-layer {
