@@ -2,8 +2,6 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { roles } from 'models/User'
-
 import { interfaceService, adminService } from 'services'
 
 import { Manager } from 'components'
@@ -91,7 +89,7 @@ const LabAssistantManagerContainer = props => {
 const mapStateToProps = store => ({
 	professor: store.adminStore.professor,
 	collections: store.adminStore.professorCollections,
-	admin: store.authStore.user.roles.includes(roles.admin),
+	admin: store.authStore.user.roles === 0,
 })
 
 const mapDispatchToProps = {

@@ -3,15 +3,13 @@ import { connect } from 'react-redux'
 
 import { collectionService, interfaceService, contentService } from 'services'
 
-import { roles } from 'models/User'
-
 import { Collections } from 'components'
 
 // import { objectIsEmpty } from 'lib/util'
 
 const CollectionsContainer = props => {
 
-	const {
+	const { 
 		isProf,
 		isAdmin,
 		displayBlocks,
@@ -55,8 +53,8 @@ const CollectionsContainer = props => {
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
-	isProf: authStore.user.roles.includes(roles.teacher),
-	isAdmin: authStore.user.roles.includes(roles.admin),
+	isProf: authStore.user.roles === 2,
+	isAdmin: authStore.user.roles === 0,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,

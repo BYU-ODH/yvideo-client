@@ -124,7 +124,8 @@ const apiProxy = {
 			 *
 			 * @returns a set of roles for a collection
 			 */
-			get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/permissions`, { withCredentials: true }),
+			//get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/permissions`, { withCredentials: true }),
+			//get: async () => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }),
 			/**
 			 * Edits a collections roles/permissions
 			 *
@@ -214,8 +215,18 @@ const apiProxy = {
 		 */
 		get: async () => {
 			try {
+				//CALL TO GET SESSION ID FROM CLOJURE BACK END
+				const res = await axios.get(`http://localhost:3030/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`)
+				window.clj_session_id = res.data['session-id']
+				//CALL TO GET THE USER ONCE THE SESSION ID HAS BEEN SET
 				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
-				const result = await axios.get(url, { withCredentials: true })
+				const result = await axios.get(url, { 
+					withCredentials: true, 
+					headers: {
+					'Content-Type': `application/json`,
+					'session-id': res.data['session-id'],
+					}, 
+				})
 				return new User(result.data)
 			} catch (error) {
 				console.error(error)
@@ -229,7 +240,9 @@ const apiProxy = {
 			 */
 			get: async () => {
 
-				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true }).then(res => res.data)
+				// const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true }).then(res => res.data)
+				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => res.data)
+
 
 				return result.reduce((map, item) => {
 					map[item.id] = item
@@ -241,3 +254,4 @@ const apiProxy = {
 }
 
 export default apiProxy
+

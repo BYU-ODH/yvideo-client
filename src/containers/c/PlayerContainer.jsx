@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import { contentService } from 'services'
 
-import { roles } from 'models/User'
 import { objectIsEmpty } from 'lib/util'
 
 import { Player } from 'components'
@@ -38,8 +37,8 @@ const PlayerContainer = props => {
 }
 
 const mapStateToProps = ({ authStore, contentStore }) => ({
-	isProf: authStore.user.roles.includes(roles.teacher),
-	isAdmin: authStore.user.roles.includes(roles.admin),
+	isProf: authStore.user.roles === 2,
+	isAdmin: authStore.user.roles === 0,
 	userId: authStore.user.id,
 	content: contentStore.cache,
 })

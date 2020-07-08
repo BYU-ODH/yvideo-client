@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { roles } from 'models/User'
-
 import {
 	contentService,
 	interfaceService,
@@ -129,7 +127,7 @@ const CreateContentContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	admin: store.authStore.user.roles.includes(roles.admin),
+	admin: store.authStore.user.roles === 0,
 	adminContent: store.adminStore.data,
 	modal: store.interfaceStore.modal,
 	collections: store.collectionStore.cache,
