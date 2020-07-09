@@ -9,7 +9,7 @@ import { Collections } from 'components'
 
 const CollectionsContainer = props => {
 
-	const { 
+	const {
 		isProf,
 		isAdmin,
 		displayBlocks,
@@ -21,14 +21,17 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 	} = props
 
+	//console.log(collections)
+
 	useEffect(() => {
 		getCollections()
 		setHeaderBorder(false)
 
 		// Iterate through published collections to get content, then get the ids of all of the content
-		const ids = [].concat.apply([], Object.entries(collections).filter(([k,v]) => v.published && !v.archived)
-			.map(([k,v]) => v.content.map(item => parseInt(item.id))))
-		getContent(ids)
+		// const ids = [].concat.apply([], Object.entries(collections).filter(([k,v]) => v.published && !v.archived)
+		// 	.map(([k,v]) => v.content.map(item => (item.id))))
+		// //console.log(ids)
+		// getContent(ids)
 
 		return () => {
 			setHeaderBorder(true)
@@ -40,9 +43,10 @@ const CollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		// TODO: When archiving a collection, make sure to unpublish it
-		collections: Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
+		//collections: Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
+		collections: collections,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
-		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => parseInt(k)),
+		// contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => (k)),
 	}
 
 	const handlers = {

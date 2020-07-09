@@ -26,7 +26,7 @@ const ManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
-		const ids = collection.content.map(item => parseInt(item.id))
+		const ids = collection.content.map(item => (item.id))
 		getContent(ids)
 		setCollectionName(collection.name)
 	}, [collection.content, collection.name, content, getContent])

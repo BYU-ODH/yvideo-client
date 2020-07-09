@@ -8,6 +8,7 @@ import { interfaceService, collectionService, adminService } from 'services'
 const CreateCollectionContainer = props => {
 
 	const {
+		userId,
 		adminCreateCollection,
 		createCollection,
 		isLabAssistantRoute,
@@ -23,8 +24,15 @@ const CreateCollectionContainer = props => {
 	const handleSubmit = async e => {
 		e.preventDefault()
 
-		if(isLabAssistantRoute) adminCreateCollection(name)
-		else createCollection(name)
+		const defaultV = {
+			'published': false,
+			'archived': false, 
+			'owner': userId, 
+			'collection-name': name,
+		}
+
+		if(isLabAssistantRoute) adminCreateCollection(defaultV)
+		else createCollection(defaultV)
 		toggleModal()
 	}
 
@@ -42,6 +50,7 @@ const CreateCollectionContainer = props => {
 }
 
 const mapStateToProps = store => ({
+	userId: store.authStore.user.id,
 	isLabAssistantRoute: store.interfaceStore.modal.isLabAssistantRoute,
 })
 

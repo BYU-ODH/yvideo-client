@@ -71,7 +71,6 @@ export default class BlockCollection extends Component {
 					<SlideWrapper count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 						{
 							content.map(item => {
-								if(!contentIds.includes(item.id)) return null
 								return <BlockItem key={item.id} data={item} />
 							})
 						}

@@ -37,7 +37,6 @@ class ListCollection extends PureComponent {
 				<Body isOpen={isOpen} count={content.length}>
 					{
 						content.map(item => {
-							if(!contentIds.includes(item.id)) return null
 							return <ListItem key={item.id} data={item} />
 						})
 					}

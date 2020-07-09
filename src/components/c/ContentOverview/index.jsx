@@ -21,6 +21,9 @@ import Style, {
 class ContentOverview extends PureComponent {
 	render() {
 
+		console.log(this.props)
+		console.log('use effect')
+
 		const {
 			editing,
 			content,
@@ -41,6 +44,8 @@ class ContentOverview extends PureComponent {
 			showCaptions,
 			showAnnotations,
 		} = content.settings
+
+		// const allowDefinitions = content['allow-definitions'] // <-- ?? -Matthew
 
 		const handlers = {
 			setContentState,

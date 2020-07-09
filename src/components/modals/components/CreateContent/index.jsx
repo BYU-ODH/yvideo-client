@@ -28,7 +28,7 @@ export default class CreateContent extends PureComponent {
 			contentType,
 			url,
 			description,
-			keywords,
+			resource,
 		} = this.props.viewstate.data
 
 		const {
@@ -85,12 +85,12 @@ export default class CreateContent extends PureComponent {
 						</label>
 
 						<div className='keywords-list'>
-							{keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
+							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
 						</div>
-
-						<input id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add a tag...' />
+						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
+						<input id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add a tag...'/>
 						<datalist id='create-content-keywords'>
-							{keywords.map((keyword, index) => <option key={index} value={keyword} />)}
+							{resource.keywords.map((keyword, index) => <option key={index} value={keyword} />)}
 						</datalist>
 
 						<div>

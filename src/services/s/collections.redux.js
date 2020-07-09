@@ -15,12 +15,11 @@ export default class CollectionService {
 	}
 
 	roleEndpoints = {
-		linkCourses: `linkCourses`,
-		addTA: `addTA`,
-		addException: `addException`,
-		unlinkCourses: `unlinkCourses`,
-		removeTA: `removeTA`,
-		removeException: `removeException`,
+		addCourse: `add-course`,
+		addTA: `add-user`,
+		addException: `add-user`,
+		removeCourse: `remove-course`,
+		removeUser: `remove-user`,
 	}
 
 	// action creators
@@ -219,10 +218,12 @@ export default class CollectionService {
 		const currentState = getState().collectionStore.cache[id]
 
 		let abort = false
+		
 
 		switch (action) {
 		case `publish`:
 			currentState.published = true
+
 			break
 
 		case `unpublish`:
@@ -243,10 +244,17 @@ export default class CollectionService {
 			break
 		}
 
+		let finalState = {
+			published: currentState.published,
+			archived: currentState.archived
+		}
+
+		console.log('finalState: ', finalState)
+
 		if (abort) dispatch(this.actions.collectionsAbort())
 		else {
 			try {
-				await apiProxy.collection.edit(id, action)
+				await apiProxy.collection.edit(id, finalState)
 				dispatch(this.actions.collectionEdit(currentState))
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
@@ -313,24 +321,22 @@ export default class CollectionService {
 			const newRoles = getState().collectionStore.roles[collectionId]
 
 			switch (endpoint) {
-			case this.roleEndpoints.linkCourses:
+			case this.roleEndpoints.addCourse:
 				newRoles.courses = [...newRoles.courses, data[0]]
 				break
-			case this.roleEndpoints.unlinkCourses:
+			case this.roleEndpoints.removeCourse:
 				newRoles.courses = newRoles.courses.filter(item => item.id !== body[0].id)
 				break
 			case this.roleEndpoints.addTA:
 				newRoles.admins = [...newRoles.admins, data]
 				newRoles.exceptions = [...newRoles.exceptions, data]
 				break
-			case this.roleEndpoints.removeTA:
-				newRoles.admins = newRoles.admins.filter(item => item.username !== body)
-				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
-				break
+			
 			case this.roleEndpoints.addException:
 				newRoles.exceptions = [...newRoles.exceptions, data]
 				break
-			case this.roleEndpoints.removeException:
+			case this.roleEndpoints.removeUser:
+				newRoles.admins = newRoles.admins.filter(item => item.username !== body)
 				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
 				break
 			default:
