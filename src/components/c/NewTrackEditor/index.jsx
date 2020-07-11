@@ -11,21 +11,21 @@ import { EventCard, TrackEditorSideMenu } from 'components/bits'
 
 import { Controller, TrackLayer } from 'components'
 
-import skipIcon from 'Assets/event_skip.svg'
-import muteIcon from 'Assets/event_mute.svg'
-import pauseIcon from 'Assets/event_pause.svg'
-import commentIcon from 'Assets/event_comment.svg'
+import skipIcon from 'assets/event_skip.svg'
+import muteIcon from 'assets/event_mute.svg'
+import pauseIcon from 'assets/event_pause.svg'
+import commentIcon from 'assets/event_comment.svg'
 //import censorIcon from 'Assets/event_censor.svg'
-import blankIcon from 'Assets/event_blank.svg'
-import trashIcon from 'Assets/trash_icon.svg'
-import closeIcon from 'Assets/close_icon.svg'
+import blankIcon from 'assets/event_blank.svg'
+import trashIcon from 'assets/trash_icon.svg'
+import closeIcon from 'assets/close_icon.svg'
 
 //ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 //TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
-//MAKE KEYBOARD ERROR LIKE YOUTUBE FUNCTIONALITY - ADD SECOND BACK OR FORWARD BUTTON
+//Move zoom control to the bottom of the screen
 
-import plus from 'Assets/plus-square.svg'
+import plus from 'assets/plus-square.svg'
 
 const TrackEditor = props => {
 
@@ -170,6 +170,8 @@ const TrackEditor = props => {
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
+	const [scrollFactor, setScrollFactor] = useState(0)
+	const [scrollWidth, setScrollWidth] = useState(0)
 	//const [editCensor, setEditCensor] = useState({})
 	//const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
@@ -179,13 +181,18 @@ const TrackEditor = props => {
 	})
 
 	useEffect(() => {
+		setScrollWidth(document.getElementsByClassName('zoom-scroll-container')[0].clientWidth)
 		function handleResize() {
+			setZoomFactor(0)
+			setWidth(0)
 			setTimeout(() => {
 				setDimensions({
 					height: window.innerHeight,
 					width: window.innerWidth
 				})
 			}, 500);
+			setZoomFactor(1)
+			setWidth(1)
 		}
 		window.addEventListener('resize', handleResize)
 		setEvents(allEvents)
@@ -452,6 +459,39 @@ const TrackEditor = props => {
 		updateContent(content)
 	}
 
+	const handleScrollFactor = (e, d) => {
+		console.log(scrollWidth)
+		setScrollFactor(d.x)
+		console.log(d.x)
+		let scrollPercentage = ((d.x * 100) / scrollWidth)
+		console.log(scrollPercentage)
+
+		if(document.getElementsByClassName('layer-container') !== undefined){
+			let scrubber = document.getElementById('time-bar')
+			let alllayers = Array.from(document.getElementsByClassName('layer-container'))
+			let currentLayerWidth = document.getElementsByClassName('events')[0].clientWidth
+			let scrollIndicatorWidth = ((document.getElementsByClassName('zoom-scroll-indicator')[0].clientWidth) * 100) / scrollWidth
+			if(d.x < scrollFactor){
+				alllayers.forEach((element, i) => {
+					alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+					scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+				});
+			}
+			else if(d.x === 0){
+				alllayers.forEach((element, i) => {
+					alllayers[i].scrollLeft -= d.x + 100 * 100
+					scrubber.scrollLeft -= d.x + 100 * 100
+				});
+			}
+			else {
+				alllayers.forEach((element, i) => {
+					alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+					scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+				});
+			}
+		}
+	}
+
 	// const handleLastClick = (height, width, x, y, time) => {
 	// 	//console.log(height, width)
 
@@ -494,8 +534,48 @@ const TrackEditor = props => {
 					>
 				</Controller>
 
-				<Timeline minimized={timelineMinimized}>
-
+				<Timeline minimized={timelineMinimized} zoom={zoomFactor}>
+					<div className='zoom-controls'>
+						<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<Rnd
+								className={'zoom-indicator'}
+								bounds={'parent'}
+								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								dragAxis="x"
+								onDragStop={(e, d) => {
+									console.log(d.x)
+									if(d.x < zoomFactor){
+										if(d.x === 0){
+											//console.log('zero')
+											setZoomFactor(0)
+											setWidth(0)
+										}
+										else {
+											//console.log('smaller')
+											setZoomFactor(d.x)
+											setWidth(-(Math.abs(zoomFactor - d.x) * 20))
+										}
+									}
+									else if(d.x > zoomFactor) {
+										//console.log('larger')
+										setZoomFactor(d.x)
+										setWidth((Math.abs(zoomFactor - d.x) * 20))
+									}
+								}}
+							></Rnd>
+						</div>
+						<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<div className={'zoom-scroll-container'}>
+								<Rnd
+									className={'zoom-scroll-indicator'}
+									bounds={'parent'}
+									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+									dragAxis="x"
+									onDragStop={(e, d) => handleScrollFactor(e, d)}
+								></Rnd>
+							</div>
+						</div>
+					</div>
 					<section>
 						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
@@ -529,36 +609,6 @@ const TrackEditor = props => {
 						</div>
 
 					</section>
-					<div className='zoom-controls'>
-						<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
-							<Rnd
-								className={'zoom-indicator'}
-								bounds={'parent'}
-								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-								dragAxis="y"
-								onDragStop={(e, d) => {
-									if(d.y < zoomFactor){
-										if(d.y === 0){
-											console.log('zero')
-											setZoomFactor(0)
-											setWidth(0)
-										}
-										else {
-											console.log('smaller')
-											setZoomFactor(d.y)
-											setWidth(-(Math.abs(zoomFactor - d.y) * 20))
-										}
-									}
-									else if(d.y > zoomFactor) {
-										console.log('larger')
-										setZoomFactor(d.y)
-										setWidth((Math.abs(zoomFactor - d.y) * 20))
-									}
-								}}
-							></Rnd>
-						</div>
-					</div>
-
 				</Timeline>
 
 			</span>
@@ -598,7 +648,7 @@ const TrackEditor = props => {
 								></TrackEditorSideMenu>
 						) : (
 							<>
-								<div className='events'>
+								<div className='eventsList'>
 									{events.map((event, i) => (
 										<EventCard event={event} key={i} />
 									))}

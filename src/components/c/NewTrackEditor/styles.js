@@ -11,6 +11,7 @@ const Style = styled.div`
 
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
+	z-index: 0;
 
 	display: flex;
 
@@ -56,39 +57,60 @@ export const Timeline = styled.div`
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
-	display: flex;
-  background-color: white;
-	overflow: scroll;
+  background-color: transparent;
+	z-index: 0;
 
 	& .zoom-controls {
-		width: 46px;
-		height: 26%;
+		width: 100%;
+		height: 40px;
 		display: flex;
-		flex-direction: column;
-		position: fixed;
 		left: 0px;
 		background-color: white;
 		border: 1px solid black;
 
-		& div {
+		& .zoom-factor {
 			margin: auto;
-			width: 50%;
-			height: 90%;
+			width: 140px;
+			height: 50%;
 			border-radius: 10px;
 			background-color: rgba(220, 220, 220, 0.5);
 			position: relative;
 
 			& .zoom-indicator {
-				width: 100% !important;
-				height: 3rem !important;
+				width: 2rem !important;
+				height: 100% !important;
 				background-color: var(--light-blue);
 				border-radius: 20px;
+			}
+		}
+
+		& .zoom-scroll {
+			width: calc(100% - 161px);
+			height: calc(100%);
+			border-left: 1px solid black;
+			display: flex;
+
+			& .zoom-scroll-container {
+				margin: auto;
+				width: 90%;
+				height: 50%;
+				border-radius: 10px;
+				background-color: rgba(220, 220, 220, 0.5);
+				position: relative;
+
+				& .zoom-scroll-indicator {
+					min-width: 5%;
+					width: ${props => props.zoom !== 0 ? (`calc(100% - ${props.zoom}%)`) : (`100%`)} !important;
+					height: 100% !important;
+					background-color: var(--light-blue);
+					border-radius: 20px;
+					/* TODO: RESIZE INDICATOR BASED ON ZOOM FACTOR*/
+				}
 			}
 		}
 	}
 
 	& > section {
-		margin-left: 48px;
 		width: 100%;
 		box-sizing: border-box;
 	}
@@ -105,8 +127,8 @@ export const Timeline = styled.div`
 	}
 
 	& .handle {
-		width: 115px !important;
-		min-width: 115px;
+		width: 162px !important;
+		min-width: 162px;
 		height: 46px;
 		display: inline-flex;
 		align-items: center;
@@ -266,7 +288,7 @@ export const EventList = styled.div`
 		}
 	}
 
-	& > .events {
+	& > .eventsList {
 		display: ${ props => props.minimized !== false ? ('none') : ('visible')}
 		padding: 3rem;
 	}

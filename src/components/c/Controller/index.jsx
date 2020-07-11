@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
@@ -44,6 +44,10 @@ const Controller = props => {
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
+
+	useEffect(() => {
+		let indicator = document.getElementById('time-indicator')
+	})
 
 	const video = {
 
@@ -231,13 +235,6 @@ const Controller = props => {
 
 							<div id='time-bar'>
 								<div id={'time-bar-container'}>
-									{/* <span className='total'></span>
-
-									<span className='current'>
-										<span className='current-time'>
-											<span id='timeDot'></span>
-										</span>
-									</span> */}
 									<progress className="total" value={`${video.played * 100}`} max="100" onClick={video.handleSeek}></progress>
 									<span id='time-dot'></span>
 									<span id='time-indicator'></span>

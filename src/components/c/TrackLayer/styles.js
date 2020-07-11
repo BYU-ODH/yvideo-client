@@ -16,11 +16,10 @@ export const Style = styled.div`
 	width: 100%;
 	height: auto;
 	z-index: 0;
-	overflow-x: scroll !important;
+	overflow-x: scroll;
 
 	& .eventsbox {
     position: relative;
-		overflow: scroll;
     width: 100%;
     height: 100%;
 	}
@@ -31,10 +30,9 @@ export const Style = styled.div`
 		display: flex;
 		height: 45px;
 		position: absolute;
-		overflow-x: scroll !important;
 		border-right: 2px solid var(--light-blue);
-		background: url(${timeBarIcon}) center repeat;
-		background-size: 200px 100%;
+		/* background: url(${timeBarIcon}) center repeat;
+		background-size: 200px 100%; */
 	}
 
 	& .layer-event {

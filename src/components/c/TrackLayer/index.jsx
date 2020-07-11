@@ -140,7 +140,7 @@ const TrackLayer = props => {
 
 	return (
 		<>
-		<Style layerWidth={layerWidth}>
+		<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? 'active-layer' : ''}`} ref={dropRef}>

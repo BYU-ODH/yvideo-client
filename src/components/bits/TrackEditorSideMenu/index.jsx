@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
-import trashIcon from 'Assets/trash_icon.svg'
-import closeIcon from 'Assets/close_icon.svg'
+import trashIcon from 'assets/trash_icon.svg'
+import closeIcon from 'assets/close_icon.svg'
 
 import Style from './styles.js'
 
