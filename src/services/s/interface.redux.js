@@ -9,7 +9,10 @@ export default class InterfaceService {
 		MODAL_TOGGLE: `MODAL_TOGGLE`,
 		COLLECTIONS_DISPLAY_TOGGLE: `COLLECTIONS_DISPLAY_TOGGLE`,
 		SET_HEADER_BORDER: `SET_HEADER_BORDER`,
+		SET_EDITOR_STYLE: `SET_EDITOR_STYLE`,
 		SET_LOST: `SET_LOST`,
+		SET_EVENTS: `SET_EVENTS`,
+		GET_EVENTS: `GET_EVENTS`,
 	}
 
 	// action creators
@@ -19,7 +22,10 @@ export default class InterfaceService {
 		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute:false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
 		setHeaderBorder: active => ({ type: this.types.SET_HEADER_BORDER, payload: { active }}),
+		setEditorStyle: active => ({ type: this.types.SET_EDITOR_STYLE, payload: { active }}),
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),
+		setEvents: events => ({ type: this.types.SET_EVENTS, payload: { events }}),
+		getEvents: events => ({ type: this.types.GET_EVENTS, payload: { events }}),
 	}
 
 	// default store
@@ -35,7 +41,9 @@ export default class InterfaceService {
 		},
 		displayBlocks: browserStorage.displayBlocks,
 		headerBorder: false,
+		editorStyle: false,
 		lost: false,
+		events: [],
 	}
 
 	// reducer
@@ -75,10 +83,28 @@ export default class InterfaceService {
 				headerBorder: action.payload.active,
 			}
 
+		case this.types.SET_EDITOR_STYLE:
+			return {
+				...store,
+				editorStyle: action.payload.active,
+			}
+
 		case this.types.SET_LOST:
 			return {
 				...store,
 				lost: action.payload.lost,
+			}
+
+		case this.types.SET_EVENTS:
+			return {
+				...store,
+				events: action.payload.events,
+			}
+
+		case this.types.GET_EVENTS:
+			return {
+				...store,
+				events: action.payload.events,
 			}
 
 		default:
@@ -114,5 +140,14 @@ export default class InterfaceService {
 
 	setLost = lost => async dispatch => {
 		dispatch(this.actions.setLost(lost))
+	}
+
+	setEditorStyle = active => async dispatch => {
+		dispatch(this.actions.setEditorStyle(active))
+	}
+
+	setEvents = events => async dispatch => {
+		//console.log('%c Updated Store', 'color: purple; font-weight: bold;')
+		dispatch(this.actions.setEvents(events))
 	}
 }

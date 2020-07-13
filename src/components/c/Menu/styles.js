@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-export const Wrapper = styled.div`
+const Style = styled.div`
 	position: fixed;
 	top: 0;
 	left: 100%;
@@ -14,7 +14,8 @@ export const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 
-	background-color: white;
+	background-color: ${props => props.editorStyle ? `#303030` : `white`};
+	color: ${props => props.editorStyle ? `white` : `black`};
 
 	z-index: 32;
 
@@ -49,13 +50,13 @@ export const Wrapper = styled.div`
 	}
 `
 
+export default Style
+
 export const LinkStyled = styled(Link)`
 	margin-bottom: 1rem;
 
 	text-decoration: none;
 	font-weight: 300;
-
-	color: black;
 
 	background: transparent;
 	border: none;

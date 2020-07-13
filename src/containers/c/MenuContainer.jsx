@@ -16,6 +16,7 @@ const MenuContainer = props => {
 		menuActive,
 		logout,
 		toggleMenu,
+		editorStyle,
 	} = props
 
 	const handleLogout = async e => {
@@ -29,6 +30,7 @@ const MenuContainer = props => {
 		menuActive,
 		isProf,
 		isAdmin,
+		editorStyle,
 	}
 
 	const handlers = {
@@ -45,6 +47,7 @@ const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 	isAdmin: authStore.user.roles.includes(`admin`),
 	isStudent: authStore.user.roles.includes(`student`),
 	menuActive: interfaceStore.menuActive,
+	editorStyle: interfaceStore.editorStyle,
 })
 
 const mapDispatchToProps = {

@@ -3,7 +3,9 @@ import CollectionPermissions from './c/CollectionPermissions'
 import Collections from './c/Collections'
 import ContentOverview from './c/ContentOverview'
 import ContentSettings from './c/ContentSettings'
+import Controller from './c/Controller'
 import Error from './c/Error'
+import Events from './c/Events'
 import Header from './c/Header'
 import LabAssistant from './c/LabAssistant'
 import Landing from './c/Landing'
@@ -14,6 +16,9 @@ import Menu from './c/Menu'
 import Overlay from './c/Overlay'
 import Player from './c/Player'
 import Root from './c/Root'
+import TrackEditor from './c/NewTrackEditor'
+import TrackLayer from './c/TrackLayer'
+import VideoControls from './c/VideoControls'
 
 export {
 	Admin,
@@ -21,7 +26,9 @@ export {
 	Collections,
 	ContentOverview,
 	ContentSettings,
+	Controller,
 	Error,
+	Events,
 	Header,
 	LabAssistant,
 	Landing,
@@ -32,4 +39,7 @@ export {
 	Overlay,
 	Player,
 	Root,
+	TrackEditor,
+	TrackLayer,
+	VideoControls,
 }

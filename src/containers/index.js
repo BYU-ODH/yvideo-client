@@ -3,6 +3,7 @@ import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
 import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
 import ContentSettingsContainer from './c/ContentSettingsContainer'
+import EventsContainer from './c/EventsContainer'
 import HeaderContainer from './c/HeaderContainer'
 import LabAssistantContainer from './c/LabAssistantContainer'
 import LabAssistantManageCollectionContainer from './c/LabAssistantManageCollectionContainer'
@@ -14,6 +15,7 @@ import ManagerContainer from './c/ManagerContainer'
 import MenuContainer from './c/MenuContainer'
 import PlayerContainer from './c/PlayerContainer'
 import RootContainer from './c/RootContainer'
+import TrackEditorContainer from './c/TrackEditorContainer'
 
 export {
 	AdminContainer,
@@ -21,6 +23,7 @@ export {
 	ContentOverviewContainer,
 	CollectionPermissionsContainer,
 	ContentSettingsContainer,
+	EventsContainer,
 	HeaderContainer,
 	LabAssistantContainer,
 	LabAssistantManageCollectionContainer,
@@ -32,4 +35,5 @@ export {
 	MenuContainer,
 	PlayerContainer,
 	RootContainer,
+	TrackEditorContainer,
 }

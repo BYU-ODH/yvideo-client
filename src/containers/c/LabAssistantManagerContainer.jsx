@@ -34,6 +34,10 @@ const LabAssistantManagerContainer = props => {
 
 		if(objectIsEmpty(professor)){
 			setProfessor(professorId)
+
+			if (!collections)
+				searchCollections(professorId, true)
+			//else console.log(collections)
 		}
 
 		return () => {

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Wrapper, LinkStyled, Header, UserPic, LogoutButton } from './styles'
+import Style, { LinkStyled, Header, UserPic, LogoutButton } from './styles'
 
 class Menu extends PureComponent {
 	render() {
@@ -10,6 +10,7 @@ class Menu extends PureComponent {
 			menuActive,
 			isProf,
 			isAdmin,
+			editorStyle,
 		} = this.props.viewstate
 
 		const {
@@ -18,7 +19,7 @@ class Menu extends PureComponent {
 		} = this.props.handlers
 
 		return (
-			<Wrapper className={menuActive && `active`} onClick={toggleMenu}>
+			<Style editorStyle={editorStyle} className={menuActive && `active`} onClick={toggleMenu}>
 
 				<UserPic>{initials}</UserPic>
 				<h4>{user.name}</h4>
@@ -53,7 +54,7 @@ class Menu extends PureComponent {
 					</>
 				}
 
-			</Wrapper>
+			</Style>
 		)
 	}
 }
