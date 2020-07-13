@@ -38,7 +38,7 @@ export default class ManageCollection extends PureComponent {
 			togglePublish,
 			archive,
 			setTab,
-			createContent,
+			showCreateContentModal,
 		} = this.props.handlers
 
 		console.log(admin)
@@ -104,7 +104,7 @@ export default class ManageCollection extends PureComponent {
 						)}
 
 					{isContent && (
-						<NewContent onClick={createContent}>
+						<NewContent onClick={showCreateContentModal}>
 							<Icon src={plus} />
 						</NewContent>
 					)}

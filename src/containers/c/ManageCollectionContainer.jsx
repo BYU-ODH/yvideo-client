@@ -47,7 +47,7 @@ const ManageCollectionContainer = props => {
 		updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
 	}
 
-	const createContent = () => {
+	const showCreateContentModal = () => {
 		props.toggleModal({
 			component: CreateContentContainer,
 			collectionId: collection.id,
@@ -90,7 +90,7 @@ const ManageCollectionContainer = props => {
 		toggleEdit,
 		handleNameChange,
 		togglePublish,
-		createContent,
+		showCreateContentModal,
 		archive,
 		setTab,
 	}

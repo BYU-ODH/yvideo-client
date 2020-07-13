@@ -11,6 +11,7 @@ const LazyImage =
 		heightSm = `50.5vw`,
 		widthSm = `90vw`,
 	}) => {
+
 		return (
 			<Style
 				height={height}
