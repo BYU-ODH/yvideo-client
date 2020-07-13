@@ -11,6 +11,7 @@ class Load extends Component {
 				<Wrapper ref={this.wrapper} className='hidden'>
 					<Spinner />
 				</Wrapper>
+			)
 			,
 			document.getElementById('load'))
 	}
@@ -18,18 +19,20 @@ class Load extends Component {
 	componentDidUpdate = prevProps => {
 
 
-		if (!prevProps.loading && this.props.loading) {
-			this.wrapper.current.classList.add('active')
-			this.wrapper.current.classList.remove('hidden')
-		}
+		if(this.wrapper !== undefined){
+			if (!prevProps.loading && this.props.loading) {
+				this.wrapper.current.classList.add('active')
+				this.wrapper.current.classList.remove('hidden')
+			}
 
-		if (prevProps.loading && !this.props.loading) {
-			setTimeout(() => {
-				this.wrapper.current.classList.remove('active')
+			if (prevProps.loading && !this.props.loading) {
 				setTimeout(() => {
-					this.wrapper.current.classList.add('hidden')
-				}, 250)
-			}, 1000)
+					this.wrapper.current.classList.remove('active')
+					setTimeout(() => {
+						this.wrapper.current.classList.add('hidden')
+					}, 250)
+				}, 1000)
+			}
 		}
 	}
 

@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 
 import ConfirmDelete from '../components/ConfirmDelete'
 
-import { roles } from 'models/User'
-
 import {
 	adminService,
 	interfaceService
@@ -70,7 +68,7 @@ const ConfirmDeleteContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	admin: store.authStore.user.roles.includes(roles.admin),
+	admin: store.authStore.user.roles === 0,
 	adminContent: store.adminStore.data,
 })
 
