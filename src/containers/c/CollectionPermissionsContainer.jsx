@@ -118,7 +118,7 @@ const CollectionPermissionsContainer = props => {
 			if (catalog) body.catalogNumber = catalog
 			if (section) body.sectionNumber = section
 
-			updateCollectionRoles(collection.id, roleEndpoints.linkCourses, [body])
+			updateCollectionRoles(collection.id, roleEndpoints.addCourse, [body])
 
 			setState({
 				...state,
@@ -146,12 +146,17 @@ const CollectionPermissionsContainer = props => {
 			if (data.Section) body.sectionNumber = data.Section
 
 			if (body.department !== null && body.id !== null)
-				updateCollectionRoles(collection.id, roleEndpoints.unlinkCourses, [body])
+				updateCollectionRoles(collection.id, roleEndpoints.removeCourse, [body])
 			else alert(`Error, department not found`)
 		},
 		addTaFaculty: e => {
+			console.log(state.taFaculty)
 			e.preventDefault()
-			updateCollectionRoles(collection.id, roleEndpoints.addTA, state.taFaculty)
+			const body = {
+				'username': state.taFaculty,
+				'account-role': 1,
+			}
+			updateCollectionRoles(collection.id, roleEndpoints.addTA, body)
 			setState({
 				...state,
 				taFaculty: ``,
@@ -163,7 +168,7 @@ const CollectionPermissionsContainer = props => {
 			const data = JSON.parse(e.target.dataset.item)
 			const body = data.NetID || null
 
-			if (body !== null) updateCollectionRoles(collection.id, roleEndpoints.removeTA, body)
+			if (body !== null) updateCollectionRoles(collection.id, roleEndpoints.removeUser, body)
 
 			else alert(`Error, netId not found`)
 		},
@@ -180,7 +185,7 @@ const CollectionPermissionsContainer = props => {
 			const data = JSON.parse(e.target.dataset.item)
 			const body = data.NetID || null
 			if (body !== null)
-				updateCollectionRoles(collection.id, roleEndpoints.removeException, body)
+				updateCollectionRoles(collection.id, roleEndpoints.removeUser, body)
 			else alert(`Error, netId not found`)
 		},
 	}

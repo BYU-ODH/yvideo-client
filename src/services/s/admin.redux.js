@@ -1,3 +1,5 @@
+import User from 'models/User'
+
 export default class AdminService {
 
 	// TODO: Move all functionality from this service into appropriate services
@@ -254,8 +256,16 @@ export default class AdminService {
 			try {
 
 				const results = await apiProxy.admin.search.get(`user`, searchQuery)
+				
+				let profArray = []
 
-				dispatch(this.actions.adminSearchProfessors(results))
+				results.forEach(element => {
+					profArray.push(new User(element))
+				});
+
+				//console.log(profArray)
+
+				dispatch(this.actions.adminSearchProfessors(profArray))
 
 			} catch (error) {
 				console.error(error.message)
@@ -315,7 +325,7 @@ export default class AdminService {
 
 			const ownerId = getState().adminStore.professor.id
 
-			await apiProxy.admin.collection.create(name, parseInt(ownerId))
+			await apiProxy.admin.collection.create(name, parseInt(ownerId)) // maybe parseInt(ownerId) -> ownerId -Matthew
 
 			dispatch(this.actions.adminCreateCollection())
 

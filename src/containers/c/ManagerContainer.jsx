@@ -2,8 +2,6 @@ import React, { useEffect } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { roles } from 'models/User'
-
 import { collectionService, interfaceService } from 'services'
 
 import { Manager } from 'components'
@@ -75,7 +73,7 @@ const ManagerContainer = props => {
 
 const mapStateToProps = store => ({
 	collections: store.collectionStore.cache,
-	admin: store.authStore.user.roles.includes(roles.admin),
+	admin: store.authStore.user.roles === 0,
 })
 
 const mapDispatchToProps = {

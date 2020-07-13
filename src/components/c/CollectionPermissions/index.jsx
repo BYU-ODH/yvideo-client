@@ -79,7 +79,7 @@ export class CollectionPermissions extends PureComponent {
 				<h4>TA / Faculty</h4>
 
 				<Search onSubmit={handlers.addTaFaculty}>
-					<input type='search' placeholder={`Enter netID or name`} onChange={handlers.handleTaFacultyChange} value={taFaculty} />
+					<input type='search' placeholder={`Enter netID`} onChange={handlers.handleTaFacultyChange} value={taFaculty} />
 					<AddButton type='submit' disabled={disabled.taFaculty}>Add</AddButton>
 				</Search>
 
@@ -88,7 +88,7 @@ export class CollectionPermissions extends PureComponent {
 				<h4>Audit Exceptions</h4>
 
 				<Search onSubmit={handlers.addException}>
-					<input type='search' placeholder={`Enter netID or name`} onChange={handlers.handleExceptionChange} value={exception} />
+					<input type='search' placeholder={`Enter netID`} onChange={handlers.handleExceptionChange} value={exception} />
 					<AddButton type='submit' disabled={disabled.exception}>Add</AddButton>
 				</Search>
 

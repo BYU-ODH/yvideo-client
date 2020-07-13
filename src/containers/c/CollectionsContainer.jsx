@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 
 import { collectionService, interfaceService, contentService } from 'services'
 
-import { roles } from 'models/User'
-
 import { Collections } from 'components'
 
 // import { objectIsEmpty } from 'lib/util'
@@ -23,14 +21,17 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 	} = props
 
+	//console.log(collections)
+
 	useEffect(() => {
 		getCollections()
 		setHeaderBorder(false)
 
 		// Iterate through published collections to get content, then get the ids of all of the content
-		const ids = [].concat.apply([], Object.entries(collections).filter(([k,v]) => v.published && !v.archived)
-			.map(([k,v]) => v.content.map(item => parseInt(item.id))))
-		getContent(ids)
+		// const ids = [].concat.apply([], Object.entries(collections).filter(([k,v]) => v.published && !v.archived)
+		// 	.map(([k,v]) => v.content.map(item => (item.id))))
+		// //console.log(ids)
+		// getContent(ids)
 
 		return () => {
 			setHeaderBorder(true)
@@ -42,9 +43,10 @@ const CollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		// TODO: When archiving a collection, make sure to unpublish it
-		collections: Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
+		//collections: Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
+		collections: collections,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
-		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => parseInt(k)),
+		// contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => (k)),
 	}
 
 	const handlers = {
@@ -55,8 +57,8 @@ const CollectionsContainer = props => {
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
-	isProf: authStore.user.roles.includes(roles.teacher),
-	isAdmin: authStore.user.roles.includes(roles.admin),
+	isProf: authStore.user.roles === 2,
+	isAdmin: authStore.user.roles === 0,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,

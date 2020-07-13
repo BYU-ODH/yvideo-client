@@ -24,6 +24,8 @@ const MenuContainer = props => {
 		await logout()
 	}
 
+	console.log(user)
+
 	const viewstate = {
 		user,
 		initials: getInitials(user.name),
@@ -43,9 +45,9 @@ const MenuContainer = props => {
 
 const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 	user: authStore.user,
-	isProf: authStore.user.roles.includes(`professor`),
-	isAdmin: authStore.user.roles.includes(`admin`),
-	isStudent: authStore.user.roles.includes(`student`),
+	isProf: authStore.user.roles === 2,
+	isAdmin: authStore.user.roles  === 0,
+	isStudent: authStore.user.roles  === 3,
 	menuActive: interfaceStore.menuActive,
 	editorStyle: interfaceStore.editorStyle,
 })

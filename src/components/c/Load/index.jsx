@@ -1,14 +1,14 @@
-import React, { Component, createRef } from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
 import { Wrapper, Spinner } from './styles'
 
 class Load extends Component {
 
-	wrapper = createRef()
-
 	render() {
-		return ReactDOM.createPortal(<Wrapper ref={this.wrapper} className='active'>
+		return ReactDOM.createPortal(
+			(
+				<Wrapper ref={this.wrapper} className='hidden'>
 					<Spinner />
 				</Wrapper>
 			,
@@ -17,7 +17,6 @@ class Load extends Component {
 
 	componentDidUpdate = prevProps => {
 
-		if (!this.wrapper.current) return
 
 		if (!prevProps.loading && this.props.loading) {
 			this.wrapper.current.classList.add('active')

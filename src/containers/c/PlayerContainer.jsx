@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 
 import { contentService, resourceService } from 'services'
 
-import { roles } from 'models/User'
-
 import { Player } from 'components'
 
 const PlayerContainer = props => {
@@ -150,11 +148,11 @@ const PlayerContainer = props => {
 	return <Player viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, contentStore, resourceStore }) => ({
-	isProf: authStore.user.roles.includes(roles.teacher),
-	isAdmin: authStore.user.roles.includes(roles.admin),
-	contentCache: contentStore.cache,
-	resourceCache: resourceStore.cache,
+const mapStateToProps = ({ authStore, contentStore }) => ({
+	isProf: authStore.user.roles === 2,
+	isAdmin: authStore.user.roles === 0,
+	userId: authStore.user.id,
+	content: contentStore.cache,
 })
 
 const mapDispatchToProps = {

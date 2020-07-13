@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { roles } from 'models/User'
+import Content from 'models/Content'
 
 import {
 	contentService,
@@ -32,7 +32,9 @@ const CreateContentContainer = props => {
 		contentType: `video`,
 		title: ``,
 		description: ``,
-		keywords: [],
+		resource: {
+			keywords: [],
+		}
 	})
 
 	const changeTab = e => {
@@ -61,7 +63,7 @@ const CreateContentContainer = props => {
 
 	const handleSelectResourceChange = e => {
 		const { target } = e
-		console.log(target.value)
+		//console.log(target.value)
 		setSelectedResource(target.value)
 	}
 
@@ -78,7 +80,9 @@ const CreateContentContainer = props => {
 
 		setData({
 			...data,
-			keywords: [...data.keywords, element.value],
+			resource: {
+				keywords: [...data.resource.keywords, element.value],
+			}
 		})
 
 		document.getElementById(`create-content-form`).reset()
@@ -86,8 +90,43 @@ const CreateContentContainer = props => {
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		if(modal.isLabAssistantRoute) adminCreateContent(data, modal.collectionId)
-		else createContent(data, modal.collectionId)
+		//console.log(data)
+		let tags = ''
+		
+		if(data.resource.keywords.length !== 0){
+			//console.log(data.resource.keywords)
+			data.resource.keywords.forEach((element, i) => {
+
+				if(i !== data.resource.keywords.length -1){
+					tags += `${element}; `
+				}
+				else {
+					tags += `${element}`
+				}
+			})
+		}
+
+		let temp = {
+			
+			"allow-definitions": true,
+			"url": data.url,
+			"allow-captions": true,
+			"content-type": data.contentType,
+			"resource-id": "00000000-0000-0000-0000-000000000000",
+			"tags": tags,
+			"thumbnail": "",
+			"file-version": '',
+			"collection-id": modal.collectionId,
+			"views": 0,
+			"annotations": "",
+			"title": data.title,
+			"allow-notes": true,
+			"description": data.description
+			
+		}
+		
+		if(modal.isLabAssistantRoute) adminCreateContent(temp)
+		else createContent(temp)
 		toggleModal()
 	}
 
@@ -101,7 +140,9 @@ const CreateContentContainer = props => {
 		const badkeyword = e.target.dataset.keyword
 		setData({
 			...data,
-			keywords: data.keywords.filter(keyword => keyword !== badkeyword),
+			resource: {
+				keywords: data.keywords.filter(keyword => keyword !== badkeyword)
+			},
 		})
 	}
 
@@ -129,7 +170,7 @@ const CreateContentContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	admin: store.authStore.user.roles.includes(roles.admin),
+	admin: store.authStore.user.roles === 0,
 	adminContent: store.adminStore.data,
 	modal: store.interfaceStore.modal,
 	collections: store.collectionStore.cache,

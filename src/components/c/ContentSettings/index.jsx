@@ -28,6 +28,8 @@ export class ContentSettings extends PureComponent {
 			description,
 		} = content.resource
 
+		console.log(content.resource)
+
 		const {
 			handleToggle,
 			handleDescription,
