@@ -122,7 +122,7 @@ describe(`LabAssistantManagerContainer container test`, () => {
 		expect(viewstate.user.email).toBe(`test1@email.com`)
 		expect(viewstate.user.lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(viewstate.user.name).toBe(`testname professor1`)
-		expect(viewstate.user.roles[0]).toBe(`admin`)
+		expect(viewstate.user.roles).toBe(0)
 		expect(viewstate.user.username).toBe(`testusername`)
 
 		// console.log(wrapper.debug())

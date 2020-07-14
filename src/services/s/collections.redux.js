@@ -259,7 +259,7 @@ export default class CollectionService {
 			archived: currentState.archived,
 		}
 
-		console.log(`finalState: `, finalState)
+		// console.log(`finalState: `, finalState)
 
 		if (abort) dispatch(this.actions.collectionsAbort())
 		else {

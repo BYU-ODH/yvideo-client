@@ -19,7 +19,7 @@ const props = {
 		id: 22,
 		lastLogin: `2020-05-14T19:53:02.807Z`,
 		name: `testname`,
-		roles: [`admin`],
+		roles: 0,
 		username: `testusername`,
 	},
 }
@@ -35,7 +35,7 @@ describe(`root container test`, () => {
 		expect(viewstate.user.id).toBe(22)
 		expect(viewstate.user.lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(viewstate.user.name).toBe(`testname`)
-		expect(viewstate.user.roles[0]).toBe(`admin`)
+		expect(viewstate.user.roles).toBe(0)
 		expect(viewstate.user.username).toBe(`testusername`)
 		expect(viewstate.loading).toBe(false)
 		expect(viewstate.modal.active).toBe(false)

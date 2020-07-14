@@ -40,8 +40,7 @@ describe(`collection container test`, () => {
 		expect(viewstate.collections[0].owner).toBe(22)
 		expect(viewstate.collections[0].published).toBe(true)
 		expect(viewstate.collections[0].thumbnail).toBe(`test@thumbnail`)
-
-		expect(viewstate.contentIds[0]).toBe(0)
+		// expect(viewstate.contentIds[0]).toBe(0)
 	})
 
 	it(`mount`, () => {

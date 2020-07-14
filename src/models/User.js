@@ -19,11 +19,11 @@ export default class User {
 		// if (typeof obj.lastLogin !== `string`) console.error(`Error: lastLogin must be of type 'string'`)
 		// if (typeof obj.accountName !== `string`) console.error(`Error: lastLogin must be of type 'string'`)
 
-		this.id = obj['id']
-		this.username = obj['username']
-		this.name = obj['account-name']
-		this.email = obj['email']
-		this.roles = obj['account-type']
-		this.lastLogin = obj['last-login']
+		this.id = obj[`id`]
+		this.username = obj[`username`]
+		this.name = obj[`account-name`]
+		this.email = obj[`email`]
+		this.roles = obj[`account-type`]
+		this.lastLogin = obj[`last-login`]
 	}
 }

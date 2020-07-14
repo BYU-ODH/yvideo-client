@@ -45,7 +45,7 @@ export const user = {
 	id: 22,
 	lastLogin: `2020-05-14T19:53:02.807Z`,
 	name: `testname`,
-	roles: [`admin`],
+	roles: 0,
 	username: `testusername`,
 }
 
@@ -154,7 +154,7 @@ export const professor1 = {
 	lastLogin: `2020-05-14T19:53:02.807Z`,
 	linked: `-1`,
 	name: `testname professor1`,
-	roles: [`admin`],
+	roles: 0,
 	username: `testusername`,
 }
 
@@ -164,7 +164,7 @@ export const professor2 = {
 	lastLogin: `2020-05-14T19:53:02.807Z`,
 	linked: `-1`,
 	name: `testname professor2`,
-	roles: [`admin`],
+	roles: 0,
 	username: `testusername2`,
 }
 
@@ -221,7 +221,7 @@ export const roles = {
 				name:`testname`,
 				email:`test@test.com`,
 				linked:-1,
-				roles: [`admin`],
+				roles: 0,
 				lastLogin:`2020-05-29T20:45:58.551Z`,
 				exceptions:[
 					{
@@ -230,7 +230,7 @@ export const roles = {
 						lastLogin:`2020-05-29T20:45:58.551Z`,
 						name:`testname`,
 						linked:-1,
-						roles: [`admin`],
+						roles: 0,
 						username: `testusername`,
 					},
 				],
@@ -243,7 +243,7 @@ export const roles = {
 				lastLogin:`2020-05-29T20:45:58.551Z`,
 				name:`testname`,
 				linked:-1,
-				roles: [`admin`],
+				roles: 0,
 				username: `testusername`,
 			},
 		],
@@ -273,7 +273,7 @@ export const store = mockStore(
 					lastLogin: `2020-05-14T19:53:02.807Z`,
 					linked: `-1`,
 					name: `testname`,
-					roles: [`admin`],
+					roles: 0,
 					username: `testusername`,
 				},
 			],

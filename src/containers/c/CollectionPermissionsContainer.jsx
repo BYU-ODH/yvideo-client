@@ -150,7 +150,7 @@ const CollectionPermissionsContainer = props => {
 			else alert(`Error, department not found`)
 		},
 		addTaFaculty: e => {
-			console.log(state.taFaculty)
+			// console.log(state.taFaculty)
 			e.preventDefault()
 			const body = {
 				'username': state.taFaculty,

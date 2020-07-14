@@ -31,7 +31,7 @@ describe(`CreateContentContainer test`, () => {
 		const viewstate = wrapper.props().viewstate
 		expect(viewstate.adminContent[0].email).toBe(`test@email.com`)
 		expect(viewstate.adminContent[0].name).toBe(`testname`)
-		expect(viewstate.adminContent[0].roles[0]).toBe(`admin`)
+		expect(viewstate.adminContent[0].roles).toBe(0)
 		expect(viewstate.adminContent[0].username).toBe(`testusername`)
 	})
 

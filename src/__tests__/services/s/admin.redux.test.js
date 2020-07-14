@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import proxies from 'proxy'
+import User from '../../../models/User'
 
 const content = testutil.content
 
@@ -11,10 +12,10 @@ const searchResults = [
 	{
 		email:`test@test.com`,
 		id:22,
-		lastLogin:`2020-05-29T20:45:58.551Z`,
-		name:`testname`,
+		"last-login":`2020-05-29T20:45:58.551Z`,
+		"account-name":`testname`,
 		linked:-1,
-		roles: [`admin`],
+		"account-type": [`admin`],
 		username: `testusername`,
 	},
 ]
@@ -212,16 +213,14 @@ describe(`content service test`, () => {
 
 		proxies.apiProxy.admin.search.get = jest.fn()
 		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				results: searchResults,
-			})
+			return Promise.resolve(searchResults)
 		})
 
 		expect(store.getState().professors).toEqual([])
 		expect(store.getState().professor).toEqual({})
 		await adminServiceConstructor.searchProfessors(`testusername`, true)(dispatch, getState, { apiProxy })
-		expect(store.getState().professors).toEqual({status: 200, results: searchResults})
+
+		expect(store.getState().professors).toEqual([new User(searchResults[0])])
 	})
 
 	it(`setProfessor`, async() => {

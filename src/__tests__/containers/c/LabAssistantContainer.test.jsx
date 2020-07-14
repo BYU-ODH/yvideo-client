@@ -34,14 +34,14 @@ describe(`lab assistant container test`, () => {
 		expect(professor1.lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(professor1.name).toBe(`testname professor1`)
 		expect(professor1.username).toBe(`testusername`)
-		expect(professor1.roles[0]).toBe(`admin`)
+		expect(professor1.roles).toBe(0)
 
 		expect(professor2.email).toBe(`test2@email.com`)
 		expect(professor2.id).toBe(23)
 		expect(professor2.lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(professor2.name).toBe(`testname professor2`)
 		expect(professor2.username).toBe(`testusername2`)
-		expect(professor2.roles[0]).toBe(`admin`)
+		expect(professor2.roles).toBe(0)
 	})
 
 	it(`render lab asisstant component to check viewstate`, () => {
@@ -59,14 +59,14 @@ describe(`lab assistant container test`, () => {
 		expect(viewstate[0].lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(viewstate[0].name).toBe(`testname professor1`)
 		expect(viewstate[0].username).toBe(`testusername`)
-		expect(viewstate[0].roles[0]).toBe(`admin`)
+		expect(viewstate[0].roles).toBe(0)
 
 		expect(viewstate[1].email).toBe(`test2@email.com`)
 		expect(viewstate[1].id).toBe(23)
 		expect(viewstate[1].lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(viewstate[1].name).toBe(`testname professor2`)
 		expect(viewstate[1].username).toBe(`testusername2`)
-		expect(viewstate[1].roles[0]).toBe(`admin`)
+		expect(viewstate[1].roles).toBe(0)
 	})
 
 	it(`event handlers test`, () => {

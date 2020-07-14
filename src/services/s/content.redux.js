@@ -127,14 +127,13 @@ export default class ContentService {
 	// thunks
 
 	getContent = (contentIds = [], force = false) => async (dispatch, getState, { apiProxy }) => {
-		console.log(contentIds)
 
 		const time = Date.now() - getState().contentStore.lastFetched
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
 		const { cache } = getState().contentStore
-		const cachedIds = Object.keys(cache).map(id => (id))
+		const cachedIds = Object.keys(cache).map(id => id)
 		const notCached = contentIds.filter(id => !cachedIds.includes(id))
 
 		if (stale || notCached.length || force) {
@@ -231,7 +230,7 @@ export default class ContentService {
 			// const metaResult =
 			// await apiProxy.content.metadata.post(id, metadata)
 
-			console.log(settingsResult)
+			// console.log(settingsResult)
 			// console.log(metaResult)
 
 			dispatch(this.actions.contentUpdate(content))

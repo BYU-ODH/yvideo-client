@@ -28,7 +28,7 @@ describe(`admin container test`, () => {
 		expect(props.data[0].lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(props.data[0].name).toBe(`testname`)
 		expect(props.data[0].username).toBe(`testusername`)
-		expect(props.data[0].roles[0]).toBe(`admin`)
+		expect(props.data[0].roles).toBe(0)
 	})
 
 	it(`viewstate should generate successfully`, () => {
@@ -42,7 +42,7 @@ describe(`admin container test`, () => {
 		expect(viewstate.data[0].id).toBe(22)
 		expect(viewstate.data[0].lastLogin).toBe(`2020-05-14T19:53:02.807Z`)
 		expect(viewstate.data[0].name).toBe(`testname`)
-		expect(viewstate.data[0].roles[0]).toBe(`admin`)
+		expect(viewstate.data[0].roles).toBe(0)
 		expect(viewstate.data[0].username).toBe(`testusername`)
 	})
 

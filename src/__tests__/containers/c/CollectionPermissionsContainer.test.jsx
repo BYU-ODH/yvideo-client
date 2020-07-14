@@ -46,7 +46,7 @@ describe(`CollectionPermissionsContainer test`, () => {
 		expect(viewstate.roles.admins[0].id).toBe(22)
 		expect(viewstate.roles.admins[0].username).toBe(`testusername`)
 		expect(viewstate.roles.admins[0].name).toBe(`testname`)
-		expect(viewstate.roles.admins[0].roles[0]).toBe(`admin`)
+		expect(viewstate.roles.admins[0].roles).toBe(0)
 	})
 
 	it(`mount for behavioral test`, () => {

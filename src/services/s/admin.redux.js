@@ -256,14 +256,12 @@ export default class AdminService {
 			try {
 
 				const results = await apiProxy.admin.search.get(`user`, searchQuery)
-				
-				let profArray = []
+
+				const profArray = []
 
 				results.forEach(element => {
 					profArray.push(new User(element))
-				});
-
-				//console.log(profArray)
+				})
 
 				dispatch(this.actions.adminSearchProfessors(profArray))
 
