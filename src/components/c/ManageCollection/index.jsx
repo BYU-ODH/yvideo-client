@@ -52,6 +52,7 @@ export default class ManageCollection extends PureComponent {
 								value={collectionName}
 								contenteditable='true'
 								onChange={handleNameChange}
+								className={`title-edit`}
 								onKeyPress={event => {
 									if (event.key === `Enter`) toggleEdit()
 								}}
@@ -64,6 +65,7 @@ export default class ManageCollection extends PureComponent {
 						<TitleEditButton
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
+							className={`title-edit-button`}
 						>
 							{isEditingCollectionName ? `Save` : `Edit`}
 						</TitleEditButton>
@@ -92,8 +94,8 @@ export default class ManageCollection extends PureComponent {
 					</div>
 				</header>
 				<TabHeader>
-					<button onClick={setTab(true)}>Content</button>
-					<button onClick={setTab(false)}>Permissions</button>
+					<button className={`content-button`} onClick={setTab(true)}>Content</button>
+					<button className={`permissions-button`} onClick={setTab(false)}>Permissions</button>
 					<Selector isContent={isContent} />
 				</TabHeader>
 				<Tab>
@@ -106,7 +108,7 @@ export default class ManageCollection extends PureComponent {
 						)}
 
 					{isContent && (
-						<NewContent onClick={createContent}>
+						<NewContent className={`newcontent-button`} onClick={createContent}>
 							<Icon src={plus} />
 						</NewContent>
 					)}

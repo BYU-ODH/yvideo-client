@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme'
 import ManageCollection from '../../../../components/c/ManageCollection/index'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
+import { BrowserRouter } from 'react-router-dom'
 
 const resource = testutil.resource
 
@@ -115,7 +116,9 @@ describe(`manage collection test`, () => {
 		props.viewstate.isContent = true
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<ManageCollection {...props}/>,
+				<BrowserRouter>
+					<ManageCollection {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 
@@ -135,7 +138,9 @@ describe(`manage collection test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<ManageCollection {...props}/>
+				<BrowserRouter>
+					<ManageCollection {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 

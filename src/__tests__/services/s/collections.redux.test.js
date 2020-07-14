@@ -322,14 +322,13 @@ describe(`content service test`, () => {
 		await collectionServiceConstructor.getCollections(true)(dispatch, getState, { apiProxy })
 		expect(Object.keys(store.getState().cache.collections).length).toBe(2)
 
-		// unpublish
-		expect(store.getState().collectionStore.cache[0].published).toBe(true)
-		await collectionServiceConstructor.updateCollectionStatus(0, `unpublish`)(dispatch, getState, { apiProxy })
-		expect(store.getState().collectionStore.cache[0].published).toBe(false)
-
 		// publish
 		await collectionServiceConstructor.updateCollectionStatus(0, `publish`)(dispatch, getState, { apiProxy })
 		expect(store.getState().collectionStore.cache[0].published).toBe(true)
+
+		// unpublish
+		await collectionServiceConstructor.updateCollectionStatus(0, `unpublish`)(dispatch, getState, { apiProxy })
+		expect(store.getState().collectionStore.cache[0].published).toBe(false)
 
 		// archive
 		expect(store.getState().collectionStore.cache[0].archived).toBe(false)

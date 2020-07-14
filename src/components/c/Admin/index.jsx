@@ -15,7 +15,7 @@ export class Admin extends PureComponent {
 			menuActive,
 			menuItemInfo,
 			mousePos,
-			placeholder
+			placeholder,
 		} = this.props.viewstate
 
 		const {
@@ -23,7 +23,7 @@ export class Admin extends PureComponent {
 			handleSubmit,
 			toggleMenu,
 			handleConfirmDelete,
-			updateCategory
+			updateCategory,
 		} = this.props.handlers
 
 		const viewstate = {
@@ -47,14 +47,14 @@ export class Admin extends PureComponent {
 				<div>
 
 					{/* WE ARE ONLY SEARCHING FOR USERS NOW SO WE DO NOT NEED THE SELECT DROP DOWN */}
-					<CategorySelect onChange={updateCategory}>
+					<CategorySelect id='categorySelect' onChange={updateCategory}>
 						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
 								{category[c].name}
 							</option>
 						))}
 					</CategorySelect>
-					<Search onSubmit={handleSubmit}>
+					<Search id='searchSubmit' onSubmit={handleSubmit}>
 						<SearchIcon />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
 					</Search>

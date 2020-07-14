@@ -23,9 +23,9 @@ export default class AdminService {
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
 		ADMIN_COLLECTION_EDIT: `ADMIN_COLLECTION_EDIT`,
-		ADMIN_COLLECTION_DELETE: 'ADMIN_COLLECTION_DELETE',
-		ADMIN_USER_DELETE: 'ADMIN_USER_DELETE',
-		ADMIN_CONTENT_DELETE: 'ADMIN_CONTENT_DELETE',
+		ADMIN_COLLECTION_DELETE: `ADMIN_COLLECTION_DELETE`,
+		ADMIN_USER_DELETE: `ADMIN_USER_DELETE`,
+		ADMIN_CONTENT_DELETE: `ADMIN_CONTENT_DELETE`,
 	}
 
 	// action creators
@@ -45,7 +45,7 @@ export default class AdminService {
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
 		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
-		adminContentDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }})
+		adminContentDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
 	}
 
 	// default store
@@ -181,7 +181,7 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_EDIT:
-			console.log('editing collections: ')
+			console.log(`editing collections: `)
 			return {
 				...store,
 				professorCollections: {
@@ -192,21 +192,21 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_DELETE:
-			console.log('delete collection: ')
+			console.log(`delete collection: `)
 			return {
 				...store,
 				loading: false,
 			}
 
 		case ADMIN_USER_DELETE:
-			console.log('delete user: ')
+			console.log(`delete user: `)
 			return {
 				...store,
 				loading: false,
 			}
 
 		case ADMIN_CONTENT_DELETE:
-			console.log('delete content: ')
+			console.log(`delete content: `)
 			return {
 				...store,
 				loading: false,
@@ -360,10 +360,10 @@ export default class AdminService {
 
 		try {
 
-			console.log(resourceId)
+			// console.log(resourceId)
 			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
 
-			console.log(result.data)
+			// console.log(result.data)
 
 			// const data = { [result.data.id]: result.data }
 
@@ -402,18 +402,18 @@ export default class AdminService {
 
 		dispatch(this.actions.adminStart())
 
-		//Grab all the collections from the admin store
+		// Grab all the collections from the admin store
 		const collections = { ...getState().adminStore.professorCollections}
-		//Grab the current collection from the admin store
+		// Grab the current collection from the admin store
 		const professorId = { ...getState().adminStore.professor.id }
 		let currentCollection
 		Object.keys(collections).forEach(item => {
 			const {id} = collections[item]
 			if (id === ID){
 				currentCollection = collections[item]
-				return;
+				return
 			}
-		});
+		})
 
 		let abort = false
 
@@ -443,14 +443,14 @@ export default class AdminService {
 		if (abort) dispatch(this.actions.adminAbort())
 		else {
 			try {
-				//Edit the desired collection
+				// Edit the desired collection
 				await apiProxy.collection.edit(ID, action)
-				//Get the updated collection and all the other collections
-				//This fixes the bug that it will add a duplicated collection
-				//to the professorCollections
+				// Get the updated collection and all the other collections
+				// This fixes the bug that it will add a duplicated collection
+				// to the professorCollections
 				await this.searchCollections(professorId, true)
-				//The result will be the updated professorCollections
-				//This will be the paidload for the adminSeachCollections
+				// The result will be the updated professorCollections
+				// This will be the paidload for the adminSeachCollections
 				const result = { ...getState().adminStore.professorCollections}
 				dispatch(this.actions.adminSearchCollections(result))
 			} catch (error) {

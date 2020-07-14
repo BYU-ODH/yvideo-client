@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import Container from '../../../containers/c/LabAssistantManageCollectionContainer'
 import * as testutil from '../../testutil/testutil'
+import { BrowserRouter } from 'react-router-dom'
 
 const collection = testutil.collection
 
@@ -53,7 +54,9 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 	it(`mount for testing button behaviors`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<Container {...props}/>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 

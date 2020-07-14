@@ -174,7 +174,7 @@ const CollectionPermissionsContainer = props => {
 		},
 		addException: e => {
 			e.preventDefault()
-			updateCollectionRoles(collection.id, roleEndpoints.addException, this.state.exception)
+			updateCollectionRoles(collection.id, roleEndpoints.addException, state.exception)
 			setState({
 				...state,
 				exception: ``,

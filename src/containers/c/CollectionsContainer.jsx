@@ -21,7 +21,7 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 	} = props
 
-	//console.log(collections)
+	// console.log(collections)
 
 	useEffect(() => {
 		getCollections()
@@ -43,8 +43,8 @@ const CollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		// TODO: When archiving a collection, make sure to unpublish it
-		//collections: Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
-		collections: collections,
+		// TODO: need to check to see if which way is right way to use
+		collections, // : Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		// contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => (k)),
 	}

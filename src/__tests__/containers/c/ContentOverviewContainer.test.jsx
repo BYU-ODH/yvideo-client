@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme'
 import Container from '../../../containers/c/ContentOverviewContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
+import { BrowserRouter } from 'react-router-dom'
 
 const content = testutil.content[0]
 
@@ -18,7 +19,9 @@ describe(`manage collection test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<Container {...props}/>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 
@@ -46,7 +49,9 @@ describe(`manage collection test`, () => {
 	it(`Unpublish event handler test`, ()=> {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<Container {...props}/>,
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
@@ -61,7 +66,9 @@ describe(`manage collection test`, () => {
 	it(`delete event handler test`, ()=> {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<Container {...props}/>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
@@ -81,7 +88,9 @@ describe(`manage collection test`, () => {
 	it(`save event handler test`, ()=> {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<Container {...props}/>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 		expect(wrapper.find(`button`).props().children).toBe(`Edit`)

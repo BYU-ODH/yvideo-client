@@ -3,12 +3,10 @@ import { shallow, mount } from 'enzyme'
 import Container from '../../../containers/c/ManageCollectionContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
-import { applyMiddleware, createStore } from 'redux'
-import thunk from 'redux-thunk'
 import ContentService from '../../../services/s/content.redux'
-import CollectionService from '../../../services/s/collections.redux'
+import AuthService from '../../../services/s/auth.redux'
 import proxies from 'proxy'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { BrowserRouter } from 'react-router-dom'
 import store from '../../../services/store'
 
 import { collectionService, contentService, interfaceService, adminService } from 'services'
@@ -221,7 +219,9 @@ describe(`manage collection container test`, () => {
 	it(`testing buttons`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<Container {...props}/>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 
@@ -245,7 +245,9 @@ describe(`manage collection container test`, () => {
 	it(`test rest of event handlers`, ()=> {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<Container {...props}/>,
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 
@@ -270,9 +272,11 @@ describe(`manage collection container test`, () => {
 		expect(wrapper.find(`ManageCollection`).props().viewstate.collectionName).toBe(`title changed`)
 	})
 
+	// TODO: still need to complete
 	it(`test`, async()=> {
 
 		const contentServiceConstructor = new ContentService()
+		const authServiceConstructor = new AuthService()
 
 		const dispatch = store.dispatch
 		const getState = store.getState
@@ -303,13 +307,16 @@ describe(`manage collection container test`, () => {
 		})
 		await contentServiceConstructor.createContent(newcontent, 0)(dispatch, getState, { apiProxy })
 
+		// put test auth user
+		store.dispatch(authServiceConstructor.actions.authGet(testutil.user))
+
 		const wrapper = mount(
 			<Provider store={store}>
-				<Container {...props}/>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
-
-		// console.log(wrapper.find(`ManageCollectionContainer`).instance())
 
 		// test if two contents are inserted
 		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content
@@ -349,16 +356,18 @@ describe(`manage collection container test`, () => {
 
 		const wrapper = mount(
 			<Provider store={store}>
-				<Container {...props}/>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
 			</Provider>,
 		)
 
 		// wrapper.find({className: `newcontent-button`}).at(0).simulate(`click`)
 		// console.log(wrapper.find(`button`).at(6).debug())
 		await wrapper.find(`button`).at(6).simulate(`click`)
-		wrapper.update()
+		// wrapper.update()
 		// console.log(wrapper.find(`CreateContent`).debug())
-		console.log(wrapper.debug())
+		// console.log(wrapper.debug())
 
 	})
 

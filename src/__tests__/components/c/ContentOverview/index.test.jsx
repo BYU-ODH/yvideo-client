@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme'
 import ContentOverview from '../../../../components/c/ContentOverview/index'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
+import { BrowserRouter } from 'react-router-dom'
 
 const content = testutil.content[0]
 
@@ -32,7 +33,9 @@ describe(`content overview test`, () => {
 	it(`mount`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
-				<ContentOverview {...props} />
+				<BrowserRouter>
+					<ContentOverview {...props} />
+				</BrowserRouter>
 			</Provider>,
 		)
 

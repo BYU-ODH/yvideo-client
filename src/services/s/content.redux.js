@@ -155,31 +155,6 @@ export default class ContentService {
 		} else dispatch(this.actions.contentAbort())
 	}
 
-	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-
-		const time = Date.now() - getState().contentStore.lastFetched
-
-		const stale = time >= process.env.REACT_APP_STALE_TIME
-
-		if (stale || force) {
-
-			dispatch(this.actions.contentStart())
-
-			try {
-
-				await apiProxy.content.addView.get(id)
-
-				// TODO: This isn't a real function
-				dispatch(this.actions.addView(id))
-
-			} catch (error) {
-				console.error(error.message)
-				dispatch(this.actions.contentError(error))
-			}
-
-		} else dispatch(this.actions.contentAbort())
-	}
-
 	createContent = (content, collectionId) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.contentStart())
@@ -190,7 +165,7 @@ export default class ContentService {
 
 			const data = { [result.data.id]: result.data }
 
-			console.log(result.data)
+			// console.log(result.data)
 
 			// TODO: Why doesn't this update to state cause it to rerender?
 			dispatch(this.actions.contentCreate(data))
@@ -202,13 +177,13 @@ export default class ContentService {
 
 	updateContent = content => async (dispatch, _getState, { apiProxy }) => {
 
-		console.log(content)
+		// console.log(content)
 
 		dispatch(this.actions.contentStart())
 
-		let title = ''
-		let description = ''
-		let keywords = ''
+		let title = ``
+		let description = ``
+		let keywords = ``
 
 		try {
 
@@ -254,7 +229,7 @@ export default class ContentService {
 			const settingsResult = await apiProxy.content.settings.post(id, content.settings)
 
 			// const metaResult =
-			//await apiProxy.content.metadata.post(id, metadata)
+			// await apiProxy.content.metadata.post(id, metadata)
 
 			console.log(settingsResult)
 			// console.log(metaResult)

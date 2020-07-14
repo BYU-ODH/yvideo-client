@@ -36,12 +36,13 @@ const PermissionTable = props => {
 							<td>
 								{item.NetID === user.username ||
 										<RemoveButton
+											className='remove-button'
 											data-item={`${JSON.stringify(item)}`}
 											onClick={removeFunc}
 										/>
 								}
 							</td>
-						</tr>
+						</tr>,
 					)}
 				</tbody>
 			</Table>

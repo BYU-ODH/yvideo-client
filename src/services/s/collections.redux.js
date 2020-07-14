@@ -2,16 +2,16 @@ export default class CollectionService {
 	// types
 
 	types = {
-		COLLECTIONS_START: 'COLLECTIONS_START',
-		COLLECTIONS_ABORT: 'COLLECTIONS_ABORT',
-		COLLECTIONS_CLEAN: 'COLLECTIONS_CLEAN',
-		COLLECTIONS_ERROR: 'COLLECTIONS_ERROR',
-		COLLECTIONS_GET: 'COLLECTIONS_GET',
-		COLLECTIONS_REMOVE_CONTENT: 'COLLECTION_REMOVE_CONTENT',
-		COLLECTION_CREATE: 'COLLECTION_CREATE',
-		COLLECTION_EDIT: 'COLLECTION_EDIT',
-		COLLECTION_ROLES_GET: 'COLLECTION_ROLES_GET',
-		COLLECTION_ROLES_UPDATE: 'COLLECTION_ROLES_UPDATE'
+		COLLECTIONS_START: `COLLECTIONS_START`,
+		COLLECTIONS_ABORT: `COLLECTIONS_ABORT`,
+		COLLECTIONS_CLEAN: `COLLECTIONS_CLEAN`,
+		COLLECTIONS_ERROR: `COLLECTIONS_ERROR`,
+		COLLECTIONS_GET: `COLLECTIONS_GET`,
+		COLLECTIONS_REMOVE_CONTENT: `COLLECTION_REMOVE_CONTENT`,
+		COLLECTION_CREATE: `COLLECTION_CREATE`,
+		COLLECTION_EDIT: `COLLECTION_EDIT`,
+		COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
+		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
 	}
 
 	roleEndpoints = {
@@ -30,11 +30,11 @@ export default class CollectionService {
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
-		collectionsRemoveContent: () => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT }),
+		collectionsRemoveContent: (id, collection) => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT, payload: {id, collection} }),
 		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 		collectionRolesGet: data => ({ type: this.types.COLLECTION_ROLES_GET, payload: { ...data }}),
-		collectionRolesUpdate: data => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { ...data }})
+		collectionRolesUpdate: data => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { ...data }}),
 	}
 
 	// default store
@@ -43,7 +43,7 @@ export default class CollectionService {
 		roles: {},
 		cache: {},
 		loading: false,
-		lastFetched: 0
+		lastFetched: 0,
 	}
 
 	// reducer
@@ -60,7 +60,7 @@ export default class CollectionService {
 			COLLECTION_CREATE,
 			COLLECTION_EDIT,
 			COLLECTION_ROLES_GET,
-			COLLECTION_ROLES_UPDATE
+			COLLECTION_ROLES_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -68,32 +68,32 @@ export default class CollectionService {
 		case COLLECTIONS_START:
 			return {
 				...store,
-				loading: true
+				loading: true,
 			}
 
 		case COLLECTIONS_ABORT:
 			return {
 				...store,
-				loading: false
+				loading: false,
 			}
 
 		case COLLECTIONS_CLEAN:
 			return {
 				...store,
-				cache: {}
+				cache: {},
 			}
 
 		case COLLECTION_CREATE:
 			return {
 				...store,
-				loading: false
+				loading: false,
 			}
 
 		case COLLECTIONS_ERROR:
 			console.error(action.payload.error)
 			return {
 				...store,
-				loading: false
+				loading: false,
 			}
 
 		case COLLECTIONS_GET:
@@ -101,27 +101,30 @@ export default class CollectionService {
 				...store,
 				cache: {
 					...store.cache,
-					...action.payload.collections
+					...action.payload.collections,
 				},
 				loading: false,
-				lastFetched: Date.now()
+				lastFetched: Date.now(),
 			}
 
 		case COLLECTIONS_REMOVE_CONTENT:
 			return {
 				...store,
-				loading: false
+				cache: {
+					...store.cache,
+					[action.payload.collection.id]: action.payload.collection,
+				},
+				loading: false,
 			}
 
 		case COLLECTION_EDIT:
-			console.log('editing collections: ')
 			return {
 				...store,
 				cache: {
 					...store.cache,
-					[action.payload.collection.id]: action.payload.collection
+					[action.payload.collection.id]: action.payload.collection,
 				},
-				loading: false
+				loading: false,
 			}
 
 		case COLLECTION_ROLES_GET:
@@ -129,8 +132,8 @@ export default class CollectionService {
 				...store,
 				roles: {
 					...store.roles,
-					...action.payload
-				}
+					...action.payload,
+				},
 			}
 
 		case COLLECTION_ROLES_UPDATE:
@@ -138,8 +141,8 @@ export default class CollectionService {
 				...store,
 				roles: {
 					...store.roles,
-					...action.payload
-				}
+					...action.payload,
+				},
 			}
 
 		default:
@@ -174,18 +177,25 @@ export default class CollectionService {
 	}
 
 	removeCollectionContent = (id, contentId) => async (dispatch, getState, { apiProxy }) => {
-
 		dispatch(this.actions.collectionsStart())
 
+		const currentState = { ...getState().collectionStore.cache[id] }
+		let contentIndex = 0
+
+		currentState.content.forEach((element, index) => {
+			if(element.id === contentId){
+				// console.log(true)
+				contentIndex = index
+			}
+		})
+		currentState.content.splice(contentIndex, 1)
+
 		try {
-
 			const result = await apiProxy.collection.remove(id, [contentId.toString()])
-			console.log(result)
+			// console.log(result)
 
-			// TODO: Remove content from cache so that rerendering happens
 			// You also have to be an admin to do this, I'm pretty sure
-			// dispatch(this.actions.collectionsRemoveContent(contentId))
-
+			dispatch(this.actions.collectionsRemoveContent(id, currentState))
 		} catch (error) {
 			console.log(error)
 			dispatch(this.actions.collectionsError(error))
@@ -216,26 +226,25 @@ export default class CollectionService {
 
 		dispatch(this.actions.collectionsStart())
 
-		const currentState = { ...getState().collectionStore.cache[id] }
+		const currentState = getState().collectionStore.cache[id]
 
 		let abort = false
 
-
 		switch (action) {
-		case 'publish':
+		case `publish`:
 			currentState.published = true
 
 			break
 
-		case 'unpublish':
+		case `unpublish`:
 			currentState.published = false
 			break
 
-		case 'archive':
+		case `archive`:
 			currentState.archived = true
 			break
 
-		case 'unarchive':
+		case `unarchive`:
 			currentState.published = false
 			currentState.archived = false
 			break
@@ -245,12 +254,12 @@ export default class CollectionService {
 			break
 		}
 
-		let finalState = {
+		const finalState = {
 			published: currentState.published,
-			archived: currentState.archived
+			archived: currentState.archived,
 		}
 
-		console.log('finalState: ', finalState)
+		console.log(`finalState: `, finalState)
 
 		if (abort) dispatch(this.actions.collectionsAbort())
 		else {

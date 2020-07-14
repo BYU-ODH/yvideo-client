@@ -33,6 +33,7 @@ class Root extends PureComponent {
 			modal,
 		} = this.props.viewstate
 
+		// TODO: route has to be touched mirroring with backend
 		return (
 			<Router>
 				{user ?
