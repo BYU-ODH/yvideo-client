@@ -33,8 +33,13 @@ export default class Manager extends PureComponent {
 
 		return (
 			<Container>
-				{ this.props.empty ? (
-					<h1>There are no collections</h1>
+				{ this.props.empty !== undefined ? (
+					<>
+						<h1 className='no-collections'>There are no collections</h1>
+						<div id={'create-button'} >
+							<button onClick={createNew}>Create New Collection</button>
+						</div>
+					</>
 				) : (
 					<>
 						<SideMenu>

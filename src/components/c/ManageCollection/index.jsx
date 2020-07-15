@@ -74,7 +74,7 @@ export default class ManageCollection extends PureComponent {
 						{collection.archived ? (
 							<>
 								{ admin !== undefined ? (
-									<>{admin[0] === `admin` || admin[0] === `professor` ? (
+									<>{admin === 0 || admin === 1 ? (
 										<ArchiveButton onClick={unarchive}>Unarchive</ArchiveButton>
 									) : ( <p>Cannot unarchive</p> )}
 									</>

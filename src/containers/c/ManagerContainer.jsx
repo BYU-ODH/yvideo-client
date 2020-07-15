@@ -35,13 +35,23 @@ const ManagerContainer = props => {
 		}
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal])
 
-	if (objectIsEmpty(collections)) return <Manager viewstate={{}} handlers={{}} empty={true}/>
+	const createNew = () => {
+		toggleModal({
+			component: CreateCollectionContainer,
+		})
+	}
+
+	const handlers = {
+		createNew,
+	}
 
 	const sideLists = {
 		published: [],
 		unpublished: [],
 		archived: [],
 	}
+
+	if (objectIsEmpty(collections)) return <Manager viewstate={{}} handlers={handlers} empty={true}/>
 
 	Object.keys(collections).forEach(id => {
 		const { archived, published, name } = collections[id]
@@ -51,12 +61,6 @@ const ManagerContainer = props => {
 		else sideLists.unpublished.push({ id, name })
 	})
 
-	const createNew = () => {
-		toggleModal({
-			component: CreateCollectionContainer,
-		})
-	}
-
 	const viewstate = {
 		admin,
 		collection: collections[params.id],
@@ -64,9 +68,7 @@ const ManagerContainer = props => {
 		sideLists,
 	}
 
-	const handlers = {
-		createNew,
-	}
+
 
 	return <Manager viewstate={viewstate} handlers={handlers} />
 }

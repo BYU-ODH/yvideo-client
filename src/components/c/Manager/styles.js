@@ -3,6 +3,35 @@ import styled from 'styled-components'
 export const Container = styled.div`
 	padding-top: 8.4rem;
 	display: flex;
+
+	& .no-collections {
+		text-align: center;
+		width: 80%;
+		margin: 5% 10% 2% 10%;
+	}
+
+	& #create-button {
+		position: absolute !important;
+		top: 30%;
+		width: 100%;
+		display: flex;
+
+		& button {
+			margin: auto;
+			height: 40px;
+			font-size: 2rem;
+			width: 20%;
+			color: white;
+			background-color: var(--light-blue);
+			border: none;
+			border-radius: 10px;
+			cursor: pointer;
+
+			:hover {
+				border: 2px solid var(--navy-blue);
+			}
+		}
+	}
 `
 
 export const SideMenu = styled.div`
