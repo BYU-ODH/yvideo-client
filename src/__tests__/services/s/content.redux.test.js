@@ -339,5 +339,4 @@ describe(`content service test`, () => {
 		expect(store.getState().cache[0].settings.showWordList).toBe(true)
 		expect(store.getState().cache[0].settings.description).toBe(`changed`)
 	})
-
 })
