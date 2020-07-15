@@ -33,36 +33,42 @@ export default class Manager extends PureComponent {
 
 		return (
 			<Container>
-				<SideMenu>
+				{ this.props.empty ? (
+					<h1>There are no collections</h1>
+				) : (
+					<>
+						<SideMenu>
 
-					<h4>{user ? `${user.name.endsWith(`s`) ? `${user.name}'` : `${user.name}'s`} Collections` : `My Collections`}</h4>
+							<h4>{user ? `${user.name.endsWith(`s`) ? `${user.name}'` : `${user.name}'s`} Collections` : `My Collections`}</h4>
 
-					<Accordion header={`Published`} active>
-						{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
-					</Accordion>
+							<Accordion header={`Published`} active>
+								{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
+							</Accordion>
 
-					<Accordion header={`Unpublished`} active>
-						{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
-					</Accordion>
+							<Accordion header={`Unpublished`} active>
+								{sideLists.unpublished.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
+							</Accordion>
 
-					{
-						admin && <Accordion header={`Archived`}>
-							{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
-						</Accordion>
-					}
+							{
+								admin && <Accordion header={`Archived`}>
+									{sideLists.archived.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}
+								</Accordion>
+							}
 
-					<CreateButton onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
+							<CreateButton onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
 
-				</SideMenu>
-				<Body>
-					{collection ?
-						user ?
-							<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
-							:
-							<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
-						:
-						<NoCollection>Select a Collection to get started.</NoCollection>}
-				</Body>
+						</SideMenu>
+						<Body>
+							{collection ?
+								user ?
+									<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+									:
+									<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+								:
+								<NoCollection>Select a Collection to get started.</NoCollection>}
+						</Body>
+					</>
+				)}
 			</Container>
 		)
 	}

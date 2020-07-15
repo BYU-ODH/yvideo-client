@@ -34,7 +34,7 @@ const CreateContentContainer = props => {
 		description: ``,
 		resource: {
 			keywords: [],
-		}
+		},
 		thumbnail: ``,
 	})
 

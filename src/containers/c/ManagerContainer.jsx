@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -35,7 +35,7 @@ const ManagerContainer = props => {
 		}
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal])
 
-	if (objectIsEmpty(collections)) return null
+	if (objectIsEmpty(collections)) return <Manager viewstate={{}} handlers={{}} empty={true}/>
 
 	const sideLists = {
 		published: [],

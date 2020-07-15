@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
@@ -18,7 +18,10 @@ export default class Collections extends PureComponent {
 			displayBlocks,
 			collections,
 			contentIds,
+			collectionsLength,
 		} = this.props.viewstate
+
+
 
 		const {
 			toggleCollectionsDisplay,
@@ -39,11 +42,17 @@ export default class Collections extends PureComponent {
 					</div>
 				</header>
 				<div className='list'>
-					{displayBlocks ?
-						Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]} contentIds={contentIds} />)
-						:
-						Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]} contentIds={contentIds} />)
-					}
+					{ collectionsLength > 0 ? (
+						<>
+							{	displayBlocks ?
+								Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]} contentIds={contentIds} />)
+								:
+								Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]} contentIds={contentIds} />)
+							}
+						</>
+					) : (
+						<h1>There are no collections to display</h1>
+					) }
 				</div>
 			</Style>
 		)

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import { collectionService, interfaceService, contentService } from 'services'
@@ -45,6 +45,7 @@ const CollectionsContainer = props => {
 		// TODO: When archiving a collection, make sure to unpublish it
 		// TODO: need to check to see if which way is right way to use
 		collections, // : Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
+		collectionsLength: Object.keys(collections).length,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		// contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => (k)),
 	}
