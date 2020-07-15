@@ -144,6 +144,8 @@ export default class ContentService {
 
 				const result = await apiProxy.content.get(notCached)
 
+				console.log(`getContent`, result)
+
 				dispatch(this.actions.contentGet(result))
 
 			} catch (error) {
@@ -159,7 +161,6 @@ export default class ContentService {
 		dispatch(this.actions.contentStart())
 
 		try {
-
 			const result = await apiProxy.content.post(content, collectionId)
 
 			const data = { [result.data.id]: result.data }
@@ -169,6 +170,7 @@ export default class ContentService {
 			// TODO: Why doesn't this update to state cause it to rerender?
 			dispatch(this.actions.contentCreate(data))
 
+			dispatch(this.actions.contentAbort())
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}

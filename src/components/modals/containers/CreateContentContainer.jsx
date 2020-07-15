@@ -35,6 +35,7 @@ const CreateContentContainer = props => {
 		resource: {
 			keywords: [],
 		}
+		thumbnail: ``,
 	})
 
 	const changeTab = e => {
@@ -92,7 +93,7 @@ const CreateContentContainer = props => {
 		e.preventDefault()
 		//console.log(data)
 		let tags = ''
-		
+
 		if(data.resource.keywords.length !== 0){
 			//console.log(data.resource.keywords)
 			data.resource.keywords.forEach((element, i) => {
@@ -106,27 +107,29 @@ const CreateContentContainer = props => {
 			})
 		}
 
-		let temp = {
-			
+		const videoId = new URL(data.url).search.split(`=`)[1]
+
+		let backEndData = {
+
 			"allow-definitions": true,
 			"url": data.url,
 			"allow-captions": true,
 			"content-type": data.contentType,
 			"resource-id": "00000000-0000-0000-0000-000000000000",
 			"tags": tags,
-			"thumbnail": "",
+			"thumbnail": `https://i.ytimg.com/vi/${videoId}/hq720.jpg`,
 			"file-version": '',
 			"collection-id": modal.collectionId,
 			"views": 0,
 			"annotations": "",
 			"title": data.title,
 			"allow-notes": true,
-			"description": data.description
-			
+			"description": data.description,
 		}
-		
-		if(modal.isLabAssistantRoute) adminCreateContent(temp)
-		else createContent(temp)
+
+		if(modal.isLabAssistantRoute) adminCreateContent(backEndData)
+		else createContent(backEndData)
+
 		toggleModal()
 	}
 
