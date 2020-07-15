@@ -7,6 +7,7 @@ import {
 	contentService,
 	interfaceService,
 	adminService,
+	collectionService,
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
@@ -21,6 +22,7 @@ const CreateContentContainer = props => {
 		modal,
 		search,
 		toggleModal,
+		getCollections,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -64,7 +66,7 @@ const CreateContentContainer = props => {
 
 	const handleSelectResourceChange = e => {
 		const { target } = e
-		//console.log(target.value)
+		// console.log(target.value)
 		setSelectedResource(target.value)
 	}
 
@@ -83,53 +85,53 @@ const CreateContentContainer = props => {
 			...data,
 			resource: {
 				keywords: [...data.resource.keywords, element.value],
-			}
+			},
 		})
 
 		document.getElementById(`create-content-form`).reset()
 	}
 
-	const handleSubmit = e => {
+	const handleSubmit = async(e) => {
 		e.preventDefault()
-		//console.log(data)
-		let tags = ''
+		let tags = ``
 
 		if(data.resource.keywords.length !== 0){
-			//console.log(data.resource.keywords)
 			data.resource.keywords.forEach((element, i) => {
 
-				if(i !== data.resource.keywords.length -1){
+				if(i !== data.resource.keywords.length -1)
 					tags += `${element}; `
-				}
-				else {
+				else
 					tags += `${element}`
-				}
+
 			})
 		}
 
 		const videoId = new URL(data.url).search.split(`=`)[1]
 
-		let backEndData = {
+		const backEndData = {
 
 			"allow-definitions": true,
 			"url": data.url,
 			"allow-captions": true,
 			"content-type": data.contentType,
-			"resource-id": "00000000-0000-0000-0000-000000000000",
-			"tags": tags,
+			"resource-id": `00000000-0000-0000-0000-000000000000`,
+			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/hq720.jpg`,
-			"file-version": '',
+			"file-version": ``,
 			"collection-id": modal.collectionId,
 			"views": 0,
-			"annotations": "",
+			"annotations": ``,
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
+
 		}
 
-		if(modal.isLabAssistantRoute) adminCreateContent(backEndData)
-		else createContent(backEndData)
-
+		if(modal.isLabAssistantRoute) adminCreateContent(temp)
+		else{
+			await createContent(data, modal.collectionId)
+			getCollections(true)
+		}
 		toggleModal()
 	}
 
@@ -144,7 +146,7 @@ const CreateContentContainer = props => {
 		setData({
 			...data,
 			resource: {
-				keywords: data.keywords.filter(keyword => keyword !== badkeyword)
+				keywords: data.keywords.filter(keyword => keyword !== badkeyword),
 			},
 		})
 	}
@@ -185,6 +187,7 @@ const mapDispatchToProps = {
 	createContent: contentService.createContent,
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
+	getCollections: collectionService.getCollections,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)

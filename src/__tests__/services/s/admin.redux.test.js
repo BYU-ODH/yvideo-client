@@ -17,6 +17,8 @@ const searchResults = [
 		linked:-1,
 		"account-type": [`admin`],
 		username: `testusername`,
+		published: false,
+		archived: false,
 	},
 ]
 
@@ -53,7 +55,9 @@ describe(`content service test`, () => {
 					cache: {},
 					professors: [],
 					professor: {},
-					professorCollections: null,
+					professorCollections: {
+						22: searchResults[0],
+					},
 					profCollectionContent: null,
 					loading: false,
 					lastFetched: 0,
@@ -190,6 +194,17 @@ describe(`content service test`, () => {
 		expect(result.type).toBe(`ADMIN_SEARCH_COLLECTIONS`)
 	})
 
+	it(`adminCollectionEdit`, () => {
+		// check empty and null before updating store
+		expect(store.getState().professorCollections).toEqual(null)
+
+		// updating store
+		const result = store.dispatch(adminServiceConstructor.actions.adminCollectionEdit(searchResults[0]))
+		expect(store.getState().professorCollections).toEqual({22: searchResults[0]})
+		expect(store.getState().loading).toBe(false)
+		expect(result.type).toBe(`ADMIN_COLLECTION_EDIT`)
+	})
+
 	// thunk
 	// TODO: need to figure out how to check actions to be called
 	it(`search`, async() => {
@@ -297,5 +312,69 @@ describe(`content service test`, () => {
 		expect(store.getState().professorCollections).toEqual(null)
 		await adminServiceConstructor.searchCollections(`testusername`, true)(dispatch, getState, { apiProxy })
 		expect(store.getState().professorCollections).toEqual({results: searchResults})
+	})
+
+	it(`updateCollectionStatus`, async() => {
+
+		proxies.apiProxy.collection.edit = jest.fn()
+		proxies.apiProxy.collection.edit.mockImplementationOnce(()=>{
+			return Promise.resolve({
+				status: 200,
+			})
+		})
+
+		// publish
+		await adminServiceConstructor.updateCollectionStatus(22, `publish`)(dispatch, getState, { apiProxy })
+		expect(store.getState().adminStore.professorCollections[22].published).toBe(true)
+
+		// unpublish
+		await adminServiceConstructor.updateCollectionStatus(22, `unpublish`)(dispatch, getState, { apiProxy })
+		expect(store.getState().adminStore.professorCollections[22].published).toBe(false)
+
+		// archive
+		await adminServiceConstructor.updateCollectionStatus(22, `archive`)(dispatch, getState, { apiProxy })
+		expect(store.getState().adminStore.professorCollections[22].archived).toBe(true)
+
+		// unarchive
+		await adminServiceConstructor.updateCollectionStatus(22, `unarchive`)(dispatch, getState, { apiProxy })
+		expect(store.getState().adminStore.professorCollections[22].archived).toBe(false)
+	})
+
+	// TODO: need to update when it's updated
+	it(`deleteCollection`, async() => {
+
+		proxies.apiProxy.admin.collection.delete = jest.fn()
+		proxies.apiProxy.admin.collection.delete.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults[0])
+		})
+
+		await adminServiceConstructor.deleteCollection(22)(dispatch, getState, { apiProxy })
+	})
+
+	// TODO: need to update when it's updated
+	it(`deleteContent`, async() => {
+
+		proxies.apiProxy.admin.content.delete = jest.fn()
+		proxies.apiProxy.admin.content.delete.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults[0])
+		})
+
+		await adminServiceConstructor.deleteContent(22)(dispatch, getState, { apiProxy })
+	})
+
+	// TODO: need to update when it's updated
+	it(`deleteUser`, async() => {
+
+		proxies.apiProxy.admin.user.delete = jest.fn()
+		proxies.apiProxy.admin.user.delete.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults[0])
+		})
+
+		await adminServiceConstructor.deleteUser(22)(dispatch, getState, { apiProxy })
+	})
+
+	// TODO: need to update when it's updated
+	it(`clean`, async() => {
+		await adminServiceConstructor.clean()(dispatch, getState, { apiProxy })
 	})
 })

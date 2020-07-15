@@ -181,7 +181,7 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_EDIT:
-			console.log(`editing collections: `)
+			// console.log(`editing collections: `)
 			return {
 				...store,
 				professorCollections: {
@@ -192,14 +192,14 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_DELETE:
-			console.log(`delete collection: `)
+			// console.log(`delete collection: `)
 			return {
 				...store,
 				loading: false,
 			}
 
 		case ADMIN_USER_DELETE:
-			console.log(`delete user: `)
+			// console.log(`delete user: `)
 			return {
 				...store,
 				loading: false,
@@ -413,6 +413,8 @@ export default class AdminService {
 			}
 		})
 
+		// console.log(collections)
+
 		let abort = false
 
 		switch (action) {
@@ -463,7 +465,7 @@ export default class AdminService {
 		try {
 
 			const result = await apiProxy.admin.collection.delete(collectionId)
-			console.log(result)
+			// console.log(result)
 			dispatch(this.actions.adminCollectionDelete(result))
 
 		} catch (error) {
@@ -477,7 +479,6 @@ export default class AdminService {
 		try {
 
 			const result = await apiProxy.admin.content.delete(contentId)
-			console.log(result)
 			dispatch(this.actions.adminCollectionDelete(result))
 
 		} catch (error) {
@@ -491,7 +492,6 @@ export default class AdminService {
 		try {
 
 			const result = await apiProxy.admin.user.delete(userId)
-			console.log(result)
 			dispatch(this.actions.adminCollectionDelete(result))
 
 		} catch (error) {
