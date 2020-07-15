@@ -127,7 +127,7 @@ const CreateContentContainer = props => {
 
 		}
 
-		if(modal.isLabAssistantRoute) adminCreateContent(temp)
+		if(modal.isLabAssistantRoute) adminCreateContent(backEndData)
 		else{
 			await createContent(data, modal.collectionId)
 			getCollections(true)
