@@ -31,6 +31,7 @@ const CreateContentContainer = props => {
 		title: ``,
 		description: ``,
 		keywords: [],
+		thumbnail: ``,
 	})
 
 	const changeTab = e => {
@@ -84,8 +85,20 @@ const CreateContentContainer = props => {
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		if(modal.isLabAssistantRoute) adminCreateContent(data, modal.collectionId)
-		else createContent(data, modal.collectionId)
+
+		const videoId = new URL(data.url).search.split(`=`)[1]
+
+		if(modal.isLabAssistantRoute) {
+			adminCreateContent({
+				...data,
+				thumbnail: `https://i.ytimg.com/vi/${videoId}/hq720.jpg`,
+			}, modal.collectionId)
+		}else {
+			createContent({
+				...data,
+				thumbnail: `https://i.ytimg.com/vi/${videoId}/hq720.jpg`,
+			}, modal.collectionId)
+		}
 		toggleModal()
 	}
 
