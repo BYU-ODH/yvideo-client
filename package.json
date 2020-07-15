@@ -5,7 +5,9 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test setupFile ./src/setupTests.js"
+		"test": "react-scripts test setupFile ./src/setupTests.js",
+		"eject": "react-scripts eject",
+  	"lint": "eslint src"
 	},
 	"husky": {
 		"hooks": {
