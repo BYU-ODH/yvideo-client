@@ -147,7 +147,7 @@ export default class InterfaceService {
 	}
 
 	setEvents = events => async dispatch => {
-		//console.log('%c Updated Store', 'color: purple; font-weight: bold;')
+		// console.log('%c Updated Store', 'color: purple; font-weight: bold;')
 		dispatch(this.actions.setEvents(events))
 	}
 }

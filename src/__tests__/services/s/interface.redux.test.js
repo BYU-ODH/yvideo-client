@@ -36,7 +36,9 @@ describe(`content service test`, () => {
 				},
 				displayBlocks: browserStorage.displayBlocks,
 				headerBorder: false,
+				editorStyle: false,
 				lost: false,
+				events: [],
 				interfaceStore:{
 					menuActive: false,
 					modal: {
@@ -49,6 +51,8 @@ describe(`content service test`, () => {
 					displayBlocks: browserStorage.displayBlocks,
 					headerBorder: false,
 					lost: false,
+					editorStyle: false,
+					events: [],
 				},
 			},
 			composeWithDevTools(
@@ -135,6 +139,19 @@ describe(`content service test`, () => {
 		expect(store.getState().lost).toBe(false)
 		await interfaceServiceConstructor.setLost(true)(dispatch)
 		expect(store.getState().lost).toBe(true)
+	})
+
+	it(`setEditorStyle`, async() => {
+		expect(store.getState().editorStyle).toBe(false)
+		await interfaceServiceConstructor.setEditorStyle(true)(dispatch)
+		expect(store.getState().editorStyle).toBe(true)
+	})
+
+	it(`setEvents`, async() => {
+		const testEvent = {id: `test`}
+		expect(store.getState().events).toEqual([])
+		await interfaceServiceConstructor.setEvents(testEvent)(dispatch)
+		expect(store.getState().events).toEqual(testEvent)
 	})
 
 })

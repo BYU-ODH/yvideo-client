@@ -30,7 +30,7 @@
 
 	Launches the test runner in the interactive watch mode.
 
- ### `npm run test -- --coverage`
+ ### `npm run test -- --coverage --watchAll=true`
 
 	Launches the test runner with test coverage report.
 
