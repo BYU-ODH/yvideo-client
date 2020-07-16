@@ -8,7 +8,6 @@ import {
 	collectionService,
 	interfaceService,
 	adminService,
-	collectionService,
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
