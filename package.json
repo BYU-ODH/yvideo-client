@@ -5,14 +5,11 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "cross-env CI=true react-scripts test --env=jsdom"
+		"test": "react-scripts test"
 	},
-	"jest": {
-    "setupTestFrameworkScriptFile": "./src/setupTests.js"
-  },
 	"husky": {
 		"hooks": {
-			"pre-commit": "npm run test"
+			"pre-commit": "CI=true npm test"
 		}
 	},
 	"browserslist": [
