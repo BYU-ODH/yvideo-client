@@ -29,7 +29,7 @@ export default class BlockItem extends Component {
 		return (
 			<ItemContainer>
 				<Link to={`/player/${id}`}>
-					<Thumbnail src={name} loaded={loaded} />
+					<Thumbnail src={this.state.img} loaded={loaded} />
 					<h4>{name}</h4>
 				</Link>
 			</ItemContainer>

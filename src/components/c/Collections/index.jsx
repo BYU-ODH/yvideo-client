@@ -45,9 +45,9 @@ export default class Collections extends PureComponent {
 					{ collectionsLength > 0 ? (
 						<>
 							{	displayBlocks ?
-								Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]} contentIds={contentIds} />)
+								Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
 								:
-								Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]} contentIds={contentIds} />)
+								Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
 							}
 						</>
 					) : (

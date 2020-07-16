@@ -96,7 +96,6 @@ const ManageCollectionContainer = props => {
 	}
 
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
-
 }
 
 const mapStateToProps = store => ({

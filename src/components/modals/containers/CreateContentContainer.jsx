@@ -5,6 +5,7 @@ import Content from 'models/Content'
 
 import {
 	contentService,
+	collectionService,
 	interfaceService,
 	adminService,
 } from 'services'
@@ -21,6 +22,7 @@ const CreateContentContainer = props => {
 		modal,
 		search,
 		toggleModal,
+		getCollections,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -89,7 +91,7 @@ const CreateContentContainer = props => {
 		document.getElementById(`create-content-form`).reset()
 	}
 
-	const handleSubmit = e => {
+	const handleSubmit = async (e) => {
 		e.preventDefault()
 		//console.log(data)
 		let tags = ''
@@ -128,8 +130,10 @@ const CreateContentContainer = props => {
 		}
 
 		if(modal.isLabAssistantRoute) adminCreateContent(backEndData)
-		else createContent(backEndData)
-
+		else{
+			await createContent(backEndData)
+			getCollections(true)
+		}
 		toggleModal()
 	}
 
@@ -185,6 +189,7 @@ const mapDispatchToProps = {
 	createContent: contentService.createContent,
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
+	getCollections: collectionService.getCollections
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)

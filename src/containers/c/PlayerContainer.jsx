@@ -38,17 +38,24 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
+		//console.log(params)
+
+		//console.log(contentCache)
+
 		if (!contentCache[params.id]) getContent([params.id])
-		else setContent(contentCache[params.id])
-
-		if (content) {
+		else {
+			setContent(contentCache[params.id])
+			setUrl(contentCache[params.id].url)
 			addView(params.id)
-			if (!resourceCache[content.resourceId]) getResources(content.resourceId)
-			else setResource(resourceCache[content.resourceId])
 		}
+		// if (content) {
+		// 	addView(params.id)
+		// 	if (!resourceCache[content.resourceId]) getResources(content.resourceId)
+		// 	else setResource(resourceCache[content.resourceId])
+		// }
 
-		if (resource)
-			setUrl(resource.content.files[0].streamUri)
+		// if (resource)
+		// 	setUrl(resource.content.files[0].streamUri)
 
 	}, [addView, content, contentCache, getContent, getResources, params.id, resource, resourceCache])
 
@@ -85,12 +92,12 @@ const PlayerContainer = props => {
 
 	const handleSeekChange = e => {
 		const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
-		console.log(played)
+	//	console.log(played)
 		player.seekTo(played)
 	}
 
 	const handleSeekMouseDown = e => {
-		console.log(`handleSeekMouseDown`)
+		//console.log(`handleSeekMouseDown`)
 		setSeeking(true)
 	}
 
@@ -114,7 +121,7 @@ const PlayerContainer = props => {
 		// setVolume(volume)
 	}
 
-	if (!resource) return null
+	//if (!resource) return null
 
 	const viewstate = {
 		duration,
@@ -152,7 +159,7 @@ const mapStateToProps = ({ authStore, contentStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	userId: authStore.user.id,
-	content: contentStore.cache,
+	contentCache: contentStore.cache,
 })
 
 const mapDispatchToProps = {

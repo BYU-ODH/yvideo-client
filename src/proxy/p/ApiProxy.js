@@ -189,7 +189,7 @@ const apiProxy = {
 				map[item.id] = item
 				return map
 			}, {})
-			console.log(returnMe)
+			//console.log(returnMe)
 			return returnMe
 		},
 		/**

@@ -14,7 +14,7 @@ const CollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		content,
-		getContent,
+		setContent,
 		collections,
 		getCollections,
 		toggleCollectionsDisplay,
@@ -27,16 +27,21 @@ const CollectionsContainer = props => {
 		getCollections()
 		setHeaderBorder(false)
 
-		// Iterate through published collections to get content, then get the ids of all of the content
-		// const ids = [].concat.apply([], Object.entries(collections).filter(([k,v]) => v.published && !v.archived)
-		// 	.map(([k,v]) => v.content.map(item => (item.id))))
-		// //console.log(ids)
-		// getContent(ids)
+		let allContent = {}
+		Object.keys(collections).forEach(element => {
+			collections[element].content.forEach(item => {
+				allContent[item.id] = item
+			})
+		});
+
+		//console.log(allContent)
+
+		setContent(allContent)
 
 		return () => {
 			setHeaderBorder(true)
 		}
-	}, [collections, getCollections, getContent, setHeaderBorder])
+	}, [collections, getCollections, setContent, setHeaderBorder])
 
 	const viewstate = {
 		isProf,
@@ -47,12 +52,14 @@ const CollectionsContainer = props => {
 		collections, // : Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
 		collectionsLength: Object.keys(collections).length,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
-		// contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => (k)),
+		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => (k)),
 	}
 
 	const handlers = {
 		toggleCollectionsDisplay,
 	}
+
+	// console.log(collections)
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
 }
@@ -67,7 +74,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 
 const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
-	getContent: contentService.getContent,
+	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 }
