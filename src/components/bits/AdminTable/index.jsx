@@ -33,11 +33,11 @@ export default class AdminTable extends PureComponent {
 				sortBy: ``,
 				descending: false,
 				columns: [
-					{
-						title: `ID`,
-						sort: true,
-						descending: false,
-					},
+					// {
+					// 	title: `ID`,
+					// 	sort: true,
+					// 	descending: false,
+					// },
 					{
 						title: `NetID`,
 						sort: true,
@@ -132,12 +132,13 @@ export default class AdminTable extends PureComponent {
 		}
 
 		const printTableValues = (category, item) => {
+			console.log(item)
 			switch (category) {
 				case 'Users':
 					const date = new Date(item.lastLogin)
 					return (
 						<>
-							<td>{item.id}</td>
+							{/* <td>{item.id}</td> */}
 							<td>{item.username}</td>
 							<td>{item.name}</td>
 							<td>{item.roles}</td>
