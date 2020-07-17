@@ -38,9 +38,9 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		//console.log(params)
+		// console.log(params)
 
-		//console.log(contentCache)
+		// console.log(contentCache)
 
 		if (!contentCache[params.id]) getContent([params.id])
 		else {
@@ -92,12 +92,12 @@ const PlayerContainer = props => {
 
 	const handleSeekChange = e => {
 		const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
-	//	console.log(played)
+		//	console.log(played)
 		player.seekTo(played)
 	}
 
 	const handleSeekMouseDown = e => {
-		//console.log(`handleSeekMouseDown`)
+		// console.log(`handleSeekMouseDown`)
 		setSeeking(true)
 	}
 
@@ -121,7 +121,7 @@ const PlayerContainer = props => {
 		// setVolume(volume)
 	}
 
-	//if (!resource) return null
+	// if (!resource) return null
 
 	const viewstate = {
 		duration,

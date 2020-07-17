@@ -211,17 +211,16 @@ describe(`content service test`, () => {
 
 		proxies.apiProxy.admin.search.get = jest.fn()
 		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				results: searchResults,
-			})
+			return Promise.resolve(searchResults)
 		})
 
 		expect(store.getState().data).toEqual(null)
 		expect(store.getState().cache).toEqual({})
-		await adminServiceConstructor.search(`User`, `testusername`, true)(dispatch, getState, { apiProxy })
-		expect(store.getState().data).toEqual({status: 200, results: searchResults})
-		expect(store.getState().cache).toEqual({status: 200, results: searchResults})
+		await adminServiceConstructor.search(`Users`, `testusername`, true)(dispatch, getState, { apiProxy })
+
+		const expected = new User(searchResults[0])
+		expect(store.getState().data).toEqual([expected])
+		expect(store.getState().cache).toEqual({0: expected})
 	})
 
 	it(`searchProfessors`, async() => {

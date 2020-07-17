@@ -28,7 +28,7 @@ class ContentOverview extends PureComponent {
 			showing,
 		} = this.props.viewstate
 
-		console.log(content)
+		// console.log(content)
 
 		const {
 			handleNameChange,

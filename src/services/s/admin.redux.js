@@ -232,25 +232,25 @@ export default class AdminService {
 			try {
 
 				const results = await apiProxy.admin.search.get(searchCategory, searchQuery)
-				//console.log(results)
+				// console.log(results)
 
-				let finalData = []
+				const finalData = []
 
 				switch (searchCategory) {
-					case 'Users':
-							results.forEach((item) => {
-								finalData.push(new User(item))
-							})
-						break;
+				case `Users`:
+					results.forEach((item) => {
+						finalData.push(new User(item))
+					})
+					break
 
-					case 'Collections':
-						break;
+				case `Collections`:
+					break
 
-					case 'Content':
-						break;
+				case `Content`:
+					break
 
-					default:
-						break;
+				default:
+					break
 				}
 
 				dispatch(this.actions.adminSearch(finalData))

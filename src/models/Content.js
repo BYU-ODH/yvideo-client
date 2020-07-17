@@ -33,28 +33,25 @@ export default class Content {
 		annotationDocument: [],
 	}
 
-	
-
 	constructor(obj){
 
 		if(obj !== undefined){
-			this.id = obj['id']
-			this.views = obj['views']
-			this.collectionId = obj['collection-id']
-			this.url = obj['url']
-			this.contentType = obj['content-type']
-			this.thumbnail = obj['thumbnail']
-			this.description = obj['description']
-			this.resourceId = obj['resource-id']
-			this.resource.keywords = obj['tags'].split("; ")
-			this.name = obj['title']
-
+			this.id = obj[`id`]
+			this.views = obj[`views`]
+			this.collectionId = obj[`collection-id`]
+			this.url = obj[`url`]
+			this.contentType = obj[`content-type`]
+			this.thumbnail = obj[`thumbnail`]
+			this.description = obj[`description`]
+			this.resourceId = obj[`resource-id`]
+			this.resource.keywords = obj[`tags`].split(`; `)
+			this.name = obj[`title`]
 
 			this.settings = {
-				allowDefinitions: obj['allow-definitions'],
-				annotationDocument: obj['annotations'].split("; "),
-				showCaptions: obj['allow-captions'],
-				targetLanguages: obj['file-version'].split("; "),
+				allowDefinitions: obj[`allow-definitions`],
+				annotationDocument: obj[`annotations`].split(`; `),
+				showCaptions: obj[`allow-captions`],
+				targetLanguages: obj[`file-version`].split(`; `),
 			}
 		}
 
