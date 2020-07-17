@@ -69,30 +69,7 @@ jest.mock(`react-router-dom`, () => ({
 // TODO: need to re-write player container test
 describe(`PlayerContainer test`, () => {
 
-	it(`should get correct viewstate`, () => {
-		const wrapper = shallow(
-			<Container store={testutil.store} {...props}/>,
-		).childAt(0).dive()
-
-		wrapper.update()
-		console.log(wrapper.props().viewstate)
-
-		// console.log(wrapper.props())
-		const viewstate = wrapper.props().viewstate
-		expect(viewstate.videoId).toBe(`0`)
-
-		// viewstate content
-		expect(viewstate.content.name).toBe(`testname`)
-		expect(viewstate.content.contentType).toBe(`video`)
-		expect(viewstate.content.collectionId).toBe(85)
-		expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
-		expect(viewstate.content.physicalCopyExists).toBe(false)
-		expect(viewstate.content.isCopyrighted).toBe(false)
-		expect(viewstate.content.expired).toBe(true)
-		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
-	})
-
-	it(`mount`, () => {
+	it(`test viewstate`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -101,7 +78,14 @@ describe(`PlayerContainer test`, () => {
 			</Provider>,
 		)
 
-		// expect(wrapper.find(`CollectionsContainer`).length).toBe(1)
+		const viewstate = wrapper.find(`Player`).at(0).props().viewstate
 
+		expect(viewstate.duration).toBe(0)
+		expect(viewstate.fullscreen).toBe(false)
+		expect(viewstate.hovering).toBe(false)
+		expect(viewstate.muted).toBe(false)
+		expect(viewstate.playbackRate).toBe(1)
+		expect(viewstate.playing).toBe(false)
+		expect(viewstate.url).toBe(`test url`)
 	})
 })

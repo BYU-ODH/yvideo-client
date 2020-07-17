@@ -38,25 +38,12 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		// console.log(params)
-
-		// console.log(contentCache)
-
 		if (!contentCache[params.id]) getContent([params.id])
 		else {
 			setContent(contentCache[params.id])
 			setUrl(contentCache[params.id].url)
 			addView(params.id)
 		}
-		// if (content) {
-		// 	addView(params.id)
-		// 	if (!resourceCache[content.resourceId]) getResources(content.resourceId)
-		// 	else setResource(resourceCache[content.resourceId])
-		// }
-
-		// if (resource)
-		// 	setUrl(resource.content.files[0].streamUri)
-
 	}, [addView, content, contentCache, getContent, getResources, params.id, resource, resourceCache])
 
 	const handleDuration = duration => {
@@ -92,12 +79,10 @@ const PlayerContainer = props => {
 
 	const handleSeekChange = e => {
 		const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
-		//	console.log(played)
 		player.seekTo(played)
 	}
 
 	const handleSeekMouseDown = e => {
-		// console.log(`handleSeekMouseDown`)
 		setSeeking(true)
 	}
 
@@ -108,7 +93,6 @@ const PlayerContainer = props => {
 	}
 
 	const handleToggleFullscreen = () => {
-		// screenfull.request(findDOMNode(this.player))
 		setFullscreen(!fullscreen)
 	}
 
@@ -118,10 +102,7 @@ const PlayerContainer = props => {
 
 	const handleVolumeChange = e => {
 		console.log(e.target)
-		// setVolume(volume)
 	}
-
-	// if (!resource) return null
 
 	const viewstate = {
 		duration,
