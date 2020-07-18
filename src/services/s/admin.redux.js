@@ -236,7 +236,7 @@ export default class AdminService {
 				const results = await apiProxy.admin.search.get(searchCategory, searchQuery)
 				// console.log(results)
 
-				const finalData = []
+				let finalData = []
 
 				//console.log(searchCategory)
 
