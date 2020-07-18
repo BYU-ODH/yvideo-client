@@ -1,3 +1,5 @@
+import BackEndContent from 'models/BackEndContent'
+
 export default class ContentService {
 
 	// types
@@ -162,7 +164,7 @@ export default class ContentService {
 
 				const result = await apiProxy.content.get(notCached)
 
-				//console.log(`getContent`, result)
+				console.log(`getContent`, result)
 
 				dispatch(this.actions.contentGet(result))
 
@@ -200,58 +202,16 @@ export default class ContentService {
 
 		dispatch(this.actions.contentStart())
 
-		let title = ``
-		let description = ``
-		let keywords = ``
-
 		try {
 
-			const { id, published } = content
+			let finalData = new BackEndContent(content).backEndData
 
-			if(content.resource !== undefined){
-				title = content.resource.title
-				description = content.resource.description
-				keywords = content.resource.keywords
-			}
-
-			// const {
-			// 	captionTrack,
-			// 	annotationDocument,
-			// 	targetLanguages,
-			// 	aspectRatio,
-			// 	showCaptions,
-			// 	showAnnotations,
-			// 	allowDefinitions,
-			// 	showTranscripts,
-			// 	showWordList,
-			// } = content.settings
-
-			// const settings = {
-			// 	captionTrack,
-			// 	annotationDocument,
-			// 	targetLanguages,
-			// 	aspectRatio,
-			// 	showCaptions,
-			// 	showAnnotations,
-			// 	allowDefinitions,
-			// 	showTranscripts,
-			// 	showWordList,
-			// }
-
-			// const metadata = {
-			// 	title,
-			// 	description,
-			// 	keywords,
-			// 	published,
-			// }a
-
-			const settingsResult = await apiProxy.content.settings.post(id, content.settings)
+			const results = await apiProxy.content.update(finalData)
 
 			// const metaResult =
 			// await apiProxy.content.metadata.post(id, metadata)
 
 			// console.log(settingsResult)
-			// console.log(metaResult)
 
 			dispatch(this.actions.contentUpdate(content))
 

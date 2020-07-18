@@ -140,6 +140,7 @@ const TrackEditor = props => {
 	// 	},
 	// ] // THIS IS GOING TO HAVE EVENTS
 	let largestLayer = 0
+
 	//SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
 	if(eventsArray !== undefined && eventsArray.length > 0){
 		eventsArray.sort((a, b) => (a.layer > b.layer) ? 1 : -1)
@@ -155,6 +156,8 @@ const TrackEditor = props => {
 		//console.log(i)
 		initialLayers.push([i])
 	}
+
+	//console.log(eventsArray)
 
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [layers, setLayers] = useState(initialLayers)
@@ -195,6 +198,7 @@ const TrackEditor = props => {
 			setWidth(1)
 		}
 		window.addEventListener('resize', handleResize)
+		setAllEvents(eventsArray)
 		setEvents(allEvents)
 	})
 
@@ -455,7 +459,8 @@ const TrackEditor = props => {
 
 	const handleSaveAnnotation = () => {
 		let content = currentContent
-		currentContent.settings.annotationDocument = [...allEvents]
+		content.settings.annotationDocument = [...allEvents]
+
 		updateContent(content)
 	}
 

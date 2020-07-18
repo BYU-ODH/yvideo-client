@@ -44,6 +44,7 @@ const AdminContainer = props => {
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
 	useEffect(() => {
+		clean()
 		setHeaderBorder(true)
 		return () => {
 			setHeaderBorder(false)

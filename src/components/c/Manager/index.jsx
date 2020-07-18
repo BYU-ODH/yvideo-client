@@ -19,6 +19,8 @@ import plus from 'assets/plus.svg'
 export default class Manager extends PureComponent {
 	render() {
 
+		// console.log('render manager')
+
 		const {
 			admin,
 			collection,
@@ -35,16 +37,27 @@ export default class Manager extends PureComponent {
 			<Container>
 				{ this.props.empty !== undefined ? (
 					<>
-						<h1 className='no-collections'>There are no collections</h1>
-						<div id={'create-button'} >
-							<button onClick={createNew}>Create New Collection</button>
-						</div>
+						{ user ? (
+							<>
+								<h1 className='no-collections'>{ user.name } does not have any collections</h1>
+								<div id={'create-button'}>
+									<button onClick={createNew}>Create New Collection</button>
+								</div>
+							</>
+						) : (
+							<>
+								<h1 className='no-collections'>There are no collections</h1>
+								<div id={'create-button'} >
+									<button onClick={createNew}>Create New Collection</button>
+								</div>
+							</>
+						) }
 					</>
 				) : (
 					<>
 						<SideMenu>
 
-							<h4>{user ? `${user.name.endsWith(`s`) ? `${user.name}'` : `${user.name}'s`} Collections` : `My Collections`}</h4>
+							<h4>{user ? (`${user.name}'s Collections`) : `My Collections`}</h4>
 
 							<Accordion header={`Published`} active>
 								{sideLists.published.map(({ id, name }, index) => <Link key={index} to={`/${path}/${id}`}>{name}</Link>)}

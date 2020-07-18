@@ -38,6 +38,7 @@ const ManagerContainer = props => {
 	const createNew = () => {
 		toggleModal({
 			component: CreateCollectionContainer,
+			isLabAssistantRoute: false,
 		})
 	}
 
@@ -67,8 +68,6 @@ const ManagerContainer = props => {
 		path: `manager`,
 		sideLists,
 	}
-
-
 
 	return <Manager viewstate={viewstate} handlers={handlers} />
 }

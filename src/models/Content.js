@@ -1,5 +1,3 @@
-import Settings from './Settings'
-
 export default class Content {
 	authKey = ``
 	collectionId = null
@@ -33,7 +31,7 @@ export default class Content {
 		annotationDocument: [],
 	}
 
-	
+
 
 	constructor(obj){
 
@@ -52,11 +50,27 @@ export default class Content {
 
 			this.settings = {
 				allowDefinitions: obj['allow-definitions'],
-				annotationDocument: obj['annotations'].split("; "),
+				annotationDocument: this.stringToArray(obj['annotations']),
 				showCaptions: obj['allow-captions'],
 				targetLanguages: obj['file-version'].split("; "),
 			}
 		}
 
+	}
+
+	stringToArray(string){
+		let array = []
+
+		let temp = string.split("; ")
+
+		console.log(temp)
+
+		temp.forEach(element => {
+			if(element !== ''){
+				array.push(JSON.parse(element))
+			}
+		})
+
+		return array
 	}
 }

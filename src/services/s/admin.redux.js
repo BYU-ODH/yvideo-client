@@ -1,4 +1,5 @@
 import User from 'models/User'
+import Content from 'models/Content'
 
 export default class AdminService {
 
@@ -192,9 +193,10 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_DELETE:
-			// console.log(`delete collection: `)
+			console.log(action.payload.response)
 			return {
 				...store,
+				data: action.payload.response,
 				loading: false,
 			}
 
@@ -236,17 +238,30 @@ export default class AdminService {
 
 				let finalData = []
 
+				//console.log(searchCategory)
+
 				switch (searchCategory) {
-					case 'Users':
+					case 'user':
 							results.forEach((item) => {
+								//console.log(item)
 								finalData.push(new User(item))
 							})
 						break;
 
-					case 'Collections':
+					case 'collection':
+							results.forEach((item) => {
+								//console.log(item)
+								item['name'] = item['collection-name']
+								delete item['collection-name']
+								finalData.push(item)
+							})
 						break;
 
-					case 'Content':
+					case 'content':
+							results.forEach((item) => {
+								//console.log(item)
+								finalData.push(new Content(item))
+							})
 						break;
 
 					default:
@@ -297,13 +312,15 @@ export default class AdminService {
 
 		dispatch(this.actions.adminStart())
 
+		//console.log(professorId)
+
 		try {
 
-			const results = await apiProxy.admin.search.get(`user`, professorId)
+			const results = await apiProxy.admin.user.get(professorId)
 
-			const professor = results.filter(user => user.id = professorId)[0] || {}
+			//console.log(new User(results))
 
-			dispatch(this.actions.adminSetProfessor(professor))
+			dispatch(this.actions.adminSetProfessor(new User(results)))
 
 		} catch (error) {
 			console.error(error.message)
@@ -335,42 +352,42 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
-	createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
+	// createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
 
-		dispatch(this.actions.adminStart())
+	// 	dispatch(this.actions.adminStart())
 
-		try {
+	// 	try {
 
-			const ownerId = getState().adminStore.professor.id
+	// 		const ownerId = getState().adminStore.professor.id
 
-			await apiProxy.admin.collection.create(name, parseInt(ownerId)) // maybe parseInt(ownerId) -> ownerId -Matthew
+	// 		await apiProxy.admin.collection.create(name, parseInt(ownerId)) // maybe parseInt(ownerId) -> ownerId -Matthew
 
-			dispatch(this.actions.adminCreateCollection())
+	// 		dispatch(this.actions.adminCreateCollection())
 
-			this.searchCollections(ownerId)
+	// 		this.searchCollections(ownerId)
 
-		} catch (error) {
-			console.log(error.message)
-			dispatch(this.actions.adminError(error))
-		}
-	}
+	// 	} catch (error) {
+	// 		console.log(error.message)
+	// 		dispatch(this.actions.adminError(error))
+	// 	}
+	// }
 
-	createContent = (content, collectionId) => async (dispatch, { apiProxy }) => {
+	// createContent = (content, collectionId) => async (dispatch, { apiProxy }) => {
 
-		dispatch(this.actions.adminStart())
+	// 	dispatch(this.actions.adminStart())
 
-		try {
+	// 	try {
 
-			const result = await apiProxy.admin.collection.content.post(content, collectionId)
+	// 		const result = await apiProxy.content.post(content, collectionId)
 
-			const data = { [result.data.id]: result.data }
+	// 		const data = { [result.data.id]: result.data }
 
-			dispatch(this.actions.adminCreateContent(data))
+	// 		dispatch(this.actions.adminCreateContent(data))
 
-		} catch (error) {
-			dispatch(this.actions.adminError(error))
-		}
-	}
+	// 	} catch (error) {
+	// 		dispatch(this.actions.adminError(error))
+	// 	}
+	// }
 
 	createContentFromResource = (collectionId, resourceId) => async (dispatch, getState, { apiProxy }) => {
 
@@ -392,7 +409,7 @@ export default class AdminService {
 		}
 	}
 
-	searchCollections = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
+	searchCollections = (professorId, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().adminStore.lastFetchedCollections
 
@@ -404,9 +421,13 @@ export default class AdminService {
 
 			try {
 
-				const results = await apiProxy.admin.search.get(`collection`, searchQuery)
+				const results = await apiProxy.admin.collection.get(professorId)
 
-				dispatch(this.actions.adminSearchCollections(results))
+				let collections = results.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
+
+				//console.log(collections)
+
+				dispatch(this.actions.adminSearchCollections(collections))
 
 			} catch (error) {
 				console.error(error.message)
@@ -416,7 +437,7 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
-	updateCollectionStatus = (ID, action) => async (dispatch, getState, { apiProxy }) => {
+	updateCollectionStatus = (colId, action) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.adminStart())
 
@@ -427,7 +448,7 @@ export default class AdminService {
 		let currentCollection
 		Object.keys(collections).forEach(item => {
 			const {id} = collections[item]
-			if (id === ID){
+			if (id === colId){
 				currentCollection = collections[item]
 				return
 			}
@@ -460,11 +481,16 @@ export default class AdminService {
 			break
 		}
 
+		const finalState = {
+			published: currentCollection.published,
+			archived: currentCollection.archived,
+		}
+
 		if (abort) dispatch(this.actions.adminAbort())
 		else {
 			try {
 				// Edit the desired collection
-				await apiProxy.collection.edit(ID, action)
+				await apiProxy.collection.edit(colId, finalState)
 				// Get the updated collection and all the other collections
 				// This fixes the bug that it will add a duplicated collection
 				// to the professorCollections
@@ -480,13 +506,23 @@ export default class AdminService {
 	}
 
 	deleteCollection = (collectionId) => async (dispatch, getState, { apiProxy }) => {
+
 		dispatch(this.actions.adminStart())
 
 		try {
 
+			let currentResults = [...getState().adminStore.data]
+
+			// console.log(currentResults)
+
+			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId) ,1)
+
 			const result = await apiProxy.admin.collection.delete(collectionId)
 			// console.log(result)
-			dispatch(this.actions.adminCollectionDelete(result))
+
+			// console.log(currentResults)
+
+			dispatch(this.actions.adminCollectionDelete(currentResults))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))

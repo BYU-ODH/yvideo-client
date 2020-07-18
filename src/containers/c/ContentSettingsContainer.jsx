@@ -9,9 +9,7 @@ const ContentSettingsContainer = props => {
 	const {
 		showing,
 		content,
-		resources,
 		loading,
-		getResources,
 	} = props
 
 	const {
@@ -20,18 +18,17 @@ const ContentSettingsContainer = props => {
 	} = props.handlers
 
 	const [tag, setTag] = useState(``)
+	const [currentContent, setCurrentContent] = useState(content)
 
 	useEffect(
 		() => {
-			if (!resources[content.resourceId]) getResources(content.resourceId)
-			else if (!content.resource) {
+			if (!content.resource) {
 				setContentState({
 					...content,
-					resource: resources[content.resourceId],
 				})
 			} else setShowing(true)
 		},
-		[content, getResources, resources, setContentState, setShowing]
+		[content, setContentState, setShowing]
 	)
 
 	if (!content || !content.resource) return null
@@ -113,12 +110,11 @@ const ContentSettingsContainer = props => {
 }
 
 const mapStoreToProps = store => ({
-	resources: store.resourceStore.cache,
+	// resources: store.resourceStore.cache,
 	loading: store.contentStore.loading,
 })
 
 const mapDispatchToProps = {
-	getResources: services.resourceService.getResources,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(ContentSettingsContainer)

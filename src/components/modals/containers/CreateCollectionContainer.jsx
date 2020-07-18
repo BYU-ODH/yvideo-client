@@ -9,10 +9,13 @@ const CreateCollectionContainer = props => {
 
 	const {
 		userId,
+		professorId,
 		adminCreateCollection,
+		adminSearchCollections,
 		createCollection,
 		isLabAssistantRoute,
 		toggleModal,
+		getCollections,
 	} = props
 
 	const [name, setName] = useState(``)
@@ -26,13 +29,19 @@ const CreateCollectionContainer = props => {
 
 		const defaultV = {
 			'published': false,
-			'archived': false, 
-			'owner': userId, 
+			'archived': false,
+			'owner': `${isLabAssistantRoute ? professorId : userId }`,
 			'collection-name': name,
 		}
 
-		if(isLabAssistantRoute) adminCreateCollection(defaultV)
-		else createCollection(defaultV)
+		if(isLabAssistantRoute){
+			await createCollection(defaultV)
+			adminSearchCollections(professorId, true)
+		}
+		else {
+			await createCollection(defaultV)
+			//collectionService.getCollections()
+		}
 		toggleModal()
 	}
 
@@ -51,6 +60,7 @@ const CreateCollectionContainer = props => {
 
 const mapStateToProps = store => ({
 	userId: store.authStore.user.id,
+	professorId: store.adminStore.professor.id,
 	isLabAssistantRoute: store.interfaceStore.modal.isLabAssistantRoute,
 })
 
@@ -58,6 +68,8 @@ const mapDispatchToProps = {
 	adminCreateCollection: adminService.createCollection,
 	createCollection: collectionService.createCollection,
 	toggleModal: interfaceService.toggleModal,
+	getCollections: collectionService.getCollections,
+	adminSearchCollections: adminService.searchCollections,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollectionContainer)

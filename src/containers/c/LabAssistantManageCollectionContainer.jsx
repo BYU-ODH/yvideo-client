@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
@@ -17,20 +18,37 @@ const LabAssistantManageCollectionContainer = props => {
 	const {
 		admin,
 		collection,
+		professorId,
 		content,
+		searchCollections,
 		getCollectionContent,
-		updateCollectionStatus
+		updateCollectionName,
+		updateCollectionStatus,
 	} = props
 
+	//console.log(collection)
 	const [isContent, setIsContent] = useState(true)
+	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
+	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
+		//console.log('useeffect')
+		//console.log(collection.id)
 		getCollectionContent(collection.id, true)
-	}, [collection, getCollectionContent])
+		setCollectionName(collection.name)
+	}, [collection])
 
 	const togglePublish = e => {
 		e.preventDefault()
 		updateCollectionStatus(collection.id, collection.published ? 'unpublish' : 'publish')
+	}
+
+	const toggleEdit = async e => {
+		setIsEditingCollectionName(!isEditingCollectionName)
+		if (isEditingCollectionName){
+			await updateCollectionName(collection.id, collectionName, true)
+			searchCollections(professorId, true)
+		}
 	}
 
 	const createContent = () => {
@@ -55,17 +73,26 @@ const LabAssistantManageCollectionContainer = props => {
 		setIsContent(isContent)
 	}
 
+	const handleNameChange = e => {
+		const { value } = e.target
+		setCollectionName(value)
+	}
+
 	if(!content) return null
 
 	const viewstate = {
 		admin,
 		collection,
 		content: Object.keys(content).map(key => content[key]),
-		isContent
+		isContent,
+		isEditingCollectionName,
+		collectionName,
 	}
 
 	const handlers = {
 		togglePublish,
+		toggleEdit,
+		handleNameChange,
 		createContent,
 		archive,
 		setTab,
@@ -78,6 +105,7 @@ const LabAssistantManageCollectionContainer = props => {
 const mapStateToProps = store => ({
 	content: store.adminStore.profCollectionContent,
 	admin: store.authStore.user.roles,
+	professorId: store.adminStore.professor.id
 })
 
 const mapDispatchToProps = {
@@ -85,6 +113,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	updateCollectionStatus: adminService.updateCollectionStatus,
 	updateCollectionName: collectionService.updateCollectionName,
+	searchCollections: adminService.searchCollections,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManageCollectionContainer)

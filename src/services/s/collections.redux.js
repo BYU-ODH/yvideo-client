@@ -210,10 +210,10 @@ export default class CollectionService {
 
 			await apiProxy.collection.create(name)
 
-			// const results = await apiProxy.user.collections.get()
+			const results = await apiProxy.user.collections.get()
 
 			// TODO: We need to update state
-			dispatch(this.actions.collectionCreate())
+			dispatch(this.actions.collectionsGet(results))
 
 		} catch (error) {
 			console.log(error.message)
@@ -301,19 +301,25 @@ export default class CollectionService {
 		}
 	}
 
-	updateCollectionName = (collectionId, collectionName) => {
+	updateCollectionName = (collectionId, collectionName, isAdmin) => {
 		return async (dispatch, getState, { apiProxy }) => {
 			dispatch(this.actions.collectionsStart())
 
-			const currentState = getState().collectionStore.cache[collectionId]
-
 			try {
-
-				currentState.name = collectionName
 
 				await apiProxy.collection.post(collectionId, collectionName)
 
-				dispatch(this.actions.collectionEdit(currentState))
+				let currentState = {}
+
+				if(isAdmin !== null){
+				}
+				else {
+					currentState = getState().collectionStore.cache[collectionId]
+					console.log('not admin', currentState)
+					currentState.name = collectionName
+					dispatch(this.actions.collectionEdit(currentState))
+
+				}
 
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))

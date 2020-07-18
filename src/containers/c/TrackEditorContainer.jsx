@@ -22,11 +22,11 @@ const TrackEditorContainer = props => {
 
 	const {id} = useParams()
 
-	const [resourceId, setResourceId] = useState(0)
+	const [url, setUrl] = useState('')
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
 
-	let url = ''
+	//console.log(content)
 
 	useEffect(() => {
 		console.log('use effecct')
@@ -35,22 +35,15 @@ const TrackEditorContainer = props => {
 		}
 
 		if(content[id] !== undefined){
+			console.log(content[id].settings.annotationDocument)
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
-			setResourceId(content[id].resourceId)
-			getResource(content[id].resourceId)
+			setUrl(content[id].url)
 		}
 
 	}, [content, resource, eventsArray, currentContent])
 
-
-	if(resource[resourceId] != undefined){
-		//console.log(resource[resourceId].content.files[0].streamUri)
-		url = resource[resourceId].content.files[0].streamUri
-		//url = `http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4`
-	}
-
-	//console.log(currentContent)
+	console.log(eventsArray)
 
 	const viewstate = {
 		currentContent,

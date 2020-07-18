@@ -18,6 +18,7 @@ const CreateContentContainer = props => {
 		adminContent,
 		adminCreateContent,
 		adminCreateContentFromResource,
+		adminGetCollectionContent,
 		createContent,
 		modal,
 		search,
@@ -115,8 +116,8 @@ const CreateContentContainer = props => {
 			"allow-captions": true,
 			"content-type": data.contentType,
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
-			tags,
-			"thumbnail": `https://i.ytimg.com/vi/${videoId}/hq720.jpg`,
+			"tags": tags,
+			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
 			"file-version": ``,
 			"collection-id": modal.collectionId,
 			"views": 0,
@@ -127,7 +128,10 @@ const CreateContentContainer = props => {
 
 		}
 
-		if(modal.isLabAssistantRoute) adminCreateContent(backEndData)
+		if(modal.isLabAssistantRoute){
+			await createContent(backEndData)
+			adminGetCollectionContent(modal.collectionId)
+		}
 		else{
 			await createContent(backEndData)
 			getCollections(true)
@@ -183,6 +187,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
 	adminCreateContent: adminService.createContent,
+	adminGetCollectionContent: adminService.getCollectionContent,
 	adminCreateContentFromResource: adminService.createContentFromResource,
 	createContent: contentService.createContent,
 	toggleModal: interfaceService.toggleModal,

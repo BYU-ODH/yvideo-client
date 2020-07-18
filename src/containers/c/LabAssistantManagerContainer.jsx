@@ -21,7 +21,12 @@ const LabAssistantManagerContainer = props => {
 		toggleModal,
 	} = props
 
+	//console.log(collections)
+
 	const { professorId, collectionId } = useParams()
+
+	//console.log(professor)
+	//console.log(professorId)
 
 	useEffect(() => {
 		setHeaderBorder(true)
@@ -43,26 +48,6 @@ const LabAssistantManagerContainer = props => {
 		}
 	}, [collections, professor, professorId, searchCollections, setHeaderBorder, setProfessor])
 
-	if(!professor || objectIsEmpty(professor) || !collections) return null
-
-	const sideLists = {
-		published: [],
-		unpublished: [],
-		archived: [],
-	}
-
-	//This populates the sideList object to display all the collections based on
-	//their current status published, unpublished, and archived
-	Object.keys(collections).forEach(item => {
-		const { archived, published, name, id} = collections[item]
-
-		if (archived) sideLists.archived.push({ id, name })
-		else if (published) sideLists.published.push({ id, name })
-		else sideLists.unpublished.push({ id, name })
-	})
-
-
-
 	const createNew = () => {
 		toggleModal({
 			component: CreateCollectionContainer,
@@ -70,31 +55,58 @@ const LabAssistantManagerContainer = props => {
 		})
 	}
 
-	//This is to pass the right collection based on the ID of the collection
-	//instead of the old way that changed the array index and then pointed to the new index
-	//Doing it this way we get the collection from the props and not from a
-	//static new array that will not update after a handler action
-	let singleCollection
-	Object.keys(collections).forEach(item => {
-		const {id} = collections[item]
-		const cId = parseInt(collectionId)
-		if (id === cId){
-			singleCollection = collections[item]
-			return;
-		}
-	});
+	const sideLists = {
+		published: [],
+		unpublished: [],
+		archived: [],
+	}
+
+	let singleCollection = {}
+
+	if(collections !== undefined && collections !== null){
+		//This populates the sideList object to display all the collections based on
+		//their current status published, unpublished, and archived
+
+		Object.keys(collections).forEach(item => {
+			const { archived, published, name, id} = collections[item]
+
+			if (archived) sideLists.archived.push({ id, name })
+			else if (published) sideLists.published.push({ id, name })
+			else sideLists.unpublished.push({ id, name })
+		})
+
+		//This is to pass the right collection based on the ID of the collection
+		//instead of the old way that changed the array index and then pointed to the new index
+		//Doing it this way we get the collection from the props and not from a
+		//static new array that will not update after a handler action
+
+		Object.keys(collections).forEach(item => {
+			const {id} = collections[item]
+			const cId = collectionId
+			if (id === cId){
+				singleCollection = collections[item]
+				return;
+			}
+		});
+	}
+
+	//console.log('single collection', singleCollection)
 
 	const viewstate = {
 		admin,
 		collection: singleCollection,
 		path: `lab-assistant-manager/${professor.id}`,
 		sideLists,
-		user: professor
+		user: professor,
 	}
 
 	const handlers = {
 		createNew,
 	}
+
+
+	if(!collections) return <Manager viewstate={viewstate} handlers={handlers} archived={[]} published={[]} unpublished={[]} empty={true}/>
+
 
 	return <Manager viewstate={viewstate} handlers={handlers} archived={sideLists.archived} published={sideLists.published} unpublished={sideLists.unpublished}/>
 }
