@@ -33,11 +33,11 @@ export default class AdminTable extends PureComponent {
 				sortBy: ``,
 				descending: false,
 				columns: [
-					{
-						title: `ID`,
-						sort: true,
-						descending: false,
-					},
+					// {
+					// 	title: `ID`,
+					// 	sort: true,
+					// 	descending: false,
+					// },
 					{
 						title: `NetID`,
 						sort: true,
@@ -138,7 +138,7 @@ export default class AdminTable extends PureComponent {
 					const date = new Date(item.lastLogin)
 					return (
 						<>
-							<td>{item.id}</td>
+							{/* <td>{item.id}</td> */}
 							<td>{item.username}</td>
 							<td>{item.name}</td>
 							<td>{item.roles}</td>
@@ -157,6 +157,7 @@ export default class AdminTable extends PureComponent {
 					return (
 						<>
 							<td>{item.name}</td>
+							<td>{item.collectionId}</td>
 							<td>{item.contentType}</td>
 							<td>{item.expired.toString()}</td>
 							<td>{item.resourceId}</td>

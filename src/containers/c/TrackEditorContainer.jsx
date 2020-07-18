@@ -29,13 +29,13 @@ const TrackEditorContainer = props => {
 	//console.log(content)
 
 	useEffect(() => {
-		console.log('use effecct')
+		//console.log('use effecct')
 		if(!content.hasOwnProperty(id)){
 			getContent([id])
 		}
 
 		if(content[id] !== undefined){
-			console.log(content[id].settings.annotationDocument)
+			//console.log(content[id].settings.annotationDocument)
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setUrl(content[id].url)
@@ -43,7 +43,7 @@ const TrackEditorContainer = props => {
 
 	}, [content, resource, eventsArray, currentContent])
 
-	console.log(eventsArray)
+	//console.log(eventsArray)
 
 	const viewstate = {
 		currentContent,
