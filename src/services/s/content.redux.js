@@ -127,15 +127,15 @@ export default class ContentService {
 	}
 
 	// thunks
-	setContent = (content) => async (dispatch, getState, { apiProxy })  => {
+	setContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.contentStart())
 
-		//console.log('updated content1', content)
+		// console.log('updated content1', content)
 
 		try {
 			// TODO: Why doesn't this update to state cause it to rerender?
-			//dispatch(this.actions.contentCreate(data))
+			// dispatch(this.actions.contentCreate(data))
 
 			dispatch(this.actions.contentGet(content))
 		} catch (error) {
@@ -154,7 +154,7 @@ export default class ContentService {
 		const cachedIds = Object.keys(cache).map(id => id)
 		const notCached = contentIds.filter(id => !cachedIds.includes(id))
 
-		//console.log('updated store', contentIds)
+		// console.log('updated store', contentIds)
 
 		if (stale || notCached.length || force) {
 
@@ -164,7 +164,7 @@ export default class ContentService {
 
 				const result = await apiProxy.content.get(notCached)
 
-				console.log(`getContent`, result)
+				// console.log(`getContent`, result)
 
 				dispatch(this.actions.contentGet(result))
 
@@ -185,10 +185,10 @@ export default class ContentService {
 
 			const data = { [result.data.id]: result.data }
 
-			console.log(result.data)
+			// console.log(result.data)
 
 			// TODO: Why doesn't this update to state cause it to rerender?
-			//dispatch(this.actions.contentCreate(data))
+			// dispatch(this.actions.contentCreate(data))
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {
