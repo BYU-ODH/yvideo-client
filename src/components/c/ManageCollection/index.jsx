@@ -60,7 +60,7 @@ export default class ManageCollection extends PureComponent {
 								autoFocus
 							/>
 						) : (
-							<h6 onClick={e => toggleEdit(e)}>{collection.name}</h6>
+							<h6 onClick={e => toggleEdit(e)}>{collectionName}</h6>
 						)}
 						<TitleEditButton
 							editing={isEditingCollectionName}

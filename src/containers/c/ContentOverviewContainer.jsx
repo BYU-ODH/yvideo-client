@@ -23,6 +23,8 @@ const ContentOverviewContainer = props => {
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
 
+	const [tag, setTag] = useState(``)
+
 	const [contentState, setContentState] = useState(content)
 
 	if (objectIsEmpty(content)) return null
@@ -59,10 +61,57 @@ const ContentOverviewContainer = props => {
 		})
 	}
 
+	const handleToggleSettings = e => {
+		const { key } = e.target.dataset
+		setContentState({
+			...contentState,
+			settings: {
+				...contentState.settings,
+				[key]: !contentState.settings[key],
+			},
+		})
+	}
+
+	const handleDescription = e => {
+		setContentState({
+			...contentState,
+			description: e.target.value,
+		})
+	}
+
+	const addTag = (e) => {
+		e.preventDefault()
+		const newTags = tag.split(/[ ,]+/)
+		setContentState({
+			...contentState,
+			resource: {
+				...contentState.resource,
+				keywords: [...contentState.resource.keywords, ...newTags],
+			},
+		})
+		setTag(``)
+	}
+
+	const removeTag = e => {
+		setContentState({
+			...contentState,
+			resource: {
+				...contentState.resource,
+				keywords: contentState.resource.keywords.filter(item => item !== e.target.dataset.value),
+			},
+		})
+	}
+
+	const changeTag = e => {
+		setTag(e.target.value)
+	}
+
+
 	const viewstate = {
 		content: contentState,
 		showing,
 		editing,
+		tag,
 	}
 
 	const handlers = {
@@ -72,6 +121,12 @@ const ContentOverviewContainer = props => {
 		handleTogglePublish,
 		setContentState,
 		setShowing,
+		updateContent,
+		handleToggleSettings,
+		handleDescription,
+		addTag,
+		removeTag,
+		changeTag,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

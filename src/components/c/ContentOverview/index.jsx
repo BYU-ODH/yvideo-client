@@ -3,11 +3,7 @@ import { connect } from 'react-redux'
 
 import { resourceService, contentService } from 'services'
 
-import {
-	ContentSettingsContainer,
-} from 'containers'
-
-import { LazyImage } from 'components/bits'
+import { SwitchToggle, AspectRadio, Tag, Spinner, LazyImage } from 'components/bits'
 
 import Style, {
 	EditButton,
@@ -17,6 +13,9 @@ import Style, {
 	RemoveButton,
 	TitleEdit,
 	StyledLink,
+	Setting,
+	Column,
+	InnerContainer,
 } from './styles'
 
 class ContentOverview extends PureComponent {
@@ -26,6 +25,7 @@ class ContentOverview extends PureComponent {
 			editing,
 			content,
 			showing,
+			tag,
 		} = this.props.viewstate
 
 		// console.log(content)
@@ -37,6 +37,11 @@ class ContentOverview extends PureComponent {
 			handleTogglePublish,
 			setContentState,
 			setShowing,
+			addTag,
+			removeTag,
+			handleToggleSettings,
+			handleDescription,
+			changeTag,
 		} = this.props.handlers
 
 		const {
@@ -45,12 +50,15 @@ class ContentOverview extends PureComponent {
 			showAnnotations,
 		} = content.settings
 
-		// const allowDefinitions = content['allow-definitions'] // <-- ?? -Matthew
+		const {
+			keywords
+		} = content.resource
 
-		const handlers = {
-			setContentState,
-			setShowing,
-		}
+		const {
+			description
+		} = content
+
+		// const allowDefinitions = content['allow-definitions'] // <-- ?? -Matthew
 
 		return (
 			<Style>
@@ -85,7 +93,34 @@ class ContentOverview extends PureComponent {
 					</div>
 				</Preview>
 				{editing &&
-					<ContentSettingsContainer content={content} showing={showing} handlers={handlers} />
+					<InnerContainer>
+						<Column>
+							<h4>Allow automatic definitions
+								<SwitchToggle on={allowDefinitions} setToggle={handleToggleSettings} data_key='allowDefinitions' />
+							</h4>
+							<h4>
+								Captions
+								<SwitchToggle on={showCaptions} setToggle={handleToggleSettings} data_key='showCaptions' />
+							</h4>
+						</Column>
+
+						<Column>
+							<h4>Tags</h4>
+							<div style={{ display: 'flex', }}>
+								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} className='tag-input' />
+								<button onClick={addTag}>Add</button>
+							</div>
+							<br/>
+							<div className='tags'>
+								{keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
+							</div>
+						</Column>
+
+						<Column>
+							<h4>Description</h4>
+							<textarea rows={4} onChange={handleDescription} value={description} />
+						</Column>
+					</InnerContainer>
 				}
 			</Style>
 		)

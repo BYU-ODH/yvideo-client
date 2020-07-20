@@ -2,7 +2,6 @@ import Admin from './c/Admin'
 import CollectionPermissions from './c/CollectionPermissions'
 import Collections from './c/Collections'
 import ContentOverview from './c/ContentOverview'
-import ContentSettings from './c/ContentSettings'
 import Controller from './c/Controller'
 import Error from './c/Error'
 import Events from './c/Events'
@@ -25,7 +24,6 @@ export {
 	CollectionPermissions,
 	Collections,
 	ContentOverview,
-	ContentSettings,
 	Controller,
 	Error,
 	Events,

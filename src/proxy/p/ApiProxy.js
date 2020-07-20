@@ -130,8 +130,8 @@ const apiProxy = {
 		 * @param id The ID of the collection
 		 * @param contentIds List of content ids
 		 */
-		remove: async (id, contentIds) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/removeContent`,
-			JSON.stringify({ removeContent: contentIds}), {
+		remove: async (id) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/removeContent`,
+			id, {
 				withCredentials: true,
 				headers: {
 					'Content-Type': `application/json`,
@@ -184,7 +184,7 @@ const apiProxy = {
 						'session-id': window.clj_session_id,
 					},
 				}).then(res => res.data)))
-			console.log('get content')
+			//console.log('get content')
 			const returnMe = results.reduce((map, item) => {
 				let newItem = new Content(item)
 				map[item.id] = newItem
