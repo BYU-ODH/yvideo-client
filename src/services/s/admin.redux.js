@@ -193,7 +193,6 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_DELETE:
-			console.log(action.payload.response)
 			return {
 				...store,
 				data: action.payload.response,
@@ -234,35 +233,31 @@ export default class AdminService {
 			try {
 
 				const results = await apiProxy.admin.search.get(searchCategory, searchQuery)
-				// console.log(results)
 
-				let finalData = []
-
-				//console.log(searchCategory)
-
+				const finalData = []
 				switch (searchCategory) {
-					case 'user':
-							results.forEach((item) => {
-								//console.log(item)
-								finalData.push(new User(item))
-							})
-						break;
+				case `user`:
+					results.forEach((item) => {
+						console.log(item)
+						finalData.push(new User(item))
+					})
+					break
 
-					case 'collection':
-							results.forEach((item) => {
-								//console.log(item)
-								item['name'] = item['collection-name']
-								delete item['collection-name']
-								finalData.push(item)
-							})
-						break;
+				case `collection`:
+					results.forEach((item) => {
+						// console.log(item)
+						item[`name`] = item[`collection-name`]
+						delete item[`collection-name`]
+						finalData.push(item)
+					})
+					break
 
-					case 'content':
-							results.forEach((item) => {
-								//console.log(item)
-								finalData.push(new Content(item))
-							})
-						break;
+				case `content`:
+					results.forEach((item) => {
+						// console.log(item)
+						finalData.push(new Content(item))
+					})
+					break
 
 				default:
 					break
@@ -312,13 +307,13 @@ export default class AdminService {
 
 		dispatch(this.actions.adminStart())
 
-		//console.log(professorId)
+		// console.log(professorId)
 
 		try {
 
 			const results = await apiProxy.admin.user.get(professorId)
 
-			//console.log(new User(results))
+			// console.log(new User(results))
 
 			dispatch(this.actions.adminSetProfessor(new User(results)))
 
@@ -423,9 +418,7 @@ export default class AdminService {
 
 				const results = await apiProxy.admin.collection.get(professorId)
 
-				let collections = results.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
-
-				//console.log(collections)
+				const collections = results.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
 
 				dispatch(this.actions.adminSearchCollections(collections))
 
@@ -511,7 +504,7 @@ export default class AdminService {
 
 		try {
 
-			let currentResults = [...getState().adminStore.data]
+			const currentResults = [...getState().adminStore.data]
 
 			// console.log(currentResults)
 

@@ -312,10 +312,9 @@ export default class CollectionService {
 				let currentState = {}
 
 				if(isAdmin !== null){
-				}
-				else {
+				} else {
 					currentState = getState().collectionStore.cache[collectionId]
-					console.log('not admin', currentState)
+					// console.log(`not admin`, currentState)
 					currentState.name = collectionName
 					dispatch(this.actions.collectionEdit(currentState))
 
