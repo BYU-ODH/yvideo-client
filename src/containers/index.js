@@ -2,7 +2,6 @@ import AdminContainer from './c/AdminContainer'
 import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
 import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
-import ContentSettingsContainer from './c/ContentSettingsContainer'
 import EventsContainer from './c/EventsContainer'
 import HeaderContainer from './c/HeaderContainer'
 import LabAssistantContainer from './c/LabAssistantContainer'
@@ -22,7 +21,6 @@ export {
 	CollectionsContainer,
 	ContentOverviewContainer,
 	CollectionPermissionsContainer,
-	ContentSettingsContainer,
 	EventsContainer,
 	HeaderContainer,
 	LabAssistantContainer,

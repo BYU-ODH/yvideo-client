@@ -319,6 +319,7 @@ export const store = mockStore(
 					thumbnail: `test@thumbnail.com`,
 					url: `test url`,
 					views: 0,
+					resource,
 				},
 				{
 					authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -339,6 +340,7 @@ export const store = mockStore(
 					thumbnail: `test@thumbnail.com`,
 					url: `test url2`,
 					views: 0,
+					resource,
 				},
 			],
 		},

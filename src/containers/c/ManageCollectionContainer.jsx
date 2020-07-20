@@ -34,7 +34,7 @@ const ManageCollectionContainer = props => {
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
 		if (isEditingCollectionName)
-			updateCollectionName(collection.id, collectionName)
+			updateCollectionName(collection.id, collectionName, null)
 	}
 
 	const handleNameChange = e => {

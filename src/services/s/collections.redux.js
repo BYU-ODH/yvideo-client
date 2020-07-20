@@ -191,7 +191,7 @@ export default class CollectionService {
 		currentState.content.splice(contentIndex, 1)
 
 		try {
-			const result = await apiProxy.collection.remove(id, [contentId.toString()])
+			const result = await apiProxy.collection.remove(currentState)
 			// console.log(result)
 
 			// You also have to be an admin to do this, I'm pretty sure
@@ -301,7 +301,7 @@ export default class CollectionService {
 		}
 	}
 
-	updateCollectionName = (collectionId, collectionName, isAdmin) => {
+	updateCollectionName = (collectionId, collectionName) => {
 		return async (dispatch, getState, { apiProxy }) => {
 			dispatch(this.actions.collectionsStart())
 
@@ -311,14 +311,10 @@ export default class CollectionService {
 
 				let currentState = {}
 
-				if(isAdmin !== null){
-				} else {
-					currentState = getState().collectionStore.cache[collectionId]
-					// console.log(`not admin`, currentState)
-					currentState.name = collectionName
-					dispatch(this.actions.collectionEdit(currentState))
-
-				}
+				currentState = getState().collectionStore.cache[collectionId]
+				console.log(`not admin`, currentState)
+				currentState.name = collectionName
+				dispatch(this.actions.collectionEdit(currentState))
 
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))

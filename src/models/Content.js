@@ -60,7 +60,7 @@ export default class Content {
 
 		let temp = string.split("; ")
 
-		console.log(temp)
+		//console.log(temp)
 
 		temp.forEach(element => {
 			if(element !== ''){
