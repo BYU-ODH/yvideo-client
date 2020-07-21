@@ -27,7 +27,7 @@ const props = {
 	updateContent: jest.fn(),
 }
 
-// container is deleted
+// componenet is deleted
 describe(`content settings container test`, () => {
 	// it(`mount`, ()=> {
 	// 	const wrapper = shallow(

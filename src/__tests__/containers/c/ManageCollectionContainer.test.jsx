@@ -7,7 +7,7 @@ import ContentService from '../../../services/s/content.redux'
 import AuthService from '../../../services/s/auth.redux'
 import proxies from 'proxy'
 import { BrowserRouter } from 'react-router-dom'
-import store from '../../../services/store'
+import store from 'services/store'
 
 import { collectionService, contentService, interfaceService, adminService } from 'services'
 
@@ -227,9 +227,7 @@ describe(`manage collection container test`, () => {
 
 		// TODO: should pass a Mock function toggleModal to component, otherwise jest won't be able to check whether it was called or not.
 
-		// expect(wrapper.find(`ManageCollectionContainer`).props().toggleModal).not.toHaveBeenCalled()
 		wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
-		// expect(wrapper.find(`ManageCollectionContainer`).props().toggleModal).toHaveBeenCalled()
 
 		// switching back and forth Content and Permissions componenets
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)

@@ -182,7 +182,6 @@ export default class AdminService {
 			}
 
 		case ADMIN_COLLECTION_EDIT:
-			// console.log(`editing collections: `)
 			return {
 				...store,
 				professorCollections: {
@@ -200,14 +199,12 @@ export default class AdminService {
 			}
 
 		case ADMIN_USER_DELETE:
-			// console.log(`delete user: `)
 			return {
 				...store,
 				loading: false,
 			}
 
 		case ADMIN_CONTENT_DELETE:
-			console.log(`delete content: `)
 			return {
 				...store,
 				loading: false,
@@ -238,14 +235,12 @@ export default class AdminService {
 				switch (searchCategory) {
 				case `user`:
 					results.forEach((item) => {
-						console.log(item)
 						finalData.push(new User(item))
 					})
 					break
 
 				case `collection`:
 					results.forEach((item) => {
-						// console.log(item)
 						item[`name`] = item[`collection-name`]
 						delete item[`collection-name`]
 						finalData.push(item)
@@ -254,7 +249,6 @@ export default class AdminService {
 
 				case `content`:
 					results.forEach((item) => {
-						// console.log(item)
 						finalData.push(new Content(item))
 					})
 					break

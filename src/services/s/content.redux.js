@@ -164,8 +164,6 @@ export default class ContentService {
 
 				const result = await apiProxy.content.get(notCached)
 
-				// console.log(`getContent`, result)
-
 				dispatch(this.actions.contentGet(result))
 
 			} catch (error) {
@@ -204,7 +202,7 @@ export default class ContentService {
 
 		try {
 
-			let finalData = new BackEndContent(content).backEndData
+			const finalData = new BackEndContent(content).backEndData
 
 			const results = await apiProxy.content.update(finalData)
 

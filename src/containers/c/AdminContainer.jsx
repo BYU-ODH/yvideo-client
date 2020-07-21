@@ -80,9 +80,9 @@ const AdminContainer = props => {
 		},
 		toggleMenu: id => e => {
 			data.forEach(item => {
-				if (item.id === id){
+				if (item.id === id)
 					setMenuItemInfo(item)
-				}
+
 			})
 			setMenuActive(!menuActive)
 			setMousePos({
@@ -95,7 +95,7 @@ const AdminContainer = props => {
 			e.preventDefault()
 			toggleModal({
 				component: ConfirmDeleteContainer,
-				props: { menuItemInfo, searchCategory}
+				props: { menuItemInfo, searchCategory},
 			})
 		},
 	}
