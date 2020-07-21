@@ -130,7 +130,7 @@ describe(`content service test`, () => {
 		const result = store.dispatch(adminServiceConstructor.actions.adminCreateContent(content))
 		expect(store.getState().loading).toBe(false)
 		expect(result.type).toBe(`ADMIN_CREATE_CONTENT`)
-		expect(Object.keys(store.getState().profCollectionContent).length).toBe(1)
+		expect(Object.keys(store.getState().profCollectionContent).length).toBe(2)
 	})
 
 	it(`adminError`, () => {
@@ -147,7 +147,7 @@ describe(`content service test`, () => {
 
 		const result = store.dispatch(adminServiceConstructor.actions.adminGetCollectionContent(content))
 		expect(result.type).toBe(`ADMIN_GET_COLLECTION_CONTENT`)
-		expect(Object.keys(store.getState().profCollectionContent).length).toBe(1)
+		expect(Object.keys(store.getState().profCollectionContent).length).toBe(2)
 	})
 
 	it(`adminSearch`, () => {

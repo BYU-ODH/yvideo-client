@@ -121,5 +121,7 @@ describe(`PlayerContainer test`, () => {
 		expect(viewstate.playbackRate).toBe(1)
 		expect(viewstate.playing).toBe(false)
 		expect(viewstate.url).toBe(`test url`)
+
+		console.log(wrapper.debug())
 	})
 })
