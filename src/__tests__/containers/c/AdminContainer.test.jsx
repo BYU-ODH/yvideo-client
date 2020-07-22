@@ -4,14 +4,16 @@ import Container from '../../../containers/c/AdminContainer'
 import * as testutil from '../../testutil/testutil'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import proxies from 'proxy'
+import store from 'services/store'
 
 const user = testutil.user
 
 const data = [user]
 
 const props = {
-	clean: jest.fn(),
 	data,
+	clean: jest.fn(),
 	search: jest.fn(),
 	setHeaderBorder: jest.fn(),
 }
@@ -47,25 +49,42 @@ describe(`admin container test`, () => {
 	})
 
 	// TODO: submit does not change the searchQuery state, need to figure out how to check
-	it(`mount admin container`, () => {
+	it(`mount admin container`, async() => {
+
+		const searchResults = [
+			{
+				email:`test@test.com`,
+				id:22,
+				"last-login":`2020-05-29T20:45:58.551Z`,
+				"account-name":`testname`,
+				linked:-1,
+				"account-type": [`admin`],
+				username: `testusername`,
+				published: false,
+				archived: false,
+			},
+		]
+
 		const wrapper = mount(
-			<Provider store={testutil.store}>
+			<Provider store={store}>
 				<BrowserRouter>
-					<Container store={testutil.store} {...props}/>
+					<Container {...props}/>
 				</BrowserRouter>
 			</Provider>,
 		)
 
+		proxies.apiProxy.admin.search.get = jest.fn()
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults)
+		})
+
 		// test the search query
 		const viewstate = wrapper.find(`Admin`).props().viewstate
 		expect(viewstate.searchQuery).toBe(``)
-		wrapper.find({"type" : `search`}).simulate(`change`, {target: {value: `test user`}})
-		expect(wrapper.find({"type" : `search`}).props().value).toBe(`test user`)
+		wrapper.find({"type" : `search`}).simulate(`change`, {target: {value: `testusername`}})
+		expect(wrapper.find({"type" : `search`}).props().value).toBe(`testusername`)
 		wrapper.find({"id" : `searchSubmit`}).at(0).simulate(`submit`)
 
-		// test category select
-		expect(viewstate.searchCategory).toBe(`Users`)
-		wrapper.find({"id" : `categorySelect`}).first().simulate(`change`, {target: {value: `Collections`}})
-		wrapper.update()
+		// TODO: it is updating store in admin service, but not the store that passed in
 	})
 })

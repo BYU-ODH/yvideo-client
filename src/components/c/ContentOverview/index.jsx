@@ -51,11 +51,11 @@ class ContentOverview extends PureComponent {
 		} = content.settings
 
 		const {
-			keywords
+			keywords,
 		} = content.resource
 
 		const {
-			description
+			description,
 		} = content
 
 		// const allowDefinitions = content['allow-definitions'] // <-- ?? -Matthew
@@ -106,7 +106,7 @@ class ContentOverview extends PureComponent {
 
 						<Column>
 							<h4>Tags</h4>
-							<div style={{ display: 'flex', }}>
+							<div style={{ display: `flex` }}>
 								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} className='tag-input' />
 								<button onClick={addTag}>Add</button>
 							</div>

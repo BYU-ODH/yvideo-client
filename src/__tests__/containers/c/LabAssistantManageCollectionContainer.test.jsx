@@ -77,3 +77,6 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 		}, 500)
 	})
 })
+
+// upload new content(resource)
+// authrorize, bring the hard copy video to the lab attandence, mark that as authorized

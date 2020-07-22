@@ -130,7 +130,7 @@ describe(`content service test`, () => {
 		const result = store.dispatch(adminServiceConstructor.actions.adminCreateContent(content))
 		expect(store.getState().loading).toBe(false)
 		expect(result.type).toBe(`ADMIN_CREATE_CONTENT`)
-		expect(Object.keys(store.getState().profCollectionContent).length).toBe(1)
+		expect(Object.keys(store.getState().profCollectionContent).length).toBe(2)
 	})
 
 	it(`adminError`, () => {
@@ -147,7 +147,7 @@ describe(`content service test`, () => {
 
 		const result = store.dispatch(adminServiceConstructor.actions.adminGetCollectionContent(content))
 		expect(result.type).toBe(`ADMIN_GET_COLLECTION_CONTENT`)
-		expect(Object.keys(store.getState().profCollectionContent).length).toBe(1)
+		expect(Object.keys(store.getState().profCollectionContent).length).toBe(2)
 	})
 
 	it(`adminSearch`, () => {
@@ -216,7 +216,8 @@ describe(`content service test`, () => {
 
 		expect(store.getState().data).toEqual(null)
 		expect(store.getState().cache).toEqual({})
-		await adminServiceConstructor.search(`Users`, `testusername`, true)(dispatch, getState, { apiProxy })
+		// TODO: need to write other cases for collection and content
+		await adminServiceConstructor.search(`user`, `testusername`, true)(dispatch, getState, { apiProxy })
 
 		const expected = new User(searchResults[0])
 		expect(store.getState().data).toEqual([expected])
@@ -239,14 +240,14 @@ describe(`content service test`, () => {
 
 	it(`setProfessor`, async() => {
 
-		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
-			return Promise.resolve(searchResults)
+		proxies.apiProxy.admin.user.get = jest.fn()
+		proxies.apiProxy.admin.user.get.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults[0])
 		})
 
 		expect(store.getState().professor).toEqual({})
 		await adminServiceConstructor.setProfessor(22, true)(dispatch, getState, { apiProxy })
-		expect(store.getState().professor).toEqual(searchResults[0])
+		expect(store.getState().professor).toEqual(new User(searchResults[0]))
 	})
 
 	it(`getCollectionContent`, async() => {
@@ -262,29 +263,29 @@ describe(`content service test`, () => {
 	})
 
 	// TODO: I do not think I understand this correctly, need further explanation where this is being used
-	it(`createCollection`, async() => {
+	// it(`createCollection`, async() => {
 
-		proxies.apiProxy.admin.collection.create = jest.fn()
-		proxies.apiProxy.admin.collection.create.mockImplementationOnce(()=>{
-			return Promise.resolve({status: 200})
-		})
+	// 	proxies.apiProxy.admin.collection.create = jest.fn()
+	// 	proxies.apiProxy.admin.collection.create.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({status: 200})
+	// 	})
 
-		await adminServiceConstructor.createCollection(`create collection test`, true)(dispatch, getState, { apiProxy })
-	})
+	// 	await adminServiceConstructor.createCollection(`create collection test`, true)(dispatch, getState, { apiProxy })
+	// })
 
-	it(`createContent`, async() => {
+	// it(`createContent`, async() => {
 
-		proxies.apiProxy.admin.collection.content.post = jest.fn()
-		proxies.apiProxy.admin.collection.content.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				data: testutil.content[0],
-			})
-		})
+	// 	proxies.apiProxy.admin.collection.content.post = jest.fn()
+	// 	proxies.apiProxy.admin.collection.content.post.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			data: testutil.content[0],
+	// 		})
+	// 	})
 
-		expect(store.getState().profCollectionContent).toEqual(null)
-		await adminServiceConstructor.createContent(0, 0)(dispatch, { apiProxy })
-		expect(store.getState().profCollectionContent).toEqual({0: content[0]})
-	})
+	// 	expect(store.getState().profCollectionContent).toEqual(null)
+	// 	await adminServiceConstructor.createContent(0, 0)(dispatch, { apiProxy })
+	// 	expect(store.getState().profCollectionContent).toEqual({0: content[0]})
+	// })
 
 	// TODO: I do not think this thunk is completed
 	it(`createContentFromResource`, async() => {
@@ -301,16 +302,14 @@ describe(`content service test`, () => {
 
 	it(`searchCollections`, async() => {
 
-		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				results: searchResults,
-			})
+		proxies.apiProxy.admin.collection.get = jest.fn()
+		proxies.apiProxy.admin.collection.get.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults)
 		})
 
 		expect(store.getState().professorCollections).toEqual(null)
 		await adminServiceConstructor.searchCollections(`testusername`, true)(dispatch, getState, { apiProxy })
-		expect(store.getState().professorCollections).toEqual({results: searchResults})
+		expect(store.getState().professorCollections).toEqual({22: searchResults[0]})
 	})
 
 	it(`updateCollectionStatus`, async() => {

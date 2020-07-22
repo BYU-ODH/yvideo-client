@@ -4,27 +4,34 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/PlayerContainer'
 import * as testutil from '../../testutil/testutil'
+import store from 'services/store'
+import ContentService from '../../../services/s/content.redux'
+import AuthService from '../../../services/s/auth.redux'
+import proxies from 'proxy'
 
 const settings = testutil.settings
 
 const content = [
 	{
-		id: 0,
-		name: `testname`,
-		contentType: `video`,
+		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
 		collectionId: 85,
-		thumbnail: `test@thumbnail.com`,
-		physicalCopyExists:false,
-		isCopyrighted:false,
-		expired:true,
+		contentType: `video`,
 		dateValidated:``,
+		description: `test`,
+		expired:true,
+		fullVideo: true,
+		id: 0,
+		isCopyrighted:false,
+		name: `testname`,
+		physicalCopyExists:false,
+		published:true,
 		requester:``,
 		resourceId:`5ebdaef833e57cec218b457c`,
-		published:true,
 		settings,
-		fullVideo: true,
-		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
+		thumbnail: `test@thumbnail.com`,
+		url: `test url`,
 		views: 0,
+		resource: testutil.resource,
 	},
 	{
 		id: 1,
@@ -68,10 +75,37 @@ jest.mock(`react-router-dom`, () => ({
 
 // TODO: need to re-write player container test
 describe(`PlayerContainer test`, () => {
+	let contentServiceConstructor
+	let authServiceConstructor
+	let dispatch
+	let getState
+	let apiProxy
 
-	it(`test viewstate`, () => {
+	beforeEach(async() => {
+		authServiceConstructor = new AuthService()
+		contentServiceConstructor = new ContentService()
+
+		dispatch = store.dispatch
+		getState = store.getState
+		apiProxy = proxies.apiProxy
+
+		proxies.apiProxy.user.get = jest.fn()
+		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
+			return Promise.resolve(testutil.user)
+		})
+		await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
+
+		proxies.apiProxy.content.get = jest.fn()
+		proxies.apiProxy.content.get.mockImplementationOnce(()=>{
+			return Promise.resolve({0: content[0]})
+		})
+		await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
+	})
+
+	it(`test viewstate`, async() => {
+
 		const wrapper = mount(
-			<Provider store={testutil.store}>
+			<Provider store={store}>
 				<BrowserRouter>
 					<Container {...props}/>
 				</BrowserRouter>
@@ -87,5 +121,7 @@ describe(`PlayerContainer test`, () => {
 		expect(viewstate.playbackRate).toBe(1)
 		expect(viewstate.playing).toBe(false)
 		expect(viewstate.url).toBe(`test url`)
+
+		console.log(wrapper.debug())
 	})
 })
