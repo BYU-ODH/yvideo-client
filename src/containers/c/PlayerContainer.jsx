@@ -109,7 +109,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleSeekMouseUp = e => {
-		console.log(`handleSeekMouseDown`)
+		// console.log(`handleSeekMouseDown`)
 		setSeeking(false)
 		player.seekTo(parseFloat(e.target.value))
 	}
@@ -119,12 +119,12 @@ const PlayerContainer = props => {
 	}
 
 	const handleMuted = () => {
-		console.log('calling mute', muted)
+		// console.log('calling mute', muted)
 		setMuted(true)
 	}
 
 	const handleUnmuted = () => {
-		console.log('calling unmute', muted)
+		// console.log('calling unmute', muted)
 		setMuted(false)
 	}
 
@@ -134,7 +134,7 @@ const PlayerContainer = props => {
 
 	const handleShowComment = (value, position) => {
 		//console.log(position)
-		console.log('VALUE', value)
+		// console.log('VALUE', value)
 		setVideoComment(value)
 		setCommentPosition(position)
 	}

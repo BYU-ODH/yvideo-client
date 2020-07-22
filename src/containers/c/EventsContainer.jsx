@@ -71,7 +71,7 @@ const EventsContainer = props => {
 	}, [duration, events])
 
 	eventArray.forEach(element => {
-		if(currentTime >= element.start && currentTime <= element.end){
+		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
 			switch (element.type) {
 			case `Skip`:

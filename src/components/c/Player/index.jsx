@@ -54,13 +54,13 @@ export default class Player extends PureComponent {
 						playbackRate={playbackRate}
 						volume={volume}
 						muted={muted}
-						onReady={() => console.log(`onReady`)}
-						onStart={() => console.log(`onStart`)}
+						// onReady={() => console.log(`onReady`)}
+						// onStart={() => console.log(`onStart`)}
 						onPlay={handlePlay}
 						onPause={handlePause}
-						onBuffer={() => console.log(`onBuffer`)}
-						onSeek={e => console.log(`onSeek`, e)}
-						onError={e => console.log(`onError`, e)}
+						// onBuffer={() => console.log(`onBuffer`)}
+						// onSeek={e => console.log(`onSeek`, e)}
+						// onError={e => console.log(`onError`, e)}
 						progressInterval={100}
 						onProgress={handleProgress}
 						onDuration={handleDuration}
