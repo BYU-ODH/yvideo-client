@@ -73,7 +73,6 @@ const TrackLayer = props => {
 		if(cEvents[index].start < 0){
 			cEvents[index].start = 0
 		}
-
 		//call handler from parent
 		updateEvents(index, cEvents[index], layerIndex)
 	}

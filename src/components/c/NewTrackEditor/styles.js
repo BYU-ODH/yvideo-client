@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import carat from 'assets/carat_white.svg'
 
@@ -40,6 +40,11 @@ const Style = styled.div`
 `
 export default Style
 
+export const ItemContainer = styled.div`
+	& h4 {
+		font-weight: 500;
+	}
+`
 export const Timeline = styled.div`
 
 	--scale: ${props => props.scale};
@@ -59,6 +64,7 @@ export const Timeline = styled.div`
 	cursor: ${props => props.cursor};
   background-color: transparent;
 	z-index: 0;
+	overflow-y: scroll;
 
 	& .zoom-controls {
 		width: 100%;
@@ -113,6 +119,7 @@ export const Timeline = styled.div`
 	& > section {
 		width: 100%;
 		box-sizing: border-box;
+		overflow-y: scroll;
 	}
 
 	& .event-layers {
@@ -206,11 +213,8 @@ export const EventList = styled.div`
 	border-left: 1px solid black;
 
 	& > header {
-
 		height: 5rem;
 		background: var(--navy-blue);
-
-		display: flex;
 
 		border-bottom: 5px solid var(--light-blue);
 
@@ -221,7 +225,7 @@ export const EventList = styled.div`
 			padding-right: 1rem;
 		}
 
-		& > .tab {
+		/* & > .tab {
 			display: ${ props => props.minimized !== false ? ('none') : ('visible')}
 			height: 5rem;
 			width: 7rem;
@@ -233,10 +237,36 @@ export const EventList = styled.div`
 
 			font-weight: 500;
 
-			cursor: pointer;
-
 			&.active {
 				background: var(--light-blue);
+			}
+		} */
+
+		& > .save {
+			position: relative;
+			float: right;
+			margin-right: 20px;
+			width: 10rem;
+			height: 100%;
+
+			& button {
+				width: 100%;
+				height: 100%;
+				font-size: 1.7rem;
+				display: flex;
+				border: none;
+				background-color: transparent;
+				color: white;
+				cursor: pointer;
+				transition: .5s ease;
+
+				:hover {
+					background-color: var(--light-blue)
+				}
+
+				& span, img {
+					margin: auto;
+				}
 			}
 		}
 	}
@@ -331,4 +361,24 @@ export const EventListCarat = styled.button`
 		transform: rotate(90deg);
 	}
 `
+export const AnnotationMessage = styled.div`
+	position: fixed;
+	margin-top: calc(40vh - 150px);
+	margin-left: calc(60vw - 400px);
+	width: 400px;
+	height: 150px;
+	z-index: 30;
+	background-color: var(--light-blue);
+	display: flex;
+	border: 5px solid var(--light-blue);
+	border-radius: 25px;
 
+	transition: 1s ease;
+
+	& h2 {
+		margin: auto;
+		color: white;
+		font-size: 2.5rem;
+	}
+}
+`

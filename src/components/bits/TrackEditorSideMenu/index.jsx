@@ -62,7 +62,7 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleSaveComment = () => {
-		let index = index
+		let ind = index
 		let cEvent = event
 		let layer = cEvent.layer
 		cEvent = editComment
@@ -70,7 +70,7 @@ const TrackEditorSideMenu = props => {
 		//console.log(event)
 
 		setEditComment({})
-		updateEvents(index, cEvent, layer)
+		updateEvents(ind, cEvent, layer)
 	}
 
 	const handleEditComment = (value, cEvent, int) => {

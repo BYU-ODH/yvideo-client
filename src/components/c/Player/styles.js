@@ -24,4 +24,25 @@ export const Style = styled.div`
 	}
 `
 
+export const Blank = styled.div`
+	position: absolute;
+	background-color: ${props => props.blank ? ('black') : ('transparent')};
+	z-index: 10;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+`
+
+export const Comment = styled.div`
+	--x: ${props => props.commentX !== 0 ? `${props.commentX}%` : `0%`};
+	--y: ${props => props.commentY !== 0 ? `${props.commentY}%` : `0%`};
+
+	position: absolute;
+	top: var(--y);
+	left: calc(var(--x));
+	font-size: 2rem;
+	color: white;
+	z-index: 15;
+`
+
 export default Style

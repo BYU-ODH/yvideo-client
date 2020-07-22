@@ -29,7 +29,8 @@ const PlayerControls = props => {
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
 		handleToggleFullscreen,
-		handleToggleMuted,
+		handleMuted,
+		handleUnmuted,
 		handleVolumeChange,
 	} = props.handlers
 
@@ -40,14 +41,17 @@ const PlayerControls = props => {
 
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
-				<Volume onClick={handleToggleMuted}/>
-				<VolumeScrubber volume={volume} muted={muted} handleClick={handleVolumeChange}/>
+				{ muted ? (
+					<Volume onClick={e => { alert('You cannot control this part of the player')}} muted={muted}/>
+				) : (
+					<Volume onClick={e => { alert('You cannot control this part of the player')}} muted={muted}/>
+				) }
 			</div>
 			<div className='right'>
-				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
+				{/* <Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} /> */}
 				{/* <SideBarToggle /> */}
 				{/* <Speed /> */}
-				<ClosedCaptions />
+				{/* <ClosedCaptions /> */}
 				{/* <Notes /> */}
 			</div>
 		</Style>

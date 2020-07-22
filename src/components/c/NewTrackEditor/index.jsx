@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon } from './styles'
+import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon, AnnotationMessage } from './styles'
 
 import { DndProvider } from 'react-dnd'
 import { Rnd } from "react-rnd"
@@ -19,6 +19,7 @@ import commentIcon from 'assets/event_comment.svg'
 import blankIcon from 'assets/event_blank.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
+import saveIcon from 'assets/annotations-save.svg'
 
 //ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 //TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -139,28 +140,12 @@ const TrackEditor = props => {
 	// 		},
 	// 	},
 	// ] // THIS IS GOING TO HAVE EVENTS
-	let largestLayer = 0
 
-	//SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
-	if(eventsArray !== undefined && eventsArray.length > 0){
-		eventsArray.sort((a, b) => (a.layer > b.layer) ? 1 : -1)
-		largestLayer = eventsArray[eventsArray.length-1].layer
-	}
-
-	//Find the largets layer number
-	const initialLayers = []
-
-	//new Array(largestLayer+1).fill(0)
-
-	for(let i = 0; i < largestLayer + 1; i++){
-		//console.log(i)
-		initialLayers.push([i])
-	}
 
 	//console.log(eventsArray)
 
 	const [allEvents, setAllEvents] = useState(eventsArray)
-	const [layers, setLayers] = useState(initialLayers)
+	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [eventToEdit, setEventToEdit] = useState(10000)
@@ -175,6 +160,7 @@ const TrackEditor = props => {
 	const [zoomFactor, setZoomFactor] = useState(0)
 	const [scrollFactor, setScrollFactor] = useState(0)
 	const [scrollWidth, setScrollWidth] = useState(0)
+	const [annotationsSaved, setSaved] = useState(false)
 	//const [editCensor, setEditCensor] = useState({})
 	//const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
@@ -199,8 +185,37 @@ const TrackEditor = props => {
 		}
 		window.addEventListener('resize', handleResize)
 		setAllEvents(eventsArray)
+
+		let largestLayer = 0
+
+		//SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
+		if(eventsArray !== undefined && eventsArray.length > 0){
+			eventsArray.sort((a, b) => (a.layer > b.layer) ? 1 : -1)
+			largestLayer = eventsArray[eventsArray.length-1].layer
+		}
+
+		eventsArray.sort((a, b) => (a.layer > b.layer) ? 1 : -1)
+
+		//Find the largets layer number
+		const initialLayers = []
+
+		//new Array(largestLayer+1).fill(0)
+
+		for(let i = 0; i < largestLayer + 1; i++){
+			//console.log(i)
+			initialLayers.push([i])
+		}
+
+		setLayers(initialLayers)
 		setEvents(allEvents)
-	})
+
+		if(annotationsSaved){
+			setTimeout(() => {
+				setSaved(false)
+			}, 3000);
+		}
+
+	}, [eventsArray])
 
 	if(shouldUpdate === true){
 
@@ -250,28 +265,30 @@ const TrackEditor = props => {
 		if(e !== null){
 			//console.log('remove layer: ', index)
 			let currentLayers = [...layers]
-			let currentEvents = allEvents
+			let currentEvents = [...allEvents]
 			let toDelete = []
 
 			currentLayers.splice(index, 1)
 
 			currentEvents.forEach((element, i) => {
 				if(element.layer === index){
-					toDelete.push(i)
+					toDelete.push(element)
 				}
 			});
 
-			toDelete.forEach((element, i) => {
-				currentEvents.splice(element, 1)
+			//console.log('%c to delete', 'color: red;', toDelete)
+
+			toDelete.forEach((element) => {
+				currentEvents.splice(currentEvents.findIndex(item => item === element), 1)
 			});
 
-			currentEvents.forEach((element, i) => {
-				currentEvents[i].layer = i
-			});
+			//console.log('%c left Events', 'color: blue;', currentEvents)
 
 			setLayers(currentLayers)
 			setSideEditor(false)
 			setDisplayLayer(currentLayers.length-1)
+			setAllEvents(currentEvents)
+			setEvents(currentEvents)
 		}
 	}
 
@@ -458,6 +475,7 @@ const TrackEditor = props => {
 	}
 
 	const handleSaveAnnotation = () => {
+		setSaved(true)
 		let content = currentContent
 		content.settings.annotationDocument = [...allEvents]
 
@@ -528,7 +546,7 @@ const TrackEditor = props => {
 		<Style>
 			<DndProvider backend={Backend}>
 
-			<span>
+			<span style={{ zIndex: 0 }}>
 
 				<Controller className='video'
 					url={props.viewstate.url}
@@ -611,6 +629,7 @@ const TrackEditor = props => {
 								<NewLayer onClick={handleAddLayer}>
 									<Icon src={plus}/>
 								</NewLayer>
+								<br/>
 						</div>
 
 					</section>
@@ -624,8 +643,8 @@ const TrackEditor = props => {
 					{/* <div className='carat'>
 						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
 					</div> */}
-					<div className={`tab${tab === `events` ? ` active` : ``}`} onClick={handleTabChange(`events`)}>Events</div>
-					<div className={`tab`} onClick={handleSaveAnnotation}>Save</div>
+					{/* <div className={`tab active`}>Events</div> */}
+					<div className={`save`}><button onClick={handleSaveAnnotation}><img src={`${saveIcon}`}/><span>Save</span></button></div>
 
 				</header>
 
@@ -667,7 +686,12 @@ const TrackEditor = props => {
 				}
 			</EventList>
 		</DndProvider>
-		</Style>
+		<>
+			<AnnotationMessage style={{ visibility: `${annotationsSaved ? (`visible`) : (`hidden`)}`, opacity: `${annotationsSaved ? (`1`) : (`0`)}`, }}>
+				<h2>Annotations saved successfully</h2>
+			</AnnotationMessage>
+		</>
+	</Style>
 	)
 }
 

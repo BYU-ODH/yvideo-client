@@ -25,9 +25,10 @@ const EventsContainer = props => {
 	} = props
 
 	const [eventArray, setEventArray] = useState([])
+	const [force, setForce] = useState(false)
 
 	useEffect(() => {
-
+		console.log('reset')
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
 		// If the blank or mute event is active the event will be executed.
 		handleBlank(false)
@@ -36,7 +37,7 @@ const EventsContainer = props => {
 		handleShowComment(``, {x: 0, y: 0})
 
 		// We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
-		const tempArray =[]
+		let tempArray = []
 		if(duration !== 0 && events !== undefined){
 			events.forEach(event => {
 				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
@@ -66,12 +67,11 @@ const EventsContainer = props => {
 				}
 			})
 		}
-		setEventArray(tempArray)
+		setEventArray([...tempArray])
 	}, [duration, events])
 
 	eventArray.forEach(element => {
-		// console.log(currentTime)
-		if(currentTime >= element.start && currentTime <= element.end && element.active === false){
+		if(currentTime >= element.start && currentTime <= element.end){
 			element.active = true
 			switch (element.type) {
 			case `Skip`:
@@ -105,7 +105,7 @@ const EventsContainer = props => {
 			default:
 				break
 			}
-		} else if (currentTime > element.end && element.active === true){
+		} else if ((currentTime > element.end || currentTime < element.start) && element.active !== false){
 			element.active = false
 			switch (element.type) {
 			case `Mute`:

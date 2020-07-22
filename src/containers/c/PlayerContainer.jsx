@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { contentService, resourceService } from 'services'
+import { contentService, resourceService, interfaceService } from 'services'
 
 import { Player } from 'components'
 
@@ -14,6 +14,7 @@ const PlayerContainer = props => {
 		resourceCache,
 		getResources,
 		addView,
+		setEvents,
 	} = props
 
 	const params = useParams()
@@ -32,6 +33,9 @@ const PlayerContainer = props => {
 	const [seeking, setSeeking] = useState(false) // Set to true or false, is player seeking
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
+	const [blank, setBlank] = useState(false)
+	const [videoComment, setVideoComment] = useState('')
+	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 
 	const ref = player => {
 		setPlayer(player)
@@ -41,6 +45,7 @@ const PlayerContainer = props => {
 		if (!contentCache[params.id]) getContent([params.id])
 		else {
 			setContent(contentCache[params.id])
+			setEvents(contentCache[params.id].settings.annotationDocument)
 			setUrl(contentCache[params.id].url)
 			addView(params.id)
 		}
@@ -66,6 +71,10 @@ const PlayerContainer = props => {
 		setPlaying(true)
 	}
 
+	const handleBlank = (bool) => {
+		setBlank(bool)
+	}
+
 	const handlePlaybackRateChange = rate => {
 		setPlaybackRate(rate)
 	}
@@ -77,9 +86,22 @@ const PlayerContainer = props => {
 			setProgress(progression)
 	}
 
-	const handleSeekChange = e => {
-		const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
-		player.seekTo(played)
+	const handleSeekChange = (e, time) => {
+		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
+		// player.seekTo(played)
+		setBlank(false)
+		let newPlayed = 0
+		if(e !== null){
+			const scrubber = e.currentTarget.getBoundingClientRect()
+			newPlayed = (e.pageX - scrubber.left) / scrubber.width
+		}
+		else {
+			newPlayed = time / duration
+		}
+		if(newPlayed !== Infinity && newPlayed !== -Infinity){
+			//console.log(newPlayed)
+			player.seekTo(newPlayed.toFixed(10), `fraction`)
+		}
 	}
 
 	const handleSeekMouseDown = e => {
@@ -96,12 +118,25 @@ const PlayerContainer = props => {
 		setFullscreen(!fullscreen)
 	}
 
-	const handleToggleMuted = () => {
-		setMuted(!muted)
+	const handleMuted = () => {
+		console.log('calling mute', muted)
+		setMuted(true)
+	}
+
+	const handleUnmuted = () => {
+		console.log('calling unmute', muted)
+		setMuted(false)
 	}
 
 	const handleVolumeChange = e => {
 		console.log(e.target)
+	}
+
+	const handleShowComment = (value, position) => {
+		//console.log(position)
+		console.log('VALUE', value)
+		setVideoComment(value)
+		setCommentPosition(position)
 	}
 
 	const viewstate = {
@@ -115,6 +150,9 @@ const PlayerContainer = props => {
 		ref,
 		url,
 		volume,
+		blank,
+		videoComment,
+		commentPosition,
 	}
 
 	const handlers = {
@@ -129,8 +167,11 @@ const PlayerContainer = props => {
 		handleSeekMouseDown,
 		handleSeekMouseUp,
 		handleToggleFullscreen,
-		handleToggleMuted,
+		handleMuted,
+		handleUnmuted,
 		handleVolumeChange,
+		handleShowComment,
+		handleBlank,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
@@ -147,6 +188,7 @@ const mapDispatchToProps = {
 	getContent: contentService.getContent,
 	getResources: resourceService.getResources,
 	addView: contentService.addView,
+	setEvents: interfaceService.setEvents,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

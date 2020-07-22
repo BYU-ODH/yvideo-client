@@ -38,6 +38,7 @@ const TrackEditorContainer = props => {
 			//console.log(content[id].settings.annotationDocument)
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
+			setEvents(content[id].settings.annotationDocument)
 			setUrl(content[id].url)
 		}
 

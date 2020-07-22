@@ -84,7 +84,9 @@ const Controller = props => {
 			setElapsed(playedSeconds)
 		},
 		handleDuration: duration => {
-			getDuration(duration)
+			if(typeof getDuration === 'function'){
+				getDuration(duration)
+			}
 			setDuration(duration)
 			setCurrentZone([0, duration])
 		},
@@ -120,12 +122,6 @@ const Controller = props => {
 		handleUnMute: () => {
 			//console.log('Unmute event')
 			setMuted(false)
-		},
-		handleZoomFactor: a => {
-			//console.log(a)
-		},
-		handleZoneChange: a => {
-			//console.log(a)
 		},
 		handleBlank: (bool) => {
 			setBlank(bool)

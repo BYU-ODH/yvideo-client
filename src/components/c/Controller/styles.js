@@ -178,7 +178,7 @@ export const Blank = styled.div`
 	background-color: ${props => props.blank ? ('black') : ('transparent')};
 	z-index: 10;
 	width: 100%;
-	height: 91.5%;
+	height: 100%;
 `
 export const Censor = styled.div`
 	--top: ${props => props.y !== 0 ? `${props.y}%` : `0%`};

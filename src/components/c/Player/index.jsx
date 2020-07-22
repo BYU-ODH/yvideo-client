@@ -2,10 +2,12 @@ import React, { PureComponent } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import { CollectionsContainer } from 'containers'
+import { CollectionsContainer, EventsContainer } from 'containers'
 import { PlayerControls } from 'components/bits'
 
-import Style from './styles'
+import { Controller } from 'components'
+
+import Style, { Blank, Comment } from './styles'
 
 export default class Player extends PureComponent {
 
@@ -15,8 +17,13 @@ export default class Player extends PureComponent {
 			url,
 			playing,
 			playbackRate,
+			progress,
 			volume,
 			muted,
+			blank,
+			videoComment,
+			commentPosition,
+			duration,
 		} = this.props.viewstate
 
 		const {
@@ -26,6 +33,11 @@ export default class Player extends PureComponent {
 			handlePause,
 			handlePlay,
 			handleProgress,
+			handleSeekChange,
+			handleBlank,
+			handleMuted,
+			handleUnmuted,
+			handleShowComment,
 		} = this.props.handlers
 
 		return (
@@ -54,8 +66,26 @@ export default class Player extends PureComponent {
 						onDuration={handleDuration}
 					/>
 					<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
+					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
+						<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
+						{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
+					</Blank>
 				</div>
-				<CollectionsContainer />
+				<div className={`collection-container`}>
+					<CollectionsContainer/>
+				</div>
+				<EventsContainer currentTime={progress.playedSeconds.toFixed(1)} duration={duration}
+					handleSeek={handleSeekChange}
+					handleMute={handleMuted}
+					handlePlay={handlePlay}
+					handlePause={handlePause}
+					handleUnMute={handleUnmuted}
+					// toggleMute={toggleMute}
+					handleBlank={handleBlank}
+					handleShowComment={handleShowComment}
+					// handleCensorPosition={video.handleCensorPosition}
+					// handleCensorActive={video.handleCensorActive}
+				></EventsContainer>
 			</Style>
 		)
 	}

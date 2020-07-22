@@ -6,6 +6,7 @@ import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
 import volumeIcon from 'assets/controls_volume.svg'
+import volumeIconMute from 'assets/controls_muted.svg'
 
 const Style = styled.div`
 	position: absolute;
@@ -22,6 +23,7 @@ const Style = styled.div`
 	grid-template-areas:
 		"scrubber scrubber"
 		"left right";
+	z-index: 20;
 
 	& .right {
 		grid-area: right;
@@ -44,6 +46,10 @@ const Style = styled.div`
 		margin: 1rem;
 		outline: none;
 	}
+
+	& button {
+		cursor: pointer;
+	}
 `
 
 export default Style
@@ -53,7 +59,7 @@ export const PlayPause = styled.button`
 `
 
 export const Volume = styled.button`
-	background: url(${volumeIcon}) center no-repeat;
+	background: ${ props => props.muted ? `url(${volumeIconMute}) center no-repeat` : (`url(${volumeIcon}) center no-repeat`) };
 `
 
 export const ClosedCaptions = styled.button`
