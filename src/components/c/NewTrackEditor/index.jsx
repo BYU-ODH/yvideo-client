@@ -491,25 +491,29 @@ const TrackEditor = props => {
 
 		if(document.getElementsByClassName('layer-container') !== undefined){
 			let scrubber = document.getElementById('time-bar')
+			let timeIndicator = document.getElementById('time-indicator-container')
 			let alllayers = Array.from(document.getElementsByClassName('layer-container'))
 			let currentLayerWidth = document.getElementsByClassName('events')[0].clientWidth
 			let scrollIndicatorWidth = ((document.getElementsByClassName('zoom-scroll-indicator')[0].clientWidth) * 100) / scrollWidth
 			if(d.x < scrollFactor){
+				scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+				timeIndicator.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
 				alllayers.forEach((element, i) => {
 					alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-					scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
 				});
 			}
 			else if(d.x === 0){
+				scrubber.scrollLeft -= d.x + 100 * 100
+				timeIndicator.scrollLeft -= d.x + 100 * 100
 				alllayers.forEach((element, i) => {
 					alllayers[i].scrollLeft -= d.x + 100 * 100
-					scrubber.scrollLeft -= d.x + 100 * 100
 				});
 			}
 			else {
+				scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+				timeIndicator.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
 				alllayers.forEach((element, i) => {
 					alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-					scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
 				});
 			}
 		}
@@ -558,47 +562,7 @@ const TrackEditor = props => {
 				</Controller>
 
 				<Timeline minimized={timelineMinimized} zoom={zoomFactor}>
-					<div className='zoom-controls'>
-						<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
-							<Rnd
-								className={'zoom-indicator'}
-								bounds={'parent'}
-								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-								dragAxis="x"
-								onDragStop={(e, d) => {
-									console.log(d.x)
-									if(d.x < zoomFactor){
-										if(d.x === 0){
-											//console.log('zero')
-											setZoomFactor(0)
-											setWidth(0)
-										}
-										else {
-											//console.log('smaller')
-											setZoomFactor(d.x)
-											setWidth(-(Math.abs(zoomFactor - d.x) * 20))
-										}
-									}
-									else if(d.x > zoomFactor) {
-										//console.log('larger')
-										setZoomFactor(d.x)
-										setWidth((Math.abs(zoomFactor - d.x) * 20))
-									}
-								}}
-							></Rnd>
-						</div>
-						<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
-							<div className={'zoom-scroll-container'}>
-								<Rnd
-									className={'zoom-scroll-indicator'}
-									bounds={'parent'}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-									dragAxis="x"
-									onDragStop={(e, d) => handleScrollFactor(e, d)}
-								></Rnd>
-							</div>
-						</div>
-					</div>
+
 					<section>
 						{/* //TODO: Add delete logic */}
 						<div className='event-layers'>
@@ -629,10 +593,56 @@ const TrackEditor = props => {
 								<NewLayer onClick={handleAddLayer}>
 									<Icon src={plus}/>
 								</NewLayer>
-								<br/>
+								<br/><br/><br/><br/><br/><br/><br/>
 						</div>
 
 					</section>
+					<div className='zoom-controls'>
+						<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<Rnd
+								className={'zoom-indicator'}
+								bounds={'parent'}
+								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								dragAxis="x"
+								onDragStop={(e, d) => {
+									console.log(d.x)
+									if(d.x < zoomFactor){
+										if(d.x === 0){
+											//console.log('zero')
+											setZoomFactor(0)
+											setWidth(0)
+										}
+										else {
+											//console.log('smaller')
+											setZoomFactor(d.x)
+											setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
+										}
+									}
+									else if(d.x > zoomFactor) {
+										//console.log('larger')
+										setZoomFactor(d.x)
+										setWidth((Math.abs(zoomFactor - d.x) * videoLength / 10))
+									}
+								}}
+							></Rnd>
+						</div>
+						<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<div className={'zoom-scroll-container'}>
+								<Rnd
+									className={'zoom-scroll-indicator'}
+									bounds={'parent'}
+									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+									dragAxis="x"
+									onDragStop={(e, d) => handleScrollFactor(e, d)}
+								></Rnd>
+							</div>
+							<div id={'time-indicator-container'}>
+								<div id={'layer-time-indicator'}>
+									<span id={'layer-time-indicator-line'}></span>
+								</div>
+							</div>
+						</div>
+					</div>
 				</Timeline>
 
 			</span>

@@ -69,7 +69,7 @@ const TrackEditorSideMenu = props => {
 
 		//console.log(event)
 
-		setEditComment({})
+		//setEditComment({})
 		updateEvents(ind, cEvent, layer)
 	}
 

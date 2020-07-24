@@ -21,15 +21,6 @@ const Style = styled.div`
 
 		display: flex;
 		flex-direction: column;
-
-		& > .video {
-			flex: 1;
-		}
-	}
-
-	& video {
-		width: 100%;
-		background-color: black;
 	}
 
 	* {
@@ -65,14 +56,18 @@ export const Timeline = styled.div`
   background-color: transparent;
 	z-index: 0;
 	overflow-y: scroll;
+	overflow-x: hidden;
 
 	& .zoom-controls {
-		width: 100%;
+		width: calc(100% - 35rem);
 		height: 40px;
 		display: flex;
 		left: 0px;
 		background-color: white;
-		border: 1px solid black;
+		border-bottom: 1px solid black;
+		border-top: 1px solid black;
+		position: fixed;
+		bottom: 0px;
 
 		& .zoom-factor {
 			margin: auto;
@@ -95,6 +90,8 @@ export const Timeline = styled.div`
 			height: calc(100%);
 			border-left: 1px solid black;
 			display: flex;
+			flex-direction: column;
+			overflow-x: scroll;
 
 			& .zoom-scroll-container {
 				margin: auto;
@@ -112,6 +109,32 @@ export const Timeline = styled.div`
 					border-radius: 20px;
 					/* TODO: RESIZE INDICATOR BASED ON ZOOM FACTOR*/
 				}
+			}
+
+			& #time-indicator-container {
+				height: 26vh;
+				width: calc(100% - 162px);
+				position: absolute;
+				overflow-x: scroll;
+				overflow-y: hidden;
+				pointer-events: none;
+				bottom: 0px;
+
+				& #layer-time-indicator {
+					height: 10px;
+					position: absolute;
+					background-color: transparent;
+
+					& #layer-time-indicator-line {
+						position: absolute;
+						height: calc(26vh - 40px);
+						background-color: rgba(235, 64, 52, 0.2);
+						z-Index: 20;
+						/* border-right: 2px dotted red; */
+					}
+				}
+
+
 			}
 		}
 	}
@@ -163,7 +186,6 @@ export const Timeline = styled.div`
 		}
 	}
 `
-
 export const HandleIcon = styled.div `
 	height: 2.5rem;
 	width: 2.5rem;
@@ -174,14 +196,12 @@ export const HandleIcon = styled.div `
 	right: 5px;
 	margin: auto 0;
 `
-
 export const Icon = styled.div`
 	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 15px;
 `
-
 export const NewLayer = styled.button`
 	height: 2.4rem;
 	width: 2.5rem;
@@ -200,7 +220,6 @@ export const NewLayer = styled.button`
 	outline: none;
 	cursor: pointer;
 `
-
 export const EventList = styled.div`
 	--minimized: ${props => props.minimized};
 
@@ -343,7 +362,6 @@ export const EventList = styled.div`
 		}
 	}
 `
-
 export const EventListCarat = styled.button`
 	height: 2rem;
 	width: 2rem;
@@ -380,5 +398,4 @@ export const AnnotationMessage = styled.div`
 		color: white;
 		font-size: 2.5rem;
 	}
-}
 `

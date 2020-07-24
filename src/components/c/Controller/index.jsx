@@ -80,8 +80,13 @@ const Controller = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
+			if(document.getElementById('layer-time-indicator') !== undefined){
+				document.getElementById('layer-time-indicator-line').style.width = `calc(${played * 100}%)`
+				//document.getElementById('time-dot').scrollIntoView()
+			}
 			setPlayed(played)
 			setElapsed(playedSeconds)
+
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === 'function'){
@@ -180,6 +185,7 @@ const Controller = props => {
 
 	return (
 		<Style style={{ maxHeight: `${ !minimized ? ('65vh') : ('100vh')}`}}>
+			{/* <Style> */}
 					{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
 					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 						<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
@@ -233,10 +239,12 @@ const Controller = props => {
 								<div id={'time-bar-container'}>
 									<progress className="total" value={`${video.played * 100}`} max="100" onClick={video.handleSeek}></progress>
 									<span id='time-dot'></span>
-									<span id='time-indicator'></span>
+									{/* <span id='time-indicator'></span> */}
 								</div>
 							</div>
 						</div>
+
+
 						{/* <ToggleCarat id={'carat-button'} className={`${minimized ? ` minimized` : ``}`} onClick={e => togglendTimeline()}>
 							<img src={carat} alt='Toggle Timeline' />
 						</ToggleCarat> */}

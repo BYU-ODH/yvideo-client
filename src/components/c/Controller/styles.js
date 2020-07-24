@@ -8,6 +8,7 @@ const Style = styled.div`
 	position: relative;
 	/* max-height: 65vh; */
 	z-index: 20;
+	overflow-y: visible;
 
 	& .video {
 		height: calc(100% - 50px) !important;
@@ -29,7 +30,7 @@ export const TimeBar = styled.div`
 	--lighter-gray: #565656;
 	color: #5F5F5F; */
 
-	position: relative;
+	/* position: relative; */
 	height: var(--header-height);
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
@@ -89,15 +90,13 @@ export const TimeBar = styled.div`
 
 				& #time-dot {
 					position: absolute;
+					top: 2px;
 					float: left;
-					top: -2px;
-					left: ${props => props.played ? (`calc(${props.played * 100}% - 7px)`) : (`calc(${props.played * 100}% - 7px)`)};
+					left: ${props => props.played ? (`calc(${props.played * 100}% - 2px)`) : (`calc(${props.played * 100}% - 2px)`)};
 					margin: 0px;
-					width: 12px;
-					height: 12px;
-					background-color: red;
-					border: 2px solid white;
-					border-radius: 50%;
+					width: 4px;
+					height: 100%;
+					background-color: transparent;
 				}
 
 				& #time-indicator {
@@ -178,7 +177,7 @@ export const Blank = styled.div`
 	background-color: ${props => props.blank ? ('black') : ('transparent')};
 	z-index: 10;
 	width: 100%;
-	height: 100%;
+	height: calc(100% - 50px);
 `
 export const Censor = styled.div`
 	--top: ${props => props.y !== 0 ? `${props.y}%` : `0%`};
