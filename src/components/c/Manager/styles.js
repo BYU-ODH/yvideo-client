@@ -54,6 +54,20 @@ export const SideMenu = styled.div`
 		padding: .8rem 0;
 		margin-bottom: 1rem;
 	}
+
+	& .link {
+		height: 4rem;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		padding-left: 2rem;
+		font-size: 1.3rem;
+	}
+
+	& .active-collection {
+		background-color: rgba(5, 130, 202, 0.5);
+		border-radius: 2px;
+	}
 `
 
 export const Body = styled.div`

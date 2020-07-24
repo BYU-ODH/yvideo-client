@@ -74,7 +74,7 @@ export const ArchiveButton = styled.button`
 `
 
 export const Tab = styled.div`
-  background-color: #fafafa;
+  background-color: white;
   overflow-y: scroll;
 
   border-top: 1px solid #c4c4c4;

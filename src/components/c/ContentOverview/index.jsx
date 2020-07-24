@@ -64,13 +64,13 @@ class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail} height='6.1rem' width='10rem' />
+						<LazyImage src={content.thumbnail} height='8rem' width='14rem' />
 					</div>
 					<div>
 						{editing ?
 							<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
 							:
-							<h4>{content.name}</h4>}
+							<h3 className={'content-title'}>{content.name}</h3>}
 						<ul>
 							<Icon className='translation' checked={allowDefinitions} />
 							<Icon className='captions' checked={showCaptions} />
@@ -96,11 +96,11 @@ class ContentOverview extends PureComponent {
 					<InnerContainer>
 						<Column>
 							<h4>Allow automatic definitions
-								<SwitchToggle on={allowDefinitions} setToggle={handleToggleSettings} data_key='allowDefinitions' />
+								<SwitchToggle on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
 							</h4>
 							<h4>
 								Captions
-								<SwitchToggle on={showCaptions} setToggle={handleToggleSettings} data_key='showCaptions' />
+								<SwitchToggle on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
 							</h4>
 						</Column>
 
@@ -108,7 +108,7 @@ class ContentOverview extends PureComponent {
 							<h4>Tags</h4>
 							<div style={{ display: `flex` }}>
 								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} className='tag-input' />
-								<button onClick={addTag}>Add</button>
+								<button className={'add-tag'} onClick={addTag}>Add</button>
 							</div>
 							<br/>
 							<div className='tags'>

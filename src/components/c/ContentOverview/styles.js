@@ -7,6 +7,12 @@ import annotations from 'assets/annotations.svg'
 
 const Style = styled.div`
 	padding: 2rem;
+
+	& * {
+		:focus {
+			outline: none;
+		}
+	}
 `
 
 export default Style
@@ -26,6 +32,7 @@ export const Preview = styled.div`
 
 	& > div:nth-child(1) {
 		min-width: 14rem;
+		margin: 0px 2rem 0px 0px;
 	}
 
 	& > div:nth-child(2) {
@@ -35,9 +42,10 @@ export const Preview = styled.div`
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		margin: 0px 0px 0px 2rem;
 
-		& > h4 {
-			font-weight: normal;
+		& .content-title {
+			font-weight: 500;
 			text-overflow: ellipsis;
 		}
 
@@ -71,6 +79,8 @@ const TextButton = css`
 `
 export const EditButton = styled.button`
 	${TextButton}
+
+	font-size: 1.5rem;
 `
 
 export const Icon = styled.li`
@@ -162,14 +172,18 @@ ${TextButton} //reuses TextButton css
 export const InnerContainer = styled.div`
 	display: grid;
 	grid-gap: 2rem;
+	margin-top: 10px;
 	grid-template-columns: 1fr 1fr 2fr;
-	padding: 2rem 0;
+	padding: 2rem 1rem;
+	border-radius: 5px;
+	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	background-color: white;
+
 	& .tags {
 		display: flex;
 		flex-wrap: wrap;
 	}
 	& .tag-input {
-		width: calc(100% - 4px);
 	}
 `
 
@@ -183,9 +197,24 @@ export const Column = styled.div`
 		grid-template-columns: 1fr 1.8rem;
 		line-height: 2rem;
 		margin-bottom: 1rem;
+		font-size: 1.4rem;
 	}
 	& textarea {
 		width: 100%;
+	}
+
+	& .add-tag {
+		border-radius: 10px;
+    font-size: 1.3rem;
+    color: white;
+    background-color: var(--light-blue);
+    border: 2px solid transparent;
+    width: 5rem !important;
+    margin: 0px auto 0px auto;
+    font-weight: bold;
+		:hover {
+			border: 2px solid var(--navy-blue)
+		}
 	}
 `
 
