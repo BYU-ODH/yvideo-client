@@ -67,6 +67,7 @@ const ManagerContainer = props => {
 		collection: collections[params.id],
 		path: `manager`,
 		sideLists,
+		activeId: params.id,
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />

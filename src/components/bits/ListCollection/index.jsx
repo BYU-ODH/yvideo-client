@@ -25,7 +25,7 @@ class ListCollection extends PureComponent {
 
 		const contentIds = this.props.contentIds
 
-		if (!content) return null
+		if (!content || this.props.collection.published !== true ) return null
 
 		return (
 			<div>

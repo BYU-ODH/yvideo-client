@@ -58,29 +58,34 @@ export default class BlockCollection extends Component {
 		// This way, the number of videos (<p>{content.length} Videos</p>) includes the unpublished ones
 		// const contentIds = this.props.contentIds
 
-		return (
-			<Container>
-				<Header>
-					<Link to={`/`}>{name}</Link>
-					<p>{content.length} Videos</p>
-				</Header>
-				<div>
-					<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
-						<div />
-					</Arrow>
-					<SlideWrapper className='slide-wrapper' count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
-						{
-							content.map(item => {
-								return <BlockItem key={item.id} data={item}/>
-							})
-						}
-						<BlockEnd />
-					</SlideWrapper>
-					<Arrow className='right' onClick={this.scrollRight}>
-						<div />
-					</Arrow>
-				</div>
-			</Container>
-		)
+		if(this.props.collection.published){
+			return (
+				<Container>
+					<Header>
+						<Link to={`/`}>{name}</Link>
+						<p>{content.length} Videos</p>
+					</Header>
+					<div>
+						<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
+							<div />
+						</Arrow>
+						<SlideWrapper className='slide-wrapper' count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
+							{
+								content.map(item => {
+									return <BlockItem key={item.id} data={item}/>
+								})
+							}
+							<BlockEnd />
+						</SlideWrapper>
+						<Arrow className='right' onClick={this.scrollRight}>
+							<div />
+						</Arrow>
+					</div>
+				</Container>
+			)
+		}
+		else {
+			return null
+		}
 	}
 }
