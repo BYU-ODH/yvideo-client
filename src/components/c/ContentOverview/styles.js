@@ -166,7 +166,7 @@ export const RemoveButton = styled.button`
 `
 
 export const StyledLink = styled(Link)`
-${TextButton} //reuses TextButton css
+	${TextButton} //reuses TextButton css
 `
 
 export const InnerContainer = styled.div`
@@ -183,12 +183,14 @@ export const InnerContainer = styled.div`
 		display: flex;
 		flex-wrap: wrap;
 	}
+
 	& .tag-input {
 	}
 `
 
 export const Column = styled.div`
 	margin-right: 1rem;
+
 	& > h4 {
 		align-items: center;
 		border-bottom: 1px solid #c4c4c4;
@@ -199,6 +201,7 @@ export const Column = styled.div`
 		margin-bottom: 1rem;
 		font-size: 1.4rem;
 	}
+
 	& textarea {
 		width: 100%;
 	}
@@ -212,6 +215,7 @@ export const Column = styled.div`
     width: 5rem !important;
     margin: 0px auto 0px auto;
     font-weight: bold;
+
 		:hover {
 			border: 2px solid var(--navy-blue)
 		}
@@ -224,6 +228,7 @@ export const Setting = styled.div`
 	grid-template-columns: 1fr 1.8rem;
 	justify-content: space-between;
 	margin-bottom: .5rem;
+
 	& > p {
 		display: block;
 		text-overflow: ellipsis;

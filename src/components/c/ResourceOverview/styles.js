@@ -19,6 +19,14 @@ export const Preview = styled.div`
 	}
 `
 
+export const BoxRow = styled.div`
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	background-color: white;
+`
+
 export const Buttons = styled.div`
 	display: flex;
 `
@@ -49,16 +57,18 @@ export const EditButton = styled.button`
 export const InnerContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr 2fr;
+	padding-bottom: 15px;
 `
 
 export const Type = styled.div`
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 `
 
 export const Column = styled.div`
-	margin-right: 2.5rem;
+	margin-right: 1.5rem;
+	margin-left: 2.5rem;
 	& > h4 {
 		align-items: center;
 		border-bottom: 1px solid #c4c4c4;
@@ -74,6 +84,7 @@ export const Column = styled.div`
 		line-height: 2rem;
 		margin-bottom: 1rem;
 	}
+
 	& textarea {
 		width: 100%;
 	}
@@ -115,6 +126,15 @@ export const FileUploadButton = styled.button`
 
 export const Title = styled.form`
 	display: flex;
+	& > h4 {
+		display: flex;
+		align-items: center;
+	}
+`
+
+export const ResourceTitle = styled.form`
+	display: flex;
+	margin-left: 1rem;
 	& > h4 {
 		display: flex;
 		align-items: center;

@@ -50,6 +50,10 @@ export const Button = styled.button`
 	outline: none;
 	width: 10rem;
 	border-radius: .5rem;
+
+	&:hover {
+		box-shadow: 0 3px 6px -2px #A0A0A0;
+	}
 `
 
 export const Table = styled.table`

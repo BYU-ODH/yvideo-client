@@ -127,6 +127,8 @@ export default class ResourceService {
 
 		try {
 
+			dispatch(this.actions.resourcesClean())
+
 			const result = await apiProxy.resources.search(term)
 
 			const convertedResult = []

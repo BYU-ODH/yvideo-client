@@ -23,7 +23,7 @@ export class ManageResource extends PureComponent {
 			<Style>
 				<header>
 					<div>
-						<h3>Resources</h3>
+						<h2>Manage Resources</h2>
 					</div>
 					<div>
 						<Button onClick={addResource}>Create Resource</Button>

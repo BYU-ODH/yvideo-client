@@ -12,6 +12,8 @@ import Style, {
 	SaveIcon,
 	TypeButton,
 	Type,
+	BoxRow,
+	ResourceTitle,
 } from './styles'
 import { SwitchToggle } from 'components/bits'
 
@@ -51,12 +53,12 @@ export class ResourceOverview extends PureComponent {
 		} = resource
 
 		return (
-			<div>
+			<BoxRow>
 				<Style>
 					<Preview>
 						<div>
 							{editing ?
-								<Title><h4>Title:</h4><TitleEdit type='text' value={resourceName} onChange={handleResourceName}/></Title>
+								<ResourceTitle><h4>Title:</h4><TitleEdit type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
 								:
 								<h4>{resourceName}</h4>
 							}
@@ -75,7 +77,6 @@ export class ResourceOverview extends PureComponent {
 				</Style>
 				{editing &&
 					<InnerContainer>
-
 						<Column>
 							<h4>
 								copyrighted
@@ -99,7 +100,6 @@ export class ResourceOverview extends PureComponent {
 						</Column>
 
 						<Column>
-
 							<div><Title><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></Title></div>
 							<Type>
 								<h4>Type:</h4>
@@ -117,7 +117,7 @@ export class ResourceOverview extends PureComponent {
 
 					</InnerContainer>
 				}
-			</div>
+			</BoxRow>
 		)
 	}
 }

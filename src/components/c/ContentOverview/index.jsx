@@ -68,7 +68,7 @@ class ContentOverview extends PureComponent {
 						{editing ?
 							<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
 							:
-							<h3 className={'content-title'}>{content.name}</h3>}
+							<h3 className={`content-title`}>{content.name}</h3>}
 						<ul>
 							<Icon className='translation' checked={allowDefinitions} />
 							<Icon className='captions' checked={showCaptions} />
@@ -106,7 +106,7 @@ class ContentOverview extends PureComponent {
 							<h4>Tags</h4>
 							<div style={{ display: `flex` }}>
 								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} className='tag-input' />
-								<button className={'add-tag'} onClick={addTag}>Add</button>
+								<button className={`add-tag`} onClick={addTag}>Add</button>
 							</div>
 							<br/>
 							<div className='tags'>
