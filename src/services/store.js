@@ -19,10 +19,6 @@ import {
 // the options here, and then replace `composeWithDevTools` with
 // `composeEnhancers` down below.
 
-// const composeEnhancers = composeWithDevTools({
-// 	trace: true,
-// })
-
 const store = createStore(
 
 	// This is what the store looks like

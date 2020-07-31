@@ -11,11 +11,13 @@ export class LabAssistant extends PureComponent {
 			data,
 			placeholder,
 			searchQuery,
+			showResource,
 		} = this.props.viewstate
 
 		const {
 			updateSearchBar,
 			handleSubmit,
+			handleShowResource,
 		} = this.props.handlers
 
 		return (
@@ -25,7 +27,7 @@ export class LabAssistant extends PureComponent {
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
 				</Search>
-				<LabAssistantTable data={data} />
+				<LabAssistantTable data={data} show={showResource} handleShowResource={handleShowResource}/>
 			</Style>
 		)
 	}

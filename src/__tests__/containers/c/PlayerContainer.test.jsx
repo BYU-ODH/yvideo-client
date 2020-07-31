@@ -122,6 +122,6 @@ describe(`PlayerContainer test`, () => {
 		expect(viewstate.playing).toBe(false)
 		expect(viewstate.url).toBe(`test url`)
 
-		console.log(wrapper.debug())
+		// console.log(wrapper.debug())
 	})
 })

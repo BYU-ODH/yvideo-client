@@ -12,6 +12,7 @@ import {
 	ManagerContainer,
 	PlayerContainer,
 	TrackEditorContainer,
+	ManageResourceContainer,
 } from 'containers'
 
 import {
@@ -56,6 +57,10 @@ class Root extends PureComponent {
 
 							<Route path='/lab-assistant'>
 								<LabAssistantContainer />
+							</Route>
+
+							<Route path='/lab-assistant-resource/:professorId'>
+								<ManageResourceContainer />
 							</Route>
 
 							<Route path='/lab-assistant-manager/:professorId/:collectionId?'>

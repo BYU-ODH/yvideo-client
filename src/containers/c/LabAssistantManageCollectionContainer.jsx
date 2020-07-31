@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import {
 	adminService,
 	interfaceService,
-	collectionService
+	collectionService,
 } from 'services'
 
 import { ManageCollection } from 'components'
@@ -26,21 +26,21 @@ const LabAssistantManageCollectionContainer = props => {
 		updateCollectionStatus,
 	} = props
 
-	//console.log(collection)
+	// console.log(collection)
 	const [isContent, setIsContent] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
-		//console.log('useeffect')
-		//console.log(collection.id)
+		// console.log('useeffect')
+		// console.log(collection.id)
 		getCollectionContent(collection.id, true)
 		setCollectionName(collection.name)
 	}, [collection])
 
 	const togglePublish = e => {
 		e.preventDefault()
-		updateCollectionStatus(collection.id, collection.published ? 'unpublish' : 'publish')
+		updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
 	}
 
 	const toggleEdit = async e => {
@@ -55,13 +55,13 @@ const LabAssistantManageCollectionContainer = props => {
 		props.toggleModal({
 			component: CreateContentContainer,
 			collectionId: collection.id,
-			isLabAssistantRoute: true
+			isLabAssistantRoute: true,
 		})
 	}
 
 	const archive = e => {
 		e.preventDefault()
-		updateCollectionStatus(collection.id, 'archive')
+		updateCollectionStatus(collection.id, `archive`)
 	}
 
 	const unarchive = e => {
@@ -96,7 +96,7 @@ const LabAssistantManageCollectionContainer = props => {
 		createContent,
 		archive,
 		setTab,
-		unarchive
+		unarchive,
 	}
 
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
@@ -105,7 +105,7 @@ const LabAssistantManageCollectionContainer = props => {
 const mapStateToProps = store => ({
 	content: store.adminStore.profCollectionContent,
 	admin: store.authStore.user.roles,
-	professorId: store.adminStore.professor.id
+	professorId: store.adminStore.professor.id,
 })
 
 const mapDispatchToProps = {

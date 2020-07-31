@@ -18,6 +18,8 @@ import Root from './c/Root'
 import TrackEditor from './c/NewTrackEditor'
 import TrackLayer from './c/TrackLayer'
 import VideoControls from './c/VideoControls'
+import ManageResource from './c/ManageResource'
+import ResourceOverview from './c/ResourceOverview'
 
 export {
 	Admin,
@@ -40,4 +42,6 @@ export {
 	TrackEditor,
 	TrackLayer,
 	VideoControls,
+	ManageResource,
+	ResourceOverview,
 }

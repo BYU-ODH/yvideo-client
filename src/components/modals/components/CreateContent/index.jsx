@@ -21,6 +21,7 @@ export default class CreateContent extends PureComponent {
 			adminContent,
 			searchQuery,
 			tab,
+			resourceContent,
 		} = this.props.viewstate
 
 		const {
@@ -102,7 +103,6 @@ export default class CreateContent extends PureComponent {
 
 				{tab === `resource` &&
 					<Form onSubmit={handleAddResourceSubmit}>
-						{console.log(adminContent)}
 						<label htmlFor='create-content-resource-search'>
 							<span>Title</span>
 							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
@@ -111,12 +111,13 @@ export default class CreateContent extends PureComponent {
 							<Table>
 								<tbody>
 									{
-										adminContent &&
-										adminContent.map(content =>
-											<tr key={content.id}>
+										// TODO: need to be updated for submit work
+										resourceContent &&
+										Object.keys(resourceContent).map(index =>
+											<tr key={resourceContent[index].id}>
 												<td>
-													<input type='radio' value={content.resourceId} name='resource' onChange={handleSelectResourceChange}/>
-													<label>{content.name}</label>
+													<input type='radio' value={resourceContent[index].id} name='resource' onChange={handleSelectResourceChange}/>
+													<label>{resourceContent[index].resourceName}</label>
 												</td>
 											</tr>,
 										)

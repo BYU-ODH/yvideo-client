@@ -1,3 +1,5 @@
+import ResourceObject from '../../models/ResourceObject'
+
 export default class ResourceService {
 
 	// types
@@ -8,6 +10,9 @@ export default class ResourceService {
 		RESOURCE_CLEAN: `RESOURCE_CLEAN`,
 		RESOURCE_ERROR: `RESOURCE_ERROR`,
 		RESOURCE_GET: `RESOURCE_GET`,
+		RESOURCE_SEARCH:`RESOURCE_SEARCH`,
+		RESOURCE_EDIT: `RESOURCE_EDIT`,
+		RESOURCE_DELETE: `RESOURCE_DELETE`,
 	}
 
 	// action creators
@@ -18,6 +23,9 @@ export default class ResourceService {
 		resourcesClean: () => ({ type: this.types.RESOURCE_CLEAN }),
 		resourcesError: error => ({ type: this.types.RESOURCE_ERROR, payload: { error } }),
 		resourcesGet: resource => ({ type: this.types.RESOURCE_GET, payload: { resource } }),
+		resourceSearch: resource => ({ type: this.types.RESOURCE_SEARCH, payload: { resource } }),
+		resourceEdit: resource => ({ type: this.types.RESOURCE_EDIT, payload: { resource } }),
+		resourceDelete: filteredResources => ({ type: this.types.RESOURCE_DELETE, payload: { filteredResources } }),
 	}
 
 	// default store
@@ -38,6 +46,9 @@ export default class ResourceService {
 			RESOURCE_CLEAN,
 			RESOURCE_ERROR,
 			RESOURCE_GET,
+			RESOURCE_SEARCH,
+			RESOURCE_EDIT,
+			RESOURCE_DELETE,
 		} = this.types
 
 		switch (action.type) {
@@ -78,12 +89,59 @@ export default class ResourceService {
 				lastFetched: Date.now(),
 			}
 
+		case RESOURCE_EDIT:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.resource.id]: action.payload.resource,
+				},
+			}
+
+		case RESOURCE_DELETE:
+			return {
+				...store,
+				cache: {
+					...action.payload.filteredResources,
+				},
+			}
+
+		case RESOURCE_SEARCH:
+			return {
+				...store,
+				cache: {
+					...action.payload.resource,
+				},
+			}
+
 		default:
 			return store
 		}
 	}
 
 	// thunks
+
+	search = (term, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const result = await apiProxy.resources.search(term)
+
+			const convertedResult = []
+
+			result.forEach((resource) => {
+				const resourceObj = new ResourceObject(resource)
+				convertedResult[resourceObj.id] = resourceObj
+			})
+
+			dispatch(this.actions.resourceSearch(convertedResult))
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
 
 	getResources = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
@@ -125,7 +183,65 @@ export default class ResourceService {
 		} else dispatch(this.actions.resourcesAbort())
 	}
 
-	addResource = resource => async dispatch => {
-		dispatch(this.actions.resourcesGet(resource))
+	addResource = (resource) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.resourcesStart())
+
+		try {
+			const result = await apiProxy.resources.post(resource)
+
+			dispatch(this.actions.resourcesGet(resource))
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	editResource = (resource, resourceId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.resourcesStart())
+
+		try {
+			const backendForm = {
+				"id": resource.id,
+				"copyrighted": resource.copyrighted,
+				"resource-name": resource.resourceName,
+				"physical-copy-exists": resource.physicalCopyExists,
+				"published": resource.published,
+				"views": resource.views,
+				"full-video": resource.fullVideo,
+				"metadata": resource.metadata,
+				"requester-email": resource.requesterEmail,
+				"all-file-versions": resource.allFileVersions,
+				"resource-type": resource.resourceType,
+				"date-validated": resource.dateValidated,
+			}
+
+			const result = await apiProxy.resources.edit(backendForm, resourceId)
+
+			dispatch(this.actions.resourceEdit(resource))
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	removeResource = (resourceId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const currentResources = getState().resourceStore.cache
+			const filteredResources = []
+			Object.keys(currentResources).forEach(key => {
+				if(key !== resourceId)
+					filteredResources[key] = currentResources[key]
+			})
+
+			const result = await apiProxy.resources.delete(resourceId)
+			dispatch(this.actions.resourceDelete(filteredResources))
+
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
 	}
 }

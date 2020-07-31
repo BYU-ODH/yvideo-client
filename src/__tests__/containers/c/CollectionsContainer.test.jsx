@@ -93,6 +93,7 @@ describe(`collection container test`, () => {
 		})
 		await collectionsServiceCostructor.getCollections(true)(dispatch, getState, { apiProxy })
 
+		// update after getCollectios
 		wrapper.update()
 	})
 })

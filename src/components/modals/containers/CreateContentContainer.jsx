@@ -8,6 +8,7 @@ import {
 	collectionService,
 	interfaceService,
 	adminService,
+	resourceService,
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
@@ -24,6 +25,8 @@ const CreateContentContainer = props => {
 		search,
 		toggleModal,
 		getCollections,
+		resourceContent,
+		searchResource,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -62,12 +65,14 @@ const CreateContentContainer = props => {
 	const handleSearchTextChange = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 1) search(`content`, value, true)
+		if (value.length > 1) {
+			search(`content`, value, true)
+			searchResource(value)
+		}
 	}
 
 	const handleSelectResourceChange = e => {
 		const { target } = e
-		// console.log(target.value)
 		setSelectedResource(target.value)
 	}
 
@@ -92,6 +97,7 @@ const CreateContentContainer = props => {
 		document.getElementById(`create-content-form`).reset()
 	}
 
+	// TODO: need to add create content from the resource
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		let tags = ``
@@ -110,13 +116,12 @@ const CreateContentContainer = props => {
 		const videoId = new URL(data.url).search.split(`=`)[1]
 
 		const backEndData = {
-
 			"allow-definitions": true,
 			"url": data.url,
 			"allow-captions": true,
 			"content-type": data.contentType,
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
-			"tags": tags,
+			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
 			"file-version": ``,
 			"collection-id": modal.collectionId,
@@ -125,14 +130,12 @@ const CreateContentContainer = props => {
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
-
 		}
 
 		if(modal.isLabAssistantRoute){
 			await createContent(backEndData)
 			adminGetCollectionContent(modal.collectionId)
-		}
-		else{
+		} else{
 			await createContent(backEndData)
 			getCollections(true)
 		}
@@ -160,6 +163,7 @@ const CreateContentContainer = props => {
 		data,
 		searchQuery,
 		tab,
+		resourceContent,
 	}
 
 	const handlers = {
@@ -181,6 +185,7 @@ const CreateContentContainer = props => {
 const mapStateToProps = store => ({
 	admin: store.authStore.user.roles === 0,
 	adminContent: store.adminStore.data,
+	resourceContent: store.resourceStore.cache,
 	modal: store.interfaceStore.modal,
 	collections: store.collectionStore.cache,
 })
@@ -192,6 +197,7 @@ const mapDispatchToProps = {
 	createContent: contentService.createContent,
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
+	searchResource: resourceService.search,
 	getCollections: collectionService.getCollections,
 }
 

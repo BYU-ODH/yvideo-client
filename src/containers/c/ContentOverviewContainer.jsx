@@ -106,7 +106,6 @@ const ContentOverviewContainer = props => {
 		setTag(e.target.value)
 	}
 
-
 	const viewstate = {
 		content: contentState,
 		showing,

@@ -20,6 +20,7 @@ import Tag from './Tag'
 import TrackEditorSideMenu from './TrackEditorSideMenu'
 import VolumeBar from './VolumeBar'
 import VolumeScrubber from './VolumeScrubber'
+import ResourceOverview from '../c/ResourceOverview'
 
 export {
 	Accordion,
@@ -44,4 +45,5 @@ export {
 	TrackEditorSideMenu,
 	VolumeBar,
 	VolumeScrubber,
+	ResourceOverview,
 }

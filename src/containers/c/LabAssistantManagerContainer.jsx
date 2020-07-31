@@ -21,26 +21,19 @@ const LabAssistantManagerContainer = props => {
 		toggleModal,
 	} = props
 
-	//console.log(collections)
-
 	const { professorId, collectionId } = useParams()
-
-	//console.log(professor)
-	//console.log(professorId)
 
 	useEffect(() => {
 		setHeaderBorder(true)
 
-		if (!collections){
+		if (!collections)
 			searchCollections(professorId, true)
-		}
 
 		if(objectIsEmpty(professor)){
 			setProfessor(professorId)
 
 			if (!collections)
 				searchCollections(professorId, true)
-			//else console.log(collections)
 		}
 
 		return () => {
@@ -64,8 +57,8 @@ const LabAssistantManagerContainer = props => {
 	let singleCollection = {}
 
 	if(collections !== undefined && collections !== null){
-		//This populates the sideList object to display all the collections based on
-		//their current status published, unpublished, and archived
+		// This populates the sideList object to display all the collections based on
+		// their current status published, unpublished, and archived
 
 		Object.keys(collections).forEach(item => {
 			const { archived, published, name, id} = collections[item]
@@ -75,22 +68,22 @@ const LabAssistantManagerContainer = props => {
 			else sideLists.unpublished.push({ id, name })
 		})
 
-		//This is to pass the right collection based on the ID of the collection
-		//instead of the old way that changed the array index and then pointed to the new index
-		//Doing it this way we get the collection from the props and not from a
-		//static new array that will not update after a handler action
+		// This is to pass the right collection based on the ID of the collection
+		// instead of the old way that changed the array index and then pointed to the new index
+		// Doing it this way we get the collection from the props and not from a
+		// static new array that will not update after a handler action
 
 		Object.keys(collections).forEach(item => {
 			const {id} = collections[item]
 			const cId = collectionId
 			if (id === cId){
 				singleCollection = collections[item]
-				return;
+				return
 			}
-		});
+		})
 	}
 
-	//console.log('single collection', singleCollection)
+	// console.log('single collection', singleCollection)
 
 	const viewstate = {
 		admin,
@@ -104,9 +97,7 @@ const LabAssistantManagerContainer = props => {
 		createNew,
 	}
 
-
 	if(!collections) return <Manager viewstate={viewstate} handlers={handlers} archived={[]} published={[]} unpublished={[]} empty={true}/>
-
 
 	return <Manager viewstate={viewstate} handlers={handlers} archived={sideLists.archived} published={sideLists.published} unpublished={sideLists.unpublished}/>
 }

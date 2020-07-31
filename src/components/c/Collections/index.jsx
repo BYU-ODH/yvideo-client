@@ -21,8 +21,6 @@ export default class Collections extends PureComponent {
 			collectionsLength,
 		} = this.props.viewstate
 
-
-
 		const {
 			toggleCollectionsDisplay,
 		} = this.props.handlers

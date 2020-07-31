@@ -316,6 +316,8 @@ describe(`manage collection container test`, () => {
 			</Provider>,
 		)
 
+		console.log(wrapper.debug())
+
 		// test if two contents are inserted
 		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content
 		const contents = wrapper.find(`ManageCollectionContainer`).props().content
@@ -331,42 +333,4 @@ describe(`manage collection container test`, () => {
 		// wrapper.find({className: `newcontent-button`}).at(0).simulate(`click`)
 		// console.log(wrapper.find(`ManageCollectionContainer`).props())
 	})
-
-	it(`test`, async()=> {
-
-		const props = {
-			collection: {
-				archived: false,
-				content,
-				id: 0,
-				name: `Collection 1`,
-				owner: 22,
-				published: true,
-				thumbnail: `test@thumbnail`,
-			},
-			content,
-			getContent: contentService.getContent,
-			updateCollectionName: collectionService.updateCollectionName,
-			updateCollectionStatus: collectionService.updateCollectionStatus,
-			getCollectionContent: adminService.getCollectionContent,
-			getCollections: collectionService.getCollections,
-		}
-
-		const wrapper = mount(
-			<Provider store={store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
-
-		// wrapper.find({className: `newcontent-button`}).at(0).simulate(`click`)
-		// console.log(wrapper.find(`button`).at(6).debug())
-		// await wrapper.find(`button`).at(6).simulate(`click`)
-		// wrapper.update()
-		// console.log(wrapper.find(`CreateContent`).debug())
-		// console.log(wrapper.debug())
-
-	})
-
 })

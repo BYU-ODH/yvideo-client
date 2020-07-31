@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import User from 'models/User'
-
 import { LabAssistant } from 'components'
 
 import { adminService, interfaceService } from 'services'
@@ -24,6 +22,7 @@ const LabAssistantContainer = props => {
 	}
 
 	const [searchQuery, setSearchQuery] = useState(``)
+	const [showResource, setShowResource] = useState(false)
 
 	useEffect(() => {
 		setHeaderBorder(true)
@@ -42,18 +41,22 @@ const LabAssistantContainer = props => {
 		e.preventDefault()
 	}
 
-	//console.log(professors)
+	const handleShowResource = () => {
+		setShowResource(!showResource)
+	}
 
 	const viewstate = {
 		searchQuery,
 		// TODO: Admins who are also Profs, should have `prof` included in their roles because we will only search for that, not admin
 		data: professors ? professors.filter(item => item.roles === 2 || item.roles === 0) : [],
 		placeholder: category.Users.placeholder,
+		showResource,
 	}
 
 	const handlers = {
 		updateSearchBar,
 		handleSubmit,
+		handleShowResource,
 	}
 
 	return <LabAssistant viewstate={viewstate} handlers={handlers} />
