@@ -10,6 +10,15 @@ import Style, { Table, ItemEdit, Filter, Sort, ItemMenu } from './styles'
 // we use toggleModal from interfaceService from the AdminContainer
 
 export default class AdminTable extends PureComponent {
+	constructor(props){
+		super(props)
+		this.state={
+			sortType: {
+				id: ``,
+				reverse: false,
+			},
+		}
+	}
 
 	render() {
 
@@ -106,9 +115,9 @@ export default class AdminTable extends PureComponent {
 
 		const printTableValues = (category, item) => {
 			// console.log(item)
+			const date = new Date(item.lastLogin)
 			switch (category) {
 			case `Users`:
-				const date = new Date(item.lastLogin)
 				return (
 					<>
 						{/* <td>{item.id}</td> */}
@@ -169,7 +178,6 @@ export default class AdminTable extends PureComponent {
 				)
 
 			case `Content`:
-				console.log(data)
 				return (
 					<ul>
 						<li>
@@ -192,12 +200,57 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
+		const sort = (data,sortType) => {
+			if (this.state.sortType.id === sortType && this.state.sortType.reverse === false){
+				this.setState({
+					sortType:{
+						id: sortType,
+						reverse: true,
+					},
+				})
+				data.sort((a, b) => {
+					switch (sortType) {
+					case `Name`:
+						return b.name.localeCompare(a.name,{sensitivity:`base`})
+					case `NetID`:
+						return b.username.localeCompare(a.username,{sensitivity:`base`})
+					case `Email`:
+						return b.email.localeCompare(a.email,{sensitivity:`base`})
+					case `Owner`:
+						return b.owner.localeCompare(a.owner,{sensitivity:`base`})
+					default: return null
+					}
+				})
+			}else{
+				this.setState({
+					sortType:{
+						id: sortType,
+						reverse: false,
+					},
+				})
+				data.sort((a, b) => {
+					switch (sortType) {
+					case `Name`:
+						return a.name.localeCompare(b.name,{sensitivity:`base`})
+					case `NetID`:
+						return a.username.localeCompare(b.username,{sensitivity:`base`})
+					case `Email`:
+						return a.email.localeCompare(b.email,{sensitivity:`base`})
+					case `Owner`:
+						return a.owner.localeCompare(b.owner,{sensitivity:`base`})
+					default: return null
+					}
+				})
+			}
+
+			return data
+		}
 		return (
 			<Style>
 				<Table>
 					<thead>
 						<tr>
-							{headers[searchCategory].columns.map((header, index) => <th key={index}>{header.title}{header.filter && <Filter />}<Sort/></th>)}
+							{headers[searchCategory].columns.map((header, index) => <th key={index}>{header.title}{header.filter && <Filter />}<Sort onClick={()=>sort(data,header.title)}/></th>)}
 							<th/>
 						</tr>
 					</thead>
