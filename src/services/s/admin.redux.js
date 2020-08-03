@@ -27,6 +27,7 @@ export default class AdminService {
 		ADMIN_COLLECTION_DELETE: `ADMIN_COLLECTION_DELETE`,
 		ADMIN_USER_DELETE: `ADMIN_USER_DELETE`,
 		ADMIN_CONTENT_DELETE: `ADMIN_CONTENT_DELETE`,
+		ADMIN_CONTENT_DELETE_FROM_TABLE: `ADMIN_CONTENT_DELETE_FROM_TABLE`,
 	}
 
 	// action creators
@@ -47,6 +48,7 @@ export default class AdminService {
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
 		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
+		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 	}
 
 	// default store
@@ -85,6 +87,7 @@ export default class AdminService {
 			ADMIN_COLLECTION_DELETE,
 			ADMIN_USER_DELETE,
 			ADMIN_CONTENT_DELETE,
+			ADMIN_CONTENT_DELETE_FROM_TABLE,
 		} = this.types
 
 		switch (action.type) {
@@ -204,10 +207,19 @@ export default class AdminService {
 				loading: false,
 			}
 
+		//THIS IS DELETING CONTENT FROM MANAGE COLLECTION
 		case ADMIN_CONTENT_DELETE:
 			return {
 				...store,
 				profCollectionContent: action.payload.content,
+				loading: false,
+			}
+
+		//THIS IS DELETING CONTENT FROM THE ADMIN CONTAINER / ADMIN DASHBOARD
+		case ADMIN_CONTENT_DELETE_FROM_TABLE:
+			return {
+				...store,
+				data: action.payload.content,
 				loading: false,
 			}
 
@@ -516,19 +528,33 @@ export default class AdminService {
 		}
 	}
 
-	deleteContent = (contentId) => async (dispatch, getState, { apiProxy }) => {
+	deleteContent = (contentId, fromAdmin) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
-		const currentState = { ...getState().adminStore.profCollectionContent }
+		let currentState;
 
-		delete currentState[contentId]
+		if(fromAdmin){
+			currentState = [...getState().adminStore.data]
+
+			currentState.splice(currentState.findIndex((element) => element.id === contentId) ,1)
+		}
+		else {
+			currentState = { ...getState().adminStore.profCollectionContent }
+
+			delete currentState[contentId]
+		}
 
 		console.log(currentState)
 
 		try {
-
 			const result = await apiProxy.admin.content.delete(contentId)
-			dispatch(this.actions.adminContentDelete(currentState))
+
+			if(fromAdmin){
+				dispatch(this.actions.adminContentDeleteFromTable(currentState))
+			}
+			else {
+				dispatch(this.actions.adminContentDelete(currentState))
+			}
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))
