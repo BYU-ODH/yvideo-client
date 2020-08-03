@@ -176,7 +176,7 @@ export default class CollectionService {
 		} else dispatch(this.actions.collectionsAbort())
 	}
 
-	removeCollectionContent = (id, contentId) => async (dispatch, getState, { apiProxy }) => {
+	removeCollectionContent = (id, contentId, isLabAssistant) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.collectionsStart())
 
 		const currentState = { ...getState().collectionStore.cache[id] }

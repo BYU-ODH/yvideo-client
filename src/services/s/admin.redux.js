@@ -46,7 +46,7 @@ export default class AdminService {
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
 		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
-		adminContentDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
+		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 	}
 
 	// default store
@@ -123,7 +123,7 @@ export default class AdminService {
 				...store,
 				profCollectionContent: {
 					...store.profCollectionContent,
-					...action.payload.content,
+					[action.payload.content.id]: action.payload.content,
 				},
 				loading: false,
 			}
@@ -207,6 +207,7 @@ export default class AdminService {
 		case ADMIN_CONTENT_DELETE:
 			return {
 				...store,
+				profCollectionContent: action.payload.content,
 				loading: false,
 			}
 
@@ -319,6 +320,8 @@ export default class AdminService {
 
 	getCollectionContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
+		console.log('getting collection content')
+
 		const time = Date.now() - getState().adminStore.lastFetchedProfContent
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
@@ -361,22 +364,19 @@ export default class AdminService {
 	// 	}
 	// }
 
-	// createContent = (content, collectionId) => async (dispatch, { apiProxy }) => {
+	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
-	// 	dispatch(this.actions.adminStart())
+		dispatch(this.actions.adminStart())
 
-	// 	try {
+		try {
+			// console.log('got here')
+			const result = await apiProxy.content.post(content)
 
-	// 		const result = await apiProxy.content.post(content, collectionId)
-
-	// 		const data = { [result.data.id]: result.data }
-
-	// 		dispatch(this.actions.adminCreateContent(data))
-
-	// 	} catch (error) {
-	// 		dispatch(this.actions.adminError(error))
-	// 	}
-	// }
+		} catch (error) {
+			console.log('errorr api proxy ?')
+			dispatch(this.actions.adminError(error))
+		}
+	}
 
 	createContentFromResource = (collectionId, resourceId) => async (dispatch, getState, { apiProxy }) => {
 
@@ -519,10 +519,16 @@ export default class AdminService {
 	deleteContent = (contentId) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
+		const currentState = { ...getState().adminStore.profCollectionContent }
+
+		delete currentState[contentId]
+
+		console.log(currentState)
+
 		try {
 
 			const result = await apiProxy.admin.content.delete(contentId)
-			dispatch(this.actions.adminCollectionDelete(result))
+			dispatch(this.actions.adminContentDelete(currentState))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))

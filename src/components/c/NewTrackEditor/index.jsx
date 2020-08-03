@@ -21,10 +21,13 @@ import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
 import saveIcon from 'assets/annotations-save.svg'
 
+import llIcon from 'assets/te-chevrons-left.svg'
+import rrIcon from 'assets/te-chevrons-right.svg'
+import lIcon from 'assets/te-chevron-left.svg'
+import rIcon from 'assets/te-chevron-right.svg'
+
 //ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 //TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
-
-//Move zoom control to the bottom of the screen
 
 import plus from 'assets/plus-square.svg'
 
@@ -89,61 +92,6 @@ const TrackEditor = props => {
 		},
 	]
 
-	//console.log(currentContent)
-
-	// const eventsArray = [
-	// 	// {
-	// 	// 	type: `Censor`,
-	// 	// 	icon: censorIcon,
-	// 	// 	start: 0,
-	// 	// 	end: 10,
-	// 	// 	layer: 0,
-	// 	// 	position: {
-	// 	// 		"0.5": [75.94291539245668, 33.70998116760829, 30, 40],
-	// 	// 		"1.2": [40.16309887869521, 38.60640301318267, 30, 40],
-	// 	// 		"2.1": [38.430173292558614, 70.4331450094162, 30, 40],
-	// 	// 		"2.9": [71.1518858307849, 66.85499058380414, 30, 40],
-	// 	// 		"3.8": [70.74413863404689, 33.89830508474576, 30, 40],
-	// 	// 		"4.7": [42.40570846075433, 35.59322033898305, 30, 40],
-	// 	// 		"5.9": [44.342507645259936, 72.88135593220339, 30, 40],
-	// 	// 		"6.6": [69.01121304791029, 73.44632768361582, 30, 40],
-	// 	// 		"7.7": [67.88990825688074, 24.293785310734464, 30, 40],
-	// 	// 		"8.6": [41.284403669724774, 31.45009416195857, 30, 40],
-	// 	// 		"9.8": [37.20693170234455, 67.60828625235405, 30, 40],
-	// 	// 		"10.8": [65.54536187563711, 68.36158192090396, 30, 40],
-	// 	// 	},
-	// 	// },
-	// 	// {
-	// 	// 	type: `Skip`,
-	// 	// 	icon: muteIcon,
-	// 	// 	start: 60,
-	// 	// 	end: 65,
-	// 	// 	layer: 0
-	// 	// },
-	// 	{
-	// 		type: `Mute`,
-	// 		icon: muteIcon,
-	// 		start: 0,
-	// 		end: 100,
-	// 		layer: 1
-	// 	},
-	// 	{
-	// 		type: `Comment`,
-	// 		icon: commentIcon,
-	// 		start: 0,
-	// 		end: 20,
-	// 		layer: 2,
-	// 		comment: 'New COmment',
-	// 		position: {
-	// 			x: 0,
-	// 			y: 0,
-	// 		},
-	// 	},
-	// ] // THIS IS GOING TO HAVE EVENTS
-
-
-	//console.log(eventsArray)
-
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
@@ -161,6 +109,7 @@ const TrackEditor = props => {
 	const [scrollFactor, setScrollFactor] = useState(0)
 	const [scrollWidth, setScrollWidth] = useState(0)
 	const [annotationsSaved, setSaved] = useState(false)
+	const [scrollBarWidth, setScrollBar] = useState(0)
 	//const [editCensor, setEditCensor] = useState({})
 	//const [lastClick, setLastClick] = useState({x: 0, y: 0})
 
@@ -240,10 +189,6 @@ const TrackEditor = props => {
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
 	}
-
-	// const getCurrentTime = (time) => {
-	// 	setCurrentTime(parseFloat(time))
-	// }
 
 	const handleTabChange = tab => () => {
 		setTab(tab)
@@ -482,43 +427,147 @@ const TrackEditor = props => {
 		updateContent(content)
 	}
 
-	const handleScrollFactor = (e, d) => {
-		console.log(scrollWidth)
-		setScrollFactor(d.x)
-		console.log(d.x)
-		let scrollPercentage = ((d.x * 100) / scrollWidth)
-		console.log(scrollPercentage)
-
+	const handleScrollFactor = (direction) => {
+		//console.log('called')
 		if(document.getElementsByClassName('layer-container') !== undefined){
 			let scrubber = document.getElementById('time-bar')
 			let timeIndicator = document.getElementById('time-indicator-container')
 			let alllayers = Array.from(document.getElementsByClassName('layer-container'))
 			let currentLayerWidth = document.getElementsByClassName('events')[0].clientWidth
-			let scrollIndicatorWidth = ((document.getElementsByClassName('zoom-scroll-indicator')[0].clientWidth) * 100) / scrollWidth
-			if(d.x < scrollFactor){
-				scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-				timeIndicator.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-				});
-			}
-			else if(d.x === 0){
-				scrubber.scrollLeft -= d.x + 100 * 100
-				timeIndicator.scrollLeft -= d.x + 100 * 100
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft -= d.x + 100 * 100
-				});
-			}
-			else {
-				scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-				timeIndicator.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-				});
+			let scrollBarContainer = ((document.getElementsByClassName('zoom-scroll-container')[0].offsetWidth))
+			let scrollBar = document.getElementsByClassName('zoom-scroll-indicator')[0]
+
+			let cLeft = parseInt(scrollBar.style.left)
+			let scrollBarOffset = scrollBarContainer * 0.03
+			let lastPossibleRight = document.getElementsByClassName('zoom-scroll-container')[0].clientWidth - document.getElementsByClassName('zoom-scroll-indicator')[0].clientWidth
+			//console.log(lastPossibleRight)
+			console.log(cLeft)
+			switch (direction) {
+				case 'start':
+					scrubber.scrollLeft = 0
+					timeIndicator.scrollLeft = 0
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft = 0
+					});
+					scrollBar.style.left = '0px'
+
+					break;
+				case 'left':
+					scrubber.scrollLeft -= currentLayerWidth * 0.03 
+					timeIndicator.scrollLeft -= currentLayerWidth * 0.03
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft -= currentLayerWidth * 0.03
+					});
+					//FIND 3 PERCENT OF PARENT
+					//CURRENT LEFT MINUS NEW LEFT
+					if(isNaN(cLeft) === false && (cLeft - scrollBarOffset) > -1){
+						scrollBar.style.left = `${cLeft - scrollBarOffset}px`
+					}
+					else if ((cLeft - scrollBarOffset) < 0){
+						scrollBar.style.left = `0px`	
+					}
+
+					break;
+				case 'right':
+					scrubber.scrollLeft += currentLayerWidth * 0.03
+					timeIndicator.scrollLeft += currentLayerWidth * 0.03
+					//console.log(scrollPercentage / scrollIndicatorWidth)
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft += currentLayerWidth * 0.03
+					});
+					if(zoomFactor !== 0){
+						if(isNaN(cLeft) === true){
+							scrollBar.style.left = `${scrollBarOffset}px`
+						}
+						else {
+							scrollBar.style.left = `${cLeft + scrollBarOffset}px`
+						}
+					}
+
+					if ((cLeft + scrollBarOffset) > lastPossibleRight){
+						console.log('got to the end')
+						scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
+					}
+
+					break;
+				case 'end':
+					scrubber.scrollLeft += currentLayerWidth
+					timeIndicator.scrollLeft += currentLayerWidth
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft += currentLayerWidth
+					});
+					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
+					
+					break;
+			
+				default:
+					break;
 			}
 		}
 	}
 
+	//OLD SCROLL FUNCTIONALITY
+	// const handleScrollFactorD = (e, d) => {
+	// 	console.log('in scroll')
+	// 	setScrollFactor(d.x)
+	// 	console.log(d)
+	// 	let scrollPercentage = ((d.x * 100) / scrollWidth)
+	// 	//console.log(scrollPercentage)
+
+	// 	if(document.getElementsByClassName('layer-container') !== undefined){
+	// 		let scrubber = document.getElementById('time-bar')
+	// 		let timeIndicator = document.getElementById('time-indicator-container')
+	// 		let alllayers = Array.from(document.getElementsByClassName('layer-container'))
+	// 		let currentLayerWidth = document.getElementsByClassName('events')[0].clientWidth
+	// 		let scrollIndicatorWidth = ((document.getElementsByClassName('zoom-scroll-indicator')[0].clientWidth) * 100) / scrollWidth
+	// 		let scrollBar = document.getElementsByClassName('zoom-scroll-indicator')[0]
+			
+	// 		if(d.x === 0){
+	// 			scrubber.scrollLeft -= d.x + 100 * 100
+	// 			timeIndicator.scrollLeft -= d.x + 100 * 100
+	// 			console.log('got here')
+	// 			scrollBar.style.transform = 'translate(0px, 0px)'
+	// 			alllayers.forEach((element, i) => {
+	// 				alllayers[i].scrollLeft -= d.x + 100 * 100
+	// 			});
+	// 		}
+	// 		else if(d.x < scrollFactor){
+	// 			scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+	// 			timeIndicator.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+	// 			alllayers.forEach((element, i) => {
+	// 				alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
+	// 			});
+	// 		}
+	// 		else {
+	// 			scrubber.scrollLeft = (((scrollPercentage) * currentLayerWidth) / 100)
+	// 			timeIndicator.scrollLeft = (((scrollPercentage) * currentLayerWidth) / 100)
+	// 			console.log(scrollPercentage / scrollIndicatorWidth)
+	// 			alllayers.forEach((element, i) => {
+	// 				if(scrollPercentage + scrollIndicatorWidth >= 100){
+	// 					alllayers[i].scrollLeft = (((scrollPercentage + scrollIndicatorWidth) * currentLayerWidth) / 100)
+	// 				}
+	// 				else {
+	// 					alllayers[i].scrollLeft = (((scrollPercentage + (scrollIndicatorWidth / scrollPercentage )) * currentLayerWidth) / 100)
+	// 				}
+	// 			});
+
+	// 			// scrubber.scrollLeft = (((scrollPercentage  + scrollIndicatorWidth / 2) * currentLayerWidth) / 100)
+	// 			// timeIndicator.scrollLeft = (((scrollPercentage  + scrollIndicatorWidth / 2) * currentLayerWidth) / 100)
+	// 			// alllayers.forEach((element, i) => {
+	// 			// 	//console.log(currentLayerWidth)
+	// 			// 	console.log(scrollPercentage + (scrollIndicatorWidth))
+	// 			// 	if(scrollPercentage + scrollIndicatorWidth >= 100){
+	// 			// 		alllayers[i].scrollLeft = (((scrollPercentage + scrollIndicatorWidth) * currentLayerWidth) / 100)
+	// 			// 	}
+	// 			// 	else {
+	// 			// 		alllayers[i].scrollLeft = (((scrollPercentage + scrollIndicatorWidth / 2) * currentLayerWidth) / 100)
+	// 			// 	}
+	// 			// });	
+	// 		}
+	// 	}
+	// }
+
+	// THIS IS PART OF CENSOR
 	// const handleLastClick = (height, width, x, y, time) => {
 	// 	//console.log(height, width)
 
@@ -543,9 +592,6 @@ const TrackEditor = props => {
 	// 	}
 	// }
 
-	//console.log('track-editor ', videoLength)
-	//change add timer to current time based on skip or pause play
-
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
@@ -561,7 +607,7 @@ const TrackEditor = props => {
 					>
 				</Controller>
 
-				<Timeline minimized={timelineMinimized} zoom={zoomFactor}>
+				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 					<section>
 						{/* //TODO: Add delete logic */}
@@ -605,12 +651,12 @@ const TrackEditor = props => {
 								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 								dragAxis="x"
 								onDragStop={(e, d) => {
-									console.log(d.x)
 									if(d.x < zoomFactor){
 										if(d.x === 0){
 											//console.log('zero')
 											setZoomFactor(0)
 											setWidth(0)
+											handleScrollFactor('start')
 										}
 										else {
 											//console.log('smaller')
@@ -623,18 +669,29 @@ const TrackEditor = props => {
 										setZoomFactor(d.x)
 										setWidth((Math.abs(zoomFactor - d.x) * videoLength / 10))
 									}
+									setScrollBar(document.getElementsByClassName('layer-container')[0].clientWidth * 100 / document.getElementsByClassName('events')[0].clientWidth)
 								}}
 							></Rnd>
 						</div>
 						<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
-							<div className={'zoom-scroll-container'}>
-								<Rnd
+
+							<div style={{ width: '90%', height: '100%', display: 'flex', marginLeft: '5%' }}>
+								
+								{/* <Rnd
 									className={'zoom-scroll-indicator'}
 									bounds={'parent'}
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis="x"
-									onDragStop={(e, d) => handleScrollFactor(e, d)}
-								></Rnd>
+									onDrag={(e, d) => handleScrollFactor(e, d)}
+								></Rnd> */}
+								<span onClick={ e => handleScrollFactor('start') } style={{ margin: 'auto' }}><img src={llIcon}/></span>
+								<span onClick={ e => handleScrollFactor('left') } style={{ margin: 'auto' }}><img src={lIcon}/></span>
+									<div className={'zoom-scroll-container'}>
+										{/* <div style={{ width: '98%',  height: '100%', backgroundColor: 'red'}}></div> */}
+										<div className={'zoom-scroll-indicator'}></div>
+									</div>
+								<span onClick={ e => handleScrollFactor('right') } style={{ margin: 'auto' }}><img src={rIcon}/></span>
+								<span onClick={ e => handleScrollFactor('end') } style={{ margin: 'auto' }}><img src={rrIcon}/></span>
 							</div>
 							<div id={'time-indicator-container'}>
 								<div id={'layer-time-indicator'}>

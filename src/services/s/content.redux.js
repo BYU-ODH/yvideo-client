@@ -174,12 +174,12 @@ export default class ContentService {
 		} else dispatch(this.actions.contentAbort())
 	}
 
-	createContent = (content, collectionId) => async (dispatch, getState, { apiProxy }) => {
+	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.contentStart())
 
 		try {
-			const result = await apiProxy.content.post(content, collectionId)
+			const result = await apiProxy.content.post(content)
 
 			const data = { [result.data.id]: result.data }
 

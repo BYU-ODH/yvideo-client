@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import {
 	collectionService,
 	contentService,
+	adminService,
 } from 'services'
 
 import {
@@ -18,6 +19,8 @@ const ContentOverviewContainer = props => {
 		content,
 		removeCollectionContent,
 		updateContent,
+		isLabAssistant,
+		adminRemoveCollectionContent,
 	} = props
 
 	const [editing, setEditing] = useState(false)
@@ -51,7 +54,12 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleRemoveContent = e => {
-		removeCollectionContent(content.collectionId, content.id)
+		if(isLabAssistant){
+			adminRemoveCollectionContent(content.id)
+		}
+		else {
+			removeCollectionContent(content.collectionId, content.id)
+		}
 	}
 
 	const handleTogglePublish = e => {
@@ -135,6 +143,7 @@ const ContentOverviewContainer = props => {
 const mapDispatchToProps = {
 	removeCollectionContent: collectionService.removeCollectionContent,
 	updateContent: contentService.updateContent,
+	adminRemoveCollectionContent: adminService.deleteContent,
 }
 
 export default connect(null, mapDispatchToProps)(ContentOverviewContainer)

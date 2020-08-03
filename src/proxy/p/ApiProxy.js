@@ -130,8 +130,7 @@ const apiProxy = {
 		 * @param id The ID of the collection
 		 * @param contentIds List of content ids
 		 */
-		remove: async (id) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/removeContent`,
-			id, {
+		remove: async (id) => axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`, {
 				withCredentials: true,
 				headers: {
 					'Content-Type': `application/json`,
@@ -199,7 +198,7 @@ const apiProxy = {
 		 * @param data the content data
 		 * @param collectionId the collection id
 		 */
-		post: async (data, collectionId) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content`, data, {
+		post: async (data) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content`, data, {
 			withCredentials: true,
 			headers: {
 				'Content-Type': `application/json`,
