@@ -15,13 +15,13 @@ import carat from 'assets/carat_white.svg'
 
 const Controller = props => {
 
-	//console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
+	// console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
 
 	const {
 		url,
 		getDuration,
 		minimized,
-		//handleLastClick,
+		// handleLastClick,
 		togglendTimeline,
 		getCurrentTime,
 	} = props
@@ -37,7 +37,7 @@ const Controller = props => {
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
-	const [videoComment, setVideoComment] = useState('')
+	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	// const [censorPosition, setCensorPosition] = useState([0,0])
 	// const [censorActive, SetCensorActive] = useState(false)
@@ -46,7 +46,7 @@ const Controller = props => {
 	const [currentZone, setCurrentZone] = useState([0, duration])
 
 	useEffect(() => {
-		let indicator = document.getElementById('time-indicator')
+		const indicator = document.getElementById(`time-indicator`)
 	})
 
 	const video = {
@@ -80,18 +80,18 @@ const Controller = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			if(document.getElementById('layer-time-indicator') !== undefined){
-				document.getElementById('layer-time-indicator-line').style.width = `calc(${played * 100}%)`
-				//document.getElementById('time-dot').scrollIntoView()
-			}
+			if(document.getElementById(`layer-time-indicator`) !== undefined)
+				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
+				// document.getElementById('time-dot').scrollIntoView()
+
 			setPlayed(played)
 			setElapsed(playedSeconds)
 
 		},
 		handleDuration: duration => {
-			if(typeof getDuration === 'function'){
+			if(typeof getDuration === `function`)
 				getDuration(duration)
-			}
+
 			setDuration(duration)
 			setCurrentZone([0, duration])
 		},
@@ -103,37 +103,36 @@ const Controller = props => {
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
-			}
-			else {
+			} else
 				newPlayed = time / duration
-			}
+
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
-				//console.log(newPlayed)
+				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
-			//getCurrentTime(elapsed.toFixed(1))
+			// getCurrentTime(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
-			//getCurrentTime(elapsed.toFixed(1))
+			// getCurrentTime(elapsed.toFixed(1))
 		},
 		handleMute: () => {
-			//console.log('mute event')
+			// console.log('mute event')
 			setMuted(true)
 		},
 		handleUnMute: () => {
-			//console.log('Unmute event')
+			// console.log('Unmute event')
 			setMuted(false)
 		},
 		handleBlank: (bool) => {
 			setBlank(bool)
 		},
 		handleShowComment: (value, position) => {
-			//console.log(position)
-			//console.log(value)
+			// console.log(position)
+			// console.log(value)
 			setVideoComment(value)
 			setCommentPosition(position)
 
@@ -170,98 +169,103 @@ const Controller = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-	document.addEventListener('keydown', event => {
+	document.addEventListener(`keydown`, event => {
 		switch (event.keyCode) {
-			case 37:
-					video.handleSeek(null, elapsed-1)
-				break;
-			case 39:
-					video.handleSeek(null, elapsed+1)
-				break;
-			default:
-				break;
+		case 37:
+			video.handleSeek(null, elapsed-1)
+			break
+		case 39:
+			video.handleSeek(null, elapsed+1)
+			break
+		default:
+			break
 		}
 	})
+	const showError = () => {
+		alert(`There was an error loading the video`)
+	}
 
 	return (
-		<Style style={{ maxHeight: `${ !minimized ? ('65vh') : ('100vh')}`}}>
+		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}}>
 			{/* <Style> */}
-					{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
-					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
-						<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-						{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
-					</Blank>
-					<ReactPlayer ref={ref} config={config} url={url}
-						onContextMenu={e => e.preventDefault()}
+			{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
+			<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
+				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
+				{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
+			</Blank>
+			<ReactPlayer ref={ref} config={config} url={url}
+				onContextMenu={e => e.preventDefault()}
 
-						// constants
+				// constants
 
-						className='video'
-						progressInterval={100}
+				className='video'
+				progressInterval={100}
 
-						// state
+				// state
 
-						playing={playing}
-						volume={volume}
-						muted={muted}
-						playbackRate={playbackRate}
+				playing={playing}
+				volume={volume}
+				muted={muted}
+				playbackRate={playbackRate}
 
-						// handlers
+				// handlers
 
-						onReady={video.handleReady}
-						// onStart={() => console.log(`onStart`)}
-						// onBuffer={() => console.log(`onBuffer`)}
-						onError={console.error}
+				onReady={video.handleReady}
+				// onStart={() => console.log(`onStart`)}
+				// onBuffer={() => console.log(`onBuffer`)}
+				onError={()=>{
+					console.log(`Error is working`)
+					showError()
+				}}
 
-						onPlay={video.handlePlay}
-						onPause={video.handlePause}
+				onPlay={video.handlePlay}
+				onPause={video.handlePause}
 
-						onProgress={video.handleProgress}
-						onDuration={video.handleDuration}
+				onProgress={video.handleProgress}
+				onDuration={video.handleDuration}
 
-						//blank style
-					/>
-				<TimeBar played={video.played}>
-					<header>
-						<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
-							<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
-							<span className='carat'></span>
+				// blank style
+			/>
+			<TimeBar played={video.played}>
+				<header>
+					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
+						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
+						<span className='carat'></span>
+					</button>
+
+					<div className='scrubber'>
+						<span className='time'>{formattedElapsed}</span>
+
+						<button className='mute' onClick={video.toggleMute}>
+							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
 						</button>
 
-						<div className='scrubber'>
-							<span className='time'>{formattedElapsed}</span>
-
-							<button className='mute' onClick={video.toggleMute}>
-								<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
-							</button>
-
-							<div id='time-bar'>
-								<div id={'time-bar-container'}>
-									<progress className="total" value={`${video.played * 100}`} max="100" onClick={video.handleSeek}></progress>
-									<span id='time-dot'></span>
-									{/* <span id='time-indicator'></span> */}
-								</div>
+						<div id='time-bar'>
+							<div id={`time-bar-container`}>
+								<progress className='total' value={`${video.played * 100}`} max='100' onClick={video.handleSeek}></progress>
+								<span id='time-dot'></span>
+								{/* <span id='time-indicator'></span> */}
 							</div>
 						</div>
+					</div>
 
-
-						{/* <ToggleCarat id={'carat-button'} className={`${minimized ? ` minimized` : ``}`} onClick={e => togglendTimeline()}>
+					{/* <ToggleCarat id={'carat-button'} className={`${minimized ? ` minimized` : ``}`} onClick={e => togglendTimeline()}>
 							<img src={carat} alt='Toggle Timeline' />
 						</ToggleCarat> */}
-					</header>
-				</TimeBar>
-				<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
-					handleSeek={video.handleSeek}
-					handleMute={video.handleMute}
-					handlePlay={video.handlePlay}
-					handlePause={video.handlePause}
-					handleUnMute={video.handleUnMute}
-					toggleMute={video.toggleMute}
-					handleBlank={video.handleBlank}
-					handleShowComment={video.handleShowComment}
-					// handleCensorPosition={video.handleCensorPosition}
-					// handleCensorActive={video.handleCensorActive}
-				></EventsContainer>
+				</header>
+			</TimeBar>
+			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
+				handleSeek={video.handleSeek}
+				handleMute={video.handleMute}
+				handlePlay={video.handlePlay}
+				handlePause={video.handlePause}
+				handleUnMute={video.handleUnMute}
+				toggleMute={video.toggleMute}
+				handleBlank={video.handleBlank}
+				handleShowComment={video.handleShowComment}
+				// handleCensorPosition={video.handleCensorPosition}
+				// handleCensorActive={video.handleCensorActive}
+			></EventsContainer>
 		</Style>
 	)
 }
