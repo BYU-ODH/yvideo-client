@@ -13,10 +13,8 @@ export default class Player extends PureComponent {
 	componentDidMount(){
 		setTimeout(() => {
 			const {url} = this.props.viewstate
-			if (!url) alert(`There was an error loading this resource, please check to see if you have the correct URL`)
-			console.log(this.props)
-			console.log(url)
-		}, 2000)
+			if (!url) alert(`No media found, please check to see if you have the correct URL`)
+		}, 4000)
 
 	}
 	render() {
@@ -65,7 +63,7 @@ export default class Player extends PureComponent {
 						onPlay={handlePlay}
 						onPause={handlePause}
 						// onBuffer={() => console.log(`onBuffer`)}
-						onSeek={e => console.log(`onSeek`, e)}
+						// onSeek={e => console.log(`onSeek`, e)}
 						// onError={e => console.log(`onError`, e)}
 						progressInterval={100}
 						onProgress={handleProgress}
