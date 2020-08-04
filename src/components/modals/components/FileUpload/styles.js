@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import uploadIcon from 'assets/upload.svg'
 
 export const Form = styled.form`
 	display: grid;
@@ -9,44 +10,9 @@ export const Form = styled.form`
 	min-height: 35rem;
 
 
-	& input, select {
-		flex: 5;
-		border: none;
-		border-bottom: 1px solid #ccc;
-		outline: none;
-	}
-
-	& > label{
-
-		display: flex;
-		justify-content: space-between;
-
-		& > span {
-			flex: 1;
-		}
-
-	}
-
 	& > div {
 		display: flex;
 		justify-content: space-between;
-	}
-
-	.keywords-list {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: start;
-		max-width: 30rem;
-
-		& > span {
-			color: white;
-			background-color: #0582CA;
-			padding: .5rem .75rem;
-			border-radius: 1.2rem;
-			margin: 0 .5rem 0 0;
-			display: flex;
-			align-items: center;
-		}
 	}
 `
 
@@ -119,6 +85,13 @@ export const Tab = styled.button`
 	cursor: pointer;
 `
 
+export const UploadButton = styled.button`
+	font-size: 1.5rem;
+	color: ${props => props.color || `black`};
+	background: transparent;
+	cursor: pointer;
+`
+
 export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
@@ -127,4 +100,36 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
+`
+
+export const Upload = styled.div`
+
+	& .files-input {
+		outline: 2px dashed #92b0b3;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 1em;
+    text-align: center !important;
+    margin: 0;
+		margin-right: 20px;
+    width: 100% !important;
+	}
+
+	& .files{ position:relative }
+
+	& .files:after {
+		pointer-events: none;
+    position: absolute;
+    top: 10px;
+    left: 230px;
+    right: 0;
+		width: 50px;
+    height: 56px;
+    content: "";
+		background-image: url(${uploadIcon});
+    display: block;
+    margin: 0 auto;
+    background-size: 50%;
+    background-repeat: no-repeat;
+	}
 `

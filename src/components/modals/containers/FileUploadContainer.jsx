@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import {
 	interfaceService,
+	fileService,
+	resourceService,
 } from 'services'
 
 import FileUpload from 'components/modals/components/FileUpload'
@@ -10,74 +12,43 @@ import FileUpload from 'components/modals/components/FileUpload'
 const FileUploadContainer = props => {
 
 	const {
+		// resource id from the Resource Overview Container
+		resourceId,
 		toggleModal,
-		addResource,
+		resource,
+		uploadFile,
+		getResource,
 	} = props
 
-	const [data, setData] = useState({
-		copyrighted: true,
-		resourceName: ``,
-		physicalCopyExists: true,
-		published: true,
-		views: 0,
-		fullVideo: true,
-		metadata: ``,
-		requesterEmail: ``,
-		allFileVersions: ``,
-		resourceType: ``,
-		dateValidated: ``,
-	})
+	const [selectedFile, setSelectedFile] = useState()
 
-	const handleTextChange = e => {
-		setData({
-			...data,
-			[e.target.name]: e.target.value,
-		})
+	const handleFileChange = e =>{
+		setSelectedFile(e.target.files[0])
 	}
 
-	const handleTypeChange = e => {
-		const resourceType = e.target.dataset.type
-		setData({
-			...data,
-			resourceType,
-		})
-	}
-
-	const handleSubmit = async (e) => {
+	const handleFileUpload = async(e) =>{
 		e.preventDefault()
 
-		const backEndData = {
-			"copyrighted": data.copyrighted,
-			"resource-name": data.resourceName,
-			"physical-copy-exists": data.physicalCopyExists,
-			"published": data.published,
-			"views": data.views,
-			"full-video": data.fullVideo,
-			"metadata": data.metadata,
-			"requester-email": data.requesterEmail,
-			"all-file-versions": data.allFileVersions,
-			"resource-type": data.resourceType,
-			"date-validated": data.dateValidated,
-		}
+		getResource(resourceId)
 
-		await addResource(backEndData)
-		toggleModal()
-	}
+		const formData = new FormData()
+		formData.append(`file`, selectedFile)
+		formData.append(`resource-id`, resourceId)
+		formData.append(`file-version`, resource.allFileVersions)
+		formData.append(`mime`, ``)
+		formData.append(`metadata`, ``)
 
-	const handleAddResourceSubmit = e => {
-		e.preventDefault()
+		uploadFile(formData)
 		toggleModal()
 	}
 
 	const viewstate = {
-		data,
+		selectedFile,
 	}
 
 	const handlers = {
-		handleAddResourceSubmit,
-		handleSubmit,
-		handleTextChange,
-		handleTypeChange,
+		handleFileChange,
+		handleFileUpload,
 		toggleModal,
 	}
 
@@ -86,10 +57,13 @@ const FileUploadContainer = props => {
 
 const mapStateToProps = store => ({
 	modal: store.interfaceStore.modal,
+	resource: store.resourceStore.cache,
 })
 
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
+	uploadFile: fileService.upload,
+	getResource: resourceService.getResource,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileUploadContainer)

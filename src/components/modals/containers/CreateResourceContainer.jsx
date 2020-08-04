@@ -5,6 +5,7 @@ import axios from 'axios'
 import {
 	interfaceService,
 	resourceService,
+	fileService,
 } from 'services'
 
 import CreateResource from 'components/modals/components/CreateResource'
@@ -14,6 +15,7 @@ const CreateResourceContainer = props => {
 	const {
 		toggleModal,
 		addResource,
+		// uploadFile,
 		user,
 	} = props
 
@@ -59,18 +61,24 @@ const CreateResourceContainer = props => {
 		setSelectedFile(e.target.files[0])
 	}
 
+	// const handleFileUpload = async(e) =>{
+	// 	e.preventDefault()
+
+	// 	const formData = new FormData()
+	// 	formData.append(`file`, selectedFile)
+
+	// 	const backEndData = {
+	// 		file: formData,
+	// 		"resource-id": 0,
+	// 		"file-version": 0,
+	// 		mime: 0,
+	// 		metadata: ``,
+	// 	}
+	// 	uploadFile(backEndData)
+	// }
+
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-
-		const formData = new FormData()
-		formData.append(`file`, selectedFile)
-
-		axios.post(`http://localhost:3000/upload`, formData, {
-			// receive two parameter endpoint url ,form data
-		})
-			.then(res => { // then print response status
-				console.log(res.statusText)
-			})
 
 		const backEndData = {
 			"copyrighted": data.copyrighted,
@@ -109,6 +117,7 @@ const CreateResourceContainer = props => {
 		handleTypeChange,
 		changeTab,
 		handleFileChange,
+		// handleFileUpload,
 		toggleModal,
 	}
 
@@ -123,6 +132,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	addResource: resourceService.addResource,
+	uploadFile: fileService.upload,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateResourceContainer)

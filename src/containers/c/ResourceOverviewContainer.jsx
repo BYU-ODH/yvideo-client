@@ -20,22 +20,34 @@ const ResourceOverviewContainer = props => {
 		resource,
 		editResource,
 		removeResource,
+		getResourceFiles,
+		resourceStore,
+		fileId,
 	} = props
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
-
 	const [resourceState, setResourceState] = useState(resource)
+	const [files, setFiles] = useState()
 
 	if (objectIsEmpty(resource)) return null
 
 	const handleFileUploadToResource = () => {
 		props.toggleModal({
 			component: FileUploadContainer,
+			props: {
+				resourceId: resource.id,
+			},
 		})
 	}
 
 	const handleToggleEdit = async () => {
+		const newFiles = await getResourceFiles(resource.id)
+		const id = resource.id
+		console.log(resourceStore[id])
+		// console.log(newFiles)
+		// setFiles(newFiles)
+
 		if (editing) {
 			await editResource(resourceState, resourceState.id)
 			setShowing(false)
@@ -71,7 +83,6 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceType: e.target.dataset.type,
 		})
-		console.log(resourceState)
 	}
 
 	const handleRemoveResource = e => {
@@ -116,14 +127,22 @@ const ResourceOverviewContainer = props => {
 		})
 	}
 
+	const handleFiles = async(e) => {
+		getResourceFiles(resource.id)
+		console.log(files)
+	}
+
 	const viewstate = {
 		resource: resourceState,
+		files,
+		fileId,
 		showing,
 		editing,
 	}
 
 	const handlers = {
 		handleFileUploadToResource,
+		handleFiles,
 		handleResourceName,
 		handleResourceMetadata,
 		handleRemoveResource,
@@ -142,10 +161,16 @@ const ResourceOverviewContainer = props => {
 	return <ResourceOverview viewstate={viewstate} handlers={handlers} />
 }
 
+const mapStateToProps = store => ({
+	fileId: store.fileStore.cache,
+	resourceStore: store.resourceStore.cache,
+})
+
 const mapDispatchToProps = {
 	removeResource: resourceService.removeResource,
 	editResource: resourceService.editResource,
 	toggleModal: interfaceService.toggleModal,
+	getResourceFiles: resourceService.getFiles,
 }
 
-export default connect(null, mapDispatchToProps)(ResourceOverviewContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceOverviewContainer)

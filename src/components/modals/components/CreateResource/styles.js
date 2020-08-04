@@ -5,7 +5,7 @@ import uploadIcon from 'assets/upload.svg'
 
 export const Form = styled.form`
 	display: grid;
-	grid-gap: 3rem;
+	grid-gap: 4rem;
 
 	min-width: 30rem;
 	min-height: 35rem;
@@ -57,6 +57,15 @@ export const Button = styled.button`
 	background: transparent;
 	border: none;
 	outline: none;
+	cursor: pointer;
+`
+
+export const UploadButton = styled.button`
+	font-size: 1.5rem;
+	color: ${props => props.color || `black`};
+	background: transparent;
+	/* border: none;
+	outline: none; */
 	cursor: pointer;
 `
 
@@ -112,7 +121,7 @@ export const Table = styled.table`
 `
 
 export const Tabs = styled.div`
-	margin: 2rem 0;
+	margin: 1.5rem 0;
 	padding: 0;
 `
 

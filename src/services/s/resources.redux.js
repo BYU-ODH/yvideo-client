@@ -10,6 +10,7 @@ export default class ResourceService {
 		RESOURCE_CLEAN: `RESOURCE_CLEAN`,
 		RESOURCE_ERROR: `RESOURCE_ERROR`,
 		RESOURCE_GET: `RESOURCE_GET`,
+		RESOURCE_FILES: `RESOURCE_FILES`,
 		RESOURCE_SEARCH:`RESOURCE_SEARCH`,
 		RESOURCE_EDIT: `RESOURCE_EDIT`,
 		RESOURCE_DELETE: `RESOURCE_DELETE`,
@@ -23,6 +24,7 @@ export default class ResourceService {
 		resourcesClean: () => ({ type: this.types.RESOURCE_CLEAN }),
 		resourcesError: error => ({ type: this.types.RESOURCE_ERROR, payload: { error } }),
 		resourcesGet: resource => ({ type: this.types.RESOURCE_GET, payload: { resource } }),
+		resourcesFiles: (id, files) => ({ type: this.types.RESOURCE_FILES, payload: { id, files } }),
 		resourceSearch: resource => ({ type: this.types.RESOURCE_SEARCH, payload: { resource } }),
 		resourceEdit: resource => ({ type: this.types.RESOURCE_EDIT, payload: { resource } }),
 		resourceDelete: filteredResources => ({ type: this.types.RESOURCE_DELETE, payload: { filteredResources } }),
@@ -49,6 +51,7 @@ export default class ResourceService {
 			RESOURCE_SEARCH,
 			RESOURCE_EDIT,
 			RESOURCE_DELETE,
+			RESOURCE_FILES,
 		} = this.types
 
 		switch (action.type) {
@@ -84,6 +87,20 @@ export default class ResourceService {
 				cache: {
 					...store.cache,
 					[action.payload.resource.id]: action.payload.resource,
+				},
+				loading: false,
+				lastFetched: Date.now(),
+			}
+
+		case RESOURCE_FILES:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.id]: {
+						...store.cache[action.payload.id],
+						files: action.payload.files,
+					},
 				},
 				loading: false,
 				lastFetched: Date.now(),
@@ -139,6 +156,36 @@ export default class ResourceService {
 			})
 
 			dispatch(this.actions.resourceSearch(convertedResult))
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	getFiles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const result = await apiProxy.resources.files(id)
+
+			dispatch(this.actions.resourcesFiles(id, result))
+
+			console.log(getState().resourceStore)
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	getResource = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const result = await apiProxy.resources.get(id)
+
+			dispatch(this.actions.resourcesGet(result))
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))

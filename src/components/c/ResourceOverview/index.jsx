@@ -9,10 +9,12 @@ import Style, {
 	Title,
 	TitleEdit,
 	RemoveIcon,
+	UploadIcon,
 	SaveIcon,
 	TypeButton,
 	Type,
 	BoxRow,
+	FileUploadButton,
 	ResourceTitle,
 } from './styles'
 import { SwitchToggle } from 'components/bits'
@@ -23,6 +25,7 @@ export class ResourceOverview extends PureComponent {
 
 		const {
 			handleResourceName,
+			handleFiles,
 			handleResourceMetadata,
 			handleToggleEdit,
 			handleRemoveResource,
@@ -38,10 +41,13 @@ export class ResourceOverview extends PureComponent {
 		const {
 			resource,
 			showing,
+			files,
 			editing,
+			fileId,
 		} = this.props.viewstate
 
 		const {
+			id,
 			metadata,
 			resourceName,
 			physicalCopyExists,
@@ -67,7 +73,7 @@ export class ResourceOverview extends PureComponent {
 							{editing &&
 							<>
 								{/* TODO: need to figure out how it work on attaching files on resource */}
-								{/* <FileUploadButton className='file-attach-button' onClick={handleFileUploadToResource}>Attach File</FileUploadButton> */}
+								<FileUploadButton className='file-attach-button' onClick={handleFileUploadToResource}>Upload File<UploadIcon/></FileUploadButton>
 								<RemoveButton className='remove-resource-button' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
 							</>
 							}
@@ -100,7 +106,7 @@ export class ResourceOverview extends PureComponent {
 						</Column>
 
 						<Column>
-							<div><Title><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></Title></div>
+							<div><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></div>
 							<Type>
 								<h4>Type:</h4>
 								<TypeButton type='button' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
@@ -108,6 +114,13 @@ export class ResourceOverview extends PureComponent {
 								<TypeButton type='button' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
 								<TypeButton type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
 							</Type>
+
+							{/* TODO: need to find the file ID that is already attached to this resource. */}
+							{/* {handleFiles(id)} */}
+
+							{/* {console.log(Object.keys(files))} */}
+							<div><h4>Files:</h4>{Object.keys(fileId).length !== 0 ? Object.keys(fileId).map(item => <Title key={item}>{item}</Title>) : <Title>none</Title>}</div>
+							{/* <div><h4>Files:</h4>{Object.keys(fileId).length !== 0 ? Object.keys(fileId).map(item => <Title key={item}>{item}</Title>) : <Title>none</Title>}</div> */}
 						</Column>
 
 						<Column>

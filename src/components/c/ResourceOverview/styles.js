@@ -1,6 +1,7 @@
 import styled, {css} from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
+import uploadIcon from 'assets/upload.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -57,7 +58,7 @@ export const EditButton = styled.button`
 export const InnerContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr 2fr;
-	padding-bottom: 15px;
+	padding: 15px;
 `
 
 export const Type = styled.div`
@@ -68,7 +69,8 @@ export const Type = styled.div`
 
 export const Column = styled.div`
 	margin-right: 1.5rem;
-	margin-left: 2.5rem;
+	margin-left: 1.5rem;
+
 	& > h4 {
 		align-items: center;
 		border-bottom: 1px solid #c4c4c4;
@@ -80,6 +82,7 @@ export const Column = styled.div`
 	}
 
 	& > div {
+		display: flex;
 		align-items: center;
 		line-height: 2rem;
 		margin-bottom: 1rem;
@@ -102,6 +105,12 @@ export const SaveIcon = styled.span`
 	width: 2rem;
 `
 
+export const UploadIcon = styled.span`
+	background: url(${uploadIcon}) center no-repeat;
+	height: 2.5rem;
+	width: 2rem;
+`
+
 export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
@@ -109,6 +118,20 @@ export const RemoveButton = styled.button`
 	color: #ff4c4c;
 	${TextButton}
 	text-align: center !important;
+
+	& > span {
+		margin-left: .5rem;
+	}
+`
+
+export const FileUploadButton = styled.button`
+	display: flex;
+	align-items: center;
+  justify-content: center;
+	color: #3CB371;
+	${TextButton}
+	text-align: center !important;
+
 	& > span {
 		margin-left: .5rem;
 	}
@@ -119,13 +142,9 @@ export const TitleEdit = styled.input`
 	box-sizing: border-box;
 `
 
-export const FileUploadButton = styled.button`
-	color: ${props => props.published ? `#FFBF00` : `#3CB371`};
-	${TextButton}
-`
-
 export const Title = styled.form`
 	display: flex;
+	margin-left: 1rem;
 	& > h4 {
 		display: flex;
 		align-items: center;
