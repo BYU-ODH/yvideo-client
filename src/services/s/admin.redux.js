@@ -46,7 +46,7 @@ export default class AdminService {
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
-		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
+		adminUserDelete: data => ({ type: this.types.ADMIN_USER_DELETE, payload: { data }}),
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 	}
@@ -204,6 +204,7 @@ export default class AdminService {
 		case ADMIN_USER_DELETE:
 			return {
 				...store,
+				data: action.payload.data,
 				loading: false,
 			}
 
@@ -564,10 +565,22 @@ export default class AdminService {
 	deleteUser = (userId) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
+		const currentResults = [...getState().adminStore.data]
+
+		// console.log(currentResults)
+
+		currentResults.splice(currentResults.findIndex((element) => element.id === userId) ,1)
+
+
+		// console.log(result)
+
+		// console.log(currentResults)
+
 		try {
 
 			const result = await apiProxy.admin.user.delete(userId)
-			dispatch(this.actions.adminCollectionDelete(result))
+
+			dispatch(this.actions.adminUserDelete(currentResults))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))
