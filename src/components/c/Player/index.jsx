@@ -10,7 +10,13 @@ import { Controller } from 'components'
 import Style, { Blank, Comment } from './styles'
 
 export default class Player extends PureComponent {
+	componentDidMount(){
+		setTimeout(() => {
+			const {url} = this.props.viewstate
+			if (!url) alert(`No media found, please check to see if you have the correct URL`)
+		}, 4000)
 
+	}
 	render() {
 		const {
 			ref,
@@ -25,7 +31,6 @@ export default class Player extends PureComponent {
 			commentPosition,
 			duration,
 		} = this.props.viewstate
-
 		const {
 			handleDuration,
 			handleMouseOut,
@@ -39,7 +44,6 @@ export default class Player extends PureComponent {
 			handleUnmuted,
 			handleShowComment,
 		} = this.props.handlers
-
 		return (
 			<Style>
 				<div className='player-wrapper' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
