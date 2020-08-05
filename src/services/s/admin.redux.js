@@ -283,6 +283,8 @@ export default class AdminService {
 
 	searchProfessors = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
 
+		console.log('search prof')
+
 		const time = Date.now() - getState().adminStore.lastFetchedProfessors
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
@@ -312,6 +314,8 @@ export default class AdminService {
 	}
 
 	setProfessor = (professorId, force = false) => async (dispatch, getState, { apiProxy }) => {
+		console.log('set prof')
+
 
 		dispatch(this.actions.adminStart())
 
@@ -321,12 +325,14 @@ export default class AdminService {
 
 			const results = await apiProxy.admin.user.get(professorId)
 
+			console.log('setProf RESULTS', results)
+
 			// console.log(new User(results))
 
 			dispatch(this.actions.adminSetProfessor(new User(results)))
 
 		} catch (error) {
-			console.error(error.message)
+			console.error('ERRROR', error.message)
 			dispatch(this.actions.adminError(error))
 		}
 	}

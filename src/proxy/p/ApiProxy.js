@@ -3,9 +3,11 @@ import User from 'models/User'
 import Content from 'models/Content'
 
 const updateSessionId = (id) => {
-	window.clj_session_id = id;
 	console.log('update session id from: ', window.clj_session_id)
 	console.log(' to ', id)
+
+	
+	window.clj_session_id = id;
 }
 
 const apiProxy = {
@@ -27,9 +29,11 @@ const apiProxy = {
 			// get: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id,} }).then(res => res.data),
 			get: async (id) => {
 
-				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
-
-				updateSessionId(result.headers['session-id'])
+				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
+					updateSessionId(res.headers['session-id'])
+					console.log(res)
+					return res.data
+				})
 
 				result.forEach(element => {
 					element[`name`] = element[`collection-name`]
@@ -70,8 +74,11 @@ const apiProxy = {
 				 */
 				get: async (id) => {
 					const results = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/contents`, { withCredentials: true, headers: {'session-id': window.clj_session_id,} })
-
-					updateSessionId(results.headers['session-id'])
+					.then(res => {
+						updateSessionId(res.headers['session-id'])
+						return res.data
+					})
+					
 
 					return results.reduce((map, item) => {
 						map[item.id] = new Content(item)
@@ -102,6 +109,7 @@ const apiProxy = {
 			/* This is to delete a user by just getting the user ID  ^^ */
 			get: async (id) => await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}`, { withCredentials: true, headers: {'session-id': window.clj_session_id, }}).then(res => {
 					updateSessionId(res.headers['session-id'])
+					console.log('SET PROF API CALL RESULTS', res)
 					return res.data
 				}),
 

@@ -25,7 +25,7 @@ export default class Content {
 		captionTrack: [],
 		showTranscripts: false,
 		showWordList: false,
-		targetLanguages: [],
+		targetLanguages: '',
 		showCaptions: true,
 		allowDefinitions: true,
 		annotationDocument: [],
@@ -49,7 +49,7 @@ export default class Content {
 				allowDefinitions: obj['allow-definitions'],
 				annotationDocument: this.stringToArray(obj['annotations']),
 				showCaptions: obj['allow-captions'],
-				targetLanguages: obj['file-version'].split("; "),
+				targetLanguages: obj['file-version'],
 			}
 		}
 

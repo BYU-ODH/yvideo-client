@@ -181,7 +181,7 @@ export default class ContentService {
 		try {
 			const result = await apiProxy.content.post(content)
 
-			const data = { [result.data.id]: result.data }
+			//const data = { [result.data.id]: result.data }
 
 			// console.log(result.data)
 

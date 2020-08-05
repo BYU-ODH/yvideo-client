@@ -61,16 +61,16 @@ export default class Manager extends PureComponent {
 							<h4>{user ? (`${user.name}'s Collections`) : `My Collections`}</h4>
 
 							<Accordion header={`Published`} active>
-								{sideLists.published.map(({ id, name }, index) => <div className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link key={index} to={`/${path}/${id}`} >{name}</Link></div>)}
+								{sideLists.published.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
 							</Accordion>
 
 							<Accordion header={`Unpublished`} active>
-								{sideLists.unpublished.map(({ id, name }, index) => <div className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link key={index} to={`/${path}/${id}`}>{name}</Link></div>)}
+								{sideLists.unpublished.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`}>{name}</Link></div>)}
 							</Accordion>
 
 							{
 								admin && <Accordion header={`Archived`}>
-									{sideLists.archived.map(({ id, name }, index) => <div className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link key={index} to={`/${path}/${id}`} >{name}</Link></div>)}
+									{sideLists.archived.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
 								</Accordion>
 							}
 

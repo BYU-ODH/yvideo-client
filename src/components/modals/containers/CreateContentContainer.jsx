@@ -27,9 +27,11 @@ const CreateContentContainer = props => {
 		getCollections,
 		resourceContent,
 		searchResource,
+		getFiles,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
+	const [hideResources, setHide] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [selectedResource, setSelectedResource] = useState(``)
 	const [data, setData] = useState({
@@ -42,6 +44,7 @@ const CreateContentContainer = props => {
 			keywords: [],
 		},
 		thumbnail: ``,
+		targetLanguages: '',
 	})
 
 	const changeTab = e => {
@@ -66,14 +69,20 @@ const CreateContentContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 		if (value.length > 1) {
-			search(`content`, value, true)
+			//search(`content`, value, true)
 			searchResource(value)
+			setHide(false)
+		}
+		else {
+			setHide(true)
 		}
 	}
 
-	const handleSelectResourceChange = e => {
+	const handleSelectResourceChange = (e, name) => {
 		const { target } = e
 		setSelectedResource(target.value)
+		setSearchQuery(name)
+		setHide(true)
 	}
 
 	const handleTypeChange = e => {
@@ -143,9 +152,41 @@ const CreateContentContainer = props => {
 		toggleModal()
 	}
 
-	const handleAddResourceSubmit = e => {
+	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
-		adminCreateContentFromResource(modal.collectionId, selectedResource)
+
+		//CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
+		//EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
+		//THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
+
+		const backEndData = {
+			"allow-definitions": true,
+			"url": '',
+			"allow-captions": true,
+			"content-type": data.contentType,
+			"resource-id": selectedResource,
+			"tags": '',
+			"thumbnail": `empty`,
+			"file-version": data.targetLanguages,
+			"collection-id": modal.collectionId,
+			"views": 0,
+			"annotations": ``,
+			"title": data.title,
+			"allow-notes": true,
+			"description": '',
+		}
+
+		//console.log(backEndData)
+		
+		//console.log(resourceContent[selectedResource])
+		if(modal.isLabAssistantRoute){
+			await adminCreateContent(backEndData)
+			adminGetCollectionContent(modal.collectionId, true)
+		}
+		else{
+			await createContent(backEndData)
+			getCollections(true)
+		}
 		toggleModal()
 	}
 
@@ -165,6 +206,8 @@ const CreateContentContainer = props => {
 		searchQuery,
 		tab,
 		resourceContent,
+		hideResources,
+		selectedResource,
 	}
 
 	const handlers = {
@@ -199,6 +242,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
 	searchResource: resourceService.search,
+	getFiles: resourceService.getFiles,
 	getCollections: collectionService.getCollections,
 }
 
