@@ -2,6 +2,38 @@ import styled from 'styled-components'
 
 import searchIcon from 'assets/search.svg'
 
+export const FormResource = styled.form`
+	display: grid;
+	/* grid: repeat(3, 1fr) / 1fr; */
+
+	min-width: 30rem;
+	min-height: 35rem;
+
+	& > label {
+		font-size: 1.4rem;
+		height: 20px;
+
+		& input {
+			width: 100%;
+			border: none;
+			border-bottom: 1px solid rgba(0,0,0,0.3);
+			/* background-color: rgba(0,0,0,0.03); */
+			outline: none;
+			margin: 10px 0px 2px 0px; 
+		}
+
+		& select {
+			margin-left: 20px;
+			width: 150px;
+		}
+	}
+
+	& > div {
+		display: flex;
+		justify-content: space-between;
+	}
+`
+
 export const Form = styled.form`
 	display: grid;
 	/* grid: repeat(3, 1fr) / 1fr; */
@@ -86,14 +118,38 @@ export const RemoveKeyword = styled.button`
 `
 
 export const TableContainer = styled.div`
-	height: 25rem;
+	position: absolute;
+	height: 250px;
+	width: 75%;
+	margin-top: 10%;
+	background-color: white;
 	overflow-y: scroll;
+
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3), 0px 0px 5px rgba(0, 0, 0, 0.3);
+
+	& li {
+		height: 25px;
+		list-style-type: none;
+		font-size: 1.4rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+		padding: 5px;
+		display: flex;
+
+		& input, label {
+			margin: auto 0px auto 5%;
+		}
+	}
 `
 
 export const Table = styled.table`
 	/*background: white;*/
 	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
-	width: 100%;
+
+	height: ${props => props.height ? (`${props.height * 15}px`): ('0px')};
+	width: 80%;
+	position: absolute;
+	z-index: 10;
+	background-color: white;
 
 	& th {
 		padding: 1rem;

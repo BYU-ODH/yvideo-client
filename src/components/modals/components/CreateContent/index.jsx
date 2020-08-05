@@ -9,6 +9,7 @@ import {
 	Tabs,
 	Tab,
 	TypeButton,
+	FormResource,
 } from './styles'
 
 import plus from 'assets/plus_blue.svg'
@@ -22,6 +23,8 @@ export default class CreateContent extends PureComponent {
 			searchQuery,
 			tab,
 			resourceContent,
+			hideResources,
+			selectedResource,
 		} = this.props.viewstate
 
 		const {
@@ -30,6 +33,7 @@ export default class CreateContent extends PureComponent {
 			url,
 			description,
 			resource,
+			targetLanguages
 		} = this.props.viewstate.data
 
 		const {
@@ -102,35 +106,49 @@ export default class CreateContent extends PureComponent {
 				}
 
 				{tab === `resource` &&
-					<Form onSubmit={handleAddResourceSubmit}>
-						<label htmlFor='create-content-resource-search'>
-							<span>Title</span>
+					<FormResource onSubmit={handleAddResourceSubmit}>
+						<label>
+							Search Resource Title<br/>
 							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
 						</label>
-						<TableContainer>
-							<Table>
-								<tbody>
-									{
-										// TODO: need to be updated for submit work
-										resourceContent &&
-										Object.keys(resourceContent).map(index =>
-											<tr key={resourceContent[index].id}>
-												<td>
-													<input type='radio' value={resourceContent[index].id} name='resource' onChange={handleSelectResourceChange}/>
-													<label>{resourceContent[index].resourceName}</label>
-												</td>
-											</tr>,
-										)
-									}
-								</tbody>
-							</Table>
+						<TableContainer height={Object.keys(resourceContent).length} style={{ display: `${ hideResources === true ? ('none') : ('initial')}` }}>
+							{
+								// TODO: need to be updated for submit work
+								resourceContent && hideResources !== true &&
+								Object.keys(resourceContent).map(index =>
+									<li key={resourceContent[index].id}>
+										<input type='radio' value={resourceContent[index].id} name='resource' onChange={e => handleSelectResourceChange(e, resourceContent[index].resourceName)}/>
+										<label>{resourceContent[index].resourceName}</label>
+									</li>,
+								)
+							}
 						</TableContainer>
+						<label>
+							<span>Content Title</span><br/>
+							<input type='text' name='title' value={title} onChange={handleTextChange} />
+						</label>
+						<label htmlFor='create-content-description'>
+							<span>Description</span><br/>
+							<textarea id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} required />
+						</label>
+						<label>
+							<span>Target Language</span>
+							{ selectedResource !== '' && resourceContent && 
+								<select name='targetLanguages' onChange={handleTextChange}>
+									<option value=''>None</option>
+									{  
+										resourceContent[selectedResource].allFileVersions.split("; ").forEach((element, index) => 
+										<option value={element}>{element}</option> )
+									}	
+								</select>
+							}
+						</label>
 
 						<div>
 							<Button type='button' onClick={toggleModal}>Cancel</Button>
 							<Button type='submit' color={`#0582CA`}>Create</Button>
 						</div>
-					</Form>
+					</FormResource>
 				}
 			</>
 		)
