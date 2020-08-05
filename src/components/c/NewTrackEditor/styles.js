@@ -129,7 +129,8 @@ export const Timeline = styled.div`
 					& #layer-time-indicator-line {
 						position: absolute;
 						height: calc(26vh - 40px);
-						background-color: rgba(235, 64, 52, 0.2);
+						background-color: transparent;
+						border-right: 2px solid red;
 						z-Index: 20;
 						/* border-right: 2px dotted red; */
 					}

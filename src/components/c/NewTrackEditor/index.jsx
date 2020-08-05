@@ -453,7 +453,7 @@ const TrackEditor = props => {
 
 					break;
 				case 'left':
-					scrubber.scrollLeft -= currentLayerWidth * 0.03 
+					scrubber.scrollLeft -= currentLayerWidth * 0.03
 					timeIndicator.scrollLeft -= currentLayerWidth * 0.03
 					alllayers.forEach((element, i) => {
 						alllayers[i].scrollLeft -= currentLayerWidth * 0.03
@@ -464,7 +464,7 @@ const TrackEditor = props => {
 						scrollBar.style.left = `${cLeft - scrollBarOffset}px`
 					}
 					else if ((cLeft - scrollBarOffset) < 0){
-						scrollBar.style.left = `0px`	
+						scrollBar.style.left = `0px`
 					}
 
 					break;
@@ -497,9 +497,9 @@ const TrackEditor = props => {
 						alllayers[i].scrollLeft += currentLayerWidth
 					});
 					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-					
+
 					break;
-			
+
 				default:
 					break;
 			}
@@ -521,7 +521,7 @@ const TrackEditor = props => {
 	// 		let currentLayerWidth = document.getElementsByClassName('events')[0].clientWidth
 	// 		let scrollIndicatorWidth = ((document.getElementsByClassName('zoom-scroll-indicator')[0].clientWidth) * 100) / scrollWidth
 	// 		let scrollBar = document.getElementsByClassName('zoom-scroll-indicator')[0]
-			
+
 	// 		if(d.x === 0){
 	// 			scrubber.scrollLeft -= d.x + 100 * 100
 	// 			timeIndicator.scrollLeft -= d.x + 100 * 100
@@ -562,7 +562,7 @@ const TrackEditor = props => {
 	// 			// 	else {
 	// 			// 		alllayers[i].scrollLeft = (((scrollPercentage + scrollIndicatorWidth / 2) * currentLayerWidth) / 100)
 	// 			// 	}
-	// 			// });	
+	// 			// });
 	// 		}
 	// 	}
 	// }
@@ -644,6 +644,7 @@ const TrackEditor = props => {
 
 					</section>
 					<div className='zoom-controls'>
+					{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 							<Rnd
 								className={'zoom-indicator'}
@@ -676,7 +677,7 @@ const TrackEditor = props => {
 						<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 
 							<div style={{ width: '90%', height: '100%', display: 'flex', marginLeft: '5%' }}>
-								
+
 								{/* <Rnd
 									className={'zoom-scroll-indicator'}
 									bounds={'parent'}
