@@ -45,18 +45,18 @@ const ConfirmDeleteContainer = props => {
 	}
 
 	const handleDeleteCollection = () => {
-		console.log(menuItemInfo, `Called delete collection`)
+		//console.log(menuItemInfo, `Called delete collection`)
 		adminDeleteCollection(menuItemInfo.id)
 	}
 
 	const handleDeleteUser = () => {
-		console.log(menuItemInfo, `Called delete user`)
+		//console.log(menuItemInfo, `Called delete user`)
 		adminDeleteUser(menuItemInfo.id)
 	}
 
 	const handleDeleteContent = () => {
-		console.log(menuItemInfo, `Called delete content`)
-		adminDeleteContent(menuItemInfo.id)
+		//console.log(menuItemInfo, `Called delete content`)
+		adminDeleteContent(menuItemInfo.id, true)
 	}
 
 	const handlers = {

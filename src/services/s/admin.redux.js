@@ -27,6 +27,7 @@ export default class AdminService {
 		ADMIN_COLLECTION_DELETE: `ADMIN_COLLECTION_DELETE`,
 		ADMIN_USER_DELETE: `ADMIN_USER_DELETE`,
 		ADMIN_CONTENT_DELETE: `ADMIN_CONTENT_DELETE`,
+		ADMIN_CONTENT_DELETE_FROM_TABLE: `ADMIN_CONTENT_DELETE_FROM_TABLE`,
 	}
 
 	// action creators
@@ -45,8 +46,9 @@ export default class AdminService {
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
-		adminUserDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
-		adminContentDelete: response => ({ type: this.types.ADMIN_USER_DELETE, payload: { response }}),
+		adminUserDelete: data => ({ type: this.types.ADMIN_USER_DELETE, payload: { data }}),
+		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
+		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 	}
 
 	// default store
@@ -85,6 +87,7 @@ export default class AdminService {
 			ADMIN_COLLECTION_DELETE,
 			ADMIN_USER_DELETE,
 			ADMIN_CONTENT_DELETE,
+			ADMIN_CONTENT_DELETE_FROM_TABLE,
 		} = this.types
 
 		switch (action.type) {
@@ -123,7 +126,7 @@ export default class AdminService {
 				...store,
 				profCollectionContent: {
 					...store.profCollectionContent,
-					...action.payload.content,
+					[action.payload.content.id]: action.payload.content,
 				},
 				loading: false,
 			}
@@ -201,12 +204,23 @@ export default class AdminService {
 		case ADMIN_USER_DELETE:
 			return {
 				...store,
+				data: action.payload.data,
 				loading: false,
 			}
 
+		//THIS IS DELETING CONTENT FROM MANAGE COLLECTION
 		case ADMIN_CONTENT_DELETE:
 			return {
 				...store,
+				profCollectionContent: action.payload.content,
+				loading: false,
+			}
+
+		//THIS IS DELETING CONTENT FROM THE ADMIN CONTAINER / ADMIN DASHBOARD
+		case ADMIN_CONTENT_DELETE_FROM_TABLE:
+			return {
+				...store,
+				data: action.payload.content,
 				loading: false,
 			}
 
@@ -319,6 +333,8 @@ export default class AdminService {
 
 	getCollectionContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
+		console.log('getting collection content')
+
 		const time = Date.now() - getState().adminStore.lastFetchedProfContent
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
@@ -361,22 +377,19 @@ export default class AdminService {
 	// 	}
 	// }
 
-	// createContent = (content, collectionId) => async (dispatch, { apiProxy }) => {
+	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
-	// 	dispatch(this.actions.adminStart())
+		dispatch(this.actions.adminStart())
 
-	// 	try {
+		try {
+			// console.log('got here')
+			const result = await apiProxy.content.post(content)
 
-	// 		const result = await apiProxy.content.post(content, collectionId)
-
-	// 		const data = { [result.data.id]: result.data }
-
-	// 		dispatch(this.actions.adminCreateContent(data))
-
-	// 	} catch (error) {
-	// 		dispatch(this.actions.adminError(error))
-	// 	}
-	// }
+		} catch (error) {
+			console.log('errorr api proxy ?')
+			dispatch(this.actions.adminError(error))
+		}
+	}
 
 	createContentFromResource = (collectionId, resourceId) => async (dispatch, getState, { apiProxy }) => {
 
@@ -516,13 +529,33 @@ export default class AdminService {
 		}
 	}
 
-	deleteContent = (contentId) => async (dispatch, getState, { apiProxy }) => {
+	deleteContent = (contentId, fromAdmin) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
-		try {
+		let currentState;
 
+		if(fromAdmin){
+			currentState = [...getState().adminStore.data]
+
+			currentState.splice(currentState.findIndex((element) => element.id === contentId) ,1)
+		}
+		else {
+			currentState = { ...getState().adminStore.profCollectionContent }
+
+			delete currentState[contentId]
+		}
+
+		console.log(currentState)
+
+		try {
 			const result = await apiProxy.admin.content.delete(contentId)
-			dispatch(this.actions.adminCollectionDelete(result))
+
+			if(fromAdmin){
+				dispatch(this.actions.adminContentDeleteFromTable(currentState))
+			}
+			else {
+				dispatch(this.actions.adminContentDelete(currentState))
+			}
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))
@@ -532,10 +565,22 @@ export default class AdminService {
 	deleteUser = (userId) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
+		const currentResults = [...getState().adminStore.data]
+
+		// console.log(currentResults)
+
+		currentResults.splice(currentResults.findIndex((element) => element.id === userId) ,1)
+
+
+		// console.log(result)
+
+		// console.log(currentResults)
+
 		try {
 
 			const result = await apiProxy.admin.user.delete(userId)
-			dispatch(this.actions.adminCollectionDelete(result))
+
+			dispatch(this.actions.adminUserDelete(currentResults))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))

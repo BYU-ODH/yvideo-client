@@ -29,6 +29,7 @@ export default class ManageCollection extends PureComponent {
 			isEditingCollectionName,
 			isContent,
 			content,
+			isLabAssistant,
 		} = this.props.viewstate
 
 		const {
@@ -101,7 +102,13 @@ export default class ManageCollection extends PureComponent {
 				<Tab>
 					{isContent ?
 						content.map(item => (
-							<ContentOverviewContainer key={item.id} content={item} />
+							<>
+								{ isLabAssistant !== undefined ? (
+									<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
+								) : (
+									<ContentOverviewContainer key={item.id} content={item} />
+								)}
+							</>
 						))
 						: (
 							<CollectionPermissionsContainer collection={collection} />

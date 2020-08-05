@@ -87,6 +87,7 @@ const LabAssistantManageCollectionContainer = props => {
 		isContent,
 		isEditingCollectionName,
 		collectionName,
+		isLabAssistant: true,
 	}
 
 	const handlers = {

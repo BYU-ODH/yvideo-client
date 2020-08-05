@@ -53,7 +53,7 @@ export const Timeline = styled.div`
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
-  background-color: transparent;
+  	background-color: transparent;
 	z-index: 0;
 	overflow-y: scroll;
 	overflow-x: hidden;
@@ -100,14 +100,15 @@ export const Timeline = styled.div`
 				border-radius: 10px;
 				background-color: rgba(220, 220, 220, 0.5);
 				position: relative;
+				overflow: hidden;
 
 				& .zoom-scroll-indicator {
+					position: absolute;
 					min-width: 5%;
-					width: ${props => props.zoom !== 0 ? (`calc(100% - ${props.zoom}%)`) : (`100%`)} !important;
+					width: ${props => props.zoom !== 0 ? (`${props.zoom}%`) : (`100%`)} !important;
 					height: 100% !important;
 					background-color: var(--light-blue);
 					border-radius: 20px;
-					/* TODO: RESIZE INDICATOR BASED ON ZOOM FACTOR*/
 				}
 			}
 
@@ -128,7 +129,8 @@ export const Timeline = styled.div`
 					& #layer-time-indicator-line {
 						position: absolute;
 						height: calc(26vh - 40px);
-						background-color: rgba(235, 64, 52, 0.2);
+						background-color: transparent;
+						border-right: 2px solid red;
 						z-Index: 20;
 						/* border-right: 2px dotted red; */
 					}

@@ -178,6 +178,7 @@ export default class AdminTable extends PureComponent {
 				)
 
 			case `Content`:
+				//console.log(data)
 				return (
 					<ul>
 						<li>
