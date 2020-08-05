@@ -299,6 +299,8 @@ const apiProxy = {
 				'Content-Type': `application/json`,
 				'session-id': window.clj_session_id,
 			},
+		}).then(res => {
+			updateSessionId(res.headers['session-id'])
 		}),
 
 		delete: async (resourceId) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}`, {
@@ -307,6 +309,8 @@ const apiProxy = {
 				'Content-Type': `application/json`,
 				'session-id': window.clj_session_id,
 			},
+		}).then(res => {
+			updateSessionId(res.headers['session-id'])
 		}),
 
 		edit: async (resource, resourceId) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}`, resource, {
@@ -315,6 +319,8 @@ const apiProxy = {
 				'Content-Type': `application/json`,
 				'session-id': window.clj_session_id,
 			},
+		}).then(res => {
+			updateSessionId(res.headers['session-id'])
 		}),
 		/**
 		 * Retrieves a single resource from a resource ID
@@ -323,8 +329,34 @@ const apiProxy = {
 		 *
 		 * @returns a resource object
 		 */
-		get: id => axios(`${process.env.REACT_APP_RESOURCE_LIB}/resources/${id}?${Date.now().toString(36)}`).then(res => {
+		get: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}`, {
+			withCredentials: true,
+			headers: {
+				'session-id': window.clj_session_id},
+		}).then(res => {
+			updateSessionId(res.headers['session-id'])
+			return res.data
+		}),
+
+		search: async (searchQuery) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/resource/${searchQuery}`, 
+			{
+				withCredentials: true,
+				headers: {
+					'session-id': window.clj_session_id,
+				}
+			}).then(res => {
 				updateSessionId(res.headers['session-id'])
+				return res.data
+			}),
+		files: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`, 
+			{
+				withCredentials: true,
+				headers: {
+					'session-id': window.clj_session_id
+				},
+			}).then(res => {
+				updateSessionId(res.headers['session-id'])
+				return res.data
 			}),
 	},
 	user: {
