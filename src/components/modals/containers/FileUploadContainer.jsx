@@ -18,6 +18,7 @@ const FileUploadContainer = props => {
 		resource,
 		uploadFile,
 		getResource,
+		user,
 	} = props
 
 	const category = {
@@ -66,7 +67,9 @@ const FileUploadContainer = props => {
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, ``)
 
-		console.log(formData)
+		// console.log(formData)
+		// console.log(user)
+		// console.log(resourceId)
 		uploadFile(formData)
 		toggleModal()
 	}
@@ -87,6 +90,7 @@ const FileUploadContainer = props => {
 }
 
 const mapStateToProps = store => ({
+	user: store.authStore.user,
 	modal: store.interfaceStore.modal,
 	resource: store.resourceStore.cache,
 })

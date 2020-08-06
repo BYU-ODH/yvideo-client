@@ -428,9 +428,10 @@ const apiProxy = {
 		post: async (file) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file`, file, {
 			withCredentials: true,
 			headers: {
-				'Content-Type': `application/json`,
 				'session-id': window.clj_session_id,
 			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
 		}),
 
 		delete: async (fileId) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file/${fileId}`, {

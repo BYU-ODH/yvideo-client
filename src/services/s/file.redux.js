@@ -95,7 +95,7 @@ export default class FileService {
 			dispatch(this.actions.fileUpload(result))
 
 		} catch (error) {
-			dispatch(this.actions.resourcesError(error))
+			dispatch(this.actions.fileError(error))
 		}
 	}
 

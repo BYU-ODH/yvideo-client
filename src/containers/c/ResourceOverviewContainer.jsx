@@ -141,7 +141,6 @@ const ResourceOverviewContainer = props => {
 				files,
 			},
 		})
-		console.log(files)
 	}
 
 	const viewstate = {
