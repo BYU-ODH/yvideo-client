@@ -98,4 +98,18 @@ export default class FileService {
 			dispatch(this.actions.resourcesError(error))
 		}
 	}
+
+	delete = (id) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.fileStart())
+
+		try {
+			const result = await apiProxy.file.delete(id)
+
+			console.log(result)
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
 }

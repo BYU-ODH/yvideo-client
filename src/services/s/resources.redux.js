@@ -171,7 +171,7 @@ export default class ResourceService {
 
 			dispatch(this.actions.resourcesFiles(id, result))
 
-			console.log(getState().resourceStore)
+			// console.log(getState().resourceStore)
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))
