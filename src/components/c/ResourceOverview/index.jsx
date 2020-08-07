@@ -44,6 +44,7 @@ export class ResourceOverview extends PureComponent {
 			showing,
 			files,
 			editing,
+			isMounted,
 			fileId,
 		} = this.props.viewstate
 

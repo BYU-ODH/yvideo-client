@@ -24,6 +24,7 @@ const ResourceOverviewContainer = props => {
 		getResourceFiles,
 		resourceCache,
 		fileId,
+		thisfiles,
 	} = props
 
 	const [editing, setEditing] = useState(false)
@@ -32,14 +33,14 @@ const ResourceOverviewContainer = props => {
 	const [files, setFiles] = useState([])
 
 	useEffect(() => {
-		if(resourceCache[resource.id].files !== undefined)
-			setFiles(resourceCache[resource.id].files)
+
+		if(editing) setFiles(resourceCache[resource.id].files)
 
 		// TODO: need to update file versions from the files to the resource all-file-versionns
 		// if(files.length !== 0)
 		// 	console.log(files)
 
-	}, [resource.id, resourceCache, files])
+	}, [editing, files, resource.id, resourceCache])
 
 	if (objectIsEmpty(resource)) return null
 
@@ -62,6 +63,10 @@ const ResourceOverviewContainer = props => {
 				setEditing(false)
 			}, 500)
 		} else setEditing(true)
+	}
+
+	const handleRemoveResource = e => {
+		removeResource(resource.id)
 	}
 
 	const handleResourceName = e => {
@@ -90,13 +95,6 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceType: e.target.dataset.type,
 		})
-	}
-
-	const handleRemoveResource = e => {
-		removeResource(resource.id)
-		setTimeout(() => {
-			setEditing(false)
-		}, 500)
 	}
 
 	const handleTogglePublish = e => {
@@ -174,6 +172,7 @@ const ResourceOverviewContainer = props => {
 }
 
 const mapStateToProps = store => ({
+	thisfiles: store.fileStore.cache,
 	fileId: store.fileStore.cache,
 	resourceCache: store.resourceStore.cache,
 })

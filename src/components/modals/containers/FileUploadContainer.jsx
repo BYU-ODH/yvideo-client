@@ -17,6 +17,7 @@ const FileUploadContainer = props => {
 		toggleModal,
 		resource,
 		uploadFile,
+		getFiles,
 		getResource,
 		user,
 	} = props
@@ -58,8 +59,6 @@ const FileUploadContainer = props => {
 	const handleFileUpload = async(e) =>{
 		e.preventDefault()
 
-		getResource(resourceId)
-
 		const formData = new FormData()
 		formData.append(`file`, selectedFile)
 		formData.append(`resource-id`, resourceId)
@@ -67,10 +66,8 @@ const FileUploadContainer = props => {
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, ``)
 
-		// console.log(formData)
-		// console.log(user)
-		// console.log(resourceId)
-		uploadFile(formData)
+		await uploadFile(formData)
+		await getFiles(resourceId)
 		toggleModal()
 	}
 
@@ -99,6 +96,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	uploadFile: fileService.upload,
 	getResource: resourceService.getResource,
+	getFiles: resourceService.getFiles,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileUploadContainer)

@@ -27,6 +27,7 @@ const CreateResourceContainer = props => {
 	// const [fileVersion, setFileVersion] = useState(category.English.name)
 
 	const [data, setData] = useState({
+		id: 0,
 		copyrighted: true,
 		resourceName: ``,
 		physicalCopyExists: true,
@@ -93,7 +94,7 @@ const CreateResourceContainer = props => {
 			"date-validated": data.dateValidated,
 		}
 
-		await addResource(backEndData)
+		await addResource(backEndData, data)
 		toggleModal()
 	}
 
