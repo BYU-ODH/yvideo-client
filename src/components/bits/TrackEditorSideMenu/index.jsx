@@ -14,27 +14,33 @@ const TrackEditorSideMenu = props => {
 		updateEvents,
 		videoLength,
 		closeSideEditor,
+		isSub,
+		updateSubs,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
+	const [subText, setSubText] = useState(``)
 
 	useEffect(() => {
 		setEvent(singleEvent)
 	}, [index])
 
 	const handleEditEventBTimeChange = (e) => {
-
-		document.getElementById('sideTabMessage').style.color='red'
-		let number = parseFloat(e.target.value)
-		let cEvent = event
-		let layer = cEvent.layer
-
-		if(isNaN(number)){
-			number = 0
+		if (isSub){
+			console.log(`detecting sub`)
+			editSub(`beg`,e,subText)
+			return
 		}
+		document.getElementById(`sideTabMessage`).style.color=`red`
+		let number = parseFloat(e.target.value)
+		const cEvent = event
+		const layer = cEvent.layer
 
-		number = (number / videoLength) * 100
+		if(isNaN(number))
+			number = 0
+
+		number = number / videoLength * 100
 
 		cEvent.start = number
 
@@ -44,17 +50,21 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditEventETimeChange = (e) => {
-		document.getElementById('sideTabMessage').style.color='red'
-		let number = parseFloat(e.target.value)
-		let cEvent = event
-		let layer = cEvent.layer
-
-		if(isNaN(number)){
-			number = 0
+		if (isSub){
+			console.log(`detecting sub`)
+			editSub(`end`,e,subText)
+			return
 		}
+		document.getElementById(`sideTabMessage`).style.color=`red`
+		let number = parseFloat(e.target.value)
+		const cEvent = event
+		const layer = cEvent.layer
 
-		number = (number / videoLength) * 100
-		//console.log(number)
+		if(isNaN(number))
+			number = 0
+
+		number = number / videoLength * 100
+		// console.log(number)
 		cEvent.end = number
 
 		setEvent(cEvent)
@@ -62,68 +72,90 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleSaveComment = () => {
-		let ind = index
+		const ind = index
 		let cEvent = event
-		let layer = cEvent.layer
+		const layer = cEvent.layer
 		cEvent = editComment
 
-		//console.log(event)
+		// console.log(event)
 
-		//setEditComment({})
+		// setEditComment({})
 		updateEvents(ind, cEvent, layer)
 	}
 
 	const handleEditComment = (value, cEvent, int) => {
 
 		switch (int) {
-			case 1:
-					if(editComment.position !== undefined){
-						setEditComment({...editComment, position: { x: parseInt(value), y: editComment.position.y, }})
-					}
-					else {
-						setEditComment({...cEvent, position: { x: parseInt(value), y: cEvent.position.y, }})
-					}
-				break;
-			case 2:
-					if(editComment.position !== undefined){
-						setEditComment({...editComment, position: { x: editComment.position.x, y: parseInt(value), }})
-					}
-					else {
-						setEditComment({...cEvent, position: { x: cEvent.position.x, y: parseInt(value), }})
-					}
-				break;
-			case 3:
-					if(editComment.position !== undefined){
-						setEditComment({...editComment, comment: value })
-					}
-					else {
-						setEditComment({...cEvent, comment: value })
-					}
-				break;
+		case 1:
+			if(editComment.position !== undefined)
+				setEditComment({...editComment, position: { x: parseInt(value), y: editComment.position.y }})
+					 else
+				setEditComment({...cEvent, position: { x: parseInt(value), y: cEvent.position.y }})
 
-			default:
-				break;
+			break
+		case 2:
+			if(editComment.position !== undefined)
+				setEditComment({...editComment, position: { x: editComment.position.x, y: parseInt(value) }})
+					 else
+				setEditComment({...cEvent, position: { x: cEvent.position.x, y: parseInt(value) }})
+
+			break
+		case 3:
+			if(editComment.position !== undefined)
+				setEditComment({...editComment, comment: value })
+					 else
+				setEditComment({...cEvent, comment: value })
+
+			break
+
+		default:
+			break
 		}
 	}
+	const editSub = (side, time, value) => {
+		const sub = event
+		if (side === `beg`)
+			sub.start = time
+		else if(side === `end`)
+			sub.end = time
+		setSubText(value)
+		sub.text = value
+		updateSubs(index,sub)
+	}
 
-	let start = (event.start / 100 * videoLength).toFixed(3)
-	let end = (event.end / 100 * videoLength).toFixed(3)
+	const start = (event.start / 100 * videoLength).toFixed(3)
+	const end = (event.end / 100 * videoLength).toFixed(3)
 
 	return (
 		<Style>
 			<div>
-				<img className={'closeEditor'} src={`${closeIcon}`} onClick={closeSideEditor}/>
+				<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 				<div className='center'>
 					<label>Start</label>
-					<label style={{ visibility: `${event.type !== 'Pause' ? ('visible') : ('hidden') }`}}>End</label>
+					<label style={{ visibility: `${event.type !== `Pause` ? `visible` : `hidden`}`}}>End</label>
 				</div>
 				<div className='center'>
 					<input type='text' className='sideTabInput' value={`${parseFloat(start).toFixed(0)}`} onChange={e => handleEditEventBTimeChange(e)}/>
-					<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: `${event.type !== 'Pause' ? ('visible') : ('hidden') }`}}/>
+					<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: `${event.type !== `Pause` ? `visible` : `hidden`}`}}/>
 				</div>
 				<br/>
 			</div>
-			{ event.type === 'Comment' ? (
+			{isSub ? (
+				<>
+					<div className='center'>
+						<label>Subtitle Text</label>
+					</div>
+					<div className='center'>
+						<input type='text' placeholder='Subtitle' onChange={value=>{
+							setSubText(value)
+							updateSubs(null,null,value)
+						}} />
+					</div>
+				</>
+			)
+				: ``
+			}
+			{ event.type === `Comment` ? (
 				<>
 					<div className='center'>
 						<label>X</label>
@@ -133,13 +165,13 @@ const TrackEditorSideMenu = props => {
 						<input type='number' className='sideTabInput' placeholder={event.position.x.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 1)}/>
 						<input type='number' className='sideTabInput' placeholder={event.position.y.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 2)}/>
 					</div>
-					<div className='center' style={{ flexDirection: 'column'}}>
-						<label style={{ textAlign: 'left', margin: '15px 5px 5px 5px' }}>Type a comment</label>
-						<textarea style={{ margin: '5%', width: '90%'}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
+					<div className='center' style={{ flexDirection: `column`}}>
+						<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
+						<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
 						<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
 					</div>
 				</>
-				) : (null)
+			) : null
 			}
 			{/* { event.type === 'Censor' ? (
 				<div className='censorMenu'>
