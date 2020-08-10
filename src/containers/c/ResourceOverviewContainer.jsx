@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import FileUploadContainer from 'components/modals/containers/FileUploadContainer'
+import ManageFilesContainer from 'components/modals/containers/ManageFilesContainer'
 
 import {
 	resourceService,
@@ -21,14 +22,25 @@ const ResourceOverviewContainer = props => {
 		editResource,
 		removeResource,
 		getResourceFiles,
-		resourceStore,
+		resourceCache,
 		fileId,
+		thisfiles,
 	} = props
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
-	const [files, setFiles] = useState()
+	const [files, setFiles] = useState([])
+
+	useEffect(() => {
+
+		if(editing) setFiles(resourceCache[resource.id].files)
+
+		// TODO: need to update file versions from the files to the resource all-file-versionns
+		// if(files.length !== 0)
+		// 	console.log(files)
+
+	}, [editing, files, resource.id, resourceCache])
 
 	if (objectIsEmpty(resource)) return null
 
@@ -42,11 +54,7 @@ const ResourceOverviewContainer = props => {
 	}
 
 	const handleToggleEdit = async () => {
-		const newFiles = await getResourceFiles(resource.id)
-		const id = resource.id
-		console.log(resourceStore[id])
-		// console.log(newFiles)
-		// setFiles(newFiles)
+		await getResourceFiles(resource.id)
 
 		if (editing) {
 			await editResource(resourceState, resourceState.id)
@@ -55,6 +63,10 @@ const ResourceOverviewContainer = props => {
 				setEditing(false)
 			}, 500)
 		} else setEditing(true)
+	}
+
+	const handleRemoveResource = e => {
+		removeResource(resource.id)
 	}
 
 	const handleResourceName = e => {
@@ -83,13 +95,6 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceType: e.target.dataset.type,
 		})
-	}
-
-	const handleRemoveResource = e => {
-		removeResource(resource.id)
-		setTimeout(() => {
-			setEditing(false)
-		}, 500)
 	}
 
 	const handleTogglePublish = e => {
@@ -127,12 +132,17 @@ const ResourceOverviewContainer = props => {
 		})
 	}
 
-	const handleFiles = async(e) => {
-		getResourceFiles(resource.id)
-		console.log(files)
+	const handleFiles = () => {
+		props.toggleModal({
+			component: ManageFilesContainer,
+			props: {
+				files,
+			},
+		})
 	}
 
 	const viewstate = {
+		resourceCache,
 		resource: resourceState,
 		files,
 		fileId,
@@ -162,8 +172,9 @@ const ResourceOverviewContainer = props => {
 }
 
 const mapStateToProps = store => ({
+	thisfiles: store.fileStore.cache,
 	fileId: store.fileStore.cache,
-	resourceStore: store.resourceStore.cache,
+	resourceCache: store.resourceStore.cache,
 })
 
 const mapDispatchToProps = {

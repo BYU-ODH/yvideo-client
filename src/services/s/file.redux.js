@@ -17,7 +17,7 @@ export default class FileService {
 		fileAbort: () => ({ type: this.types.FIle_ABORT }),
 		fileClean: () => ({ type: this.types.FIle_CLEAN }),
 		fileError: error => ({ type: this.types.FIle_ERROR, payload: { error } }),
-		fileUpload: result => ({ type: this.types.FIle_UPLOAD, payload: { result } }),
+		fileUpload: file => ({ type: this.types.FIle_UPLOAD, payload: { file } }),
 	}
 
 	// default store
@@ -72,7 +72,7 @@ export default class FileService {
 				...store,
 				cache: {
 					...store.cache,
-					[action.payload.result.data.id]: action.payload.result.data.id,
+					[action.payload.file.id]: action.payload.file.id,
 				},
 				loading: false,
 				lastFetched: Date.now(),
@@ -93,6 +93,20 @@ export default class FileService {
 			const result = await apiProxy.file.post(file)
 
 			dispatch(this.actions.fileUpload(result))
+
+		} catch (error) {
+			dispatch(this.actions.fileError(error))
+		}
+	}
+
+	delete = (id) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.fileStart())
+
+		try {
+			const result = await apiProxy.file.delete(id)
+
+			console.log(result)
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import axios from 'axios'
 
 import {
 	interfaceService,
@@ -15,19 +14,20 @@ const CreateResourceContainer = props => {
 	const {
 		toggleModal,
 		addResource,
-		// uploadFile,
 		user,
 	} = props
 
 	const [tab, setTab] = useState(`resource`)
 	const [selectedFile, setSelectedFile] = useState()
-	const [isReady, setIsReady] = useState(false)
 
 	const changeTab = e => {
 		setTab(e.target.name)
 	}
 
+	// const [fileVersion, setFileVersion] = useState(category.English.name)
+
 	const [data, setData] = useState({
+		id: 0,
 		copyrighted: true,
 		resourceName: ``,
 		physicalCopyExists: true,
@@ -37,7 +37,7 @@ const CreateResourceContainer = props => {
 		metadata: ``,
 		requesterEmail: user.email,
 		allFileVersions: ``,
-		resourceType: ``,
+		resourceType: `video`,
 		dateValidated: ``,
 	})
 
@@ -94,7 +94,7 @@ const CreateResourceContainer = props => {
 			"date-validated": data.dateValidated,
 		}
 
-		await addResource(backEndData)
+		await addResource(backEndData, data)
 		toggleModal()
 	}
 
@@ -117,7 +117,6 @@ const CreateResourceContainer = props => {
 		handleTypeChange,
 		changeTab,
 		handleFileChange,
-		// handleFileUpload,
 		toggleModal,
 	}
 

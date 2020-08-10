@@ -11,7 +11,6 @@ export class ManageResource extends PureComponent {
 			user,
 			searchQuery,
 			resources,
-			professorId,
 		} = this.props.viewstate
 
 		const {
