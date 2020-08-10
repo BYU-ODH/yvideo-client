@@ -14,6 +14,7 @@ export default class ResourceService {
 		RESOURCE_SEARCH:`RESOURCE_SEARCH`,
 		RESOURCE_EDIT: `RESOURCE_EDIT`,
 		RESOURCE_DELETE: `RESOURCE_DELETE`,
+		RESOURCE_STREAM: 'RESOURCE_STREAM',
 	}
 
 	// action creators
@@ -28,6 +29,7 @@ export default class ResourceService {
 		resourceSearch: resource => ({ type: this.types.RESOURCE_SEARCH, payload: { resource } }),
 		resourceEdit: resource => ({ type: this.types.RESOURCE_EDIT, payload: { resource } }),
 		resourceDelete: filteredResources => ({ type: this.types.RESOURCE_DELETE, payload: { filteredResources } }),
+		resourceStream: key => ({ type: this.types.RESOURCE_STREAM, payload: { key } })
 	}
 
 	// default store
@@ -36,6 +38,7 @@ export default class ResourceService {
 		cache: {},
 		loading: false,
 		lastFetched: 0,
+		streamKey: '',
 	}
 
 	// reducer
@@ -52,6 +55,7 @@ export default class ResourceService {
 			RESOURCE_EDIT,
 			RESOURCE_DELETE,
 			RESOURCE_FILES,
+			RESOURCE_STREAM
 		} = this.types
 
 		switch (action.type) {
@@ -129,6 +133,12 @@ export default class ResourceService {
 				cache: {
 					...action.payload.resource,
 				},
+			}
+
+		case RESOURCE_STREAM:
+			return {
+				...store,
+				streamKey: action.payload.key,
 			}
 
 		default:
@@ -293,4 +303,29 @@ export default class ResourceService {
 			dispatch(this.actions.resourcesError(error))
 		}
 	}
+
+	getStreamKey = (resourceId, language) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const allFiles = await apiProxy.resources.files(resourceId)
+
+			//console.log(allFiles)
+
+			let fileId = allFiles.find(element => element['file-version'].includes(language) !== false)['id']
+
+			//console.log(fileId)
+			const result = await apiProxy.media.getKey(fileId)
+			//console.log('FILE KEY', result)
+
+
+			dispatch(this.actions.resourceStream(result['file-key']))
+
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
 }
