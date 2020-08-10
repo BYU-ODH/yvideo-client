@@ -191,7 +191,7 @@ export default class CollectionService {
 		currentState.content.splice(contentIndex, 1)
 
 		try {
-			const result = await apiProxy.collection.remove(currentState)
+			const result = await apiProxy.collection.remove(contentId)
 			// console.log(result)
 
 			// You also have to be an admin to do this, I'm pretty sure

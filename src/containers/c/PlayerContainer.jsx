@@ -11,16 +11,17 @@ const PlayerContainer = props => {
 	const {
 		contentCache,
 		getContent,
-		resourceCache,
-		getResources,
+		getStreamKey,
 		addView,
 		setEvents,
+		streamKey,
 	} = props
 
 	const params = useParams()
 
 	const [content, setContent] = useState()
-	const [resource, setResource] = useState()
+	const [resource, setResource] = useState('')
+	const [fileId, setFileId] = useState('')
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -42,14 +43,29 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
+		//console.log('called us effct in player')
 		if (!contentCache[params.id]) getContent([params.id])
 		else {
 			setContent(contentCache[params.id])
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			setUrl(contentCache[params.id].url)
+			if(contentCache[params.id].url !== ''){
+				setUrl(contentCache[params.id].url)
+			}
+			else {
+				//CHECK RESOURCE ID
+				if(contentCache[params.id].resourceId !== '00000000-0000-0000-0000-000000000000' && streamKey === ''){
+					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					setResource(contentCache[params.id].resourceId)
+					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+				}
+				else if (streamKey !== '' && url === ''){
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
+					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
+				}
+			}
 			addView(params.id)
 		}
-	}, [addView, content, contentCache, getContent, getResources, params.id, resource, resourceCache])
+	}, [addView, content, contentCache, getContent, params.id, resource, streamKey])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -177,16 +193,17 @@ const PlayerContainer = props => {
 	return <Player viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, contentStore }) => ({
+const mapStateToProps = ({ authStore, contentStore, resourceStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	userId: authStore.user.id,
 	contentCache: contentStore.cache,
+	streamKey: resourceStore.streamKey,
 })
 
 const mapDispatchToProps = {
 	getContent: contentService.getContent,
-	getResources: resourceService.getResources,
+	getStreamKey: resourceService.getStreamKey,
 	addView: contentService.addView,
 	setEvents: interfaceService.setEvents,
 }
