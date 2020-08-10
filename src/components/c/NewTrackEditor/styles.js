@@ -113,7 +113,7 @@ export const Timeline = styled.div`
 			}
 
 			& #time-indicator-container {
-				height: 26vh;
+				height: 27vh;
 				width: calc(100% - 162px);
 				position: absolute;
 				overflow-x: scroll;
@@ -128,7 +128,7 @@ export const Timeline = styled.div`
 
 					& #layer-time-indicator-line {
 						position: absolute;
-						height: calc(26vh - 40px);
+						height: calc(27vh - 40px);
 						background-color: transparent;
 						border-right: 2px solid red;
 						z-Index: 20;

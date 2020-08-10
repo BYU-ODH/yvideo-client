@@ -18,6 +18,8 @@ const TrackEditorContainer = props => {
 		getResource,
 		getContent,
 		updateContent,
+		getStreamKey,
+		streamKey,
 	} = props
 
 	const {id} = useParams()
@@ -39,10 +41,23 @@ const TrackEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setUrl(content[id].url)
+			if(content[id].url !== ''){
+				setUrl(content[id].url)
+			}
+			else {
+				//CHECK RESOURCE ID
+				if(content[id].resourceId !== '00000000-0000-0000-0000-000000000000' && streamKey === ''){
+					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
+				}
+				else if (streamKey !== '' && url === ''){
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
+					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
+				}
+			}
 		}
 
-	}, [content, resource, eventsArray, currentContent])
+	}, [content, resource, eventsArray, currentContent, streamKey])
 
 	//console.log(eventsArray)
 
@@ -58,12 +73,14 @@ const TrackEditorContainer = props => {
 const mapStoreToProps = ({ contentStore, resourceStore }) => ({
 	resource: resourceStore.cache,
 	content: contentStore.cache,
+	streamKey: resourceStore.streamKey,
 })
 
 const mapThunksToProps = {
 	setEvents: interfaceService.setEvents,
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
+	getStreamKey: resourceService.getStreamKey,
 	updateContent: contentService.updateContent,
 }
 
