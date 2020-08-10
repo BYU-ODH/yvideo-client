@@ -25,29 +25,13 @@ export const Form = styled.form`
 
 		& > span {
 			flex: 1;
+
 		}
 	}
 
 	& > div {
 		display: flex;
 		justify-content: space-between;
-	}
-
-	.keywords-list {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: start;
-		max-width: 30rem;
-
-		& > span {
-			color: white;
-			background-color: #0582CA;
-			padding: .5rem .75rem;
-			border-radius: 1.2rem;
-			margin: 0 .5rem 0 0;
-			display: flex;
-			align-items: center;
-		}
 	}
 `
 

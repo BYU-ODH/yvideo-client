@@ -39,17 +39,12 @@ export class ResourceOverview extends PureComponent {
 		} = this.props.handlers
 
 		const {
-			resourceCache,
 			resource,
-			showing,
 			files,
 			editing,
-			isMounted,
-			fileId,
 		} = this.props.viewstate
 
 		const {
-			id,
 			metadata,
 			resourceName,
 			physicalCopyExists,

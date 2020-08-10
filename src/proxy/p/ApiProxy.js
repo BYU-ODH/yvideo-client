@@ -439,6 +439,17 @@ const apiProxy = {
 			return res.data
 		}),
 
+		patch: async (fileId, file) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file/${fileId}`, file,{
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`,
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+			return res.data
+		}),
+
 		delete: async (fileId) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file/${fileId}`, {
 			withCredentials: true,
 			headers: {

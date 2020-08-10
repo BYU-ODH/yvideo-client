@@ -2,14 +2,13 @@ import styled from 'styled-components'
 
 import searchIcon from 'assets/search.svg'
 import uploadIcon from 'assets/upload.svg'
+import xIcon from 'assets/x.svg'
 
 export const Form = styled.form`
 	display: grid;
 	grid-gap: 4rem;
 
 	min-width: 30rem;
-	min-height: 35rem;
-
 
 	& input, select {
 		flex: 4;
@@ -58,6 +57,13 @@ export const Button = styled.button`
 	border: none;
 	outline: none;
 	cursor: pointer;
+`
+
+export const XIcon = styled.button`
+	background: url(${xIcon}) center no-repeat;
+	background-size: contain;
+	height: 2rem;
+	width: 2rem;
 `
 
 export const UploadButton = styled.button`

@@ -12,6 +12,13 @@ export default Style
 export const BoxRow = styled.div`
 	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
 	background-color: white;
+
+	& > div {
+		display: grid;
+		padding-top:1rem;
+		padding-bottom: 1rem;
+		padding-right: 1rem;
+	}
 `
 
 export const FileTitle = styled.div`
@@ -50,40 +57,35 @@ export const EditButton = styled.button`
 	}
 `
 
+export const SaveIcon = styled.span`
+	background: url(${saveIcon}) center no-repeat;
+	height: 2.5rem;
+	width: 2rem;
+`
+
 export const InnerContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 2fr;
+	grid-template-columns: 1fr 1fr;
 	padding: 15px;
 `
 
-export const Type = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-`
-
 export const Column = styled.div`
-	margin-right: 1.5rem;
+	/* margin-right: 1.5rem; */
 	margin-left: 1.5rem;
-
-	& > h4 {
-		align-items: center;
-		border-bottom: 1px solid #c4c4c4;
-		display: grid;
-		grid-gap: 1rem;
-		grid-template-columns: 1fr 1.8rem;
-		line-height: 2rem;
-		margin-bottom: 1rem;
-	}
 
 	& > div {
 		display: flex;
 		align-items: center;
 		line-height: 2rem;
 		margin-bottom: 1rem;
+
+		& > h4 {
+			margin-right: 0.5rem;
+		}
 	}
 
 	& textarea {
+		margin-top: 1rem;
 		width: 100%;
 	}
 `
@@ -103,30 +105,6 @@ export const RemoveButton = styled.button`
 	text-align: center !important;
 
 	& > span {
-		margin-right: 2rem;
+		margin-left: .5rem;
 	}
-`
-
-export const TitleEdit = styled.input`
-	margin-left: 1rem;
-	box-sizing: border-box;
-`
-
-export const Title = styled.form`
-	display: flex;
-	margin-left: 1rem;
-	& > h4 {
-		display: flex;
-		align-items: center;
-	}
-`
-
-export const TypeButton = styled.button`
-	background: transparent;
-	border: none;
-	outline: none;
-	cursor: pointer;
-
-	font-weight: ${props => props.selected ? `500` : `300`};
-	color: ${props => props.selected ? `#0057B8` : `black`};
 `

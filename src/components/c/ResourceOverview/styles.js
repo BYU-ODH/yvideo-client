@@ -49,6 +49,7 @@ export const EditButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
+
 	text-align: center !important;
 	& > span {
 		margin-left: .5rem;

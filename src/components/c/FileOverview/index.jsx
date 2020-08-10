@@ -5,6 +5,8 @@ import Style, {
 	BoxRow,
 	RemoveButton,
 	RemoveIcon,
+	EditButton,
+	SaveIcon,
 	FileTitle,
 } from './styles'
 
@@ -13,6 +15,7 @@ export class FileOverview extends PureComponent {
 	render() {
 
 		const {
+			handleUpdateFile,
 			handleFileMetadata,
 			handleRemoveFile,
 		} = this.props.handlers
@@ -30,19 +33,19 @@ export class FileOverview extends PureComponent {
 						</div>
 
 						<div>
-							<h4>file version:</h4> {file[`file-version`]}
+							<h4>File version:</h4> {file[`file-version`]}
 						</div>
 
 						<div>
-							<h4>id:</h4> {file[`id`]}
+							<h4>File ID:</h4> {file[`id`]}
 						</div>
 
 						<div>
-							<h4>mime:</h4> {file[`mime`]}
+							<h4>Resource ID:</h4> {file[`resource-id`]}
 						</div>
 
 						<div>
-							<h4>resource id:</h4> {file[`resource id`]}
+							<h4>Mime:</h4> {file[`mime`]}
 						</div>
 					</Column>
 
@@ -51,7 +54,10 @@ export class FileOverview extends PureComponent {
 						<textarea onChange={handleFileMetadata} defaultValue={file.metadata} rows={8}/>
 					</Column>
 				</InnerContainer>
-				<RemoveButton className='remove-file-button' onClick={handleRemoveFile}>Delete<RemoveIcon/></RemoveButton>
+				<div>
+					<EditButton onClick={handleUpdateFile}>Update<SaveIcon/></EditButton>
+					<RemoveButton className='remove-file-button' onClick={handleRemoveFile}>Delete<RemoveIcon/></RemoveButton>
+				</div>
 			</BoxRow>
 		)
 	}

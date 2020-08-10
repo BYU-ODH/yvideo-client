@@ -5,6 +5,7 @@ import FileOverviewContainer from '../../../../containers/c/FileOverviewContaine
 import {
 	Form,
 	Button,
+	XIcon,
 } from './styles'
 
 export default class ManageFiles extends PureComponent {
@@ -22,13 +23,16 @@ export default class ManageFiles extends PureComponent {
 		return (
 			<>
 				<Form>
-					<h2>Manage Files</h2>
+					<div>
+						<h2>Manage Files</h2>
+						<Button type='button' onClick={toggleModal}>Cancel</Button>
+					</div>
 
 					{Object.keys(files).map(index => <FileOverviewContainer key={files[index].id} file={files[index]} />)}
-					<div>
+					{/* <div>
 						<Button type='button' onClick={toggleModal}>Cancel</Button>
 						<Button type='submit' color={`#0582CA`}>Update</Button>
-					</div>
+					</div> */}
 				</Form>
 			</>
 		)

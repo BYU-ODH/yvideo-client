@@ -26,8 +26,8 @@ const FileUploadContainer = props => {
 		English: {
 			name: `English`,
 		},
-		Franch: {
-			name: `Franch`,
+		French: {
+			name: `French`,
 		},
 		Mandarin: {
 			name: `Mandarin`,
