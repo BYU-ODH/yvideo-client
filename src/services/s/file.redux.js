@@ -8,6 +8,7 @@ export default class FileService {
 		FIle_CLEAN: `FIle_CLEAN`,
 		FIle_ERROR: `FIle_ERROR`,
 		FIle_UPLOAD:`FIle_UPLOAD`,
+		FIle_UPDATE: `FIle_UPDATE`,
 	}
 
 	// action creators
@@ -17,7 +18,8 @@ export default class FileService {
 		fileAbort: () => ({ type: this.types.FIle_ABORT }),
 		fileClean: () => ({ type: this.types.FIle_CLEAN }),
 		fileError: error => ({ type: this.types.FIle_ERROR, payload: { error } }),
-		fileUpload: result => ({ type: this.types.FIle_UPLOAD, payload: { result } }),
+		fileUpload: file => ({ type: this.types.FIle_UPLOAD, payload: { file } }),
+		fileUpdate: file => ({ type: this.types.FIle_UPDATE, payload: { file } }),
 	}
 
 	// default store
@@ -38,6 +40,7 @@ export default class FileService {
 			FIle_CLEAN,
 			FIle_ERROR,
 			FIle_UPLOAD,
+			FIle_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -72,7 +75,18 @@ export default class FileService {
 				...store,
 				cache: {
 					...store.cache,
-					[action.payload.result.data.id]: action.payload.result.data.id,
+					[action.payload.file.id]: action.payload.file.id,
+				},
+				loading: false,
+				lastFetched: Date.now(),
+			}
+
+		case FIle_UPDATE:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.file.id]: action.payload.file,
 				},
 				loading: false,
 				lastFetched: Date.now(),
@@ -93,6 +107,36 @@ export default class FileService {
 			const result = await apiProxy.file.post(file)
 
 			dispatch(this.actions.fileUpload(result))
+
+		} catch (error) {
+			dispatch(this.actions.fileError(error))
+		}
+	}
+
+	delete = (id) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.fileStart())
+
+		try {
+			const result = await apiProxy.file.delete(id)
+
+			console.log(result)
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	update = (id, file) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.fileStart())
+
+		try {
+			const result = await apiProxy.file.patch(id, file)
+
+			dispatch(this.actions.fileUpdate(file))
+
+			console.log(result)
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))

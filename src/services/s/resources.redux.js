@@ -10,6 +10,7 @@ export default class ResourceService {
 		RESOURCE_CLEAN: `RESOURCE_CLEAN`,
 		RESOURCE_ERROR: `RESOURCE_ERROR`,
 		RESOURCE_GET: `RESOURCE_GET`,
+		RESOURCE_ADD: `RESOURCE_ADD`,
 		RESOURCE_FILES: `RESOURCE_FILES`,
 		RESOURCE_SEARCH:`RESOURCE_SEARCH`,
 		RESOURCE_EDIT: `RESOURCE_EDIT`,
@@ -25,6 +26,7 @@ export default class ResourceService {
 		resourcesClean: () => ({ type: this.types.RESOURCE_CLEAN }),
 		resourcesError: error => ({ type: this.types.RESOURCE_ERROR, payload: { error } }),
 		resourcesGet: resource => ({ type: this.types.RESOURCE_GET, payload: { resource } }),
+		resourcesAdd: resource => ({ type: this.types.RESOURCE_ADD, payload: { resource } }),
 		resourcesFiles: (id, files) => ({ type: this.types.RESOURCE_FILES, payload: { id, files } }),
 		resourceSearch: resource => ({ type: this.types.RESOURCE_SEARCH, payload: { resource } }),
 		resourceEdit: resource => ({ type: this.types.RESOURCE_EDIT, payload: { resource } }),
@@ -51,6 +53,7 @@ export default class ResourceService {
 			RESOURCE_CLEAN,
 			RESOURCE_ERROR,
 			RESOURCE_GET,
+			RESOURCE_ADD,
 			RESOURCE_SEARCH,
 			RESOURCE_EDIT,
 			RESOURCE_DELETE,
@@ -94,6 +97,16 @@ export default class ResourceService {
 				},
 				loading: false,
 				lastFetched: Date.now(),
+			}
+
+		case RESOURCE_ADD:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.resource.id]: action.payload.resource,
+				},
+				loading: false,
 			}
 
 		case RESOURCE_FILES:
@@ -181,7 +194,7 @@ export default class ResourceService {
 
 			dispatch(this.actions.resourcesFiles(id, result))
 
-			console.log(getState().resourceStore)
+			// console.log(getState().resourceStore)
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))
@@ -242,14 +255,16 @@ export default class ResourceService {
 		} else dispatch(this.actions.resourcesAbort())
 	}
 
-	addResource = (resource) => async (dispatch, getState, { apiProxy }) => {
+	addResource = (resource, data) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.resourcesStart())
 
 		try {
 			const result = await apiProxy.resources.post(resource)
 
-			dispatch(this.actions.resourcesGet(resource))
+			data.id = result.id
+
+			dispatch(this.actions.resourcesAdd(data))
 		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}

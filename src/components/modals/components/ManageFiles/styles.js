@@ -1,18 +1,52 @@
 import styled from 'styled-components'
+
+import searchIcon from 'assets/search.svg'
 import uploadIcon from 'assets/upload.svg'
+import xIcon from 'assets/x.svg'
 
 export const Form = styled.form`
 	display: grid;
-	/* grid: repeat(3, 1fr) / 1fr; */
-	grid-gap: 2rem;
+	grid-gap: 4rem;
 
 	min-width: 30rem;
-	min-height: 35rem;
 
+	& input, select {
+		flex: 4;
+		border: none;
+		border-bottom: 1px solid #ccc;
+		outline: none;
+	}
+
+	& > label{
+
+		display: flex;
+		justify-content: space-between;
+
+		& > span {
+			flex: 1;
+		}
+	}
 
 	& > div {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.keywords-list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: start;
+		max-width: 30rem;
+
+		& > span {
+			color: white;
+			background-color: #0582CA;
+			padding: .5rem .75rem;
+			border-radius: 1.2rem;
+			margin: 0 .5rem 0 0;
+			display: flex;
+			align-items: center;
+		}
 	}
 `
 
@@ -23,6 +57,33 @@ export const Button = styled.button`
 	border: none;
 	outline: none;
 	cursor: pointer;
+`
+
+export const XIcon = styled.button`
+	background: url(${xIcon}) center no-repeat;
+	background-size: contain;
+	height: 2rem;
+	width: 2rem;
+`
+
+export const UploadButton = styled.button`
+	font-size: 1.5rem;
+	color: ${props => props.color || `black`};
+	background: transparent;
+	/* border: none;
+	outline: none; */
+	cursor: pointer;
+`
+
+export const SearchIcon = styled.span`
+	position: absolute;
+	z-index: 10;
+	top: 1rem;
+	left: 2rem;
+	background: url(${searchIcon}) center no-repeat;
+	background-size: contain;
+	height: 2rem;
+	width: 2rem;
 `
 
 export const RemoveKeyword = styled.button`
@@ -44,8 +105,6 @@ export const TableContainer = styled.div`
 `
 
 export const Table = styled.table`
-	/*background: white;*/
-	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
 	width: 100%;
 
 	& th {
@@ -68,7 +127,7 @@ export const Table = styled.table`
 `
 
 export const Tabs = styled.div`
-	margin: 2rem 0;
+	margin: 1.5rem 0;
 	padding: 0;
 `
 
@@ -85,13 +144,6 @@ export const Tab = styled.button`
 	cursor: pointer;
 `
 
-export const UploadButton = styled.button`
-	font-size: 1.5rem;
-	color: ${props => props.color || `black`};
-	background: transparent;
-	cursor: pointer;
-`
-
 export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
@@ -102,7 +154,7 @@ export const TypeButton = styled.button`
 	color: ${props => props.selected ? `#0057B8` : `black`};
 `
 
-export const Upload = styled.div`
+export const FileUpload = styled.div`
 
 	& .files-input {
 		outline: 2px dashed #92b0b3;
@@ -111,7 +163,6 @@ export const Upload = styled.div`
     padding: 1em;
     text-align: center !important;
     margin: 0;
-		margin-right: 20px;
     width: 100% !important;
 	}
 
