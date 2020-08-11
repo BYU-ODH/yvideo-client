@@ -92,7 +92,6 @@ export default class ContentService {
 			return {
 				...store,
 				cache: {
-					...store.cache,
 					...action.payload.content,
 				},
 				loading: false,
@@ -144,34 +143,50 @@ export default class ContentService {
 
 	}
 
-	getContent = (contentIds = [], force = false) => async (dispatch, getState, { apiProxy }) => {
+	getContent = (contentArray, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		const time = Date.now() - getState().contentStore.lastFetched
+		dispatch(this.actions.contentStart())
 
-		const stale = time >= process.env.REACT_APP_STALE_TIME
+		let content = contentArray.reduce((acc, item) => {
+			acc[item.id] = item
+			return acc
+		}, {})
 
-		const { cache } = getState().contentStore
-		const cachedIds = Object.keys(cache).map(id => id)
-		const notCached = contentIds.filter(id => !cachedIds.includes(id))
+		try {
+			dispatch(this.actions.contentGet(content))
+		}
+		catch (error){
+			console.log(error.message)
+			dispatch(this.actions.contentError())
+		}
 
-		// console.log('updated store', contentIds)
+		// const time = Date.now() - getState().contentStore.lastFetched
 
-		if (stale || notCached.length || force) {
+		// const stale = time >= process.env.REACT_APP_STALE_TIME
 
-			dispatch(this.actions.contentStart())
+		// const { cache } = getState().contentStore
+		// const cachedIds = Object.keys(cache).map(id => id)
+		// const notCached = contentIds.filter(id => !cachedIds.includes(id))
 
-			try {
+		// // console.log('updated store', contentIds)
 
-				const result = await apiProxy.content.get(notCached)
+		// if (stale || notCached.length || force) {
 
-				dispatch(this.actions.contentGet(result))
+		// 	dispatch(this.actions.contentStart())
 
-			} catch (error) {
-				console.error(error.message)
-				dispatch(this.actions.contentError(error))
-			}
+		// 	try {
 
-		} else dispatch(this.actions.contentAbort())
+		// 		const result = await apiProxy.content.get(notCached)
+
+		// 		dispatch(this.actions.contentGet(result))
+
+		// 	} catch (error) {
+				
+		// 		console.error(error.message)
+		// 		dispatch(this.actions.contentError(error))
+		// 	}
+
+		// } else dispatch(this.actions.contentAbort())
 	}
 
 	createContent = (content) => async (dispatch, getState, { apiProxy }) => {

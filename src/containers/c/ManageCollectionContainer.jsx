@@ -26,10 +26,10 @@ const ManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
-		const ids = collection.content.map(item => (item.id))
-		getContent(ids)
+		//const ids = collection.content.map(item => (item.id))
+		getContent(collection.content)
 		setCollectionName(collection.name)
-	}, [collection.content, collection.name, content, getContent])
+	}, [collection.name])
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
