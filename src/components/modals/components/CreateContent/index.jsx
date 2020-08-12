@@ -50,7 +50,7 @@ export default class CreateContent extends PureComponent {
 			toggleModal,
 		} = this.props.handlers
 
-		console.log(languages)
+		//console.log(languages)
 
 		return (
 			<>

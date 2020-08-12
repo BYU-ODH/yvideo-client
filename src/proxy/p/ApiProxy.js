@@ -3,7 +3,7 @@ import User from 'models/User'
 import Content from 'models/Content'
 
 const updateSessionId = (id) => {
-	window.clj_session_id = id
+	if(id !== ``) window.clj_session_id = id
 	// console.log('update session id from: ', window.clj_session_id)
 	// console.log(' to ', id)
 }
@@ -29,9 +29,10 @@ const apiProxy = {
 
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 
+				console.log(`ADMIN COLLECTION GET`, result)
 				updateSessionId(result.headers[`session-id`])
 
-				result.forEach(element => {
+				result.data.forEach(element => {
 					element[`name`] = element[`collection-name`]
 					delete element[`collection-name`]
 				})
@@ -73,7 +74,7 @@ const apiProxy = {
 
 					updateSessionId(results.headers[`session-id`])
 
-					return results.reduce((map, item) => {
+					return results.data.reduce((map, item) => {
 						map[item.id] = new Content(item)
 						return map
 					}, {})
@@ -223,19 +224,18 @@ const apiProxy = {
 		 */
 		get: async ids => {
 
-			const results = await Promise.all(ids.map(id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`,
-				{
-					withCredentials: true,
-					headers: {
-						'Content-Type': `application/json`,
-						'session-id': window.clj_session_id,
-					},
-				}).then(async res => {
+			const results = await Promise.all(ids.map(id =>
 
-				await updateSessionId(res.headers[`session-id`])
+				axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`,
+					{
+						withCredentials: true,
+						headers: {
+							'Content-Type': `application/json`,
+							'session-id': window.clj_session_id,
+						},
+					}).then(res => res.data),
 
-				return res.data
-			})))
+			))
 
 			// console.log('get content')
 			const returnMe = results.reduce((map, item) => {
