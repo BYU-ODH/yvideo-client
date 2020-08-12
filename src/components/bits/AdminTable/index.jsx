@@ -54,13 +54,13 @@ export default class AdminTable extends PureComponent {
 					},
 					{
 						title: `Roles`,
-						filter: {
-							Admin: false,
-							Manager: false,
-							Professor: false,
-							TA: false,
-							Student: false,
-						},
+					// 	filter: {
+					// 		Admin: false,
+					// 		Manager: false,
+					// 		Professor: false,
+					// 		TA: false,
+					// 		Student: false,
+					// 	},
 					},
 					{
 						title: `Email`,
@@ -200,7 +200,7 @@ export default class AdminTable extends PureComponent {
 				return null
 			}
 		}
-		
+
 		const sort = (data,sortType) => {
 			if (this.state.sortType.id === sortType && this.state.sortType.reverse === false){
 				this.setState({
@@ -219,9 +219,10 @@ export default class AdminTable extends PureComponent {
 						return b.email.localeCompare(a.email,{sensitivity:`base`})
 					case `Owner`:
 						return b.owner.localeCompare(a.owner,{sensitivity:`base`})
+					case `Roles`:
+						return b.roles - a.roles
 					case `Last Login`:
-						let Da = new Date(a.lastLogin), Db = new Date(b.lastLogin);
-						return Db - Da;
+						return new Date(b.lastLogin) - new Date(a.lastLogin);
 					default: return null
 					}
 				})
@@ -242,9 +243,10 @@ export default class AdminTable extends PureComponent {
 						return a.email.localeCompare(b.email,{sensitivity:`base`})
 					case `Owner`:
 						return a.owner.localeCompare(b.owner,{sensitivity:`base`})
+					case `Roles`:
+						return a.roles - b.roles
 					case `Last Login`:
-						let Da = new Date(a.lastLogin), Db = new Date(b.lastLogin);
-						return Da - Db;
+						return new Date(a.lastLogin) - new Date(b.lastLogin);
 					default: return null
 					}
 				})
