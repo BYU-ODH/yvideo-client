@@ -40,7 +40,7 @@ const ManageResourceContainer = props => {
 	const handleSearchTextChange = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 1) searchResource(value)
+		searchResource(value)
 	}
 
 	const handleSelectResourceChange = e => {

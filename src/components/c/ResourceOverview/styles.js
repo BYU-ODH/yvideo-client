@@ -82,6 +82,12 @@ export const Column = styled.div`
 		margin-bottom: 1rem;
 	}
 
+	& > button {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
 	& > div {
 		display: flex;
 		align-items: center;
