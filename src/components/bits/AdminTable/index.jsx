@@ -200,7 +200,7 @@ export default class AdminTable extends PureComponent {
 				return null
 			}
 		}
-
+		
 		const sort = (data,sortType) => {
 			if (this.state.sortType.id === sortType && this.state.sortType.reverse === false){
 				this.setState({
@@ -219,6 +219,9 @@ export default class AdminTable extends PureComponent {
 						return b.email.localeCompare(a.email,{sensitivity:`base`})
 					case `Owner`:
 						return b.owner.localeCompare(a.owner,{sensitivity:`base`})
+					case `Last Login`:
+						let Da = new Date(a.lastLogin), Db = new Date(b.lastLogin);
+						return Db - Da;
 					default: return null
 					}
 				})
@@ -239,6 +242,9 @@ export default class AdminTable extends PureComponent {
 						return a.email.localeCompare(b.email,{sensitivity:`base`})
 					case `Owner`:
 						return a.owner.localeCompare(b.owner,{sensitivity:`base`})
+					case `Last Login`:
+						let Da = new Date(a.lastLogin), Db = new Date(b.lastLogin);
+						return Da - Db;
 					default: return null
 					}
 				})
