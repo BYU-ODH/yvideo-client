@@ -44,6 +44,7 @@ export default class Content {
 			this.resourceId = obj[`resource-id`]
 			this.resource.keywords = obj[`tags`].split(`; `)
 			this.name = obj[`title`]
+			this.published = obj['published']
 
 			this.settings = {
 				allowDefinitions: obj['allow-definitions'],

@@ -7,7 +7,10 @@ import Style, {
 	ClosedCaptions,
 	Fullscreen,
 	Volume,
+	Speed,
 } from './styles'
+
+import clockIcon from 'assets/te-clock.svg'
 
 const PlayerControls = props => {
 
@@ -24,7 +27,7 @@ const PlayerControls = props => {
 	const {
 		handlePause,
 		handlePlay,
-		// handlePlaybackRateChange,
+		//handlePlaybackRateChange,
 		handleSeekChange,
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
@@ -50,7 +53,7 @@ const PlayerControls = props => {
 			<div className='right'>
 				{/* <Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} /> */}
 				{/* <SideBarToggle /> */}
-				{/* <Speed /> */}
+				<Speed src={clockIcon}/>
 				{/* <ClosedCaptions /> */}
 				{/* <Notes /> */}
 			</div>

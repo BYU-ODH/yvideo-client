@@ -69,3 +69,7 @@ export const ClosedCaptions = styled.button`
 export const Fullscreen = styled.button`
 	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
 `
+export const Speed = styled.img`
+	width: 30px;
+	height: 30px;
+`

@@ -21,7 +21,7 @@ const PlayerContainer = props => {
 
 	const [content, setContent] = useState()
 	const [resource, setResource] = useState('')
-	const [fileId, setFileId] = useState('')
+	const [sKey, setKey] = useState('')
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -43,29 +43,39 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		//console.log('called us effct in player')
-		if (!contentCache[params.id]) getContent([params.id])
+		console.log('called use effect in player')
+		if (!contentCache[params.id]){
+			console.log('no cached content')
+			//get single content?
+		}
 		else {
+			console.log('yes cached content')
 			setContent(contentCache[params.id])
+			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ''){
+				console.log('GOT A VALID URL FROM CONTENT')
 				setUrl(contentCache[params.id].url)
 			}
 			else {
+				console.log('CONTENT URL IS NOT VALID')
 				//CHECK RESOURCE ID
-				if(contentCache[params.id].resourceId !== '00000000-0000-0000-0000-000000000000' && streamKey === ''){
+				if(contentCache[params.id].resourceId !== '00000000-0000-0000-0000-000000000000' && sKey === ''){
 					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					console.log('ACTING TO CHANGE URL')
 					setResource(contentCache[params.id].resourceId)
 					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+					setKey(streamKey)
 				}
-				else if (streamKey !== '' && url === ''){
-					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
+				else if (sKey !== ''){
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					console.log('CHANGED URL')
 					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
 			}
 			addView(params.id)
 		}
-	}, [addView, content, contentCache, getContent, params.id, resource, streamKey])
+	}, [addView, contentCache, getContent, params.id, resource, streamKey])
 
 	const handleDuration = duration => {
 		setDuration(duration)
