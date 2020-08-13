@@ -43,6 +43,7 @@ const FileOverviewContainer = props => {
 	const handleRemoveFile = e => {
 		e.preventDefault()
 		removeFile(file.id)
+		editFileResource(fileState[`resource-id`], file, false)
 		toggleModal()
 	}
 

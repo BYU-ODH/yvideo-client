@@ -221,7 +221,7 @@ export default class ResourceService {
 		}
 	}
 
-	editFile = (resourceId, file) => async (dispatch, getState, { apiProxy }) => {
+	editFile = (resourceId, file, edit = true) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
 		try {
@@ -234,7 +234,7 @@ export default class ResourceService {
 					newFileStack.push(item)
 			})
 
-			newFileStack.push(file)
+			if(edit) newFileStack.push(file)
 
 			dispatch(this.actions.resourcesFilesEdit(resourceId, newFileStack))
 
