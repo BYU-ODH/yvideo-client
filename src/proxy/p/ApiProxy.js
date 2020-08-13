@@ -3,7 +3,12 @@ import User from 'models/User'
 import Content from 'models/Content'
 
 const updateSessionId = (id) => {
-	if(id !== '') window.clj_session_id = id
+	if(id !== '' && id !== undefined){
+		 window.clj_session_id = id
+	}
+	else {
+		console.log('session id was empty')
+	}
 	// console.log('update session id from: ', window.clj_session_id)
 	// console.log(' to ', id)
 }
@@ -18,8 +23,8 @@ const apiProxy = {
 				{
 					withCredentials: true,
 					headers: {'session-id': window.clj_session_id},
-				}).then(async res => {
-					await updateSessionId(res.headers['session-id'])
+				}).then(res => {
+					updateSessionId(res.headers['session-id'])
 					return res.data
 				}),
 		},
@@ -193,6 +198,7 @@ const apiProxy = {
 			// get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/permissions`, { withCredentials: true }),
 			get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
 				updateSessionId(res.headers[`session-id`])
+				return res.data
 			}),
 			/**
 			 * Edits a collections roles/permissions
@@ -203,7 +209,7 @@ const apiProxy = {
 			 *
 			 * @returns nothing, idk
 			 */
-			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, JSON.stringify(body), {
+			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, body, {
 				withCredentials: true,
 				headers: {
 					'Content-Type': `application/json`,
@@ -224,8 +230,8 @@ const apiProxy = {
 		 */
 		get: async ids => {
 
-			const results = await Promise.all(ids.map(id => 
-			
+			const results = await Promise.all(ids.map(id =>
+
 				axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`,
 				{
 					withCredentials: true,
@@ -234,7 +240,7 @@ const apiProxy = {
 						'session-id': window.clj_session_id,
 					},
 				}).then(res => res.data)
-				
+
 				))
 
 			// console.log('get content')
@@ -350,7 +356,7 @@ const apiProxy = {
 				await updateSessionId(res.headers['session-id'])
 				return res.data
 			}),
-		files: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`, 
+		files: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`,
 			{
 				withCredentials: true,
 				headers: {
