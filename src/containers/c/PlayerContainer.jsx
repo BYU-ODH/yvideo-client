@@ -43,33 +43,34 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		console.log('called use effect in player')
+		setPlaybackRate(1)
+		// console.log('called use effect in player')
 		if (!contentCache[params.id]){
-			console.log('no cached content')
+			// console.log('no cached content')
 			//get single content?
 		}
 		else {
-			console.log('yes cached content')
+			// console.log('yes cached content')
 			setContent(contentCache[params.id])
 			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ''){
-				console.log('GOT A VALID URL FROM CONTENT')
+				// console.log('GOT A VALID URL FROM CONTENT')
 				setUrl(contentCache[params.id].url)
 			}
 			else {
-				console.log('CONTENT URL IS NOT VALID')
+				// console.log('CONTENT URL IS NOT VALID')
 				//CHECK RESOURCE ID
 				if(contentCache[params.id].resourceId !== '00000000-0000-0000-0000-000000000000' && sKey === ''){
 					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-					console.log('ACTING TO CHANGE URL')
+					// console.log('ACTING TO CHANGE URL')
 					setResource(contentCache[params.id].resourceId)
 					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
 					setKey(streamKey)
 				}
 				else if (sKey !== ''){
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
-					console.log('CHANGED URL')
+					// console.log('CHANGED URL')
 					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
 			}

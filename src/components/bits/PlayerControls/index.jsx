@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Scrubber, VolumeScrubber } from 'components/bits'
 
@@ -27,7 +27,7 @@ const PlayerControls = props => {
 	const {
 		handlePause,
 		handlePlay,
-		//handlePlaybackRateChange,
+		handlePlaybackRateChange,
 		handleSeekChange,
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
@@ -36,6 +36,12 @@ const PlayerControls = props => {
 		handleUnmuted,
 		handleVolumeChange,
 	} = props.handlers
+
+	const [showSpeed, setShowSpeed] = useState(false)
+
+	const handleSubmitSpeed = (e) => {
+		e.preventDefault()
+	}
 
 	return (
 		<Style playing={playing} >
@@ -53,10 +59,22 @@ const PlayerControls = props => {
 			<div className='right'>
 				{/* <Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} /> */}
 				{/* <SideBarToggle /> */}
-				<Speed src={clockIcon}/>
+				<Speed src={clockIcon} onClick={e => setShowSpeed(!showSpeed)}/>
 				{/* <ClosedCaptions /> */}
 				{/* <Notes /> */}
 			</div>
+			{ showSpeed && <form className="speed" onSubmit={handleSubmitSpeed} onMouseLeave={e => setShowSpeed(false)}>
+					<select onChange={e => handlePlaybackRateChange(e.target.value)}>
+						<option value=''>&nbsp;</option>
+						<option value={3}>3.0</option>
+						<option value={2}>2.0</option>
+						<option value={1.5}>1.5</option>
+						<option value={1}>1.0</option>
+						<option value={.5}>0.5</option>
+						<option value={.25}>0.25</option>
+					</select>
+				</form>
+			}
 		</Style>
 	)
 

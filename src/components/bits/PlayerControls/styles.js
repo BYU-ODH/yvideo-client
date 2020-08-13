@@ -30,6 +30,10 @@ const Style = styled.div`
 		display: flex;
 		flex-direction: row-reverse;
 		align-items: center;
+
+		& img {
+			margin-right: 10px;
+		}
 	}
 
 	& .left {
@@ -49,6 +53,12 @@ const Style = styled.div`
 
 	& button {
 		cursor: pointer;
+	}
+
+	& .speed {
+		position: absolute;
+		right: 0px;
+		bottom: 50px;
 	}
 `
 
@@ -70,6 +80,6 @@ export const Fullscreen = styled.button`
 	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
 `
 export const Speed = styled.img`
-	width: 30px;
-	height: 30px;
+	width: 20px;
+	height: 20px;
 `

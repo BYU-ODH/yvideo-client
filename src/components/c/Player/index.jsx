@@ -41,6 +41,7 @@ export default class Player extends PureComponent {
 			handlePlay,
 			handleProgress,
 			handleSeekChange,
+			handlePlaybackRateChange,
 			handleBlank,
 			handleMuted,
 			handleUnmuted,
