@@ -10,10 +10,14 @@ export default class ResourceService {
 		RESOURCE_CLEAN: `RESOURCE_CLEAN`,
 		RESOURCE_ERROR: `RESOURCE_ERROR`,
 		RESOURCE_GET: `RESOURCE_GET`,
+		RESOURCE_ADD: `RESOURCE_ADD`,
 		RESOURCE_FILES: `RESOURCE_FILES`,
+		RESOURCE_FILE_DELETE: `RESOURCE_FILE_DELETE`,
 		RESOURCE_SEARCH:`RESOURCE_SEARCH`,
 		RESOURCE_EDIT: `RESOURCE_EDIT`,
 		RESOURCE_DELETE: `RESOURCE_DELETE`,
+		RESOURCE_STREAM: `RESOURCE_STREAM`,
+		RESOURCE_FILES_EDIT: `RESOURCE_FILES_EDIT`,
 	}
 
 	// action creators
@@ -24,10 +28,14 @@ export default class ResourceService {
 		resourcesClean: () => ({ type: this.types.RESOURCE_CLEAN }),
 		resourcesError: error => ({ type: this.types.RESOURCE_ERROR, payload: { error } }),
 		resourcesGet: resource => ({ type: this.types.RESOURCE_GET, payload: { resource } }),
+		resourcesAdd: resource => ({ type: this.types.RESOURCE_ADD, payload: { resource } }),
 		resourcesFiles: (id, files) => ({ type: this.types.RESOURCE_FILES, payload: { id, files } }),
+		resourcesFileDelete: (fileId, resourceId) => ({ type: this.types.RESOURCE_FILE_DELETE, payload: { fileId, resourceId } }),
+		resourcesFilesEdit: (resourceId, files) => ({ type: this.types.RESOURCE_FILES_EDIT, payload: { resourceId, files } }),
 		resourceSearch: resource => ({ type: this.types.RESOURCE_SEARCH, payload: { resource } }),
 		resourceEdit: resource => ({ type: this.types.RESOURCE_EDIT, payload: { resource } }),
 		resourceDelete: filteredResources => ({ type: this.types.RESOURCE_DELETE, payload: { filteredResources } }),
+		resourceStream: key => ({ type: this.types.RESOURCE_STREAM, payload: { key } }),
 	}
 
 	// default store
@@ -36,6 +44,7 @@ export default class ResourceService {
 		cache: {},
 		loading: false,
 		lastFetched: 0,
+		streamKey: ``,
 	}
 
 	// reducer
@@ -48,10 +57,14 @@ export default class ResourceService {
 			RESOURCE_CLEAN,
 			RESOURCE_ERROR,
 			RESOURCE_GET,
+			RESOURCE_ADD,
 			RESOURCE_SEARCH,
 			RESOURCE_EDIT,
 			RESOURCE_DELETE,
 			RESOURCE_FILES,
+			RESOURCE_STREAM,
+			RESOURCE_FILES_EDIT,
+			RESOURCE_FILE_DELETE,
 		} = this.types
 
 		switch (action.type) {
@@ -92,6 +105,16 @@ export default class ResourceService {
 				lastFetched: Date.now(),
 			}
 
+		case RESOURCE_ADD:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.resource.id]: action.payload.resource,
+				},
+				loading: false,
+			}
+
 		case RESOURCE_FILES:
 			return {
 				...store,
@@ -100,6 +123,20 @@ export default class ResourceService {
 					[action.payload.id]: {
 						...store.cache[action.payload.id],
 						files: action.payload.files,
+					},
+				},
+				loading: false,
+				lastFetched: Date.now(),
+			}
+
+		case RESOURCE_FILES_EDIT:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.resourceId]: {
+						...store.cache[action.payload.resourceId],
+						files:action.payload.files,
 					},
 				},
 				loading: false,
@@ -129,6 +166,12 @@ export default class ResourceService {
 				cache: {
 					...action.payload.resource,
 				},
+			}
+
+		case RESOURCE_STREAM:
+			return {
+				...store,
+				streamKey: action.payload.key,
 			}
 
 		default:
@@ -171,7 +214,29 @@ export default class ResourceService {
 
 			dispatch(this.actions.resourcesFiles(id, result))
 
-			console.log(getState().resourceStore)
+			// console.log(getState().resourceStore)
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	editFile = (resourceId, file, edit = true) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+			const files = getState().resourceStore.cache[resourceId].files
+
+			const newFileStack = []
+
+			files.forEach(item => {
+				if(item.id !== file.id)
+					newFileStack.push(item)
+			})
+
+			if(edit) newFileStack.push(file)
+
+			dispatch(this.actions.resourcesFilesEdit(resourceId, newFileStack))
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))
@@ -232,14 +297,16 @@ export default class ResourceService {
 		} else dispatch(this.actions.resourcesAbort())
 	}
 
-	addResource = (resource) => async (dispatch, getState, { apiProxy }) => {
+	addResource = (resource, data) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.resourcesStart())
 
 		try {
 			const result = await apiProxy.resources.post(resource)
 
-			dispatch(this.actions.resourcesGet(resource))
+			data.id = result.id
+
+			dispatch(this.actions.resourcesAdd(data))
 		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}
@@ -293,4 +360,28 @@ export default class ResourceService {
 			dispatch(this.actions.resourcesError(error))
 		}
 	}
+
+	getStreamKey = (resourceId, language) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const allFiles = await apiProxy.resources.files(resourceId)
+
+			// console.log(allFiles)
+
+			const fileId = allFiles.find(element => element[`file-version`].includes(language) !== false)[`id`]
+
+			// console.log(fileId)
+			const result = await apiProxy.media.getKey(fileId)
+			// console.log('FILE KEY', result)
+
+			dispatch(this.actions.resourceStream(result[`file-key`]))
+
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
 }

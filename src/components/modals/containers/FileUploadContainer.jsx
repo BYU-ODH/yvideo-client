@@ -17,36 +17,67 @@ const FileUploadContainer = props => {
 		toggleModal,
 		resource,
 		uploadFile,
+		getFiles,
 		getResource,
+		user,
 	} = props
 
+	const category = {
+		English: {
+			name: `English`,
+		},
+		French: {
+			name: `French`,
+		},
+		Mandarin: {
+			name: `Mandarin`,
+		},
+		Japanese: {
+			name: `Japanese`,
+		},
+		Spainsh: {
+			name: `Spanish`,
+		},
+		Korean: {
+			name: `Korean`,
+		},
+	}
+
 	const [selectedFile, setSelectedFile] = useState()
+
+	const [fileVersion, setFileVersion] = useState(category.English.name)
 
 	const handleFileChange = e =>{
 		setSelectedFile(e.target.files[0])
 	}
 
+	const updateFileVersion = e => {
+		e.preventDefault()
+		setFileVersion(e.target.value)
+	}
+
 	const handleFileUpload = async(e) =>{
 		e.preventDefault()
-
-		getResource(resourceId)
 
 		const formData = new FormData()
 		formData.append(`file`, selectedFile)
 		formData.append(`resource-id`, resourceId)
-		formData.append(`file-version`, resource.allFileVersions)
+		formData.append(`file-version`, fileVersion)
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, ``)
 
-		uploadFile(formData)
+		await uploadFile(formData)
+		await getFiles(resourceId)
 		toggleModal()
 	}
 
 	const viewstate = {
+		category,
 		selectedFile,
 	}
 
 	const handlers = {
+		updateFileVersion,
 		handleFileChange,
 		handleFileUpload,
 		toggleModal,
@@ -56,6 +87,7 @@ const FileUploadContainer = props => {
 }
 
 const mapStateToProps = store => ({
+	user: store.authStore.user,
 	modal: store.interfaceStore.modal,
 	resource: store.resourceStore.cache,
 })
@@ -64,6 +96,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	uploadFile: fileService.upload,
 	getResource: resourceService.getResource,
+	getFiles: resourceService.getFiles,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileUploadContainer)

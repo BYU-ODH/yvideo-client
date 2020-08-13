@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import Content from 'models/Content'
@@ -34,6 +34,7 @@ const CreateContentContainer = props => {
 	const [hideResources, setHide] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [selectedResource, setSelectedResource] = useState(``)
+	const [languages, setLanguages] = useState([])
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -46,6 +47,12 @@ const CreateContentContainer = props => {
 		thumbnail: ``,
 		targetLanguages: '',
 	})
+
+	useEffect(() => {
+		if(resourceContent[selectedResource] !== undefined){
+			setLanguages(resourceContent[selectedResource].allFileVersions.split("; "))
+		}
+	}, [selectedResource])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -173,7 +180,7 @@ const CreateContentContainer = props => {
 			"annotations": ``,
 			"title": data.title,
 			"allow-notes": true,
-			"description": '',
+			"description": data.description,
 		}
 
 		//console.log(backEndData)
@@ -208,6 +215,7 @@ const CreateContentContainer = props => {
 		resourceContent,
 		hideResources,
 		selectedResource,
+		languages,
 	}
 
 	const handlers = {

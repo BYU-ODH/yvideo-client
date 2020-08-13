@@ -38,6 +38,7 @@ class Menu extends PureComponent {
 					<>
 						<LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
 						<LinkStyled to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
+						<LinkStyled to='/manage-resource'>Manage Resource</LinkStyled>
 					</>
 				}
 

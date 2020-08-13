@@ -35,7 +35,7 @@ export default class BackEndContent {
 
 			this.backEndData['annotations'] =  this.arrayToString(obj.settings.annotationDocument)//settings
 
-			this.backEndData['file-version'] = obj.settings.targetLanguages.join("; ") //settings
+			this.backEndData['file-version'] = obj.settings.targetLanguages
 
 			this.backEndData['tags'] = obj.resource.keywords.join("; ")
 		}

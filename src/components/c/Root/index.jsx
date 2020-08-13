@@ -59,7 +59,11 @@ class Root extends PureComponent {
 								<LabAssistantContainer />
 							</Route>
 
-							<Route path='/lab-assistant-resource/:professorId'>
+							{/* <Route path='/lab-assistant-resource/:professorId'>
+								<ManageResourceContainer />
+							</Route> */}
+
+							<Route path='/manage-resource'>
 								<ManageResourceContainer />
 							</Route>
 

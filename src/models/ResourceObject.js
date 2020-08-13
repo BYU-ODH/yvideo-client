@@ -12,7 +12,6 @@ export default class ResourceObject {
 	allFileVersions
 	resourceType
 	dateValidated
-	files
 
 	constructor(obj) {
 

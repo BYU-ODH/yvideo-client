@@ -431,11 +431,12 @@ export default class AdminService {
 
 				const results = await apiProxy.admin.collection.get(professorId)
 
-				const collections = results.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
+				const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
 
 				dispatch(this.actions.adminSearchCollections(collections))
 
 			} catch (error) {
+				console.log('SEARCH COLLECTIONS FAILED')
 				console.error(error.message)
 				dispatch(this.actions.adminError(error))
 			}

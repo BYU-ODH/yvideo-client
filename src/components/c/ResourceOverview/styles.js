@@ -49,6 +49,7 @@ export const EditButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
+
 	text-align: center !important;
 	& > span {
 		margin-left: .5rem;
@@ -79,6 +80,12 @@ export const Column = styled.div`
 		grid-template-columns: 1fr 1.8rem;
 		line-height: 2rem;
 		margin-bottom: 1rem;
+	}
+
+	& > button {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 
 	& > div {

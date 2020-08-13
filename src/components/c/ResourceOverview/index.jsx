@@ -40,14 +40,11 @@ export class ResourceOverview extends PureComponent {
 
 		const {
 			resource,
-			showing,
 			files,
 			editing,
-			fileId,
 		} = this.props.viewstate
 
 		const {
-			id,
 			metadata,
 			resourceName,
 			physicalCopyExists,
@@ -116,11 +113,11 @@ export class ResourceOverview extends PureComponent {
 							</Type>
 
 							{/* TODO: need to find the file ID that is already attached to this resource. */}
-							{/* {handleFiles(id)} */}
 
-							{/* {console.log(Object.keys(files))} */}
-							<div><h4>Files:</h4>{Object.keys(fileId).length !== 0 ? Object.keys(fileId).map(item => <Title key={item}>{item}</Title>) : <Title>none</Title>}</div>
-							{/* <div><h4>Files:</h4>{Object.keys(fileId).length !== 0 ? Object.keys(fileId).map(item => <Title key={item}>{item}</Title>) : <Title>none</Title>}</div> */}
+							{/* <div><h4>Files:</h4>{files.length !== 0 ? files.map(file => <Title key={file.id}>{file.id}</Title>) : <Title>none</Title>}</div> */}
+
+							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
+
 						</Column>
 
 						<Column>
