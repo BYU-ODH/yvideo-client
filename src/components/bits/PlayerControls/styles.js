@@ -57,8 +57,47 @@ const Style = styled.div`
 
 	& .speed {
 		position: absolute;
-		right: 0px;
-		bottom: 50px;
+		right: 10px;
+		bottom: 60px;
+		width: 150px;
+		height: 230px;
+		background-color: white;
+		display: flex;
+		flex-direction: column;
+
+		& h3 {
+			display: flex;
+			padding: 2px;
+			margin-bottom: 2px;
+			font-weight: 400 !important;
+			border-bottom: 1px solid black;
+			height: 20px;
+			text-align: left;
+			align-items: center;
+		}
+
+		& div {
+			position: relative;
+
+			& input {
+				position: relative;
+				width: 100%;
+				height: 30px;
+				font-size: 13px;
+				font-weight: 500;
+				margin: 2px 0px 2px 0px;
+				transition: .5s ease;
+				text-align: left;
+				border: none;
+				background-color: white;
+
+				:hover {
+					background-color: var(--navy-blue);
+					color: white;
+				}
+			}
+		}
+
 	}
 `
 

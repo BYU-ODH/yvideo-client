@@ -63,17 +63,18 @@ const PlayerControls = props => {
 				{/* <ClosedCaptions /> */}
 				{/* <Notes /> */}
 			</div>
-			{ showSpeed && <form className="speed" onSubmit={handleSubmitSpeed} onMouseLeave={e => setShowSpeed(false)}>
-					<select onChange={e => handlePlaybackRateChange(e.target.value)}>
-						<option value=''>&nbsp;</option>
-						<option value={3}>3.0</option>
-						<option value={2}>2.0</option>
-						<option value={1.5}>1.5</option>
-						<option value={1}>1.0</option>
-						<option value={.5}>0.5</option>
-						<option value={.25}>0.25</option>
-					</select>
-				</form>
+			{ showSpeed &&
+				<div className="speed" onMouseLeave={e => setShowSpeed(false)}>
+					<h3>Playback Rate</h3>
+					<div>
+						<input type="button" value={3.0} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value={2.0} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value={1.5} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value='Normal' onClick={e => handlePlaybackRateChange(1)}/><br/>
+						<input type="button" value={0.5} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value={0.25} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+					</div>
+				</div>
 			}
 		</Style>
 	)
