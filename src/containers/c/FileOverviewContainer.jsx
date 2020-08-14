@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { FileOverview } from 'components'
 
-import { interfaceService, fileService } from 'services'
+import { interfaceService, fileService, resourceService } from 'services'
 
 const FileOverviewContainer = props => {
 
@@ -12,13 +12,13 @@ const FileOverviewContainer = props => {
 		removeFile,
 		updateFile,
 		fileCache,
+		toggleModal,
+		editFileResource,
 	} = props
 
 	const [fileState, setFileState] = useState(file)
 
 	useEffect(() => {
-
-		console.log(fileCache)
 	}, [fileCache])
 
 	const viewstate = {
@@ -32,13 +32,19 @@ const FileOverviewContainer = props => {
 		})
 	}
 
+	// TODO: need to update the cache in resource, this has to update the files in resource as well
 	const handleUpdateFile = e => {
 		e.preventDefault()
 		updateFile(file.id, fileState)
+		editFileResource(fileState[`resource-id`], fileState)
+		toggleModal()
 	}
 
 	const handleRemoveFile = e => {
+		e.preventDefault()
 		removeFile(file.id)
+		editFileResource(fileState[`resource-id`], file, false)
+		toggleModal()
 	}
 
 	const handlers = {
@@ -56,6 +62,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
+	editFileResource: resourceService.editFile,
 	removeFile: fileService.delete,
 	updateFile: fileService.update,
 }

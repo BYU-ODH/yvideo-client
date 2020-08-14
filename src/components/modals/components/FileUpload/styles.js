@@ -14,6 +14,25 @@ export const Form = styled.form`
 		display: flex;
 		justify-content: space-between;
 	}
+
+	& > label {
+		display: flex;
+		justify-content: space-between;
+
+		& > h4 {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center !important;
+		}
+
+		& > div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center !important;
+		}
+	}
 `
 
 export const Button = styled.button`
@@ -105,14 +124,14 @@ export const TypeButton = styled.button`
 export const Upload = styled.div`
 
 	& .files-input {
-		outline: 2px dashed #92b0b3;
+		/* outline: 2px dashed #92b0b3; */
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
-    padding: 1em;
+    padding: 1rem;
     text-align: center !important;
-    margin: 0;
-		margin-right: 20px;
-    width: 100% !important;
+		/* margin-right: 20px; */
+		margin-left: 10px;
+    width: 70% !important;
 	}
 
 	& .files{ position:relative }
@@ -120,8 +139,8 @@ export const Upload = styled.div`
 	& .files:after {
 		pointer-events: none;
     position: absolute;
-    top: 10px;
-    left: 230px;
+    top: 5px;
+    left: 210px;
     right: 0;
 		width: 50px;
     height: 56px;
