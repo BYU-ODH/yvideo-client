@@ -42,7 +42,7 @@ export const SearchIcon = styled.span`
 	z-index: 10;
 `
 
-export const DepartmentSelect = styled.select`
+export const DepartmentSelect = styled.input`
 	background: white;
 	border-radius: 1.3rem;
 	border: none;

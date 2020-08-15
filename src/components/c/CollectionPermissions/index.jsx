@@ -61,14 +61,16 @@ export class CollectionPermissions extends PureComponent {
 				<h4>Courses</h4>
 
 				<form onSubmit={handlers.addCourse}>
-					<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange}>
+					<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder="Enter department (EX: ENG)"/>
+
+					{/* <DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange}>
 						<option value='*' disabled>Select Department</option>
 						{departments.map((item, index) =>
 							<option value={item.code} key={index}>
 								{`${item.code} - ${item.name}`}
 							</option>,
 						)}
-					</DepartmentSelect>
+					</DepartmentSelect> */}
 					<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Enter Catalog Number' disabled={disabled.catalog} />
 					<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Enter Section Number' disabled={disabled.section} />
 					<AddButton className='add-course-button' type='submit' disabled={disabled.submit}>Add</AddButton>
