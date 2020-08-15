@@ -57,6 +57,7 @@ export class Admin extends PureComponent {
 					<Search id='searchSubmit' onSubmit={handleSubmit}>
 						<SearchIcon />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
+						<button type="submit">Search</button>
 					</Search>
 
 				</div>
