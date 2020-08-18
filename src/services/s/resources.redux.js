@@ -224,6 +224,7 @@ export default class ResourceService {
 	editFile = (resourceId, file, edit = true) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
+		// TODO: add file versions onto resource with ;
 		try {
 			const files = getState().resourceStore.cache[resourceId].files
 
@@ -307,6 +308,36 @@ export default class ResourceService {
 			data.id = result.id
 
 			dispatch(this.actions.resourcesAdd(data))
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	updateFileVersion = (resource, allFileVersions) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const backendForm = {
+				// "id": resource.id,
+				"copyrighted": resource.copyrighted,
+				"resource-name": resource.resourceName,
+				"physical-copy-exists": resource.physicalCopyExists,
+				"published": resource.published,
+				"views": resource.views,
+				"full-video": resource.fullVideo,
+				"metadata": resource.metadata,
+				"requester-email": resource.requesterEmail,
+				"all-file-versions": allFileVersions,
+				"resource-type": resource.resourceType,
+				"date-validated": resource.dateValidated,
+			}
+
+			const result = await apiProxy.resources.edit(backendForm, resource.id)
+
+			console.log(`it is here`)
+			console.log(result)
+			// dispatch(this.actions.resourceEdit(resource))
 		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}

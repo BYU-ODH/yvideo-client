@@ -20,12 +20,6 @@ const ManageResourceContainer = props => {
 	const [isDefaultSearched, setIsDefaultSearched] = useState(false)
 	const [selectedResource, setSelectedResource] = useState(``)
 
-	// useEffect(() => {
-	// 	// need getResources backend to get all the resources attached to the user id
-
-	// 	console.log(resources)
-	// }, [resources])
-
 	const addResource = () => {
 		props.toggleModal({
 			component: CreateResourceContainer,

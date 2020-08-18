@@ -14,6 +14,8 @@ const FileOverviewContainer = props => {
 		fileCache,
 		toggleModal,
 		editFileResource,
+		resources,
+		updateFileVersion,
 	} = props
 
 	const [fileState, setFileState] = useState(file)
@@ -32,13 +34,17 @@ const FileOverviewContainer = props => {
 		})
 	}
 
-	// TODO: need to update the cache in resource, this has to update the files in resource as well
 	const handleUpdateFile = e => {
 		e.preventDefault()
 		updateFile(file.id, fileState)
 		editFileResource(fileState[`resource-id`], fileState)
+
+		// TODO: need to update file version onto resource
+		// updateFileVersion(fileState)
 		toggleModal()
 	}
+
+	console.log(resources)
 
 	const handleRemoveFile = e => {
 		e.preventDefault()
@@ -58,11 +64,13 @@ const FileOverviewContainer = props => {
 
 const mapStateToProps = store => ({
 	fileCache: store.fileStore.cache,
+	resources: store.resourceStore.cache,
 })
 
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	editFileResource: resourceService.editFile,
+	updateFileVersion: resourceService.updateFileVersion,
 	removeFile: fileService.delete,
 	updateFile: fileService.update,
 }
