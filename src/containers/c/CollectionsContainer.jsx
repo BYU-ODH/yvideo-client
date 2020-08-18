@@ -5,6 +5,8 @@ import { collectionService, interfaceService, contentService } from 'services'
 
 import { Collections } from 'components'
 
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
+
 const CollectionsContainer = props => {
 
 	const {
@@ -17,6 +19,7 @@ const CollectionsContainer = props => {
 		getCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,
+		toggleModal,
 	} = props
 
 	useEffect(() => {
@@ -37,6 +40,13 @@ const CollectionsContainer = props => {
 		}
 	}, [collections, getCollections, setContent, setHeaderBorder])
 
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: 'Home Page'},
+		})
+	}
+
 	const viewstate = {
 		isProf,
 		isAdmin,
@@ -51,6 +61,7 @@ const CollectionsContainer = props => {
 
 	const handlers = {
 		toggleCollectionsDisplay,
+		handleShowHelp,
 	}
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
@@ -68,6 +79,7 @@ const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
+	toggleModal: interfaceService.toggleModal,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 }
 

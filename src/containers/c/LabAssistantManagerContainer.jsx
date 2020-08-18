@@ -91,6 +91,7 @@ const LabAssistantManagerContainer = props => {
 		path: `lab-assistant-manager/${professor.id}`,
 		sideLists,
 		user: professor,
+		activeId: collectionId,
 	}
 
 	const handlers = {

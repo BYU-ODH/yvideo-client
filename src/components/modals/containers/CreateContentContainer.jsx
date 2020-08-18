@@ -153,6 +153,7 @@ const CreateContentContainer = props => {
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
+			"published": true,
 		}
 
 		if(modal.isLabAssistantRoute){
@@ -187,6 +188,7 @@ const CreateContentContainer = props => {
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
+			"published": true,
 		}
 
 		// console.log(backEndData)

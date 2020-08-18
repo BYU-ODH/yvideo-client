@@ -73,10 +73,10 @@ const AdminContainer = props => {
 		updateSearchBar: e => {
 			const { value } = e.target
 			setSearchQuery(value)
-			if (value.length > 1) search(category[searchCategory].url, value, true)
 		},
 		handleSubmit: e => {
 			e.preventDefault()
+			search(category[searchCategory].url, searchQuery, true)
 		},
 		toggleMenu: id => e => {
 			data.forEach(item => {

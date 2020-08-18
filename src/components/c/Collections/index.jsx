@@ -6,7 +6,9 @@ import {
 	BlockCollection,
 } from 'components/bits'
 
-import Style, { ViewToggle } from './styles'
+import Style, { ViewToggle, Help } from './styles'
+
+import helpIcon from 'assets/manage-collection-help-circle.svg'
 
 export default class Collections extends PureComponent {
 
@@ -23,13 +25,14 @@ export default class Collections extends PureComponent {
 
 		const {
 			toggleCollectionsDisplay,
+			handleShowHelp,
 		} = this.props.handlers
 
 		return (
 			<Style>
 				<header>
 					<div>
-						<h3>Collections</h3>
+						<h3>Collections &nbsp;&nbsp;&nbsp;<Help src={helpIcon} onClick={handleShowHelp}/></h3>
 					</div>
 					<div>
 						{

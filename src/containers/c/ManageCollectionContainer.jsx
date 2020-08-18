@@ -16,7 +16,8 @@ const ManageCollectionContainer = props => {
 		admin,
 		collection,
 		content,
-		getContent,
+		setContent,
+		getCollections,
 		updateCollectionName,
 		updateCollectionStatus,
 	} = props
@@ -26,10 +27,20 @@ const ManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
-		//const ids = collection.content.map(item => (item.id))
-		getContent(collection.content)
+		if(collection.content.length > 0){
+			if(content[collection.content[0].id]){
+				console.log('got cached content')
+			}
+			else {
+				const allContent = {}
+				collection.content.forEach(item => {
+					allContent[item.id] = item
+				})
+				setContent(allContent)
+			}
+		}
 		setCollectionName(collection.name)
-	}, [collection.name])
+	}, [collection.name, getCollections])
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
@@ -104,7 +115,8 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = {
-	getContent: contentService.getContent,
+	setContent: contentService.setContent,
+	getCollections: collectionService.getCollections,
 	toggleModal: interfaceService.toggleModal,
 	updateCollectionName: collectionService.updateCollectionName,
 	updateCollectionStatus: collectionService.updateCollectionStatus,

@@ -7,6 +7,7 @@ import { collectionService, interfaceService } from 'services'
 import { Manager } from 'components'
 
 import CreateCollectionContainer from 'components/modals/containers/CreateCollectionContainer'
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 import { objectIsEmpty } from 'lib/util'
 
@@ -42,8 +43,16 @@ const ManagerContainer = props => {
 		})
 	}
 
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: 'Manage Collections'},
+		})
+	}
+
 	const handlers = {
 		createNew,
+		handleShowHelp,
 	}
 
 	const sideLists = {
