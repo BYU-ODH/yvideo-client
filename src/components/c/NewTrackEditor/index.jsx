@@ -37,7 +37,7 @@ const TrackEditor = props => {
 
 	// console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
 
-	const { setEvents, updateContent } = props
+	const { setEvents, updateContent, createSub } = props
 
 	const { eventsArray, currentContent,subs } = props.viewstate
 
@@ -456,8 +456,12 @@ const TrackEditor = props => {
 		setSaved(true)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
+		const rawSubs = subtitles
+		for (let i = 0; i < rawSubs.length;i++)
+			rawSubs[i][`content`] = Subtitle.stringify(rawSubs[i][`content`])
 
 		updateContent(content)
+		createSub(rawSubs)
 	}
 	const handleSaveSubtitles = () => {
 

@@ -55,15 +55,17 @@ const TrackEditorContainer = props => {
 	}, [content, resource, eventsArray, currentContent])
 
 	const createAndAddSub = (newSubs) =>{
-		const subtitles = subs
-		for (let x = 0; x < newSubs.length; x++){
-			const deleteSub = newSbus.find(sub => sub[`id`] === subs[x][`id`] )
-			// DELETE sub function here
-		}
+		const subtitles = newSubs
+		// for (let x = 0; x < newSubs.length; x++){
+		// 	console.log(`testing Subtitles`,)
+		// 	const deleteSub = newSubs.find(sub => sub[`id`] === subtitles[x][`id`] )
+		// 	// DELETE sub function here
+		// }
 		for(let i = 0; i<subtitles.length;i++){
 			if (subtitles[i][`id`] === ``){
 				subtitles[i][`content-id`] = id
 				const subId = createSubtitle(subtitles[i])
+				console.log(`subid`,subId)
 			}
 		}
 	}
@@ -76,7 +78,7 @@ const TrackEditorContainer = props => {
 		subs,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent}/>
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
