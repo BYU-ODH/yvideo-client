@@ -47,6 +47,10 @@ const FileUploadContainer = props => {
 
 	const [fileVersion, setFileVersion] = useState(category.English.name)
 
+	const [fileMetadata, setFileMetadata] = useState(``)
+
+	const [fileMime, setFileMime] = useState(``)
+
 	const handleFileChange = e =>{
 		setSelectedFile(e.target.files[0])
 	}
@@ -56,6 +60,16 @@ const FileUploadContainer = props => {
 		setFileVersion(e.target.value)
 	}
 
+	const handleFileMetadata = e => {
+		e.preventDefault()
+		setFileMetadata(e.target.value)
+	}
+
+	const handleFileMime = e => {
+		e.preventDefault()
+		setFileMime(e.target.value)
+	}
+
 	const handleFileUpload = async(e) =>{
 		e.preventDefault()
 
@@ -63,8 +77,8 @@ const FileUploadContainer = props => {
 		formData.append(`file`, selectedFile)
 		formData.append(`resource-id`, resourceId)
 		formData.append(`file-version`, fileVersion)
-		formData.append(`mime`, ``)
-		formData.append(`metadata`, ``)
+		formData.append(`mime`, fileMime)
+		formData.append(`metadata`, fileMetadata)
 
 		await uploadFile(formData)
 		await getFiles(resourceId)
@@ -80,6 +94,8 @@ const FileUploadContainer = props => {
 		updateFileVersion,
 		handleFileChange,
 		handleFileUpload,
+		handleFileMetadata,
+		handleFileMime,
 		toggleModal,
 	}
 

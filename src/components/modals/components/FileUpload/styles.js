@@ -19,6 +19,10 @@ export const Form = styled.form`
 		display: flex;
 		justify-content: space-between;
 
+		& > textarea {
+			width: 20rem;
+		}
+
 		& > h4 {
 			display: flex;
 			align-items: center;
@@ -30,7 +34,7 @@ export const Form = styled.form`
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			text-align: center !important;
+			text-align: end !important;
 		}
 	}
 `
@@ -136,11 +140,11 @@ export const Upload = styled.div`
 
 	& .files{ position:relative }
 
-	& .files:after {
+	/* & .files:after {
 		pointer-events: none;
     position: absolute;
     top: 5px;
-    left: 210px;
+    left: 240px;
     right: 0;
 		width: 50px;
     height: 56px;
@@ -150,7 +154,7 @@ export const Upload = styled.div`
     margin: 0 auto;
     background-size: 50%;
     background-repeat: no-repeat;
-	}
+	} */
 `
 
 export const CategorySelect = styled.select`
@@ -160,11 +164,10 @@ export const CategorySelect = styled.select`
 	border: none;
 	border-radius: 2rem;
 
-	padding: 0 1.25rem 0 1.25rem;
+	padding: 0 6rem 0 6rem;
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 	& option {
-		margin: auto auto 6px auto;
 	}
 `

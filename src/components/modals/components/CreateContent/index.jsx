@@ -34,7 +34,7 @@ export default class CreateContent extends PureComponent {
 			url,
 			description,
 			resource,
-			targetLanguages
+			targetLanguages,
 		} = this.props.viewstate.data
 
 		const {
@@ -50,7 +50,7 @@ export default class CreateContent extends PureComponent {
 			toggleModal,
 		} = this.props.handlers
 
-		//console.log(languages)
+		// console.log(languages)
 
 		return (
 			<>
@@ -114,7 +114,7 @@ export default class CreateContent extends PureComponent {
 							Search Resource Title<br/>
 							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
 						</label>
-						<TableContainer height={Object.keys(resourceContent).length} style={{ display: `${ hideResources === true ? ('none') : ('initial')}` }}>
+						<TableContainer height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
 							{
 								// TODO: need to be updated for submit work
 								resourceContent && hideResources !== true &&
@@ -136,13 +136,13 @@ export default class CreateContent extends PureComponent {
 						</label>
 						<label>
 							<span>Target Language</span>
-							{ languages.length > 0 && 
+							{ languages.length > 0 &&
 								<select name='targetLanguages' onChange={handleTextChange} required>
 									<option value='default'>None</option>
-									{  
-										languages.map((element, index) => 
-										<option value={element.slice(0, element.length - 1)} key={index}>{element.slice(0, element.length-1)}</option> )
-									}	
+									{
+										languages.map((element, index) =>
+											<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option> )
+									}
 								</select>
 							}
 						</label>

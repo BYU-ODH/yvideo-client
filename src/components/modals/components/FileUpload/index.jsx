@@ -25,6 +25,8 @@ export default class FileUpload extends PureComponent {
 			handleFileUpload,
 			toggleModal,
 			onKeyPress,
+			handleFileMetadata,
+			handleFileMime,
 		} = this.props.handlers
 
 		return (
@@ -49,6 +51,16 @@ export default class FileUpload extends PureComponent {
 							</option>
 						))}
 					</CategorySelect>
+				</label>
+
+				<label htmlFor='create-resource-file-metadata'>
+					<h4>Metadata</h4>
+					<textarea onChange={handleFileMetadata} rows={2}/>
+				</label>
+
+				<label htmlFor='create-resource-file-mime'>
+					<h4>Mime</h4>
+					<textarea onChange={handleFileMime} rows={2}/>
 				</label>
 
 				<div>
