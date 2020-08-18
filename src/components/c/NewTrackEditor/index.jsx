@@ -39,7 +39,7 @@ const TrackEditor = props => {
 
 	const { setEvents, updateContent } = props
 
-	const { eventsArray, currentContent } = props.viewstate
+	const { eventsArray, currentContent,subs } = props.viewstate
 
 	const events = [
 		{
@@ -119,8 +119,9 @@ const TrackEditor = props => {
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [usingSubtitles, setSubtitles] = useState(false)
-	const [subtitles, setSubs] = useState(parseSub)
+	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
+	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
 	const [subSelected, setSubSelected] = useState(false)
 	// const [editCensor, setEditCensor] = useState({})
 	// const [lastClick, setLastClick] = useState({x: 0, y: 0})
@@ -175,6 +176,9 @@ const TrackEditor = props => {
 				setSaved(false)
 			}, 3000)
 		}
+		const tempSubs = subs
+		for (let i = 0; i < tempSubs.length; i++)
+			tempSubs[i][`content`] = Subtitle.parse(tempSubs[i][`content`])
 
 	}, [eventsArray])
 
@@ -199,7 +203,6 @@ const TrackEditor = props => {
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
-		console.log(duration)
 		for (let i = 0; i < subtitles.length; i++){
 			subtitles[i].start = subtitles[i].start/duration * 100
 			subtitles[i].end = subtitles[i].end/duration * 100
@@ -260,7 +263,7 @@ const TrackEditor = props => {
 
 	const addEventToLayer = (item, index) => {
 		if (item.id === `subtitle`){
-			setSubtitles(true)
+			handleAddSubLayer()
 			return
 		}
 		// TODO: Change this to use real JS event objects and insert based on time
@@ -352,7 +355,7 @@ const TrackEditor = props => {
 	}
 	const deleteSub = () =>{
 		const currentSubs = [...subtitles]
-		currentSubs.splice(subToEdit,1)
+		currentSubs[subLayerToEdit][`content`].splice(subToEdit,1)
 		setSubs(currentSubs)
 		setSideEditor(false)
 	}
@@ -433,8 +436,9 @@ const TrackEditor = props => {
 		setDisplayLayer(layerIndex)
 		setSideEditor(true)
 	}
-	const openSubEditor = (subIndex) =>{
+	const openSubEditor = (layerIndex,subIndex) =>{
 		setSubToEdit(subIndex)
+		setSubLayerToEdit(layerIndex)
 		setSideEditor(true)
 	}
 
@@ -455,7 +459,9 @@ const TrackEditor = props => {
 
 		updateContent(content)
 	}
+	const handleSaveSubtitles = () => {
 
+	}
 	const handleScrollFactor = (direction) => {
 		// console.log('called')
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
@@ -619,16 +625,16 @@ const TrackEditor = props => {
 		// }
 	}
 	const createSubtitleLayer = () =>{
-		setSubtitles(true)
+		handleAddSubLayer()
 	}
-	const updateSubs = (index, sub) => {
+	const updateSubs = (index, sub, subLayerIndex) => {
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
 			document.getElementById(`sideTabMessage`).style.color=`red`
 		}
-
-		const currentSubs = [...subtitles]
+		const tempSubs = [...subtitles]
+		const currentSubs = tempSubs[subLayerIndex]
 
 		// check start event times
 		if(sub.start < 0){
@@ -669,22 +675,20 @@ const TrackEditor = props => {
 				document.getElementById(`sideTabExplanation`).innerHTML=``
 			}
 		}
-
-		currentSubs[index] = sub
-
-		setSubs(currentSubs)
+		currentSubs[`content`][index] = sub
+		tempSubs[subLayerIndex] = currentSubs
+		setSubs(tempSubs)
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
-		console.log(index)
 		setSubToEdit(index)
+		setSubLayerToEdit(subLayerIndex)
 		setSubSelected(true)
 		// setSideEditor(true)
 	}
-	const addSubToLayer = (item) => {
+	const addSubToLayer = (item,index) => {
 		// TODO: Change this to use real JS event objects and insert based on time
 		let currentSubs = []
-		if(allEvents !== undefined)
-			currentSubs = [...subtitles]
+		currentSubs = [...subtitles]
 
 		// console.log('ADDING NEW EVENT')
 		const newSub = {
@@ -693,7 +697,8 @@ const TrackEditor = props => {
 			text: ``,
 		}
 
-		currentSubs.push(newSub)
+		currentSubs[index][`content`].push(newSub)
+		setSubLayerToEdit(index)
 		setSubs(currentSubs)
 	}
 	const checkSideBarTitle = () => {
@@ -705,10 +710,44 @@ const TrackEditor = props => {
 		}
 	}
 	const checkEventOrSub = () => {
-		return subSelected ? subtitles[subToEdit] : allEvents[eventToEdit]
+		return subSelected ? subtitles[subLayerToEdit][`content`][subToEdit] : allEvents[eventToEdit]
 	}
 	const checkIndex = () => {
 		return subSelected ? subToEdit : eventToEdit
+	}
+	const handleChangeSubIndex = (index,subLayer) =>{
+		setSubToEdit(index)
+	}
+	const handleAddSubLayer = () => {
+		if (subtitles === [] || !subtitles){
+			const tempSubList = []
+			const tempSub = {
+				title : ``,
+				language: ``,
+				content: [],
+				id: ``,
+			}
+			tempSubList.push(tempSub)
+			setSubs(tempSubList)
+		}else {
+			const tempSubList = subtitles
+			const tempSub = {
+				title : ``,
+				language: ``,
+				content: [],
+				id: ``,
+			}
+			tempSubList.push(tempSub)
+			setSubs(tempSubList)
+
+		}
+		setSideEditor(false)
+	}
+	const handleDeleteSubLayer = (index) =>{
+		const tempSubs = subtitles
+		tempSubs.splice(index, 1)
+		setSubs(tempSubs)
+
 	}
 	return (
 		<Style>
@@ -755,25 +794,30 @@ const TrackEditor = props => {
 								<NewLayer onClick={handleAddLayer}>
 									<Icon src={plus}/>
 								</NewLayer>
-								<div className={`layer`} style={{visibility:`${usingSubtitles?`visible`:`hidden`}`}}>
-									<div className={`handle`}>
-										<p>SubTitles<img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>setSubtitles(false)} /></p>
-									</div>
 
-									<SubtitlesLayer
-										videoLength={videoLength}
-										minimized={eventListMinimized}
-										width={layerWidth}
-										subs={subtitles}
-										activeEvent={subToEdit}
-										index={subToEdit}
-										onDrop={(item) => addSubToLayer(item)}
-										sideEditor={openSubEditor}
-										updateSubs={updateSubs}
-										closeEditor={closeSideEditor}
-										displayLayer={displayLayer}
-									/>
-								</div>
+								{subtitles.map((sub, index) => (
+									<div className={`layer`} key={index}>
+										<div className={`handle`}>
+											<p>SubTitles<img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>setSubtitles(false)} /></p>
+										</div>
+										<SubtitlesLayer
+											videoLength={videoLength}
+											minimized={eventListMinimized}
+											width={layerWidth}
+											subs={sub[`content`]}
+											activeEvent={subToEdit}
+											layer={index}
+											index={subToEdit}
+											onDrop={(item)=>addSubToLayer(item,index)}
+											sideEditor={openSubEditor}
+											updateSubs={updateSubs}
+											closeEditor={closeSideEditor}
+											displayLayer={subLayerToEdit}
+										/>
+									</div>
+								))
+								}
+
 								<br/><br/><br/><br/><br/><br/><br/>
 							</div>
 
@@ -859,7 +903,7 @@ const TrackEditor = props => {
 									<span className='carat'></span>
 									{ subSelected ?
 										<>
-											<span className='current'>{subToEdit !== undefined ? `Subtitle ${subToEdit}` : ``}</span>
+											<span className='current'>{subToEdit !== undefined ? `Subtitle ${subToEdit + 1}` : ``}</span>
 											<button className='deleteEventButton' onClick={deleteSub}>Delete Event</button>
 										</>
 										:
@@ -884,6 +928,10 @@ const TrackEditor = props => {
 									updateEvents={updateEvents}
 									updateSubs={updateSubs}
 									isSub={subSelected}
+									subs={subtitles}
+									subLayer={subLayerToEdit}
+									changeSubIndex={handleChangeSubIndex}
+									addSub={addSubToLayer}
 								></TrackEditorSideMenu>
 							) : (
 								<>

@@ -13,6 +13,8 @@ export default class ContentService {
 		CONTENT_GET: `CONTENT_GET`,
 		CONTENT_ADD_VIEW: `CONTENT_ADD_VIEW`,
 		CONTENT_UPDATE: `CONTENT_UPDATE`,
+		CONTENT_GET_SUBTITLES: `CONTENT_GET_SUBTITLES`,
+		CONTENT_ADD_SUBTITLES: `CONTENT_ADD_SUBTITLES`,
 	}
 
 	// action creators
@@ -26,6 +28,8 @@ export default class ContentService {
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
 		contentUpdate: content => ({ type: this.types.CONTENT_UPDATE, payload: { content }}),
+		contentGetSubtitles: ids => ({type: this.types.CONTENT_GET_SUBTITLES, payload: {ids}}),
+		contentAddSubtitles: ids => ({type: this.types.CONTENT_ADD_SUBTITLES, payload:{ids}}),
 	}
 
 	// default store
@@ -34,6 +38,7 @@ export default class ContentService {
 		cache: {},
 		loading: false,
 		lastFetched: 0,
+		subtitlesIds: [],
 	}
 
 	// reducer
@@ -49,6 +54,8 @@ export default class ContentService {
 			CONTENT_GET,
 			CONTENT_ADD_VIEW,
 			CONTENT_UPDATE,
+			CONTENT_GET_SUBTITLES,
+			CONTENT_ADD_SUBTITLES,
 		} = this.types
 
 		switch (action.type) {
@@ -119,6 +126,22 @@ export default class ContentService {
 					},
 				},
 				loading: false,
+			}
+		case CONTENT_GET_SUBTITLES:
+			return {
+				...store,
+				subtitlesIds: {
+					...store.subtitlesIds,
+					...action.payload.content,
+				},
+			}
+		case CONTENT_ADD_SUBTITLES:
+			return{
+				...store,
+				subtitlesIds: {
+					...store.subtitlesIds,
+					...action.payload.content,
+				},
 			}
 
 		default:
@@ -242,4 +265,49 @@ export default class ContentService {
 		} else dispatch(this.actions.contentAbort())
 	}
 
+	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().contentStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+		// console.log('updated store', contentIds)
+
+		if (stale || force) {
+
+			dispatch(this.actions.contentStart())
+
+			try {
+
+				const result = await apiProxy.content.getSubtitles(id)
+
+				dispatch(this.actions.subtitlesIds(result))
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.contentError(error))
+			}
+
+		} else dispatch(this.actions.contentAbort())
+	}
+	addSubtitles = subs => async (dispatch, getState, { apiProxy }) => {
+
+		// console.log(content)
+
+		dispatch(this.actions.contentStart())
+
+		try {
+
+			const results = await apiProxy.content.addSubtitles(subs)
+
+			// const metaResult =
+			// await apiProxy.content.metadata.post(id, metadata)
+
+			// console.log(settingsResult)
+
+			dispatch(this.actions.contentAddSubtitles(subs))
+
+		} catch (error) {
+			dispatch(this.actions.contentError(error))
+		}
+	}
 }

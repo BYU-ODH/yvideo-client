@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
-import { interfaceService, resourceService, contentService } from 'services'
+import { interfaceService, resourceService, contentService, subtitlesService } from 'services'
 
 import { TrackEditor } from 'components'
 
@@ -18,46 +18,72 @@ const TrackEditorContainer = props => {
 		getResource,
 		getContent,
 		updateContent,
+		subs,
+		getSubtitles,
+		updateSubtitle,
+		createSubtitle,
+		addSubtitles,
+		contentGetSubtitles,
+		subtitlesIds,
 	} = props
 
 	const {id} = useParams()
 
-	const [url, setUrl] = useState('')
+	const [url, setUrl] = useState(``)
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
 
-	//console.log(content)
+	// console.log(content)
 
 	useEffect(() => {
-		//console.log('use effecct')
-		if(!content.hasOwnProperty(id)){
+		// console.log('use effecct')
+		if(!content.hasOwnProperty(id))
 			getContent([id])
-		}
 
 		if(content[id] !== undefined){
-			//console.log(content[id].settings.annotationDocument)
+			// console.log(content[id].settings.annotationDocument)
+			console.log(content)
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
 			setUrl(content[id].url)
+			contentGetSubtitles(content[id])
+			getSubtitles(subtitlesIds)
+
 		}
 
 	}, [content, resource, eventsArray, currentContent])
 
-	//console.log(eventsArray)
-
+	const createAndAddSub = (newSubs) =>{
+		const subtitles = subs
+		for (let x = 0; x < newSubs.length; x++){
+			const deleteSub = newSbus.find(sub => sub[`id`] === subs[x][`id`] )
+			// DELETE sub function here
+		}
+		for(let i = 0; i<subtitles.length;i++){
+			if (subtitles[i][`id`] === ``){
+				subtitles[i][`content-id`] = id
+				const subId = createSubtitle(subtitles[i])
+			}
+		}
+	}
+	// console.log(eventsArray)
+	console.log(subs)
 	const viewstate = {
 		currentContent,
 		url,
 		eventsArray,
+		subs,
 	}
 
 	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent}/>
 }
 
-const mapStoreToProps = ({ contentStore, resourceStore }) => ({
+const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
 	resource: resourceStore.cache,
 	content: contentStore.cache,
+	subs: subtitlesStore.cache,
+	subtitlesIds: contentStore.subtitlesIds,
 })
 
 const mapThunksToProps = {
@@ -65,6 +91,11 @@ const mapThunksToProps = {
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
 	updateContent: contentService.updateContent,
+	getSubtitles: subtitlesService.getSubtitles,
+	updateSubtitle: subtitlesService.updateSubtitle,
+	createSubtitle: subtitlesService.createSubtitle,
+	addSubtitles: contentService.addSubtitles,
+	contentGetSubtitles: contentService.getSubtitles,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

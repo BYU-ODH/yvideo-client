@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-	display: ${ props => props.minimized !== false ? ('initial') : ('none')};
+	display: ${props => props.minimized !== false ? `initial` : `none`};
 	padding: 20px;
+	overflow: scroll;
 
 	& .closeEditor {
 		width: 2rem;
@@ -129,10 +130,30 @@ const Style = styled.div`
 		text-align: center;
 	}
 
+	& .subCard {
+		border-bottom: 1px solid var(--light-blue);
+		padding: 1rem;
+	}
+	& .subTitleCard {
+		font-size: 2rem;
+		border-bottom: 1px solid var(--light-blue);
+		padding: 1rem;
+		color: black;
+	}
+	& .subActive {
+		background-color: var(--navy-blue);
+		color: white;
+	}
 	@keyframes spin {
 		0% { transform: rotate(0deg); }
 		100% { transform: rotate(360deg); }
 	}
 
+`
+export const Icon = styled.div`
+	/* transform: rotate(45deg); */
+  background: url(${props => props.src}) center no-repeat;
+  width: 20px;
+  height: 15px;
 `
 export default Style

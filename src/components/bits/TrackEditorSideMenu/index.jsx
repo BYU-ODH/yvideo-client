@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
 
-import Style from './styles.js'
+import plus from 'assets/plus-square.svg'
+
+import Style, {Icon} from './styles.js'
 
 const TrackEditorSideMenu = props => {
 
@@ -16,6 +18,10 @@ const TrackEditorSideMenu = props => {
 		closeSideEditor,
 		isSub,
 		updateSubs,
+		subs,
+		changeSubIndex,
+		addSub,
+		subLayer,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -29,7 +35,7 @@ const TrackEditorSideMenu = props => {
 	const handleEditEventBTimeChange = (e) => {
 		if (isSub){
 			console.log(`detecting sub`)
-			editSub(`beg`,e,subText)
+			editSub(`beg`,e.target.value,subText)
 			return
 		}
 		document.getElementById(`sideTabMessage`).style.color=`red`
@@ -52,7 +58,7 @@ const TrackEditorSideMenu = props => {
 	const handleEditEventETimeChange = (e) => {
 		if (isSub){
 			console.log(`detecting sub`)
-			editSub(`end`,e,subText)
+			editSub(`end`,e.target.value,subText)
 			return
 		}
 		document.getElementById(`sideTabMessage`).style.color=`red`
@@ -113,14 +119,18 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 	const editSub = (side, time, value) => {
+		console.log(time,`this is time`)
+		console.log(side,value)
 		const sub = event
 		if (side === `beg`)
-			sub.start = time
+			sub.start = time / videoLength * 100
 		else if(side === `end`)
-			sub.end = time
+			sub.end = time / videoLength * 100
 		setSubText(value)
-		sub.text = value
-		updateSubs(index,sub)
+		if(value.target) sub.text = value.target.value
+		console.log(`The sub is`,sub)
+		setEvent(sub)
+		updateSubs(index,sub,subLayer)
 	}
 
 	const start = (event.start / 100 * videoLength).toFixed(3)
@@ -146,11 +156,13 @@ const TrackEditorSideMenu = props => {
 						<label>Subtitle Text</label>
 					</div>
 					<div className='center'>
-						<input type='text' placeholder='Subtitle' onChange={value=>{
+						<textarea style={{ margin: `5%`, width: `90%`}} className='sideTabInput' type='text' value={event.text} onChange={value=>{
+							console.log(`The value in question is`, value)
 							setSubText(value)
-							updateSubs(null,null,value)
+							editSub(null,null,value)
 						}} />
 					</div>
+
 				</>
 			)
 				: ``
@@ -218,6 +230,21 @@ const TrackEditorSideMenu = props => {
 			<br/>
 			<p id='sideTabMessage'></p>
 			<p id='sideTabExplanation'></p>
+			{
+				isSub ?(
+					<div style={{overflowY:`scroll`, height:`30vh`}}>
+						<p className={`subTitleCard`} >All Subtitles</p>
+						{subs[subLayer][`content`].map((sub,ind)=>(
+							<div className={`subCard ${ind === index ? `subActive`:``}`} onClick={()=>changeSubIndex(ind)} key={ind}>
+								<p>
+									{sub.text}
+								</p>
+							</div>
+						))}
+						<Icon src={plus} onClick={()=>addSub()} />
+					</div>
+				) :``
+			}
 		</Style>
 	)
 }
