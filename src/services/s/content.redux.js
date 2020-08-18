@@ -1,4 +1,5 @@
 import BackEndContent from 'models/BackEndContent'
+import Content from 'models/Content'
 
 export default class ContentService {
 
@@ -140,7 +141,7 @@ export default class ContentService {
 	}
 
 	// thunks
-	setContent = (content) => async (dispatch, getState, { apiProxy }) => {
+	setContent = (content, force = false) => async (dispatch, getState, { apiProxy }) => {
 		//SETS CONTENT FOR ALL THE COLLECTIONS OF THE USER
 		dispatch(this.actions.contentStart())
 
@@ -149,6 +150,7 @@ export default class ContentService {
 		try {
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
+			//console.log('FROM REDUX', content)
 
 			dispatch(this.actions.contentSet(content))
 		} catch (error) {
@@ -194,13 +196,16 @@ export default class ContentService {
 
 		try {
 			const result = await apiProxy.content.post(content)
+			let id = result.id
+			content['id'] = id
 
-			const data = { [result.data.id]: result.data }
+			// const data = { [result.data.id]: result.data }
 
-			console.log(result)
+			const newContent = new Content(content)
+			// console.log(result)
 
-			// TODO: Why doesn't this update to state cause it to rerender?
-			dispatch(this.actions.contentCreate(data))
+			// // TODO: Why doesn't this update to state cause it to rerender?
+			dispatch(this.actions.contentCreate({ [id]: newContent}))
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {

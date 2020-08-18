@@ -27,17 +27,22 @@ const ManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
+		getCollections(true)
 		if(collection.content.length > 0){
 			if(content[collection.content[0].id]){
-				console.log('got cached content')
+				//console.log('got cached content')
 			}
 			else {
+				//console.log('setting content')
 				const allContent = {}
 				collection.content.forEach(item => {
 					allContent[item.id] = item
 				})
-				setContent(allContent)
+				setContent(allContent, true)
 			}
+		}
+		else {
+			//console.log('no content')
 		}
 		setCollectionName(collection.name)
 	}, [collection.name, getCollections])
