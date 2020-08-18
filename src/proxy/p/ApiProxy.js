@@ -268,6 +268,7 @@ const apiProxy = {
 			},
 		}).then(res => {
 			updateSessionId(res.headers[`session-id`])
+			return res.data
 		}),
 		addView: {
 			/**
