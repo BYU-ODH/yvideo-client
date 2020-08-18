@@ -14,7 +14,8 @@ export default class BackEndContent {
 		"annotations": "string",
 		"title": "string",
 		"allow-notes": true,
-		"description": "string"
+		"description": "string",
+		"published": true,
 	}
 
 	constructor(obj){
@@ -29,6 +30,7 @@ export default class BackEndContent {
 			this.backEndData['description'] = obj.description
 			this.backEndData['resource-id'] = obj.resourceId
 			this.backEndData['title'] = obj.name
+			this.backEndData['published'] = obj.published
 
 			this.backEndData['allow-definitions'] = obj.settings.allowDefinitions
 			this.backEndData['allow-captions'] = obj.settings.allowCaptions

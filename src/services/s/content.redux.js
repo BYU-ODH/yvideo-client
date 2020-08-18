@@ -10,6 +10,7 @@ export default class ContentService {
 		CONTENT_CLEAN: `CONTENT_CLEAN`,
 		CONTENT_CREATE: `CONTENT_CREATE`,
 		CONTENT_ERROR: `CONTENT_ERROR`,
+		CONTENT_SET: `CONTENT_SET`,
 		CONTENT_GET: `CONTENT_GET`,
 		CONTENT_ADD_VIEW: `CONTENT_ADD_VIEW`,
 		CONTENT_UPDATE: `CONTENT_UPDATE`,
@@ -23,6 +24,7 @@ export default class ContentService {
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
 		contentCreate: (content) => ({ type: this.types.CONTENT_CREATE, payload: { content }}),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
+		contentSet: content => ({ type: this.types.CONTENT_SET, payload: { content } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
 		contentUpdate: content => ({ type: this.types.CONTENT_UPDATE, payload: { content }}),
@@ -34,6 +36,7 @@ export default class ContentService {
 		cache: {},
 		loading: false,
 		lastFetched: 0,
+		getter: {},
 	}
 
 	// reducer
@@ -46,6 +49,7 @@ export default class ContentService {
 			CONTENT_CLEAN,
 			CONTENT_CREATE,
 			CONTENT_ERROR,
+			CONTENT_SET,
 			CONTENT_GET,
 			CONTENT_ADD_VIEW,
 			CONTENT_UPDATE,
@@ -88,11 +92,20 @@ export default class ContentService {
 				loading: false,
 			}
 
-		case CONTENT_GET:
+		case CONTENT_SET:
 			return {
 				...store,
 				cache: {
-					...store.cache,
+					...action.payload.content,
+				},
+				loading: false,
+				lastFetched: Date.now(),
+			}
+
+		case CONTENT_GET:
+			return {
+				...store,
+				getter: {
 					...action.payload.content,
 				},
 				loading: false,
@@ -128,7 +141,7 @@ export default class ContentService {
 
 	// thunks
 	setContent = (content) => async (dispatch, getState, { apiProxy }) => {
-
+		//SETS CONTENT FOR ALL THE COLLECTIONS OF THE USER
 		dispatch(this.actions.contentStart())
 
 		// console.log('updated content1', content)
@@ -137,42 +150,43 @@ export default class ContentService {
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
 
-			dispatch(this.actions.contentGet(content))
+			dispatch(this.actions.contentSet(content))
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}
 
 	}
 
-	getContent = (contentIds = [], force = false) => async (dispatch, getState, { apiProxy }) => {
+	// getContent = (contentIds, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		const time = Date.now() - getState().contentStore.lastFetched
+	// 	const time = Date.now() - getState().contentStore.lastFetched
 
-		const stale = time >= process.env.REACT_APP_STALE_TIME
+	// 	const stale = time >= process.env.REACT_APP_STALE_TIME
 
-		const { cache } = getState().contentStore
-		const cachedIds = Object.keys(cache).map(id => id)
-		const notCached = contentIds.filter(id => !cachedIds.includes(id))
+	// 	const { cache } = getState().contentStore
+	// 	const cachedIds = Object.keys(cache).map(id => id)
+	// 	const notCached = contentIds.filter(id => !cachedIds.includes(id))
 
-		// console.log('updated store', contentIds)
+	// 	// console.log('updated store', contentIds)
 
-		if (stale || notCached.length || force) {
+	// 	if (stale || notCached.length || force) {
 
-			dispatch(this.actions.contentStart())
+	// 		dispatch(this.actions.contentStart())
 
-			try {
+	// 		try {
 
-				const result = await apiProxy.content.get(notCached)
+	// 			const result = await apiProxy.content.get(notCached)
 
-				dispatch(this.actions.contentGet(result))
+	// 			dispatch(this.actions.contentGet(result))
 
-			} catch (error) {
-				console.error(error.message)
-				dispatch(this.actions.contentError(error))
-			}
+	// 		} catch (error) {
 
-		} else dispatch(this.actions.contentAbort())
-	}
+	// 			console.error(error.message)
+	// 			dispatch(this.actions.contentError(error))
+	// 		}
+
+	// 	} else dispatch(this.actions.contentAbort())
+	// }
 
 	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 

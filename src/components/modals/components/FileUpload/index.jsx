@@ -25,6 +25,8 @@ export default class FileUpload extends PureComponent {
 			handleFileUpload,
 			toggleModal,
 			onKeyPress,
+			handleFileMetadata,
+			handleFileMime,
 		} = this.props.handlers
 
 		return (
@@ -32,7 +34,7 @@ export default class FileUpload extends PureComponent {
 				<h2>File Upload</h2>
 
 				<label htmlFor='create-resource-file-version'>
-					<span>Select File</span>
+					<h4>Select File</h4>
 					<Upload>
 						<div className='files'>
 							<input type='file' className='files-input' onChange={handleFileChange}/>
@@ -41,7 +43,7 @@ export default class FileUpload extends PureComponent {
 				</label>
 
 				<label htmlFor='create-resource-file-version'>
-					<span>File Version</span>
+					<h4>File Version</h4>
 					<CategorySelect id='categorySelect' onChange={updateFileVersion}>
 						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
@@ -49,6 +51,16 @@ export default class FileUpload extends PureComponent {
 							</option>
 						))}
 					</CategorySelect>
+				</label>
+
+				<label htmlFor='create-resource-file-metadata'>
+					<h4>Metadata</h4>
+					<textarea onChange={handleFileMetadata} rows={2}/>
+				</label>
+
+				<label htmlFor='create-resource-file-mime'>
+					<h4>Mime</h4>
+					<textarea onChange={handleFileMime} rows={2}/>
 				</label>
 
 				<div>

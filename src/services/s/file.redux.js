@@ -118,6 +118,7 @@ export default class FileService {
 		dispatch(this.actions.fileStart())
 
 		try {
+
 			const result = await apiProxy.file.delete(id)
 
 			console.log(result)
@@ -136,7 +137,7 @@ export default class FileService {
 
 			dispatch(this.actions.fileUpdate(file))
 
-			console.log(result)
+			// console.log(getState())
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))

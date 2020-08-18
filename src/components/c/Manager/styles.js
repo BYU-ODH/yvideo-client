@@ -53,6 +53,7 @@ export const SideMenu = styled.div`
 	& > h4 {
 		padding: .8rem 0;
 		margin-bottom: 1rem;
+		position: relative;
 	}
 
 	& .link {
@@ -112,4 +113,17 @@ export const NoCollection = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+`
+
+export const Help = styled.span`
+	width: 20px;
+	height: 20px;
+
+	& img {
+		width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -3px;
+    bottom: 5px;
+	}
 `

@@ -24,6 +24,7 @@ const ResourceOverviewContainer = props => {
 		getResourceFiles,
 		resourceCache,
 		fileId,
+		updateAllFileVersions,
 		thisfiles,
 	} = props
 
@@ -31,16 +32,27 @@ const ResourceOverviewContainer = props => {
 	const [showing, setShowing] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
+	const [fileVersions, setFileVersions] = useState([])
+	const [allFileVersions, setAllFileVersions] = useState(``)
 
 	useEffect(() => {
 
 		if(editing) setFiles(resourceCache[resource.id].files)
 
 		// TODO: need to update file versions from the files to the resource all-file-versionns
-		// if(files.length !== 0)
-		// 	console.log(files)
+		if(resource.files !== undefined && fileVersions.length !== resource.files.length){
+			const langs = []
+			files.forEach(file => {
+				langs.push(file[`file-version`])
+			})
+			setFileVersions(langs)
 
-	}, [editing, files, resource.id, resourceCache])
+			setAllFileVersions(fileVersions.join(`;`))
+		}
+
+		if(allFileVersions.length !== 0) updateAllFileVersions(resource, allFileVersions)
+
+	}, [allFileVersions, editing, fileVersions, fileVersions.length, files, resource, resource.files, resource.id, resourceCache, updateAllFileVersions, files.length])
 
 	if (objectIsEmpty(resource)) return null
 
@@ -180,6 +192,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	removeResource: resourceService.removeResource,
 	editResource: resourceService.editResource,
+	updateAllFileVersions: resourceService.updateFileVersion,
 	toggleModal: interfaceService.toggleModal,
 	getResourceFiles: resourceService.getFiles,
 }

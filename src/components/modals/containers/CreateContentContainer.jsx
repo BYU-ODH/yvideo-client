@@ -35,6 +35,7 @@ const CreateContentContainer = props => {
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [selectedResource, setSelectedResource] = useState(``)
 	const [languages, setLanguages] = useState([])
+	const [files, setFiles] = useState([])
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -45,14 +46,21 @@ const CreateContentContainer = props => {
 			keywords: [],
 		},
 		thumbnail: ``,
-		targetLanguages: '',
+		targetLanguages: ``,
 	})
 
 	useEffect(() => {
 		if(resourceContent[selectedResource] !== undefined){
-			setLanguages(resourceContent[selectedResource].allFileVersions.split("; "))
+			const langs = resourceContent[selectedResource].allFileVersions
+			setLanguages(langs.split(`;`))
+			console.log(resourceContent[selectedResource])
 		}
-	}, [selectedResource])
+
+		// if(resourceContent[selectedResource].files !== undefined) {
+		// 	setFiles(resourceContent.files)
+		// 	console.log(files)
+		// }
+	}, [resourceContent, selectedResource, files])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -76,13 +84,12 @@ const CreateContentContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 		if (value.length > 1) {
-			//search(`content`, value, true)
+			// search(`content`, value, true)
 			searchResource(value)
 			setHide(false)
-		}
-		else {
+		} else
 			setHide(true)
-		}
+
 	}
 
 	const handleSelectResourceChange = (e, name) => {
@@ -146,13 +153,13 @@ const CreateContentContainer = props => {
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
+			"published": true,
 		}
 
 		if(modal.isLabAssistantRoute){
 			await adminCreateContent(backEndData)
 			adminGetCollectionContent(modal.collectionId, true)
-		}
-		else{
+		} else{
 			await createContent(backEndData)
 			getCollections(true)
 		}
@@ -162,17 +169,17 @@ const CreateContentContainer = props => {
 	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
 
-		//CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
-		//EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
-		//THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
+		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
+		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
+		// THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
 
 		const backEndData = {
 			"allow-definitions": true,
-			"url": '',
+			"url": ``,
 			"allow-captions": true,
 			"content-type": data.contentType,
 			"resource-id": selectedResource,
-			"tags": '',
+			"tags": ``,
 			"thumbnail": `empty`,
 			"file-version": data.targetLanguages,
 			"collection-id": modal.collectionId,
@@ -181,16 +188,16 @@ const CreateContentContainer = props => {
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
+			"published": true,
 		}
 
-		//console.log(backEndData)
-		
-		//console.log(resourceContent[selectedResource])
+		// console.log(backEndData)
+
+		// console.log(resourceContent[selectedResource])
 		if(modal.isLabAssistantRoute){
 			await adminCreateContent(backEndData)
 			adminGetCollectionContent(modal.collectionId, true)
-		}
-		else{
+		} else{
 			await createContent(backEndData)
 			getCollections(true)
 		}

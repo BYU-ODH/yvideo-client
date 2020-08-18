@@ -49,3 +49,10 @@ export const ViewToggle = styled.button`
 	outline: none;
 	cursor: pointer;
 `
+export const Help = styled.img`
+	width: 20px;
+	height: 20px;
+	margin-left: 20px;
+	position: relative;
+	bottom: -4px;
+`

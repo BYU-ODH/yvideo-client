@@ -116,7 +116,7 @@ export class ResourceOverview extends PureComponent {
 
 							{/* <div><h4>Files:</h4>{files.length !== 0 ? files.map(file => <Title key={file.id}>{file.id}</Title>) : <Title>none</Title>}</div> */}
 
-							<div><h4>Files:</h4>{files.length !== 0 ? <><Title>{files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
+							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
 
 						</Column>
 

@@ -12,9 +12,11 @@ import {
 	NoCollection,
 	Plus,
 	SideMenu,
+	Help,
 } from './styles'
 
 import plus from 'assets/plus.svg'
+import helpIcon from 'assets/manage-collection-help-circle.svg'
 
 export default class Manager extends PureComponent {
 	render() {
@@ -32,6 +34,7 @@ export default class Manager extends PureComponent {
 
 		const {
 			createNew,
+			handleShowHelp,
 		} = this.props.handlers
 
 		return (
@@ -58,7 +61,7 @@ export default class Manager extends PureComponent {
 					<>
 						<SideMenu>
 
-							<h4>{user ? (`${user.name}'s Collections`) : `My Collections`}</h4>
+							<h4>{user ? (`${user.name}'s Collections`) : `My Collections`} &nbsp;<Help><img src={helpIcon} onClick={handleShowHelp}/></Help></h4>
 
 							<Accordion header={`Published`} active>
 								{sideLists.published.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
