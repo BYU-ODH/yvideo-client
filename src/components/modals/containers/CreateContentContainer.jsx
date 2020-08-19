@@ -95,6 +95,7 @@ const CreateContentContainer = props => {
 	const handleSelectResourceChange = (e, name) => {
 		const { target } = e
 		setSelectedResource(target.value)
+		console.log(target)
 		setSearchQuery(name)
 		setHide(true)
 	}
@@ -191,9 +192,6 @@ const CreateContentContainer = props => {
 			"published": true,
 		}
 
-		// console.log(backEndData)
-
-		// console.log(resourceContent[selectedResource])
 		if(modal.isLabAssistantRoute){
 			await adminCreateContent(backEndData)
 			adminGetCollectionContent(modal.collectionId, true)
