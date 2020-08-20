@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import FileUploadContainer from 'components/modals/containers/FileUploadContainer'
+import ConfirmDeleteResourceContainer from 'components/modals/containers/ConfirmDeleteResourceContainer'
 import ManageFilesContainer from 'components/modals/containers/ManageFilesContainer'
 
 import {
@@ -80,7 +81,16 @@ const ResourceOverviewContainer = props => {
 	}
 
 	const handleRemoveResource = e => {
-		removeResource(resource.id)
+
+		// TODO: confirming delete pop up
+
+		props.toggleModal({
+			component: ConfirmDeleteResourceContainer,
+			props: {
+				resourceId: resource.id,
+			},
+		})
+		// removeResource(resource.id)
 	}
 
 	const handleResourceName = e => {
