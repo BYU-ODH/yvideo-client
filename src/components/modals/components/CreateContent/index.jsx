@@ -138,7 +138,7 @@ export default class CreateContent extends PureComponent {
 							<span>Target Language</span>
 							{ languages.length > 0 &&
 								<select name='targetLanguages' onChange={handleTextChange} required>
-									<option value='default'>None</option>
+									<option value=''>Select</option>
 									{
 										languages.map((element, index) =>
 											<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option> )

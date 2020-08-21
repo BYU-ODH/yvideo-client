@@ -3,6 +3,19 @@ import { connect } from 'react-redux'
 
 import HelpDocumentation from '../components/HelpDocumentation'
 
+import menu from 'assets/help/help-menu.png'
+import list from 'assets/list-view.svg'
+import block from 'assets/block-view.svg'
+
+import manager from 'assets/help/help-manager.png'
+
+import collection from 'assets/help/help-collection.png'
+
+import content from 'assets/help/help-content.png'
+import eventHelp from 'assets/help/help-te-event.png'
+import layerHelp from 'assets/help/help-te-layers.png'
+import zoomrHelp from 'assets/help/help-te-zoom.png'
+
 import {
 	// adminService,
 	interfaceService
@@ -24,7 +37,7 @@ to the component where you are and then add the following code:
 const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: 'Home Page'},
+			props: { name: 'Page Name'},
 		})
 	}
 
@@ -48,26 +61,86 @@ const HelpDocumentationContainer = props => {
 	const index = {
 		'Manage Collections': {
 			htmlInstruction: `
-				<div style="font-size: 1.5rem; padding: 20px;">
-					<p><b>Collections:</b> To manage your collections you are going to use the left side menu of the screen which lists all your current collections. You can create new
-						collections by clicking "Create New Collection". The new collection will then be added as an unpublished collection, so students can't see it.</p><br/>
-					<p><b>Managing a collection:</b> When you click on a collection name, you will see on the right a collection menu where you can edit the collection name, see "Content" "Permissions", and where you can publish/unpublish
-						and archive/unarchive a collection. </p><br/>
+				<div class="section">
+					<p><b>Manager:</b> To manage your collections you are going to use the left side menu of the screen which lists all your current collections in three categories: <br/>
+						<br/>- &nbsp;<b>Published</b> collections are the ones that students can see.
+						<br/>- &nbsp;<b>Unpublished</b> collections are hidden from students.
+						<br/>- &nbsp;<b>Archived</b> collections are the ones that you are not working on and students can't see them.
+						<br/><br/>
+						<b>Create New Collection:</b> this button allows you to create a new collection and add it as an unpublished collection, so students can't see it.
+					</p><br/>
+					<img src="${manager}" width="250px"/>
+				</div>
+				<hr/>
+				<div class="section large-img">
+					<p><b>Managing collections:</b> when you click on a collection name, you will see on the right a collection menu where you can edit the collection name, see "Content" or "Permissions",
+						change status to publish/unpublish to show or hide collection from students, and archive/unarchive a collection.
+					</p>
+					<img src="${collection}">
+				</div>
+				<hr/>
+				<div class="section large-img">
 					<p><b>Managing content:</b> Each collection will display a list of content. Each content will show the name, subtitles icon, language icon, a link to edit content, and a link to edit the video.
-					 	You can edit the content by clicking the edit button. If you want to edit the video for a class, you can click on the "TrackEditor".</p><br/>
+						<br/>
+					 	<b>Edit Content:</b> you can edit the content settings by clicking the edit button. This allows you to delete content, publish/unpublish a content even if the collection is visible to students, add a description,
+						tags related to the video content, and activate subtiltes or definitions.
+						<br/>
+						<b>Edit Video:</b> if you want to edit events and subtitles for a video, you can click on the "TrackEditor".</p>
+					<img src="${content}" />
 				</div>`,
-			images: '',
-			videos: '',
 		},
 		'Home Page': {
-			htmlInstruction: '',
-			images: '',
-			videos: '',
+			htmlInstruction: `
+				<div class="section">
+					<p><b>Menu:</b><br/>The application main menu is located on the top right side of the screen. To open the menu you have to click on the icon which looks similar to the one in the
+						photo on the right. As a student you will use the menu to log out of the application. As an instructor the menu will provide links to manage collections, and other functions.
+					</p><br/>
+					<img src="${menu}" width="100px"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Collections:</b><br/> Collections show available content for different classes. To play a video you just have to click on the video. Collections can be display in block view or list view.
+						You can change the view by clicking the list or block icon on the top right.<br/>
+						If you are an instructor, you can manage your collections by clicking on "Manage Collections" on the top right.
+					</p><br/>
+					<div style="margin: 10px;">
+						<img src="${list}" width="30px" style="margin: 5px;"/>
+						<img src="${block}" width="30px" style="margin: 5px;"/>
+					</div>
+				</div>`,
 		},
 		'Track Editor': {
-			htmlInstruction: '',
-			images: '',
-			videos: '',
+			htmlInstruction: `
+				<div class="section">
+					<p><b>Side Menu:</b>
+						<br/> -&nbsp; <b>Events:</b> all supported events are listed in blue on the right side on the screen. To add an event you need to drag it and drop it in the layer you want.
+						<br/> -&nbsp; <b>Save:</b> after you made your changes to the video the last step is to save the video by clicking the save button. <b><i>If you do not save it you will lose
+						all your changes</i></b>
+					</p><br/>
+					<img src="${eventHelp}" width="200px"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Layers:</b>
+							<br/> -&nbsp; <b>Add Events:</b> drag an event from the right side menu and drop it in the desired layer. The event will be added at the beginning of the layer as default.
+							<br/> -&nbsp; <b>Edit Events:</b> you can drag the event inside of the layer to change the time in which the event gets executed. And, you can resize an event from the edges to
+							extend the length of the event. If you prefer, you can click on an event and the right side menu will show the event properties that you can edit.
+							<br/> -&nbsp; <b>Add Layer:</b> you can add as many layers as you want. Layers let you organize your events and it makes it easier to work with overlapping events. To add a layer just click
+							the plus icon on the bottom left of the screen.
+							<br/> -&nbsp; <b>Delete Layer:</b> click on the trash can icon next to the layer number. <u>This will delete a layer and all the events inside of such layer.</u>
+					</p><br/>
+					<img src="${layerHelp}" width="250px"/>
+				</div>
+				<hr/>
+				<div class="section large-img">
+					<p><b>Zoom & Scroll:</b>
+							<br/> -&nbsp; <b>Zoom:</b> when working with large videos, you can zoom in to edit your events more acurrately. To zoom in and out drag and drop the small blue dot in the left bottom of the screen
+							and move it right to zoom in and left to zoom out.
+							<br/> -&nbsp; <b>Scroll:</b> when you zoom in or out the scroll indicator (blue bar at the bottom of the screen) will change size. To scroll you can use the arrows next to the scroll indicator.
+							Double arrows will take you to the respective end of the layer, and single arrows will scroll a short distance to the indicated side.
+					</p><br/>
+					<img src="${zoomrHelp}"/>
+				</div>`,
 		}
 	}
 

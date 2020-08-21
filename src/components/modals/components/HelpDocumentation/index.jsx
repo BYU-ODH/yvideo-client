@@ -21,7 +21,7 @@ export default class HelpDocumentation extends PureComponent {
 			<>
 				<Back>
 					<Container>
-						<h2>Help Documentation: {name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h2>
+						<h1>Help Documentation: {name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
 						<div id="content">
 						</div>
 					</Container>

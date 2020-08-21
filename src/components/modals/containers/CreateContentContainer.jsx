@@ -51,8 +51,13 @@ const CreateContentContainer = props => {
 
 	useEffect(() => {
 		if(resourceContent[selectedResource] !== undefined){
-			const langs = resourceContent[selectedResource].allFileVersions
-			setLanguages(langs.split(`;`))
+			let langs = resourceContent[selectedResource].allFileVersions.split(";")
+			langs.forEach((element, i) => {
+				if(element === ""){
+					delete langs[i]
+				}
+			});
+			setLanguages(langs)
 			console.log(resourceContent[selectedResource])
 		}
 
@@ -169,6 +174,11 @@ const CreateContentContainer = props => {
 
 	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
+
+		if(data.targetLanguages === ''){
+			alert('Please, select a valid language')
+			return;
+		}
 
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
 		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO

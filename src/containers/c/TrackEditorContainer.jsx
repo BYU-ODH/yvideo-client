@@ -7,7 +7,7 @@ import { interfaceService, resourceService, contentService } from 'services'
 
 import { TrackEditor } from 'components'
 
-// import { interfaceService } from 'services'
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const TrackEditorContainer = props => {
 
@@ -20,6 +20,7 @@ const TrackEditorContainer = props => {
 		updateContent,
 		getStreamKey,
 		streamKey,
+		toggleModal,
 	} = props
 
 	const {id} = useParams()
@@ -61,13 +62,20 @@ const TrackEditorContainer = props => {
 
 	//console.log(eventsArray)
 
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: 'Track Editor'},
+		})
+	}
+
 	const viewstate = {
 		currentContent,
 		url,
 		eventsArray,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent}/>
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} handleShowHelp={handleShowHelp}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore }) => ({
@@ -82,6 +90,7 @@ const mapThunksToProps = {
 	getContent: contentService.getContent,
 	getStreamKey: resourceService.getStreamKey,
 	updateContent: contentService.updateContent,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)
