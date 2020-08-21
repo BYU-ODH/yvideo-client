@@ -45,7 +45,7 @@ const ManageCollectionContainer = props => {
 			//console.log('no content')
 		}
 		setCollectionName(collection.name)
-	}, [collection.content, collection.name, content, getCollections, setContent])
+	}, [collection.name, getCollections])
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
