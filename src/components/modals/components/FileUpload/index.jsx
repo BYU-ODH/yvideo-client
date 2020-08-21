@@ -20,7 +20,7 @@ export default class FileUpload extends PureComponent {
 		} = this.props.viewstate
 
 		const {
-			updateFileVersion,
+			handleFileVersion,
 			handleFileChange,
 			handleFileUpload,
 			toggleModal,
@@ -44,7 +44,7 @@ export default class FileUpload extends PureComponent {
 
 				<label htmlFor='create-resource-file-version'>
 					<h4>File Version</h4>
-					<CategorySelect id='categorySelect' onChange={updateFileVersion}>
+					<CategorySelect id='categorySelect' onChange={handleFileVersion}>
 						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
 								{category[c].name}

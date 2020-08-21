@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {
@@ -15,7 +15,8 @@ const FileUploadContainer = props => {
 		// resource id from the Resource Overview Container
 		resourceId,
 		toggleModal,
-		resource,
+		updateFileVersion,
+		resources,
 		uploadFile,
 		getFiles,
 		getResource,
@@ -55,11 +56,6 @@ const FileUploadContainer = props => {
 		setSelectedFile(e.target.files[0])
 	}
 
-	const updateFileVersion = e => {
-		e.preventDefault()
-		setFileVersion(e.target.value)
-	}
-
 	const handleFileMetadata = e => {
 		e.preventDefault()
 		setFileMetadata(e.target.value)
@@ -68,6 +64,11 @@ const FileUploadContainer = props => {
 	const handleFileMime = e => {
 		e.preventDefault()
 		setFileMime(e.target.value)
+	}
+
+	const handleFileVersion = e => {
+		e.preventDefault()
+		setFileVersion(e.target.value)
 	}
 
 	const handleFileUpload = async(e) =>{
@@ -82,7 +83,11 @@ const FileUploadContainer = props => {
 
 		await uploadFile(formData)
 		await getFiles(resourceId)
+
 		toggleModal()
+
+		// TODO: update fileversion
+		// await updateFileVersion(resources[resourceId], fileVersion, true, formData)
 	}
 
 	const viewstate = {
@@ -91,8 +96,8 @@ const FileUploadContainer = props => {
 	}
 
 	const handlers = {
-		updateFileVersion,
 		handleFileChange,
+		handleFileVersion,
 		handleFileUpload,
 		handleFileMetadata,
 		handleFileMime,
@@ -105,12 +110,13 @@ const FileUploadContainer = props => {
 const mapStateToProps = store => ({
 	user: store.authStore.user,
 	modal: store.interfaceStore.modal,
-	resource: store.resourceStore.cache,
+	resources: store.resourceStore.cache,
 })
 
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	uploadFile: fileService.upload,
+	updateFileVersion: resourceService.updateFileVersion,
 	getResource: resourceService.getResource,
 	getFiles: resourceService.getFiles,
 }

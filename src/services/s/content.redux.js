@@ -144,6 +144,7 @@ export default class ContentService {
 		dispatch(this.actions.contentStart())
 
 		try {
+      
 			dispatch(this.actions.contentSet(content))
 		} catch (error) {
 			dispatch(this.actions.contentError(error))

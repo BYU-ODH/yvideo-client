@@ -38,18 +38,24 @@ const FileOverviewContainer = props => {
 		e.preventDefault()
 		updateFile(file.id, fileState)
 		editFileResource(fileState[`resource-id`], fileState)
-
-		// TODO: need to update file version onto resource
-		// updateFileVersion(fileState)
 		toggleModal()
 	}
-
-	console.log(resources)
 
 	const handleRemoveFile = e => {
 		e.preventDefault()
 		removeFile(file.id)
 		editFileResource(fileState[`resource-id`], file, false)
+
+		// TODO: need to update file version onto resource
+		const fileResourceId = fileState[`resource-id`]
+		const resource = resources[fileResourceId]
+		const allFileVersions = resource.allFileVersions.split(`;`)
+		const arr = []
+		allFileVersions.forEach(item => {
+			if(item !== file[`file-version`]) arr.push(item)
+		})
+		const newAllFileVersions = arr.join(`;`)
+		updateFileVersion(resource, newAllFileVersions)
 		toggleModal()
 	}
 

@@ -1,4 +1,5 @@
 import ResourceObject from '../../models/ResourceObject'
+import { fileService } from '..'
 
 export default class ResourceService {
 
@@ -205,22 +206,6 @@ export default class ResourceService {
 		}
 	}
 
-	getFiles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-		dispatch(this.actions.resourcesStart())
-
-		try {
-
-			const result = await apiProxy.resources.files(id)
-
-			dispatch(this.actions.resourcesFiles(id, result))
-
-			// console.log(getState().resourceStore)
-
-		} catch (error) {
-			dispatch(this.actions.resourcesError(error))
-		}
-	}
-
 	editFile = (resourceId, file, edit = true) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
@@ -313,13 +298,26 @@ export default class ResourceService {
 		}
 	}
 
-	updateFileVersion = (resource, allFileVersions) => async (dispatch, getState, { apiProxy }) => {
+	getFiles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			const result = await apiProxy.resources.files(id)
+
+			dispatch(this.actions.resourcesFiles(id, result))
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	// TODO: need to update the local store as well
+	updateFileVersion = (resource, fileVersion) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
 		try {
 
 			const backendForm = {
-				// "id": resource.id,
 				"copyrighted": resource.copyrighted,
 				"resource-name": resource.resourceName,
 				"physical-copy-exists": resource.physicalCopyExists,
@@ -328,16 +326,14 @@ export default class ResourceService {
 				"full-video": resource.fullVideo,
 				"metadata": resource.metadata,
 				"requester-email": resource.requesterEmail,
-				"all-file-versions": allFileVersions,
+				"all-file-versions": fileVersion,
 				"resource-type": resource.resourceType,
 				"date-validated": resource.dateValidated,
 			}
 
 			const result = await apiProxy.resources.edit(backendForm, resource.id)
-
-			console.log(`it is here`)
+			dispatch(this.actions.resourceEdit(resource))
 			console.log(result)
-			// dispatch(this.actions.resourceEdit(resource))
 		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}
