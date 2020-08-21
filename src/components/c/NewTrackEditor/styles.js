@@ -401,3 +401,11 @@ export const AnnotationMessage = styled.div`
 		font-size: 2.5rem;
 	}
 `
+
+export const Help = styled.img`
+	width: 30px;
+	height: 30px;
+	margin-left: 10px;
+	position: relative;
+	top: 10px;
+`

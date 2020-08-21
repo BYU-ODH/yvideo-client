@@ -221,6 +221,16 @@ const apiProxy = {
 		},
 	},
 	content: {
+		getSingleContent: async id => await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`, {
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`,
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+			return res.data
+		}),
 		/**
 		 * Retrieves content from a list of content IDs
 		 *

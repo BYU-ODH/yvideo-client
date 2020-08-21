@@ -37,7 +37,6 @@ export default class ContentService {
 		cache: {},
 		loading: false,
 		lastFetched: 0,
-		getter: {},
 	}
 
 	// reducer
@@ -106,11 +105,10 @@ export default class ContentService {
 		case CONTENT_GET:
 			return {
 				...store,
-				getter: {
-					...action.payload.content,
+				cache: {
+					...store.cache,
+					[action.payload.content.id]: action.payload.content,
 				},
-				loading: false,
-				lastFetched: Date.now(),
 			}
 
 		case CONTENT_UPDATE:
@@ -145,18 +143,27 @@ export default class ContentService {
 		//SETS CONTENT FOR ALL THE COLLECTIONS OF THE USER
 		dispatch(this.actions.contentStart())
 
-		// console.log('updated content1', content)
-
 		try {
-			// TODO: Why doesn't this update to state cause it to rerender?
-			// dispatch(this.actions.contentCreate(data))
-			//console.log('FROM REDUX', content)
-
 			dispatch(this.actions.contentSet(content))
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}
+	}
 
+	getContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
+		//GETS SPECIFIC CONTENT BASED ON CONTENT ID FROM THE BACK END IF THE CONTENT STORE DOES NOT HAVE IT
+		dispatch(this.actions.contentStart())
+
+		try {
+
+			const result = await apiProxy.content.getSingleContent(id)
+
+			const newContent = new Content(result)
+
+			dispatch(this.actions.contentGet(newContent))
+		} catch (error) {
+			dispatch(this.actions.contentError(error))
+		}
 	}
 
 	// getContent = (contentIds, force = false) => async (dispatch, getState, { apiProxy }) => {
