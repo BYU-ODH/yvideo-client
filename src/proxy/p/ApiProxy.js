@@ -332,6 +332,7 @@ const apiProxy = {
 			},
 		}).then(res => {
 			updateSessionId(res.headers[`session-id`])
+			return res.data
 		}),
 		/**
 		 * Retrieves a single resource from a resource ID

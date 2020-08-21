@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { useParams } from 'react-router-dom'
 
 import {
 	interfaceService,
@@ -13,8 +12,6 @@ import ManageFiles from 'components/modals/components/ManageFiles'
 const ManageFilesContainer = props => {
 
 	const {
-		modal,
-		user,
 		files,
 		toggleModal,
 	} = props

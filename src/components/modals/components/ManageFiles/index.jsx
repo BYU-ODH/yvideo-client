@@ -29,10 +29,6 @@ export default class ManageFiles extends PureComponent {
 					</div>
 
 					{Object.keys(files).map(index => <FileOverviewContainer key={files[index].id} file={files[index]} />)}
-					{/* <div>
-						<Button type='button' onClick={toggleModal}>Cancel</Button>
-						<Button type='submit' color={`#0582CA`}>Update</Button>
-					</div> */}
 				</Form>
 			</>
 		)
