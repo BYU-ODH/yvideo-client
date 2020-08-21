@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import FileUploadContainer from 'components/modals/containers/FileUploadContainer'
+import ConfirmDeleteResourceContainer from 'components/modals/containers/ConfirmDeleteResourceContainer'
 import ManageFilesContainer from 'components/modals/containers/ManageFilesContainer'
 
 import {
@@ -32,27 +33,27 @@ const ResourceOverviewContainer = props => {
 	const [showing, setShowing] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
-	const [fileVersions, setFileVersions] = useState([])
-	const [allFileVersions, setAllFileVersions] = useState(``)
+	const [fileVersions, setFileVersions] = useState(0)
+	// const [allFileVersions, setAllFileVersions] = useState(``)
 
 	useEffect(() => {
 
-		if(editing) setFiles(resourceCache[resource.id].files)
+		if(editing && resourceCache[resource.id].files !== undefined)
+			setFiles(resourceCache[resource.id].files)
 
-		// TODO: need to update file versions from the files to the resource all-file-versionns
-		if(resource.files !== undefined && fileVersions.length !== resource.files.length){
-			const langs = []
+		if(files.length !== fileVersions){
+			setFileVersions(files.length)
+
+			let langs = ``
 			files.forEach(file => {
-				langs.push(file[`file-version`])
+				langs = langs.concat(`${file[`file-version`]};`)
 			})
-			setFileVersions(langs)
 
-			setAllFileVersions(fileVersions.join(`;`))
+			if(resource.allFileVersions !== langs)
+				updateAllFileVersions(resource, langs)
 		}
 
-		if(allFileVersions.length !== 0) updateAllFileVersions(resource, allFileVersions)
-
-	}, [allFileVersions, editing, fileVersions, fileVersions.length, files, resource, resource.files, resource.id, resourceCache, updateAllFileVersions, files.length])
+	}, [editing, fileVersions, files, resource, resourceCache, updateAllFileVersions])
 
 	if (objectIsEmpty(resource)) return null
 
@@ -74,11 +75,22 @@ const ResourceOverviewContainer = props => {
 			setTimeout(() => {
 				setEditing(false)
 			}, 500)
-		} else setEditing(true)
+		} else
+			setEditing(true)
+
 	}
 
 	const handleRemoveResource = e => {
-		removeResource(resource.id)
+
+		// TODO: confirming delete pop up
+
+		props.toggleModal({
+			component: ConfirmDeleteResourceContainer,
+			props: {
+				resourceId: resource.id,
+			},
+		})
+		// removeResource(resource.id)
 	}
 
 	const handleResourceName = e => {
