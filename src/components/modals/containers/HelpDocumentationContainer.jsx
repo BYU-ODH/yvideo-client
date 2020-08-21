@@ -80,7 +80,7 @@ const HelpDocumentationContainer = props => {
 				</div>
 				<hr/>
 				<div class="section large-img">
-					<p><b>Managing content:</b> Each collection will display a list of content. Each content will show the name, subtitles icon, language icon, a link to edit content, and a link to edit the video.
+					<p><b>Managing content:</b> Each collection will display a list of content. Each content will show the name, translation icon, captions icon, a link to edit content, and a link to edit the video.
 						<br/>
 					 	<b>Edit Content:</b> you can edit the content settings by clicking the edit button. This allows you to delete content, publish/unpublish a content even if the collection is visible to students, add a description,
 						tags related to the video content, and activate subtiltes or definitions.
