@@ -19,7 +19,7 @@ const CollectionPermissionsContainer = props => {
 	const collectionRoles = roles[collection.id]
 
 	const [state, setState] = useState({
-		department: `*`,
+		department: ``,
 		catalog: ``,
 		section: ``,
 		taFaculty: ``,
@@ -118,11 +118,11 @@ const CollectionPermissionsContainer = props => {
 			if (catalog) body.catalogNumber = catalog
 			if (section) body.sectionNumber = section
 
-			updateCollectionRoles(collection.id, roleEndpoints.addCourse, [body])
+			updateCollectionRoles(collection.id, roleEndpoints.addCourse, body)
 
 			setState({
 				...state,
-				department: `*`,
+				department: ``,
 				catalog: ``,
 				section: ``,
 				disabled: {
@@ -146,7 +146,7 @@ const CollectionPermissionsContainer = props => {
 			if (data.Section) body.sectionNumber = data.Section
 
 			if (body.department !== null && body.id !== null)
-				updateCollectionRoles(collection.id, roleEndpoints.removeCourse, [body])
+				updateCollectionRoles(collection.id, roleEndpoints.removeCourse, body)
 			else alert(`Error, department not found`)
 		},
 		addTaFaculty: e => {

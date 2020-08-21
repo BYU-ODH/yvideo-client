@@ -326,6 +326,8 @@ export default class CollectionService {
 
 		dispatch(this.actions.collectionsStart())
 
+		console.log(body, typeof body)
+
 		try {
 			const { data = {} } = await apiProxy.collection.permissions.post(collectionId, endpoint, body)
 

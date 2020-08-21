@@ -204,7 +204,11 @@ const apiProxy = {
 			 *
 			 * @returns nothing, idk
 			 */
-			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, body, {
+			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, {
+				'department': body.department,
+				'catalog-number': body.catalogNumber,
+				'section-number': body.sectionNumber,
+			}, {
 				withCredentials: true,
 				headers: {
 					'Content-Type': `application/json`,
@@ -212,6 +216,7 @@ const apiProxy = {
 				},
 			}).then(res => {
 				updateSessionId(res.headers[`session-id`])
+				return res.data
 			}),
 		},
 	},
@@ -263,6 +268,7 @@ const apiProxy = {
 			},
 		}).then(res => {
 			updateSessionId(res.headers[`session-id`])
+			return res.data
 		}),
 		addView: {
 			/**
