@@ -19,9 +19,9 @@ const apiProxy = {
 					withCredentials: true,
 					headers: {'session-id': window.clj_session_id},
 				}).then(res => {
-					updateSessionId(res.headers['session-id'])
-					return res.data
-				}),
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
 		},
 		collection: {
 			// get: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id,} }).then(res => res.data),
@@ -228,17 +228,17 @@ const apiProxy = {
 			const results = await Promise.all(ids.map(id =>
 
 				axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`,
-				{
-					withCredentials: true,
-					headers: {
-						'Content-Type': `application/json`,
-						'session-id': window.clj_session_id,
-					},
-				}).then(res => {
-					updateSessionId(res.headers['session-id'])
+					{
+						withCredentials: true,
+						headers: {
+							'Content-Type': `application/json`,
+							'session-id': window.clj_session_id,
+						},
+					}).then(res => {
+					updateSessionId(res.headers[`session-id`])
 					return res.data
-				})
-				))
+				}),
+			))
 
 			// console.log('get content')
 			const returnMe = results.reduce((map, item) => {
@@ -351,9 +351,9 @@ const apiProxy = {
 					'session-id': window.clj_session_id,
 				},
 			}).then( async res => {
-				await updateSessionId(res.headers['session-id'])
-				return res.data
-			}),
+			await updateSessionId(res.headers[`session-id`])
+			return res.data
+		}),
 		files: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`,
 			{
 				withCredentials: true,

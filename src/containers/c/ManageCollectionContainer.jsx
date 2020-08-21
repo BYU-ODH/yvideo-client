@@ -28,9 +28,9 @@ const ManageCollectionContainer = props => {
 
 	useEffect(() => {
 		if(collection.content.length > 0){
-			if(content[collection.content[0].id]){
-				console.log('got cached content')
-			}
+			if(content[collection.content[0].id])
+				console.log(`got cached content`)
+
 			else {
 				const allContent = {}
 				collection.content.forEach(item => {
@@ -40,7 +40,7 @@ const ManageCollectionContainer = props => {
 			}
 		}
 		setCollectionName(collection.name)
-	}, [collection.name, getCollections])
+	}, [collection.content, collection.name, content, getCollections, setContent])
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
