@@ -301,7 +301,9 @@ const apiProxy = {
 			updateSessionId(res.headers[`session-id`])
 		}))),
 		getSubtitles: async id => {
-			const results = axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/subtitles`,
+			console.log(`here`)
+			console.log(window.clj_session_id)
+			const results = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/subtitles`,
 				{
 					withCredentials: true,
 					headers: {
@@ -311,7 +313,7 @@ const apiProxy = {
 				}).then(res => {
 
 				updateSessionId(res.headers[`session-id`])
-
+				console.log(`results are`,res)
 				return res.data
 			})
 			return results
@@ -460,13 +462,21 @@ const apiProxy = {
 		}),
 	},
 	subtitles: {
-		post: async (data) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle`,data,{
-			withCredentials: true,
-			headers: {
-				'Content-Type' : `application/json`,
-				'session-id' : window.clj_session_id,
-			},
-		}),
+		post: async (data) => {
+			console.log(data)
+			await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle`,data,{
+				withCredentials: true,
+				headers: {
+					'Content-Type' : `application/json`,
+					'session-id' : window.clj_session_id,
+				},
+			}).then(res => {
+
+				updateSessionId(res.headers[`session-id`])
+
+				return res.data.id
+			})
+		},
 		get: async ids => {
 			console.log(`wut?`)
 			const results = await Promise.all(ids.map(id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle/${id}`,
@@ -485,7 +495,28 @@ const apiProxy = {
 			console.log(`my sub results are`)
 			return results
 		},
-		update: async (sub) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle/${sub[`id`]}`),
+		delete: async (ids) => {
+			await Promise.all(ids.map(id =>axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle/${id}`, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+			})))
+			console.log(`he re`)
+		},
+
+		edit: async (sub, id) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle/${id}`, sub, {
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`,
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+		}),
 	},
 }
 

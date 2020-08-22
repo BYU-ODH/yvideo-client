@@ -176,7 +176,7 @@ export default class ContentService {
 		const { cache } = getState().contentStore
 		const cachedIds = Object.keys(cache).map(id => id)
 		const notCached = contentIds.filter(id => !cachedIds.includes(id))
-
+		console.log(`content is getting`)
 		// console.log('updated store', contentIds)
 
 		if (stale || notCached.length || force) {
@@ -270,24 +270,20 @@ export default class ContentService {
 		const time = Date.now() - getState().contentStore.lastFetched
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
-		// console.log('updated store', contentIds)
+		console.log(`testing`)
+		dispatch(this.actions.contentStart())
 
-		if (stale || force) {
+		try {
+			console.log(`try`)
+			const result = await apiProxy.content.getSubtitles(id)
+			console.log(`hello`)
+			return result
 
-			dispatch(this.actions.contentStart())
-
-			try {
-
-				const result = await apiProxy.content.getSubtitles(id)
-
-				dispatch(this.actions.subtitlesIds(result))
-
-			} catch (error) {
-				console.error(error.message)
-				dispatch(this.actions.contentError(error))
-			}
-
-		} else dispatch(this.actions.contentAbort())
+		} catch (error) {
+			console.error(error.message)
+			console.log(`oof`)
+			dispatch(this.actions.contentError(error))
+		}
 	}
 	addSubtitles = subs => async (dispatch, getState, { apiProxy }) => {
 

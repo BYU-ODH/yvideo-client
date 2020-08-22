@@ -37,10 +37,10 @@ const TrackEditor = props => {
 
 	// console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
 
-	const { setEvents, updateContent, createSub } = props
+	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles } = props
 
 	const { eventsArray, currentContent,subs } = props.viewstate
-
+	console.log(subs)
 	const events = [
 		{
 			type: `Skip`,
@@ -99,7 +99,6 @@ const TrackEditor = props => {
 		parseSub[i].start = parseSub[i].start/1000
 		parseSub[i].end = parseSub[i].end/1000
 	}
-
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
@@ -123,6 +122,7 @@ const TrackEditor = props => {
 	const [subToEdit, setSubToEdit] = useState(0)
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
 	const [subSelected, setSubSelected] = useState(false)
+	const [subLayersToDelete, setSubLayersToDelete] = useState([])
 	// const [editCensor, setEditCensor] = useState({})
 	// const [lastClick, setLastClick] = useState({x: 0, y: 0})
 	// console.log(allEvents)
@@ -176,10 +176,6 @@ const TrackEditor = props => {
 				setSaved(false)
 			}, 3000)
 		}
-		const tempSubs = subs
-		for (let i = 0; i < tempSubs.length; i++)
-			tempSubs[i][`content`] = Subtitle.parse(tempSubs[i][`content`])
-
 	}, [eventsArray])
 
 	if(shouldUpdate === true)
@@ -202,11 +198,20 @@ const TrackEditor = props => {
 	// }
 
 	const getVideoDuration = (duration) => {
+		console.log(`setting video length`)
 		setVideoLength(duration)
-		for (let i = 0; i < subtitles.length; i++){
-			subtitles[i].start = subtitles[i].start/duration * 100
-			subtitles[i].end = subtitles[i].end/duration * 100
+		const tempSubs = subs
+		for (let i = 0; i < tempSubs.length; i++){
+			console.log(tempSubs[i])
+			tempSubs[i][`content`] = Subtitle.parse(tempSubs[i][`content`])
+			console.log(tempSubs[i][`content`])
+			for (let x = 0; x < tempSubs[i][`content`].length;x++){
+				tempSubs[i][`content`].start = tempSubs[i][`content`].start/1000/duration * 100
+				tempSubs[i][`content`].end = tempSubs[i][`content`].end/1000/duration * 100
+			}
 		}
+		setSubs(tempSubs)
+
 	}
 
 	const handleTabChange = tab => () => {
@@ -280,12 +285,13 @@ const TrackEditor = props => {
 		}
 
 		currentEvents.push(eventObj)
+		console.log(currentEvents)
 		setAllEvents(currentEvents)
 		setDisplayLayer(index)
 	}
 
 	const updateEvents = (index, event, layerIndex) => {
-		// console.log('Update', event)
+		console.log(`Update`, event)
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
@@ -357,6 +363,7 @@ const TrackEditor = props => {
 		const currentSubs = [...subtitles]
 		currentSubs[subLayerToEdit][`content`].splice(subToEdit,1)
 		setSubs(currentSubs)
+		setAllSubs(currentSubs)
 		setSideEditor(false)
 	}
 	const filler = () =>{
@@ -439,6 +446,7 @@ const TrackEditor = props => {
 	const openSubEditor = (layerIndex,subIndex) =>{
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
+		activeUpdate(layerIndex)
 		setSideEditor(true)
 	}
 
@@ -456,14 +464,26 @@ const TrackEditor = props => {
 		setSaved(true)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
-		const rawSubs = subtitles
-		for (let i = 0; i < rawSubs.length;i++)
-			rawSubs[i][`content`] = Subtitle.stringify(rawSubs[i][`content`])
 
 		updateContent(content)
-		createSub(rawSubs)
+		handleSaveSubtitles()
+		console.log(subLayersToDelete)
+		deleteSubtitles(subLayersToDelete)
 	}
 	const handleSaveSubtitles = () => {
+		const rawSubs = subtitles
+		console.log(rawSubs)
+		for (let i = 0; i < rawSubs.length;i++){
+			for(let x = 0; x<rawSubs[i][`content`].length;x++){
+				rawSubs[i][`content`][x].start = rawSubs[i][`content`][x].start / 100 * videoLength * 1000
+				rawSubs[i][`content`][x].end = rawSubs[i][`content`][x].end / 100 * videoLength * 1000
+			}
+			console.log(rawSubs[i][`content`])
+			rawSubs[i][`content`] = Subtitle.stringify(rawSubs[i][`content`])
+			console.log(rawSubs[i][`content`])
+		}
+		console.log(rawSubs)
+		createSub(rawSubs)
 
 	}
 	const handleScrollFactor = (direction) => {
@@ -682,10 +702,12 @@ const TrackEditor = props => {
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 		setSubs(tempSubs)
+		setAllSubs(tempSubs)
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
+		activeUpdate(subLayerIndex)
 		setSubSelected(true)
 		// setSideEditor(true)
 	}
@@ -703,7 +725,9 @@ const TrackEditor = props => {
 
 		currentSubs[index][`content`].push(newSub)
 		setSubLayerToEdit(index)
+		activeUpdate(index)
 		setSubs(currentSubs)
+		setAllSubs(currentSubs)
 	}
 	const checkSideBarTitle = () => {
 		try {
@@ -733,6 +757,7 @@ const TrackEditor = props => {
 			}
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
+			setAllSubs(tempSubList)
 		}else {
 			const tempSubList = subtitles
 			const tempSub = {
@@ -743,15 +768,34 @@ const TrackEditor = props => {
 			}
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
+			setAllSubs(tempSubList)
 
 		}
 		setSideEditor(false)
 	}
 	const handleDeleteSubLayer = (index) =>{
 		const tempSubs = subtitles
+		console.log(tempSubs[index])
+		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
+			const deleteSub = subLayersToDelete
+			deleteSub.push(tempSubs[index][`id`])
+			setSubLayersToDelete(deleteSub)
+		}
 		tempSubs.splice(index, 1)
 		setSubs(tempSubs)
-
+		setAllSubs(tempSubs)
+	}
+	const updateSubLayerTitle = (title) =>{
+		const temp = subtitles
+		temp[subLayerToEdit][`title`] = title
+		setSubs(temp)
+		setAllSubs(temp)
+	}
+	const updateSubLayerLanguage = (language) =>{
+		const temp = subtitles
+		temp[subLayerToEdit][`language`] = language
+		setSubs(temp)
+		setAllSubs(temp)
 	}
 	return (
 		<Style>
@@ -802,7 +846,7 @@ const TrackEditor = props => {
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
 										<div className={`handle`}>
-											<p>SubTitles<img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>setSubtitles(false)} /></p>
+											<p>SubTitles<img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p>
 										</div>
 										<SubtitlesLayer
 											videoLength={videoLength}
@@ -925,6 +969,8 @@ const TrackEditor = props => {
 							</div>
 							{ showSideEditor !== false && eventListMinimized !== true ? (
 								<TrackEditorSideMenu
+									updateLanguage = {updateSubLayerLanguage}
+									updateTitle = {updateSubLayerTitle}
 									singleEvent={checkEventOrSub()}
 									index={checkIndex()}
 									videoLength={videoLength}

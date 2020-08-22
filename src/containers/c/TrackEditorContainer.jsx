@@ -18,13 +18,14 @@ const TrackEditorContainer = props => {
 		getResource,
 		getContent,
 		updateContent,
-		subs,
+		allSubs,
 		getSubtitles,
 		updateSubtitle,
 		createSubtitle,
-		addSubtitles,
-		contentGetSubtitles,
-		subtitlesIds,
+		setSubtitles,
+		activeUpdate,
+		deleteSubtitle,
+
 	} = props
 
 	const {id} = useParams()
@@ -32,45 +33,50 @@ const TrackEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
+	const [subs,setSubs] = useState([])
 
-	// console.log(content)
-
+	const getData = async() => {
+		// console.log(`these subs are`, subs)
+		await getContent([id])
+		const testsubs = await getSubtitles(id)
+		setSubs(testsubs !== undefined?testsubs:[])
+	}
 	useEffect(() => {
 		// console.log('use effecct')
 		if(!content.hasOwnProperty(id))
-			getContent([id])
+			getData()
 
 		if(content[id] !== undefined){
-			// console.log(content[id].settings.annotationDocument)
-			console.log(content)
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
 			setUrl(content[id].url)
-			contentGetSubtitles(content[id])
-			getSubtitles(subtitlesIds)
-
 		}
+		console.log(eventsArray,subs)
+	}, [content, resource, eventsArray, currentContent,subs,setSubs])
 
-	}, [content, resource, eventsArray, currentContent])
-
-	const createAndAddSub = (newSubs) =>{
-		const subtitles = newSubs
-		// for (let x = 0; x < newSubs.length; x++){
-		// 	console.log(`testing Subtitles`,)
-		// 	const deleteSub = newSubs.find(sub => sub[`id`] === subtitles[x][`id`] )
-		// 	// DELETE sub function here
-		// }
-		for(let i = 0; i<subtitles.length;i++){
-			if (subtitles[i][`id`] === ``){
-				subtitles[i][`content-id`] = id
-				const subId = createSubtitle(subtitles[i])
-				console.log(`subid`,subId)
+	const createAndAddSub = async (subtitles) =>{
+		console.log(subtitles)
+		try{
+			for(let i = 0; i<subtitles.length;i++){
+				if (subtitles[i][`id`] === ``){
+					subtitles[i][`content-id`] = id
+					console.log(subtitles[i])
+					const subId = await createSubtitle(subtitles[i])
+					subtitles[i][`id`] = subId
+					console.log(`subid`,subId)
+				}else if(subtitles[i][`id`] !== ``)
+					updateSubtitle(subtitles[i])
 			}
+		}catch(error){
+
 		}
+
+	}
+	const deleteSubs = async(subs) =>{
+		deleteSubtitle(subs)
 	}
 	// console.log(eventsArray)
-	console.log(subs)
 	const viewstate = {
 		currentContent,
 		url,
@@ -78,14 +84,14 @@ const TrackEditorContainer = props => {
 		subs,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub}/>
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setSubtitles} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
 	resource: resourceStore.cache,
 	content: contentStore.cache,
-	subs: subtitlesStore.cache,
-	subtitlesIds: contentStore.subtitlesIds,
+	allSubs: subtitlesStore.cache,
+	subContentId: subtitlesStore.contentId,
 })
 
 const mapThunksToProps = {
@@ -94,10 +100,12 @@ const mapThunksToProps = {
 	getContent: contentService.getContent,
 	updateContent: contentService.updateContent,
 	getSubtitles: subtitlesService.getSubtitles,
+	setSubtitles: subtitlesService.setSubtitles,
+	deleteSubtitle: subtitlesService.deleteSubtitle,
 	updateSubtitle: subtitlesService.updateSubtitle,
 	createSubtitle: subtitlesService.createSubtitle,
-	addSubtitles: contentService.addSubtitles,
-	contentGetSubtitles: contentService.getSubtitles,
+	activeUpdate: subtitlesService.activeUpdate,
+	setSubContentId: subtitlesService.setContentId,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

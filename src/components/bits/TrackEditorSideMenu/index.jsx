@@ -22,12 +22,15 @@ const TrackEditorSideMenu = props => {
 		changeSubIndex,
 		addSub,
 		subLayer,
+		updateLanguage,
+		updateTitle,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
 	const [subText, setSubText] = useState(``)
-
+	const [language, setLanguage] = useState(``)
+	const [title, setTitle] = useState(``)
 	useEffect(() => {
 		setEvent(singleEvent)
 	}, [index])
@@ -140,6 +143,26 @@ const TrackEditorSideMenu = props => {
 		<Style>
 			<div>
 				<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+				{isSub ? (
+					<>
+						<div className='center'>
+							<label>Title</label>
+							<label>Language</label>
+						</div>
+						<div className='center'>
+							<input type='text' className='sideTabInput' value={title} onChange={e => {
+								updateTitle(e.target.value)
+								setTitle(e.target.value)
+							}
+							}/>
+							<input type='text' className='sideTabInput' value={language} onChange={e => {
+								updateLanguage(e.target.value)
+								setLanguage(e.target.value)
+							}}/>
+						</div>
+
+					</>
+				):``}
 				<div className='center'>
 					<label>Start</label>
 					<label style={{ visibility: `${event.type !== `Pause` ? `visible` : `hidden`}`}}>End</label>
