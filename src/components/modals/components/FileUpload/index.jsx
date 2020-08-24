@@ -53,7 +53,8 @@ export default class FileUpload extends PureComponent {
 					</CategorySelect>
 				</label>
 
-				<label htmlFor='create-resource-file-metadata'>
+				{/* TODO: These can be used for later for an extra data */}
+				{/* <label htmlFor='create-resource-file-metadata'>
 					<h4>Metadata</h4>
 					<textarea onChange={handleFileMetadata} rows={2}/>
 				</label>
@@ -61,7 +62,7 @@ export default class FileUpload extends PureComponent {
 				<label htmlFor='create-resource-file-mime'>
 					<h4>Mime</h4>
 					<textarea onChange={handleFileMime} rows={2}/>
-				</label>
+				</label> */}
 
 				<div>
 					<Button type='button' onClick={toggleModal}>Cancel</Button>

@@ -4,18 +4,20 @@ import {
 	ConfirmDeleteBox,
 	ConfirmBox,
 	ConfirmButton,
+	Logo,
 } from './styles'
 
-export default class ConfirmDeleteResource extends PureComponent {
+export default class DeleteConfirm extends PureComponent {
 
 	render() {
 
 		const {
-			resourceId,
+			title,
+			type,
 		} = this.props.viewstate
 
 		const {
-			handleRemoveResource,
+			handleRemoveItem,
 			toggleModal,
 		} = this.props.handlers
 
@@ -24,10 +26,13 @@ export default class ConfirmDeleteResource extends PureComponent {
 				{
 					<ConfirmDeleteBox>
 						<ConfirmBox>
-							<p>Are you sure you want to delete this {resourceId}?<br/>Once deleted it cannot be recovered</p>
+							<div>
+								<Logo></Logo><p>Delete {type}?</p>
+							</div>
+							<p>Are you sure you want to delete '{title}'?<br/>Once deleted it cannot be recovered.</p>
 							<div>
 								<button onClick={toggleModal}>Cancel</button>
-								<ConfirmButton onClick={handleRemoveResource}>Delete</ConfirmButton>
+								<ConfirmButton onClick={handleRemoveItem}>Delete</ConfirmButton>
 							</div>
 						</ConfirmBox>
 					</ConfirmDeleteBox>

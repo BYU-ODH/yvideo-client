@@ -85,9 +85,6 @@ const FileUploadContainer = props => {
 		await getFiles(resourceId)
 
 		toggleModal()
-
-		// TODO: update fileversion
-		// await updateFileVersion(resources[resourceId], fileVersion, true, formData)
 	}
 
 	const viewstate = {

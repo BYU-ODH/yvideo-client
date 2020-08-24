@@ -100,7 +100,6 @@ const CreateContentContainer = props => {
 	const handleSelectResourceChange = (e, name) => {
 		const { target } = e
 		setSelectedResource(target.value)
-		console.log(target)
 		setSearchQuery(name)
 		setHide(true)
 	}

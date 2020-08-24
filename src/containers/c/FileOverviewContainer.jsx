@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import { FileOverview } from 'components'
 
+import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
+
 import { interfaceService, fileService, resourceService } from 'services'
 
 const FileOverviewContainer = props => {
@@ -42,21 +44,13 @@ const FileOverviewContainer = props => {
 	}
 
 	const handleRemoveFile = e => {
-		e.preventDefault()
-		removeFile(file.id)
-		editFileResource(fileState[`resource-id`], file, false)
-
-		// TODO: need to update file version onto resource
-		const fileResourceId = fileState[`resource-id`]
-		const resource = resources[fileResourceId]
-		const allFileVersions = resource.allFileVersions.split(`;`)
-		const arr = []
-		allFileVersions.forEach(item => {
-			if(item !== file[`file-version`]) arr.push(item)
+		props.toggleModal({
+			component: DeleteConfirmContainer,
+			props: {
+				type: `file`,
+				file,
+			},
 		})
-		const newAllFileVersions = arr.join(`;`)
-		updateFileVersion(resource, newAllFileVersions)
-		toggleModal()
 	}
 
 	const handlers = {

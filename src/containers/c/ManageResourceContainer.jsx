@@ -31,10 +31,14 @@ const ManageResourceContainer = props => {
 		setIsDefaultSearched(true)
 	}
 
+	const handleSubmit = e => {
+		e.preventDefault()
+		searchResource(searchQuery)
+	}
+
 	const handleSearchTextChange = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		searchResource(value)
 	}
 
 	const handleSelectResourceChange = e => {
@@ -52,6 +56,7 @@ const ManageResourceContainer = props => {
 		handleSelectResourceChange,
 		handleSearchTextChange,
 		addResource,
+		handleSubmit,
 	}
 
 	return <ManageResource viewstate={viewstate} handlers={handlers} />

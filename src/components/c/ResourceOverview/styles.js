@@ -58,7 +58,7 @@ export const EditButton = styled.button`
 
 export const InnerContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr 2fr;
+	grid-template-columns: 1.5fr 1fr 2fr;
 	padding: 15px;
 `
 
@@ -66,6 +66,7 @@ export const Type = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	width: 22rem;
 `
 
 export const Column = styled.div`
@@ -147,6 +148,7 @@ export const FileUploadButton = styled.button`
 export const TitleEdit = styled.input`
 	margin-left: 1rem;
 	box-sizing: border-box;
+	width: 18rem;
 `
 
 export const Title = styled.form`

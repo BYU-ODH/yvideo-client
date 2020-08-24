@@ -16,6 +16,7 @@ export class ManageResource extends PureComponent {
 		const {
 			addResource,
 			handleSearchTextChange,
+			handleSubmit,
 		} = this.props.handlers
 
 		return (
@@ -29,9 +30,10 @@ export class ManageResource extends PureComponent {
 					</div>
 				</header>
 
-				<Search >
+				<Search id='searchSubmit' onSubmit={handleSubmit}>
 					<SearchIcon />
 					<input type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
+					<button type='submit'>Search</button>
 				</Search>
 
 				<div>

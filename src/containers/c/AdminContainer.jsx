@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import ConfirmDeleteContainer from 'components/modals/containers/ConfirmDeleteContainer'
 
+import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
+
 import { Admin } from 'components'
 
 import { adminService, interfaceService } from 'services'
@@ -94,8 +96,13 @@ const AdminContainer = props => {
 		handleConfirmDelete: e => {
 			e.preventDefault()
 			toggleModal({
-				component: ConfirmDeleteContainer,
-				props: { menuItemInfo, searchCategory},
+				// component: ConfirmDeleteContainer,
+				component: DeleteConfirmContainer,
+				props: {
+					type: searchCategory,
+					menuItemInfo,
+					// searchCategory,
+				},
 			})
 		},
 	}

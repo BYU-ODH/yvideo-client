@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import HexLogo from 'assets/hexborder.svg'
 
 export const ConfirmDeleteBox = styled.div`
 	position: fixed;
@@ -14,17 +15,17 @@ export const ConfirmBox = styled.div`
   grid-template-columns: auto;
 	margin: auto;
 	min-width: 460px;
-	height: 260px;
+	height: 360px;
 	background-color: white;
 	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.3);
 	border-radius: 10px;
 
 	& p {
 		line-height: 2.5rem;
-		margin: auto;
+		margin: 5rem;
 		padding: 2px;
 		text-align: center;
-		font-size: 20px;
+		font-size: 17px;
 		word-wrap: break-word;
 	}
 
@@ -78,4 +79,11 @@ export const ConfirmButton = styled.button`
 		color: white !important;
 		background-color: red !important;
 	}
+`
+
+export const Logo = styled.div`
+	position: relative;
+	background: url(${HexLogo}) no-repeat left;
+	background-size: contain;
+	height: 7rem;
 `

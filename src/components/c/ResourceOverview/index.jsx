@@ -112,18 +112,21 @@ export class ResourceOverview extends PureComponent {
 								<TypeButton type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
 							</Type>
 
-							{/* TODO: need to find the file ID that is already attached to this resource. */}
-
-							{/* <div><h4>Files:</h4>{files.length !== 0 ? files.map(file => <Title key={file.id}>{file.id}</Title>) : <Title>none</Title>}</div> */}
-
-							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
+							<div><h4>Views:</h4><Title>{resource.views} views</Title></div>
 
 						</Column>
 
 						<Column>
+							<div><h4>File Versions:</h4><Title>{resource.allFileVersions}</Title></div>
+
+							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
+						</Column>
+
+						{/* TODO: metadata can be used later for the extended data. */}
+						{/* <Column>
 							<h4>Metadata</h4>
 							<textarea onChange={handleResourceMetadata} value={metadata} rows={6}/>
-						</Column>
+						</Column> */}
 
 					</InnerContainer>
 				}

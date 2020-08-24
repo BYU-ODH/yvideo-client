@@ -23,7 +23,6 @@ export default class CreateResource extends PureComponent {
 			handleTypeChange,
 			onKeyPress,
 			toggleModal,
-			updateFileVersion,
 		} = this.props.handlers
 
 		const {
@@ -36,8 +35,13 @@ export default class CreateResource extends PureComponent {
 				<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} id='create-resource-form' >
 					<h2>Create New Resource</h2>
 					<label htmlFor='create-resource-name'>
-						<span>Name</span>
+						<span>Title</span>
 						<input id='create-resource-name' type='text' name='resourceName' value={resourceName} onChange={handleTextChange} required />
+					</label>
+
+					<label htmlFor='create-resource-requester-email'>
+						<span>Email</span>
+						<input id='create-resource-requester-email' type='text' name='requesterEmail' value={requesterEmail} onChange={handleTextChange} required />
 					</label>
 
 					<label htmlFor='create-resource-type'>
@@ -50,26 +54,11 @@ export default class CreateResource extends PureComponent {
 						</div>
 					</label>
 
-					<label htmlFor='create-resource-requester-email'>
-						<span>Requester Email</span>
-						<input id='create-resource-requester-email' type='text' name='requesterEmail' value={requesterEmail} onChange={handleTextChange} required />
-					</label>
-
-					{/* <label htmlFor='create-resource-file-version'>
-						<span>File Version</span>
-						<CategorySelect id='categorySelect' onChange={updateFileVersion}>
-							{Object.keys(category).map((c, index) => (
-								<option value={category[c].name} key={index}>
-									{category[c].name}
-								</option>
-							))}
-						</CategorySelect>
-					</label> */}
-
-					<label htmlFor='create-resource-metadata'>
+					{/* TODO: metadata can be used later as putting an extra data */}
+					{/* <label htmlFor='create-resource-metadata'>
 						<span>Metadata</span>
 					</label>
-					<textarea id='create-resource-metadata' name='metadata' value={metadata} onChange={handleTextChange} rows={4} required />
+					<textarea id='create-resource-metadata' name='metadata' value={metadata} onChange={handleTextChange} rows={4} required /> */}
 
 					<div>
 						<Button type='button' onClick={toggleModal}>Cancel</Button>

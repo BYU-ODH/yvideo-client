@@ -5,13 +5,14 @@ import uploadIcon from 'assets/upload.svg'
 
 export const Form = styled.form`
 	display: grid;
-	grid-gap: 4rem;
+	grid-gap: 6rem;
 
 	min-width: 30rem;
 	min-height: 35rem;
 
 
 	& input, select {
+
 		flex: 4;
 		border: none;
 		border-bottom: 1px solid #ccc;

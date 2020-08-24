@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import FileUploadContainer from 'components/modals/containers/FileUploadContainer'
-import ConfirmDeleteResourceContainer from 'components/modals/containers/ConfirmDeleteResourceContainer'
+import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
 import ManageFilesContainer from 'components/modals/containers/ManageFilesContainer'
 
 import {
@@ -34,8 +34,8 @@ const ResourceOverviewContainer = props => {
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
 	const [fileVersions, setFileVersions] = useState(0)
-	// const [allFileVersions, setAllFileVersions] = useState(``)
 
+	// TODO: file versions not updated when it is uploaded
 	useEffect(() => {
 
 		if(editing && resourceCache[resource.id].files !== undefined)
@@ -81,16 +81,13 @@ const ResourceOverviewContainer = props => {
 	}
 
 	const handleRemoveResource = e => {
-
-		// TODO: confirming delete pop up
-
 		props.toggleModal({
-			component: ConfirmDeleteResourceContainer,
+			component: DeleteConfirmContainer,
 			props: {
-				resourceId: resource.id,
+				type: `resource`,
+				id: resource.id,
 			},
 		})
-		// removeResource(resource.id)
 	}
 
 	const handleResourceName = e => {

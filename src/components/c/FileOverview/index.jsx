@@ -44,15 +44,15 @@ export class FileOverview extends PureComponent {
 							<h4>Resource ID:</h4> {file[`resource-id`]}
 						</div>
 
-						<div>
+						{/* <div>
 							<h4>Mime:</h4> {file[`mime`]}
-						</div>
+						</div> */}
 					</Column>
 
-					<Column>
+					{/* <Column>
 						<h4>Metadata</h4>
 						<textarea onChange={handleFileMetadata} defaultValue={file.metadata} rows={8}/>
-					</Column>
+					</Column> */}
 				</InnerContainer>
 				<div>
 					<EditButton onClick={handleUpdateFile}>Update<SaveIcon/></EditButton>
