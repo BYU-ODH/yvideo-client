@@ -184,15 +184,28 @@ const apiProxy = {
 		}),
 		permissions: {
 			/**
-			 * Gets the current roles/permissions for the specified collection
+			 * Gets the current users TA/Exception for the specified collection
 			 *
 			 * @param id the ID of the collection
 			 *
-			 * @returns a set of roles for a collection
+			 * @returns an array of users for a collection
 			 */
 			// get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/permissions`, { withCredentials: true }),
-			get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
+			getUsers: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/users`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
 				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
+			/**
+			 * Gets the current courses for the specified collection
+			 *
+			 * @param id the ID of the collection
+			 *
+			 * @returns an array of courses for a collection
+			 */
+			// get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/permissions`, { withCredentials: true }),
+			getCourses: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/courses`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
+				updateSessionId(res.headers[`session-id`])
+
 				return res.data
 			}),
 			/**
@@ -204,11 +217,7 @@ const apiProxy = {
 			 *
 			 * @returns nothing, idk
 			 */
-			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, {
-				'department': body.department,
-				'catalog-number': body.catalogNumber,
-				'section-number': body.sectionNumber,
-			}, {
+			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, body, {
 				withCredentials: true,
 				headers: {
 					'Content-Type': `application/json`,
@@ -216,7 +225,7 @@ const apiProxy = {
 				},
 			}).then(res => {
 				updateSessionId(res.headers[`session-id`])
-				return res.data
+				return res
 			}),
 		},
 	},

@@ -114,3 +114,33 @@ export const AddButton = styled.button`
 	padding-left: 1rem;
 	padding-right: 1.2rem;
 `
+
+export const Table = styled.table`
+	/* border: 1px solid black; */
+	width: 400px;
+	padding: 10px;
+
+	& th {
+		font-size: 1.4rem;
+	}
+
+
+	& td {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+		padding: 2px;
+		text-align: center;
+
+		& img {
+			opacity: .5;
+			cursor: pointer;
+
+			:hover {
+				opacity: 1;
+			}
+		}
+	}
+`
+
+export const TableContainer = styled.div`
+	display: flex;
+`

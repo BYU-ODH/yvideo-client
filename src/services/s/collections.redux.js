@@ -10,14 +10,13 @@ export default class CollectionService {
 		COLLECTIONS_REMOVE_CONTENT: `COLLECTION_REMOVE_CONTENT`,
 		COLLECTION_CREATE: `COLLECTION_CREATE`,
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
-		COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
+		COLLECTION_INFO_GET: `COLLECTION_INFO_GET`,
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
 	}
 
 	roleEndpoints = {
 		addCourse: `add-course`,
-		addTA: `add-user`,
-		addException: `add-user`,
+		addUser: `add-user`,
 		removeCourse: `remove-course`,
 		removeUser: `remove-user`,
 	}
@@ -33,17 +32,18 @@ export default class CollectionService {
 		collectionsRemoveContent: (id, collection) => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT, payload: {id, collection} }),
 		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
-		collectionRolesGet: data => ({ type: this.types.COLLECTION_ROLES_GET, payload: { ...data }}),
-		collectionRolesUpdate: data => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { ...data }}),
+		collectionGetInfo: data => ({ type: this.types.COLLECTION_INFO_GET, payload: { data }}),
+		collectionPermissionUpdate: object => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { object }}),
 	}
 
 	// default store
 
 	store = {
-		roles: {},
 		cache: {},
 		loading: false,
 		lastFetched: 0,
+		users: [],
+		courses: [],
 	}
 
 	// reducer
@@ -59,7 +59,7 @@ export default class CollectionService {
 			COLLECTIONS_REMOVE_CONTENT,
 			COLLECTION_CREATE,
 			COLLECTION_EDIT,
-			COLLECTION_ROLES_GET,
+			COLLECTION_INFO_GET,
 			COLLECTION_ROLES_UPDATE,
 		} = this.types
 
@@ -127,22 +127,27 @@ export default class CollectionService {
 				loading: false,
 			}
 
-		case COLLECTION_ROLES_GET:
-			return {
-				...store,
-				roles: {
-					...store.roles,
-					...action.payload,
-				},
+		case COLLECTION_INFO_GET:
+			if(store.users.length !== action.payload.data.users.length || store.courses.length !== action.payload.data.courses.length){
+					return {
+					...store,
+					users: action.payload.data.users,
+					courses: action.payload.data.courses,
+					loading: false,
+				}
 			}
+			else {
+				return {
+					...store,
+				}
+			}
+
 
 		case COLLECTION_ROLES_UPDATE:
 			return {
 				...store,
-				roles: {
-					...store.roles,
-					...action.payload,
-				},
+				users: action.payload.object.currentUsers,
+				courses: action.payload.object.currentCourses,
 			}
 
 		default:
@@ -272,32 +277,24 @@ export default class CollectionService {
 		}
 	}
 
-	getCollectionRoles = (collectionId, force = false) => {
+	getCollectionInfo = (collectionId, force = false) => {
+		//GET USERS AND COURSES FOR A SPECIFIED COLLECTION
 		return async (dispatch, getState, { apiProxy }) => {
 
-			const store = getState().collectionStore
+			dispatch(this.actions.collectionsStart())
 
-			const time = Date.now() - store.lastFetched
+			try {
 
-			const stale = time >= process.env.REACT_APP_STALE_TIME
+				const users = await apiProxy.collection.permissions.getUsers(collectionId)
+				//console.log(users)
 
-			const { roles } = store
-			const cached = Object.keys(roles).includes(collectionId)
+				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
+				//console.log(courses)
 
-			if (stale || !cached || force) {
-
-				dispatch(this.actions.collectionsStart())
-
-				try {
-
-					const { data = {} } = await apiProxy.collection.permissions.get(collectionId)
-					dispatch(this.actions.collectionRolesGet({ [collectionId]: data }))
-
-				} catch (error) {
-					dispatch(this.actions.collectionsError(error))
-				}
-
-			} else dispatch(this.actions.collectionsAbort())
+				dispatch(this.actions.collectionGetInfo({ users, courses }))
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
 		}
 	}
 
@@ -322,42 +319,57 @@ export default class CollectionService {
 		}
 	}
 
-	updateCollectionRoles = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
+	updateCollectionPermissions = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
 
+		console.log('update permissions')
 		dispatch(this.actions.collectionsStart())
 
-		console.log(body, typeof body)
+		let backEndBody = {}
+
+		const currentUsers = getState().collectionStore.users
+		const currentCourses = getState().collectionStore.courses
+
+		//TODO: WE CANT ADD THE SAME USER TWICE. ADD DELETE ADD DOES NOT WORK
 
 		try {
-			const { data = {} } = await apiProxy.collection.permissions.post(collectionId, endpoint, body)
 
-			const newRoles = getState().collectionStore.roles[collectionId]
-
-			switch (endpoint) {
-			case this.roleEndpoints.addCourse:
-				newRoles.courses = [...newRoles.courses, data[0]]
-				break
-			case this.roleEndpoints.removeCourse:
-				newRoles.courses = newRoles.courses.filter(item => item.id !== body[0].id)
-				break
-			case this.roleEndpoints.addTA:
-				newRoles.admins = [...newRoles.admins, data]
-				newRoles.exceptions = [...newRoles.exceptions, data]
-				break
-
-			case this.roleEndpoints.addException:
-				newRoles.exceptions = [...newRoles.exceptions, data]
-				break
-			case this.roleEndpoints.removeUser:
-				newRoles.admins = newRoles.admins.filter(item => item.username !== body)
-				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
-				break
-			default:
-				break
+			if(endpoint === 'add-user'){
+				backEndBody = {
+					'username': body.username,
+					'account-role': body.role,
+				}
+				// currentUsers.push(backEndBody)
+			}
+			else if(endpoint === 'add-course'){
+				backEndBody = {
+					'department': body.department,
+					'catalog-number': body.catalog,
+					'section-number': body.section,
+				}
+				// currentCourses.push(backEndBody)
+			}
+			else if(endpoint === 'remove-course'){
+				backEndBody = {
+					'course-id': body
+				}
+				// currentCourses.splice(currentCourses.findIndex(element => element['id'] === body), 1)
+			}
+			else if(endpoint === 'remove-user'){
+				backEndBody = {
+					'username': body
+				}
+				// currentUsers.splice(currentUsers.findIndex(element => element['username'] === body), 1)
 			}
 
-			dispatch(this.actions.collectionRolesUpdate({ [collectionId]: newRoles }))
+			//TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
+
+			console.log(backEndBody)
+
+			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
+
+			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {
+			alert('The data could not be saved. Plase, try again')
 			dispatch(this.actions.collectionsError(error))
 		}
 
