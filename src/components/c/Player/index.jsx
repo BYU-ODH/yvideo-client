@@ -61,7 +61,7 @@ export default class Player extends PureComponent {
 						url={url}
 						playing={playing}
 						controls={false}
-						playbackRate={playbackRate}
+						playbackRate={parseFloat(playbackRate)}
 						volume={volume}
 						muted={muted}
 						// onReady={() => console.log(`onReady`)}
