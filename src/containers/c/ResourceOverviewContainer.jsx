@@ -7,6 +7,7 @@ import ManageFilesContainer from 'components/modals/containers/ManageFilesContai
 import {
 	resourceService,
 	interfaceService,
+	languageService,
 } from 'services'
 
 import {
@@ -18,22 +19,21 @@ import { objectIsEmpty } from 'lib/util'
 const ResourceOverviewContainer = props => {
 
 	const {
-		user,
 		resource,
 		editResource,
-		removeResource,
-		getResourceFiles,
 		resourceCache,
-		fileId,
+		getResourceFiles,
 		updateAllFileVersions,
-		thisfiles,
+		fileId,
+		getLangs,
 	} = props
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
-	const [fileVersions, setFileVersions] = useState(0)
+	const [numFileVersions, setNumFileVersions] = useState(0)
+	// const [fileVersions, setFileVersions] = useState(resource.allFileVersions)
 
 	// TODO: file versions not updated when it is uploaded
 	useEffect(() => {
@@ -41,23 +41,32 @@ const ResourceOverviewContainer = props => {
 		if(editing && resourceCache[resource.id].files !== undefined)
 			setFiles(resourceCache[resource.id].files)
 
-		if(files.length !== fileVersions){
-			setFileVersions(files.length)
+		if(files.length !== numFileVersions){
+			setNumFileVersions(files.length)
 
 			let langs = ``
 			files.forEach(file => {
 				langs = langs.concat(`${file[`file-version`]};`)
 			})
 
-			if(resource.allFileVersions !== langs)
-				updateAllFileVersions(resource, langs)
-		}
+			if(resource.allFileVersions !== langs){
+				setResourceState({
+					...resourceState,
+					allFileVersions: langs,
+				})
 
-	}, [editing, fileVersions, files, resource, resourceCache, updateAllFileVersions])
+				updateAllFileVersions(resourceState, files)
+			}
+		}
+	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions])
 
 	if (objectIsEmpty(resource)) return null
 
-	const handleFileUploadToResource = () => {
+	const handleFileUploadToResource = async() => {
+
+		// need to set up languages on store before post new one
+		await getLangs()
+
 		props.toggleModal({
 			component: FileUploadContainer,
 			props: {
@@ -67,6 +76,8 @@ const ResourceOverviewContainer = props => {
 	}
 
 	const handleToggleEdit = async () => {
+		// need to set up languages on store before editing
+		await getLangs()
 		await getResourceFiles(resource.id)
 
 		if (editing) {
@@ -204,6 +215,7 @@ const mapDispatchToProps = {
 	updateAllFileVersions: resourceService.updateFileVersion,
 	toggleModal: interfaceService.toggleModal,
 	getResourceFiles: resourceService.getFiles,
+	getLangs: languageService.get,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceOverviewContainer)

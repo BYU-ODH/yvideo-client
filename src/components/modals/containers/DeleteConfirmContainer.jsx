@@ -16,7 +16,7 @@ const DeleteConfirmContainer = props => {
 		type,
 		menuItemInfo,
 		id,
-		file,
+		selectedFile,
 		toggleModal,
 		removeResource,
 		removeFile,
@@ -26,44 +26,66 @@ const DeleteConfirmContainer = props => {
 		adminDeleteCollection,
 		adminDeleteUser,
 		adminDeleteContent,
+		editResource,
 	} = props
 
 	const [title, setTitle] = useState(``)
 
 	useEffect(() => {
-		if(type === `resource`)
+		// eslint-disable-next-line default-case
+		switch(type) {
+		case `resource`:
 			setTitle(resources[id].resourceName)
-		else if(type === `file`)
-			setTitle(file.filepath)
-		else if(type === `Users` || type === `Collections` || type === `Content`)
+			break
+		case `file`:
+			setTitle(selectedFile.filepath)
+			break
+		case `Users`:
 			setTitle(menuItemInfo.name)
-	}, [file, id, resources, type, menuItemInfo])
+			break
+		case `Collections`:
+			setTitle(menuItemInfo.name)
+			break
+		case `Content`:
+			setTitle(menuItemInfo.name)
+			break
+		}
+	}, [selectedFile, id, resources, type, menuItemInfo])
 
-	const handleRemoveItem = e =>{
+	const handleRemoveItem = async(e) =>{
 		e.preventDefault()
+
 		if(type === `resource`)
 			removeResource(id)
+		else if(type === `Users`)
+			handleDeleteUser()
+		else if(type === `Collections`)
+			handleDeleteCollection()
+		else if(type === `Content`)
+			handleDeleteContent()
 		else if(type === `file`){
-			removeFile(file.id)
-			editFileResource(file[`resource-id`], file, false)
-
-			const fileResourceId = file[`resource-id`]
+			const fileResourceId = selectedFile[`resource-id`]
 			const resource = resources[fileResourceId]
 			const allFileVersions = resource.allFileVersions.split(`;`)
 			const arr = []
+
 			allFileVersions.forEach(item => {
-				if(item !== file[`file-version`]) arr.push(item)
+				if(item !== selectedFile[`file-version`]) arr.push(item)
 			})
+
 			const newAllFileVersions = arr.join(`;`)
-			updateFileVersion(resource, newAllFileVersions)
-		} else if(type === `Users`)
-			handleDeleteUser()
+			resource.allFileVersions = newAllFileVersions
 
-		else if(type === `Collections`)
-			handleDeleteCollection()
+			// console.log(newAllFileVersions)
 
-		else if(type === `Content`)
-			handleDeleteContent()
+			await removeFile(selectedFile.id)
+			// file edit does not have api call
+			await editFileResource(fileResourceId, selectedFile, false)
+
+			// await updateFileVersion(resource, newAllFileVersions)
+			// console.log(resource.allFileVersions)
+			await editResource(resource, fileResourceId, selectedFile)
+		}
 
 		toggleModal()
 	}
@@ -108,11 +130,11 @@ const mapDispatchToProps = {
 	removeFile: fileService.delete,
 	uploadFile: fileService.upload,
 	updateFileVersion: resourceService.updateFileVersion,
+	editResource: resourceService.editResource,
 	getResource: resourceService.getResource,
 	getFiles: resourceService.getFiles,
 	adminDeleteCollection: adminService.deleteCollection,
 	adminDeleteUser: adminService.deleteUser,
 	adminDeleteContent: adminService.deleteContent,
 }
-// ConfirmDeleteResourceContainer
 export default connect(mapStateToProps, mapDispatchToProps)(DeleteConfirmContainer)

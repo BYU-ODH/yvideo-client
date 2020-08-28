@@ -34,6 +34,7 @@ export default class CreateResource extends PureComponent {
 			<>
 				<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} id='create-resource-form' >
 					<h2>Create New Resource</h2>
+
 					<label htmlFor='create-resource-name'>
 						<span>Title</span>
 						<input id='create-resource-name' type='text' name='resourceName' value={resourceName} onChange={handleTextChange} required />
