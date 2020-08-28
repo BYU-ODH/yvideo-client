@@ -464,7 +464,7 @@ const apiProxy = {
 	subtitles: {
 		post: async (data) => {
 			console.log(data)
-			await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle`,data,{
+			const returnMe = await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle`,data,{
 				withCredentials: true,
 				headers: {
 					'Content-Type' : `application/json`,
@@ -476,6 +476,7 @@ const apiProxy = {
 
 				return res.data.id
 			})
+			return returnMe
 		},
 		get: async ids => {
 			console.log(`wut?`)

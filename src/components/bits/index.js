@@ -23,7 +23,7 @@ import VolumeScrubber from './VolumeScrubber'
 import SubtitlesCard from './SubtitlesCard'
 import ResourceOverview from '../c/ResourceOverview'
 import SubtitlesLayer from './SubtitlesLayer'
-
+import SubtitlesModal from './SubtitlesModal'
 export {
 	Accordion,
 	AdminTable,
@@ -50,4 +50,5 @@ export {
 	ResourceOverview,
 	SubtitlesCard,
 	SubtitlesLayer,
+	SubtitlesModal,
 }

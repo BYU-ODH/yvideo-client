@@ -39,6 +39,7 @@ const TrackEditorContainer = props => {
 		// console.log(`these subs are`, subs)
 		await getContent([id])
 		const testsubs = await getSubtitles(id)
+		console.log(`more testing`,testsubs)
 		setSubs(testsubs !== undefined?testsubs:[])
 	}
 	useEffect(() => {
@@ -55,26 +56,40 @@ const TrackEditorContainer = props => {
 		console.log(eventsArray,subs)
 	}, [content, resource, eventsArray, currentContent,subs,setSubs])
 
-	const createAndAddSub = async (subtitles) =>{
+	const createAndAddSub = async () =>{
+		console.log(allSubs)
+		const subtitles = {...allSubs}
+		subtitles.map((item)=>console.log(`AAAAg`,item))
 		console.log(subtitles)
 		try{
 			for(let i = 0; i<subtitles.length;i++){
 				if (subtitles[i][`id`] === ``){
 					subtitles[i][`content-id`] = id
 					console.log(subtitles[i])
+					subtitles[i][`content`] = JSON.stringify(subtitles[i][`content`])
 					const subId = await createSubtitle(subtitles[i])
 					subtitles[i][`id`] = subId
+					subtitles[i][`content`] = JSON.parse(subtitles[i][`content`])
 					console.log(`subid`,subId)
 				}else if(subtitles[i][`id`] !== ``)
 					updateSubtitle(subtitles[i])
+
 			}
+			// setAllSubs(subtitles)
+			// console.log(subtitles)
 		}catch(error){
 
 		}
 
 	}
+	console.log(subs)
+	console.log(allSubs)
 	const deleteSubs = async(subs) =>{
 		deleteSubtitle(subs)
+	}
+	const setAllSubs = (subs) =>{
+		console.log(subs)
+		setSubtitles(subs)
 	}
 	// console.log(eventsArray)
 	const viewstate = {
@@ -82,9 +97,10 @@ const TrackEditorContainer = props => {
 		url,
 		eventsArray,
 		subs,
+		allSubs,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setSubtitles} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs}/>
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setAllSubs} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({

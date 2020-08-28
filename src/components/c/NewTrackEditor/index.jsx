@@ -12,6 +12,7 @@ import * as Subtitle from 'subtitle'
 import { EventCard, TrackEditorSideMenu, SubtitlesCard, SubtitlesLayer } from 'components/bits'
 
 import { Controller, TrackLayer } from 'components'
+import { SubtitlesModal } from 'components/bits'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -27,6 +28,7 @@ import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
 import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
+import captions from 'assets/captions.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -39,7 +41,7 @@ const TrackEditor = props => {
 
 	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles } = props
 
-	const { eventsArray, currentContent,subs } = props.viewstate
+	const { eventsArray, currentContent,subs, allSubs } = props.viewstate
 	console.log(subs)
 	const events = [
 		{
@@ -123,6 +125,8 @@ const TrackEditor = props => {
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
 	const [subSelected, setSubSelected] = useState(false)
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
+	const [subModalVisible, setSubModalVisible] = useState(false)
+	const [subModalMode, setSubModalMode] = useState(``)
 	// const [editCensor, setEditCensor] = useState({})
 	// const [lastClick, setLastClick] = useState({x: 0, y: 0})
 	// console.log(allEvents)
@@ -130,7 +134,7 @@ const TrackEditor = props => {
 		height: window.innerHeight,
 		width: window.innerWidth,
 	})
-
+	console.log(subtitles)
 	useEffect(() => {
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
@@ -201,17 +205,15 @@ const TrackEditor = props => {
 		console.log(`setting video length`)
 		setVideoLength(duration)
 		const tempSubs = subs
+		console.log(`he re re re`)
 		for (let i = 0; i < tempSubs.length; i++){
 			console.log(tempSubs[i])
-			tempSubs[i][`content`] = Subtitle.parse(tempSubs[i][`content`])
 			console.log(tempSubs[i][`content`])
-			for (let x = 0; x < tempSubs[i][`content`].length;x++){
-				tempSubs[i][`content`].start = tempSubs[i][`content`].start/1000/duration * 100
-				tempSubs[i][`content`].end = tempSubs[i][`content`].end/1000/duration * 100
-			}
+			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
 		}
+		console.log(`he re 1`)
 		setSubs(tempSubs)
-
+		setAllSubs(tempSubs)
 	}
 
 	const handleTabChange = tab => () => {
@@ -360,6 +362,7 @@ const TrackEditor = props => {
 		setSideEditor(false)
 	}
 	const deleteSub = () =>{
+		console.log(`he re 2`)
 		const currentSubs = [...subtitles]
 		currentSubs[subLayerToEdit][`content`].splice(subToEdit,1)
 		setSubs(currentSubs)
@@ -461,30 +464,28 @@ const TrackEditor = props => {
 	}
 
 	const handleSaveAnnotation = () => {
+		console.log(subtitles)
 		setSaved(true)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
-
 		updateContent(content)
 		handleSaveSubtitles()
 		console.log(subLayersToDelete)
 		deleteSubtitles(subLayersToDelete)
 	}
-	const handleSaveSubtitles = () => {
+	const handleSaveSubtitles = async() => {
 		const rawSubs = subtitles
 		console.log(rawSubs)
-		for (let i = 0; i < rawSubs.length;i++){
-			for(let x = 0; x<rawSubs[i][`content`].length;x++){
-				rawSubs[i][`content`][x].start = rawSubs[i][`content`][x].start / 100 * videoLength * 1000
-				rawSubs[i][`content`][x].end = rawSubs[i][`content`][x].end / 100 * videoLength * 1000
-			}
-			console.log(rawSubs[i][`content`])
-			rawSubs[i][`content`] = Subtitle.stringify(rawSubs[i][`content`])
-			console.log(rawSubs[i][`content`])
-		}
+		// for (let i = 0; i < rawSubs.length;i++){
+		// 	for(let x = 0; x<rawSubs[i][`content`].length;x++){
+		// 		rawSubs[i][`content`][x].start = rawSubs[i][`content`][x].start / 100 * videoLength * 1000
+		// 		rawSubs[i][`content`][x].end = rawSubs[i][`content`][x].end / 100 * videoLength * 1000
+		// 	}
+		// 	console.log(rawSubs[i][`content`])
+		// 	console.log(rawSubs[i][`content`])
+		// }
 		console.log(rawSubs)
 		createSub(rawSubs)
-
 	}
 	const handleScrollFactor = (direction) => {
 		// console.log('called')
@@ -702,6 +703,7 @@ const TrackEditor = props => {
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 		setSubs(tempSubs)
+		console.log(`he re 3`)
 		setAllSubs(tempSubs)
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
@@ -727,6 +729,7 @@ const TrackEditor = props => {
 		setSubLayerToEdit(index)
 		activeUpdate(index)
 		setSubs(currentSubs)
+		console.log(`he re 4`)
 		setAllSubs(currentSubs)
 	}
 	const checkSideBarTitle = () => {
@@ -738,6 +741,7 @@ const TrackEditor = props => {
 		}
 	}
 	const checkEventOrSub = () => {
+		console.log(subtitles)
 		return subSelected ? subtitles[subLayerToEdit][`content`][subToEdit] : allEvents[eventToEdit]
 	}
 	const checkIndex = () => {
@@ -756,6 +760,7 @@ const TrackEditor = props => {
 				id: ``,
 			}
 			tempSubList.push(tempSub)
+			console.log(`he re 5`)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 		}else {
@@ -767,11 +772,74 @@ const TrackEditor = props => {
 				id: ``,
 			}
 			tempSubList.push(tempSub)
+			console.log(`he re 6`)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 
 		}
 		setSideEditor(false)
+		setSubModalVisible(false)
+		setSubModalMode(``)
+	}
+	const handleAddSubLayerFromFile = (url) => {
+		try{
+			const reader = new FileReader()
+			console.log(url)
+			reader.onload = (e) =>{
+				const temp = Subtitle.parse(e.target.result)
+				for (let i = 0; i < temp.length; i++){
+					temp[i].start = temp[i].start /1000/videoLength * 100
+					temp[i].end = temp[i].end /1000/videoLength * 100
+				}
+				let removeArray = 0
+				const filtered = temp.filter(item => {
+					removeArray = removeArray + 1
+					return item.start < 100
+				})
+				const filtered1 = filtered.filter(item => {
+					removeArray = removeArray + 1
+					return item.end < 100
+				})
+				console.log(`he re re`,filtered1)
+				if (removeArray > 0)
+					alert(`Some subtitles had to be cut because the subtitles are longer than the video`)
+				if (subtitles === [] || !subtitles){
+					const tempSubList = []
+					const tempSub = {
+						title : ``,
+						language: ``,
+						content: filtered1,
+						id: ``,
+					}
+					tempSubList.push(tempSub)
+					console.log(`he re 7`)
+					setSubs(tempSubList)
+					setAllSubs(tempSubList)
+				}else {
+					const tempSubList = subtitles
+					const tempSub = {
+						title : ``,
+						language: ``,
+						content: filtered1,
+						id: ``,
+					}
+					tempSubList.push(tempSub)
+					console.log(`he re 8`)
+					setSubs(tempSubList)
+					setAllSubs(tempSubList)
+
+				}
+				setSideEditor(false)
+				setSubModalVisible(false)
+				setSubModalMode(``)
+			}
+			reader.readAsText(url)
+		}catch(error){
+			console.log(error)
+			alert(`There was an error importing subtitles`)
+		}
+		setSubModalVisible(false)
+		setSubModalMode(``)
 	}
 	const handleDeleteSubLayer = (index) =>{
 		const tempSubs = subtitles
@@ -782,6 +850,7 @@ const TrackEditor = props => {
 			setSubLayersToDelete(deleteSub)
 		}
 		tempSubs.splice(index, 1)
+		console.log(`he re 9`)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 	}
@@ -789,18 +858,27 @@ const TrackEditor = props => {
 		const temp = subtitles
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
+		console.log(`he re 10`)
 		setAllSubs(temp)
 	}
 	const updateSubLayerLanguage = (language) =>{
 		const temp = subtitles
 		temp[subLayerToEdit][`language`] = language
+		console.log(`he re 11`)
 		setSubs(temp)
 		setAllSubs(temp)
 	}
+	console.log(subtitles)
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
-
+				<SubtitlesModal
+					mode = {subModalMode}
+					handleAddSubLayer = {handleAddSubLayer}
+					handleAddSubLayerFromFile = {handleAddSubLayerFromFile}
+					visible = {subModalVisible}
+					setModalVisible = {setSubModalVisible}
+				/>
 				<span style={{ zIndex: 0 }}>
 
 					<Controller className='video'
@@ -845,8 +923,9 @@ const TrackEditor = props => {
 
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
-										<div className={`handle`}>
-											<p>SubTitles<img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p>
+										<div className={`handle`} onClick={()=>setSubLayerToEdit(index)}>
+											<img alt={`cc`} src={captions}/>
+											<p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p>
 										</div>
 										<SubtitlesLayer
 											videoLength={videoLength}
@@ -865,7 +944,12 @@ const TrackEditor = props => {
 									</div>
 								))
 								}
-
+								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`150px`,marginLeft:`2px`,marginTop:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} onClick={()=>{
+									setSubModalVisible(true)
+									setSubModalMode(`create`)
+								}}>
+									<p style={{fontWeight:700}}>Add Subtitle Track +</p>
+								</div>
 								<br/><br/><br/><br/><br/><br/><br/>
 							</div>
 
@@ -962,8 +1046,6 @@ const TrackEditor = props => {
 										</>
 									}
 
-									}
-
 								</>
 								}
 							</div>
@@ -990,9 +1072,13 @@ const TrackEditor = props => {
 											<EventCard event={event} key={i} />
 										))}
 									</div>
-									<div className='subCard' onClick={()=>createSubtitleLayer()}>
-										<SubtitlesCard />
+									<div className='subCard'>
+										{subtitles !== [] && subtitles !== undefined ? (
+
+											<SubtitlesCard />
+										):``}
 									</div>
+
 								</>
 							)}
 						</>

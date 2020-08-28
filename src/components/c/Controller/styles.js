@@ -242,10 +242,11 @@ export const ToggleCarat = styled.div`
 `
 export const Subtitles = styled.div`
   position: absolute;
-  bottom: 50px;
-  height: 30%;
-  background-color: red;
-  color: black;
+  height: 10%;
+	bottom:0;
+  background-color: rgba(0,0,0,0.5);
+	font-size: 1.5rem;
+  color: #ffffff;
   z-index: 20;
   width: 100%;
   text-align: center;
