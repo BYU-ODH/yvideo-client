@@ -69,7 +69,7 @@ export class CollectionPermissions extends PureComponent {
 					<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
 				</form><br/>
 
-				<h4>TA / Faculty / Audit Exception</h4>
+				<h4>TA / Faculty / Auditing</h4>
 
 				<Search className='faculty-submit' onSubmit={handlers.addUser}>
 					<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
