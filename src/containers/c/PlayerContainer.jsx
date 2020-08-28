@@ -116,7 +116,6 @@ const PlayerContainer = props => {
 	const handleSeekChange = (e, time) => {
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-		setBlank(false)
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
