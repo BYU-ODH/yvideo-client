@@ -280,11 +280,6 @@ const TrackEditor = props => {
 		// console.log(monitor.getSourceClientOffset())
 		// console.log(`Event Drop Handler: `, item, index)
 
-	const addEventToLayer = (item, index) => {
-		if (item.id === `subtitle`){
-			handleAddSubLayer()
-			return
-		}
 		//TODO: Change this to use real JS event objects and insert based on time
 		//CALCULATE THE CURRENT TIME IN RESPECT OF THE CURRENT PERCENTAGE OF THE LAYER
 		//READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
@@ -294,6 +289,11 @@ const TrackEditor = props => {
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
+		if (item.id === `subtitle`){
+			handleAddSubLayer()
+			return
+		}
+
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
@@ -1120,7 +1120,7 @@ const TrackEditor = props => {
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
-					message='If you leave you will lose all your changes. Please, save changes before leaving this page'
+					message='If you leave you will lose all your changes. Have you saved your changes already?'
 				/>
 			</>
 		</Style>
