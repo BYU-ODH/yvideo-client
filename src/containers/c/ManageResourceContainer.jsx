@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { useParams } from 'react-router-dom'
-
 import { ManageResource } from 'components'
 
 import { interfaceService, resourceService } from 'services'
@@ -22,18 +20,9 @@ const ManageResourceContainer = props => {
 	const [isDefaultSearched, setIsDefaultSearched] = useState(false)
 	const [selectedResource, setSelectedResource] = useState(``)
 
-	useEffect(() => {
-		// need getResources backend to get all the resources attached to the user id
-	}, [resources])
-
-	const { professorId } = useParams()
-
 	const addResource = () => {
 		props.toggleModal({
 			component: CreateResourceContainer,
-			props: {
-				professorId,
-			},
 		})
 	}
 
@@ -42,10 +31,14 @@ const ManageResourceContainer = props => {
 		setIsDefaultSearched(true)
 	}
 
+	const handleSubmit = e => {
+		e.preventDefault()
+		searchResource(searchQuery)
+	}
+
 	const handleSearchTextChange = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 1) searchResource(value)
 	}
 
 	const handleSelectResourceChange = e => {
@@ -57,13 +50,13 @@ const ManageResourceContainer = props => {
 		user,
 		searchQuery,
 		resources,
-		professorId,
 	}
 
 	const handlers = {
 		handleSelectResourceChange,
 		handleSearchTextChange,
 		addResource,
+		handleSubmit,
 	}
 
 	return <ManageResource viewstate={viewstate} handlers={handlers} />

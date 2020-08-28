@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Scrubber, VolumeScrubber } from 'components/bits'
 
@@ -7,7 +7,10 @@ import Style, {
 	ClosedCaptions,
 	Fullscreen,
 	Volume,
+	Speed,
 } from './styles'
+
+import clockIcon from 'assets/te-clock.svg'
 
 const PlayerControls = props => {
 
@@ -24,7 +27,7 @@ const PlayerControls = props => {
 	const {
 		handlePause,
 		handlePlay,
-		// handlePlaybackRateChange,
+		handlePlaybackRateChange,
 		handleSeekChange,
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
@@ -33,6 +36,12 @@ const PlayerControls = props => {
 		handleUnmuted,
 		handleVolumeChange,
 	} = props.handlers
+
+	const [showSpeed, setShowSpeed] = useState(false)
+
+	const handleSubmitSpeed = (e) => {
+		e.preventDefault()
+	}
 
 	return (
 		<Style playing={playing} >
@@ -50,10 +59,23 @@ const PlayerControls = props => {
 			<div className='right'>
 				{/* <Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} /> */}
 				{/* <SideBarToggle /> */}
-				{/* <Speed /> */}
+				<Speed src={clockIcon} onClick={e => setShowSpeed(!showSpeed)}/>
 				{/* <ClosedCaptions /> */}
 				{/* <Notes /> */}
 			</div>
+			{ showSpeed &&
+				<div className="speed" onMouseLeave={e => setShowSpeed(false)}>
+					<h3>Playback Rate</h3>
+					<div>
+						<input type="button" value={3.0} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value={2.0} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value={1.5} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value='Normal' onClick={e => handlePlaybackRateChange(1)}/><br/>
+						<input type="button" value={0.5} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+						<input type="button" value={0.25} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+					</div>
+				</div>
+			}
 		</Style>
 	)
 

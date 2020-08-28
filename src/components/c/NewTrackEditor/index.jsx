@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon, AnnotationMessage } from './styles'
+import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon, AnnotationMessage, Help } from './styles'
 
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
@@ -29,6 +29,8 @@ import rrIcon from 'assets/te-chevrons-right.svg'
 import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
 import captions from 'assets/captions.svg'
+
+import helpIcon from 'assets/te-help-circle-white.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca

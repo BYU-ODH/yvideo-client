@@ -11,16 +11,17 @@ const PlayerContainer = props => {
 	const {
 		contentCache,
 		getContent,
-		resourceCache,
-		getResources,
+		getStreamKey,
 		addView,
 		setEvents,
+		streamKey,
 	} = props
 
 	const params = useParams()
 
 	const [content, setContent] = useState()
-	const [resource, setResource] = useState()
+	const [resource, setResource] = useState('')
+	const [sKey, setKey] = useState('')
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -42,14 +43,40 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		if (!contentCache[params.id]) getContent([params.id])
+		setPlaybackRate(1)
+		// console.log('called use effect in player')
+		if (!contentCache[params.id]){
+			// console.log('no cached content')
+			//get single content?
+		}
 		else {
+			// console.log('yes cached content')
 			setContent(contentCache[params.id])
+			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			setUrl(contentCache[params.id].url)
+			if(contentCache[params.id].url !== ''){
+				// console.log('GOT A VALID URL FROM CONTENT')
+				setUrl(contentCache[params.id].url)
+			}
+			else {
+				// console.log('CONTENT URL IS NOT VALID')
+				//CHECK RESOURCE ID
+				if(contentCache[params.id].resourceId !== '00000000-0000-0000-0000-000000000000' && sKey === ''){
+					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					// console.log('ACTING TO CHANGE URL')
+					setResource(contentCache[params.id].resourceId)
+					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+					setKey(streamKey)
+				}
+				else if (sKey !== ''){
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					// console.log('CHANGED URL')
+					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
+				}
+			}
 			addView(params.id)
 		}
-	}, [addView, content, contentCache, getContent, getResources, params.id, resource, resourceCache])
+	}, [addView, contentCache, getContent, params.id, resource, streamKey])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -177,16 +204,17 @@ const PlayerContainer = props => {
 	return <Player viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, contentStore }) => ({
+const mapStateToProps = ({ authStore, contentStore, resourceStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	userId: authStore.user.id,
 	contentCache: contentStore.cache,
+	streamKey: resourceStore.streamKey,
 })
 
 const mapDispatchToProps = {
 	getContent: contentService.getContent,
-	getResources: resourceService.getResources,
+	getStreamKey: resourceService.getStreamKey,
 	addView: contentService.addView,
 	setEvents: interfaceService.setEvents,
 }

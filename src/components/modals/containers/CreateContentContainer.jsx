@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import Content from 'models/Content'
@@ -27,11 +27,15 @@ const CreateContentContainer = props => {
 		getCollections,
 		resourceContent,
 		searchResource,
+		getFiles,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
+	const [hideResources, setHide] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [selectedResource, setSelectedResource] = useState(``)
+	const [languages, setLanguages] = useState([])
+	const [files, setFiles] = useState([])
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -42,7 +46,26 @@ const CreateContentContainer = props => {
 			keywords: [],
 		},
 		thumbnail: ``,
+		targetLanguages: ``,
 	})
+
+	useEffect(() => {
+		if(resourceContent[selectedResource] !== undefined){
+			let langs = resourceContent[selectedResource].allFileVersions.split(";")
+			langs.forEach((element, i) => {
+				if(element === ""){
+					delete langs[i]
+				}
+			});
+			setLanguages(langs)
+			console.log(resourceContent[selectedResource])
+		}
+
+		// if(resourceContent[selectedResource].files !== undefined) {
+		// 	setFiles(resourceContent.files)
+		// 	console.log(files)
+		// }
+	}, [resourceContent, selectedResource, files])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -66,14 +89,19 @@ const CreateContentContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 		if (value.length > 1) {
-			search(`content`, value, true)
+			// search(`content`, value, true)
 			searchResource(value)
-		}
+			setHide(false)
+		} else
+			setHide(true)
+
 	}
 
-	const handleSelectResourceChange = e => {
+	const handleSelectResourceChange = (e, name) => {
 		const { target } = e
 		setSelectedResource(target.value)
+		setSearchQuery(name)
+		setHide(true)
 	}
 
 	const handleTypeChange = e => {
@@ -130,22 +158,56 @@ const CreateContentContainer = props => {
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
+			"published": true,
 		}
 
 		if(modal.isLabAssistantRoute){
 			await adminCreateContent(backEndData)
 			adminGetCollectionContent(modal.collectionId, true)
-		}
-		else{
+		} else{
 			await createContent(backEndData)
 			getCollections(true)
 		}
 		toggleModal()
 	}
 
-	const handleAddResourceSubmit = e => {
+	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
-		adminCreateContentFromResource(modal.collectionId, selectedResource)
+
+		if(data.targetLanguages === ''){
+			alert('Please, select a valid language')
+			return;
+		}
+
+		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
+		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
+		// THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
+
+		const backEndData = {
+			"allow-definitions": true,
+			"url": ``,
+			"allow-captions": true,
+			"content-type": data.contentType,
+			"resource-id": selectedResource,
+			"tags": ``,
+			"thumbnail": `empty`,
+			"file-version": data.targetLanguages,
+			"collection-id": modal.collectionId,
+			"views": 0,
+			"annotations": ``,
+			"title": data.title,
+			"allow-notes": true,
+			"description": data.description,
+			"published": true,
+		}
+
+		if(modal.isLabAssistantRoute){
+			await adminCreateContent(backEndData)
+			adminGetCollectionContent(modal.collectionId, true)
+		} else{
+			await createContent(backEndData)
+			getCollections(true)
+		}
 		toggleModal()
 	}
 
@@ -165,6 +227,9 @@ const CreateContentContainer = props => {
 		searchQuery,
 		tab,
 		resourceContent,
+		hideResources,
+		selectedResource,
+		languages,
 	}
 
 	const handlers = {
@@ -199,6 +264,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
 	searchResource: resourceService.search,
+	getFiles: resourceService.getFiles,
 	getCollections: collectionService.getCollections,
 }
 

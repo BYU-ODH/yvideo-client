@@ -34,11 +34,11 @@ const LabAssistantContainer = props => {
 	const updateSearchBar = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 1) searchProfessors(value, true)
 	}
 
 	const handleSubmit = e => {
 		e.preventDefault()
+		searchProfessors(searchQuery, true)
 	}
 
 	const handleShowResource = () => {

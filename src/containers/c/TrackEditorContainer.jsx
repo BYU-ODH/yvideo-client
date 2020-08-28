@@ -7,7 +7,7 @@ import { interfaceService, resourceService, contentService, subtitlesService } f
 
 import { TrackEditor } from 'components'
 
-// import { interfaceService } from 'services'
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const TrackEditorContainer = props => {
 
@@ -26,6 +26,9 @@ const TrackEditorContainer = props => {
 		activeUpdate,
 		deleteSubtitle,
 
+		getStreamKey,
+		streamKey,
+		toggleModal,
 	} = props
 
 	const {id} = useParams()
@@ -51,10 +54,21 @@ const TrackEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setUrl(content[id].url)
+			if(content[id].url !== ``)
+				setUrl(content[id].url)
+			 else {
+				// CHECK RESOURCE ID
+				if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
+					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
+				} else if (streamKey !== `` && url === ``)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
+					// console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
+
+			}
 		}
 		console.log(eventsArray,subs)
-	}, [content, resource, eventsArray, currentContent,subs,setSubs])
+	}, [content, resource, eventsArray, currentContent,subs,setSubs,streamKey])
 
 	const createAndAddSub = async () =>{
 		console.log(allSubs)
@@ -92,6 +106,16 @@ const TrackEditorContainer = props => {
 		setSubtitles(subs)
 	}
 	// console.log(eventsArray)
+
+	// console.log(eventsArray)
+
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: `Track Editor`},
+		})
+	}
+
 	const viewstate = {
 		currentContent,
 		url,
@@ -100,7 +124,7 @@ const TrackEditorContainer = props => {
 		allSubs,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setAllSubs} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs}/>
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setAllSubs} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs} handleShowHelp={handleShowHelp}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
@@ -108,12 +132,14 @@ const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
 	content: contentStore.cache,
 	allSubs: subtitlesStore.cache,
 	subContentId: subtitlesStore.contentId,
+	streamKey: resourceStore.streamKey,
 })
 
 const mapThunksToProps = {
 	setEvents: interfaceService.setEvents,
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
+	getStreamKey: resourceService.getStreamKey,
 	updateContent: contentService.updateContent,
 	getSubtitles: subtitlesService.getSubtitles,
 	setSubtitles: subtitlesService.setSubtitles,
@@ -122,6 +148,7 @@ const mapThunksToProps = {
 	createSubtitle: subtitlesService.createSubtitle,
 	activeUpdate: subtitlesService.activeUpdate,
 	setSubContentId: subtitlesService.setContentId,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

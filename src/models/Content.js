@@ -25,7 +25,7 @@ export default class Content {
 		captionTrack: [],
 		showTranscripts: false,
 		showWordList: false,
-		targetLanguages: [],
+		targetLanguages: '',
 		showCaptions: true,
 		allowDefinitions: true,
 		annotationDocument: [],
@@ -44,12 +44,13 @@ export default class Content {
 			this.resourceId = obj[`resource-id`]
 			this.resource.keywords = obj[`tags`].split(`; `)
 			this.name = obj[`title`]
+			this.published = obj['published']
 
 			this.settings = {
 				allowDefinitions: obj['allow-definitions'],
 				annotationDocument: this.stringToArray(obj['annotations']),
 				showCaptions: obj['allow-captions'],
-				targetLanguages: obj['file-version'].split("; "),
+				targetLanguages: obj['file-version'],
 			}
 		}
 

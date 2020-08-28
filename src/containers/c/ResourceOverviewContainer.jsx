@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import FileUploadContainer from 'components/modals/containers/FileUploadContainer'
+import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
+import ManageFilesContainer from 'components/modals/containers/ManageFilesContainer'
 
 import {
 	resourceService,
@@ -21,14 +23,37 @@ const ResourceOverviewContainer = props => {
 		editResource,
 		removeResource,
 		getResourceFiles,
-		resourceStore,
+		resourceCache,
 		fileId,
+		updateAllFileVersions,
+		thisfiles,
 	} = props
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
-	const [files, setFiles] = useState()
+	const [files, setFiles] = useState([])
+	const [fileVersions, setFileVersions] = useState(0)
+
+	// TODO: file versions not updated when it is uploaded
+	useEffect(() => {
+
+		if(editing && resourceCache[resource.id].files !== undefined)
+			setFiles(resourceCache[resource.id].files)
+
+		if(files.length !== fileVersions){
+			setFileVersions(files.length)
+
+			let langs = ``
+			files.forEach(file => {
+				langs = langs.concat(`${file[`file-version`]};`)
+			})
+
+			if(resource.allFileVersions !== langs)
+				updateAllFileVersions(resource, langs)
+		}
+
+	}, [editing, fileVersions, files, resource, resourceCache, updateAllFileVersions])
 
 	if (objectIsEmpty(resource)) return null
 
@@ -42,11 +67,7 @@ const ResourceOverviewContainer = props => {
 	}
 
 	const handleToggleEdit = async () => {
-		const newFiles = await getResourceFiles(resource.id)
-		const id = resource.id
-		console.log(resourceStore[id])
-		// console.log(newFiles)
-		// setFiles(newFiles)
+		await getResourceFiles(resource.id)
 
 		if (editing) {
 			await editResource(resourceState, resourceState.id)
@@ -54,7 +75,19 @@ const ResourceOverviewContainer = props => {
 			setTimeout(() => {
 				setEditing(false)
 			}, 500)
-		} else setEditing(true)
+		} else
+			setEditing(true)
+
+	}
+
+	const handleRemoveResource = e => {
+		props.toggleModal({
+			component: DeleteConfirmContainer,
+			props: {
+				type: `resource`,
+				id: resource.id,
+			},
+		})
 	}
 
 	const handleResourceName = e => {
@@ -83,13 +116,6 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceType: e.target.dataset.type,
 		})
-	}
-
-	const handleRemoveResource = e => {
-		removeResource(resource.id)
-		setTimeout(() => {
-			setEditing(false)
-		}, 500)
 	}
 
 	const handleTogglePublish = e => {
@@ -127,12 +153,17 @@ const ResourceOverviewContainer = props => {
 		})
 	}
 
-	const handleFiles = async(e) => {
-		getResourceFiles(resource.id)
-		console.log(files)
+	const handleFiles = () => {
+		props.toggleModal({
+			component: ManageFilesContainer,
+			props: {
+				files,
+			},
+		})
 	}
 
 	const viewstate = {
+		resourceCache,
 		resource: resourceState,
 		files,
 		fileId,
@@ -162,13 +193,15 @@ const ResourceOverviewContainer = props => {
 }
 
 const mapStateToProps = store => ({
+	thisfiles: store.fileStore.cache,
 	fileId: store.fileStore.cache,
-	resourceStore: store.resourceStore.cache,
+	resourceCache: store.resourceStore.cache,
 })
 
 const mapDispatchToProps = {
 	removeResource: resourceService.removeResource,
 	editResource: resourceService.editResource,
+	updateAllFileVersions: resourceService.updateFileVersion,
 	toggleModal: interfaceService.toggleModal,
 	getResourceFiles: resourceService.getFiles,
 }

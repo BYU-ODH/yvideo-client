@@ -44,6 +44,27 @@ export const Search = styled.form`
 		outline: none;
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 	}
+
+	& > button {
+		width: 8rem;
+    height: 4rem;
+    color: white;
+    background-color: var(--light-blue);
+    margin-left: 1rem;
+    outline: none;
+    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 2rem;
+    text-align: center;
+		cursor: pointer;
+		transition: .5s ease;
+		font-weight: 500;
+
+		:hover {
+			background-color: var(--navy-blue);
+		}
+	}
 `
 
 export const SearchIcon = styled.span`
