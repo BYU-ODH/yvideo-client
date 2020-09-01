@@ -3,7 +3,12 @@ import { connect } from 'react-redux'
 
 import services from 'services'
 
+import { interfaceService } from 'services'
+
 import { CollectionPermissions } from 'components'
+
+import AddBatchNetidsContainer from 'components/modals/containers/AddBatchNetidsContainer'
+
 
 const CollectionPermissionsContainer = props => {
 
@@ -15,6 +20,7 @@ const CollectionPermissionsContainer = props => {
 		courses, // from collectionService
 		updateCollectionPermissions, // from collectionService
 		getCollectionInfo,
+		toggleModal,
 	} = props
 
 	const [course, setCourse] = useState({
@@ -30,6 +36,13 @@ const CollectionPermissionsContainer = props => {
 
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
+
+	const AddBatchNetids = () => {
+		toggleModal({
+			component: AddBatchNetidsContainer,
+			props: { collectionId: collection.id },
+		})
+	}
 
 	useEffect(() => {
 		// console.log(collection.id)
@@ -109,14 +122,15 @@ const CollectionPermissionsContainer = props => {
 				...user,
 				username: ``,
 			})
-
 		},
 		removeUser: value => {
 			// console.log(value)
 			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, value)
 
 		},
+		AddBatchNetids,
 	}
+
 
 	const viewstate = {
 		collection,
@@ -139,6 +153,7 @@ const mapStoreToProps = store => ({
 const mapDispatchToProps = {
 	getCollectionInfo: services.collectionService.getCollectionInfo,
 	updateCollectionPermissions: services.collectionService.updateCollectionPermissions,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(CollectionPermissionsContainer)

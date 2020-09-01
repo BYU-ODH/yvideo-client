@@ -286,7 +286,7 @@ export default class CollectionService {
 			try {
 
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
-				//console.log(users)
+				console.log(users)
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 				//console.log(courses)
@@ -372,6 +372,16 @@ export default class CollectionService {
 			alert('The data could not be saved. Plase, try again')
 			dispatch(this.actions.collectionsError(error))
 		}
+	}
+	updateMany  = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.collectionsStart())
 
+		try {
+
+			const result =  await apiProxy.collection.permissions.postMany(collectionId, body)
+			console.log(result)
+		} catch (error) {
+			dispatch(this.actions.collectionsError(error))
+		}
 	}
 }
