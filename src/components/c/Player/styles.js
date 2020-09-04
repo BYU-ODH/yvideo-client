@@ -41,8 +41,24 @@ export const Comment = styled.div`
 	top: var(--y);
 	left: calc(var(--x));
 	font-size: 2rem;
-	color: white;
+	color: white; style={{ w}}
 	z-index: 15;
 `
+export const Transcript = styled.div`
+	width: 50rem;
+	border: 1px solid black;
+	margin-left: 10px;
+
+	& .transcript-row {
+		cursor: pointer;
+
+		& td {
+			border-bottom: 1.5px solid var(--light-blue);
+			padding: 2px;
+		}
+	}
+`
+
+
 
 export default Style

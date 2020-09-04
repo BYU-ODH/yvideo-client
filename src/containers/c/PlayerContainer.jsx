@@ -37,6 +37,7 @@ const PlayerContainer = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState('')
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [showTranscript, setShowTranscript] = useState(false)
 
 	const ref = player => {
 		setPlayer(player)
@@ -44,6 +45,7 @@ const PlayerContainer = props => {
 
 	useEffect(() => {
 		setPlaybackRate(1)
+		setShowTranscript(false)
 		// console.log('called use effect in player')
 		if (!contentCache[params.id]){
 			// console.log('no cached content')
@@ -52,6 +54,7 @@ const PlayerContainer = props => {
 		else {
 			// console.log('yes cached content')
 			setContent(contentCache[params.id])
+			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ''){
@@ -109,13 +112,14 @@ const PlayerContainer = props => {
 	// Potentially use to update current time and maybe progress bar, but only if not seeking?
 	// progression = { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 }
 	const handleProgress = progression => {
-		if (!seeking)
-			setProgress(progression)
+		console.log('progress', player.getCurrentTime())
+		setProgress(progression)
 	}
 
 	const handleSeekChange = (e, time) => {
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
+		console.log('seeking')
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
@@ -125,19 +129,9 @@ const PlayerContainer = props => {
 			newPlayed = time / duration
 		}
 		if(newPlayed !== Infinity && newPlayed !== -Infinity){
-			//console.log(newPlayed)
+			console.log(newPlayed * duration)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
-	}
-
-	const handleSeekMouseDown = e => {
-		setSeeking(true)
-	}
-
-	const handleSeekMouseUp = e => {
-		// console.log(`handleSeekMouseDown`)
-		setSeeking(false)
-		player.seekTo(parseFloat(e.target.value))
 	}
 
 	const handleToggleFullscreen = () => {
@@ -166,6 +160,7 @@ const PlayerContainer = props => {
 	}
 
 	const viewstate = {
+		showTranscript,
 		duration,
 		fullscreen,
 		hovering,
@@ -190,8 +185,6 @@ const PlayerContainer = props => {
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,
-		handleSeekMouseDown,
-		handleSeekMouseUp,
 		handleToggleFullscreen,
 		handleMuted,
 		handleUnmuted,

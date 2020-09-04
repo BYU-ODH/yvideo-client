@@ -254,9 +254,12 @@ export default class ContentService {
 
 			const finalData = new BackEndContent(content).backEndData
 
+			console.log(finalData)
+
 			const results = await apiProxy.content.update(finalData)
 
-			// const metaResult =
+			console.log(results)
+
 			// await apiProxy.content.metadata.post(id, metadata)
 
 			// console.log(settingsResult)
