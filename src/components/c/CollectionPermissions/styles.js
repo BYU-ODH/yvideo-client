@@ -15,6 +15,8 @@ export default Style
 
 export const Search = styled.form`
 	position: relative;
+	display: inline;
+
 	& > input {
 		background: white;
 		border-radius: 1.3rem;
@@ -107,12 +109,27 @@ export const AddButton = styled.button`
 	border-radius: 1.3rem;
 
 	outline: none;
+
 	${props => props.disabled ? `` : `cursor: pointer;`}
 
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
+`
+export const AddManyButton = styled.button`
+	height: 2.8rem;
+	width: 10rem;
+	margin-left: 1rem;
+	border: none;
+	border-radius: 1.3rem;
+	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	cursor: pointer;
+	background: #0582CA;
+	color: white;
 `
 
 export const Table = styled.table`

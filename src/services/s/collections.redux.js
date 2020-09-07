@@ -369,18 +369,17 @@ export default class CollectionService {
 
 			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {
-			alert('The data could not be saved. Plase, try again')
+			alert('The data could not be saved. Please, try again')
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
 	updateMany  = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.collectionsStart())
-
 		try {
-
 			const result =  await apiProxy.collection.permissions.postMany(collectionId, body)
-			console.log(result)
+			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {
+			alert('The data could not be saved. Please, try again')
 			dispatch(this.actions.collectionsError(error))
 		}
 	}

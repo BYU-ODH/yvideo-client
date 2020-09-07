@@ -114,9 +114,7 @@ const CollectionPermissionsContainer = props => {
 		addUser: e => {
 			// console.log(state.taFaculty)
 			e.preventDefault()
-
 			updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
-
 			setDisableUser(true)
 			setUser({
 				...user,

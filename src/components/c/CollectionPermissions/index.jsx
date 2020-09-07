@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton} from './styles'
+import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton } from './styles'
 
 // import { PermissionTable } from 'components/bits'
 
@@ -72,12 +72,11 @@ export class CollectionPermissions extends PureComponent {
 				</form><br/>
 
 				<h4>TA / Faculty / Auditing</h4>
-
 				<Search className='faculty-submit' onSubmit={handlers.addUser}>
 					<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
 					<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
-				</Search><br/>
-				<AddManyButton onClick={handlers.AddBatchNetids}>Add many...</AddManyButton><br/><br/>
+				</Search>
+				<AddManyButton type="button" onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
 
 				{/* <AddManyButton onClick={handlers.handleShowHelp}>Add many...</AddManyButton> */}
 				<TableContainer>

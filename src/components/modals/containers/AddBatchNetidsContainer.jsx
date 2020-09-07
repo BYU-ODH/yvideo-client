@@ -17,7 +17,8 @@ const AddBatchNetidsContainer = props => {
 	const { updateMany, toggleModal } = props
 	const [ list, setList ] = useState([])
 	const [ id, setId ] = useState("")
-	const viewState = { list, id }
+	const [disabledUser, setDisableUser] = useState(true)
+	const viewState = { list, id, disabledUser }
 
 	const handleNewId = ( e ) => {
 		e.preventDefault()
@@ -32,6 +33,13 @@ const AddBatchNetidsContainer = props => {
 
 	const handleIdChange = ( value ) => {
 		setId(value)
+
+		if(value.length > 1){
+			setDisableUser(false)
+		}
+		else {
+			setDisableUser(true)
+		}
 	}
 
 	const handler = {
@@ -39,8 +47,6 @@ const AddBatchNetidsContainer = props => {
 		handleIdChange,
 		toggleModal,
 	}
-	console.log(list)
-	console.log(id)
 
 	return <AddBatchNetids viewState={ viewState } handler={ handler }/>
 }
