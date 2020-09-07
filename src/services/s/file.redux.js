@@ -124,7 +124,7 @@ export default class FileService {
 			console.log(result)
 
 		} catch (error) {
-			dispatch(this.actions.resourcesError(error))
+			dispatch(this.actions.fileError(error))
 		}
 	}
 
@@ -137,10 +137,8 @@ export default class FileService {
 
 			dispatch(this.actions.fileUpdate(file))
 
-			// console.log(getState())
-
 		} catch (error) {
-			dispatch(this.actions.resourcesError(error))
+			dispatch(this.actions.fileError(error))
 		}
 	}
 }

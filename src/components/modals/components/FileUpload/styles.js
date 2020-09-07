@@ -23,6 +23,10 @@ export const Form = styled.form`
 			width: 20rem;
 		}
 
+		& > input {
+			width: 18rem;
+		}
+
 		& > h4 {
 			display: flex;
 			align-items: center;

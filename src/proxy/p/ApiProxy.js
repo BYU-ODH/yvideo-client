@@ -467,6 +467,35 @@ const apiProxy = {
 			},
 		},
 	},
+	language: {
+		post: async (lang) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/language`, lang, {
+			withCredentials: true,
+			headers: {
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+			return res.data
+		}),
+		get: async () => await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/language`, {
+			withCredentials: true,
+			headers: {
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+			return res.data
+		}),
+		delete: async (lang) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/language`, lang, {
+			withCredentials: true,
+			headers: {
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+			return res.data
+		}),
+	},
 	file: {
 		post: async (file) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file`, file, {
 			withCredentials: true,

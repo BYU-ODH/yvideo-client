@@ -58,7 +58,7 @@ export const EditButton = styled.button`
 
 export const InnerContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1.5fr 1fr 2fr;
+	grid-template-columns: 1fr 1fr 1.5fr;
 	padding: 15px;
 `
 

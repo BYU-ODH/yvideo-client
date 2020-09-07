@@ -23,7 +23,7 @@ const Controller = props => {
 		minimized,
 		// handleLastClick,
 		togglendTimeline,
-		getCurrentTime,
+		getVideoTime,
 	} = props
 
 	const ref = useRef(null)
@@ -109,15 +109,19 @@ const Controller = props => {
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
+				getVideoTime(newPlayed.toFixed(10) * duration)
+				console.log(newPlayed.toFixed(10) * duration)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
-			// getCurrentTime(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(1))
+			console.log(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
-			// getCurrentTime(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(1))
+			console.log(elapsed.toFixed(1))
 		},
 		handleMute: () => {
 			// console.log('mute event')

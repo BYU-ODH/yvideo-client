@@ -56,7 +56,8 @@ const TrackLayer = props => {
 	const [, dropRef] = useDrop({
 		accept: `timeline-event`,
 		drop: onDrop,
-		hover: (item, monitor) => {},
+		hover: (item, monitor) => {
+		},
 	})
 	//Drag within the layer
 	const handleDrag = (d, event, index) => {
