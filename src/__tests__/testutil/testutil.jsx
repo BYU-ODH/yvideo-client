@@ -318,6 +318,8 @@ export const store = mockStore(
 		collectionStore: {
 			roles,
 			cache: collections,
+			users: [],
+			courses: [],
 		},
 		contentStore:{
 			loading: false,

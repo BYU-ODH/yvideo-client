@@ -146,7 +146,6 @@ describe(`content service test`, () => {
 		expect(types.COLLECTIONS_REMOVE_CONTENT).toBe(`COLLECTION_REMOVE_CONTENT`)
 		expect(types.COLLECTION_CREATE).toBe(`COLLECTION_CREATE`)
 		expect(types.COLLECTION_EDIT).toBe(`COLLECTION_EDIT`)
-		expect(types.COLLECTION_ROLES_GET).toBe(`COLLECTION_ROLES_GET`)
 		expect(types.COLLECTION_ROLES_UPDATE).toBe(`COLLECTION_ROLES_UPDATE`)
 	})
 
@@ -154,8 +153,7 @@ describe(`content service test`, () => {
 		const endpoints = collectionServiceConstructor.roleEndpoints
 
 		expect(endpoints.addCourse).toBe(`add-course`)
-		expect(endpoints.addTA).toBe(`add-user`)
-		expect(endpoints.addException).toBe(`add-user`)
+		expect(endpoints.addUser).toBe(`add-user`)
 		expect(endpoints.removeCourse).toBe(`remove-course`)
 		expect(endpoints.removeUser).toBe(`remove-user`)
 	})
@@ -222,31 +220,33 @@ describe(`content service test`, () => {
 		expect(result.type).toBe(`COLLECTION_EDIT`)
 	})
 
-	it(`collections roles get`, () => {
-		store.dispatch(collectionServiceConstructor.actions.collectionsGet(collections))
-		expect(Object.keys(store.getState().cache[0].content).length).toBe(2)
+	// method is removed
+	// it(`collections roles get`, () => {
+	// 	store.dispatch(collectionServiceConstructor.actions.collectionsGet(collections))
+	// 	expect(Object.keys(store.getState().cache[0].content).length).toBe(2)
 
-		expect(Object.keys(store.getState().roles).length).toBe(0)
-		const result = store.dispatch(collectionServiceConstructor.actions.collectionRolesGet(testutil.roles))
-		expect(Object.keys(store.getState().roles).length).toBe(1)
-		expect(store.getState().roles[0].courses[0].id).toBe(`course id`)
-		expect(store.getState().roles[0].admins[0].username).toBe(`testusername`)
-		expect(store.getState().roles[0].exceptions[0].email).toBe(`test@test.com`)
-		expect(result.type).toBe(`COLLECTION_ROLES_GET`)
-	})
+	// 	expect(Object.keys(store.getState().roles).length).toBe(0)
+	// 	const result = store.dispatch(collectionServiceConstructor.actions.collectionRolesGet(testutil.roles))
 
-	it(`collections roles update`, () => {
-		store.dispatch(collectionServiceConstructor.actions.collectionsGet(collections))
-		expect(Object.keys(store.getState().cache[0].content).length).toBe(2)
+	// 	expect(Object.keys(store.getState().roles).length).toBe(1)
+	// 	expect(store.getState().roles[0].courses[0].id).toBe(`course id`)
+	// 	expect(store.getState().roles[0].admins[0].username).toBe(`testusername`)
+	// 	expect(store.getState().roles[0].exceptions[0].email).toBe(`test@test.com`)
+	// 	expect(result.type).toBe(`COLLECTION_ROLES_GET`)
+	// })
 
-		expect(Object.keys(store.getState().roles).length).toBe(0)
-		const result = store.dispatch(collectionServiceConstructor.actions.collectionRolesUpdate(testutil.roles))
-		expect(Object.keys(store.getState().roles).length).toBe(1)
-		expect(store.getState().roles[0].courses[0].id).toBe(`course id`)
-		expect(store.getState().roles[0].admins[0].username).toBe(`testusername`)
-		expect(store.getState().roles[0].exceptions[0].email).toBe(`test@test.com`)
-		expect(result.type).toBe(`COLLECTION_ROLES_UPDATE`)
-	})
+	// it(`collections roles update`, () => {
+	// 	store.dispatch(collectionServiceConstructor.actions.collectionsGet(collections))
+	// 	expect(Object.keys(store.getState().cache[0].content).length).toBe(2)
+
+	// 	expect(Object.keys(store.getState().roles).length).toBe(0)
+	// 	const result = store.dispatch(collectionServiceConstructor.actions.collectionRolesUpdate(testutil.roles))
+	// 	expect(Object.keys(store.getState().roles).length).toBe(1)
+	// 	expect(store.getState().roles[0].courses[0].id).toBe(`course id`)
+	// 	expect(store.getState().roles[0].admins[0].username).toBe(`testusername`)
+	// 	expect(store.getState().roles[0].exceptions[0].email).toBe(`test@test.com`)
+	// 	expect(result.type).toBe(`COLLECTION_ROLES_UPDATE`)
+	// })
 
 	// thunk
 	// TODO: need to figure out how to check actions to be called
@@ -339,27 +339,27 @@ describe(`content service test`, () => {
 		expect(store.getState().collectionStore.cache[0].archived).toBe(false)
 	})
 
-	it(`getCollectionRoles`, async() => {
+	// it(`getCollectionRoles`, async() => {
 
-		proxies.apiProxy.collection.permissions.get = jest.fn()
-		proxies.apiProxy.collection.permissions.get.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					courses,
-					admins,
-					exceptions,
-				},
-			})
-		})
+	// 	proxies.apiProxy.collection.permissions.get = jest.fn()
+	// 	proxies.apiProxy.collection.permissions.get.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			data: {
+	// 				courses,
+	// 				admins,
+	// 				exceptions,
+	// 			},
+	// 		})
+	// 	})
 
-		await collectionServiceConstructor.getCollectionRoles(0, true)(dispatch, getState, { apiProxy })
+	// 	await collectionServiceConstructor.getCollectionRoles(0, true)(dispatch, getState, { apiProxy })
 
-		expect(Object.keys(store.getState().roles).length).toBe(1)
-		expect(store.getState().roles[0].courses[0].id).toBe(`course id`)
-		expect(store.getState().roles[0].admins[0].username).toBe(`testusername`)
-		expect(store.getState().roles[0].exceptions[0].email).toBe(`test@test.com`)
-	})
+	// 	expect(Object.keys(store.getState().roles).length).toBe(1)
+	// 	expect(store.getState().roles[0].courses[0].id).toBe(`course id`)
+	// 	expect(store.getState().roles[0].admins[0].username).toBe(`testusername`)
+	// 	expect(store.getState().roles[0].exceptions[0].email).toBe(`test@test.com`)
+	// })
 
 	// TODO: should fix later when thunk got fixed
 	it(`updateCollectionName`, async() => {
@@ -391,123 +391,123 @@ describe(`content service test`, () => {
 	})
 
 	// TODO: fix it later when update collectio roles is updated
-	it(`updateCollectionRoles`, async() => {
+	// it(`updateCollectionRoles`, async() => {
 
-		// types
-		const linkCourses = collectionServiceConstructor.roleEndpoints.addCourse
-		const unlinkCourses = collectionServiceConstructor.roleEndpoints.removeCourse
-		const addTA = collectionServiceConstructor.roleEndpoints.addTA
-		const addException = collectionServiceConstructor.roleEndpoints.addException
-		const removeTA = collectionServiceConstructor.roleEndpoints.removeUser
-		// const removeException = collectionServiceConstructor.roleEndpoints.removeException
+	// 	// types
+	// 	const linkCourses = collectionServiceConstructor.roleEndpoints.addCourse
+	// 	const unlinkCourses = collectionServiceConstructor.roleEndpoints.removeCourse
+	// 	const addTA = collectionServiceConstructor.roleEndpoints.addTA
+	// 	const addException = collectionServiceConstructor.roleEndpoints.addException
+	// 	const removeTA = collectionServiceConstructor.roleEndpoints.removeUser
+	// 	// const removeException = collectionServiceConstructor.roleEndpoints.removeException
 
-		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				collections,
-			})
-		})
+	// 	proxies.apiProxy.user.collections.get = jest.fn()
+	// 	proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			collections,
+	// 		})
+	// 	})
 
-		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: newCourses,
-			})
-		})
+	// 	proxies.apiProxy.collection.permissions.post = jest.fn()
+	// 	proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			data: newCourses,
+	// 		})
+	// 	})
 
-		expect(store.getState().cache.collections).toBe(undefined)
-		await collectionServiceConstructor.getCollections(true)(dispatch, getState, { apiProxy })
-		expect(Object.keys(store.getState().cache.collections).length).toBe(2)
+	// 	expect(store.getState().cache.collections).toBe(undefined)
+	// 	await collectionServiceConstructor.getCollections(true)(dispatch, getState, { apiProxy })
+	// 	expect(Object.keys(store.getState().cache.collections).length).toBe(2)
 
-		// linkCourses
-		expect(store.getState().collectionStore.roles[0].courses.length).toBe(1)
-		const linkCoursesBody = { newCourses }
-		await collectionServiceConstructor.updateCollectionRoles(0, linkCourses, linkCoursesBody)(dispatch, getState, { apiProxy })
-		expect(store.getState().roles[0].courses.length).toBe(2)
+	// 	// linkCourses
+	// 	expect(store.getState().collectionStore.roles[0].courses.length).toBe(1)
+	// 	const linkCoursesBody = { newCourses }
+	// 	await collectionServiceConstructor.updateCollectionRoles(0, linkCourses, linkCoursesBody)(dispatch, getState, { apiProxy })
+	// 	expect(store.getState().roles[0].courses.length).toBe(2)
 
-		// unlinkCourses
-		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: courses,
-			})
-		})
-		const unlinkCoursesBody = newCourses
-		await collectionServiceConstructor.updateCollectionRoles(0, unlinkCourses, unlinkCoursesBody)(dispatch, getState, { apiProxy })
-		expect(store.getState().roles[0].courses.length).toBe(1)
+	// 	// unlinkCourses
+	// 	proxies.apiProxy.collection.permissions.post = jest.fn()
+	// 	proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			data: courses,
+	// 		})
+	// 	})
+	// 	const unlinkCoursesBody = newCourses
+	// 	await collectionServiceConstructor.updateCollectionRoles(0, unlinkCourses, unlinkCoursesBody)(dispatch, getState, { apiProxy })
+	// 	expect(store.getState().roles[0].courses.length).toBe(1)
 
-		// addTA
-		const addTABody = `testusername2`
-		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					email: `test@email.com`,
-					id: 0,
-					lastLogin: `2020-07-03T20:44:45.369Z`,
-					linked: -1,
-					name: `testname`,
-					roles: [`admin`],
-					username: `testusername2`,
-				},
-			})
-		})
-		expect(store.getState().roles[0].admins[1]).toBe(undefined)
-		await collectionServiceConstructor.updateCollectionRoles(0, addTA, addTABody)(dispatch, getState, { apiProxy })
-		expect(store.getState().roles[0].admins[1].username).toBe(`testusername2`)
+	// 	// addTA
+	// 	const addTABody = `testusername2`
+	// 	proxies.apiProxy.collection.permissions.post = jest.fn()
+	// 	proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			data: {
+	// 				email: `test@email.com`,
+	// 				id: 0,
+	// 				lastLogin: `2020-07-03T20:44:45.369Z`,
+	// 				linked: -1,
+	// 				name: `testname`,
+	// 				roles: [`admin`],
+	// 				username: `testusername2`,
+	// 			},
+	// 		})
+	// 	})
+	// 	expect(store.getState().roles[0].admins[1]).toBe(undefined)
+	// 	await collectionServiceConstructor.updateCollectionRoles(0, addTA, addTABody)(dispatch, getState, { apiProxy })
+	// 	expect(store.getState().roles[0].admins[1].username).toBe(`testusername2`)
 
-		// removeTA
-		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					admins,
-					exceptions,
-				},
-			})
-		})
-		expect(store.getState().roles[0].admins[1].username).toBe(`testusername2`)
-		await collectionServiceConstructor.updateCollectionRoles(0, removeTA, addTABody)(dispatch, getState, { apiProxy })
-		expect(store.getState().roles[0].admins[1]).toBe(undefined)
+	// 	// removeTA
+	// 	proxies.apiProxy.collection.permissions.post = jest.fn()
+	// 	proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			data: {
+	// 				admins,
+	// 				exceptions,
+	// 			},
+	// 		})
+	// 	})
+	// 	expect(store.getState().roles[0].admins[1].username).toBe(`testusername2`)
+	// 	await collectionServiceConstructor.updateCollectionRoles(0, removeTA, addTABody)(dispatch, getState, { apiProxy })
+	// 	expect(store.getState().roles[0].admins[1]).toBe(undefined)
 
-		// addException
-		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					email: `test@email.com`,
-					id: 0,
-					lastLogin: `2020-07-03T20:44:45.369Z`,
-					linked: -1,
-					name: `testname`,
-					roles: [`admin`],
-					username: `testusername2`,
-				},
-			})
-		})
-		expect(store.getState().roles[0].exceptions[1]).toBe(undefined)
-		await collectionServiceConstructor.updateCollectionRoles(0, addException, addTABody)(dispatch, getState, { apiProxy })
-		expect(store.getState().roles[0].exceptions[1].username).toBe(`testusername2`)
+	// 	// addException
+	// 	proxies.apiProxy.collection.permissions.post = jest.fn()
+	// 	proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			data: {
+	// 				email: `test@email.com`,
+	// 				id: 0,
+	// 				lastLogin: `2020-07-03T20:44:45.369Z`,
+	// 				linked: -1,
+	// 				name: `testname`,
+	// 				roles: [`admin`],
+	// 				username: `testusername2`,
+	// 			},
+	// 		})
+	// 	})
+	// 	expect(store.getState().roles[0].exceptions[1]).toBe(undefined)
+	// 	await collectionServiceConstructor.updateCollectionRoles(0, addException, addTABody)(dispatch, getState, { apiProxy })
+	// 	expect(store.getState().roles[0].exceptions[1].username).toBe(`testusername2`)
 
-		// removeException
-		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					admins,
-					exceptions,
-				},
-			})
-		})
-		// expect(store.getState().roles[0].exceptions[1].username).toBe(`testusername2`)
-		// await collectionServiceConstructor.updateCollectionRoles(0, removeException, addTABody)(dispatch, getState, { apiProxy })
-		// expect(store.getState().roles[0].exceptions[1]).toBe(undefined)
-	})
+	// 	// removeException
+	// 	proxies.apiProxy.collection.permissions.post = jest.fn()
+	// 	proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+	// 		return Promise.resolve({
+	// 			status: 200,
+	// 			data: {
+	// 				admins,
+	// 				exceptions,
+	// 			},
+	// 		})
+	// 	})
+	// 	// expect(store.getState().roles[0].exceptions[1].username).toBe(`testusername2`)
+	// 	// await collectionServiceConstructor.updateCollectionRoles(0, removeException, addTABody)(dispatch, getState, { apiProxy })
+	// 	// expect(store.getState().roles[0].exceptions[1]).toBe(undefined)
+	// })
 })
