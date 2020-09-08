@@ -286,7 +286,7 @@ export default class CollectionService {
 			try {
 
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
-				console.log(users)
+				// console.log(users)
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 				//console.log(courses)

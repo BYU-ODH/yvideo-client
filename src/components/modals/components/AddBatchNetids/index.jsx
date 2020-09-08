@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import {	Form,	AddManyForm,	AddManyButton,	CancelButton } from './styles'
+import { Form, AddManyForm, AddManyButton, CancelButton } from './styles'
 
 export default class AddBatchNetids extends PureComponent {
 
