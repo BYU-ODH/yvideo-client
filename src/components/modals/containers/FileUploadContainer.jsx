@@ -18,7 +18,6 @@ const FileUploadContainer = props => {
 		toggleModal,
 		uploadFile,
 		getFiles,
-		getLanguages,
 		langs,
 	} = props
 

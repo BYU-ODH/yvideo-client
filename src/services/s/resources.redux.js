@@ -1,5 +1,4 @@
 import ResourceObject from '../../models/ResourceObject'
-import { fileService } from '..'
 
 export default class ResourceService {
 
@@ -245,7 +244,6 @@ export default class ResourceService {
 		}
 	}
 
-	// TODO: can it be combined with edit resource? => do not need
 	updateFileVersion = (resource, files) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
@@ -271,7 +269,7 @@ export default class ResourceService {
 	editFile = (resourceId, file, edit = true) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
-		// TODO: add file versions onto resource with ;
+		// add file versions on resource
 		try {
 			const files = getState().resourceStore.cache[resourceId].files
 			const newFileStack = []

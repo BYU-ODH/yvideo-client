@@ -51,7 +51,7 @@ describe(`content service test`, () => {
 				lastFetchedProfessors: 0,
 				lastFetchedCollections: 0,
 				adminStore:{
-					data: null,
+					data: [searchResults[0]],
 					cache: {},
 					professors: [],
 					professor: {},
@@ -130,7 +130,7 @@ describe(`content service test`, () => {
 		const result = store.dispatch(adminServiceConstructor.actions.adminCreateContent(content))
 		expect(store.getState().loading).toBe(false)
 		expect(result.type).toBe(`ADMIN_CREATE_CONTENT`)
-		expect(Object.keys(store.getState().profCollectionContent).length).toBe(2)
+		expect(Object.keys(store.getState().profCollectionContent).length).toBe(1)
 	})
 
 	it(`adminError`, () => {
@@ -304,11 +304,12 @@ describe(`content service test`, () => {
 
 		proxies.apiProxy.admin.collection.get = jest.fn()
 		proxies.apiProxy.admin.collection.get.mockImplementationOnce(()=>{
-			return Promise.resolve(searchResults)
+			return Promise.resolve({data: searchResults})
 		})
 
 		expect(store.getState().professorCollections).toEqual(null)
 		await adminServiceConstructor.searchCollections(`testusername`, true)(dispatch, getState, { apiProxy })
+		// console.log(store.getState())
 		expect(store.getState().professorCollections).toEqual({22: searchResults[0]})
 	})
 
