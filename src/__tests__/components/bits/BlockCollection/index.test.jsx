@@ -45,6 +45,8 @@ describe(`collections test`, () => {
 		)
 
 		collection.content[1].published = false
+		const publishContent = collection.content.filter(item => item.published)
+		expect(publishContent.length).toBe(1)
 		expect(wrapper.contains(<p>1 Videos</p>)).toEqual(false)
 
 		wrapper.find(`.block-collection-link`).forEach((node, index) => {
