@@ -21,7 +21,7 @@ import {
 	interfaceService
 } from 'services'
 
-/**
+/**c
 This component takes one parameter. The parameter is the @param name of the component that we need help with.
 Help documentation is available as an object. Each key will be the name of a component and each name will point to specific information and resources
 which will provide the necessary help to the user. Resources can be a video, an image, or maybe a detailed tutorial
