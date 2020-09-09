@@ -102,6 +102,7 @@ const EventsContainer = props => {
 
 				// 	break;
 			case `Blank`:
+				console.log('should blank')
 				handleBlank(true)
 				break
 			default:

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+import { Prompt } from 'react-router'
+
 import Style, { Timeline, EventList, EventListCarat, NewLayer, Icon, AnnotationMessage, Help } from './styles'
 
 import { DndProvider } from 'react-dnd'
@@ -106,11 +108,12 @@ const TrackEditor = props => {
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
+	const [blockLeave, setBlock] = useState(true)
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [displayLayer, setDisplayLayer] = useState(0)
 	const [videoLength, setVideoLength] = useState(0)
-	// const [videoCurrentTime, setCurrentTime] = useState(0)
+	const [videoCurrentTime, setCurrentTime] = useState(0)
 
 	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
@@ -182,6 +185,14 @@ const TrackEditor = props => {
 				setSaved(false)
 			}, 3000)
 		}
+
+		if(blockLeave){
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+
 	}, [eventsArray])
 
 	if(shouldUpdate === true)
@@ -266,16 +277,23 @@ const TrackEditor = props => {
 	}
 
 	const eventDropHandler = (item, index) => {
+		// console.log(monitor.getSourceClientOffset())
 		// console.log(`Event Drop Handler: `, item, index)
-		addEventToLayer(item, index)
+
+		//TODO: Change this to use real JS event objects and insert based on time
+		//CALCULATE THE CURRENT TIME IN RESPECT OF THE CURRENT PERCENTAGE OF THE LAYER
+		//READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
+		let newStart = videoCurrentTime * 100 / videoLength
+		console.log(newStart)
+		addEventToLayer(item, index, newStart)
 	}
 
-	const addEventToLayer = (item, index) => {
+	const addEventToLayer = (item, index, startPercentage) => {
 		if (item.id === `subtitle`){
 			handleAddSubLayer()
 			return
 		}
-		// TODO: Change this to use real JS event objects and insert based on time
+
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
@@ -286,6 +304,11 @@ const TrackEditor = props => {
 		const eventObj = {
 			...matchingEvent,
 			layer: index,
+		}
+
+		if(videoCurrentTime !== 0){
+			eventObj.start = startPercentage
+			eventObj.end = startPercentage + 10
 		}
 
 		currentEvents.push(eventObj)
@@ -917,6 +940,7 @@ const TrackEditor = props => {
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
 						getDuration={getVideoDuration}
+						getVideoTime={setCurrentTime}
 						minimized={timelineMinimized}
 						togglendTimeline={togglendTimeline}
 					>
@@ -1121,9 +1145,13 @@ const TrackEditor = props => {
 				</EventList>
 			</DndProvider>
 			<>
-				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
+				<AnnotationMessage style={{ visibility: `${annotationsSaved ? (`visible`) : (`hidden`)}`, opacity: `${annotationsSaved ? (`1`) : (`0`)}`, }}>
 					<h2>Annotations saved successfully</h2>
 				</AnnotationMessage>
+				<Prompt
+					when={blockLeave}
+					message='If you leave you will lose all your changes. Have you saved your changes already?'
+				/>
 			</>
 		</Style>
 	)
