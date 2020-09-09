@@ -5,20 +5,19 @@ import { subtitlesService } from 'services'
 const SubtitlesContainer = props => {
 	const {subtitles, currentTime, handleShowSubtitle, active,duration} = props
 	console.log(subtitles)
-	try{
-		console.log(subtitles[active])
+
+	if(subtitles[active] !== undefined){
+		console.log(`ack`,subtitles[active])
 		subtitles[active][`content`].forEach(element => {
 			console.log(element)
 			const start = element.start / 100 * duration
 			const end = element.end / 100 * duration
 			if(currentTime >= start && currentTime <= end){
-				console.log(element)
+				console.log(element.text)
 				handleShowSubtitle(element.text)
 			}else if (currentTime > end || currentTime < start)
 				handleShowSubtitle(``)
-
 		})
-	}catch(error){
 	}
 
 	// console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')

@@ -321,6 +321,25 @@ const apiProxy = {
 			updateSessionId(res.headers[`session-id`])
 			return res.data
 		}),
+		getSubtitles: async id => {
+			console.log(`here`)
+			console.log(window.clj_session_id)
+			const results = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/subtitles`,
+				{
+					withCredentials: true,
+					headers: {
+						'Content-Type': `application/json`,
+						'session-id': window.clj_session_id,
+					},
+				}).then( async res => {
+
+				await updateSessionId(res.headers[`session-id`])
+				console.log(`results are`,res)
+				return res.data
+			})
+			return results
+		},
+
 	},
 	resources: {
 		post: async (resource) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource`, resource, {

@@ -714,25 +714,41 @@ const TrackEditor = props => {
 		activeUpdate(subLayerIndex)
 		setSubSelected(true)
 		// setSideEditor(true)
+		sortSubtitles()
 	}
 	const addSubToLayer = (item,index) => {
 		// TODO: Change this to use real JS event objects and insert based on time
 		let currentSubs = []
 		currentSubs = [...subtitles]
+		let subStart = 0
+		try{
+			console.log(subStart)
+			if (currentSubs[index]){
+				if(currentSubs[index][`content`][subToEdit]){
+					console.log(currentSubs[index][`content`])
+					subStart = currentSubs[index][`content`][subToEdit].end + .01
+				}
+			}
+			console.log(`ayee`,subStart)
+			const newSub = {
+				start: subStart,
+				end: subStart + 5,
+				text: ``,
+			}
 
-		// console.log('ADDING NEW EVENT')
-		const newSub = {
-			start: 0,
-			end: 10,
-			text: ``,
+			currentSubs[index][`content`].push(newSub)
+			setSubLayerToEdit(index)
+			activeUpdate(index)
+			setSubs(currentSubs)
+			console.log(`he re 4`)
+			setAllSubs(currentSubs)
+			sortSubtitles()
+		}catch(error) {
+			alert(`there was an error adding the subtitle`)
+			console.error(error)
 		}
+		// console.log('ADDING NEW EVENT')
 
-		currentSubs[index][`content`].push(newSub)
-		setSubLayerToEdit(index)
-		activeUpdate(index)
-		setSubs(currentSubs)
-		console.log(`he re 4`)
-		setAllSubs(currentSubs)
 	}
 	const checkSideBarTitle = () => {
 		try {
@@ -869,6 +885,20 @@ const TrackEditor = props => {
 		console.log(`he re 11`)
 		setSubs(temp)
 		setAllSubs(temp)
+	}
+	const sortSubtitles = () => {
+		const tempSubs = subtitles
+		for(let i = 0; i< tempSubs.length; i++){
+			console.log(`ay ay`)
+			const tempContent = tempSubs[i][`content`]
+			console.log(tempContent)
+			tempContent.sort((a,b)=> a.start - b.start)
+			tempSubs[i][`content`] = tempContent
+		}
+		console.log(tempSubs)
+		setSubs(tempSubs)
+		setAllSubs(tempSubs)
+
 	}
 	console.log(subtitles)
 	return (

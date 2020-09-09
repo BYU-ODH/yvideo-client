@@ -92,10 +92,7 @@ export default class SubtitlesService {
 			console.log(`??//`,action.payload.subtitles)
 			return {
 				...store,
-				cache: {
-					...store.cache,
-					...action.payload.subtitles,
-				},
+				cache: action.payload.subtitles,
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -103,10 +100,7 @@ export default class SubtitlesService {
 		case SUBTITLES_UPDATE:
 			return {
 				...store,
-				cache: {
-					...store.cache,
-					...action.payload.subtitles,
-				},
+				cache:action.payload.subtitles,
 				loading: false,
 			}
 		case ACTIVE_UPDATE:

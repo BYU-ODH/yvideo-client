@@ -45,18 +45,26 @@ const TrackEditorContainer = props => {
 		console.log(`more testing`,testsubs)
 		setSubs(testsubs !== undefined?testsubs:[])
 	}
+	const getAllSubtitles = async() => {
+		const testsubs = await getSubtitles(id)
+		console.log(`more testing`,testsubs)
+		setSubs(testsubs !== undefined?testsubs:[])
+	}
 	useEffect(() => {
 		// console.log('use effecct')
-		if(!content.hasOwnProperty(id))
+		if(!content.hasOwnProperty(id)){
+			console.log(`this is happening`)
 			getData()
+		}
 
 		if(content[id] !== undefined){
+			// getAllSubtitles()
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
-			 else {
+			else {
 				// CHECK RESOURCE ID
 				if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
 					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
@@ -72,19 +80,19 @@ const TrackEditorContainer = props => {
 
 	const createAndAddSub = async () =>{
 		console.log(allSubs)
-		const subtitles = {...allSubs}
+		const subtitles = [...allSubs]
 		subtitles.map((item)=>console.log(`AAAAg`,item))
 		console.log(subtitles)
 		try{
 			for(let i = 0; i<subtitles.length;i++){
 				if (subtitles[i][`id`] === ``){
 					subtitles[i][`content-id`] = id
-					console.log(subtitles[i])
 					subtitles[i][`content`] = JSON.stringify(subtitles[i][`content`])
 					const subId = await createSubtitle(subtitles[i])
 					subtitles[i][`id`] = subId
 					subtitles[i][`content`] = JSON.parse(subtitles[i][`content`])
 					console.log(`subid`,subId)
+					console.log(subtitles[i])
 				}else if(subtitles[i][`id`] !== ``)
 					updateSubtitle(subtitles[i])
 
