@@ -283,6 +283,22 @@ export const roles = {
 	},
 }
 
+export const file1 = {
+	"file-version": `test version`,
+	filepath: `test file path`,
+	id: `test id`,
+	metadata: `metadata`,
+	"resource-id": `test resource id`,
+}
+
+export const file2 = {
+	"file-version": `test version2`,
+	filepath: `test file path2`,
+	id: `test id2`,
+	metadata: `metadata2`,
+	"resource-id": `test resource id2`,
+}
+
 export const store = mockStore(
 	{
 		resourceStore: {
