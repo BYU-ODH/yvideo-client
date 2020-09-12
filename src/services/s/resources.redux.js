@@ -1,5 +1,4 @@
 import ResourceObject from '../../models/ResourceObject'
-import { fileService } from '..'
 
 export default class ResourceService {
 
@@ -206,13 +205,73 @@ export default class ResourceService {
 		}
 	}
 
+	editResource = (resource, resourceId, selectedFile) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.resourcesStart())
+
+		try {
+			const backendForm = {
+				"id": resource.id,
+				"copyrighted": resource.copyrighted,
+				"resource-name": resource.resourceName,
+				"physical-copy-exists": resource.physicalCopyExists,
+				"published": resource.published,
+				"views": resource.views,
+				"full-video": resource.fullVideo,
+				"metadata": resource.metadata,
+				"requester-email": resource.requesterEmail,
+				"all-file-versions": resource.allFileVersions,
+				"resource-type": resource.resourceType,
+				"date-validated": resource.dateValidated,
+			}
+
+			const result = await apiProxy.resources.edit(backendForm, resourceId)
+
+			if(selectedFile !== undefined){
+				const files = getState().resourceStore.cache[resourceId].files
+				const newFileStack = []
+
+				files.forEach(item => {
+					if(item.id !== selectedFile.id)
+						newFileStack.push(item)
+				})
+				resource.files = newFileStack
+			}
+
+			dispatch(this.actions.resourceEdit(resource))
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	updateFileVersion = (resource, files) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			if(files !== undefined){
+				resource.files = files
+
+				let langs = ``
+				files.forEach(file => {
+					langs = langs.concat(`${file[`file-version`]};`)
+				})
+
+				resource.allFileVersions = langs
+			}
+
+			dispatch(this.actions.resourceEdit(resource))
+		} catch(error){
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
 	editFile = (resourceId, file, edit = true) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
-		// TODO: add file versions onto resource with ;
+		// add file versions on resource
 		try {
 			const files = getState().resourceStore.cache[resourceId].files
-
 			const newFileStack = []
 
 			files.forEach(item => {
@@ -220,7 +279,8 @@ export default class ResourceService {
 					newFileStack.push(item)
 			})
 
-			if(edit) newFileStack.push(file)
+			if(edit)
+				newFileStack.push(file)
 
 			dispatch(this.actions.resourcesFilesEdit(resourceId, newFileStack))
 
@@ -307,62 +367,6 @@ export default class ResourceService {
 
 			dispatch(this.actions.resourcesFiles(id, result))
 		} catch (error) {
-			dispatch(this.actions.resourcesError(error))
-		}
-	}
-
-	// TODO: need to update the local store as well
-	updateFileVersion = (resource, fileVersion) => async (dispatch, getState, { apiProxy }) => {
-		dispatch(this.actions.resourcesStart())
-
-		try {
-
-			const backendForm = {
-				"copyrighted": resource.copyrighted,
-				"resource-name": resource.resourceName,
-				"physical-copy-exists": resource.physicalCopyExists,
-				"published": resource.published,
-				"views": resource.views,
-				"full-video": resource.fullVideo,
-				"metadata": resource.metadata,
-				"requester-email": resource.requesterEmail,
-				"all-file-versions": fileVersion,
-				"resource-type": resource.resourceType,
-				"date-validated": resource.dateValidated,
-			}
-
-			const result = await apiProxy.resources.edit(backendForm, resource.id)
-			dispatch(this.actions.resourceEdit(resource))
-			console.log(result)
-		} catch(error){
-			dispatch(this.actions.resourcesError(error))
-		}
-	}
-
-	editResource = (resource, resourceId) => async (dispatch, getState, { apiProxy }) => {
-
-		dispatch(this.actions.resourcesStart())
-
-		try {
-			const backendForm = {
-				"id": resource.id,
-				"copyrighted": resource.copyrighted,
-				"resource-name": resource.resourceName,
-				"physical-copy-exists": resource.physicalCopyExists,
-				"published": resource.published,
-				"views": resource.views,
-				"full-video": resource.fullVideo,
-				"metadata": resource.metadata,
-				"requester-email": resource.requesterEmail,
-				"all-file-versions": resource.allFileVersions,
-				"resource-type": resource.resourceType,
-				"date-validated": resource.dateValidated,
-			}
-
-			const result = await apiProxy.resources.edit(backendForm, resourceId)
-
-			dispatch(this.actions.resourceEdit(resource))
-		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}
 	}

@@ -316,8 +316,6 @@ describe(`manage collection container test`, () => {
 			</Provider>,
 		)
 
-		console.log(wrapper.debug())
-
 		// test if two contents are inserted
 		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content
 		const contents = wrapper.find(`ManageCollectionContainer`).props().content

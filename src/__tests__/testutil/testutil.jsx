@@ -158,6 +158,16 @@ export const collection2 = {
 	thumbnail: `test@thumbnail`,
 }
 
+export const collection3 = {
+	archived: false,
+	content,
+	id: 1,
+	name: `Collection 3`,
+	owner: 22,
+	published: true,
+	thumbnail: `test@thumbnail`,
+}
+
 export const collections = {
 	0:collection1,
 	1:collection2,
@@ -273,6 +283,22 @@ export const roles = {
 	},
 }
 
+export const file1 = {
+	"file-version": `test version`,
+	filepath: `test file path`,
+	id: `test id`,
+	metadata: `metadata`,
+	"resource-id": `test resource id`,
+}
+
+export const file2 = {
+	"file-version": `test version2`,
+	filepath: `test file path2`,
+	id: `test id2`,
+	metadata: `metadata2`,
+	"resource-id": `test resource id2`,
+}
+
 export const store = mockStore(
 	{
 		resourceStore: {
@@ -318,6 +344,8 @@ export const store = mockStore(
 		collectionStore: {
 			roles,
 			cache: collections,
+			users: [],
+			courses: [],
 		},
 		contentStore:{
 			loading: false,

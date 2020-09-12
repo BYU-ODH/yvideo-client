@@ -3,23 +3,23 @@ export default class FileService {
 	// types
 
 	types = {
-		FIle_START: `FIle_START`,
-		FIle_ABORT: `FIle_ABORT`,
-		FIle_CLEAN: `FIle_CLEAN`,
-		FIle_ERROR: `FIle_ERROR`,
-		FIle_UPLOAD:`FIle_UPLOAD`,
-		FIle_UPDATE: `FIle_UPDATE`,
+		FILE_START: `FILE_START`,
+		FILE_ABORT: `FILE_ABORT`,
+		FILE_CLEAN: `FILE_CLEAN`,
+		FILE_ERROR: `FILE_ERROR`,
+		FILE_UPLOAD:`FILE_UPLOAD`,
+		FILE_UPDATE: `FILE_UPDATE`,
 	}
 
 	// action creators
 
 	actions = {
-		fileStart: () => ({ type: this.types.FIle_START }),
-		fileAbort: () => ({ type: this.types.FIle_ABORT }),
-		fileClean: () => ({ type: this.types.FIle_CLEAN }),
-		fileError: error => ({ type: this.types.FIle_ERROR, payload: { error } }),
-		fileUpload: file => ({ type: this.types.FIle_UPLOAD, payload: { file } }),
-		fileUpdate: file => ({ type: this.types.FIle_UPDATE, payload: { file } }),
+		fileStart: () => ({ type: this.types.FILE_START }),
+		fileAbort: () => ({ type: this.types.FILE_ABORT }),
+		fileClean: () => ({ type: this.types.FILE_CLEAN }),
+		fileError: error => ({ type: this.types.FILE_ERROR, payload: { error } }),
+		fileUpload: file => ({ type: this.types.FILE_UPLOAD, payload: { file } }),
+		fileUpdate: file => ({ type: this.types.FILE_UPDATE, payload: { file } }),
 	}
 
 	// default store
@@ -35,42 +35,42 @@ export default class FileService {
 	reducer = (store = this.store, action) => {
 
 		const {
-			FIle_START,
-			FIle_ABORT,
-			FIle_CLEAN,
-			FIle_ERROR,
-			FIle_UPLOAD,
-			FIle_UPDATE,
+			FILE_START,
+			FILE_ABORT,
+			FILE_CLEAN,
+			FILE_ERROR,
+			FILE_UPLOAD,
+			FILE_UPDATE,
 		} = this.types
 
 		switch (action.type) {
 
-		case FIle_START:
+		case FILE_START:
 			return {
 				...store,
 				loading: true,
 			}
 
-		case FIle_ABORT:
+		case FILE_ABORT:
 			return {
 				...store,
 				loading: false,
 			}
 
-		case FIle_CLEAN:
+		case FILE_CLEAN:
 			return {
 				...store,
 				cache: {},
 			}
 
-		case FIle_ERROR:
+		case FILE_ERROR:
 			console.error(action.payload.error)
 			return {
 				...store,
 				loading: false,
 			}
 
-		case FIle_UPLOAD:
+		case FILE_UPLOAD:
 			return {
 				...store,
 				cache: {
@@ -81,7 +81,7 @@ export default class FileService {
 				lastFetched: Date.now(),
 			}
 
-		case FIle_UPDATE:
+		case FILE_UPDATE:
 			return {
 				...store,
 				cache: {
@@ -121,10 +121,8 @@ export default class FileService {
 
 			const result = await apiProxy.file.delete(id)
 
-			console.log(result)
-
 		} catch (error) {
-			dispatch(this.actions.resourcesError(error))
+			dispatch(this.actions.fileError(error))
 		}
 	}
 
@@ -137,10 +135,8 @@ export default class FileService {
 
 			dispatch(this.actions.fileUpdate(file))
 
-			// console.log(getState())
-
 		} catch (error) {
-			dispatch(this.actions.resourcesError(error))
+			dispatch(this.actions.fileError(error))
 		}
 	}
 }

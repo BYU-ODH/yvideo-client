@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer} from './styles'
+import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton } from './styles'
 
 // import { PermissionTable } from 'components/bits'
 
@@ -34,6 +34,8 @@ export class CollectionPermissions extends PureComponent {
 			username,
 		} = this.props.viewstate.user
 
+
+
 		// const reducedCourses = courses.map(item => ({
 		// 	id: item.id,
 		// 	Department: item.department,
@@ -55,31 +57,30 @@ export class CollectionPermissions extends PureComponent {
 		// 	Email: item.email,
 		// }))
 
-		console.log(users, courses)
-
 		return (
 			<Style>
 
 				<h4>Courses</h4>
 
 				<form onSubmit={handlers.addCourse}>
-					<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder="Enter department (EX: ENGL)"/>
+					<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Enter department (EX: ENGL)'/>
 					<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Enter Catalog Number' required/>
 					<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Enter Section Number' required/>
 					<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
 				</form><br/>
 
 				<h4>TA / Faculty / Auditing</h4>
-
 				<Search className='faculty-submit' onSubmit={handlers.addUser}>
 					<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
 					<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
-				</Search><br/>
+				</Search>
+				<AddManyButton type="button" onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
 
+				{/* <AddManyButton onClick={handlers.handleShowHelp}>Add many...</AddManyButton> */}
 				<TableContainer>
-					<div id="course-table">
+					<div id='course-table'>
 						<h4>Current Courses</h4>
-						<Table border="1">
+						<Table border='1'>
 							<thead>
 								<tr>
 									<th>Department</th>
@@ -89,25 +90,25 @@ export class CollectionPermissions extends PureComponent {
 								</tr>
 							</thead>
 							<tbody>
-								{ courses.length > 0 ? (
+								{ courses.length > 0 ?
 									 courses.map((element, index) =>
 										<tr key={index}>
-											<td>{element['department']}</td>
-											<td>{element['catalog-number']}</td>
-											<td>{element['section-number']}</td>
-											<td onClick={e => handlers.removeCourse(element['id'])}><img src={removeIcon} width="20px"/></td>
-										</tr>
-										)
-									) : (
-										null
+											<td>{element[`department`]}</td>
+											<td>{element[`catalog-number`]}</td>
+											<td>{element[`section-number`]}</td>
+											<td onClick={e => handlers.removeCourse(element[`id`])}><img src={removeIcon} width='20px'/></td>
+										</tr>,
 									)
+									 :
+									null
+
 								}
 							</tbody>
 						</Table>
 					</div>
-					<div id="user-table">
+					<div id='user-table'>
 						<h4>Current Users</h4>
-						<Table border="1">
+						<Table border='1'>
 							<thead>
 								<tr>
 									<th>Username</th>

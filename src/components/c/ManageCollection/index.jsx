@@ -42,7 +42,7 @@ export default class ManageCollection extends PureComponent {
 			createContent,
 		} = this.props.handlers
 
-		//console.log(content)
+		// console.log(content)
 
 		return (
 			<Style>

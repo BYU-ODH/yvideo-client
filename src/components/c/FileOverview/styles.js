@@ -108,3 +108,18 @@ export const RemoveButton = styled.button`
 		margin-left: .5rem;
 	}
 `
+
+export const CategorySelect = styled.select`
+	background: white;
+	font-size: 1.5rem;
+
+	border: none;
+	border-radius: 2rem;
+
+	padding: 0 6rem 0 6rem;
+
+	outline: none;
+	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	& option {
+	}
+`

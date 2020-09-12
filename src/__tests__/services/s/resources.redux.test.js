@@ -1,5 +1,5 @@
 import * as testutil from '../../testutil/testutil'
-import ResourcesService from '../../../services/s/resources.redux'
+import ResourceService from '../../../services/s/resources.redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
@@ -19,7 +19,7 @@ describe(`content service test`, () => {
 
 	// reset store
 	beforeEach(() => {
-		resourcesServiceConstructor = new ResourcesService()
+		resourcesServiceConstructor = new ResourceService()
 
 		// TODO: good to fix: when getState().adminStore is used, this mock store has to have adminStore object,
 		// is there any way to combine these duplicated stores?

@@ -11,22 +11,45 @@ const FileOverviewContainer = props => {
 
 	const {
 		file,
-		removeFile,
+		langs,
 		updateFile,
 		fileCache,
 		toggleModal,
 		editFileResource,
 		resources,
-		updateFileVersion,
 	} = props
+
+	const category = {
+		English: {
+			name: `English`,
+		},
+		French: {
+			name: `French`,
+		},
+		Mandarin: {
+			name: `Mandarin`,
+		},
+		Japanese: {
+			name: `Japanese`,
+		},
+		Spainsh: {
+			name: `Spanish`,
+		},
+		Korean: {
+			name: `Korean`,
+		},
+	}
 
 	const [fileState, setFileState] = useState(file)
 
 	useEffect(() => {
 	}, [fileCache])
 
-	const viewstate = {
-		file,
+	const handleFileVersion = e => {
+		setFileState({
+			...fileState,
+			"file-version": e.target.value,
+		})
 	}
 
 	const handleFileMetadata = e => {
@@ -44,19 +67,27 @@ const FileOverviewContainer = props => {
 	}
 
 	const handleRemoveFile = e => {
+		toggleModal()
 		props.toggleModal({
 			component: DeleteConfirmContainer,
 			props: {
 				type: `file`,
-				file,
+				selectedFile: file,
 			},
 		})
+	}
+
+	const viewstate = {
+		file,
+		langs,
+		category,
 	}
 
 	const handlers = {
 		handleFileMetadata,
 		handleUpdateFile,
 		handleRemoveFile,
+		handleFileVersion,
 	}
 
 	return <FileOverview viewstate={viewstate} handlers={handlers} />
@@ -65,6 +96,7 @@ const FileOverviewContainer = props => {
 const mapStateToProps = store => ({
 	fileCache: store.fileStore.cache,
 	resources: store.resourceStore.cache,
+	langs: store.languageStore.cache.langs,
 })
 
 const mapDispatchToProps = {
