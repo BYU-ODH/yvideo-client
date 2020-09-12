@@ -66,71 +66,6 @@ export default class Player extends PureComponent {
 				end: '00:00:12,000',
 				text: "bla bla bla bla bla bla bla "
 			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
 			
 		]
 
@@ -218,38 +153,5 @@ export default class Player extends PureComponent {
 				></EventsContainer>
 			</Style>
 		)
-	}
-
-
-	// render(){
-
-	// 	return (
-	// 		<>
-	// 			<br/><br/><br/><br/><br/><br/>
-	// 			<h2>Local Cat video HTML5</h2>
-	// 			<video src={videoFile} width="600" height="200" controls  />
-	// 			<br/><br/>
-	// 			<h2>Server Cat video HTML5</h2>
-	// 			<video src={'https://yvideobeta.byu.edu/static/cat_sleep.mp4'} width="600" height="200" controls  />
-	// 			<br/><br/>
-	// 			<h2>Local Cat video ReactPlayer</h2>
-	// 			<ReactPlayer 
-	// 				controls={true}
-	// 				url={videoFile}
-	// 				width="600px"
-	// 				height="200px"
-
-	// 			/>
-	// 			<br/><br/>
-	// 			<h2>Server Cat video ReactPlayer</h2>
-	// 			<ReactPlayer 
-	// 				controls={true}
-	// 				url={'https://yvideobeta.byu.edu/static/cat_sleep.mp4'}
-	// 				width="600px"
-	// 				height="200px"
-
-	// 			/>
-	// 		</>
-	// 	)
-	// }	
+	}	
 }
