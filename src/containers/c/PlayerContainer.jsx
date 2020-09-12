@@ -38,6 +38,7 @@ const PlayerContainer = props => {
 	const [videoComment, setVideoComment] = useState('')
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [showTranscript, setShowTranscript] = useState(false)
+	const [toggleTranscript, setToggleTranscript] = useState(true)
 
 	const ref = player => {
 		setPlayer(player)
@@ -48,8 +49,9 @@ const PlayerContainer = props => {
 		setShowTranscript(false)
 		// console.log('called use effect in player')
 		if (!contentCache[params.id]){
-			// console.log('no cached content')
+			//console.log('no cached content')
 			//get single content?
+			getContent(params.id)
 		}
 		else {
 			// console.log('yes cached content')
@@ -72,7 +74,9 @@ const PlayerContainer = props => {
 					setKey(streamKey)
 				}
 				else if (sKey !== ''){
-					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+					
 					// console.log('CHANGED URL')
 					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
@@ -112,14 +116,15 @@ const PlayerContainer = props => {
 	// Potentially use to update current time and maybe progress bar, but only if not seeking?
 	// progression = { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 }
 	const handleProgress = progression => {
-		console.log('progress', player.getCurrentTime())
+		//console.log('progress', player.getCurrentTime())
 		setProgress(progression)
 	}
 
 	const handleSeekChange = (e, time) => {
+		//**TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-		console.log('seeking')
+		console.log('seeking', time, " seconds")
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
@@ -129,7 +134,7 @@ const PlayerContainer = props => {
 			newPlayed = time / duration
 		}
 		if(newPlayed !== Infinity && newPlayed !== -Infinity){
-			console.log(newPlayed * duration)
+			console.log("in fraction: ", newPlayed)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
 	}
@@ -174,6 +179,8 @@ const PlayerContainer = props => {
 		blank,
 		videoComment,
 		commentPosition,
+		toggleTranscript,
+		content,
 	}
 
 	const handlers = {
@@ -191,6 +198,7 @@ const PlayerContainer = props => {
 		handleVolumeChange,
 		handleShowComment,
 		handleBlank,
+		setToggleTranscript,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

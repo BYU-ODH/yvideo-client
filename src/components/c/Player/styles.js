@@ -45,16 +45,67 @@ export const Comment = styled.div`
 	z-index: 15;
 `
 export const Transcript = styled.div`
-	width: 50rem;
+	position: relative;
+	width: ${props => props.displayTranscript ? ('50rem') : ('2rem')};
+	max-height: 50rem;
+	padding: 0px 10px 0px 10px;
 	border: 1px solid black;
-	margin-left: 10px;
+	transition: 1s ease;
+	display: flex;
+	/* background-color: ${props => props.displayTranscript ? ('white') : ('var(--light-blue)')}; */
+
+	& .side-bar {
+		position: absolute;
+		left: 0px;
+		width: 40px;
+		height: 100%;
+		background-color: rgba(5, 130, 202, 0.5);
+		
+		& img {
+			cursor: pointer;
+		}
+	}
+
+	& .toggle-transcript {
+		position: absolute;
+		top: 2px;
+		left: 5px;
+		width: 30px;
+		height: 30px;
+		transition: .5s ease;
+		transform: ${props => props.displayTranscript ? ('rotate(-180deg)') : ('rotate(0deg)')};
+	}
+
+	& .main-bar {
+		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
+		margin-left: 45px;
+		max-height: 50rem;
+		overflow-y: scroll !important;
+
+
+		& .transcript-title {
+			display: flex;
+			width: 100%;
+			height: 30px;
+
+			& h2 {
+				margin: auto;
+				font-weight: 500;
+				text-align: center;
+			}
+		}
+	}
+
 
 	& .transcript-row {
+
 		cursor: pointer;
 
-		& td {
+		& p {
 			border-bottom: 1.5px solid var(--light-blue);
-			padding: 2px;
+			padding: 5px 0px 5px 0px;
+			word-wrap: break-word;
+			font-size: 1.4rem;
 		}
 	}
 `

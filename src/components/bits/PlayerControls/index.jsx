@@ -60,7 +60,7 @@ const PlayerControls = props => {
 				{/* <Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} /> */}
 				{/* <SideBarToggle /> */}
 				<Speed src={clockIcon} onClick={e => setShowSpeed(!showSpeed)}/>
-				{/* <ClosedCaptions /> */}
+				<ClosedCaptions />
 				{/* <Notes /> */}
 			</div>
 			{ showSpeed &&

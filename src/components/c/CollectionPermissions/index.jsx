@@ -122,7 +122,13 @@ export class CollectionPermissions extends PureComponent {
 											<tr key={index}>
 												<td>{element['username']}</td>
 												<td>{element['account-name']}</td>
-												<td>{element['last-login'].substring(0, 11)}{element['last-login'].substring(element["last-login"].length - 4, element["last-login"].length)}</td>
+												<td>
+													{
+														element['last-login'] !== 'na' ? (
+															`${element['last-login'].substring(0, 11)} ${element['last-login'].substring(element["last-login"].length - 4, element["last-login"].length)}`
+														) : ('NA')
+													}
+												</td>
 												<td onClick={e => handlers.removeUser(element['username'])}><img src={removeIcon} width="20px"/></td>
 											</tr>
 										)

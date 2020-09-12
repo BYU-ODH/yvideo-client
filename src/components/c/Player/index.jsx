@@ -9,7 +9,7 @@ import { Controller } from 'components'
 
 import Style, { Blank, Comment, Transcript } from './styles'
 
-import videoFile from 'assets/cat_sleep.mp4'
+import chevron from 'assets/te-chevron-left.svg'
 
 export default class Player extends PureComponent {
 	componentDidMount(){
@@ -34,6 +34,8 @@ export default class Player extends PureComponent {
 			commentPosition,
 			duration,
 			showTranscript,
+			toggleTranscript,
+			content,
 		} = this.props.viewstate
 
 		const {
@@ -49,22 +51,87 @@ export default class Player extends PureComponent {
 			handleMuted,
 			handleUnmuted,
 			handleShowComment,
+			setToggleTranscript,
 		} = this.props.handlers
 
 
 		const mySub = [
 			{
-					number: "1",
-					start: '00:00:00,750',
-					end:'00:00:05,750',
-					text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
 			},
 			{
-					number: "2",
-					start: '00:00:06,000',
-					end: '00:00:12,000',
-					text: "bla bla bla bla bla bla bla "
+				start: '00:00:06.000',
+				end: '00:00:12,000',
+				text: "bla bla bla bla bla bla bla "
 			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			{
+				start: '00:00:00.750',
+				end:'00:00:05,750',
+				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+			},
+			
 		]
 
 		//console.log('%c URL', 'font-size: 18px; color: green;', url)
@@ -113,30 +180,30 @@ export default class Player extends PureComponent {
 							{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 						</Blank>
 					</div>
-					<Transcript style={{ visibility: `${showTranscript !== false ? ('visible') : ('hidden')}` }}>
-						<table>
-							<thead border="1">
-								<tr>
-									<td colSpan="1">Time</td>
-									<td colSpan="5">Text</td>
-								</tr>
-							</thead>
-							<tbody>
+					<Transcript style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript}>
+						<div className={'side-bar'}>
+							<img src={chevron} className={'toggle-transcript'} onClick={e => setToggleTranscript(!toggleTranscript)}/>
+						</div>
+						<div className={'main-bar'}>
+							<div className={'transcript-title'}>
+								<h2>Transcript View - {content !== undefined ? (content.settings.targetLanguages) : (null)}</h2>
+							</div>
+							<div className={'transcript-content'}>
 								{
 									mySub.map((element, index) =>
-										<tr key={index} className={"transcript-row"} onClick={e => handleSeekChange(e, element.start.split(':').reduce((acc,time) => (60 * acc) + +time))}>
-											<td colSpan="1">{element.start.slice(0, 8)}</td>
-											<td colSpan="5">{element.text}</td>
-										</tr>
+										<div key={index} className={"transcript-row"} onClick={e => handleSeekChange(null, element.start.split(':').reduce((acc,time) => (60 * acc) + +time))}>
+											<p>{element.text}</p>
+										</div>
 									)
 								}
-							</tbody>
-						</table>
+								<br/>
+							</div>
+						</div>
 					</Transcript>
 				</div>
-				<div className={`collection-container`}>
+				{/* <div className={`collection-container`}>
 					<CollectionsContainer/>
-				</div>
+				</div> */}
 				<EventsContainer currentTime={progress.playedSeconds.toFixed(1)} duration={duration}
 					handleSeek={handleSeekChange}
 					handleMute={handleMuted}
