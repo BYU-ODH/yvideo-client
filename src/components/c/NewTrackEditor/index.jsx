@@ -46,7 +46,6 @@ const TrackEditor = props => {
 	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles } = props
 
 	const { eventsArray, currentContent,subs, allSubs } = props.viewstate
-	console.log(subs)
 	const events = [
 		{
 			type: `Skip`,
@@ -139,7 +138,6 @@ const TrackEditor = props => {
 		height: window.innerHeight,
 		width: window.innerWidth,
 	})
-	console.log(subtitles)
 	useEffect(() => {
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
@@ -186,12 +184,10 @@ const TrackEditor = props => {
 			}, 3000)
 		}
 
-		if(blockLeave){
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		 else
 			window.onbeforeunload = undefined
-		}
 
 	}, [eventsArray])
 
@@ -215,16 +211,11 @@ const TrackEditor = props => {
 	// }
 
 	const getVideoDuration = (duration) => {
-		console.log(`setting video length`)
 		setVideoLength(duration)
 		const tempSubs = subs
-		console.log(`he re re re`)
-		for (let i = 0; i < tempSubs.length; i++){
-			console.log(tempSubs[i])
-			console.log(tempSubs[i][`content`])
+		for (let i = 0; i < tempSubs.length; i++)
 			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
-		}
-		console.log(`he re 1`)
+
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 	}
@@ -280,10 +271,10 @@ const TrackEditor = props => {
 		// console.log(monitor.getSourceClientOffset())
 		// console.log(`Event Drop Handler: `, item, index)
 
-		//TODO: Change this to use real JS event objects and insert based on time
-		//CALCULATE THE CURRENT TIME IN RESPECT OF THE CURRENT PERCENTAGE OF THE LAYER
-		//READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
-		let newStart = videoCurrentTime * 100 / videoLength
+		// TODO: Change this to use real JS event objects and insert based on time
+		// CALCULATE THE CURRENT TIME IN RESPECT OF THE CURRENT PERCENTAGE OF THE LAYER
+		// READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
+		const newStart = videoCurrentTime * 100 / videoLength
 		console.log(newStart)
 		addEventToLayer(item, index, newStart)
 	}
@@ -387,7 +378,6 @@ const TrackEditor = props => {
 		setSideEditor(false)
 	}
 	const deleteSub = () =>{
-		console.log(`he re 2`)
 		const currentSubs = [...subtitles]
 		currentSubs[subLayerToEdit][`content`].splice(subToEdit,1)
 		setSubs(currentSubs)
@@ -489,18 +479,15 @@ const TrackEditor = props => {
 	}
 
 	const handleSaveAnnotation = () => {
-		console.log(subtitles)
 		setSaved(true)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
 		updateContent(content)
 		handleSaveSubtitles()
-		console.log(subLayersToDelete)
 		deleteSubtitles(subLayersToDelete)
 	}
 	const handleSaveSubtitles = async() => {
 		const rawSubs = subtitles
-		console.log(rawSubs)
 		// for (let i = 0; i < rawSubs.length;i++){
 		// 	for(let x = 0; x<rawSubs[i][`content`].length;x++){
 		// 		rawSubs[i][`content`][x].start = rawSubs[i][`content`][x].start / 100 * videoLength * 1000
@@ -509,7 +496,6 @@ const TrackEditor = props => {
 		// 	console.log(rawSubs[i][`content`])
 		// 	console.log(rawSubs[i][`content`])
 		// }
-		console.log(rawSubs)
 		createSub(rawSubs)
 	}
 	const handleScrollFactor = (direction) => {
@@ -728,7 +714,6 @@ const TrackEditor = props => {
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 		setSubs(tempSubs)
-		console.log(`he re 3`)
 		setAllSubs(tempSubs)
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
@@ -745,14 +730,11 @@ const TrackEditor = props => {
 		currentSubs = [...subtitles]
 		let subStart = 0
 		try{
-			console.log(subStart)
 			if (currentSubs[index]){
-				if(currentSubs[index][`content`][subToEdit]){
-					console.log(currentSubs[index][`content`])
+				if(currentSubs[index][`content`][subToEdit])
 					subStart = currentSubs[index][`content`][subToEdit].end + .01
-				}
+
 			}
-			console.log(`ayee`,subStart)
 			const newSub = {
 				start: subStart,
 				end: subStart + 5,
@@ -763,7 +745,6 @@ const TrackEditor = props => {
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)
-			console.log(`he re 4`)
 			setAllSubs(currentSubs)
 			sortSubtitles()
 		}catch(error) {
@@ -782,7 +763,6 @@ const TrackEditor = props => {
 		}
 	}
 	const checkEventOrSub = () => {
-		console.log(subtitles)
 		return subSelected ? subtitles[subLayerToEdit][`content`][subToEdit] : allEvents[eventToEdit]
 	}
 	const checkIndex = () => {
@@ -801,7 +781,6 @@ const TrackEditor = props => {
 				id: ``,
 			}
 			tempSubList.push(tempSub)
-			console.log(`he re 5`)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 		}else {
@@ -813,7 +792,6 @@ const TrackEditor = props => {
 				id: ``,
 			}
 			tempSubList.push(tempSub)
-			console.log(`he re 6`)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 
@@ -825,7 +803,6 @@ const TrackEditor = props => {
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
-			console.log(url)
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
@@ -841,7 +818,6 @@ const TrackEditor = props => {
 					removeArray = removeArray + 1
 					return item.end < 100
 				})
-				console.log(`he re re`,filtered1)
 				if (removeArray > 0)
 					alert(`Some subtitles had to be cut because the subtitles are longer than the video`)
 				if (subtitles === [] || !subtitles){
@@ -853,7 +829,6 @@ const TrackEditor = props => {
 						id: ``,
 					}
 					tempSubList.push(tempSub)
-					console.log(`he re 7`)
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
 				}else {
@@ -865,7 +840,6 @@ const TrackEditor = props => {
 						id: ``,
 					}
 					tempSubList.push(tempSub)
-					console.log(`he re 8`)
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
 
@@ -884,14 +858,12 @@ const TrackEditor = props => {
 	}
 	const handleDeleteSubLayer = (index) =>{
 		const tempSubs = subtitles
-		console.log(tempSubs[index])
 		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
 			const deleteSub = subLayersToDelete
 			deleteSub.push(tempSubs[index][`id`])
 			setSubLayersToDelete(deleteSub)
 		}
 		tempSubs.splice(index, 1)
-		console.log(`he re 9`)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 	}
@@ -899,31 +871,25 @@ const TrackEditor = props => {
 		const temp = subtitles
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
-		console.log(`he re 10`)
 		setAllSubs(temp)
 	}
 	const updateSubLayerLanguage = (language) =>{
 		const temp = subtitles
 		temp[subLayerToEdit][`language`] = language
-		console.log(`he re 11`)
 		setSubs(temp)
 		setAllSubs(temp)
 	}
 	const sortSubtitles = () => {
 		const tempSubs = subtitles
 		for(let i = 0; i< tempSubs.length; i++){
-			console.log(`ay ay`)
 			const tempContent = tempSubs[i][`content`]
-			console.log(tempContent)
 			tempContent.sort((a,b)=> a.start - b.start)
 			tempSubs[i][`content`] = tempContent
 		}
-		console.log(tempSubs)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 
 	}
-	console.log(subtitles)
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
@@ -1145,7 +1111,7 @@ const TrackEditor = props => {
 				</EventList>
 			</DndProvider>
 			<>
-				<AnnotationMessage style={{ visibility: `${annotationsSaved ? (`visible`) : (`hidden`)}`, opacity: `${annotationsSaved ? (`1`) : (`0`)}`, }}>
+				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
 					<h2>Annotations saved successfully</h2>
 				</AnnotationMessage>
 				<Prompt

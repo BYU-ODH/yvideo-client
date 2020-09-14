@@ -39,7 +39,7 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
-	const [subtitleText, setSubtitleText] = useState([])
+	const [subtitleText, setSubtitleText] = useState(``)
 	// const [censorPosition, setCensorPosition] = useState([0,0])
 	// const [censorActive, SetCensorActive] = useState(false)
 
@@ -142,11 +142,9 @@ const Controller = props => {
 			setCommentPosition(position)
 
 		},
-		handleShowSubtitle: async (value) => {
+		handleShowSubtitle: (value) => {
 			console.log(value)
-			const temp = subtitleText
-			temp.push(value)
-			await setSubtitleText(temp)
+			setSubtitleText(value)
 		},
 		// handleCensorPosition: (position) => {
 		// 	//console.log(position)
@@ -202,9 +200,10 @@ const Controller = props => {
 			{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
 			<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-				{subtitleText.map((item,index) => (
-					<Subtitles>{item}</Subtitles>
-				))}
+				{subtitleText !== `` ?(
+					<Subtitles>{subtitleText}</Subtitles>
+				) :``}
+
 				{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}

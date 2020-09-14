@@ -37,7 +37,6 @@ const TrackEditorSideMenu = props => {
 
 	const handleEditEventBTimeChange = (e) => {
 		if (isSub){
-			console.log(`detecting sub`)
 			editSub(`beg`,e.target.value,subText)
 			return
 		}
@@ -60,7 +59,6 @@ const TrackEditorSideMenu = props => {
 
 	const handleEditEventETimeChange = (e) => {
 		if (isSub){
-			console.log(`detecting sub`)
 			editSub(`end`,e.target.value,subText)
 			return
 		}
@@ -122,8 +120,6 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 	const editSub = (side, time, value,layer) => {
-		console.log(time,`this is time`)
-		console.log(side,value)
 		const sub = event
 		if (side === `beg`)
 			sub.start = time / videoLength * 100
@@ -131,15 +127,13 @@ const TrackEditorSideMenu = props => {
 			sub.end = time / videoLength * 100
 		setSubText(value)
 		try{
-			if(value.target) {
-				console.log(value.target.value)
+			if(value.target)
 				sub.text = value.target.value
-			}
+
 		}catch(error){
 
 		}
 
-		console.log(`The sub is`,sub)
 		setEvent(sub)
 		updateSubs(index,sub,layer)
 	}
