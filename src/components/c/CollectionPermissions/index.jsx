@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton } from './styles'
+import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort } from './styles'
 
 // import { PermissionTable } from 'components/bits'
 
@@ -9,6 +9,14 @@ import { departments } from 'lib/util'
 import removeIcon from 'assets/trash_icon.svg'
 
 export class CollectionPermissions extends PureComponent {
+	constructor(props){
+		super(props)
+		this.state={
+			sortType: {
+				reverse: true,
+			},
+		}
+	}
 	render() {
 
 		const {
@@ -34,8 +42,6 @@ export class CollectionPermissions extends PureComponent {
 			username,
 		} = this.props.viewstate.user
 
-
-
 		// const reducedCourses = courses.map(item => ({
 		// 	id: item.id,
 		// 	Department: item.department,
@@ -56,6 +62,39 @@ export class CollectionPermissions extends PureComponent {
 		// 	NetID: item.username,
 		// 	Email: item.email,
 		// }))
+
+		const sort = (data,sortType) => {
+			if (this.state.sortType.reverse === false){
+				this.setState({
+					sortType:{
+						reverse: true,
+					},
+				})
+				data.sort((a, b) => {
+					switch (sortType) {
+					case `Username`:
+						return b.username.localeCompare(a.username,{sensitivity:`base`})
+					case `Name`:
+						return b['account-name'].localeCompare(a['account-name'],{sensitivity:`base`})
+					}
+				})
+			}else{
+				this.setState({
+					sortType:{
+						reverse: false,
+					},
+				})
+				data.sort((a, b) => {
+					switch (sortType) {
+					case `Username`:
+						return a.username.localeCompare(b.username,{sensitivity:`base`})
+					case `Name`:
+						return a['account-name'].localeCompare(b['account-name'],{sensitivity:`base`})
+					}
+				})
+			}
+			return data
+		}
 
 		return (
 			<Style>
@@ -111,8 +150,8 @@ export class CollectionPermissions extends PureComponent {
 						<Table border='1'>
 							<thead>
 								<tr>
-									<th>Username</th>
-									<th>Name</th>
+									<th>Username<Sort onClick={()=>sort(users,"Username")}></Sort></th>
+									<th>Name<Sort onClick={()=>sort(users,"Name")}></Sort></th>
 									<th>Last Login</th>
 									<th>Remove</th>
 								</tr>

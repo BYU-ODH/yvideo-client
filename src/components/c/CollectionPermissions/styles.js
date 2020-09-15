@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import searchIcon from 'assets/search.svg'
+import iconSort from 'assets/admin-icon-sort.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -160,4 +161,11 @@ export const Table = styled.table`
 
 export const TableContainer = styled.div`
 	display: flex;
+`
+
+export const Sort = styled.button`
+	background: url(${iconSort}) center no-repeat;
+	border: none;
+	height: 1.5rem;
+	cursor: pointer;
 `
