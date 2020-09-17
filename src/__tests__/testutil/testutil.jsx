@@ -299,6 +299,10 @@ export const file2 = {
 	"resource-id": `test resource id2`,
 }
 
+export const lang1 = {
+	name: `test lang`,
+}
+
 export const store = mockStore(
 	{
 		resourceStore: {
