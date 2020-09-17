@@ -400,7 +400,7 @@ export default class ResourceService {
 
 			const allFiles = await apiProxy.resources.files(resourceId)
 
-			// console.log(allFiles)
+			console.log(allFiles)
 
 			const fileId = allFiles.find(element => element[`file-version`].includes(language) !== false)[`id`]
 

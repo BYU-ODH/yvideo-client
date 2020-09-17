@@ -22,6 +22,8 @@ const PlayerControls = props => {
 		volume,
 		muted,
 		playing,
+		isCaption,
+		showTranscript,
 	} = props.viewstate
 
 	const {
@@ -35,6 +37,7 @@ const PlayerControls = props => {
 		handleMuted,
 		handleUnmuted,
 		handleVolumeChange,
+		setIsCaption,
 	} = props.handlers
 
 	const [showSpeed, setShowSpeed] = useState(false)
@@ -60,7 +63,7 @@ const PlayerControls = props => {
 				{/* <Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} /> */}
 				{/* <SideBarToggle /> */}
 				<Speed src={clockIcon} onClick={e => setShowSpeed(!showSpeed)}/>
-				{/* <ClosedCaptions /> */}
+				<ClosedCaptions style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} isCaptions={isCaption} onClick={e => setIsCaption(!isCaption)}/>
 				{/* <Notes /> */}
 			</div>
 			{ showSpeed &&

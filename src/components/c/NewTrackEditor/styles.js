@@ -105,7 +105,7 @@ export const Timeline = styled.div`
 				& .zoom-scroll-indicator {
 					position: absolute;
 					min-width: 5%;
-					width: ${props => props.zoom !== 0 ? (`${props.zoom}%`) : (`100%`)} !important;
+					width: ${props => props.zoom !== 0 ? `${props.zoom}%` : `100%`} !important;
 					height: 100% !important;
 					background-color: var(--light-blue);
 					border-radius: 20px;
@@ -225,9 +225,9 @@ export const NewLayer = styled.button`
 export const EventList = styled.div`
 	--minimized: ${props => props.minimized};
 
-	width: ${ props => props.minimized !== false ? ('4rem') : ('35rem')};
+	width: ${props => props.minimized !== false ? '4rem' : '35rem'};
 	height: calc(100vh - var(--navbar-height));
-	background: ${ props => props.minimized !== false ? ('var(--navy-blue)') : ('white !important')};
+	background: ${props => props.minimized !== false ? 'var(--navy-blue)' : 'white !important'};
 	transition: .5s;
 	z-index: 20;
 	overflow: hidden;
@@ -247,7 +247,7 @@ export const EventList = styled.div`
 		}
 
 		/* & > .tab {
-			display: ${ props => props.minimized !== false ? ('none') : ('visible')}
+			display: ${props => props.minimized !== false ? 'none' : 'visible'}
 			height: 5rem;
 			width: 7rem;
 			color: white;
@@ -293,7 +293,7 @@ export const EventList = styled.div`
 	}
 
 	& > .breadcrumbs {
-		display: ${ props => props.minimized !== false ? ('none') : ('flex')}
+		display: ${props => props.minimized !== false ? 'none' : 'flex'}
 
 		height: 5rem;
 
@@ -340,8 +340,12 @@ export const EventList = styled.div`
 	}
 
 	& > .eventsList {
-		display: ${ props => props.minimized !== false ? ('none') : ('visible')}
+		display: ${props => props.minimized !== false ? 'none' : 'visible'}
 		padding: 3rem;
+	}
+	& .subCard {
+		padding-left: 3rem;
+		padding-right: 3rem;
 	}
 
 	& .deleteEventButton {
