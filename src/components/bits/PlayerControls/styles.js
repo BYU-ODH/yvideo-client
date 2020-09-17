@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import closedCaption from 'assets/controls_closed_captions.svg'
+import closedCaptionOff from 'assets/controls_closed_captions_off.svg'
 import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
 import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
@@ -112,7 +113,8 @@ export const Volume = styled.button`
 `
 
 export const ClosedCaptions = styled.button`
-	background: url(${closedCaption}) center no-repeat;
+	background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)};
+	/* background: url(${closedCaptionOff}) center no-repeat; */
 `
 
 export const Fullscreen = styled.button`

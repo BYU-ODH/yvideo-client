@@ -37,6 +37,11 @@ const PlayerContainer = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState('')
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [showTranscript, setShowTranscript] = useState(false)
+	const [toggleTranscript, setToggleTranscript] = useState(true)
+	const [subtitleText, setSubtitleText] = useState(``)
+
+	const [isCaption, setIsCaption] = useState( content !== undefined ? (content.settings.showCaptions) : (true) )
 
 	const ref = player => {
 		setPlayer(player)
@@ -44,14 +49,17 @@ const PlayerContainer = props => {
 
 	useEffect(() => {
 		setPlaybackRate(1)
+		setShowTranscript(false)
 		// console.log('called use effect in player')
 		if (!contentCache[params.id]){
-			// console.log('no cached content')
+			//console.log('no cached content')
 			//get single content?
+			getContent(params.id)
 		}
 		else {
 			// console.log('yes cached content')
 			setContent(contentCache[params.id])
+			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ''){
@@ -69,7 +77,9 @@ const PlayerContainer = props => {
 					setKey(streamKey)
 				}
 				else if (sKey !== ''){
-					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+					
 					// console.log('CHANGED URL')
 					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
@@ -109,13 +119,15 @@ const PlayerContainer = props => {
 	// Potentially use to update current time and maybe progress bar, but only if not seeking?
 	// progression = { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 }
 	const handleProgress = progression => {
-		if (!seeking)
-			setProgress(progression)
+		//console.log('progress', player.getCurrentTime())
+		setProgress(progression)
 	}
 
 	const handleSeekChange = (e, time) => {
+		//**TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
+		console.log('seeking', time, " seconds")
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
@@ -125,19 +137,9 @@ const PlayerContainer = props => {
 			newPlayed = time / duration
 		}
 		if(newPlayed !== Infinity && newPlayed !== -Infinity){
-			//console.log(newPlayed)
+			console.log("in fraction: ", newPlayed)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
-	}
-
-	const handleSeekMouseDown = e => {
-		setSeeking(true)
-	}
-
-	const handleSeekMouseUp = e => {
-		// console.log(`handleSeekMouseDown`)
-		setSeeking(false)
-		player.seekTo(parseFloat(e.target.value))
 	}
 
 	const handleToggleFullscreen = () => {
@@ -165,7 +167,12 @@ const PlayerContainer = props => {
 		setCommentPosition(position)
 	}
 
+	const handleShowSubtitle = (value) => {
+		setSubtitleText(value)
+	}
+
 	const viewstate = {
+		showTranscript,
 		duration,
 		fullscreen,
 		hovering,
@@ -179,6 +186,10 @@ const PlayerContainer = props => {
 		blank,
 		videoComment,
 		commentPosition,
+		toggleTranscript,
+		content,
+		isCaption,
+		subtitleText,
 	}
 
 	const handlers = {
@@ -190,14 +201,15 @@ const PlayerContainer = props => {
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,
-		handleSeekMouseDown,
-		handleSeekMouseUp,
 		handleToggleFullscreen,
 		handleMuted,
 		handleUnmuted,
 		handleVolumeChange,
 		handleShowComment,
 		handleBlank,
+		handleShowSubtitle,
+		setToggleTranscript,
+		setIsCaption,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
