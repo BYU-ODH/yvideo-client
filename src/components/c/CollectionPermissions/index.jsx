@@ -150,7 +150,6 @@ export class CollectionPermissions extends PureComponent {
 					</div>
 					<div id='user-table'>
 						<h4>Current Users</h4>
-<<<<<<< HEAD
 							<Table border='1'>
 								<thead>
 									<tr>
@@ -180,38 +179,6 @@ export class CollectionPermissions extends PureComponent {
 										)
 									}
 								</tbody>
-=======
-						<Table border='1'>
-							<thead>
-								<tr>
-									<th>Username</th>
-									<th>Name</th>
-									<th>Last Login</th>
-									<th>Remove</th>
-								</tr>
-							</thead>
-							<tbody>
-								{ users.length > 0 ? (
-									 users.map((element, index) =>
-											<tr key={index}>
-												<td>{element['username']}</td>
-												<td>{element['account-name']}</td>
-												<td>
-													{
-														element['last-login'] !== 'na' ? (
-															`${element['last-login'].substring(0, 11)} ${element['last-login'].substring(element["last-login"].length - 4, element["last-login"].length)}`
-														) : ('NA')
-													}
-												</td>
-												<td onClick={e => handlers.removeUser(element['username'])}><img src={removeIcon} width="20px"/></td>
-											</tr>
-										)
-									) : (
-										null
-									)
-								}
-							</tbody>
->>>>>>> 0fcdc58972ad013efafd2ab60525664718974b38
 						</Table>
 					</div>
 				</TableContainer>
