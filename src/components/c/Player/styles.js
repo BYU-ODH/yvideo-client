@@ -110,6 +110,16 @@ export const Transcript = styled.div`
 	}
 `
 
-
+export const Subtitles = styled.div`
+	position: absolute;
+	height: 15%;
+	bottom: 50px;
+	background-color: rgba(0,0,0,0.5);
+	font-size: 1.5rem;
+	color: #ffffff;
+	z-index: 20;
+	width: 100%;
+	text-align: center;
+`
 
 export default Style

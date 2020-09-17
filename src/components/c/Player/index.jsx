@@ -7,7 +7,7 @@ import { PlayerControls } from 'components/bits'
 
 import { Controller } from 'components'
 
-import Style, { Blank, Comment, Transcript } from './styles'
+import Style, { Blank, Comment, Transcript, Subtitles } from './styles'
 
 import chevron from 'assets/te-chevron-left.svg'
 
@@ -36,6 +36,7 @@ export default class Player extends PureComponent {
 			showTranscript,
 			toggleTranscript,
 			content,
+			subtitleText,
 		} = this.props.viewstate
 
 		const {
@@ -53,7 +54,6 @@ export default class Player extends PureComponent {
 			handleShowComment,
 			setToggleTranscript,
 		} = this.props.handlers
-
 
 		const mySub = [
 			{
@@ -79,7 +79,7 @@ export default class Player extends PureComponent {
 							ref={ref}
 							className='react-player'
 							width='100%'
-							height='50rem'
+							height='50vh'
 							url={url}
 							playing={playing}
 							playbackRate={parseFloat(playbackRate)}
@@ -112,6 +112,7 @@ export default class Player extends PureComponent {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
+							<Subtitles>{subtitleText}</Subtitles>
 							{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 						</Blank>
 					</div>
@@ -151,6 +152,7 @@ export default class Player extends PureComponent {
 					// handleCensorPosition={video.handleCensorPosition}
 					// handleCensorActive={video.handleCensorActive}
 				></EventsContainer>
+				{/* subtitle container ? */}
 			</Style>
 		)
 	}	

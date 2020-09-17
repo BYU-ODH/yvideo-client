@@ -34,7 +34,7 @@ const store = createStore(
 		resourceStore: resourceService.reducer,
 		fileStore: fileService.reducer,
 		languageStore: languageService.reducer,
-		subtitleStore: subtitlesService.reducer
+		subtitlesStore: subtitlesService.reducer
 	}),
 
 	// This is the initial state of the store
@@ -47,7 +47,7 @@ const store = createStore(
 		resourceStore: resourceService.store,
 		fileStore: fileService.store,
 		languageStore: languageService.store,
-		subtitleStore: subtitlesService.store,
+		subtitlesStore: subtitlesService.store,
 	},
 
 	composeWithDevTools(

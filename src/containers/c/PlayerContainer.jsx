@@ -39,6 +39,9 @@ const PlayerContainer = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [showTranscript, setShowTranscript] = useState(false)
 	const [toggleTranscript, setToggleTranscript] = useState(true)
+	const [subtitleText, setSubtitleText] = useState(``)
+
+	const [isCaption, setIsCaption] = useState( content !== undefined ? (content.settings.showCaptions) : (true) )
 
 	const ref = player => {
 		setPlayer(player)
@@ -164,6 +167,10 @@ const PlayerContainer = props => {
 		setCommentPosition(position)
 	}
 
+	const handleShowSubtitle = (value) => {
+		setSubtitleText(value)
+	}
+
 	const viewstate = {
 		showTranscript,
 		duration,
@@ -181,6 +188,8 @@ const PlayerContainer = props => {
 		commentPosition,
 		toggleTranscript,
 		content,
+		isCaption,
+		subtitleText,
 	}
 
 	const handlers = {
@@ -198,7 +207,9 @@ const PlayerContainer = props => {
 		handleVolumeChange,
 		handleShowComment,
 		handleBlank,
+		handleShowSubtitle,
 		setToggleTranscript,
+		setIsCaption,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
