@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort } from './styles'
+import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort, Loading } from './styles'
+
+import logo from 'assets/hexborder.svg'
 
 // import { PermissionTable } from 'components/bits'
 
@@ -17,8 +19,8 @@ export class CollectionPermissions extends PureComponent {
 			},
 		}
 	}
-	render() {
 
+	render() {
 		const {
 			viewstate,
 			handlers,
@@ -30,6 +32,7 @@ export class CollectionPermissions extends PureComponent {
 			state,
 			disabled,
 			disabledUser,
+			loaded,
 		} = viewstate
 
 		const {
@@ -147,30 +150,35 @@ export class CollectionPermissions extends PureComponent {
 					</div>
 					<div id='user-table'>
 						<h4>Current Users</h4>
-						<Table border='1'>
-							<thead>
-								<tr>
-									<th>Username<Sort onClick={()=>sort(users,"Username")}></Sort></th>
-									<th>Name<Sort onClick={()=>sort(users,"Name")}></Sort></th>
-									<th>Last Login</th>
-									<th>Remove</th>
-								</tr>
-							</thead>
-							<tbody>
-								{ users.length > 0 ?
-									 users.map((element, index) =>
-										<tr key={index}>
-											<td>{element[`username`]}</td>
-											<td>{element[`account-name`]}</td>
-											<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
-											<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
-										</tr>,
-									)
-									 :
-									null
-
-								}
-							</tbody>
+							<Table border='1'>
+								<thead>
+									<tr>
+										<th>Username<Sort onClick={()=>sort(users,"Username")}></Sort></th>
+										<th>Name<Sort onClick={()=>sort(users,"Name")}></Sort></th>
+										<th>Last Login</th>
+										<th>Remove</th>
+									</tr>
+								</thead>
+								<tbody>
+									{loaded === false ?
+										( users.length > 0 ?
+											users.map((element, index) =>
+												<tr key={index}>
+													<td>{element[`username`]}</td>
+													<td>{element[`account-name`]}</td>
+													<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
+													<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
+												</tr>,
+											)
+											:
+											null
+										)
+										:
+										(
+											<tr className='loading'><Loading colSpan={4} rowSpan={6} loaded={loaded}><img src={logo} /></Loading></tr>
+										)
+									}
+								</tbody>
 						</Table>
 					</div>
 				</TableContainer>

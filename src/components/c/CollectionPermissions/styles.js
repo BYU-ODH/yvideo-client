@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 
 import searchIcon from 'assets/search.svg'
 import iconSort from 'assets/admin-icon-sort.svg'
@@ -142,7 +142,6 @@ export const Table = styled.table`
 		font-size: 1.4rem;
 	}
 
-
 	& td {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 		padding: 2px;
@@ -153,6 +152,16 @@ export const Table = styled.table`
 			cursor: pointer;
 
 			:hover {
+				opacity: 1;
+			}
+		}
+	}
+
+	& .loading {
+		& td {
+			border-bottom: none;
+
+			& img {
 				opacity: 1;
 			}
 		}
@@ -168,4 +177,32 @@ export const Sort = styled.button`
 	border: none;
 	height: 1.5rem;
 	cursor: pointer;
+`
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Loading = styled.td`
+	width: 15rem;
+	height: 15rem;
+
+	& img {
+		width: 15rem;
+		height: 15rem;
+	}
+
+	${
+	props => !props.loaded ?
+		css`
+		`
+		:
+		css`
+			animation: ${rotate} 2.5s infinite;
+		`
+	}
 `
