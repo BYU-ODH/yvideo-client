@@ -185,16 +185,20 @@ export default class SubtitlesService {
 		dispatch(this.actions.subtitlesStart())
 
 		try {
-
-			const results = await apiProxy.content.edit(subtitle,subtitle[`id`])
+			const temp = subtitle
+			temp[`content`] = JSON.stringify(temp[`content`])
+			console.log(subtitle)
+			console.log(temp,subtitle[`id`])
+			await apiProxy.subtitles.edit(temp,subtitle[`id`])
 
 			// const metaResult =
 			// await apiProxy.content.metadata.post(id, metadata)
 
 			// console.log(settingsResult)
 
-			dispatch(this.actions.subtitlesUpdate(subtitle))
+			// dispatch(this.actions.subtitlesUpdate(subtitle))
 		} catch (error) {
+			console.log(`BEEP BEEP BEEP`,error,subtitle)
 			dispatch(this.actions.subtitlesError(error))
 		}
 	}

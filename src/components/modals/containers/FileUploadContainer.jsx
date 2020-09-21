@@ -5,6 +5,7 @@ import {
 	interfaceService,
 	fileService,
 	resourceService,
+	languageService,
 } from 'services'
 
 import FileUpload from 'components/modals/components/FileUpload'
@@ -15,12 +16,9 @@ const FileUploadContainer = props => {
 		// resource id from the Resource Overview Container
 		resourceId,
 		toggleModal,
-		updateFileVersion,
-		resources,
 		uploadFile,
 		getFiles,
-		getResource,
-		user,
+		langs,
 	} = props
 
 	const category = {
@@ -42,13 +40,20 @@ const FileUploadContainer = props => {
 		Korean: {
 			name: `Korean`,
 		},
+		Other: {
+			name: `Other`,
+		},
 	}
 
 	const [selectedFile, setSelectedFile] = useState()
 
-	const [fileVersion, setFileVersion] = useState(category.English.name)
+	const [fileVersion, setFileVersion] = useState(langs[0])
 
 	const [fileMetadata, setFileMetadata] = useState(``)
+
+	const [customLang, setCustomLang] = useState(``)
+
+	const [isOther, setIsOther] = useState(false)
 
 	const [fileMime, setFileMime] = useState(``)
 
@@ -69,8 +74,21 @@ const FileUploadContainer = props => {
 	const handleFileVersion = e => {
 		e.preventDefault()
 		setFileVersion(e.target.value)
+
+		if(e.target.value !== `Other`)
+			setIsOther(false)
+		else{
+			setIsOther(true)
+			setFileVersion(customLang)
+		}
 	}
 
+	const handleOtherLanguage = e => {
+		e.preventDefault()
+		setCustomLang(e.target.value)
+	}
+
+	// customized langs need to be fixed, got 500
 	const handleFileUpload = async(e) =>{
 		e.preventDefault()
 
@@ -89,7 +107,10 @@ const FileUploadContainer = props => {
 
 	const viewstate = {
 		category,
+		customLang,
+		isOther,
 		selectedFile,
+		langs,
 	}
 
 	const handlers = {
@@ -98,6 +119,7 @@ const FileUploadContainer = props => {
 		handleFileUpload,
 		handleFileMetadata,
 		handleFileMime,
+		handleOtherLanguage,
 		toggleModal,
 	}
 
@@ -108,6 +130,7 @@ const mapStateToProps = store => ({
 	user: store.authStore.user,
 	modal: store.interfaceStore.modal,
 	resources: store.resourceStore.cache,
+	langs: store.languageStore.cache.langs,
 })
 
 const mapDispatchToProps = {
@@ -116,6 +139,7 @@ const mapDispatchToProps = {
 	updateFileVersion: resourceService.updateFileVersion,
 	getResource: resourceService.getResource,
 	getFiles: resourceService.getFiles,
+	getLanguages: languageService.get,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileUploadContainer)

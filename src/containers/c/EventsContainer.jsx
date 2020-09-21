@@ -68,6 +68,7 @@ const EventsContainer = props => {
 				}
 			})
 		}
+		console.log(`yike1`,tempArray)
 		setEventArray([...tempArray])
 	}, [duration, events])
 
@@ -102,7 +103,7 @@ const EventsContainer = props => {
 
 				// 	break;
 			case `Blank`:
-				console.log('should blank')
+				console.log(`should blank`)
 				handleBlank(true)
 				break
 			default:

@@ -945,7 +945,7 @@ const TrackEditor = props => {
 
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
-										<div className={`handle`} onClick={()=>setSubLayerToEdit(index)}>
+										<div className={`handle`} onClick={()=>setSubToEdit(index)}>
 											<img alt={`cc`} src={captions}/>
 											<p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p>
 										</div>
@@ -1095,8 +1095,7 @@ const TrackEditor = props => {
 										))}
 									</div>
 									<div className='subCard'>
-										{subtitles !== [] && subtitles !== undefined ? (
-
+										{subtitles.length !== 0 && subtitles !== undefined ? (
 											<SubtitlesCard />
 										):``}
 									</div>

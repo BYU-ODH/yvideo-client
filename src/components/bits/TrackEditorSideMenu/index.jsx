@@ -138,8 +138,8 @@ const TrackEditorSideMenu = props => {
 		updateSubs(index,sub,layer)
 	}
 
-	const start = (event.start / 100 * videoLength).toFixed(3)
-	const end = (event.end / 100 * videoLength).toFixed(3)
+	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
+	const end = (event.end / 100 * videoLength).toFixed(3) || undefined
 
 	return (
 		<Style>

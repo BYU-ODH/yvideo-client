@@ -46,6 +46,7 @@ const TrackEditorContainer = props => {
 		setSubs(testsubs !== undefined?testsubs:[])
 	}
 	const getAllSubtitles = async() => {
+		console.log(`yeep`,id)
 		const testsubs = await getSubtitles(id)
 		console.log(`more testing`,testsubs)
 		setSubs(testsubs !== undefined?testsubs:[])
@@ -62,6 +63,7 @@ const TrackEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
+			getAllSubtitles()
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
 			else {

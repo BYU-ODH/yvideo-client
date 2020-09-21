@@ -42,6 +42,7 @@ export class ResourceOverview extends PureComponent {
 			resource,
 			files,
 			editing,
+			fileVersions,
 		} = this.props.viewstate
 
 		const {
@@ -80,6 +81,7 @@ export class ResourceOverview extends PureComponent {
 				</Style>
 				{editing &&
 					<InnerContainer>
+
 						<Column>
 							<h4>
 								copyrighted
@@ -91,6 +93,9 @@ export class ResourceOverview extends PureComponent {
 								<SwitchToggle on={physicalCopyExists} setToggle={handleTogglePhysicalCopyExists} data_key='physicalCopyExists' />
 							</h4>
 
+						</Column>
+
+						<Column>
 							<h4>
 								published
 								<SwitchToggle on={published} setToggle={handleTogglePublish} data_key='published' />
@@ -112,15 +117,17 @@ export class ResourceOverview extends PureComponent {
 								<TypeButton type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
 							</Type>
 
+							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
+
 							<div><h4>Views:</h4><Title>{resource.views} views</Title></div>
 
 						</Column>
 
-						<Column>
+						{/* <Column>
 							<div><h4>File Versions:</h4><Title>{resource.allFileVersions}</Title></div>
 
 							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
-						</Column>
+						</Column> */}
 
 						{/* TODO: metadata can be used later for the extended data. */}
 						{/* <Column>
