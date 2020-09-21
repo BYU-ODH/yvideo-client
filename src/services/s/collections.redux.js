@@ -129,19 +129,17 @@ export default class CollectionService {
 
 		case COLLECTION_INFO_GET:
 			if(store.users.length !== action.payload.data.users.length || store.courses.length !== action.payload.data.courses.length){
-					return {
+				return {
 					...store,
 					users: action.payload.data.users,
 					courses: action.payload.data.courses,
 					loading: false,
 				}
-			}
-			else {
+			} else {
 				return {
 					...store,
 				}
 			}
-
 
 		case COLLECTION_ROLES_UPDATE:
 			return {
@@ -197,7 +195,6 @@ export default class CollectionService {
 
 		try {
 			const result = await apiProxy.collection.remove(contentId)
-			// console.log(result)
 
 			// You also have to be an admin to do this, I'm pretty sure
 			dispatch(this.actions.collectionsRemoveContent(id, currentState))
@@ -278,7 +275,7 @@ export default class CollectionService {
 	}
 
 	getCollectionInfo = (collectionId, force = false) => {
-		//GET USERS AND COURSES FOR A SPECIFIED COLLECTION
+		// GET USERS AND COURSES FOR A SPECIFIED COLLECTION
 		return async (dispatch, getState, { apiProxy }) => {
 
 			dispatch(this.actions.collectionsStart())
@@ -289,7 +286,6 @@ export default class CollectionService {
 				// console.log(users)
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
-				//console.log(courses)
 
 				dispatch(this.actions.collectionGetInfo({ users, courses }))
 			} catch (error) {
@@ -309,7 +305,7 @@ export default class CollectionService {
 				let currentState = {}
 
 				currentState = getState().collectionStore.cache[collectionId]
-				// console.log(`not admin`, currentState)
+
 				currentState.name = collectionName
 				dispatch(this.actions.collectionEdit(currentState))
 
@@ -321,7 +317,6 @@ export default class CollectionService {
 
 	updateCollectionPermissions = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
 
-		console.log('update permissions')
 		dispatch(this.actions.collectionsStart())
 
 		let backEndBody = {}
@@ -329,57 +324,48 @@ export default class CollectionService {
 		const currentUsers = getState().collectionStore.users
 		const currentCourses = getState().collectionStore.courses
 
-		//TODO: WE CANT ADD THE SAME USER TWICE. ADD DELETE ADD DOES NOT WORK
+		// TODO: WE CANT ADD THE SAME USER TWICE. ADD DELETE ADD DOES NOT WORK
 
 		try {
 
-			if(endpoint === 'add-user'){
+			if(endpoint === `add-user`){
 				backEndBody = {
 					'username': body.username,
 					'account-role': body.role,
 				}
-				// currentUsers.push(backEndBody)
-			}
-			else if(endpoint === 'add-course'){
+			} else if(endpoint === `add-course`){
 				backEndBody = {
 					'department': body.department,
 					'catalog-number': body.catalog,
 					'section-number': body.section,
 				}
-				// currentCourses.push(backEndBody)
-			}
-			else if(endpoint === 'remove-course'){
+			} else if(endpoint === `remove-course`){
 				backEndBody = {
-					'course-id': body
+					'course-id': body,
 				}
-				// currentCourses.splice(currentCourses.findIndex(element => element['id'] === body), 1)
-			}
-			else if(endpoint === 'remove-user'){
+			} else if(endpoint === `remove-user`){
 				backEndBody = {
-					'username': body
+					'username': body,
 				}
-				// currentUsers.splice(currentUsers.findIndex(element => element['username'] === body), 1)
 			}
 
-			//TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
-
-			console.log(backEndBody)
+			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
 
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
 
 			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {
-			alert('The data could not be saved. Please, try again')
+			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
-	updateMany  = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
+	updateMany = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.collectionsStart())
 		try {
-			const result =  await apiProxy.collection.permissions.postMany(collectionId, body)
+			const result = await apiProxy.collection.permissions.postMany(collectionId, body)
 			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {
-			alert('The data could not be saved. Please, try again')
+			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))
 		}
 	}

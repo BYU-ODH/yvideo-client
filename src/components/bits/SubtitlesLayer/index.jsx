@@ -11,13 +11,13 @@ import {
 
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
-const TrackLayer = props => {
+const SubtitlesLayer = props => {
 
 	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
 
-	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength, displayLayer} = props
-	const layerIndex = parseInt(props.index)
-
+	const { subs, onDrop, sideEditor, updateSubs, activeEvent, width, minimized, videoLength, displayLayer} = props
+	const layerIndex = props.layer
+	const subIndex = parseInt(props.index)
 	const layerRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
@@ -25,7 +25,7 @@ const TrackLayer = props => {
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
 	const [isEditorOpen, setEditorOpen] = useState(false)
-
+	console.log(subs)
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
@@ -51,14 +51,14 @@ const TrackLayer = props => {
 
 	// Drag and Drop event to the layer
 	const [, dropRef] = useDrop({
-		accept: [`timeline-event`],
+		accept: `subtitle-event`,
 		drop: onDrop,
-		hover: (item, monitor) => {
-		},
+		hover: (item, monitor) => {},
 	})
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
-		const cEvents = events
+		console.log(`layerindex`, layerIndex)
+		const cEvents = subs
 		const beginTimePercentage = d.x / layerWidth * 100
 		const endPercentage = beginTimePercentage + (event.end - event.start)
 
@@ -71,13 +71,13 @@ const TrackLayer = props => {
 
 		if(cEvents[index].start < 0)
 			cEvents[index].start = 0
-
+		console.log(`l`,layerIndex)
 		// call handler from parent
-		updateEvents(index, cEvents[index], layerIndex)
+		updateSubs(index, cEvents[index],layerIndex)
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
-		const cEvents = events
+		const cEvents = subs
 		const difference = delta.width / layerWidth * 100
 		if(direction === `right`){
 			cEvents[index].end += difference
@@ -88,28 +88,27 @@ const TrackLayer = props => {
 		} else {
 			cEvents[index].start -= difference
 
-			console.log(cEvents[index])
+			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
-			 else if(cEvents[index].start > 100){
+			else if(cEvents[index].start > 100){
 				cEvents[index].start = 99
 				cEvents[index].end = 100
 			}
 		}
-
-		updateEvents(index, cEvents[index], layerIndex)
+		updateSubs(index, cEvents[index],layerIndex)
 	}
 
 	// This opens the side tab editor
-	const toggleEditor = (layerIndex, eventIndex) => {
-		setEditorOpen(true)
-		sideEditor(layerIndex, eventIndex)
+	const toggleEditor = (layerIndex, subIndex) => {
+		// setEditorOpen(true)
+		sideEditor(layerIndex, subIndex)
 	}
 
 	const printEvents = (event, index) => {
 		return (
 			<Rnd
-				className={`layer-event ${activeEvent === index ? `active-event` : ``}`}
+				className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`}
 				id={`event-${index}`}
 				size={{width: `${(event.end - event.start)/100 * layerWidth}px`, height: `46px`}}
 				position={{ x: parseFloat(event.start / 100 * layerWidth), y: 0}}
@@ -123,9 +122,8 @@ const TrackLayer = props => {
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
-				<Icon src={event.icon}/>
 				{ event.type !== `Pause` ? (
-					<p>{event.type} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
+					<p>{event.text} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
 				) : (
 					<p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
 				)
@@ -141,15 +139,13 @@ const TrackLayer = props => {
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
 						{
-							events !== undefined ? (
+							subs !== undefined ? (
 								<>
-									{events.map((event, index) => (
+									{subs.map((event, index) => (
 										<>
-											{event.layer === layerIndex ? (
-												<div key={index}>
-													{printEvents(event, index)}
-												</div>
-											) : null}
+											<div key={index}>
+												{printEvents(event, index)}
+											</div>
 										</>
 									))}
 								</>
@@ -163,5 +159,5 @@ const TrackLayer = props => {
 	)
 }
 
-export default TrackLayer
+export default SubtitlesLayer
 

@@ -262,32 +262,6 @@ describe(`content service test`, () => {
 		expect(store.getState().profCollectionContent).toEqual({content})
 	})
 
-	// TODO: I do not think I understand this correctly, need further explanation where this is being used
-	// it(`createCollection`, async() => {
-
-	// 	proxies.apiProxy.admin.collection.create = jest.fn()
-	// 	proxies.apiProxy.admin.collection.create.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({status: 200})
-	// 	})
-
-	// 	await adminServiceConstructor.createCollection(`create collection test`, true)(dispatch, getState, { apiProxy })
-	// })
-
-	// it(`createContent`, async() => {
-
-	// 	proxies.apiProxy.admin.collection.content.post = jest.fn()
-	// 	proxies.apiProxy.admin.collection.content.post.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({
-	// 			data: testutil.content[0],
-	// 		})
-	// 	})
-
-	// 	expect(store.getState().profCollectionContent).toEqual(null)
-	// 	await adminServiceConstructor.createContent(0, 0)(dispatch, { apiProxy })
-	// 	expect(store.getState().profCollectionContent).toEqual({0: content[0]})
-	// })
-
-	// TODO: I do not think this thunk is completed
 	it(`createContentFromResource`, async() => {
 
 		proxies.apiProxy.admin.collection.content.createFromResource = jest.fn()
@@ -350,29 +324,55 @@ describe(`content service test`, () => {
 		await adminServiceConstructor.deleteCollection(22)(dispatch, getState, { apiProxy })
 	})
 
-	// TODO: need to update when it's updated
 	it(`deleteContent`, async() => {
 
+		// get content
+		proxies.apiProxy.admin.collection.content.get = jest.fn()
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+			return Promise.resolve({content})
+		})
+
+		expect(store.getState().profCollectionContent).toEqual(null)
+		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
+		expect(store.getState().profCollectionContent).toEqual({content})
+		// delete content not as an admin
 		proxies.apiProxy.admin.content.delete = jest.fn()
 		proxies.apiProxy.admin.content.delete.mockImplementationOnce(()=>{
 			return Promise.resolve(searchResults[0])
 		})
 
+		expect(store.getState().profCollectionContent).toEqual({content})
 		await adminServiceConstructor.deleteContent(22)(dispatch, getState, { apiProxy })
+		expect(store.getState().profCollectionContent).toEqual({})
+
+		// delete content as an admin
+		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
+		await adminServiceConstructor.deleteContent(22, true)(dispatch, getState, { apiProxy })
 	})
 
-	// TODO: need to update when it's updated
 	it(`deleteUser`, async() => {
+		proxies.apiProxy.admin.search.get = jest.fn()
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults)
+		})
+
+		expect(store.getState().data).toEqual(null)
+		expect(store.getState().cache).toEqual({})
+		await adminServiceConstructor.search(`user`, `testusername`, true)(dispatch, getState, { apiProxy })
+
+		const expected = new User(searchResults[0])
+		expect(store.getState().data).toEqual([expected])
+		expect(store.getState().cache).toEqual({0: expected})
 
 		proxies.apiProxy.admin.user.delete = jest.fn()
 		proxies.apiProxy.admin.user.delete.mockImplementationOnce(()=>{
 			return Promise.resolve(searchResults[0])
 		})
-
+		expect(store.getState().data).not.toEqual([])
 		await adminServiceConstructor.deleteUser(22)(dispatch, getState, { apiProxy })
+		expect(store.getState().data).toEqual([])
 	})
 
-	// TODO: need to update when it's updated
 	it(`clean`, async() => {
 		await adminServiceConstructor.clean()(dispatch, getState, { apiProxy })
 	})

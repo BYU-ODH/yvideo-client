@@ -329,8 +329,6 @@ export default class AdminService {
 
 	getCollectionContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		console.log(`getting collection content`)
-
 		const time = Date.now() - getState().adminStore.lastFetchedProfContent
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
@@ -378,7 +376,6 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		try {
-			// console.log('got here')
 			const result = await apiProxy.content.post(content)
 
 		} catch (error) {
@@ -393,14 +390,7 @@ export default class AdminService {
 
 		try {
 
-			// console.log(resourceId)
 			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
-
-			// console.log(result.data)
-
-			// const data = { [result.data.id]: result.data }
-
-			// dispatch(this.actions.adminCreateContent(data))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))
