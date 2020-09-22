@@ -84,7 +84,7 @@ const PlayerContainer = props => {
 					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
 			}
-			addView(params.id)
+			// addView(params.id)
 		}
 	}, [addView, contentCache, getContent, params.id, resource, streamKey])
 
@@ -168,6 +168,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleShowSubtitle = (value) => {
+		console.log('CALED SUBTITLE')
 		setSubtitleText(value)
 	}
 

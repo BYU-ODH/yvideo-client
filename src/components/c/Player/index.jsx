@@ -7,6 +7,8 @@ import { PlayerControls } from 'components/bits'
 
 import { Controller } from 'components'
 
+import { SubtitlesContainer } from 'containers'
+
 import Style, { Blank, Comment, Transcript, Subtitles } from './styles'
 
 import chevron from 'assets/te-chevron-left.svg'
@@ -53,20 +55,40 @@ export default class Player extends PureComponent {
 			handleUnmuted,
 			handleShowComment,
 			setToggleTranscript,
+			handleShowSubtitle,
 		} = this.props.handlers
 
 		const mySub = [
 			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
+				start: '0',
+				end:'16',
+				text: "1"
 			},
 			{
-				start: '00:00:06.000',
-				end: '00:00:12,000',
-				text: "bla bla bla bla bla bla bla "
+				start: '16',
+				end:'32',
+				text: "2"
 			},
-			
+			{
+				start: '32',
+				end:'48',
+				text: "3"
+			},
+			{
+				start: '48',
+				end:'54',
+				text: "4"
+			},
+			{
+				start: '54',
+				end:'70',
+				text: "5"
+			},
+			{
+				start: '70',
+				end:'86',
+				text: "6"
+			},
 		]
 
 		//console.log('%c URL', 'font-size: 18px; color: green;', url)
@@ -112,7 +134,7 @@ export default class Player extends PureComponent {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-							<Subtitles>{subtitleText}</Subtitles>
+							<Subtitles style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} >{subtitleText}</Subtitles>
 							{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 						</Blank>
 					</div>
@@ -140,7 +162,9 @@ export default class Player extends PureComponent {
 				{/* <div className={`collection-container`}>
 					<CollectionsContainer/>
 				</div> */}
-				<EventsContainer currentTime={progress.playedSeconds.toFixed(1)} duration={duration}
+				<EventsContainer 
+					currentTime={progress.playedSeconds.toFixed(1)} 
+					duration={duration}
 					handleSeek={handleSeekChange}
 					handleMute={handleMuted}
 					handlePlay={handlePlay}
@@ -153,6 +177,14 @@ export default class Player extends PureComponent {
 					// handleCensorActive={video.handleCensorActive}
 				></EventsContainer>
 				{/* subtitle container ? */}
+				<SubtitlesContainer 
+					currentTime={progress.playedSeconds.toFixed(1)} 
+					duration={duration}
+					handleShowSubtitle={handleShowSubtitle}
+					mySubs={mySub}
+				>
+				</SubtitlesContainer>
+			
 			</Style>
 		)
 	}	

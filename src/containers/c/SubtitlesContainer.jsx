@@ -3,25 +3,36 @@ import { connect } from 'react-redux'
 import { subtitlesService } from 'services'
 
 const SubtitlesContainer = props => {
-	const {subtitles, currentTime, handleShowSubtitle, active,duration} = props
-	console.log(subtitles)
-	try{
-		console.log(subtitles[active])
-		subtitles[active][`content`].forEach(element => {
-			console.log(element)
-			const start = element.start / 100 * duration
-			const end = element.end / 100 * duration
-			if(currentTime >= start && currentTime <= end){
-				console.log(element)
-				handleShowSubtitle(element.text)
-			}else if (currentTime > end || currentTime < start)
-				handleShowSubtitle(``)
+	const {
+		// subtitles, 
+		currentTime, 
+		handleShowSubtitle, 
+		duration,
+		mySubs 
+	} = props
+	
+	//console.log(mySubs)
+	let temp = mySubs
 
-		})
-	}catch(error){
+	for(let i = 0; i < temp.length; i++){
+		let element = temp[i]
+		//event start is a % not actuall time we are converting the percentage into time
+		const start = element.start / 100 * duration
+		const end = element.end / 100 * duration
+
+		if(currentTime >= start && currentTime <= end){
+			// console.log(element)
+			//POP FROM NON VISITED AND SEND TO VISITED OR JUST DELETE WE DONT NEED IT ANYMORE?
+			handleShowSubtitle(element.text)
+			break;
+		}
+		else {
+			handleShowSubtitle('')
+		}
+
 	}
 
-	// console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
+	console.log('%c Subtitle Container', 'color: orange; font-weight: bolder; font-size: 12px;')
 
 	return <div></div>
 }
