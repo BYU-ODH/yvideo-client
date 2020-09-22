@@ -92,7 +92,7 @@ export const TimeBar = styled.div`
 					position: absolute;
 					top: 2px;
 					float: left;
-					left: ${props => props.played ? (`calc(${props.played * 100}% - 2px)`) : (`calc(${props.played * 100}% - 2px)`)};
+					left: ${props => props.played ? `calc(${props.played * 100}% - 2px)` : `calc(${props.played * 100}% - 2px)`};
 					margin: 0px;
 					width: 4px;
 					height: 100%;
@@ -174,7 +174,7 @@ export const TimeBar = styled.div`
 `
 export const Blank = styled.div`
 	position: absolute;
-	background-color: ${props => props.blank ? ('black') : ('transparent')};
+	background-color: ${props => props.blank ? `black` : `transparent`};
 	z-index: 10;
 	width: 100%;
 	height: calc(100% - 50px);
@@ -182,8 +182,8 @@ export const Blank = styled.div`
 export const Censor = styled.div`
 	--top: ${props => props.y !== 0 ? `${props.y}%` : `0%`};
 	--left: ${props => props.x !== 0 ? `${props.x}%` : `0%`};
-	--wProp: ${props => props.wProp !== 0 ? `${props.wProp}%` : '0%'};
-	--hProp: ${props => props.hProp !== 0 ? `${props.hProp}%` : '0%'};
+	--wProp: ${props => props.wProp !== 0 ? `${props.wProp}%` : `0%`};
+	--hProp: ${props => props.hProp !== 0 ? `${props.hProp}%` : `0%`};
 
 	/* TIME X Y WIDTH HEIHT */
 	/* FIND BLUR EFFECT */
@@ -198,7 +198,7 @@ export const Censor = styled.div`
 		width: 100%;
 		height: 100%;
 		background-color: transparent;
-		backdrop-filter: ${ props => props.active ? ('blur(30px)') : 'blur(0px)' };
+		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(0px)`};
 	}
 `
 export const Comment = styled.div`
@@ -239,4 +239,15 @@ export const ToggleCarat = styled.div`
 	&.minimized {
 		transform: rotate(90deg);
 	}
+`
+export const Subtitles = styled.div`
+	position: absolute;
+	height: 10%;
+	bottom:0;
+	background-color: rgba(0,0,0,0.5);
+	font-size: 1.5rem;
+	color: #ffffff;
+	z-index: 20;
+	width: 100%;
+	text-align: center;
 `

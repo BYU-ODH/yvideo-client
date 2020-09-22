@@ -52,13 +52,24 @@ const CreateContentContainer = props => {
 	useEffect(() => {
 		if(resourceContent[selectedResource] !== undefined){
 			let langs = resourceContent[selectedResource].allFileVersions.split(";")
+			let finalLanguages = []
 			langs.forEach((element, i) => {
 				if(element === ""){
+					// console.log('empty')
 					delete langs[i]
 				}
+				else {
+					// console.log('not empty')
+					let newLetter = element[0].toUpperCase()
+					element = newLetter + element.slice(1)
+					// console.log(element)
+					finalLanguages.push(element)
+				}
 			});
-			setLanguages(langs)
-			console.log(resourceContent[selectedResource])
+			// console.log(langs)
+			// console.log(finalLanguages)
+			setLanguages(finalLanguages)
+			// console.log(resourceContent[selectedResource])
 		}
 
 		// if(resourceContent[selectedResource].files !== undefined) {

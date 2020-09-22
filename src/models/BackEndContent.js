@@ -33,7 +33,7 @@ export default class BackEndContent {
 			this.backEndData['published'] = obj.published
 
 			this.backEndData['allow-definitions'] = obj.settings.allowDefinitions
-			this.backEndData['allow-captions'] = obj.settings.allowCaptions
+			this.backEndData['allow-captions'] = obj.settings.showCaptions
 
 			this.backEndData['annotations'] =  this.arrayToString(obj.settings.annotationDocument)//settings
 

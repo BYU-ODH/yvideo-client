@@ -403,6 +403,11 @@ export default class ResourceService {
 
 			const allFiles = await apiProxy.resources.files(resourceId)
 
+<<<<<<< HEAD
+=======
+			console.log(allFiles)
+
+>>>>>>> 0fcdc58972ad013efafd2ab60525664718974b38
 			const fileId = allFiles.find(element => element[`file-version`].includes(language) !== false)[`id`]
 
 			const result = await apiProxy.media.getKey(fileId)
