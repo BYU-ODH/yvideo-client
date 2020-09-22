@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { subtitlesService } from 'services'
+import { Events } from 'components'
 
 const SubtitlesContainer = props => {
-	const {
-		// subtitles, 
-		currentTime, 
-		handleShowSubtitle, 
-		duration,
-		mySubs 
-	} = props
-	
-	//console.log(mySubs)
-	let temp = mySubs
+	const {subtitles, currentTime, handleShowSubtitle, active,duration} = props
 
-	for(let i = 0; i < temp.length; i++){
-		let element = temp[i]
-		//event start is a % not actuall time we are converting the percentage into time
+	const [subtitlesArray, setSubtitlesArray] = useState([])
+
+	useEffect(() => {
+		handleShowSubtitle(``)
+		if(subtitles[active] !== undefined){
+			const tempArray = subtitles[active][`content`]
+			setSubtitlesArray([...tempArray])
+			console.log(`yike`,tempArray)
+
+		}else
+			setSubtitlesArray([])
+	}, [duration, subtitles])
+
+	// console.log(subtitlesArray)
+	for(let i = 0; i<subtitlesArray.length; i++){
+		const element = subtitlesArray[i]
+		console.log(element)
 		const start = element.start / 100 * duration
 		const end = element.end / 100 * duration
-
 		if(currentTime >= start && currentTime <= end){
-			// console.log(element)
-			//POP FROM NON VISITED AND SEND TO VISITED OR JUST DELETE WE DONT NEED IT ANYMORE?
 			handleShowSubtitle(element.text)
-			break;
-		}
-		else {
-			handleShowSubtitle('')
-		}
-
+			break
+		}else if (currentTime > end || currentTime < start)
+			handleShowSubtitle(``)
 	}
 
-	console.log('%c Subtitle Container', 'color: orange; font-weight: bolder; font-size: 12px;')
+	// console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
+	const eventClassArray = subtitles
+	const viewstate = {
+		currentTime,
+		eventClassArray,
+	}
+	return <Events viewstate={viewstate}></Events>
 
-	return <div></div>
 }
 
 const mapStateToProps = ({ subtitlesStore }) => ({
