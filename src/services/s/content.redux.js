@@ -164,9 +164,9 @@ export default class ContentService {
 
 	// thunks
 	setContent = (content, force = false) => async (dispatch, getState, { apiProxy }) => {
-		//SETS CONTENT FOR ALL THE COLLECTIONS OF THE USER
+		// SETS CONTENT FOR ALL THE COLLECTIONS OF THE USER
 
-		//CONTENT IS AN ARRAY OF CONTENTS
+		// CONTENT IS AN ARRAY OF CONTENTS
 
 		dispatch(this.actions.contentStart())
 
@@ -258,11 +258,11 @@ export default class ContentService {
 
 			const finalData = new BackEndContent(content).backEndData
 
-			console.log(finalData)
+			// console.log(finalData)
 
 			const results = await apiProxy.content.update(finalData)
 
-			console.log(results)
+			// console.log(results)
 
 			// await apiProxy.content.metadata.post(id, metadata)
 
@@ -304,13 +304,10 @@ export default class ContentService {
 		const time = Date.now() - getState().contentStore.lastFetched
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
-		console.log(`testing`)
 		dispatch(this.actions.contentStart())
 
 		try {
-			console.log(`try`)
 			const result = await apiProxy.content.getSubtitles(id)
-			console.log(`hello`)
 			return result
 
 		} catch (error) {

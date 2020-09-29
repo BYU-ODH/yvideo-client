@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import ConfirmDeleteContainer from 'components/modals/containers/ConfirmDeleteContainer'
-
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
 
 import { Admin } from 'components'
@@ -91,17 +89,14 @@ const AdminContainer = props => {
 				x: e.pageX,
 				y: e.pageY,
 			})
-
 		},
 		handleConfirmDelete: e => {
 			e.preventDefault()
 			toggleModal({
-				// component: ConfirmDeleteContainer,
 				component: DeleteConfirmContainer,
 				props: {
 					type: searchCategory,
 					menuItemInfo,
-					// searchCategory,
 				},
 			})
 		},

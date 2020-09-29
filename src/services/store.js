@@ -34,7 +34,7 @@ const store = createStore(
 		resourceStore: resourceService.reducer,
 		fileStore: fileService.reducer,
 		languageStore: languageService.reducer,
-		subtitlesStore: subtitlesService.reducer
+		subtitlesStore: subtitlesService.reducer,
 	}),
 
 	// This is the initial state of the store
