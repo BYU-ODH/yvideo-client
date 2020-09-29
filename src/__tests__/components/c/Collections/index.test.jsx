@@ -58,20 +58,20 @@ describe(`collections test`, () => {
 		expect(linkMap[`/manager`]).toBe(`Manage Collections`)
 	})
 
-	// it(`test render BlockCollection`, ()=> {
-	// 	const wrapper = mount(
-	// 		<BrowserRouter>
-	// 			<BlockCollection {...props}/>
-	// 		</BrowserRouter>,
-	// 	)
+	it(`test render BlockCollection`, ()=> {
+		const wrapper = mount(
+			<BrowserRouter>
+				<BlockCollection {...props}/>
+			</BrowserRouter>,
+		)
 
-	// 	const elem = wrapper.find(`h4`)
-	// 	expect(elem.length).toBe(0)
-	// 	expect(wrapper.contains(<h4>testname</h4>)).toEqual(true)
-
-	// 	const arrowLeft = wrapper.find({"className" : `left`})
-	// 	const arrowRight = wrapper.find({"className" : `right`})
-	// 	expect(arrowLeft).toHaveLength(2)
-	// 	expect(arrowRight).toHaveLength(2)
-	// })
+		const elem = wrapper.find(`h4`)
+		expect(elem.length).toBe(0)
+		expect(wrapper.props().bar).to.equal('baz');
+		
+		const arrowLeft = wrapper.find({"className" : `left`})
+		const arrowRight = wrapper.find({"className" : `right`})
+		expect(arrowLeft).toHaveLength(2)
+		expect(arrowRight).toHaveLength(2)
+	})
 })
