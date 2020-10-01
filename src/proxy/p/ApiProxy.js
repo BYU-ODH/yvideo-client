@@ -333,7 +333,7 @@ const apiProxy = {
 		}),
 		getSubtitles: async id => {
 			console.log(`here`)
-			console.log(window.clj_session_id)
+			console.log(`testing session`, window.clj_session_id)
 			const results = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/subtitles`,
 				{
 					withCredentials: true,
@@ -581,7 +581,6 @@ const apiProxy = {
 			return returnMe
 		},
 		get: async ids => {
-			console.log(`wut?`)
 			const results = await Promise.all(ids.map(id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle/${id}`,
 				{
 					withCredentials: true,
@@ -595,7 +594,6 @@ const apiProxy = {
 
 				return res.data
 			})))
-			console.log(`my sub results are`)
 			return results
 		},
 		delete: async (ids) => {
@@ -608,7 +606,6 @@ const apiProxy = {
 			}).then(res => {
 				updateSessionId(res.headers[`session-id`])
 			})))
-			console.log(`he re`)
 		},
 
 		edit: async (sub, id) => {
