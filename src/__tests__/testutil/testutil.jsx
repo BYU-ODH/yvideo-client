@@ -497,6 +497,18 @@ export const store = mockStore(
 				},
 			],
 		},
+		fileStore:{
+			cache: {},
+			loading: false,
+			lastFetched: 0,
+		},
+		languageStore:{
+			cache: {
+				langs:[`test version`, `lang1`, `lang2`, `lang3`],
+			},
+			loading: false,
+			lastFetched: 0,
+		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
 )
