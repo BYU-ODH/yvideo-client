@@ -135,7 +135,7 @@ export default class SubtitlesService {
 	}
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-		console.log(`this is working`)
+		// console.log(`this is working`)
 		// console.log('updated store', contentIds)
 		const time = Date.now() - getState().contentStore.lastFetched
 
@@ -145,11 +145,11 @@ export default class SubtitlesService {
 		dispatch(this.actions.subtitlesStart())
 
 		try {
-			console.log(`wut`)
+			// console.log(`wut`)
 			const result = await apiProxy.content.getSubtitles(id)
-			console.log(`result time`,result)
+			// console.log(`result time`,result)
 			dispatch(this.actions.subtitlesGet(result))
-			console.log(`heya`,this.store)
+			// console.log(`heya`,this.store)
 			return result
 		} catch (error) {
 			console.error(error.message)
@@ -164,9 +164,9 @@ export default class SubtitlesService {
 		// dispatch(this.actions.subtitlesStart())
 
 		try {
-			console.log(subtitle)
+			// console.log(subtitle)
 			const result = await apiProxy.subtitles.post(subtitle)
-			console.log(result)
+			// console.log(result)
 
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
@@ -187,8 +187,8 @@ export default class SubtitlesService {
 		try {
 			const temp = subtitle
 			temp[`content`] = JSON.stringify(temp[`content`])
-			console.log(subtitle)
-			console.log(temp,subtitle[`id`])
+			// console.log(subtitle)
+			// console.log(temp,subtitle[`id`])
 			await apiProxy.subtitles.edit(temp,subtitle[`id`])
 
 			// const metaResult =

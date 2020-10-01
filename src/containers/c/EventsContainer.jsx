@@ -28,7 +28,6 @@ const EventsContainer = props => {
 	const [force, setForce] = useState(false)
 
 	useEffect(() => {
-		console.log(`aya`,events)
 		// console.log('reset')
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
 		// If the blank or mute event is active the event will be executed.
@@ -68,12 +67,10 @@ const EventsContainer = props => {
 				}
 			})
 		}
-		console.log(`yike1`,tempArray)
 		setEventArray([...tempArray])
 	}, [duration, events])
 
 	eventArray.forEach(element => {
-		// console.log(element)
 		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
 			switch (element.type) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { contentService, resourceService, interfaceService } from 'services'
+import { contentService, resourceService, interfaceService, subtitlesService } from 'services'
 
 import { Player } from 'components'
 
@@ -15,12 +15,13 @@ const PlayerContainer = props => {
 		addView,
 		setEvents,
 		streamKey,
+		getSubtitles,
+		subtitles,
 	} = props
 
 	const params = useParams()
 
 	const [content, setContent] = useState()
-	const [resource, setResource] = useState('')
 	const [sKey, setKey] = useState('')
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
@@ -40,7 +41,9 @@ const PlayerContainer = props => {
 	const [showTranscript, setShowTranscript] = useState(false)
 	const [toggleTranscript, setToggleTranscript] = useState(true)
 	const [subtitleText, setSubtitleText] = useState(``)
+	const [displaySubtitles, setDisplaySubtitles] = useState(null)
 
+	//this is for caption toggle 
 	const [isCaption, setIsCaption] = useState( content !== undefined ? (content.settings.showCaptions) : (true) )
 
 	const ref = player => {
@@ -57,36 +60,38 @@ const PlayerContainer = props => {
 			getContent(params.id)
 		}
 		else {
-			// console.log('yes cached content')
+			//console.log('yes cached content')
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ''){
-				// console.log('GOT A VALID URL FROM CONTENT')
+				//console.log('GOT A VALID URL FROM CONTENT')
 				setUrl(contentCache[params.id].url)
 			}
 			else {
-				// console.log('CONTENT URL IS NOT VALID')
+				//console.log('CONTENT URL IS NOT VALID')
 				//CHECK RESOURCE ID
-				if(contentCache[params.id].resourceId !== '00000000-0000-0000-0000-000000000000' && sKey === ''){
+				if(sKey === ''){
 					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-					// console.log('ACTING TO CHANGE URL')
-					setResource(contentCache[params.id].resourceId)
+					//console.log('ACTING TO CHANGE URL')
 					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
 					setKey(streamKey)
 				}
 				else if (sKey !== ''){
 					//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-					
+					getSubtitles(params.id)
 					// console.log('CHANGED URL')
 					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
 			}
 			// addView(params.id)
 		}
-	}, [addView, contentCache, getContent, params.id, resource, streamKey])
+
+		//select right subtitle to display in the transcript
+
+	}, [addView, contentCache, getContent, params.id, streamKey, getSubtitles])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -168,8 +173,19 @@ const PlayerContainer = props => {
 	}
 
 	const handleShowSubtitle = (value) => {
-		console.log('CALED SUBTITLE')
+		// console.log('CALED SUBTITLE')
 		setSubtitleText(value)
+	}
+
+	if(displaySubtitles == null){	
+		if(subtitles.length > 1){
+			//some logic to pick the subtitle
+		}
+		else if(subtitles.length == 1){
+			let temp = subtitles[0]
+			temp.content = JSON.parse(subtitles[0].content)
+			setDisplaySubtitles(temp)
+		}
 	}
 
 	const viewstate = {
@@ -191,6 +207,7 @@ const PlayerContainer = props => {
 		content,
 		isCaption,
 		subtitleText,
+		displaySubtitles,
 	}
 
 	const handlers = {
@@ -216,12 +233,13 @@ const PlayerContainer = props => {
 	return <Player viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, contentStore, resourceStore }) => ({
+const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	userId: authStore.user.id,
 	contentCache: contentStore.cache,
 	streamKey: resourceStore.streamKey,
+	subtitles: subtitlesStore.cache,
 })
 
 const mapDispatchToProps = {
@@ -229,6 +247,7 @@ const mapDispatchToProps = {
 	getStreamKey: resourceService.getStreamKey,
 	addView: contentService.addView,
 	setEvents: interfaceService.setEvents,
+	getSubtitles: subtitlesService.getSubtitles,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

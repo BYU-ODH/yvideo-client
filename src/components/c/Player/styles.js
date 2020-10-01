@@ -2,9 +2,8 @@ import styled from 'styled-components'
 
 export const Style = styled.div`
 	padding-top: 8.4rem;
-	padding-bottom: 15rem;
-	overflow-y: scroll;
-	height: calc(100vh - 23.4rem);
+	height: calc(100vh - 8.4rem);
+	overflow: hidden;
 
 	& > div {
 		& .ayamelPlayer,
@@ -44,10 +43,11 @@ export const Comment = styled.div`
 	color: white; style={{ w}}
 	z-index: 15;
 `
+
 export const Transcript = styled.div`
 	position: relative;
 	width: ${props => props.displayTranscript ? ('50rem') : ('2rem')};
-	max-height: 50rem;
+	height: 100%;
 	padding: 0px 10px 0px 10px;
 	border: 1px solid black;
 	transition: 1s ease;
@@ -86,9 +86,11 @@ export const Transcript = styled.div`
 		& .transcript-title {
 			display: flex;
 			width: 100%;
-			height: 30px;
+			height: 50px;
+			flex-direction: column;
 
 			& h2 {
+				padding: 5px;
 				margin: auto;
 				font-weight: 500;
 				text-align: center;
@@ -108,18 +110,31 @@ export const Transcript = styled.div`
 			font-size: 1.4rem;
 		}
 	}
+
+	& .active-sub {
+		background-color: rgba(5, 130, 202, 0.3);
+	}
 `
 
 export const Subtitles = styled.div`
 	position: absolute;
-	height: 15%;
 	bottom: 50px;
-	background-color: rgba(0,0,0,0.5);
-	font-size: 1.5rem;
 	color: #ffffff;
 	z-index: 20;
+	height: 60px;
 	width: 100%;
-	text-align: center;
+
+	& h3 {
+		background-color: rgba(0,0,0,0.5);
+		padding: 3px;
+		font-size: 1.6rem;
+		text-align: center;
+		margin: auto;
+		width: auto;
+		height: auto;
+		max-width: 60%;
+		max-height: 60px;
+	}
 `
 
 export default Style
