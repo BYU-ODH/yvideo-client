@@ -153,12 +153,12 @@ const TrackEditorSideMenu = props => {
 							<label>Language</label>
 						</div>
 						<div className='center'>
-							<input type='text' className='sideTabInput' value={title} onChange={e => {
+							<input type='text' className='sideTabInput' value={subs[subLayer].title} onChange={e => {
 								updateTitle(e.target.value)
 								setTitle(e.target.value)
 							}
 							}/>
-							<input type='text' className='sideTabInput' value={language} onChange={e => {
+							<input type='text' className='sideTabInput' value={subs[subLayer].language} onChange={e => {
 								updateLanguage(e.target.value)
 								setLanguage(e.target.value)
 							}}/>
@@ -279,7 +279,6 @@ const TrackEditorSideMenu = props => {
 										</td>
 										<td>
 											<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
-												console.log(`The value in question is`, value)
 												const text = subText
 												text[ind] = value
 												setSubText(text)

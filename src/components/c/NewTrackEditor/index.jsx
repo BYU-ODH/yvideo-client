@@ -43,7 +43,7 @@ const TrackEditor = props => {
 
 	// console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
 
-	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles } = props
+	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles,getAllSubtitles } = props
 
 	const { eventsArray, currentContent,subs, allSubs } = props.viewstate
 	const events = [
@@ -210,9 +210,9 @@ const TrackEditor = props => {
 	// 	setEventListMinimized(!eventListMinimized)
 	// }
 
-	const getVideoDuration = (duration) => {
+	const getVideoDuration = async(duration) => {
 		setVideoLength(duration)
-		const tempSubs = subs
+		const tempSubs = await getAllSubtitles()
 		for (let i = 0; i < tempSubs.length; i++)
 			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
 
@@ -275,7 +275,6 @@ const TrackEditor = props => {
 		// CALCULATE THE CURRENT TIME IN RESPECT OF THE CURRENT PERCENTAGE OF THE LAYER
 		// READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
 		const newStart = videoCurrentTime * 100 / videoLength
-		console.log(newStart)
 		addEventToLayer(item, index, newStart)
 	}
 
@@ -303,13 +302,11 @@ const TrackEditor = props => {
 		}
 
 		currentEvents.push(eventObj)
-		console.log(currentEvents)
 		setAllEvents(currentEvents)
 		setDisplayLayer(index)
 	}
 
 	const updateEvents = (index, event, layerIndex) => {
-		console.log(`Update`, event)
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
@@ -485,18 +482,11 @@ const TrackEditor = props => {
 		updateContent(content)
 		handleSaveSubtitles()
 		deleteSubtitles(subLayersToDelete)
+		setSubLayersToDelete([])
 	}
 
 	const handleSaveSubtitles = async() => {
 		const rawSubs = subtitles
-		// for (let i = 0; i < rawSubs.length;i++){
-		// 	for(let x = 0; x<rawSubs[i][`content`].length;x++){
-		// 		rawSubs[i][`content`][x].start = rawSubs[i][`content`][x].start / 100 * videoLength * 1000
-		// 		rawSubs[i][`content`][x].end = rawSubs[i][`content`][x].end / 100 * videoLength * 1000
-		// 	}
-		// 	console.log(rawSubs[i][`content`])
-		// 	console.log(rawSubs[i][`content`])
-		// }
 		createSub(rawSubs)
 	}
 	const handleScrollFactor = (direction) => {
@@ -513,7 +503,6 @@ const TrackEditor = props => {
 			const scrollBarOffset = scrollBarContainer * 0.03
 			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
 			// console.log(lastPossibleRight)
-			console.log(cLeft)
 			switch (direction) {
 			case `start`:
 				scrubber.scrollLeft = 0
@@ -553,10 +542,8 @@ const TrackEditor = props => {
 
 				}
 
-				if (cLeft + scrollBarOffset > lastPossibleRight){
-					console.log(`got to the end`)
+				if (cLeft + scrollBarOffset > lastPossibleRight)
 					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-				}
 
 				break
 			case `end`:

@@ -118,9 +118,6 @@ export default class SubtitlesService {
 		}
 	}
 	setSubtitles = (content) => async (dispatch, getState, { apiProxy }) => {
-
-		console.log(`contenta`, content)
-		console.log(`contentb`,this.store)
 		// console.log('updated content1', content)
 
 		try {
@@ -135,7 +132,6 @@ export default class SubtitlesService {
 	}
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-		// console.log(`this is working`)
 		// console.log('updated store', contentIds)
 		const time = Date.now() - getState().contentStore.lastFetched
 
@@ -145,15 +141,13 @@ export default class SubtitlesService {
 		dispatch(this.actions.subtitlesStart())
 
 		try {
-			// console.log(`wut`)
 			const result = await apiProxy.content.getSubtitles(id)
-			// console.log(`result time`,result)
 			dispatch(this.actions.subtitlesGet(result))
-			// console.log(`heya`,this.store)
 			return result
 		} catch (error) {
 			console.error(error.message)
 			dispatch(this.actions.subtitlesError(error))
+			return[]
 		}
 
 		// } else dispatch(this.actions.subtitlesAbort())
@@ -164,10 +158,9 @@ export default class SubtitlesService {
 		// dispatch(this.actions.subtitlesStart())
 
 		try {
-			// console.log(subtitle)
-			const result = await apiProxy.subtitles.post(subtitle)
-			// console.log(result)
-
+			const temp = subtitle
+			temp[`content`] = JSON.stringify(temp[`content`])
+			const result = await apiProxy.subtitles.post(temp)
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
 
@@ -185,20 +178,10 @@ export default class SubtitlesService {
 		dispatch(this.actions.subtitlesStart())
 
 		try {
-			const temp = subtitle
-			temp[`content`] = JSON.stringify(temp[`content`])
-			// console.log(subtitle)
-			// console.log(temp,subtitle[`id`])
+			const tempSub = subtitle
+			tempSub[`content`] = JSON.stringify(tempSub[`content`])
 			await apiProxy.subtitles.edit(temp,subtitle[`id`])
-
-			// const metaResult =
-			// await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
-
-			// dispatch(this.actions.subtitlesUpdate(subtitle))
 		} catch (error) {
-			console.log(`BEEP BEEP BEEP`,error,subtitle)
 			dispatch(this.actions.subtitlesError(error))
 		}
 	}
@@ -214,7 +197,6 @@ export default class SubtitlesService {
 
 		try {
 			await apiProxy.subtitles.delete(ids)
-
 			// console.log(result.data)
 
 			// TODO: Why doesn't this update to state cause it to rerender?

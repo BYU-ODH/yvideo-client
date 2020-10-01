@@ -13,7 +13,6 @@ const SubtitlesContainer = props => {
 		if(subtitles[active] !== undefined){
 			const tempArray = subtitles[active][`content`]
 			setSubtitlesArray([...tempArray])
-			console.log(`yike`,tempArray)
 
 		}else
 			setSubtitlesArray([])
@@ -22,7 +21,6 @@ const SubtitlesContainer = props => {
 	// console.log(subtitlesArray)
 	for(let i = 0; i<subtitlesArray.length; i++){
 		const element = subtitlesArray[i]
-		console.log(element)
 		const start = element.start / 100 * duration
 		const end = element.end / 100 * duration
 		if(currentTime >= start && currentTime <= end){
@@ -32,7 +30,6 @@ const SubtitlesContainer = props => {
 			handleShowSubtitle(``)
 	}
 
-	// console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
 	const eventClassArray = subtitles
 	const viewstate = {
 		currentTime,
