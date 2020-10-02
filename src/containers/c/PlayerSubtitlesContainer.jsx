@@ -25,6 +25,20 @@ const PlayerSubtitlesContainer = props => {
 			//some logic to pick the subtitle
 		}
 		else if(subtitles.length == 1){
+			let temp = subtitles[0]
+			let currentContent = temp.content
+
+			try {
+
+				if(typeof currentContent === "string"){
+					console.log("String type")
+					temp.content = JSON.parse(subtitles[0].content)
+				}
+
+			}
+			catch (e){
+				console.log(e)
+			}
 			setSubtitlesArray(subtitles[0].content)
 		}
         

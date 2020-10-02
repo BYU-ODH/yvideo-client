@@ -180,7 +180,7 @@ export default class SubtitlesService {
 		try {
 			const tempSub = subtitle
 			tempSub[`content`] = JSON.stringify(tempSub[`content`])
-			await apiProxy.subtitles.edit(temp,subtitle[`id`])
+			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {
 			dispatch(this.actions.subtitlesError(error))
 		}

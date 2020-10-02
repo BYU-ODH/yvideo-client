@@ -53,6 +53,8 @@ const PlayerContainer = props => {
 	useEffect(() => {
 		setPlaybackRate(1)
 		setShowTranscript(false)
+		setSubtitleText('')
+		setDisplaySubtitles(null)
 		// console.log('called use effect in player')
 		if (!contentCache[params.id]){
 			//console.log('no cached content')
@@ -183,7 +185,20 @@ const PlayerContainer = props => {
 		}
 		else if(subtitles.length == 1){
 			let temp = subtitles[0]
-			temp.content = JSON.parse(subtitles[0].content)
+			let currentContent = temp.content
+
+			try {
+				
+				if(typeof currentContent === "string"){
+					console.log("String type")
+					temp.content = JSON.parse(subtitles[0].content)
+				}
+
+			}
+			catch (e){
+				console.log(e)
+			}
+
 			setDisplaySubtitles(temp)
 		}
 	}

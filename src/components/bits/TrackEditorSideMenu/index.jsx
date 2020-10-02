@@ -268,6 +268,7 @@ const TrackEditorSideMenu = props => {
 							</tr>
 						</table>
 						<table>
+							{/* content is a string type. Maybe change to an array by parsing content? */}
 							{subs[subLayer][`content`].map((sub,ind)=>(
 								<div className={`${ind === index ? `subActive`:``}`}>
 									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`}>

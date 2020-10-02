@@ -96,6 +96,10 @@ export const Transcript = styled.div`
 				text-align: center;
 			}
 		}
+
+		& .transcript-content {
+			margin-top: 15px;
+		}
 	}
 
 
@@ -127,13 +131,15 @@ export const Subtitles = styled.div`
 	& h3 {
 		background-color: rgba(0,0,0,0.5);
 		padding: 3px;
-		font-size: 1.6rem;
+		font-size: 1.8rem;
 		text-align: center;
 		margin: auto;
 		width: auto;
 		height: auto;
 		max-width: 60%;
 		max-height: 60px;
+		line-height: 1.5;
+		letter-spacing: .7px;
 	}
 `
 
