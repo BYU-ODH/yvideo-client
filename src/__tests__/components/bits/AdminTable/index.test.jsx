@@ -1,6 +1,7 @@
 import React from 'react'
 import { shallow, mount, render } from 'enzyme'
 import AdminTable from '../../../../components/bits/AdminTable/index'
+import Style, { Table, ItemEdit, Filter, Sort, ItemMenu } from '../../../../components/bits/AdminTable/styles'
 import { BrowserRouter} from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
@@ -118,5 +119,24 @@ describe(`admin table test`, () => {
 		expect(wrapper.contains("Type")).toEqual(true)
 		expect(wrapper.contains("Expired")).toEqual(true)
 		expect(wrapper.contains("ResourceID")).toEqual(true)
+	}),
+	it(`Sort`, ()=> {
+		const mockCallBack = jest.fn();
+		const button = shallow(<Sort onClick={mockCallBack}/>);
+    button.find('StyledComponent').simulate('click');
+		expect(mockCallBack.mock.calls.length).toEqual(1);
 	})
+	it(`ItemEdit`, ()=> {
+		const mockCallBack = jest.fn();
+		const button = shallow(<ItemEdit onClick={mockCallBack}/>);
+    button.find('StyledComponent').simulate('click');
+		expect(mockCallBack.mock.calls.length).toEqual(1);
+	})
+	it(`ItemMenu`, ()=> {
+		const mockCallBack = jest.fn();
+		const button = shallow(<ItemMenu onClick={mockCallBack}/>);
+    button.find('StyledComponent').simulate('mouseover');
+		expect(mockCallBack.mock.calls.length).toEqual(1);
+	})
+
 })
