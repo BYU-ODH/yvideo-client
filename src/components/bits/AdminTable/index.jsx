@@ -251,8 +251,8 @@ export default class AdminTable extends PureComponent {
 					}
 				})
 			}
-
 			return data
+
 		}
 		return (
 			<Style>
