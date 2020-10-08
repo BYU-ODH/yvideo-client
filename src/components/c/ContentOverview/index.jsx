@@ -94,11 +94,11 @@ class ContentOverview extends PureComponent {
 					<InnerContainer>
 						<Column>
 							<h4>Allow automatic definitions
-								<SwitchToggle on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
+								<SwitchToggle className='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
 							</h4>
 							<h4>
 								Captions
-								<SwitchToggle on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
+								<SwitchToggle className='captions-toggle'on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
 							</h4>
 						</Column>
 

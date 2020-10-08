@@ -383,6 +383,24 @@ export const lang1 = {
 	name: `test lang`,
 }
 
+export const adminCategory = {
+	Users: {
+		name: `Users`,
+		placeholder: `Search for a user`,
+		url: `user`,
+	},
+	Collections: {
+		name: `Collections`,
+		placeholder: `Search for a collection`,
+		url: `collection`,
+	},
+	Content: {
+		name: `Content`,
+		placeholder: `Search for content`,
+		url: `content`,
+	},
+}
+
 export const store = mockStore(
 	{
 		resourceStore: {
@@ -478,6 +496,18 @@ export const store = mockStore(
 					resource,
 				},
 			],
+		},
+		fileStore:{
+			cache: {},
+			loading: false,
+			lastFetched: 0,
+		},
+		languageStore:{
+			cache: {
+				langs:[`test version`, `lang1`, `lang2`, `lang3`],
+			},
+			loading: false,
+			lastFetched: 0,
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),

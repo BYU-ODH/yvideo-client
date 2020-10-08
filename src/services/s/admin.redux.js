@@ -68,7 +68,6 @@ export default class AdminService {
 	}
 
 	// reducer
-
 	reducer = (store = this.store, action) => {
 
 		const {
