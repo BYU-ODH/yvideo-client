@@ -131,6 +131,7 @@ const TrackEditor = props => {
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
 	const [subModalVisible, setSubModalVisible] = useState(false)
 	const [subModalMode, setSubModalMode] = useState(``)
+	const [subChanges, setSubChanges] = useState(0)
 	// const [editCensor, setEditCensor] = useState({})
 	// const [lastClick, setLastClick] = useState({x: 0, y: 0})
 	// console.log(allEvents)
@@ -656,8 +657,6 @@ const TrackEditor = props => {
 			canAccessDom = true
 			document.getElementById(`sideTabMessage`).style.color=`red`
 		}
-		const tempSubs = [...subtitles]
-		const currentSubs = tempSubs[subLayerIndex]
 
 		// check start event times
 		if(sub.start < 0){
@@ -698,12 +697,16 @@ const TrackEditor = props => {
 				document.getElementById(`sideTabExplanation`).innerHTML=``
 			}
 		}
+		const tempSubs = [...subtitles]
+		const currentSubs = tempSubs[subLayerIndex]
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
+		setSubChanges(subChanges+1)
+		console.log(`?!?`,subChanges)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
@@ -713,8 +716,7 @@ const TrackEditor = props => {
 	}
 	const addSubToLayer = (item,index) => {
 		// TODO: Change this to use real JS event objects and insert based on time
-		let currentSubs = []
-		currentSubs = [...subtitles]
+		const currentSubs = [...subtitles]
 		let subStart = 0
 		try{
 			if (currentSubs[index]){
@@ -771,7 +773,7 @@ const TrackEditor = props => {
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 		}else {
-			const tempSubList = subtitles
+			const tempSubList = [...subtitles]
 			const tempSub = {
 				title : ``,
 				language: ``,
@@ -819,7 +821,7 @@ const TrackEditor = props => {
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
 				}else {
-					const tempSubList = subtitles
+					const tempSubList = [...subtitles]
 					const tempSub = {
 						title : ``,
 						language: ``,
@@ -844,7 +846,10 @@ const TrackEditor = props => {
 		setSubModalMode(``)
 	}
 	const handleDeleteSubLayer = (index) =>{
-		const tempSubs = subtitles
+		if (index === subLayerToEdit)
+			closeSideEditor()
+
+		const tempSubs = [...subtitles]
 		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
 			const deleteSub = subLayersToDelete
 			deleteSub.push(tempSubs[index][`id`])
@@ -855,19 +860,19 @@ const TrackEditor = props => {
 		setAllSubs(tempSubs)
 	}
 	const updateSubLayerTitle = (title) =>{
-		const temp = subtitles
+		const temp = [...subtitles]
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
 		setAllSubs(temp)
 	}
 	const updateSubLayerLanguage = (language) =>{
-		const temp = subtitles
+		const temp = [...subtitles]
 		temp[subLayerToEdit][`language`] = language
 		setSubs(temp)
 		setAllSubs(temp)
 	}
 	const sortSubtitles = () => {
-		const tempSubs = subtitles
+		const tempSubs = [...subtitles]
 		for(let i = 0; i< tempSubs.length; i++){
 			const tempContent = tempSubs[i][`content`]
 			tempContent.sort((a,b)=> a.start - b.start)
@@ -932,7 +937,10 @@ const TrackEditor = props => {
 
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
-										<div className={`handle`} onClick={()=>setSubToEdit(index)}>
+										<div className={`handle`} onClick={()=> {
+											console.log(index)
+											setSubLayerToEdit(index)
+										}}>
 											<img alt={`cc`} src={captions}/>
 											<p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p>
 										</div>
