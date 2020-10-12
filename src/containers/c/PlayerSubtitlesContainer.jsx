@@ -12,7 +12,8 @@ const PlayerSubtitlesContainer = props => {
 		handleShowSubtitle,
 		active,
 		duration,
-		getSubtitles
+		getSubtitles,
+		indexToDisplay,
 	} = props
 
 	const [subtitlesArray, setSubtitlesArray] = useState([])
@@ -20,29 +21,25 @@ const PlayerSubtitlesContainer = props => {
 	const {id} = useParams()
 
 	useEffect(() => {
-        // console.log("use effect", subtitles)
-        if(subtitles.length > 1){
-			//some logic to pick the subtitle
-		}
-		else if(subtitles.length == 1){
-			let temp = subtitles[0]
+		// console.log("use effect", subtitles)
+		if(subtitles.length != 0){
+			let temp = subtitles[indexToDisplay]
 			let currentContent = temp.content
 
 			try {
 
 				if(typeof currentContent === "string"){
 					console.log("String type")
-					temp.content = JSON.parse(subtitles[0].content)
+					temp.content = JSON.parse(subtitles[indexToDisplay].content)
 				}
 
 			}
 			catch (e){
 				console.log(e)
 			}
-			setSubtitlesArray(subtitles[0].content)
+			setSubtitlesArray(subtitles[indexToDisplay].content)
 		}
-        
-	}, [duration, subtitles])
+	}, [duration, subtitles, indexToDisplay])
 
 	for(let i = 0; i < subtitlesArray.length; i++){
         // console.log(subtitlesArray[i])

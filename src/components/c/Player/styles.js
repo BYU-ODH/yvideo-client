@@ -60,7 +60,7 @@ export const Transcript = styled.div`
 		width: 40px;
 		height: 100%;
 		background-color: rgba(5, 130, 202, 0.5);
-		
+
 		& img {
 			cursor: pointer;
 		}
@@ -122,10 +122,10 @@ export const Transcript = styled.div`
 
 export const Subtitles = styled.div`
 	position: absolute;
-	bottom: 50px;
+	bottom: 80px;
 	color: #ffffff;
 	z-index: 20;
-	height: 60px;
+	height: 80px;
 	width: 100%;
 
 	& h3 {
@@ -137,7 +137,6 @@ export const Subtitles = styled.div`
 		width: auto;
 		height: auto;
 		max-width: 60%;
-		max-height: 60px;
 		line-height: 1.5;
 		letter-spacing: .7px;
 	}

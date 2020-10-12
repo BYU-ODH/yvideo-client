@@ -40,6 +40,7 @@ export default class Player extends PureComponent {
 			subtitleText,
 			displaySubtitles,
 			isCaption,
+			indexToDisplay,
 		} = this.props.viewstate
 
 		const {
@@ -117,11 +118,11 @@ export default class Player extends PureComponent {
 							</div>
 							<div className={'transcript-content'}>
 								{	displaySubtitles != null ? (
-									 	
+
 									displaySubtitles['content'].map((element, index) =>
-											<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`} 
-												key={index} 
-												onClick={e => handleSeekChange(null, (element.start * duration / 100) + .5)} 
+											<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
+												key={index}
+												onClick={e => handleSeekChange(null, (element.start * duration / 100) + .5)}
 												>
 												<p>{element.text}</p>
 											</div>
@@ -153,11 +154,11 @@ export default class Player extends PureComponent {
 				{
 					url !== '' && showTranscript ? (
 						//showsubtitles
-						<PlayerSubtitlesContainer 
+						<PlayerSubtitlesContainer
 							currentTime={progress.playedSeconds.toFixed(1)}
 							duration={duration}
 							handleShowSubtitle={handleShowSubtitle}
-							selectedLanguage={``}
+							indexToDisplay={indexToDisplay}
 						/>
 					) : (null)
 				}

@@ -24,6 +24,7 @@ const PlayerControls = props => {
 		playing,
 		isCaption,
 		showTranscript,
+		subtitles,
 	} = props.viewstate
 
 	const {
@@ -38,6 +39,7 @@ const PlayerControls = props => {
 		handleUnmuted,
 		handleVolumeChange,
 		setIsCaption,
+		setIndexToDisplay,
 	} = props.handlers
 
 	const [showSpeed, setShowSpeed] = useState(false)
@@ -53,14 +55,9 @@ const PlayerControls = props => {
 
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
-				{ muted ? (
-					<Volume onClick={e => { alert('You cannot control this part of the player')}} muted={muted}/>
-				) : (
-					<Volume onClick={e => { alert('You cannot control this part of the player')}} muted={muted}/>
-				) }
 			</div>
 			<div className='right'>
-				{/* <Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} /> */}
+				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
 				{/* <SideBarToggle /> */}
 				<Speed src={clockIcon} onClick={e => setShowSpeed(!showSpeed)}/>
 				<ClosedCaptions style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} isCaptions={isCaption} onClick={e => setIsCaption(!isCaption)}/>
@@ -76,6 +73,18 @@ const PlayerControls = props => {
 						<input type="button" value='Normal' onClick={e => handlePlaybackRateChange(1)}/><br/>
 						<input type="button" value={0.5} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
 						<input type="button" value={0.25} onClick={e => handlePlaybackRateChange(e.target.value)}/><br/>
+					</div>
+				</div>
+			}
+			{ isCaption &&
+				<div className="caption" onMouseLeave={e => setIsCaption(false)}>
+					<h3>Select Caption</h3>
+					<div className="caption-list">
+						{/* Display all possible options with check mark for current selection. Add none field. */}
+						{subtitles.map((element, index) =>
+							<input key={element.id} type="button" value={element.language} onClick={e => setIndexToDisplay(e.target.value)}/>
+						)
+						}
 					</div>
 				</div>
 			}

@@ -41,10 +41,11 @@ const PlayerContainer = props => {
 	const [showTranscript, setShowTranscript] = useState(false)
 	const [toggleTranscript, setToggleTranscript] = useState(true)
 	const [subtitleText, setSubtitleText] = useState(``)
-	const [displaySubtitles, setDisplaySubtitles] = useState(null)
+	const [displaySubtitles, setDisplaySubtitles] = useState(null) //this is the subtitle that will show in the transcript view
 
-	//this is for caption toggle 
-	const [isCaption, setIsCaption] = useState( content !== undefined ? (content.settings.showCaptions) : (true) )
+	//this is for caption toggle
+	const [isCaption, setIsCaption] = useState( false ) //this is the state to toggle caption selection
+	const [indexToDisplay, setIndexToDisplay] = useState(0) //use index to display a desired subtitle based on selection from player controls.
 
 	const ref = player => {
 		setPlayer(player)
@@ -91,9 +92,7 @@ const PlayerContainer = props => {
 			// addView(params.id)
 		}
 
-		//select right subtitle to display in the transcript
-
-	}, [addView, contentCache, getContent, params.id, streamKey, getSubtitles])
+	}, [addView, contentCache, getContent, params.id, streamKey, getSubtitles, indexToDisplay])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -151,6 +150,20 @@ const PlayerContainer = props => {
 
 	const handleToggleFullscreen = () => {
 		setFullscreen(!fullscreen)
+
+		// let elem = document.getElementsByTagName('video')[0]
+
+		// elem.removeAttribute("controls")
+
+		// if (elem.requestFullscreen) {
+		// 	elem.requestFullscreen();
+		// } else if (elem.mozRequestFullScreen) { /* Firefox */
+		// 	elem.mozRequestFullScreen();
+		// } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+		// 	elem.webkitRequestFullscreen();
+		// } else if (elem.msRequestFullscreen) { /* IE/Edge */
+		// 	elem.msRequestFullscreen();
+		// }
 	}
 
 	const handleMuted = () => {
@@ -179,19 +192,18 @@ const PlayerContainer = props => {
 		setSubtitleText(value)
 	}
 
-	if(displaySubtitles == null){	
-		if(subtitles.length > 1){
+	if(displaySubtitles == null){
+		if(subtitles.length != 0){
 			//some logic to pick the subtitle
-		}
-		else if(subtitles.length == 1){
-			let temp = subtitles[0]
+
+			let temp = subtitles[indexToDisplay]
 			let currentContent = temp.content
 
 			try {
-				
+
 				if(typeof currentContent === "string"){
 					console.log("String type")
-					temp.content = JSON.parse(subtitles[0].content)
+					temp.content = JSON.parse(subtitles[indexToDisplay].content)
 				}
 
 			}
@@ -223,6 +235,8 @@ const PlayerContainer = props => {
 		isCaption,
 		subtitleText,
 		displaySubtitles,
+		subtitles,
+		indexToDisplay,
 	}
 
 	const handlers = {
@@ -243,6 +257,7 @@ const PlayerContainer = props => {
 		handleShowSubtitle,
 		setToggleTranscript,
 		setIsCaption,
+		setIndexToDisplay,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
