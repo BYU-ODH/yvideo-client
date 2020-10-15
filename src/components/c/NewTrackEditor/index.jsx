@@ -485,6 +485,7 @@ const TrackEditor = props => {
 		deleteSubtitles(subLayersToDelete)
 		setSubLayersToDelete([])
 	}
+
 	const handleSaveSubtitles = async() => {
 		const rawSubs = subtitles
 		createSub(rawSubs)
@@ -940,6 +941,9 @@ const TrackEditor = props => {
 										<div className={`handle`} onClick={()=> {
 											console.log(index)
 											setSubLayerToEdit(index)
+											// if(subtitles[index][`content`].length === 0 && showSideEditor === false)
+											// 	openSubEditor(index,0)
+
 										}}>
 											<img alt={`cc`} src={captions}/>
 											<p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p>
@@ -1052,7 +1056,7 @@ const TrackEditor = props => {
 									<span className='carat'></span>
 									{ subSelected ?
 										<>
-											<span className='current'>{subToEdit !== undefined ? `Subtitle ${subToEdit + 1}` : ``}</span>
+											<span className='current'>{subToEdit !== undefined ? `Subtitle ${subLayerToEdit + 1}` : ``}</span>
 											<button className='deleteEventButton' onClick={deleteSub}>Delete Event</button>
 										</>
 										:

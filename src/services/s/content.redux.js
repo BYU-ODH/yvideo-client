@@ -103,6 +103,7 @@ export default class ContentService {
 			return {
 				...store,
 				cache: {
+					...store.cache,
 					...action.payload.content,
 				},
 				loading: false,
@@ -163,7 +164,10 @@ export default class ContentService {
 
 	// thunks
 	setContent = (content, force = false) => async (dispatch, getState, { apiProxy }) => {
-		// SETS CONTENT FOR ALL THE COLLECTIONS OF THE USER
+		//SETS CONTENT FOR ALL THE COLLECTIONS OF THE USER
+
+		//CONTENT IS AN ARRAY OF CONTENTS
+
 		dispatch(this.actions.contentStart())
 
 		try {
@@ -254,9 +258,12 @@ export default class ContentService {
 
 			const finalData = new BackEndContent(content).backEndData
 
+			console.log(finalData)
+
 			const results = await apiProxy.content.update(finalData)
 
-			// const metaResult =
+			console.log(results)
+
 			// await apiProxy.content.metadata.post(id, metadata)
 
 			// console.log(settingsResult)

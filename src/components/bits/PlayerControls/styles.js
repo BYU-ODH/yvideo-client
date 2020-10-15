@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import closedCaption from 'assets/controls_closed_captions.svg'
+import closedCaptionOff from 'assets/controls_closed_captions_off.svg'
 import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
 import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
@@ -99,6 +100,43 @@ const Style = styled.div`
 		}
 
 	}
+
+	& .caption {
+		position: absolute;
+		right: 10px;
+		bottom: 60px;
+		width: 150px;
+		min-height: 150px;
+		height: auto;
+		background-color: white;
+		display: flex;
+		flex-direction: column;
+
+		& h3 {
+			display: flex;
+			padding: 2px;
+			margin-bottom: 2px;
+			font-weight: 400 !important;
+			border-bottom: 1px solid black;
+			height: 20px;
+			text-align: left;
+			align-items: center;
+		}
+
+		& .caption-list {
+			width: 100%;
+			margin: 0px auto auto auto;
+			font-size: 1.5rem;
+			height: auto;
+			display: flex;
+			flex-direction: column;
+
+			& input {
+				width: 90%;
+    		margin: 10px auto 0px auto;
+			}
+		}
+	}
 `
 
 export default Style
@@ -112,10 +150,13 @@ export const Volume = styled.button`
 `
 
 export const ClosedCaptions = styled.button`
-	background: url(${closedCaption}) center no-repeat;
+	background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)};
+	/* background: url(${closedCaptionOff}) center no-repeat; */
 `
 
 export const Fullscreen = styled.button`
+	width: 20px;
+	height: 20px;
 	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
 `
 export const Speed = styled.img`
