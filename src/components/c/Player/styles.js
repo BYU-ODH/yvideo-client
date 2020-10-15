@@ -59,7 +59,8 @@ export const Transcript = styled.div`
 		left: 0px;
 		width: 40px;
 		height: 100%;
-		background-color: rgba(5, 130, 202, 0.5);
+		/* background-color: rgba(5, 130, 202, 0.5); */
+		background-color: var(--light-blue);
 
 		& img {
 			cursor: pointer;
@@ -108,7 +109,7 @@ export const Transcript = styled.div`
 		cursor: pointer;
 
 		& p {
-			border-bottom: 1.5px solid var(--light-blue);
+			border-bottom: 1.5px solid var(--light-blue); /* make ligther */
 			padding: 5px 0px 5px 0px;
 			word-wrap: break-word;
 			font-size: 1.4rem;

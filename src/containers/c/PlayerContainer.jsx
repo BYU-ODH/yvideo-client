@@ -56,10 +56,9 @@ const PlayerContainer = props => {
 		setShowTranscript(false)
 		setSubtitleText('')
 		setDisplaySubtitles(null)
-		// console.log('called use effect in player')
 		if (!contentCache[params.id]){
 			//console.log('no cached content')
-			//get single content?
+			//get single content
 			getContent(params.id)
 		}
 		else {
@@ -69,11 +68,10 @@ const PlayerContainer = props => {
 			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ''){
-				//console.log('GOT A VALID URL FROM CONTENT')
 				setUrl(contentCache[params.id].url)
+				getSubtitles(params.id)
 			}
 			else {
-				//console.log('CONTENT URL IS NOT VALID')
 				//CHECK RESOURCE ID
 				if(sKey === ''){
 					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
@@ -85,14 +83,11 @@ const PlayerContainer = props => {
 					//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 					getSubtitles(params.id)
-					// console.log('CHANGED URL')
-					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
 			}
-			// addView(params.id)
 		}
 
-	}, [addView, contentCache, getContent, params.id, streamKey, getSubtitles, indexToDisplay])
+	}, [addView, contentCache, getContent, params.id, streamKey, getSubtitles])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -119,11 +114,10 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlaybackRateChange = rate => {
-		setPlaybackRate(rate)
+
+		setPlaybackRate(parseFloat(rate))
 	}
 
-	// Potentially use to update current time and maybe progress bar, but only if not seeking?
-	// progression = { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 }
 	const handleProgress = progression => {
 		//console.log('progress', player.getCurrentTime())
 		setProgress(progression)
@@ -149,21 +143,43 @@ const PlayerContainer = props => {
 	}
 
 	const handleToggleFullscreen = () => {
+		//set the state to whatever the state wasn't before.
+		//false to true && true to false.
 		setFullscreen(!fullscreen)
 
-		// let elem = document.getElementsByTagName('video')[0]
+		//find the element which contains subtitles and events placeholders
+		let elem = document.getElementById('player-container')
 
-		// elem.removeAttribute("controls")
+		//if fullscreen is false we want to turn to full screen. Else, request cancelFullScreen.
+		//For more info read full screen api https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
+		//This is a functionality that behaves like F11. This is not video full screen mode.
+		//Video full screen mode would break the subtitles and events.
+		if(!fullscreen){
 
-		// if (elem.requestFullscreen) {
-		// 	elem.requestFullscreen();
-		// } else if (elem.mozRequestFullScreen) { /* Firefox */
-		// 	elem.mozRequestFullScreen();
-		// } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-		// 	elem.webkitRequestFullscreen();
-		// } else if (elem.msRequestFullscreen) { /* IE/Edge */
-		// 	elem.msRequestFullscreen();
-		// }
+			if (elem.requestFullscreen) {
+				elem.requestFullscreen();
+			} else if (elem.mozRequestFullScreen) { /* Firefox */
+				elem.mozRequestFullScreen();
+			} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+				elem.webkitRequestFullscreen();
+			} else if (elem.msRequestFullscreen) { /* IE/Edge */
+				elem.msRequestFullscreen();
+			}
+
+		}
+		else {
+
+			if (document.cancelFullScreen) {
+				document.cancelFullScreen();
+			} else if (document.mozCancelFullScreen) { /* Firefox */
+				document.mozCancelFullScreen();
+			} else if (document.webkitCancelFullScreen) { /* Chrome, Safari & Opera */
+				document.webkitCancelFullScreen();
+			} else if (document.msExitFullscreen) { /* IE/Edge */
+				document.msExitFullscreen();
+			}
+
+		}
 	}
 
 	const handleMuted = () => {
@@ -192,26 +208,34 @@ const PlayerContainer = props => {
 		setSubtitleText(value)
 	}
 
+	const handleChangeSubtitle = (index) => {
+
+		let temp = subtitles[index]
+		let currentContent = temp.content
+
+		try {
+
+			if(typeof currentContent === "string"){
+				console.log("String type")
+				temp.content = JSON.parse(subtitles[index].content)
+			}
+
+		}
+		catch (e){
+			console.log(e)
+		}
+
+		setIndexToDisplay(index)
+		setDisplaySubtitles(temp)
+	}
+
 	if(displaySubtitles == null){
+		//This statement prevents displaySubtitles from being null.
+		//If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
+
 		if(subtitles.length != 0){
 			//some logic to pick the subtitle
-
-			let temp = subtitles[indexToDisplay]
-			let currentContent = temp.content
-
-			try {
-
-				if(typeof currentContent === "string"){
-					console.log("String type")
-					temp.content = JSON.parse(subtitles[indexToDisplay].content)
-				}
-
-			}
-			catch (e){
-				console.log(e)
-			}
-
-			setDisplaySubtitles(temp)
+			handleChangeSubtitle(0)
 		}
 	}
 
@@ -257,7 +281,7 @@ const PlayerContainer = props => {
 		handleShowSubtitle,
 		setToggleTranscript,
 		setIsCaption,
-		setIndexToDisplay,
+		handleChangeSubtitle,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

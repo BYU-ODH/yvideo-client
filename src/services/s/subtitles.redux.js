@@ -21,7 +21,7 @@ export default class SubtitlesService {
 		subtitlesClean: () => ({ type: this.types.SUBTITLES_CLEAN }),
 		subtitlesCreate: (subtitles) => ({ type: this.types.SUBTITLES_CREATE, payload: { subtitles }}),
 		subtitlesError: error => ({ type: this.types.SUBTITLES_ERROR, payload: { error } }),
-		subtitlesGet: subtitles => ({ type: this.types.SUBTITLES_GET, payload: { subtitles } }),
+		subtitlesGet: (subtitles, id) => ({ type: this.types.SUBTITLES_GET, payload: { subtitles, id } }),
 		subtitlesUpdate: subtitles => ({ type: this.types.SUBTITLES_UPDATE, payload: { subtitles }}),
 		activeUpdate: active => ({ type: this.types.ACTIVE_UPDATE, payload: { active }}),
 		setContentId: id => ({type: this.types.SET_CONTENT_ID,payload: {id}}),
@@ -69,6 +69,7 @@ export default class SubtitlesService {
 			return {
 				...store,
 				cache: [],
+				contentId: '',
 			}
 
 		case SUBTITLES_CREATE:
@@ -89,10 +90,11 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_GET:
-			console.log(`??//`,action.payload.subtitles)
+			console.log(`??//`,action.payload)
 			return {
 				...store,
 				cache: action.payload.subtitles,
+				contentId: action.payload.id,
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -133,16 +135,18 @@ export default class SubtitlesService {
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 		// console.log('updated store', contentIds)
-		const time = Date.now() - getState().contentStore.lastFetched
-
-		const stale = time >= process.env.REACT_APP_STALE_TIME
-		// if (stale || force) {
+		let currentContentId = getState().subtitlesStore.contentId
 
 		dispatch(this.actions.subtitlesStart())
 
+		if(currentContentId !== id){
+			dispatch(this.actions.subtitlesClean())
+		}
+
+
 		try {
 			const result = await apiProxy.content.getSubtitles(id)
-			dispatch(this.actions.subtitlesGet(result))
+			dispatch(this.actions.subtitlesGet(result, id))
 			return result
 		} catch (error) {
 			console.error(error.message)
