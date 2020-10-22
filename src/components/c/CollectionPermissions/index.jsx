@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton } from './styles'
+import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton } from './styles'
 
-import { PermissionTable } from 'components/bits'
+// import { PermissionTable } from 'components/bits'
 
 import { departments } from 'lib/util'
+
+import removeIcon from 'assets/trash_icon.svg'
 
 export class CollectionPermissions extends PureComponent {
 	render() {
@@ -15,45 +17,45 @@ export class CollectionPermissions extends PureComponent {
 		} = this.props
 
 		const {
-			roles,
+			users,
+			courses,
 			state,
+			disabled,
+			disabledUser,
 		} = viewstate
 
 		const {
-			department,
 			catalog,
+			department,
 			section,
-			disabled,
-			taFaculty,
-			exception,
-		} = state
+		} = this.props.viewstate.course
 
 		const {
-			admins = [],
-			courses = [],
-			exceptions = [],
-		} = roles
+			username,
+		} = this.props.viewstate.user
 
-		const reducedCourses = courses.map(item => ({
-			id: item.id,
-			Department: item.department,
-			Catalog: item.catalogNumber,
-			Section: item.sectionNumber,
-		}))
 
-		const reducedAdmins = admins.map(item => ({
-			id: item.id,
-			Name: item.name,
-			NetID: item.username,
-			Email: item.email,
-		}))
 
-		const reducedExceptions = exceptions.map(item => ({
-			id: item.id,
-			Name: item.name,
-			NetID: item.username,
-			Email: item.email,
-		}))
+		// const reducedCourses = courses.map(item => ({
+		// 	id: item.id,
+		// 	Department: item.department,
+		// 	Catalog: item.catalogNumber,
+		// 	Section: item.sectionNumber,
+		// }))
+
+		// const reducedAdmins = admins.map(item => ({
+		// 	id: item.id,
+		// 	Name: item.name,
+		// 	NetID: item.username,
+		// 	Email: item.email,
+		// }))
+
+		// const reducedExceptions = exceptions.map(item => ({
+		// 	id: item.id,
+		// 	Name: item.name,
+		// 	NetID: item.username,
+		// 	Email: item.email,
+		// }))
 
 		return (
 			<Style>
@@ -61,38 +63,84 @@ export class CollectionPermissions extends PureComponent {
 				<h4>Courses</h4>
 
 				<form onSubmit={handlers.addCourse}>
-					<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange}>
-						<option value='*' disabled>Select Department</option>
-						{departments.map((item, index) =>
-							<option value={item.code} key={index}>
-								{`${item.code} - ${item.name}`}
-							</option>,
-						)}
-					</DepartmentSelect>
-					<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Enter Catalog Number' disabled={disabled.catalog} />
-					<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Enter Section Number' disabled={disabled.section} />
-					<AddButton className='add-course-button' type='submit' disabled={disabled.submit}>Add</AddButton>
-				</form>
+					<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Enter department (EX: ENGL)'/>
+					<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Enter Catalog Number' required/>
+					<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Enter Section Number' required/>
+					<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
+				</form><br/>
 
-				<PermissionTable placeholder={`Enter courseID`} data={reducedCourses} removeFunc={handlers.removeCourse} />
-
-				<h4>TA / Faculty</h4>
-
-				<Search className='faculty-submit' onSubmit={handlers.addTaFaculty}>
-					<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleTaFacultyChange} value={taFaculty} />
-					<AddButton className='add-faculty-button' type='submit' disabled={disabled.taFaculty}>Add</AddButton>
+				<h4>TA / Faculty / Auditing</h4>
+				<Search className='faculty-submit' onSubmit={handlers.addUser}>
+					<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
+					<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
 				</Search>
+				<AddManyButton type="button" onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
 
-				<PermissionTable data={reducedAdmins} removeFunc={handlers.removeFaculty} />
+				{/* <AddManyButton onClick={handlers.handleShowHelp}>Add many...</AddManyButton> */}
+				<TableContainer>
+					<div id='course-table'>
+						<h4>Current Courses</h4>
+						<Table border='1'>
+							<thead>
+								<tr>
+									<th>Department</th>
+									<th>Catalog</th>
+									<th>Section</th>
+									<th>Remove</th>
+								</tr>
+							</thead>
+							<tbody>
+								{ courses.length > 0 ?
+									 courses.map((element, index) =>
+										<tr key={index}>
+											<td>{element[`department`]}</td>
+											<td>{element[`catalog-number`]}</td>
+											<td>{element[`section-number`]}</td>
+											<td onClick={e => handlers.removeCourse(element[`id`])}><img src={removeIcon} width='20px'/></td>
+										</tr>,
+									)
+									 :
+									null
 
-				<h4>Audit Exceptions</h4>
-
-				<Search className='exceptions-submit' onSubmit={handlers.addException}>
-					<input className='exceptions-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleExceptionChange} value={exception} />
-					<AddButton className='add-exceptions-button' type='submit' disabled={disabled.exception}>Add</AddButton>
-				</Search>
-
-				<PermissionTable className='exceptions-table' data={reducedExceptions} removeFunc={handlers.removeException} />
+								}
+							</tbody>
+						</Table>
+					</div>
+					<div id='user-table'>
+						<h4>Current Users</h4>
+						<Table border='1'>
+							<thead>
+								<tr>
+									<th>Username</th>
+									<th>Name</th>
+									<th>Last Login</th>
+									<th>Remove</th>
+								</tr>
+							</thead>
+							<tbody>
+								{ users.length > 0 ? (
+									 users.map((element, index) =>
+											<tr key={index}>
+												<td>{element['username']}</td>
+												<td>{element['account-name']}</td>
+												<td>
+													{
+														element['last-login'] !== 'na' ? (
+															`${element['last-login'].substring(0, 11)} ${element['last-login'].substring(element["last-login"].length - 4, element["last-login"].length)}`
+														) : ('NA')
+													}
+												</td>
+												<td onClick={e => handlers.removeUser(element['username'])}><img src={removeIcon} width="20px"/></td>
+											</tr>
+										)
+									) : (
+										null
+									)
+								}
+							</tbody>
+						</Table>
+					</div>
+				</TableContainer>
 
 			</Style>
 		)

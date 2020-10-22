@@ -15,15 +15,19 @@ const props = {
 
 // TODO: need to fix `UnhandledPromiseRejectionWarning`. This is from the not mocked functions from the child componenet
 describe(`manage collection test`, () => {
-	it(`ContentOverviewContainer should render`, ()=> {
 
-		const wrapper = mount(
+	let wrapper
+	beforeEach(() => {
+		wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
 				</BrowserRouter>
 			</Provider>,
 		)
+	})
+
+	it(`ContentOverviewContainer should render`, ()=> {
 
 		// test viewstate made correctly
 		const viewstate = wrapper.find(`ContentOverview`).props().viewstate
@@ -47,13 +51,7 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`Unpublish event handler test`, ()=> {
-		const wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
+
 		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
 		wrapper.find(`button`).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
@@ -64,13 +62,7 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`delete event handler test`, ()=> {
-		const wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
+
 		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
 		wrapper.find(`button`).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
@@ -86,13 +78,7 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`save event handler test`, ()=> {
-		const wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
+
 		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
 		wrapper.find(`button`).simulate(`click`)
 		expect(wrapper.find(`button`).at(2).props().children).toBe(`Save`)
@@ -103,5 +89,35 @@ describe(`manage collection test`, () => {
 		setTimeout(() => {
 			expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(false)
 		}, 500)
+	})
+
+	// TODO: need to figure out which store it updates.
+	it(`toggle, tags and description test`, ()=> {
+
+		// click edit-button. It updates display without wrapper.update().
+		// click edit button trigger drop down menu.
+		expect(wrapper.find({"className" : `tag-input`}).length).toBe(0)
+		wrapper.find({"className" : `edit-button`}).at(0).simulate(`click`)
+		expect(wrapper.find({"className" : `tag-input`}).length).toBe(1)
+
+		// add input and add tags
+		wrapper.find({"className" : `tag-input`}).simulate(`change`, {target: {value: `testaddedtag`}})
+		expect(wrapper.find(`Tag`).length).toBe(0)
+		wrapper.find({"className" : `add-tag`}).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(1)
+
+		// remove tag
+		wrapper.find(`Tag`).find(`button`).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(0)
+
+		// definition toggle
+		expect(wrapper.find({"className" : `definitions-toggle`}).props().on).toBe(false)
+		wrapper.find({"className" : `definitions-toggle`}).simulate(`click`)
+		expect(wrapper.find({"className" : `definitions-toggle`}).props().on).toBe(true)
+
+		// captions toggle
+		expect(wrapper.find({"className" : `captions-toggle`}).props().on).toBe(false)
+		wrapper.find({"className" : `captions-toggle`}).simulate(`click`)
+		expect(wrapper.find({"className" : `captions-toggle`}).props().on).toBe(true)
 	})
 })

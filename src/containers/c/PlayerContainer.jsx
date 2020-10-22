@@ -11,16 +11,17 @@ const PlayerContainer = props => {
 	const {
 		contentCache,
 		getContent,
-		resourceCache,
-		getResources,
+		getStreamKey,
 		addView,
 		setEvents,
+		streamKey,
 	} = props
 
 	const params = useParams()
 
 	const [content, setContent] = useState()
-	const [resource, setResource] = useState()
+	const [resource, setResource] = useState('')
+	const [sKey, setKey] = useState('')
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -36,20 +37,56 @@ const PlayerContainer = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState('')
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [showTranscript, setShowTranscript] = useState(false)
+	const [toggleTranscript, setToggleTranscript] = useState(true)
+	const [subtitleText, setSubtitleText] = useState(``)
+
+	const [isCaption, setIsCaption] = useState( content !== undefined ? (content.settings.showCaptions) : (true) )
 
 	const ref = player => {
 		setPlayer(player)
 	}
 
 	useEffect(() => {
-		if (!contentCache[params.id]) getContent([params.id])
+		setPlaybackRate(1)
+		setShowTranscript(false)
+		// console.log('called use effect in player')
+		if (!contentCache[params.id]){
+			//console.log('no cached content')
+			//get single content?
+			getContent(params.id)
+		}
 		else {
+			// console.log('yes cached content')
 			setContent(contentCache[params.id])
+			setShowTranscript(contentCache[params.id].settings.showCaptions)
+			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			setUrl(contentCache[params.id].url)
+			if(contentCache[params.id].url !== ''){
+				// console.log('GOT A VALID URL FROM CONTENT')
+				setUrl(contentCache[params.id].url)
+			}
+			else {
+				// console.log('CONTENT URL IS NOT VALID')
+				//CHECK RESOURCE ID
+				if(contentCache[params.id].resourceId !== '00000000-0000-0000-0000-000000000000' && sKey === ''){
+					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					// console.log('ACTING TO CHANGE URL')
+					setResource(contentCache[params.id].resourceId)
+					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+					setKey(streamKey)
+				}
+				else if (sKey !== ''){
+					//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+					
+					// console.log('CHANGED URL')
+					//console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
+				}
+			}
 			addView(params.id)
 		}
-	}, [addView, content, contentCache, getContent, getResources, params.id, resource, resourceCache])
+	}, [addView, contentCache, getContent, params.id, resource, streamKey])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -82,14 +119,15 @@ const PlayerContainer = props => {
 	// Potentially use to update current time and maybe progress bar, but only if not seeking?
 	// progression = { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 }
 	const handleProgress = progression => {
-		if (!seeking)
-			setProgress(progression)
+		//console.log('progress', player.getCurrentTime())
+		setProgress(progression)
 	}
 
 	const handleSeekChange = (e, time) => {
+		//**TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-		setBlank(false)
+		console.log('seeking', time, " seconds")
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
@@ -99,19 +137,9 @@ const PlayerContainer = props => {
 			newPlayed = time / duration
 		}
 		if(newPlayed !== Infinity && newPlayed !== -Infinity){
-			//console.log(newPlayed)
+			console.log("in fraction: ", newPlayed)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
-	}
-
-	const handleSeekMouseDown = e => {
-		setSeeking(true)
-	}
-
-	const handleSeekMouseUp = e => {
-		// console.log(`handleSeekMouseDown`)
-		setSeeking(false)
-		player.seekTo(parseFloat(e.target.value))
 	}
 
 	const handleToggleFullscreen = () => {
@@ -139,7 +167,12 @@ const PlayerContainer = props => {
 		setCommentPosition(position)
 	}
 
+	const handleShowSubtitle = (value) => {
+		setSubtitleText(value)
+	}
+
 	const viewstate = {
+		showTranscript,
 		duration,
 		fullscreen,
 		hovering,
@@ -153,6 +186,10 @@ const PlayerContainer = props => {
 		blank,
 		videoComment,
 		commentPosition,
+		toggleTranscript,
+		content,
+		isCaption,
+		subtitleText,
 	}
 
 	const handlers = {
@@ -164,29 +201,31 @@ const PlayerContainer = props => {
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,
-		handleSeekMouseDown,
-		handleSeekMouseUp,
 		handleToggleFullscreen,
 		handleMuted,
 		handleUnmuted,
 		handleVolumeChange,
 		handleShowComment,
 		handleBlank,
+		handleShowSubtitle,
+		setToggleTranscript,
+		setIsCaption,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, contentStore }) => ({
+const mapStateToProps = ({ authStore, contentStore, resourceStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	userId: authStore.user.id,
 	contentCache: contentStore.cache,
+	streamKey: resourceStore.streamKey,
 })
 
 const mapDispatchToProps = {
 	getContent: contentService.getContent,
-	getResources: resourceService.getResources,
+	getStreamKey: resourceService.getStreamKey,
 	addView: contentService.addView,
 	setEvents: interfaceService.setEvents,
 }

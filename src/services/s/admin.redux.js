@@ -68,7 +68,6 @@ export default class AdminService {
 	}
 
 	// reducer
-
 	reducer = (store = this.store, action) => {
 
 		const {
@@ -208,7 +207,7 @@ export default class AdminService {
 				loading: false,
 			}
 
-		//THIS IS DELETING CONTENT FROM MANAGE COLLECTION
+		// THIS IS DELETING CONTENT FROM MANAGE COLLECTION
 		case ADMIN_CONTENT_DELETE:
 			return {
 				...store,
@@ -216,7 +215,7 @@ export default class AdminService {
 				loading: false,
 			}
 
-		//THIS IS DELETING CONTENT FROM THE ADMIN CONTAINER / ADMIN DASHBOARD
+		// THIS IS DELETING CONTENT FROM THE ADMIN CONTAINER / ADMIN DASHBOARD
 		case ADMIN_CONTENT_DELETE_FROM_TABLE:
 			return {
 				...store,
@@ -283,8 +282,6 @@ export default class AdminService {
 
 	searchProfessors = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		console.log('search prof')
-
 		const time = Date.now() - getState().adminStore.lastFetchedProfessors
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
@@ -314,32 +311,22 @@ export default class AdminService {
 	}
 
 	setProfessor = (professorId, force = false) => async (dispatch, getState, { apiProxy }) => {
-		console.log('set prof')
-
 
 		dispatch(this.actions.adminStart())
-
-		// console.log(professorId)
 
 		try {
 
 			const results = await apiProxy.admin.user.get(professorId)
 
-			console.log('setProf RESULTS', results)
-
-			// console.log(new User(results))
-
 			dispatch(this.actions.adminSetProfessor(new User(results)))
 
 		} catch (error) {
-			console.error('ERRROR', error.message)
+			console.error(`ERRROR`, error.message)
 			dispatch(this.actions.adminError(error))
 		}
 	}
 
 	getCollectionContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-
-		console.log('getting collection content')
 
 		const time = Date.now() - getState().adminStore.lastFetchedProfContent
 
@@ -388,11 +375,10 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		try {
-			// console.log('got here')
 			const result = await apiProxy.content.post(content)
 
 		} catch (error) {
-			console.log('errorr api proxy ?')
+			console.log(`errorr api proxy ?`)
 			dispatch(this.actions.adminError(error))
 		}
 	}
@@ -403,14 +389,7 @@ export default class AdminService {
 
 		try {
 
-			// console.log(resourceId)
 			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
-
-			// console.log(result.data)
-
-			// const data = { [result.data.id]: result.data }
-
-			// dispatch(this.actions.adminCreateContent(data))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))
@@ -431,11 +410,12 @@ export default class AdminService {
 
 				const results = await apiProxy.admin.collection.get(professorId)
 
-				const collections = results.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
+				const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
 
 				dispatch(this.actions.adminSearchCollections(collections))
 
 			} catch (error) {
+				console.log(`SEARCH COLLECTIONS FAILED`)
 				console.error(error.message)
 				dispatch(this.actions.adminError(error))
 			}
@@ -538,30 +518,26 @@ export default class AdminService {
 	deleteContent = (contentId, fromAdmin) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
-		let currentState;
+		let currentState
 
 		if(fromAdmin){
 			currentState = [...getState().adminStore.data]
 
 			currentState.splice(currentState.findIndex((element) => element.id === contentId) ,1)
-		}
-		else {
+		} else {
 			currentState = { ...getState().adminStore.profCollectionContent }
 
 			delete currentState[contentId]
 		}
 
-		console.log(currentState)
-
 		try {
 			const result = await apiProxy.admin.content.delete(contentId)
 
-			if(fromAdmin){
+			if(fromAdmin)
 				dispatch(this.actions.adminContentDeleteFromTable(currentState))
-			}
-			else {
+
+			else
 				dispatch(this.actions.adminContentDelete(currentState))
-			}
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))
@@ -573,14 +549,7 @@ export default class AdminService {
 
 		const currentResults = [...getState().adminStore.data]
 
-		// console.log(currentResults)
-
 		currentResults.splice(currentResults.findIndex((element) => element.id === userId) ,1)
-
-
-		// console.log(result)
-
-		// console.log(currentResults)
 
 		try {
 

@@ -49,6 +49,30 @@ export const user = {
 	username: `testusername`,
 }
 
+export const file1 = {
+	"file-version": `test version`,
+	filepath: `test file path`,
+	id: `test id`,
+	metadata: `metadata`,
+	"resource-id": `test resource id`,
+}
+
+export const file1mod = {
+	"file-version": `test version mod`,
+	filepath: `test file path`,
+	id: `test id`,
+	metadata: `metadata`,
+	"resource-id": `test resource id`,
+}
+
+export const file2 = {
+	"file-version": `test version2`,
+	filepath: `test file path2`,
+	id: `test id2`,
+	metadata: `metadata2`,
+	"resource-id": `test resource id2`,
+}
+
 export const resource = {
 	id: `resourceId`,
 	title: `resource title`,
@@ -57,6 +81,42 @@ export const resource = {
 	languages: {
 		iso639_3:[],
 	},
+	files: [file1],
+	type: `video`,
+	dateAdded: `1591672795`,
+	dateModified:`1591672795`,
+	status:`normal`,
+	clientUser: {
+		id: `user:22`,
+	},
+	client:{
+		id: `byu_demo`,
+		name: `BYU Demos`,
+	},
+	content:{
+		files:[
+			{
+				streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
+				bytes:0,
+				representation:`original`,
+				quality:1,
+				mime:`video/x-youtube`,
+				mimeType:`video/x-youtube`,
+				attributes: [],
+			},
+		],
+	},
+}
+
+export const resource2 = {
+	id: `resourceId2`,
+	title: `resource title2`,
+	description: `description`,
+	keywords: [``],
+	languages: {
+		iso639_3:[],
+	},
+	files: [file2],
 	type: `video`,
 	dateAdded: `1591672795`,
 	dateModified:`1591672795`,
@@ -158,6 +218,16 @@ export const collection2 = {
 	thumbnail: `test@thumbnail`,
 }
 
+export const collection3 = {
+	archived: false,
+	content,
+	id: 1,
+	name: `Collection 3`,
+	owner: 22,
+	published: true,
+	thumbnail: `test@thumbnail`,
+}
+
 export const collections = {
 	0:collection1,
 	1:collection2,
@@ -191,8 +261,8 @@ export const professor2 = {
 	username: `testusername2`,
 }
 
-export const resources = {
-	resourceId: {
+export const resources = [
+	{
 		id: `resourceId`,
 		title: `resource title`,
 		description: `description`,
@@ -225,7 +295,43 @@ export const resources = {
 			],
 		},
 	},
-}
+]
+
+export const resources2 = [
+	{
+		id: `resourceId2`,
+		title: `resource title2`,
+		description: `description2`,
+		keywords: [],
+		languages: {
+			iso639_3:[],
+		},
+		type: `video`,
+		dateAdded: `1591672795`,
+		dateModified:`1591672795`,
+		status:`normal`,
+		clientUser: {
+			id: `user:22`,
+		},
+		client:{
+			id: `byu_demo`,
+			name: `BYU Demos`,
+		},
+		content:{
+			files:[
+				{
+					streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
+					bytes:0,
+					representation:`original`,
+					quality:1,
+					mime:`video/x-youtube`,
+					mimeType:`video/x-youtube`,
+					attributes: [],
+				},
+			],
+		},
+	},
+]
 
 export const roles = {
 	0:{
@@ -270,6 +376,28 @@ export const roles = {
 				username: `testusername`,
 			},
 		],
+	},
+}
+
+export const lang1 = {
+	name: `test lang`,
+}
+
+export const adminCategory = {
+	Users: {
+		name: `Users`,
+		placeholder: `Search for a user`,
+		url: `user`,
+	},
+	Collections: {
+		name: `Collections`,
+		placeholder: `Search for a collection`,
+		url: `collection`,
+	},
+	Content: {
+		name: `Content`,
+		placeholder: `Search for content`,
+		url: `content`,
 	},
 }
 
@@ -318,6 +446,8 @@ export const store = mockStore(
 		collectionStore: {
 			roles,
 			cache: collections,
+			users: [],
+			courses: [],
 		},
 		contentStore:{
 			loading: false,
@@ -366,6 +496,18 @@ export const store = mockStore(
 					resource,
 				},
 			],
+		},
+		fileStore:{
+			cache: {},
+			loading: false,
+			lastFetched: 0,
+		},
+		languageStore:{
+			cache: {
+				langs:[`test version`, `lang1`, `lang2`, `lang3`],
+			},
+			loading: false,
+			lastFetched: 0,
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),

@@ -26,6 +26,7 @@ export class LabAssistant extends PureComponent {
 				<Search onSubmit={handleSubmit}>
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
+					<button type="submit">Search</button>
 				</Search>
 				<LabAssistantTable data={data} show={showResource} handleShowResource={handleShowResource}/>
 			</Style>

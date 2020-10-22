@@ -14,6 +14,8 @@ import {
 	contentService,
 	resourceService,
 	fileService,
+	languageService,
+	subtitlesService,
 } from 'services'
 
 // Use this const to change the settings in Redux Dev Tools. Set
@@ -31,6 +33,8 @@ const store = createStore(
 		interfaceStore: interfaceService.reducer,
 		resourceStore: resourceService.reducer,
 		fileStore: fileService.reducer,
+		languageStore: languageService.reducer,
+		subtitlesStore: subtitlesService.reducer,
 	}),
 
 	// This is the initial state of the store
@@ -42,6 +46,8 @@ const store = createStore(
 		interfaceStore: interfaceService.store,
 		resourceStore: resourceService.store,
 		fileStore: fileService.store,
+		languageStore: languageService.store,
+		subtitlesStore: subtitlesService.store,
 	},
 
 	composeWithDevTools(

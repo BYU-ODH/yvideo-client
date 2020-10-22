@@ -25,18 +25,20 @@ class ListCollection extends PureComponent {
 
 		const contentIds = this.props.contentIds
 
+		const publishContent = content.filter(item => item.published)
+
 		if (!content || this.props.collection.published !== true ) return null
 
 		return (
 			<div>
 				<Header isOpen={isOpen} onClick={this.togglePanel} >
 					<h3>{name}</h3>
-					<p>{content.length} Videos</p>
+					<p>{publishContent.length} Videos</p>
 					<div />
 				</Header>
-				<Body isOpen={isOpen} count={content.length}>
+				<Body isOpen={isOpen} count={publishContent.length}>
 					{
-						content.map(item => {
+						publishContent.map(item => {
 							return <ListItem key={item.id} data={item} />
 						})
 					}

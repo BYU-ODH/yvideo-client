@@ -5,14 +5,15 @@ import uploadIcon from 'assets/upload.svg'
 
 export const Form = styled.form`
 	display: grid;
-	grid-gap: 4rem;
+	grid-gap: 6rem;
 
 	min-width: 30rem;
 	min-height: 35rem;
 
 
 	& input, select {
-		flex: 5;
+
+		flex: 4;
 		border: none;
 		border-bottom: 1px solid #ccc;
 		outline: none;
@@ -25,29 +26,13 @@ export const Form = styled.form`
 
 		& > span {
 			flex: 1;
+
 		}
 	}
 
 	& > div {
 		display: flex;
 		justify-content: space-between;
-	}
-
-	.keywords-list {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: start;
-		max-width: 30rem;
-
-		& > span {
-			color: white;
-			background-color: #0582CA;
-			padding: .5rem .75rem;
-			border-radius: 1.2rem;
-			margin: 0 .5rem 0 0;
-			display: flex;
-			align-items: center;
-		}
 	}
 `
 
@@ -176,5 +161,21 @@ export const FileUpload = styled.div`
     margin: 0 auto;
     background-size: 50%;
     background-repeat: no-repeat;
+	}
+`
+
+export const CategorySelect = styled.select`
+	background: white;
+	font-size: 1.5rem;
+
+	border: none;
+	border-radius: 2rem;
+
+	padding: 0 1.25rem 0 1.25rem;
+
+	outline: none;
+	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	& option {
+		margin: auto auto 6px auto;
 	}
 `

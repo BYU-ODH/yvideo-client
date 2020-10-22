@@ -25,6 +25,7 @@ export default class CreateContent extends PureComponent {
 			resourceContent,
 			hideResources,
 			selectedResource,
+			languages,
 		} = this.props.viewstate
 
 		const {
@@ -33,7 +34,7 @@ export default class CreateContent extends PureComponent {
 			url,
 			description,
 			resource,
-			targetLanguages
+			targetLanguages,
 		} = this.props.viewstate.data
 
 		const {
@@ -48,6 +49,8 @@ export default class CreateContent extends PureComponent {
 			remove,
 			toggleModal,
 		} = this.props.handlers
+
+		// console.log(languages)
 
 		return (
 			<>
@@ -111,7 +114,7 @@ export default class CreateContent extends PureComponent {
 							Search Resource Title<br/>
 							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
 						</label>
-						<TableContainer height={Object.keys(resourceContent).length} style={{ display: `${ hideResources === true ? ('none') : ('initial')}` }}>
+						<TableContainer height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
 							{
 								// TODO: need to be updated for submit work
 								resourceContent && hideResources !== true &&
@@ -127,19 +130,19 @@ export default class CreateContent extends PureComponent {
 							<span>Content Title</span><br/>
 							<input type='text' name='title' value={title} onChange={handleTextChange} />
 						</label>
-						<label htmlFor='create-content-description'>
+						<label>
 							<span>Description</span><br/>
-							<textarea id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} required />
+							<textarea name='description' value={description} onChange={handleTextChange} rows={2} cols={35} required />
 						</label>
 						<label>
 							<span>Target Language</span>
-							{ selectedResource !== '' && resourceContent && 
-								<select name='targetLanguages' onChange={handleTextChange}>
-									<option value=''>None</option>
-									{  
-										resourceContent[selectedResource].allFileVersions.split("; ").forEach((element, index) => 
-										<option value={element}>{element}</option> )
-									}	
+							{ languages.length > 0 &&
+								<select name='targetLanguages' onChange={handleTextChange} required>
+									<option value=''>Select</option>
+									{
+										languages.map((element, index) =>
+											<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option> )
+									}
 								</select>
 							}
 						</label>

@@ -3,9 +3,9 @@ import React, { useRef, useState, useEffect } from 'react'
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
 
-import { EventsContainer } from 'containers'
+import { EventsContainer, SubtitlesContainer } from 'containers'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -23,7 +23,7 @@ const Controller = props => {
 		minimized,
 		// handleLastClick,
 		togglendTimeline,
-		getCurrentTime,
+		getVideoTime,
 	} = props
 
 	const ref = useRef(null)
@@ -39,6 +39,7 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [subtitleText, setSubtitleText] = useState(``)
 	// const [censorPosition, setCensorPosition] = useState([0,0])
 	// const [censorActive, SetCensorActive] = useState(false)
 
@@ -109,15 +110,19 @@ const Controller = props => {
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
+				getVideoTime(newPlayed.toFixed(10) * duration)
+				console.log(newPlayed.toFixed(10) * duration)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
-			// getCurrentTime(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(1))
+			console.log(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
-			// getCurrentTime(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(1))
+			console.log(elapsed.toFixed(1))
 		},
 		handleMute: () => {
 			// console.log('mute event')
@@ -136,6 +141,11 @@ const Controller = props => {
 			setVideoComment(value)
 			setCommentPosition(position)
 
+		},
+		handleShowSubtitle: async (value) => {
+			console.log(value)
+			await setSubtitleText(value)
+			console.log(subtitleText)
 		},
 		// handleCensorPosition: (position) => {
 		// 	//console.log(position)
@@ -191,6 +201,9 @@ const Controller = props => {
 			{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
 			<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
+				{subtitleText !== ``? (
+					<Subtitles>{subtitleText}</Subtitles>
+				):``}
 				{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
@@ -266,6 +279,10 @@ const Controller = props => {
 				// handleCensorPosition={video.handleCensorPosition}
 				// handleCensorActive={video.handleCensorActive}
 			></EventsContainer>
+			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
+				handleShowSubtitle={video.handleShowSubtitle}
+			>
+			</SubtitlesContainer>
 		</Style>
 	)
 }
