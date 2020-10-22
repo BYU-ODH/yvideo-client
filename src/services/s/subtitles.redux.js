@@ -143,7 +143,6 @@ export default class SubtitlesService {
 			dispatch(this.actions.subtitlesClean())
 		}
 
-		dispatch(this.actions.subtitlesStart())
 
 		try {
 			const result = await apiProxy.content.getSubtitles(id)

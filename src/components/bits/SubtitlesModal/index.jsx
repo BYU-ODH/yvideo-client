@@ -32,8 +32,8 @@ const SubtitlesModal = props => {
 									<div className={`modalSection modalButton`} onClick={()=>createLayer.fromScratch()}><p>Start from scratch</p></div>
 								</td>
 								<td className={`modalSectionRight`}>
-									<h4 style={{margin:`10px`}}>Import Srt File</h4>
-									<input style={{margin:`10px`,width: `100%`}} type={`file`} accept={`.srt`} id={`subFileInput`} onChange ={e => console.log(e.target.files)}/>
+									<h4 style={{margin:`10px`}}>Import Srt or Vtt File</h4>
+									<input style={{margin:`10px`,width: `100%`}} type={`file`} accept={`.srt,.vtt`} id={`subFileInput`} onChange ={e => console.log(e.target.files)}/>
 									<button style={{margin:`10px`}} className={`modalButton`} onClick={()=>createLayer.fromFile()}>Submit</button>
 								</td>
 							</tr>

@@ -15,22 +15,25 @@ import content from 'assets/help/help-content.png'
 import eventHelp from 'assets/help/help-te-event.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomrHelp from 'assets/help/help-te-zoom.png'
+<<<<<<< HEAD
 import playercontrolHelp from 'assets/help/help-playercontrols.png'
 import transcriptHelp from 'assets/help/help-transcriptview.png'
+=======
+import subHelp from 'assets/help/help-te-subtitle.png'
+>>>>>>> origin/subtitles
 
 import {
 	// adminService,
-	interfaceService
+	interfaceService,
 } from 'services'
 
-/**c
+/** c
 This component takes one parameter. The parameter is the @param name of the component that we need help with.
 Help documentation is available as an object. Each key will be the name of a component and each name will point to specific information and resources
 which will provide the necessary help to the user. Resources can be a video, an image, or maybe a detailed tutorial
 
 To open up the modal you can import the question mark icon from the assets folder:
 -> @path =>> import helpIcon from 'assets/help/help-icon-black.svg' ** NOTE THAT IF YOU WILL CHANGE THE STYLE OF THE SVG MAKE A COPY AND SAVE IT WITH A NEW NAME **
-
 
 to show the modal you need to import the modal from
 --> @path =>> import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
@@ -52,19 +55,19 @@ MAYBE IN THE FUTURE WE CAN CREATE SMALL HELP COMPONENTS AND SHOW THOSE COMPONENT
 
 **/
 
-
 const HelpDocumentationContainer = props => {
 
 	const {
 		name,
-		toggleModal
+		toggleModal,
 	} = props
 
 	const index = {
 		'Manage Collections': {
 			htmlInstruction: `
 				<div class="section">
-					<p><b>Manager:</b> To manage your collections you are going to use the left side menu of the screen which lists all your current collections in three categories: <br/>
+					<p><b>Manager:</b> Select which collection you want to edit on the left menu
+					<br/>
 						<br/>- &nbsp;<b>Published</b> collections are the ones that students can see.
 						<br/>- &nbsp;<b>Unpublished</b> collections are hidden from students.
 						<br/>- &nbsp;<b>Archived</b> collections are the ones that you are not working on and students can't see them.
@@ -94,16 +97,14 @@ const HelpDocumentationContainer = props => {
 		'Home Page': {
 			htmlInstruction: `
 				<div class="section">
-					<p><b>Menu:</b><br/>The application main menu is located on the top right side of the screen. To open the menu you have to click on the icon which looks similar to the one in the
-						photo on the right. As a student you will use the menu to log out of the application. As an instructor the menu will provide links to manage collections, and other functions.
+					<p><b>Menu:</b><br/> To open the menu, click on the icon in the top right corner of the screen. For instructors, you can find links to view and manage your collections, and find other collections.
 					</p><br/>
 					<img src="${menu}" width="100px"/>
 				</div>
 				<hr/>
 				<div class="section">
-					<p><b>Collections:</b><br/> Collections show available content for different classes. To play a video you just have to click on the video. Collections can be display in block view or list view.
-						You can change the view by clicking the list or block icon on the top right.<br/>
-						If you are an instructor, you can manage your collections by clicking on "Manage Collections" on the top right.
+					<p><b>Collections:</b><br/> Collections show all of the content available to a class. Click on a collection to show the videos available to you. Click the Icon shown on the right to switch between compact and block views.<br/>
+					For instructors, a “Manage Collections” Icon will appear in the top right, where you can create and edit collections.
 					</p><br/>
 					<div style="margin: 10px;">
 						<img src="${list}" width="30px" style="margin: 5px;"/>
@@ -132,6 +133,18 @@ const HelpDocumentationContainer = props => {
 							<br/> -&nbsp; <b>Delete Layer:</b> click on the trash can icon next to the layer number. <u>This will delete a layer and all the events inside of such layer.</u>
 					</p><br/>
 					<img src="${layerHelp}" width="250px"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Subtitles:</b>
+							<br/> -&nbsp;You can create a new subtitle track either from scratch or from a file ending in .srt or .vtt.
+							<br/> -&nbsp; <b>Start from Scratch:</b> This option will start you out with an entirely empty subtitle track.
+							<br/> -&nbsp; <b>Start from File:</b> Choose an SRT or VTT file, and a new track will be created with the subtitles from the file.
+							<br/> -&nbsp; <b>Add Subtitle:</b> Once you have a subtitle track, a new event card below the others will appear titled "Add Subtitle", drag this card to a subtitle track to add a subtitle.
+							<br/> -&nbsp; <b>Delete Subtitle:</b> click on the trash can icon next to the track Title. <u>This will delete the subtitle track.</u>
+							<br/> -&nbsp; <b>Side Editor</b> Clicking on a subtitle will open the side editor where you can edit the Title and the Language. There is also a table where you can edit start/end times and the text of all subtitles, as shown to the right.
+					</p><br/>
+					<img src="${subHelp}" width="250px"/>
 				</div>
 				<hr/>
 				<div class="section large-img">
