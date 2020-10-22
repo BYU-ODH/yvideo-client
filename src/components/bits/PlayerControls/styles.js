@@ -130,8 +130,8 @@ export const Volume = styled.button`
 `
 
 export const ClosedCaptions = styled.button`
-	background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)};
-	/* background: url(${closedCaptionOff}) center no-repeat; */
+	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
+	background: url(${closedCaption}) center no-repeat;
 `
 
 export const Fullscreen = styled.button`

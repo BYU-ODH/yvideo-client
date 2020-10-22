@@ -179,24 +179,27 @@ const Controller = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-	document.addEventListener(`keydown`, event => {
-		switch (event.keyCode) {
-		case 37:
-			video.handleSeek(null, elapsed-1)
-			break
-		case 39:
-			video.handleSeek(null, elapsed+1)
-			break
-		default:
-			break
-		}
-	})
+	if(document.getElementById("controller")){
+		document.getElementById("controller").addEventListener(`keydown`, event => {
+			switch (event.keyCode) {
+			case 37:
+				video.handleSeek(null, elapsed-1)
+				break
+			case 39:
+				video.handleSeek(null, elapsed+1)
+				break
+			default:
+				break
+			}
+		})
+	}
+
 	const showError = () => {
 		alert(`There was an error loading the video`)
 	}
 
 	return (
-		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}}>
+		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id="controller">
 			{/* <Style> */}
 			{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
 			<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
