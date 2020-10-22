@@ -21,7 +21,11 @@ export default class SubtitlesService {
 		subtitlesClean: () => ({ type: this.types.SUBTITLES_CLEAN }),
 		subtitlesCreate: (subtitles) => ({ type: this.types.SUBTITLES_CREATE, payload: { subtitles }}),
 		subtitlesError: error => ({ type: this.types.SUBTITLES_ERROR, payload: { error } }),
+<<<<<<< HEAD
 		subtitlesGet: subtitles => ({ type: this.types.SUBTITLES_GET, payload: { subtitles } }),
+=======
+		subtitlesGet: (subtitles, id) => ({ type: this.types.SUBTITLES_GET, payload: { subtitles, id } }),
+>>>>>>> origin/transcript-view
 		subtitlesUpdate: subtitles => ({ type: this.types.SUBTITLES_UPDATE, payload: { subtitles }}),
 		activeUpdate: active => ({ type: this.types.ACTIVE_UPDATE, payload: { active }}),
 		setContentId: id => ({type: this.types.SET_CONTENT_ID,payload: {id}}),
@@ -69,6 +73,10 @@ export default class SubtitlesService {
 			return {
 				...store,
 				cache: [],
+<<<<<<< HEAD
+=======
+				contentId: '',
+>>>>>>> origin/transcript-view
 			}
 
 		case SUBTITLES_CREATE:
@@ -89,6 +97,7 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_GET:
+<<<<<<< HEAD
 			console.log(`??//`,action.payload.subtitles)
 			return {
 				...store,
@@ -96,6 +105,13 @@ export default class SubtitlesService {
 					...store.cache,
 					...action.payload.subtitles,
 				},
+=======
+			console.log(`??//`,action.payload)
+			return {
+				...store,
+				cache: action.payload.subtitles,
+				contentId: action.payload.id,
+>>>>>>> origin/transcript-view
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -103,10 +119,14 @@ export default class SubtitlesService {
 		case SUBTITLES_UPDATE:
 			return {
 				...store,
+<<<<<<< HEAD
 				cache: {
 					...store.cache,
 					...action.payload.subtitles,
 				},
+=======
+				cache:action.payload.subtitles,
+>>>>>>> origin/transcript-view
 				loading: false,
 			}
 		case ACTIVE_UPDATE:
@@ -216,7 +236,6 @@ export default class SubtitlesService {
 
 		try {
 			await apiProxy.subtitles.delete(ids)
-
 			// console.log(result.data)
 
 			// TODO: Why doesn't this update to state cause it to rerender?

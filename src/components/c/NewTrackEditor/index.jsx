@@ -193,6 +193,11 @@ const TrackEditor = props => {
 			window.onbeforeunload = undefined
 		}
 
+		if(blockLeave)
+			window.onbeforeunload = () => true
+		 else
+			window.onbeforeunload = undefined
+
 	}, [eventsArray])
 
 	if(shouldUpdate === true)

@@ -273,7 +273,6 @@ export default class ResourceService {
 		// add file versions on resource
 		try {
 			const files = getState().resourceStore.cache[resourceId].files
-
 			const newFileStack = []
 
 			files.forEach(item => {
@@ -403,9 +402,13 @@ export default class ResourceService {
 
 			const allFiles = await apiProxy.resources.files(resourceId)
 
+			console.log(allFiles)
+
 			const fileId = allFiles.find(element => element[`file-version`].includes(language) !== false)[`id`]
 
+			// console.log(fileId)
 			const result = await apiProxy.media.getKey(fileId)
+			// console.log('FILE KEY', result)
 
 			dispatch(this.actions.resourceStream(result[`file-key`]))
 

@@ -25,7 +25,6 @@ const TrackEditorContainer = props => {
 		setSubtitles,
 		activeUpdate,
 		deleteSubtitle,
-
 		getStreamKey,
 		streamKey,
 		toggleModal,
