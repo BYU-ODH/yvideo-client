@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
 
+import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
+
 import { Admin } from 'components'
 
 import { adminService, interfaceService } from 'services'

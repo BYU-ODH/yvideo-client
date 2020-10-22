@@ -20,7 +20,6 @@ const CollectionsContainer = props => {
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
-		updateContent,
 	} = props
 
 	useEffect(() => {

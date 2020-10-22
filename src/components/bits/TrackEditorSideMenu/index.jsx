@@ -37,7 +37,6 @@ const TrackEditorSideMenu = props => {
 
 	const handleEditEventBTimeChange = (e) => {
 		if (isSub){
-			console.log(`detecting sub`)
 			editSub(`beg`,e.target.value,subText)
 			return
 		}
@@ -60,7 +59,6 @@ const TrackEditorSideMenu = props => {
 
 	const handleEditEventETimeChange = (e) => {
 		if (isSub){
-			console.log(`detecting sub`)
 			editSub(`end`,e.target.value,subText)
 			return
 		}
@@ -122,30 +120,27 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 	const editSub = (side, time, value,layer) => {
-		console.log(time,`this is time`)
-		console.log(side,value)
-		const sub = event
+		console.log(time)
+		const sub = {...event}
 		if (side === `beg`)
 			sub.start = time / videoLength * 100
 		else if(side === `end`)
 			sub.end = time / videoLength * 100
 		setSubText(value)
 		try{
-			if(value.target) {
-				console.log(value.target.value)
+			if(value.target)
 				sub.text = value.target.value
-			}
+
 		}catch(error){
 
 		}
-
-		console.log(`The sub is`,sub)
+		console.log(`why is`,layer)
 		setEvent(sub)
 		updateSubs(index,sub,layer)
 	}
 
-	const start = (event.start / 100 * videoLength).toFixed(3)
-	const end = (event.end / 100 * videoLength).toFixed(3)
+	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
+	const end = (event.end / 100 * videoLength).toFixed(3) || undefined
 
 	return (
 		<Style>
@@ -159,12 +154,12 @@ const TrackEditorSideMenu = props => {
 							<label>Language</label>
 						</div>
 						<div className='center'>
-							<input type='text' className='sideTabInput' value={title} onChange={e => {
+							<input type='text' className='sideTabInput' value={subs[subLayer].title} onChange={e => {
 								updateTitle(e.target.value)
 								setTitle(e.target.value)
 							}
 							}/>
-							<input type='text' className='sideTabInput' value={language} onChange={e => {
+							<input type='text' className='sideTabInput' value={subs[subLayer].language} onChange={e => {
 								updateLanguage(e.target.value)
 								setLanguage(e.target.value)
 							}}/>
@@ -274,21 +269,21 @@ const TrackEditorSideMenu = props => {
 							</tr>
 						</table>
 						<table>
+							{/* content is a string type. Maybe change to an array by parsing content? */}
 							{subs[subLayer][`content`].map((sub,ind)=>(
 								<div className={`${ind === index ? `subActive`:``}`}>
 									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`}>
 										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e,subText[ind],subLayer)}/>
+											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
 										</td>
 										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e,subText[ind],subLayer)}/>
+											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer)}/>
 										</td>
 										<td>
 											<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
-												console.log(`The value in question is`, value)
-												const text = subText
-												text[ind] = value
-												setSubText(text)
+												// const text = subText
+												// text[ind] = value
+												// setSubText(text)
 												editSub(null,null,value,subLayer)
 											}} />
 										</td>

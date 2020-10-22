@@ -244,7 +244,6 @@ export default class ResourceService {
 		}
 	}
 
-	// it only updates store
 	updateFileVersion = (resource, files) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 

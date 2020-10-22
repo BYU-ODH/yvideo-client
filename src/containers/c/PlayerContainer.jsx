@@ -25,7 +25,7 @@ const PlayerContainer = props => {
 	const params = useParams()
 
 	const [content, setContent] = useState()
-	const [sKey, setKey] = useState('')
+	const [sKey, setKey] = useState(``)
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -39,7 +39,7 @@ const PlayerContainer = props => {
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
 	const [blank, setBlank] = useState(false)
-	const [videoComment, setVideoComment] = useState('')
+	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [showTranscript, setShowTranscript] = useState(false)
 	const [toggleTranscript, setToggleTranscript] = useState(true)
@@ -135,10 +135,9 @@ const PlayerContainer = props => {
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
 			newPlayed = (e.pageX - scrubber.left) / scrubber.width
-		}
-		else {
+		} else
 			newPlayed = time / duration
-		}
+
 		if(newPlayed !== Infinity && newPlayed !== -Infinity){
 			console.log("in fraction: ", newPlayed)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
@@ -183,6 +182,20 @@ const PlayerContainer = props => {
 		//set the state to whatever the state wasn't before.
 		//false to true && true to false.
 		setFullscreen(!fullscreen)
+
+		// let elem = document.getElementsByTagName('video')[0]
+
+		// elem.removeAttribute("controls")
+
+		// if (elem.requestFullscreen) {
+		// 	elem.requestFullscreen();
+		// } else if (elem.mozRequestFullScreen) { /* Firefox */
+		// 	elem.mozRequestFullScreen();
+		// } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+		// 	elem.webkitRequestFullscreen();
+		// } else if (elem.msRequestFullscreen) { /* IE/Edge */
+		// 	elem.msRequestFullscreen();
+		// }
 	}
 
 	const handleMuted = () => {
@@ -200,7 +213,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleShowComment = (value, position) => {
-		//console.log(position)
+		// console.log(position)
 		// console.log('VALUE', value)
 		setVideoComment(value)
 		setCommentPosition(position)

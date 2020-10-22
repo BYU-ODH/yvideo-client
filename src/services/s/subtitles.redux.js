@@ -102,10 +102,7 @@ export default class SubtitlesService {
 		case SUBTITLES_UPDATE:
 			return {
 				...store,
-				cache: {
-					...store.cache,
-					...action.payload.subtitles,
-				},
+				cache:action.payload.subtitles,
 				loading: false,
 			}
 		case ACTIVE_UPDATE:
@@ -123,9 +120,6 @@ export default class SubtitlesService {
 		}
 	}
 	setSubtitles = (content) => async (dispatch, getState, { apiProxy }) => {
-
-		console.log(`contenta`, content)
-		console.log(`contentb`,this.store)
 		// console.log('updated content1', content)
 
 		try {
@@ -140,25 +134,25 @@ export default class SubtitlesService {
 	}
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-		console.log(`this is working`)
 		// console.log('updated store', contentIds)
-		const time = Date.now() - getState().contentStore.lastFetched
+		let currentContentId = getState().subtitlesStore.contentId
 
-		const stale = time >= process.env.REACT_APP_STALE_TIME
-		// if (stale || force) {
+		dispatch(this.actions.subtitlesStart())
+
+		if(currentContentId !== id){
+			dispatch(this.actions.subtitlesClean())
+		}
 
 		dispatch(this.actions.subtitlesStart())
 
 		try {
-			console.log(`wut`)
 			const result = await apiProxy.content.getSubtitles(id)
-			console.log(`result time`,result)
-			dispatch(this.actions.subtitlesGet(result))
-			console.log(`heya`,this.store)
+			dispatch(this.actions.subtitlesGet(result, id))
 			return result
 		} catch (error) {
 			console.error(error.message)
 			dispatch(this.actions.subtitlesError(error))
+			return[]
 		}
 
 		// } else dispatch(this.actions.subtitlesAbort())
@@ -169,10 +163,13 @@ export default class SubtitlesService {
 		// dispatch(this.actions.subtitlesStart())
 
 		try {
-			console.log(subtitle)
-			const result = await apiProxy.subtitles.post(subtitle)
-			console.log(result)
-
+			const tempSub = {}
+			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			tempSub[`language`] = subtitle[`language`]
+			tempSub[`title`] = subtitle[`title`]
+			tempSub[`content-id`] = subtitle[`content-id`]
+			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			const result = await apiProxy.subtitles.post(tempSub)
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
 
@@ -190,15 +187,13 @@ export default class SubtitlesService {
 		dispatch(this.actions.subtitlesStart())
 
 		try {
+			const tempSub = {}
+			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			tempSub[`language`] = subtitle[`language`]
+			tempSub[`title`] = subtitle[`title`]
+			tempSub[`content-id`] = subtitle[`content-id`]
 
-			const results = await apiProxy.content.edit(subtitle,subtitle[`id`])
-
-			// const metaResult =
-			// await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
-
-			dispatch(this.actions.subtitlesUpdate(subtitle))
+			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {
 			dispatch(this.actions.subtitlesError(error))
 		}

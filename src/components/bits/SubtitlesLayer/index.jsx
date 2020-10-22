@@ -25,7 +25,6 @@ const SubtitlesLayer = props => {
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
 	const [isEditorOpen, setEditorOpen] = useState(false)
-	console.log(subs)
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
@@ -57,7 +56,6 @@ const SubtitlesLayer = props => {
 	})
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
-		console.log(`layerindex`, layerIndex)
 		const cEvents = subs
 		const beginTimePercentage = d.x / layerWidth * 100
 		const endPercentage = beginTimePercentage + (event.end - event.start)
@@ -71,7 +69,6 @@ const SubtitlesLayer = props => {
 
 		if(cEvents[index].start < 0)
 			cEvents[index].start = 0
-		console.log(`l`,layerIndex)
 		// call handler from parent
 		updateSubs(index, cEvents[index],layerIndex)
 	}
