@@ -15,12 +15,9 @@ import content from 'assets/help/help-content.png'
 import eventHelp from 'assets/help/help-te-event.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomrHelp from 'assets/help/help-te-zoom.png'
-<<<<<<< HEAD
 import playercontrolHelp from 'assets/help/help-playercontrols.png'
 import transcriptHelp from 'assets/help/help-transcriptview.png'
-=======
 import subHelp from 'assets/help/help-te-subtitle.png'
->>>>>>> origin/subtitles
 
 import {
 	// adminService,

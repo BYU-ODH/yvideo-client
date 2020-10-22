@@ -515,64 +515,63 @@ const TrackEditor = props => {
 			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
 			// console.log(lastPossibleRight)
 			switch (direction) {
-			case `start`:
-				scrubber.scrollLeft = 0
-				timeIndicator.scrollLeft = 0
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft = 0
-				})
-				scrollBar.style.left = `0px`
-
-				break
-			case `left`:
-				scrubber.scrollLeft -= currentLayerWidth * 0.03
-				timeIndicator.scrollLeft -= currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft -= currentLayerWidth * 0.03
-				})
-				// FIND 3 PERCENT OF PARENT
-				// CURRENT LEFT MINUS NEW LEFT
-				if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
-					scrollBar.style.left = `${cLeft - scrollBarOffset}px`
-				else if (cLeft - scrollBarOffset < 0)
+				case `start`:
+					scrubber.scrollLeft = 0
+					timeIndicator.scrollLeft = 0
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft = 0
+					})
 					scrollBar.style.left = `0px`
 
-				break
-			case `right`:
-				scrubber.scrollLeft += currentLayerWidth * 0.03
-				timeIndicator.scrollLeft += currentLayerWidth * 0.03
-				// console.log(scrollPercentage / scrollIndicatorWidth)
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth * 0.03
-				})
-				if(zoomFactor !== 0){
-					if(isNaN(cLeft) === true)
-						scrollBar.style.left = `${scrollBarOffset}px`
-					else
-						scrollBar.style.left = `${cLeft + scrollBarOffset}px`
+					break
+				case `left`:
+					scrubber.scrollLeft -= currentLayerWidth * 0.03
+					timeIndicator.scrollLeft -= currentLayerWidth * 0.03
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft -= currentLayerWidth * 0.03
+					})
+					// FIND 3 PERCENT OF PARENT
+					// CURRENT LEFT MINUS NEW LEFT
+					if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
+						scrollBar.style.left = `${cLeft - scrollBarOffset}px`
+					else if (cLeft - scrollBarOffset < 0)
+						scrollBar.style.left = `0px`
 
-				}
+					break
+				case `right`:
+					scrubber.scrollLeft += currentLayerWidth * 0.03
+					timeIndicator.scrollLeft += currentLayerWidth * 0.03
+					// console.log(scrollPercentage / scrollIndicatorWidth)
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft += currentLayerWidth * 0.03
+					})
+					if(zoomFactor !== 0){
+						if(isNaN(cLeft) === true)
+							scrollBar.style.left = `${scrollBarOffset}px`
+						else
+							scrollBar.style.left = `${cLeft + scrollBarOffset}px`
+					}
 
-				if (cLeft + scrollBarOffset > lastPossibleRight)
+					if (cLeft + scrollBarOffset > lastPossibleRight)
+						scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
+
+					break
+				case `end`:
+					scrubber.scrollLeft += currentLayerWidth
+					timeIndicator.scrollLeft += currentLayerWidth
+					alllayers.forEach((element, i) => {
+						alllayers[i].scrollLeft += currentLayerWidth
+					})
 					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-				}
 
-				break
-			case `end`:
-				scrubber.scrollLeft += currentLayerWidth
-				timeIndicator.scrollLeft += currentLayerWidth
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth
-				})
-				scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
+					break
 
-				break
-
-			default:
-				break
+				default:
+					break
 			}
 		}
 	}
+
 	const filler1 = () => {
 		// OLD SCROLL FUNCTIONALITY
 		// const handleScrollFactorD = (e, d) => {

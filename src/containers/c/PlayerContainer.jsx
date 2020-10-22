@@ -182,39 +182,6 @@ const PlayerContainer = props => {
 		//set the state to whatever the state wasn't before.
 		//false to true && true to false.
 		setFullscreen(!fullscreen)
-
-		// find the element which contains subtitles and events placeholders
-		const elem = document.getElementById(`player-container`)
-
-		// if fullscreen is false we want to turn to full screen. Else, request cancelFullScreen.
-		// For more info read full screen api https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
-		// This is a functionality that behaves like F11. This is not video full screen mode.
-		// Video full screen mode would break the subtitles and events.
-		if(!fullscreen){
-
-			if (elem.requestFullscreen)
-				elem.requestFullscreen()
-			 else if (elem.mozRequestFullScreen) { /* Firefox */
-				elem.mozRequestFullScreen()
-			} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-				elem.webkitRequestFullscreen()
-			} else if (elem.msRequestFullscreen) { /* IE/Edge */
-				elem.msRequestFullscreen()
-			}
-
-		} else {
-
-			if (document.cancelFullScreen)
-				document.cancelFullScreen()
-			 else if (document.mozCancelFullScreen) { /* Firefox */
-				document.mozCancelFullScreen()
-			} else if (document.webkitCancelFullScreen) { /* Chrome, Safari & Opera */
-				document.webkitCancelFullScreen()
-			} else if (document.msExitFullscreen) { /* IE/Edge */
-				document.msExitFullscreen()
-			}
-
-		}
 	}
 
 	const handleMuted = () => {
