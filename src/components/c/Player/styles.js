@@ -20,6 +20,7 @@ export const Style = styled.div`
 	& .player-wrapper {
 		position: relative;
 		background-color: black;
+		height: 100%;
 	}
 `
 
@@ -61,6 +62,10 @@ export const Transcript = styled.div`
 		height: 100%;
 		/* background-color: rgba(5, 130, 202, 0.5); */
 		background-color: var(--light-blue);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: 5px;
 
 		& img {
 			cursor: pointer;
@@ -68,9 +73,8 @@ export const Transcript = styled.div`
 	}
 
 	& .toggle-transcript {
-		position: absolute;
-		top: 2px;
-		left: 5px;
+		position: relative;
+		margin-top: 5px;
 		width: 30px;
 		height: 30px;
 		transition: .5s ease;
@@ -141,6 +145,11 @@ export const Subtitles = styled.div`
 		line-height: 1.5;
 		letter-spacing: .7px;
 	}
+`
+export const Help = styled.img`
+	margin-top: 5px;
+	width: 25px;
+	height: 25px;
 `
 
 export default Style

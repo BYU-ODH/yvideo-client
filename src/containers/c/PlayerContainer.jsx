@@ -6,6 +6,8 @@ import { contentService, resourceService, interfaceService, subtitlesService } f
 
 import { Player } from 'components'
 
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
+
 const PlayerContainer = props => {
 
 	const {
@@ -17,6 +19,7 @@ const PlayerContainer = props => {
 		streamKey,
 		getSubtitles,
 		subtitles,
+		toggleModal,
 	} = props
 
 	const params = useParams()
@@ -143,9 +146,6 @@ const PlayerContainer = props => {
 	}
 
 	const handleToggleFullscreen = () => {
-		//set the state to whatever the state wasn't before.
-		//false to true && true to false.
-		setFullscreen(!fullscreen)
 
 		//find the element which contains subtitles and events placeholders
 		let elem = document.getElementById('player-container')
@@ -178,8 +178,11 @@ const PlayerContainer = props => {
 			} else if (document.msExitFullscreen) { /* IE/Edge */
 				document.msExitFullscreen();
 			}
-
 		}
+
+		//set the state to whatever the state wasn't before.
+		//false to true && true to false.
+		setFullscreen(!fullscreen)
 	}
 
 	const handleMuted = () => {
@@ -227,6 +230,13 @@ const PlayerContainer = props => {
 
 		setIndexToDisplay(index)
 		setDisplaySubtitles(temp)
+	}
+
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: 'Player'},
+		})
 	}
 
 	if(displaySubtitles == null){
@@ -282,6 +292,8 @@ const PlayerContainer = props => {
 		setToggleTranscript,
 		setIsCaption,
 		handleChangeSubtitle,
+		setFullscreen,
+		handleShowHelp,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
@@ -302,6 +314,7 @@ const mapDispatchToProps = {
 	addView: contentService.addView,
 	setEvents: interfaceService.setEvents,
 	getSubtitles: subtitlesService.getSubtitles,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

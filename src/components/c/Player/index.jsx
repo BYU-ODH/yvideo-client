@@ -9,9 +9,11 @@ import { Controller } from 'components'
 
 import { PlayerSubtitlesContainer } from 'containers'
 
-import Style, { Blank, Comment, Transcript, Subtitles } from './styles'
+import Style, { Blank, Comment, Transcript, Subtitles, Help } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
+
+import helpIcon from 'assets/help/help-icon-white.svg'
 
 export default class Player extends PureComponent {
 	componentDidMount(){
@@ -58,6 +60,7 @@ export default class Player extends PureComponent {
 			handleShowComment,
 			setToggleTranscript,
 			handleShowSubtitle,
+			handleShowHelp,
 		} = this.props.handlers
 
 		// console.log('%c Player component', 'color:red;')
@@ -110,6 +113,7 @@ export default class Player extends PureComponent {
 					<Transcript style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript}>
 						<div className={'side-bar'}>
 							<img src={chevron} className={'toggle-transcript'} onClick={e => setToggleTranscript(!toggleTranscript)}/>
+							<Help src={helpIcon} onClick={handleShowHelp}/>
 						</div>
 						<div className={'main-bar'}>
 							<div className={'transcript-title'}>
