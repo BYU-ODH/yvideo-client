@@ -11,7 +11,7 @@ import { PlayerSubtitlesContainer } from 'containers'
 
 import Style, { Blank, Comment, Transcript, Subtitles } from './styles'
 
-import chevron from 'assets/te-chevron-left.svg'
+import chevron from 'assets/player-chevron-left.svg'
 
 export default class Player extends PureComponent {
 	componentDidMount(){
@@ -65,7 +65,7 @@ export default class Player extends PureComponent {
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? ('flex') : ('initial')}`, height: '100%'}}>
-					<div className='player-wrapper' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1}}>
+					<div className='player-wrapper' id={'player-container'} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1}}>
 						<ReactPlayer
 							ref={ref}
 							className='react-player'

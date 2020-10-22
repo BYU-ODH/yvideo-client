@@ -13,12 +13,13 @@ export const Back = styled.div`
 export const Container = styled.div`
 	margin: auto;
 	width: 80vw;
-	height: auto;
+	height: 80%;
 	background-color: white;
 	border-radius: 10px;
 	padding: 20px;
 	position: relative;
 	text-align: center;
+	overflow: scroll;
 
 	& #content {
 		width: 80%;

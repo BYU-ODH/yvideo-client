@@ -43,7 +43,7 @@ const TrackEditor = props => {
 
 	// console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
 
-	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles,getAllSubtitles } = props
+	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles,getAllSubtitles,handleShowHelp } = props
 
 	const { eventsArray, currentContent,subs, allSubs } = props.viewstate
 	const events = [
@@ -904,7 +904,6 @@ const TrackEditor = props => {
 						togglendTimeline={togglendTimeline}
 					>
 					</Controller>
-
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 						<section>
@@ -1042,7 +1041,8 @@ const TrackEditor = props => {
 						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
 					</div> */}
 						{/* <div className={`tab active`}>Events</div> */}
-						<div className={`save`}><button onClick={handleSaveAnnotation}><img src={`${saveIcon}`}/><span>Save</span></button></div>
+
+						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:10}}/><div className={`save`}><button onClick={handleSaveAnnotation}><img src={`${saveIcon}`}/><span>Save</span></button></div>
 
 					</header>
 
