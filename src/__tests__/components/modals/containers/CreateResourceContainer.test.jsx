@@ -3,9 +3,6 @@ import { shallow, mount } from 'enzyme'
 import Container from '../../../../components/modals/containers/CreateResourceContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
-import { waitFor } from '@testing-library/dom'
-import MutationObserver from 'mutation-observer'
-import proxies from 'proxy'
 
 const props = {
 	toggleModal: jest.fn(),
@@ -56,8 +53,6 @@ describe(`CreateResourceContainer test`, () => {
 
 		wrapper.find(`#create-resource-type-text`).at(0).simulate(`click`)
 		expect(wrapper.find(`#create-resource-type-text`).at(0).props().selected).toBe(true)
-
-		// console.log(wrapper.debug())
 
 		// create and cancel
 		wrapper.find(`#create-resource-create`).at(0).simulate(`click`)

@@ -612,7 +612,7 @@ export const store = mockStore(
 		},
 		languageStore:{
 			cache: {
-				langs:[`test version`, `lang1`, `lang2`, `lang3`],
+				langs:[`test version`, `lang1`, `lang2`, `lang3`, `other`],
 			},
 			loading: false,
 			lastFetched: 0,
