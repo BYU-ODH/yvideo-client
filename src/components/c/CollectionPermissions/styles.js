@@ -1,6 +1,7 @@
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 
 import searchIcon from 'assets/search.svg'
+import iconSort from 'assets/admin-icon-sort.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -15,6 +16,8 @@ export default Style
 
 export const Search = styled.form`
 	position: relative;
+	display: inline;
+
 	& > input {
 		background: white;
 		border-radius: 1.3rem;
@@ -42,7 +45,7 @@ export const SearchIcon = styled.span`
 	z-index: 10;
 `
 
-export const DepartmentSelect = styled.select`
+export const DepartmentSelect = styled.input`
 	background: white;
 	border-radius: 1.3rem;
 	border: none;
@@ -107,10 +110,99 @@ export const AddButton = styled.button`
 	border-radius: 1.3rem;
 
 	outline: none;
+
 	${props => props.disabled ? `` : `cursor: pointer;`}
 
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
+`
+export const AddManyButton = styled.button`
+	height: 2.8rem;
+	width: 10rem;
+	margin-left: 1rem;
+	border: none;
+	border-radius: 1.3rem;
+	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	cursor: pointer;
+	background: #0582CA;
+	color: white;
+`
+
+export const Table = styled.table`
+	/* border: 1px solid black; */
+	width: 400px;
+	padding: 10px;
+
+	& th {
+		font-size: 1.4rem;
+	}
+
+	& td {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+		padding: 2px;
+		text-align: center;
+
+		& img {
+			opacity: .5;
+			cursor: pointer;
+
+			:hover {
+				opacity: 1;
+			}
+		}
+	}
+
+	& .loading {
+		& td {
+			border-bottom: none;
+
+			& img {
+				opacity: 1;
+			}
+		}
+	}
+`
+
+export const TableContainer = styled.div`
+	display: flex;
+`
+
+export const Sort = styled.button`
+	background: url(${iconSort}) center no-repeat;
+	border: none;
+	height: 1.5rem;
+	cursor: pointer;
+`
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Loading = styled.td`
+	width: 15rem;
+	height: 15rem;
+
+	& img {
+		width: 15rem;
+		height: 15rem;
+	}
+
+	${
+	props => !props.loaded ?
+		css`
+		`
+		:
+		css`
+			animation: ${rotate} 2.5s infinite;
+		`
+	}
 `

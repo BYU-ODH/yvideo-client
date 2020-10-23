@@ -28,7 +28,7 @@ export default class LabAssistantTable extends PureComponent {
 							<tr key={item.id}>
 								<td>{item.name}</td>
 								<td><StyledLink key={index} to={`/lab-assistant-manager/${item.id}`} >View Collections</StyledLink></td>
-								<td><StyledLink key={index} to={`/lab-assistant-resource/${item.id}`}>Manage Resources</StyledLink></td>
+								{/* <td><StyledLink key={index} to={`/lab-assistant-resource/${item.id}`}>Manage Resources</StyledLink></td> */}
 							</tr>,
 						)}
 					</tbody>

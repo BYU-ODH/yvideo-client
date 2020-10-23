@@ -28,7 +28,7 @@ const EventsContainer = props => {
 	const [force, setForce] = useState(false)
 
 	useEffect(() => {
-		//console.log('reset')
+		// console.log('reset')
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
 		// If the blank or mute event is active the event will be executed.
 		handleBlank(false)
@@ -37,7 +37,7 @@ const EventsContainer = props => {
 		handleShowComment(``, {x: 0, y: 0})
 
 		// We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
-		let tempArray = []
+		const tempArray = []
 		if(duration !== 0 && events !== undefined){
 			events.forEach(event => {
 				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
@@ -71,6 +71,7 @@ const EventsContainer = props => {
 	}, [duration, events])
 
 	eventArray.forEach(element => {
+		// console.log(element)
 		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
 			switch (element.type) {
@@ -100,6 +101,7 @@ const EventsContainer = props => {
 
 				// 	break;
 			case `Blank`:
+				console.log('should blank')
 				handleBlank(true)
 				break
 			default:
@@ -139,7 +141,7 @@ const mapStateToProps = ({ interfaceStore }) => ({
 })
 
 const mapDispatchToProps = {
- 	getEvents: interfaceService.getEvents,
+	getEvents: interfaceService.getEvents,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsContainer)

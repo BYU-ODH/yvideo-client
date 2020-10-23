@@ -278,6 +278,38 @@ describe(`content service test`, () => {
 		expect(store.getState().cache[0].views).toBe(1)
 	})
 
+	it(`getSubtitles`, async() => {
+
+		proxies.apiProxy.content.getSubtitles = jest.fn()
+		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
+			return Promise.resolve({
+				status: 200,
+			})
+		})
+
+		store.dispatch(contentServiceConstructor.actions.contentCreate(newcontent, 85))
+
+		// expect(store.getState().cache[0].views).toBe(0)
+		await contentServiceConstructor.getSubtitles(0)(dispatch, getState, { apiProxy })
+		// expect(store.getState().cache[0].views).toBe(1)
+	})
+
+	it(`addSubtitles`, async() => {
+
+		proxies.apiProxy.content.getSubtitles = jest.fn()
+		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
+			return Promise.resolve({
+				status: 200,
+			})
+		})
+
+		store.dispatch(contentServiceConstructor.actions.contentCreate(newcontent, 85))
+
+		// expect(store.getState().cache[0].views).toBe(0)
+		await contentServiceConstructor.getSubtitles(0)(dispatch, getState, { apiProxy })
+		// expect(store.getState().cache[0].views).toBe(1)
+	})
+
 	// it(`updateContent`, async() => {
 
 	// 	proxies.apiProxy.content.post = jest.fn()

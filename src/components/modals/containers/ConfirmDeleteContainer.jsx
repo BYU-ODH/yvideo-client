@@ -5,13 +5,12 @@ import ConfirmDelete from '../components/ConfirmDelete'
 
 import {
 	adminService,
-	interfaceService
+	interfaceService,
 } from 'services'
 
-
-//This component takes two parameters. menuItemInfo which is the object to be deleted and category so the component knows
-//what type of delete it should perform. Ths component is called from AdminContainer using toggleModal passing component and props
-//To close this modal toggleModal is called without passing any parameters
+// This component takes two parameters. menuItemInfo which is the object to be deleted and category so the component knows
+// what type of delete it should perform. Ths component is called from AdminContainer using toggleModal passing component and props
+// To close this modal toggleModal is called without passing any parameters
 
 const ConfirmDeleteContainer = props => {
 
@@ -21,7 +20,7 @@ const ConfirmDeleteContainer = props => {
 		adminDeleteContent,
 		toggleModal,
 		menuItemInfo,
-		searchCategory
+		searchCategory,
 	} = props
 
 	const deleteConfirmed = () => {
@@ -45,17 +44,14 @@ const ConfirmDeleteContainer = props => {
 	}
 
 	const handleDeleteCollection = () => {
-		//console.log(menuItemInfo, `Called delete collection`)
 		adminDeleteCollection(menuItemInfo.id)
 	}
 
 	const handleDeleteUser = () => {
-		//console.log(menuItemInfo, `Called delete user`)
 		adminDeleteUser(menuItemInfo.id)
 	}
 
 	const handleDeleteContent = () => {
-		//console.log(menuItemInfo, `Called delete content`)
 		adminDeleteContent(menuItemInfo.id, true)
 	}
 

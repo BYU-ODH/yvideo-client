@@ -14,6 +14,33 @@ export const Form = styled.form`
 		display: flex;
 		justify-content: space-between;
 	}
+
+	& > label {
+		display: flex;
+		justify-content: space-between;
+
+		& > textarea {
+			width: 20rem;
+		}
+
+		& > input {
+			width: 18rem;
+		}
+
+		& > h4 {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center !important;
+		}
+
+		& > div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: end !important;
+		}
+	}
 `
 
 export const Button = styled.button`
@@ -105,23 +132,23 @@ export const TypeButton = styled.button`
 export const Upload = styled.div`
 
 	& .files-input {
-		outline: 2px dashed #92b0b3;
+		/* outline: 2px dashed #92b0b3; */
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
-    padding: 1em;
+    padding: 1rem;
     text-align: center !important;
-    margin: 0;
-		margin-right: 20px;
-    width: 100% !important;
+		/* margin-right: 20px; */
+		margin-left: 10px;
+    width: 70% !important;
 	}
 
 	& .files{ position:relative }
 
-	& .files:after {
+	/* & .files:after {
 		pointer-events: none;
     position: absolute;
-    top: 10px;
-    left: 230px;
+    top: 5px;
+    left: 240px;
     right: 0;
 		width: 50px;
     height: 56px;
@@ -131,5 +158,20 @@ export const Upload = styled.div`
     margin: 0 auto;
     background-size: 50%;
     background-repeat: no-repeat;
+	} */
+`
+
+export const CategorySelect = styled.select`
+	background: white;
+	font-size: 1.5rem;
+
+	border: none;
+	border-radius: 2rem;
+
+	padding: 0 6rem 0 6rem;
+
+	outline: none;
+	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	& option {
 	}
 `
