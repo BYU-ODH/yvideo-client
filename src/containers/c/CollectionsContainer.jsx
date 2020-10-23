@@ -38,7 +38,7 @@ const CollectionsContainer = props => {
 		return () => {
 			setHeaderBorder(true)
 		}
-	}, [collections, getCollections, setContent, setHeaderBorder])
+	}, [setContent, setHeaderBorder])
 
 	const handleShowHelp = () => {
 		toggleModal({
