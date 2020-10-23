@@ -26,14 +26,11 @@ const LabAssistantManageCollectionContainer = props => {
 		updateCollectionStatus,
 	} = props
 
-	// console.log(collection)
 	const [isContent, setIsContent] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
-		// console.log('useeffect')
-		// console.log(collection.id)
 		getCollectionContent(collection.id, true)
 		setCollectionName(collection.name)
 	}, [collection])

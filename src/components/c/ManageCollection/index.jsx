@@ -42,8 +42,6 @@ export default class ManageCollection extends PureComponent {
 			createContent,
 		} = this.props.handlers
 
-		// console.log(content)
-
 		return (
 			<Style>
 				<header>
@@ -78,7 +76,7 @@ export default class ManageCollection extends PureComponent {
 							<>
 								{ admin !== undefined ? (
 									<>{admin === 0 || admin === 1 ? (
-										<ArchiveButton onClick={unarchive}>Unarchive</ArchiveButton>
+										<ArchiveButton className={`archive-button`} onClick={unarchive}>Unarchive</ArchiveButton>
 									) : ( <p>Cannot unarchive</p> )}
 									</>
 								) : null }
@@ -88,10 +86,11 @@ export default class ManageCollection extends PureComponent {
 								<PublishButton
 									published={collection.published}
 									onClick={togglePublish}
+									className={`publish-button`}
 								>
 									{collection.published ? `Unpublish` : `Publish`}
 								</PublishButton>
-								<ArchiveButton onClick={archive}>Archive</ArchiveButton>
+								<ArchiveButton className={`archive-button`} onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
 					</div>

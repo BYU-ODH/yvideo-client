@@ -7,84 +7,90 @@ import * as testutil from '../../testutil/testutil'
 import store from 'services/store'
 import ContentService from '../../../services/s/content.redux'
 import AuthService from '../../../services/s/auth.redux'
-import CollectionsService from '../../../services/s/collections.redux'
+import ResourceService from '../../../services/s/resources.redux'
 import proxies from 'proxy'
 
 const content = testutil.content
 
-const collections = testutil.collections
+const resources = testutil.resourcesNew
 
 const props = {
-	// searchResource,
-	// resources,
-	// user,
+	searchResource: jest.fn(),
+	resources,
+	user: testutil.user,
 }
 
+const resourcesResult = {
+	"0b93692f-35ee-4c9b-a4c9-273197f681c5": {
+		allFileVersions: ``,
+		copyrighted: true,
+		dateValidated: ``,
+		fullVideo: true,
+		id: `0b93692f-35ee-4c9b-a4c9-273197f681c5`,
+		metadata: `test3`,
+		physicalCopyExists: true,
+		published: true,
+		requesterEmail: `test@email.com`,
+		resourceName: `test with file3`,
+		resourceType: `video`,
+		views: 0,
+	},
+}
+
+proxies.apiProxy.user.get = jest.fn()
+proxies.apiProxy.user.get.mockImplementationOnce(()=>{
+	return Promise.resolve(testutil.user)
+})
+
+proxies.apiProxy.resources.search = jest.fn()
+proxies.apiProxy.resources.search.mockImplementation(()=>{
+	return Promise.resolve(resourcesResult)
+})
+
 describe(`collection container test`, () => {
-	let contentServiceConstructor
 	let authServiceConstructor
-	let collectionsServiceCostructor
+	let resourceServiceConstructor
 	let dispatch
 	let getState
 	let apiProxy
 
-	// beforeEach(async() => {
-	// 	authServiceConstructor = new AuthService()
-	// 	contentServiceConstructor = new ContentService()
+	beforeEach(async() => {
+		authServiceConstructor = new AuthService()
+		resourceServiceConstructor = new ResourceService()
+		dispatch = store.dispatch
+		getState = store.getState
+		apiProxy = proxies.apiProxy
+		await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
+	})
 
-	// 	dispatch = store.dispatch
-	// 	getState = store.getState
-	// 	apiProxy = proxies.apiProxy
+	it(`collections container check viewstate`, () => {
+		const wrapper = shallow(
+			<Container store={testutil.store} {...props}/>,
+		).childAt(0).dive()
 
-	// 	proxies.apiProxy.user.get = jest.fn()
-	// 	proxies.apiProxy.user.get.mockImplementationOnce(()=>{
-	// 		return Promise.resolve(testutil.user)
-	// 	})
-	// 	await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
+		const viewstate = wrapper.find(`ManageResource`).props().viewstate
 
-	// 	proxies.apiProxy.content.get = jest.fn()
-	// 	proxies.apiProxy.content.get.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({0: content[0]})
-	// 	})
-	// 	await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
-	// })
+		expect(viewstate.user.email).toBe(`email@testemail.com`)
+		expect(viewstate.user.name).toBe(`testname`)
+		expect(viewstate.user.username).toBe(`testusername`)
+		expect(viewstate.resources.resourcesNew).toBe(resources)
+	})
 
-	// it(`collections container check viewstate`, () => {
-	// 	const wrapper = shallow(
-	// 		<Container store={testutil.store} {...props}/>,
-	// 	).childAt(0).dive()
+	it(`mount`, async() => {
+		const wrapper = mount(
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<Container props={props}/>
+				</BrowserRouter>
+			</Provider>,
+		)
 
-	// 	const viewstate = wrapper.find(`ManageResource`).props().viewstate
+		expect(wrapper.find(`ResourceOverviewContainer`).length).toBe(3)
 
-	// 	expect(viewstate.user.email).toBe(`email@testemail.com`)
-	// 	expect(viewstate.user.name).toBe(`testname`)
-	// 	expect(viewstate.user.username).toBe(`testusername`)
+		wrapper.find({className: `resource-search-input`}).simulate(`change`, {target: {value: `search text`}})
+		expect(wrapper.find({className: `resource-search-input`}).props().value).toBe(`search text`)
 
-	// 	expect(viewstate.resources.resources[`resourceId`].id).toBe(`resourceId`)
-	// 	expect(viewstate.resources.resources[`resourceId`].title).toBe(`resource title`)
-	// 	expect(viewstate.resources.resources[`resourceId`].description).toBe(`description`)
-	// })
+		wrapper.find({className: `resource-search-submit`}).at(0).simulate(`click`)
 
-	// it(`mount`, async() => {
-	// 	const wrapper = mount(
-	// 		<Provider store={store}>
-	// 			<BrowserRouter>
-	// 				<Container props={props}/>
-	// 			</BrowserRouter>
-	// 		</Provider>,
-	// 	)
-
-	// expect(wrapper.find({className: `list`}).props().children.props.children).toBe(`There are no collections to display`)
-
-	// // getcollection
-	// collectionsServiceCostructor = new CollectionsService()
-	// proxies.apiProxy.user.collections.get = jest.fn()
-	// proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
-	// 	return Promise.resolve(collections)
-	// })
-	// await collectionsServiceCostructor.getCollections(true)(dispatch, getState, { apiProxy })
-
-	// // update after getCollectios
-	// wrapper.update()
-	// })
+	})
 })

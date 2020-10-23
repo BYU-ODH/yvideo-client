@@ -44,14 +44,14 @@ export default class Manager extends PureComponent {
 						{ user ? (
 							<>
 								<h1 className='no-collections'>{ user.name } does not have any collections</h1>
-								<div id={'create-button'}>
+								<div id={`create-button`}>
 									<button onClick={createNew}>Create New Collection</button>
 								</div>
 							</>
 						) : (
 							<>
 								<h1 className='no-collections'>There are no collections</h1>
-								<div id={'create-button'} >
+								<div id={`create-button`} >
 									<button onClick={createNew}>Create New Collection</button>
 								</div>
 							</>
@@ -61,23 +61,23 @@ export default class Manager extends PureComponent {
 					<>
 						<SideMenu>
 
-							<h4>{user ? (`${user.name}'s Collections`) : `My Collections`} &nbsp;<Help><img src={helpIcon} onClick={handleShowHelp}/></Help></h4>
+							<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}<Help><img className='help-document' src={helpIcon} onClick={handleShowHelp}/></Help></h4>
 
-							<Accordion header={`Published`} active>
-								{sideLists.published.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
+							<Accordion className='collection-published' header={`Published`} active>
+								{sideLists.published.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
 							</Accordion>
 
 							<Accordion header={`Unpublished`} active>
-								{sideLists.unpublished.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`}>{name}</Link></div>)}
+								{sideLists.unpublished.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`}>{name}</Link></div>)}
 							</Accordion>
 
 							{
 								admin && <Accordion header={`Archived`}>
-									{sideLists.archived.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
+									{sideLists.archived.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
 								</Accordion>
 							}
 
-							<CreateButton onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
+							<CreateButton className='collection-create' onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
 
 						</SideMenu>
 						<Body>
@@ -87,7 +87,7 @@ export default class Manager extends PureComponent {
 									:
 									<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 								:
-								<NoCollection>Select a Collection to get started.</NoCollection>}
+								<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>}
 						</Body>
 					</>
 				)}

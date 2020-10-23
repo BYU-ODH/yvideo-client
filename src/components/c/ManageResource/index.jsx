@@ -30,9 +30,9 @@ export class ManageResource extends PureComponent {
 					</div>
 				</header>
 
-				<Search id='searchSubmit' onSubmit={handleSubmit}>
+				<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSubmit}>
 					<SearchIcon />
-					<input type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
+					<input className='resource-search-input' type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
 					<button type='submit'>Search</button>
 				</Search>
 
