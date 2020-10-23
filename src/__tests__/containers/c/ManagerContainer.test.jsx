@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { Router, BrowserRouter } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import Container from '../../../containers/c/ManagerContainer'
+import { interfaceService } from 'services'
 import * as testutil from '../../testutil/testutil'
 
 const collections = testutil.collections
@@ -11,6 +12,14 @@ const collections = testutil.collections
 const props = {
 	admin: true,
 	collections,
+	getCollections: jest.fn(),
+	setHeaderBorder: jest.fn(),
+	toggleModal: interfaceService.toggleModal,
+}
+
+const emptyProps = {
+	admin: true,
+	collections: {},
 	getCollections: jest.fn(),
 	setHeaderBorder: jest.fn(),
 	toggleModal: jest.fn(),
@@ -36,13 +45,26 @@ describe(`manager container test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		// const viewstate = wrapper.find(`Manager`).props().viewstate
-		// console.log(viewstate)
-		// console.log(wrapper.debug())
 
+		// check each collection link
+		wrapper.find({"className" : `link`}).forEach((link, index) => {
+			expect(link.props().children.props.to).toBe(`/manager/${index}`)
+		})
+
+		// TODO: how to properly test toggleModal is initiated. I cannot find the way to see the interfaceStore is updated
+		wrapper.find({"className" : `collection-create`}).at(0).simulate(`click`)
+
+		wrapper.find({"className" : `help-document`}).simulate(`click`)
 	})
 
-	it(`mount`, () => {
-
+	it(`mount container with empty store`, () => {
+		const wrapper = mount(
+			<Provider store={testutil.emptyStore}>
+				<BrowserRouter>
+					<Container {...emptyProps}/>
+				</BrowserRouter>
+			</Provider>,
+		)
+		expect(wrapper.find({"className" : `no-collections-body`}).at(0).props().children).toBe(`Select a Collection to get started.`)
 	})
 })

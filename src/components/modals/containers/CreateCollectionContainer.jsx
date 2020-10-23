@@ -30,18 +30,17 @@ const CreateCollectionContainer = props => {
 		const defaultV = {
 			'published': false,
 			'archived': false,
-			'owner': `${isLabAssistantRoute ? professorId : userId }`,
+			'owner': `${isLabAssistantRoute ? professorId : userId}`,
 			'collection-name': name,
 		}
 
 		if(isLabAssistantRoute){
 			await createCollection(defaultV)
 			adminSearchCollections(professorId, true)
-		}
-		else {
+		} else
 			await createCollection(defaultV)
-			//collectionService.getCollections()
-		}
+			// collectionService.getCollections()
+
 		toggleModal()
 	}
 

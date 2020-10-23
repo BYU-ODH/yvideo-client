@@ -49,26 +49,12 @@ const FileUploadContainer = props => {
 
 	const [fileVersion, setFileVersion] = useState(langs[0])
 
-	const [fileMetadata, setFileMetadata] = useState(``)
-
 	const [customLang, setCustomLang] = useState(``)
 
 	const [isOther, setIsOther] = useState(false)
 
-	const [fileMime, setFileMime] = useState(``)
-
 	const handleFileChange = e =>{
 		setSelectedFile(e.target.files[0])
-	}
-
-	const handleFileMetadata = e => {
-		e.preventDefault()
-		setFileMetadata(e.target.value)
-	}
-
-	const handleFileMime = e => {
-		e.preventDefault()
-		setFileMime(e.target.value)
 	}
 
 	const handleFileVersion = e => {
@@ -96,8 +82,8 @@ const FileUploadContainer = props => {
 		formData.append(`file`, selectedFile)
 		formData.append(`resource-id`, resourceId)
 		formData.append(`file-version`, fileVersion)
-		formData.append(`mime`, fileMime)
-		formData.append(`metadata`, fileMetadata)
+		formData.append(`mime`, ``)
+		formData.append(`metadata`, ``)
 
 		await uploadFile(formData)
 		await getFiles(resourceId)
@@ -117,8 +103,6 @@ const FileUploadContainer = props => {
 		handleFileChange,
 		handleFileVersion,
 		handleFileUpload,
-		handleFileMetadata,
-		handleFileMime,
 		handleOtherLanguage,
 		toggleModal,
 	}

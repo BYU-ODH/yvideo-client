@@ -22,7 +22,6 @@ const DeleteConfirmContainer = props => {
 		removeFile,
 		resources,
 		editFileResource,
-		updateFileVersion,
 		adminDeleteCollection,
 		adminDeleteUser,
 		adminDeleteContent,
@@ -76,14 +75,10 @@ const DeleteConfirmContainer = props => {
 			const newAllFileVersions = arr.join(`;`)
 			resource.allFileVersions = newAllFileVersions
 
-			// console.log(newAllFileVersions)
-
 			await removeFile(selectedFile.id)
 			// file edit does not have api call
 			await editFileResource(fileResourceId, selectedFile, false)
 
-			// await updateFileVersion(resource, newAllFileVersions)
-			// console.log(resource.allFileVersions)
 			await editResource(resource, fileResourceId, selectedFile)
 		}
 

@@ -51,6 +51,7 @@
 		"yvideojs": "^1.1.8"
 	},
 	"devDependencies": {
+		"@testing-library/dom": "^7.26.0",
 		"eslint-config-react-app": "^5.2.1",
 		"eslint-plugin-flowtype": "^4.7.0",
 		"eslint-plugin-import": "^2.20.2",
@@ -59,6 +60,7 @@
 		"eslint-plugin-react": "^7.19.0",
 		"eslint-plugin-react-hooks": "^3.0.0",
 		"husky": "^4.2.5",
+		"mutation-observer": "^1.0.3",
 		"redux-devtools-extension": "^2.13.8"
 	}
 }
