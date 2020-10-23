@@ -3,10 +3,7 @@ import React, { PureComponent } from 'react'
 import {
 	Form,
 	Upload,
-	UploadButton,
 	Button,
-	TypeButton,
-	Tab,
 	CategorySelect,
 } from './styles'
 
@@ -15,7 +12,6 @@ export default class FileUpload extends PureComponent {
 	render() {
 
 		const {
-			category,
 			selectedFile,
 			isOther,
 			customLang,
@@ -29,8 +25,6 @@ export default class FileUpload extends PureComponent {
 			toggleModal,
 			onKeyPress,
 			handleOtherLanguage,
-			handleFileMetadata,
-			handleFileMime,
 		} = this.props.handlers
 
 		return (
@@ -69,7 +63,7 @@ export default class FileUpload extends PureComponent {
 				{isOther &&
 					<label>
 						<h4>Type Language</h4>
-						<input type='text' name='customLang' value={customLang} onChange={handleOtherLanguage} />
+						<input id='type-language' type='text' name='customLang' value={customLang} onChange={handleOtherLanguage} />
 					</label>
 				}
 
