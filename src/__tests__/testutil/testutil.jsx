@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import proxies from 'proxy'
+import { browserStorage } from 'proxy'
 
 const thunk = require(`redux-thunk`).default
 const middlewares = [thunk]
@@ -297,6 +298,37 @@ export const resources = [
 	},
 ]
 
+export const resourcesNew = {
+	"0": {
+		allFileVersions: ``,
+		copyrighted: true,
+		dateValidated: ``,
+		fullVideo: true,
+		id: `0`,
+		metadata: `test3`,
+		physicalCopyExists: true,
+		published: true,
+		requesterEmail: `test@email.com`,
+		resourceName: `resourcename0`,
+		resourceType: `video`,
+		views: 0,
+	},
+	"1": {
+		allFileVersions: ``,
+		copyrighted: true,
+		dateValidated: ``,
+		fullVideo: true,
+		id: `1`,
+		metadata: `test1`,
+		physicalCopyExists: true,
+		published: true,
+		requesterEmail: `test@email.com`,
+		resourceName: `resourcename1`,
+		resourceType: `video`,
+		views: 0,
+	},
+}
+
 export const resources2 = [
 	{
 		id: `resourceId2`,
@@ -401,13 +433,43 @@ export const adminCategory = {
 	},
 }
 
+export const emptyStore = mockStore(
+	{
+		resourceStore: {},
+		authStore: {
+			user,
+		},
+		adminStore: {
+			data: [],
+			professor: professor1,
+		},
+		interfaceStore: {},
+		collectionStore: {
+			roles,
+			cache: [],
+			users: [],
+			courses: [],
+		},
+		contentStore:{
+			cache: [],
+		},
+		fileStore:{
+			cache: {},
+		},
+		languageStore:{
+			cache: {},
+		},
+	},
+	composeWithDevTools(thunk.withExtraArgument(proxies)),
+)
+
 export const store = mockStore(
 	{
 		resourceStore: {
 			cache:{
 				loading: false,
 				lastFetched: 1591825599289,
-				resources,
+				resourcesNew,
 			},
 		},
 		authStore: {
@@ -439,9 +501,19 @@ export const store = mockStore(
 			professor: professor1,
 		},
 		interfaceStore: {
-			menuActive:false,
-			displayBlocks: true,
-			modal,
+			menuActive: false,
+			modal: {
+				active: false,
+				component: null,
+				collectionId: -1,
+				isLabAssistantRoute: false,
+				props: {},
+			},
+			displayBlocks: browserStorage.displayBlocks,
+			headerBorder: false,
+			editorStyle: false,
+			lost: false,
+			events: [],
 		},
 		collectionStore: {
 			roles,
