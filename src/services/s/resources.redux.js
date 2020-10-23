@@ -376,6 +376,7 @@ export default class ResourceService {
 
 	removeResource = (resourceId) => async (dispatch, getState, { apiProxy }) => {
 
+		console.log(`object2`)
 		dispatch(this.actions.resourcesStart())
 
 		try {
@@ -387,6 +388,7 @@ export default class ResourceService {
 					filteredResources[key] = currentResources[key]
 			})
 
+			console.log(getState().resourceStore)
 			const result = await apiProxy.resources.delete(resourceId)
 			dispatch(this.actions.resourceDelete(filteredResources))
 
