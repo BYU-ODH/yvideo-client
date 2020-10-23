@@ -126,7 +126,7 @@ export default class InterfaceService {
 	 *
 	 * @param modal an object representing the modal you want to display. Takes the following properties: `component` (the component to display) and `id` (the id of the collection)
 	 */
-	toggleModal = modal => async dispatch => {
+	toggleModal = modal => async (dispatch, getState) => {
 		dispatch(this.actions.modalToggle(modal))
 	}
 

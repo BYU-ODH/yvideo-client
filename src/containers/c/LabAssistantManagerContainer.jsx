@@ -83,8 +83,6 @@ const LabAssistantManagerContainer = props => {
 		})
 	}
 
-	// console.log('single collection', singleCollection)
-
 	const viewstate = {
 		admin,
 		collection: singleCollection,

@@ -7,10 +7,6 @@ import { BrowserRouter } from 'react-router-dom'
 
 const file = testutil.file1
 
-// handleFileMetadata:jest.fn(),
-// handleUpdateFile:jest.fn(),
-// handleRemoveFile:jest.fn(),
-// handleFileVersion:jest.fn(),
 const props = {
 	file,
 	langs:[`lang1`],

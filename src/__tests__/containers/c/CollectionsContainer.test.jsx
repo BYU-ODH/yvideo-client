@@ -64,7 +64,6 @@ describe(`collection container test`, () => {
 
 		expect(viewstate.isProf).toBe(false)
 		expect(viewstate.isAdmin).toBe(true)
-		expect(viewstate.displayBlocks).toBe(true)
 
 		expect(viewstate.collections[0].archived).toBe(false)
 		expect(viewstate.collections[0].id).toBe(0)
