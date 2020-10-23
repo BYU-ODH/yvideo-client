@@ -50,53 +50,51 @@ export default class CreateContent extends PureComponent {
 			toggleModal,
 		} = this.props.handlers
 
-		// console.log(languages)
-
 		return (
 			<>
 				<h2>Create New Content</h2>
 
 				<Tabs>
-					<Tab selected={tab === `url`} onClick={changeTab} name={`url`}>From URL</Tab>
-					<Tab selected={tab === `resource`} onClick={changeTab} name={`resource`}>Search Resources</Tab>
+					<Tab className='tab-url' selected={tab === `url`} onClick={changeTab} name={`url`}>From URL</Tab>
+					<Tab className='tab-search-resources' selected={tab === `resource`} onClick={changeTab} name={`resource`}>Search Resources</Tab>
 				</Tabs>
 
 				{tab === `url` &&
-					<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} id='create-content-form' >
+					<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} className='create-content-form' id='create-content-form' >
 						<label htmlFor='create-content-title'>
 							<span>Title</span>
-							<input id='create-content-title' type='text' name='title' value={title} onChange={handleTextChange} required />
+							<input className='url-title-input' id='create-content-title' type='text' name='title' value={title} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-type'>
 							<span>Type</span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
-								<TypeButton type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
-								<TypeButton type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
-								<TypeButton type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
+								<TypeButton className='url-type-video' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
+								<TypeButton className='url-type-audio' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
+								<TypeButton className='url-type-image' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
+								<TypeButton className='url-type-text' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
 							</div>
 						</label>
 
 						<label htmlFor='create-content-url'>
 							<span>URL</span>
-							<input id='create-content-url' type='text' name='url' value={url} onChange={handleTextChange} required />
+							<input className='url-content-url' id='create-content-url' type='text' name='url' value={url} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-description'>
 							<span>Description</span>
 						</label>
-						<textarea id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} required />
+						<textarea className='url-content-description' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} required />
 
 						<label htmlFor='create-content-keywords'>
 							<span>Tags</span>
 						</label>
 
 						<div className='keywords-list'>
-							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
+							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword className='url-content-remove' src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
 						</div>
 						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
-						<input id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add a tag...'/>
+						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add a tag...'/>
 						<datalist id='create-content-keywords'>
 							{resource.keywords.map((keyword, index) => <option key={index} value={keyword} />)}
 						</datalist>
@@ -112,9 +110,9 @@ export default class CreateContent extends PureComponent {
 					<FormResource onSubmit={handleAddResourceSubmit}>
 						<label>
 							Search Resource Title<br/>
-							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
+							<input className='resource-search-title' type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
 						</label>
-						<TableContainer height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
+						<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
 							{
 								// TODO: need to be updated for submit work
 								resourceContent && hideResources !== true &&
@@ -128,11 +126,11 @@ export default class CreateContent extends PureComponent {
 						</TableContainer>
 						<label>
 							<span>Content Title</span><br/>
-							<input type='text' name='title' value={title} onChange={handleTextChange} />
+							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange} />
 						</label>
 						<label>
 							<span>Description</span><br/>
-							<textarea name='description' value={description} onChange={handleTextChange} rows={2} cols={35} required />
+							<textarea className='resource-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} required />
 						</label>
 						<label>
 							<span>Target Language</span>
@@ -148,8 +146,8 @@ export default class CreateContent extends PureComponent {
 						</label>
 
 						<div>
-							<Button type='button' onClick={toggleModal}>Cancel</Button>
-							<Button type='submit' color={`#0582CA`}>Create</Button>
+							<Button className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+							<Button className='url-content-create' type='submit' color={`#0582CA`}>Create</Button>
 						</div>
 					</FormResource>
 				}

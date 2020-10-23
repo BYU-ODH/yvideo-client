@@ -64,7 +64,7 @@ export class ResourceOverview extends PureComponent {
 							{editing ?
 								<ResourceTitle><h4>Title:</h4><TitleEdit type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
 								:
-								<h4>{resourceName}</h4>
+								<h4 className='resource-name'>{resourceName}</h4>
 							}
 						</div>
 						<Buttons>
@@ -75,13 +75,12 @@ export class ResourceOverview extends PureComponent {
 								<RemoveButton className='remove-resource-button' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
 							</>
 							}
-							<EditButton onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
+							<EditButton className='resource-edit' onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
 						</Buttons>
 					</Preview>
 				</Style>
 				{editing &&
 					<InnerContainer>
-
 						<Column>
 							<h4>
 								copyrighted

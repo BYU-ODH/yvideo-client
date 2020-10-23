@@ -22,7 +22,7 @@ const props = {
 
 const resourcesResult = {
 	"0b93692f-35ee-4c9b-a4c9-273197f681c5": {
-		allFileVersions: ``,
+		allFileVersions: `English;Spanish;Korean;`,
 		copyrighted: true,
 		dateValidated: ``,
 		fullVideo: true,
@@ -73,7 +73,7 @@ describe(`collection container test`, () => {
 		expect(viewstate.user.email).toBe(`email@testemail.com`)
 		expect(viewstate.user.name).toBe(`testname`)
 		expect(viewstate.user.username).toBe(`testusername`)
-		expect(viewstate.resources.resourcesNew).toBe(resources)
+		expect(viewstate.resources).toEqual(resources)
 	})
 
 	it(`mount`, async() => {
@@ -85,12 +85,11 @@ describe(`collection container test`, () => {
 			</Provider>,
 		)
 
-		expect(wrapper.find(`ResourceOverviewContainer`).length).toBe(3)
+		expect(wrapper.find(`ResourceOverviewContainer`).length).toBe(2)
 
 		wrapper.find({className: `resource-search-input`}).simulate(`change`, {target: {value: `search text`}})
 		expect(wrapper.find({className: `resource-search-input`}).props().value).toBe(`search text`)
 
 		wrapper.find({className: `resource-search-submit`}).at(0).simulate(`click`)
-
 	})
 })
