@@ -76,6 +76,17 @@ export const file2 = {
 
 export const resource = {
 	id: `resourceId`,
+	copyrighted: true,
+	resourceName: `test resource name`,
+	physicalCopyExists: true,
+	published: true,
+	views: 0,
+	fullVideo: ``,
+	metadata: ``,
+	requesterEmail: `email`,
+	allFileVersions: ``,
+	resourceType: `video`,
+	dateValidated: ``,
 	title: `resource title`,
 	description: `description`,
 	keywords: [``],
@@ -300,7 +311,7 @@ export const resources = [
 
 export const resourcesNew = {
 	"0": {
-		allFileVersions: ``,
+		allFileVersions: `English;Spanish;Korean;`,
 		copyrighted: true,
 		dateValidated: ``,
 		fullVideo: true,
@@ -314,7 +325,7 @@ export const resourcesNew = {
 		views: 0,
 	},
 	"1": {
-		allFileVersions: ``,
+		allFileVersions: `English;Spanish;Korean;`,
 		copyrighted: true,
 		dateValidated: ``,
 		fullVideo: true,
@@ -467,9 +478,34 @@ export const store = mockStore(
 	{
 		resourceStore: {
 			cache:{
-				loading: false,
-				lastFetched: 1591825599289,
-				resourcesNew,
+				"0": {
+					allFileVersions: `English;Spanish;Korean;`,
+					copyrighted: true,
+					dateValidated: ``,
+					fullVideo: true,
+					id: `0`,
+					metadata: `test3`,
+					physicalCopyExists: true,
+					published: true,
+					requesterEmail: `test@email.com`,
+					resourceName: `resourcename0`,
+					resourceType: `video`,
+					views: 0,
+				},
+				"1": {
+					allFileVersions: `English;Spanish;Korean;`,
+					copyrighted: true,
+					dateValidated: ``,
+					fullVideo: true,
+					id: `1`,
+					metadata: `test1`,
+					physicalCopyExists: true,
+					published: true,
+					requesterEmail: `test@email.com`,
+					resourceName: `resourcename1`,
+					resourceType: `video`,
+					views: 0,
+				},
 			},
 		},
 		authStore: {
