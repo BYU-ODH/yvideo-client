@@ -304,13 +304,10 @@ export default class ContentService {
 		const time = Date.now() - getState().contentStore.lastFetched
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
-		console.log(`testing`)
 		dispatch(this.actions.contentStart())
 
 		try {
-			console.log(`try`)
 			const result = await apiProxy.content.getSubtitles(id)
-			console.log(`hello`)
 			return result
 
 		} catch (error) {

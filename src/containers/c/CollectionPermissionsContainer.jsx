@@ -36,18 +36,17 @@ const CollectionPermissionsContainer = props => {
 
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
-
-	const AddBatchNetids = () => {
-		toggleModal({
-			component: AddBatchNetidsContainer,
-			props: { collectionId: collection.id },
-		})
-	}
+	const [loaded, setLoaded] = useState(false)
 
 	useEffect(() => {
 		// console.log(collection.id)
 		// console.log('called')
 		getCollectionInfo(collection.id)
+		if(loaded === true) {
+			setTimeout(() => {
+				setLoaded(false)
+			}, 1000)
+		}
 
 	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses])
 
@@ -126,7 +125,12 @@ const CollectionPermissionsContainer = props => {
 			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, value)
 
 		},
-		AddBatchNetids,
+		AddBatchNetids: () => {
+			toggleModal({
+				component: AddBatchNetidsContainer,
+				props: { collectionId: collection.id, setLoaded },
+			})
+		}
 	}
 
 
@@ -138,6 +142,7 @@ const CollectionPermissionsContainer = props => {
 		courses,
 		disabled,
 		disabledUser,
+		loaded,
 	}
 
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />
