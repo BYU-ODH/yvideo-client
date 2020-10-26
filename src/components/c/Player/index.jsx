@@ -7,9 +7,13 @@ import { PlayerControls } from 'components/bits'
 
 import { Controller } from 'components'
 
-import Style, { Blank, Comment, Transcript, Subtitles } from './styles'
+import { PlayerSubtitlesContainer } from 'containers'
 
-import chevron from 'assets/te-chevron-left.svg'
+import Style, { Blank, Comment, Transcript, Subtitles, Help } from './styles'
+
+import chevron from 'assets/player-chevron-left.svg'
+
+import helpIcon from 'assets/help/help-icon-white.svg'
 
 export default class Player extends PureComponent {
 	componentDidMount(){
@@ -17,7 +21,6 @@ export default class Player extends PureComponent {
 		// 	const {url} = this.props.viewstate
 		// 	if (!url) alert(`No media found, please check to see if you have the correct URL`)
 		// }, 4000)
-
 	}
 
 	render() {
@@ -37,6 +40,9 @@ export default class Player extends PureComponent {
 			toggleTranscript,
 			content,
 			subtitleText,
+			displaySubtitles,
+			isCaption,
+			indexToDisplay,
 		} = this.props.viewstate
 
 		const {
@@ -53,33 +59,21 @@ export default class Player extends PureComponent {
 			handleUnmuted,
 			handleShowComment,
 			setToggleTranscript,
+			handleShowSubtitle,
+			handleShowHelp,
 		} = this.props.handlers
 
-		const mySub = [
-			{
-				start: '00:00:00.750',
-				end:'00:00:05,750',
-				text: "Your predilections for the bottle are tearing this family apart!, Your predilections for the bottle are tearing this family apart!"
-			},
-			{
-				start: '00:00:06.000',
-				end: '00:00:12,000',
-				text: "bla bla bla bla bla bla bla "
-			},
-			
-		]
-
-		//console.log('%c URL', 'font-size: 18px; color: green;', url)
+		// console.log('%c Player component', 'color:red;')
 
 		return (
 			<Style>
-				<div style={{ display: `${showTranscript !== false ? ('flex') : ('initial')}` }}>
-					<div className='player-wrapper' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1}}>
+				<div style={{ display: `${showTranscript !== false ? ('flex') : ('initial')}`, height: '100%'}}>
+					<div className='player-wrapper' id={'player-container'} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1}}>
 						<ReactPlayer
 							ref={ref}
 							className='react-player'
 							width='100%'
-							height='50vh'
+							height='100%'
 							url={url}
 							playing={playing}
 							playbackRate={parseFloat(playbackRate)}
@@ -112,25 +106,32 @@ export default class Player extends PureComponent {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-							<Subtitles>{subtitleText}</Subtitles>
+							<Subtitles style={{ display: `${subtitleText !== '' ? ('flex') : ('none')}` }} ><h3>{subtitleText}</h3></Subtitles>
 							{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 						</Blank>
 					</div>
 					<Transcript style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript}>
 						<div className={'side-bar'}>
 							<img src={chevron} className={'toggle-transcript'} onClick={e => setToggleTranscript(!toggleTranscript)}/>
+							<Help src={helpIcon} onClick={handleShowHelp}/>
 						</div>
 						<div className={'main-bar'}>
 							<div className={'transcript-title'}>
-								<h2>Transcript View - {content !== undefined ? (content.settings.targetLanguages) : (null)}</h2>
+								<h2>Video Audio - {content !== undefined ? (content.settings.targetLanguages) : (null)}</h2>
+								<h2>Caption Language - {displaySubtitles !== null ? (displaySubtitles.language) : (null)}</h2>
 							</div>
 							<div className={'transcript-content'}>
-								{
-									mySub.map((element, index) =>
-										<div key={index} className={"transcript-row"} onClick={e => handleSeekChange(null, element.start.split(':').reduce((acc,time) => (60 * acc) + +time))}>
-											<p>{element.text}</p>
-										</div>
-									)
+								{	displaySubtitles != null ? (
+
+									displaySubtitles['content'].map((element, index) =>
+											<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
+												key={index}
+												onClick={e => handleSeekChange(null, (element.start * duration / 100) + .5)}
+												>
+												<p>{element.text}</p>
+											</div>
+										)
+									) : (null)
 								}
 								<br/>
 							</div>
@@ -140,7 +141,9 @@ export default class Player extends PureComponent {
 				{/* <div className={`collection-container`}>
 					<CollectionsContainer/>
 				</div> */}
-				<EventsContainer currentTime={progress.playedSeconds.toFixed(1)} duration={duration}
+				<EventsContainer
+					currentTime={progress.playedSeconds.toFixed(1)}
+					duration={duration}
 					handleSeek={handleSeekChange}
 					handleMute={handleMuted}
 					handlePlay={handlePlay}
@@ -151,9 +154,20 @@ export default class Player extends PureComponent {
 					handleShowComment={handleShowComment}
 					// handleCensorPosition={video.handleCensorPosition}
 					// handleCensorActive={video.handleCensorActive}
-				></EventsContainer>
-				{/* subtitle container ? */}
+				/>
+				{
+					url !== '' && showTranscript ? (
+						//showsubtitles
+						<PlayerSubtitlesContainer
+							currentTime={progress.playedSeconds.toFixed(1)}
+							duration={duration}
+							handleShowSubtitle={handleShowSubtitle}
+							indexToDisplay={indexToDisplay}
+						/>
+					) : (null)
+				}
+
 			</Style>
 		)
-	}	
+	}
 }

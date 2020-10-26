@@ -18,13 +18,10 @@ const CreateResourceContainer = props => {
 	} = props
 
 	const [tab, setTab] = useState(`resource`)
-	const [selectedFile, setSelectedFile] = useState()
 
 	const changeTab = e => {
 		setTab(e.target.name)
 	}
-
-	// const [fileVersion, setFileVersion] = useState(category.English.name)
 
 	const [data, setData] = useState({
 		id: 0,
@@ -56,27 +53,6 @@ const CreateResourceContainer = props => {
 		})
 	}
 
-	const handleFileChange = e =>{
-		console.log(e.target.files[0])
-		setSelectedFile(e.target.files[0])
-	}
-
-	// const handleFileUpload = async(e) =>{
-	// 	e.preventDefault()
-
-	// 	const formData = new FormData()
-	// 	formData.append(`file`, selectedFile)
-
-	// 	const backEndData = {
-	// 		file: formData,
-	// 		"resource-id": 0,
-	// 		"file-version": 0,
-	// 		mime: 0,
-	// 		metadata: ``,
-	// 	}
-	// 	uploadFile(backEndData)
-	// }
-
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 
@@ -98,25 +74,17 @@ const CreateResourceContainer = props => {
 		toggleModal()
 	}
 
-	const handleAddResourceSubmit = e => {
-		e.preventDefault()
-		toggleModal()
-	}
-
 	const viewstate = {
-		selectedFile,
 		user,
 		data,
 		tab,
 	}
 
 	const handlers = {
-		handleAddResourceSubmit,
 		handleSubmit,
 		handleTextChange,
 		handleTypeChange,
 		changeTab,
-		handleFileChange,
 		toggleModal,
 	}
 

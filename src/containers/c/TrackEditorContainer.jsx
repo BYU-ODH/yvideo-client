@@ -25,10 +25,11 @@ const TrackEditorContainer = props => {
 		setSubtitles,
 		activeUpdate,
 		deleteSubtitle,
-
+		subContentId,
 		getStreamKey,
 		streamKey,
 		toggleModal,
+		setSubContentId,
 	} = props
 
 	const {id} = useParams()
@@ -45,18 +46,26 @@ const TrackEditorContainer = props => {
 		console.log(`more testing`,testsubs)
 		setSubs(testsubs !== undefined?testsubs:[])
 	}
+	const getAllSubtitles = async() => {
+		console.log(`yeep`,id)
+		const testsubs = await getSubtitles(id)
+		console.log(`more testing`,testsubs)
+		const returnThis = testsubs !== undefined?testsubs:[]
+		return returnThis
+	}
 	useEffect(() => {
 		// console.log('use effecct')
-		if(!content.hasOwnProperty(id))
+		if(!content.hasOwnProperty(id)){
+			console.log(`this is happening`)
 			getData()
-
+		}
 		if(content[id] !== undefined){
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
-			 else {
+			else {
 				// CHECK RESOURCE ID
 				if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
 					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
@@ -71,38 +80,28 @@ const TrackEditorContainer = props => {
 	}, [content, resource, eventsArray, currentContent,subs,setSubs,streamKey])
 
 	const createAndAddSub = async () =>{
-		console.log(allSubs)
-		const subtitles = {...allSubs}
-		subtitles.map((item)=>console.log(`AAAAg`,item))
-		console.log(subtitles)
+		const subtitles = [...allSubs]
 		try{
 			for(let i = 0; i<subtitles.length;i++){
 				if (subtitles[i][`id`] === ``){
 					subtitles[i][`content-id`] = id
-					console.log(subtitles[i])
-					subtitles[i][`content`] = JSON.stringify(subtitles[i][`content`])
 					const subId = await createSubtitle(subtitles[i])
 					subtitles[i][`id`] = subId
 					subtitles[i][`content`] = JSON.parse(subtitles[i][`content`])
-					console.log(`subid`,subId)
 				}else if(subtitles[i][`id`] !== ``)
 					updateSubtitle(subtitles[i])
 
 			}
-			// setAllSubs(subtitles)
-			// console.log(subtitles)
 		}catch(error){
 
 		}
 
 	}
-	console.log(subs)
-	console.log(allSubs)
-	const deleteSubs = async(subs) =>{
+
+	const deleteSubs = (subs) =>{
 		deleteSubtitle(subs)
 	}
 	const setAllSubs = (subs) =>{
-		console.log(subs)
 		setSubtitles(subs)
 	}
 	// console.log(eventsArray)
@@ -124,7 +123,7 @@ const TrackEditorContainer = props => {
 		allSubs,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setAllSubs} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs} handleShowHelp={handleShowHelp}/>
+	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setAllSubs} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs} handleShowHelp={handleShowHelp} getAllSubtitles={getAllSubtitles}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({

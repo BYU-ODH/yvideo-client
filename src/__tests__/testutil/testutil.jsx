@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import proxies from 'proxy'
+import { browserStorage } from 'proxy'
 
 const thunk = require(`redux-thunk`).default
 const middlewares = [thunk]
@@ -75,6 +76,17 @@ export const file2 = {
 
 export const resource = {
 	id: `resourceId`,
+	copyrighted: true,
+	resourceName: `test resource name`,
+	physicalCopyExists: true,
+	published: true,
+	views: 0,
+	fullVideo: ``,
+	metadata: ``,
+	requesterEmail: `email`,
+	allFileVersions: ``,
+	resourceType: `video`,
+	dateValidated: ``,
 	title: `resource title`,
 	description: `description`,
 	keywords: [``],
@@ -297,6 +309,37 @@ export const resources = [
 	},
 ]
 
+export const resourcesNew = {
+	"0": {
+		allFileVersions: `English;Spanish;Korean;`,
+		copyrighted: true,
+		dateValidated: ``,
+		fullVideo: true,
+		id: `0`,
+		metadata: `test3`,
+		physicalCopyExists: true,
+		published: true,
+		requesterEmail: `test@email.com`,
+		resourceName: `resourcename0`,
+		resourceType: `video`,
+		views: 0,
+	},
+	"1": {
+		allFileVersions: `English;Spanish;Korean;`,
+		copyrighted: true,
+		dateValidated: ``,
+		fullVideo: true,
+		id: `1`,
+		metadata: `test1`,
+		physicalCopyExists: true,
+		published: true,
+		requesterEmail: `test@email.com`,
+		resourceName: `resourcename1`,
+		resourceType: `video`,
+		views: 0,
+	},
+}
+
 export const resources2 = [
 	{
 		id: `resourceId2`,
@@ -401,13 +444,68 @@ export const adminCategory = {
 	},
 }
 
+export const emptyStore = mockStore(
+	{
+		resourceStore: {},
+		authStore: {
+			user,
+		},
+		adminStore: {
+			data: [],
+			professor: professor1,
+		},
+		interfaceStore: {},
+		collectionStore: {
+			roles,
+			cache: [],
+			users: [],
+			courses: [],
+		},
+		contentStore:{
+			cache: [],
+		},
+		fileStore:{
+			cache: {},
+		},
+		languageStore:{
+			cache: {},
+		},
+	},
+	composeWithDevTools(thunk.withExtraArgument(proxies)),
+)
+
 export const store = mockStore(
 	{
 		resourceStore: {
 			cache:{
-				loading: false,
-				lastFetched: 1591825599289,
-				resources,
+				"0": {
+					allFileVersions: `English;Spanish;Korean;`,
+					copyrighted: true,
+					dateValidated: ``,
+					fullVideo: true,
+					id: `0`,
+					metadata: `test3`,
+					physicalCopyExists: true,
+					published: true,
+					requesterEmail: `test@email.com`,
+					resourceName: `resourcename0`,
+					resourceType: `video`,
+					views: 0,
+				},
+				"1": {
+					allFileVersions: `English;Spanish;Korean;`,
+					copyrighted: true,
+					dateValidated: ``,
+					fullVideo: true,
+					id: `1`,
+					metadata: `test1`,
+					physicalCopyExists: true,
+					published: true,
+					requesterEmail: `test@email.com`,
+					resourceName: `resourcename1`,
+					resourceType: `video`,
+					views: 0,
+				},
 			},
 		},
 		authStore: {
@@ -439,9 +537,19 @@ export const store = mockStore(
 			professor: professor1,
 		},
 		interfaceStore: {
-			menuActive:false,
-			displayBlocks: true,
-			modal,
+			menuActive: false,
+			modal: {
+				active: false,
+				component: null,
+				collectionId: -1,
+				isLabAssistantRoute: false,
+				props: {},
+			},
+			displayBlocks: browserStorage.displayBlocks,
+			headerBorder: false,
+			editorStyle: false,
+			lost: false,
+			events: [],
 		},
 		collectionStore: {
 			roles,
@@ -504,7 +612,7 @@ export const store = mockStore(
 		},
 		languageStore:{
 			cache: {
-				langs:[`test version`, `lang1`, `lang2`, `lang3`],
+				langs:[`test version`, `lang1`, `lang2`, `lang3`, `other`],
 			},
 			loading: false,
 			lastFetched: 0,

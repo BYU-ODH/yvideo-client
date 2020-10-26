@@ -1,29 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { subtitlesService } from 'services'
+import { Events } from 'components'
 
 const SubtitlesContainer = props => {
 	const {subtitles, currentTime, handleShowSubtitle, active,duration} = props
-	console.log(subtitles)
-	try{
-		console.log(subtitles[active])
-		subtitles[active][`content`].forEach(element => {
-			console.log(element)
-			const start = element.start / 100 * duration
-			const end = element.end / 100 * duration
-			if(currentTime >= start && currentTime <= end){
-				console.log(element)
-				handleShowSubtitle(element.text)
-			}else if (currentTime > end || currentTime < start)
-				handleShowSubtitle(``)
 
-		})
-	}catch(error){
+	const [subtitlesArray, setSubtitlesArray] = useState([])
+
+	useEffect(() => {
+		handleShowSubtitle(``)
+		if(subtitles[active] !== undefined){
+			const tempArray = subtitles[active][`content`]
+			setSubtitlesArray([...tempArray])
+
+		}else
+			setSubtitlesArray([])
+	}, [duration, subtitles])
+
+	// console.log(subtitlesArray)
+	for(let i = 0; i<subtitlesArray.length; i++){
+		const element = subtitlesArray[i]
+		const start = element.start / 100 * duration
+		const end = element.end / 100 * duration
+		if(currentTime >= start && currentTime <= end){
+			handleShowSubtitle(element.text)
+			break
+		}else if (currentTime > end || currentTime < start)
+			handleShowSubtitle(``)
 	}
 
-	// console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
+	const eventClassArray = subtitles
+	const viewstate = {
+		currentTime,
+		eventClassArray,
+	}
+	return <Events viewstate={viewstate}></Events>
 
-	return <div></div>
 }
 
 const mapStateToProps = ({ subtitlesStore }) => ({

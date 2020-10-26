@@ -17,6 +17,7 @@ import RootContainer from './c/RootContainer'
 import TrackEditorContainer from './c/TrackEditorContainer'
 import ManageResourceContainer from './c/ManageResourceContainer'
 import SubtitlesContainer from './c/SubtitlesContainer'
+import PlayerSubtitlesContainer from './c/PlayerSubtitlesContainer'
 import FileOverviewContainer from './c/FileOverviewContainer'
 
 export {
@@ -35,6 +36,7 @@ export {
 	ManagerContainer,
 	MenuContainer,
 	PlayerContainer,
+	PlayerSubtitlesContainer,
 	RootContainer,
 	TrackEditorContainer,
 	ManageResourceContainer,

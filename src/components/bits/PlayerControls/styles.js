@@ -8,6 +8,8 @@ import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
 import volumeIcon from 'assets/controls_volume.svg'
 import volumeIconMute from 'assets/controls_muted.svg'
+import clockIcon from 'assets/te-clock.svg'
+import playerCheck from 'assets/player-check.svg'
 
 const Style = styled.div`
 	position: absolute;
@@ -56,49 +58,64 @@ const Style = styled.div`
 		cursor: pointer;
 	}
 
-	& .speed {
+	& .menu-modal {
 		position: absolute;
 		right: 10px;
 		bottom: 60px;
 		width: 150px;
-		height: 230px;
-		background-color: white;
+		height: auto;
+		background-color: rgba(71, 71, 71, 0.8);
+		color: white;
 		display: flex;
 		flex-direction: column;
-
-		& h3 {
-			display: flex;
-			padding: 2px;
-			margin-bottom: 2px;
-			font-weight: 400 !important;
-			border-bottom: 1px solid black;
-			height: 20px;
-			text-align: left;
-			align-items: center;
-		}
+		border: 2px solid (71, 71, 71, 1);
+		border-radius: 5px;
 
 		& div {
 			position: relative;
-
-			& input {
-				position: relative;
-				width: 100%;
-				height: 30px;
-				font-size: 13px;
-				font-weight: 500;
-				margin: 2px 0px 2px 0px;
-				transition: .5s ease;
-				text-align: left;
-				border: none;
-				background-color: white;
-
-				:hover {
-					background-color: var(--navy-blue);
-					color: white;
-				}
-			}
 		}
 
+		& .active-value {
+			transition: none !important;
+			background: url(${playerCheck}) center no-repeat !important;
+			background-position: calc(100% - 10px) center !important;
+
+			:hover {
+				background-color: rgba(5,130,202,1);
+				color: white;
+			}
+		}
+	}
+
+	& h3 {
+		display: flex;
+    padding: 2px 2px 2px 5px;
+    margin-bottom: 2px;
+    font-weight: 500 !important;
+    border-bottom: 2px solid white;
+    height: 25px;
+    font-size: 1.55rem;
+    text-align: left;
+		align-items: center;
+	}
+
+	& input {
+		position: relative;
+		width: 100%;
+		height: 30px;
+		font-size: 1.4rem;
+		font-weight: 500;
+		margin: 2px 0px 2px 0px;
+		transition: .5s ease;
+		text-align: left;
+		border: none;
+		background: transparent;
+		color: white;
+
+		:hover {
+			background-color: rgba(5,130,202,1);
+			color: white;
+		}
 	}
 `
 
@@ -113,14 +130,17 @@ export const Volume = styled.button`
 `
 
 export const ClosedCaptions = styled.button`
-	background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)};
-	/* background: url(${closedCaptionOff}) center no-repeat; */
+	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
+	background: url(${closedCaption}) center no-repeat;
 `
 
 export const Fullscreen = styled.button`
-	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
-`
-export const Speed = styled.img`
 	width: 20px;
 	height: 20px;
+	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
+`
+export const Speed = styled.button`
+	width: 20px;
+	height: 20px;
+	background: url(${clockIcon}) center no-repeat;
 `

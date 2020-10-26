@@ -156,4 +156,16 @@ export const Icon = styled.div`
   width: 20px;
   height: 15px;
 `
+export const Help = styled.span`
+	width: 20px;
+	height: 20px;
+
+	& img {
+		width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -3px;
+    bottom: 5px;
+	}
+`
 export default Style

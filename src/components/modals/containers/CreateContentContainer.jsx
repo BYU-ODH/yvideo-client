@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-
-import Content from 'models/Content'
-
 import {
 	contentService,
 	collectionService,
@@ -18,16 +15,13 @@ const CreateContentContainer = props => {
 	const {
 		adminContent,
 		adminCreateContent,
-		adminCreateContentFromResource,
 		adminGetCollectionContent,
 		createContent,
 		modal,
-		search,
 		toggleModal,
 		getCollections,
 		resourceContent,
 		searchResource,
-		getFiles,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -51,31 +45,19 @@ const CreateContentContainer = props => {
 
 	useEffect(() => {
 		if(resourceContent[selectedResource] !== undefined){
-			let langs = resourceContent[selectedResource].allFileVersions.split(";")
-			let finalLanguages = []
+			const langs = resourceContent[selectedResource].allFileVersions.split(`;`)
+			const finalLanguages = []
 			langs.forEach((element, i) => {
-				if(element === ""){
-					// console.log('empty')
+				if(element === ``)
 					delete langs[i]
-				}
 				else {
-					// console.log('not empty')
-					let newLetter = element[0].toUpperCase()
+					const newLetter = element[0].toUpperCase()
 					element = newLetter + element.slice(1)
-					// console.log(element)
 					finalLanguages.push(element)
 				}
-			});
-			// console.log(langs)
-			// console.log(finalLanguages)
+			})
 			setLanguages(finalLanguages)
-			// console.log(resourceContent[selectedResource])
 		}
-
-		// if(resourceContent[selectedResource].files !== undefined) {
-		// 	setFiles(resourceContent.files)
-		// 	console.log(files)
-		// }
 	}, [resourceContent, selectedResource, files])
 
 	const changeTab = e => {
@@ -100,12 +82,10 @@ const CreateContentContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 		if (value.length > 1) {
-			// search(`content`, value, true)
 			searchResource(value)
 			setHide(false)
 		} else
 			setHide(true)
-
 	}
 
 	const handleSelectResourceChange = (e, name) => {
@@ -143,12 +123,10 @@ const CreateContentContainer = props => {
 
 		if(data.resource.keywords.length !== 0){
 			data.resource.keywords.forEach((element, i) => {
-
 				if(i !== data.resource.keywords.length -1)
 					tags += `${element}; `
 				else
 					tags += `${element}`
-
 			})
 		}
 
@@ -185,10 +163,10 @@ const CreateContentContainer = props => {
 	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
 
-		if(data.targetLanguages === ''){
-			alert('Please, select a valid language')
-			return;
-		}
+		// if(data.targetLanguages === ``){
+		// 	alert(`Please, select a valid language`)
+		// 	return
+		// }
 
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
 		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO

@@ -21,7 +21,7 @@ export default class SubtitlesService {
 		subtitlesClean: () => ({ type: this.types.SUBTITLES_CLEAN }),
 		subtitlesCreate: (subtitles) => ({ type: this.types.SUBTITLES_CREATE, payload: { subtitles }}),
 		subtitlesError: error => ({ type: this.types.SUBTITLES_ERROR, payload: { error } }),
-		subtitlesGet: subtitles => ({ type: this.types.SUBTITLES_GET, payload: { subtitles } }),
+		subtitlesGet: (subtitles, id) => ({ type: this.types.SUBTITLES_GET, payload: { subtitles, id } }),
 		subtitlesUpdate: subtitles => ({ type: this.types.SUBTITLES_UPDATE, payload: { subtitles }}),
 		activeUpdate: active => ({ type: this.types.ACTIVE_UPDATE, payload: { active }}),
 		setContentId: id => ({type: this.types.SET_CONTENT_ID,payload: {id}}),
@@ -69,6 +69,7 @@ export default class SubtitlesService {
 			return {
 				...store,
 				cache: [],
+				contentId: '',
 			}
 
 		case SUBTITLES_CREATE:
@@ -89,13 +90,11 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_GET:
-			console.log(`??//`,action.payload.subtitles)
+			console.log(`??//`,action.payload)
 			return {
 				...store,
-				cache: {
-					...store.cache,
-					...action.payload.subtitles,
-				},
+				cache: action.payload.subtitles,
+				contentId: action.payload.id,
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -103,10 +102,7 @@ export default class SubtitlesService {
 		case SUBTITLES_UPDATE:
 			return {
 				...store,
-				cache: {
-					...store.cache,
-					...action.payload.subtitles,
-				},
+				cache:action.payload.subtitles,
 				loading: false,
 			}
 		case ACTIVE_UPDATE:
@@ -124,9 +120,6 @@ export default class SubtitlesService {
 		}
 	}
 	setSubtitles = (content) => async (dispatch, getState, { apiProxy }) => {
-
-		console.log(`contenta`, content)
-		console.log(`contentb`,this.store)
 		// console.log('updated content1', content)
 
 		try {
@@ -141,25 +134,24 @@ export default class SubtitlesService {
 	}
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-		console.log(`this is working`)
 		// console.log('updated store', contentIds)
-		const time = Date.now() - getState().contentStore.lastFetched
-
-		const stale = time >= process.env.REACT_APP_STALE_TIME
-		// if (stale || force) {
+		let currentContentId = getState().subtitlesStore.contentId
 
 		dispatch(this.actions.subtitlesStart())
 
+		if(currentContentId !== id){
+			dispatch(this.actions.subtitlesClean())
+		}
+
+
 		try {
-			console.log(`wut`)
 			const result = await apiProxy.content.getSubtitles(id)
-			console.log(`result time`,result)
-			dispatch(this.actions.subtitlesGet(result))
-			console.log(`heya`,this.store)
+			dispatch(this.actions.subtitlesGet(result, id))
 			return result
 		} catch (error) {
 			console.error(error.message)
 			dispatch(this.actions.subtitlesError(error))
+			return[]
 		}
 
 		// } else dispatch(this.actions.subtitlesAbort())
@@ -170,10 +162,13 @@ export default class SubtitlesService {
 		// dispatch(this.actions.subtitlesStart())
 
 		try {
-			console.log(subtitle)
-			const result = await apiProxy.subtitles.post(subtitle)
-			console.log(result)
-
+			const tempSub = {}
+			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			tempSub[`language`] = subtitle[`language`]
+			tempSub[`title`] = subtitle[`title`]
+			tempSub[`content-id`] = subtitle[`content-id`]
+			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			const result = await apiProxy.subtitles.post(tempSub)
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
 
@@ -191,15 +186,13 @@ export default class SubtitlesService {
 		dispatch(this.actions.subtitlesStart())
 
 		try {
+			const tempSub = {}
+			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			tempSub[`language`] = subtitle[`language`]
+			tempSub[`title`] = subtitle[`title`]
+			tempSub[`content-id`] = subtitle[`content-id`]
 
-			const results = await apiProxy.content.edit(subtitle,subtitle[`id`])
-
-			// const metaResult =
-			// await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
-
-			dispatch(this.actions.subtitlesUpdate(subtitle))
+			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {
 			dispatch(this.actions.subtitlesError(error))
 		}
@@ -216,7 +209,6 @@ export default class SubtitlesService {
 
 		try {
 			await apiProxy.subtitles.delete(ids)
-
 			// console.log(result.data)
 
 			// TODO: Why doesn't this update to state cause it to rerender?

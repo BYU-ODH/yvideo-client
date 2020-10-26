@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton } from './styles'
+import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort, Loading } from './styles'
+
+import logo from 'assets/hexborder.svg'
 
 // import { PermissionTable } from 'components/bits'
 
@@ -9,8 +11,16 @@ import { departments } from 'lib/util'
 import removeIcon from 'assets/trash_icon.svg'
 
 export class CollectionPermissions extends PureComponent {
-	render() {
+	constructor(props){
+		super(props)
+		this.state={
+			sortType: {
+				reverse: true,
+			},
+		}
+	}
 
+	render() {
 		const {
 			viewstate,
 			handlers,
@@ -22,6 +32,7 @@ export class CollectionPermissions extends PureComponent {
 			state,
 			disabled,
 			disabledUser,
+			loaded,
 		} = viewstate
 
 		const {
@@ -33,8 +44,6 @@ export class CollectionPermissions extends PureComponent {
 		const {
 			username,
 		} = this.props.viewstate.user
-
-
 
 		// const reducedCourses = courses.map(item => ({
 		// 	id: item.id,
@@ -56,6 +65,39 @@ export class CollectionPermissions extends PureComponent {
 		// 	NetID: item.username,
 		// 	Email: item.email,
 		// }))
+
+		const sort = (data,sortType) => {
+			if (this.state.sortType.reverse === false){
+				this.setState({
+					sortType:{
+						reverse: true,
+					},
+				})
+				data.sort((a, b) => {
+					switch (sortType) {
+					case `Username`:
+						return b.username.localeCompare(a.username,{sensitivity:`base`})
+					case `Name`:
+						return b['account-name'].localeCompare(a['account-name'],{sensitivity:`base`})
+					}
+				})
+			}else{
+				this.setState({
+					sortType:{
+						reverse: false,
+					},
+				})
+				data.sort((a, b) => {
+					switch (sortType) {
+					case `Username`:
+						return a.username.localeCompare(b.username,{sensitivity:`base`})
+					case `Name`:
+						return a['account-name'].localeCompare(b['account-name'],{sensitivity:`base`})
+					}
+				})
+			}
+			return data
+		}
 
 		return (
 			<Style>
@@ -108,36 +150,35 @@ export class CollectionPermissions extends PureComponent {
 					</div>
 					<div id='user-table'>
 						<h4>Current Users</h4>
-						<Table border='1'>
-							<thead>
-								<tr>
-									<th>Username</th>
-									<th>Name</th>
-									<th>Last Login</th>
-									<th>Remove</th>
-								</tr>
-							</thead>
-							<tbody>
-								{ users.length > 0 ? (
-									 users.map((element, index) =>
-											<tr key={index}>
-												<td>{element['username']}</td>
-												<td>{element['account-name']}</td>
-												<td>
-													{
-														element['last-login'] !== 'na' ? (
-															`${element['last-login'].substring(0, 11)} ${element['last-login'].substring(element["last-login"].length - 4, element["last-login"].length)}`
-														) : ('NA')
-													}
-												</td>
-												<td onClick={e => handlers.removeUser(element['username'])}><img src={removeIcon} width="20px"/></td>
-											</tr>
+							<Table border='1'>
+								<thead>
+									<tr>
+										<th>Username<Sort onClick={()=>sort(users,"Username")}></Sort></th>
+										<th>Name<Sort onClick={()=>sort(users,"Name")}></Sort></th>
+										<th>Last Login</th>
+										<th>Remove</th>
+									</tr>
+								</thead>
+								<tbody>
+									{loaded === false ?
+										( users.length > 0 ?
+											users.map((element, index) =>
+												<tr key={index}>
+													<td>{element[`username`]}</td>
+													<td>{element[`account-name`]}</td>
+													<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
+													<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
+												</tr>,
+											)
+											:
+											null
 										)
-									) : (
-										null
-									)
-								}
-							</tbody>
+										:
+										(
+											<tr className='loading'><Loading colSpan={4} rowSpan={6} loaded={loaded}><img src={logo} /></Loading></tr>
+										)
+									}
+								</tbody>
 						</Table>
 					</div>
 				</TableContainer>

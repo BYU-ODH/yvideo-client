@@ -13,16 +13,29 @@ export const Back = styled.div`
 export const Container = styled.div`
 	margin: auto;
 	width: 80vw;
+	max-height: 70vh;
 	height: auto;
+	overflow-y: scroll !important;
 	background-color: white;
 	border-radius: 10px;
-	padding: 20px;
+	padding: 0px 20px 20px 20px;
 	position: relative;
 	text-align: center;
+	overflow: scroll;
+
+	& #title {
+		position: fixed;
+		width: 80vw;
+		height: 50px;
+		text-align: center;
+		padding-top: 5px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+		background-color: white;
+	}
 
 	& #content {
 		width: 80%;
-		margin: auto;
+		margin: 70px auto auto auto;
 		text-align: left;
 
 		& .large-img{
@@ -62,8 +75,8 @@ export const CloseHelp = styled.span`
 	& img {
 		width: 30px;
 		height: 30px;
-		position: absolute;
-		right: 10px;
-		top: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 	}
 `
