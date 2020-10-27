@@ -23,10 +23,13 @@ const PlayerControls = props => {
 		muted,
 		playing,
 		isCaption,
+		isAdmin,
+		isProf,
 		showTranscript,
 		subtitles,
 		playbackRate,
 		indexToDisplay,
+		displaySubtitles
 	} = props.viewstate
 
 	const {
@@ -112,7 +115,7 @@ const PlayerControls = props => {
 					</div>
 				</div>
 			}
-			{ isCaption &&
+			{ isCaption && (isAdmin || isProf) && 
 				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>
 					<div className="caption-list">
@@ -121,6 +124,14 @@ const PlayerControls = props => {
 							<input key={element.id} type="button" value={element.language} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? ('active-value') : ('')}/>
 						)
 						}
+					</div>
+				</div>
+			}
+			{ isCaption && !isAdmin && !isProf &&
+				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
+					<h3>Select Caption</h3>
+					<div className="caption-list">
+						<input type="button" value={displaySubtitles.language} className={'active-value'}/>
 					</div>
 				</div>
 			}

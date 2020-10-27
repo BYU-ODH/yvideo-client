@@ -11,6 +11,8 @@ import HelpDocumentation from 'components/modals/containers/HelpDocumentationCon
 const PlayerContainer = props => {
 
 	const {
+		isAdmin,
+		isProf,
 		contentCache,
 		getContent,
 		getStreamKey,
@@ -211,7 +213,6 @@ const PlayerContainer = props => {
 	}
 
 	const handleChangeSubtitle = (index) => {
-
 		let temp = subtitles[index]
 		let currentContent = temp.content
 
@@ -238,13 +239,31 @@ const PlayerContainer = props => {
 		})
 	}
 
-	if(displaySubtitles == null){
+	if(displaySubtitles == null && content != undefined){
 		//This statement prevents displaySubtitles from being null.
 		//If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
 
-		if(subtitles.length != 0){
+		if(subtitles.length == 1){
 			//some logic to pick the subtitle
 			handleChangeSubtitle(0)
+		}
+		else if(subtitles.length > 1) {
+			//pick the subtitle to display to be the one with the same language as the audio
+			let audioLanguage = content.settings.targetLanguages
+		
+			let result = 0;
+			for(let i = 0; i < subtitles.length; i++){
+				console.log("in loop")
+				let temp = subtitles[i];
+				console.log("TEMP CONTENT", temp)
+				//now that we have an actual object lets check language
+				//go through all subtitles and find there index where subtitle language = audio language
+				if(temp.language.toLowerCase() === audioLanguage.toLowerCase()){
+					result = i;
+					break;
+				}
+			}
+			handleChangeSubtitle(result)
 		}
 	}
 
@@ -270,6 +289,8 @@ const PlayerContainer = props => {
 		displaySubtitles,
 		subtitles,
 		indexToDisplay,
+		isAdmin,
+		isProf,
 	}
 
 	const handlers = {
