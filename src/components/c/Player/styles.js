@@ -113,7 +113,7 @@ export const Transcript = styled.div`
 		cursor: pointer;
 
 		& p {
-			border-bottom: 1.5px solid var(--light-blue); /* make ligther */
+			border-bottom: 1.5px solid rgba(5, 130, 202, 0.3); /* make ligther #0582ca or 5, 130, 202 */
 			padding: 5px 0px 5px 0px;
 			word-wrap: break-word;
 			font-size: 1.4rem;

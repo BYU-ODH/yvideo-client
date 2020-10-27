@@ -102,14 +102,14 @@ export default class ManageCollection extends PureComponent {
 				</TabHeader>
 				<Tab>
 					{isContent ?
-						content.map(item => (
-							<>
-								{ isLabAssistant !== undefined ? (
-									<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
-								) : (
-									<ContentOverviewContainer key={item.id} content={item} />
-								)}
-							</>
+						content.map((item, index) => (
+								<div key={index}>
+									{ isLabAssistant !== undefined ? (
+										<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
+									) : (
+										<ContentOverviewContainer key={item.id} content={item} />
+									)}
+								</div>
 						))
 						: (
 							<CollectionPermissionsContainer collection={collection} />
