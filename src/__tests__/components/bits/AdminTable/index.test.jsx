@@ -66,7 +66,7 @@ describe(`admin table test`, () => {
 		expect(wrapper.contains(<td>testname</td>)).toEqual(true)
 		expect(wrapper.contains(<td>testname1</td>)).toEqual(true)
 		expect(wrapper.contains(<td>admin</td>)).toEqual(true)
-		expect(wrapper.contains(<td>test@email.com</td>)).toEqual(true)
+		expect(wrapper.contains(<td>atest@email.com</td>)).toEqual(true)
 
 		expect(wrapper.contains("NetID")).toEqual(true)
 		expect(wrapper.contains("Name")).toEqual(true)
@@ -112,7 +112,7 @@ describe(`admin table test`, () => {
 		expect(wrapper.contains("Name")).toEqual(true)
 		expect(wrapper.contains("Collection")).toEqual(true)
 		expect(wrapper.contains("Type")).toEqual(true)
-	 expect(wrapper.contains("Expired")).toEqual(true)
+	  expect(wrapper.contains("Expired")).toEqual(true)
 		expect(wrapper.contains("ResourceID")).toEqual(true)
 	}),
 
