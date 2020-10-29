@@ -115,7 +115,7 @@ const PlayerControls = props => {
 					</div>
 				</div>
 			}
-			{ isCaption && 
+			{ isCaption &&
 				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>
 					<div className="caption-list">
@@ -127,7 +127,7 @@ const PlayerControls = props => {
 					</div>
 				</div>
 			}
-			{/* isCaption && (isAdmin || isProf) && 
+			{/* isCaption && (isAdmin || isProf) &&
 				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>
 					<div className="caption-list">
@@ -145,7 +145,7 @@ const PlayerControls = props => {
 						<input type="button" value={displaySubtitles.language} className={'active-value'}/>
 					</div>
 				</div>
-			}*/
+			*/}
 		</Style>
 	)
 
