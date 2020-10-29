@@ -5,6 +5,8 @@ import { resourceService, contentService } from 'services'
 
 import { SwitchToggle, AspectRadio, Tag, Spinner, LazyImage } from 'components/bits'
 
+import defaultThumbnail from 'assets/default-thumb.svg'
+
 import Style, {
 	EditButton,
 	Icon,
@@ -62,7 +64,7 @@ class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail} height='8rem' width='14rem' />
+						<LazyImage src={content.thumbnail !== "empty" ? (content.thumbnail) : (defaultThumbnail)} height='8rem' width='14rem' />
 					</div>
 					<div>
 						{editing ?
