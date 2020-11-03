@@ -78,6 +78,7 @@ const ResourceOverviewContainer = props => {
 	const handleToggleEdit = async () => {
 		// need to set up languages on store before editing
 		await getLangs()
+
 		await getResourceFiles(resource.id)
 
 		if (editing) {

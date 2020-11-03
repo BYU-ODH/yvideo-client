@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Scrubber, VolumeScrubber } from 'components/bits'
 
@@ -23,10 +23,13 @@ const PlayerControls = props => {
 		muted,
 		playing,
 		isCaption,
+		isAdmin,
+		isProf,
 		showTranscript,
 		subtitles,
 		playbackRate,
 		indexToDisplay,
+		displaySubtitles
 	} = props.viewstate
 
 	const {
@@ -43,6 +46,26 @@ const PlayerControls = props => {
 		setIsCaption,
 		handleChangeSubtitle,
 	} = props.handlers
+
+	useEffect(() => {
+		//Some browsers do not trigger an event when you exit full screen mode. So, you have to look for it manually adding an event listener
+		//after the event listener, there is a callback function which only has to set the fullscreen prop to false again.
+		//the close event is already handled when you close the full screen. So instead of looking at the escape event, we look for the fullscreenchange event
+		//when the screen changes we know that we should update our state.
+		document.addEventListener('fullscreenchange', exitHandler);
+		document.addEventListener('webkitfullscreenchange', exitHandler);
+		document.addEventListener('mozfullscreenchange', exitHandler);
+		document.addEventListener('MSFullscreenChange', exitHandler);
+
+		function exitHandler() {
+				if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+					///now, we only want to do this whenever the fullscreen is true so we make sure that this happens when we are exiting fullscreen
+					if(fullscreen) props.handlers.setFullscreen(!props.viewstate.fullscreen)
+
+				}
+		}
+	},)
+
 
 	const [showSpeed, setShowSpeed] = useState(false)
 
@@ -104,6 +127,25 @@ const PlayerControls = props => {
 					</div>
 				</div>
 			}
+			{/* isCaption && (isAdmin || isProf) &&
+				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
+					<h3>Select Caption</h3>
+					<div className="caption-list">
+						{subtitles.map((element, index) =>
+							<input key={element.id} type="button" value={element.language} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? ('active-value') : ('')}/>
+						)
+						}
+					</div>
+				</div>
+			}
+			{ isCaption && !isAdmin && !isProf &&
+				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
+					<h3>Select Caption</h3>
+					<div className="caption-list">
+						<input type="button" value={displaySubtitles.language} className={'active-value'}/>
+					</div>
+				</div>
+			*/}
 		</Style>
 	)
 

@@ -244,6 +244,7 @@ export default class ResourceService {
 		}
 	}
 
+	// it only updates store
 	updateFileVersion = (resource, files) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.resourcesStart())
 
@@ -272,6 +273,7 @@ export default class ResourceService {
 		// add file versions on resource
 		try {
 			const files = getState().resourceStore.cache[resourceId].files
+
 			const newFileStack = []
 
 			files.forEach(item => {
@@ -324,6 +326,7 @@ export default class ResourceService {
 				const result = await apiProxy.resources.get(id)
 
 				const { resource } = result.data
+
 				resource.resources = {}
 				resource.relations.forEach(item => resource.resources[item.type] = [])
 
@@ -373,6 +376,7 @@ export default class ResourceService {
 
 	removeResource = (resourceId) => async (dispatch, getState, { apiProxy }) => {
 
+		console.log(`object2`)
 		dispatch(this.actions.resourcesStart())
 
 		try {
@@ -384,6 +388,7 @@ export default class ResourceService {
 					filteredResources[key] = currentResources[key]
 			})
 
+			console.log(getState().resourceStore)
 			const result = await apiProxy.resources.delete(resourceId)
 			dispatch(this.actions.resourceDelete(filteredResources))
 
@@ -400,13 +405,9 @@ export default class ResourceService {
 
 			const allFiles = await apiProxy.resources.files(resourceId)
 
-			console.log(allFiles)
-
 			const fileId = allFiles.find(element => element[`file-version`].includes(language) !== false)[`id`]
 
-			// console.log(fileId)
 			const result = await apiProxy.media.getKey(fileId)
-			// console.log('FILE KEY', result)
 
 			dispatch(this.actions.resourceStream(result[`file-key`]))
 
@@ -414,5 +415,4 @@ export default class ResourceService {
 			dispatch(this.actions.resourcesError(error))
 		}
 	}
-
 }

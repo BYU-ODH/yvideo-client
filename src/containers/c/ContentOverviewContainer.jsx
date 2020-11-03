@@ -54,12 +54,11 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleRemoveContent = e => {
-		if(isLabAssistant){
+		if(isLabAssistant)
 			adminRemoveCollectionContent(content.id)
-		}
-		else {
+		 else
 			removeCollectionContent(content.collectionId, content.id)
-		}
+
 	}
 
 	const handleTogglePublish = e => {

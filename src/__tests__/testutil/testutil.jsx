@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import proxies from 'proxy'
+import { browserStorage } from 'proxy'
 
 const thunk = require(`redux-thunk`).default
 const middlewares = [thunk]
@@ -49,14 +50,85 @@ export const user = {
 	username: `testusername`,
 }
 
+export const file1 = {
+	"file-version": `test version`,
+	filepath: `test file path`,
+	id: `test id`,
+	metadata: `metadata`,
+	"resource-id": `test resource id`,
+}
+
+export const file1mod = {
+	"file-version": `test version mod`,
+	filepath: `test file path`,
+	id: `test id`,
+	metadata: `metadata`,
+	"resource-id": `test resource id`,
+}
+
+export const file2 = {
+	"file-version": `test version2`,
+	filepath: `test file path2`,
+	id: `test id2`,
+	metadata: `metadata2`,
+	"resource-id": `test resource id2`,
+}
+
 export const resource = {
 	id: `resourceId`,
+	copyrighted: true,
+	resourceName: `test resource name`,
+	physicalCopyExists: true,
+	published: true,
+	views: 0,
+	fullVideo: ``,
+	metadata: ``,
+	requesterEmail: `email`,
+	allFileVersions: ``,
+	resourceType: `video`,
+	dateValidated: ``,
 	title: `resource title`,
 	description: `description`,
 	keywords: [``],
 	languages: {
 		iso639_3:[],
 	},
+	files: [file1],
+	type: `video`,
+	dateAdded: `1591672795`,
+	dateModified:`1591672795`,
+	status:`normal`,
+	clientUser: {
+		id: `user:22`,
+	},
+	client:{
+		id: `byu_demo`,
+		name: `BYU Demos`,
+	},
+	content:{
+		files:[
+			{
+				streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
+				bytes:0,
+				representation:`original`,
+				quality:1,
+				mime:`video/x-youtube`,
+				mimeType:`video/x-youtube`,
+				attributes: [],
+			},
+		],
+	},
+}
+
+export const resource2 = {
+	id: `resourceId2`,
+	title: `resource title2`,
+	description: `description`,
+	keywords: [``],
+	languages: {
+		iso639_3:[],
+	},
+	files: [file2],
 	type: `video`,
 	dateAdded: `1591672795`,
 	dateModified:`1591672795`,
@@ -201,8 +273,8 @@ export const professor2 = {
 	username: `testusername2`,
 }
 
-export const resources = {
-	resourceId: {
+export const resources = [
+	{
 		id: `resourceId`,
 		title: `resource title`,
 		description: `description`,
@@ -235,7 +307,74 @@ export const resources = {
 			],
 		},
 	},
+]
+
+export const resourcesNew = {
+	"0": {
+		allFileVersions: `English;Spanish;Korean;`,
+		copyrighted: true,
+		dateValidated: ``,
+		fullVideo: true,
+		id: `0`,
+		metadata: `test3`,
+		physicalCopyExists: true,
+		published: true,
+		requesterEmail: `test@email.com`,
+		resourceName: `resourcename0`,
+		resourceType: `video`,
+		views: 0,
+	},
+	"1": {
+		allFileVersions: `English;Spanish;Korean;`,
+		copyrighted: true,
+		dateValidated: ``,
+		fullVideo: true,
+		id: `1`,
+		metadata: `test1`,
+		physicalCopyExists: true,
+		published: true,
+		requesterEmail: `test@email.com`,
+		resourceName: `resourcename1`,
+		resourceType: `video`,
+		views: 0,
+	},
 }
+
+export const resources2 = [
+	{
+		id: `resourceId2`,
+		title: `resource title2`,
+		description: `description2`,
+		keywords: [],
+		languages: {
+			iso639_3:[],
+		},
+		type: `video`,
+		dateAdded: `1591672795`,
+		dateModified:`1591672795`,
+		status:`normal`,
+		clientUser: {
+			id: `user:22`,
+		},
+		client:{
+			id: `byu_demo`,
+			name: `BYU Demos`,
+		},
+		content:{
+			files:[
+				{
+					streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
+					bytes:0,
+					representation:`original`,
+					quality:1,
+					mime:`video/x-youtube`,
+					mimeType:`video/x-youtube`,
+					attributes: [],
+				},
+			],
+		},
+	},
+]
 
 export const roles = {
 	0:{
@@ -283,29 +422,90 @@ export const roles = {
 	},
 }
 
-export const file1 = {
-	"file-version": `test version`,
-	filepath: `test file path`,
-	id: `test id`,
-	metadata: `metadata`,
-	"resource-id": `test resource id`,
+export const lang1 = {
+	name: `test lang`,
 }
 
-export const file2 = {
-	"file-version": `test version2`,
-	filepath: `test file path2`,
-	id: `test id2`,
-	metadata: `metadata2`,
-	"resource-id": `test resource id2`,
+export const adminCategory = {
+	Users: {
+		name: `Users`,
+		placeholder: `Search for a user`,
+		url: `user`,
+	},
+	Collections: {
+		name: `Collections`,
+		placeholder: `Search for a collection`,
+		url: `collection`,
+	},
+	Content: {
+		name: `Content`,
+		placeholder: `Search for content`,
+		url: `content`,
+	},
 }
+
+export const emptyStore = mockStore(
+	{
+		resourceStore: {},
+		authStore: {
+			user,
+		},
+		adminStore: {
+			data: [],
+			professor: professor1,
+		},
+		interfaceStore: {},
+		collectionStore: {
+			roles,
+			cache: [],
+			users: [],
+			courses: [],
+		},
+		contentStore:{
+			cache: [],
+		},
+		fileStore:{
+			cache: {},
+		},
+		languageStore:{
+			cache: {},
+		},
+	},
+	composeWithDevTools(thunk.withExtraArgument(proxies)),
+)
 
 export const store = mockStore(
 	{
 		resourceStore: {
 			cache:{
-				loading: false,
-				lastFetched: 1591825599289,
-				resources,
+				"0": {
+					allFileVersions: `English;Spanish;Korean;`,
+					copyrighted: true,
+					dateValidated: ``,
+					fullVideo: true,
+					id: `0`,
+					metadata: `test3`,
+					physicalCopyExists: true,
+					published: true,
+					requesterEmail: `test@email.com`,
+					resourceName: `resourcename0`,
+					resourceType: `video`,
+					views: 0,
+				},
+				"1": {
+					allFileVersions: `English;Spanish;Korean;`,
+					copyrighted: true,
+					dateValidated: ``,
+					fullVideo: true,
+					id: `1`,
+					metadata: `test1`,
+					physicalCopyExists: true,
+					published: true,
+					requesterEmail: `test@email.com`,
+					resourceName: `resourcename1`,
+					resourceType: `video`,
+					views: 0,
+				},
 			},
 		},
 		authStore: {
@@ -337,9 +537,19 @@ export const store = mockStore(
 			professor: professor1,
 		},
 		interfaceStore: {
-			menuActive:false,
-			displayBlocks: true,
-			modal,
+			menuActive: false,
+			modal: {
+				active: false,
+				component: null,
+				collectionId: -1,
+				isLabAssistantRoute: false,
+				props: {},
+			},
+			displayBlocks: browserStorage.displayBlocks,
+			headerBorder: false,
+			editorStyle: false,
+			lost: false,
+			events: [],
 		},
 		collectionStore: {
 			roles,
@@ -394,6 +604,18 @@ export const store = mockStore(
 					resource,
 				},
 			],
+		},
+		fileStore:{
+			cache: {},
+			loading: false,
+			lastFetched: 0,
+		},
+		languageStore:{
+			cache: {
+				langs:[`test version`, `lang1`, `lang2`, `lang3`, `other`],
+			},
+			loading: false,
+			lastFetched: 0,
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),

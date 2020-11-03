@@ -384,7 +384,7 @@ const apiProxy = {
 			return res.data
 		}),
 		/**
-		 * Retrieves a single resource from a resource ID
+		 * Retrieves a single resource from a reso`urce ID
 		 *
 		 * @param id the resource ID of the requested resource
 		 *

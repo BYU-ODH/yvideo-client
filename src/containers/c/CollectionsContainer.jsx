@@ -23,7 +23,7 @@ const CollectionsContainer = props => {
 	} = props
 
 	useEffect(() => {
-		getCollections()
+		getCollections(true)
 		setHeaderBorder(false)
 
 		const allContent = {}
@@ -38,7 +38,7 @@ const CollectionsContainer = props => {
 		return () => {
 			setHeaderBorder(true)
 		}
-	}, [collections, getCollections, setContent, setHeaderBorder])
+	}, [setContent, setHeaderBorder])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -81,6 +81,7 @@ const mapDispatchToProps = {
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
 	toggleModal: interfaceService.toggleModal,
 	setHeaderBorder: interfaceService.setHeaderBorder,
+	updateContent: contentService.updateContent,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

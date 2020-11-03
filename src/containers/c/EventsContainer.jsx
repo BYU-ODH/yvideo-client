@@ -71,6 +71,7 @@ const EventsContainer = props => {
 	}, [duration, events])
 
 	eventArray.forEach(element => {
+		// console.log(element)
 		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
 			switch (element.type) {
@@ -100,7 +101,7 @@ const EventsContainer = props => {
 
 				// 	break;
 			case `Blank`:
-				console.log(`should blank`)
+				console.log('should blank')
 				handleBlank(true)
 				break
 			default:

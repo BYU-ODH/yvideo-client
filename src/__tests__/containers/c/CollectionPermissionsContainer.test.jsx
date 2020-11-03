@@ -16,6 +16,7 @@ const props = {
 	updateCollectionRoles: jest.fn(),
 }
 
+// TODO: come back later when it is finished
 describe(`CollectionPermissionsContainer test`, () => {
 
 	it(`should get correct viewstate`, () => {
@@ -52,6 +53,9 @@ describe(`CollectionPermissionsContainer test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
+
+		// console.log(wrapper.debug())
+		// console.log(wrapper.find({"className" : `faculty-input`}).debug())
 
 		// check state before changing
 		// expect(wrapper.find(`CollectionPermissions`).props().viewstate.state.disabled.catalog).toBe(true)

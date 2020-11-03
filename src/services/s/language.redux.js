@@ -122,15 +122,12 @@ export default class LanguageService {
 
 			const result = await apiProxy.language.delete(lang)
 
-			console.log(result)
-
 		} catch (error) {
 			dispatch(this.actions.languageError(error))
 		}
 	}
 
 	get = () => async (dispatch, getState, { apiProxy }) => {
-
 		dispatch(this.actions.languageStart())
 
 		try {

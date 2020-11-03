@@ -76,26 +76,20 @@ const Style = styled.div`
 		}
 
 		& .active-value {
-			transition: none !important;
 			background: url(${playerCheck}) center no-repeat !important;
 			background-position: calc(100% - 10px) center !important;
-
-			:hover {
-				background-color: rgba(5,130,202,1);
-				color: white;
-			}
 		}
 	}
 
 	& h3 {
 		display: flex;
-    padding: 2px 2px 2px 5px;
-    margin-bottom: 2px;
-    font-weight: 500 !important;
-    border-bottom: 2px solid white;
-    height: 25px;
-    font-size: 1.55rem;
-    text-align: left;
+		padding: 2px 2px 2px 5px;
+		margin-bottom: 2px;
+		font-weight: 500 !important;
+		border-bottom: 2px solid white;
+		height: 25px;
+		font-size: 1.55rem;
+		text-align: left;
 		align-items: center;
 	}
 
@@ -130,6 +124,7 @@ export const Volume = styled.button`
 `
 
 export const ClosedCaptions = styled.button`
+	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
 	background: url(${closedCaption}) center no-repeat;
 `
 

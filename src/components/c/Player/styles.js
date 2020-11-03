@@ -21,6 +21,7 @@ export const Style = styled.div`
 		height:100%;
 		position: relative;
 		background-color: black;
+		height: 100%;
 	}
 `
 
@@ -44,16 +45,15 @@ export const Comment = styled.div`
 	color: white; style={{ w}}
 	z-index: 15;
 `
-
 export const Transcript = styled.div`
 	position: relative;
-	width: ${props => props.displayTranscript ? `50rem` : `2rem`};
+	width: ${props => props.displayTranscript ? ('50rem') : ('2rem')};
 	height: 100%;
 	padding: 0px 10px 0px 10px;
 	border: 1px solid black;
 	transition: 1s ease;
 	display: flex;
-	/* background-color: ${props => props.displayTranscript ? `white` : `var(--light-blue)`}; */
+	/* background-color: ${props => props.displayTranscript ? ('white') : ('var(--light-blue)')}; */
 
 	& .side-bar {
 		position: absolute;
@@ -62,6 +62,10 @@ export const Transcript = styled.div`
 		height: 100%;
 		/* background-color: rgba(5, 130, 202, 0.5); */
 		background-color: var(--light-blue);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: 5px;
 
 		& img {
 			cursor: pointer;
@@ -69,17 +73,16 @@ export const Transcript = styled.div`
 	}
 
 	& .toggle-transcript {
-		position: absolute;
-		top: 2px;
-		left: 5px;
+		position: relative;
+		margin-top: 5px;
 		width: 30px;
 		height: 30px;
 		transition: .5s ease;
-		transform: ${props => props.displayTranscript ? `rotate(-180deg)` : `rotate(0deg)`};
+		transform: ${props => props.displayTranscript ? ('rotate(-180deg)') : ('rotate(0deg)')};
 	}
 
 	& .main-bar {
-		visibility: ${props => props.displayTranscript ? `visible` : `hidden`};
+		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
 		margin-left: 45px;
 		max-height: 50rem;
 		overflow-y: scroll !important;
@@ -110,7 +113,7 @@ export const Transcript = styled.div`
 		cursor: pointer;
 
 		& p {
-			border-bottom: 1.5px solid var(--light-blue); /* make ligther */
+			border-bottom: 1.5px solid rgba(5, 130, 202, 0.3); /* make ligther #0582ca or 5, 130, 202 */
 			padding: 5px 0px 5px 0px;
 			word-wrap: break-word;
 			font-size: 1.4rem;
@@ -121,7 +124,6 @@ export const Transcript = styled.div`
 		background-color: rgba(5, 130, 202, 0.3);
 	}
 `
-
 export const Subtitles = styled.div`
 	position: absolute;
 	bottom: 80px;
@@ -142,6 +144,11 @@ export const Subtitles = styled.div`
 		line-height: 1.5;
 		letter-spacing: .7px;
 	}
+`
+export const Help = styled.img`
+	margin-top: 5px;
+	width: 25px;
+	height: 25px;
 `
 
 export default Style
