@@ -25,6 +25,8 @@ import blankIcon from 'assets/event_blank.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
 import saveIcon from 'assets/annotations-save.svg'
+import zoomIn from 'assets/te-zoom-in.svg'
+import zoomOut from 'assets/te-zoom-out.svg'
 
 import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
@@ -188,15 +190,17 @@ const TrackEditor = props => {
 			window.onbeforeunload = undefined
 		}
 
-		if(blockLeave)
+		if(blockLeave){
 			window.onbeforeunload = () => true
-		 else
+		}
+		else {
 			window.onbeforeunload = undefined
+		 	setBlock(false)
+		}
 
-		if(blockLeave)
-			window.onbeforeunload = () => true
-		 else
-			window.onbeforeunload = undefined
+		return function cleanup () {
+			window.onbeforeunload = null;
+		}
 
 	}, [eventsArray])
 
@@ -571,7 +575,26 @@ const TrackEditor = props => {
 			}
 		}
 	}
-
+	const handleZoomChange = (e, d) => {
+		console.log(d.x)
+		if(d.x < zoomFactor){
+			if(d.x === 0){
+			// console.log('zero')
+				setZoomFactor(0)
+				setWidth(0)
+				handleScrollFactor(`start`)
+			} else {
+			// console.log('smaller')
+				setZoomFactor(d.x)
+				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
+			}
+		} else if(d.x > zoomFactor) {
+		// console.log('larger')
+			setZoomFactor(d.x)
+			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+		}
+		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+	}
 	const filler1 = () => {
 		// OLD SCROLL FUNCTIONALITY
 		// const handleScrollFactorD = (e, d) => {
@@ -987,31 +1010,15 @@ const TrackEditor = props => {
 						<div className='zoom-controls'>
 							{/* ADD ZOOM ICON */}
 							<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+								<img src={zoomOut} style={{ width: '20px' }}/>
 								<Rnd
 									className={`zoom-indicator`}
 									bounds={`parent`}
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
-									onDragStop={(e, d) => {
-										if(d.x < zoomFactor){
-											if(d.x === 0){
-											// console.log('zero')
-												setZoomFactor(0)
-												setWidth(0)
-												handleScrollFactor(`start`)
-											} else {
-											// console.log('smaller')
-												setZoomFactor(d.x)
-												setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-											}
-										} else if(d.x > zoomFactor) {
-										// console.log('larger')
-											setZoomFactor(d.x)
-											setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
-										}
-										setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
-									}}
+									onDragStop={(e, d) => handleZoomChange(e, d)}
 								></Rnd>
+								<img src={zoomIn} style={{ float: 'right', width: '20px'}}/>
 							</div>
 							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 
@@ -1028,7 +1035,9 @@ const TrackEditor = props => {
 									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}><img src={lIcon}/></span>
 									<div className={`zoom-scroll-container`}>
 										{/* <div style={{ width: '98%',  height: '100%', backgroundColor: 'red'}}></div> */}
+
 										<div className={`zoom-scroll-indicator`}></div>
+
 									</div>
 									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}><img src={rIcon}/></span>
 									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}><img src={rrIcon}/></span>

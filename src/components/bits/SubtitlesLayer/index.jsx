@@ -139,11 +139,9 @@ const SubtitlesLayer = props => {
 							subs !== undefined ? (
 								<>
 									{subs.map((event, index) => (
-										<>
-											<div key={index}>
-												{printEvents(event, index)}
-											</div>
-										</>
+										<div key={index}>
+											{printEvents(event, index)}
+										</div>
 									))}
 								</>
 							) : null
