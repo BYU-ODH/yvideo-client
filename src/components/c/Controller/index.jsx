@@ -21,7 +21,7 @@ const Controller = props => {
 		url,
 		getDuration,
 		minimized,
-		// handleLastClick,
+		handleLastClick,
 		togglendTimeline,
 		getVideoTime,
 	} = props
@@ -40,8 +40,8 @@ const Controller = props => {
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [subtitleText, setSubtitleText] = useState(``)
-	// const [censorPosition, setCensorPosition] = useState([0,0])
-	// const [censorActive, SetCensorActive] = useState(false)
+	const [censorPosition, setCensorPosition] = useState([0,0])
+	const [censorActive, SetCensorActive] = useState(false)
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
@@ -146,17 +146,17 @@ const Controller = props => {
 			console.log(value)
 			setSubtitleText(value)
 		},
-		// handleCensorPosition: (position) => {
-		// 	//console.log(position)
-		// 	if(position !== undefined){
-		// 		setCensorPosition(
-		// 			position
-		// 		)
-		// 	}
-		// },
-		// handleCensorActive: (bool) => {
-		// 	SetCensorActive(bool)
-		// }
+		handleCensorPosition: (position) => {
+			//console.log(position)
+			if(position !== undefined){
+				setCensorPosition(
+					position
+				)
+			}
+		},
+		handleCensorActive: (bool) => {
+			SetCensorActive(bool)
+		}
 	}
 
 	const config = {
@@ -200,14 +200,14 @@ const Controller = props => {
 	return (
 		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id="controller">
 			{/* <Style> */}
-			{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
-			<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
+			<Blank blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}>
+			{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
 				{subtitleText !== `` ?(
 					<Subtitles>{subtitleText}</Subtitles>
 				) :``}
 
-				{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
+				<Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor>
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
@@ -279,8 +279,8 @@ const Controller = props => {
 				toggleMute={video.toggleMute}
 				handleBlank={video.handleBlank}
 				handleShowComment={video.handleShowComment}
-				// handleCensorPosition={video.handleCensorPosition}
-				// handleCensorActive={video.handleCensorActive}
+				handleCensorPosition={video.handleCensorPosition}
+				handleCensorActive={video.handleCensorActive}
 			></EventsContainer>
 			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
 				handleShowSubtitle={video.handleShowSubtitle}

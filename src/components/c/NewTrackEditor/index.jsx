@@ -20,7 +20,7 @@ import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
 import pauseIcon from 'assets/event_pause.svg'
 import commentIcon from 'assets/event_comment.svg'
-// import censorIcon from 'Assets/event_censor.svg'
+import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
@@ -82,16 +82,16 @@ const TrackEditor = props => {
 				y: 0,
 			},
 		},
-		// {
-		// 	type: `Censor`,
-		// 	icon: censorIcon,
-		// 	start: 0,
-		// 	end: 10,
-		// 	layer: 0,
-		// 	position: {
-		// 		0: [0, 0, 30, 40],
-		// 	},
-		// },
+		{
+			type: `Censor`,
+			icon: censorIcon,
+			start: 0,
+			end: 10,
+			layer: 0,
+			position: {
+				0: [0, 0, 30, 40],
+			},
+		},
 		{
 			type: `Blank`,
 			icon: blankIcon,
@@ -134,8 +134,8 @@ const TrackEditor = props => {
 	const [subModalVisible, setSubModalVisible] = useState(false)
 	const [subModalMode, setSubModalMode] = useState(``)
 	const [subChanges, setSubChanges] = useState(0)
-	// const [editCensor, setEditCensor] = useState({})
-	// const [lastClick, setLastClick] = useState({x: 0, y: 0})
+	const [editCensor, setEditCensor] = useState({})
+	const [lastClick, setLastClick] = useState({x: 0, y: 0})
 	// console.log(allEvents)
 	const [dimensions, setDimensions] = useState({
 		height: window.innerHeight,
@@ -395,77 +395,76 @@ const TrackEditor = props => {
 		setAllSubs(currentSubs)
 		setSideEditor(false)
 	}
-	const filler = () =>{
-		// const handleCensorRemove = (item) => {
-		// 	let index = eventToEdit
-		// 	let cEvent = allEvents[index]
-		// 	let layer = cEvent.layer
+	const handleCensorRemove = (item) => {
+		let index = eventToEdit
+		let cEvent = allEvents[index]
+		let layer = cEvent.layer
 
-		// 	delete cEvent.position[item]
+		delete cEvent.position[item]
 
-		// 	updateEvents(index, cEvent, layer)
+		updateEvents(index, cEvent, layer)
 
-		// }
-
-		// const handleAddCensor = () => {
-
-		// 	let temp = editCensor
-		// 	const last = Object.keys(temp)
-
-		// 	if(videoCurrentTime === 0 && last.length === 0){
-		// 		temp[`0.0`] = [0 ,0, 30, 40]
-		// 	}
-		// 	else if(videoCurrentTime == 0 && last.length > 0){
-		// 		temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
-		// 	}
-		// 	else{
-		// 		temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
-		// 	}
-
-		// 	console.log('temp', temp)
-		// 	document.getElementById('tableBottom').scrollIntoView(false)
-		// 	setEditCensor(temp)
-		// 	handleSaveCensor()
-		// }
-
-		// const handleEditCensor = (e, item, int) => {
-		// 	let object = editCensor
-		// 	//console.log(editCensor)
-		// 	let value = (parseFloat(e.target.value)).toFixed(1)
-
-		// 	switch (int) {
-		// 		case 1:
-		// 			object[item][0] = value
-		// 			break;
-		// 		case 2:
-		// 			object[item][1] = value
-		// 			break;
-		// 		case 3:
-		// 			object[item][2] = value
-		// 			break;
-		// 		case 4:
-		// 			object[item][3] = value
-		// 			break;
-
-		// 		default:
-		// 			break;
-		// 	}
-
-		// 	setEditCensor(object)
-		// }
-
-		// const handleSaveCensor = () => {
-		// 	console.log('SAVE CENSOR')
-		// 	let index = eventToEdit
-		// 	let cEvent = allEvents[index]
-		// 	let layer = cEvent.layer
-
-		// 	cEvent.position = editCensor
-
-		// 	setEditCensor({})
-		// 	updateEvents(index, cEvent, layer)
-		// }
 	}
+
+	const handleAddCensor = () => {
+
+		let temp = editCensor
+		const last = Object.keys(temp)
+
+		if(videoCurrentTime === 0 && last.length === 0){
+			temp[`0.0`] = [0 ,0, 30, 40]
+		}
+		else if(videoCurrentTime == 0 && last.length > 0){
+			temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
+		}
+		else{
+			temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
+		}
+
+		console.log('temp', temp)
+		document.getElementById('tableBottom').scrollIntoView(false)
+		setEditCensor(temp)
+		handleSaveCensor()
+	}
+
+	const handleEditCensor = (e, item, int) => {
+		let object = editCensor
+		//console.log(editCensor)
+		let value = (parseFloat(e.target.value)).toFixed(1)
+
+		switch (int) {
+			case 1:
+				object[item][0] = value
+				break;
+			case 2:
+				object[item][1] = value
+				break;
+			case 3:
+				object[item][2] = value
+				break;
+			case 4:
+				object[item][3] = value
+				break;
+
+			default:
+				break;
+		}
+
+		setEditCensor(object)
+	}
+
+	const handleSaveCensor = () => {
+		console.log('SAVE CENSOR')
+		let index = eventToEdit
+		let cEvent = allEvents[index]
+		let layer = cEvent.layer
+
+		cEvent.position = editCensor
+
+		setEditCensor({})
+		updateEvents(index, cEvent, layer)
+	}
+
 
 	const openSideEditor = (layerIndex, eventIndex) => {
 		setEventToEdit(eventIndex)
