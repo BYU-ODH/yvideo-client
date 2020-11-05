@@ -82,6 +82,7 @@ export const Timeline = styled.div`
 				height: 100% !important;
 				background-color: var(--light-blue);
 				border-radius: 20px;
+				cursor: move;
 			}
 		}
 
