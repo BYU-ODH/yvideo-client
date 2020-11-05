@@ -20,8 +20,8 @@ const SubtitlesModal = props => {
 	return (
 		<Style visible={visible}>
 			<div className={`inner`}>
-				<div onClick={() => setModalVisible(false)}>
-					<img alt={`close`}className={`closeModal`} src={`${closeIcon}`} onClick={()=>setModalVisible(false)}/>
+				<div className={`setModalVisible`} onClick={() => setModalVisible(false)}>
+					<img alt={`close`} className={`closeModal`} src={`${closeIcon}`} onClick={()=>setModalVisible(false)}/>
 				</div>
 				{mode === `create`?
 					<div>

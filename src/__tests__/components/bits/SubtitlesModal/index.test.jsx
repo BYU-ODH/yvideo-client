@@ -5,17 +5,15 @@ import Style from '../../../../components/bits/SubtitlesModal/styles'
 import { BrowserRouter } from 'react-router-dom'
 import sinon from "sinon";
 
-const mode = 'create'
-const visible = false
-const handleAddSubLayer = jest.fn()
 
 const props = {
-	mode, visible, handleAddSubLayer,
+	mode: 'create',
+	visible: false,
+	handleAddSubLayer: jest.fn(),
+	setModalVisible: jest.fn(),
 }
 
 describe(`Subtitles Modal test`, () => {
-
-
 	it(`mount`, () => {
 		let wrapper = mount(
 			<BrowserRouter>
@@ -40,30 +38,24 @@ describe(`Subtitles Modal test`, () => {
 		expect(mockCallBack.mock.calls.length).toEqual(1);
 	})
 
-	it('renders modal when open flag is true', () => {
+	it(`simulate onClick`, ()=> {
+		const mockCallBack = jest.fn();
+		const button = shallow(<div className="modalSection modalButton" onClick={mockCallBack}/>);
+		button.find('div').simulate('click');
+		expect(mockCallBack.mock.calls.length).toEqual(1);
+	})
+
+	it('simulate onClick', () => {
 		const mockCallBack = jest.fn();
 		const button = shallow(<button style={{margin:`10px`}} className="modalButton" onClick={mockCallBack}>Submit</button>);
 		button.find('button').simulate('click');
 		expect(mockCallBack.mock.calls.length).toEqual(1);
 	});
-	it('renders modal when open flag is true', () => {
-		const handleClick = sinon.spy();
-		let wrapper = shallow(<SubtitlesModal setModalVisible={handleClick} {...props}/>);
-		wrapper.find('.visible').prop('onClick')()
-		expect(handleClick.calledOnce).toBe(true);
-	});
-	// it('renders modal when open flag is true', () => {
-	// 	const handleClick = sinon.spy();
-	// 	let wrapper = shallow(<SubtitlesModal fromScratch={handleClick} {...props}/>);
-	// 	console.log(wrapper)
-	// 	wrapper.find('.closeModal').prop('onClick')()
-	// 	expect(handleClick.calledOnce).toBe(true);
-	// });
 
 	afterEach(() => {
     jest.resetAllMocks();
   });
-	it('renders modal when open flag is true', () => {
+	it('onClick createLayer.fromFile', () => {
 		const mElement = { files: "file" };
     const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement);
 		const handleClick = sinon.spy();
@@ -72,16 +64,22 @@ describe(`Subtitles Modal test`, () => {
 		expect(handleClick.calledOnce).toBe(true);
 	});
 
-	it('renders modal when open flag is true', () => {
+	it('simulate onChange files', () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<SubtitlesModal {...props} />
 			</BrowserRouter>,
 		)
-
 		wrapper.find({"id" : `subFileInput`}).simulate('change', { target: { files: 'path' } });
 		let checked = wrapper.find('[files="path"]').first();
 		expect(checked).toBeDefined();
 	});
+
+	it(`simulate onClick`, ()=> {
+		const wrapper = shallow(<SubtitlesModal {...props}/>);
+		wrapper.find(".setModalVisible").simulate('click');
+		wrapper.find(".closeModal").simulate('click');
+		wrapper.find(".modalSection .modalButton").simulate('click');
+	})
 
 })
