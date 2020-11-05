@@ -4,8 +4,6 @@ import Content from 'models/Content'
 
 const updateSessionId = (id) => {
 	if(id !== ``) window.clj_session_id = id
-	// console.log('update session id from: ', window.clj_session_id)
-	// console.log(' to ', id)
 }
 
 const apiProxy = {
@@ -24,12 +22,10 @@ const apiProxy = {
 			}),
 		},
 		collection: {
-			// get: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id,} }).then(res => res.data),
 			get: async (id) => {
 
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 
-				console.log(`ADMIN COLLECTION GET`, result)
 				updateSessionId(result.headers[`session-id`])
 
 				result.data.forEach(element => {
@@ -191,10 +187,11 @@ const apiProxy = {
 			 * @returns an array of users for a collection
 			 */
 			// get: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/permissions`, { withCredentials: true }),
-			getUsers: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/users`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
-				updateSessionId(res.headers[`session-id`])
-				return res.data
-			}),
+			getUsers: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/users`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
+				.then(res => {
+					updateSessionId(res.headers[`session-id`])
+					return res.data
+				}),
 			/**
 			 * Gets the current courses for the specified collection
 			 *
@@ -258,9 +255,7 @@ const apiProxy = {
 		 * @returns a map of the content, where the key is the content's ID
 		 */
 		get: async ids => {
-
 			const results = await Promise.all(ids.map(id =>
-
 				axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`,
 					{
 						withCredentials: true,
@@ -274,14 +269,11 @@ const apiProxy = {
 				}),
 			))
 
-			// console.log('get content')
 			const returnMe = results.reduce((map, item) => {
 				const newItem = new Content(item)
 				map[item.id] = newItem
 				return map
 			}, {})
-			console.log(`returnMe is`, returnMe)
-			// console.log(returnMe)
 			return returnMe
 		},
 		/**
@@ -393,7 +385,8 @@ const apiProxy = {
 		get: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}`, {
 			withCredentials: true,
 			headers: {
-				'session-id': window.clj_session_id},
+				'session-id': window.clj_session_id,
+			},
 		}).then(async res => {
 			await updateSessionId(res.headers[`session-id`])
 			return res.data
@@ -409,6 +402,7 @@ const apiProxy = {
 			await updateSessionId(res.headers[`session-id`])
 			return res.data
 		}),
+
 		files: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`,
 			{
 				withCredentials: true,
@@ -430,8 +424,7 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/ecatala/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
-						console.log(`%c From User 1` , `color: red;`)
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`).then(async res => {
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']
@@ -445,7 +438,6 @@ const apiProxy = {
 						'session-id': window.clj_session_id,
 					},
 				}).then(async res => {
-					console.log(`%c From User 2` , `color: blue;`, res)
 					await updateSessionId(res.headers[`session-id`])
 					return res
 				})
@@ -462,7 +454,7 @@ const apiProxy = {
 			 * @returns a map of the collections, where the key is the collection's ID
 			 */
 			get: async () => {
-				// const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/collections`, { withCredentials: true }).then(res => res.data)
+
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 					.then(async res => {
 						await updateSessionId(res.headers[`session-id`])
@@ -480,8 +472,8 @@ const apiProxy = {
 					item[`content`] = temp
 
 					delete item[`collection-name`]
-					// console.log(item)
 					map[item.id] = item
+
 					return map
 				}, {})
 			},
@@ -535,7 +527,6 @@ const apiProxy = {
 			},
 		}).then(res => {
 			updateSessionId(res.headers[`session-id`])
-			console.log(res)
 			return res
 		}),
 
@@ -547,7 +538,6 @@ const apiProxy = {
 			},
 		}).then(res => {
 			updateSessionId(res.headers[`session-id`])
-			console.log(res.data)
 			return res.data
 		}),
 	},
@@ -565,7 +555,6 @@ const apiProxy = {
 	},
 	subtitles: {
 		post: async (data) => {
-			console.log(data)
 			const returnMe = await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle`,data,{
 				withCredentials: true,
 				headers: {
