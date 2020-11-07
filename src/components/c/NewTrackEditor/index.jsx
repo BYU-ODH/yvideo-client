@@ -20,11 +20,13 @@ import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
 import pauseIcon from 'assets/event_pause.svg'
 import commentIcon from 'assets/event_comment.svg'
-// import censorIcon from 'Assets/event_censor.svg'
+import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
 import saveIcon from 'assets/annotations-save.svg'
+import zoomIn from 'assets/te-zoom-in.svg'
+import zoomOut from 'assets/te-zoom-out.svg'
 
 import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
@@ -80,16 +82,16 @@ const TrackEditor = props => {
 				y: 0,
 			},
 		},
-		// {
-		// 	type: `Censor`,
-		// 	icon: censorIcon,
-		// 	start: 0,
-		// 	end: 10,
-		// 	layer: 0,
-		// 	position: {
-		// 		0: [0, 0, 30, 40],
-		// 	},
-		// },
+		{
+			type: `Censor`,
+			icon: censorIcon,
+			start: 0,
+			end: 10,
+			layer: 0,
+			position: {
+				0: [0, 0, 30, 40],
+			},
+		},
 		{
 			type: `Blank`,
 			icon: blankIcon,
@@ -132,8 +134,8 @@ const TrackEditor = props => {
 	const [subModalVisible, setSubModalVisible] = useState(false)
 	const [subModalMode, setSubModalMode] = useState(``)
 	const [subChanges, setSubChanges] = useState(0)
-	// const [editCensor, setEditCensor] = useState({})
-	// const [lastClick, setLastClick] = useState({x: 0, y: 0})
+	const [editCensor, setEditCensor] = useState({})
+	const [lastClick, setLastClick] = useState({x: 0, y: 0})
 	// console.log(allEvents)
 	const [dimensions, setDimensions] = useState({
 		height: window.innerHeight,
@@ -188,15 +190,17 @@ const TrackEditor = props => {
 			window.onbeforeunload = undefined
 		}
 
-		if(blockLeave)
+		if(blockLeave){
 			window.onbeforeunload = () => true
-		 else
+		}
+		else {
 			window.onbeforeunload = undefined
+		 	setBlock(false)
+		}
 
-		if(blockLeave)
-			window.onbeforeunload = () => true
-		 else
-			window.onbeforeunload = undefined
+		return function cleanup () {
+			window.onbeforeunload = null;
+		}
 
 	}, [eventsArray])
 
@@ -391,77 +395,76 @@ const TrackEditor = props => {
 		setAllSubs(currentSubs)
 		setSideEditor(false)
 	}
-	const filler = () =>{
-		// const handleCensorRemove = (item) => {
-		// 	let index = eventToEdit
-		// 	let cEvent = allEvents[index]
-		// 	let layer = cEvent.layer
+	const handleCensorRemove = (item) => {
+		let index = eventToEdit
+		let cEvent = allEvents[index]
+		let layer = cEvent.layer
 
-		// 	delete cEvent.position[item]
+		delete cEvent.position[item]
 
-		// 	updateEvents(index, cEvent, layer)
+		updateEvents(index, cEvent, layer)
 
-		// }
-
-		// const handleAddCensor = () => {
-
-		// 	let temp = editCensor
-		// 	const last = Object.keys(temp)
-
-		// 	if(videoCurrentTime === 0 && last.length === 0){
-		// 		temp[`0.0`] = [0 ,0, 30, 40]
-		// 	}
-		// 	else if(videoCurrentTime == 0 && last.length > 0){
-		// 		temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
-		// 	}
-		// 	else{
-		// 		temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
-		// 	}
-
-		// 	console.log('temp', temp)
-		// 	document.getElementById('tableBottom').scrollIntoView(false)
-		// 	setEditCensor(temp)
-		// 	handleSaveCensor()
-		// }
-
-		// const handleEditCensor = (e, item, int) => {
-		// 	let object = editCensor
-		// 	//console.log(editCensor)
-		// 	let value = (parseFloat(e.target.value)).toFixed(1)
-
-		// 	switch (int) {
-		// 		case 1:
-		// 			object[item][0] = value
-		// 			break;
-		// 		case 2:
-		// 			object[item][1] = value
-		// 			break;
-		// 		case 3:
-		// 			object[item][2] = value
-		// 			break;
-		// 		case 4:
-		// 			object[item][3] = value
-		// 			break;
-
-		// 		default:
-		// 			break;
-		// 	}
-
-		// 	setEditCensor(object)
-		// }
-
-		// const handleSaveCensor = () => {
-		// 	console.log('SAVE CENSOR')
-		// 	let index = eventToEdit
-		// 	let cEvent = allEvents[index]
-		// 	let layer = cEvent.layer
-
-		// 	cEvent.position = editCensor
-
-		// 	setEditCensor({})
-		// 	updateEvents(index, cEvent, layer)
-		// }
 	}
+
+	const handleAddCensor = () => {
+
+		let temp = editCensor
+		const last = Object.keys(temp)
+
+		if(videoCurrentTime === 0 && last.length === 0){
+			temp[`0.0`] = [0 ,0, 30, 40]
+		}
+		else if(videoCurrentTime == 0 && last.length > 0){
+			temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
+		}
+		else{
+			temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
+		}
+
+		console.log('temp', temp)
+		document.getElementById('tableBottom').scrollIntoView(false)
+		setEditCensor(temp)
+		handleSaveCensor()
+	}
+
+	const handleEditCensor = (e, item, int) => {
+		let object = editCensor
+		//console.log(editCensor)
+		let value = (parseFloat(e.target.value)).toFixed(1)
+
+		switch (int) {
+			case 1:
+				object[item][0] = value
+				break;
+			case 2:
+				object[item][1] = value
+				break;
+			case 3:
+				object[item][2] = value
+				break;
+			case 4:
+				object[item][3] = value
+				break;
+
+			default:
+				break;
+		}
+
+		setEditCensor(object)
+	}
+
+	const handleSaveCensor = () => {
+		console.log('SAVE CENSOR')
+		let index = eventToEdit
+		let cEvent = allEvents[index]
+		let layer = cEvent.layer
+
+		cEvent.position = editCensor
+
+		setEditCensor({})
+		updateEvents(index, cEvent, layer)
+	}
+
 
 	const openSideEditor = (layerIndex, eventIndex) => {
 		setEventToEdit(eventIndex)
@@ -571,7 +574,26 @@ const TrackEditor = props => {
 			}
 		}
 	}
-
+	const handleZoomChange = (e, d) => {
+		console.log(d.x)
+		if(d.x < zoomFactor){
+			if(d.x === 0){
+			// console.log('zero')
+				setZoomFactor(0)
+				setWidth(0)
+				handleScrollFactor(`start`)
+			} else {
+			// console.log('smaller')
+				setZoomFactor(d.x)
+				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
+			}
+		} else if(d.x > zoomFactor) {
+		// console.log('larger')
+			setZoomFactor(d.x)
+			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+		}
+		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+	}
 	const filler1 = () => {
 		// OLD SCROLL FUNCTIONALITY
 		// const handleScrollFactorD = (e, d) => {
@@ -987,31 +1009,15 @@ const TrackEditor = props => {
 						<div className='zoom-controls'>
 							{/* ADD ZOOM ICON */}
 							<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+								<img src={zoomOut} style={{ width: '20px' }}/>
 								<Rnd
 									className={`zoom-indicator`}
 									bounds={`parent`}
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
-									onDragStop={(e, d) => {
-										if(d.x < zoomFactor){
-											if(d.x === 0){
-											// console.log('zero')
-												setZoomFactor(0)
-												setWidth(0)
-												handleScrollFactor(`start`)
-											} else {
-											// console.log('smaller')
-												setZoomFactor(d.x)
-												setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-											}
-										} else if(d.x > zoomFactor) {
-										// console.log('larger')
-											setZoomFactor(d.x)
-											setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
-										}
-										setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
-									}}
+									onDragStop={(e, d) => handleZoomChange(e, d)}
 								></Rnd>
+								<img src={zoomIn} style={{ float: 'right', width: '20px'}}/>
 							</div>
 							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 
@@ -1028,7 +1034,9 @@ const TrackEditor = props => {
 									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}><img src={lIcon}/></span>
 									<div className={`zoom-scroll-container`}>
 										{/* <div style={{ width: '98%',  height: '100%', backgroundColor: 'red'}}></div> */}
+
 										<div className={`zoom-scroll-indicator`}></div>
+
 									</div>
 									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}><img src={rIcon}/></span>
 									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}><img src={rrIcon}/></span>

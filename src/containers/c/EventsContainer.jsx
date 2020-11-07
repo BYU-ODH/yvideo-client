@@ -4,7 +4,7 @@ import { Events } from 'components'
 
 import { interfaceService } from 'services'
 
-import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, BlankEvent } from 'models/events/'
+import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, BlankEvent, CensorEvent } from 'models/events/'
 
 const EventsContainer = props => {
 
@@ -20,8 +20,8 @@ const EventsContainer = props => {
 		handleUnMute,
 		handleBlank,
 		handleShowComment,
-		// handleCensorPosition,
-		// handleCensorActive,
+		handleCensorPosition,
+		handleCensorActive,
 	} = props
 
 	const [eventArray, setEventArray] = useState([])
@@ -33,7 +33,7 @@ const EventsContainer = props => {
 		// If the blank or mute event is active the event will be executed.
 		handleBlank(false)
 		handleUnMute()
-		// handleCensorActive(false)
+		handleCensorActive(false)
 		handleShowComment(``, {x: 0, y: 0})
 
 		// We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
@@ -56,9 +56,9 @@ const EventsContainer = props => {
 				case `Comment`:
 					tempArray.push(new CommentEvent(event.type, start, end, event.comment, event.position))
 					break
-					// case 'Censor':
-					// 		tempArray.push(new CensorEvent(event.type, start, end, event.position))
-					// 	break;
+					case 'Censor':
+							tempArray.push(new CensorEvent(event.type, start, end, event.position))
+						break;
 				case `Blank`:
 					tempArray.push(new BlankEvent(event.type, start, end))
 					break
@@ -88,18 +88,18 @@ const EventsContainer = props => {
 				// console.log(element)
 				handleShowComment(element.comment, element.position)
 				break
-				// case 'Censor':
-				// 		element.active = false
-				// 		let value = Object.keys(element.position).find(time => time >= currentTime)
-				// 		//let includes = Object.keys(element.position).includes(currentTime)
+				case 'Censor':
+						element.active = false
+						let value = Object.keys(element.position).find(time => time >= currentTime)
+						//let includes = Object.keys(element.position).includes(currentTime)
 
-				// 		console.log('current Time', currentTime)
-				// 		console.log('value', value)
+						console.log('current Time', currentTime)
+						console.log('value', value)
 
-				// 		handleCensorActive(true)
-				// 		handleCensorPosition(element.position[value])
+						handleCensorActive(true)
+						handleCensorPosition(element.position[value])
 
-				// 	break;
+					break;
 			case `Blank`:
 				console.log('should blank')
 				handleBlank(true)
@@ -123,9 +123,9 @@ const EventsContainer = props => {
 				break
 			}
 		}
-		// else if (currentTime > element.end && element.type === 'Censor'){
-		// 	handleCensorActive(false)
-		// }
+		else if (currentTime > element.end && element.type === 'Censor'){
+			handleCensorActive(false)
+		}
 	})
 
 	const viewstate = {

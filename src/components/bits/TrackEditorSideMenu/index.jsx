@@ -24,6 +24,11 @@ const TrackEditorSideMenu = props => {
 		subLayer,
 		updateLanguage,
 		updateTitle,
+		editCensor,
+		handleEditCensor,
+		handleCensorRemove,
+		handleAddCensor,
+		handleSaveCensor,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -200,7 +205,7 @@ const TrackEditorSideMenu = props => {
 				</>
 			) : null
 			}
-			{/* { event.type === 'Censor' ? (
+			{ event.type === 'Censor' ? (
 				<div className='censorMenu'>
 					<label>Censor Times</label><br/><br/>
 					<table className='tableHeader'>
@@ -237,11 +242,11 @@ const TrackEditorSideMenu = props => {
 						<div id='tableBottom' style={{ width: '90%', marginLeft: '0px' }}></div>
 					</div>
 
-					<NewLayer className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></NewLayer><br/><br/><br/><br/>
+					<button className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></button><br/><br/><br/><br/>
 					<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
 				</div>
 				) : (null)
-			} */}
+			}
 			<br/>
 			<p id='sideTabMessage'></p>
 			<p id='sideTabExplanation'></p>
