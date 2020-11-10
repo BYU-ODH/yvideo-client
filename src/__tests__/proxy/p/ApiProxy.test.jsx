@@ -11,8 +11,6 @@ import uuid from 'react-uuid'
 
 const collection4 = testutil.collection4
 
-const collection5 = testutil.collection5
-
 const user = testutil.user
 
 jest.mock(`axios`)
@@ -732,7 +730,6 @@ describe(`ApiProxy test`, () => {
 		axios.patch.mockResolvedValue(res)
 		proxies.apiProxy.subtitles.edit(`update`, `id`)
 		expect(axios.patch).toBeCalledWith(`//api.yvideobeta.byu.edu/api/subtitle/id`, `update`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
-
 	})
 
 })

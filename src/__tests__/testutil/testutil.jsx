@@ -633,8 +633,6 @@ export const store = mockStore(
 			courses: [],
 		},
 		contentStore:{
-			loading: false,
-			lastFetched:1592426369817,
 			cache: [
 				{
 					authKey: `5377628e855d31ad4d84a8fdedf5758b`,
