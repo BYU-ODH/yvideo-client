@@ -465,6 +465,31 @@ const TrackEditor = props => {
 		updateEvents(index, cEvent, layer)
 	}
 
+	// THIS IS PART OF CENSOR
+	const handleLastClick = (height, width, x, y, time) => {
+		//console.log(height, width)
+
+		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === 'Censor'){
+			//console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
+			let index = eventToEdit
+			let cEvent = allEvents[index]
+			let layer = cEvent.layer
+
+			let value = Object.keys(cEvent.position).find(item => item >= time)
+
+			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
+			if(cEvent.position[`${(time).toFixed(1)}`] !== undefined){
+				cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
+			}
+			else {
+				cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), 30, 40]
+			}
+
+			//console.log(cEvent.position)
+			updateEvents(index, cEvent, layer)
+		}
+	}
+
 
 	const openSideEditor = (layerIndex, eventIndex) => {
 		setEventToEdit(eventIndex)
@@ -653,31 +678,6 @@ const TrackEditor = props => {
 		// 			// 	}
 		// 			// });
 		// 		}
-		// 	}
-		// }
-
-		// THIS IS PART OF CENSOR
-		// const handleLastClick = (height, width, x, y, time) => {
-		// 	//console.log(height, width)
-
-		// 	if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === 'Censor'){
-		// 		//console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
-		// 		let index = eventToEdit
-		// 		let cEvent = allEvents[index]
-		// 		let layer = cEvent.layer
-
-		// 		let value = Object.keys(cEvent.position).find(item => item >= time)
-
-		// 		// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
-		// 		if(cEvent.position[`${(time).toFixed(1)}`] !== undefined){
-		// 			cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
-		// 		}
-		// 		else {
-		// 			cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), 30, 40]
-		// 		}
-
-		// 		//console.log(cEvent.position)
-		// 		updateEvents(index, cEvent, layer)
 		// 	}
 		// }
 	}
@@ -934,6 +934,7 @@ const TrackEditor = props => {
 						getVideoTime={setCurrentTime}
 						minimized={timelineMinimized}
 						togglendTimeline={togglendTimeline}
+						handleLastClick={handleLastClick}
 					>
 					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -1103,6 +1104,12 @@ const TrackEditor = props => {
 									subLayer={subLayerToEdit}
 									changeSubIndex={handleChangeSubIndex}
 									addSub={addSubToLayer}
+									setEditCensor={setEditCensor}
+									editCensor={editCensor}
+									handleEditCensor={handleEditCensor}
+									handleCensorRemove={handleCensorRemove}
+									handleAddCensor={handleAddCensor}
+									handleSaveCensor={handleSaveCensor}
 								></TrackEditorSideMenu>
 							) : (
 								<>

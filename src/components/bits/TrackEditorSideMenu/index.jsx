@@ -25,6 +25,7 @@ const TrackEditorSideMenu = props => {
 		updateLanguage,
 		updateTitle,
 		editCensor,
+		setEditCensor,
 		handleEditCensor,
 		handleCensorRemove,
 		handleAddCensor,
@@ -36,9 +37,13 @@ const TrackEditorSideMenu = props => {
 	const [subText, setSubText] = useState([])
 	const [language, setLanguage] = useState(``)
 	const [title, setTitle] = useState(``)
+
 	useEffect(() => {
 		setEvent(singleEvent)
-	}, [index])
+		if(singleEvent.type === 'Censor' && editCensor !== singleEvent.position){
+			setEditCensor(singleEvent.position)
+		}
+	}, [index, editCensor, setEditCensor])
 
 	const handleEditEventBTimeChange = (e) => {
 		if (isSub){
@@ -146,6 +151,10 @@ const TrackEditorSideMenu = props => {
 
 	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
 	const end = (event.end / 100 * videoLength).toFixed(3) || undefined
+
+	if(event.type === 'Censor' && editCensor !== event.position){
+		setEditCensor(event.position)
+	}
 
 	return (
 		<Style>
