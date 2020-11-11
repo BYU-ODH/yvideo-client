@@ -61,7 +61,8 @@ const props = {
 	resourceCache: jest.fn(),
 	getResources: jest.fn(),
 	addView: jest.fn(),
-	streamKey: `streamKey`,
+	streamKey: `key`,
+	indexToDisplay: 0,
 }
 
 // mock useParams

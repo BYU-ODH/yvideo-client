@@ -11,6 +11,7 @@ const viewstate = {
 	content,
 	editing: false,
 	showing: false,
+	tag: [],
 }
 
 const handlers = {
@@ -20,6 +21,11 @@ const handlers = {
 	handleTogglePublish: jest.fn(),
 	setContentState: jest.fn(),
 	setShowing: jest.fn(),
+	addTag: jest.fn(),
+	removeTag: jest.fn(),
+	handleToggleSettings: jest.fn(),
+	handleDescription: jest.fn(),
+	changeTag: jest.fn(),
 }
 
 const props = {

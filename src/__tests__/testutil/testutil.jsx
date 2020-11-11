@@ -582,6 +582,7 @@ export const store = mockStore(
 					views: 0,
 				},
 			},
+			streamKey: `key`,
 		},
 		authStore: {
 			user,
@@ -689,6 +690,13 @@ export const store = mockStore(
 			},
 			loading: false,
 			lastFetched: 0,
+		},
+		subtitlesStore:{
+			cache: [],
+			loading: false,
+			lastFetched: 0,
+			active: 0,
+			contentId : ``,
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),

@@ -27,7 +27,6 @@ const PlayerContainer = props => {
 	const params = useParams()
 
 	const [content, setContent] = useState()
-	const [resource, setResource] = useState(``)
 	const [sKey, setKey] = useState(``)
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
@@ -49,7 +48,9 @@ const PlayerContainer = props => {
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [displaySubtitles, setDisplaySubtitles] = useState(null) // this is the subtitle that will show in the transcript view
 
-	const [isCaption, setIsCaption] = useState( content !== undefined ? content.settings.showCaptions : true )
+	// this is for caption toggle
+	const [isCaption, setIsCaption] = useState( false ) // this is the state to toggle caption selection
+	const [indexToDisplay, setIndexToDisplay] = useState(0) // use index to display a desired subtitle based on selection from player controls.
 
 	const ref = player => {
 		setPlayer(player)
@@ -58,26 +59,32 @@ const PlayerContainer = props => {
 	useEffect(() => {
 		setPlaybackRate(1)
 		setShowTranscript(false)
+		setSubtitleText(``)
+		setDisplaySubtitles(null)
 		if (!contentCache[params.id]){
-			// get single content?
+			// console.log('no cached content')
+			// get single content
 			getContent(params.id)
 		} else {
+			// console.log('yes cached content')
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setKey(``)
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			if(contentCache[params.id].url !== ``)
+			if(contentCache[params.id].url !== ``){
 				setUrl(contentCache[params.id].url)
-			else {
+				getSubtitles(params.id)
+			} else {
 				// CHECK RESOURCE ID
-				if(contentCache[params.id].resourceId !== `00000000-0000-0000-0000-000000000000` && sKey === ``){
+				if(sKey === ``){
 					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-					setResource(contentCache[params.id].resourceId)
+					// console.log('ACTING TO CHANGE URL')
 					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
 					setKey(streamKey)
 				} else if (sKey !== ``){
 					// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+					getSubtitles(params.id)
 				}
 			}
 		}
@@ -114,6 +121,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleProgress = progression => {
+		// console.log('progress', player.getCurrentTime())
 		setProgress(progression)
 	}
 
@@ -148,7 +156,7 @@ const PlayerContainer = props => {
 
 			if (elem.requestFullscreen)
 				elem.requestFullscreen()
-			 else if (elem.mozRequestFullScreen) { /* Firefox */
+			else if (elem.mozRequestFullScreen) { /* Firefox */
 				elem.mozRequestFullScreen()
 			} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
 				elem.webkitRequestFullscreen()
@@ -160,7 +168,7 @@ const PlayerContainer = props => {
 
 			if (document.cancelFullScreen)
 				document.cancelFullScreen()
-			 else if (document.mozCancelFullScreen) { /* Firefox */
+			else if (document.mozCancelFullScreen) { /* Firefox */
 				document.mozCancelFullScreen()
 			} else if (document.webkitCancelFullScreen) { /* Chrome, Safari & Opera */
 				document.webkitCancelFullScreen()
@@ -175,10 +183,12 @@ const PlayerContainer = props => {
 	}
 
 	const handleMuted = () => {
+		// console.log('calling mute', muted)
 		setMuted(true)
 	}
 
 	const handleUnmuted = () => {
+		// console.log('calling unmute', muted)
 		setMuted(false)
 	}
 
@@ -187,6 +197,8 @@ const PlayerContainer = props => {
 	}
 
 	const handleShowComment = (value, position) => {
+		// console.log(position)
+		// console.log('VALUE', value)
 		setVideoComment(value)
 		setCommentPosition(position)
 	}
