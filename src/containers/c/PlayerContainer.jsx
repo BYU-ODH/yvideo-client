@@ -250,7 +250,7 @@ const PlayerContainer = props => {
 		else if(subtitles.length > 1) {
 			//pick the subtitle to display to be the one with the same language as the audio
 			let audioLanguage = content.settings.targetLanguages
-		
+
 			let result = 0;
 			for(let i = 0; i < subtitles.length; i++){
 				console.log("in loop")
@@ -313,6 +313,7 @@ const PlayerContainer = props => {
 		setIsCaption,
 		handleChangeSubtitle,
 		setFullscreen,
+		setShowTranscript,
 		handleShowHelp,
 	}
 

@@ -45,6 +45,8 @@ const PlayerControls = props => {
 		handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
+		handleShowSubtitle,
+		setShowTranscript,
 	} = props.handlers
 
 	useEffect(() => {
@@ -87,6 +89,11 @@ const PlayerControls = props => {
 		}
 	}
 
+	const handleToggleSubtitles = () => {
+		setShowTranscript(!showTranscript)
+		handleShowSubtitle("")
+	}
+
 	return (
 		<Style playing={playing} >
 
@@ -99,7 +106,11 @@ const PlayerControls = props => {
 				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
 				{/* <SideBarToggle /> */}
 				<Speed src={clockIcon} onClick={handleChangeSpeed}/>
-				<ClosedCaptions style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} isCaptions={isCaption} onClick={handleChangeCaption}/>
+				<ClosedCaptions
+					// style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }}
+					isCaptions={isCaption}
+					onClick={ isCaption && isAdmin && isProf ? (handleChangeCaption) : (handleToggleSubtitles)}
+				/>
 				{/* <Notes /> */}
 			</div>
 			{ showSpeed &&
@@ -115,19 +126,18 @@ const PlayerControls = props => {
 					</div>
 				</div>
 			}
-			{ isCaption &&
+			{/* { isCaption &&
 				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>
 					<div className="caption-list">
-						{/* Display all possible options with check mark for current selection. Add none field. */}
 						{subtitles.map((element, index) =>
 							<input key={element.id} type="button" value={element.language} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? ('active-value') : ('')}/>
 						)
 						}
 					</div>
 				</div>
-			}
-			{/* isCaption && (isAdmin || isProf) &&
+			} */}
+			{ isCaption && (isAdmin || isProf) &&
 				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>
 					<div className="caption-list">
@@ -145,7 +155,7 @@ const PlayerControls = props => {
 						<input type="button" value={displaySubtitles.language} className={'active-value'}/>
 					</div>
 				</div>
-			*/}
+			}
 		</Style>
 	)
 
