@@ -13,6 +13,8 @@ class ListCollection extends PureComponent {
 		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
 
+	
+
 	render() {
 		const {
 			isOpen,

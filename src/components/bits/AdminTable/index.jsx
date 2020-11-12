@@ -160,7 +160,7 @@ export default class AdminTable extends PureComponent {
 							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
 						</li>
 						<li>
-							<button onClick={handleConfirmDelete}>Delete</button>
+							<button className="userDelete" onClick={handleConfirmDelete}>Delete</button>
 						</li>
 					</ul>
 				)
@@ -172,7 +172,7 @@ export default class AdminTable extends PureComponent {
 							<Link to={`/lab-assistant-manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
 						</li>
 						<li>
-							<button onClick={handleConfirmDelete}>Delete</button>
+							<button className="collectionsDelete" onClick={handleConfirmDelete}>Delete</button>
 						</li>
 					</ul>
 				)
@@ -191,7 +191,7 @@ export default class AdminTable extends PureComponent {
 							<button>Disable</button>
 						</li>
 						<li>
-							<button onClick={handleConfirmDelete}>Delete</button>
+							<button className="contentDelete" onClick={handleConfirmDelete}>Delete</button>
 						</li>
 					</ul>
 				)

@@ -27,8 +27,6 @@ const EventCard = ({ event }) => {
 		}),
 
 	})
-	console.log("isDragging")
-	console.log(isDragging)
 
 	const opacity = isDragging ? 0.5 : 1
 
