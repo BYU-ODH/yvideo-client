@@ -209,7 +209,6 @@ export default class CollectionService {
 		dispatch(this.actions.collectionsStart())
 
 		try {
-
 			await apiProxy.collection.create(name)
 
 			const results = await apiProxy.user.collections.get()

@@ -185,7 +185,6 @@ export default class ContentService {
 		try {
 
 			const result = await apiProxy.content.getSingleContent(id)
-
 			const newContent = new Content(result)
 
 			dispatch(this.actions.contentGet(newContent))
@@ -194,79 +193,36 @@ export default class ContentService {
 		}
 	}
 
-	// getContent = (contentIds, force = false) => async (dispatch, getState, { apiProxy }) => {
-
-	// 	const time = Date.now() - getState().contentStore.lastFetched
-
-	// 	const stale = time >= process.env.REACT_APP_STALE_TIME
-
-	// 	const { cache } = getState().contentStore
-	// 	const cachedIds = Object.keys(cache).map(id => id)
-	// 	const notCached = contentIds.filter(id => !cachedIds.includes(id))
-
-	// 	// console.log('updated store', contentIds)
-
-	// 	if (stale || notCached.length || force) {
-
-	// 		dispatch(this.actions.contentStart())
-
-	// 		try {
-
-	// 			const result = await apiProxy.content.get(notCached)
-
-	// 			dispatch(this.actions.contentGet(result))
-
-	// 		} catch (error) {
-
-	// 			console.error(error.message)
-	// 			dispatch(this.actions.contentError(error))
-	// 		}
-
-	// 	} else dispatch(this.actions.contentAbort())
-	// }
-
 	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.contentStart())
 
 		try {
 			const result = await apiProxy.content.post(content)
+
 			const id = result.id
 			content[`id`] = id
 
-			// const data = { [result.data.id]: result.data }
-
 			const newContent = new Content(content)
-			// console.log(result)
 
-			// // TODO: Why doesn't this update to state cause it to rerender?
+			// TODO: Why doesn't this update to state cause it to rerender?
 			dispatch(this.actions.contentCreate({ [id]: newContent}))
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {
+			console.log(error)
 			dispatch(this.actions.contentError(error))
 		}
 	}
 
 	updateContent = content => async (dispatch, _getState, { apiProxy }) => {
 
-		// console.log(content)
-
 		dispatch(this.actions.contentStart())
 
 		try {
-
 			const finalData = new BackEndContent(content).backEndData
 
-			// console.log(finalData)
-
 			const results = await apiProxy.content.update(finalData)
-
-			// console.log(results)
-
-			// await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
 
 			dispatch(this.actions.contentUpdate(content))
 
@@ -312,13 +268,10 @@ export default class ContentService {
 
 		} catch (error) {
 			console.error(error.message)
-			console.log(`oof`)
 			dispatch(this.actions.contentError(error))
 		}
 	}
 	addSubtitles = subs => async (dispatch, getState, { apiProxy }) => {
-
-		// console.log(content)
 
 		dispatch(this.actions.contentStart())
 
