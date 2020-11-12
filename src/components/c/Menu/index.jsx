@@ -10,8 +10,11 @@ class Menu extends PureComponent {
 			menuActive,
 			isProf,
 			isAdmin,
+			isLab,
 			editorStyle,
 		} = this.props.viewstate
+
+		console.log(isAdmin, isLab, isProf)
 
 		const {
 			toggleMenu,
@@ -29,14 +32,14 @@ class Menu extends PureComponent {
 				{/* <LinkStyled to='/word-list'>My Word List</LinkStyled> */}
 
 				{
-					isProf || isAdmin ||
-					<LinkStyled to='/collections'>Collections</LinkStyled>
-				}
-
-				{
-					isAdmin &&
+					(isAdmin) &&
 					<>
 						<LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
+					</>
+				}
+
+				{ (isLab || isAdmin) &&
+					<>
 						<LinkStyled to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
 						<LinkStyled to='/manage-resource'>Manage Resource</LinkStyled>
 					</>
@@ -45,7 +48,7 @@ class Menu extends PureComponent {
 				<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
 
 				{
-					(isProf || isAdmin) &&
+					(isProf || isAdmin || isLab) &&
 					<>
 						<Header>Collections</Header>
 						<hr />

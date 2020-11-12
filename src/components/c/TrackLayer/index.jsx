@@ -144,13 +144,13 @@ const TrackLayer = props => {
 							events !== undefined ? (
 								<>
 									{events.map((event, index) => (
-										<>
+										<div key={index}>
 											{event.layer === layerIndex ? (
-												<div key={index}>
+												<div>
 													{printEvents(event, index)}
 												</div>
 											) : null}
-										</>
+										</div>
 									))}
 								</>
 							) : null

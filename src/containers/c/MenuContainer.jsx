@@ -13,6 +13,7 @@ const MenuContainer = props => {
 		user,
 		isProf,
 		isAdmin,
+		isLab,
 		menuActive,
 		logout,
 		toggleMenu,
@@ -30,6 +31,7 @@ const MenuContainer = props => {
 		menuActive,
 		isProf,
 		isAdmin,
+		isLab,
 		editorStyle,
 	}
 
@@ -46,6 +48,7 @@ const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	isStudent: authStore.user.roles === 3,
+	isLab: authStore.user.roles === 1,
 	menuActive: interfaceStore.menuActive,
 	editorStyle: interfaceStore.editorStyle,
 })
