@@ -20,7 +20,6 @@ import transcriptHelp from 'assets/help/help-transcriptview.png'
 import subHelp from 'assets/help/help-te-subtitle.png'
 
 import {
-	// adminService,
 	interfaceService,
 } from 'services'
 
@@ -30,7 +29,7 @@ Help documentation is available as an object. Each key will be the name of a com
 which will provide the necessary help to the user. Resources can be a video, an image, or maybe a detailed tutorial
 
 To open up the modal you can import the question mark icon from the assets folder:
--> @path =>> import helpIcon from 'assets/help/help-icon-black.svg' ** NOTE THAT IF YOU WILL CHANGE THE STYLE OF THE SVG MAKE A COPY AND SAVE IT WITH A NEW NAME **
+-> @path =>> import helpIcon from 'assets/manage-collection-help-circle.svg'
 
 to show the modal you need to import the modal from
 --> @path =>> import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
@@ -154,41 +153,6 @@ const HelpDocumentationContainer = props => {
 					<img src="${zoomrHelp}"/>
 				</div>`,
 		},
-		'Player': {
-			htmlInstruction: `
-				<div class="section">
-					<p><b>Video Controls:</b> The video screen covers almost half of the screen. Video controls can be found at the bottom of the video screen. There is a play/pause button on the left side and
-						on the right side there are closed caption, playback rate, and full screen buttons.
-					</p>
-				</div>
-				<div class="section">
-					<p>
-						- &nbsp;<b>CC</b> (Closed Captions) are created by the instructor. A green arrow indicates which captions is currently active.
-							To see available captions click on the CC icon located at the bottom right of the video. To select a desired caption just click the desired language.
-						<br/>- &nbsp;<b>Playback Rate</b> indicates how fast the video plays. A green arrow indicates which rate is currently active.
-							Normal playback rate is 1. <b>Slower </b> is less than one, and  <b>faster </b> is larger than one with 3 as the highest.
-						<br/>- &nbsp;<b>Full Screen</b> changes to a full screen view but takes away the transcript view.
-					</p><br/>
-					<img src="${playercontrolHelp}" width="150px" height="55px" style="margin: 30px 10px 10px 10px;"/>
-				</div>
-				<hr/>
-				<div class="section">
-					<p><b>Middle Bar:</b> If captions are allowed there will be a middle bar which divides the video screen from the transcript. To hide/display the transcript on the right just click the
-						arrow on the top of the bar.
-				</div>
-				<hr/>
-				<div class="section large-img">
-					<p>
-						<b>Transcript View:</b> If captions are allowed, the transcript will be on the right side of the screen. The transcript will display the captions that are currently active and
-						divide them in lines ordered by time. The transcript view will display the language of the audio and the current caption language.<br/>
-					 	<b>Transcript Lines</b> are clickable. When you click a line, the video will go to the time when that line is set to execute and highlight the active line. Transcript lines are highlighted
-						 when they are displayed in the video, so users can follow along, review words, or practice phrases.
-						<br/>
-					</p>
-					<img src="${transcriptHelp}" style="width: 500px !important; height: 100px;"/>
-				</div>`,
-		},
-
 	}
 
 	const viewstate = {
@@ -200,15 +164,9 @@ const HelpDocumentationContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	// admin: store.authStore.user.roles === 0,
-	// adminContent: store.adminStore.data,
 })
 
 const mapDispatchToProps = {
-	// search: adminService.search,
-	// adminDeleteCollection: adminService.deleteCollection,
-	// adminDeleteUser: adminService.deleteUser,
-	// adminDeleteContent: adminService.deleteContent,
 	toggleModal: interfaceService.toggleModal,
 }
 

@@ -7,9 +7,6 @@ import { interfaceService } from 'services'
 import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, BlankEvent } from 'models/events/'
 
 const EventsContainer = props => {
-
-	// console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
-
 	const {
 		events,
 		currentTime,
@@ -20,15 +17,11 @@ const EventsContainer = props => {
 		handleUnMute,
 		handleBlank,
 		handleShowComment,
-		// handleCensorPosition,
-		// handleCensorActive,
 	} = props
 
 	const [eventArray, setEventArray] = useState([])
-	const [force, setForce] = useState(false)
 
 	useEffect(() => {
-		// console.log('reset')
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
 		// If the blank or mute event is active the event will be executed.
 		handleBlank(false)
@@ -71,7 +64,6 @@ const EventsContainer = props => {
 	}, [duration, events])
 
 	eventArray.forEach(element => {
-		// console.log(element)
 		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
 			switch (element.type) {
@@ -85,7 +77,6 @@ const EventsContainer = props => {
 				handlePause()
 				break
 			case `Comment`:
-				// console.log(element)
 				handleShowComment(element.comment, element.position)
 				break
 				// case 'Censor':
@@ -93,15 +84,11 @@ const EventsContainer = props => {
 				// 		let value = Object.keys(element.position).find(time => time >= currentTime)
 				// 		//let includes = Object.keys(element.position).includes(currentTime)
 
-				// 		console.log('current Time', currentTime)
-				// 		console.log('value', value)
-
 				// 		handleCensorActive(true)
 				// 		handleCensorPosition(element.position[value])
 
 				// 	break;
 			case `Blank`:
-				console.log('should blank')
 				handleBlank(true)
 				break
 			default:
