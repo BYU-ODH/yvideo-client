@@ -19,6 +19,7 @@ const PlayerContainer = props => {
 		addView,
 		setEvents,
 		streamKey,
+		resourceIdStream,
 		getSubtitles,
 		subtitles,
 		toggleModal,
@@ -62,37 +63,48 @@ const PlayerContainer = props => {
 		setSubtitleText('')
 		setDisplaySubtitles(null)
 		if (!contentCache[params.id]){
-			//console.log('no cached content')
+			console.log('no cached content')
 			//get single content
 			getContent(params.id)
 		}
 		else {
-			//console.log('yes cached content')
+			console.log('yes cached content')
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
-			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ''){
 				setUrl(contentCache[params.id].url)
 				getSubtitles(params.id)
 			}
 			else {
-				//CHECK RESOURCE ID
-				if(sKey === ''){
-					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-					//console.log('ACTING TO CHANGE URL')
-					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
-					setKey(streamKey)
-				}
-				else if (sKey !== ''){
-					//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
-					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-					getSubtitles(params.id)
+				//here we know that the type of content is from the server.
+				//so we reset the states to use for the new video.
+				setKey('')
+				setUrl('')
+				if(content !== undefined){
+					//CHECK RESOURCE ID
+					if(sKey === '' && contentCache[params.id].resourceId !== resourceIdStream){
+						console.log(sKey)
+						console.log(`%c getting streaming key for resource ${contentCache[params.id].resourceId}`,  'background-color: black; color: yellow; font-weight: bold;');
+						console.log(`%c and content ${params.id}`, 'background-color: black; color: yellow; font-weight: bold;')
+						//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+						getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+					}
+					else if(streamKey){
+						setKey(streamKey)
+					}
+
+					if (sKey !== ''){
+						//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+						console.log(`%c Stream KEY ${streamKey}`, 'background-color: black; color: pink; font-weight: bold;')
+						console.log(`%c getting stram media for ${content.id}`, 'color: green');
+						getSubtitles(params.id)
+						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+					}
 				}
 			}
 		}
-
-	}, [addView, contentCache, getContent, params.id, streamKey, getSubtitles])
+	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -239,6 +251,10 @@ const PlayerContainer = props => {
 		})
 	}
 
+	const handleToggleTranscript = () => {
+		setToggleTranscript(!toggleTranscript)
+	}
+
 	if(displaySubtitles == null && content != undefined){
 		//This statement prevents displaySubtitles from being null.
 		//If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
@@ -309,7 +325,7 @@ const PlayerContainer = props => {
 		handleShowComment,
 		handleBlank,
 		handleShowSubtitle,
-		setToggleTranscript,
+		handleToggleTranscript,
 		setIsCaption,
 		handleChangeSubtitle,
 		setFullscreen,
@@ -326,6 +342,7 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 	userId: authStore.user.id,
 	contentCache: contentStore.cache,
 	streamKey: resourceStore.streamKey,
+	resourceIdStream: resourceStore.resourceIdStreamKey,
 	subtitles: subtitlesStore.cache,
 })
 
