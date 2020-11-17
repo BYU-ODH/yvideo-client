@@ -5,17 +5,18 @@ import ReactPlayer from 'react-player'
 import { CollectionsContainer, EventsContainer } from 'containers'
 import { PlayerControls } from 'components/bits'
 
-import { Controller } from 'components'
+import { Transcript } from 'components/bits'
 
 import { PlayerSubtitlesContainer } from 'containers'
 
-import Style, { Blank, Comment, Transcript, Subtitles, Help } from './styles'
+import Style, { Blank, Comment, Subtitles } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
 
 import helpIcon from 'assets/help/help-icon-white.svg'
 
 export default class Player extends PureComponent {
+
 	componentDidMount(){
 		// setTimeout(() => {
 		// 	const {url} = this.props.viewstate
@@ -58,12 +59,12 @@ export default class Player extends PureComponent {
 			handleMuted,
 			handleUnmuted,
 			handleShowComment,
-			setToggleTranscript,
+			handleToggleTranscript,
 			handleShowSubtitle,
 			handleShowHelp,
 		} = this.props.handlers
 
-		// console.log('%c Player component', 'color:red;')
+		// console.log(`%c Player component ${url}`, 'color:red;')
 
 		return (
 			<Style>
@@ -110,32 +111,7 @@ export default class Player extends PureComponent {
 							{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
 						</Blank>
 					</div>
-					<Transcript style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript}>
-						<div className={'side-bar'}>
-							<img src={chevron} className={'toggle-transcript'} onClick={e => setToggleTranscript(!toggleTranscript)}/>
-							<Help src={helpIcon} onClick={handleShowHelp}/>
-						</div>
-						<div className={'main-bar'}>
-							<div className={'transcript-title'}>
-								<h2>Video Audio - {content !== undefined ? (content.settings.targetLanguages) : (null)}</h2>
-								<h2>Caption Language - {displaySubtitles !== null ? (displaySubtitles.language) : (null)}</h2>
-							</div>
-							<div className={'transcript-content'}>
-								{	displaySubtitles != null ? (
-
-									displaySubtitles['content'].map((element, index) =>
-											<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
-												key={index}
-												onClick={e => handleSeekChange(null, (element.start * duration / 100) + .5)}
-												>
-												<p>{element.text}</p>
-											</div>
-										)
-									) : (null)
-								}
-								<br/>
-							</div>
-						</div>
+					<Transcript viewstate={this.props.viewstate} handlers={this.props.handlers}>
 					</Transcript>
 				</div>
 				{/* <div className={`collection-container`}>

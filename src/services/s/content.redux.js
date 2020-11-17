@@ -114,7 +114,6 @@ export default class ContentService {
 			return {
 				...store,
 				cache: {
-					...store.cache,
 					[action.payload.content.id]: action.payload.content,
 				},
 			}
