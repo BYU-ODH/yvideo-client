@@ -64,7 +64,7 @@ export default class Player extends PureComponent {
 			handleShowHelp,
 		} = this.props.handlers
 
-		console.log(`%c Player component ${url}`, 'color:red;')
+		// console.log(`%c Player component ${url}`, 'color:red;')
 
 		return (
 			<Style>
