@@ -124,4 +124,3 @@ it(`simulate setIsCaption`, ()=> {
 	wrapper.find(Speed).simulate('click')
 	wrapper.find(ClosedCaptions).simulate('click')
 })
-

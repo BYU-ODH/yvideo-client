@@ -120,7 +120,7 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 	const editSub = (side, time, value,layer) => {
-		console.log(time)
+		// console.log(time)
 		const sub = {...event}
 		if (side === `beg`)
 			sub.start = time / videoLength * 100
@@ -134,7 +134,7 @@ const TrackEditorSideMenu = props => {
 		}catch(error){
 
 		}
-		console.log(`why is`,layer)
+		// console.log(`why is`,layer)
 		setEvent(sub)
 		updateSubs(index,sub,layer)
 	}
