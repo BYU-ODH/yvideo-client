@@ -17,8 +17,6 @@ import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
 import TrackEditorSideMenu from './TrackEditorSideMenu'
 import Transcript from './Transcript'
-import VolumeBar from './VolumeBar'
-import VolumeScrubber from './VolumeScrubber'
 import SubtitlesCard from './SubtitlesCard'
 import ResourceOverview from '../c/ResourceOverview'
 import SubtitlesLayer from './SubtitlesLayer'
@@ -43,8 +41,6 @@ export {
 	Tag,
 	TrackEditorSideMenu,
 	Transcript,
-	VolumeBar,
-	VolumeScrubber,
 	ResourceOverview,
 	SubtitlesCard,
 	SubtitlesLayer,
