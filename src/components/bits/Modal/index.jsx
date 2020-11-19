@@ -28,7 +28,7 @@ class Modal extends Component {
 	}
 
 	componentDidUpdate = prevProps => {
-
+		console.log(prevProps)
 		if (!this.wrapper.current) return
 
 		if (!prevProps.active && this.props.active) {
