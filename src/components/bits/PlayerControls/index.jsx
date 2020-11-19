@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Scrubber, VolumeScrubber } from 'components/bits'
+import { Scrubber } from 'components/bits'
 
 import Style, {
 	PlayPause,
