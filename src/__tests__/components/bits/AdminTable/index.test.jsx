@@ -149,7 +149,7 @@ describe(`admin table test`, () => {
 		expect(wrapper.contains("ResourceID")).toEqual(true)
 
 		button = shallow(<AdminTable viewstate={viewstate} handlers={handlers}/>);
-		// console.log(button.debug())
+		console.log(button.debug())
 
 		button.find(".sorting-button").forEach(button => {
 			button.simulate("click")
@@ -161,7 +161,7 @@ describe(`admin table test`, () => {
 		wrapper.find({"to": "/trackeditor/2323"}).simulate('click');
 		wrapper.find({"className": "contentDelete"}).simulate('click');
 
-
+		
 	}),
 
 	it(`Sort onClick`, ()=> {

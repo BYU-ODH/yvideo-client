@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { resourceService, contentService } from 'services'
 
-import { SwitchToggle, Tag, Spinner, LazyImage } from 'components/bits'
+import { SwitchToggle, AspectRadio, Tag, Spinner, LazyImage } from 'components/bits'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 
