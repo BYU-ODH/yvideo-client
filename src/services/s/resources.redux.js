@@ -35,7 +35,7 @@ export default class ResourceService {
 		resourceSearch: resource => ({ type: this.types.RESOURCE_SEARCH, payload: { resource } }),
 		resourceEdit: resource => ({ type: this.types.RESOURCE_EDIT, payload: { resource } }),
 		resourceDelete: filteredResources => ({ type: this.types.RESOURCE_DELETE, payload: { filteredResources } }),
-		resourceStream: key => ({ type: this.types.RESOURCE_STREAM, payload: { key } }),
+		resourceStream: (key, resourceId) => ({ type: this.types.RESOURCE_STREAM, payload: { key, resourceId } }),
 	}
 
 	// default store
@@ -45,6 +45,7 @@ export default class ResourceService {
 		loading: false,
 		lastFetched: 0,
 		streamKey: ``,
+		resourceIdStreamKey: ``, //this resource id is to make sure that we have a stream key for the current resource id
 	}
 
 	// reducer
@@ -172,6 +173,7 @@ export default class ResourceService {
 			return {
 				...store,
 				streamKey: action.payload.key,
+				resourceIdStreamKey: action.payload.resourceId,
 			}
 
 		default:
@@ -375,8 +377,6 @@ export default class ResourceService {
 	}
 
 	removeResource = (resourceId) => async (dispatch, getState, { apiProxy }) => {
-
-		console.log(`object2`)
 		dispatch(this.actions.resourcesStart())
 
 		try {
@@ -388,7 +388,6 @@ export default class ResourceService {
 					filteredResources[key] = currentResources[key]
 			})
 
-			console.log(getState().resourceStore)
 			const result = await apiProxy.resources.delete(resourceId)
 			dispatch(this.actions.resourceDelete(filteredResources))
 
@@ -411,8 +410,7 @@ export default class ResourceService {
 
 			const result = await apiProxy.media.getKey(fileId)
 
-			dispatch(this.actions.resourceStream(result[`file-key`]))
-
+			dispatch(this.actions.resourceStream(result[`file-key`], resourceId))
 		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}

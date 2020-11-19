@@ -43,6 +43,7 @@
 		"react-router-dom": "^5.1.2",
 		"react-scripts": "^3.4.1",
 		"react-scrubber": "^1.0.0",
+		"react-uuid": "^1.0.2",
 		"redux": "^4.0.1",
 		"redux-mock-store": "^1.5.4",
 		"redux-thunk": "^2.3.0",
@@ -64,6 +65,8 @@
 		"eslint-plugin-react": "^7.19.0",
 		"eslint-plugin-react-hooks": "^3.0.0",
 		"husky": "^4.2.5",
+		"jest-mock-axios": "^4.2.1",
+		"jest-spy-object": "^1.4.0",
 		"mutation-observer": "^1.0.3",
 		"redux-devtools-extension": "^2.13.8"
 	}

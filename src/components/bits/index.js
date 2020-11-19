@@ -16,6 +16,7 @@ import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
 import TrackEditorSideMenu from './TrackEditorSideMenu'
+import Transcript from './Transcript'
 import VolumeBar from './VolumeBar'
 import SubtitlesCard from './SubtitlesCard'
 import ResourceOverview from '../c/ResourceOverview'
@@ -40,6 +41,7 @@ export {
 	SwitchToggle,
 	Tag,
 	TrackEditorSideMenu,
+	Transcript,
 	VolumeBar,
 	ResourceOverview,
 	SubtitlesCard,

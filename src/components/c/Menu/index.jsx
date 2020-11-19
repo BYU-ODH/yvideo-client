@@ -45,6 +45,13 @@ class Menu extends PureComponent {
 					</>
 				}
 
+				{
+					!(isLab || isAdmin || isProf) &&
+					<>
+						<LinkStyled to='/'>Collections</LinkStyled>
+					</>
+				}
+
 				<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
 
 				{

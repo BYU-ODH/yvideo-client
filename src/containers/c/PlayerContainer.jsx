@@ -19,6 +19,7 @@ const PlayerContainer = props => {
 		addView,
 		setEvents,
 		streamKey,
+		resourceIdStream,
 		getSubtitles,
 		subtitles,
 		toggleModal,
@@ -46,11 +47,11 @@ const PlayerContainer = props => {
 	const [showTranscript, setShowTranscript] = useState(false)
 	const [toggleTranscript, setToggleTranscript] = useState(true)
 	const [subtitleText, setSubtitleText] = useState(``)
-	const [displaySubtitles, setDisplaySubtitles] = useState(null) //this is the subtitle that will show in the transcript view
+	const [displaySubtitles, setDisplaySubtitles] = useState(null) // this is the subtitle that will show in the transcript view
 
-	//this is for caption toggle
-	const [isCaption, setIsCaption] = useState( false ) //this is the state to toggle caption selection
-	const [indexToDisplay, setIndexToDisplay] = useState(0) //use index to display a desired subtitle based on selection from player controls.
+	// this is for caption toggle
+	const [isCaption, setIsCaption] = useState( false ) // this is the state to toggle caption selection
+	const [indexToDisplay, setIndexToDisplay] = useState(0) // use index to display a desired subtitle based on selection from player controls.
 
 	const ref = player => {
 		setPlayer(player)
@@ -59,40 +60,51 @@ const PlayerContainer = props => {
 	useEffect(() => {
 		setPlaybackRate(1)
 		setShowTranscript(false)
-		setSubtitleText('')
+		setSubtitleText(``)
 		setDisplaySubtitles(null)
 		if (!contentCache[params.id]){
-			//console.log('no cached content')
+			// console.log('no cached content')
 			//get single content
 			getContent(params.id)
 		}
 		else {
-			//console.log('yes cached content')
+			// console.log('yes cached content')
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
-			setKey('')
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			if(contentCache[params.id].url !== ''){
+			if(contentCache[params.id].url !== ``){
 				setUrl(contentCache[params.id].url)
 				getSubtitles(params.id)
 			}
 			else {
-				//CHECK RESOURCE ID
-				if(sKey === ''){
-					//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-					//console.log('ACTING TO CHANGE URL')
-					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
-					setKey(streamKey)
-				}
-				else if (sKey !== ''){
-					//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
-					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-					getSubtitles(params.id)
+				//here we know that the type of content is from the server.
+				//so we reset the states to use for the new video.
+				setKey('')
+				setUrl('')
+				if(content !== undefined){
+					//CHECK RESOURCE ID
+					if(sKey === '' && contentCache[params.id].resourceId !== resourceIdStream){
+						// console.log(sKey)
+						// console.log(`%c getting streaming key for resource ${contentCache[params.id].resourceId}`,  'background-color: black; color: yellow; font-weight: bold;');
+						// console.log(`%c and content ${params.id}`, 'background-color: black; color: yellow; font-weight: bold;')
+						//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+						getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+					}
+					else if(streamKey){
+						setKey(streamKey)
+					}
+
+					if (sKey !== ''){
+						//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+						// console.log(`%c Stream KEY ${streamKey}`, 'background-color: black; color: pink; font-weight: bold;')
+						// console.log(`%c getting stram media for ${content.id}`, 'color: green');
+						getSubtitles(params.id)
+						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+					}
 				}
 			}
 		}
-
-	}, [addView, contentCache, getContent, params.id, streamKey, getSubtitles])
+	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
 
 	const handleDuration = duration => {
 		setDuration(duration)
@@ -124,15 +136,15 @@ const PlayerContainer = props => {
 	}
 
 	const handleProgress = progression => {
-		//console.log('progress', player.getCurrentTime())
+		// console.log('progress', player.getCurrentTime())
 		setProgress(progression)
 	}
 
 	const handleSeekChange = (e, time) => {
-		//**TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
+		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-		console.log('seeking', time, " seconds")
+		console.log(`seeking`, time, ` seconds`)
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
@@ -141,48 +153,47 @@ const PlayerContainer = props => {
 			newPlayed = time / duration
 
 		if(newPlayed !== Infinity && newPlayed !== -Infinity){
-			console.log("in fraction: ", newPlayed)
+			console.log(`in fraction: `, newPlayed)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
 	}
 
 	const handleToggleFullscreen = () => {
 
-		//find the element which contains subtitles and events placeholders
-		let elem = document.getElementById('player-container')
+		// find the element which contains subtitles and events placeholders
+		const elem = document.getElementById(`player-container`)
 
-		//if fullscreen is false we want to turn to full screen. Else, request cancelFullScreen.
-		//For more info read full screen api https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
-		//This is a functionality that behaves like F11. This is not video full screen mode.
-		//Video full screen mode would break the subtitles and events.
+		// if fullscreen is false we want to turn to full screen. Else, request cancelFullScreen.
+		// For more info read full screen api https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
+		// This is a functionality that behaves like F11. This is not video full screen mode.
+		// Video full screen mode would break the subtitles and events.
 		if(!fullscreen){
 
-			if (elem.requestFullscreen) {
-				elem.requestFullscreen();
-			} else if (elem.mozRequestFullScreen) { /* Firefox */
-				elem.mozRequestFullScreen();
+			if (elem.requestFullscreen)
+				elem.requestFullscreen()
+			else if (elem.mozRequestFullScreen) { /* Firefox */
+				elem.mozRequestFullScreen()
 			} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-				elem.webkitRequestFullscreen();
+				elem.webkitRequestFullscreen()
 			} else if (elem.msRequestFullscreen) { /* IE/Edge */
-				elem.msRequestFullscreen();
+				elem.msRequestFullscreen()
 			}
 
-		}
-		else {
+		} else {
 
-			if (document.cancelFullScreen) {
-				document.cancelFullScreen();
-			} else if (document.mozCancelFullScreen) { /* Firefox */
-				document.mozCancelFullScreen();
+			if (document.cancelFullScreen)
+				document.cancelFullScreen()
+			else if (document.mozCancelFullScreen) { /* Firefox */
+				document.mozCancelFullScreen()
 			} else if (document.webkitCancelFullScreen) { /* Chrome, Safari & Opera */
-				document.webkitCancelFullScreen();
+				document.webkitCancelFullScreen()
 			} else if (document.msExitFullscreen) { /* IE/Edge */
-				document.msExitFullscreen();
+				document.msExitFullscreen()
 			}
 		}
 
-		//set the state to whatever the state wasn't before.
-		//false to true && true to false.
+		// set the state to whatever the state wasn't before.
+		// false to true && true to false.
 		setFullscreen(!fullscreen)
 	}
 
@@ -213,18 +224,17 @@ const PlayerContainer = props => {
 	}
 
 	const handleChangeSubtitle = (index) => {
-		let temp = subtitles[index]
-		let currentContent = temp.content
+		const temp = subtitles[index]
+		const currentContent = temp.content
 
 		try {
 
-			if(typeof currentContent === "string"){
-				console.log("String type")
+			if(typeof currentContent === `string`){
+				console.log(`String type`)
 				temp.content = JSON.parse(subtitles[index].content)
 			}
 
-		}
-		catch (e){
+		} catch (e){
 			console.log(e)
 		}
 
@@ -235,32 +245,35 @@ const PlayerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: 'Player'},
+			props: { name: `Player`},
 		})
 	}
 
+	const handleToggleTranscript = () => {
+		setToggleTranscript(!toggleTranscript)
+	}
+
 	if(displaySubtitles == null && content != undefined){
-		//This statement prevents displaySubtitles from being null.
-		//If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
+		// This statement prevents displaySubtitles from being null.
+		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
 
 		if(subtitles.length == 1){
-			//some logic to pick the subtitle
+			// some logic to pick the subtitle
 			handleChangeSubtitle(0)
-		}
-		else if(subtitles.length > 1) {
-			//pick the subtitle to display to be the one with the same language as the audio
-			let audioLanguage = content.settings.targetLanguages
+		} else if(subtitles.length > 1) {
+			// pick the subtitle to display to be the one with the same language as the audio
+			const audioLanguage = content.settings.targetLanguages
 
-			let result = 0;
+			let result = 0
 			for(let i = 0; i < subtitles.length; i++){
-				console.log("in loop")
-				let temp = subtitles[i];
-				console.log("TEMP CONTENT", temp)
-				//now that we have an actual object lets check language
-				//go through all subtitles and find there index where subtitle language = audio language
+				console.log(`in loop`)
+				const temp = subtitles[i]
+				console.log(`TEMP CONTENT`, temp)
+				// now that we have an actual object lets check language
+				// go through all subtitles and find there index where subtitle language = audio language
 				if(temp.language.toLowerCase() === audioLanguage.toLowerCase()){
-					result = i;
-					break;
+					result = i
+					break
 				}
 			}
 			handleChangeSubtitle(result)
@@ -309,7 +322,7 @@ const PlayerContainer = props => {
 		handleShowComment,
 		handleBlank,
 		handleShowSubtitle,
-		setToggleTranscript,
+		handleToggleTranscript,
 		setIsCaption,
 		handleChangeSubtitle,
 		setFullscreen,
@@ -326,6 +339,7 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 	userId: authStore.user.id,
 	contentCache: contentStore.cache,
 	streamKey: resourceStore.streamKey,
+	resourceIdStream: resourceStore.resourceIdStreamKey,
 	subtitles: subtitlesStore.cache,
 })
 

@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect } from 'react'
+import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
@@ -19,7 +19,6 @@ export default class Collections extends PureComponent {
 			isAdmin,
 			displayBlocks,
 			collections,
-			contentIds,
 			collectionsLength,
 		} = this.props.viewstate
 
@@ -32,7 +31,7 @@ export default class Collections extends PureComponent {
 			<Style>
 				<header>
 					<div>
-						<h3>Collections &nbsp;&nbsp;&nbsp;<Help src={helpIcon} onClick={handleShowHelp}/></h3>
+						<h3>Collections &nbsp;&nbsp;&nbsp;<Help id='collections-help-documentation' src={helpIcon} onClick={handleShowHelp}/></h3>
 					</div>
 					<div>
 						{
