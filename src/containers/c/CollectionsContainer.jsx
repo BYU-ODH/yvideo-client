@@ -70,6 +70,7 @@ const CollectionsContainer = props => {
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
+	isStu: authStore.user.roles === 3,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,
