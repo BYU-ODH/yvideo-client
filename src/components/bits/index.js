@@ -3,6 +3,7 @@ import AdminTable from './AdminTable'
 import Bar from './Bar'
 import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
+import Captcha from './Captcha'
 import EventCard from './EventCard'
 import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
@@ -27,6 +28,7 @@ export {
 	Bar,
 	BlockCollection,
 	BlockItem,
+	Captcha,
 	EventCard,
 	LabAssistantTable,
 	LazyImage,

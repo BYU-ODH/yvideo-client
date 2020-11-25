@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Style, { LinkStyled, Header, UserPic, LogoutButton } from './styles'
+import Style, { LinkStyled, Header, UserPic, LogoutButton, Footer } from './styles'
 
 class Menu extends PureComponent {
 	render() {
@@ -64,6 +64,15 @@ class Menu extends PureComponent {
 						<LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled>
 					</>
 				}
+
+				<Footer>
+					<Header>Connect Wish Us</Header>
+					<hr />
+					<LinkStyled to='/' >About Us</LinkStyled>
+					<LinkStyled to='/' >Contact Us</LinkStyled>
+					<LinkStyled to='/' >Social Media?</LinkStyled>
+					<LinkStyled to='/feedback' >Feedback / Issues</LinkStyled>
+				</Footer>
 
 			</Style>
 		)

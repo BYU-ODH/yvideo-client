@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 
+import Style, {} from './styles.js'
+
+import { Captcha } from 'components/bits'
+
 export class Feedback extends PureComponent {
 
 	/*
@@ -27,7 +31,7 @@ export class Feedback extends PureComponent {
 		} =  this.props.handlers
 
     return (
-        <div>
+        <Style>
             <form className="test-mailing" onSubmit={handleSubmit}>
                 <h1>Form</h1>
                 <input type="text" placeholder="Name" required onChange={ e => setName(e.target.value)}/><br/>
@@ -44,10 +48,10 @@ export class Feedback extends PureComponent {
                 />
                 </div>
                 <input type="file" accept={".jpg,.jpeg"} onChange={e => setFile({type: e.target.files[0].type, attachment: e.target.files[0]})}/>
-                {/* <Captcha handleCaptcha={handleCaptcha}/> */}
+                <Captcha handleCaptcha={handleCaptcha}/>
                 <input type="submit" value="Submit" className="btn btn--submit"  />
             </form>
-        </div>
+        </Style>
     );
 	}
 }
