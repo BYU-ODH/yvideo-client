@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-import { Scrubber, VolumeScrubber } from 'components/bits'
+import { Scrubber } from 'components/bits'
 
 import Style, {
 	PlayPause,
 	ClosedCaptions,
 	Fullscreen,
-	Volume,
+	// Volume,
 	Speed,
 } from './styles'
 
@@ -71,9 +71,9 @@ const PlayerControls = props => {
 
 	const [showSpeed, setShowSpeed] = useState(false)
 
-	const handleSubmitSpeed = (e) => {
-		e.preventDefault()
-	}
+	// const handleSubmitSpeed = (e) => {
+	// 	e.preventDefault()
+	// }
 
 	const handleChangeSpeed = () => {
 		setShowSpeed(!showSpeed)

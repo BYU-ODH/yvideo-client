@@ -13,6 +13,8 @@ class ListCollection extends PureComponent {
 		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
 
+	
+
 	render() {
 		const {
 			isOpen,
@@ -31,7 +33,7 @@ class ListCollection extends PureComponent {
 
 		return (
 			<div>
-				<Header isOpen={isOpen} onClick={this.togglePanel} >
+				<Header className='list-header' isOpen={isOpen} onClick={this.togglePanel} >
 					<h3>{name}</h3>
 					<p>{publishContent.length} Videos</p>
 					<div />
