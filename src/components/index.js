@@ -6,6 +6,7 @@ import Controller from './c/Controller'
 import Error from './c/Error'
 import Events from './c/Events'
 import Header from './c/Header'
+import Feedback from './c/Feedback'
 import LabAssistant from './c/LabAssistant'
 import Landing from './c/Landing'
 import Load from './c/Load'
@@ -31,6 +32,7 @@ export {
 	Error,
 	Events,
 	Header,
+	Feedback,
 	LabAssistant,
 	Landing,
 	Load,
