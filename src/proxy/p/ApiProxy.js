@@ -3,6 +3,8 @@ import User from 'models/User'
 import Content from 'models/Content'
 
 const updateSessionId = (id) => {
+	// console.log('OLD => ', window.clj_session_id)
+	// console.log('NEW => ', id)
 	if(id !== ``) window.clj_session_id = id
 }
 
@@ -324,8 +326,8 @@ const apiProxy = {
 			return res.data
 		}),
 		getSubtitles: async id => {
-			console.log(`here`)
-			console.log(`testing session`, window.clj_session_id)
+			// console.log(`here`)
+			// console.log(`testing session`, window.clj_session_id)
 			const results = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/subtitles`,
 				{
 					withCredentials: true,
@@ -336,7 +338,7 @@ const apiProxy = {
 				}).then( async res => {
 
 				await updateSessionId(res.headers[`session-id`])
-				console.log(`results are`,res)
+				// console.log(`results are`,res)
 				return res.data
 			})
 			return results
@@ -479,6 +481,25 @@ const apiProxy = {
 				}, {})
 			},
 		},
+		courses: {
+			/**
+			 * Retrieves the courses for the current user
+			 *
+			 * @returns an array of courses
+			 */
+			get: async (id) => {
+				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/courses`,
+				 	{
+					 withCredentials: true,
+					 headers: {'session-id': window.clj_session_id}
+					})
+					.then(res => {
+						updateSessionId(res.headers[`session-id`])
+						return res.data
+					})
+					return result
+			},
+		},
 	},
 	language: {
 		post: async (lang) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/language`, lang, {
@@ -609,6 +630,34 @@ const apiProxy = {
 				updateSessionId(res.headers[`session-id`])
 			})
 		},
+	},
+	courses: {
+		getCollections: async (course) => {
+
+			const result = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/course/${course.id}/collections`, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(res => {
+				updateSessionId(res.headers['session-id'])
+				return res.data
+			})
+			return result;
+			// return result.reduce((map, item) => {
+			// 	if(item['collection-name'] !== undefined){
+			// 		item[`name`] = item[`collection-name`]
+			// 		item['name'] = item['name'] + ` ${course['department']} ${course['catalog-number']}`
+			// 		item['content'] = []
+
+			// 		delete item[`collection-name`]
+			// 		map[item.id] = item
+			// 	}
+
+			// 	return map
+			// }, {})
+		}
 	},
 }
 

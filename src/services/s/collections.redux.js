@@ -161,18 +161,50 @@ export default class CollectionService {
 
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
+		const userId = getState().authStore.user.id
+		const student = getState().authStore.user.roles === 3
+		const admin = getState().authStore.user.roles === 0
+		// console.log(`%c Current USER ID => ${userId}`, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;')
+
 		if (stale || force) {
 
 			dispatch(this.actions.collectionsStart())
 
 			try {
+				//this gets the collections directly linked to the user.
+				let result = await apiProxy.user.collections.get()
 
-				const result = await apiProxy.user.collections.get()
+				if(student || admin){
+					//we also need to display the collections link to the user, but through courses.
+					//first we get the courses that a user is registered to
+					const courses = await apiProxy.user.courses.get(userId);
+					// console.log(`%c Current COURSES => `, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;', courses)
+					//once we have the courses, we can get the collections for those courses and display them
+					//by adding those collections to the result object.
+					//get all the collections from the courses that the user is registered to.
+					let courseCollections = []
+					let i = 0;
+					while(i < courses.length){
+						let response = await apiProxy.courses.getCollections(courses[i])
+						courseCollections.concat(response)
+						// result = {...result, ...response}
+						setTimeout(() => {
+							i++
+						}, 50);
+					}
+
+					// console.log(courseCollections)
+
+					// console.log(result)
+
+					courseCollections.forEach(element => {
+						result[element.id] = element
+					});
+				}
 
 				dispatch(this.actions.collectionsGet(result))
 
 			} catch (error) {
-				console.error(error.message)
 				dispatch(this.actions.collectionsError(error))
 			}
 
@@ -358,6 +390,7 @@ export default class CollectionService {
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
+
 	updateMany = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.collectionsStart())
 		try {
