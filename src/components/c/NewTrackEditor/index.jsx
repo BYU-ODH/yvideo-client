@@ -991,7 +991,25 @@ const TrackEditor = props => {
 									bounds={`parent`}
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
-									onDragStop={(e, d) => handleZoomChange(e, d)}
+									onDragStop={(e, d) => {
+										if(d.x < zoomFactor){
+											if(d.x === 0){
+											// console.log('zero')
+												setZoomFactor(0)
+												setWidth(0)
+												handleScrollFactor(`start`)
+											} else {
+											// console.log('smaller')
+												setZoomFactor(d.x)
+												setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
+											}
+										} else if(d.x > zoomFactor) {
+										// console.log('larger')
+											setZoomFactor(d.x)
+											setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+										}
+										setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+									}}
 								></Rnd>
 								<img src={zoomIn} style={{ float: 'right', width: '20px'}}/>
 							</div>
