@@ -164,7 +164,7 @@ export default class CollectionService {
 		const userId = getState().authStore.user.id
 		const student = getState().authStore.user.roles === 3
 		const admin = getState().authStore.user.roles === 0
-		console.log(`%c Current USER ID => ${userId}`, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;')
+		// console.log(`%c Current USER ID => ${userId}`, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;')
 
 		if (stale || force) {
 
@@ -178,7 +178,7 @@ export default class CollectionService {
 					//we also need to display the collections link to the user, but through courses.
 					//first we get the courses that a user is registered to
 					const courses = await apiProxy.user.courses.get(userId);
-					console.log(`%c Current COURSES => `, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;', courses)
+					// console.log(`%c Current COURSES => `, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;', courses)
 					//once we have the courses, we can get the collections for those courses and display them
 					//by adding those collections to the result object.
 					//get all the collections from the courses that the user is registered to.
@@ -193,9 +193,9 @@ export default class CollectionService {
 						}, 50);
 					}
 
-					console.log(courseCollections)
+					// console.log(courseCollections)
 
-					console.log(result)
+					// console.log(result)
 
 					courseCollections.forEach(element => {
 						result[element.id] = element

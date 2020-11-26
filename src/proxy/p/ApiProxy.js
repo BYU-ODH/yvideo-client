@@ -326,8 +326,8 @@ const apiProxy = {
 			return res.data
 		}),
 		getSubtitles: async id => {
-			console.log(`here`)
-			console.log(`testing session`, window.clj_session_id)
+			// console.log(`here`)
+			// console.log(`testing session`, window.clj_session_id)
 			const results = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}/subtitles`,
 				{
 					withCredentials: true,
@@ -338,7 +338,7 @@ const apiProxy = {
 				}).then( async res => {
 
 				await updateSessionId(res.headers[`session-id`])
-				console.log(`results are`,res)
+				// console.log(`results are`,res)
 				return res.data
 			})
 			return results
