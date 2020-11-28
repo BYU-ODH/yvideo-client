@@ -33,10 +33,10 @@ export class Feedback extends PureComponent {
     return (
         <Style>
             <form className="test-mailing" onSubmit={handleSubmit}>
-                <h1>Form</h1>
-                <input type="text" placeholder="Name" required onChange={ e => setName(e.target.value)}/><br/>
-                <input type="email" placeholder="Your Email" required onChange={ e => setEmail(e.target.value)}/><br/>
-                <input type="text" placeholder="Subject" required onChange={ e => setTitle(e.target.value)}/>
+                <h1>Submit Feedback</h1>
+                <input className="user-info" type="text" placeholder="Name" required onChange={ e => setName(e.target.value)}/><br/>
+                <input className="user-info" type="email" placeholder="Your Email" required onChange={ e => setEmail(e.target.value)}/><br/>
+                <input className="user-info"type="text" placeholder="Subject" required onChange={ e => setTitle(e.target.value)}/>
                 <div>
                 <textarea
                     id="feedback-body"
@@ -44,12 +44,11 @@ export class Feedback extends PureComponent {
                     placeholder="Type your feedback or message for the admins to see"
                     required
                     value={body}
-                    style={{width: '100%', height: '150px'}}
                 />
                 </div>
-                <input type="file" accept={".jpg,.jpeg"} onChange={e => setFile({type: e.target.files[0].type, attachment: e.target.files[0]})}/>
-                <Captcha handleCaptcha={handleCaptcha}/>
-                <input type="submit" value="Submit" className="btn btn--submit"  />
+                <input className="submit-file" type="file" accept={".jpg,.jpeg"} onChange={e => setFile({type: e.target.files[0].type, attachment: e.target.files[0]})}/>
+                <Captcha className="captcha" handleCaptcha={handleCaptcha}/>
+                <input type="submit" value="Submit" className="btn-submit"  />
             </form>
         </Style>
     );

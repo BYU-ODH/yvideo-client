@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-// import Style, { } from './styles'
+import Style, { } from './styles'
 
 const Captcha = (props) => {
 
@@ -16,9 +16,9 @@ const Captcha = (props) => {
     }
 
     return (
-        <div style={{ width: '150px', height: '75px', display: 'flex'}}>
-            <input type="checkbox" checked={checked} onClick={handleCheckboxChange}/><h3>I am not a robot</h3>
-        </div>
+			<Style>
+				<input type="checkbox" checked={checked} onClick={handleCheckboxChange}/><h3>I am not a robot</h3>
+			</Style>
     );
 }
 
