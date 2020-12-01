@@ -17,7 +17,7 @@ const Captcha = (props) => {
 
     return (
 			<Style>
-				<input type="checkbox" checked={checked} onClick={handleCheckboxChange}/><h3>I am not a robot</h3>
+				<input type="checkbox" checked={checked} onClick={handleCheckboxChange} required/><h3>I am not a robot</h3>
 			</Style>
     );
 }
