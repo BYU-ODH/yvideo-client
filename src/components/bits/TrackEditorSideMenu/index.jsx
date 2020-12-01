@@ -250,51 +250,55 @@ const TrackEditorSideMenu = props => {
 					<div style={{overflowY:`scroll`, height:`40vh`}}>
 						<p className={`subTitleCard`} >All Subtitles</p>
 						<table>
-							<tr>
-								<td>
-									<div style={{width:`8rem`}}>
-										<label>Start</label>
-									</div>
-								</td>
-								<td>
-									<div style={{width:`8rem`}}>
-										<label>End</label>
-									</div>
-								</td>
-								<td>
-									<div style={{width:`8rem`}}>
-										<label>Text</label>
-									</div>
-								</td>
-							</tr>
+							<thead>
+								<tr>
+									<td>
+										<div style={{width:`8rem`}}>
+											<label>Start</label>
+										</div>
+									</td>
+									<td>
+										<div style={{width:`8rem`}}>
+											<label>End</label>
+										</div>
+									</td>
+									<td>
+										<div style={{width:`8rem`}}>
+											<label>Text</label>
+										</div>
+									</td>
+								</tr>
+							</thead>
 						</table>
 						<table>
 							{/* content is a string type. Maybe change to an array by parsing content? */}
-							{subs[subLayer][`content`].map((sub,ind)=>(
-								<div className={`${ind === index ? `subActive`:``}`}>
-									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`}>
-										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
-										</td>
-										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer)}/>
-										</td>
-										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
-												// const text = subText
-												// text[ind] = value
-												// setSubText(text)
-												editSub(null,null,value,subLayer)
-											}} />
-										</td>
-									</tr>
-								</div>
-							// <div className={`subCard ${ind === index ? `subActive`:``}`} onClick={()=>changeSubIndex(ind)} key={ind}>
-							// 	<p>
-							// 		{sub.text}
-							// 	</p>
-							// </div>
-							))}
+							<tbody>
+								{subs[subLayer][`content`].map((sub,ind)=>(
+									// <div className={`${ind === index ? `subActive`:``}`}>
+										<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`} key={ind}>
+											<td>
+												<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
+											</td>
+											<td>
+												<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer)}/>
+											</td>
+											<td>
+												<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
+													// const text = subText
+													// text[ind] = value
+													// setSubText(text)
+													editSub(null,null,value,subLayer)
+												}} />
+											</td>
+										</tr>
+									// </div>
+								// <div className={`subCard ${ind === index ? `subActive`:``}`} onClick={()=>changeSubIndex(ind)} key={ind}>
+								// 	<p>
+								// 		{sub.text}
+								// 	</p>
+								// </div>
+								))}
+							</tbody>
 						</table>
 						<Icon src={plus} onClick={()=>addSub(null,subLayer)} />
 					</div>
