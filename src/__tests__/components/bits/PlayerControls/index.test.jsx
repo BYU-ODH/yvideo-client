@@ -29,6 +29,8 @@ const props = {
 			played: "played"
 		},
 		isCaption: true,
+		isAdmin: true,
+		isProf: true,
 		subtitles: [{
 			content: [{
 				end: 24.201520912547526,
@@ -113,6 +115,14 @@ it(`simulate setShowSpeed`, ()=> {
 	props.viewstate.isCaption = true
 	const wrapper = shallow(<PlayerControls {...props}/>)
 	wrapper.find(Speed).simulate('click')
+	wrapper.find(".menu-modal").at(0).simulate('MouseLeave')
+})
+
+it(`simulate setShowSpeed`, ()=> {
+	props.viewstate.isCaption = true
+	props.viewstate.isAdmin = false
+	props.viewstate.isProf = false
+	const wrapper = shallow(<PlayerControls {...props}/>)
 	wrapper.find(".menu-modal").at(0).simulate('MouseLeave')
 })
 
