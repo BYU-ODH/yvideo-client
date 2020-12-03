@@ -134,13 +134,13 @@ const Controller = props => {
 				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed.toFixed(10) * duration)
-				console.log(newPlayed.toFixed(10) * duration)
+				// console.log(newPlayed.toFixed(10) * duration)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
 			getVideoTime(elapsed.toFixed(1))
-			console.log(elapsed.toFixed(1))
+			// console.log(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
