@@ -56,6 +56,7 @@ const HelpDocumentationContainer = props => {
 	const {
 		name,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const index = {
@@ -168,6 +169,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HelpDocumentationContainer)

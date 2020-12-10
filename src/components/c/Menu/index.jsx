@@ -18,11 +18,13 @@ class Menu extends PureComponent {
 
 		const {
 			toggleMenu,
+			handleShowTip,
 			handleLogout,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
-			<Style editorStyle={editorStyle} className={menuActive && `active`} onClick={toggleMenu}>
+			<Style editorStyle={editorStyle} className={menuActive && `active`} onClick={toggleMenu} onMouseEnter={e => handleShowTip('menu', {x: e.clientX, y: e.clientY})} onMouseLeave={e => toggleTip()}>
 
 				<UserPic>{initials}</UserPic>
 				<h4>{user.name}</h4>

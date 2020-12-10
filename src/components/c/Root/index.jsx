@@ -22,6 +22,7 @@ import {
 
 import {
 	Modal,
+	Tooltip,
 } from 'components/bits'
 
 class Root extends PureComponent {
@@ -32,6 +33,7 @@ class Root extends PureComponent {
 			user,
 			loading,
 			modal,
+			tip,
 		} = this.props.viewstate
 
 		// TODO: route has to be touched mirroring with backend
@@ -95,6 +97,7 @@ class Root extends PureComponent {
 
 				<Load loading={loading} />
 				<Modal active={modal.active} />
+				<Tooltip/>
 			</Router>
 		)
 	}

@@ -40,6 +40,8 @@ export default class ManageCollection extends PureComponent {
 			archive,
 			setTab,
 			createContent,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
@@ -67,6 +69,8 @@ export default class ManageCollection extends PureComponent {
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
 							className={`title-edit-button`}
+							onMouseEnter={e => handleShowTip('collection-edit-name', {x: e.clientX, y: e.clientY})}
+							onMouseLeave={e => toggleTip()}
 						>
 							{isEditingCollectionName ? `Save` : `Edit`}
 						</TitleEditButton>
@@ -87,6 +91,8 @@ export default class ManageCollection extends PureComponent {
 									published={collection.published}
 									onClick={togglePublish}
 									className={`publish-button`}
+									onMouseEnter={e => handleShowTip('collection-publish', {x: e.clientX, y: e.clientY})}
+									onMouseLeave={e => toggleTip()}
 								>
 									{collection.published ? `Unpublish` : `Publish`}
 								</PublishButton>
@@ -97,7 +103,10 @@ export default class ManageCollection extends PureComponent {
 				</header>
 				<TabHeader>
 					<button className={`content-button`} onClick={setTab(true)}>Content</button>
-					<button className={`permissions-button`} onClick={setTab(false)}>Permissions</button>
+					<button className={`permissions-button`} onClick={setTab(false)}
+						onMouseEnter={e => handleShowTip('collection-permissions', {x: e.clientX, y: e.clientY})}
+						onMouseLeave={e => toggleTip()}
+					>Permissions</button>
 					<Selector isContent={isContent} />
 				</TabHeader>
 				<Tab>
@@ -116,7 +125,10 @@ export default class ManageCollection extends PureComponent {
 						)}
 
 					{isContent && (
-						<NewContent className={`newcontent-button`} onClick={createContent}>
+						<NewContent className={`newcontent-button`} onClick={createContent}
+						onMouseEnter={e => handleShowTip('collection-add-content', {x: e.clientX, y: e.clientY})}
+						onMouseLeave={e => toggleTip()}
+						>
 							<Icon src={plus} />
 						</NewContent>
 					)}

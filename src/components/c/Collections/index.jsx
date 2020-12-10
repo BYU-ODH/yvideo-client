@@ -25,20 +25,27 @@ export default class Collections extends PureComponent {
 		const {
 			toggleCollectionsDisplay,
 			handleShowHelp,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
 			<Style>
 				<header>
 					<div>
-						<h3>Collections &nbsp;&nbsp;&nbsp;<Help id='collections-help-documentation' src={helpIcon} onClick={handleShowHelp}/></h3>
+						<h3>Collections &nbsp;&nbsp;&nbsp;
+						<Help id='collections-help-documentation'
+							src={helpIcon} onClick={handleShowHelp}
+							onMouseEnter={e => handleShowTip('help', {x: e.clientX, y: e.clientY})}
+							onMouseLeave={e => toggleTip()}
+							/></h3>
 					</div>
 					<div>
 						{
 							(isProf || isAdmin) &&
-							<Link to={`/manager`} >Manage Collections</Link>
+							<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip('manage-collections', {x: e.clientX, y: e.clientY})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
 						}
-						<ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} />
+						<ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip('list-block', {x: e.clientX, y: e.clientY})} onMouseLeave={toggleTip}/>
 					</div>
 				</header>
 				<div className='list'>
