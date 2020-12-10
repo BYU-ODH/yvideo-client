@@ -62,9 +62,11 @@
 	<div id='root'></div>
 	<div id='load'></div>
 	<div id='modal'></div>
-	<script> 
-		var clj_session_id = '{{ session-id }}' 
+	<script>
+		var clj_session_id = '{{ session-id }}'
 	</script>
+	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
 	<!--
 __     ___      ___     _
 \ \   / \ \    / (_)   | |

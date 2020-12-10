@@ -8,7 +8,6 @@ import { Feedback } from 'components'
 import { interfaceService } from 'services'
 
 const FeedbackContainer = props => {
-
 	const [isPerson, setIsPerson] = useState(false)
 	const [email, setEmail] = useState('')
 	const [title, setTitle] = useState('')
