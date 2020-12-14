@@ -62,6 +62,8 @@ export default class Player extends PureComponent {
 			handleToggleTranscript,
 			handleShowSubtitle,
 			handleShowHelp,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		// console.log(`%c Player component ${url}`, 'color:red;')

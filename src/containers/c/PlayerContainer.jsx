@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { contentService, resourceService, interfaceService, subtitlesService } from 'services'
 
 import { Player } from 'components'
+import { Tooltip } from 'components/bits'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -23,6 +24,7 @@ const PlayerContainer = props => {
 		getSubtitles,
 		subtitles,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const params = useParams()
@@ -106,6 +108,16 @@ const PlayerContainer = props => {
 		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
+	}
+
 	const handleDuration = duration => {
 		setDuration(duration)
 	}
@@ -141,6 +153,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleSeekChange = (e, time) => {
+		toggleTip()
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
@@ -208,7 +221,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleVolumeChange = e => {
-		console.log(e.target)
+		// console.log(e.target)
 	}
 
 	const handleShowComment = (value, position) => {
@@ -250,6 +263,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleToggleTranscript = () => {
+		toggleTip()
 		setToggleTranscript(!toggleTranscript)
 	}
 
@@ -328,6 +342,8 @@ const PlayerContainer = props => {
 		setFullscreen,
 		setShowTranscript,
 		handleShowHelp,
+		toggleTip,
+		handleShowTip,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
@@ -350,6 +366,7 @@ const mapDispatchToProps = {
 	setEvents: interfaceService.setEvents,
 	getSubtitles: subtitlesService.getSubtitles,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

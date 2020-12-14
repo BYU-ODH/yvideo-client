@@ -154,6 +154,24 @@ const HelpDocumentationContainer = props => {
 					<img src="${zoomrHelp}"/>
 				</div>`,
 		},
+		'Player': {
+			htmlInstruction: `
+				<div class="section">
+					<p><b>Menu:</b><br/> To open the menu, click on the icon in the top right corner of the screen. For instructors, you can find links to view and manage your collections, and find other collections.
+					</p><br/>
+					<img src="${menu}" width="100px"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Collections:</b><br/> Collections show all of the content available to a class. Click on a collection to show the videos available to you. Click the Icon shown on the right to switch between compact and block views.<br/>
+					For instructors, a “Manage Collections” Icon will appear in the top right, where you can create and edit collections.
+					</p><br/>
+					<div style="margin: 10px;">
+						<img src="${list}" width="30px" style="margin: 5px;"/>
+						<img src="${block}" width="30px" style="margin: 5px;"/>
+					</div>
+				</div>`,
+		}
 	}
 
 	const viewstate = {

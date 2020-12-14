@@ -6,8 +6,7 @@ const Style = styled.div`
 
 	border-radius: 3px;
 
-	width: auto;
-	max-width: 6vw;
+	width: 6vw;
 	min-height: 3vh;
 	max-height: auto;
 	display: flex;
@@ -18,15 +17,16 @@ const Style = styled.div`
 
 	transition: visibility 1s ease, opacity .5s ease;
 
-	top: ${props => props.position ? (`${ props.position.y < window.innerHeight / 2 ? (`${props.position.y + 30}px`) : (`calc(${props.position.y - 30 } - 3vh)`)}`) : (`-10px`)};
+	top: ${props => props.position ? (`${ props.position.y < window.innerHeight / 2 ? (`${props.position.y + 20}px`) : (`calc(${props.position.y - 20}px - 5vh)`)}`) : (`-10px`)};
 	/* if it is greater than 3/4 of width we display to the left of item */
 	/* if it is less than 1/4 of width display to the riht */
 	/* else display in to the middle  */
-	left: ${props => props.position ? (`${ props.position.x > window.innerWidth * .8 ? (`calc(${props.position.x}px - 5vw)`) : (`${props.position.x < window.innerWidth * .2 ? (`calc(${props.position.x}px + 5vw)`) : (`calc(${props.position.x}px - 3.5vw)`)}`)}`) : (`-10px`)};
 
-	background-color: white;
-	border: 2px solid var(--light-blue);
-	color: var(--light-blue);
+	left: ${props => props.position ? (`${ props.position.x > window.innerWidth * .9 ? (`calc(${props.position.x + props.position.width / 2 - 10}px - 4vw)`) : (`${props.position.x < window.innerWidth * .1 ? (`calc(${props.position.x + props.position.width / 2 - 10}px)`) : (`calc(${props.position.x + props.position.width / 2 - 10}px - 3vw)`)}`) }`) : (`-10px`)};
+
+	background-color: rgba(0, 46, 93, 0.8);
+	border: rgba(0, 46, 93, 0.8);
+	color: white;
 
 	& h3 {
 		text-align: center !important;

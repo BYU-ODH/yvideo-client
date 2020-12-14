@@ -26,7 +26,8 @@ import Style, {} from './styles.js'
 		4. Function on point 3 is to show the Tooltip component
 		5. Paste the following mouse events in your element:
 			<Element
-				onMouseEnter={e => handleShowTip('name-of-tip', {x: e.clientX, y: e.clientY})} onMouseLeave={e => toggleTip()}
+				onMouseEnter={e => handleShowTip('name-of-tip', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+				onMouseLeave={e => toggleTip()}
 				></Element
 		6. Make sure that all the necesary methods are available to your component.
 		7. Make sure to close the tip once the actual click event happens.
@@ -66,16 +67,29 @@ export const ToolTip = (props) => {
 	}, [tip, name, position])
 
 	const tips = {
-		"help": 'Help documentation',
+		"help": 'Help',
 		"list-block": 'Change view',
 		"manage-collections": 'Edit collections',
 		"home": 'Home page',
 		"menu": 'Menu',
 		"collection-publish": "Show/Hide collection",
-		"collection-permissions": "Edit who accesses this collection",
+		"collection-permissions": "Edit collection users",
 		"collection-edit-name": "Edit collection name",
 		"collection-add-content": "Add content to collection",
 		"content-edit": "Edit content",
+		"playback-rate": "Change video speed",
+		"closed-captions": "On/Off Captions",
+		"transcript-hide": "Show/Hide",
+		"transcript-seek": "Click to seek",
+		"drag-and-drop": "Drag & Drop card into layer",
+		"te-add-layer": "Add Event Layer",
+		"te-zoom": "Drag to zoom in/out",
+		"te-scroll": "Scroll indicator",
+		"te-scroll-right": "Scroll right",
+		"te-scroll-left": "Scroll left",
+		"te-scroll-end": "Scroll to end",
+		"te-scroll-start": "Scroll to start",
+		"actions": "Actions"
 	}
 
 	// console.log("POSITION", position)

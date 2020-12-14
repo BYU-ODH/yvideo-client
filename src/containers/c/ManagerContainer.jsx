@@ -6,6 +6,8 @@ import { collectionService, interfaceService } from 'services'
 
 import { Manager } from 'components'
 
+import { Tooltip } from 'components/bits'
+
 import CreateCollectionContainer from 'components/modals/containers/CreateCollectionContainer'
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -19,6 +21,7 @@ const ManagerContainer = props => {
 		getCollections,
 		setHeaderBorder,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const params = useParams()
@@ -51,6 +54,16 @@ const ManagerContainer = props => {
 		})
 	}
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
+	}
+
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
@@ -61,6 +74,8 @@ const ManagerContainer = props => {
 	const handlers = {
 		createNew,
 		handleShowHelp,
+		toggleTip,
+		handleShowTip,
 	}
 
 	const sideLists = {
@@ -99,6 +114,7 @@ const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerContainer)

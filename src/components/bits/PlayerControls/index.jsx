@@ -47,6 +47,8 @@ const PlayerControls = props => {
 		handleChangeSubtitle,
 		handleShowSubtitle,
 		setShowTranscript,
+		handleShowTip,
+		toggleTip,
 	} = props.handlers
 
 	useEffect(() => {
@@ -76,6 +78,7 @@ const PlayerControls = props => {
 	// }
 
 	const handleChangeSpeed = () => {
+		toggleTip()
 		setShowSpeed(!showSpeed)
 		if(isCaption){
 			setIsCaption(!isCaption)
@@ -83,6 +86,7 @@ const PlayerControls = props => {
 	}
 
 	const handleChangeCaption = () => {
+		toggleTip()
 		setIsCaption(!isCaption)
 		if(showSpeed){
 			setShowSpeed(!showSpeed)
@@ -105,11 +109,16 @@ const PlayerControls = props => {
 			<div className='right'>
 				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
 				{/* <SideBarToggle /> */}
-				<Speed src={clockIcon} onClick={handleChangeSpeed}/>
+				<Speed src={clockIcon} onClick={handleChangeSpeed}
+					onMouseEnter={e => handleShowTip('playback-rate', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
 				<ClosedCaptions
 					// style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }}
 					isCaptions={isCaption}
-					onClick={ isCaption && isAdmin && isProf ? (handleChangeCaption) : (handleToggleSubtitles)}
+					onClick={ isAdmin || isProf ? (handleChangeCaption) : (handleToggleSubtitles)}
+					onMouseEnter={e => handleShowTip('closed-captions', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
 				/>
 				{/* <Notes /> */}
 			</div>
