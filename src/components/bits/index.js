@@ -15,6 +15,7 @@ import Scrubber from './Scrubber'
 import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
+import Tooltip from './Tooltips'
 import TrackEditorSideMenu from './TrackEditorSideMenu'
 import Transcript from './Transcript'
 import SubtitlesCard from './SubtitlesCard'
@@ -39,6 +40,7 @@ export {
 	Spinner,
 	SwitchToggle,
 	Tag,
+	Tooltip,
 	TrackEditorSideMenu,
 	Transcript,
 	ResourceOverview,

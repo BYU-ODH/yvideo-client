@@ -25,23 +25,31 @@ export default class Collections extends PureComponent {
 		const {
 			toggleCollectionsDisplay,
 			handleShowHelp,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
 			<Style>
 				<header>
 					<div>
-						<h3>Collections &nbsp;&nbsp;&nbsp;<Help id='collections-help-documentation' src={helpIcon} onClick={handleShowHelp}/></h3>
+						<h3>Collections &nbsp;&nbsp;&nbsp;
+						<Help id='collections-help-documentation'
+							src={helpIcon} onClick={handleShowHelp}
+							onMouseEnter={e => handleShowTip('help', {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})}
+							onMouseLeave={e => toggleTip()}
+							/></h3>
 					</div>
 					<div>
 						{
 							(isProf || isAdmin) &&
-							<Link to={`/manager`} >Manage Collections</Link>
+							<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip('manage-collections', {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
 						}
-						<ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} />
+						<ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip('list-block', {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
 					</div>
 				</header>
 				<div className='list'>
+
 					{ collectionsLength > 0 ? (
 						<>
 							{	displayBlocks ?
@@ -51,7 +59,20 @@ export default class Collections extends PureComponent {
 							}
 						</>
 					) : (
-						<h1>There are no collections to display</h1>
+						<>
+							<h1 id="message">Loading</h1>
+						{
+							<>
+							{
+								setTimeout(() => {
+									if(document.getElementById("message") != null){
+										document.getElementById("message").innerHTML = "There are no collections"
+									}
+								}, 2000)
+							}
+							</>
+						}
+					</>
 					) }
 				</div>
 			</Style>

@@ -49,6 +49,8 @@ const TrackEditor = props => {
 
 	const { eventsArray, currentContent,subs, allSubs } = props.viewstate
 
+	const { handleShowTip, toggleTip } = props.handlers
+
 	const events = [
 		{
 			type: `Skip`,
@@ -515,6 +517,7 @@ const TrackEditor = props => {
 		createSub(rawSubs)
 	}
 	const handleZoomChange = (e, d) => {
+		toggleTip()
 		// console.log(d.x)
 		if(d.x < zoomFactor){
 			if(d.x === 0){
@@ -867,7 +870,9 @@ const TrackEditor = props => {
 										/>
 									</div>
 								))}
-								<NewLayer onClick={handleAddLayer}>
+								<NewLayer onClick={handleAddLayer}
+									onMouseEnter={e => handleShowTip('te-add-layer', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 11, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}>
 									<Icon src={plus}/>
 								</NewLayer>
 
@@ -914,30 +919,34 @@ const TrackEditor = props => {
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
+									onMouseEnter={e => handleShowTip('te-zoom', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}
 								></Rnd>
 								<img src={zoomIn} style={{ float: 'right', width: '20px'}}/>
 							</div>
 							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 
 								<div style={{ width: `90%`, height: `100%`, display: `flex`, marginLeft: `5%` }}>
+									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip('te-scroll-start', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}
+									><img src={llIcon}/></span>
+									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip('te-scroll-left', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
 
-									{/* <Rnd
-									className={'zoom-scroll-indicator'}
-									bounds={'parent'}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-									dragAxis="x"
-									onDrag={(e, d) => handleScrollFactor(e, d)}
-								></Rnd> */}
-									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}><img src={llIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}><img src={lIcon}/></span>
 									<div className={`zoom-scroll-container`}>
-										{/* <div style={{ width: '98%',  height: '100%', backgroundColor: 'red'}}></div> */}
-
-										<div className={`zoom-scroll-indicator`}></div>
-
+										<div className={`zoom-scroll-indicator`}
+											onMouseEnter={e => handleShowTip('te-scroll', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+											onMouseLeave={e => toggleTip()}></div>
 									</div>
-									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}><img src={rIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}><img src={rrIcon}/></span>
+
+									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip('te-scroll-right', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect(). y+ 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}><img src={rIcon}/></span>
+									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip('te-scroll-end', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}><img src={rrIcon}/></span>
 								</div>
 								<div id={`time-indicator-container`}>
 									<div id={`layer-time-indicator`}>
@@ -1003,15 +1012,16 @@ const TrackEditor = props => {
 								></TrackEditorSideMenu>
 							) : (
 								<>
-									<div className='eventsList'>
+									<div className='eventsList'
+										onMouseEnter={e => handleShowTip('drag-and-drop', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y - 50, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}>
 										{events.map((event, i) => (
-											<EventCard event={event} key={i} />
+											<EventCard event={event} key={i}/>
 										))}
 									</div>
 									<div className='subCard'>
 										{subtitles !== [] && subtitles !== undefined ? (
-
-											<SubtitlesCard />
+											<SubtitlesCard/>
 										):``}
 									</div>
 

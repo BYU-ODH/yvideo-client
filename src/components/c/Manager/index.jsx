@@ -35,6 +35,8 @@ export default class Manager extends PureComponent {
 		const {
 			createNew,
 			handleShowHelp,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
@@ -61,7 +63,13 @@ export default class Manager extends PureComponent {
 					<>
 						<SideMenu>
 
-							<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}<Help><img className='help-document' src={helpIcon} onClick={handleShowHelp}/></Help></h4>
+							<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
+								<Help
+									onMouseEnter={e => handleShowTip('help', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}
+									><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
+								</Help>
+							</h4>
 
 							<Accordion className='collection-published' header={`Published`} active>
 								{sideLists.published.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}

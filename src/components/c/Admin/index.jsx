@@ -26,20 +26,6 @@ export class Admin extends PureComponent {
 			updateCategory,
 		} = this.props.handlers
 
-		const viewstate = {
-			menuItemInfo,
-			searchCategory,
-			menuActive,
-			category,
-			data,
-			mousePos,
-		}
-
-		const handlers = {
-			handleConfirmDelete,
-			toggleMenu,
-		}
-
 		return (
 			<Style>
 				<h1>Admin Dashboard</h1>
@@ -66,7 +52,7 @@ export class Admin extends PureComponent {
 					data.length < 1 ?
 						<FeedbackMessage><p>The are no results</p></FeedbackMessage>
 						:
-						<AdminTable viewstate={viewstate} handlers={handlers}/>
+						<AdminTable viewstate={this.props.viewstate} handlers={this.props.handlers} tipHandlers={this.props.tipHandlers}/>
 					:
 					<FeedbackMessage><p></p></FeedbackMessage>
 				}

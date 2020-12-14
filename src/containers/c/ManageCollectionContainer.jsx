@@ -6,6 +6,8 @@ import { collectionService, contentService, interfaceService } from 'services'
 
 import { ManageCollection } from 'components'
 
+import { Tooltip } from 'components/bits'
+
 import CreateContentContainer from 'components/modals/containers/CreateContentContainer'
 
 import { objectIsEmpty } from 'lib/util'
@@ -20,6 +22,7 @@ const ManageCollectionContainer = props => {
 		getCollections,
 		updateCollectionName,
 		updateCollectionStatus,
+		toggleTip,
 	} = props
 
 	const [isContent, setIsContent] = useState(true)
@@ -47,6 +50,16 @@ const ManageCollectionContainer = props => {
 		setCollectionName(collection.name)
 		setIsContent(true)
 	}, [collection.name, getCollections])
+
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
+	}
 
 	const toggleEdit = e => {
 		setIsEditingCollectionName(!isEditingCollectionName)
@@ -108,6 +121,8 @@ const ManageCollectionContainer = props => {
 		handleNameChange,
 		togglePublish,
 		createContent,
+		handleShowTip,
+		toggleTip,
 		archive,
 		setTab,
 	}
@@ -124,6 +139,7 @@ const mapDispatchToProps = {
 	setContent: contentService.setContent,
 	getCollections: collectionService.getCollections,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 	updateCollectionName: collectionService.updateCollectionName,
 	updateCollectionStatus: collectionService.updateCollectionStatus,
 }

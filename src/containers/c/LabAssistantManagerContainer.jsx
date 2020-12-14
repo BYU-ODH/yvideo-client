@@ -6,6 +6,8 @@ import { interfaceService, adminService } from 'services'
 
 import { Manager } from 'components'
 
+import { Tooltip } from 'components/bits'
+
 import CreateCollectionContainer from 'components/modals/containers/CreateCollectionContainer'
 import { objectIsEmpty } from 'lib/util'
 
@@ -19,6 +21,7 @@ const LabAssistantManagerContainer = props => {
 		setHeaderBorder,
 		setProfessor,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const { professorId, collectionId } = useParams()
@@ -45,6 +48,16 @@ const LabAssistantManagerContainer = props => {
 		toggleModal({
 			component: CreateCollectionContainer,
 			isLabAssistantRoute: true,
+		})
+	}
+
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
 		})
 	}
 
@@ -94,6 +107,8 @@ const LabAssistantManagerContainer = props => {
 
 	const handlers = {
 		createNew,
+		toggleTip,
+		handleShowTip,
 	}
 
 	if(!collections) return <Manager viewstate={viewstate} handlers={handlers} archived={[]} published={[]} unpublished={[]} empty={true}/>
@@ -112,6 +127,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	setProfessor: adminService.setProfessor,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManagerContainer)
