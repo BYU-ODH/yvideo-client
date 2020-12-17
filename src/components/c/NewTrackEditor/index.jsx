@@ -185,21 +185,18 @@ const TrackEditor = props => {
 			setTimeout(() => {
 				setSaved(false)
 			}, 3000)
-		}
-		else {
+		} else
 			window.onbeforeunload = undefined
-		}
 
-		if(blockLeave){
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		 else {
 			window.onbeforeunload = undefined
 		 	setBlock(false)
 		}
 
 		return function cleanup () {
-			window.onbeforeunload = null;
+			window.onbeforeunload = null
 		}
 
 	}, [eventsArray])
@@ -396,9 +393,9 @@ const TrackEditor = props => {
 		setSideEditor(false)
 	}
 	const handleCensorRemove = (item) => {
-		let index = eventToEdit
-		let cEvent = allEvents[index]
-		let layer = cEvent.layer
+		const index = eventToEdit
+		const cEvent = allEvents[index]
+		const layer = cEvent.layer
 
 		delete cEvent.position[item]
 
@@ -408,63 +405,82 @@ const TrackEditor = props => {
 
 	const handleAddCensor = () => {
 
-		let temp = editCensor
+		const temp = {...editCensor}
 		const last = Object.keys(temp)
+		console.log(`Current Time`,videoCurrentTime)
 
-		if(videoCurrentTime === 0 && last.length === 0){
+		if(videoCurrentTime === 0 && last.length === 0)
 			temp[`0.0`] = [0 ,0, 30, 40]
-		}
-		else if(videoCurrentTime == 0 && last.length > 0){
+		 else if(videoCurrentTime == 0 && last.length > 0)
 			temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
-		}
-		else{
-			temp[`${videoCurrentTime.toFixed(1)}`] = [0 ,0, 30, 40]
-		}
+		 else
+			temp[`${parseFloat(videoCurrentTime).toFixed(1)}`] = [0 ,0, 30, 40]
 
-		console.log('temp', temp)
-		document.getElementById('tableBottom').scrollIntoView(false)
+		console.log(`temp`, temp)
+		document.getElementById(`tableBottom`).scrollIntoView(false)
 		setEditCensor(temp)
 		handleSaveCensor()
 	}
 
 	const handleEditCensor = (e, item, int) => {
-		let object = editCensor
-		//console.log(editCensor)
-		let value = (parseFloat(e.target.value)).toFixed(1)
+		const object = editCensor
+		// console.log(editCensor)
+		const value = parseFloat(e.target.value).toFixed(1)
 
 		switch (int) {
-			case 1:
-				object[item][0] = value
-				break;
-			case 2:
-				object[item][1] = value
-				break;
-			case 3:
-				object[item][2] = value
-				break;
-			case 4:
-				object[item][3] = value
-				break;
+		case 1:
+			object[item][0] = value
+			break
+		case 2:
+			object[item][1] = value
+			break
+		case 3:
+			object[item][2] = value
+			break
+		case 4:
+			object[item][3] = value
+			break
 
-			default:
-				break;
+		default:
+			break
 		}
 
 		setEditCensor(object)
 	}
 
 	const handleSaveCensor = () => {
-		console.log('SAVE CENSOR')
-		let index = eventToEdit
-		let cEvent = allEvents[index]
-		let layer = cEvent.layer
+		console.log(`SAVE CENSOR`)
+		const index = eventToEdit
+		const cEvent = allEvents[index]
+		const layer = cEvent.layer
 
 		cEvent.position = editCensor
 
-		setEditCensor({})
+		// setEditCensor({})
 		updateEvents(index, cEvent, layer)
 	}
+	// THIS IS PART OF CENSOR
+	const handleLastClick = (height, width, x, y, time) => {
+		// console.log(height, width)
 
+		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
+			// console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
+			const index = eventToEdit
+			const cEvent = allEvents[index]
+			const layer = cEvent.layer
+
+			const value = Object.keys(cEvent.position).find(item => item >= time)
+
+			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
+			if(cEvent.position[`${time.toFixed(1)}`] !== undefined)
+				cEvent.position[`${time.toFixed(1)}`] = [x / width * 100, (y-86) / height * 100, cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
+				 else
+				cEvent.position[`${time.toFixed(1)}`] = [x / width * 100, (y-86) / height * 100, 30, 40]
+
+			// console.log(cEvent.position)
+			updateEvents(index, cEvent, layer)
+		}
+	}
 
 	const openSideEditor = (layerIndex, eventIndex) => {
 		setEventToEdit(eventIndex)
@@ -518,59 +534,59 @@ const TrackEditor = props => {
 			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
 			// console.log(lastPossibleRight)
 			switch (direction) {
-				case `start`:
-					scrubber.scrollLeft = 0
-					timeIndicator.scrollLeft = 0
-					alllayers.forEach((element, i) => {
-						alllayers[i].scrollLeft = 0
-					})
+			case `start`:
+				scrubber.scrollLeft = 0
+				timeIndicator.scrollLeft = 0
+				alllayers.forEach((element, i) => {
+					alllayers[i].scrollLeft = 0
+				})
+				scrollBar.style.left = `0px`
+
+				break
+			case `left`:
+				scrubber.scrollLeft -= currentLayerWidth * 0.03
+				timeIndicator.scrollLeft -= currentLayerWidth * 0.03
+				alllayers.forEach((element, i) => {
+					alllayers[i].scrollLeft -= currentLayerWidth * 0.03
+				})
+				// FIND 3 PERCENT OF PARENT
+				// CURRENT LEFT MINUS NEW LEFT
+				if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
+					scrollBar.style.left = `${cLeft - scrollBarOffset}px`
+				else if (cLeft - scrollBarOffset < 0)
 					scrollBar.style.left = `0px`
 
-					break
-				case `left`:
-					scrubber.scrollLeft -= currentLayerWidth * 0.03
-					timeIndicator.scrollLeft -= currentLayerWidth * 0.03
-					alllayers.forEach((element, i) => {
-						alllayers[i].scrollLeft -= currentLayerWidth * 0.03
-					})
-					// FIND 3 PERCENT OF PARENT
-					// CURRENT LEFT MINUS NEW LEFT
-					if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
-						scrollBar.style.left = `${cLeft - scrollBarOffset}px`
-					else if (cLeft - scrollBarOffset < 0)
-						scrollBar.style.left = `0px`
+				break
+			case `right`:
+				scrubber.scrollLeft += currentLayerWidth * 0.03
+				timeIndicator.scrollLeft += currentLayerWidth * 0.03
+				// console.log(scrollPercentage / scrollIndicatorWidth)
+				alllayers.forEach((element, i) => {
+					alllayers[i].scrollLeft += currentLayerWidth * 0.03
+				})
+				if(zoomFactor !== 0){
+					if(isNaN(cLeft) === true)
+						scrollBar.style.left = `${scrollBarOffset}px`
+					else
+						scrollBar.style.left = `${cLeft + scrollBarOffset}px`
+				}
 
-					break
-				case `right`:
-					scrubber.scrollLeft += currentLayerWidth * 0.03
-					timeIndicator.scrollLeft += currentLayerWidth * 0.03
-					// console.log(scrollPercentage / scrollIndicatorWidth)
-					alllayers.forEach((element, i) => {
-						alllayers[i].scrollLeft += currentLayerWidth * 0.03
-					})
-					if(zoomFactor !== 0){
-						if(isNaN(cLeft) === true)
-							scrollBar.style.left = `${scrollBarOffset}px`
-						else
-							scrollBar.style.left = `${cLeft + scrollBarOffset}px`
-					}
-
-					if (cLeft + scrollBarOffset > lastPossibleRight)
-						scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-					break
-				case `end`:
-					scrubber.scrollLeft += currentLayerWidth
-					timeIndicator.scrollLeft += currentLayerWidth
-					alllayers.forEach((element, i) => {
-						alllayers[i].scrollLeft += currentLayerWidth
-					})
+				if (cLeft + scrollBarOffset > lastPossibleRight)
 					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
 
-					break
+				break
+			case `end`:
+				scrubber.scrollLeft += currentLayerWidth
+				timeIndicator.scrollLeft += currentLayerWidth
+				alllayers.forEach((element, i) => {
+					alllayers[i].scrollLeft += currentLayerWidth
+				})
+				scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
 
-				default:
-					break
+				break
+
+			default:
+				break
 			}
 		}
 	}
@@ -656,30 +672,6 @@ const TrackEditor = props => {
 		// 	}
 		// }
 
-		// THIS IS PART OF CENSOR
-		// const handleLastClick = (height, width, x, y, time) => {
-		// 	//console.log(height, width)
-
-		// 	if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === 'Censor'){
-		// 		//console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
-		// 		let index = eventToEdit
-		// 		let cEvent = allEvents[index]
-		// 		let layer = cEvent.layer
-
-		// 		let value = Object.keys(cEvent.position).find(item => item >= time)
-
-		// 		// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
-		// 		if(cEvent.position[`${(time).toFixed(1)}`] !== undefined){
-		// 			cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
-		// 		}
-		// 		else {
-		// 			cEvent.position[`${(time).toFixed(1)}`] = [((x / width) * 100), (((y-86) / height) * 100), 30, 40]
-		// 		}
-
-		// 		//console.log(cEvent.position)
-		// 		updateEvents(index, cEvent, layer)
-		// 	}
-		// }
 	}
 	const createSubtitleLayer = () =>{
 		handleAddSubLayer()
@@ -934,6 +926,7 @@ const TrackEditor = props => {
 						getVideoTime={setCurrentTime}
 						minimized={timelineMinimized}
 						togglendTimeline={togglendTimeline}
+						handleLastClick = {handleLastClick}
 					>
 					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -1009,7 +1002,7 @@ const TrackEditor = props => {
 						<div className='zoom-controls'>
 							{/* ADD ZOOM ICON */}
 							<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
-								<img src={zoomOut} style={{ width: '20px' }}/>
+								<img src={zoomOut} style={{ width: `20px` }}/>
 								<Rnd
 									className={`zoom-indicator`}
 									bounds={`parent`}
@@ -1017,7 +1010,7 @@ const TrackEditor = props => {
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
 								></Rnd>
-								<img src={zoomIn} style={{ float: 'right', width: '20px'}}/>
+								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
 							</div>
 							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 
@@ -1103,6 +1096,11 @@ const TrackEditor = props => {
 									subLayer={subLayerToEdit}
 									changeSubIndex={handleChangeSubIndex}
 									addSub={addSubToLayer}
+									editCensor = {editCensor}
+									handleEditCensor = {handleEditCensor}
+									handleCensorRemove = {handleCensorRemove}
+									handleAddCensor = {handleAddCensor}
+									handleSaveCensor = {handleSaveCensor}
 								></TrackEditorSideMenu>
 							) : (
 								<>

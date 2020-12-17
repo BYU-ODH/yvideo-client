@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
@@ -40,7 +40,18 @@ const Controller = props => {
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [subtitleText, setSubtitleText] = useState(``)
-	const [censorPosition, setCensorPosition] = useState([0,0])
+	const [censorPosition, setCensorPosition] = useState({
+		top1: 0,
+		top2:0,
+		left1:0,
+		left2:0,
+		width1:0,
+		width2:0,
+		heigth1:0,
+		heigth2:0,
+		next:0,
+		previous:0,
+	})
 	const [censorActive, SetCensorActive] = useState(false)
 
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
@@ -49,7 +60,9 @@ const Controller = props => {
 	useEffect(() => {
 		const indicator = document.getElementById(`time-indicator`)
 	})
+	const censorValues = {
 
+	}
 	const video = {
 
 		// state
@@ -146,17 +159,24 @@ const Controller = props => {
 			console.log(value)
 			setSubtitleText(value)
 		},
+		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
-			//console.log(position)
 			if(position !== undefined){
 				setCensorPosition(
-					position
+					position,
 				)
 			}
 		},
+		// For when returning values of one subtitle
+		// handleCensorCalculate: (position) => {
+		// 	const temp = {
+		// 		top1: position[1],
+
+		// 	}
+		// },
 		handleCensorActive: (bool) => {
 			SetCensorActive(bool)
-		}
+		},
 	}
 
 	const config = {
@@ -178,8 +198,8 @@ const Controller = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-	if(document.getElementById("controller")){
-		document.getElementById("controller").addEventListener(`keydown`, event => {
+	if(document.getElementById(`controller`)){
+		document.getElementById(`controller`).addEventListener(`keydown`, event => {
 			switch (event.keyCode) {
 			case 37:
 				video.handleSeek(null, elapsed-1)
@@ -198,16 +218,16 @@ const Controller = props => {
 	}
 
 	return (
-		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id="controller">
+		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
 			{/* <Style> */}
 			<Blank blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}>
-			{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
+				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
 				{subtitleText !== `` ?(
 					<Subtitles>{subtitleText}</Subtitles>
 				) :``}
 
-				<Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor>
+				<Censor active={censorActive} values={censorPosition} currentTime={elapsed}><canvas></canvas></Censor>
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
@@ -215,7 +235,7 @@ const Controller = props => {
 				// constants
 
 				className='video'
-				progressInterval={100}
+				progressInterval={30}
 
 				// state
 
