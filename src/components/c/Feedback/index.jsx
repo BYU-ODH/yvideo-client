@@ -47,7 +47,6 @@ export class Feedback extends PureComponent {
                 </div>
                 <input className="submit-file" type="file" accept={".jpg,.jpeg"} onChange={e => setFile({type: e.target.files[0].type, attachment: e.target.files[0]})}/>
                 <Captcha handleCaptcha={handleCaptcha} />
-
                 <input type="submit" value="Submit" className="btn-submit"  />
             </form>
         </Style>

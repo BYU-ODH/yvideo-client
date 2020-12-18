@@ -37,6 +37,7 @@ margin: 0 auto;
 & .submit-file {
 	font-size: 14px;
 	margin: 1% 0%;
+	padding-bottom: 20px;
 }
 
 & .btn-submit {
