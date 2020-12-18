@@ -178,20 +178,21 @@ const Controller = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-	if(document.getElementById("controller")){
-		document.getElementById("controller").addEventListener(`keydown`, event => {
-			switch (event.keyCode) {
-			case 37:
-				video.handleSeek(null, elapsed-1)
-				break
-			case 39:
-				video.handleSeek(null, elapsed+1)
-				break
-			default:
-				break
-			}
-		})
-	}
+	//this is causing a problem with rendering the video. It does not work as expected.
+	// if(document.getElementById("controller")){
+	// 	document.getElementById("controller").addEventListener(`keydown`, event => {
+	// 		switch (event.keyCode) {
+	// 		case 37:
+	// 			video.handleSeek(null, elapsed-1)
+	// 			break
+	// 		case 39:
+	// 			video.handleSeek(null, elapsed+1)
+	// 			break
+	// 		default:
+	// 			break
+	// 		}
+	// 	})
+	// }
 
 	const showError = () => {
 		alert(`There was an error loading the video`)

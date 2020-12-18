@@ -7,6 +7,7 @@ export default class InterfaceService {
 	types = {
 		MENU_TOGGLE: `MENU_TOGGLE`,
 		MODAL_TOGGLE: `MODAL_TOGGLE`,
+		TIP_TOGGLE: 'TIP_TOGGLE',
 		COLLECTIONS_DISPLAY_TOGGLE: `COLLECTIONS_DISPLAY_TOGGLE`,
 		SET_HEADER_BORDER: `SET_HEADER_BORDER`,
 		SET_EDITOR_STYLE: `SET_EDITOR_STYLE`,
@@ -20,6 +21,7 @@ export default class InterfaceService {
 	actions = {
 		menuToggle: () => ({ type: this.types.MENU_TOGGLE }),
 		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute:false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
+		tipToggle: (payload) => ({ type: this.types.TIP_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
 		setHeaderBorder: active => ({ type: this.types.SET_HEADER_BORDER, payload: { active }}),
 		setEditorStyle: active => ({ type: this.types.SET_EDITOR_STYLE, payload: { active }}),
@@ -37,6 +39,11 @@ export default class InterfaceService {
 			component: null,
 			collectionId: -1,
 			isLabAssistantRoute: false,
+			props: {},
+		},
+		tip: {
+			active: false,
+			component: null,
 			props: {},
 		},
 		displayBlocks: browserStorage.displayBlocks,
@@ -68,6 +75,32 @@ export default class InterfaceService {
 					isLabAssistantRoute: action.payload.isLabAssistantRoute,
 					props: action.payload.props,
 				},
+			}
+
+		case this.types.TIP_TOGGLE:
+			if(action.payload == null){
+				//console.log("IT IS NULL")
+				//we need to set modal to false and then pass a null component
+				return {
+					...store,
+					tip: {
+						...store.tip,
+						active: false,
+						component: null,
+						props: null,
+					},
+				}
+			}
+			else {
+				return {
+					...store,
+					tip: {
+						...store.tip,
+						active: !store.tip.active,
+						component: action.payload.component,
+						props: action.payload.props,
+					},
+				}
 			}
 
 		case this.types.COLLECTIONS_DISPLAY_TOGGLE:
@@ -128,6 +161,15 @@ export default class InterfaceService {
 	 */
 	toggleModal = modal => async (dispatch, getState) => {
 		dispatch(this.actions.modalToggle(modal))
+	}
+
+	/**
+	 * @param tip an object representing a tooltip.
+	 * to know more about a tip object check the interface store tip object.
+	 * the tooltip will appear once the user hovers over an icon or button to display a tip about what such icon or botton does.
+	 */
+	toggleTip = tip => async (dispatch, getState) => {
+		dispatch(this.actions.tipToggle(tip))
 	}
 
 	toggleCollectionsDisplay = () => async dispatch => {

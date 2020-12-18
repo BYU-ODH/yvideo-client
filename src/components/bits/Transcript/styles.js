@@ -48,6 +48,7 @@ export const Style = styled.div`
 			width: 100%;
 			height: 50px;
 			flex-direction: column;
+			text-align: center;
 
 			& h2 {
 				padding: 5px;

@@ -7,6 +7,8 @@ import { interfaceService, resourceService, contentService, subtitlesService } f
 
 import { TrackEditor } from 'components'
 
+import { Tooltip } from 'components/bits'
+
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const TrackEditorContainer = props => {
@@ -29,6 +31,7 @@ const TrackEditorContainer = props => {
 		getStreamKey,
 		streamKey,
 		toggleModal,
+		toggleTip,
 		setSubContentId,
 	} = props
 
@@ -132,6 +135,16 @@ const TrackEditorContainer = props => {
 		})
 	}
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
+	}
+
 	const viewstate = {
 		currentContent,
 		url,
@@ -140,7 +153,22 @@ const TrackEditorContainer = props => {
 		allSubs,
 	}
 
-	return <TrackEditor viewstate={viewstate} setEvents={setEvents} updateContent={updateContent} createSub={createAndAddSub} setAllSubs={setAllSubs} activeUpdate={activeUpdate} deleteSubtitles={deleteSubs} handleShowHelp={handleShowHelp} getAllSubtitles={getAllSubtitles}/>
+	const handlers = {
+		toggleTip,
+		handleShowTip,
+	}
+
+	return <TrackEditor
+						viewstate={viewstate}
+						setEvents={setEvents}
+						updateContent={updateContent}
+						createSub={createAndAddSub}
+						setAllSubs={setAllSubs}
+						activeUpdate={activeUpdate}
+						deleteSubtitles={deleteSubs}
+						handleShowHelp={handleShowHelp}
+						getAllSubtitles={getAllSubtitles}
+						handlers={handlers}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
@@ -165,6 +193,7 @@ const mapThunksToProps = {
 	activeUpdate: subtitlesService.activeUpdate,
 	setSubContentId: subtitlesService.setContentId,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

@@ -11,6 +11,8 @@ import {
 
 import { ManageCollection } from 'components'
 
+import { Tooltip } from 'components/bits'
+
 import CreateContentContainer from 'components/modals/containers/CreateContentContainer'
 
 const LabAssistantManageCollectionContainer = props => {
@@ -24,6 +26,7 @@ const LabAssistantManageCollectionContainer = props => {
 		getCollectionContent,
 		updateCollectionName,
 		updateCollectionStatus,
+		toggleTip,
 	} = props
 
 	const [isContent, setIsContent] = useState(true)
@@ -75,6 +78,16 @@ const LabAssistantManageCollectionContainer = props => {
 		setCollectionName(value)
 	}
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
+	}
+
 	if(!content) return null
 
 	const viewstate = {
@@ -95,6 +108,8 @@ const LabAssistantManageCollectionContainer = props => {
 		archive,
 		setTab,
 		unarchive,
+		toggleTip,
+		handleShowTip,
 	}
 
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
@@ -112,6 +127,7 @@ const mapDispatchToProps = {
 	updateCollectionStatus: adminService.updateCollectionStatus,
 	updateCollectionName: collectionService.updateCollectionName,
 	searchCollections: adminService.searchCollections,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManageCollectionContainer)
