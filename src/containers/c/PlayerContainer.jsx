@@ -31,6 +31,7 @@ const PlayerContainer = props => {
 
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
+	const [isMobile, setIsMobile] = useState(false)
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -105,6 +106,11 @@ const PlayerContainer = props => {
 					}
 				}
 			}
+		}
+
+		if(window.innerWidth < 600){
+			setToggleTranscript(false)
+			setIsMobile(true)
 		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
 
@@ -318,6 +324,7 @@ const PlayerContainer = props => {
 		indexToDisplay,
 		isAdmin,
 		isProf,
+		isMobile,
 	}
 
 	const handlers = {

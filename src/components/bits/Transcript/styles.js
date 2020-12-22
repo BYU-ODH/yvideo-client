@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 
 export const Style = styled.div`
-	position: relative;
-	width: ${props => props.displayTranscript ? ('50rem') : ('2rem')};
+	position: ${props => props.isMobile ? (`fixed`) : (`relative`)};
+	/* position: relative; */
+	right: ${props => props.isMobile ? (`0px`) : (``)};
+	width: ${props => props.displayTranscript ? ( props.isMobile ? ('calc(100vw)') : ('50rem') ) : ('2rem')};
 	height: 100%;
-	padding: 0px 10px 0px 10px;
-	border: 1px solid black;
-	transition: 1s ease;
+	padding: ${props => props.isMobile ? (`0px`) : (`padding: 0px 10px 0px 10px;`)}
+	border-top: 1px solid black;
+	transition: .5s ease;
 	display: flex;
+	z-index: 20;
 	/* background-color: ${props => props.displayTranscript ? ('white') : ('var(--light-blue)')}; */
 
 	& .side-bar {
@@ -39,9 +42,9 @@ export const Style = styled.div`
 	& .main-bar {
 		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
 		margin-left: 45px;
-		max-height: 50rem;
+		height: calc(100vh - 84px);
 		overflow-y: scroll !important;
-
+		background-color: white;
 
 		& .transcript-title {
 			display: flex;
@@ -63,6 +66,19 @@ export const Style = styled.div`
 		}
 	}
 
+	& .side-mobile {
+		left ${props => props.displayTranscript ? (`0px`) : (`-20px !important`)};
+		background-color: transparent;
+	}
+
+	& .main-mobile {
+		width: calc(100vw - 40px);
+
+		& .transcript-content {
+				padding: 10px;
+				width: 90%;
+		}
+	}
 
 	& .transcript-row {
 

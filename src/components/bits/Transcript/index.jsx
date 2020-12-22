@@ -17,6 +17,7 @@ export default class Transcript extends PureComponent {
 			duration,
 			toggleTranscript,
 			showTranscript,
+			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -29,18 +30,18 @@ export default class Transcript extends PureComponent {
 		} = this.props.handlers
 
 		return (
-			<Style style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript}>
-				<div className={'side-bar'}>
+			<Style style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript} isMobile={isMobile}>
+				<div className={isMobile ? ('side-bar side-mobile') : ('side-bar')}>
 					<img src={chevron} className={'toggle-transcript'} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip('transcript-hide', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip('transcript-hide', {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					/>
 					<Help src={helpIcon} onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip('help', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip('help', {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					/>
 				</div>
-				<div className={'main-bar'}>
+				<div className={isMobile ? ('main-bar main-mobile') : ('main-bar')} >
 					<div className={'transcript-title'}>
 						<h1>Transcript</h1>
 						<h2>Video Audio - {content !== undefined ? (content.settings.targetLanguages) : (null)}</h2>

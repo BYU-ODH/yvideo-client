@@ -112,7 +112,6 @@ const Style = styled.div`
 		}
 	}
 `
-
 export default Style
 
 export const PlayPause = styled.button`
@@ -127,7 +126,6 @@ export const ClosedCaptions = styled.button`
 	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
 	background: url(${closedCaption}) center no-repeat;
 `
-
 export const Fullscreen = styled.button`
 	width: 20px;
 	height: 20px;

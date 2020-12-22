@@ -25,6 +25,8 @@ const CollectionsContainer = props => {
 		toggleTip
 	} = props
 
+	const [isMobile, setIsMobile] = useState(false)
+
 	useEffect(() => {
 		toggleTip()
 		getCollections(true)
@@ -38,6 +40,13 @@ const CollectionsContainer = props => {
 		})
 
 		setContent(allContent)
+
+		if(window.innerWidth < 400){
+			setIsMobile(true)
+		}
+		else (
+			setIsMobile(false)
+		)
 
 		return () => {
 			setHeaderBorder(true)
@@ -73,6 +82,7 @@ const CollectionsContainer = props => {
 		collectionsLength: Object.keys(collections).length,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		isMobile,
 	}
 
 	const handlers = {

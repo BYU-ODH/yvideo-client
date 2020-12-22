@@ -20,6 +20,7 @@ export default class Collections extends PureComponent {
 			displayBlocks,
 			collections,
 			collectionsLength,
+			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -28,6 +29,14 @@ export default class Collections extends PureComponent {
 			handleShowTip,
 			toggleTip,
 		} = this.props.handlers
+
+		const setNoCollections = () => {
+			setTimeout(() => {
+				if(document.getElementById("message") != null){
+					document.getElementById("message").innerHTML = "There are no collections"
+				}
+			}, 2000)
+		}
 
 		return (
 			<Style>
@@ -45,33 +54,29 @@ export default class Collections extends PureComponent {
 							(isProf || isAdmin) &&
 							<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip('manage-collections', {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
 						}
-						<ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip('list-block', {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
-					</div>
+						{
+							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip('list-block', {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
+						}
+						</div>
 				</header>
 				<div className='list'>
 
 					{ collectionsLength > 0 ? (
 						<>
-							{	displayBlocks ?
-								Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
-								:
-								Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
+							{
+								isMobile ? (Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)) :
+								(
+									displayBlocks ?
+										Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
+										:
+										Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
+								)
 							}
 						</>
 					) : (
 						<>
 							<h1 id="message">Loading</h1>
-						{
-							<>
-							{
-								setTimeout(() => {
-									if(document.getElementById("message") != null){
-										document.getElementById("message").innerHTML = "There are no collections"
-									}
-								}, 2000)
-							}
-							</>
-						}
+						{	setNoCollections()}
 					</>
 					) }
 				</div>
