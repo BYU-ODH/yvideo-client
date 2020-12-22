@@ -19,6 +19,12 @@ import playercontrolHelp from 'assets/help/help-playercontrols.png'
 import transcriptHelp from 'assets/help/help-transcriptview.png'
 import subHelp from 'assets/help/help-te-subtitle.png'
 
+//player
+import clockIcon from 'assets/clock-black.svg'
+import bookIcon from 'assets/book-open-black.svg'
+import closedCaption from 'assets/controls_closed_captions.svg'
+import chevron from 'assets/player-chevron-left-black.svg'
+
 import {
 	interfaceService,
 } from 'services'
@@ -154,22 +160,56 @@ const HelpDocumentationContainer = props => {
 					<img src="${zoomrHelp}"/>
 				</div>`,
 		},
-		'Player': {
+		'Player Mobile': {
 			htmlInstruction: `
 				<div class="section">
-					<p><b>Menu:</b><br/> To open the menu, click on the icon in the top right corner of the screen. For instructors, you can find links to view and manage your collections, and find other collections.
-					</p><br/>
-					<img src="${menu}" width="100px"/>
+					<p><b>Toolbar:</b><br/>
+						The toolbar contains icons to manage the video
+					</p>
+				</div>
+				<div class="section">
+					<ul>
+						<li><img className="icon" src="${bookIcon}"/>: This icon shows the transcript which contains all the subtitles in the video to follow along</li>
+						<li><img className="icon" src="${clockIcon}"/>: This icon allows you to change the speed of the video. Faster is any number above normal speed or 1</li>
+						<li>&nbsp;<b>CC</b>&nbsp;&nbsp;: This icon allows you to turn on or off the captions</li>
+						<li>Play/Pause and Full screen icons: Common video functionality</li>
+					</ul>
 				</div>
 				<hr/>
 				<div class="section">
-					<p><b>Collections:</b><br/> Collections show all of the content available to a class. Click on a collection to show the videos available to you. Click the Icon shown on the right to switch between compact and block views.<br/>
-					For instructors, a “Manage Collections” Icon will appear in the top right, where you can create and edit collections.
-					</p><br/>
-					<div style="margin: 10px;">
-						<img src="${list}" width="30px" style="margin: 5px;"/>
-						<img src="${block}" width="30px" style="margin: 5px;"/>
-					</div>
+					<ol>
+						<label><b>Transcript Usage</b></label>
+						<li>The transcript represents all the captions or subtitles for this video</li>
+						<li>Each line in the transcript is clickable. When a line is clicked, the video will seek to the time in the video where that line is mentioned</li>
+						<li>Each line is highlighted to show which line in the transcript is being displayed in the video</li>
+						<li>Even when the video is playing the transcript can be shown to follow along the audio</li>
+					</ol>
+				</div>`,
+		},
+		'Player': {
+			htmlInstruction: `
+				<div class="section">
+					<ul>
+						<label><b>Toolbar</b></label>
+						<li><img className="icon" src="${clockIcon}"/>: This icon allows you to change the speed of the video. Faster is any number above normal speed or 1</li>
+						<li>&nbsp;<b>CC</b>&nbsp;&nbsp;: This icon allows you to turn on or off the captions</li>
+						<li>Play/Pause and Full screen icons: These support common video functionality</li>
+					</ul>
+				</div>
+				<div class="section">
+					<ul>
+						<label><b>Side Bar</b></label>
+						<li><img className="icon" src="${chevron}"/>: This icon displays or hides the transcript which contains the captions, or subtitles in some cases, for the entire video</li>
+					</ul>
+				</div>
+				<hr/>
+				<div class="section">
+					<ol>
+						<label><b>Transcript Usage</b></label>
+						<li>The transcript represents all the captions or subtitles for this video</li>
+						<li>Each line in the transcript is clickable. When a line is clicked, the video will seek to the time in the video where that line is mentioned</li>
+						<li>Each line is highlighted to show which line in the transcript is being displayed in the video</li>
+					</ol>
 				</div>`,
 		}
 	}

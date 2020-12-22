@@ -108,7 +108,7 @@ const PlayerContainer = props => {
 			}
 		}
 
-		if(window.innerWidth < 600){
+		if(window.innerWidth < 1000){
 			setToggleTranscript(false)
 			setIsMobile(true)
 		}
@@ -264,7 +264,7 @@ const PlayerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Player`},
+			props: { name: `${isMobile === true ? ('Player Mobile') : ('Player')}`},
 		})
 	}
 
