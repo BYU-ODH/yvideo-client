@@ -6,6 +6,7 @@ import Style, {
 	PlayPause,
 	ClosedCaptions,
 	Fullscreen,
+	Book,
 	// Volume,
 	Speed,
 } from './styles'
@@ -29,10 +30,12 @@ const PlayerControls = props => {
 		subtitles,
 		playbackRate,
 		indexToDisplay,
-		displaySubtitles
+		displaySubtitles,
+		isMobile,
 	} = props.viewstate
 
 	const {
+		handleToggleTranscript,
 		handlePause,
 		handlePlay,
 		handlePlaybackRateChange,
@@ -120,6 +123,8 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip('closed-captions', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
+				{ isMobile &&
+				<Book onClick={handleToggleTranscript}/>}
 				{/* <Notes /> */}
 			</div>
 			{ showSpeed &&

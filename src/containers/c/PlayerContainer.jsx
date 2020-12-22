@@ -249,12 +249,12 @@ const PlayerContainer = props => {
 		try {
 
 			if(typeof currentContent === `string`){
-				console.log(`String type`)
+				// console.log(`String type`)
 				temp.content = JSON.parse(subtitles[index].content)
 			}
 
 		} catch (e){
-			console.log(e)
+			// console.log(e)
 		}
 
 		setIndexToDisplay(index)
@@ -286,9 +286,9 @@ const PlayerContainer = props => {
 
 			let result = 0
 			for(let i = 0; i < subtitles.length; i++){
-				console.log(`in loop`)
+				// console.log(`in loop`)
 				const temp = subtitles[i]
-				console.log(`TEMP CONTENT`, temp)
+				// console.log(`TEMP CONTENT`, temp)
 				// now that we have an actual object lets check language
 				// go through all subtitles and find there index where subtitle language = audio language
 				if(temp.language.toLowerCase() === audioLanguage.toLowerCase()){

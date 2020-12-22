@@ -3,12 +3,11 @@ import styled from 'styled-components'
 export const Style = styled.div`
 	position: ${props => props.isMobile ? (`fixed`) : (`relative`)};
 	/* position: relative; */
-	right: ${props => props.isMobile ? (`0px`) : (``)};
 	width: ${props => props.displayTranscript ? ( props.isMobile ? ('calc(100vw)') : ('50rem') ) : ('2rem')};
 	height: 100%;
-	padding: ${props => props.isMobile ? (`0px`) : (`padding: 0px 10px 0px 10px;`)}
+	padding: ${props => props.isMobile ? (`0px`) : (`0px 10px 0px 10px`)};
 	border-top: 1px solid black;
-	transition: .5s ease;
+	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
 	z-index: 20;
 	/* background-color: ${props => props.displayTranscript ? ('white') : ('var(--light-blue)')}; */
@@ -41,6 +40,8 @@ export const Style = styled.div`
 
 	& .main-bar {
 		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
+		opacity: ${props => props.displayTranscript ? (1) : (0)};
+		transition: opacity .5s ease;
 		margin-left: 45px;
 		height: calc(100vh - 84px);
 		overflow-y: scroll !important;
@@ -66,18 +67,17 @@ export const Style = styled.div`
 		}
 	}
 
-	& .side-mobile {
-		left ${props => props.displayTranscript ? (`0px`) : (`-20px !important`)};
-		background-color: transparent;
+	& .main-mobile {
+		margin-left: 0px;
+		width: calc(100vw);
+		& .transcript-content {
+			padding: 0px 5px 0px 5px;
+		}
 	}
 
-	& .main-mobile {
-		width: calc(100vw - 40px);
-
-		& .transcript-content {
-				padding: 10px;
-				width: 90%;
-		}
+	& .close-transcript {
+		position: absolute;
+		right: 10px;
 	}
 
 	& .transcript-row {
@@ -94,6 +94,10 @@ export const Style = styled.div`
 
 	& .active-sub {
 		background-color: rgba(5, 130, 202, 0.3);
+	}
+
+	& .hide-element {
+		display: none;
 	}
 `
 export const Help = styled.img`

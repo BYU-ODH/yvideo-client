@@ -10,6 +10,7 @@ import volumeIcon from 'assets/controls_volume.svg'
 import volumeIconMute from 'assets/controls_muted.svg'
 import clockIcon from 'assets/te-clock.svg'
 import playerCheck from 'assets/player-check.svg'
+import bookIcon from 'assets/book-open-white.svg'
 
 const Style = styled.div`
 	position: absolute;
@@ -135,4 +136,9 @@ export const Speed = styled.button`
 	width: 20px;
 	height: 20px;
 	background: url(${clockIcon}) center no-repeat;
+`
+export const Book = styled.button`
+	width: 20px;
+	height: 20px;
+	background: url(${bookIcon}) center no-repeat;
 `
