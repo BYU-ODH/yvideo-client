@@ -27,6 +27,7 @@ class ContentOverview extends PureComponent {
 			editing,
 			content,
 			tag,
+			word,
 		} = this.props.viewstate
 
 		const {
@@ -39,6 +40,9 @@ class ContentOverview extends PureComponent {
 			handleToggleSettings,
 			handleDescription,
 			changeTag,
+			addWord,
+			removeWord,
+			changeWord,
 		} = this.props.handlers
 
 		const {
@@ -53,6 +57,7 @@ class ContentOverview extends PureComponent {
 
 		const {
 			description,
+			words,
 		} = content
 
 		// const allowDefinitions = content['allow-definitions'] // <-- ?? -Matthew
@@ -110,6 +115,16 @@ class ContentOverview extends PureComponent {
 							<br/>
 							<div className='tags'>
 								{keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
+							</div>
+
+							<h4>Words</h4>
+							<div style={{ display: `flex` }}>
+								<input type='text' placeholder='Add word...' onChange={changeWord} value={word} className='tag-input' />
+								<button className={`add-tag`} onClick={addWord}>Add</button>
+							</div>
+							<br/>
+							<div className='tags'>
+								{words.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)}
 							</div>
 						</Column>
 

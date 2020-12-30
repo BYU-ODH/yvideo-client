@@ -35,7 +35,7 @@ const PlayerContainer = props => {
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
-	const [hovering, setHovering] = useState(false)
+	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
@@ -123,11 +123,11 @@ const PlayerContainer = props => {
 	}
 
 	const handleMouseOver = e => {
-		setHovering(true)
+		// setHovering(true)
 	}
 
 	const handleMouseOut = e => {
-		setHovering(false)
+		// setHovering(false)
 	}
 
 	const handlePause = () => {
@@ -243,7 +243,7 @@ const PlayerContainer = props => {
 		try {
 
 			if(typeof currentContent === `string`){
-				console.log(`String type`)
+				// console.log(`String type`)
 				temp.content = JSON.parse(subtitles[index].content)
 			}
 
@@ -280,9 +280,9 @@ const PlayerContainer = props => {
 
 			let result = 0
 			for(let i = 0; i < subtitles.length; i++){
-				console.log(`in loop`)
+				// console.log(`in loop`)
 				const temp = subtitles[i]
-				console.log(`TEMP CONTENT`, temp)
+				// console.log(`TEMP CONTENT`, temp)
 				// now that we have an actual object lets check language
 				// go through all subtitles and find there index where subtitle language = audio language
 				if(temp.language.toLowerCase() === audioLanguage.toLowerCase()){
