@@ -3,14 +3,26 @@ import styled from 'styled-components'
 import carrot from 'assets/carrot.svg'
 
 const Style = styled.div`
-  display: inline;
+
+	& > div {
+	}
 `
 export default Style
 
-export const Header = styled.div`
+export const CollectionRow = styled.div`
+
+	& > button {
+		margin: 1rem;
+		float: right;
+	}
+`
+
+export const Collection = styled.div`
 	display: grid;
-	grid-template-columns: 18rem auto 1.5rem;
+	/* grid-template-columns: 8rem 15rem auto 2rem; */
+	grid-template-columns: 15rem auto 2rem;
 	justify-items: start;
+	align-items: center;
 
 	padding: 2rem;
 	border-top: 1px solid #ccc;
@@ -53,7 +65,7 @@ export const Body = styled.div`
 export const PublicButton = styled.button`
   color: white;
   font-weight: bold;
-  background-color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
 
   letter-spacing: 0.05rem;
 

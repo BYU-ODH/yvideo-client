@@ -12,6 +12,7 @@ export default class CollectionService {
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
 		COLLECTION_INFO_GET: `COLLECTION_INFO_GET`,
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
+		PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS: `PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS`,
 	}
 
 	roleEndpoints = {
@@ -34,6 +35,7 @@ export default class CollectionService {
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 		collectionGetInfo: data => ({ type: this.types.COLLECTION_INFO_GET, payload: { data }}),
 		collectionPermissionUpdate: object => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { object }}),
+		publicCollectionUpdateSubscribers: data => ({type: this.types.PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS, payload: {data}}),
 	}
 
 	// default store
@@ -61,6 +63,7 @@ export default class CollectionService {
 			COLLECTION_EDIT,
 			COLLECTION_INFO_GET,
 			COLLECTION_ROLES_UPDATE,
+			PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS,
 		} = this.types
 
 		switch (action.type) {
@@ -142,6 +145,13 @@ export default class CollectionService {
 			}
 
 		case COLLECTION_ROLES_UPDATE:
+			return {
+				...store,
+				users: action.payload.object.currentUsers,
+				courses: action.payload.object.currentCourses,
+			}
+
+		case PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS:
 			return {
 				...store,
 				users: action.payload.object.currentUsers,
@@ -231,12 +241,12 @@ export default class CollectionService {
 		}
 	}
 
-	createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
+	createCollection = (item) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.collectionsStart())
 
 		try {
-			await apiProxy.collection.create(name)
+			await apiProxy.collection.create(item)
 
 			const results = await apiProxy.user.collections.get()
 
@@ -309,11 +319,45 @@ export default class CollectionService {
 			try {
 
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
-				// console.log(users)
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 
 				dispatch(this.actions.collectionGetInfo({ users, courses }))
+
+				// console.log(getState().collectionStore)
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+	}
+
+	getCollectionSubscribers = (collectionId, userId, force = false) => {
+		// GET USERS AND COURSES FOR A SPECIFIED COLLECTION
+		return async (dispatch, getState, { apiProxy }) => {
+
+			dispatch(this.actions.collectionsStart())
+
+			try {
+
+				const users = await apiProxy.collection.permissions.getUsers(collectionId)
+
+				const courses = []
+
+				let currentState = {}
+				currentState = getState().collectionStore.cache[collectionId]
+
+				if(currentState.public){
+					// currentState.users = []
+					// users.forEach(user => {
+					// 	currentState.users[user.id] = user
+					// })
+					currentState.isSubscribed = false
+					users.forEach(user => {
+						if(user.id === userId) currentState.isSubscribed = true
+					})
+				}
+				dispatch(this.actions.collectionGetInfo({ users, courses }))
+				dispatch(this.actions.collectionEdit(currentState))
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}

@@ -22,12 +22,12 @@ const CollectionsContainer = props => {
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
-		toggleTip
+		toggleTip,
 	} = props
 
 	useEffect(() => {
 		toggleTip()
-		getCollections(true)
+		getCollections()
 		setHeaderBorder(false)
 
 		// const allContent = {}
@@ -48,7 +48,7 @@ const CollectionsContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props:{ name: 'Home Page'},
+			props:{ name: `Home Page`},
 		})
 		toggleTip()
 	}
@@ -58,7 +58,7 @@ const CollectionsContainer = props => {
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}
@@ -69,8 +69,8 @@ const CollectionsContainer = props => {
 		displayBlocks,
 		// TODO: When archiving a collection, make sure to unpublish it
 		// TODO: need to check to see if which way is right way to use
-		collections, // : Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
-		collectionsLength: Object.keys(collections).length,
+		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
+		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 	}
