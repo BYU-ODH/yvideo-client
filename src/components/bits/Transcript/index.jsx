@@ -144,8 +144,8 @@ export default class Transcript extends PureComponent {
 			// });
 
 			jsonResponse[foundWord][0]['meanings'].forEach((item, index) => {
-				allWords += `<b>${index}.</b>${item.lemma}; `
-				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)}; `
+				allWords += `${item.lemma}; `
+				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
 			});
 
 			this.setState({
