@@ -5,6 +5,7 @@ import {
 	Upload,
 	Button,
 	CategorySelect,
+	ProgressBar,
 } from './styles'
 
 export default class FileUpload extends PureComponent {
@@ -16,6 +17,7 @@ export default class FileUpload extends PureComponent {
 			isOther,
 			customLang,
 			langs,
+			progress,
 		} = this.props.viewstate
 
 		const {
@@ -25,22 +27,16 @@ export default class FileUpload extends PureComponent {
 			toggleModal,
 			onKeyPress,
 			handleOtherLanguage,
+			handleCancelUpload,
+			handleProgressEvent,
 		} = this.props.handlers
 
 		return (
-			<Form onKeyPress={onKeyPress} onSubmit={handleFileUpload} id='upload-file-form'>
+			// //onSubmit={handleFileUpload}
+			<Form onKeyPress={onKeyPress} id='upload-file-form'>
 				<h2>File Upload</h2>
 
 				<label htmlFor='empty'>
-				</label>
-
-				<label htmlFor='create-resource-file-version'>
-					<h4>Select File</h4>
-					<Upload>
-						<div className='files'>
-							<input type='file' className='files-input' onChange={handleFileChange}/>
-						</div>
-					</Upload>
 				</label>
 
 				<label htmlFor='create-resource-file-version'>
@@ -52,11 +48,6 @@ export default class FileUpload extends PureComponent {
 								{lang}
 							</option>
 						))}
-						{/* {Object.keys(category).map((c, index) => (
-							<option value={category[c].name} key={index}>
-								{category[c].name}
-							</option>
-						))} */}
 					</CategorySelect>
 				</label>
 
@@ -67,24 +58,34 @@ export default class FileUpload extends PureComponent {
 					</label>
 				}
 
+				<label htmlFor='create-resource-file-version'>
+					<h4>Select File</h4>
+					<Upload>
+						<div className='files'>
+							<input type='file' className='files-input' onChange={handleFileChange}/>
+						</div>
+					</Upload>
+				</label>
+
+				{selectedFile && (
+					<div className='progress'>
+						{progress > 0 &&
+							<>
+								<ProgressBar value={progress} max={100} />
+								<span><>{progress}%</></span>
+							</>
+						}
+					</div>
+				)}
+
 				<label htmlFor='empty'>
 				</label>
 
-				{/* TODO: These can be used for later for an extra data */}
-				{/* <label htmlFor='create-resource-file-metadata'>
-					<h4>Metadata</h4>
-					<textarea onChange={handleFileMetadata} rows={2}/>
-				</label>
-
-				<label htmlFor='create-resource-file-mime'>
-					<h4>Mime</h4>
-					<textarea onChange={handleFileMime} rows={2}/>
-				</label> */}
-
 				<div>
-					<Button type='button' onClick={toggleModal}>Cancel</Button>
+					{/* toggleModal */}
+					<Button type='button' onClick={handleCancelUpload}>Cancel</Button>
 					{selectedFile !== undefined ?
-						<Button type='submit' color={`#0582CA`}>Upload</Button>
+						<Button type='submit' onClick={handleFileUpload} color={`#0582CA`}>Upload</Button>
 						:
 						<Button disabled={selectedFile === undefined} type='submit' color={`#A0A0A0`}>Upload</Button>
 					}

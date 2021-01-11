@@ -57,7 +57,7 @@ export const Collection = styled.div`
 `
 
 export const Body = styled.div`
-	height: ${props => props.isOpen ? `${(parseInt(props.count) * 6.5 + 2).toString()}rem` : `0`};
+	height: ${props => props.isOpen ? `${(parseInt(props.count) * 7 + 6).toString()}rem` : `0`};
 	transition: height .25s ease-in-out;
 	overflow: hidden;
 `
@@ -70,7 +70,9 @@ export const PublicButton = styled.button`
   letter-spacing: 0.05rem;
 
   padding: 0.8rem 1.5rem;
-  margin-right: 3rem;
+  /* margin-right: 3rem; */
+
+	margin: 1rem;
 
   border: none;
   border-radius: 0.3rem;

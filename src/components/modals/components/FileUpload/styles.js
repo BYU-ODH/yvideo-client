@@ -81,3 +81,6 @@ export const CategorySelect = styled.select`
 	& option {
 	}
 `
+
+export const ProgressBar = styled.progress`
+`

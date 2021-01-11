@@ -12,44 +12,43 @@ const PublicListCollectionContainer = props => {
 		setHeaderBorder,
 		toggleTip,
 		updateCollectionPermissions,
-		getCollectionSubscribers,
+		getIsPublicCollectionSubscribed,
 		user,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
-	const [subscribeStatus, setSubscribeStatus] = useState(false)
+	const [isSubscribed, setIsSubscribed] = useState(false)
 
-	// TODO: need to figure out publish issue
 	useEffect(() => {
 		toggleTip()
 		setHeaderBorder(false)
 
-		// console.log(collection)
-		if(collection.isSubscribed === undefined)
-			getCollectionSubscribers(collection.id, user.id, true)
-			// setSubscribeStatus(collection.isSubscribed)
+	}, [isOpen, isSubscribed])
 
-	}, [isOpen, subscribeStatus])
-
-	const addPublicCollection = e => {
-		// /api/collection/{id}/add-user
-		// collectionId, endpoint, body
-		updateCollectionPermissions(collection.id, `add-user`, {username: user.username, role: user.roles})
+	const handlePublicCollection = async() => {
+		if(!collection.isSubscribed){
+			await updateCollectionPermissions(collection.id, `add-user`, {username: user.username, role: user.roles})
+			setIsSubscribed(true)
+		} else{
+			await updateCollectionPermissions(collection.id, `remove-user`, user.username)
+			setIsSubscribed(false)
+		}
 	}
 
-	const isOpenEventHandler = e => {
+	const isOpenEventHandler = async() => {
+		await getIsPublicCollectionSubscribed(collection.id, user.id)
 		setIsOpen(!isOpen)
+		setIsSubscribed(collection.isSubscribed)
 	}
 
 	const viewstate = {
 		isOpen,
 		collection,
-		subscribeStatus,
 	}
 
 	const handlers = {
 		isOpenEventHandler,
-		addPublicCollection,
+		handlePublicCollection,
 	}
 
 	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
@@ -60,9 +59,9 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 	isAdmin: authStore.user.roles === 0,
 	isStu: authStore.user.roles === 3,
 	user: authStore.user,
-	searchedPublicCollections: adminStore.publicCollections,
+	// searchedPublicCollections: adminStore.publicCollections,
 	displayBlocks: interfaceStore.displayBlocks,
-	subscribers: collectionStore.users,
+	// subscribers: collectionStore.users,
 	content: contentStore.cache,
 })
 
@@ -70,7 +69,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleTip: interfaceService.toggleTip,
 	updateCollectionPermissions: collectionService.updateCollectionPermissions,
-	getCollectionSubscribers: collectionService.getCollectionSubscribers,
+	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicListCollectionContainer)

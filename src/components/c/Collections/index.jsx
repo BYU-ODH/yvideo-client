@@ -6,6 +6,10 @@ import {
 	BlockCollection,
 } from 'components/bits'
 
+import {
+	PublicListCollectionContainer,
+} from 'containers'
+
 import Style, { ViewToggle, Help, Button } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
@@ -20,6 +24,7 @@ export default class Collections extends PureComponent {
 			displayBlocks,
 			collections,
 			publicCollections,
+			allPublic,
 		} = this.props.viewstate
 
 		const {
@@ -92,12 +97,15 @@ export default class Collections extends PureComponent {
 				</header>
 				<div className='public-collections-list'>
 
-					{ Object.keys(publicCollections).length > 0 ? (
+					{ Object.keys(allPublic).length > 0 ? (
 						<>
-							{	displayBlocks ?
-								Object.keys(publicCollections).map(key => <BlockCollection key={key} collection={publicCollections[key]}/>)
-								:
-								Object.keys(publicCollections).map(key => <ListCollection key={key} collection={publicCollections[key]}/>)
+							{
+								Object.keys(allPublic).map(key =>
+									allPublic[key].isSubscribed ?
+										<PublicListCollectionContainer key={key} collection={allPublic[key]}/>
+										:
+										``,
+								)
 							}
 						</>
 					) : ``

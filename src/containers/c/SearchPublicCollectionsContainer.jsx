@@ -23,6 +23,8 @@ const SearchPublicCollectionsContainer = props => {
 		toggleModal,
 		toggleTip,
 		searchPublicCollections,
+		getIsPublicCollectionSubscribed,
+		user,
 	} = props
 
 	const [searchQuery, setSearchQuery] = useState(``)
@@ -32,6 +34,7 @@ const SearchPublicCollectionsContainer = props => {
 	useEffect(() => {
 		toggleTip()
 		getCollections(true)
+		// getIsPublicCollectionSubscribed()
 		setHeaderBorder(false)
 
 		const allContent = {}
@@ -46,11 +49,6 @@ const SearchPublicCollectionsContainer = props => {
 		// when public collection searched, find id and assiciated collection from collections
 		if(searchedPublicCollections.length !== searchedCount)
 			setSearchedCount(searchedPublicCollections.length)
-			// console.log(searchedPublicCollections)
-
-		// Object.entries(searchedPublicCollections).filter(([k, v]) => v ).map(([k,v]) =>
-		// 	searchedPublicCollections[v.id].content = collections[v.id].content,
-		// )
 
 		return () => {
 			setHeaderBorder(true)
@@ -114,6 +112,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	isStu: authStore.user.roles === 3,
+	user: authStore.user,
 	searchedPublicCollections: adminStore.publicCollections,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
@@ -129,6 +128,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
+	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPublicCollectionsContainer)

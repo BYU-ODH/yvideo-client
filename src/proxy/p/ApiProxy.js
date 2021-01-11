@@ -440,7 +440,13 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,
+						{
+							headers:{
+								'Access-Control-Allow-Origin': `*`,
+							},
+						},
+					).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
@@ -545,11 +551,13 @@ const apiProxy = {
 		}),
 	},
 	file: {
-		post: async (file) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file`, file, {
+		post: (formData, onUploadProgress) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file`, formData, {
 			withCredentials: true,
 			headers: {
+				'Content-Type': `multipart/form-data`,
 				'session-id': window.clj_session_id,
 			},
+			onUploadProgress,
 		}).then(res => {
 			updateSessionId(res.headers[`session-id`])
 			return res.data

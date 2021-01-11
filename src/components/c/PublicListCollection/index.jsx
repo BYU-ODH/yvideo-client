@@ -11,12 +11,11 @@ class PublicListCollection extends PureComponent {
 		const {
 			collection,
 			isOpen,
-			subscribeStatus,
 		} = this.props.viewstate
 
 		const {
 			isOpenEventHandler,
-			addPublicCollection,
+			handlePublicCollection,
 		} = this.props.handlers
 
 		if (!collection) return null
@@ -24,14 +23,6 @@ class PublicListCollection extends PureComponent {
 		return (
 			<Style>
 				<CollectionRow>
-					<PublicButton
-						public={collection.public}
-						onClick={addPublicCollection}
-						className={`public-button`}
-					>
-						{!subscribeStatus ? `Add` : `Remove`}
-					</PublicButton>
-
 					{/* TODO: public collection is not attached to the user, how do we track if this is subscribed by which users */}
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
@@ -51,6 +42,13 @@ class PublicListCollection extends PureComponent {
 								return <ListItem key={item.id} data={item} />
 							})
 						}
+						<PublicButton
+							isSubscribed = {collection.isSubscribed}
+							onClick={handlePublicCollection}
+							className={`public-button`}
+						>
+							{!collection.isSubscribed ? `Add` : `Remove`}
+						</PublicButton>
 					</Body>
 				):(
 					<></>
