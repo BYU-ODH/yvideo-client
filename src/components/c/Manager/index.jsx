@@ -65,9 +65,9 @@ export default class Manager extends PureComponent {
 
 							<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 								<Help
-									onMouseEnter={e => handleShowTip('help', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
-									><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
+								><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
 								</Help>
 							</h4>
 

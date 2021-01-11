@@ -30,6 +30,7 @@ const CreateCollectionContainer = props => {
 			'archived': false,
 			'owner': `${isLabAssistantRoute ? professorId : userId}`,
 			'collection-name': name,
+			'public': false,
 		}
 
 		if(isLabAssistantRoute){

@@ -33,19 +33,17 @@ const ManageCollectionContainer = props => {
 		getCollections(true)
 		if(collection.content.length > 0){
 			if(content[collection.content[0].id]){
-				//console.log('got cached content')
-			}
-			else {
-				//console.log('setting content')
+				// console.log('got cached content')
+			} else {
+				// console.log('setting content')
 				const allContent = {}
 				collection.content.forEach(item => {
 					allContent[item.id] = item
 				})
 				setContent(allContent, true)
 			}
-		}
-		else {
-			//console.log('no content')
+		} else {
+			// console.log('no content')
 		}
 		setCollectionName(collection.name)
 		setIsContent(true)
@@ -56,7 +54,7 @@ const ManageCollectionContainer = props => {
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}
