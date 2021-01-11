@@ -22,6 +22,7 @@
 		"deep-object-diff": "^1.1.0",
 		"enzyme": "^3.11.0",
 		"enzyme-adapter-react-16": "^1.15.2",
+		"html-react-parser": "^1.1.1",
 		"jest": "^24.9.0",
 		"jest-enzyme": "^7.1.2",
 		"jest-redux-thunk": "^1.1.1",

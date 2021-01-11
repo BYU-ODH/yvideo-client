@@ -74,6 +74,11 @@ export const Style = styled.div`
 			word-wrap: break-word;
 			font-size: 1.4rem;
 		}
+
+		& .highlight {
+			font-weight: 500;
+			background-color: #fffa82;
+		}
 	}
 
 	& .active-sub {
