@@ -56,7 +56,7 @@ class Menu extends PureComponent {
 					</>
 				}
 
-				<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
+				<LinkStyled to='/logout'>Sign Out</LinkStyled>
 
 				{
 					(isProf || isAdmin || isLab) &&
