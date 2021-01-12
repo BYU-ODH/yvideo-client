@@ -203,9 +203,9 @@ export default class Transcript extends PureComponent {
 						<br/>
 					</div>
 				</div>
-				<hr style={{ width: '120%'}}/>
-				<br/>
-				<div className="transcript-translation">
+				<div className={isMobile ? ('transcript-translation translation-mobile') : ('transcript-translation')}>
+					<hr style={{ width: '120%'}}/>
+					<br/>
 					<h2>Quick Translation</h2><br/>
 					<div id="translation-box">
 						<h3 id="translation-word"></h3>

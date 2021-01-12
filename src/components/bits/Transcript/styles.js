@@ -43,11 +43,11 @@ export const Style = styled.div`
 		opacity: ${props => props.displayTranscript ? (1) : (0)};
 		transition: opacity .5s ease;
 		margin-left: 45px;
-		height: calc(100vh - 84px);
+		/* height: calc(100vh - 84px); */
 		overflow-y: scroll !important;
 		background-color: white;
-		/* height: 70vh;
-		overflow-y: scroll !important; */
+		height: 70vh;
+		/* overflow-y: scroll !important; */
 		/* border: 1px solid black; */
 
 		& .transcript-title {
@@ -72,6 +72,7 @@ export const Style = styled.div`
 
 	& .main-mobile {
 		margin-left: 0px;
+		height: 60vh;
 		width: calc(100vw);
 		& .transcript-content {
 			padding: 0px 5px 0px 5px;
@@ -130,7 +131,11 @@ export const Style = styled.div`
 	}
 
 	& .transcript-translation {
+		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
+		opacity: ${props => props.displayTranscript ? (1) : (0)};
+		transition: opacity .5s ease;
 		position: relative;
+		background-color: white !important;
 		/* border: 1px solid red; */
 		margin-left: 45px;
 		height: 15vh;
@@ -157,6 +162,16 @@ export const Style = styled.div`
 					padding: 2px 0px 4px 0px;
 				}
 			}
+		}
+	}
+
+	& .translation-mobile {
+		height: calc(100vh - 60vh - 84px);
+		margin-left: 0px !important;
+		width: calc(100vw);
+
+		& #translation-box {
+			height: calc(100vh - 72vh - 84px) !important;
 		}
 	}
 `
