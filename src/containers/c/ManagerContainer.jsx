@@ -26,16 +26,15 @@ const ManagerContainer = props => {
 
 	const params = useParams()
 	const location = useLocation()
-	const [count, setCount] = useState(0) //set a count just to keep track of how many times we call get collections and make sure we only call with force = true only once.
+	const [count, setCount] = useState(0) // set a count just to keep track of how many times we call get collections and make sure we only call with force = true only once.
 
 	useEffect(() => {
 		setHeaderBorder(true)
-		getCollections()
 
-		if(count == 0){ //if we have not called gt collections with force = true just call it once to make sure that we get all the collections.
-			getCollections(true)//when we use get collections and pass force = true we are saying that no matter if we already have info in the store that we want to re render after this call
-			//this way forcing the component to get data from the back end and rendering the component again.
-			//this is done because we want to prevent a user from having zero collections, so this way if collections returns zero this means that we are 100% sure that the user has no collections
+		if(count === 0){ // if we have not called gt collections with force = true just call it once to make sure that we get all the collections.
+			getCollections(true)// when we use get collections and pass force = true we are saying that no matter if we already have info in the store that we want to re render after this call
+			// this way forcing the component to get data from the back end and rendering the component again.
+			// this is done because we want to prevent a user from having zero collections, so this way if collections returns zero this means that we are 100% sure that the user has no collections
 			setCount(count + 1)
 		}
 
@@ -59,7 +58,7 @@ const ManagerContainer = props => {
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}
@@ -88,6 +87,8 @@ const ManagerContainer = props => {
 
 	Object.keys(collections).forEach(id => {
 		const { archived, published, name } = collections[id]
+
+		if(collections[id].public) return
 
 		if (archived) sideLists.archived.push({ id, name })
 		else if (published) sideLists.published.push({ id, name })

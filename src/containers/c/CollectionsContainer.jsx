@@ -32,14 +32,14 @@ const CollectionsContainer = props => {
 		getCollections(true)
 		setHeaderBorder(false)
 
-		const allContent = {}
-		Object.keys(collections).forEach(element => {
-			collections[element].content.forEach(item => {
-				allContent[item.id] = item
-			})
-		})
+		// const allContent = {}
+		// Object.keys(collections).forEach(element => {
+		// 	collections[element].content.forEach(item => {
+		// 		allContent[item.id] = item
+		// 	})
+		// })
 
-		setContent(allContent)
+		// setContent(allContent)
 
 		if(window.innerWidth < 400){
 			setIsMobile(true)
