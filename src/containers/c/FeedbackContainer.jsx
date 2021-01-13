@@ -18,38 +18,28 @@ const FeedbackContainer = props => {
 	const [name, setName] = useState('')
 	const [file, setFile] = useState({
 			type: '',
-			attachment: null,
+			attachment: {},
 	})
 
 	const handleSubmit = (e) => {
 			e.preventDefault()
-			if(file.attachment == null) {
-				 var emailObject = {
+			if(isPerson){
+				if(file.attachment.name === undefined) {
+					var emailObject = {
 						"sender-email": email,
 						"subject": title,
 						"message": body,
 				}
-			}
-			else {
-				 var emailObject = {
-					"sender-email": email,
-					"subject": title,
-					"message": body,
-					"attachment": file
-				}
-			}
-			if(isPerson){
-				if(file.attachment == null) {
-					sendNoAttachment(emailObject)
+				sendNoAttachment(emailObject)
 				}
 				else {
-					sendWithAttachment(emailObject)
-					console.log(emailObject)
+					const formData = new FormData()
+					formData.append(`attachment`, file.attachment)
+					formData.append(`sender-email`, email)
+					formData.append(`subject`, title)
+					formData.append(`message`, body)
+					sendWithAttachment(formData)
 				}
-					/*
-							TODO: instead of printing the data, we need to send the data to the back end using redux. Implement this using the user interface, there is no need to create a new store.
-							Create api proxy for email. Talk to matt
-					*/
 			}
 			else {
 				Swal.fire({
