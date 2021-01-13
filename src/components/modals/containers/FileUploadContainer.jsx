@@ -19,9 +19,6 @@ const FileUploadContainer = props => {
 		uploadFile,
 		getFiles,
 		langs,
-		removeFile,
-		resources,
-		editFileResource,
 	} = props
 
 	const [selectedFile, setSelectedFile] = useState()
@@ -38,30 +35,12 @@ const FileUploadContainer = props => {
 
 	useEffect(() => {
 
-		if(selectedFile !== undefined && !isUploadComplete)
-			uploadingFile()
-		if(isUploadComplete)
+		if(isUploadComplete){
 			getFiles(resourceId)
-			// console.log(resources(resourceId))
+			toggleModal()
+		}
 
 	}, [selectedFile, isUploadComplete])
-
-	const uploadingFile = () => {
-		const formData = new FormData()
-		formData.append(`file`, selectedFile)
-		formData.append(`resource-id`, resourceId)
-		formData.append(`file-version`, fileVersion)
-		formData.append(`mime`, ``)
-		formData.append(`metadata`, ``)
-
-		// uploadFile(formData)
-		uploadFile(formData, (event) => {
-			const percent = Math.round(100 * event.loaded / event.total)
-			setProgress(percent)
-			if(percent === 100)
-				setIsUploadComplete(true)
-		})
-	}
 
 	const handleFileChange = e =>{
 		setSelectedFile(e.target.files[0])
@@ -88,26 +67,20 @@ const FileUploadContainer = props => {
 	const handleFileUpload = async (e) =>{
 		e.preventDefault()
 
-		// const formData = new FormData()
-		// formData.append(`file`, selectedFile)
-		// formData.append(`resource-id`, resourceId)
-		// formData.append(`file-version`, fileVersion)
-		// formData.append(`mime`, ``)
-		// formData.append(`metadata`, ``)
-		// await uploadFile(formData)
+		const formData = new FormData()
+		formData.append(`file`, selectedFile)
+		formData.append(`resource-id`, resourceId)
+		formData.append(`file-version`, fileVersion)
+		formData.append(`mime`, ``)
+		formData.append(`metadata`, ``)
 
-		// await getFiles(resourceId)
-		toggleModal()
-	}
-
-	const handleCancelUpload = async(e)=> {
-		if(selectedFile !== undefined){
-			const file = resources[resourceId].files[0]
-			await removeFile(file.id)
-			await editFileResource(resourceId, file, false)
-		}
-
-		toggleModal()
+		// uploadFile(formData)
+		uploadFile(formData, (event) => {
+			const percent = Math.round(100 * event.loaded / event.total)
+			setProgress(percent)
+			if(percent === 100)
+				setIsUploadComplete(true)
+		})
 	}
 
 	const viewstate = {
@@ -123,7 +96,7 @@ const FileUploadContainer = props => {
 		handleFileVersion,
 		handleFileUpload,
 		handleOtherLanguage,
-		handleCancelUpload,
+		// handleCancelUpload,
 		toggleModal,
 	}
 
