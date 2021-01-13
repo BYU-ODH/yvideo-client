@@ -40,6 +40,8 @@ export default class ManageCollection extends PureComponent {
 			archive,
 			setTab,
 			createContent,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
@@ -67,6 +69,8 @@ export default class ManageCollection extends PureComponent {
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
 							className={`title-edit-button`}
+							onMouseEnter={e => handleShowTip('collection-edit-name', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+							onMouseLeave={e => toggleTip()}
 						>
 							{isEditingCollectionName ? `Save` : `Edit`}
 						</TitleEditButton>
@@ -87,6 +91,8 @@ export default class ManageCollection extends PureComponent {
 									published={collection.published}
 									onClick={togglePublish}
 									className={`publish-button`}
+									onMouseEnter={e => handleShowTip('collection-publish', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}
 								>
 									{collection.published ? `Unpublish` : `Publish`}
 								</PublishButton>
@@ -97,7 +103,10 @@ export default class ManageCollection extends PureComponent {
 				</header>
 				<TabHeader>
 					<button className={`content-button`} onClick={setTab(true)}>Content</button>
-					<button className={`permissions-button`} onClick={setTab(false)}>Permissions</button>
+					<button className={`permissions-button`} onClick={setTab(false)}
+						onMouseEnter={e => handleShowTip('collection-permissions', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}
+					>Permissions</button>
 					<Selector isContent={isContent} />
 				</TabHeader>
 				<Tab>
@@ -117,7 +126,10 @@ export default class ManageCollection extends PureComponent {
 
 					{isContent && (
 						<NewContent className={`newcontent-button`} onClick={createContent}>
-							<Icon src={plus} />
+							<Icon src={plus}
+								onMouseEnter={e => handleShowTip('collection-add-content', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseLeave={e => toggleTip()}
+								/>
 						</NewContent>
 					)}
 				</Tab>

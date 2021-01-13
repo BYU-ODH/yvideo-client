@@ -39,15 +39,16 @@ export const Style = styled.div`
 	& .main-bar {
 		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
 		margin-left: 45px;
-		max-height: 50rem;
+		height: 70vh;
 		overflow-y: scroll !important;
-
+		/* border: 1px solid black; */
 
 		& .transcript-title {
 			display: flex;
 			width: 100%;
 			height: 50px;
 			flex-direction: column;
+			text-align: center;
 
 			& h2 {
 				padding: 5px;
@@ -65,18 +66,75 @@ export const Style = styled.div`
 
 	& .transcript-row {
 
-		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-content: center;
+		border-bottom: 1.5px solid rgba(5, 130, 202, 0.2); /* make ligther #0582ca or 5, 130, 202 */
 
 		& p {
-			border-bottom: 1.5px solid rgba(5, 130, 202, 0.1); /* make ligther #0582ca or 5, 130, 202 */
-			padding: 5px 0px 5px 0px;
+			width: 90%;
+			padding: 5px 5px 5px 0px;
 			word-wrap: break-word;
 			font-size: 1.4rem;
+		}
+
+		& .arrow {
+			width: 10%;
+			height: inherit;
+			text-align: center;
+			cursor: pointer;
+			display: flex;
+			border-left: 1.5px solid rgba(5, 130, 202, 0.2); /* make ligther #0582ca or 5, 130, 202 */
+
+			& span {
+				margin: auto;
+			}
+		}
+
+		& .highlight {
+			cursor: pointer;
+			font-weight: 500;
+			background-color: #fffa82;
+		}
+
+		:hover {
+			background-color: rgba(210, 210, 210, 0.5);
 		}
 	}
 
 	& .active-sub {
 		background-color: rgba(5, 130, 202, 0.3);
+	}
+
+	& .transcript-translation {
+		position: relative;
+		/* border: 1px solid red; */
+		margin-left: 45px;
+		height: 15vh;
+
+		& h2 {
+			padding: 2px;
+			margin: auto;
+			font-weight: 500;
+			text-align: center;
+		}
+
+		& #translation-box {
+			height: 70%;
+			padding: 5px;
+			border: 1px solid black;
+			border-radius: 3px;
+
+			& #translation-list {
+				font-size: 1.3rem;
+				list-style: none;
+				padding: 0px 0px 0px 10px;
+
+				& li {
+					padding: 2px 0px 4px 0px;
+				}
+			}
+		}
 	}
 `
 export const Help = styled.img`

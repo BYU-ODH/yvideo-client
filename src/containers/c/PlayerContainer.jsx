@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { contentService, resourceService, interfaceService, subtitlesService } from 'services'
 
 import { Player } from 'components'
+import { Tooltip } from 'components/bits'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -23,6 +24,7 @@ const PlayerContainer = props => {
 		getSubtitles,
 		subtitles,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const params = useParams()
@@ -33,7 +35,7 @@ const PlayerContainer = props => {
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
-	const [hovering, setHovering] = useState(false)
+	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
@@ -106,16 +108,26 @@ const PlayerContainer = props => {
 		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
+	}
+
 	const handleDuration = duration => {
 		setDuration(duration)
 	}
 
 	const handleMouseOver = e => {
-		setHovering(true)
+		// setHovering(true)
 	}
 
 	const handleMouseOut = e => {
-		setHovering(false)
+		// setHovering(false)
 	}
 
 	const handlePause = () => {
@@ -141,6 +153,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleSeekChange = (e, time) => {
+		toggleTip()
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
@@ -208,7 +221,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleVolumeChange = e => {
-		console.log(e.target)
+		// console.log(e.target)
 	}
 
 	const handleShowComment = (value, position) => {
@@ -230,7 +243,7 @@ const PlayerContainer = props => {
 		try {
 
 			if(typeof currentContent === `string`){
-				console.log(`String type`)
+				// console.log(`String type`)
 				temp.content = JSON.parse(subtitles[index].content)
 			}
 
@@ -250,6 +263,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleToggleTranscript = () => {
+		toggleTip()
 		setToggleTranscript(!toggleTranscript)
 	}
 
@@ -266,9 +280,9 @@ const PlayerContainer = props => {
 
 			let result = 0
 			for(let i = 0; i < subtitles.length; i++){
-				console.log(`in loop`)
+				// console.log(`in loop`)
 				const temp = subtitles[i]
-				console.log(`TEMP CONTENT`, temp)
+				// console.log(`TEMP CONTENT`, temp)
 				// now that we have an actual object lets check language
 				// go through all subtitles and find there index where subtitle language = audio language
 				if(temp.language.toLowerCase() === audioLanguage.toLowerCase()){
@@ -328,6 +342,8 @@ const PlayerContainer = props => {
 		setFullscreen,
 		setShowTranscript,
 		handleShowHelp,
+		toggleTip,
+		handleShowTip,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
@@ -350,6 +366,7 @@ const mapDispatchToProps = {
 	setEvents: interfaceService.setEvents,
 	getSubtitles: subtitlesService.getSubtitles,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

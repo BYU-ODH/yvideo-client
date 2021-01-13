@@ -35,6 +35,11 @@ export default class AdminTable extends PureComponent {
 			toggleMenu,
 		} = this.props.handlers
 
+		const {
+			handleShowTip,
+			toggleTip,
+		} = this.props.tipHandlers
+
 		if (!data.length || data[0] === undefined) return null
 
 		const headers = {
@@ -268,7 +273,11 @@ export default class AdminTable extends PureComponent {
 						{data.map(
 							item => <tr key={item.id}>
 								{ printTableValues(searchCategory, item) }
-								<td><ItemEdit onClick={toggleMenu(item.id)}></ItemEdit></td>
+								<td>
+									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip('actions', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}
+									></ItemEdit>
+								</td>
 							</tr>,
 						)}
 					</tbody>
