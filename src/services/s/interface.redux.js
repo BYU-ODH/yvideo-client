@@ -1,5 +1,5 @@
 import { browserStorage } from 'proxy'
-
+import Swal from 'sweetalert2'
 export default class InterfaceService {
 
 	// types
@@ -13,6 +13,9 @@ export default class InterfaceService {
 		SET_LOST: `SET_LOST`,
 		SET_EVENTS: `SET_EVENTS`,
 		GET_EVENTS: `GET_EVENTS`,
+		SENT_EMAIL: `SENT_EMAIL`,
+		INTERFACE_ERROR: `INTERFACE_ERROR`,
+		// SUCCESS: `SUCCESS`,
 	}
 
 	// action creators
@@ -26,6 +29,8 @@ export default class InterfaceService {
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),
 		setEvents: events => ({ type: this.types.SET_EVENTS, payload: { events }}),
 		getEvents: events => ({ type: this.types.GET_EVENTS, payload: { events }}),
+		interfaceError: error => ({ type: this.types.INTERFACE_ERROR, payload: { error } }),
+		// success: error => ({ type: this.types.SUCCESS, payload: { error } }),
 	}
 
 	// default store
@@ -107,6 +112,13 @@ export default class InterfaceService {
 				events: action.payload.events,
 			}
 
+			case this.types.INTERFACE_ERROR:
+				console.error(action.payload.error)
+				return {
+					...store,
+					loading: false,
+				}
+
 		default:
 			return store
 		}
@@ -149,5 +161,55 @@ export default class InterfaceService {
 	setEvents = events => async dispatch => {
 		// console.log('%c Updated Store', 'color: purple; font-weight: bold;')
 		dispatch(this.actions.setEvents(events))
+	}
+
+	sendNoAttachment = (emailObject) => {
+		return async (dispatch, getState, { apiProxy }) => {
+
+			try {
+				const results = await apiProxy.email.postNoAttachment(emailObject)
+				if(results.status == 200) {
+					Swal.fire({
+						icon: 'success',
+						title: 'You have successfully submitted the form',
+						showConfirmButton: false,
+						timer: 3000,
+						width: 500,
+						})
+				}
+			} catch (error) {
+				dispatch(this.actions.interfaceError(error))
+				Swal.fire({
+					title: 'There is something wrong, Please try again',
+					showConfirmButton: true,
+					width: 500,
+				})
+			}
+		}
+	}
+
+	sendWithAttachment = (emailObject) => {
+		return async (dispatch, getState, { apiProxy }) => {
+
+			try {
+				const results = await apiProxy.email.postWithAttachment(emailObject)
+				if(results.status == 200) {
+					Swal.fire({
+						icon: 'success',
+						title: 'You have successfully submitted the form',
+						showConfirmButton: false,
+						timer: 3000,
+						width: 500,
+						})
+				}
+			} catch (error) {
+				dispatch(this.actions.interfaceError(error))
+				Swal.fire({
+					title: 'There is something wrong, Please try again',
+					showConfirmButton: true,
+					width: 500,
+				})
+			}
+		}
 	}
 }

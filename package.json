@@ -51,6 +51,7 @@
 		"sinon": "^9.2.1",
 		"styled-components": "^4.4.0",
 		"subtitle": "^2.0.3",
+		"sweetalert2": "^10.12.6",
 		"uuid": "^3.3.2",
 		"yvideo-editorwidgets": "^1.1.2",
 		"yvideo-subtitle-timeline-editor": "^0.2.7",
