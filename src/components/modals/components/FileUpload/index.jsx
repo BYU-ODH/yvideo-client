@@ -6,6 +6,7 @@ import {
 	Button,
 	CategorySelect,
 	ProgressBar,
+	Progress,
 } from './styles'
 
 export default class FileUpload extends PureComponent {
@@ -67,22 +68,25 @@ export default class FileUpload extends PureComponent {
 					</Upload>
 				</label>
 
-				{selectedFile && (
+				{selectedFile ? (
 					<div className='progress'>
 						{progress > 0 &&
-							<>
-								<ProgressBar value={progress} max={100} />
-								<span><>{progress}%</></span>
-							</>
+							<label htmlFor='file-upload-progress'>
+								<Progress>
+									<h4>Progress</h4>
+									<ProgressBar value={progress} max={100} />
+									<span><>{progress}%</></span>
+								</Progress>
+							</label>
 						}
 					</div>
-				)}
-
-				<label htmlFor='empty'>
-				</label>
+				) : (
+					<label htmlFor='empty'>
+					</label>
+				)
+				}
 
 				<div>
-					{/* toggleModal */}
 					<Button type='button' >Cancel</Button>
 					{selectedFile !== undefined ?
 						<Button type='submit' color={`#0582CA`}>Upload</Button>

@@ -36,11 +36,16 @@ const FileUploadContainer = props => {
 	useEffect(() => {
 
 		if(isUploadComplete){
-			getFiles(resourceId)
+			getUploadedFiles()
 			toggleModal()
 		}
 
 	}, [selectedFile, isUploadComplete])
+
+	async function getUploadedFiles() {
+		setIsUploadComplete(false)
+		await getFiles(resourceId)
+	}
 
 	const handleFileChange = e =>{
 		setSelectedFile(e.target.files[0])
@@ -96,7 +101,6 @@ const FileUploadContainer = props => {
 		handleFileVersion,
 		handleFileUpload,
 		handleOtherLanguage,
-		// handleCancelUpload,
 		toggleModal,
 	}
 
