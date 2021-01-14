@@ -19,16 +19,17 @@ const Captcha = (props) => {
 		}
 	}
 
-		return (
-			<Recaptcha
-				required
-				sitekey="6LcG1AAaAAAAAJzuRIIcUHNseZ3ppN30-_0o8MPN"
-				// site key to config
-				render="explicit"
-				verifyCallback={verifyCallback}
-				ref={_reCaptchaRef}
-			/>
-		);
+	return (
+		<Recaptcha
+			required
+
+			sitekey={ process.env.REACT_APP_RECAPTCHA_SITEKEY }
+			// site key to config
+			render="explicit"
+			verifyCallback={verifyCallback}
+			ref={_reCaptchaRef}
+		/>
+	);
 
 }
 
