@@ -86,14 +86,14 @@ const ManagerContainer = props => {
 	if (objectIsEmpty(collections)) return <Manager viewstate={{}} handlers={handlers} empty={true}/>
 
 	Object.keys(collections).forEach(id => {
-		if(!collections[id].public){
-			const { archived, published, name } = collections[id]
+		const { archived, published, name } = collections[id]
 
 		if(collections[id].public) return
 
 		if (archived) sideLists.archived.push({ id, name })
 		else if (published) sideLists.published.push({ id, name })
 		else sideLists.unpublished.push({ id, name })
+
 	})
 
 	const viewstate = {
