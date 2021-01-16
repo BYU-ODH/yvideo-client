@@ -21,7 +21,7 @@ import subHelp from 'assets/help/help-te-subtitle.png'
 
 //player
 import clockIcon from 'assets/clock-black.svg'
-import bookIcon from 'assets/book-open-black.svg'
+import bookIcon from 'assets/sidebar-black.svg'
 import closedCaption from 'assets/controls_closed_captions.svg'
 import chevron from 'assets/player-chevron-left-black.svg'
 
