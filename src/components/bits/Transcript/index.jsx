@@ -124,7 +124,7 @@ export default class Transcript extends PureComponent {
 			// }
 			// console.log(mockResponse['papa'][0]['meanings'])
 			// return mockResponse['papa'][0]['meanings']
-			const response = await fetch(`http://yvideobeta.byu.edu:5001/translate/${languageCodes[displaySubtitles.language]}/${foundWord}`)
+			const response = await fetch(`http://yvideodev.byu.edu:5001/translate/${languageCodes[displaySubtitles.language]}/${foundWord}`)
 			console.log(response)
 			let jsonResponse = await response.json()
 			console.log(jsonResponse)
