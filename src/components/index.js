@@ -22,6 +22,9 @@ import VideoControls from './c/VideoControls'
 import ManageResource from './c/ManageResource'
 import ResourceOverview from './c/ResourceOverview'
 import FileOverview from './c/FileOverview'
+import SearchPublicCollections from './c/SearchPublicCollections'
+import PublicManager from './c/PublicManager'
+import PublicListCollection from './c/PublicListCollection'
 
 export {
 	Admin,
@@ -48,4 +51,7 @@ export {
 	ManageResource,
 	ResourceOverview,
 	FileOverview,
+	SearchPublicCollections,
+	PublicManager,
+	PublicListCollection,
 }

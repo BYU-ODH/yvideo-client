@@ -30,9 +30,6 @@ margin: 0 auto;
 			text-decoration: none;
 			color: #000;
 		}
-
-		& > button {
-		}
 	}
 }
 `
@@ -55,4 +52,19 @@ export const Help = styled.img`
 	margin-left: 20px;
 	position: relative;
 	bottom: -4px;
+`
+
+export const Button = styled.button`
+
+	background-size: contain;
+	border: none;
+	cursor: pointer;
+	height: 3rem;
+	outline: none;
+	width: 10rem;
+	border-radius: .5rem;
+
+	&:hover {
+		box-shadow: 0 3px 6px -2px #A0A0A0;
+	}
 `

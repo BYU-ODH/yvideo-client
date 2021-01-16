@@ -20,6 +20,9 @@ import ManageResourceContainer from './c/ManageResourceContainer'
 import SubtitlesContainer from './c/SubtitlesContainer'
 import PlayerSubtitlesContainer from './c/PlayerSubtitlesContainer'
 import FileOverviewContainer from './c/FileOverviewContainer'
+import SearchPublicCollectionsContainer from './c/SearchPublicCollectionsContainer'
+import PublicManagerContainer from './c/PublicManagerContainer'
+import PublicListCollectionContainer from './c/PublicListCollectionContainer'
 
 export {
 	AdminContainer,
@@ -44,4 +47,7 @@ export {
 	ManageResourceContainer,
 	SubtitlesContainer,
 	FileOverviewContainer,
+	SearchPublicCollectionsContainer,
+	PublicManagerContainer,
+	PublicListCollectionContainer,
 }

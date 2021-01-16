@@ -25,7 +25,7 @@ class Menu extends PureComponent {
 		return (
 			<Style editorStyle={editorStyle} className={menuActive && `active`}
 				onClick={toggleMenu}
-				onMouseEnter={e => handleShowTip('menu', {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
+				onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
 				onMouseLeave={e => toggleTip()}>
 
 				<UserPic>{initials}</UserPic>
@@ -36,7 +36,7 @@ class Menu extends PureComponent {
 				{/* <LinkStyled to='/word-list'>My Word List</LinkStyled> */}
 
 				{
-					(isAdmin) &&
+					isAdmin &&
 					<>
 						<LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
 					</>
@@ -65,6 +65,12 @@ class Menu extends PureComponent {
 						<hr />
 						<LinkStyled to='/'>View Collections</LinkStyled>
 						<LinkStyled to='/manager'>Manage Collections</LinkStyled>
+						{
+							isAdmin &&
+							<>
+								<LinkStyled to='/public-manager'>Public Collections</LinkStyled>
+							</>
+						}
 						<LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled>
 					</>
 				}

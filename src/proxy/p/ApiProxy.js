@@ -22,6 +22,21 @@ const apiProxy = {
 				updateSessionId(res.headers[`session-id`])
 				return res.data
 			}),
+
+			public: {
+				collection: {
+					get: async (term) => {
+						const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/public-collection/${term}`, { withCredentials: true})
+
+						result.data.forEach(element => {
+							element[`name`] = element[`collection-name`]
+							delete element[`collection-name`]
+						})
+
+						return result.data
+					},
+				},
+			},
 		},
 		collection: {
 			get: async (id) => {
@@ -425,7 +440,13 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,
+						{
+							headers:{
+								'Access-Control-Allow-Origin': `*`,
+							},
+						},
+					).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
@@ -490,13 +511,13 @@ const apiProxy = {
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/courses`,
 				 	{
 					 withCredentials: true,
-					 headers: {'session-id': window.clj_session_id}
+					 headers: {'session-id': window.clj_session_id},
 					})
 					.then(res => {
 						updateSessionId(res.headers[`session-id`])
 						return res.data
 					})
-					return result
+				return result
 			},
 		},
 	},
@@ -530,11 +551,13 @@ const apiProxy = {
 		}),
 	},
 	file: {
-		post: async (file) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file`, file, {
+		post: (formData, onUploadProgress) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file`, formData, {
 			withCredentials: true,
 			headers: {
+				'Content-Type': `multipart/form-data`,
 				'session-id': window.clj_session_id,
 			},
+			onUploadProgress,
 		}).then(res => {
 			updateSessionId(res.headers[`session-id`])
 			return res.data
@@ -640,10 +663,10 @@ const apiProxy = {
 					'session-id': window.clj_session_id,
 				},
 			}).then(res => {
-				updateSessionId(res.headers['session-id'])
+				updateSessionId(res.headers[`session-id`])
 				return res.data
 			})
-			return result;
+			return result
 			// return result.reduce((map, item) => {
 			// 	if(item['collection-name'] !== undefined){
 			// 		item[`name`] = item[`collection-name`]
@@ -656,7 +679,7 @@ const apiProxy = {
 
 			// 	return map
 			// }, {})
-		}
+		},
 	},
 	email: {
 		postNoAttachment: async (emailObject) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/email/no-attachment`, emailObject, {

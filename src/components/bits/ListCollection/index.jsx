@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import { Header, Body } from './styles'
+import Style, { Header, Body, PublicButton } from './styles'
 
 class ListCollection extends PureComponent {
 	state = {
@@ -12,8 +12,6 @@ class ListCollection extends PureComponent {
 	togglePanel = () => {
 		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
-
-	
 
 	render() {
 		const {
@@ -32,7 +30,7 @@ class ListCollection extends PureComponent {
 		if (!content || this.props.collection.published !== true ) return null
 
 		return (
-			<div>
+			<Style>
 				<Header className='list-header' isOpen={isOpen} onClick={this.togglePanel} >
 					<h3>{name}</h3>
 					<p>{publishContent.length} Videos</p>
@@ -45,7 +43,7 @@ class ListCollection extends PureComponent {
 						})
 					}
 				</Body>
-			</div>
+			</Style>
 		)
 	}
 }
