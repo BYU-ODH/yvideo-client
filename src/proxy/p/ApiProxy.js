@@ -658,6 +658,29 @@ const apiProxy = {
 			// }, {})
 		}
 	},
+	email: {
+		postNoAttachment: async (emailObject) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/email/no-attachment`, emailObject, {
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`,
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+			return res
+		}),
+
+		postWithAttachment: async (emailObject) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/email/with-attachment`, emailObject, {
+			withCredentials: true,
+			headers: {
+				'Content-Type': `application/json`,
+				'session-id': window.clj_session_id,
+			},
+		}).then(res => {
+			updateSessionId(res.headers[`session-id`])
+			return res
+		}),
+	},
 }
 
 export default apiProxy

@@ -5,6 +5,7 @@ import {
 	AdminContainer,
 	CollectionsContainer,
 	HeaderContainer,
+	FeedbackContainer,
 	LabAssistantContainer,
 	LabAssistantManagerContainer,
 	LandingContainer,
@@ -83,6 +84,10 @@ class Root extends PureComponent {
 
 							<Route path='/trackeditor/:id'>
 								<TrackEditorContainer />
+							</Route>
+
+							<Route path='/feedback'>
+								<FeedbackContainer />
 							</Route>
 
 							<Route>
