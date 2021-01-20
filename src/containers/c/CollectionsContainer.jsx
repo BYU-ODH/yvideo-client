@@ -27,6 +27,7 @@ const CollectionsContainer = props => {
 		user,
 	} = props
 
+	const [isMobile, setIsMobile] = useState(false)
 	const allPublic = Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v)
 	const [count, setCount] = useState(0)
 
@@ -44,6 +45,12 @@ const CollectionsContainer = props => {
 
 		// setContent(allContent)
 
+		if(window.innerWidth < 600){
+			setIsMobile(true)
+		}
+		else (
+			setIsMobile(false)
+		)
 		if(Object.keys(allPublic).length > 0 && count !== Object.keys(allPublic).length){
 			allPublic.forEach(collection => {
 				getIsPublicCollectionSubscribed(collection.id, user.id)
@@ -89,6 +96,7 @@ const CollectionsContainer = props => {
 		allPublic,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		isMobile,
 	}
 
 	const handlers = {

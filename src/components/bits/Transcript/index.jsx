@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { Style, Help } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
+import closeIcon from 'assets/close_icon.svg'
+import seek from 'assets/skip-forward.svg'
 
 import helpIcon from 'assets/help/help-icon-white.svg'
 
@@ -37,6 +39,7 @@ export default class Transcript extends PureComponent {
 			duration,
 			toggleTranscript,
 			showTranscript,
+			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -122,7 +125,7 @@ export default class Transcript extends PureComponent {
 			// }
 			// console.log(mockResponse['papa'][0]['meanings'])
 			// return mockResponse['papa'][0]['meanings']
-			const response = await fetch(`http://yvideobeta.byu.edu:5001/translate/${languageCodes[displaySubtitles.language]}/${foundWord}`)
+			const response = await fetch(`http://yvideodev.byu.edu:5001/translate/${languageCodes[displaySubtitles.language]}/${foundWord}`)
 			console.log(response)
 			let jsonResponse = await response.json()
 			console.log(jsonResponse)
@@ -155,18 +158,24 @@ export default class Transcript extends PureComponent {
 		}
 
 		return (
-			<Style style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript}>
-				<div className={'side-bar'}>
+			<Style style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
+				<div className={isMobile ? (`hide-element`) : ('side-bar')}>
 					<img src={chevron} className={'toggle-transcript'} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip('transcript-hide', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip('transcript-hide', {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					/>
 					<Help src={helpIcon} onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip('help', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip('help', {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					/>
 				</div>
-				<div className={'main-bar'}>
+				<div className={isMobile ? ('main-bar main-mobile') : ('main-bar')} >
+					<div className={'close-transcript'} style={{ display: `${isMobile ? (`initial`) : (`none`)}` }}>
+						<img src={closeIcon} className={'toggle-transcript'} onClick={handleToggleTranscript}
+							onMouseEnter={e => handleShowTip('transcript-hide', {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
+							onMouseLeave={e => toggleTip()}
+						/>
+					</div>
 					<div className={'transcript-title'}>
 						<h1>Transcript</h1>
 						<h2>Video Audio - {content !== undefined ? (content.settings.targetLanguages) : (null)}</h2>
@@ -185,8 +194,10 @@ export default class Transcript extends PureComponent {
 											className="arrow"
 											onMouseEnter={e => handleShowTip('transcript-seek', {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 											onMouseLeave={e => toggleTip()}
-											><span
-											>{(element.start * duration / 100).toFixed(2)}s</span></div>
+											>
+											{/* <span>{(element.start * duration / 100).toFixed(2)}s</span> */}
+											<span><img src={seek} width="20" height="20"/></span>
+										</div>
 										{/* <p>{element.text}</p> */}
 									</div>
 								)
@@ -195,9 +206,9 @@ export default class Transcript extends PureComponent {
 						<br/>
 					</div>
 				</div>
-				<hr style={{ width: '120%'}}/>
-				<br/>
-				<div className="transcript-translation">
+				<div className={isMobile ? ('transcript-translation translation-mobile') : ('transcript-translation')}>
+					<hr style={{ width: '120%'}}/>
+					<br/>
 					<h2>Quick Translation</h2><br/>
 					<div id="translation-box">
 						<h3 id="translation-word"></h3>

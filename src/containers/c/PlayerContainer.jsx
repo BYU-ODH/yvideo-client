@@ -31,6 +31,7 @@ const PlayerContainer = props => {
 
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
+	const [isMobile, setIsMobile] = useState(false)
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -105,6 +106,11 @@ const PlayerContainer = props => {
 					}
 				}
 			}
+		}
+
+		if(window.innerWidth < 1000){
+			setToggleTranscript(false)
+			setIsMobile(true)
 		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
 
@@ -248,7 +254,7 @@ const PlayerContainer = props => {
 			}
 
 		} catch (e){
-			console.log(e)
+			// console.log(e)
 		}
 
 		setIndexToDisplay(index)
@@ -258,7 +264,7 @@ const PlayerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Player`},
+			props: { name: `${isMobile === true ? ('Player Mobile') : ('Player')}`},
 		})
 	}
 
@@ -318,6 +324,7 @@ const PlayerContainer = props => {
 		indexToDisplay,
 		isAdmin,
 		isProf,
+		isMobile,
 	}
 
 	const handlers = {

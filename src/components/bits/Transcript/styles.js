@@ -1,13 +1,15 @@
 import styled from 'styled-components'
 
 export const Style = styled.div`
-	position: relative;
-	width: ${props => props.displayTranscript ? ('50rem') : ('2rem')};
+	position: ${props => props.isMobile ? (`fixed`) : (`relative`)};
+	/* position: relative; */
+	width: ${props => props.displayTranscript ? ( props.isMobile ? ('calc(100vw)') : ('50rem') ) : ('2rem')};
 	height: 100%;
-	padding: 0px 10px 0px 10px;
-	border: 1px solid black;
-	transition: 1s ease;
+	padding: ${props => props.isMobile ? (`0px`) : (`0px 10px 0px 10px`)};
+	border-top: 1px solid black;
+	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
+	z-index: 20;
 	/* background-color: ${props => props.displayTranscript ? ('white') : ('var(--light-blue)')}; */
 
 	& .side-bar {
@@ -38,9 +40,14 @@ export const Style = styled.div`
 
 	& .main-bar {
 		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
+		opacity: ${props => props.displayTranscript ? (1) : (0)};
+		transition: opacity .5s ease;
 		margin-left: 45px;
-		height: 70vh;
+		/* height: calc(100vh - 84px); */
 		overflow-y: scroll !important;
+		background-color: white;
+		height: 70vh;
+		/* overflow-y: scroll !important; */
 		/* border: 1px solid black; */
 
 		& .transcript-title {
@@ -63,6 +70,19 @@ export const Style = styled.div`
 		}
 	}
 
+	& .main-mobile {
+		margin-left: 0px;
+		height: 60vh;
+		width: calc(100vw);
+		& .transcript-content {
+			padding: 0px 5px 0px 5px;
+		}
+	}
+
+	& .close-transcript {
+		position: absolute;
+		right: 10px;
+	}
 
 	& .transcript-row {
 
@@ -70,6 +90,7 @@ export const Style = styled.div`
 		justify-content: center;
 		align-content: center;
 		border-bottom: 1.5px solid rgba(5, 130, 202, 0.2); /* make ligther #0582ca or 5, 130, 202 */
+		/* height: 50px; */
 
 		& p {
 			width: 90%;
@@ -106,8 +127,16 @@ export const Style = styled.div`
 		background-color: rgba(5, 130, 202, 0.3);
 	}
 
+	& .hide-element {
+		display: none;
+	}
+
 	& .transcript-translation {
+		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
+		opacity: ${props => props.displayTranscript ? (1) : (0)};
+		transition: opacity .5s ease;
 		position: relative;
+		background-color: white !important;
 		/* border: 1px solid red; */
 		margin-left: 45px;
 		height: 15vh;
@@ -126,7 +155,9 @@ export const Style = styled.div`
 			border-radius: 3px;
 
 			& #translation-list {
-				font-size: 1.3rem;
+				height: 100%;
+				overflow-y: scroll;
+				font-size: 1.4rem;
 				list-style: none;
 				padding: 0px 0px 0px 10px;
 
@@ -134,6 +165,16 @@ export const Style = styled.div`
 					padding: 2px 0px 4px 0px;
 				}
 			}
+		}
+	}
+
+	& .translation-mobile {
+		height: calc(100vh - 60vh - 84px);
+		margin-left: 0px !important;
+		width: calc(100vw);
+
+		& #translation-box {
+			height: calc(100vh - 72vh - 84px) !important;
 		}
 	}
 `
