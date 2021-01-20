@@ -134,13 +134,14 @@ const apiProxy = {
 		 * Sets the current URL to the OAuth2 BYU CAS Login page, then redirects back to the original URL
 		 */
 		cas: () => {
-			window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/auth/cas/redirect${window.location.href}`
+			window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/login`
+			// window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/auth/cas/redirect${window.location.href}`
 		},
 		/**
 		 * Sets the current URL to the OAuth2 BYU CAS Logout page, then redirects back to the original URL
 		 */
 		logout: () => {
-			window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/auth/logout/redirect${window.location.href}`
+			window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/logout`
 		},
 	},
 	collection: {
@@ -438,15 +439,15 @@ const apiProxy = {
 		 */
 		get: async () => {
 			try {
-				// if (window.clj_session_id === `{{ session-id }}`) {
-				// 	// CALL TO GET SESSION ID FROM CLOJURE BACK END
-				// 	const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
-				// 		// console.log(`%c From User 1` , `color: red;`)
-				// 		await updateSessionId(res.data[`session-id`])
-				// 	})
-				// 	// window.clj_session_id = res.data['session-id']
-				// 	// CALL TO GET THE USER ONCE THE SESSION ID HAS BEEN SET
-				// }
+				if (window.clj_session_id === `{{ session-id }}`) {
+					// CALL TO GET SESSION ID FROM CLOJURE BACK END
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+						// console.log(`%c From User 1` , `color: red;`)
+						await updateSessionId(res.data[`session-id`])
+					})
+					// window.clj_session_id = res.data['session-id']
+					// CALL TO GET THE USER ONCE THE SESSION ID HAS BEEN SET
+				}
 				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
 				const result = await axios.get(url, {
 					withCredentials: true,
