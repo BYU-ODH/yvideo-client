@@ -69,7 +69,7 @@ export default class ManageCollection extends PureComponent {
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
 							className={`title-edit-button`}
-							onMouseEnter={e => handleShowTip('collection-edit-name', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+							onMouseEnter={e => handleShowTip(`collection-edit-name`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 							onMouseLeave={e => toggleTip()}
 						>
 							{isEditingCollectionName ? `Save` : `Edit`}
@@ -87,15 +87,17 @@ export default class ManageCollection extends PureComponent {
 							</>
 						) : (
 							<>
-								<PublishButton
-									published={collection.published}
-									onClick={togglePublish}
-									className={`publish-button`}
-									onMouseEnter={e => handleShowTip('collection-publish', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth})}
-									onMouseLeave={e => toggleTip()}
-								>
-									{collection.published ? `Unpublish` : `Publish`}
-								</PublishButton>
+								{ !collection.public ? (
+									<PublishButton
+										published={collection.published}
+										onClick={togglePublish}
+										className={`publish-button`}
+										onMouseEnter={e => handleShowTip(`collection-publish`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}
+									>
+										{collection.published ? `Unpublish` : `Publish`}
+									</PublishButton>
+								): (<></>)}
 								<ArchiveButton className={`archive-button`} onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
@@ -104,7 +106,7 @@ export default class ManageCollection extends PureComponent {
 				<TabHeader>
 					<button className={`content-button`} onClick={setTab(true)}>Content</button>
 					<button className={`permissions-button`} onClick={setTab(false)}
-						onMouseEnter={e => handleShowTip('collection-permissions', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					>Permissions</button>
 					<Selector isContent={isContent} />
@@ -112,13 +114,13 @@ export default class ManageCollection extends PureComponent {
 				<Tab>
 					{isContent ?
 						content.map((item, index) => (
-								<div key={index}>
-									{ isLabAssistant !== undefined ? (
-										<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
-									) : (
-										<ContentOverviewContainer key={item.id} content={item} />
-									)}
-								</div>
+							<div key={index}>
+								{ isLabAssistant !== undefined ? (
+									<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
+								) : (
+									<ContentOverviewContainer key={item.id} content={item} />
+								)}
+							</div>
 						))
 						: (
 							<CollectionPermissionsContainer collection={collection} />
@@ -127,9 +129,9 @@ export default class ManageCollection extends PureComponent {
 					{isContent && (
 						<NewContent className={`newcontent-button`} onClick={createContent}>
 							<Icon src={plus}
-								onMouseEnter={e => handleShowTip('collection-add-content', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 								onMouseLeave={e => toggleTip()}
-								/>
+							/>
 						</NewContent>
 					)}
 				</Tab>

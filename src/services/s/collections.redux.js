@@ -12,6 +12,7 @@ export default class CollectionService {
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
 		COLLECTION_INFO_GET: `COLLECTION_INFO_GET`,
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
+		PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS: `PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS`,
 	}
 
 	roleEndpoints = {
@@ -34,6 +35,7 @@ export default class CollectionService {
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 		collectionGetInfo: data => ({ type: this.types.COLLECTION_INFO_GET, payload: { data }}),
 		collectionPermissionUpdate: object => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { object }}),
+		publicCollectionUpdateSubscribers: data => ({type: this.types.PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS, payload: {data}}),
 	}
 
 	// default store
@@ -61,6 +63,7 @@ export default class CollectionService {
 			COLLECTION_EDIT,
 			COLLECTION_INFO_GET,
 			COLLECTION_ROLES_UPDATE,
+			PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS,
 		} = this.types
 
 		switch (action.type) {
@@ -148,14 +151,20 @@ export default class CollectionService {
 				courses: action.payload.object.currentCourses,
 			}
 
+		case PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS:
+			return {
+				...store,
+				users: action.payload.object.currentUsers,
+				courses: action.payload.object.currentCourses,
+			}
+
 		default:
 			return store
 		}
 	}
 
 	// thunks
-
-	getCollections = (force = false) => async (dispatch, getState, { apiProxy }) => {
+	getCollections = (force = false, doesIncludePublic = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().collectionStore.lastFetched
 
@@ -171,36 +180,40 @@ export default class CollectionService {
 			dispatch(this.actions.collectionsStart())
 
 			try {
-				//this gets the collections directly linked to the user.
-				let result = await apiProxy.user.collections.get()
+				// this gets the collections directly linked to the user.
+				const result = await apiProxy.user.collections.get()
 
 				if(student || admin){
-					//we also need to display the collections link to the user, but through courses.
-					//first we get the courses that a user is registered to
-					const courses = await apiProxy.user.courses.get(userId);
+					// we also need to display the collections link to the user, but through courses.
+					// first we get the courses that a user is registered to
+					const courses = await apiProxy.user.courses.get(userId)
 					// console.log(`%c Current COURSES => `, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;', courses)
-					//once we have the courses, we can get the collections for those courses and display them
-					//by adding those collections to the result object.
-					//get all the collections from the courses that the user is registered to.
-					let courseCollections = []
-					let i = 0;
+					// once we have the courses, we can get the collections for those courses and display them
+					// by adding those collections to the result object.
+					// get all the collections from the courses that the user is registered to.
+					const courseCollections = []
+					let i = 0
 					while(i < courses.length){
-						let response = await apiProxy.courses.getCollections(courses[i])
+						const response = await apiProxy.courses.getCollections(courses[i])
 						courseCollections.concat(response)
-						// result = {...result, ...response}
 						setTimeout(() => {
 							i++
-						}, 50);
+						}, 50)
 					}
-
-					// console.log(courseCollections)
-
-					// console.log(result)
 
 					courseCollections.forEach(element => {
 						result[element.id] = element
-					});
+					})
 				}
+
+				// let publicCollections = []
+				// if(doesIncludePublic){
+				// 	publicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k,v]) => v)
+				// 	publicCollections.forEach(item => {
+				// 		// getIsPublicCollectionSubscribed(item.id, )
+				// 	})
+				// 	console.log(publicCollections)
+				// }
 
 				dispatch(this.actions.collectionsGet(result))
 
@@ -236,12 +249,12 @@ export default class CollectionService {
 		}
 	}
 
-	createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
+	createCollection = (item) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.collectionsStart())
 
 		try {
-			await apiProxy.collection.create(name)
+			await apiProxy.collection.create(item)
 
 			const results = await apiProxy.user.collections.get()
 
@@ -314,14 +327,40 @@ export default class CollectionService {
 			try {
 
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
-				// console.log(users)
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 
 				dispatch(this.actions.collectionGetInfo({ users, courses }))
+
+				// console.log(getState().collectionStore)
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}
+		}
+	}
+
+	getIsPublicCollectionSubscribed = (collectionId, userId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.collectionsStart())
+		try {
+
+			const users = await apiProxy.collection.permissions.getUsers(collectionId)
+
+			let currentState = {}
+			currentState = getState().collectionStore.cache[collectionId]
+
+			if(currentState.public){
+				currentState.isSubscribed = false
+				users.forEach(user => {
+					if(user.id === userId)
+						currentState.isSubscribed = true
+
+				})
+			}
+			dispatch(this.actions.collectionEdit(currentState))
+
+			// console.log(getState().collectionStore.cache[collectionId])
+		} catch (error) {
+			dispatch(this.actions.collectionsError(error))
 		}
 	}
 
@@ -383,6 +422,16 @@ export default class CollectionService {
 			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
 
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
+			let currentState = {}
+			currentState = getState().collectionStore.cache[collectionId]
+
+			if(endpoint === `add-user` && currentState.public){
+				currentState.isSubscribed = true
+				dispatch(this.actions.collectionEdit(currentState))
+			} else if(endpoint === `remove-user` && currentState.public){
+				currentState.isSubscribed = false
+				dispatch(this.actions.collectionEdit(currentState))
+			}
 
 			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {

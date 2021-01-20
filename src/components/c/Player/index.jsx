@@ -44,6 +44,7 @@ export default class Player extends PureComponent {
 			displaySubtitles,
 			isCaption,
 			indexToDisplay,
+			isMobile,
 		} = this.props.viewstate
 
 		const {

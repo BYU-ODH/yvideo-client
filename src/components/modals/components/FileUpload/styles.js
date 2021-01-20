@@ -74,10 +74,16 @@ export const CategorySelect = styled.select`
 	border: none;
 	border-radius: 2rem;
 
-	padding: 0 6rem 0 6rem;
+	padding: 0 1.25rem;
+	text-align-last:center;
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
-	& option {
-	}
+`
+
+export const ProgressBar = styled.progress`
+`
+
+export const Progress = styled.div`
+	position: relative;
 `

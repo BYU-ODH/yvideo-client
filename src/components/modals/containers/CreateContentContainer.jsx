@@ -148,6 +148,7 @@ const CreateContentContainer = props => {
 			"allow-notes": true,
 			"description": data.description,
 			"published": true,
+			"words": ``,
 		}
 
 		if(modal.isLabAssistantRoute){
@@ -188,6 +189,7 @@ const CreateContentContainer = props => {
 			"allow-notes": true,
 			"description": data.description,
 			"published": true,
+			"words": ``,
 		}
 
 		if(modal.isLabAssistantRoute){
