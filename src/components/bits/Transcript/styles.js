@@ -90,6 +90,7 @@ export const Style = styled.div`
 		justify-content: center;
 		align-content: center;
 		border-bottom: 1.5px solid rgba(5, 130, 202, 0.2); /* make ligther #0582ca or 5, 130, 202 */
+		/* height: 50px; */
 
 		& p {
 			width: 90%;
@@ -154,7 +155,9 @@ export const Style = styled.div`
 			border-radius: 3px;
 
 			& #translation-list {
-				font-size: 1.3rem;
+				height: 100%;
+				overflow-y: scroll;
+				font-size: 1.4rem;
 				list-style: none;
 				padding: 0px 0px 0px 10px;
 

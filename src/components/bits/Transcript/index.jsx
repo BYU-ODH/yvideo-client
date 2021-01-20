@@ -7,6 +7,7 @@ import { Style, Help } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
 import closeIcon from 'assets/close_icon.svg'
+import seek from 'assets/skip-forward.svg'
 
 import helpIcon from 'assets/help/help-icon-white.svg'
 
@@ -193,8 +194,10 @@ export default class Transcript extends PureComponent {
 											className="arrow"
 											onMouseEnter={e => handleShowTip('transcript-seek', {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 											onMouseLeave={e => toggleTip()}
-											><span
-											>{(element.start * duration / 100).toFixed(2)}s</span></div>
+											>
+											{/* <span>{(element.start * duration / 100).toFixed(2)}s</span> */}
+											<span><img src={seek} width="20" height="20"/></span>
+										</div>
 										{/* <p>{element.text}</p> */}
 									</div>
 								)
