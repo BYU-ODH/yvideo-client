@@ -200,6 +200,61 @@ export const content = [
 	},
 ]
 
+export const contentBeforeModel = [
+	{
+		id: `contentid1`,
+		views: 0,
+		"collection-id": `collectionsid1`,
+		url: `test url`,
+		"content-type":`video`,
+		"resource-id":`5ebdaef833e57cec218b457c`,
+		thumbnail: `test@thumbnail.com`,
+		description: `test`,
+		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
+		dateValidated:``,
+		expired:true,
+		fullVideo: true,
+		isCopyrighted:false,
+		"title": `testname`,
+		physicalCopyExists:false,
+		published:true,
+		requester:``,
+		tags: ``,
+		"allow-definitions":true,
+		"allow-captions":true,
+		"allow-notes": true,
+		"file-version": [],
+		"annotations": ``,
+		resource,
+	},
+	{
+		id: `contentid2`,
+		views: 0,
+		"collection-id": `collectionsid2`,
+		url: `test ur2l`,
+		"content-type":`video2`,
+		"resource-id":`5ebdaef833e57cec218b457c`,
+		thumbnail: `test@thumbnail.com2`,
+		description: `test2`,
+		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
+		dateValidated:``,
+		expired:true,
+		fullVideo: true,
+		isCopyrighted:false,
+		name: `testname2`,
+		physicalCopyExists:false,
+		published:true,
+		requester:``,
+		tags: ``,
+		"allow-definitions":true,
+		"allow-captions":true,
+		"allow-notes": true,
+		"file-version": [],
+		"annotations": ``,
+		resource,
+	},
+]
+
 export const collection = {
 	archived: false,
 	content,
@@ -235,6 +290,26 @@ export const collection3 = {
 	content,
 	id: 1,
 	name: `Collection 3`,
+	owner: 22,
+	published: true,
+	thumbnail: `test@thumbnail`,
+}
+
+export const collection4 = {
+	archived: false,
+	content: contentBeforeModel,
+	id: 1,
+	name: `Collection 4`,
+	owner: 22,
+	published: true,
+	thumbnail: `test@thumbnail`,
+}
+
+export const collection5 = {
+	archived: false,
+	content: contentBeforeModel,
+	id: 1,
+	name: `Collection 5`,
 	owner: 22,
 	published: true,
 	thumbnail: `test@thumbnail`,
@@ -507,6 +582,7 @@ export const store = mockStore(
 					views: 0,
 				},
 			},
+			streamKey: `key`,
 		},
 		authStore: {
 			user,
@@ -558,8 +634,6 @@ export const store = mockStore(
 			courses: [],
 		},
 		contentStore:{
-			loading: false,
-			lastFetched:1592426369817,
 			cache: [
 				{
 					authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -616,6 +690,13 @@ export const store = mockStore(
 			},
 			loading: false,
 			lastFetched: 0,
+		},
+		subtitlesStore:{
+			cache: [],
+			loading: false,
+			lastFetched: 0,
+			active: 0,
+			contentId : ``,
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),

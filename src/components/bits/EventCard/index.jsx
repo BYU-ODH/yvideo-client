@@ -8,6 +8,7 @@ const EventCard = ({ event }) => {
 
 	const [{ isDragging }, ref] = useDrag({
 
+
 		// REQUIRED
 		item: {
 			id: event.type,
@@ -24,6 +25,7 @@ const EventCard = ({ event }) => {
 		collect: monitor => ({
 			isDragging: monitor.isDragging(),
 		}),
+
 	})
 
 	const opacity = isDragging ? 0.5 : 1

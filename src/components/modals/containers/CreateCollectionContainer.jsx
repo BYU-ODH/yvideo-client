@@ -10,12 +10,10 @@ const CreateCollectionContainer = props => {
 	const {
 		userId,
 		professorId,
-		adminCreateCollection,
 		adminSearchCollections,
 		createCollection,
 		isLabAssistantRoute,
 		toggleModal,
-		getCollections,
 	} = props
 
 	const [name, setName] = useState(``)
@@ -39,7 +37,6 @@ const CreateCollectionContainer = props => {
 			adminSearchCollections(professorId, true)
 		} else
 			await createCollection(defaultV)
-			// collectionService.getCollections()
 
 		toggleModal()
 	}

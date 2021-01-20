@@ -69,7 +69,7 @@ export default class SubtitlesService {
 			return {
 				...store,
 				cache: [],
-				contentId: '',
+				contentId: ``,
 			}
 
 		case SUBTITLES_CREATE:
@@ -135,16 +135,17 @@ export default class SubtitlesService {
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 		// console.log('updated store', contentIds)
-		let currentContentId = getState().subtitlesStore.contentId
+		const currentContentId = getState().subtitlesStore.contentId
+
+		console.log(`USED SESSION ID`, window.clj_session_id)
 
 		dispatch(this.actions.subtitlesStart())
 
-		if(currentContentId !== id){
+		if(currentContentId !== id)
 			dispatch(this.actions.subtitlesClean())
-		}
-
 
 		try {
+
 			const result = await apiProxy.content.getSubtitles(id)
 			dispatch(this.actions.subtitlesGet(result, id))
 			return result
@@ -154,7 +155,6 @@ export default class SubtitlesService {
 			return[]
 		}
 
-		// } else dispatch(this.actions.subtitlesAbort())
 	}
 
 	createSubtitle = (subtitle) => async (dispatch, getState, { apiProxy }) => {
@@ -180,8 +180,6 @@ export default class SubtitlesService {
 	}
 
 	updateSubtitle = subtitle => async (dispatch, _getState, { apiProxy }) => {
-
-		// console.log(content)
 
 		dispatch(this.actions.subtitlesStart())
 

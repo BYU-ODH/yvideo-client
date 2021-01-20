@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import services from 'services'
 
 import { Menu } from 'components'
+import { Tooltip } from 'components/bits'
 
 import { getInitials } from 'lib/util'
 
@@ -17,12 +18,23 @@ const MenuContainer = props => {
 		menuActive,
 		logout,
 		toggleMenu,
+		toggleTip,
 		editorStyle,
 	} = props
 
 	const handleLogout = async e => {
 		e.preventDefault()
 		await logout()
+	}
+
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
 	}
 
 	const viewstate = {
@@ -38,6 +50,8 @@ const MenuContainer = props => {
 	const handlers = {
 		toggleMenu,
 		handleLogout,
+		handleShowTip,
+		toggleTip,
 	}
 
 	return <Menu viewstate={viewstate} handlers={handlers} />
@@ -56,6 +70,7 @@ const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 const mapDispatchToProps = {
 	logout: services.authService.logout,
 	toggleMenu: services.interfaceService.toggleMenu,
+	toggleTip: services.interfaceService.toggleTip,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(MenuContainer)

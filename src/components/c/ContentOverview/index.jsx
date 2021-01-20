@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { resourceService, contentService } from 'services'
 
-import { SwitchToggle, AspectRadio, Tag, Spinner, LazyImage } from 'components/bits'
+import { SwitchToggle, Tag, Spinner, LazyImage } from 'components/bits'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 
@@ -26,7 +26,6 @@ class ContentOverview extends PureComponent {
 		const {
 			editing,
 			content,
-			showing,
 			tag,
 		} = this.props.viewstate
 
@@ -35,8 +34,6 @@ class ContentOverview extends PureComponent {
 			handleRemoveContent,
 			handleToggleEdit,
 			handleTogglePublish,
-			setContentState,
-			setShowing,
 			addTag,
 			removeTag,
 			handleToggleSettings,
@@ -64,7 +61,7 @@ class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail !== "empty" ? (content.thumbnail) : (defaultThumbnail)} height='8rem' width='14rem' />
+						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' />
 					</div>
 					<div>
 						{editing ?

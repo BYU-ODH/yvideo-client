@@ -144,6 +144,10 @@ const Style = styled.div`
 		background-color: var(--navy-blue);
 		color: white;
 	}
+	& .censorActive {
+		background-color: var(--navy-blue);
+		color: white;
+	}
 	@keyframes spin {
 		0% { transform: rotate(0deg); }
 		100% { transform: rotate(360deg); }

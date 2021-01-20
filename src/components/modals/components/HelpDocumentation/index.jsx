@@ -10,7 +10,7 @@ export default class HelpDocumentation extends PureComponent {
 	}
 
 	componentDidMount(){
-		document.getElementById('content').innerHTML = this.props.viewstate.help.htmlInstruction
+		document.getElementById(`content`).innerHTML = this.props.viewstate.help.htmlInstruction
 	}
 
 	render() {
@@ -20,11 +20,9 @@ export default class HelpDocumentation extends PureComponent {
 		return (
 			<>
 				<Back>
-					<Container>
-						<div id="title">
-							<h1>Help Documentation: {name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
-						</div>
-						<div id="content">
+					<Container id='help-documentation-container'>
+						<h1>Help Documentation: {name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
+						<div id='content'>
 						</div>
 					</Container>
 				</Back>

@@ -1,6 +1,5 @@
 import Accordion from './Accordion'
 import AdminTable from './AdminTable'
-import AspectRadio from './AspectRadio'
 import Bar from './Bar'
 import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
@@ -12,22 +11,21 @@ import ListItem from './ListItem'
 import Modal from './Modal'
 import PermissionTable from './PermissionTable'
 import PlayerControls from './PlayerControls'
-import ResourceTable from './ResourceTable'
 import Scrubber from './Scrubber'
 import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
+import Tooltip from './Tooltips'
 import TrackEditorSideMenu from './TrackEditorSideMenu'
-import VolumeBar from './VolumeBar'
-import VolumeScrubber from './VolumeScrubber'
+import Transcript from './Transcript'
 import SubtitlesCard from './SubtitlesCard'
 import ResourceOverview from '../c/ResourceOverview'
 import SubtitlesLayer from './SubtitlesLayer'
 import SubtitlesModal from './SubtitlesModal'
+import CensorDnD from './CensorDnD'
 export {
 	Accordion,
 	AdminTable,
-	AspectRadio,
 	Bar,
 	BlockCollection,
 	BlockItem,
@@ -39,16 +37,16 @@ export {
 	Modal,
 	PermissionTable,
 	PlayerControls,
-	ResourceTable,
 	Scrubber,
 	Spinner,
 	SwitchToggle,
 	Tag,
+	Tooltip,
 	TrackEditorSideMenu,
-	VolumeBar,
-	VolumeScrubber,
+	Transcript,
 	ResourceOverview,
 	SubtitlesCard,
 	SubtitlesLayer,
 	SubtitlesModal,
+	CensorDnD,
 }

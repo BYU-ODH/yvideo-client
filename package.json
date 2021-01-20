@@ -15,6 +15,7 @@
 		"not op_mini all"
 	],
 	"dependencies": {
+		"@testing-library/react-hooks": "^3.4.2",
 		"axios": "^0.19.0",
 		"axois": "0.0.1-security",
 		"bootstrap": "^4.4.1",
@@ -31,6 +32,8 @@
 		"react-bootstrap": "^1.0.1",
 		"react-dnd": "^10.0.2",
 		"react-dnd-html5-backend": "^10.0.2",
+		"react-dnd-test-backend": "^11.1.3",
+		"react-dnd-test-utils": "^11.1.3",
 		"react-dom": "^16.13.1",
 		"react-grid-layout": "^0.18.3",
 		"react-player": "^2.6.0",
@@ -40,9 +43,11 @@
 		"react-router-dom": "^5.1.2",
 		"react-scripts": "^3.4.1",
 		"react-scrubber": "^1.0.0",
+		"react-uuid": "^1.0.2",
 		"redux": "^4.0.1",
 		"redux-mock-store": "^1.5.4",
 		"redux-thunk": "^2.3.0",
+		"sinon": "^9.2.1",
 		"styled-components": "^4.4.0",
 		"subtitle": "^2.0.3",
 		"uuid": "^3.3.2",
@@ -60,6 +65,8 @@
 		"eslint-plugin-react": "^7.19.0",
 		"eslint-plugin-react-hooks": "^3.0.0",
 		"husky": "^4.2.5",
+		"jest-mock-axios": "^4.2.1",
+		"jest-spy-object": "^1.4.0",
 		"mutation-observer": "^1.0.3",
 		"redux-devtools-extension": "^2.13.8"
 	}

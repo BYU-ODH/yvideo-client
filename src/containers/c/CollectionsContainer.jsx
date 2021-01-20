@@ -7,6 +7,8 @@ import { Collections } from 'components'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
+import { Tooltip } from 'components/bits'
+
 const CollectionsContainer = props => {
 
 	const {
@@ -20,9 +22,11 @@ const CollectionsContainer = props => {
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
+		toggleTip
 	} = props
 
 	useEffect(() => {
+		toggleTip()
 		getCollections(true)
 		setHeaderBorder(false)
 
@@ -37,13 +41,25 @@ const CollectionsContainer = props => {
 
 		return () => {
 			setHeaderBorder(true)
+			toggleTip(null)
 		}
 	}, [setContent, setHeaderBorder])
 
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: 'Home Page'},
+			props:{ name: 'Home Page'},
+		})
+		toggleTip()
+	}
+
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
 		})
 	}
 
@@ -62,6 +78,8 @@ const CollectionsContainer = props => {
 	const handlers = {
 		toggleCollectionsDisplay,
 		handleShowHelp,
+		handleShowTip,
+		toggleTip,
 	}
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
@@ -70,6 +88,7 @@ const CollectionsContainer = props => {
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
+	isStu: authStore.user.roles === 3,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,
@@ -80,6 +99,7 @@ const mapDispatchToProps = {
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
 }

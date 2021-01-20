@@ -180,22 +180,8 @@ export const Blank = styled.div`
 	height: calc(100% - 50px);
 `
 export const Censor = styled.div`
-		${props=>console.log(props.values)}
-		${props=>console.log(props.values.top1-15+(props.currentTime-props.values.previous)/(props.values.next-props.values.previous)*(props.values.top2-props.values.top1))}
-	--top: ${props => props.values.top1 !== 0 && props.values.top2 !== 0 ? `${props.values.top1+(props.currentTime-props.values.previous)/(props.values.next-props.values.previous)*(props.values.top2-props.values.top1)}%` : `0%`};
-	--left: ${props => props.values.left1 !== 0 && props.values.left2 !== 0 ? `${props.values.left1+(props.currentTime-props.values.previous)/(props.values.next-props.values.previous)*(props.values.left2-props.values.left1)}%` : `0%`};
-	--width: 40%;
-	--height: 30%;
-
-	/* TIME X Y WIDTH HEIHT */
-	/* FIND BLUR EFFECT */
-
 	position: absolute;
-	top: ${props => props.values.top1 + props.values.top2 !== 0 ? `${props.values.top1-15+(props.currentTime-props.values.previous)/(props.values.next-props.values.previous)*(props.values.top2-props.values.top1)}%` : `0%`} !important;
-	left: ${props => props.values.left1 + props.values.left2 !== 0 ? `${props.values.left1-20+(props.currentTime-props.values.previous)/(props.values.next-props.values.previous)*(props.values.left2-props.values.left1)}%` : `5%`} !important;
-	width: var(--width);
-	height: var(--height);
-	transition: top 300ms linear, left 300ms linear;
+	transition-timing-function: linear;
 	& canvas {
 		width: 100%;
 		height: 100%;

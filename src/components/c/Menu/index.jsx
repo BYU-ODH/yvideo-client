@@ -13,16 +13,20 @@ class Menu extends PureComponent {
 			isLab,
 			editorStyle,
 		} = this.props.viewstate
-
-		console.log(isAdmin, isLab, isProf)
+		// console.log(isAdmin, isLab, isProf)
 
 		const {
 			toggleMenu,
+			handleShowTip,
 			handleLogout,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
-			<Style editorStyle={editorStyle} className={menuActive && `active`} onClick={toggleMenu}>
+			<Style editorStyle={editorStyle} className={menuActive && `active`}
+				onClick={toggleMenu}
+				onMouseEnter={e => handleShowTip('menu', {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
+				onMouseLeave={e => toggleTip()}>
 
 				<UserPic>{initials}</UserPic>
 				<h4>{user.name}</h4>
@@ -42,6 +46,13 @@ class Menu extends PureComponent {
 					<>
 						<LinkStyled to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
 						<LinkStyled to='/manage-resource'>Manage Resource</LinkStyled>
+					</>
+				}
+
+				{
+					!(isLab || isAdmin || isProf) &&
+					<>
+						<LinkStyled to='/'>Collections</LinkStyled>
 					</>
 				}
 

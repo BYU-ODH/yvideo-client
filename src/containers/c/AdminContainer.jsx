@@ -7,6 +7,8 @@ import { Admin } from 'components'
 
 import { adminService, interfaceService } from 'services'
 
+import { Tooltip } from 'components/bits'
+
 const AdminContainer = props => {
 
 	const {
@@ -15,6 +17,7 @@ const AdminContainer = props => {
 		clean,
 		setHeaderBorder,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const category = {
@@ -79,6 +82,7 @@ const AdminContainer = props => {
 			search(category[searchCategory].url, searchQuery, true)
 		},
 		toggleMenu: id => e => {
+			toggleTip()
 			data.forEach(item => {
 				if (item.id === id)
 					setMenuItemInfo(item)
@@ -102,7 +106,23 @@ const AdminContainer = props => {
 		},
 	}
 
-	return <Admin viewstate={viewstate} handlers={handlers} />
+
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position: position,
+			},
+		})
+	}
+
+	const tipHandlers = {
+		handleShowTip,
+		toggleTip,
+	}
+
+	return <Admin viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers} />
 }
 
 const mapStateToProps = store => ({
@@ -114,6 +134,7 @@ const mapDispatchToProps = {
 	clean: adminService.clean,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

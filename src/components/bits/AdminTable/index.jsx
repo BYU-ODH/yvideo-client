@@ -35,6 +35,11 @@ export default class AdminTable extends PureComponent {
 			toggleMenu,
 		} = this.props.handlers
 
+		const {
+			handleShowTip,
+			toggleTip,
+		} = this.props.tipHandlers
+
 		if (!data.length || data[0] === undefined) return null
 
 		const headers = {
@@ -160,7 +165,7 @@ export default class AdminTable extends PureComponent {
 							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
 						</li>
 						<li>
-							<button onClick={handleConfirmDelete}>Delete</button>
+							<button className="userDelete" onClick={handleConfirmDelete}>Delete</button>
 						</li>
 					</ul>
 				)
@@ -172,7 +177,7 @@ export default class AdminTable extends PureComponent {
 							<Link to={`/lab-assistant-manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
 						</li>
 						<li>
-							<button onClick={handleConfirmDelete}>Delete</button>
+							<button className="collectionsDelete" onClick={handleConfirmDelete}>Delete</button>
 						</li>
 					</ul>
 				)
@@ -191,7 +196,7 @@ export default class AdminTable extends PureComponent {
 							<button>Disable</button>
 						</li>
 						<li>
-							<button onClick={handleConfirmDelete}>Delete</button>
+							<button className="contentDelete" onClick={handleConfirmDelete}>Delete</button>
 						</li>
 					</ul>
 				)
@@ -201,7 +206,7 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
-		const sort = (data,sortType) => {
+		const isReverse = (sortType) =>{
 			if (this.state.sortType.id === sortType && this.state.sortType.reverse === false){
 				this.setState({
 					sortType:{
@@ -209,57 +214,58 @@ export default class AdminTable extends PureComponent {
 						reverse: true,
 					},
 				})
-				data.sort((a, b) => {
-					switch (sortType) {
-					case `Name`:
-						return b.name.localeCompare(a.name,{sensitivity:`base`})
-					case `NetID`:
-						return b.username.localeCompare(a.username,{sensitivity:`base`})
-					case `Email`:
-						return b.email.localeCompare(a.email,{sensitivity:`base`})
-					case `Owner`:
-						return b.owner.localeCompare(a.owner,{sensitivity:`base`})
-					case `Roles`:
-						return b.roles - a.roles
-					case `Last Login`:
-						return new Date(b.lastLogin) - new Date(a.lastLogin);
-					default: return null
-					}
-				})
-			}else{
+				return true
+			}
+			else {
 				this.setState({
 					sortType:{
 						id: sortType,
 						reverse: false,
 					},
 				})
+				return false
+			}
+		}
+
+		const sort = (data,sortType) => {
 				data.sort((a, b) => {
 					switch (sortType) {
 					case `Name`:
-						return a.name.localeCompare(b.name,{sensitivity:`base`})
+						return isReverse(sortType) ? a.name.localeCompare(b.name,{sensitivity:`base`}) : b.name.localeCompare(a.name,{sensitivity:`base`})
 					case `NetID`:
-						return a.username.localeCompare(b.username,{sensitivity:`base`})
+						return isReverse(sortType) ? a.username.localeCompare(b.username,{sensitivity:`base`}) : b.username.localeCompare(a.username,{sensitivity:`base`})
 					case `Email`:
-						return a.email.localeCompare(b.email,{sensitivity:`base`})
+						return isReverse(sortType) ? a.email.localeCompare(b.email,{sensitivity:`base`}) : b.email.localeCompare(a.email,{sensitivity:`base`})
 					case `Owner`:
-						return a.owner.localeCompare(b.owner,{sensitivity:`base`})
+						return isReverse(sortType) ? a.owner.localeCompare(b.owner,{sensitivity:`base`}) : b.owner.localeCompare(a.owner,{sensitivity:`base`})
 					case `Roles`:
-						return a.roles - b.roles
+						return isReverse(sortType) ? a.roles - b.roles : b.roles - a.roles
 					case `Last Login`:
-						return new Date(a.lastLogin) - new Date(b.lastLogin);
+						if(a.lastLogin == "na" && b.lastLogin != "na") {
+							return isReverse(sortType) ? 1 : 1
+						}
+						else if(b.lastLogin == "na" && a.lastLogin != "na") {
+							return isReverse(sortType) ? -1 : -1
+						}
+						else if(b.lastLogin == "na" && a.lastLogin == "na") {
+							return isReverse(sortType) ? 0 : 0
+						}
+						else {
+							return isReverse(sortType) ? new Date(a.lastLogin) - new Date(b.lastLogin) : new Date(b.lastLogin) - new Date(a.lastLogin)
+						}
 					default: return null
 					}
 				})
-			}
 
 			return data
 		}
+
 		return (
 			<Style>
 				<Table>
 					<thead>
 						<tr>
-							{headers[searchCategory].columns.map((header, index) => <th key={index}>{header.title}{header.filter && <Filter />}<Sort onClick={()=>sort(data,header.title)}/></th>)}
+							{headers[searchCategory].columns.map((header, index) => <th className="headers" key={index}>{header.title}{header.filter && <Filter />}<Sort className="sorting-button" onClick={()=>sort(data,header.title)}/></th>)}
 							<th/>
 						</tr>
 					</thead>
@@ -267,7 +273,11 @@ export default class AdminTable extends PureComponent {
 						{data.map(
 							item => <tr key={item.id}>
 								{ printTableValues(searchCategory, item) }
-								<td><ItemEdit onClick={toggleMenu(item.id)}></ItemEdit></td>
+								<td>
+									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip('actions', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}
+									></ItemEdit>
+								</td>
 							</tr>,
 						)}
 					</tbody>

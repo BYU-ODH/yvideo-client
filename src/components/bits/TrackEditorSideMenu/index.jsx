@@ -29,6 +29,8 @@ const TrackEditorSideMenu = props => {
 		handleCensorRemove,
 		handleAddCensor,
 		handleSaveCensor,
+		activeCensorPosition,
+		setActiveCensorPosition,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -125,7 +127,7 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 	const editSub = (side, time, value,layer) => {
-		console.log(time)
+		// console.log(time)
 		const sub = {...event}
 		if (side === `beg`)
 			sub.start = time / videoLength * 100
@@ -139,7 +141,7 @@ const TrackEditorSideMenu = props => {
 		}catch(error){
 
 		}
-		console.log(`why is`,layer)
+		// console.log(`why is`,layer)
 		setEvent(sub)
 		updateSubs(index,sub,layer)
 	}
@@ -225,12 +227,12 @@ const TrackEditorSideMenu = props => {
 							<tbody>
 								{event.type === `Censor`?
 									Object.keys(event.position).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-										<tr key={item}>
-											<td><input type='number' value={`${item}`}/></td>
-											<td><input type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-											<td><input type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-											<td><input type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-											<td><input type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+										<tr class={activeCensorPosition === item ? `censorActive` : ``} key={item}>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' value={`${item}`}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
 											<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
 										</tr>
 									))
@@ -258,29 +260,32 @@ const TrackEditorSideMenu = props => {
 					<div style={{overflowY:`scroll`, height:`40vh`}}>
 						<p className={`subTitleCard`} >All Subtitles</p>
 						<table>
-							<tr>
-								<td>
-									<div style={{width:`8rem`}}>
-										<label>Start</label>
-									</div>
-								</td>
-								<td>
-									<div style={{width:`8rem`}}>
-										<label>End</label>
-									</div>
-								</td>
-								<td>
-									<div style={{width:`8rem`}}>
-										<label>Text</label>
-									</div>
-								</td>
-							</tr>
+							<thead>
+								<tr>
+									<td>
+										<div style={{width:`8rem`}}>
+											<label>Start</label>
+										</div>
+									</td>
+									<td>
+										<div style={{width:`8rem`}}>
+											<label>End</label>
+										</div>
+									</td>
+									<td>
+										<div style={{width:`8rem`}}>
+											<label>Text</label>
+										</div>
+									</td>
+								</tr>
+							</thead>
 						</table>
 						<table>
 							{/* content is a string type. Maybe change to an array by parsing content? */}
-							{subs[subLayer][`content`].map((sub,ind)=>(
-								<div className={`${ind === index ? `subActive`:``}`}>
-									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`}>
+							<tbody>
+								{subs[subLayer][`content`].map((sub,ind)=>(
+									// <div className={`${ind === index ? `subActive`:``}`}>
+									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`} key={ind}>
 										<td>
 											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
 										</td>
@@ -296,13 +301,14 @@ const TrackEditorSideMenu = props => {
 											}} />
 										</td>
 									</tr>
-								</div>
-							// <div className={`subCard ${ind === index ? `subActive`:``}`} onClick={()=>changeSubIndex(ind)} key={ind}>
-							// 	<p>
-							// 		{sub.text}
-							// 	</p>
-							// </div>
-							))}
+									// </div>
+								// <div className={`subCard ${ind === index ? `subActive`:``}`} onClick={()=>changeSubIndex(ind)} key={ind}>
+								// 	<p>
+								// 		{sub.text}
+								// 	</p>
+								// </div>
+								))}
+							</tbody>
 						</table>
 						<Icon src={plus} onClick={()=>addSub(null,subLayer)} />
 					</div>

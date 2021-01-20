@@ -45,9 +45,12 @@ const TrackEditor = props => {
 
 	// console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
 
-	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles,getAllSubtitles,handleShowHelp } = props
+	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles } = props
 
 	const { eventsArray, currentContent,subs, allSubs } = props.viewstate
+
+	const { handleShowTip, toggleTip } = props.handlers
+
 	const events = [
 		{
 			type: `Skip`,
@@ -89,7 +92,7 @@ const TrackEditor = props => {
 			end: 10,
 			layer: 0,
 			position: {
-				0: [0, 0, 30, 40],
+
 			},
 		},
 		{
@@ -141,6 +144,8 @@ const TrackEditor = props => {
 		height: window.innerHeight,
 		width: window.innerWidth,
 	})
+	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
+	// console.log(subtitles)
 	useEffect(() => {
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
@@ -185,20 +190,16 @@ const TrackEditor = props => {
 			setTimeout(() => {
 				setSaved(false)
 			}, 3000)
-		} else
-			window.onbeforeunload = undefined
+		}
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
-		 else {
+		else
 			window.onbeforeunload = undefined
-		 	setBlock(false)
-		}
 
-		return function cleanup () {
-			window.onbeforeunload = null
+		return () => {
+			window.onbeforeunload = undefined
 		}
-
 	}, [eventsArray])
 
 	if(shouldUpdate === true)
@@ -220,12 +221,14 @@ const TrackEditor = props => {
 	// 	setEventListMinimized(!eventListMinimized)
 	// }
 
-	const getVideoDuration = async(duration) => {
+	const getVideoDuration = (duration) => {
+		// console.log(`setting video length`)
 		setVideoLength(duration)
-		const tempSubs = await getAllSubtitles()
+		const tempSubs = subs
 		for (let i = 0; i < tempSubs.length; i++)
 			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
 
+		// console.log(`he re 1`)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 	}
@@ -285,6 +288,7 @@ const TrackEditor = props => {
 		// CALCULATE THE CURRENT TIME IN RESPECT OF THE CURRENT PERCENTAGE OF THE LAYER
 		// READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
 		const newStart = videoCurrentTime * 100 / videoLength
+		// console.log(newStart)
 		addEventToLayer(item, index, newStart)
 	}
 
@@ -293,7 +297,7 @@ const TrackEditor = props => {
 			handleAddSubLayer()
 			return
 		}
-
+		console.log(item)
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
@@ -312,12 +316,13 @@ const TrackEditor = props => {
 		}
 
 		currentEvents.push(eventObj)
-		console.log(currentEvents)
+		// console.log(currentEvents)
 		setAllEvents(currentEvents)
 		setDisplayLayer(index)
 	}
 
 	const updateEvents = (index, event, layerIndex) => {
+		// console.log(`Update`, event)
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
@@ -408,7 +413,7 @@ const TrackEditor = props => {
 		const temp = {...editCensor}
 		const last = Object.keys(temp)
 		console.log(`Current Time`,videoCurrentTime)
-
+		console.log(parseInt(videoCurrentTime).toFixed(1))
 		if(videoCurrentTime === 0 && last.length === 0)
 			temp[`0.0`] = [0 ,0, 30, 40]
 		 else if(videoCurrentTime == 0 && last.length > 0)
@@ -483,6 +488,9 @@ const TrackEditor = props => {
 	}
 
 	const openSideEditor = (layerIndex, eventIndex) => {
+		if(eventIndex !== eventToEdit)
+			setActiveCensorPosition(-1)
+
 		setEventToEdit(eventIndex)
 		setDisplayLayer(layerIndex)
 		setSideEditor(true)
@@ -496,6 +504,7 @@ const TrackEditor = props => {
 
 	const closeSideEditor = () => {
 		setSideEditor(false)
+		setActiveCensorPosition(-1)
 	}
 
 	const filterValue = (obj, key, value) => {
@@ -510,15 +519,47 @@ const TrackEditor = props => {
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
 		updateContent(content)
-		handleSaveSubtitles()
-		deleteSubtitles(subLayersToDelete)
-		setSubLayersToDelete([])
+		// handleSaveSubtitles()
+		// console.log(subLayersToDelete)
+		// deleteSubtitles(subLayersToDelete)
 	}
 
 	const handleSaveSubtitles = async() => {
 		const rawSubs = subtitles
+		// console.log(rawSubs)
+		// for (let i = 0; i < rawSubs.length;i++){
+		// 	for(let x = 0; x<rawSubs[i][`content`].length;x++){
+		// 		rawSubs[i][`content`][x].start = rawSubs[i][`content`][x].start / 100 * videoLength * 1000
+		// 		rawSubs[i][`content`][x].end = rawSubs[i][`content`][x].end / 100 * videoLength * 1000
+		// 	}
+		// 	console.log(rawSubs[i][`content`])
+		// 	console.log(rawSubs[i][`content`])
+		// }
+		// console.log(rawSubs)
 		createSub(rawSubs)
 	}
+	const handleZoomChange = (e, d) => {
+		toggleTip()
+		// console.log(d.x)
+		if(d.x < zoomFactor){
+			if(d.x === 0){
+			// console.log('zero')
+				setZoomFactor(0)
+				setWidth(0)
+				handleScrollFactor(`start`)
+			} else {
+			// console.log('smaller')
+				setZoomFactor(d.x)
+				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
+			}
+		} else if(d.x > zoomFactor) {
+		// console.log('larger')
+			setZoomFactor(d.x)
+			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+		}
+		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+	}
+
 	const handleScrollFactor = (direction) => {
 		// console.log('called')
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
@@ -533,6 +574,7 @@ const TrackEditor = props => {
 			const scrollBarOffset = scrollBarContainer * 0.03
 			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
 			// console.log(lastPossibleRight)
+			// console.log(cLeft)
 			switch (direction) {
 			case `start`:
 				scrubber.scrollLeft = 0
@@ -569,10 +611,13 @@ const TrackEditor = props => {
 						scrollBar.style.left = `${scrollBarOffset}px`
 					else
 						scrollBar.style.left = `${cLeft + scrollBarOffset}px`
+
 				}
 
-				if (cLeft + scrollBarOffset > lastPossibleRight)
+				if (cLeft + scrollBarOffset > lastPossibleRight){
+					// console.log(`got to the end`)
 					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
+				}
 
 				break
 			case `end`:
@@ -590,89 +635,6 @@ const TrackEditor = props => {
 			}
 		}
 	}
-	const handleZoomChange = (e, d) => {
-		console.log(d.x)
-		if(d.x < zoomFactor){
-			if(d.x === 0){
-			// console.log('zero')
-				setZoomFactor(0)
-				setWidth(0)
-				handleScrollFactor(`start`)
-			} else {
-			// console.log('smaller')
-				setZoomFactor(d.x)
-				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-			}
-		} else if(d.x > zoomFactor) {
-		// console.log('larger')
-			setZoomFactor(d.x)
-			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
-		}
-		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
-	}
-	const filler1 = () => {
-		// OLD SCROLL FUNCTIONALITY
-		// const handleScrollFactorD = (e, d) => {
-		// 	console.log('in scroll')
-		// 	setScrollFactor(d.x)
-		// 	console.log(d)
-		// 	let scrollPercentage = ((d.x * 100) / scrollWidth)
-		// 	//console.log(scrollPercentage)
-
-		// 	if(document.getElementsByClassName('layer-container') !== undefined){
-		// 		let scrubber = document.getElementById('time-bar')
-		// 		let timeIndicator = document.getElementById('time-indicator-container')
-		// 		let alllayers = Array.from(document.getElementsByClassName('layer-container'))
-		// 		let currentLayerWidth = document.getElementsByClassName('events')[0].clientWidth
-		// 		let scrollIndicatorWidth = ((document.getElementsByClassName('zoom-scroll-indicator')[0].clientWidth) * 100) / scrollWidth
-		// 		let scrollBar = document.getElementsByClassName('zoom-scroll-indicator')[0]
-
-		// 		if(d.x === 0){
-		// 			scrubber.scrollLeft -= d.x + 100 * 100
-		// 			timeIndicator.scrollLeft -= d.x + 100 * 100
-		// 			console.log('got here')
-		// 			scrollBar.style.transform = 'translate(0px, 0px)'
-		// 			alllayers.forEach((element, i) => {
-		// 				alllayers[i].scrollLeft -= d.x + 100 * 100
-		// 			});
-		// 		}
-		// 		else if(d.x < scrollFactor){
-		// 			scrubber.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-		// 			timeIndicator.scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-		// 			alllayers.forEach((element, i) => {
-		// 				alllayers[i].scrollLeft = ((scrollPercentage * currentLayerWidth) / 100)
-		// 			});
-		// 		}
-		// 		else {
-		// 			scrubber.scrollLeft = (((scrollPercentage) * currentLayerWidth) / 100)
-		// 			timeIndicator.scrollLeft = (((scrollPercentage) * currentLayerWidth) / 100)
-		// 			console.log(scrollPercentage / scrollIndicatorWidth)
-		// 			alllayers.forEach((element, i) => {
-		// 				if(scrollPercentage + scrollIndicatorWidth >= 100){
-		// 					alllayers[i].scrollLeft = (((scrollPercentage + scrollIndicatorWidth) * currentLayerWidth) / 100)
-		// 				}
-		// 				else {
-		// 					alllayers[i].scrollLeft = (((scrollPercentage + (scrollIndicatorWidth / scrollPercentage )) * currentLayerWidth) / 100)
-		// 				}
-		// 			});
-
-		// 			// scrubber.scrollLeft = (((scrollPercentage  + scrollIndicatorWidth / 2) * currentLayerWidth) / 100)
-		// 			// timeIndicator.scrollLeft = (((scrollPercentage  + scrollIndicatorWidth / 2) * currentLayerWidth) / 100)
-		// 			// alllayers.forEach((element, i) => {
-		// 			// 	//console.log(currentLayerWidth)
-		// 			// 	console.log(scrollPercentage + (scrollIndicatorWidth))
-		// 			// 	if(scrollPercentage + scrollIndicatorWidth >= 100){
-		// 			// 		alllayers[i].scrollLeft = (((scrollPercentage + scrollIndicatorWidth) * currentLayerWidth) / 100)
-		// 			// 	}
-		// 			// 	else {
-		// 			// 		alllayers[i].scrollLeft = (((scrollPercentage + scrollIndicatorWidth / 2) * currentLayerWidth) / 100)
-		// 			// 	}
-		// 			// });
-		// 		}
-		// 	}
-		// }
-
-	}
 	const createSubtitleLayer = () =>{
 		handleAddSubLayer()
 	}
@@ -682,6 +644,8 @@ const TrackEditor = props => {
 			canAccessDom = true
 			document.getElementById(`sideTabMessage`).style.color=`red`
 		}
+		const tempSubs = [...subtitles]
+		const currentSubs = tempSubs[subLayerIndex]
 
 		// check start event times
 		if(sub.start < 0){
@@ -722,51 +686,35 @@ const TrackEditor = props => {
 				document.getElementById(`sideTabExplanation`).innerHTML=``
 			}
 		}
-		const tempSubs = [...subtitles]
-		const currentSubs = tempSubs[subLayerIndex]
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
-		setSubChanges(subChanges+1)
-		console.log(`?!?`,subChanges)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setSubSelected(true)
 		// setSideEditor(true)
-		sortSubtitles()
 	}
 	const addSubToLayer = (item,index) => {
 		// TODO: Change this to use real JS event objects and insert based on time
-		const currentSubs = [...subtitles]
-		let subStart = 0
-		try{
-			if (currentSubs[index]){
-				if(currentSubs[index][`content`][subToEdit])
-					subStart = currentSubs[index][`content`][subToEdit].end + .01
+		let currentSubs = []
+		currentSubs = [...subtitles]
 
-			}
-			const newSub = {
-				start: subStart,
-				end: subStart + 5,
-				text: ``,
-			}
-
-			currentSubs[index][`content`].push(newSub)
-			setSubLayerToEdit(index)
-			activeUpdate(index)
-			setSubs(currentSubs)
-			setAllSubs(currentSubs)
-			sortSubtitles()
-		}catch(error) {
-			alert(`there was an error adding the subtitle`)
-			console.error(error)
-		}
 		// console.log('ADDING NEW EVENT')
+		const newSub = {
+			start: 0,
+			end: 10,
+			text: ``,
+		}
 
+		currentSubs[index][`content`].push(newSub)
+		setSubLayerToEdit(index)
+		activeUpdate(index)
+		setSubs(currentSubs)
+		setAllSubs(currentSubs)
 	}
 	const checkSideBarTitle = () => {
 		try {
@@ -777,6 +725,7 @@ const TrackEditor = props => {
 		}
 	}
 	const checkEventOrSub = () => {
+		// console.log(subtitles)
 		return subSelected ? subtitles[subLayerToEdit][`content`][subToEdit] : allEvents[eventToEdit]
 	}
 	const checkIndex = () => {
@@ -798,7 +747,7 @@ const TrackEditor = props => {
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 		}else {
-			const tempSubList = [...subtitles]
+			const tempSubList = subtitles
 			const tempSub = {
 				title : ``,
 				language: ``,
@@ -817,6 +766,7 @@ const TrackEditor = props => {
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
+			// console.log(url)
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
@@ -846,7 +796,7 @@ const TrackEditor = props => {
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
 				}else {
-					const tempSubList = [...subtitles]
+					const tempSubList = subtitles
 					const tempSub = {
 						title : ``,
 						language: ``,
@@ -864,17 +814,15 @@ const TrackEditor = props => {
 			}
 			reader.readAsText(url)
 		}catch(error){
-			console.log(error)
+			// console.log(error)
 			alert(`There was an error importing subtitles`)
 		}
 		setSubModalVisible(false)
 		setSubModalMode(``)
 	}
 	const handleDeleteSubLayer = (index) =>{
-		if (index === subLayerToEdit)
-			closeSideEditor()
-
-		const tempSubs = [...subtitles]
+		const tempSubs = subtitles
+		// console.log(tempSubs[index])
 		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
 			const deleteSub = subLayersToDelete
 			deleteSub.push(tempSubs[index][`id`])
@@ -885,27 +833,16 @@ const TrackEditor = props => {
 		setAllSubs(tempSubs)
 	}
 	const updateSubLayerTitle = (title) =>{
-		const temp = [...subtitles]
+		const temp = subtitles
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
 		setAllSubs(temp)
 	}
 	const updateSubLayerLanguage = (language) =>{
-		const temp = [...subtitles]
+		const temp = subtitles
 		temp[subLayerToEdit][`language`] = language
 		setSubs(temp)
 		setAllSubs(temp)
-	}
-	const sortSubtitles = () => {
-		const tempSubs = [...subtitles]
-		for(let i = 0; i< tempSubs.length; i++){
-			const tempContent = tempSubs[i][`content`]
-			tempContent.sort((a,b)=> a.start - b.start)
-			tempSubs[i][`content`] = tempContent
-		}
-		setSubs(tempSubs)
-		setAllSubs(tempSubs)
-
 	}
 	return (
 		<Style>
@@ -927,6 +864,11 @@ const TrackEditor = props => {
 						minimized={timelineMinimized}
 						togglendTimeline={togglendTimeline}
 						handleLastClick = {handleLastClick}
+						events = {allEvents}
+						updateEvents={updateEvents}
+						eventToEdit={eventToEdit}
+						activeCensorPosition = {activeCensorPosition}
+						setActiveCensorPosition = {setActiveCensorPosition}
 					>
 					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -956,19 +898,15 @@ const TrackEditor = props => {
 										/>
 									</div>
 								))}
-								<NewLayer onClick={handleAddLayer}>
+								<NewLayer onClick={handleAddLayer}
+									onMouseEnter={e => handleShowTip(`te-add-layer`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 11, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}>
 									<Icon src={plus}/>
 								</NewLayer>
 
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
-										<div className={`handle`} onClick={()=> {
-											console.log(index)
-											setSubLayerToEdit(index)
-											// if(subtitles[index][`content`].length === 0 && showSideEditor === false)
-											// 	openSubEditor(index,0)
-
-										}}>
+										<div className={`handle`} onClick={()=>setSubLayerToEdit(index)}>
 											<img alt={`cc`} src={captions}/>
 											<p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p>
 										</div>
@@ -1009,30 +947,34 @@ const TrackEditor = props => {
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
+									onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}
 								></Rnd>
 								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
 							</div>
 							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 
 								<div style={{ width: `90%`, height: `100%`, display: `flex`, marginLeft: `5%` }}>
+									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip(`te-scroll-start`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}
+									><img src={llIcon}/></span>
+									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip(`te-scroll-left`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
 
-									{/* <Rnd
-									className={'zoom-scroll-indicator'}
-									bounds={'parent'}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-									dragAxis="x"
-									onDrag={(e, d) => handleScrollFactor(e, d)}
-								></Rnd> */}
-									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}><img src={llIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}><img src={lIcon}/></span>
 									<div className={`zoom-scroll-container`}>
-										{/* <div style={{ width: '98%',  height: '100%', backgroundColor: 'red'}}></div> */}
-
-										<div className={`zoom-scroll-indicator`}></div>
-
+										<div className={`zoom-scroll-indicator`}
+											onMouseEnter={e => handleShowTip(`te-scroll`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+											onMouseLeave={e => toggleTip()}></div>
 									</div>
-									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}><img src={rIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}><img src={rrIcon}/></span>
+
+									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip(`te-scroll-right`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y+ 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}><img src={rIcon}/></span>
+									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}
+										onMouseEnter={e => handleShowTip(`te-scroll-end`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}><img src={rrIcon}/></span>
 								</div>
 								<div id={`time-indicator-container`}>
 									<div id={`layer-time-indicator`}>
@@ -1052,8 +994,7 @@ const TrackEditor = props => {
 						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
 					</div> */}
 						{/* <div className={`tab active`}>Events</div> */}
-
-						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:10}}/><div className={`save`}><button onClick={handleSaveAnnotation}><img src={`${saveIcon}`}/><span>Save</span></button></div>
+						<div className={`save`}><button onClick={handleSaveAnnotation}><img src={`${saveIcon}`}/><span>Save</span></button></div>
 
 					</header>
 
@@ -1067,7 +1008,7 @@ const TrackEditor = props => {
 									<span className='carat'></span>
 									{ subSelected ?
 										<>
-											<span className='current'>{subToEdit !== undefined ? `Subtitle ${subLayerToEdit + 1}` : ``}</span>
+											<span className='current'>{subToEdit !== undefined ? `Subtitle ${subToEdit + 1}` : ``}</span>
 											<button className='deleteEventButton' onClick={deleteSub}>Delete Event</button>
 										</>
 										:
@@ -1101,17 +1042,21 @@ const TrackEditor = props => {
 									handleCensorRemove = {handleCensorRemove}
 									handleAddCensor = {handleAddCensor}
 									handleSaveCensor = {handleSaveCensor}
+									activeCensorPosition = {activeCensorPosition}
+									setActiveCensorPosition = {setActiveCensorPosition}
 								></TrackEditorSideMenu>
 							) : (
 								<>
-									<div className='eventsList'>
+									<div className='eventsList'
+										onMouseEnter={e => handleShowTip(`drag-and-drop`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y - 50, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}>
 										{events.map((event, i) => (
-											<EventCard event={event} key={i} />
+											<EventCard event={event} key={i}/>
 										))}
 									</div>
 									<div className='subCard'>
-										{subtitles.length !== 0 && subtitles !== undefined ? (
-											<SubtitlesCard />
+										{subtitles !== [] && subtitles !== undefined ? (
+											<SubtitlesCard/>
 										):``}
 									</div>
 
