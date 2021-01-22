@@ -59,6 +59,12 @@ export default class InterfaceService {
 		editorStyle: false,
 		lost: false,
 		events: [],
+		languageCodes: {
+			//add language codes as needed
+			spanish: 'es',
+			german: 'de',
+			russian: 'ru',
+		}
 	}
 
 	// reducer
@@ -223,6 +229,31 @@ export default class InterfaceService {
 		}
 		catch (e) {
 			dispatch(this.actions.getTranslation(''))
+		}
+	}
+
+	checkTranslation = (word, language) => async (dispatch, getState, { apiProxy }) => {
+
+		if(getState().interfaceStore.languageCodes[language] === null || getState().interfaceStore.languageCodes[language] === undefined){
+			return {
+				json: {},
+				success: false,
+			}
+		}
+
+		try {
+			const json = await apiProxy.translation.getTranslation(word, getState().interfaceStore.languageCodes[language])
+			// console.log(json)
+			return {
+				json,
+				success: true,
+			}
+		}
+		catch (e) {
+			return {
+				json: {},
+				success: false,
+			}
 		}
 	}
 

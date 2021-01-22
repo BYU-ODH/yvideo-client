@@ -19,15 +19,11 @@ const Transcript = props => {
 
 		const {
 			jsonResponse,
-			translate
+			translate,
+			languageCodes,
 		} = props
 
-		const languageCodes = {
-			//add language codes as needed
-			spanish: 'es',
-			german: 'de',
-			russian: 'ru',
-		}
+
 
 		const {
 			content,
@@ -196,6 +192,7 @@ const Transcript = props => {
 
 const mapStateToProps = store => ({
 	// data: store.adminStore.data,
+	languageCodes: store.interfaceStore.languageCodes,
 	jsonResponse: store.interfaceStore.jsonResponse,
 })
 

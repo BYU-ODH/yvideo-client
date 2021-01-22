@@ -89,7 +89,7 @@ export default class AuthService {
 				user = await apiProxy.user.get()
 			}
 			// console.log(window.clj_session_id)
-			if(window.clj_session_id != '{{ session-id }}'){
+			if(window.clj_session_id !== '{{ session-id }}'){
 				//we got a valid session id so user should login automatically
 				console.log("true")
 				user = await apiProxy.user.get()
