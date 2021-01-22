@@ -358,7 +358,6 @@ const apiProxy = {
 			})
 			return results
 		},
-
 	},
 	resources: {
 		post: async (resource) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource`, resource, {
@@ -698,6 +697,12 @@ const apiProxy = {
 			updateSessionId(res.headers[`session-id`])
 			return res
 		}),
+	},
+	translation: {
+		getTranslation: async (word, language) => {
+			const result = await axios.get(`http://yvideodev.byu.edu:5001/translate/${language}/${word}`)
+			return result.data
+		}
 	},
 }
 

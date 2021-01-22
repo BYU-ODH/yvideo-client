@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { useEffect, useState } from 'react'
 import parse from 'html-react-parser'
 
 import { connect } from 'react-redux'
@@ -15,16 +15,13 @@ import {
 	interfaceService
 } from 'services'
 
-export default class Transcript extends PureComponent {
-	constructor(props){
-		super(props);
-		this.state = {
-			words: '',
-			meanings: '',
-		}
-	}
+const Transcript = props => {
 
-	render(){
+		const {
+			jsonResponse,
+			translate
+		} = props
+
 		const languageCodes = {
 			//add language codes as needed
 			spanish: 'es',
@@ -40,7 +37,7 @@ export default class Transcript extends PureComponent {
 			toggleTranscript,
 			showTranscript,
 			isMobile,
-		} = this.props.viewstate
+		} = props.viewstate
 
 		const {
 			setToggleTranscript,
@@ -49,7 +46,29 @@ export default class Transcript extends PureComponent {
 			handleToggleTranscript,
 			handleShowTip,
 			toggleTip,
-		} = this.props.handlers
+		} = props.handlers
+
+		const [words, setWords] = useState('')
+		const [meanings, setMeanings] = useState('')
+
+		useEffect(() => {
+			let allWords = ''
+			let allMeanings = ''
+
+			if(Object.keys(jsonResponse).length < 1){
+				setWords('No matches found')
+				setMeanings('')
+				return;
+			}
+
+			jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].forEach((item, index) => {
+				allWords += `${item.lemma}; `
+				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
+			});
+
+			setWords(allWords)
+			setMeanings(allMeanings)
+		}, [jsonResponse, translate])
 
 		const highlightWords = (text) => {
 			//initialize the string where we can make changes
@@ -88,7 +107,7 @@ export default class Transcript extends PureComponent {
 			return parse(newString)
 		}
 
-		const getTranslation = async (e) => {
+		const getTranslation = (e) => {
 			let elementText = e.target.innerText
 			let wordArray = elementText.split(' ')
 			let foundWord = ''
@@ -103,58 +122,7 @@ export default class Transcript extends PureComponent {
 					}
 				})
 			}
-			//http://yvideobeta.byu.edu:5001/translate/es/hola
-			// const mockResponse = {
-			// 	"papa": [
-			// 		{
-			// 			"lemma": "papa",
-			// 			"meanings": [
-			// 				{
-			// 					"lemma": "pontiff",
-			// 					"pos": "{n}",
-			// 					"meaning": "(pope)"
-			// 				},
-			// 				{
-			// 					"lemma": "potato",
-			// 					"pos": "{n}",
-			// 					"meaning": "(plant tuber eaten as starchy vegetable)"
-			// 				}
-			// 			]
-			// 		}
-			// 	]
-			// }
-			// console.log(mockResponse['papa'][0]['meanings'])
-			// return mockResponse['papa'][0]['meanings']
-			const response = await fetch(`http://yvideodev.byu.edu:5001/translate/${languageCodes[displaySubtitles.language]}/${foundWord}`)
-			console.log(response)
-			let jsonResponse = await response.json()
-			console.log(jsonResponse)
-
-			let allWords = ''
-			let allMeanings = ''
-
-			if(!jsonResponse[foundWord]){
-				this.setState({
-					words: 'No Matches Found',
-					meanings: '-'
-				})
-				return;
-			}
-
-			// mockResponse[word][0]['meanings'].forEach((item, index) => {
-			// 	allWords += `<b>${index}.</b>${item.lemma}; `
-			// 	allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)}; `
-			// });
-
-			jsonResponse[foundWord][0]['meanings'].forEach((item, index) => {
-				allWords += `${item.lemma}; `
-				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
-			});
-
-			this.setState({
-				words: allWords,
-				meanings: allMeanings
-			})
+			translate(foundWord, languageCodes[displaySubtitles.language])
 		}
 
 		return (
@@ -214,15 +182,25 @@ export default class Transcript extends PureComponent {
 						<h3 id="translation-word"></h3>
 						<ul id="translation-list">
 							<li>
-								<label>Translation: {parse(this.state.words)}</label>
+								<label>Translation: {parse(words)}</label>
 							</li>
 							<li>
-								<label>Meaning: {parse(this.state.meanings)}</label>
+								<label>Meaning: {parse(meanings)}</label>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</Style>
 		)
-	}
 }
+
+const mapStateToProps = store => ({
+	// data: store.adminStore.data,
+	jsonResponse: store.interfaceStore.jsonResponse,
+})
+
+const mapDispatchToProps = {
+	translate: interfaceService.getTranslation,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transcript)

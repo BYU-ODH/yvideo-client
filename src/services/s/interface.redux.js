@@ -15,6 +15,7 @@ export default class InterfaceService {
 		SET_EVENTS: `SET_EVENTS`,
 		GET_EVENTS: `GET_EVENTS`,
 		SENT_EMAIL: `SENT_EMAIL`,
+		GET_TRANSLATION: 'GET_TRANSLATION',
 		INTERFACE_ERROR: `INTERFACE_ERROR`,
 		// SUCCESS: `SUCCESS`,
 	}
@@ -31,6 +32,7 @@ export default class InterfaceService {
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),
 		setEvents: events => ({ type: this.types.SET_EVENTS, payload: { events }}),
 		getEvents: events => ({ type: this.types.GET_EVENTS, payload: { events }}),
+		getTranslation: json => ({ type: this.types.GET_TRANSLATION, payload: { json }}),
 		interfaceError: error => ({ type: this.types.INTERFACE_ERROR, payload: { error } }),
 		// success: error => ({ type: this.types.SUCCESS, payload: { error } }),
 	}
@@ -51,6 +53,7 @@ export default class InterfaceService {
 			component: null,
 			props: {},
 		},
+		jsonResponse: {},
 		displayBlocks: browserStorage.displayBlocks,
 		headerBorder: false,
 		editorStyle: false,
@@ -145,12 +148,19 @@ export default class InterfaceService {
 				events: action.payload.events,
 			}
 
-			case this.types.INTERFACE_ERROR:
-				console.error(action.payload.error)
-				return {
-					...store,
-					loading: false,
-				}
+		case this.types.GET_TRANSLATION:
+			return {
+				...store,
+				jsonResponse: action.payload.json,
+			}
+
+
+		case this.types.INTERFACE_ERROR:
+			console.error(action.payload.error)
+			return {
+				...store,
+				loading: false,
+			}
 
 		default:
 			return store
@@ -203,6 +213,17 @@ export default class InterfaceService {
 	setEvents = events => async dispatch => {
 		// console.log('%c Updated Store', 'color: purple; font-weight: bold;')
 		dispatch(this.actions.setEvents(events))
+	}
+
+	getTranslation = (word, language) => async (dispatch, getState, { apiProxy }) => {
+		try {
+			const json = await apiProxy.translation.getTranslation(word, language)
+			console.log(json)
+			dispatch(this.actions.getTranslation(json))
+		}
+		catch (e) {
+			dispatch(this.actions.getTranslation(''))
+		}
 	}
 
 	sendNoAttachment = (emailObject) => {
