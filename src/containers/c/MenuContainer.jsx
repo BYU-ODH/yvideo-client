@@ -32,7 +32,7 @@ const MenuContainer = props => {
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}

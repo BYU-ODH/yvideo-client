@@ -17,6 +17,10 @@ const LandingContainer = props => {
 		setOverlay(!overlay)
 	}
 
+	const handlePublicCollections = e => {
+		// if(e) console.log(e.target.value)
+	}
+
 	const handleLogin = e => {
 		e.preventDefault()
 		login()
@@ -29,6 +33,7 @@ const LandingContainer = props => {
 	const handlers = {
 		toggleOverlay,
 		handleLogin,
+		handlePublicCollections,
 	}
 
 	return <Landing viewstate={viewstate} handlers={handlers} />

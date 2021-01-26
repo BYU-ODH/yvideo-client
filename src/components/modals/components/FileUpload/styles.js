@@ -82,8 +82,12 @@ export const CategorySelect = styled.select`
 `
 
 export const ProgressBar = styled.progress`
+	width: 200px;
+  height: 20px;
 `
 
 export const Progress = styled.div`
-	position: relative;
+	display: grid;
+	grid-gap: 2rem;
+
 `
