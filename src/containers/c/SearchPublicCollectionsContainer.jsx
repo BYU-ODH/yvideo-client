@@ -33,8 +33,10 @@ const SearchPublicCollectionsContainer = props => {
 	// TODO: need to figure out publish issue
 	useEffect(() => {
 		toggleTip()
-		getCollections(true)
-		// getIsPublicCollectionSubscribed()
+
+		if(user) getCollections(true)
+		else console.log(`this is yvieo guest need to set up public collections here`)
+
 		setHeaderBorder(false)
 
 		const allContent = {}
@@ -109,9 +111,6 @@ const SearchPublicCollectionsContainer = props => {
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore, adminStore }) => ({
-	isProf: authStore.user.roles === 2,
-	isAdmin: authStore.user.roles === 0,
-	isStu: authStore.user.roles === 3,
 	user: authStore.user,
 	searchedPublicCollections: adminStore.publicCollections,
 	displayBlocks: interfaceStore.displayBlocks,
