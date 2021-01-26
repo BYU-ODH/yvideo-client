@@ -49,6 +49,10 @@ export const ToolTip = (props) => {
 	const [position, setPosition] = useState(null)
 
 	useEffect(() => {
+		if(window.innerWidth < 400){
+			document.getElementById("tip-box").style.visibility = "hidden"
+			return;
+		}
 		if(tip.active){
 			document.getElementById("tip-box").style.visibility = "visible"
 			document.getElementById("tip-box").style.opacity = 1

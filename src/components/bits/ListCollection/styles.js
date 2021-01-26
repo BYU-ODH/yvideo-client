@@ -2,13 +2,17 @@ import styled from 'styled-components'
 
 import carrot from 'assets/carrot.svg'
 
+const Style = styled.div`
+  display: inline;
+`
+export default Style
+
 export const Header = styled.div`
 	display: grid;
 	grid-template-columns: 18rem auto 1.5rem;
 	justify-items: start;
 
 	padding: 2rem;
-
 	border-top: 1px solid #ccc;
 
 	& > div {
@@ -44,4 +48,21 @@ export const Body = styled.div`
 	height: ${props => props.isOpen ? `${(parseInt(props.count) * 6.5 + 2).toString()}rem` : `0`};
 	transition: height .25s ease-in-out;
 	overflow: hidden;
+`
+
+export const PublicButton = styled.button`
+  color: white;
+  font-weight: bold;
+  background-color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+
+  letter-spacing: 0.05rem;
+
+  padding: 0.8rem 1.5rem;
+  margin-right: 3rem;
+
+  border: none;
+  border-radius: 0.3rem;
+
+  cursor: pointer;
+  outline: none;
 `

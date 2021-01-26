@@ -5,6 +5,7 @@ import {
 	AdminContainer,
 	CollectionsContainer,
 	HeaderContainer,
+	FeedbackContainer,
 	LabAssistantContainer,
 	LabAssistantManagerContainer,
 	LandingContainer,
@@ -13,6 +14,8 @@ import {
 	PlayerContainer,
 	TrackEditorContainer,
 	ManageResourceContainer,
+	SearchPublicCollectionsContainer,
+	PublicManagerContainer,
 } from 'containers'
 
 import {
@@ -49,6 +52,11 @@ class Root extends PureComponent {
 								<CollectionsContainer />
 							</Route>
 
+							{/* TODO: need to double check */}
+							<Route exact path='/search-public-collections' >
+								<SearchPublicCollectionsContainer />
+							</Route>
+
 							<Route path='/admin'>
 								<AdminContainer />
 							</Route>
@@ -77,12 +85,20 @@ class Root extends PureComponent {
 								<ManagerContainer />
 							</Route>
 
+							<Route path='/public-manager/:id?'>
+								<PublicManagerContainer />
+							</Route>
+
 							<Route path='/player/:id'>
 								<PlayerContainer />
 							</Route>
 
 							<Route path='/trackeditor/:id'>
 								<TrackEditorContainer />
+							</Route>
+
+							<Route path='/feedback'>
+								<FeedbackContainer />
 							</Route>
 
 							<Route>

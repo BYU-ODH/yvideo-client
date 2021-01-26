@@ -3,6 +3,7 @@ import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
 import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
 import EventsContainer from './c/EventsContainer'
+import FeedbackContainer from './c/FeedbackContainer'
 import HeaderContainer from './c/HeaderContainer'
 import LabAssistantContainer from './c/LabAssistantContainer'
 import LabAssistantManageCollectionContainer from './c/LabAssistantManageCollectionContainer'
@@ -19,6 +20,9 @@ import ManageResourceContainer from './c/ManageResourceContainer'
 import SubtitlesContainer from './c/SubtitlesContainer'
 import PlayerSubtitlesContainer from './c/PlayerSubtitlesContainer'
 import FileOverviewContainer from './c/FileOverviewContainer'
+import SearchPublicCollectionsContainer from './c/SearchPublicCollectionsContainer'
+import PublicManagerContainer from './c/PublicManagerContainer'
+import PublicListCollectionContainer from './c/PublicListCollectionContainer'
 
 export {
 	AdminContainer,
@@ -27,6 +31,7 @@ export {
 	CollectionPermissionsContainer,
 	EventsContainer,
 	HeaderContainer,
+	FeedbackContainer,
 	LabAssistantContainer,
 	LabAssistantManageCollectionContainer,
 	LabAssistantManagerContainer,
@@ -42,4 +47,7 @@ export {
 	ManageResourceContainer,
 	SubtitlesContainer,
 	FileOverviewContainer,
+	SearchPublicCollectionsContainer,
+	PublicManagerContainer,
+	PublicListCollectionContainer,
 }

@@ -21,37 +21,31 @@ const FileUploadContainer = props => {
 		langs,
 	} = props
 
-	const category = {
-		English: {
-			name: `English`,
-		},
-		French: {
-			name: `French`,
-		},
-		Mandarin: {
-			name: `Mandarin`,
-		},
-		Japanese: {
-			name: `Japanese`,
-		},
-		Spainsh: {
-			name: `Spanish`,
-		},
-		Korean: {
-			name: `Korean`,
-		},
-		Other: {
-			name: `Other`,
-		},
-	}
-
 	const [selectedFile, setSelectedFile] = useState()
 
 	const [fileVersion, setFileVersion] = useState(langs[0])
 
 	const [customLang, setCustomLang] = useState(``)
 
+	const [progress, setProgress] = useState(0)
+
+	const [isUploadComplete, setIsUploadComplete] = useState(false)
+
 	const [isOther, setIsOther] = useState(false)
+
+	useEffect(() => {
+
+		if(isUploadComplete){
+			getUploadedFiles()
+			toggleModal()
+		}
+
+	}, [selectedFile, isUploadComplete])
+
+	async function getUploadedFiles() {
+		setIsUploadComplete(false)
+		await getFiles(resourceId)
+	}
 
 	const handleFileChange = e =>{
 		setSelectedFile(e.target.files[0])
@@ -74,8 +68,8 @@ const FileUploadContainer = props => {
 		setCustomLang(e.target.value)
 	}
 
-	// customized langs need to be fixed, got 500
-	const handleFileUpload = async(e) =>{
+	// TODO: need to change this to upload when hit the upload. progress when they hit upload button.
+	const handleFileUpload = async (e) =>{
 		e.preventDefault()
 
 		const formData = new FormData()
@@ -85,18 +79,21 @@ const FileUploadContainer = props => {
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, ``)
 
-		await uploadFile(formData)
-		await getFiles(resourceId)
-
-		toggleModal()
+		// uploadFile(formData)
+		uploadFile(formData, (event) => {
+			const percent = Math.round(100 * event.loaded / event.total)
+			setProgress(percent)
+			if(percent === 100)
+				setIsUploadComplete(true)
+		})
 	}
 
 	const viewstate = {
-		category,
 		customLang,
 		isOther,
 		selectedFile,
 		langs,
+		progress,
 	}
 
 	const handlers = {
@@ -121,9 +118,11 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	uploadFile: fileService.upload,
 	updateFileVersion: resourceService.updateFileVersion,
+	editFileResource: resourceService.editFile,
 	getResource: resourceService.getResource,
 	getFiles: resourceService.getFiles,
 	getLanguages: languageService.get,
+	removeFile: fileService.delete,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileUploadContainer)

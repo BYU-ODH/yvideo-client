@@ -16,6 +16,7 @@ export default class Content {
 	thumbnail = ``
 	views = 0
 	url = ``
+	words = ``
 	resource = {
 		keywords: [],
 	}
@@ -45,6 +46,7 @@ export default class Content {
 			this.resource.keywords = obj[`tags`].split(`; `)
 			this.name = obj[`title`]
 			this.published = obj[`published`]
+			this.words = obj[`words`].split('; ')
 
 			this.settings = {
 				allowDefinitions: obj[`allow-definitions`],

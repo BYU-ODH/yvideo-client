@@ -37,12 +37,12 @@ const Style = styled.div`
 		}
 	}
 
-	& > h4 {
+	& h4 {
 		margin-top: 2.4rem;
 		font-weight: 500;
 	}
 
-	& > hr {
+	& hr {
 		margin: 1rem 0;
 		border: none;
 		border-top: 1px solid #c4c4c4;
@@ -111,4 +111,13 @@ export const LogoutButton = styled.button`
 	border: none;
 
 	cursor: pointer;
+`
+export const Footer = styled.div`
+	position: absolute;
+	bottom: 7vh;
+	width: 100%;
+	height: auto;
+	max-height: 300px;
+	display: flex;
+	flex-direction: column;
 `

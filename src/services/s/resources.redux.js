@@ -45,7 +45,7 @@ export default class ResourceService {
 		loading: false,
 		lastFetched: 0,
 		streamKey: ``,
-		resourceIdStreamKey: ``, //this resource id is to make sure that we have a stream key for the current resource id
+		resourceIdStreamKey: ``, // this resource id is to make sure that we have a stream key for the current resource id
 	}
 
 	// reducer
@@ -369,6 +369,8 @@ export default class ResourceService {
 		try {
 
 			const result = await apiProxy.resources.files(id)
+
+			console.log(result)
 
 			dispatch(this.actions.resourcesFiles(id, result))
 		} catch (error) {

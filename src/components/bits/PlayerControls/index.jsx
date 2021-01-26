@@ -6,11 +6,15 @@ import Style, {
 	PlayPause,
 	ClosedCaptions,
 	Fullscreen,
+	Book,
 	// Volume,
 	Speed,
+	Help,
 } from './styles'
 
 import clockIcon from 'assets/te-clock.svg'
+
+import helpIcon from 'assets/help/help-icon-white.svg'
 
 const PlayerControls = props => {
 
@@ -29,10 +33,12 @@ const PlayerControls = props => {
 		subtitles,
 		playbackRate,
 		indexToDisplay,
-		displaySubtitles
+		displaySubtitles,
+		isMobile,
 	} = props.viewstate
 
 	const {
+		handleToggleTranscript,
 		handlePause,
 		handlePlay,
 		handlePlaybackRateChange,
@@ -48,6 +54,7 @@ const PlayerControls = props => {
 		handleShowSubtitle,
 		setShowTranscript,
 		handleShowTip,
+		handleShowHelp,
 		toggleTip,
 	} = props.handlers
 
@@ -108,19 +115,23 @@ const PlayerControls = props => {
 			</div>
 			<div className='right'>
 				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
-				{/* <SideBarToggle /> */}
 				<Speed src={clockIcon} onClick={handleChangeSpeed}
 					onMouseEnter={e => handleShowTip('playback-rate', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
 				<ClosedCaptions
-					// style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }}
 					isCaptions={isCaption}
 					onClick={ isAdmin || isProf ? (handleChangeCaption) : (handleToggleSubtitles)}
 					onMouseEnter={e => handleShowTip('closed-captions', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
-				{/* <Notes /> */}
+				{ isMobile &&
+				<Book onClick={handleToggleTranscript}/>}
+				{ isMobile &&
+					<Help src={helpIcon} onClick={handleShowHelp}
+						onMouseEnter={e => handleShowTip('help', {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}
+					/>}
 			</div>
 			{ showSpeed &&
 				<div className="menu-modal" onMouseLeave={e => setShowSpeed(false)}>
