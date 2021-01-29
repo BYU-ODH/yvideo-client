@@ -27,6 +27,7 @@ const ContentOverviewContainer = props => {
 	const [showing, setShowing] = useState(false)
 
 	const [tag, setTag] = useState(``)
+	const [word, setWord] = useState(``)
 
 	const [contentState, setContentState] = useState(content)
 
@@ -58,7 +59,6 @@ const ContentOverviewContainer = props => {
 			adminRemoveCollectionContent(content.id)
 		 else
 			removeCollectionContent(content.collectionId, content.id)
-
 	}
 
 	const handleTogglePublish = e => {
@@ -113,11 +113,33 @@ const ContentOverviewContainer = props => {
 		setTag(e.target.value)
 	}
 
+	const addWord = (e) => {
+		e.preventDefault()
+		const newWords = word.split(/[ ,]+/)
+		setContentState({
+			...contentState,
+			words: [...contentState.words, ...newWords],
+		})
+		setWord(``)
+	}
+
+	const removeWord = e => {
+		setContentState({
+			...contentState,
+			words: contentState.words.filter(item => item !== e.target.dataset.value),
+		})
+	}
+
+	const changeWord = e => {
+		setWord(e.target.value)
+	}
+
 	const viewstate = {
 		content: contentState,
 		showing,
 		editing,
 		tag,
+		word,
 	}
 
 	const handlers = {
@@ -133,6 +155,9 @@ const ContentOverviewContainer = props => {
 		addTag,
 		removeTag,
 		changeTag,
+		addWord,
+		removeWord,
+		changeWord,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

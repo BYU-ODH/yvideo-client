@@ -46,7 +46,6 @@ export const Comment = styled.div`
 `
 export const Censor = styled.div`
 	position: absolute;
-	transition-timing-function: linear;
 	& canvas {
 		width: 100%;
 		height: 100%;

@@ -10,6 +10,7 @@ import volumeIcon from 'assets/controls_volume.svg'
 import volumeIconMute from 'assets/controls_muted.svg'
 import clockIcon from 'assets/te-clock.svg'
 import playerCheck from 'assets/player-check.svg'
+import bookIcon from 'assets/sidebar-white.svg'
 
 const Style = styled.div`
 	position: absolute;
@@ -112,22 +113,16 @@ const Style = styled.div`
 		}
 	}
 `
-
 export default Style
 
 export const PlayPause = styled.button`
 	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
 `
 
-// export const Volume = styled.button`
-// 	background: ${ props => props.muted ? `url(${volumeIconMute}) center no-repeat` : (`url(${volumeIcon}) center no-repeat`) };
-// `
-
 export const ClosedCaptions = styled.button`
 	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
 	background: url(${closedCaption}) center no-repeat;
 `
-
 export const Fullscreen = styled.button`
 	width: 20px;
 	height: 20px;
@@ -137,4 +132,14 @@ export const Speed = styled.button`
 	width: 20px;
 	height: 20px;
 	background: url(${clockIcon}) center no-repeat;
+`
+export const Book = styled.button`
+	width: 20px;
+	height: 20px;
+	background: url(${bookIcon}) center no-repeat;
+`
+export const Help = styled.img`
+	margin: 0px;
+	width: 22px;
+	height: 22px;
 `

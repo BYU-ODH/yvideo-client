@@ -6,6 +6,7 @@ import Controller from './c/Controller'
 import Error from './c/Error'
 import Events from './c/Events'
 import Header from './c/Header'
+import Feedback from './c/Feedback'
 import LabAssistant from './c/LabAssistant'
 import Landing from './c/Landing'
 import Load from './c/Load'
@@ -21,6 +22,9 @@ import VideoControls from './c/VideoControls'
 import ManageResource from './c/ManageResource'
 import ResourceOverview from './c/ResourceOverview'
 import FileOverview from './c/FileOverview'
+import SearchPublicCollections from './c/SearchPublicCollections'
+import PublicManager from './c/PublicManager'
+import PublicListCollection from './c/PublicListCollection'
 
 export {
 	Admin,
@@ -31,6 +35,7 @@ export {
 	Error,
 	Events,
 	Header,
+	Feedback,
 	LabAssistant,
 	Landing,
 	Load,
@@ -46,4 +51,7 @@ export {
 	ManageResource,
 	ResourceOverview,
 	FileOverview,
+	SearchPublicCollections,
+	PublicManager,
+	PublicListCollection,
 }

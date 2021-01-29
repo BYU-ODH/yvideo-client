@@ -519,9 +519,9 @@ const TrackEditor = props => {
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
 		updateContent(content)
-		// handleSaveSubtitles()
-		// console.log(subLayersToDelete)
-		// deleteSubtitles(subLayersToDelete)
+		handleSaveSubtitles()
+		deleteSubtitles(subLayersToDelete)
+		setSubLayersToDelete([])
 	}
 
 	const handleSaveSubtitles = async() => {

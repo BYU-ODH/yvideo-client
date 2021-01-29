@@ -84,7 +84,16 @@ export default class AuthService {
 	checkAuth = () => async (dispatch, _getState, { apiProxy }) => {
 		dispatch(this.actions.authStart())
 		try {
-			const user = await apiProxy.user.get()
+			let user;
+			if(window.location.href.includes('localhost')){
+				user = await apiProxy.user.get()
+			}
+			// console.log(window.clj_session_id)
+			if(window.clj_session_id != '{{ session-id }}'){
+				//we got a valid session id so user should login automatically
+				console.log("true")
+				user = await apiProxy.user.get()
+			}
 			dispatch(this.actions.authGet(user))
 		} catch (error) {
 			dispatch(this.actions.authError(error))

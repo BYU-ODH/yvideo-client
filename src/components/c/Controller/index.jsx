@@ -52,8 +52,6 @@ const Controller = props => {
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
-	const [censorEdit, setCensorEdit] = useState(`3.7`)
-	const [censorObjectEdit, setCensorObjectEdit] = useState(null)
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
 
@@ -63,7 +61,6 @@ const Controller = props => {
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
-	console.log(ref.current!==null?ref.current.getCurrentTime():``)
 	const video = {
 
 		// state
@@ -95,9 +92,13 @@ const Controller = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-
+			const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
+			if(document.getElementById(`timeBarProgress`) !== undefined)
+				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+			if(document.getElementById(`time-dot`) !== undefined)
+				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
 			// document.getElementById('time-dot').scrollIntoView()
 			censorData = Position(censorPosition,playedSeconds,duration)
 			const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
@@ -107,7 +108,9 @@ const Controller = props => {
 			censorRef.current.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
 			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
 			// setPlayed(played)
-			// setElapsed(playedSeconds)
+			setElapsed(playedSeconds)
+			const test1 = performance.now()
+			console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
@@ -279,7 +282,7 @@ const Controller = props => {
 					<Subtitles>{subtitleText}</Subtitles>
 				) :``}
 
-				<Censor style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} ref={censorRef} active={censorActive} values={censorData} currentTime={elapsed}><canvas></canvas></Censor>
+				<Censor style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} ref={censorRef} active={censorActive}><canvas></canvas></Censor>
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
@@ -315,7 +318,7 @@ const Controller = props => {
 
 				// blank style
 			/>
-			<TimeBar played={video.played}>
+			<TimeBar>
 				<header>
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
@@ -331,7 +334,7 @@ const Controller = props => {
 
 						<div id='time-bar'>
 							<div id={`time-bar-container`}>
-								<progress className='total' value={`${video.played * 100}`} max='100' onClick={video.handleSeek}></progress>
+								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
 								<span id='time-dot'></span>
 								{/* <span id='time-indicator'></span> */}
 							</div>

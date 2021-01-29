@@ -23,6 +23,7 @@ export default class AdminService {
 		ADMIN_SEARCH_PROFESSORS: `ADMIN_SEARCH_PROFESSORS`,
 		ADMIN_SET_PROFESSOR: `ADMIN_SET_PROFESSOR`,
 		ADMIN_SEARCH_COLLECTIONS: `ADMIN_SEARCH_COLLECTIONS`,
+		ADMIN_SEARCH_PUBLIC_COLLECTIONS: `ADMIN_SEARCH_PUBLIC_COLLECTIONS`,
 		ADMIN_COLLECTION_EDIT: `ADMIN_COLLECTION_EDIT`,
 		ADMIN_COLLECTION_DELETE: `ADMIN_COLLECTION_DELETE`,
 		ADMIN_USER_DELETE: `ADMIN_USER_DELETE`,
@@ -44,6 +45,7 @@ export default class AdminService {
 		adminSearchProfessors: results => ({ type: this.types.ADMIN_SEARCH_PROFESSORS, payload: { results }}),
 		adminSetProfessor: professor => ({ type: this.types.ADMIN_SET_PROFESSOR, payload: { professor }}),
 		adminSearchCollections: results => ({ type: this.types.ADMIN_SEARCH_COLLECTIONS, payload: { results }}),
+		adminSearchPublicCollections: results => ({ type: this.types.ADMIN_SEARCH_PUBLIC_COLLECTIONS, payload: { results }}),
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
 		adminUserDelete: data => ({ type: this.types.ADMIN_USER_DELETE, payload: { data }}),
@@ -58,6 +60,7 @@ export default class AdminService {
 		cache: {},
 		professors: [],
 		professor: {},
+		publicCollections: [],
 		professorCollections: null,
 		profCollectionContent: null,
 		loading: false,
@@ -82,6 +85,7 @@ export default class AdminService {
 			ADMIN_SEARCH_PROFESSORS,
 			ADMIN_SET_PROFESSOR,
 			ADMIN_SEARCH_COLLECTIONS,
+			ADMIN_SEARCH_PUBLIC_COLLECTIONS,
 			ADMIN_COLLECTION_EDIT,
 			ADMIN_COLLECTION_DELETE,
 			ADMIN_USER_DELETE,
@@ -183,6 +187,15 @@ export default class AdminService {
 				lastFetchedCollections: Date.now(),
 			}
 
+		case ADMIN_SEARCH_PUBLIC_COLLECTIONS:
+			return {
+				...store,
+				professors: [],
+				publicCollections: action.payload.results,
+				loading: false,
+				lastFetchedCollections: Date.now(),
+			}
+
 		case ADMIN_COLLECTION_EDIT:
 			return {
 				...store,
@@ -241,7 +254,6 @@ export default class AdminService {
 			dispatch(this.actions.adminStart())
 
 			try {
-
 				const results = await apiProxy.admin.search.get(searchCategory, searchQuery)
 
 				const finalData = []
@@ -271,6 +283,36 @@ export default class AdminService {
 				}
 
 				dispatch(this.actions.adminSearch(finalData))
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.adminError(error))
+			}
+
+		} else dispatch(this.actions.adminAbort())
+	}
+
+	searchPublicCollection = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().adminStore.lastFetchedProfessors
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.adminStart())
+
+			try {
+
+				const results = await apiProxy.admin.search.public.collection.get(searchQuery)
+
+				const resultArr = []
+
+				results.forEach(element => {
+					resultArr.push(element)
+				})
+
+				dispatch(this.actions.adminSearchPublicCollections(resultArr))
 
 			} catch (error) {
 				console.error(error.message)

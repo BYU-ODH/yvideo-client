@@ -92,13 +92,12 @@ export const TimeBar = styled.div`
 					position: absolute;
 					top: 2px;
 					float: left;
-					left: ${props => props.played ? `calc(${props.played * 100}% - 2px)` : `calc(${props.played * 100}% - 2px)`};
 					margin: 0px;
 					width: 4px;
 					height: 100%;
 					background-color: transparent;
 				}
-
+/*
 				& #time-indicator {
 					position: absolute;
 					float: left;
@@ -109,7 +108,7 @@ export const TimeBar = styled.div`
 					height: 100vh;
 					background-color: red;
 					z-index: 20;
-				}
+				} */
 			}
 		}
 
