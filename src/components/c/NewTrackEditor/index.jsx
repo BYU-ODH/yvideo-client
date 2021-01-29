@@ -644,8 +644,6 @@ const TrackEditor = props => {
 			canAccessDom = true
 			document.getElementById(`sideTabMessage`).style.color=`red`
 		}
-		const tempSubs = [...subtitles]
-		const currentSubs = tempSubs[subLayerIndex]
 
 		// check start event times
 		if(sub.start < 0){
@@ -686,35 +684,51 @@ const TrackEditor = props => {
 				document.getElementById(`sideTabExplanation`).innerHTML=``
 			}
 		}
+		const tempSubs = [...subtitles]
+		const currentSubs = tempSubs[subLayerIndex]
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
+		setSubChanges(subChanges+1)
+		console.log(`?!?`,subChanges)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setSubSelected(true)
 		// setSideEditor(true)
+		sortSubtitles()
 	}
 	const addSubToLayer = (item,index) => {
 		// TODO: Change this to use real JS event objects and insert based on time
-		let currentSubs = []
-		currentSubs = [...subtitles]
+		const currentSubs = [...subtitles]
+		let subStart = 0
+		try{
+			if (currentSubs[index]){
+				if(currentSubs[index][`content`][subToEdit])
+					subStart = currentSubs[index][`content`][subToEdit].end + .01
 
-		// console.log('ADDING NEW EVENT')
-		const newSub = {
-			start: 0,
-			end: 10,
-			text: ``,
+			}
+			const newSub = {
+				start: subStart,
+				end: subStart + 5,
+				text: ``,
+			}
+
+			currentSubs[index][`content`].push(newSub)
+			setSubLayerToEdit(index)
+			activeUpdate(index)
+			setSubs(currentSubs)
+			setAllSubs(currentSubs)
+			sortSubtitles()
+		}catch(error) {
+			alert(`there was an error adding the subtitle`)
+			console.error(error)
 		}
+		// console.log('ADDING NEW EVENT')
 
-		currentSubs[index][`content`].push(newSub)
-		setSubLayerToEdit(index)
-		activeUpdate(index)
-		setSubs(currentSubs)
-		setAllSubs(currentSubs)
 	}
 	const checkSideBarTitle = () => {
 		try {
@@ -747,7 +761,7 @@ const TrackEditor = props => {
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 		}else {
-			const tempSubList = subtitles
+			const tempSubList = [...subtitles]
 			const tempSub = {
 				title : ``,
 				language: ``,
@@ -766,7 +780,6 @@ const TrackEditor = props => {
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
-			// console.log(url)
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
@@ -796,7 +809,7 @@ const TrackEditor = props => {
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
 				}else {
-					const tempSubList = subtitles
+					const tempSubList = [...subtitles]
 					const tempSub = {
 						title : ``,
 						language: ``,
@@ -814,15 +827,17 @@ const TrackEditor = props => {
 			}
 			reader.readAsText(url)
 		}catch(error){
-			// console.log(error)
+			console.log(error)
 			alert(`There was an error importing subtitles`)
 		}
 		setSubModalVisible(false)
 		setSubModalMode(``)
 	}
 	const handleDeleteSubLayer = (index) =>{
-		const tempSubs = subtitles
-		// console.log(tempSubs[index])
+		if (index === subLayerToEdit)
+			closeSideEditor()
+
+		const tempSubs = [...subtitles]
 		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
 			const deleteSub = subLayersToDelete
 			deleteSub.push(tempSubs[index][`id`])
@@ -833,16 +848,27 @@ const TrackEditor = props => {
 		setAllSubs(tempSubs)
 	}
 	const updateSubLayerTitle = (title) =>{
-		const temp = subtitles
+		const temp = [...subtitles]
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
 		setAllSubs(temp)
 	}
 	const updateSubLayerLanguage = (language) =>{
-		const temp = subtitles
+		const temp = [...subtitles]
 		temp[subLayerToEdit][`language`] = language
 		setSubs(temp)
 		setAllSubs(temp)
+	}
+	const sortSubtitles = () => {
+		const tempSubs = [...subtitles]
+		for(let i = 0; i< tempSubs.length; i++){
+			const tempContent = tempSubs[i][`content`]
+			tempContent.sort((a,b)=> a.start - b.start)
+			tempSubs[i][`content`] = tempContent
+		}
+		setSubs(tempSubs)
+		setAllSubs(tempSubs)
+
 	}
 	return (
 		<Style>
