@@ -76,7 +76,7 @@ const TrackLayer = props => {
 		updateEvents(index, cEvents[index], layerIndex)
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
+	const handleResize = (direction, ref, delta, event, index, e, position ) => {
 		const cEvents = events
 		const difference = delta.width / layerWidth * 100
 		if(direction === `right`){
