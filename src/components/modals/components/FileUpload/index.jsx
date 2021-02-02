@@ -25,20 +25,15 @@ export default class FileUpload extends PureComponent {
 			handleFileVersion,
 			handleFileChange,
 			handleFileUpload,
-			// toggleModal,
+			toggleModal,
 			onKeyPress,
 			handleOtherLanguage,
-			// handleCancelUpload,
-			handleProgressEvent,
 		} = this.props.handlers
 
 		return (
 			// //onSubmit={handleFileUpload}
 			<Form onKeyPress={onKeyPress} onSubmit={handleFileUpload} id='upload-file-form'>
 				<h2>File Upload</h2>
-
-				<label htmlFor='empty'>
-				</label>
 
 				<label htmlFor='create-resource-file-version'>
 					<h4>File Version</h4>
@@ -69,8 +64,8 @@ export default class FileUpload extends PureComponent {
 				</label>
 
 				{selectedFile ? (
-					<div className='progress'>
-						{progress > 0 &&
+					<>
+						{progress > 0 ? (
 							<label htmlFor='file-upload-progress'>
 								<Progress>
 									<h4>Progress</h4>
@@ -78,16 +73,22 @@ export default class FileUpload extends PureComponent {
 									<span><>{progress}%</></span>
 								</Progress>
 							</label>
+						):(
+							<label htmlFor='empty'>
+								<div></div>
+							</label>
+						)
 						}
-					</div>
+					</>
 				) : (
 					<label htmlFor='empty'>
+						<div></div>
 					</label>
 				)
 				}
 
 				<div>
-					<Button type='button' >Cancel</Button>
+					<Button type='button' onClick={toggleModal}>Cancel</Button>
 					{selectedFile !== undefined ?
 						<Button type='submit' color={`#0582CA`}>Upload</Button>
 						:

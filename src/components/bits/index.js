@@ -22,6 +22,7 @@ import SubtitlesCard from './SubtitlesCard'
 import ResourceOverview from '../c/ResourceOverview'
 import SubtitlesLayer from './SubtitlesLayer'
 import SubtitlesModal from './SubtitlesModal'
+import CensorDnD from './CensorDnD'
 export {
 	Accordion,
 	AdminTable,
@@ -47,4 +48,5 @@ export {
 	SubtitlesCard,
 	SubtitlesLayer,
 	SubtitlesModal,
+	CensorDnD,
 }

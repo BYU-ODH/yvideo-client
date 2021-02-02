@@ -68,6 +68,11 @@ const FileUploadContainer = props => {
 		setCustomLang(e.target.value)
 	}
 
+	const handleCancelUpload = e => {
+		e.preventDefault()
+		toggleModal()
+	}
+
 	// TODO: need to change this to upload when hit the upload. progress when they hit upload button.
 	const handleFileUpload = async (e) =>{
 		e.preventDefault()
@@ -101,6 +106,7 @@ const FileUploadContainer = props => {
 		handleFileVersion,
 		handleFileUpload,
 		handleOtherLanguage,
+		handleCancelUpload,
 		toggleModal,
 	}
 

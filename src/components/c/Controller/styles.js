@@ -92,13 +92,12 @@ export const TimeBar = styled.div`
 					position: absolute;
 					top: 2px;
 					float: left;
-					left: ${props => props.played ? `calc(${props.played * 100}% - 2px)` : `calc(${props.played * 100}% - 2px)`};
 					margin: 0px;
 					width: 4px;
 					height: 100%;
 					background-color: transparent;
 				}
-
+/*
 				& #time-indicator {
 					position: absolute;
 					float: left;
@@ -109,7 +108,7 @@ export const TimeBar = styled.div`
 					height: 100vh;
 					background-color: red;
 					z-index: 20;
-				}
+				} */
 			}
 		}
 
@@ -180,20 +179,8 @@ export const Blank = styled.div`
 	height: calc(100% - 50px);
 `
 export const Censor = styled.div`
-	--top: ${props => props.y !== 0 ? `${props.y}%` : `0%`};
-	--left: ${props => props.x !== 0 ? `${props.x}%` : `0%`};
-	--wProp: ${props => props.wProp !== 0 ? `${props.wProp}%` : `0%`};
-	--hProp: ${props => props.hProp !== 0 ? `${props.hProp}%` : `0%`};
-
-	/* TIME X Y WIDTH HEIHT */
-	/* FIND BLUR EFFECT */
-
 	position: absolute;
-	top: calc((var(--top)) - (var(--hProp)/2)) !important;
-	left: calc(var(--left) - (var(--wProp)/2)) !important;
-	width: var(--wProp);
-	height: var(--hProp);
-	transition: .5s ease;
+	transition-timing-function: linear;
 	& canvas {
 		width: 100%;
 		height: 100%;

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
@@ -6,6 +6,10 @@ import ReactPlayer from 'react-player'
 import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
+
+import { CensorDnD } from 'components/bits'
+
+import Position from './censorPosition'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -21,13 +25,19 @@ const Controller = props => {
 		url,
 		getDuration,
 		minimized,
-		// handleLastClick,
+		handleLastClick,
 		togglendTimeline,
 		getVideoTime,
+		events,
+		updateEvents,
+		eventToEdit,
+		activeCensorPosition,
+		setActiveCensorPosition,
 	} = props
 
 	const ref = useRef(null)
 	const videoRef = useRef(null)
+	const censorRef = useRef(null)
 
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
@@ -40,9 +50,8 @@ const Controller = props => {
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [subtitleText, setSubtitleText] = useState(``)
-	// const [censorPosition, setCensorPosition] = useState([0,0])
-	// const [censorActive, SetCensorActive] = useState(false)
-
+	const [censorPosition, setCensorPosition] = useState({})
+	const [censorActive, SetCensorActive] = useState(false)
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
 
@@ -50,6 +59,8 @@ const Controller = props => {
 		const indicator = document.getElementById(`time-indicator`)
 	})
 
+	// I hate using a global variable here, we'll just have to see if it works
+	let censorData = {}
 	const video = {
 
 		// state
@@ -81,13 +92,25 @@ const Controller = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
+			const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
-				// document.getElementById('time-dot').scrollIntoView()
-
-			setPlayed(played)
+			if(document.getElementById(`timeBarProgress`) !== undefined)
+				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+			if(document.getElementById(`time-dot`) !== undefined)
+				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+			// document.getElementById('time-dot').scrollIntoView()
+			censorData = Position(censorPosition,playedSeconds,duration)
+			const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
+			censorRef.current.style.width = `${width}%`
+			const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
+			censorRef.current.style.height = `${height}%`
+			censorRef.current.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
+			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
+			// setPlayed(played)
 			setElapsed(playedSeconds)
-
+			const test1 = performance.now()
+			console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
@@ -122,7 +145,8 @@ const Controller = props => {
 		handlePlay: () => {
 			setPlaying(true)
 			getVideoTime(elapsed.toFixed(1))
-			// console.log(elapsed.toFixed(1))
+			console.log(elapsed.toFixed(1))
+			setActiveCensorPosition(-1)
 		},
 		handleMute: () => {
 			// console.log('mute event')
@@ -146,17 +170,54 @@ const Controller = props => {
 			console.log(value)
 			setSubtitleText(value)
 		},
-		// handleCensorPosition: (position) => {
-		// 	//console.log(position)
-		// 	if(position !== undefined){
-		// 		setCensorPosition(
-		// 			position
-		// 		)
+		// For when returning values of two subtitles
+		handleCensorPosition: (position) => {
+			if(position !== undefined){
+				censorData = position
+				setCensorPosition(
+					position,
+				)
+			}
+		},
+		// For when returning values of one subtitle
+		// handleCensorCalculate: (position) => {
+		// 	const temp = {
+		// 		top1: position[1],
+
 		// 	}
 		// },
-		// handleCensorActive: (bool) => {
-		// 	SetCensorActive(bool)
-		// }
+		handleCensorActive: (bool) => {
+			SetCensorActive(bool)
+		},
+		handleUpdateCensorPosition: (pos) => {
+			console.log(events)
+			const event = events[eventToEdit]
+			console.log(pos.x/videoRef.current.offsetWidth*100 - event.position[activeCensorPosition][2]/2)
+			if (event.type === `Censor`){
+				if (event.position[activeCensorPosition] !== undefined){
+					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + event.position[activeCensorPosition][2]/2
+					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + event.position[activeCensorPosition][3]/2
+				}
+			}
+			console.log(event)
+			updateEvents(eventToEdit,event,event[`layer`])
+		},
+		handleUpdateCensorResize: (delta, pos)=>{
+			const event = events[eventToEdit]
+			console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
+			if (event.type === `Censor`){
+				if (event.position[activeCensorPosition] !== undefined){
+					const width = event.position[activeCensorPosition][2] + delta.width/videoRef.current.offsetWidth*100
+					const height = event.position[activeCensorPosition][3] + delta.height/videoRef.current.offsetHeight*100
+					event.position[activeCensorPosition][2] = width
+					event.position[activeCensorPosition][3] = height
+					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + width/2
+					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + height/2
+				}
+			}
+			console.log(event.position)
+			updateEvents(eventToEdit,event,event[`layer`])
+		},
 	}
 
 	const config = {
@@ -178,7 +239,7 @@ const Controller = props => {
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-	//this is causing a problem with rendering the video. It does not work as expected.
+	// this is causing a problem with rendering the video. It does not work as expected.
 	// if(document.getElementById("controller")){
 	// 	document.getElementById("controller").addEventListener(`keydown`, event => {
 	// 		switch (event.keyCode) {
@@ -199,16 +260,29 @@ const Controller = props => {
 	}
 
 	return (
-		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id="controller">
+		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
 			{/* <Style> */}
-			{/* <Blank blank={blank} onClick={(e) => handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed)} ref={videoRef}> */}
-			<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
+			<Blank blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed):console.log(``)} ref={videoRef}>
+				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
+				{activeCensorPosition !== -1 ? (
+					<CensorDnD
+						censorValues = {censorPosition}
+						censorEdit = {activeCensorPosition}
+						handleUpdateCensorPosition = {video.handleUpdateCensorPosition}
+						handleUpdateCensorResize = {video.handleUpdateCensorResize}
+						setCensorEdit = {setActiveCensorPosition}
+						screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth: 0}
+						screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight: 0}
+						seekTo = {video.handleSeek}
+					/>
+				):``}
+
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
 				{subtitleText !== `` ?(
 					<Subtitles>{subtitleText}</Subtitles>
 				) :``}
 
-				{/* <Censor x={censorPosition[0]} y={censorPosition[1]} active={censorActive} wProp={censorPosition[2]} hProp={censorPosition[3]}><canvas></canvas></Censor> */}
+				<Censor style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} ref={censorRef} active={censorActive}><canvas></canvas></Censor>
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
@@ -216,7 +290,7 @@ const Controller = props => {
 				// constants
 
 				className='video'
-				progressInterval={100}
+				progressInterval={30}
 
 				// state
 
@@ -239,11 +313,12 @@ const Controller = props => {
 				onPause={video.handlePause}
 
 				onProgress={video.handleProgress}
+				// onProgress={()=>console.log(`1`)}
 				onDuration={video.handleDuration}
 
 				// blank style
 			/>
-			<TimeBar played={video.played}>
+			<TimeBar>
 				<header>
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
@@ -259,7 +334,7 @@ const Controller = props => {
 
 						<div id='time-bar'>
 							<div id={`time-bar-container`}>
-								<progress className='total' value={`${video.played * 100}`} max='100' onClick={video.handleSeek}></progress>
+								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
 								<span id='time-dot'></span>
 								{/* <span id='time-indicator'></span> */}
 							</div>
@@ -280,8 +355,8 @@ const Controller = props => {
 				toggleMute={video.toggleMute}
 				handleBlank={video.handleBlank}
 				handleShowComment={video.handleShowComment}
-				// handleCensorPosition={video.handleCensorPosition}
-				// handleCensorActive={video.handleCensorActive}
+				handleCensorPosition={video.handleCensorPosition}
+				handleCensorActive={video.handleCensorActive}
 			></EventsContainer>
 			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
 				handleShowSubtitle={video.handleShowSubtitle}
