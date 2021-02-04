@@ -176,6 +176,7 @@ export const content = [
 		url: `test url`,
 		views: 0,
 		resource,
+		words: [ `test` ]
 	},
 	{
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -197,6 +198,7 @@ export const content = [
 		url: `test url2`,
 		views: 0,
 		resource,
+		words: [ `test2` ]
 	},
 ]
 
