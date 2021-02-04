@@ -5,6 +5,8 @@ import {
 	Upload,
 	Button,
 	CategorySelect,
+	ProgressBar,
+	Progress,
 } from './styles'
 
 export default class FileUpload extends PureComponent {
@@ -16,6 +18,7 @@ export default class FileUpload extends PureComponent {
 			isOther,
 			customLang,
 			langs,
+			progress,
 		} = this.props.viewstate
 
 		const {
@@ -28,20 +31,9 @@ export default class FileUpload extends PureComponent {
 		} = this.props.handlers
 
 		return (
+			// //onSubmit={handleFileUpload}
 			<Form onKeyPress={onKeyPress} onSubmit={handleFileUpload} id='upload-file-form'>
 				<h2>File Upload</h2>
-
-				<label htmlFor='empty'>
-				</label>
-
-				<label htmlFor='create-resource-file-version'>
-					<h4>Select File</h4>
-					<Upload>
-						<div className='files'>
-							<input type='file' className='files-input' onChange={handleFileChange}/>
-						</div>
-					</Upload>
-				</label>
 
 				<label htmlFor='create-resource-file-version'>
 					<h4>File Version</h4>
@@ -52,11 +44,6 @@ export default class FileUpload extends PureComponent {
 								{lang}
 							</option>
 						))}
-						{/* {Object.keys(category).map((c, index) => (
-							<option value={category[c].name} key={index}>
-								{category[c].name}
-							</option>
-						))} */}
 					</CategorySelect>
 				</label>
 
@@ -67,19 +54,38 @@ export default class FileUpload extends PureComponent {
 					</label>
 				}
 
-				<label htmlFor='empty'>
+				<label htmlFor='create-resource-file-version'>
+					<h4>Select File</h4>
+					<Upload>
+						<div className='files'>
+							<input type='file' className='files-input' onChange={handleFileChange}/>
+						</div>
+					</Upload>
 				</label>
 
-				{/* TODO: These can be used for later for an extra data */}
-				{/* <label htmlFor='create-resource-file-metadata'>
-					<h4>Metadata</h4>
-					<textarea onChange={handleFileMetadata} rows={2}/>
-				</label>
-
-				<label htmlFor='create-resource-file-mime'>
-					<h4>Mime</h4>
-					<textarea onChange={handleFileMime} rows={2}/>
-				</label> */}
+				{selectedFile ? (
+					<>
+						{progress > 0 ? (
+							<label htmlFor='file-upload-progress'>
+								<Progress>
+									<h4>Progress</h4>
+									<ProgressBar value={progress} max={100} />
+									<span><>{progress}%</></span>
+								</Progress>
+							</label>
+						):(
+							<label htmlFor='empty'>
+								<div></div>
+							</label>
+						)
+						}
+					</>
+				) : (
+					<label htmlFor='empty'>
+						<div></div>
+					</label>
+				)
+				}
 
 				<div>
 					<Button type='button' onClick={toggleModal}>Cancel</Button>

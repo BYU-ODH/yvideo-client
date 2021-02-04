@@ -31,6 +31,7 @@ const PlayerContainer = props => {
 
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
+	const [isMobile, setIsMobile] = useState(false)
 
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
@@ -50,6 +51,8 @@ const PlayerContainer = props => {
 	const [toggleTranscript, setToggleTranscript] = useState(true)
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [displaySubtitles, setDisplaySubtitles] = useState(null) // this is the subtitle that will show in the transcript view
+	const [censorPosition, setCensorPosition] = useState({})
+	const [censorActive, setCensorActive] = useState(false)
 
 	// this is for caption toggle
 	const [isCaption, setIsCaption] = useState( false ) // this is the state to toggle caption selection
@@ -66,10 +69,9 @@ const PlayerContainer = props => {
 		setDisplaySubtitles(null)
 		if (!contentCache[params.id]){
 			// console.log('no cached content')
-			//get single content
+			// get single content
 			getContent(params.id)
-		}
-		else {
+		} else {
 			// console.log('yes cached content')
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
@@ -77,27 +79,24 @@ const PlayerContainer = props => {
 			if(contentCache[params.id].url !== ``){
 				setUrl(contentCache[params.id].url)
 				getSubtitles(params.id)
-			}
-			else {
-				//here we know that the type of content is from the server.
-				//so we reset the states to use for the new video.
-				setKey('')
-				setUrl('')
+			} else {
+				// here we know that the type of content is from the server.
+				// so we reset the states to use for the new video.
+				setKey(``)
+				setUrl(``)
 				if(content !== undefined){
-					//CHECK RESOURCE ID
-					if(sKey === '' && contentCache[params.id].resourceId !== resourceIdStream){
+					// CHECK RESOURCE ID
+					if(sKey === `` && contentCache[params.id].resourceId !== resourceIdStream){
 						// console.log(sKey)
 						// console.log(`%c getting streaming key for resource ${contentCache[params.id].resourceId}`,  'background-color: black; color: yellow; font-weight: bold;');
 						// console.log(`%c and content ${params.id}`, 'background-color: black; color: yellow; font-weight: bold;')
-						//VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
 						getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
-					}
-					else if(streamKey){
+					} else if(streamKey)
 						setKey(streamKey)
-					}
 
-					if (sKey !== ''){
-						//setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
+					if (sKey !== ``){
+						// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
 						// console.log(`%c Stream KEY ${streamKey}`, 'background-color: black; color: pink; font-weight: bold;')
 						// console.log(`%c getting stram media for ${content.id}`, 'color: green');
 						getSubtitles(params.id)
@@ -106,6 +105,11 @@ const PlayerContainer = props => {
 				}
 			}
 		}
+
+		if(window.innerWidth < 1000){
+			setToggleTranscript(false)
+			setIsMobile(true)
+		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
 
 	const handleShowTip = (tipName, position) => {
@@ -113,7 +117,7 @@ const PlayerContainer = props => {
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}
@@ -148,7 +152,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleProgress = progression => {
-		// console.log('progress', player.getCurrentTime())
+		console.log(`progress`, progression)
 		setProgress(progression)
 	}
 
@@ -248,7 +252,7 @@ const PlayerContainer = props => {
 			}
 
 		} catch (e){
-			console.log(e)
+			// console.log(e)
 		}
 
 		setIndexToDisplay(index)
@@ -258,7 +262,7 @@ const PlayerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Player`},
+			props: { name: `${isMobile === true ? `Player Mobile` : `Player`}`},
 		})
 	}
 
@@ -318,6 +322,9 @@ const PlayerContainer = props => {
 		indexToDisplay,
 		isAdmin,
 		isProf,
+		isMobile,
+		censorPosition,
+		censorActive,
 	}
 
 	const handlers = {
@@ -344,6 +351,8 @@ const PlayerContainer = props => {
 		handleShowHelp,
 		toggleTip,
 		handleShowTip,
+		setCensorPosition,
+		setCensorActive,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

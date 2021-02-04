@@ -28,9 +28,16 @@ const ManageCollectionContainer = props => {
 	const [isContent, setIsContent] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
+	const [isEdited, setIsEdited] = useState(false)
 
 	useEffect(() => {
-		getCollections(true)
+		if(isEdited) {
+			getCollections(true)
+			setCollectionName(collection.name)
+			setIsContent(true)
+
+			setIsEdited(false)
+		}
 		if(collection.content.length > 0){
 			if(content[collection.content[0].id]){
 				// console.log('got cached content')
@@ -45,9 +52,7 @@ const ManageCollectionContainer = props => {
 		} else {
 			// console.log('no content')
 		}
-		setCollectionName(collection.name)
-		setIsContent(true)
-	}, [collection.name, getCollections])
+	}, [collection.name])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -63,16 +68,20 @@ const ManageCollectionContainer = props => {
 		setIsEditingCollectionName(!isEditingCollectionName)
 		if (isEditingCollectionName)
 			updateCollectionName(collection.id, collectionName, null)
+
+		setIsEdited(true)
 	}
 
 	const handleNameChange = e => {
 		const { value } = e.target
 		setCollectionName(value)
+		setIsEdited(true)
 	}
 
 	const togglePublish = e => {
 		e.preventDefault()
 		updateCollectionStatus(collection.id, collection.published ? `unpublish` : `publish`)
+		setIsEdited(true)
 	}
 
 	const createContent = () => {
@@ -80,16 +89,20 @@ const ManageCollectionContainer = props => {
 			component: CreateContentContainer,
 			collectionId: collection.id,
 		})
+
+		setIsEdited(true)
 	}
 
 	const archive = e => {
 		e.preventDefault()
 		updateCollectionStatus(collection.id, `archive`)
+		setIsEdited(true)
 	}
 
 	const unarchive = e => {
 		e.preventDefault()
 		updateCollectionStatus(collection.id, `unarchive`)
+		setIsEdited(true)
 	}
 
 	const setTab = isContent => _e => {

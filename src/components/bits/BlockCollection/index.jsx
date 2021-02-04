@@ -66,6 +66,9 @@ export default class BlockCollection extends Component {
 					<Header>
 						<Link to={`/`}>{name}</Link>
 						<p>{publishContent.length} Videos</p>
+						{ this.props.collection.id === `public` ? (
+							<Link to={`/search-public-collections`}>Search Public Collections</Link>
+						) : ``}
 					</Header>
 					<div>
 						<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
@@ -85,9 +88,8 @@ export default class BlockCollection extends Component {
 					</div>
 				</Container>
 			)
-		}
-		else {
+		} else
 			return null
-		}
+
 	}
 }

@@ -93,6 +93,7 @@ const ManagerContainer = props => {
 		if (archived) sideLists.archived.push({ id, name })
 		else if (published) sideLists.published.push({ id, name })
 		else sideLists.unpublished.push({ id, name })
+
 	})
 
 	const viewstate = {

@@ -46,7 +46,7 @@ export const Container = styled.div`
 		}
 
 		& .section {
-			font-size: 1.5rem;
+			font-size: 1.5rem !important;
 			padding: 10px;
 			display: flex;
 
@@ -54,15 +54,19 @@ export const Container = styled.div`
 				margin: auto;
 				flex: 1;
 				line-height: 20px;
-
-				& ul {
-					text-align: left;
-					border: 1px solid red;
-				}
 			}
 
 			& img {
 				margin: auto;
+			}
+
+			& .icon {
+				width: 20px;
+				height: 20px;
+			}
+
+			& li {
+				padding: 3px 0px 3px 0px;
 			}
 		}
 	}

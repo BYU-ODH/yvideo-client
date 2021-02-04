@@ -44,6 +44,15 @@ export const Comment = styled.div`
 	color: white; style={{ w}}
 	z-index: 15;
 `
+export const Censor = styled.div`
+	position: absolute;
+	& canvas {
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(0px)`};
+	}
+`
 export const Subtitles = styled.div`
 	position: absolute;
 	bottom: 80px;

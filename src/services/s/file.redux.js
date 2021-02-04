@@ -99,15 +99,16 @@ export default class FileService {
 
 	// thunks
 
-	upload = (file) => async (dispatch, getState, { apiProxy }) => {
+	upload = (file, event) => (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.fileStart())
 
 		try {
-			const result = await apiProxy.file.post(file)
+			const result = apiProxy.file.post(file, event)
 
 			dispatch(this.actions.fileUpload(result))
 
+			return result
 		} catch (error) {
 			dispatch(this.actions.fileError(error))
 		}

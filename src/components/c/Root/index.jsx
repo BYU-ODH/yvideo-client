@@ -14,6 +14,8 @@ import {
 	PlayerContainer,
 	TrackEditorContainer,
 	ManageResourceContainer,
+	SearchPublicCollectionsContainer,
+	PublicManagerContainer,
 } from 'containers'
 
 import {
@@ -50,6 +52,11 @@ class Root extends PureComponent {
 								<CollectionsContainer />
 							</Route>
 
+							{/* TODO: need to double check */}
+							<Route exact path='/search-public-collections' >
+								<SearchPublicCollectionsContainer />
+							</Route>
+
 							<Route path='/admin'>
 								<AdminContainer />
 							</Route>
@@ -78,6 +85,10 @@ class Root extends PureComponent {
 								<ManagerContainer />
 							</Route>
 
+							<Route path='/public-manager/:id?'>
+								<PublicManagerContainer />
+							</Route>
+
 							<Route path='/player/:id'>
 								<PlayerContainer />
 							</Route>
@@ -93,11 +104,22 @@ class Root extends PureComponent {
 							<Route>
 								<Error error='404' message={`You've wandered too far`} />
 							</Route>
-
 						</Switch>
 					</>
 					:
-					<LandingContainer />
+					(
+						<Switch>
+							<Route exact path='/'>
+								<LandingContainer />
+							</Route>
+							<Route exact path='/search-public-collections' >
+								<SearchPublicCollectionsContainer />
+							</Route>
+							<Route>
+								<Error error='404' message={`You've wandered too far`} />
+							</Route>
+						</Switch>
+					)
 				}
 
 				<Load loading={loading} />
