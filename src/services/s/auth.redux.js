@@ -86,7 +86,7 @@ export default class AuthService {
 		try {
 			let user
 			if(window.location.href.includes(`localhost`))
-			// user = await apiProxy.user.get()
+				user = await apiProxy.user.get()
 
 			// console.log(window.clj_session_id)
 			{
