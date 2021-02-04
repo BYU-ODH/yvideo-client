@@ -44,7 +44,6 @@ describe(`content overview test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-
 		// thumbnail
 		expect(wrapper.find(`img`).length).toBe(1)
 		expect(wrapper.find(`img`).props().src).toBe(`test@thumbnail.com`)

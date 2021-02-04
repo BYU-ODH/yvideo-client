@@ -7,6 +7,7 @@ import { BrowserRouter} from 'react-router-dom'
 const props = {
 	getVideoTime: jest.fn(),
 	reactPlayer: jest.fn(),
+	setActiveCensorPosition: jest.fn(),
 }
 const reactPlayer = { props: {
 	playing: false,
@@ -19,6 +20,7 @@ const played = 0
 describe(`Controller test`, () => {
 	it(`simulate onClick`, ()=> {
 			const wrapper = shallow(<Controller {...props}/>)
+			console.log(wrapper.debug())
 
 		wrapper.find('button').at(0).simulate('click')
 		wrapper.find('button').at(1).simulate('click')
