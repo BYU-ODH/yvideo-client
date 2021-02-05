@@ -22,15 +22,14 @@ class Landing extends PureComponent {
 				<Comets className='right' />
 
 				<Welcome>
-					<div>
-						<h1>WELCOME TO YVIDEO&nbsp;</h1>
-						<Logo />
+					<div id="welcome-container">
+						<h1>YVIDEO&nbsp;</h1><Logo />
 					</div>
 
 					<div className='button-wrapper'>
 						<Button className='primary' onClick={handleLogin}>Sign In</Button>
 						<Button className='secondary' onClick={toggleOverlay}>About</Button>
-						<Button className='secondary' onClick={toggleOverlay}>Public</Button>
+						<Button className='secondary' onClick={toggleOverlay}>Public Videos</Button>
 					</div>
 
 				</Welcome>

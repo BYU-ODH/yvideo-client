@@ -71,6 +71,7 @@ export const Style = styled.div`
 	}
 
 	& .main-mobile {
+		position: relative;
 		margin-left: 0px;
 		height: 60vh;
 		width: calc(100vw);

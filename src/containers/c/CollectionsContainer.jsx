@@ -52,9 +52,6 @@ const CollectionsContainer = props => {
 			setIsMobile(false)
 		)
 		if(Object.keys(allPublic).length > 0 && count !== Object.keys(allPublic).length){
-			allPublic.forEach(collection => {
-				getIsPublicCollectionSubscribed(collection.id, user.id)
-			})
 			setCount(Object.keys(allPublic).length)
 		}
 
