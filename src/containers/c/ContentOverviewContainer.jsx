@@ -12,7 +12,7 @@ import {
 	ContentOverview,
 } from 'components'
 
-import TranslationContainer from 'components/modals/containers/TranslationContainer'
+import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
 
 import { objectIsEmpty } from 'lib/util'
 
@@ -24,7 +24,6 @@ const ContentOverviewContainer = props => {
 		updateContent,
 		isLabAssistant,
 		adminRemoveCollectionContent,
-		checkTranslation,
 		toggleModal,
 	} = props
 
@@ -32,12 +31,6 @@ const ContentOverviewContainer = props => {
 	const [showing, setShowing] = useState(false)
 
 	const [tag, setTag] = useState(``)
-	const [word, setWord] = useState(``)
-	const [checkWord, setCheckWord] = useState('')
-	const [language, setLanguage] = useState('')
-	const [checkResponse, setCheckResponse] = useState(false)
-	const [translationWords, setTranslationWords] = useState('')
-	const [translationMeanings, setTranslationMeanings] = useState('')
 
 	const [contentState, setContentState] = useState(content)
 
@@ -123,73 +116,10 @@ const ContentOverviewContainer = props => {
 		setTag(e.target.value)
 	}
 
-	const addWord = (e) => {
-		e.preventDefault()
-		const newWords = word.split(/[ ,]+/)
-		setContentState({
-			...contentState,
-			words: [...contentState.words, ...newWords],
-		})
-		setWord(``)
-	}
-
-	const removeWord = e => {
-		setContentState({
-			...contentState,
-			words: contentState.words.filter(item => item !== e.target.dataset.value),
-		})
-	}
-
-	const changeWord = e => {
-		setWord(e.target.value)
-	}
-
-	const changeCheckWord = e => {
-		setCheckWord(e.target.value)
-		console.log(checkResponse)
-		if(checkResponse){
-			setCheckResponse(false)
-		}
-	}
-
-	const changeLanguage = e => {
-		setLanguage(e.target.value)
-	}
-
-	const handleCheckWord = async e => {
-		const response = await checkTranslation(checkWord, language)
-		setCheckResponse(response.success)
-		writeTranslation(response.json)
-		// setCheckWord('')
-	}
-
-	const writeTranslation = (jsonResponse) => {
-
-			let allWords = ''
-			let allMeanings = ''
-
-			if(Object.keys(jsonResponse).length < 1){
-				setTranslationWords('No matches found')
-				setTranslationMeanings('')
-				return;
-			}
-
-			jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].forEach((item, index) => {
-				allWords += `${item.lemma}; `
-				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
-			});
-
-			setTranslationWords(allWords)
-			setTranslationMeanings(allMeanings)
-	}
-
-	const handleShowTranslation = () => {
+	const handleShowWordsModal = () => {
 		toggleModal({
-			component: TranslationContainer,
-			props: {
-				words: translationWords,
-				meanings: translationMeanings,
-			}
+			component: HighlightWordsContainer,
+			props:{ contentId: content.id},
 		})
 	}
 
@@ -198,12 +128,6 @@ const ContentOverviewContainer = props => {
 		showing,
 		editing,
 		tag,
-		word,
-		checkWord,
-		checkResponse,
-		language,
-		translationMeanings,
-		translationWords,
 	}
 
 	const handlers = {
@@ -219,14 +143,7 @@ const ContentOverviewContainer = props => {
 		addTag,
 		removeTag,
 		changeTag,
-		addWord,
-		removeWord,
-		changeWord,
-		changeCheckWord,
-		checkTranslation,
-		handleCheckWord,
-		changeLanguage,
-		handleShowTranslation,
+		handleShowWordsModal
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />
@@ -236,7 +153,6 @@ const mapDispatchToProps = {
 	removeCollectionContent: collectionService.removeCollectionContent,
 	updateContent: contentService.updateContent,
 	adminRemoveCollectionContent: adminService.deleteContent,
-	checkTranslation: interfaceService.checkTranslation,
 	toggleModal: interfaceService.toggleModal,
 }
 
