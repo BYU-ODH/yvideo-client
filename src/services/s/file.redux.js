@@ -120,7 +120,6 @@ export default class FileService {
 
 		try {
 
-			console.log(id)
 			const result = await apiProxy.file.delete(id)
 
 		} catch (error) {

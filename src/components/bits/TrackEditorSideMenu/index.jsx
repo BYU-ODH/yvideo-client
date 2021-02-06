@@ -24,6 +24,13 @@ const TrackEditorSideMenu = props => {
 		subLayer,
 		updateLanguage,
 		updateTitle,
+		editCensor,
+		handleEditCensor,
+		handleCensorRemove,
+		handleAddCensor,
+		handleSaveCensor,
+		activeCensorPosition,
+		setActiveCensorPosition,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -200,48 +207,51 @@ const TrackEditorSideMenu = props => {
 				</>
 			) : null
 			}
-			{/* { event.type === 'Censor' ? (
+			{ event.type === `Censor` ? (
 				<div className='censorMenu'>
 					<label>Censor Times</label><br/><br/>
 					<table className='tableHeader'>
 						<thead>
 							<tr>
-								<th align="center">Time</th>
-								<th align="center">X</th>
-								<th align="center">Y</th>
-								<th align="center">Width</th>
-								<th align="center">Height</th>
-								<th align="center">&nbsp;</th>
+								<th align='center'>Time</th>
+								<th align='center'>X</th>
+								<th align='center'>Y</th>
+								<th align='center'>Width</th>
+								<th align='center'>Height</th>
+								<th align='center'>&nbsp;</th>
 							</tr>
 						</thead>
 					</table>
 					<div className='censorList'>
 						<table>
 							<tbody>
-							{
-								Object.keys(editCensor).sort(((a, b) => (parseFloat(a) > parseFloat(b)) ? 1 : -1)).map((item, i) => (
-									<tr key={item}>
-										<td><input type='number' value={`${item}`}/></td>
-										<td><input type='number' placeholder={`${editCensor[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-										<td><input type='number' placeholder={`${editCensor[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-										<td><input type='number' placeholder={`${editCensor[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-										<td><input type='number' placeholder={`${editCensor[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
-										<td><img className={'trashIcon'} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
-									</tr>
-								)) // "foo: bar", "baz: 42"
-								//Object.entries(event.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
-							}
+								{event.type === `Censor`?
+									Object.keys(event.position).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+										<tr class={activeCensorPosition === item ? `censorActive` : ``} key={item}>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' value={`${item}`}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+											<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
+										</tr>
+									))
+									:``}
+								{
+									// "foo: bar", "baz: 42"
+								// Object.entries(event.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
+								}
 							</tbody>
 						</table>
-						<div id='loader' style={{visibility: 'hidden'}}>Loading</div><br/><br/>
-						<div id='tableBottom' style={{ width: '90%', marginLeft: '0px' }}></div>
+						<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
+						<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 					</div>
 
-					<NewLayer className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></NewLayer><br/><br/><br/><br/>
+					<button className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></button><br/><br/><br/><br/>
 					<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
 				</div>
-				) : (null)
-			} */}
+			) : null
+			}
 			<br/>
 			<p id='sideTabMessage'></p>
 			<p id='sideTabExplanation'></p>
@@ -275,22 +285,22 @@ const TrackEditorSideMenu = props => {
 							<tbody>
 								{subs[subLayer][`content`].map((sub,ind)=>(
 									// <div className={`${ind === index ? `subActive`:``}`}>
-										<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`} key={ind}>
-											<td>
-												<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
-											</td>
-											<td>
-												<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer)}/>
-											</td>
-											<td>
-												<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
-													// const text = subText
-													// text[ind] = value
-													// setSubText(text)
-													editSub(null,null,value,subLayer)
-												}} />
-											</td>
-										</tr>
+									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`} key={ind}>
+										<td>
+											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
+										</td>
+										<td>
+											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer)}/>
+										</td>
+										<td>
+											<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
+												// const text = subText
+												// text[ind] = value
+												// setSubText(text)
+												editSub(null,null,value,subLayer)
+											}} />
+										</td>
+									</tr>
 									// </div>
 								// <div className={`subCard ${ind === index ? `subActive`:``}`} onClick={()=>changeSubIndex(ind)} key={ind}>
 								// 	<p>

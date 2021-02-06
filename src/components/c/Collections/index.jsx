@@ -38,9 +38,9 @@ export default class Collections extends PureComponent {
 
 		const setNoCollections = () => {
 			setTimeout(() => {
-				if(document.getElementById("message") != null){
-					document.getElementById("message").innerHTML = "There are no collections"
-				}
+				if(document.getElementById(`message`) != null)
+					document.getElementById(`message`).innerHTML = `There are no collections`
+
 			}, 2000)
 		}
 
@@ -61,29 +61,29 @@ export default class Collections extends PureComponent {
 							<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
 						}
 						{
-							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip('list-block', {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
+							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip(`list-block`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
 						}
-						</div>
+					</div>
 				</header>
 				<div className='list'>
 
 					{ Object.keys(collections).length > 0 ? (
 						<>
 							{
-								isMobile ? (Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)) :
-								(
+								isMobile ? Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>) :
+
 									displayBlocks ?
 										Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
 										:
 										Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
-								)
+
 							}
 						</>
 					) : (
 						<>
-							<h1 id="message">Loading</h1>
-						{	setNoCollections()}
-					</>
+							<h1 id='message'>Loading</h1>
+							{	setNoCollections()}
+						</>
 					) }
 				</div>
 

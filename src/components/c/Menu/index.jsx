@@ -56,7 +56,7 @@ class Menu extends PureComponent {
 					</>
 				}
 
-				<button className={'logout'} onClick={handleLogout}>Sign Out</button>
+				<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
 
 				{
 					(isProf || isAdmin || isLab) &&
