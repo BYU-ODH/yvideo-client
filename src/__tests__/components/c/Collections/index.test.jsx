@@ -31,6 +31,7 @@ const viewstate = {
 	displayBlocks: true,
 	isAdmin: true,
 	isProf: false,
+	allPublic,
 }
 
 const collectionsProps = {

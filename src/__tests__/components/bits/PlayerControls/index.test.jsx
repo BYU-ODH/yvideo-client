@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { shallow, mount } from 'enzyme'
 import PlayerControls from '../../../../components/bits/PlayerControls'
-import Style, { PlayPause, ClosedCaptions, Fullscreen, Volume, 	Speed, } from '../../../../components/bits/PlayerControls/styles'
+import Style, { PlayPause, ClosedCaptions, Fullscreen, Volume, 	Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
 import clockIcon from '../../../../components/bits/PlayerControls/styles'
 
 
@@ -19,18 +19,23 @@ const props = {
 		handleChangeSubtitle: jest.fn(),
 		setShowTranscript: jest.fn(),
 		handleShowSubtitle: jest.fn(),
+		handleShowTip: jest.fn(),
+		handleShowHelp: jest.fn(),
+		toggleTip: jest.fn(),
 	},
 	viewstate : {
-		fullscreen: "fullscreen",
+		fullscreen: true,
 		displaySubtitles: {
 			language: "English"
 		},
 		progress: {
 			played: "played"
 		},
+		playing:true,
 		isCaption: true,
 		isAdmin: true,
 		isProf: true,
+		isMobile: true,
 		subtitles: [{
 			content: [{
 				end: 24.201520912547526,
@@ -56,6 +61,18 @@ it(`Speed onClick`, ()=> {
 	button.find('StyledComponent').simulate('click')
 	expect(mockCallBack.mock.calls.length).toEqual(1)
 })
+it(`Speed onMouseEnter`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<Speed src={clockIcon} onMouseEnter={mockCallBack}/>)
+	button.find('StyledComponent').simulate('MouseEnter')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
+it(`Speed onMouseLeave`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<Speed src={clockIcon} onMouseLeave={mockCallBack}/>)
+	button.find('StyledComponent').simulate('MouseLeave')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
 it(`PlayPause onClick`, ()=> {
 	const mockCallBack = jest.fn()
 	const button = shallow(<PlayPause onClick={mockCallBack}/>)
@@ -64,10 +81,47 @@ it(`PlayPause onClick`, ()=> {
 })
 it(`ClosedCaptions onClick`, ()=> {
 	const mockCallBack = jest.fn()
-	const button = shallow(<ClosedCaptions onClick={mockCallBack}/>)
+	const button = shallow(<ClosedCaptions isCaptions={props.viewstate.isCaption} onClick={mockCallBack}/>)
 	button.find('StyledComponent').simulate('click')
 	expect(mockCallBack.mock.calls.length).toEqual(1)
 })
+it(`ClosedCaptions onMouseEnter`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<ClosedCaptions isCaptions={props.viewstate.isCaption} onMouseEnter={mockCallBack}/>)
+	button.find('StyledComponent').simulate('MouseEnter')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
+it(`ClosedCaptions onMouseLeave`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<ClosedCaptions isCaptions={props.viewstate.isCaption} onMouseLeave={mockCallBack}/>)
+	button.find('StyledComponent').simulate('MouseLeave')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
+it(`Book onClick`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<Book onClick={mockCallBack}/>)
+	button.find('StyledComponent').simulate('click')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
+it(`Help onClick`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<Help onClick={mockCallBack}/>)
+	button.find('StyledComponent').simulate('click')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
+it(`Help onMouseEnter`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<Help onMouseEnter={mockCallBack}/>)
+	button.find('StyledComponent').simulate('MouseEnter')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
+it(`Help onMouseLeave`, ()=> {
+	const mockCallBack = jest.fn()
+	const button = shallow(<Help onMouseLeave={mockCallBack}/>)
+	button.find('StyledComponent').simulate('MouseLeave')
+	expect(mockCallBack.mock.calls.length).toEqual(1)
+})
+
 
 it(`simulate input`, ()=> {
 	props.viewstate.isCaption = false
