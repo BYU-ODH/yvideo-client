@@ -76,12 +76,9 @@ class Menu extends PureComponent {
 				}
 
 				<Footer>
-					<Header>Connect Wish Us</Header>
+					<Header>Connect With Us</Header>
 					<hr />
-					<LinkStyled to='/' >About Us</LinkStyled>
-					<LinkStyled to='/' >Contact Us</LinkStyled>
-					<LinkStyled to='/' >Social Media?</LinkStyled>
-					<LinkStyled to='/feedback' >Feedback / Issues</LinkStyled>
+					<LinkStyled to='/feedback' >Contact Us</LinkStyled>
 				</Footer>
 
 			</Style>
