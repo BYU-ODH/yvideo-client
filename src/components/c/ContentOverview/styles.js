@@ -221,7 +221,7 @@ export const Column = styled.div`
 		}
 	}
 
-	& .check-tag {
+	& .words-modal {
 		border-radius: 10px;
     font-size: 1.3rem;
     color: white;
@@ -234,15 +234,6 @@ export const Column = styled.div`
 		:hover {
 			border: 2px solid var(--navy-blue)
 		}
-	}
-
-	& .view-disable {
-		background-color: grey !important;
-	}
-
-	& .view-active{
-		color: white;
-		background-color: var(--light-blue);
 	}
 `
 

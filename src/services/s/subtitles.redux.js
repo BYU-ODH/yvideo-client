@@ -90,7 +90,7 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_GET:
-			console.log(`??//`,action.payload)
+			// console.log(`??//`,action.payload)
 			return {
 				...store,
 				cache: action.payload.subtitles,
@@ -137,7 +137,7 @@ export default class SubtitlesService {
 		// console.log('updated store', contentIds)
 		const currentContentId = getState().subtitlesStore.contentId
 
-		console.log(`USED SESSION ID`, window.clj_session_id)
+		// console.log(`USED SESSION ID`, window.clj_session_id)
 
 		dispatch(this.actions.subtitlesStart())
 
@@ -145,7 +145,6 @@ export default class SubtitlesService {
 			dispatch(this.actions.subtitlesClean())
 
 		try {
-
 			const result = await apiProxy.content.getSubtitles(id)
 			dispatch(this.actions.subtitlesGet(result, id))
 			return result
@@ -189,6 +188,13 @@ export default class SubtitlesService {
 			tempSub[`language`] = subtitle[`language`]
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
+			if(typeof subtitle['words'] !== 'string'){
+				// console.log(subtitle)
+				tempSub['words'] = subtitle['words'].join('; ')
+			}
+			else {
+				tempSub['words'] = subtitle['words']
+			}
 
 			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {

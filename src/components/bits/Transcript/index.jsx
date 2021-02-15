@@ -23,8 +23,6 @@ const Transcript = props => {
 			languageCodes,
 		} = props
 
-
-
 		const {
 			content,
 			displaySubtitles,
@@ -68,11 +66,12 @@ const Transcript = props => {
 
 		const highlightWords = (text) => {
 			//initialize the string where we can make changes
+			// console.log(displaySubtitles)
 			if(content === undefined){
 				return;
 			}
 
-			let words = content.words
+			let words = displaySubtitles.words.split('; ')
 
 			let newString = text
 
@@ -121,6 +120,8 @@ const Transcript = props => {
 			translate(foundWord, languageCodes[displaySubtitles.language])
 		}
 
+		console.log(displaySubtitles)
+
 		return (
 			<Style style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
 				<div className={isMobile ? (`hide-element`) : ('side-bar')}>
@@ -147,7 +148,6 @@ const Transcript = props => {
 					<br/><br/><br/>
 					<div className={'transcript-content'}>
 						{	displaySubtitles != null ? (
-
 							displaySubtitles['content'].map((element, index) =>
 									<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
 										key={index}
@@ -158,10 +158,8 @@ const Transcript = props => {
 											onMouseEnter={e => handleShowTip('transcript-seek', {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 											onMouseLeave={e => toggleTip()}
 											>
-											{/* <span>{(element.start * duration / 100).toFixed(2)}s</span> */}
 											<span><img src={seek} width="20" height="20"/></span>
 										</div>
-										{/* <p>{element.text}</p> */}
 									</div>
 								)
 							) : (null)

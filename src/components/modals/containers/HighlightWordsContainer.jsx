@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {
 	interfaceService,
 	resourceService,
+	subtitlesService,
 	fileService,
 } from 'services'
 
@@ -15,119 +16,154 @@ const HighlightWordsContainer = props => {
 		// files,
 		checkTranslation,
 		toggleModal,
+		contentId,
+		getSubtitles,
+		updateSubtitle,
+		subtitles,
+		subtitlesContentId,
+		supportedLanguages,
 	} = props
 
-	// const [word, setWord] = useState(``)
-	// const [checkWord, setCheckWord] = useState('')
-	// const [language, setLanguage] = useState('')
-	// const [checkResponse, setCheckResponse] = useState(false)
-	// const [translationWords, setTranslationWords] = useState('')
-	// const [translationMeanings, setTranslationMeanings] = useState('')
+	//get all subtitles for this content.
+	//allow a user to select what subtitle the words will be added to
 
-	// const addWord = (e) => {
-	// 	e.preventDefault()
-	// 	const newWords = word.split(/[ ,]+/)
-	// 	setContentState({
-	// 		...contentState,
-	// 		words: [...contentState.words, ...newWords],
-	// 	})
-	// 	setWord(``)
-	// }
+	const [subtitlesObjects, setSubtitlesObject] = useState([])
+	const [activeSubtitle, setActiveSubtitle] = useState(0)
+	const [wordList, setWordList] = useState([]) //set wordlist from the list of the words for a specific subtitle
+	const [word, setWord] = useState(``)
+	const [checkWord, setCheckWord] = useState('')
+	const [language, setLanguage] = useState('')
+	const [checkResponse, setCheckResponse] = useState(false)
+	const [translationWords, setTranslationWords] = useState('')
+	const [translationMeanings, setTranslationMeanings] = useState('')
 
-	// const removeWord = e => {
-	// 	setContentState({
-	// 		...contentState,
-	// 		words: contentState.words.filter(item => item !== e.target.dataset.value),
-	// 	})
-	// }
+	useEffect(() => {
+		console.log('use Effect', subtitles)
+		if(subtitlesContentId == ''){
+			getSubtitles(contentId)
+		}
+		else {
+			let tempSubtitles = []
+			Object.keys(subtitles).forEach((item) => {
+				console.log(item)
+				subtitles[item].words = subtitles[item].words.split('; ')
+				tempSubtitles.push(subtitles[item])
+			})
+			tempSubtitles.sort((a, b) => (a.language > b.language) ? 1 : -1)
+			setSubtitlesObject(tempSubtitles)
+		}
 
-	// const changeWord = e => {
-	// 	setWord(e.target.value)
-	// }
+	}, [contentId, getSubtitles, subtitlesContentId])
 
-	// const changeCheckWord = e => {
-	// 	setCheckWord(e.target.value)
-	// 	console.log(checkResponse)
-	// 	if(checkResponse){
-	// 		setCheckResponse(false)
-	// 	}
-	// }
 
-	// const changeLanguage = e => {
-	// 	setLanguage(e.target.value)
-	// }
+	const addWord = (e) => {
+		e.preventDefault()
+		const newWords = word.split(/[ ,]+/)
+		let allSub = subtitlesObjects
+		allSub[activeSubtitle].words = [allSub[activeSubtitle].words, ...newWords]
+		setSubtitlesObject(allSub)
+		setWord(``)
+		//save changes to the back end
+		console.log(allSub)
+		updateSubtitle(allSub[activeSubtitle])
+	}
 
-	// const handleCheckWord = async e => {
-	// 	const response = await checkTranslation(checkWord, language)
-	// 	setCheckResponse(response.success)
-	// 	writeTranslation(response.json)
-	// 	// setCheckWord('')
-	// }
+	const removeWord = e => {
+		setWordList(wordList.filter(item => item !== e.target.dataset.value))
+		//save changes to the back end
+	}
 
-	// const writeTranslation = (jsonResponse) => {
+	const changeWord = e => {
+		setWord(e.target.value)
+	}
 
-	// 		let allWords = ''
-	// 		let allMeanings = ''
+	const changeCheckWord = e => {
+		setCheckWord(e.target.value)
+		console.log(checkResponse)
+		if(checkResponse){
+			setCheckResponse(false)
+		}
+	}
 
-	// 		if(Object.keys(jsonResponse).length < 1){
-	// 			setTranslationWords('No matches found')
-	// 			setTranslationMeanings('')
-	// 			return;
-	// 		}
+	const changeLanguage = e => {
+		setLanguage(e.target.value)
+	}
 
-	// 		jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].forEach((item, index) => {
-	// 			allWords += `${item.lemma}; `
-	// 			allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
-	// 		});
+	const handleCheckWord = async e => {
+		const response = await checkTranslation(checkWord, language)
+		console.log(response)
+		setCheckResponse(response.success)
+		writeTranslation(response.json)
+		// setCheckWord('')
+	}
 
-	// 		setTranslationWords(allWords)
-	// 		setTranslationMeanings(allMeanings)
-	// }
+	const writeTranslation = (jsonResponse) => {
 
-	// const handleShowTranslation = () => {
-	// 	toggleModal({
-	// 		component: TranslationContainer,
-	// 		props: {
-	// 			words: translationWords,
-	// 			meanings: translationMeanings,
-	// 		}
-	// 	})
-	// }
+			let allWords = ''
+			let allMeanings = ''
 
-	// const viewstate = {
-	// 	// files,
-	// 	word,
-	// 	checkWord,
-	// 	checkResponse,
-	// 	language,
-	// 	translationMeanings,
-	// 	translationWords,
-	// }
+			if(Object.keys(jsonResponse).length < 1){
+				setTranslationWords('No matches found')
+				setTranslationMeanings('')
+				return;
+			}
 
-	// const handlers = {
-	// 	toggleModal,
-	// 	addWord,
-	// 	removeWord,
-	// 	changeWord,
-	// 	changeCheckWord,
-	// 	checkTranslation,
-	// 	handleCheckWord,
-	// 	changeLanguage,
-	// 	handleShowTranslation,
-	// }
+			jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].forEach((item, index) => {
+				allWords += `${item.lemma}; `
+				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
+			});
 
-	return <HighlightWords/>
+			setTranslationWords(allWords)
+			setTranslationMeanings(allMeanings)
+	}
+
+	const handleChangeActive = (e) => {
+		setActiveSubtitle(parseInt(e.target.value))
+	}
+
+	const viewstate = {
+		// files,
+		wordList,
+		word,
+		checkWord,
+		checkResponse,
+		language,
+		translationMeanings,
+		translationWords,
+		subtitlesObjects,
+		activeSubtitle,
+		supportedLanguages,
+	}
+
+	const handlers = {
+		toggleModal,
+		addWord,
+		removeWord,
+		changeWord,
+		changeCheckWord,
+		checkTranslation,
+		handleCheckWord,
+		changeLanguage,
+		handleChangeActive,
+	}
+
+	return <HighlightWords handlers={handlers} viewstate={viewstate}/>
 }
 
 const mapStateToProps = store => ({
 	modal: store.interfaceStore.modal,
 	// user: store.authStore.user,
+	subtitles: store.subtitlesStore.cache,
+	subtitlesContentId: store.subtitlesStore.contentId,
+	supportedLanguages: store.interfaceStore.languageCodes,
 })
 
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	// addResource: resourceService.addResource,
 	// uploadFile: fileService.upload,
+	getSubtitles: subtitlesService.getSubtitles,
+	updateSubtitle: subtitlesService.updateSubtitle,
 	checkTranslation: interfaceService.checkTranslation,
 }
 

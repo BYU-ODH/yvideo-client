@@ -7,9 +7,6 @@ import { SwitchToggle, Tag, Spinner, LazyImage } from 'components/bits'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 
-import checkMark from 'assets/player-check.svg'
-import xMark from 'assets/x_red.svg'
-
 import Style, {
 	EditButton,
 	Icon,
@@ -120,9 +117,9 @@ export default class ContentOverview extends PureComponent {
 							<textarea rows={4} onChange={handleDescription} value={description} />
 						</Column>
 						<Column>
-							<h4>Highlight Words</h4>
-							<p>Add a list of words to be highlighted in the transcript. The highlighted
-							words in the transcript will have quick translation on click if there is
+							<h4>Important Words</h4>
+							<p>Add a list of important words to be highlighted in the transcript. The highlighted
+							words will have quick translation on click if there is
 							one available.</p><br/>
 							<button className={`words-modal`} onClick={handleShowWordsModal}>OPEN</button>
 						</Column>

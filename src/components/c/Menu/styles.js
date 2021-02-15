@@ -78,6 +78,19 @@ export const Header = styled.h4`
 	font-weight: 500;
 `
 
+export const LogoutButton = styled.button`
+	margin-bottom: 1rem;
+	padding: 0;
+	width: fit-content;
+	text-decoration: none;
+	outline: none;
+	font-weight: 300;
+	color: #FF6161;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+`
+
 export const UserPic = styled.button`
 	display: flex;
 	align-items: center;

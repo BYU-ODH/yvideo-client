@@ -266,7 +266,6 @@ export default class ContentService {
 		try {
 			const result = await apiProxy.content.getSubtitles(id)
 			return result
-
 		} catch (error) {
 			console.error(error.message)
 			dispatch(this.actions.contentError(error))

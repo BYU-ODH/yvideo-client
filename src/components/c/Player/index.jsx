@@ -87,7 +87,7 @@ export default class Player extends PureComponent {
 			// setPlayed(played)
 			handleProgress({playedSeconds,played})
 			const test1 = performance.now()
-			console.log(`Performance ${(test1-test).toFixed(2)}ms`)
+			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		}
 
 		// console.log(`%c Player component ${url}`, 'color:red;')
