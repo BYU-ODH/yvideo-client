@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 // import Style, { } from './styles'
 
-import Recaptcha from 'react-recaptcha';
+import Recaptcha from 'react-recaptcha'
 
 const Captcha = (props) => {
 	const [isVerified, setIsVerified] = useState(false)
-	const _reCaptchaRef = React.createRef();
+	const _reCaptchaRef = React.createRef()
 
 	useEffect(() => {
 
@@ -25,14 +25,13 @@ const Captcha = (props) => {
 
 			sitekey={ process.env.REACT_APP_RECAPTCHA_SITEKEY }
 			// site key to config
-			render="explicit"
+			render='explicit'
 			verifyCallback={verifyCallback}
 			ref={_reCaptchaRef}
 		/>
-	);
+	)
 
 }
-
 
 export default Captcha
 
