@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount, render } from 'enzyme'
-import Player from '../../../lib/js/trackEditor/components/c/Player/index'
+import Player from '../../../../../../../lib/js/trackEditor/components/c/Player/index'
 import { BrowserRouter} from 'react-router-dom'
 
 
@@ -21,20 +21,15 @@ const props = {
 	},
 }
 
-describe(`Controls test`, () => {
-	it(`PlayPause onClick`, ()=> {
+describe(`Player test`, () => {
+	it(`Player`, ()=> {
 		let wrapper = mount(
 			<BrowserRouter>
 				<Player { ...props } />
 			</BrowserRouter>,
 		)
-		console.log(wrapper.debug())
-	})
-	it(`PlayPause onClick`, ()=> {
-		const mockCallBack = jest.fn()
-		let wrapper = shallow(<Player { ...props } onPlay={mockCallBack} />)
-		console.log(wrapper.debug())
-		wrapper.find('ReactPlayer').simulate('Play')
-
+		// console.log(wrapper.debug())
+		// wrapper.find('ReactPlayer').simulate('Duration', { duration: 12 })
+		wrapper.find("ReactPlayer").simulate('Progress')
 	})
 })
