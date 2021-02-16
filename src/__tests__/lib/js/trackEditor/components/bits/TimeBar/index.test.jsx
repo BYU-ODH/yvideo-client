@@ -14,8 +14,8 @@ const props = {
 	},
 }
 
-describe(`Controls test`, () => {
-	it(`PlayPause onClick`, ()=> {
+describe(`TimeBar test`, () => {
+	it(`TimeBar`, ()=> {
 		let wrapper = mount(
 			<BrowserRouter>
 				<TimeBar { ...props } />
