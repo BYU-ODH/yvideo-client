@@ -120,7 +120,7 @@ const Transcript = props => {
 			translate(foundWord, languageCodes[displaySubtitles.language])
 		}
 
-		console.log(displaySubtitles)
+		// console.log(displaySubtitles)
 
 		return (
 			<Style style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>

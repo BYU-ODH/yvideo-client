@@ -9,6 +9,7 @@ const Style = styled.div`
 	& #close-modal {
 		position: absolute;
 		right: 0px;
+		cursor: pointer;
 	}
 
 	& #words-container {

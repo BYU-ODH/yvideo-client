@@ -184,7 +184,16 @@ export default class SubtitlesService {
 
 		try {
 			const tempSub = {}
-			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			if(typeof subtitle['content'] !== 'string'){
+				tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			}
+			else {
+				let t = JSON.parse(subtitle[`content`])
+				t = JSON.parse(subtitle[`content`])
+				t = JSON.stringify(subtitle[`content`])
+				tempSub['content'] = t
+				// tempSub['content'] = subtitle['content']
+			}
 			tempSub[`language`] = subtitle[`language`]
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]

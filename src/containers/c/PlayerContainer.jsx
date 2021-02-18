@@ -241,20 +241,19 @@ const PlayerContainer = props => {
 	}
 
 	const handleChangeSubtitle = (index) => {
-		const temp = subtitles[index]
+		let temp = subtitles[index]
 		const currentContent = temp.content
-
-		try {
-
-			if(typeof currentContent === `string`){
-				console.log(`String type`)
+		if(typeof currentContent === `string`){
+			console.log(`String type`)
+			try {
 				temp.content = JSON.parse(subtitles[index].content)
+			} catch (e){
+				console.log(e)
 			}
 
-		} catch (e){
-			console.log(e)
 		}
-		console.log(temp)
+
+		console.log(temp.content)
 		setIndexToDisplay(index)
 		setDisplaySubtitles(temp)
 	}
