@@ -250,10 +250,7 @@ const PlayerContainer = props => {
 			} catch (e){
 				console.log(e)
 			}
-
 		}
-
-		console.log(temp.content)
 		setIndexToDisplay(index)
 		setDisplaySubtitles(temp)
 	}

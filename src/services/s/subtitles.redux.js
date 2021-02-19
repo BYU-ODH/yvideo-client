@@ -188,28 +188,20 @@ export default class SubtitlesService {
 				tempSub[`content`] = JSON.stringify(subtitle[`content`])
 			}
 			else {
-				let t = JSON.parse(subtitle[`content`])
-				t = JSON.parse(subtitle[`content`])
-				t = JSON.stringify(subtitle[`content`])
-				tempSub['content'] = t
-				// tempSub['content'] = subtitle['content']
+				tempSub['content'] = subtitle['content']
 			}
 			tempSub[`language`] = subtitle[`language`]
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
-			if(typeof subtitle['words'] !== 'string'){
-				// console.log(subtitle)
-				tempSub['words'] = subtitle['words'].join('; ')
-			}
-			else {
-				tempSub['words'] = subtitle['words']
-			}
+			tempSub['words'] = subtitle['words']
+			console.log(tempSub)
 
 			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {
 			dispatch(this.actions.subtitlesError(error))
 		}
 	}
+
 	activeUpdate = active => async (dispatch, _getState, { apiProxy }) => {
 		dispatch(this.actions.activeUpdate(active))
 	}

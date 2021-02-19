@@ -47,8 +47,14 @@ export default class HighlightWords extends PureComponent {
 			handleChangeActive,
 		} = this.props.handlers
 
+		let wordList = []
+
 		// console.table(subtitlesObjects[activeSubtitle])
 		// console.log(activeSubtitle)
+		if(subtitlesObjects[activeSubtitle] !== undefined){
+			wordList = subtitlesObjects[activeSubtitle].words.split(',')
+			console.log(wordList)
+		}
 
 
 		return (
@@ -104,8 +110,9 @@ export default class HighlightWords extends PureComponent {
 						</div>
 						<br/>
 						<div className='tags'>
-							{ subtitlesObjects[activeSubtitle] &&
-								subtitlesObjects[activeSubtitle].words.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)}
+							{
+								wordList.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)
+							}
 						</div>
 					</ImportantWords>
 				</div>

@@ -29,7 +29,7 @@ const HighlightWordsContainer = props => {
 
 	const [subtitlesObjects, setSubtitlesObject] = useState([])
 	const [activeSubtitle, setActiveSubtitle] = useState(0)
-	const [wordList, setWordList] = useState([]) //set wordlist from the list of the words for a specific subtitle
+	const [newList, setNewList] = useState(false) //set wordlist from the list of the words for a specific subtitle
 	const [word, setWord] = useState(``)
 	const [checkWord, setCheckWord] = useState('')
 	const [language, setLanguage] = useState('')
@@ -45,32 +45,40 @@ const HighlightWordsContainer = props => {
 		else {
 			let tempSubtitles = []
 			Object.keys(subtitles).forEach((item) => {
-				console.log(item)
-				subtitles[item].words = subtitles[item].words.split('; ')
 				tempSubtitles.push(subtitles[item])
 			})
 			tempSubtitles.sort((a, b) => (a.language > b.language) ? 1 : -1)
 			setSubtitlesObject(tempSubtitles)
 		}
-
 	}, [contentId, getSubtitles, subtitlesContentId])
 
 
 	const addWord = (e) => {
 		e.preventDefault()
-		const newWords = word.split(/[ ,]+/)
+		let currentSubtitle = subtitlesObjects[activeSubtitle]
+		let currentWords = currentSubtitle.words.concat(`, ${word}`)
+		currentSubtitle.words = currentWords
+
 		let allSub = subtitlesObjects
-		allSub[activeSubtitle].words = [allSub[activeSubtitle].words, ...newWords]
+		allSub[activeSubtitle] = currentSubtitle
 		setSubtitlesObject(allSub)
 		setWord(``)
 		//save changes to the back end
-		console.log(allSub)
-		updateSubtitle(allSub[activeSubtitle])
+		updateSubtitle(currentSubtitle)
 	}
 
 	const removeWord = e => {
-		setWordList(wordList.filter(item => item !== e.target.dataset.value))
+		let arrayWord = subtitlesObjects[activeSubtitle].words.split(',')
+		let filtedArray = arrayWord.filter(item => item !== e.target.dataset.value)
+		let currentSubtitle = subtitlesObjects[activeSubtitle]
+		currentSubtitle.words = filtedArray.join(',')
+
+		let allSub = subtitlesObjects
+		allSub[activeSubtitle] = currentSubtitle
+		setSubtitlesObject(allSub)
+		setNewList(!newList)
 		//save changes to the back end
+		updateSubtitle(currentSubtitle)
 	}
 
 	const changeWord = e => {
@@ -123,7 +131,6 @@ const HighlightWordsContainer = props => {
 
 	const viewstate = {
 		// files,
-		wordList,
 		word,
 		checkWord,
 		checkResponse,

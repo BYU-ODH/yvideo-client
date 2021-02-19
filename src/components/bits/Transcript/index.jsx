@@ -46,6 +46,8 @@ const Transcript = props => {
 		const [meanings, setMeanings] = useState('')
 
 		useEffect(() => {
+			setWords('')
+			setMeanings('')
 			let allWords = ''
 			let allMeanings = ''
 
@@ -71,7 +73,9 @@ const Transcript = props => {
 				return;
 			}
 
-			let words = displaySubtitles.words.split('; ')
+			console.log(displaySubtitles.words)
+			let words = displaySubtitles.words.split(/[, ]+/)
+			console.log(words)
 
 			let newString = text
 
@@ -82,16 +86,20 @@ const Transcript = props => {
 				//do not execute if the string is empty
 
 				let regex = new RegExp(`(^|[\\s|.|,|;])${word}([\\s|.|,|;|\\n]|$)`, "gmi");
+				// let regex = new RegExp(`(?:^|\\W)${word}(?:$|\\W)`)
 				// console.log(regex)
 				let matches = newString.match(regex)
 				if(matches !== null){
 					//highlight and push changes
 					matches.forEach(m => {
-						// console.log('Matched', m)
-						let rep = new RegExp(`${m}`, "gmi")
+						let cleanString = m.replace(/\s/g,'')
+						console.log('Matched', cleanString)
+						let rep = new RegExp(`${cleanString}`, "gmi")
+						console.log(rep)
 
-						if(m !== ". " && m !== ", " && m !== "" && m !== "."){
-							newString = newString.replace(rep, `<span class="highlight">${m}</span>`)
+
+						if(cleanString !== ". " && cleanString !== ", " && cleanString !== "" && cleanString !== "."){
+							newString = newString.replace(rep, `<span class="highlight">${cleanString}</span>`)
 						}
 
 					});
@@ -147,7 +155,7 @@ const Transcript = props => {
 					</div>
 					<br/><br/><br/>
 					<div className={'transcript-content'}>
-						{	displaySubtitles != null ? (
+						{	displaySubtitles !== null && displaySubtitles.content !== '' ? (
 							displaySubtitles['content'].map((element, index) =>
 									<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
 										key={index}
