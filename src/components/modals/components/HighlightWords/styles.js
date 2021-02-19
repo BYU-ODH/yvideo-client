@@ -3,8 +3,7 @@ import styled from 'styled-components'
 const Style = styled.div`
 	width: 60vw;
 	min-height: 35vh;
-	height: 35vh;
-	max-height: 60vh;
+	height: auto;
 
 	& #close-modal {
 		position: absolute;
@@ -29,6 +28,10 @@ const Style = styled.div`
 		display: flex;
 		align-items: center;
 		margin-bottom: 20px;
+
+		& p {
+			font-size: 1.4rem;
+		}
 	}
 
 	& h2 {
@@ -47,6 +50,13 @@ const Style = styled.div`
 export const Select = styled.select`
 	width: 100px;
 	height: 25px;
+
+	border: none;
+	border-bottom: 1px solid black;
+	background-color: transparent;
+	font-size: 1.4rem;
+	font-weight: 500;
+
 	:focus {
 		outline: none;
 	}
@@ -85,17 +95,23 @@ export const ImportantWords = styled.div`
 	padding-left: 10px;
 
 	& input {
-			width: 120px;
-			border-top: none;
-			border-right: none;
-			border-left: none;
-			border-bottom: 1.2px solid rgba(0, 0, 0, 0.5);
-			margin-right: 5px;
+		width: 120px;
+		border-top: none;
+		border-right: none;
+		border-left: none;
+		border-bottom: 1.2px solid rgba(0, 0, 0, 0.5);
+		margin-right: 5px;
 
-			:focus {
-				outline: none;
-			}
+		:focus {
+			outline: none;
 		}
+	}
+
+	& .tags {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+	}
 `
 export const Button = styled.button`
 	border-radius: 10px;

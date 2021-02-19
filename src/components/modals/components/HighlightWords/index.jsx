@@ -91,12 +91,11 @@ export default class HighlightWords extends PureComponent {
 						</TranslationCheck><br/>
 						<Translation>
 							<h4>Translations:</h4>
-							<br/>
 							<p>{parse(translationWords)}</p>
 							<br/>
 							<h4>Meanings:</h4>
-							<br/>
 							<p>{parse(translationMeanings)}</p>
+							<br/>
 						</Translation>
 					</div>
 					<ImportantWords>
@@ -111,11 +110,12 @@ export default class HighlightWords extends PureComponent {
 						<br/>
 						<div className='tags'>
 							{
-								wordList.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)
+								wordList.sort((a, b) => (a > b) ? 1 : -1).map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)
 							}
 						</div>
 					</ImportantWords>
 				</div>
+				<br/>
 				<p><i>**Currently supported languages for translation are: {
 					Object.keys(supportedLanguages).map((lang, index) =>
 						index != Object.keys(supportedLanguages).length - 1 ? (`${lang}, `) : (lang))
