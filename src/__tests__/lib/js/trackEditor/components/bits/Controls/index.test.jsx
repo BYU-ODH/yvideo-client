@@ -26,7 +26,6 @@ describe(`Controls test`, () => {
 				<Controls { ...props } />
 			</BrowserRouter>,
 		)
-		console.log(wrapper.debug())
 		const time = wrapper.find(Time)
 		expect(time.text()).toEqual(`02:15`)
 
@@ -44,7 +43,6 @@ describe(`Controls test`, () => {
 				<Controls { ...props } />
 			</BrowserRouter>,
 		)
-		console.log(wrapper.debug())
 		const time = wrapper.find(Time)
 		expect(time.text()).toEqual(`02:15`)
 

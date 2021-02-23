@@ -11,6 +11,5 @@ describe(`Timeline test`, () => {
 				<Timeline />
 			</BrowserRouter>,
 		)
-		console.log(wrapper.debug())
 	})
 })
