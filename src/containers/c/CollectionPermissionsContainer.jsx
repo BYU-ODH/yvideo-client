@@ -9,7 +9,6 @@ import { CollectionPermissions } from 'components'
 
 import AddBatchNetidsContainer from 'components/modals/containers/AddBatchNetidsContainer'
 
-
 const CollectionPermissionsContainer = props => {
 
 	const { roleEndpoints } = services.collectionService
@@ -30,23 +29,25 @@ const CollectionPermissionsContainer = props => {
 	})
 
 	const [user, setUser] = useState({
-		username: '',
+		username: ``,
 		role: 2,
 	})
 
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
 	const [loaded, setLoaded] = useState(false)
+	const [userCount, setUserCount] = useState(0)
 
 	useEffect(() => {
-		// console.log(collection.id)
-		// console.log('called')
 		getCollectionInfo(collection.id)
 		if(loaded === true) {
 			setTimeout(() => {
 				setLoaded(false)
 			}, 1000)
 		}
+
+		if(users !== undefined && userCount !== users.length)
+			console.log(users)
 
 	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses])
 
@@ -64,24 +65,22 @@ const CollectionPermissionsContainer = props => {
 			})
 		},
 		handleSectionChange: e => {
-			if(e.target.value.length > 0){
+			if(e.target.value.length > 0)
 				setDisable(false)
-			}
-			else {
+			 else
 				setDisable(true)
-			}
+
 			setCourse({
 				...course,
 				section: e.target.value,
 			})
 		},
 		handleUserChange: e => {
-			if(e.target.value.length > 1){
+			if(e.target.value.length > 1)
 				setDisableUser(false)
-			}
-			else {
+			 else
 				setDisableUser(true)
-			}
+
 			setUser({
 				...user,
 				username: e.target.value,
@@ -130,9 +129,8 @@ const CollectionPermissionsContainer = props => {
 				component: AddBatchNetidsContainer,
 				props: { collectionId: collection.id, setLoaded },
 			})
-		}
+		},
 	}
-
 
 	const viewstate = {
 		collection,

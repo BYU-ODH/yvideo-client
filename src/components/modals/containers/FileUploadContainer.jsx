@@ -14,11 +14,13 @@ const FileUploadContainer = props => {
 
 	const {
 		// resource id from the Resource Overview Container
+		resources,
 		resourceId,
 		toggleModal,
 		uploadFile,
 		getFiles,
 		langs,
+		filesCache,
 	} = props
 
 	const [selectedFile, setSelectedFile] = useState()
@@ -33,17 +35,27 @@ const FileUploadContainer = props => {
 
 	const [isOther, setIsOther] = useState(false)
 
+	const [doesGetFiles, setDoesGetFiles] = useState(false)
+
+	const [fileCount, setFileCount] = useState(0)
+
 	useEffect(() => {
 
-		if(isUploadComplete){
-			getUploadedFiles()
+		if(Object.keys(filesCache).length > 0)
 			toggleModal()
+		// if(fileCount !== resources[resourceId].files.length && Object.keys(filesCache).length > 0 && doesGetFiles)
+		// 	toggleModal()
+
+		if(fileCount !== resources[resourceId].files.length && isUploadComplete){
+			setFileCount(resources[resourceId].files.length)
+			getUploadedFiles()
 		}
 
-	}, [selectedFile, isUploadComplete])
+	}, [selectedFile, isUploadComplete, doesGetFiles, fileCount, Object.keys(filesCache).length])
 
 	async function getUploadedFiles() {
 		setIsUploadComplete(false)
+		setDoesGetFiles(true)
 		await getFiles(resourceId)
 	}
 
@@ -73,7 +85,6 @@ const FileUploadContainer = props => {
 		toggleModal()
 	}
 
-	// TODO: need to change this to upload when hit the upload. progress when they hit upload button.
 	const handleFileUpload = async (e) =>{
 		e.preventDefault()
 
@@ -84,7 +95,6 @@ const FileUploadContainer = props => {
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, ``)
 
-		// uploadFile(formData)
 		uploadFile(formData, (event) => {
 			const percent = Math.round(100 * event.loaded / event.total)
 			setProgress(percent)
@@ -118,6 +128,7 @@ const mapStateToProps = store => ({
 	modal: store.interfaceStore.modal,
 	resources: store.resourceStore.cache,
 	langs: store.languageStore.cache.langs,
+	filesCache: store.fileStore.cache,
 })
 
 const mapDispatchToProps = {
