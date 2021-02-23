@@ -65,7 +65,7 @@ const ResourceOverviewContainer = props => {
 	const handleFileUploadToResource = async() => {
 
 		// need to set up languages on store before post new one
-		await getLangs()
+		// await getLangs()
 
 		props.toggleModal({
 			component: FileUploadContainer,
@@ -82,12 +82,15 @@ const ResourceOverviewContainer = props => {
 
 		await getResourceFiles(resource.id)
 
+		// console.log(`object`)
+
 		if (editing) {
 			await editResource(resourceState, resourceState.id)
 			setShowing(false)
-			setTimeout(() => {
-				setEditing(false)
-			}, 500)
+			setEditing(false)
+			// setTimeout(() => {
+			// 	setEditing(false)
+			// }, 500)
 		} else
 			setEditing(true)
 

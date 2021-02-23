@@ -29,7 +29,7 @@ export const Search = styled.form`
 		outline: none;
 		padding-left: 1rem;
 		padding-right: 1rem;
-		width: 18rem;
+		width: 14rem;
 		z-index: 1;
 	}
 `
@@ -56,14 +56,14 @@ export const DepartmentSelect = styled.input`
 	outline: none;
 	padding-left: .6rem;
 	padding-right: 1.2rem;
-	width: 18rem;
+	width: 10rem;
 `
 
 export const CatalogInput = styled.input`
 	background: ${props => props.disabled ? `#eee` : `white`};
 
 	height: 2.6rem;
-	width: 18rem;
+	width: 10rem;
 
 	border: none;
 	border-radius: 1.3rem;
@@ -83,7 +83,7 @@ export const SectionInput = styled.input`
 	background: ${props => props.disabled ? `#eee` : `white`};
 
 	height: 2.6rem;
-	width: 18rem;
+	width: 10rem;
 
 	border: none;
 	border-radius: 1.3rem;
@@ -204,5 +204,20 @@ export const Loading = styled.td`
 		css`
 			animation: ${rotate} 2.5s infinite;
 		`
-	}
+}
+`
+
+export const UserListTable = styled.div`
+
+`
+
+export const CourseTable = styled.div`
+	margin-right: 5rem;
+`
+
+export const UserList = styled.div`
+	margin-bottom: 5rem;
+`
+
+export const TableHeader = styled.div`
 `
