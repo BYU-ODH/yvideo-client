@@ -14,6 +14,5 @@ describe(`Controls test`, () => {
 
 	it(`wrapper`, ()=> {
 		const wrapper = shallow(<TrackEditorContainer />).dive()
-		// console.log(wrapper.debug())
 	})
 })

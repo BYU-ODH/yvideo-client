@@ -11,6 +11,5 @@ describe(`TrackHandler test`, () => {
 				<TrackHandler />
 			</BrowserRouter>,
 		)
-		console.log(wrapper.debug())
 	})
 })
