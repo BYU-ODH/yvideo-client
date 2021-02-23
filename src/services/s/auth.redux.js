@@ -92,6 +92,7 @@ export default class AuthService {
 				// we got a valid session id so user should login automatically
 				user = await apiProxy.user.get()
 			}
+
 			dispatch(this.actions.authGet(user))
 		} catch (error) {
 			dispatch(this.actions.authError(error))
