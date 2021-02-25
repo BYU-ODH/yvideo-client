@@ -40,13 +40,7 @@ const FileUploadContainer = props => {
 	const [fileCount, setFileCount] = useState(0)
 
 	useEffect(() => {
-
-		if(Object.keys(filesCache).length > 0)
-			toggleModal()
-		// if(fileCount !== resources[resourceId].files.length && Object.keys(filesCache).length > 0 && doesGetFiles)
-		// 	toggleModal()
-
-		if(fileCount !== resources[resourceId].files.length && isUploadComplete){
+		if(isUploadComplete){
 			setFileCount(resources[resourceId].files.length)
 			getUploadedFiles()
 		}
@@ -56,7 +50,13 @@ const FileUploadContainer = props => {
 	async function getUploadedFiles() {
 		setIsUploadComplete(false)
 		setDoesGetFiles(true)
-		await getFiles(resourceId)
+
+		// this causes the problem, it calls before updates db
+		// await getFiles(resourceId)
+		setTimeout(() => {
+			getFiles(resourceId)
+			toggleModal()
+		}, 3000)
 	}
 
 	const handleFileChange = e =>{
