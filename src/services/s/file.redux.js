@@ -99,12 +99,12 @@ export default class FileService {
 
 	// thunks
 
-	upload = (file, event) => (dispatch, getState, { apiProxy }) => {
+	upload = (file, event) => async(dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.fileStart())
 
 		try {
-			const result = apiProxy.file.post(file, event)
+			const result = await apiProxy.file.post(file, event)
 
 			dispatch(this.actions.fileUpload(result))
 
@@ -120,7 +120,6 @@ export default class FileService {
 
 		try {
 
-			console.log(id)
 			const result = await apiProxy.file.delete(id)
 
 		} catch (error) {

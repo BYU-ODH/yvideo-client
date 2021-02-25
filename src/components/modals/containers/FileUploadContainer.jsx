@@ -14,11 +14,13 @@ const FileUploadContainer = props => {
 
 	const {
 		// resource id from the Resource Overview Container
+		resources,
 		resourceId,
 		toggleModal,
 		uploadFile,
 		getFiles,
 		langs,
+		filesCache,
 	} = props
 
 	const [selectedFile, setSelectedFile] = useState()
@@ -33,18 +35,28 @@ const FileUploadContainer = props => {
 
 	const [isOther, setIsOther] = useState(false)
 
-	useEffect(() => {
+	const [doesGetFiles, setDoesGetFiles] = useState(false)
 
+	const [fileCount, setFileCount] = useState(0)
+
+	useEffect(() => {
 		if(isUploadComplete){
+			setFileCount(resources[resourceId].files.length)
 			getUploadedFiles()
-			toggleModal()
 		}
 
-	}, [selectedFile, isUploadComplete])
+	}, [selectedFile, isUploadComplete, doesGetFiles, fileCount, Object.keys(filesCache).length])
 
 	async function getUploadedFiles() {
 		setIsUploadComplete(false)
-		await getFiles(resourceId)
+		setDoesGetFiles(true)
+
+		// this causes the problem, it calls before updates db
+		// await getFiles(resourceId)
+		setTimeout(() => {
+			getFiles(resourceId)
+			toggleModal()
+		}, 3000)
 	}
 
 	const handleFileChange = e =>{
@@ -68,7 +80,11 @@ const FileUploadContainer = props => {
 		setCustomLang(e.target.value)
 	}
 
-	// TODO: need to change this to upload when hit the upload. progress when they hit upload button.
+	const handleCancelUpload = e => {
+		e.preventDefault()
+		toggleModal()
+	}
+
 	const handleFileUpload = async (e) =>{
 		e.preventDefault()
 
@@ -79,7 +95,6 @@ const FileUploadContainer = props => {
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, ``)
 
-		// uploadFile(formData)
 		uploadFile(formData, (event) => {
 			const percent = Math.round(100 * event.loaded / event.total)
 			setProgress(percent)
@@ -101,6 +116,7 @@ const FileUploadContainer = props => {
 		handleFileVersion,
 		handleFileUpload,
 		handleOtherLanguage,
+		handleCancelUpload,
 		toggleModal,
 	}
 
@@ -112,6 +128,7 @@ const mapStateToProps = store => ({
 	modal: store.interfaceStore.modal,
 	resources: store.resourceStore.cache,
 	langs: store.languageStore.cache.langs,
+	filesCache: store.fileStore.cache,
 })
 
 const mapDispatchToProps = {

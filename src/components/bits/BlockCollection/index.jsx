@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { BlockItem } from 'components/bits'
 
-import { Container, Header, SlideWrapper, Arrow, BlockEnd, Button } from './styles.js'
+import { Container, Header, SlideWrapper, Arrow, BlockEnd } from './styles.js'
 
 export default class BlockCollection extends Component {
 	constructor(props) {
