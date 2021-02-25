@@ -75,6 +75,17 @@ const CollectionPermissionsContainer = props => {
 				section: e.target.value,
 			})
 		},
+		handleAuditorChange: e => {
+			if(e.target.value.length > 1)
+				setDisableUser(false)
+			 else
+				setDisableUser(true)
+
+			setUser({
+				...user,
+				username: e.target.value,
+			})
+		},
 		handleUserChange: e => {
 			if(e.target.value.length > 1)
 				setDisableUser(false)
@@ -105,12 +116,19 @@ const CollectionPermissionsContainer = props => {
 			})
 		},
 		removeCourse: id => {
-			// console.log(id)
 			updateCollectionPermissions(collection.id, roleEndpoints.removeCourse, id)
 
 		},
 		addUser: e => {
-			// console.log(state.taFaculty)
+			e.preventDefault()
+			updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
+			setDisableUser(true)
+			setUser({
+				...user,
+				username: ``,
+			})
+		},
+		addAuditor: e => {
 			e.preventDefault()
 			updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
 			setDisableUser(true)
@@ -120,7 +138,6 @@ const CollectionPermissionsContainer = props => {
 			})
 		},
 		removeUser: value => {
-			// console.log(value)
 			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, value)
 
 		},
