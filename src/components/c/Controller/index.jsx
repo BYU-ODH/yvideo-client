@@ -92,7 +92,7 @@ const Controller = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			const test = performance.now()
+			// const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
@@ -109,8 +109,8 @@ const Controller = props => {
 			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
 			// setPlayed(played)
 			setElapsed(playedSeconds)
-			const test1 = performance.now()
-			console.log(`Performance ${(test1-test).toFixed(2)}ms`)
+			// const test1 = performance.now()
+			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
@@ -203,6 +203,7 @@ const Controller = props => {
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleUpdateCensorResize: (delta, pos)=>{
+			console.log(videoRef.current.offsetWidth,ref.current)
 			const event = events[eventToEdit]
 			console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
 			if (event.type === `Censor`){

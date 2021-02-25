@@ -103,6 +103,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 - `REACT_APP_RECAPTCHA_SITEKEY` - reCAPTCHA secret key for site
 
 If needed, set these variables as outlined in the .env.example file
+For development, a .env.development file is needed.
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

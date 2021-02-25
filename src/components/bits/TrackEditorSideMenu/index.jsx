@@ -227,12 +227,12 @@ const TrackEditorSideMenu = props => {
 							<tbody>
 								{event.type === `Censor`?
 									Object.keys(event.position).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-										<tr class={activeCensorPosition === item ? `censorActive` : ``} key={item}>
+										<tr class={activeCensorPosition === item ? `censorActive` : ``} key={item} onClick={()=>setActiveCensorPosition(item)}>
 											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' value={`${item}`}/></td>
-											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
 											<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
 										</tr>
 									))
@@ -248,7 +248,7 @@ const TrackEditorSideMenu = props => {
 					</div>
 
 					<button className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></button><br/><br/><br/><br/>
-					<button className='sideButton' onClick={handleSaveCensor}>Save Censor</button>
+					{/* <button className='sideButton' onClick={handleSaveCensor}>Save Censor</button> */}
 				</div>
 			) : null
 			}
