@@ -26,6 +26,8 @@ const ResourceOverviewContainer = props => {
 		updateAllFileVersions,
 		fileId,
 		getLangs,
+		getFiles,
+		filesCache,
 	} = props
 
 	const [editing, setEditing] = useState(false)
@@ -54,18 +56,18 @@ const ResourceOverviewContainer = props => {
 					...resourceState,
 					allFileVersions: langs,
 				})
-
 				updateAllFileVersions(resourceState, files)
 			}
 		}
-	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions])
+
+	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceCache[resource.id].files])
 
 	if (objectIsEmpty(resource)) return null
 
 	const handleFileUploadToResource = async() => {
 
 		// need to set up languages on store before post new one
-		await getLangs()
+		// await getLangs()
 
 		props.toggleModal({
 			component: FileUploadContainer,
@@ -79,15 +81,12 @@ const ResourceOverviewContainer = props => {
 		// need to set up languages on store before editing
 
 		await getLangs()
-
 		await getResourceFiles(resource.id)
 
 		if (editing) {
 			await editResource(resourceState, resourceState.id)
 			setShowing(false)
-			setTimeout(() => {
-				setEditing(false)
-			}, 500)
+			setEditing(false)
 		} else
 			setEditing(true)
 
@@ -209,6 +208,7 @@ const mapStateToProps = store => ({
 	thisfiles: store.fileStore.cache,
 	fileId: store.fileStore.cache,
 	resourceCache: store.resourceStore.cache,
+	filesCache: store.fileStore.cache,
 })
 
 const mapDispatchToProps = {
@@ -218,6 +218,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	getResourceFiles: resourceService.getFiles,
 	getLangs: languageService.get,
+	getFiles: resourceService.getFiles,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceOverviewContainer)

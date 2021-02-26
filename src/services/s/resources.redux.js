@@ -370,6 +370,8 @@ export default class ResourceService {
 
 			const result = await apiProxy.resources.files(id)
 
+			console.log(result)
+
 			dispatch(this.actions.resourcesFiles(id, result))
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))

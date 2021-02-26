@@ -473,24 +473,27 @@ const apiProxy = {
 			 */
 			get: async () => {
 
-				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
+				const collections_result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 					.then(async res => {
 						await updateSessionId(res.headers[`session-id`])
 						return res.data
 					})
 
-				return result.reduce((map, item) => {
-					item[`name`] = item[`collection-name`]
+				return collections_result.reduce((map, collection) => {
+					collection[`name`] = collection[`collection-name`]
 
 					const temp = []
-					item[`content`].forEach(element => {
-						temp.push(new Content(element))
-					})
 
-					item[`content`] = temp
+					if(collection[`content`].length > 0){
+						collection[`content`].forEach(element => {
+							temp.push(new Content(element))
+						})
+					}
 
-					delete item[`collection-name`]
-					map[item.id] = item
+					collection[`content`] = temp
+
+					delete collection[`collection-name`]
+					map[collection.id] = collection
 
 					return map
 				}, {})

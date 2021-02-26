@@ -51,6 +51,7 @@ export default class Content {
 				annotationDocument: this.stringToArray(obj[`annotations`]),
 				showCaptions: obj[`allow-captions`],
 				targetLanguages: obj[`file-version`],
+				allowNote: obj[`allow-notes`],
 			}
 		}
 
@@ -60,8 +61,6 @@ export default class Content {
 		const array = []
 
 		const temp = string.split(`; `)
-
-		// console.log(temp)
 
 		temp.forEach(element => {
 			if(element !== ``)
