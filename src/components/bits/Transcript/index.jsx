@@ -73,9 +73,9 @@ const Transcript = props => {
 				return;
 			}
 
-			console.log(displaySubtitles.words)
+			// console.log(displaySubtitles.words)
 			let words = displaySubtitles.words.split(/[, ]+/)
-			console.log(words)
+			// console.log(words)
 
 			let newString = text
 
@@ -93,9 +93,9 @@ const Transcript = props => {
 					//highlight and push changes
 					matches.forEach(m => {
 						let cleanString = m.replace(/\s/g,'')
-						console.log('Matched', cleanString)
+						// console.log('Matched', cleanString)
 						let rep = new RegExp(`${cleanString}`, "gmi")
-						console.log(rep)
+						// console.log(rep)
 
 
 						if(cleanString !== ". " && cleanString !== ", " && cleanString !== "" && cleanString !== "."){
@@ -111,21 +111,20 @@ const Transcript = props => {
 		}
 
 		const getTranslation = (e) => {
-			let elementText = e.target.innerText
-			let wordArray = elementText.split(' ')
-			let foundWord = ''
-			if(wordArray.length < 4){
+			if(e.target.tagName.toLowerCase() !== 'p'){
+				let elementText = e.target.innerText
+				let wordArray = elementText.split(' ')
+				// console.log(wordArray)
+				let foundWord = ''
+				//we only want to translate if and only if the word is highlighted
 				//single possible word
 				//there would only be one valid word in this array
 				wordArray.forEach(word => {
-					if(word.length >= 2){
-						//valid word found get translation
-						console.log(word)
-						foundWord = word
-					}
+					//console.log(word)
+					foundWord = word
 				})
+				translate(foundWord, languageCodes[displaySubtitles.language])
 			}
-			translate(foundWord, languageCodes[displaySubtitles.language])
 		}
 
 		// console.log(displaySubtitles)
@@ -175,8 +174,8 @@ const Transcript = props => {
 						<br/>
 					</div>
 				</div>
+				<hr style={{ width: '120%'}}/>
 				<div className={isMobile ? ('transcript-translation translation-mobile') : ('transcript-translation')}>
-					<hr style={{ width: '120%'}}/>
 					<br/>
 					<h2>Quick Translation</h2><br/>
 					<div id="translation-box">

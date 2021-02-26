@@ -225,8 +225,15 @@ const TrackEditor = props => {
 		// console.log(`setting video length`)
 		setVideoLength(duration)
 		const tempSubs = subs
-		for (let i = 0; i < tempSubs.length; i++)
-			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
+		for (let i = 0; i < tempSubs.length; i++){
+			try {
+				tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
+			}
+			catch (e){
+				tempSubs[i]['content'] = []
+				console.log(e)
+			}
+		}
 
 		// console.log(`he re 1`)
 		setSubs(tempSubs)

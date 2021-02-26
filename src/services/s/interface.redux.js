@@ -224,7 +224,7 @@ export default class InterfaceService {
 	getTranslation = (word, language) => async (dispatch, getState, { apiProxy }) => {
 		try {
 			const json = await apiProxy.translation.getTranslation(word, language)
-			console.log(json)
+			// console.log(json)
 			dispatch(this.actions.getTranslation(json))
 		}
 		catch (e) {
