@@ -441,27 +441,26 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					console.log(`step 1`)
 					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/mchen95/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
-						console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']
 					// CALL TO GET THE USER ONCE THE SESSION ID HAS BEEN SET
-				}
-				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
-				const result = await axios.get(url, {
-					withCredentials: true,
-					headers: {
-						'Content-Type': `application/json`,
-						'session-id': window.clj_session_id,
-					},
-				}).then(async res => {
-					await updateSessionId(res.headers[`session-id`])
-					return res
-				})
+				} else{
+					const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
+					const result = await axios.get(url, {
+						withCredentials: true,
+						headers: {
+							'Content-Type': `application/json`,
+							'session-id': window.clj_session_id,
+						},
+					}).then(async res => {
+						await updateSessionId(res.headers[`session-id`])
+						return res
+					})
 
-				return new User(result.data)
+					return new User(result.data)
+				}
 			} catch (error) {
 				console.error(error)
 			}
