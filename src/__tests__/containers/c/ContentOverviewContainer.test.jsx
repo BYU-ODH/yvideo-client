@@ -5,17 +5,19 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
 
+
 const content = testutil.content[0]
 
-const props = {
+let props = {
 	content,
 	removeCollectionContent: jest.fn(),
 	updateContent: jest.fn(),
+	adminRemoveCollectionContent: jest.fn(),
+	isLabAssistant: false
 }
 
 // TODO: need to fix `UnhandledPromiseRejectionWarning`. This is from the not mocked functions from the child componenet
 describe(`manage collection test`, () => {
-
 	let wrapper
 	beforeEach(() => {
 		wrapper = mount(
@@ -28,7 +30,6 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`ContentOverviewContainer should render`, ()=> {
-
 		// test viewstate made correctly
 		const viewstate = wrapper.find(`ContentOverview`).props().viewstate
 		expect(viewstate.content.name).toBe(`testname`)
@@ -75,6 +76,9 @@ describe(`manage collection test`, () => {
 		setTimeout(() => {
 			expect(props.removeCollectionContent).toHaveBeenCalled()
 		}, 500)
+
+		//if isLabAssistant = true
+
 	})
 
 	it(`save event handler test`, ()=> {
@@ -98,17 +102,17 @@ describe(`manage collection test`, () => {
 		// click edit button trigger drop down menu.
 		expect(wrapper.find({"className" : `tag-input`}).length).toBe(0)
 		wrapper.find({"className" : `edit-button`}).at(0).simulate(`click`)
-		expect(wrapper.find({"className" : `tag-input`}).length).toBe(1)
+		expect(wrapper.find({"className" : `tag-input`}).length).toBe(2)
 
 		// add input and add tags
-		wrapper.find({"className" : `tag-input`}).simulate(`change`, {target: {value: `testaddedtag`}})
-		expect(wrapper.find(`Tag`).length).toBe(0)
-		wrapper.find({"className" : `add-tag`}).simulate(`click`)
+		wrapper.find({"className" : `tag-input`}).at(0).simulate(`change`, {target: {value: `testaddedtag`}})
 		expect(wrapper.find(`Tag`).length).toBe(1)
+		wrapper.find({"className" : `add-tag`}).at(0).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(2)
 
 		// remove tag
-		wrapper.find(`Tag`).find(`button`).simulate(`click`)
-		expect(wrapper.find(`Tag`).length).toBe(0)
+		wrapper.find(`Tag`).find(`button`).at(0).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(1)
 
 		// definition toggle
 		expect(wrapper.find({"className" : `definitions-toggle`}).props().on).toBe(false)
@@ -119,5 +123,18 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find({"className" : `captions-toggle`}).props().on).toBe(false)
 		wrapper.find({"className" : `captions-toggle`}).simulate(`click`)
 		expect(wrapper.find({"className" : `captions-toggle`}).props().on).toBe(true)
+
+		// add input and add words
+		wrapper.find({"className" : `tag-input`}).at(1).simulate(`change`, {target: {value: `testaddedword`}})
+		expect(wrapper.find(`Tag`).length).toBe(1)
+		wrapper.find({"className" : `add-tag`}).at(1).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(2)
+
+		// add word
+		wrapper.find(`Tag`).find(`button`).at(1).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(1)
+
+		//edit button
+		console.log(wrapper.debug())
 	})
 })

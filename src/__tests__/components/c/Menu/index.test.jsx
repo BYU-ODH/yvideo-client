@@ -53,7 +53,7 @@ describe(`MenuContainer test`, () => {
 					expect(children).toBe(`Manage Collections`)
 			}
 			if(to === `/feedback`)
-				expect(children).toBe(`Feedback / Issues`)
+				expect(children).toBe(`Contact Us`)
 		})
 	})
 })

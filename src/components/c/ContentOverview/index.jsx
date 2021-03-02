@@ -77,8 +77,8 @@ export default class ContentOverview extends PureComponent {
 						}
 						{editing ?
 							<div>
-								<PublishButton published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
-								<RemoveButton onClick={handleRemoveContent}>Delete</RemoveButton>
+								<PublishButton className='publish-button' published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
+								<RemoveButton className='remove-button' onClick={handleRemoveContent}>Delete</RemoveButton>
 							</div>
 							:
 							<em>{content.published ? `Published` : `Unpublished`}</em>
