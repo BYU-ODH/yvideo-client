@@ -64,8 +64,6 @@ describe(`CollectionPermissions test`, () => {
 			</BrowserRouter>,
 		)
 		expect(wrapper.contains(<h4>Courses</h4>)).toEqual(true)
-		expect(wrapper.contains(<h4>TA / Faculty / Auditing</h4>)).toEqual(true)
-		expect(wrapper.contains(<h4>Current Courses</h4>)).toEqual(true)
 		expect(wrapper.contains(<th>Department</th>)).toEqual(true)
 		expect(wrapper.contains(<th>Catalog</th>)).toEqual(true)
 		expect(wrapper.contains(<th>Section</th>)).toEqual(true)

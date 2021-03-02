@@ -83,8 +83,8 @@ class ContentOverview extends PureComponent {
 						}
 						{editing ?
 							<div>
-								<PublishButton published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
-								<RemoveButton onClick={handleRemoveContent}>Delete</RemoveButton>
+								<PublishButton className='publish-button' published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
+								<RemoveButton className='remove-button' onClick={handleRemoveContent}>Delete</RemoveButton>
 							</div>
 							:
 							<em>{content.published ? `Published` : `Unpublished`}</em>
@@ -116,8 +116,6 @@ class ContentOverview extends PureComponent {
 							<div className='tags'>
 								{keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
 							</div>
-							{console.log(keywords)}
-
 							<h4>Words</h4>
 							<div style={{ display: `flex` }}>
 								<input type='text' placeholder='Add word...' onChange={changeWord} value={word} className='tag-input' />

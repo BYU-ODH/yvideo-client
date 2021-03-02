@@ -25,10 +25,6 @@ const props = {
 
 describe(`TrackEditor test`, () => {
 	it(`TrackEditor`, ()=> {
-		let wrapper = mount(
-			<BrowserRouter>
-				<TrackEditor { ...props } />
-			</BrowserRouter>,
-		)
+		let wrapper = shallow(<TrackEditor { ...props } />)
 	})
 })
