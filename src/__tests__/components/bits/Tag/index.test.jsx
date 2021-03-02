@@ -48,6 +48,5 @@ describe(`tag test`, () => {
 				<Tag {...props} />
 			</BrowserRouter>,
 		)
-		console.log(wrapper.debug())
 	})
 })

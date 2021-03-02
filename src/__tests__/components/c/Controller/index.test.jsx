@@ -20,7 +20,7 @@ const played = 0
 describe(`Controller test`, () => {
 	it(`simulate onClick`, ()=> {
 			const wrapper = shallow(<Controller {...props}/>)
-			console.log(wrapper.debug())
+			// console.log(wrapper.debug())
 
 		wrapper.find('button').at(0).simulate('click')
 		wrapper.find('button').at(1).simulate('click')

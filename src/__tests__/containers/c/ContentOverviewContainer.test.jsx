@@ -135,6 +135,5 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find(`Tag`).length).toBe(1)
 
 		//edit button
-		console.log(wrapper.debug())
 	})
 })
