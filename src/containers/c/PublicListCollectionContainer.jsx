@@ -21,6 +21,7 @@ const PublicListCollectionContainer = props => {
 
 	useEffect(() => {
 		toggleTip()
+		getIsPublicCollectionSubscribed(collection.id, user.id)
 		setHeaderBorder(false)
 
 	}, [isOpen, isSubscribed])

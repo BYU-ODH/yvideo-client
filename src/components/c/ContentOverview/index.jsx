@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { resourceService, contentService } from 'services'
+import { resourceService, contentService, interfaceService } from 'services'
 
 import { SwitchToggle, Tag, Spinner, LazyImage } from 'components/bits'
 
@@ -20,14 +20,13 @@ import Style, {
 	InnerContainer,
 } from './styles'
 
-class ContentOverview extends PureComponent {
+export default class ContentOverview extends PureComponent {
 	render() {
 
 		const {
 			editing,
 			content,
 			tag,
-			word,
 		} = this.props.viewstate
 
 		const {
@@ -40,9 +39,7 @@ class ContentOverview extends PureComponent {
 			handleToggleSettings,
 			handleDescription,
 			changeTag,
-			addWord,
-			removeWord,
-			changeWord,
+			handleShowWordsModal
 		} = this.props.handlers
 
 		const {
@@ -57,7 +54,6 @@ class ContentOverview extends PureComponent {
 
 		const {
 			description,
-			words,
 		} = content
 
 		// const allowDefinitions = content['allow-definitions'] // <-- ?? -Matthew
@@ -105,7 +101,6 @@ class ContentOverview extends PureComponent {
 								<SwitchToggle className='captions-toggle'on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
 							</h4>
 						</Column>
-
 						<Column>
 							<h4>Tags</h4>
 							<div style={{ display: `flex` }}>
@@ -116,21 +111,17 @@ class ContentOverview extends PureComponent {
 							<div className='tags'>
 								{keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
 							</div>
-
-							<h4>Words</h4>
-							<div style={{ display: `flex` }}>
-								<input type='text' placeholder='Add word...' onChange={changeWord} value={word} className='tag-input' />
-								<button className={`add-tag`} onClick={addWord}>Add</button>
-							</div>
-							<br/>
-							<div className='tags'>
-								{words.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)}
-							</div>
 						</Column>
-
 						<Column>
 							<h4>Description</h4>
 							<textarea rows={4} onChange={handleDescription} value={description} />
+						</Column>
+						<Column>
+							<h4>Important Words</h4>
+							<p>Add a list of important words to be highlighted in the transcript. The highlighted
+							words will have quick translation on click if there is
+							one available.</p><br/>
+							<button className={`words-modal`} onClick={handleShowWordsModal}>OPEN</button>
 						</Column>
 					</InnerContainer>
 				}
@@ -138,14 +129,3 @@ class ContentOverview extends PureComponent {
 		)
 	}
 }
-
-const mapStateToProps = state => ({
-	resourceCache: state.resourceCache,
-})
-
-const mapDispatchToProps = {
-	getResources: resourceService.getResources,
-	updateContent: contentService.updateContent,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContentOverview)

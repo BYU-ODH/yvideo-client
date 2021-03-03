@@ -171,9 +171,9 @@ const TrackEditor = props => {
 			largestLayer = eventsArray[eventsArray.length-1].layer
 		}
 
-		eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
+		//eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
 
-		// Find the largets layer number
+		//Find the largets layer number
 		const initialLayers = []
 
 		// new Array(largestLayer+1).fill(0)
@@ -225,8 +225,15 @@ const TrackEditor = props => {
 		// console.log(`setting video length`)
 		setVideoLength(duration)
 		const tempSubs = subs
-		for (let i = 0; i < tempSubs.length; i++)
-			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
+		for (let i = 0; i < tempSubs.length; i++){
+			try {
+				tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
+			}
+			catch (e){
+				tempSubs[i]['content'] = []
+				console.log(e)
+			}
+		}
 
 		// console.log(`he re 1`)
 		setSubs(tempSubs)
