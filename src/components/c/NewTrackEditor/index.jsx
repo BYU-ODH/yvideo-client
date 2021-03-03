@@ -171,9 +171,9 @@ const TrackEditor = props => {
 			largestLayer = eventsArray[eventsArray.length-1].layer
 		}
 
-		eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
+		//eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
 
-		// Find the largets layer number
+		//Find the largets layer number
 		const initialLayers = []
 
 		// new Array(largestLayer+1).fill(0)

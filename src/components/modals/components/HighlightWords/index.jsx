@@ -53,7 +53,7 @@ export default class HighlightWords extends PureComponent {
 		// console.log(activeSubtitle)
 		if(subtitlesObjects[activeSubtitle] !== undefined){
 			wordList = subtitlesObjects[activeSubtitle].words.split(',')
-			console.log(wordList)
+			// console.log(wordList)
 		}
 
 

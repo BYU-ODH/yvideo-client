@@ -52,6 +52,9 @@ const CollectionsContainer = props => {
 			setIsMobile(false)
 		)
 		if(Object.keys(allPublic).length > 0 && count !== Object.keys(allPublic).length){
+			allPublic.forEach(collection => {
+				// getIsPublicCollectionSubscribed(collection.id, user.id)
+			})
 			setCount(Object.keys(allPublic).length)
 		}
 
@@ -89,7 +92,7 @@ const CollectionsContainer = props => {
 		// TODO: When archiving a collection, make sure to unpublish it
 		// TODO: need to check to see if which way is right way to use
 		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
-		// publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
+		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
 		allPublic,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
