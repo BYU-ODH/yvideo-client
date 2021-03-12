@@ -44,6 +44,7 @@ const apiProxy = {
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 
 				updateSessionId(result.headers[`session-id`])
+				// console.log(result.data)
 
 				result.data.forEach(element => {
 					element[`name`] = element[`collection-name`]

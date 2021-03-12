@@ -223,7 +223,7 @@ export default class ContentService {
 
 			const results = await apiProxy.content.update(finalData)
 
-			console.log(content)
+			// console.log(content)
 
 			dispatch(this.actions.contentUpdate(content))
 

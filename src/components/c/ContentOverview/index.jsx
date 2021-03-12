@@ -109,7 +109,7 @@ export default class ContentOverview extends PureComponent {
 							</div>
 							<br/>
 							<div className='tags'>
-								{keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
+								{Array.from(keywords).map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
 							</div>
 						</Column>
 						<Column>
