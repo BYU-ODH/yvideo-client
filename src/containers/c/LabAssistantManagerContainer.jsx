@@ -29,14 +29,16 @@ const LabAssistantManagerContainer = props => {
 	useEffect(() => {
 		setHeaderBorder(true)
 
-		if (!collections)
-			searchCollections(professorId, true)
-
-		if(objectIsEmpty(professor)){
-			setProfessor(professorId)
-
-			if (!collections)
-				searchCollections(professorId, true)
+		if(professorId !== undefined){
+			if(objectIsEmpty(professor)){
+				// console.log('EMPTY')
+				setProfessor(professorId)
+			}
+			else {
+				if(!collections){
+					searchCollections(professorId, true)
+				}
+			}
 		}
 
 		return () => {

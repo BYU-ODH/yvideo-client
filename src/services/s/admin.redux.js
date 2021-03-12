@@ -457,8 +457,8 @@ export default class AdminService {
 				dispatch(this.actions.adminSearchCollections(collections))
 
 			} catch (error) {
-				console.log(`SEARCH COLLECTIONS FAILED`)
-				console.error(error.message)
+				// console.log(`SEARCH COLLECTIONS FAILED`)
+				// console.error(error.message)
 				dispatch(this.actions.adminError(error))
 			}
 
