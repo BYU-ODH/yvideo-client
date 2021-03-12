@@ -30,6 +30,9 @@ const CreateContentContainer = props => {
 	const [selectedResource, setSelectedResource] = useState(``)
 	const [languages, setLanguages] = useState([])
 	const [files, setFiles] = useState([])
+	const [isTyping, setIsTyping] = useState(false)
+	const [isCalled, setIsCalled] = useState(false)
+
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -58,7 +61,24 @@ const CreateContentContainer = props => {
 			})
 			setLanguages(finalLanguages)
 		}
-	}, [resourceContent, selectedResource, files])
+
+		if(isTyping){
+			setTimeout(() => {
+				setIsTyping(false)
+				setIsCalled(false)
+			}, 1000)
+		} else{
+			if (searchQuery.length > 0 && searchQuery.match(/^[0-9a-zA-Z]+$/) && !isTyping) {
+				if(!isCalled){
+					searchResource(searchQuery)
+					setHide(false)
+					setIsCalled(true)
+				}
+			}else
+				setHide(true)
+		}
+
+	}, [resourceContent, selectedResource, files, searchQuery, isTyping])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -81,11 +101,9 @@ const CreateContentContainer = props => {
 	const handleSearchTextChange = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 1) {
-			searchResource(value)
-			setHide(false)
-		} else
-			setHide(true)
+
+		if(!isTyping)
+			setIsTyping(true)
 	}
 
 	const handleSelectResourceChange = (e, name) => {
@@ -164,10 +182,10 @@ const CreateContentContainer = props => {
 	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
 
-		// if(data.targetLanguages === ``){
-		// 	alert(`Please, select a valid language`)
-		// 	return
-		// }
+		if(data.targetLanguages === ``){
+			alert(`Please, select a valid language`)
+			return
+		}
 
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
 		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
