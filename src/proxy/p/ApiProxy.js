@@ -416,6 +416,8 @@ const apiProxy = {
 				},
 			}).then( async res => {
 			await updateSessionId(res.headers[`session-id`])
+
+			// console.log(res.data)
 			return res.data
 		}),
 
@@ -716,7 +718,7 @@ const apiProxy = {
 			// 		console.log(error)
 			// 	});
 			return result.data
-		}
+		},
 	},
 }
 
