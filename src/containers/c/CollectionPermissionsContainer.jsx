@@ -33,6 +33,11 @@ const CollectionPermissionsContainer = props => {
 		role: 2,
 	})
 
+	const [userTA, setUserTA] = useState({
+		username: ``,
+		role: 1,
+	})
+
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
 	const [loaded, setLoaded] = useState(false)
@@ -67,7 +72,7 @@ const CollectionPermissionsContainer = props => {
 		handleSectionChange: e => {
 			if(e.target.value.length > 0)
 				setDisable(false)
-			 else
+			else
 				setDisable(true)
 
 			setCourse({
@@ -75,21 +80,21 @@ const CollectionPermissionsContainer = props => {
 				section: e.target.value,
 			})
 		},
-		handleAuditorChange: e => {
+		handleUserTAChange: e => {
 			if(e.target.value.length > 1)
 				setDisableUser(false)
-			 else
+			else
 				setDisableUser(true)
 
-			setUser({
-				...user,
+			setUserTA({
+				...userTA,
 				username: e.target.value,
 			})
 		},
 		handleUserChange: e => {
 			if(e.target.value.length > 1)
 				setDisableUser(false)
-			 else
+			else
 				setDisableUser(true)
 
 			setUser({
@@ -128,12 +133,12 @@ const CollectionPermissionsContainer = props => {
 				username: ``,
 			})
 		},
-		addAuditor: e => {
+		addTA: e => {
 			e.preventDefault()
-			updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
+			updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
 			setDisableUser(true)
 			setUser({
-				...user,
+				...userTA,
 				username: ``,
 			})
 		},
@@ -152,6 +157,7 @@ const CollectionPermissionsContainer = props => {
 	const viewstate = {
 		collection,
 		user,
+		userTA,
 		course,
 		users,
 		courses,

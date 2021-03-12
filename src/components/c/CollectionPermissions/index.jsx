@@ -45,6 +45,10 @@ export class CollectionPermissions extends PureComponent {
 			username,
 		} = this.props.viewstate.user
 
+		// const {
+		// 	username,
+		// } = this.props.viewstate.userTA
+
 		const sort = (data,sortType) => {
 			if (this.state.sortType.reverse === false){
 				this.setState({
@@ -119,8 +123,8 @@ export class CollectionPermissions extends PureComponent {
 					<UserListTable>
 						<UserList id='user-table'>
 							<h4>TA</h4>
-							<Search className='faculty-submit' onSubmit={handlers.addAuditor}>
-								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleAuditorChange} value={username} />
+							<Search className='faculty-submit' onSubmit={handlers.addTA}>
+								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={username} />
 								<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
 							</Search>
 							<Table border='1'>
@@ -134,19 +138,18 @@ export class CollectionPermissions extends PureComponent {
 									</tr>
 								</thead>
 								<tbody>
-									{loaded === false ?
-									 users.length > 0 ?
-											users.map((element, index) =>
-												<tr key={index}>
-													<td>{element[`username`]}</td>
-													<td>{element[`account-name`]}</td>
-													<td>{element[`account-type`]}</td>
-													<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
-													<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
-												</tr>,
-											)
-											:
-											null
+									{loaded === false ? users.length > 0 ?
+										users.map((element, index) =>
+											<tr key={index}>
+												<td>{element[`username`]}</td>
+												<td>{element[`account-name`]}</td>
+												<td>{element[`account-type`]}</td>
+												<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
+												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
+											</tr>,
+										)
+										:
+										null
 
 										:
 										(

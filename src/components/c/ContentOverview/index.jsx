@@ -39,7 +39,7 @@ export default class ContentOverview extends PureComponent {
 			handleToggleSettings,
 			handleDescription,
 			changeTag,
-			handleShowWordsModal
+			handleShowWordsModal,
 		} = this.props.handlers
 
 		const {
@@ -55,8 +55,6 @@ export default class ContentOverview extends PureComponent {
 		const {
 			description,
 		} = content
-
-		// const allowDefinitions = content['allow-definitions'] // <-- ?? -Matthew
 
 		return (
 			<Style>
@@ -93,7 +91,14 @@ export default class ContentOverview extends PureComponent {
 				{editing &&
 					<InnerContainer>
 						<Column>
-							<h4>Allow automatic definitions
+							<div>
+								<h4>
+								Target Language:
+								</h4>
+								{content.settings.targetLanguages}
+							</div>
+							<h4>
+								Allow automatic definitions
 								<SwitchToggle className='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
 							</h4>
 							<h4>
@@ -109,7 +114,7 @@ export default class ContentOverview extends PureComponent {
 							</div>
 							<br/>
 							<div className='tags'>
-								{Array.from(keywords).map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>)}
+								{keywords ? keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>) : <></>}
 							</div>
 						</Column>
 						<Column>

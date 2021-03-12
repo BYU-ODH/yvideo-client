@@ -202,6 +202,18 @@ export const Column = styled.div`
 		font-size: 1.4rem;
 	}
 
+	& div {
+		display: flex;
+		border-bottom: 1px solid #c4c4c4;
+		line-height: 2rem;
+		margin-bottom: 1rem;
+		font-size: 1.4rem;
+
+		& > h4 {
+			margin-right: 1rem;
+		}
+	}
+
 	& textarea {
 		width: 100%;
 	}
