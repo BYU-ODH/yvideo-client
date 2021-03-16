@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme'
 import PlayerControls from '../../../../components/bits/PlayerControls'
 import Style, { PlayPause, ClosedCaptions, Fullscreen, Volume, 	Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
 import clockIcon from '../../../../components/bits/PlayerControls/styles'
-
+import { BrowserRouter} from 'react-router-dom'
 
 const props = {
 	handlers : {
@@ -49,79 +49,62 @@ const props = {
 	}
 }
 
-it(`Fullscreen onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Fullscreen onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Speed onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Speed src={clockIcon} onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Speed onMouseEnter`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Speed src={clockIcon} onMouseEnter={mockCallBack}/>)
-	button.find('StyledComponent').simulate('MouseEnter')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Speed onMouseLeave`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Speed src={clockIcon} onMouseLeave={mockCallBack}/>)
-	button.find('StyledComponent').simulate('MouseLeave')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`PlayPause onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<PlayPause onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`ClosedCaptions onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<ClosedCaptions isCaptions={props.viewstate.isCaption} onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`ClosedCaptions onMouseEnter`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<ClosedCaptions isCaptions={props.viewstate.isCaption} onMouseEnter={mockCallBack}/>)
-	button.find('StyledComponent').simulate('MouseEnter')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`ClosedCaptions onMouseLeave`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<ClosedCaptions isCaptions={props.viewstate.isCaption} onMouseLeave={mockCallBack}/>)
-	button.find('StyledComponent').simulate('MouseLeave')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Book onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Book onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Help onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Help onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Help onMouseEnter`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Help onMouseEnter={mockCallBack}/>)
-	button.find('StyledComponent').simulate('MouseEnter')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Help onMouseLeave`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Help onMouseLeave={mockCallBack}/>)
-	button.find('StyledComponent').simulate('MouseLeave')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
+describe(`Style onclick`, () => {
 
+	let wrapper
+		beforeEach(() => {
+			wrapper = mount(
+					<BrowserRouter>
+						<PlayerControls {...props}/>
+					</BrowserRouter>
+			)
+		})
+
+	it(`Fullscreen onClick`, ()=> {
+		const button = wrapper.find(Fullscreen).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`Speed onMouseEnter`, ()=> {
+		const button = wrapper.find(Speed).simulate('mouseEnter');
+		expect(button).toBeDefined();
+	})
+	it(`Speed onMouseLeave`, ()=> {
+		const button = wrapper.find(Speed).simulate('mouseLeave');
+		expect(button).toBeDefined();
+	})
+	it(`PlayPause onClick`, ()=> {
+		const button = wrapper.find(PlayPause).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`ClosedCaptions onClick`, ()=> {
+		const button = wrapper.find(ClosedCaptions).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`ClosedCaptions onMouseEnter`, ()=> {
+		const button = wrapper.find(ClosedCaptions).simulate('mouseEnter');
+		expect(button).toBeDefined();
+	})
+	it(`ClosedCaptions onMouseLeave`, ()=> {
+		const button = wrapper.find(ClosedCaptions).simulate('mouseLeave');
+		expect(button).toBeDefined();
+	})
+	it(`Book onClick`, ()=> {
+		const button = wrapper.find(Book).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`Help onClick`, ()=> {
+		const button = wrapper.find(Help).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`Help onMouseEnter`, ()=> {
+		const button = wrapper.find(Help).simulate('mouseEnter');
+		expect(button).toBeDefined();
+	})
+	it(`Help onMouseLeave`, ()=> {
+		const button = wrapper.find(Help).simulate('mouseLeave');
+		expect(button).toBeDefined();
+	})
+})
 
 it(`simulate input`, ()=> {
 	props.viewstate.isCaption = false
