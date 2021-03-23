@@ -3,7 +3,8 @@ import { shallow, mount } from 'enzyme'
 import Transcript from '../../../../components/bits/Transcript/index'
 import { BrowserRouter } from 'react-router-dom'
 import { Style, Help } from '../../../../components/bits/Transcript/styles'
-
+import * as testutil from '../../../testutil/testutil'
+import { Provider } from 'react-redux'
 
 const handlers = {
 	toggleTip: jest.fn,
@@ -44,9 +45,11 @@ describe(`Subtitles Layer test`, () => {
 	let wrapper
 	beforeEach(() => {
 		wrapper = mount(
+			<Provider store={testutil.store}>
 				<BrowserRouter>
-					<Transcript {...props}/>
+					<Transcript {...props} />
 				</BrowserRouter>
+			</Provider>,
 		)
 	})
 	it(`toggle-transcript simulate action`, () => {
