@@ -63,14 +63,3 @@ margin: 0 auto;
 `
 
 export default Style
-
-export const MessageBox = styled.div`
-	background-color: #444;
-	color: white;
-	padding: 16px;
-	top: ${props => props.top}px;
-	position: absolute;
-	right:16px;
-	z-index: 999;
-	transition: top 0.5s ease;
-`
