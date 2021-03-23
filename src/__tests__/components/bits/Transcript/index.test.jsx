@@ -14,13 +14,20 @@ const handlers = {
 	toggleTip: jest.fn,
 }
 
+
 const viewstate = {
 	displaySubtitles: {
 		language: 'english',
-		content: ['one', 'two']
+		words: '',
+		content: [
+			{
+				end: 20.227533345404066,
+				start: 0,
+				text: "First Line",
+			}
+		]
 	},
 	content: {
-		words: ['a'],
 		settings: {
 			targetLanguages: 'english'
 		}
