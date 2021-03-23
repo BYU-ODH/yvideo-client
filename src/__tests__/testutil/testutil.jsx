@@ -632,6 +632,17 @@ export const store = mockStore(
 			editorStyle: false,
 			lost: false,
 			events: [],
+			tip: {
+				active: true,
+				props: {
+					name: 'help',
+					position: {
+						width: 20,
+						x: 136,
+						y: 108
+					}
+				}
+			}
 		},
 		collectionStore: {
 			roles,
