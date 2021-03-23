@@ -152,7 +152,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleProgress = progression => {
-		console.log(`progress`, progression)
+		// console.log(`progress`, progression)
 		setProgress(progression)
 	}
 
@@ -161,7 +161,7 @@ const PlayerContainer = props => {
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-		console.log(`seeking`, time, ` seconds`)
+		// console.log(`seeking`, time, ` seconds`)
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
@@ -170,7 +170,7 @@ const PlayerContainer = props => {
 			newPlayed = time / duration
 
 		if(newPlayed !== Infinity && newPlayed !== -Infinity){
-			console.log(`in fraction: `, newPlayed)
+			// console.log(`in fraction: `, newPlayed)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
 	}
@@ -241,20 +241,16 @@ const PlayerContainer = props => {
 	}
 
 	const handleChangeSubtitle = (index) => {
-		const temp = subtitles[index]
+		let temp = subtitles[index]
 		const currentContent = temp.content
-
-		try {
-
-			if(typeof currentContent === `string`){
-				// console.log(`String type`)
+		if(typeof currentContent === `string`){
+			console.log(`String type`)
+			try {
 				temp.content = JSON.parse(subtitles[index].content)
+			} catch (e){
+				console.log(e)
 			}
-
-		} catch (e){
-			// console.log(e)
 		}
-
 		setIndexToDisplay(index)
 		setDisplaySubtitles(temp)
 	}

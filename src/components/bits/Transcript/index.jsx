@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { useEffect, useState } from 'react'
 import parse from 'html-react-parser'
 
 import { connect } from 'react-redux'
@@ -15,22 +15,13 @@ import {
 	interfaceService
 } from 'services'
 
-export default class Transcript extends PureComponent {
-	constructor(props){
-		super(props);
-		this.state = {
-			words: '',
-			meanings: '',
-		}
-	}
+const Transcript = props => {
 
-	render(){
-		const languageCodes = {
-			//add language codes as needed
-			spanish: 'es',
-			german: 'de',
-			russian: 'ru',
-		}
+		const {
+			jsonResponse,
+			translate,
+			languageCodes,
+		} = props
 
 		const {
 			content,
@@ -40,7 +31,7 @@ export default class Transcript extends PureComponent {
 			toggleTranscript,
 			showTranscript,
 			isMobile,
-		} = this.props.viewstate
+		} = props.viewstate
 
 		const {
 			setToggleTranscript,
@@ -49,16 +40,43 @@ export default class Transcript extends PureComponent {
 			handleToggleTranscript,
 			handleShowTip,
 			toggleTip,
-		} = this.props.handlers
+		} = props.handlers
+
+		const [words, setWords] = useState('')
+		const [meanings, setMeanings] = useState('')
+
+		useEffect(() => {
+			setWords('')
+			setMeanings('')
+			let allWords = ''
+			let allMeanings = ''
+
+			if(Object.keys(jsonResponse).length < 1){
+				setWords('No matches found')
+				setMeanings('')
+				return;
+			}
+
+			jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].forEach((item, index) => {
+				allWords += `${item.lemma}; `
+				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
+			});
+
+			setWords(allWords)
+			setMeanings(allMeanings)
+		}, [jsonResponse, translate])
 
 		const highlightWords = (text) => {
 			//initialize the string where we can make changes
+			// console.log(displaySubtitles)
 			if(content === undefined){
 				console.log('object')
 				return;
 			}
 
-			let words = content.words
+			// console.log(displaySubtitles.words)
+			let words = displaySubtitles.words.split(/[, ]+/)
+			// console.log(words)
 
 			let newString = text
 
@@ -69,16 +87,20 @@ export default class Transcript extends PureComponent {
 				//do not execute if the string is empty
 
 				let regex = new RegExp(`(^|[\\s|.|,|;])${word}([\\s|.|,|;|\\n]|$)`, "gmi");
+				// let regex = new RegExp(`(?:^|\\W)${word}(?:$|\\W)`)
 				// console.log(regex)
 				let matches = newString.match(regex)
 				if(matches !== null){
 					//highlight and push changes
 					matches.forEach(m => {
-						// console.log('Matched', m)
-						let rep = new RegExp(`${m}`, "gmi")
+						let cleanString = m.replace(/\s/g,'')
+						// console.log('Matched', cleanString)
+						let rep = new RegExp(`${cleanString}`, "gmi")
+						// console.log(rep)
 
-						if(m !== ". " && m !== ", " && m !== "" && m !== "."){
-							newString = newString.replace(rep, `<span class="highlight">${m}</span>`)
+
+						if(cleanString !== ". " && cleanString !== ", " && cleanString !== "" && cleanString !== "."){
+							newString = newString.replace(rep, `<span class="highlight">${cleanString}</span>`)
 						}
 
 					});
@@ -89,74 +111,24 @@ export default class Transcript extends PureComponent {
 			return parse(newString)
 		}
 
-		const getTranslation = async (e) => {
-			let elementText = e.target.innerText
-			let wordArray = elementText.split(' ')
-			let foundWord = ''
-			if(wordArray.length < 4){
+		const getTranslation = (e) => {
+			if(e.target.tagName.toLowerCase() !== 'p'){
+				let elementText = e.target.innerText
+				let wordArray = elementText.split(' ')
+				// console.log(wordArray)
+				let foundWord = ''
+				//we only want to translate if and only if the word is highlighted
 				//single possible word
 				//there would only be one valid word in this array
 				wordArray.forEach(word => {
-					if(word.length >= 2){
-						//valid word found get translation
-						console.log(word)
-						foundWord = word
-					}
+					//console.log(word)
+					foundWord = word
 				})
+				translate(foundWord, languageCodes[displaySubtitles.language])
 			}
-			//http://yvideobeta.byu.edu:5001/translate/es/hola
-			// const mockResponse = {
-			// 	"papa": [
-			// 		{
-			// 			"lemma": "papa",
-			// 			"meanings": [
-			// 				{
-			// 					"lemma": "pontiff",
-			// 					"pos": "{n}",
-			// 					"meaning": "(pope)"
-			// 				},
-			// 				{
-			// 					"lemma": "potato",
-			// 					"pos": "{n}",
-			// 					"meaning": "(plant tuber eaten as starchy vegetable)"
-			// 				}
-			// 			]
-			// 		}
-			// 	]
-			// }
-			// console.log(mockResponse['papa'][0]['meanings'])
-			// return mockResponse['papa'][0]['meanings']
-			const response = await fetch(`http://yvideodev.byu.edu:5001/translate/${languageCodes[displaySubtitles.language]}/${foundWord}`)
-			console.log(response)
-			let jsonResponse = await response.json()
-			console.log(jsonResponse)
-
-			let allWords = ''
-			let allMeanings = ''
-
-			if(!jsonResponse[foundWord]){
-				this.setState({
-					words: 'No Matches Found',
-					meanings: '-'
-				})
-				return;
-			}
-
-			// mockResponse[word][0]['meanings'].forEach((item, index) => {
-			// 	allWords += `<b>${index}.</b>${item.lemma}; `
-			// 	allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)}; `
-			// });
-
-			jsonResponse[foundWord][0]['meanings'].forEach((item, index) => {
-				allWords += `${item.lemma}; `
-				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
-			});
-
-			this.setState({
-				words: allWords,
-				meanings: allMeanings
-			})
 		}
+
+		// console.log(displaySubtitles)
 
 		return (
 			<Style style={{ display: `${showTranscript !== false ? ('initial') : ('none')}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
@@ -179,13 +151,11 @@ export default class Transcript extends PureComponent {
 					</div>
 					<div className={'transcript-title'}>
 						<h1>Transcript</h1>
-						<h2>Video Audio - {content !== undefined ? (content.settings.targetLanguages) : (null)}</h2>
-						<h2>Caption Language - {displaySubtitles !== null ? (displaySubtitles.language) : (`No captions available`)}</h2>
+						<h2>Video - {content !== undefined ? (content.settings.targetLanguages) : (null)} | Caption - {displaySubtitles !== null ? (displaySubtitles.language) : (`No captions available`)}</h2>
 					</div>
 					<br/><br/><br/>
 					<div className={'transcript-content'}>
-						{	displaySubtitles != null ? (
-
+						{	displaySubtitles !== null && displaySubtitles.content !== '' ? (
 							displaySubtitles['content'].map((element, index) =>
 									<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
 										key={index}
@@ -196,10 +166,8 @@ export default class Transcript extends PureComponent {
 											onMouseEnter={e => handleShowTip('transcript-seek', {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 											onMouseLeave={e => toggleTip()}
 											>
-											{/* <span>{(element.start * duration / 100).toFixed(2)}s</span> */}
 											<span><img src={seek} width="20" height="20"/></span>
 										</div>
-										{/* <p>{element.text}</p> */}
 									</div>
 								)
 							) : (null)
@@ -207,23 +175,34 @@ export default class Transcript extends PureComponent {
 						<br/>
 					</div>
 				</div>
+				<hr style={{ width: '120%'}}/>
 				<div className={isMobile ? ('transcript-translation translation-mobile') : ('transcript-translation')}>
-					<hr style={{ width: '120%'}}/>
 					<br/>
 					<h2>Quick Translation</h2><br/>
 					<div id="translation-box">
 						<h3 id="translation-word"></h3>
 						<ul id="translation-list">
 							<li>
-								<label>Translation: {parse(this.state.words)}</label>
+								<label>Translation: {parse(words)}</label>
 							</li>
 							<li>
-								<label>Meaning: {parse(this.state.meanings)}</label>
+								<label>Meaning: {parse(meanings)}</label>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</Style>
 		)
-	}
 }
+
+const mapStateToProps = store => ({
+	// data: store.adminStore.data,
+	languageCodes: store.interfaceStore.languageCodes,
+	jsonResponse: store.interfaceStore.jsonResponse,
+})
+
+const mapDispatchToProps = {
+	translate: interfaceService.getTranslation,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transcript)

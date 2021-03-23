@@ -45,18 +45,19 @@ const FileUploadContainer = props => {
 			getUploadedFiles()
 		}
 
-	}, [selectedFile, isUploadComplete, doesGetFiles, fileCount, Object.keys(filesCache).length])
+	}, [isUploadComplete, resources, resourceId])
 
+	// this needs to save resource at the end of it
 	async function getUploadedFiles() {
 		setIsUploadComplete(false)
 		setDoesGetFiles(true)
 
 		// this causes the problem, it calls before updates db
 		// await getFiles(resourceId)
-		setTimeout(() => {
-			getFiles(resourceId)
+		setTimeout(async() => {
+			await getFiles(resourceId)
 			toggleModal()
-		}, 3000)
+		}, 5000)
 	}
 
 	const handleFileChange = e =>{

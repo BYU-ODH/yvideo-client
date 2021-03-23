@@ -90,7 +90,7 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_GET:
-			console.log(`??//`,action.payload)
+			// console.log(`??//`,action.payload)
 			return {
 				...store,
 				cache: action.payload.subtitles,
@@ -137,7 +137,7 @@ export default class SubtitlesService {
 		// console.log('updated store', contentIds)
 		const currentContentId = getState().subtitlesStore.contentId
 
-		console.log(`USED SESSION ID`, window.clj_session_id)
+		// console.log(`USED SESSION ID`, window.clj_session_id)
 
 		dispatch(this.actions.subtitlesStart())
 
@@ -145,7 +145,6 @@ export default class SubtitlesService {
 			dispatch(this.actions.subtitlesClean())
 
 		try {
-
 			const result = await apiProxy.content.getSubtitles(id)
 			dispatch(this.actions.subtitlesGet(result, id))
 			return result
@@ -168,6 +167,8 @@ export default class SubtitlesService {
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
 			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			tempSub['words'] = ''
+			console.log(subtitle)
 			const result = await apiProxy.subtitles.post(tempSub)
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
@@ -185,16 +186,24 @@ export default class SubtitlesService {
 
 		try {
 			const tempSub = {}
-			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			if(typeof subtitle['content'] !== 'string'){
+				tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			}
+			else {
+				tempSub['content'] = subtitle['content']
+			}
 			tempSub[`language`] = subtitle[`language`]
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
+			tempSub['words'] = subtitle['words']
+			console.log(tempSub)
 
 			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {
 			dispatch(this.actions.subtitlesError(error))
 		}
 	}
+
 	activeUpdate = active => async (dispatch, _getState, { apiProxy }) => {
 		dispatch(this.actions.activeUpdate(active))
 	}

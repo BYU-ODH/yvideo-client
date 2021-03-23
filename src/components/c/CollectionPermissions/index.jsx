@@ -45,6 +45,10 @@ export class CollectionPermissions extends PureComponent {
 			username,
 		} = this.props.viewstate.user
 
+		// const {
+		// 	username,
+		// } = this.props.viewstate.userTA
+
 		const sort = (data,sortType) => {
 			if (this.state.sortType.reverse === false){
 				this.setState({
@@ -84,9 +88,9 @@ export class CollectionPermissions extends PureComponent {
 					<CourseTable id='course-table'>
 						<h4>Courses</h4>
 						<form onSubmit={handlers.addCourse}>
-							<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Department'/>
-							<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Catalog Number' required/>
-							<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Section Number' required/>
+							<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Department - ENG'/>
+							<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Catalog - Ex: 101' required/>
+							<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Section - Ex: 01' required/>
 							<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
 						</form><br/>
 						<Table border='1'>
@@ -119,8 +123,8 @@ export class CollectionPermissions extends PureComponent {
 					<UserListTable>
 						<UserList id='user-table'>
 							<h4>TA</h4>
-							<Search className='faculty-submit' onSubmit={handlers.addAuditor}>
-								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleAuditorChange} value={username} />
+							<Search className='faculty-submit' onSubmit={handlers.addTA}>
+								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={username} />
 								<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
 							</Search>
 							<Table border='1'>
@@ -134,19 +138,18 @@ export class CollectionPermissions extends PureComponent {
 									</tr>
 								</thead>
 								<tbody>
-									{loaded === false ?
-									 users.length > 0 ?
-											users.map((element, index) =>
-												<tr key={index}>
-													<td>{element[`username`]}</td>
-													<td>{element[`account-name`]}</td>
-													<td>{element[`account-type`]}</td>
-													<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
-													<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
-												</tr>,
-											)
-											:
-											null
+									{loaded === false ? users.length > 0 ?
+										users.map((element, index) =>
+											<tr key={index}>
+												<td>{element[`username`]}</td>
+												<td>{element[`account-name`]}</td>
+												<td>{element[`account-type`]}</td>
+												<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
+												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
+											</tr>,
+										)
+										:
+										null
 
 										:
 										(

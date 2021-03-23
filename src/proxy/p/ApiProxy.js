@@ -44,6 +44,7 @@ const apiProxy = {
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 
 				updateSessionId(result.headers[`session-id`])
+				// console.log(result.data)
 
 				result.data.forEach(element => {
 					element[`name`] = element[`collection-name`]
@@ -358,7 +359,6 @@ const apiProxy = {
 			})
 			return results
 		},
-
 	},
 	resources: {
 		post: async (resource) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource`, resource, {
@@ -417,6 +417,8 @@ const apiProxy = {
 				},
 			}).then( async res => {
 			await updateSessionId(res.headers[`session-id`])
+
+			// console.log(res.data)
 			return res.data
 		}),
 
@@ -441,7 +443,7 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/mchen95/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']
@@ -701,6 +703,23 @@ const apiProxy = {
 			updateSessionId(res.headers[`session-id`])
 			return res
 		}),
+	},
+	translation: {
+		getTranslation: async (word, language) => {
+			const result = await axios.get(`http://yvideodev.byu.edu:5001/translate/${language}/${word}`)
+			// const result = axios({
+			// 		method: 'GET',
+			// 		baseURL: 'http://yvideodev.byu.edu:5001',
+			// 		url: `/translate/${language}/${word}`
+			// 	}).then(response => {
+			// 		// console.log(response)
+			// 		return response
+			// 	})
+			// 	.catch(error => {
+			// 		console.log(error)
+			// 	});
+			return result.data
+		},
 	},
 }
 
