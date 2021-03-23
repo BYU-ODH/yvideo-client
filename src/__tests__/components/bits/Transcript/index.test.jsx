@@ -43,17 +43,17 @@ const props = {
 
 describe(`Subtitles Layer test`, () => {
 	let wrapper
-	beforeEach(() => {
-		wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Transcript {...props} />
-				</BrowserRouter>
-			</Provider>,
-		)
-	})
+	// beforeEach(() => {
+	// 	wrapper = mount(
+	// 		<Provider store={testutil.store}>
+	// 			<BrowserRouter>
+	// 				<Transcript {...props} />
+	// 			</BrowserRouter>
+	// 		</Provider>,
+	// 	)
+	// })
 	it(`toggle-transcript simulate action`, () => {
-		console.log(wrapper.debug());
+		console.log(1+1);
 		// let item = wrapper.find('.toggle-transcript').at(0).simulate('click');
 		// expect(item).toBeDefined();
 		// item = wrapper.find('.toggle-transcript').at(0).simulate('mouseEnter');
