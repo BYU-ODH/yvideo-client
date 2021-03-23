@@ -70,6 +70,7 @@ const Transcript = props => {
 			//initialize the string where we can make changes
 			// console.log(displaySubtitles)
 			if(content === undefined){
+				console.log('object')
 				return;
 			}
 
@@ -159,7 +160,7 @@ const Transcript = props => {
 									<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
 										key={index}
 										>
-										<p onClick={getTranslation}>{highlightWords(element.text)}</p>
+										<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
 										<div onClick={e => handleSeekChange(null, (element.start * duration / 100) + .5)}
 											className="arrow"
 											onMouseEnter={e => handleShowTip('transcript-seek', {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
