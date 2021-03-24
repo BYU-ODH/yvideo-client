@@ -6,7 +6,14 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 const props = {
+	checkTranslation : jest.fn(),
 	toggleModal: jest.fn(),
+	contentId: 0,
+	getSubtitles: jest.fn(),
+	updateSubtitle: jest.fn(),
+	subtitles: [],
+	subtitlesContentId: 0,
+	supportedLanguages: {}
 }
 
 describe(`HighlightWordsContainer test`, () => {
@@ -32,8 +39,11 @@ describe(`HighlightWordsContainer test`, () => {
 		expect(button).toBeDefined()
 		button = wrapper.find(Button).at(1).simulate('click')
 		expect(button).toBeDefined()
+		button = wrapper.find("Tag").at(0).simulate('click')
+		expect(button).toBeDefined()
+
 	})
-	test('when subtitlesObjects is undefined ', () => {
+	test('when subtitlesObjects is undefined', () => {
 		let wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container {...props}/>
@@ -42,12 +52,21 @@ describe(`HighlightWordsContainer test`, () => {
 		let button = wrapper.find(Select).simulate('change')
 		expect(button).toBeDefined()
 	})
-	test('when subtitlesObjects is undefined ', () => {
+	test('when wordlist is empty', () => {
 		let wrapper = mount(
 			<Provider store={testutil.subStore}>
 				<Container {...props}/>
 			</Provider>,
 		)
+		expect(wrapper).toBeDefined()
+	})
+	test('when handleCheckWord response is success ', () => {
+		let wrapper = mount(
+			<Provider store={testutil.subStore}>
+				<Container {...props}/>
+			</Provider>,
+		)
+
 		expect(wrapper).toBeDefined()
 	})
 
