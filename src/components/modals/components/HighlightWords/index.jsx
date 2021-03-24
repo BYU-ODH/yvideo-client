@@ -64,7 +64,7 @@ export default class HighlightWords extends PureComponent {
 					<p>Working on subtitle: &nbsp;</p>
 					<Select onChange={handleChangeActive}>
 						{
-							subtitlesObjects != undefined ? (
+							subtitlesObjects.length != 0 ? (
 								subtitlesObjects.map((sub, index) =>
 								<option value={index} key={index + 1}>
 									{sub.language}
