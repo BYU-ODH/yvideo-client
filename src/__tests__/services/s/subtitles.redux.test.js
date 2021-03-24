@@ -107,10 +107,44 @@ describe(`content service test`, () => {
 	})
 
 	it(`subtitlesCreate`, () => {
-		// expect(store.getState().cache).toEqual([{sub1}])
-		// const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesCreate([{sub1}, {sub2}]))
-		// expect(store.getState().cache).toEqual([{sub1}, {sub2}])
-		// expect(result.type).toBe(`SUBTITLES_CREATE`)
+		expect(store.getState().cache).toEqual([{sub1}])
+		const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesCreate([{sub1}, {sub2}]))
+		expect(store.getState().cache).toEqual({ 0: {sub1}, 1: {sub2}})
+		expect(result.type).toBe(`SUBTITLES_CREATE`)
+	})
+
+	it(`subtitlesError`, () => {
+		const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesError(`SUBTITLES_ERROR test error message`))
+		expect(result.payload.error).toBe(`SUBTITLES_ERROR test error message`)
+		expect(result.type).toBe(`SUBTITLES_ERROR`)
+	})
+
+	it(`subtitlesGet`, () => {
+		const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesGet([{sub1}], 0))
+		expect(result.payload.subtitles).toEqual([{sub1}])
+		expect(result.payload.id).toEqual(0)
+		expect(store.getState().loading).toBe(false)
+		expect(store.getState().lastFetched).toBeLessThanOrEqual(Date.now())
+		expect(result.type).toBe(`SUBTITLES_GET`)
+	})
+
+	it(`subtitlesUpdate`, () => {
+		const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesUpdate([{sub2}]))
+		expect(result.payload.subtitles).toEqual([{sub2}])
+		expect(store.getState().loading).toBe(false)
+		expect(result.type).toBe(`SUBTITLES_UPDATE`)
+	})
+
+	it(`subtitlesUpdate`, () => {
+		const result = store.dispatch(subtitleServiceConstructor.actions.activeUpdate(true))
+		expect(result.payload.active).toBe(true)
+		expect(result.type).toBe(`ACTIVE_UPDATE`)
+	})
+
+	it(`setContentId`, () => {
+		const result = store.dispatch(subtitleServiceConstructor.actions.setContentId(0))
+		expect(result.payload.id).toBe(0)
+		expect(result.type).toBe(`SET_CONTENT_ID`)
 	})
 
 	// thunk
