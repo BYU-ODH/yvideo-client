@@ -535,7 +535,9 @@ export const emptyStore = mockStore(
 			data: [],
 			professor: professor1,
 		},
-		interfaceStore: {},
+		interfaceStore: {
+			languageCodes: {}
+		},
 		collectionStore: {
 			roles,
 			cache: [],
@@ -550,6 +552,9 @@ export const emptyStore = mockStore(
 		},
 		languageStore:{
 			cache: {},
+		},
+		subtitlesStore:{
+			cache: [],
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
@@ -642,6 +647,11 @@ export const store = mockStore(
 						y: 108
 					}
 				}
+			},
+			languageCodes: {
+				german: "de",
+				russian: "ru",
+				spanish: "es"
 			}
 		},
 		collectionStore: {
@@ -709,11 +719,64 @@ export const store = mockStore(
 			lastFetched: 0,
 		},
 		subtitlesStore:{
-			cache: [],
+			cache: [
+				{
+				content: ``,
+				["content-id"]: `0`,
+				id: `1`,
+				language: `english`,
+				title: `title`,
+				words: `b, a, c`,
+			},
+			{
+				content: ``,
+				["content-id"]: `1`,
+				id: `1`,
+				language: `spanish`,
+				title: `title1`,
+				words: `a, d c`,
+			}],
 			loading: false,
 			lastFetched: 0,
 			active: 0,
-			contentId : ``,
+			contentId : 12,
+		},
+	},
+	composeWithDevTools(thunk.withExtraArgument(proxies)),
+)
+
+export const subStore = mockStore(
+	{
+		resourceStore: {},
+		authStore: {
+			user,
+		},
+		adminStore: {
+			data: [],
+			professor: professor1,
+		},
+		interfaceStore: {
+			languageCodes: {}
+		},
+		collectionStore: {
+			roles,
+			cache: [],
+			users: [],
+			courses: [],
+		},
+		contentStore:{
+			cache: [],
+		},
+		fileStore:{
+			cache: {},
+		},
+		languageStore:{
+			cache: {},
+		},
+		subtitlesStore:{
+			cache: [{
+				words: ``,
+			}],
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
