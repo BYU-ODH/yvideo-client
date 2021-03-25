@@ -98,22 +98,32 @@ export default class HighlightWords extends PureComponent {
 							<br/>
 						</Translation>
 					</div>
-					<ImportantWords>
-						<div>
-							<h4>Add important words</h4>
-							<p><i>Add a single word. Or, add words separated by ", ". Ex: do, be</i></p><br/>
-							<div style={{ display: 'flex' }}>
-								<input type='text' placeholder='Add word/s' onChange={changeWord} value={word} className='tag-input' />
-								<Button className={`add-tag`} onClick={addWord}>Add</Button>
+					{ subtitlesObjects[activeSubtitle] &&
+						<ImportantWords>
+							<div>
+								<h4>Add important words</h4>
+								<p><i>Add a single word. Or, add words separated by ", ". Ex: do, be</i></p><br/>
+								<div style={{ display: 'flex' }}>
+									<input type='text' placeholder='Add word/s' onChange={changeWord} value={word} className='tag-input' />
+									<Button className={`add-tag`} onClick={addWord}>Add</Button>
+								</div>
 							</div>
-						</div>
-						<br/>
-						<div className='tags'>
-							{
-								wordList.sort((a, b) => (a > b) ? 1 : -1).map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)
-							}
-						</div>
-					</ImportantWords>
+							<br/>
+							<div className='tags'>
+								{
+									wordList.sort((a, b) => (a > b) ? 1 : -1).map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)
+								}
+							</div>
+						</ImportantWords>
+					}
+					{
+						!subtitlesObjects[activeSubtitle] &&
+						<ImportantWords>
+							<div>
+								<h4>This content does not have any subtitles. Please, create a subtitle track using the Track Editor to add important words.</h4>
+							</div>
+						</ImportantWords>
+					}
 				</div>
 				<br/>
 				<p><i>**Currently supported languages for translation are: {

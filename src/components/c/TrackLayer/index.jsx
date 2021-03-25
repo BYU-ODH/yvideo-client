@@ -30,6 +30,7 @@ const TrackLayer = props => {
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
+		console.log(events)
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
@@ -141,9 +142,9 @@ const TrackLayer = props => {
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
 						{
-							events !== undefined ? (
+							events !== undefined && events.length > 0 ? (
 								<>
-									{events.map((event, index) => (
+									{ events.map((event, index) => (
 										<div key={index}>
 											{event.layer === layerIndex ? (
 												<div>

@@ -706,7 +706,15 @@ const apiProxy = {
 	},
 	translation: {
 		getTranslation: async (word, language) => {
-			const result = await axios.get(`http://yvideodev.byu.edu:5001/translate/${language}/${word}`)
+			const result = await axios({
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					'Access-Control-Allow-Origin': 'http://yvideodev.byu.edu'
+					},
+				url: `/${language}/${word}`,
+				baseURL: 'http://yvideodev.byu.edu:5001/translate',
+			})
 			// const result = axios({
 			// 		method: 'GET',
 			// 		baseURL: 'http://yvideodev.byu.edu:5001',

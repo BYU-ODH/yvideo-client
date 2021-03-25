@@ -39,7 +39,7 @@ export default class BackEndContent {
 
 			this.backEndData[`file-version`] = obj.settings.targetLanguages
 
-			this.backEndData[`tags`] = obj.resource.keywords ? obj.resource.keywords.jsoin(`; `) : ``
+			this.backEndData[`tags`] = obj.resource.keywords ? obj.resource.keywords.join(`; `) : ``
 			this.backEndData[`words`] = obj.words ? obj.words.join(`; `) : ``
 		}
 
