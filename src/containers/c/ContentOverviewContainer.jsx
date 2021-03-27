@@ -20,6 +20,7 @@ const ContentOverviewContainer = props => {
 
 	const {
 		content,
+		isExpired,
 		removeCollectionContent,
 		updateContent,
 		isLabAssistant,
@@ -65,10 +66,19 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleTogglePublish = e => {
-		setContentState({
-			...contentState,
-			published: !contentState.published,
-		})
+		if(isExpired < 0){
+			setContentState({
+				...contentState,
+				published: !contentState.published,
+			})
+		}
+		else {
+			alert('This content is expired. Please, talk to a lab assistant and provide a physical copy.')
+			setContentState({
+				...contentState,
+				published: false,
+			})
+		}
 	}
 
 	const handleToggleSettings = e => {
