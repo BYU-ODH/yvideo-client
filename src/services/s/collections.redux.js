@@ -131,18 +131,12 @@ export default class CollectionService {
 			}
 
 		case COLLECTION_INFO_GET:
-			if(store.users.length !== action.payload.data.users.length || store.courses.length !== action.payload.data.courses.length){
-				return {
+			return {
 					...store,
 					users: action.payload.data.users,
 					courses: action.payload.data.courses,
 					loading: false,
 				}
-			} else {
-				return {
-					...store,
-				}
-			}
 
 		case COLLECTION_ROLES_UPDATE:
 			return {
@@ -205,15 +199,6 @@ export default class CollectionService {
 						result[element.id] = element
 					})
 				}
-
-				// let publicCollections = []
-				// if(doesIncludePublic){
-				// 	publicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k,v]) => v)
-				// 	publicCollections.forEach(item => {
-				// 		// getIsPublicCollectionSubscribed(item.id, )
-				// 	})
-				// 	console.log(publicCollections)
-				// }
 
 				dispatch(this.actions.collectionsGet(result))
 
@@ -324,43 +309,26 @@ export default class CollectionService {
 
 			dispatch(this.actions.collectionsStart())
 
+			const currentUsers = getState().collectionStore.users
+			const currentCourses = getState().collectionStore.courses
+
 			try {
 
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 
-				dispatch(this.actions.collectionGetInfo({ users, courses }))
+				let strUsers = JSON.stringify(users)
+				let strCourses = JSON.stringify(courses)
+
+				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses)){
+					dispatch(this.actions.collectionGetInfo( { users: users, courses: courses } ))
+				}
 
 				// console.log(getState().collectionStore)
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}
-		}
-	}
-
-	getIsPublicCollectionSubscribed = (collectionId, userId) => async (dispatch, getState, { apiProxy }) => {
-		dispatch(this.actions.collectionsStart())
-		try {
-
-			const users = await apiProxy.collection.permissions.getUsers(collectionId)
-
-			let currentState = {}
-			currentState = getState().collectionStore.cache[collectionId]
-
-			if(currentState.public){
-				currentState.isSubscribed = false
-				users.forEach(user => {
-					if(user.id === userId)
-						currentState.isSubscribed = true
-
-				})
-			}
-			dispatch(this.actions.collectionEdit(currentState))
-
-			// console.log(getState().collectionStore.cache[collectionId])
-		} catch (error) {
-			dispatch(this.actions.collectionsError(error))
 		}
 	}
 
@@ -391,11 +359,6 @@ export default class CollectionService {
 
 		let backEndBody = {}
 
-		const currentUsers = getState().collectionStore.users
-		const currentCourses = getState().collectionStore.courses
-
-		// TODO: WE CANT ADD THE SAME USER TWICE. ADD DELETE ADD DOES NOT WORK
-
 		try {
 
 			if(endpoint === `add-user`){
@@ -420,20 +383,34 @@ export default class CollectionService {
 			}
 
 			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
-
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
+			// console.log(result)
 			let currentState = {}
 			currentState = getState().collectionStore.cache[collectionId]
+			let currentUsers = getState().collectionStore.users
+			let currentCourses = getState().collectionStore.courses
 
-			if(endpoint === `add-user` && currentState.public){
-				currentState.isSubscribed = true
-				dispatch(this.actions.collectionEdit(currentState))
-			} else if(endpoint === `remove-user` && currentState.public){
-				currentState.isSubscribed = false
-				dispatch(this.actions.collectionEdit(currentState))
+			//based on the endpoint edit the current store
+			if(endpoint === `add-user`){
+				let temp = []
+				if(currentUsers.length < 1){
+					temp.push(backEndBody)
+				}
+				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
 			}
-
-			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
+			else if(endpoint === `add-course`){
+				let temp = []
+				if(currentCourses.length < 1){
+					temp.push(backEndBody)
+				}
+				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
+			}
+			else if(endpoint === `remove-course`){
+				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
+			}
+			else if(endpoint === `remove-user`){
+				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
+			}
 		} catch (error) {
 			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))

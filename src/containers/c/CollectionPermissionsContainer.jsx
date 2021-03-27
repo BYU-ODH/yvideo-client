@@ -41,20 +41,20 @@ const CollectionPermissionsContainer = props => {
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
 	const [loaded, setLoaded] = useState(false)
+	const [isCalled, setIsCalled] = useState(false)
 	const [userCount, setUserCount] = useState(0)
 
 	useEffect(() => {
+		console.log('trigger')
 		getCollectionInfo(collection.id)
+
 		if(loaded === true) {
 			setTimeout(() => {
 				setLoaded(false)
 			}, 1000)
 		}
 
-		if(users !== undefined && userCount !== users.length)
-			console.log(users)
-
-	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses])
+	},[collection.id, users, courses, updateCollectionPermissions])
 
 	const handlers = {
 		handleDepartmentChange: e => {

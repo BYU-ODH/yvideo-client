@@ -17,29 +17,21 @@ const PublicListCollectionContainer = props => {
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
-	const [isSubscribed, setIsSubscribed] = useState(false)
 
 	useEffect(() => {
+		console.log('rendered')
 		toggleTip()
-		getIsPublicCollectionSubscribed(collection.id, user.id)
+		// getIsPublicCollectionSubscribed(collection.id, user.id)
 		setHeaderBorder(false)
 
-	}, [isOpen, isSubscribed])
+	}, [isOpen])
 
 	const handlePublicCollection = async() => {
-		if(!collection.isSubscribed){
-			await updateCollectionPermissions(collection.id, `add-user`, {username: user.username, role: user.roles})
-			setIsSubscribed(true)
-		} else{
-			await updateCollectionPermissions(collection.id, `remove-user`, user.username)
-			setIsSubscribed(false)
-		}
+		await updateCollectionPermissions(collection.id, `remove-user`, user.username)
 	}
 
 	const isOpenEventHandler = async() => {
-		await getIsPublicCollectionSubscribed(collection.id, user.id)
 		setIsOpen(!isOpen)
-		setIsSubscribed(collection.isSubscribed)
 	}
 
 	const viewstate = {
