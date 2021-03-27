@@ -525,6 +525,48 @@ export const adminCategory = {
 	},
 }
 
+export const subtitle =
+{
+	content: ``,
+	["content-id"]: `0`,
+	id: `1`,
+	language: `english`,
+	title: `title`,
+	words: `b, a, c`,
+}
+
+export const updateSubtitle =
+{
+	content: ``,
+	["content-id"]: `0`,
+	id: `1`,
+	language: `english`,
+	title: `title`,
+	words: `b, a, c , d, e`,
+}
+
+export const updateSubtitle1 =
+{
+	content: 0,
+	["content-id"]: `0`,
+	id: `1`,
+	language: `english`,
+	title: `title`,
+	words: `b, a, c , d, e`,
+}
+
+export const subtitle1 =
+[
+	{
+		content: ``,
+		["content-id"]: `0`,
+		id: `1`,
+		language: `english`,
+		title: `title`,
+		words: `b, a, c`,
+	}
+]
+
 export const emptyStore = mockStore(
 	{
 		resourceStore: {},
