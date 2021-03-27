@@ -24,6 +24,7 @@ import ResourceOverview from '../c/ResourceOverview'
 import SubtitlesLayer from './SubtitlesLayer'
 import SubtitlesModal from './SubtitlesModal'
 import CensorDnD from './CensorDnD'
+import ClipLayer from './ClipLayer'
 export {
 	Accordion,
 	AdminTable,
@@ -51,4 +52,5 @@ export {
 	SubtitlesLayer,
 	SubtitlesModal,
 	CensorDnD,
+	ClipLayer,
 }

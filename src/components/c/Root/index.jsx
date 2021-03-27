@@ -16,6 +16,7 @@ import {
 	ManageResourceContainer,
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
+	ClipEditorContainer,
 } from 'containers'
 
 import {
@@ -95,6 +96,10 @@ class Root extends PureComponent {
 
 							<Route path='/trackeditor/:id'>
 								<TrackEditorContainer />
+							</Route>
+
+							<Route path='/clipeditor/:id'>
+								<ClipEditorContainer />
 							</Route>
 
 							<Route path='/feedback'>
