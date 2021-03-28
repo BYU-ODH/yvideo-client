@@ -578,7 +578,11 @@ export const emptyStore = mockStore(
 			professor: professor1,
 		},
 		interfaceStore: {
-			languageCodes: {}
+			languageCodes: {},
+			jsonResponse: {},
+			tip: {
+				active: false,
+			},
 		},
 		collectionStore: {
 			roles,
@@ -694,6 +698,18 @@ export const store = mockStore(
 				german: "de",
 				russian: "ru",
 				spanish: "es"
+			},
+			jsonResponse: {
+				json: [
+					{
+						meanings: [
+							{
+								meaning: ' meaning ',
+								lemma: 'lemma'
+							}
+						]
+					}
+				],
 			}
 		},
 		collectionStore: {
@@ -798,7 +814,7 @@ export const subStore = mockStore(
 			professor: professor1,
 		},
 		interfaceStore: {
-			languageCodes: {}
+			languageCodes: {},
 		},
 		collectionStore: {
 			roles,
