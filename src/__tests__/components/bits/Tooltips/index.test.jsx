@@ -5,8 +5,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
-const toolTip = testutil.toolTip
-
 const props = {
 	tip: {
 		active: true,
@@ -21,18 +19,44 @@ const props = {
 	}
 }
 
-describe(`Subtitles Layer test`, () => {
-	it(`mount`, () => {
-		const vElement = { style: { visibility: "visible" } }
-		const oElement = { style: { opacity: 1} }
-	 	const visibility = document.getElementById = jest.fn().mockReturnValueOnce(vElement)
-	 	const opacity = document.getElementById = jest.fn().mockReturnValueOnce(oElement)
+describe(`ToolTip test`, () => {
+	it(`tip.active is true`, () => {
+		const vElement = { style: { visibility: "visible", opacity: 1 } }
+	 	document.getElementById = jest.fn((tag) => {
+			return vElement
+		 })
 
-		let wrapper = shallow(
+		let wrapper = mount(
 			<Provider store={testutil.store}>
 				<ToolTip {...props}/>
-			</Provider>, {attachTo: visibility}
+			</Provider>,
 		)
-		console.log(wrapper.debug())
+		expect(wrapper).toBeDefined()
+	})
+	it(`tip.active is false`, () => {
+		const vElement = { style: { visibility: "hidden", opacity: 0 } }
+	 	document.getElementById = jest.fn((tag) => {
+			return vElement
+		 })
+
+		let wrapper = mount(
+			<Provider store={testutil.emptyStore}>
+				<ToolTip {...props}/>
+			</Provider>,
+		)
+		expect(wrapper).toBeDefined()
+	})
+	it(`window.innerWidth < 600`, () => {
+		const vElement = { style: { visibility: "hidden" } }
+	 	document.getElementById = jest.fn((tag) => {
+			return vElement
+		 })
+		 global.innerWidth = 500
+		let wrapper = mount(
+			<Provider store={testutil.emptyStore}>
+				<ToolTip {...props}/>
+			</Provider>,
+		)
+		expect(wrapper).toBeDefined()
 	})
 })
