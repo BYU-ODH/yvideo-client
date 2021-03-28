@@ -19,8 +19,8 @@ import { objectIsEmpty } from 'lib/util'
 const ContentOverviewContainer = props => {
 
 	const {
-		content,
 		isExpired,
+		content,
 		removeCollectionContent,
 		updateContent,
 		isLabAssistant,
@@ -36,6 +36,9 @@ const ContentOverviewContainer = props => {
 	const [contentState, setContentState] = useState(content)
 
 	if (objectIsEmpty(content)) return null
+	if (isExpired){
+		return <ContentOverview isExpired={true} content={content}/>
+	}
 
 	const handleToggleEdit = async () => {
 		if (editing) {
@@ -66,19 +69,10 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleTogglePublish = e => {
-		if(isExpired < 0){
-			setContentState({
-				...contentState,
-				published: !contentState.published,
-			})
-		}
-		else {
-			alert('This content is expired. Please, talk to a lab assistant and provide a physical copy.')
-			setContentState({
-				...contentState,
-				published: false,
-			})
-		}
+		setContentState({
+			...contentState,
+			published: !contentState.published,
+		})
 	}
 
 	const handleToggleSettings = e => {

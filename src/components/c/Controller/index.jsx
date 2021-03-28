@@ -322,7 +322,6 @@ const Controller = props => {
 				<header>
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
-						<span className='carat'></span>
 					</button>
 
 					<div className='scrubber'>
