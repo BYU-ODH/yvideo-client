@@ -6,30 +6,47 @@ import {CloseBox, BeforeButton, AfterButton} from '../../../../components/bits/C
 
 
 const props = {
-	// handleUpdateCensorPosition: jest.fn(),
-	// handleUpdateCensorResize: jest.fn(),
-	// setCensorEdit: jest.fn(),
-	// seekTo: jest.fn(),
-	// censorEdit: -1,
-	censorValues: {},
+	handleUpdateCensorPosition: jest.fn(),
+	handleUpdateCensorResize: jest.fn(),
+	setCensorEdit: jest.fn(),
+	seekTo: jest.fn(),
+	censorEdit: '1',
+	censorValues: { '0': [ 0, 0, 800, 600 ], '1': [ 0, 0, 800, 600 ] },
 	// screenHeight: 100,
 }
 
-describe(`Captcha test`, () => {
-	it(`simulate onClick`, ()=> {
+describe(`CensorDnD test`, () => {
+	it(`simulate BeforeButton onClick `, ()=> {
+		const wrapper = mount(
+			<BrowserRouter>
+				<CensorDnD {...props}/>
+			</BrowserRouter>,
+		)
+		let item = wrapper.find(BeforeButton).simulate('click', 0);
+		expect(item).toBeDefined();
+		item = wrapper.find(CloseBox).simulate('click');
+		expect(item).toBeDefined();
+	})
+	it(`simulate AfterButton onClick`, ()=> {
+		props.censorEdit = '0'
+		props.censorValues =  { '0': [ 0, 0, 800, 600 ], '1': [ 0, 0, 800, 600 ], '2': [ 0, 0, 800, 600 ] }
 		const wrapper = mount(
 			<BrowserRouter>
 				<CensorDnD {...props}/>
 			</BrowserRouter>,
 		)
 		console.log(wrapper.debug())
-		let item = wrapper.find('BeforeButton').simulate('click');
+		let item = wrapper.find(AfterButton).simulate('click');
 		expect(item).toBeDefined();
-		// wrapper.find('Rnd').simulate('ResizeStop')
-		// expect(onResizeStop).toHaveBeenCalled();
-		// wrapper.find('CloseBox').simulate('click')
-		// expect(onClick).toHaveBeenCalled();
-		// wrapper.find('AfterButton').simulate('click')
-		// expect(onClick).toHaveBeenCalled();
+	})
+	it(`if censorEdit === -1`, ()=> {
+		props.censorEdit = '-1'
+		props.censorValues =  {}
+		const wrapper = mount(
+			<BrowserRouter>
+				<CensorDnD {...props}/>
+			</BrowserRouter>,
+		)
+		expect(wrapper).toBeDefined()
 	})
 })

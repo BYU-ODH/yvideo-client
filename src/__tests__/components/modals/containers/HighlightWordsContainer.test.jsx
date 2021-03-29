@@ -54,7 +54,7 @@ describe(`HighlightWordsContainer test`, () => {
 	})
 	test('when wordlist is empty', () => {
 		let wrapper = mount(
-			<Provider store={testutil.subStore}>
+			<Provider store={testutil.store2}>
 				<Container {...props}/>
 			</Provider>,
 		)
@@ -62,7 +62,7 @@ describe(`HighlightWordsContainer test`, () => {
 	})
 	test('when handleCheckWord response is success ', () => {
 		let wrapper = mount(
-			<Provider store={testutil.subStore}>
+			<Provider store={testutil.store2}>
 				<Container {...props}/>
 			</Provider>,
 		)
