@@ -8,6 +8,7 @@ const props = {
 	getVideoTime: jest.fn(),
 	reactPlayer: jest.fn(),
 	setActiveCensorPosition: jest.fn(),
+	activeCensorPosition: 1
 }
 const reactPlayer = { props: {
 	playing: false,
@@ -19,8 +20,8 @@ const played = 0
 
 describe(`Controller test`, () => {
 	it(`simulate onClick`, ()=> {
-			const wrapper = shallow(<Controller {...props}/>)
-			// console.log(wrapper.debug())
+		const wrapper = shallow(<Controller {...props}/>)
+		console.log(wrapper.debug())
 
 		wrapper.find('button').at(0).simulate('click')
 		wrapper.find('button').at(1).simulate('click')
@@ -32,7 +33,10 @@ describe(`Controller test`, () => {
 		wrapper.find('ReactPlayer').simulate('Play')
 		wrapper.find('ReactPlayer').simulate('Pause')
 		wrapper.find('ReactPlayer').simulate('Duration')
-		// wrapper.find('progress').simulate('click')
+		wrapper.find('CensorDnD').simulate('handleUpdateCensorPosition')
+		wrapper.find('CensorDnD').simulate('handleUpdateCensorResize')
+		wrapper.find('button').at(0).simulate('click')
+		wrapper.find('button').at(1).simulate('click')
 	})
 	// it(`simulate onClick`, ()=> {
 	// 	const mElement = { style: {width: "0"} }

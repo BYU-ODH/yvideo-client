@@ -52,13 +52,13 @@ const props = {
 describe(`Style onclick`, () => {
 
 	let wrapper
-		beforeEach(() => {
-			wrapper = mount(
-					<BrowserRouter>
-						<PlayerControls {...props}/>
-					</BrowserRouter>
-			)
-		})
+	beforeEach(() => {
+		wrapper = mount(
+				<BrowserRouter>
+					<PlayerControls {...props}/>
+				</BrowserRouter>
+		)
+	})
 
 	it(`Fullscreen onClick`, ()=> {
 		const button = wrapper.find(Fullscreen).simulate('click');

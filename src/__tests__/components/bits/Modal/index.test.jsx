@@ -7,18 +7,33 @@ import * as testutil from '../../../testutil/testutil'
 // jest.mock('react-dom')
 
 describe(`Modal test`, () => {
-	it(`wrapper`, ()=> {
-
+	it('componentDidUpdate: classList: active', () => {
+		let parent = mount(
+			<div id='modal'></div>
+		)
+		document.getElementById = jest.fn((tag) => parent.instance())
 		let wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
-					<Modal {...initialProps} />
+					<Modal />
 				</BrowserRouter>
-			</Provider>,
+			</Provider>
 		)
-
-		const classList = { add: jest.fn(), remove: jest.fn() };
-    // expect(classList.add).toBeCalledWith('active');
-
+		expect(wrapper).toBeDefined()
 	})
+	// it('componentDidUpdate: classList: hidden', () => {
+	// 	let parent = mount(
+	// 		<div id='modal'></div>
+	// 	)
+	// 	document.getElementById = jest.fn((tag) => parent.instance())
+	// 	let wrapper = mount(
+	// 		<Provider store={testutil.store2}>
+	// 			<BrowserRouter>
+	// 				<Modal />
+	// 			</BrowserRouter>
+	// 		</Provider>
+	// 	)
+	// 	wrapper.setProps({ active: true });
+	// 	wrapper.update();
+	// })
 })
