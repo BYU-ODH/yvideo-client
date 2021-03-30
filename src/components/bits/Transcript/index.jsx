@@ -69,12 +69,10 @@ const Transcript = props => {
 		const highlightWords = (text) => {
 			//initialize the string where we can make changes
 			// console.log(displaySubtitles)
-			if(content === undefined){
-				console.log('object')
+			if(displaySubtitles === undefined){
 				return;
 			}
 
-			// console.log(displaySubtitles.words)
 			let words = displaySubtitles.words.split(/[, ]+/)
 			// console.log(words)
 

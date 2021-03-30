@@ -8,6 +8,8 @@ import {
 	resourceService,
 } from 'services'
 
+import BackEndContentModel from 'models/BackEndContent'
+
 import CreateContent from 'components/modals/components/CreateContent'
 
 const CreateContentContainer = props => {
@@ -167,6 +169,7 @@ const CreateContentContainer = props => {
 			"description": data.description,
 			"published": true,
 			"words": ``,
+			"clips": ''
 		}
 
 		if(modal.isLabAssistantRoute){
@@ -208,6 +211,7 @@ const CreateContentContainer = props => {
 			"description": data.description,
 			"published": true,
 			"words": ``,
+			"clips": ''
 		}
 
 		if(modal.isLabAssistantRoute){

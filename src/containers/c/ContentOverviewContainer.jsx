@@ -19,6 +19,7 @@ import { objectIsEmpty } from 'lib/util'
 const ContentOverviewContainer = props => {
 
 	const {
+		isExpired,
 		content,
 		removeCollectionContent,
 		updateContent,
@@ -35,6 +36,9 @@ const ContentOverviewContainer = props => {
 	const [contentState, setContentState] = useState(content)
 
 	if (objectIsEmpty(content)) return null
+	if (isExpired){
+		return <ContentOverview isExpired={true} content={content}/>
+	}
 
 	const handleToggleEdit = async () => {
 		if (editing) {

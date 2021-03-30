@@ -13,6 +13,25 @@ const Style = styled.div`
 			outline: none;
 		}
 	}
+
+	& .expired {
+		& .content-title {
+		width: 100%;
+		position: relative;
+		font-weight: 500;
+		text-overflow: ellipsis;
+
+			& span {
+				position: absolute;
+				right: 0px;
+			}
+		}
+
+		& p {
+			font-style: italic;
+		}
+	}
+
 `
 
 export default Style

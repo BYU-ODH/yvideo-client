@@ -28,7 +28,6 @@ const CollectionsContainer = props => {
 	} = props
 
 	const [isMobile, setIsMobile] = useState(false)
-	const allPublic = Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v)
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
@@ -51,18 +50,15 @@ const CollectionsContainer = props => {
 		else (
 			setIsMobile(false)
 		)
-		if(Object.keys(allPublic).length > 0 && count !== Object.keys(allPublic).length){
-			allPublic.forEach(collection => {
-				// getIsPublicCollectionSubscribed(collection.id, user.id)
-			})
-			setCount(Object.keys(allPublic).length)
-		}
 
 		return () => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-	}, [setContent, setHeaderBorder, Object.keys(allPublic).length])
+	}, [setContent, setHeaderBorder])
+
+	// console.log(Object.entries(collections).sort((a, b) => a.name > b.name ? 1 : -1))
+	// console.log(collections)
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -93,7 +89,6 @@ const CollectionsContainer = props => {
 		// TODO: need to check to see if which way is right way to use
 		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
-		allPublic,
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 		isMobile,

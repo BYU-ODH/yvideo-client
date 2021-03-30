@@ -36,6 +36,8 @@ export default class Collections extends PureComponent {
 			toggleTip,
 		} = this.props.handlers
 
+		collections.sort((a, b) => a.name > b.name ? 1 : -1)
+
 		const setNoCollections = () => {
 			setTimeout(() => {
 				if(document.getElementById(`message`) != null)
@@ -102,14 +104,11 @@ export default class Collections extends PureComponent {
 				</header>
 				<div className='public-collections-list'>
 
-					{ Object.keys(allPublic).length > 0 ? (
+					{ Object.keys(publicCollections).length > 0 ? (
 						<>
 							{
-								Object.keys(allPublic).map(key =>
-									allPublic[key].isSubscribed ?
-										<PublicListCollectionContainer key={key} collection={allPublic[key]}/>
-										:
-										``,
+								Object.keys(publicCollections).map(key =>
+										<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>
 								)
 							}
 						</>
