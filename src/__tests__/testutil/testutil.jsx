@@ -322,6 +322,17 @@ export const collection5 = {
 	thumbnail: `test@thumbnail`,
 }
 
+export const collection6 = {
+	archived: false,
+	content: contentBeforeModel,
+	id: 1,
+	name: `Collection 5`,
+	owner: 22,
+	published: true,
+	thumbnail: `test@thumbnail`,
+	public: false
+}
+
 export const collections = {
 	0:collection1,
 	1:collection2,

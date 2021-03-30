@@ -8,7 +8,14 @@ const props = {
 	getVideoTime: jest.fn(),
 	reactPlayer: jest.fn(),
 	setActiveCensorPosition: jest.fn(),
-	activeCensorPosition: 1
+	activeCensorPosition: 1,
+	events: [{
+		position: [[0, 1, 2]],
+		type: `Censor`
+	}],
+	eventToEdit: 0,
+	activeCensorPosition: 0,
+	handleLastClick: jest.fn(),
 }
 const reactPlayer = { props: {
 	playing: false,
@@ -33,8 +40,10 @@ describe(`Controller test`, () => {
 		wrapper.find('ReactPlayer').simulate('Play')
 		wrapper.find('ReactPlayer').simulate('Pause')
 		wrapper.find('ReactPlayer').simulate('Duration')
-		wrapper.find('CensorDnD').simulate('handleUpdateCensorPosition')
-		wrapper.find('CensorDnD').simulate('handleUpdateCensorResize')
+		// wrapper.find('CensorDnD').simulate('handleUpdateCensorPosition')
+		// wrapper.find('CensorDnD').simulate('handleUpdateCensorResize')
+		wrapper.find('CensorDnD').prop('handleUpdateCensorResize')({width: 10, height: 10})
+
 		wrapper.find('button').at(0).simulate('click')
 		wrapper.find('button').at(1).simulate('click')
 	})

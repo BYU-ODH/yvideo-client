@@ -1,6 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import ManageCollection from '../../../../components/c/ManageCollection/index'
+import  { Icon, TitleEditButton, PublishButton } from '../../../../components/c/ManageCollection/styles'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
@@ -41,6 +42,7 @@ const newcontent = {
 }
 
 const collection = testutil.collection
+const collection6 = testutil.collection6
 
 const props = {
 	viewstate : {
@@ -82,12 +84,15 @@ const props = {
 		isEditingCollectionName: false,
 	},
 	handlers: {
-		archive: jest.fn(),
-		createContent: jest.fn(),
-		handleNameChange: jest.fn(),
-		setTab: jest.fn(),
+		unarchive: jest.fn(),
 		toggleEdit: jest.fn(),
+		handleNameChange: jest.fn(),
 		togglePublish: jest.fn(),
+		archive: jest.fn(),
+		setTab: jest.fn(),
+		createContent: jest.fn(),
+		handleShowTip: jest.fn(),
+		toggleTip: jest.fn(),
 	},
 }
 
@@ -134,8 +139,7 @@ describe(`manage collection test`, () => {
 		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 
-	it(`test`, ()=> {
-
+	it(`simulate click action`, ()=> {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -144,7 +148,29 @@ describe(`manage collection test`, () => {
 			</Provider>,
 		)
 
-		// console.log(wrapper.debug())
-		// console.log(wrapper.find(`ContentOverviewContainer`).props())
+		console.log(wrapper.debug())
+		wrapper.find(`.content-button`).simulate('click')
+		wrapper.find(`.permissions-button`).simulate('mouseEnter')
+		wrapper.find(`.permissions-button`).simulate('mouseLeave')
+		wrapper.find(Icon).simulate('mouseEnter')
+		wrapper.find(Icon).simulate('mouseLeave')
+		wrapper.find('h6').simulate('click')
+	})
+
+	it(`simulate click action`, ()=> {
+		props.viewstate.isEditingCollectionName = true
+		props.viewstate.collection = collection6
+		const wrapper = mount(
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<ManageCollection {...props}/>
+				</BrowserRouter>
+			</Provider>,
+		)
+
+		wrapper.find(TitleEditButton).simulate('mouseEnter')
+		wrapper.find(TitleEditButton).simulate('mouseLeave')
+		wrapper.find(PublishButton).simulate('mouseEnter')
+		wrapper.find(PublishButton).simulate('mouseLeave')
 	})
 })
