@@ -8,6 +8,12 @@
 		"test": "react-scripts test",
 		"lint": "eslint src/"
 	},
+	"jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": ["node_modules/(?!@luxon)/"]
+  },
 	"browserslist": [
 		">0.2%",
 		"not dead",

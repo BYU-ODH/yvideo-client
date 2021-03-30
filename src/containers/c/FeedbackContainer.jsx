@@ -50,10 +50,6 @@ const FeedbackContainer = props => {
 			}
 	}
 
-	const handleCaptcha = (boolean) => {
-			setIsPerson(boolean)
-	}
-
 	const viewstate = {
 		email,
 		name,
@@ -68,7 +64,6 @@ const FeedbackContainer = props => {
 		setTitle,
 		setEmail,
 		setName,
-		handleCaptcha,
 		handleSubmit,
 	}
 

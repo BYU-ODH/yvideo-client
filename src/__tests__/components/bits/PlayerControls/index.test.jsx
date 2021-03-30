@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { shallow, mount } from 'enzyme'
 import PlayerControls from '../../../../components/bits/PlayerControls'
-import Style, { PlayPause, ClosedCaptions, Fullscreen, Volume, 	Speed, } from '../../../../components/bits/PlayerControls/styles'
+import Style, { PlayPause, ClosedCaptions, Fullscreen, Volume, 	Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
 import clockIcon from '../../../../components/bits/PlayerControls/styles'
-
+import { BrowserRouter} from 'react-router-dom'
 
 const props = {
 	handlers : {
@@ -19,16 +19,23 @@ const props = {
 		handleChangeSubtitle: jest.fn(),
 		setShowTranscript: jest.fn(),
 		handleShowSubtitle: jest.fn(),
+		handleShowTip: jest.fn(),
+		handleShowHelp: jest.fn(),
+		toggleTip: jest.fn(),
 	},
 	viewstate : {
-		fullscreen: "fullscreen",
+		fullscreen: true,
 		displaySubtitles: {
 			language: "English"
 		},
 		progress: {
 			played: "played"
 		},
+		playing:true,
 		isCaption: true,
+		isAdmin: true,
+		isProf: true,
+		isMobile: true,
 		subtitles: [{
 			content: [{
 				end: 24.201520912547526,
@@ -42,29 +49,61 @@ const props = {
 	}
 }
 
-it(`Fullscreen onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Fullscreen onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`Speed onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<Speed src={clockIcon} onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`PlayPause onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<PlayPause onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
-})
-it(`ClosedCaptions onClick`, ()=> {
-	const mockCallBack = jest.fn()
-	const button = shallow(<ClosedCaptions onClick={mockCallBack}/>)
-	button.find('StyledComponent').simulate('click')
-	expect(mockCallBack.mock.calls.length).toEqual(1)
+describe(`Style onclick`, () => {
+
+	let wrapper
+	beforeEach(() => {
+		wrapper = mount(
+				<BrowserRouter>
+					<PlayerControls {...props}/>
+				</BrowserRouter>
+		)
+	})
+
+	it(`Fullscreen onClick`, ()=> {
+		const button = wrapper.find(Fullscreen).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`Speed onMouseEnter`, ()=> {
+		const button = wrapper.find(Speed).simulate('mouseEnter');
+		expect(button).toBeDefined();
+	})
+	it(`Speed onMouseLeave`, ()=> {
+		const button = wrapper.find(Speed).simulate('mouseLeave');
+		expect(button).toBeDefined();
+	})
+	it(`PlayPause onClick`, ()=> {
+		const button = wrapper.find(PlayPause).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`ClosedCaptions onClick`, ()=> {
+		const button = wrapper.find(ClosedCaptions).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`ClosedCaptions onMouseEnter`, ()=> {
+		const button = wrapper.find(ClosedCaptions).simulate('mouseEnter');
+		expect(button).toBeDefined();
+	})
+	it(`ClosedCaptions onMouseLeave`, ()=> {
+		const button = wrapper.find(ClosedCaptions).simulate('mouseLeave');
+		expect(button).toBeDefined();
+	})
+	it(`Book onClick`, ()=> {
+		const button = wrapper.find(Book).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`Help onClick`, ()=> {
+		const button = wrapper.find(Help).simulate('click');
+		expect(button).toBeDefined();
+	})
+	it(`Help onMouseEnter`, ()=> {
+		const button = wrapper.find(Help).simulate('mouseEnter');
+		expect(button).toBeDefined();
+	})
+	it(`Help onMouseLeave`, ()=> {
+		const button = wrapper.find(Help).simulate('mouseLeave');
+		expect(button).toBeDefined();
+	})
 })
 
 it(`simulate input`, ()=> {
@@ -113,6 +152,14 @@ it(`simulate setShowSpeed`, ()=> {
 	props.viewstate.isCaption = true
 	const wrapper = shallow(<PlayerControls {...props}/>)
 	wrapper.find(Speed).simulate('click')
+	wrapper.find(".menu-modal").at(0).simulate('MouseLeave')
+})
+
+it(`simulate setShowSpeed`, ()=> {
+	props.viewstate.isCaption = true
+	props.viewstate.isAdmin = false
+	props.viewstate.isProf = false
+	const wrapper = shallow(<PlayerControls {...props}/>)
 	wrapper.find(".menu-modal").at(0).simulate('MouseLeave')
 })
 

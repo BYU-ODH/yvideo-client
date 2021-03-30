@@ -48,6 +48,7 @@ const props = {
 	changeSubIndex: jest.fn(),
 	updateEvents: jest.fn(),
 	updateSubs: jest.fn(),
+	setActiveCensorPosition: jest.fn(),
 	minimized: true,
 	src: "src",
 }

@@ -15,6 +15,7 @@ const props = {
 	handleUnMute: jest.fn(),
 	handleBlank: jest.fn(),
 	handleShowComment: jest.fn(),
+	handleCensorActive: jest.fn(),
 }
 
 describe(`EventsContainer test`, () => {
