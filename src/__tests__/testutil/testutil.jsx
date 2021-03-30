@@ -1,4 +1,5 @@
 import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import proxies from 'proxy'
 import { browserStorage } from 'proxy'
@@ -710,6 +711,10 @@ export const store = mockStore(
 						]
 					}
 				],
+			},
+			modal: {
+				component: (props) => (<div></div>),
+				props: { active: true }
 			}
 		},
 		collectionStore: {
@@ -803,7 +808,7 @@ export const store = mockStore(
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
 )
 
-export const subStore = mockStore(
+export const store2 = mockStore(
 	{
 		resourceStore: {},
 		authStore: {
@@ -815,6 +820,10 @@ export const subStore = mockStore(
 		},
 		interfaceStore: {
 			languageCodes: {},
+			modal: {
+				component: (props) => (<div></div>),
+				props: { active: false }
+			},
 		},
 		collectionStore: {
 			roles,

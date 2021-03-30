@@ -183,6 +183,16 @@ describe(`content service test`, () => {
 		})
 		expect(store.getState().cache).toEqual([{sub1}])
 		await subtitleServiceConstructor.updateSubtitle(updateSubtitle1)(dispatch, getState, { apiProxy })
+
+	})
+
+	it(`updateSubtitle: catch error`, async() => {
+		proxies.apiProxy.subtitles.edit.mockImplementationOnce(()=>{
+			return Promise.reject('error')
+		});
+		expect(store.getState().loading).toEqual(false)
+		await subtitleServiceConstructor.updateSubtitle(updateSubtitle1)(dispatch, getState, { apiProxy })
+		expect(store.getState().loading).toEqual(false)
 	})
 
 	it(`activeUpdate`, async() => {
