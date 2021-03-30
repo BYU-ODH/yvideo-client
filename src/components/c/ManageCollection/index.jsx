@@ -118,14 +118,20 @@ export default class ManageCollection extends PureComponent {
 								{ isLabAssistant !== undefined ? (
 									<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
 								) : (
-									<ContentOverviewContainer key={item.id} content={item} />
+									<ContentOverviewContainer key={item.id} content={item}/>
 								)}
 							</div>
 						))
 						: (
 							<CollectionPermissionsContainer collection={collection} />
 						)}
-
+					{isContent ?
+						collection['expired-content'].map((item, index) => (
+							<ContentOverviewContainer key={index} content={item} isExpired={true}/>
+						))
+						: (
+							null
+						)}
 					{isContent && (
 						<NewContent className={`newcontent-button`} onClick={createContent}>
 							<Icon src={plus}

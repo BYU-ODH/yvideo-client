@@ -16,6 +16,7 @@ export default class Content {
 	thumbnail = ``
 	views = 0
 	url = ``
+	clips = ``
 	resource = {
 		keywords: [],
 	}
@@ -43,6 +44,7 @@ export default class Content {
 			this.description = obj[`description`]
 			this.resourceId = obj[`resource-id`]
 			this.resource.keywords = obj[`tags`] ? obj[`tags`].split(`; `) : ``
+			this.clips = obj['clips']
 			this.name = obj[`title`]
 			this.published = obj[`published`]
 

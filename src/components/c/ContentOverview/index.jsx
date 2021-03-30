@@ -23,6 +23,17 @@ import Style, {
 export default class ContentOverview extends PureComponent {
 	render() {
 
+		if(this.props.isExpired){
+			return (
+			<Style>
+				<div className="expired">
+					<h3 className={`content-title`}>{this.props.content['content-title']} <span>Expired</span></h3><br/>
+					<p>Please, contact a lab assistant to learn how to recover this content</p>
+				</div>
+			</Style>
+			)
+		}
+
 		const {
 			editing,
 			content,

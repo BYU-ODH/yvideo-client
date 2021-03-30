@@ -43,11 +43,10 @@ class PublicListCollection extends PureComponent {
 							})
 						}
 						<PublicButton
-							isSubscribed = {collection.isSubscribed}
 							onClick={handlePublicCollection}
 							className={`public-button`}
 						>
-							{!collection.isSubscribed ? `Add` : `Remove`}
+							Remove
 						</PublicButton>
 					</Body>
 				):(
