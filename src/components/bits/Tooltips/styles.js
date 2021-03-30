@@ -17,7 +17,7 @@ const Style = styled.div`
 
 	transition: visibility 1s ease, opacity .5s ease;
 
-	top: ${props => props.position ? (`${ props.position.y < window.innerHeight / 2 ? (`${props.position.y + 20}px`) : (`calc(${props.position.y - 20}px - 5vh)`)}`) : (`-10px`)};
+	top: ${props => props.position ? (`${ props.position.y < window.innerHeight / 2 ? (`calc(${props.position.y}px + 3%)`) : (`calc(${props.position.y}px - 3% - 5vh)`)}`) : (`-10px`)};
 	/* if it is greater than 3/4 of width we display to the left of item */
 	/* if it is less than 1/4 of width display to the riht */
 	/* else display in to the middle  */

@@ -44,6 +44,7 @@ const ClipEditor = props => {
 		handleShowTip,
 	} = props.handlers
 
+	const updateContent = props.updateContent
 	// const parseSub = Subtitle.parse(testingSubtitle)
 
 	// for (let i = 0; i < parseSub.length; i++){
@@ -62,6 +63,10 @@ const ClipEditor = props => {
 	const [start, setStart] = useState(0)
 	const [end,setEnd] = useState(60)
 	const [title,setTitle] = useState(``)
+	const [clipList,setClipList] = useState({})
+	const [active, setActive] = useState(``)
+	const [savedClips, setSavedClips] = useState([])
+	const [clipsToDelete,setClipsToDelete] = useState({})
 	// const [usingSubtitles, setSubtitles] = useState(false)
 	// const [subtitles, setSubs] = useState(subs)
 	// console.log(allEvents)
@@ -80,6 +85,14 @@ const ClipEditor = props => {
 		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
 		// Find the largets layer number
 		const initialLayers = []
+
+		if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
+			console.log(currentContent)
+			const clips = JSON.parse(currentContent[`clips`])
+			setClipList(clips)
+			const saved = Object.keys(clips)
+			setSavedClips(saved)
+		}
 
 		// new Array(largestLayer+1).fill(0)
 
@@ -104,7 +117,7 @@ const ClipEditor = props => {
 	}, [eventsArray])
 
 	const getVideoDuration = (duration) => {
-		// console.log(`setting video length`)
+		console.log(`setting video length`, duration)
 		setVideoLength(duration)
 		const tempSubs = subs
 		for (let i = 0; i < tempSubs.length; i++)
@@ -211,7 +224,60 @@ const ClipEditor = props => {
 			}
 		}
 	}
-
+	const titleSet = (value) => {
+		const clips = {...clipList}
+		clips[active][`title`] = value
+		setClipList(clips)
+	}
+	const setStartTime = (value) => {
+		console.log(videoLength)
+		const clips = {...clipList}
+		if(value > videoLength)
+			clips[active][`start`] = videoLength - 30
+		else if(value < 0)
+			clips[active][`start`] = 0
+		else
+			clips[active][`start`] = value
+		setClipList(clips)
+	}
+	const setEndTime = (value) => {
+		const clips = {...clipList}
+		if(value > videoLength)
+			clips[active][`end`] = videoLength
+		else if(value < 0)
+			clips[active][`end`] = 30
+		else
+			clips[active][`end`] = value
+		setClipList(clips)
+	}
+	const createClip = () =>{
+		const id = Object.keys(clipList).length === 0 ? `0` : `${parseInt(Object.keys(clipList).sort((a,b)=> a > b)[0]) + 1}`
+		const clip = {
+			start: 0,
+			end: 60,
+			title: ``,
+		}
+		const clips = {...clipList}
+		clips[id] = clip
+		setClipList(clips)
+	}
+	const deleteClip = (toDelete) =>{
+		const clips = {...clipList}
+		const del = clipsToDelete
+		const clip = clipList[toDelete]
+		del[toDelete] = clip
+		delete clips[`id`]
+		setClipList(clips)
+		setClipsToDelete(del)
+	}
+	const saveClips = () => {
+		if (Object.keys(clipList).length===0)
+			return
+		const clips = {...clipList}
+		const content = {...currentContent}
+		content[`clips`] = clips
+		updateContent(content)
+	}
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
@@ -233,15 +299,22 @@ const ClipEditor = props => {
 					</Controller>
 					<Timeline zoom={scrollBarWidth}>
 						<div className={`layer`}>
-							<div className={`handle`}>
-							</div>
-							<ClipLayer
-								start={start}
-								setStart={setStart}
-								end={end}
-								setEnd={setEnd}
-								width={0}
-							/>
+							{active !== `` ? (
+								<>
+									<div className={`handle`}>
+									</div>
+									<ClipLayer
+										start={start}
+										setStart={setStartTime}
+										end={end}
+										setEnd={setEndTime}
+										width={0}
+										videoLength = {videoLength}
+										active = {active}
+									/>
+								</>
+							): <></>}
+
 						</div>
 						<section>
 							{/* //TODO: Add delete logic */}
@@ -286,7 +359,7 @@ const ClipEditor = props => {
 								</div>
 								<div id={`time-indicator-container`}>
 									<div id={`layer-time-indicator`}>
-										<span id={`layer-time-indicator-line`}></span>
+										<span id={`layer-time-indicator-line`} style={{visibility: active !== ``? `visible`: `invisible`}}></span>
 									</div>
 								</div>
 							</div>
@@ -297,30 +370,39 @@ const ClipEditor = props => {
 					<header>
 						<div style={{position:`relative`,float:`none`, color:`#ffffff`, display:`flex`,justifyContent:`center`,alignItems:`center`,paddingTop:`20px`}}><h1 style={{margin:`0px`}}>Clip Editor</h1></div>
 					</header>
-					<div className='center'>
-						<label>Clip Name</label>
-					</div>
-					<div className='center'>
-						<input type='text' className='sideTabInput' value={start} onChange={e => {
-							setTitle(e.target.value)
-						}
-						}/>
-					</div>
-					<div className='center'>
-						<label>Clip Start</label>
-						<label>Clip End</label>
-					</div>
-					<div className='center'>
-						<input type='number' className='sideTabInput' value={start} onChange={e => {
-							setStart(e.target.value)
-						}
-						}/>
-						<input type='number' className='sideTabInput' value={end} onChange={e => {
-							setEnd(e.target.value)
-						}}/>
-					</div>
+					{active !== `` ? (<>
+						<div className='center' style={{ flexDirection: `column`}}>
+							<label>Clip Name</label>
+							<input type='text' className='sideTabInput' value={clipList[active][`title`]} onChange={e => {
+								titleSet(e.target.value)
+							}
+							}/>
+						</div>
+						<div className='center'>
+							<label>Clip Start</label>
+							<label>Clip End</label>
+						</div>
+						<div className='center'>
+							<input type='number' className='sideTabInput' value={clipList[active][`start`]} onChange={e => {
+								setStartTime(e.target.value)
+							}
+							}/>
+							<input type='number' className='sideTabInput' value={clipList[active][`end`]} onChange={e => {
+								setEndTime(e.target.value)
+							}}/>
+						</div></>):``}
+					{Object.keys(clipList).filter((a)=> savedClips.includes(a)===false).map((val, index)=>(
+						<button key={`clip${index}`} onClick={()=>{
+							setActive(val)
+							console.log(clipList,clipList[val])
+						}} className='clipButton unsavedClip'>{clipList[val].title !== ``? clipList[val].title : `No Title`}</button>
+					))}
+					<button onClick={()=>{
+						createClip()
+					}} className='clipButton createButton'>Add New Clip</button>
 					<button onClick={()=>{
 						console.log(`pressing the button`)
+						saveClips()
 					}} className='sideButton'>Save and Exit</button>
 				</SideEditor>
 			</DndProvider>

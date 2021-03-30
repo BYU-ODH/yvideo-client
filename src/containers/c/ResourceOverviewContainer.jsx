@@ -35,6 +35,7 @@ const ResourceOverviewContainer = props => {
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
 	const [numFileVersions, setNumFileVersions] = useState(0)
+	const [didUpdateResource, setDidUpdateResource] = useState(false)
 	// const [fileVersions, setFileVersions] = useState(resource.allFileVersions)
 
 	// TODO: file versions not updated when it is uploaded
@@ -45,6 +46,8 @@ const ResourceOverviewContainer = props => {
 
 		if(files.length !== numFileVersions){
 			setNumFileVersions(files.length)
+
+			console.log(files)
 
 			let langs = ``
 			files.forEach(file => {
@@ -57,18 +60,15 @@ const ResourceOverviewContainer = props => {
 					allFileVersions: langs,
 				})
 				updateAllFileVersions(resourceState, files)
+				editResource(resourceState, resourceState.id)
 			}
 		}
 
-	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceCache[resource.id].files])
+	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions])
 
 	if (objectIsEmpty(resource)) return null
 
 	const handleFileUploadToResource = async() => {
-
-		// need to set up languages on store before post new one
-		// await getLangs()
-
 		props.toggleModal({
 			component: FileUploadContainer,
 			props: {
@@ -78,17 +78,17 @@ const ResourceOverviewContainer = props => {
 	}
 
 	const handleToggleEdit = async () => {
-		// need to set up languages on store before editing
-
-		await getLangs()
-		await getResourceFiles(resource.id)
 
 		if (editing) {
 			await editResource(resourceState, resourceState.id)
 			setShowing(false)
 			setEditing(false)
-		} else
+		} else{
+			// set up languages on store before editing
+			await getLangs()
+			await getResourceFiles(resource.id)
 			setEditing(true)
+		}
 
 	}
 

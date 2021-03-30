@@ -10,6 +10,7 @@ import {
 	Tab,
 	TypeButton,
 	FormResource,
+	Search,
 } from './styles'
 
 import plus from 'assets/plus_blue.svg'
@@ -114,7 +115,6 @@ export default class CreateContent extends PureComponent {
 						</label>
 						<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
 							{
-								// TODO: need to be updated for submit work
 								resourceContent && hideResources !== true &&
 								Object.keys(resourceContent).map(index =>
 									<li key={resourceContent[index].id}>
@@ -126,7 +126,7 @@ export default class CreateContent extends PureComponent {
 						</TableContainer>
 						<label>
 							<span>Content Title</span><br/>
-							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange} />
+							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange} required/>
 						</label>
 						<label>
 							<span>Description</span><br/>
@@ -147,7 +147,15 @@ export default class CreateContent extends PureComponent {
 
 						<div>
 							<Button className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
-							<Button className='url-content-create' type='submit' color={`#0582CA`}>Create</Button>
+							{targetLanguages.length > 0 ?
+								(
+									<Button className='url-content-create' type='submit' color={`#0582CA`}>Create</Button>
+								)
+								:
+								(
+									<Button className='url-content-create' type='submit' color={`#A0A0A0`} disabled>Create</Button>
+								)
+							}
 						</div>
 					</FormResource>
 				}

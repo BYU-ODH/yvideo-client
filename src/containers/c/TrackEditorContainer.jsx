@@ -110,7 +110,6 @@ const TrackEditorContainer = props => {
 					subtitles[i][`content`] = JSON.parse(subtitles[i][`content`])
 				}else if(subtitles[i][`id`] !== ``)
 					updateSubtitle(subtitles[i])
-
 			}
 		}catch(error){
 

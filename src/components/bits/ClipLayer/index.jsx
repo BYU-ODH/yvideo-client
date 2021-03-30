@@ -8,7 +8,7 @@ import {
 
 const ClipLayer = props => {
 
-	const {width, start, end, setStart, setEnd} = props
+	const {width, start, end, setStart, setEnd,videoLength} = props
 	const layerRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
@@ -87,8 +87,8 @@ const ClipLayer = props => {
 					<div className={`clip-layer events`}>
 						<Rnd
 							id={`clip-start`}
-							size={{width: `${(end - start)/100 * layerWidth}px`, height: `46px`}}
-							position={{ x: parseFloat(start / 100 * layerWidth), y: 0}}
+							size={{width: `${(end - start)/videoLength * layerWidth}px`, height: `46px`}}
+							position={{ x: parseFloat(start/videoLength * layerWidth), y: 0}}
 							enableResizing={Enable}
 							dragAxis='x'
 							bounds={`.clip-layer`}

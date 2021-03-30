@@ -382,6 +382,41 @@ export const SideEditor = styled.div`
 			background-color: var(--navy-blue);
 		}
 	}
+	& .clipButton {
+		width: 75%;
+		margin-left: 15%;
+		margin-top: 10px;
+		border: none;
+		height: 40px;
+		color: white;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+	& .createButton {
+		background-color: #9dccfa;
+		& :hover {
+			opacity: 0.5;
+		}
+	}
+	& .savedClip {
+		background-color: #7cf578;
+		& :hover {
+			opacity: 0.5;
+		}
+	}
+	& .deletedClip {
+		background-color: #e62c2c;
+		& :hover {
+			opacity: 0.5;
+		}
+	}
+	& .unsavedClip {
+		background-color: #faf575;
+		color: black;
+		& :hover {
+			opacity: 0.5
+		}
+	}
 	& .layer {
 		display: flex;
 		width: 100%;

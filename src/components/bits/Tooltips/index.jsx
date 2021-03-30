@@ -49,7 +49,7 @@ export const ToolTip = (props) => {
 	const [position, setPosition] = useState(null)
 
 	useEffect(() => {
-		if(window.innerWidth < 400){
+		if(window.innerWidth < 600){
 			document.getElementById("tip-box").style.visibility = "hidden"
 			return;
 		}

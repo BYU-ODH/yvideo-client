@@ -44,6 +44,7 @@ const apiProxy = {
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 
 				updateSessionId(result.headers[`session-id`])
+				// console.log(result.data)
 
 				result.data.forEach(element => {
 					element[`name`] = element[`collection-name`]
@@ -358,7 +359,6 @@ const apiProxy = {
 			})
 			return results
 		},
-
 	},
 	resources: {
 		post: async (resource) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource`, resource, {
@@ -417,6 +417,8 @@ const apiProxy = {
 				},
 			}).then( async res => {
 			await updateSessionId(res.headers[`session-id`])
+
+			// console.log(res.data)
 			return res.data
 		}),
 
@@ -448,20 +450,21 @@ const apiProxy = {
 					})
 					// window.clj_session_id = res.data['session-id']
 					// CALL TO GET THE USER ONCE THE SESSION ID HAS BEEN SET
-				}
-				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
-				const result = await axios.get(url, {
-					withCredentials: true,
-					headers: {
-						'Content-Type': `application/json`,
-						'session-id': window.clj_session_id,
-					},
-				}).then(async res => {
-					await updateSessionId(res.headers[`session-id`])
-					return res
-				})
+				} else{
+					const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
+					const result = await axios.get(url, {
+						withCredentials: true,
+						headers: {
+							'Content-Type': `application/json`,
+							'session-id': window.clj_session_id,
+						},
+					}).then(async res => {
+						await updateSessionId(res.headers[`session-id`])
+						return res
+					})
 
-				return new User(result.data)
+					return new User(result.data)
+				}
 			} catch (error) {
 				console.error(error)
 			}
@@ -702,6 +705,31 @@ const apiProxy = {
 			updateSessionId(res.headers[`session-id`])
 			return res
 		}),
+	},
+	translation: {
+		getTranslation: async (word, language) => {
+			const result = await axios({
+				method: `GET`,
+				headers: {
+					'Content-Type': `application/x-www-form-urlencoded`,
+					'Access-Control-Allow-Origin': `http://yvideodev.byu.edu`,
+				},
+				url: `/${language}/${word}`,
+				baseURL: `http://yvideodev.byu.edu:5001/translate`,
+			})
+			// const result = axios({
+			// 		method: 'GET',
+			// 		baseURL: 'http://yvideodev.byu.edu:5001',
+			// 		url: `/translate/${language}/${word}`
+			// 	}).then(response => {
+			// 		// console.log(response)
+			// 		return response
+			// 	})
+			// 	.catch(error => {
+			// 		console.log(error)
+			// 	});
+			return result.data
+		},
 	},
 }
 

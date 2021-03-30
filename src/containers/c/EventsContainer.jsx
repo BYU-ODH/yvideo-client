@@ -27,7 +27,7 @@ const EventsContainer = props => {
 	useEffect(() => {
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
 		// If the blank or mute event is active the event will be executed.
-		console.log(props)
+		// console.log(props)
 		handleBlank(false)
 		handleUnMute()
 		handleCensorActive(false)
@@ -35,9 +35,10 @@ const EventsContainer = props => {
 
 		// We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
 		const tempArray = []
-		if(duration !== 0 && events !== undefined){
+		if(duration !== 0 && events !== undefined && Array.isArray(events)){
+
 			events.forEach(event => {
-				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
+				//Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
 				const start = event.start / 100 * duration
 				const end = event.end / 100 * duration
 				switch (event.type) {

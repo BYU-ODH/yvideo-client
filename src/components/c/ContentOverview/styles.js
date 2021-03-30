@@ -173,7 +173,7 @@ export const InnerContainer = styled.div`
 	display: grid;
 	grid-gap: 2rem;
 	margin-top: 10px;
-	grid-template-columns: 1fr 1fr 2fr;
+	grid-template-columns: 1fr 1fr 1.5fr 1fr;
 	padding: 2rem 1rem;
 	border-radius: 5px;
 	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
@@ -202,6 +202,18 @@ export const Column = styled.div`
 		font-size: 1.4rem;
 	}
 
+	& div {
+		display: flex;
+		border-bottom: 1px solid #c4c4c4;
+		line-height: 2rem;
+		margin-bottom: 1rem;
+		font-size: 1.4rem;
+
+		& > h4 {
+			margin-right: 1rem;
+		}
+	}
+
 	& textarea {
 		width: 100%;
 	}
@@ -213,7 +225,22 @@ export const Column = styled.div`
     background-color: var(--light-blue);
     border: 2px solid transparent;
     width: 5rem !important;
-    margin: 0px auto 0px auto;
+    margin: 0px 0px 0px 10px;
+    font-weight: bold;
+
+		:hover {
+			border: 2px solid var(--navy-blue)
+		}
+	}
+
+	& .words-modal {
+		border-radius: 10px;
+    font-size: 1.3rem;
+    color: white;
+    background-color: var(--light-blue);
+    border: 2px solid transparent;
+    width: 6rem !important;
+    margin: 0px 0px 0px 5px;
     font-weight: bold;
 
 		:hover {

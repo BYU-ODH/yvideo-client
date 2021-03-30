@@ -48,6 +48,17 @@ const Style = styled.div`
 		border-top: 1px solid #c4c4c4;
 		max-width: 27rem;
 	}
+
+	& .logout {
+		width: 10rem;
+		border: none;
+		color: red;
+		background-color: transparent;
+		text-align: left;
+		cursor: pointer;
+		padding: 0px;
+		margin: 0px;
+	}
 `
 
 export default Style
@@ -65,6 +76,19 @@ export const LinkStyled = styled(Link)`
 export const Header = styled.h4`
 	text-transform: uppercase;
 	font-weight: 500;
+`
+
+export const LogoutButton = styled.button`
+	margin-bottom: 1rem;
+	padding: 0;
+	width: fit-content;
+	text-decoration: none;
+	outline: none;
+	font-weight: 300;
+	color: #FF6161;
+	background: transparent;
+	border: none;
+	cursor: pointer;
 `
 
 export const UserPic = styled.button`
@@ -93,24 +117,6 @@ export const UserPic = styled.button`
 	:hover {
 		cursor: pointer;
 	}
-`
-
-export const LogoutButton = styled.button`
-	margin-bottom: 1rem;
-	padding: 0;
-
-	width: fit-content;
-
-	text-decoration: none;
-	outline: none;
-	font-weight: 300;
-
-	color: #FF6161;
-
-	background: transparent;
-	border: none;
-
-	cursor: pointer;
 `
 export const Footer = styled.div`
 	position: absolute;

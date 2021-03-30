@@ -113,8 +113,11 @@ const Controller = props => {
 			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		},
 		handleDuration: duration => {
-			if(typeof getDuration === `function`)
+			console.log(`step 1`)
+			if(typeof getDuration === `function`){
+				console.log(`step 2`)
 				getDuration(duration)
+			}
 
 			setDuration(duration)
 			setCurrentZone([0, duration])
@@ -134,18 +137,18 @@ const Controller = props => {
 				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed.toFixed(10) * duration)
-				console.log(newPlayed.toFixed(10) * duration)
+				// console.log(newPlayed.toFixed(10) * duration)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
 			getVideoTime(elapsed.toFixed(1))
-			console.log(elapsed.toFixed(1))
+			// console.log(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
 			getVideoTime(elapsed.toFixed(1))
-			console.log(elapsed.toFixed(1))
+			// console.log(elapsed.toFixed(1))
 			setActiveCensorPosition(-1)
 		},
 		handleMute: () => {
@@ -167,7 +170,7 @@ const Controller = props => {
 
 		},
 		handleShowSubtitle: (value) => {
-			console.log(value)
+			// console.log(value)
 			setSubtitleText(value)
 		},
 		// For when returning values of two subtitles
@@ -190,22 +193,22 @@ const Controller = props => {
 			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
-			console.log(events)
+			// console.log(events)
 			const event = events[eventToEdit]
-			console.log(pos.x/videoRef.current.offsetWidth*100 - event.position[activeCensorPosition][2]/2)
+			// console.log(pos.x/videoRef.current.offsetWidth*100 - event.position[activeCensorPosition][2]/2)
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
 					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + event.position[activeCensorPosition][2]/2
 					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + event.position[activeCensorPosition][3]/2
 				}
 			}
-			console.log(event)
+			// console.log(event)
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleUpdateCensorResize: (delta, pos)=>{
 			console.log(videoRef.current.offsetWidth,ref.current)
 			const event = events[eventToEdit]
-			console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
+			// console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
 					const width = event.position[activeCensorPosition][2] + delta.width/videoRef.current.offsetWidth*100
@@ -216,7 +219,7 @@ const Controller = props => {
 					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + height/2
 				}
 			}
-			console.log(event.position)
+			// console.log(event.position)
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 	}

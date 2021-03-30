@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import {
 	collectionService,
+	interfaceService,
 	contentService,
 	adminService,
 } from 'services'
@@ -11,23 +12,26 @@ import {
 	ContentOverview,
 } from 'components'
 
+import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
+
 import { objectIsEmpty } from 'lib/util'
 
 const ContentOverviewContainer = props => {
 
 	const {
 		content,
+		isExpired,
 		removeCollectionContent,
 		updateContent,
 		isLabAssistant,
 		adminRemoveCollectionContent,
+		toggleModal,
 	} = props
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
 
 	const [tag, setTag] = useState(``)
-	const [word, setWord] = useState(``)
 
 	const [contentState, setContentState] = useState(content)
 
@@ -62,10 +66,19 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleTogglePublish = e => {
-		setContentState({
-			...contentState,
-			published: !contentState.published,
-		})
+		if(isExpired < 0){
+			setContentState({
+				...contentState,
+				published: !contentState.published,
+			})
+		}
+		else {
+			alert('This content is expired. Please, talk to a lab assistant and provide a physical copy.')
+			setContentState({
+				...contentState,
+				published: false,
+			})
+		}
 	}
 
 	const handleToggleSettings = e => {
@@ -113,25 +126,11 @@ const ContentOverviewContainer = props => {
 		setTag(e.target.value)
 	}
 
-	const addWord = (e) => {
-		e.preventDefault()
-		const newWords = word.split(/[ ,]+/)
-		setContentState({
-			...contentState,
-			words: [...contentState.words, ...newWords],
+	const handleShowWordsModal = () => {
+		toggleModal({
+			component: HighlightWordsContainer,
+			props:{ contentId: content.id},
 		})
-		setWord(``)
-	}
-
-	const removeWord = e => {
-		setContentState({
-			...contentState,
-			words: contentState.words.filter(item => item !== e.target.dataset.value),
-		})
-	}
-
-	const changeWord = e => {
-		setWord(e.target.value)
 	}
 
 	const viewstate = {
@@ -139,7 +138,6 @@ const ContentOverviewContainer = props => {
 		showing,
 		editing,
 		tag,
-		word,
 	}
 
 	const handlers = {
@@ -155,9 +153,7 @@ const ContentOverviewContainer = props => {
 		addTag,
 		removeTag,
 		changeTag,
-		addWord,
-		removeWord,
-		changeWord,
+		handleShowWordsModal
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />
@@ -167,6 +163,7 @@ const mapDispatchToProps = {
 	removeCollectionContent: collectionService.removeCollectionContent,
 	updateContent: contentService.updateContent,
 	adminRemoveCollectionContent: adminService.deleteContent,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(null, mapDispatchToProps)(ContentOverviewContainer)

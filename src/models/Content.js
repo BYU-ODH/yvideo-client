@@ -16,7 +16,7 @@ export default class Content {
 	thumbnail = ``
 	views = 0
 	url = ``
-	words = ``
+	clips = ``
 	resource = {
 		keywords: [],
 	}
@@ -43,14 +43,14 @@ export default class Content {
 			this.thumbnail = obj[`thumbnail`]
 			this.description = obj[`description`]
 			this.resourceId = obj[`resource-id`]
-			this.resource.keywords = obj[`tags`].split(`; `)
+			this.resource.keywords = obj[`tags`] ? obj[`tags`].split(`; `) : ``
+			this.clips = obj['clips']
 			this.name = obj[`title`]
 			this.published = obj[`published`]
-			this.words = obj[`words`] ? obj[`words`].split(`; `) : ``
 
 			this.settings = {
 				allowDefinitions: obj[`allow-definitions`],
-				annotationDocument: this.stringToArray(obj[`annotations`]),
+				annotationDocument: obj[`annotations`] ? this.stringToArray(obj[`annotations`]) : ``,
 				showCaptions: obj[`allow-captions`],
 				targetLanguages: obj[`file-version`],
 				allowNote: obj[`allow-notes`],
