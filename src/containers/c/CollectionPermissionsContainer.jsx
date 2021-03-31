@@ -46,9 +46,7 @@ const CollectionPermissionsContainer = props => {
 	const [userCount, setUserCount] = useState(0)
 
 	useEffect(() => {
-		console.log(`trigger`)
 		getCollectionInfo(collection.id)
-		console.log(users)
 		if(loaded === true) {
 			setTimeout(() => {
 				setLoaded(false)
