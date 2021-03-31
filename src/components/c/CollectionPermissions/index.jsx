@@ -28,6 +28,7 @@ export class CollectionPermissions extends PureComponent {
 
 		const {
 			users,
+			userTA,
 			courses,
 			state,
 			disabled,
@@ -44,10 +45,6 @@ export class CollectionPermissions extends PureComponent {
 		const {
 			username,
 		} = this.props.viewstate.user
-
-		// const {
-		// 	username,
-		// } = this.props.viewstate.userTA
 
 		const sort = (data,sortType) => {
 			if (this.state.sortType.reverse === false){
@@ -104,7 +101,7 @@ export class CollectionPermissions extends PureComponent {
 							</thead>
 							<tbody>
 								{ courses.length > 0 ?
-									 courses.map((element, index) =>
+									courses.map((element, index) =>
 										<tr key={index}>
 											<td>{element[`department`]}</td>
 											<td>{element[`catalog-number`]}</td>
@@ -112,9 +109,8 @@ export class CollectionPermissions extends PureComponent {
 											<td onClick={e => handlers.removeCourse(element[`id`])}><img src={removeIcon} width='20px'/></td>
 										</tr>,
 									)
-									 :
+									:
 									null
-
 								}
 							</tbody>
 						</Table>
@@ -124,22 +120,22 @@ export class CollectionPermissions extends PureComponent {
 						<UserList id='user-table'>
 							<h4>TA</h4>
 							<Search className='faculty-submit' onSubmit={handlers.addTA}>
-								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={username} />
+								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={userTA.username} />
 								<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
 							</Search>
 							<Table border='1'>
 								<thead>
 									<tr>
-										<th>Username<Sort onClick={()=>sort(users,`Username`)}></Sort></th>
-										<th>Name<Sort onClick={()=>sort(users,`Name`)}></Sort></th>
+										<th>Username<Sort onClick={()=>sort(userTA,`Username`)}></Sort></th>
+										<th>Name<Sort onClick={()=>sort(userTA,`Name`)}></Sort></th>
 										<th>Role</th>
 										<th>Last Login</th>
 										<th>Remove</th>
 									</tr>
 								</thead>
 								<tbody>
-									{loaded === false ? users.length > 0 ?
-										users.map((element, index) =>
+									{loaded === false ? userTA.length > 0 ?
+										userTA.map((element, index) =>
 											<tr key={index}>
 												<td>{element[`username`]}</td>
 												<td>{element[`account-name`]}</td>

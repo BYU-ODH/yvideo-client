@@ -6,6 +6,7 @@ import { ManageResource } from 'components'
 import { interfaceService, resourceService } from 'services'
 
 import CreateResourceContainer from 'components/modals/containers/CreateResourceContainer'
+import { set } from 'js-cookie'
 
 const ManageResourceContainer = props => {
 
@@ -13,12 +14,31 @@ const ManageResourceContainer = props => {
 		searchResource,
 		resources,
 		user,
+		readAccess,
 	} = props
 
 	const defaultSearch = user.email.split(`@`)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [isDefaultSearched, setIsDefaultSearched] = useState(false)
+	const [isDefaultSetup, setIsDefaultSetup] = useState(true)
+	const [resourceCount, setResourceCount] = useState(0)
 	const [selectedResource, setSelectedResource] = useState(``)
+
+	useEffect(() => {
+
+		// find default setup for the access
+		if(Object.keys(resources).length !== resourceCount){
+			setResourceCount(Object.keys(resources).length)
+
+			// if this is
+			if(!isDefaultSetup){
+				// readAccess(selectedResource.id)
+				console.log(resources)
+			}
+
+			setIsDefaultSearched(false)
+		}
+	}, [])
 
 	const addResource = () => {
 		props.toggleModal({
@@ -65,12 +85,14 @@ const ManageResourceContainer = props => {
 const mapStateToProps = store => ({
 	resources: store.resourceStore.cache,
 	user: store.authStore.user,
+	resourceAccess: store.resourceStore.access,
 })
 
 const mapDispatchToProps = {
 	addResource: resourceService.addResource,
 	toggleModal: interfaceService.toggleModal,
 	searchResource: resourceService.search,
+	readAccess: resourceService.readAccess,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageResourceContainer)

@@ -45,7 +45,7 @@ const CollectionPermissionsContainer = props => {
 	const [userCount, setUserCount] = useState(0)
 
 	useEffect(() => {
-		console.log('trigger')
+		console.log(`trigger`)
 		getCollectionInfo(collection.id)
 
 		if(loaded === true) {
@@ -54,7 +54,12 @@ const CollectionPermissionsContainer = props => {
 			}, 1000)
 		}
 
-	},[collection.id, users, courses, updateCollectionPermissions])
+		// if(users !== undefined && userCount !== users.length){
+		// 	console.log(users)
+		// 	console.log(collection)
+		// }
+
+	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses])
 
 	const handlers = {
 		handleDepartmentChange: e => {
@@ -135,9 +140,10 @@ const CollectionPermissionsContainer = props => {
 		},
 		addTA: e => {
 			e.preventDefault()
+			// console.log(userTA)
 			updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
 			setDisableUser(true)
-			setUser({
+			setUserTA({
 				...userTA,
 				username: ``,
 			})
