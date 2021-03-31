@@ -47,6 +47,7 @@ export default class Content {
 			this.clips = obj['clips']
 			this.name = obj[`title`]
 			this.published = obj[`published`]
+			this.clips = obj[`clips`] ? obj[`clips`] : ``
 
 			this.settings = {
 				allowDefinitions: obj[`allow-definitions`],

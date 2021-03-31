@@ -10,6 +10,7 @@ import Style, {
 	TitleEdit,
 	RemoveIcon,
 	UploadIcon,
+	PersonAddIcon,
 	SaveIcon,
 	TypeButton,
 	Type,
@@ -26,15 +27,13 @@ export class ResourceOverview extends PureComponent {
 		const {
 			handleResourceName,
 			handleFiles,
-			handleResourceMetadata,
+			handleInstructors,
 			handleToggleEdit,
 			handleRemoveResource,
-			handleTogglePhysicalCopyExists,
 			handleTogglePublish,
 			handleToggleCopyRighted,
 			handleToggleFullVideo,
 			handleTypeChange,
-			handleResourceEmail,
 			handleFileUploadToResource,
 		} = this.props.handlers
 
@@ -42,18 +41,16 @@ export class ResourceOverview extends PureComponent {
 			resource,
 			files,
 			editing,
-			fileVersions,
+			accessCount,
+			user,
 		} = this.props.viewstate
 
 		const {
-			metadata,
 			resourceName,
-			physicalCopyExists,
 			published,
 			copyrighted,
 			resourceType,
 			fullVideo,
-			requesterEmail,
 		} = resource
 
 		return (
@@ -71,6 +68,7 @@ export class ResourceOverview extends PureComponent {
 							{editing &&
 							<>
 								{/* TODO: need to figure out how it work on attaching files on resource */}
+								{/* <FileUploadButton className='file-attach-button' onClick={handleRegisterInstructors}>Register Instructor<PersonAddIcon/></FileUploadButton> */}
 								<FileUploadButton className='file-attach-button' onClick={handleFileUploadToResource}>Upload File<UploadIcon/></FileUploadButton>
 								<RemoveButton className='remove-resource-button' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
 							</>
@@ -83,19 +81,6 @@ export class ResourceOverview extends PureComponent {
 					<InnerContainer>
 						<Column>
 							<h4>
-								copyrighted
-								<SwitchToggle on={copyrighted} setToggle={handleToggleCopyRighted} data_key='copyrighted' />
-							</h4>
-
-							<h4>
-								physical copy exists
-								<SwitchToggle on={physicalCopyExists} setToggle={handleTogglePhysicalCopyExists} data_key='physicalCopyExists' />
-							</h4>
-
-						</Column>
-
-						<Column>
-							<h4>
 								published
 								<SwitchToggle on={published} setToggle={handleTogglePublish} data_key='published' />
 							</h4>
@@ -104,10 +89,29 @@ export class ResourceOverview extends PureComponent {
 								full video
 								<SwitchToggle on={fullVideo} setToggle={handleToggleFullVideo} data_key='fullVideo' />
 							</h4>
+
+							<h4>
+								copyrighted
+								<SwitchToggle on={copyrighted} setToggle={handleToggleCopyRighted} data_key='copyrighted' />
+							</h4>
+
 						</Column>
 
 						<Column>
-							<div><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></div>
+							<div><h4>Views:</h4><Title>{resource.views} views</Title></div>
+
+							{user.roles === 0 || user.roles === 1 ?
+								(
+									<div>
+										<h4>Instructors: </h4>{ <> <EditButton onClick={handleInstructors}> {accessCount} registered</EditButton></>}
+									</div>
+								) :
+								null
+							}
+						</Column>
+
+						<Column>
+							{/* <div><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></div> */}
 							<Type>
 								<h4>Type:</h4>
 								<TypeButton type='button' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
@@ -117,23 +121,7 @@ export class ResourceOverview extends PureComponent {
 							</Type>
 
 							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
-
-							<div><h4>Views:</h4><Title>{resource.views} views</Title></div>
-
 						</Column>
-
-						{/* <Column>
-							<div><h4>File Versions:</h4><Title>{resource.allFileVersions}</Title></div>
-
-							<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
-						</Column> */}
-
-						{/* TODO: metadata can be used later for the extended data. */}
-						{/* <Column>
-							<h4>Metadata</h4>
-							<textarea onChange={handleResourceMetadata} value={metadata} rows={6}/>
-						</Column> */}
-
 					</InnerContainer>
 				}
 			</BoxRow>
