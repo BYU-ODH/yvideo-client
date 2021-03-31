@@ -795,7 +795,13 @@ export const store = mockStore(
 		subtitlesStore:{
 			cache: [
 				{
-				content: ``,
+				content: [
+					{
+						start: 0,
+						end: 200,
+						text: "First Line"
+					}
+				],
 				["content-id"]: `0`,
 				id: `1`,
 				language: `english`,
@@ -855,6 +861,7 @@ export const store2 = mockStore(
 			cache: [{
 				words: ``,
 			}],
+			active: 10,
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
