@@ -33,6 +33,7 @@ export class CollectionPermissions extends PureComponent {
 			state,
 			disabled,
 			disabledUser,
+			disabledTA,
 			loaded,
 		} = viewstate
 
@@ -121,14 +122,14 @@ export class CollectionPermissions extends PureComponent {
 							<h4>TA</h4>
 							<Search className='faculty-submit' onSubmit={handlers.addTA}>
 								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={userTA.username} />
-								<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
+								<AddButton className='add-faculty-button' type='submit' disabled={disabledTA}>Add</AddButton>
 							</Search>
 							<Table border='1'>
 								<thead>
 									<tr>
 										<th>Username<Sort onClick={()=>sort(userTA,`Username`)}></Sort></th>
 										<th>Name<Sort onClick={()=>sort(userTA,`Name`)}></Sort></th>
-										<th>Role</th>
+										<th>type</th>
 										<th>Last Login</th>
 										<th>Remove</th>
 									</tr>
@@ -140,18 +141,17 @@ export class CollectionPermissions extends PureComponent {
 												<td>{element[`username`]}</td>
 												<td>{element[`account-name`]}</td>
 												<td>{element[`account-type`]}</td>
-												<td>{element[`last-login`].length > 2 ? (
-														`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
-														) : (
-															'NA'
-														)}
+												<td>{element[`last-login`].length > 2 ?
+													`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
+														 :
+													`NA`
+												}
 												</td>
 												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
 											</tr>,
 										)
 										:
 										null
-
 										:
 										(
 											<tr className='loading'><Loading colSpan={4} rowSpan={6} loaded={loaded}><img src={logo} /></Loading></tr>
@@ -174,30 +174,24 @@ export class CollectionPermissions extends PureComponent {
 									<tr>
 										<th>Username<Sort onClick={()=>sort(users,`Username`)}></Sort></th>
 										<th>Name<Sort onClick={()=>sort(users,`Name`)}></Sort></th>
-										<th>Role</th>
+										<th>type</th>
 										<th>Last Login</th>
 										<th>Remove</th>
 									</tr>
 								</thead>
 								<tbody>
-									{loaded === false ?
-									 users.length > 0 ?
-											users.map((element, index) =>
-												<tr key={index}>
-													<td>{element[`username`]}</td>
-													<td>{element[`account-name`]}</td>
-													<td>{element[`account-type`]}</td>
-													<td>{element[`last-login`].length > 2 ? (
-														`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
-														) : (
-															'NA'
-														)}
-													</td>
-													<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
-												</tr>,
-											)
-											:
-											null
+									{loaded === false ? users.length > 0 ?
+										users.map((element, index) =>
+											<tr key={index}>
+												<td>{element[`username`]}</td>
+												<td>{element[`account-name`]}</td>
+												<td>{element[`account-type`]}</td>
+												<td>{element[`last-login`].substring(0, 11)}{element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}</td>
+												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
+											</tr>,
+										)
+										:
+										null
 
 										:
 										(
