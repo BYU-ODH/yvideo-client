@@ -5,8 +5,12 @@ import {
 	Button,
 	Search,
 	SearchIcon,
+	RemoveIcon,
 	Table,
 	RegisteredListTable,
+	InputForm,
+	AddButton,
+	RemoveButton,
 } from './styles'
 
 export default class ManageInstructors extends PureComponent {
@@ -31,15 +35,19 @@ export default class ManageInstructors extends PureComponent {
 
 		return (
 			<Form onSubmit={handleRegister} id='upload-file-form'>
-				<h2>Register Instructors</h2>
 
+				{/*
+
+				Keep the search method for later
+
+				<h2>Register Instructors</h2>
 				<Search id='searchSubmit'>
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
 					<button type='submit' onClick={handleSearchSubmit}>Search</button>
-				</Search>
+				</Search> */}
 
-				{ data !== null ?
+				{/* { data !== null ?
 					<Table>
 						<thead>
 							<tr>
@@ -72,19 +80,18 @@ export default class ManageInstructors extends PureComponent {
 					</Table>
 					:
 					<></>
-				}
+				} */}
 
-				<h2>Registered</h2>
+				<h2>Instructors</h2>
+
+				<InputForm className='faculty-submit'>
+					<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={updateSearchBar} value={searchQuery} />
+					<AddButton onClick={addInstructor} type='submit'>Add</AddButton>
+				</InputForm>
 				{
 					resourceAccess.length > 0 ?
 						<RegisteredListTable>
 							<thead>
-								<tr>
-									<td>NetID</td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
 							</thead>
 							<tbody>
 								{resourceAccess.map(
@@ -93,13 +100,13 @@ export default class ManageInstructors extends PureComponent {
 											<td>{item}</td>
 											<td></td>
 											<td></td>
-											<td><Button onClick={e => removeInstructor(item)} color={`#0582CA`}>remove</Button></td>
+											<td><RemoveButton onClick={e => removeInstructor(item)}><RemoveIcon/></RemoveButton></td>
 										</tr>,
 								)}
 							</tbody>
 						</RegisteredListTable>
 						:
-						<></>
+						<>There is no registered user</>
 				}
 
 				<div>

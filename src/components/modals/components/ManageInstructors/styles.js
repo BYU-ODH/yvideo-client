@@ -1,5 +1,6 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import searchIcon from 'assets/search.svg'
+import removeIcon from 'assets/trash.svg'
 
 export const Search = styled.div`
 	position: relative;
@@ -50,6 +51,45 @@ export const Search = styled.div`
 	}
 `
 
+export const InputForm = styled.div`
+	position: relative;
+	display: inline;
+
+	& > input {
+		background: white;
+		border-radius: 1.3rem;
+		border: none;
+		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		height: 2.6rem;
+		margin-bottom: 1rem;
+		margin-right: 2rem;
+		outline: none;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		width: 14rem;
+		z-index: 1;
+	}
+`
+export const AddButton = styled.button`
+	background: ${props => props.disabled ? `#eee` : `#0582CA`};
+	color: ${props => props.disabled ? `initial` : `white`};
+
+	height: 2.8rem;
+	width: 5rem;
+
+	border: none;
+	border-radius: 1.3rem;
+
+	outline: none;
+
+	${props => props.disabled ? `` : `cursor: pointer;`}
+
+	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+
+	padding-left: 1rem;
+	padding-right: 1.2rem;
+`
+
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 9;
@@ -59,6 +99,35 @@ export const SearchIcon = styled.span`
 	background-size: contain;
 	height: 2rem;
 	width: 2rem;
+`
+
+export const RemoveIcon = styled.span`
+	background: url(${removeIcon}) center no-repeat;
+	height: 2.5rem;
+	width: 2rem;
+`
+
+const TextButton = css`
+	font-weight: bold;
+	line-height: 1.5rem;
+	letter-spacing: .05rem;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	outline: none;
+`
+
+export const RemoveButton = styled.button`
+	display: flex;
+	align-items: center;
+  justify-content: center;
+	color: #ff4c4c;
+	${TextButton}
+	text-align: center !important;
+
+	& > span {
+		margin-left: .5rem;
+	}
 `
 
 export const CategorySelect = styled.select`
@@ -161,14 +230,14 @@ export const Table = styled.table`
 	& th {
 		padding: 1.5rem;
 		font-size: 1.5rem;
-		text-align: left;
+		text-align: center;
 		border-bottom: 0.7px solid rgba(0,0,0,0.15)
 	}
 
 	& td {
 		padding: 1.5rem;
 		font-size: 1.4rem;
-		text-align: left;
+		text-align: center;
 	}
 `
 
@@ -181,14 +250,14 @@ export const RegisteredListTable = styled.table`
 	& th {
 		padding: 1.5rem;
 		font-size: 1.5rem;
-		text-align: left;
+		text-align: center;
 		border-bottom: 0.7px solid rgba(0,0,0,0.15)
 	}
 
 	& td {
 		padding: 1.5rem;
 		font-size: 1.4rem;
-		text-align: left;
+		text-align: center;
 
 	}
 `
