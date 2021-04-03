@@ -40,7 +40,6 @@ const TrackEditorSideMenu = props => {
 	const [title, setTitle] = useState(``)
 	useEffect(() => {
 		setEvent(singleEvent)
-
 	}, [index, event])
 
 	const handleEditEventBTimeChange = (e) => {
@@ -89,8 +88,8 @@ const TrackEditorSideMenu = props => {
 		const ind = index
 		let cEvent = event
 		const layer = cEvent.layer
-		cEvent.position = editComment.position
-		cEvent.comment = editComment.comment
+		cEvent.position = editComment.position === undefined ? (cEvent.position) : (editComment.position)
+		cEvent.comment = editComment.comment === undefined ? (cEvent.comment) : (editComment.comment)
 
 		console.log(cEvent)
 
