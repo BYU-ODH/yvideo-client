@@ -204,6 +204,7 @@ const TrackEditorSideMenu = props => {
 					<div className='center' style={{ flexDirection: `column`}}>
 						<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
 						<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
+						<p><i>Save is only required when changing the X, Y, or comment values</i></p>
 						<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
 					</div>
 				</>
