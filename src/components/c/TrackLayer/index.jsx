@@ -30,7 +30,7 @@ const TrackLayer = props => {
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
-		console.log(events)
+		// console.log(events)
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)

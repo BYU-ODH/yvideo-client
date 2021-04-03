@@ -40,7 +40,8 @@ const TrackEditorSideMenu = props => {
 	const [title, setTitle] = useState(``)
 	useEffect(() => {
 		setEvent(singleEvent)
-	}, [index])
+
+	}, [index, event])
 
 	const handleEditEventBTimeChange = (e) => {
 		if (isSub){
@@ -60,7 +61,6 @@ const TrackEditorSideMenu = props => {
 		cEvent.start = number
 
 		setEvent(cEvent)
-
 		updateEvents(index, cEvent, layer)
 	}
 
@@ -89,9 +89,10 @@ const TrackEditorSideMenu = props => {
 		const ind = index
 		let cEvent = event
 		const layer = cEvent.layer
-		cEvent = editComment
+		cEvent.position = editComment.position
+		cEvent.comment = editComment.comment
 
-		// console.log(event)
+		console.log(cEvent)
 
 		// setEditComment({})
 		updateEvents(ind, cEvent, layer)
@@ -126,6 +127,7 @@ const TrackEditorSideMenu = props => {
 			break
 		}
 	}
+
 	const editSub = (side, time, value,layer) => {
 		// console.log(time)
 		const sub = {...event}
