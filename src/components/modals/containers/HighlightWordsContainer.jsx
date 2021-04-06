@@ -50,7 +50,7 @@ const HighlightWordsContainer = props => {
 			tempSubtitles.sort((a, b) => (a.language > b.language) ? 1 : -1)
 			setSubtitlesObject(tempSubtitles)
 		}
-	}, [contentId, getSubtitles, subtitlesContentId])
+	}, [contentId, getSubtitles, subtitlesContentId, subtitlesObjects.length])
 
 
 	const addWord = (e) => {

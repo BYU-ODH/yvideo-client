@@ -205,7 +205,7 @@ export default class SubtitlesService {
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
 			tempSub['words'] = subtitle['words']
-			console.log(tempSub)
+			// console.log(tempSub)
 
 			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {
