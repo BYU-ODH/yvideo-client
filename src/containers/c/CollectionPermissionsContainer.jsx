@@ -14,10 +14,10 @@ const CollectionPermissionsContainer = props => {
 	const { roleEndpoints } = services.collectionService
 
 	const {
-		collection, // from ManageCollection
+		collection,
 		users,
-		courses, // from collectionService
-		updateCollectionPermissions, // from collectionService
+		courses,
+		updateCollectionPermissions,
 		getCollectionInfo,
 		toggleModal,
 	} = props
@@ -42,8 +42,6 @@ const CollectionPermissionsContainer = props => {
 	const [disabledUser, setDisableUser] = useState(true)
 	const [disabledTA, setDisableTA] = useState(true)
 	const [loaded, setLoaded] = useState(false)
-	const [isCalled, setIsCalled] = useState(false)
-	const [userCount, setUserCount] = useState(0)
 
 	useEffect(() => {
 		getCollectionInfo(collection.id)
