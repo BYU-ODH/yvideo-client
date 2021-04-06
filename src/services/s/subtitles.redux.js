@@ -28,6 +28,7 @@ export default class SubtitlesService {
 	}
 
 	store = {
+		errorMessage: '',
 		cache: [],
 		loading: false,
 		lastFetched: 0,
@@ -62,12 +63,14 @@ export default class SubtitlesService {
 		case SUBTITLES_ABORT:
 			return {
 				...store,
+				errorMessage: '',
 				loading: false,
 			}
 
 		case SUBTITLES_CLEAN:
 			return {
 				...store,
+				errorMessage: '',
 				cache: [],
 				contentId: ``,
 			}
@@ -79,13 +82,15 @@ export default class SubtitlesService {
 					...store.cache,
 					...action.payload.subtitles,
 				},
+				errorMessage: '',
 				loading: false,
 			}
 
 		case SUBTITLES_ERROR:
-			console.error(action.payload.error)
+			// alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
+				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
 
@@ -95,6 +100,7 @@ export default class SubtitlesService {
 				...store,
 				cache: action.payload.subtitles,
 				contentId: action.payload.id,
+				errorMessage: '',
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -103,17 +109,20 @@ export default class SubtitlesService {
 			return {
 				...store,
 				cache:action.payload.subtitles,
+				errorMessage: '',
 				loading: false,
 			}
 		case ACTIVE_UPDATE:
 			return {
 				...store,
 				active: action.payload.active,
+				errorMessage: '',
 			}
 		case SET_CONTENT_ID:
 			return{
 				...store,
 				contentId: action.payload.id,
+				errorMessage: '',
 			}
 		default:
 			return store
@@ -196,7 +205,7 @@ export default class SubtitlesService {
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
 			tempSub['words'] = subtitle['words']
-			console.log(tempSub)
+			// console.log(tempSub)
 
 			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {

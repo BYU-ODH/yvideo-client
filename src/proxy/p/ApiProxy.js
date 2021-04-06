@@ -746,12 +746,8 @@ const apiProxy = {
 		getTranslation: async (word, language) => {
 			const result = await axios({
 				method: 'GET',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-					'Access-Control-Allow-Origin': 'http://yvideodev.byu.edu'
-					},
 				url: `/${language}/${word}`,
-				baseURL: 'http://yvideodev.byu.edu:5001/translate',
+				baseURL: process.env.REACT_APP_YVIDEO_SERVER_DICT,
 			})
 			// const result = axios({
 			// 		method: 'GET',
