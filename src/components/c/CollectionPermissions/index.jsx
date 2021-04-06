@@ -4,10 +4,6 @@ import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton,
 
 import logo from 'assets/hexborder.svg'
 
-// import { PermissionTable } from 'components/bits'
-
-import { departments } from 'lib/util'
-
 import removeIcon from 'assets/trash_icon.svg'
 
 export class CollectionPermissions extends PureComponent {
@@ -30,7 +26,6 @@ export class CollectionPermissions extends PureComponent {
 			users,
 			userTA,
 			courses,
-			state,
 			disabled,
 			disabledUser,
 			disabledTA,
