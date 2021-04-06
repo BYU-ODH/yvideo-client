@@ -40,21 +40,20 @@ const CollectionPermissionsContainer = props => {
 
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
+	const [disabledTA, setDisableTA] = useState(true)
 	const [loaded, setLoaded] = useState(false)
 	const [isCalled, setIsCalled] = useState(false)
 	const [userCount, setUserCount] = useState(0)
 
 	useEffect(() => {
-		console.log('trigger')
 		getCollectionInfo(collection.id)
-
 		if(loaded === true) {
 			setTimeout(() => {
 				setLoaded(false)
 			}, 1000)
 		}
 
-	},[collection.id, users, courses, updateCollectionPermissions])
+	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses])
 
 	const handlers = {
 		handleDepartmentChange: e => {
@@ -82,9 +81,9 @@ const CollectionPermissionsContainer = props => {
 		},
 		handleUserTAChange: e => {
 			if(e.target.value.length > 1)
-				setDisableUser(false)
+				setDisableTA(false)
 			else
-				setDisableUser(true)
+				setDisableTA(true)
 
 			setUserTA({
 				...userTA,
@@ -134,10 +133,27 @@ const CollectionPermissionsContainer = props => {
 			})
 		},
 		addTA: e => {
+
+			/*
+				account-type
+				0 = admin
+				1 = lab assistant
+				2 = faculty / instructor
+				3 = student
+		  */
+
+			/*
+				account-role
+				0 "instructor"
+				1 "ta"
+				2 "student"
+				3 "auditing"
+			*/
+
 			e.preventDefault()
 			updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
-			setDisableUser(true)
-			setUser({
+			setDisableTA(true)
+			setUserTA({
 				...userTA,
 				username: ``,
 			})
@@ -157,12 +173,13 @@ const CollectionPermissionsContainer = props => {
 	const viewstate = {
 		collection,
 		user,
-		userTA,
 		course,
-		users,
+		userTA: users.filter(user => user[`account-role`] === 1),
+		users: users.filter(user => user[`account-role`] === 2),
 		courses,
 		disabled,
 		disabledUser,
+		disabledTA,
 		loaded,
 	}
 

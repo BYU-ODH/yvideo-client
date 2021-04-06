@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import FileUploadContainer from 'components/modals/containers/FileUploadContainer'
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
 import ManageFilesContainer from 'components/modals/containers/ManageFilesContainer'
+import ManageInstructorsContainer from 'components/modals/containers/ManageInstructorsContainer'
 
 import {
 	resourceService,
@@ -26,28 +27,29 @@ const ResourceOverviewContainer = props => {
 		updateAllFileVersions,
 		fileId,
 		getLangs,
-		getFiles,
-		filesCache,
+		user,
+		readAccess,
+		resourceAccess,
 	} = props
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
+	const [chekcAccess, setCheckAccess] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
+	const [accessCount, setAccessCount] = useState(0)
 	const [numFileVersions, setNumFileVersions] = useState(0)
-	const [didUpdateResource, setDidUpdateResource] = useState(false)
-	// const [fileVersions, setFileVersions] = useState(resource.allFileVersions)
 
-	// TODO: file versions not updated when it is uploaded
 	useEffect(() => {
 
 		if(editing && resourceCache[resource.id].files !== undefined)
 			setFiles(resourceCache[resource.id].files)
 
+		if(resourceAccess[resource.id] && resourceAccess[resource.id].length !== accessCount)
+			setAccessCount(resourceAccess[resource.id].length)
+
 		if(files.length !== numFileVersions){
 			setNumFileVersions(files.length)
-
-			console.log(files)
 
 			let langs = ``
 			files.forEach(file => {
@@ -64,7 +66,7 @@ const ResourceOverviewContainer = props => {
 			}
 		}
 
-	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions])
+	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceAccess])
 
 	if (objectIsEmpty(resource)) return null
 
@@ -83,10 +85,14 @@ const ResourceOverviewContainer = props => {
 			await editResource(resourceState, resourceState.id)
 			setShowing(false)
 			setEditing(false)
+
 		} else{
 			// set up languages on store before editing
 			await getLangs()
 			await getResourceFiles(resource.id)
+
+			// read access
+			await readAccess(resource.id)
 			setEditing(true)
 		}
 
@@ -174,10 +180,21 @@ const ResourceOverviewContainer = props => {
 		})
 	}
 
+	const handleInstructors = () => {
+		props.toggleModal({
+			component: ManageInstructorsContainer,
+			props: {
+				resource,
+			},
+		})
+	}
+
 	const viewstate = {
 		resourceCache,
 		resource: resourceState,
 		files,
+		accessCount,
+		user,
 		fileId,
 		showing,
 		editing,
@@ -186,6 +203,7 @@ const ResourceOverviewContainer = props => {
 	const handlers = {
 		handleFileUploadToResource,
 		handleFiles,
+		handleInstructors,
 		handleResourceName,
 		handleResourceMetadata,
 		handleRemoveResource,
@@ -201,6 +219,14 @@ const ResourceOverviewContainer = props => {
 		handleMetadata,
 	}
 
+	/*
+			account-type
+			0 = admin
+			1 = lab assistant
+			2 = faculty / instructor
+			3 = student
+		*/
+
 	return <ResourceOverview viewstate={viewstate} handlers={handlers} />
 }
 
@@ -208,7 +234,9 @@ const mapStateToProps = store => ({
 	thisfiles: store.fileStore.cache,
 	fileId: store.fileStore.cache,
 	resourceCache: store.resourceStore.cache,
+	resourceAccess: store.resourceStore.access,
 	filesCache: store.fileStore.cache,
+	user: store.authStore.user,
 })
 
 const mapDispatchToProps = {
@@ -217,6 +245,7 @@ const mapDispatchToProps = {
 	updateAllFileVersions: resourceService.updateFileVersion,
 	toggleModal: interfaceService.toggleModal,
 	getResourceFiles: resourceService.getFiles,
+	readAccess: resourceService.readAccess,
 	getLangs: languageService.get,
 	getFiles: resourceService.getFiles,
 }

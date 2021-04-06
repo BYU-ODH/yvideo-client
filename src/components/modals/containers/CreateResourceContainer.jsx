@@ -14,6 +14,7 @@ const CreateResourceContainer = props => {
 	const {
 		toggleModal,
 		addResource,
+		addAccess,
 		user,
 	} = props
 
@@ -70,7 +71,11 @@ const CreateResourceContainer = props => {
 			"date-validated": data.dateValidated,
 		}
 
-		await addResource(backEndData, data)
+		const result = await addResource(backEndData, data)
+
+		if(result.id)
+			addAccess(result.id, user.username)
+
 		toggleModal()
 	}
 
@@ -99,6 +104,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	addResource: resourceService.addResource,
+	addAccess: resourceService.addAccess,
 	uploadFile: fileService.upload,
 }
 

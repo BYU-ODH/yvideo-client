@@ -11,6 +11,7 @@ import {
 
 export default class FileUpload extends PureComponent {
 
+	// TODO: need to consider the case that when user wants to cancel while uploading file (such as selecting a wrong file or it takes too long to upload, etc.).
 	render() {
 
 		const {
@@ -31,7 +32,6 @@ export default class FileUpload extends PureComponent {
 		} = this.props.handlers
 
 		return (
-			// //onSubmit={handleFileUpload}
 			<Form onKeyPress={onKeyPress} onSubmit={handleFileUpload} id='upload-file-form'>
 				<h2>File Upload</h2>
 
@@ -90,7 +90,14 @@ export default class FileUpload extends PureComponent {
 				<div>
 					<Button type='button' onClick={toggleModal}>Cancel</Button>
 					{selectedFile !== undefined ?
-						<Button type='submit' color={`#0582CA`}>Upload</Button>
+						<>
+							{progress === 0 ? (
+								<Button type='submit' color={`#0582CA`}>Upload</Button>
+							):(
+								<Button disabled type='submit' color={`#A0A0A0`}>Uploading...</Button>
+							)
+							}
+						</>
 						:
 						<Button disabled={selectedFile === undefined} type='submit' color={`#A0A0A0`}>Upload</Button>
 					}

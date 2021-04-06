@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import Style, { TimelineContainer, StatusContainer } from './styles'
-import { Status, SuperScrollbar, Timeline } from './../..'
+import { Status, Timeline } from './../..'
 
 class TimelineEditor extends PureComponent {
 	render() {
@@ -45,7 +45,6 @@ class TimelineEditor extends PureComponent {
 				</StatusContainer>
 				<TimelineContainer minimized={minimized}>
 					<Timeline />
-					<SuperScrollbar />
 				</TimelineContainer>
 			</Style>
 		)

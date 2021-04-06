@@ -89,4 +89,9 @@ describe(`collections test`, () => {
 		})
 		expect(spyScrollListener).toBeCalled()
 	})
+
+	it(`simulate onClick`, ()=> {
+		const wrapper = shallow(<BlockCollection {...props}/>)
+		wrapper.find(".slide-wrapper").simulate('scroll', { target: { scrollLeft: 0 } })
+	})
 })

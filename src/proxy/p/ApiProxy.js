@@ -3,8 +3,8 @@ import User from 'models/User'
 import Content from 'models/Content'
 
 const updateSessionId = (id) => {
-	// console.log('OLD => ', window.clj_session_id)
-	// console.log('NEW => ', id)
+	// console.log(`OLD => `, window.clj_session_id)
+	// console.log(`NEW => `, id)
 	if(id !== ``) window.clj_session_id = id
 }
 
@@ -372,6 +372,44 @@ const apiProxy = {
 			return res.data
 		}),
 
+		access: {
+			add: async (resourceId, username) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}/add-access`, { username }, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
+
+			read: async (resourceId) => await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}/read-all-access`, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
+
+			// request needs body
+			remove: async (resourceId, username) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}/remove-access`, {
+				headers: {
+					'session-id': window.clj_session_id,
+				},
+				data: {
+					username,
+				},
+			},
+			).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
+		},
+
 		delete: async (resourceId) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}`, {
 			withCredentials: true,
 			headers: {
@@ -443,7 +481,7 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/yrich/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']

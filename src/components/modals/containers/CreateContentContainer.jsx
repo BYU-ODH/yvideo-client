@@ -159,17 +159,18 @@ const CreateContentContainer = props => {
 			"content-type": data.contentType,
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
+			"clips": ``,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
 			"file-version": ``,
 			"collection-id": modal.collectionId,
+			"published": true,
 			"views": 0,
 			"annotations": ``,
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
-			"published": true,
 			"words": ``,
-			"clips": ''
+			"clips": ``,
 		}
 
 		if(modal.isLabAssistantRoute){
@@ -201,17 +202,17 @@ const CreateContentContainer = props => {
 			"content-type": data.contentType,
 			"resource-id": selectedResource,
 			"tags": ``,
+			"clips": ``,
+			"words": ``,
 			"thumbnail": `empty`,
 			"file-version": data.targetLanguages,
 			"collection-id": modal.collectionId,
+			"published": true,
 			"views": 0,
 			"annotations": ``,
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
-			"published": true,
-			"words": ``,
-			"clips": ''
 		}
 
 		if(modal.isLabAssistantRoute){

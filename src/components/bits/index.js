@@ -13,7 +13,6 @@ import Modal from './Modal'
 import PermissionTable from './PermissionTable'
 import PlayerControls from './PlayerControls'
 import Scrubber from './Scrubber'
-import Spinner from './Spinner'
 import SwitchToggle from './SwitchToggle'
 import Tag from './Tag'
 import Tooltip from './Tooltips'
@@ -40,7 +39,6 @@ export {
 	PermissionTable,
 	PlayerControls,
 	Scrubber,
-	Spinner,
 	SwitchToggle,
 	Tag,
 	Tooltip,

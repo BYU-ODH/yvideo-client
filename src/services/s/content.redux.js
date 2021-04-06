@@ -208,12 +208,13 @@ export default class ContentService {
 		dispatch(this.actions.contentStart())
 
 		try {
+
 			const result = await apiProxy.content.post(content)
 
 			const id = result.id
 			content[`id`] = id
 
-			const newContent = new Content(content)
+			const newContent = new Content(content) // POST https://yvideodev.byu.edu/api/content
 
 			// TODO: Why doesn't this update to state cause it to rerender?
 			dispatch(this.actions.contentCreate({ [id]: newContent}))

@@ -176,6 +176,9 @@ export const content = [
 		url: `test url`,
 		views: 0,
 		resource,
+		words: ['testWord1'],
+		tag: ['testTag1'],
+		editing: true,
 	},
 	{
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -197,6 +200,9 @@ export const content = [
 		url: `test url2`,
 		views: 0,
 		resource,
+		words: ['testWord2'],
+		tag: ['testTag2'],
+		editing: true,
 	},
 ]
 
@@ -519,6 +525,48 @@ export const adminCategory = {
 	},
 }
 
+export const subtitle =
+{
+	content: ``,
+	["content-id"]: `0`,
+	id: `1`,
+	language: `english`,
+	title: `title`,
+	words: `b, a, c`,
+}
+
+export const updateSubtitle =
+{
+	content: ``,
+	["content-id"]: `0`,
+	id: `1`,
+	language: `english`,
+	title: `title`,
+	words: `b, a, c , d, e`,
+}
+
+export const updateSubtitle1 =
+{
+	content: 0,
+	["content-id"]: `0`,
+	id: `1`,
+	language: `english`,
+	title: `title`,
+	words: `b, a, c , d, e`,
+}
+
+export const subtitle1 =
+[
+	{
+		content: ``,
+		["content-id"]: `0`,
+		id: `1`,
+		language: `english`,
+		title: `title`,
+		words: `b, a, c`,
+	}
+]
+
 export const emptyStore = mockStore(
 	{
 		resourceStore: {},
@@ -529,7 +577,13 @@ export const emptyStore = mockStore(
 			data: [],
 			professor: professor1,
 		},
-		interfaceStore: {},
+		interfaceStore: {
+			languageCodes: {},
+			jsonResponse: {},
+			tip: {
+				active: false,
+			},
+		},
 		collectionStore: {
 			roles,
 			cache: [],
@@ -544,6 +598,9 @@ export const emptyStore = mockStore(
 		},
 		languageStore:{
 			cache: {},
+		},
+		subtitlesStore:{
+			cache: [],
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
@@ -626,6 +683,34 @@ export const store = mockStore(
 			editorStyle: false,
 			lost: false,
 			events: [],
+			tip: {
+				active: true,
+				props: {
+					name: 'help',
+					position: {
+						width: 20,
+						x: 136,
+						y: 108
+					}
+				}
+			},
+			languageCodes: {
+				german: "de",
+				russian: "ru",
+				spanish: "es"
+			},
+			jsonResponse: {
+				json: [
+					{
+						meanings: [
+							{
+								meaning: ' meaning ',
+								lemma: 'lemma'
+							}
+						]
+					}
+				],
+			}
 		},
 		collectionStore: {
 			roles,
@@ -692,11 +777,64 @@ export const store = mockStore(
 			lastFetched: 0,
 		},
 		subtitlesStore:{
-			cache: [],
+			cache: [
+				{
+				content: ``,
+				["content-id"]: `0`,
+				id: `1`,
+				language: `english`,
+				title: `title`,
+				words: `b, a, c`,
+			},
+			{
+				content: ``,
+				["content-id"]: `1`,
+				id: `1`,
+				language: `spanish`,
+				title: `title1`,
+				words: `a, d c`,
+			}],
 			loading: false,
 			lastFetched: 0,
 			active: 0,
-			contentId : ``,
+			contentId : 12,
+		},
+	},
+	composeWithDevTools(thunk.withExtraArgument(proxies)),
+)
+
+export const subStore = mockStore(
+	{
+		resourceStore: {},
+		authStore: {
+			user,
+		},
+		adminStore: {
+			data: [],
+			professor: professor1,
+		},
+		interfaceStore: {
+			languageCodes: {},
+		},
+		collectionStore: {
+			roles,
+			cache: [],
+			users: [],
+			courses: [],
+		},
+		contentStore:{
+			cache: [],
+		},
+		fileStore:{
+			cache: {},
+		},
+		languageStore:{
+			cache: {},
+		},
+		subtitlesStore:{
+			cache: [{
+				words: ``,
+			}],
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
