@@ -20,6 +20,7 @@ export default class SearchPublicCollections extends PureComponent {
 		const {
 			handleSubmit,
 			handleSearchTextChange,
+			setNoCollections,
 		} = this.props.handlers
 
 		return (
@@ -52,17 +53,7 @@ export default class SearchPublicCollections extends PureComponent {
 					) : (
 						<>
 							<h1 id='message'>Loading</h1>
-							{
-								<>
-									{
-										setTimeout(() => {
-											if(document.getElementById(`message`) !== null)
-												document.getElementById(`message`).innerHTML = `There are no public collections`
-
-										}, 2000)
-									}
-								</>
-							}
+							{ setNoCollections() }
 						</>
 					) }
 				</div>
