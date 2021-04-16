@@ -23,42 +23,25 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
-		getIsPublicCollectionSubscribed,
-		user,
 	} = props
 
 	const [isMobile, setIsMobile] = useState(false)
-	const [count, setCount] = useState(0)
 
 	useEffect(() => {
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
 
-		// const allContent = {}
-		// Object.keys(collections).forEach(element => {
-		// 	collections[element].content.forEach(item => {
-		// 		allContent[item.id] = item
-		// 	})
-		// })
-
-		// setContent(allContent)
-
-		if(window.innerWidth < 600){
+		if(window.innerWidth < 600)
 			setIsMobile(true)
-		}
-		else (
+		else
 			setIsMobile(false)
-		)
 
 		return () => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
 	}, [setContent, setHeaderBorder])
-
-	// console.log(Object.entries(collections).sort((a, b) => a.name > b.name ? 1 : -1))
-	// console.log(collections)
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -77,9 +60,6 @@ const CollectionsContainer = props => {
 			},
 		})
 	}
-
-	// console.log(Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v))
-	// console.log(count)
 
 	const viewstate = {
 		isProf,

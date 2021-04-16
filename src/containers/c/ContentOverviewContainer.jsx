@@ -36,9 +36,8 @@ const ContentOverviewContainer = props => {
 	const [contentState, setContentState] = useState(content)
 
 	if (objectIsEmpty(content)) return null
-	if (isExpired){
+	if (isExpired)
 		return <ContentOverview isExpired={true} content={content}/>
-	}
 
 	const handleToggleEdit = async () => {
 		if (editing) {
@@ -64,7 +63,7 @@ const ContentOverviewContainer = props => {
 	const handleRemoveContent = e => {
 		if(isLabAssistant)
 			adminRemoveCollectionContent(content.id)
-		 else
+		else
 			removeCollectionContent(content.collectionId, content.id)
 	}
 
@@ -147,7 +146,7 @@ const ContentOverviewContainer = props => {
 		addTag,
 		removeTag,
 		changeTag,
-		handleShowWordsModal
+		handleShowWordsModal,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

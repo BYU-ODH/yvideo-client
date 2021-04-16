@@ -1,9 +1,6 @@
 import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
 
-import { resourceService, contentService, interfaceService } from 'services'
-
-import { SwitchToggle, Tag, Spinner, LazyImage } from 'components/bits'
+import { SwitchToggle, Tag, LazyImage } from 'components/bits'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 
@@ -15,7 +12,6 @@ import Style, {
 	RemoveButton,
 	TitleEdit,
 	StyledLink,
-	Setting,
 	Column,
 	InnerContainer,
 } from './styles'
@@ -25,12 +21,12 @@ export default class ContentOverview extends PureComponent {
 
 		if(this.props.isExpired){
 			return (
-			<Style>
-				<div className="expired">
-					<h3 className={`content-title`}>{this.props.content['content-title']} <span>Expired</span></h3><br/>
-					<p>Please, contact a lab assistant to learn how to recover this content</p>
-				</div>
-			</Style>
+				<Style>
+					<div className='expired'>
+						<h3 className={`content-title`}>{this.props.content[`content-title`]} <span>Expired</span></h3><br/>
+						<p>Please, contact a lab assistant to learn how to recover this content</p>
+					</div>
+				</Style>
 			)
 		}
 
