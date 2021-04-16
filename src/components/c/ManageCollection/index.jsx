@@ -125,13 +125,13 @@ export default class ManageCollection extends PureComponent {
 						: (
 							<CollectionPermissionsContainer collection={collection} />
 						)}
-					{isContent ?
-						collection['expired-content'].map((item, index) => (
+					{isContent && collection[`expired-content`] ?
+						collection[`expired-content`].map((item, index) => (
 							<ContentOverviewContainer key={index} content={item} isExpired={true}/>
 						))
-						: (
-							null
-						)}
+						:
+						null
+					}
 					{isContent && (
 						<NewContent className={`newcontent-button`} onClick={createContent}>
 							<Icon src={plus}

@@ -380,9 +380,9 @@ export default class AdminService {
 
 			try {
 
-				const content = await apiProxy.admin.collection.content.get(id)
+				const results = await apiProxy.admin.collection.content.get(id)
 
-				dispatch(this.actions.adminGetCollectionContent(content))
+				dispatch(this.actions.adminGetCollectionContent(results))
 
 			} catch (error) {
 				console.error(error.message)
@@ -391,26 +391,6 @@ export default class AdminService {
 
 		} else dispatch(this.actions.adminAbort())
 	}
-
-	// createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
-
-	// 	dispatch(this.actions.adminStart())
-
-	// 	try {
-
-	// 		const ownerId = getState().adminStore.professor.id
-
-	// 		await apiProxy.admin.collection.create(name, parseInt(ownerId)) // maybe parseInt(ownerId) -> ownerId -Matthew
-
-	// 		dispatch(this.actions.adminCreateCollection())
-
-	// 		this.searchCollections(ownerId)
-
-	// 	} catch (error) {
-	// 		console.log(error.message)
-	// 		dispatch(this.actions.adminError(error))
-	// 	}
-	// }
 
 	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
@@ -452,13 +432,13 @@ export default class AdminService {
 
 				const results = await apiProxy.admin.collection.get(professorId)
 
+				// console.log(results)
+
 				const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
 
 				dispatch(this.actions.adminSearchCollections(collections))
 
 			} catch (error) {
-				// console.log(`SEARCH COLLECTIONS FAILED`)
-				// console.error(error.message)
 				dispatch(this.actions.adminError(error))
 			}
 

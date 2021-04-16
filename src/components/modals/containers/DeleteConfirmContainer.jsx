@@ -56,6 +56,9 @@ const DeleteConfirmContainer = props => {
 
 		if(type === `resource`)
 			removeResource(id)
+
+		// this should delete related contents as well
+
 		else if(type === `Users`)
 			handleDeleteUser()
 		else if(type === `Collections`)
