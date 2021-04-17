@@ -133,7 +133,7 @@ export default class Player extends PureComponent {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3>{subtitleText}</h3></Subtitles>
+							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id="subtitle-box">{subtitleText}</h3></Subtitles>
 							<Censor ref={this.censorRef} active={censorActive}><canvas></canvas></Censor>
 						</Blank>
 					</div>

@@ -13,7 +13,7 @@ import Style, {
 } from './styles'
 
 import clockIcon from 'assets/te-clock.svg'
-
+import startOverIcon from 'assets/start_over_icon.svg'
 import helpIcon from 'assets/help/help-icon-white.svg'
 
 const PlayerControls = props => {
@@ -112,6 +112,7 @@ const PlayerControls = props => {
 
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
+				<img id="start-over" src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width="20" height="20"/>
 			</div>
 			<div className='right'>
 				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
