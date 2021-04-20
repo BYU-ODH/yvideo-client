@@ -25,6 +25,7 @@ let props = {
 	setContentId: jest.fn(),
 	toggleModal: jest.fn(),
 	toggleTip: jest.fn(),
+	handleShowTip: jest.fn(),
 }
 
 // TODO: need to find how to pass match as a param, useParams.
@@ -46,16 +47,23 @@ describe(`Subtitles container test`, () => {
 
 		expect(wrapper).toBeDefined()
 	})
+})
 
-	it(`wrapper: TrackEditor)`, () => {
-		const wrapper = mount(
+describe(`Simulate Event`, () => {
+	const setState = jest.fn()
+	const useStateMock = (initState) => [initState, setState];
+	let wrapper
+	beforeEach(() => {
+		wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
 				</BrowserRouter>
 			</Provider>,
 		)
-		// console.log(wrapper.debug())
+	})
+
+	it(`TrackEditor wrapper`, () => {
 		wrapper.find('SubtitlesModal').prop('handleAddSubLayer')()
 		wrapper.find('SubtitlesModal').prop('handleAddSubLayerFromFile')('url')
 		wrapper.find('SubtitlesModal').prop('setModalVisible')()
@@ -77,8 +85,32 @@ describe(`Subtitles container test`, () => {
 		wrapper.find('SubtitlesLayer').prop('sideEditor')()
 		wrapper.find('SubtitlesLayer').prop('updateSubs')(0, { start: 10, end: 20 } ,0)
 		wrapper.find('SubtitlesLayer').prop('closeEditor')()
-		wrapper.find('Rnd').prop('onDragStop')('', {x:10})
-		// wrapper.find('Rnd').prop('onMouseEnter')()
-		wrapper.find('Rnd').prop('onMouseLeave')()
+		wrapper.find('Rnd').prop('onDragStop')(0, {d: {x: 10}})
+		wrapper.find('Rnd').simulate('mouseEnter')
+		wrapper.find('Rnd').at(0).simulate('mouseLeave')
+		wrapper.find('.save').simulate('click')
+		// wrapper.find('.deleteEventButton').simulate('click')
+		wrapper.find('.eventsList').simulate('mouseEnter')
+		wrapper.find('.eventsList').simulate('mouseLeave')
+		wrapper.find('.zoom-scroll-indicator').simulate('mouseEnter')
+		wrapper.find('.zoom-scroll-indicator').simulate('mouseLeave')
+		wrapper.find('span').at(5).simulate('click')
+		wrapper.find('span').at(5).simulate('mouseEnter')
+		wrapper.find('span').at(5).simulate('mouseLeave')
+		wrapper.find('span').at(6).simulate('click')
+		wrapper.find('span').at(6).simulate('mouseEnter')
+		wrapper.find('span').at(6).simulate('mouseLeave')
+		wrapper.find('span').at(7).simulate('click')
+		wrapper.find('span').at(7).simulate('mouseEnter')
+		wrapper.find('span').at(7).simulate('mouseLeave')
+		wrapper.find('span').at(8).simulate('click')
+		wrapper.find('span').at(8).simulate('mouseEnter')
+		wrapper.find('span').at(8).simulate('mouseLeave')
+		wrapper.find('.setSubModal').at(8).simulate('click')
 	})
+	it(`TrackEditor wrapper: SubtitlesModal`, () => {
+		// wrapper.find(".layer-handle").simulate('click')
+		console.log(wrapper.debug())
+	})
+
 })
