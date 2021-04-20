@@ -4,7 +4,6 @@ import Load from '../../../../components/c/Load/index'
 import { BrowserRouter} from 'react-router-dom'
 import { Provider } from 'react-redux'
 
-
 describe(`Load test`, () => {
 	it(`wrapper`, ()=> {
 		let parent = mount(
