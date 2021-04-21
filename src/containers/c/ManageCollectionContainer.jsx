@@ -52,8 +52,6 @@ const ManageCollectionContainer = props => {
 				// console.log('setting content')
 				setContent(allContent, true)
 			}
-		} else {
-			// console.log('no content')
 		}
 	}, [collection.name, content])
 
