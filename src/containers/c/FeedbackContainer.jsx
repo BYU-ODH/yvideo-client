@@ -21,6 +21,13 @@ const FeedbackContainer = props => {
 			attachment: {},
 	})
 
+	const handleCaptchaChange = () => {
+		setIsPerson(!isPerson)
+		setTimeout(() => {
+			setIsPerson(false)
+		}, 30000);
+	}
+
 	const handleSubmit = (e) => {
 			e.preventDefault()
 			if(isPerson){
@@ -65,6 +72,7 @@ const FeedbackContainer = props => {
 		setEmail,
 		setName,
 		handleSubmit,
+		handleCaptchaChange
 	}
 
 	return <Feedback viewstate={viewstate} handlers={handlers}/>
