@@ -98,7 +98,7 @@ export default class ContentOverview extends PureComponent {
 				{editing &&
 					<InnerContainer>
 						<Column>
-							<div>
+							<div className='target-language'>
 								<h4>
 								Target Language:
 								</h4>

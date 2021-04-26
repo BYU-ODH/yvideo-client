@@ -193,7 +193,7 @@ export const InnerContainer = styled.div`
 	grid-gap: 2rem;
 	margin-top: 10px;
 	grid-template-columns: 1fr 1fr 1.5fr 1fr;
-	padding: 2rem 1rem;
+	padding: 2rem 3rem 3rem 3rem;
 	border-radius: 5px;
 	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
 	background-color: white;
@@ -223,7 +223,6 @@ export const Column = styled.div`
 
 	& div {
 		display: flex;
-		border-bottom: 1px solid #c4c4c4;
 		line-height: 2rem;
 		margin-bottom: 1rem;
 		font-size: 1.4rem;
@@ -235,6 +234,10 @@ export const Column = styled.div`
 
 	& textarea {
 		width: 100%;
+	}
+
+	& .target-language {
+		border-bottom: 1px solid #c4c4c4;
 	}
 
 	& .add-tag {
