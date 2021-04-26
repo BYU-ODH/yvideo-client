@@ -142,6 +142,15 @@ const PlayerContainer = props => {
 		// setHovering(false)
 	}
 
+	const handlePlayPause = () => {
+		if(playing){
+			setPlaying(false)
+		}
+		else {
+			setPlaying(true)
+		}
+	}
+
 	const handlePause = () => {
 		setPlaying(false)
 	}
@@ -360,6 +369,7 @@ const PlayerContainer = props => {
 		handleShowTip,
 		setCensorPosition,
 		setCensorActive,
+		handlePlayPause,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

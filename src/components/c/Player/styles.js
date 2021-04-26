@@ -74,4 +74,22 @@ export const Subtitles = styled.div`
 		letter-spacing: .7px;
 	}
 `
+
+export const PlayButton = styled.img`
+	display: ${props => props.playing ? ('none') : ('block')}
+	width: 15rem;
+	height: 15rem;
+	position: relative
+	margin: auto;
+	top: 40%;
+	cursor: pointer;
+	transition: 3s ease;
+	border-radius: 50%;
+	z-index: 100;
+
+	&:hover {
+  	transform: rotate(360deg);
+	}
+`
+
 export default Style

@@ -32,12 +32,12 @@ const FeedbackContainer = props => {
 			e.preventDefault()
 			if(isPerson){
 				if(file.attachment.name === undefined) {
-					var emailObject = {
+					let emailObject = {
 						"sender-email": email,
 						"subject": title,
 						"message": body,
-				}
-				sendNoAttachment(emailObject)
+					}
+					sendNoAttachment(emailObject)
 				}
 				else {
 					const formData = new FormData()
