@@ -87,7 +87,7 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_ERROR:
-			// alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
+			//alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
 				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,

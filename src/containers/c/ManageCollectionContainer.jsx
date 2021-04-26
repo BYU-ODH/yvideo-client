@@ -30,7 +30,13 @@ const ManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 	const [isEdited, setIsEdited] = useState(false)
 
+	const allContent = {}
+	collection.content.forEach(item => {
+		allContent[item.id] = item
+	})
+
 	useEffect(() => {
+		console.log('rendered')
 		if(isEdited) {
 			getCollections(true)
 			setCollectionName(collection.name)
@@ -39,20 +45,15 @@ const ManageCollectionContainer = props => {
 			setIsEdited(false)
 		}
 		if(collection.content.length > 0){
-			if(content[collection.content[0].id]){
+			//compare old content to new content
+			if(content[collection.content[0].id] && content[collection.content[collection.content.length - 1].id]){
 				// console.log('got cached content')
 			} else {
 				// console.log('setting content')
-				const allContent = {}
-				collection.content.forEach(item => {
-					allContent[item.id] = item
-				})
 				setContent(allContent, true)
 			}
-		} else {
-			// console.log('no content')
 		}
-	}, [collection.name])
+	}, [collection.name, content])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -110,12 +111,6 @@ const ManageCollectionContainer = props => {
 	}
 
 	if (objectIsEmpty(content) && collection.content.length) return null
-
-	// Forces rerender when content and collection.content don't contain the same content, and when creating new content
-	const contentCheck = collection.content.map(item => content[item.id])
-	if (contentCheck.length > 0 &&
-		(contentCheck[0] === undefined || contentCheck[contentCheck.length - 1] === undefined))
-		return null
 
 	const viewstate = {
 		user,

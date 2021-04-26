@@ -88,6 +88,14 @@ const SearchPublicCollectionsContainer = props => {
 		if(value === ``) setSearchedCount(0)
 	}
 
+	const setNoCollections = () => {
+		setTimeout(() => {
+			if(document.getElementById(`message`) !== null)
+				document.getElementById(`message`).innerHTML = `There are no public collections`
+
+		}, 2000)
+	}
+
 	const viewstate = {
 		isProf,
 		isAdmin,
@@ -105,6 +113,7 @@ const SearchPublicCollectionsContainer = props => {
 		toggleTip,
 		handleSubmit,
 		handleSearchTextChange,
+		setNoCollections,
 	}
 
 	return <SearchPublicCollections viewstate={viewstate} handlers={handlers} />

@@ -44,6 +44,11 @@ const Style = styled.div`
 		grid-area: left;
 		display: flex;
 		align-items: center;
+
+		& #start-over {
+			cursor: pointer;
+			margin-left: 5px;
+		}
 	}
 
 	& > div > button {
@@ -118,7 +123,6 @@ export default Style
 export const PlayPause = styled.button`
 	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
 `
-
 export const ClosedCaptions = styled.button`
 	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
 	background: url(${closedCaption}) center no-repeat;

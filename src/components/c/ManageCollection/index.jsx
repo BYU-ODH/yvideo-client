@@ -44,6 +44,8 @@ export default class ManageCollection extends PureComponent {
 			toggleTip,
 		} = this.props.handlers
 
+		console.log(content)
+
 		return (
 			<Style>
 				<header>
@@ -115,11 +117,16 @@ export default class ManageCollection extends PureComponent {
 					{isContentTap ?
 						content.map((item, index) => (
 							<div key={index}>
-								{ isLabAssistant !== undefined ? (
-									<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
-								) : (
-									<ContentOverviewContainer key={item.id} content={item}/>
-								)}
+								{ item !== undefined ? (
+										<>
+											{ isLabAssistant !== undefined ? (
+												<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
+											) : (
+												<ContentOverviewContainer key={item.id} content={item}/>
+											)}
+										</>
+								) : (null)
+								}
 							</div>
 						))
 						: (
