@@ -34,7 +34,6 @@ const ResourceOverviewContainer = props => {
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
-	const [chekcAccess, setCheckAccess] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
 	const [accessCount, setAccessCount] = useState(0)
@@ -98,6 +97,7 @@ const ResourceOverviewContainer = props => {
 
 	}
 
+	// this should delete related contents as well
 	const handleRemoveResource = e => {
 		props.toggleModal({
 			component: DeleteConfirmContainer,

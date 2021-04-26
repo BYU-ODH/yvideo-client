@@ -88,7 +88,7 @@ const apiProxy = {
 
 					updateSessionId(results.headers[`session-id`])
 
-					return results.data.reduce((map, item) => {
+					return results.data.content.reduce((map, item) => {
 						map[item.id] = new Content(item)
 						return map
 					}, {})
@@ -745,7 +745,7 @@ const apiProxy = {
 	translation: {
 		getTranslation: async (word, language) => {
 			const result = await axios({
-				method: 'GET',
+				method: `GET`,
 				url: `/${language}/${word}`,
 				baseURL: process.env.REACT_APP_YVIDEO_SERVER_DICT,
 			})

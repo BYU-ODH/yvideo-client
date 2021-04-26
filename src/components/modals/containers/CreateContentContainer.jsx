@@ -8,8 +8,6 @@ import {
 	resourceService,
 } from 'services'
 
-import BackEndContentModel from 'models/BackEndContent'
-
 import CreateContent from 'components/modals/components/CreateContent'
 
 const CreateContentContainer = props => {
@@ -30,8 +28,8 @@ const CreateContentContainer = props => {
 	const [hideResources, setHide] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [selectedResource, setSelectedResource] = useState(``)
+	const [isResourceSelected, setIsResourceSelected] = useState(false)
 	const [languages, setLanguages] = useState([])
-	const [files, setFiles] = useState([])
 	const [isTyping, setIsTyping] = useState(false)
 	const [isCalled, setIsCalled] = useState(false)
 
@@ -49,7 +47,7 @@ const CreateContentContainer = props => {
 	})
 
 	useEffect(() => {
-		if(resourceContent[selectedResource] !== undefined){
+		if(resourceContent[selectedResource] !== undefined && isResourceSelected){
 			const langs = resourceContent[selectedResource].allFileVersions.split(`;`)
 			const finalLanguages = []
 			langs.forEach((element, i) => {
@@ -80,7 +78,7 @@ const CreateContentContainer = props => {
 				setHide(true)
 		}
 
-	}, [resourceContent, selectedResource, files, searchQuery, isTyping])
+	}, [resourceContent, selectedResource, searchQuery, isTyping])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -104,6 +102,9 @@ const CreateContentContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 
+		if(isResourceSelected && value === ``)
+			setIsResourceSelected(false)
+
 		if(!isTyping)
 			setIsTyping(true)
 	}
@@ -111,6 +112,7 @@ const CreateContentContainer = props => {
 	const handleSelectResourceChange = (e, name) => {
 		const { target } = e
 		setSelectedResource(target.value)
+		setIsResourceSelected(true)
 		setSearchQuery(name)
 		setHide(true)
 	}
@@ -159,7 +161,6 @@ const CreateContentContainer = props => {
 			"content-type": data.contentType,
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
-			"clips": ``,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
 			"file-version": ``,
 			"collection-id": modal.collectionId,
@@ -244,6 +245,7 @@ const CreateContentContainer = props => {
 		hideResources,
 		selectedResource,
 		languages,
+		isResourceSelected,
 	}
 
 	const handlers = {
@@ -278,7 +280,6 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
 	searchResource: resourceService.search,
-	getFiles: resourceService.getFiles,
 	getCollections: collectionService.getCollections,
 }
 

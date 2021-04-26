@@ -15,7 +15,7 @@ import { objectIsEmpty } from 'lib/util'
 const ManageCollectionContainer = props => {
 
 	const {
-		admin,
+		user,
 		collection,
 		content,
 		setContent,
@@ -25,7 +25,7 @@ const ManageCollectionContainer = props => {
 		toggleTip,
 	} = props
 
-	const [isContent, setIsContent] = useState(true)
+	const [isContentTap, setIsContentTap] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 	const [isEdited, setIsEdited] = useState(false)
@@ -40,7 +40,7 @@ const ManageCollectionContainer = props => {
 		if(isEdited) {
 			getCollections(true)
 			setCollectionName(collection.name)
-			setIsContent(true)
+			setIsContentTap(true)
 
 			setIsEdited(false)
 		}
@@ -106,19 +106,19 @@ const ManageCollectionContainer = props => {
 		setIsEdited(true)
 	}
 
-	const setTab = isContent => _e => {
-		setIsContent(isContent)
+	const setTab = isContentTap => _e => {
+		setIsContentTap(isContentTap)
 	}
 
 	if (objectIsEmpty(content) && collection.content.length) return null
 
 	const viewstate = {
-		admin,
+		user,
 		isEditingCollectionName,
 		collection,
 		collectionName,
 		content: collection.content.map(item => content[item.id]),
-		isContent,
+		isContentTap,
 	}
 
 	const handlers = {
@@ -133,12 +133,28 @@ const ManageCollectionContainer = props => {
 		setTab,
 	}
 
+	/*
+		account-type
+		0 = admin
+		1 = lab assistant
+		2 = faculty / instructor
+		3 = student
+  */
+
+	/*
+		account-role
+		0 "instructor"
+		1 "ta"
+		2 "student"
+		3 "auditing"
+	*/
+
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = store => ({
 	content: store.contentStore.cache,
-	admin: store.authStore.user.roles,
+	user: store.authStore.user,
 })
 
 const mapDispatchToProps = {

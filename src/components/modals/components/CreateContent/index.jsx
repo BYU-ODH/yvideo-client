@@ -4,13 +4,11 @@ import {
 	Form,
 	Button,
 	RemoveKeyword,
-	Table,
 	TableContainer,
 	Tabs,
 	Tab,
 	TypeButton,
 	FormResource,
-	Search,
 } from './styles'
 
 import plus from 'assets/plus_blue.svg'
@@ -20,13 +18,12 @@ export default class CreateContent extends PureComponent {
 	render() {
 
 		const {
-			adminContent,
 			searchQuery,
 			tab,
 			resourceContent,
 			hideResources,
-			selectedResource,
 			languages,
+			isResourceSelected,
 		} = this.props.viewstate
 
 		const {
@@ -113,17 +110,19 @@ export default class CreateContent extends PureComponent {
 							Search Resource Title<br/>
 							<input className='resource-search-title' type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
 						</label>
-						<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
-							{
-								resourceContent && hideResources !== true &&
+						{!isResourceSelected &&
+							<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
+								{
+									resourceContent && hideResources !== true &&
 								Object.keys(resourceContent).map(index =>
 									<li key={resourceContent[index].id}>
 										<input type='radio' value={resourceContent[index].id} name='resource' onChange={e => handleSelectResourceChange(e, resourceContent[index].resourceName)}/>
 										<label>{resourceContent[index].resourceName}</label>
 									</li>,
 								)
-							}
-						</TableContainer>
+								}
+							</TableContainer>
+						}
 						<label>
 							<span>Content Title</span><br/>
 							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange} required/>
