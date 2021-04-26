@@ -79,9 +79,9 @@ export const PlayButton = styled.img`
 	display: ${props => props.playing ? ('none') : ('block')}
 	width: 15rem;
 	height: 15rem;
-	position: relative
+	position: relative;
 	margin: auto;
-	top: 40%;
+	top: ${props => props.isLandscape ? ('20%') : ('40%')};
 	cursor: pointer;
 	transition: 3s ease;
 	border-radius: 50%;

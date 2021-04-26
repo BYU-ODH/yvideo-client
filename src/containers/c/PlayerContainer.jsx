@@ -33,6 +33,7 @@ const PlayerContainer = props => {
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
+	const [isLandscape, setIsLandscape] = useState(false)
 
 	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
 	const [duration, setDuration] = useState(0) // Set duration of the media
@@ -117,6 +118,12 @@ const PlayerContainer = props => {
 		if(window.innerWidth < 1000){
 			setToggleTranscript(false)
 			setIsMobile(true)
+			if(window.innerHeight < window.innerWidth){
+				setIsLandscape(true)
+			}
+			else {
+				setIsLandscape(false)
+			}
 		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId])
 
@@ -341,6 +348,7 @@ const PlayerContainer = props => {
 		isMobile,
 		censorPosition,
 		censorActive,
+		isLandscape
 	}
 
 	const handlers = {

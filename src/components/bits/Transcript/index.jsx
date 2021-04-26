@@ -173,7 +173,6 @@ const Transcript = props => {
 						<br/>
 					</div>
 				</div>
-				<hr style={{ width: '120%'}}/>
 				<div className={isMobile ? ('transcript-translation translation-mobile') : ('transcript-translation')}>
 					<br/>
 					<h2>Quick Translation</h2><br/>

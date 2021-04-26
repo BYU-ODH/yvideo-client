@@ -50,6 +50,7 @@ export default class Player extends PureComponent {
 			isMobile,
 			censorPosition,
 			censorActive,
+			isLandscape
 		} = this.props.viewstate
 
 		const {
@@ -133,7 +134,7 @@ export default class Player extends PureComponent {
 						/>
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
-							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton}/>
+							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id="subtitle-box">{subtitleText}</h3></Subtitles>
 							<Censor ref={this.censorRef} active={censorActive}><canvas></canvas></Censor>

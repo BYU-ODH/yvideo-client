@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Style = styled.div`
 	position: ${props => props.isMobile ? (`fixed`) : (`relative`)};
 	/* position: relative; */
-	width: ${props => props.displayTranscript ? ( props.isMobile ? ('calc(100vw)') : ('50rem') ) : ('2rem')};
+	width: ${props => props.displayTranscript ? ( props.isMobile ? ('calc(100vw)') : ('50rem') ) : ( props.isMobile ? ('0rem') : ('2rem'))};
 	height: 100%;
 	padding: ${props => props.isMobile ? (`0px`) : (`0px 10px 0px 10px`)};
 	border-top: 1px solid black;
@@ -133,6 +133,7 @@ export const Style = styled.div`
 	}
 
 	& .transcript-translation {
+		border-top: 1px solid rgba(0, 0, 0, 0.3);
 		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
 		opacity: ${props => props.displayTranscript ? (1) : (0)};
 		transition: opacity .5s ease;
