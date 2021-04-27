@@ -1118,7 +1118,7 @@ const TrackEditor = props => {
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
-					message='If you leave you will lose all your changes. Have you saved your changes already?'
+					message="Have you saved your changes already?"
 				/>
 			</>
 		</Style>
