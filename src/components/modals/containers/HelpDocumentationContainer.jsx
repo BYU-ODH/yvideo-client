@@ -19,6 +19,8 @@ import zoomrHelp from 'assets/help/help-te-zoom.png'
 import playercontrolHelp from 'assets/help/help-playercontrols.png'
 import transcriptHelp from 'assets/help/help-transcriptview.png'
 import subHelp from 'assets/help/help-te-subtitle.png'
+import translationHelp from 'assets/help/help-translation.png'
+import importantWordHelp from 'assets/help/help-important-word.png'
 
 //player
 import clockIcon from 'assets/clock-black.svg'
@@ -229,6 +231,30 @@ const HelpDocumentationContainer = props => {
 						<li>Each line in the transcript is clickable. When a line is clicked, the video will seek to the time in the video where that line is mentioned</li>
 						<li>Each line is highlighted to show which line in the transcript is being displayed in the video</li>
 					</ol>
+				</div>`,
+		},
+		'Important Words': {
+			htmlInstruction: `
+				<div class="section">
+						<p><b>Subtitle Selection:</b><br/>
+						Important words are added to a specific subtitle, so select the subtitle using the drop-down on the top left.
+					</p>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Translation:</b><br/>
+						The translation portion of this modal is on the left side. The translation portion allows users to see if there is a translation available from
+						a foreign language to english. Please, notice a few languages are supported. Check the bottom of the modal to find supported languages.
+					</p><br/>
+					<img src="${translationHelp}"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Important Words:</b><br/>
+						Adding important words to a subtitle allows instructors to point out words that the students should know.
+						<br/> Important words are highlighted in the transcript and they become clickable. When a student clicks on a word a translation is given if available.
+					</p>
+					<img src="${importantWordHelp}"/>
 				</div>`,
 		}
 	}

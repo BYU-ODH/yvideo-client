@@ -56,7 +56,7 @@ const TrackEditor = props => {
 		subtitleError,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip } = props.handlers
+	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
 
 	const events = [
 		{
@@ -1024,12 +1024,8 @@ const TrackEditor = props => {
 				<EventList minimized={eventListMinimized}>
 
 					<header>
-						{/* <div className='carat'>
-						<EventListCarat onClick={toggleEventList} className={eventListMinimized ? `minimized` : ``}/>
-					</div> */}
-						{/* <div className={`tab active`}>Events</div> */}
+						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}><button onClick={handleSaveAnnotation}><img src={`${saveIcon}`}/><span>Save</span></button></div>
-
 					</header>
 
 					{tab === `events` ?
