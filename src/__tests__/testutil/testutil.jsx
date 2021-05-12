@@ -694,7 +694,15 @@ export const store = mockStore(
 			headerBorder: false,
 			editorStyle: false,
 			lost: false,
-			events: [],
+			events: [
+				{start: 1, end: 2, type: `Skip`},
+				{start: 1, end: 2, type: `Mute`},
+				{start: 1, end: 2, type: `Pause`},
+				{start: 1, end: 2, type: `Comment`},
+				{start: 1, end: 2, type: `Blank`},
+				{start: 1, end: 2, type: `Censor`},
+				{start: 1, end: 2, type: `Error`}
+			],
 			tip: {
 				active: true,
 				props: {

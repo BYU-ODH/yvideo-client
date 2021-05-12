@@ -960,7 +960,7 @@ const TrackEditor = props => {
 									</div>
 								))
 								}
-								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`150px`,marginLeft:`2px`,marginTop:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} onClick={()=>{
+								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`150px`,marginLeft:`2px`,marginTop:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`}  onClick={()=>{
 									setSubModalVisible(true)
 									setSubModalMode(`create`)
 								}}>
