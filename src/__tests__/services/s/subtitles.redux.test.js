@@ -144,9 +144,6 @@ describe(`content service test`, () => {
 	})
 
 	it(`setSubtitles`, async() => {
-		proxies.apiProxy.subtitles.post.mockImplementationOnce(()=>{
-			return Promise.resolve(subtitle1)
-		})
 		expect(store.getState().cache).toEqual([{sub1}])
 		await subtitleServiceConstructor.setSubtitles(subtitle1)(dispatch, getState, { apiProxy })
 		expect(store.getState().cache).toEqual(subtitle1)
@@ -159,6 +156,15 @@ describe(`content service test`, () => {
 		expect(store.getState().cache).toEqual([{sub1}])
 		await subtitleServiceConstructor.getSubtitles(`subtitle1`, true)(dispatch, getState, { apiProxy })
 		expect(store.getState().cache).toEqual(subtitle1)
+	})
+
+	it(`getSubtitles: catch error`, async() => {
+		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
+			return Promise.reject('error')
+		});
+		expect(store.getState().cache).toEqual([{sub1}])
+		await subtitleServiceConstructor.getSubtitles(`subtitle1`, true)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache).toEqual([])
 	})
 
 	it(`createSubtitle`, async() => {
@@ -220,10 +226,22 @@ describe(`content service test`, () => {
 
 		await subtitleServiceConstructor.setSubtitles(subtitle1)(dispatch, getState, { apiProxy })
 		expect(store.getState().cache).toEqual(subtitle1)
-
 		await subtitleServiceConstructor.deleteSubtitle(subtitle1)(dispatch, getState, { apiProxy })
 	})
 
-	// TODO : test catch error
+	it(`deleteSubtitle: catch error`, async() => {
+		proxies.apiProxy.subtitles.post.mockImplementationOnce(()=>{
+			return Promise.resolve(subtitle1)
+		})
+
+		proxies.apiProxy.subtitles.delete.mockImplementationOnce(()=>{
+			return Promise.reject('error')
+		})
+
+		await subtitleServiceConstructor.setSubtitles(subtitle1)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache).toEqual(subtitle1)
+		await subtitleServiceConstructor.deleteSubtitle(subtitle1)(dispatch, getState, { apiProxy })
+	})
+
 
 })
