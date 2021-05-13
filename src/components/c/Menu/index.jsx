@@ -13,7 +13,6 @@ class Menu extends PureComponent {
 			isLab,
 			editorStyle,
 		} = this.props.viewstate
-		// console.log(isAdmin, isLab, isProf)
 
 		const {
 			toggleMenu,

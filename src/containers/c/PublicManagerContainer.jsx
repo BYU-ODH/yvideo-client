@@ -13,11 +13,6 @@ import HelpDocumentation from 'components/modals/containers/HelpDocumentationCon
 
 import { objectIsEmpty } from 'lib/util'
 
-// TODO:
-
-// 1. just need endpoint to get public collections.
-// 2. need endpoint to update create new public collections
-
 const PublicManagerContainer = props => {
 
 	const {

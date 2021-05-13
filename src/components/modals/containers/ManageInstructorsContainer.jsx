@@ -48,13 +48,7 @@ const ManageInstructorsContainer = props => {
 		search(`user`, searchQuery, true)
 	}
 
-	const addInstructor = async(username) => {
-		// keep this for search function
-		// if(username){
-		// 	await addAccess(resource.id, username)
-		// 	await readAccess(resource.id)
-		// } else
-		// 	console.log(`alrady registered`)
+	const addInstructor = async() => {
 
 		if(searchQuery.length > 0){
 			await addAccess(resource.id, searchQuery)
@@ -62,9 +56,9 @@ const ManageInstructorsContainer = props => {
 		}
 	}
 
-	const removeInstructor = async(username) => {
-		if(username)
-			await removeAccess(resource.id, username)
+	const removeInstructor = async(item) => {
+		if(item)
+			await removeAccess(resource.id, item)
 	}
 
 	const viewstate = {

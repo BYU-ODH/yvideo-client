@@ -32,7 +32,6 @@ const CreateCollectionContainer = props => {
 			'archived': false,
 			'owner': `${isLabAssistantRoute ? professorId : userId}`,
 			'collection-name': name,
-			'public': false,
 		}
 
 		if(isLabAssistantRoute){
@@ -68,7 +67,6 @@ const mapDispatchToProps = {
 	adminCreateCollection: adminService.createCollection,
 	createCollection: collectionService.createCollection,
 	toggleModal: interfaceService.toggleModal,
-	// getCollections: collectionService.getCollections,
 	adminSearchCollections: adminService.searchCollections,
 }
 

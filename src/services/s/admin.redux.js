@@ -29,6 +29,8 @@ export default class AdminService {
 		ADMIN_USER_DELETE: `ADMIN_USER_DELETE`,
 		ADMIN_CONTENT_DELETE: `ADMIN_CONTENT_DELETE`,
 		ADMIN_CONTENT_DELETE_FROM_TABLE: `ADMIN_CONTENT_DELETE_FROM_TABLE`,
+		ADMIN_GET_USER_BY_ID: `ADMIN_GET_USER_BY_ID`,
+		ADMIN_GET_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_PUBLIC_COLLECTION_CONTENT`,
 	}
 
 	// action creators
@@ -51,6 +53,8 @@ export default class AdminService {
 		adminUserDelete: data => ({ type: this.types.ADMIN_USER_DELETE, payload: { data }}),
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
+		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
+		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 	}
 
 	// default store
@@ -58,6 +62,7 @@ export default class AdminService {
 	store = {
 		data: null,
 		cache: {},
+		searchedUser:{}, // store user here from get by id
 		professors: [],
 		professor: {},
 		publicCollections: [],
@@ -91,6 +96,8 @@ export default class AdminService {
 			ADMIN_USER_DELETE,
 			ADMIN_CONTENT_DELETE,
 			ADMIN_CONTENT_DELETE_FROM_TABLE,
+			ADMIN_GET_USER_BY_ID,
+			ADMIN_GET_PUBLIC_COLLECTION_CONTENT,
 		} = this.types
 
 		switch (action.type) {
@@ -196,6 +203,18 @@ export default class AdminService {
 				lastFetchedCollections: Date.now(),
 			}
 
+		case ADMIN_GET_PUBLIC_COLLECTION_CONTENT:
+			return{
+				...store,
+				publicCollections:{
+					...store.publicCollections,
+					[action.payload.collectionId]: {
+						...store.publicCollections[action.payload.collectionId],
+						content: action.payload.content,
+					},
+				},
+			}
+
 		case ADMIN_COLLECTION_EDIT:
 			return {
 				...store,
@@ -234,6 +253,12 @@ export default class AdminService {
 				...store,
 				data: action.payload.content,
 				loading: false,
+			}
+
+		case ADMIN_GET_USER_BY_ID:
+			return{
+				...store,
+				searchedUser: action.payload.user,
 			}
 
 		default:
@@ -292,6 +317,33 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
+	getPublicCollectionContents = (collectionId) => async(dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			// get contents that connected to public collection
+			const response = await apiProxy.collection.permissions.getContents(collectionId)
+
+			const contentResult = []
+
+			if(response.content){
+				response.content.forEach((item) => {
+					contentResult.push(new Content(item))
+				})
+			}
+
+			dispatch(this.actions.adminGetPublicCollectionContents(contentResult, collectionId))
+
+			console.log(getState().adminStore.publicCollections)
+
+		} catch (error) {
+			console.error(error.message)
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	// this calls public collection when user searchs
 	searchPublicCollection = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().adminStore.lastFetchedProfessors
@@ -304,15 +356,17 @@ export default class AdminService {
 
 			try {
 
-				const results = await apiProxy.admin.search.public.collection.get(searchQuery)
+				// I think we need to make this as a one api call from backend.
+				const data = await apiProxy.admin.search.public.collection.get(searchQuery)
 
-				const resultArr = []
+				const result = {}
 
-				results.forEach(element => {
-					resultArr.push(element)
+				data.forEach(element => {
+					result[element.id]= element
+					// result.push(element)
 				})
 
-				dispatch(this.actions.adminSearchPublicCollections(resultArr))
+				dispatch(this.actions.adminSearchPublicCollections(result))
 
 			} catch (error) {
 				console.error(error.message)
@@ -361,6 +415,22 @@ export default class AdminService {
 			const results = await apiProxy.admin.user.get(professorId)
 
 			dispatch(this.actions.adminSetProfessor(new User(results)))
+
+		} catch (error) {
+			console.error(`ERRROR`, error.message)
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	getUserById = (userId, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const results = await apiProxy.admin.user.get(userId)
+
+			dispatch(this.actions.adminGetUserById(new User(results)))
 
 		} catch (error) {
 			console.error(`ERRROR`, error.message)
