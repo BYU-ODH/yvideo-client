@@ -12,6 +12,7 @@ export default class CollectionService {
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
 		COLLECTION_INFO_GET: `COLLECTION_INFO_GET`,
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
+		COLLECTION_UPDATE_CONTENTS: `COLLECTION_UPDATE_CONTENTS`,
 		PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS: `PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS`,
 	}
 
@@ -35,6 +36,7 @@ export default class CollectionService {
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 		collectionGetInfo: data => ({ type: this.types.COLLECTION_INFO_GET, payload: { data }}),
 		collectionPermissionUpdate: object => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { object }}),
+		collectionUpdateContents: (result, collectionId) => ({ type: this.types.COLLECTION_UPDATE_CONTENTS, payload: { result, collectionId }}),
 		publicCollectionUpdateSubscribers: data => ({type: this.types.PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS, payload: {data}}),
 	}
 
@@ -63,6 +65,7 @@ export default class CollectionService {
 			COLLECTION_EDIT,
 			COLLECTION_INFO_GET,
 			COLLECTION_ROLES_UPDATE,
+			COLLECTION_UPDATE_CONTENTS,
 			PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS,
 		} = this.types
 
@@ -132,17 +135,29 @@ export default class CollectionService {
 
 		case COLLECTION_INFO_GET:
 			return {
-					...store,
-					users: action.payload.data.users,
-					courses: action.payload.data.courses,
-					loading: false,
-				}
+				...store,
+				users: action.payload.data.users,
+				courses: action.payload.data.courses,
+				loading: false,
+			}
 
 		case COLLECTION_ROLES_UPDATE:
 			return {
 				...store,
 				users: action.payload.object.currentUsers,
 				courses: action.payload.object.currentCourses,
+			}
+
+		case COLLECTION_UPDATE_CONTENTS:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collectionId]: {
+						...store.cache[action.payload.collectionId],
+						...action.payload.result.content,
+					},
+				},
 			}
 
 		case PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS:
@@ -155,6 +170,29 @@ export default class CollectionService {
 		default:
 			return store
 		}
+	}
+
+	searchCollections = (force = false, doesIncludePublic = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().collectionStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.collectionsStart())
+
+			try {
+				// this gets the collections directly linked to the user.
+				const result = await apiProxy.user.collections.get()
+
+				dispatch(this.actions.collectionsGet(result))
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+
+		} else dispatch(this.actions.collectionsAbort())
 	}
 
 	// thunks
@@ -318,17 +356,30 @@ export default class CollectionService {
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 
-				let strUsers = JSON.stringify(users)
-				let strCourses = JSON.stringify(courses)
+				const strUsers = JSON.stringify(users)
+				const strCourses = JSON.stringify(courses)
 
-				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses)){
-					dispatch(this.actions.collectionGetInfo( { users: users, courses: courses } ))
-				}
+				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses))
+					dispatch(this.actions.collectionGetInfo( { users, courses } ))
 
-				// console.log(getState().collectionStore)
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}
+		}
+	}
+
+	updateCollectionContents = (collectionId, contentId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+			const result = await apiProxy.collection.permissions.getContents(collectionId)
+
+			dispatch(this.actions.collectionUpdateContents(result, collectionId))
+
+		} catch (error) {
+			console.log(error.message)
+			dispatch(this.actions.collectionsError(error))
 		}
 	}
 
@@ -384,33 +435,30 @@ export default class CollectionService {
 
 			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
-			// console.log(result)
+
 			let currentState = {}
 			currentState = getState().collectionStore.cache[collectionId]
-			let currentUsers = getState().collectionStore.users
-			let currentCourses = getState().collectionStore.courses
+			const currentUsers = getState().collectionStore.users
+			const currentCourses = getState().collectionStore.courses
 
-			//based on the endpoint edit the current store
+			// based on the endpoint edit the current store
 			if(endpoint === `add-user`){
-				let temp = []
-				if(currentUsers.length < 1){
+				const temp = []
+				if(currentUsers.length < 1)
 					temp.push(backEndBody)
-				}
+
 				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
-			}
-			else if(endpoint === `add-course`){
-				let temp = []
-				if(currentCourses.length < 1){
+			} else if(endpoint === `add-course`){
+				const temp = []
+				if(currentCourses.length < 1)
 					temp.push(backEndBody)
-				}
+
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
-			}
-			else if(endpoint === `remove-course`){
+			} else if(endpoint === `remove-course`)
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
-			}
-			else if(endpoint === `remove-user`){
+			else if(endpoint === `remove-user`)
 				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
-			}
+
 		} catch (error) {
 			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))

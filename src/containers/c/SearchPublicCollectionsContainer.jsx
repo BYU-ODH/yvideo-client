@@ -17,27 +17,31 @@ const SearchPublicCollectionsContainer = props => {
 		setContent,
 		collections,
 		searchedPublicCollections,
-		getCollections,
+		searchCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
 		searchPublicCollections,
-		getIsPublicCollectionSubscribed,
 		user,
 	} = props
 
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [searchedCount, setSearchedCount] = useState(searchedPublicCollections.length)
+	const [previousSearchQuery, setPreviousSearchQuery] = useState(``)
+	const [searchedCount, setSearchedCount] = useState(0)
+	const [isDefault, setIsDefault] = useState(true)
+	const [isContentsUpdated, setIsContentUpdated] = useState(false)
 
 	// TODO: need to figure out publish issue
 	useEffect(() => {
 		toggleTip()
 
-		if(user) getCollections(true)
-		else console.log(`this is yvieo guest need to set up public collections here`)
-
-		setHeaderBorder(false)
+		if(user && isDefault)
+			searchCollections(true)
+			// setIsDefault(false)
+		// }else if(searchedPublicCollections.length > 0 && searchedPublicCollections[0].owner)
+		// 	searchCollections(true)
+		// console.log(searchedPublicCollections[0].owner)
 
 		const allContent = {}
 		Object.keys(collections).forEach(element => {
@@ -46,7 +50,9 @@ const SearchPublicCollectionsContainer = props => {
 			})
 		})
 
-		setContent(allContent)
+		setHeaderBorder(false)
+
+		// setContent(allContent)
 
 		// when public collection searched, find id and assiciated collection from collections
 		if(searchedPublicCollections.length !== searchedCount)
@@ -56,7 +62,7 @@ const SearchPublicCollectionsContainer = props => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-	}, [setContent, setHeaderBorder, searchedPublicCollections])
+	}, [setHeaderBorder, searchedPublicCollections])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -76,9 +82,15 @@ const SearchPublicCollectionsContainer = props => {
 		})
 	}
 
-	const handleSubmit = e => {
+	const handleSubmit = (e) => {
 		e.preventDefault()
-		searchPublicCollections(searchQuery)
+
+		if(searchQuery !== previousSearchQuery){
+			searchPublicCollections(searchQuery)
+			setPreviousSearchQuery(searchQuery)
+			setSearchQuery(``)
+			setIsContentUpdated(false)
+		}
 	}
 
 	const handleSearchTextChange = e => {
@@ -128,7 +140,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 })
 
 const mapDispatchToProps = {
-	getCollections: collectionService.getCollections,
+	searchCollections: collectionService.searchCollections,
 	searchPublicCollections: adminService.searchPublicCollection,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
@@ -137,6 +149,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
+	// updateCollectionContents: collectionService.updateCollectionContents,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPublicCollectionsContainer)

@@ -1,6 +1,7 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 
 import carrot from 'assets/carrot.svg'
+import trashIcon from 'assets/trash.svg'
 
 const Style = styled.div`
 
@@ -20,7 +21,7 @@ export const CollectionRow = styled.div`
 export const Collection = styled.div`
 	display: grid;
 	/* grid-template-columns: 8rem 15rem auto 2rem; */
-	grid-template-columns: 15rem auto 2rem;
+	grid-template-columns: 25rem auto 2rem;
 	justify-items: start;
 	align-items: center;
 
@@ -79,4 +80,55 @@ export const PublicButton = styled.button`
 
   cursor: pointer;
   outline: none;
+`
+
+export const PublicCollectionButton = styled.div`
+	display: flex;
+	justify-content: flex-end;
+`
+
+export const PublicCollectionsLable = styled.div`
+	display: grid;
+	grid-template-columns: auto 10rem;
+	align-items: center;
+
+	& .owner-name{
+		margin-left: 2rem;
+		flex: 2;
+		font-weight: 500;
+	}
+`
+
+export const PublicCollectionListItem = styled.div`
+	display: grid;
+	grid-template-columns: auto 10rem;
+`
+
+export const RemoveIcon = styled.span`
+	background: url(${trashIcon}) center no-repeat;
+	height: 2.5rem;
+	width: 2rem;
+`
+
+const TextButton = css`
+	font-weight: bold;
+	line-height: 1.5rem;
+	letter-spacing: .05rem;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	outline: none;
+`
+
+export const RemoveButton = styled.button`
+	display: flex;
+	align-items: center;
+  justify-content: center;
+	color: #ff4c4c;
+	${TextButton}
+	text-align: center !important;
+
+	& > span {
+		margin-left: .5rem;
+	}
 `
