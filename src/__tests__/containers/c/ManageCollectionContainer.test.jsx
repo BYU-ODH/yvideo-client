@@ -136,6 +136,7 @@ const props = {
 		owner: 22,
 		published: true,
 		thumbnail: `test@thumbnail`,
+		'expired-content': content,
 	},
 	content,
 	getContent: jest.fn(),

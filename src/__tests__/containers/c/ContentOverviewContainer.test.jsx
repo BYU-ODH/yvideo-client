@@ -102,17 +102,17 @@ describe(`manage collection test`, () => {
 		// click edit button trigger drop down menu.
 		expect(wrapper.find({"className" : `tag-input`}).length).toBe(0)
 		wrapper.find({"className" : `edit-button`}).at(0).simulate(`click`)
-		expect(wrapper.find({"className" : `tag-input`}).length).toBe(2)
+		expect(wrapper.find({"className" : `tag-input`}).length).toBe(1)
 
 		// add input and add tags
 		wrapper.find({"className" : `tag-input`}).at(0).simulate(`change`, {target: {value: `testaddedtag`}})
-		expect(wrapper.find(`Tag`).length).toBe(1)
+		expect(wrapper.find(`Tag`).length).toBe(0)
 		wrapper.find({"className" : `add-tag`}).at(0).simulate(`click`)
-		expect(wrapper.find(`Tag`).length).toBe(2)
+		expect(wrapper.find(`Tag`).length).toBe(1)
 
 		// remove tag
 		wrapper.find(`Tag`).find(`button`).at(0).simulate(`click`)
-		expect(wrapper.find(`Tag`).length).toBe(1)
+		expect(wrapper.find(`Tag`).length).toBe(0)
 
 		// definition toggle
 		expect(wrapper.find({"className" : `definitions-toggle`}).props().on).toBe(false)
@@ -125,14 +125,14 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find({"className" : `captions-toggle`}).props().on).toBe(true)
 
 		// add input and add words
-		wrapper.find({"className" : `tag-input`}).at(1).simulate(`change`, {target: {value: `testaddedword`}})
+		wrapper.find({"className" : `tag-input`}).at(0).simulate(`change`, {target: {value: `testaddedword`}})
+		expect(wrapper.find(`Tag`).length).toBe(0)
+		wrapper.find({"className" : `add-tag`}).at(0).simulate(`click`)
 		expect(wrapper.find(`Tag`).length).toBe(1)
-		wrapper.find({"className" : `add-tag`}).at(1).simulate(`click`)
-		expect(wrapper.find(`Tag`).length).toBe(2)
 
 		// add word
-		wrapper.find(`Tag`).find(`button`).at(1).simulate(`click`)
-		expect(wrapper.find(`Tag`).length).toBe(1)
+		wrapper.find(`Tag`).find(`button`).at(0).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(0)
 
 		//edit button
 	})

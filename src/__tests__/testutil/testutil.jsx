@@ -264,12 +264,13 @@ export const contentBeforeModel = [
 
 export const collection = {
 	archived: false,
-	content,
+	content: content,
 	id: 0,
 	name: `Collection 1`,
 	owner: 22,
 	published: true,
 	thumbnail: `test@thumbnail`,
+	'expired-content': content,
 }
 
 export const collection1 = {
@@ -685,10 +686,10 @@ export const store = mockStore(
 			menuActive: false,
 			modal: {
 				active: false,
-				component: null,
 				collectionId: -1,
 				isLabAssistantRoute: false,
-				props: {},
+				component: (props) => (<div></div>),
+				props: { active: true }
 			},
 			displayBlocks: browserStorage.displayBlocks,
 			headerBorder: false,
@@ -731,10 +732,6 @@ export const store = mockStore(
 					}
 				],
 			},
-			modal: {
-				component: (props) => (<div></div>),
-				props: { active: true }
-			}
 		},
 		collectionStore: {
 			roles,

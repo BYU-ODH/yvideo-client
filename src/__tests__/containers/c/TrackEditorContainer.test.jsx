@@ -87,7 +87,7 @@ describe(`Simulate Event`, () => {
 		wrapper.find('SubtitlesLayer').prop('closeEditor')()
 		wrapper.find('Rnd').prop('onDragStop')(0, {d: {x: 10}})
 		wrapper.find('Rnd').simulate('mouseEnter')
-		wrapper.find('Rnd').simulate('mouseLeave')
+		wrapper.find('Rnd').at(0).simulate('mouseLeave')
 		wrapper.find('.save').simulate('click')
 		// wrapper.find('.deleteEventButton').simulate('click')
 		wrapper.find('.eventsList').simulate('mouseEnter')
