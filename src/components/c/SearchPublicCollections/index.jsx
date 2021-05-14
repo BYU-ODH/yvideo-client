@@ -47,10 +47,6 @@ export default class SearchPublicCollections extends PureComponent {
 								<>
 									{
 										Object.keys(searchedPublicCollections).map(key =>
-											// searchedPublicCollections[key].content && searchedPublicCollections[key].content.length > 0 ? (
-											// 	<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
-											// ):
-											// 	null
 											<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
 											,
 										)

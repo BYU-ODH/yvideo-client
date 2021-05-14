@@ -30,21 +30,16 @@ class PublicListCollection extends PureComponent {
 					{/* TODO: public collection is not attached to the user, how do we track if this is subscribed by which users */}
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
-						<p>{contentsCount} Videos</p>
+						{/* <p>{contentsCount} Videos</p> */}
 					</Collection>
 				</CollectionRow>
 
-				{collection.content && contentsCount > 0 ? (
+				{collection.content ? (
 					<Body isOpen={isOpen} count={contentsCount}>
 						{isAdmin ? (
 							<PublicCollectionsLable>
-								<div className='owner-name'>
-									{/* {ownerName[ownerName.length-1] === `s` ?
-										<>{ownerName}' collection</>
-										:
-										<>{ownerName}'s collection</>
-									} */}
-									{ownerName}'s collection
+								<div className='ownership'>
+									Ownership: <div className='owner-name'>{ownerName}</div>
 								</div>
 								<PublicCollectionButton>
 									<PublicButton

@@ -9,15 +9,12 @@ const PublicListCollectionContainer = props => {
 
 	const {
 		collection,
-		collections,
 		content,
 		setHeaderBorder,
 		toggleTip,
 		updateCollectionPermissions,
 		user,
 		isAdmin,
-		getUserById,
-		searchedUser,
 		getPublicCollectionContents,
 	} = props
 
@@ -29,18 +26,10 @@ const PublicListCollectionContainer = props => {
 		toggleTip()
 		setHeaderBorder(false)
 
-		if(user.id !== collection.owner && isOpen)
-		// getUserById(collection.owner)
-
-		{
-			if(searchedUser && searchedUser.username)
-				setOwnerName(searchedUser.username)
-		}
-
 		if(collection.content && contentsCount !== collection.content.length)
 			setContentsCount(collection.content.length)
 
-	}, [isOpen, contentsCount])
+	}, [isOpen, contentsCount, ownerName])
 
 	const handlePublicCollection = async() => {
 		await updateCollectionPermissions(collection.id, `remove-user`, user.username)
@@ -50,8 +39,9 @@ const PublicListCollectionContainer = props => {
 		setIsOpen(!isOpen)
 
 		// get contents that attached to collection
-		if(collection)
+		if(collection.id && (!collection.content || collection.content.length === 0))
 			await getPublicCollectionContents(collection.id)
+		if(collection.username) setOwnerName(collection.username)
 	}
 
 	const viewstate = {

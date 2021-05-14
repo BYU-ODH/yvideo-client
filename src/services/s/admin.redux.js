@@ -335,8 +335,6 @@ export default class AdminService {
 
 			dispatch(this.actions.adminGetPublicCollectionContents(contentResult, collectionId))
 
-			console.log(getState().adminStore.publicCollections)
-
 		} catch (error) {
 			console.error(error.message)
 			dispatch(this.actions.adminError(error))
