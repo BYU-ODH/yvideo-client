@@ -27,21 +27,18 @@ const SearchPublicCollectionsContainer = props => {
 	} = props
 
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [previousSearchQuery, setPreviousSearchQuery] = useState(``)
 	const [searchedCount, setSearchedCount] = useState(0)
-	const [isDefault, setIsDefault] = useState(true)
-	const [isContentsUpdated, setIsContentUpdated] = useState(false)
+	const [isSearchUpdated, setIsSearchUpdated] = useState(false)
 
-	// TODO: need to figure out publish issue
 	useEffect(() => {
 		toggleTip()
 
-		if(user && isDefault)
-			searchCollections(true)
-			// setIsDefault(false)
-		// }else if(searchedPublicCollections.length > 0 && searchedPublicCollections[0].owner)
-		// 	searchCollections(true)
-		// console.log(searchedPublicCollections[0].owner)
+		if(user && !isSearchUpdated) searchCollections(true)
+
+		if(searchQuery === ``) {
+			setSearchedCount(0)
+			setIsSearchUpdated(false)
+		}
 
 		const allContent = {}
 		Object.keys(collections).forEach(element => {
@@ -52,10 +49,10 @@ const SearchPublicCollectionsContainer = props => {
 
 		setHeaderBorder(false)
 
-		// setContent(allContent)
+		setContent(allContent)
 
 		// when public collection searched, find id and assiciated collection from collections
-		if(searchedPublicCollections.length !== searchedCount)
+		if(searchedPublicCollections.length !== searchedCount && isSearchUpdated)
 			setSearchedCount(searchedPublicCollections.length)
 
 		return () => {
@@ -85,12 +82,8 @@ const SearchPublicCollectionsContainer = props => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 
-		if(searchQuery !== previousSearchQuery){
-			searchPublicCollections(searchQuery)
-			setPreviousSearchQuery(searchQuery)
-			setSearchQuery(``)
-			setIsContentUpdated(false)
-		}
+		searchPublicCollections(searchQuery)
+		setIsSearchUpdated(true)
 	}
 
 	const handleSearchTextChange = e => {

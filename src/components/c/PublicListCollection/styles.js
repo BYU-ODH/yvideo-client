@@ -92,10 +92,17 @@ export const PublicCollectionsLable = styled.div`
 	grid-template-columns: auto 10rem;
 	align-items: center;
 
-	& .owner-name{
+	& .ownership{
+		display:flex;
 		margin-left: 2rem;
 		flex: 2;
 		font-weight: 500;
+
+		& .owner-name{
+		margin-left: 1rem;
+		flex: 2;
+		font-weight: 200;
+	}
 	}
 `
 
