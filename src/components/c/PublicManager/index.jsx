@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { LabAssistantManageCollectionContainer, ManageCollectionContainer } from 'containers'
+import { ManageCollectionContainer } from 'containers'
 
 import { Accordion } from 'components/bits'
 

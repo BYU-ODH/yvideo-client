@@ -44,10 +44,15 @@ export default class SearchPublicCollections extends PureComponent {
 								Object.keys(publicCollections).map(key =>
 									<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
 								):
+								<>
+									{
+										Object.keys(searchedPublicCollections).map(key =>
+											<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
+											,
+										)
+									}
 
-								Object.keys(searchedPublicCollections).map(key =>
-									<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]}/>,
-								)
+								</>
 							}
 						</>
 					) : (

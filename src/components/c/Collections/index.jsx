@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, Button } from './styles'
+import Style, { ViewToggle, Help } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -23,10 +23,8 @@ export default class Collections extends PureComponent {
 			isAdmin,
 			displayBlocks,
 			collections,
-			collectionsLength,
 			isMobile,
 			publicCollections,
-			allPublic,
 		} = this.props.viewstate
 
 		const {
@@ -40,7 +38,7 @@ export default class Collections extends PureComponent {
 
 		const setNoCollections = () => {
 			setTimeout(() => {
-				if(document.getElementById(`message`) != null)
+				if(document.getElementById(`message`) !== null)
 					document.getElementById(`message`).innerHTML = `There are no collections`
 
 			}, 2000)
@@ -108,7 +106,7 @@ export default class Collections extends PureComponent {
 						<>
 							{
 								Object.keys(publicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>
+									<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
 								)
 							}
 						</>

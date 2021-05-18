@@ -36,7 +36,6 @@ const ManageCollectionContainer = props => {
 	})
 
 	useEffect(() => {
-		console.log('rendered')
 		if(isEdited) {
 			getCollections(true)
 			setCollectionName(collection.name)
@@ -45,7 +44,7 @@ const ManageCollectionContainer = props => {
 			setIsEdited(false)
 		}
 		if(collection.content.length > 0){
-			//compare old content to new content
+			// compare old content to new content
 			if(content[collection.content[0].id] && content[collection.content[collection.content.length - 1].id]){
 				// console.log('got cached content')
 			} else {

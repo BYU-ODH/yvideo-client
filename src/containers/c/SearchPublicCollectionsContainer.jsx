@@ -17,27 +17,28 @@ const SearchPublicCollectionsContainer = props => {
 		setContent,
 		collections,
 		searchedPublicCollections,
-		getCollections,
+		searchCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
 		searchPublicCollections,
-		getIsPublicCollectionSubscribed,
 		user,
 	} = props
 
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [searchedCount, setSearchedCount] = useState(searchedPublicCollections.length)
+	const [searchedCount, setSearchedCount] = useState(0)
+	const [isSearchUpdated, setIsSearchUpdated] = useState(false)
 
-	// TODO: need to figure out publish issue
 	useEffect(() => {
 		toggleTip()
 
-		if(user) getCollections(true)
-		else console.log(`this is yvieo guest need to set up public collections here`)
+		if(user && !isSearchUpdated) searchCollections(true)
 
-		setHeaderBorder(false)
+		if(searchQuery === ``) {
+			setSearchedCount(0)
+			setIsSearchUpdated(false)
+		}
 
 		const allContent = {}
 		Object.keys(collections).forEach(element => {
@@ -46,17 +47,19 @@ const SearchPublicCollectionsContainer = props => {
 			})
 		})
 
+		setHeaderBorder(false)
+
 		setContent(allContent)
 
 		// when public collection searched, find id and assiciated collection from collections
-		if(searchedPublicCollections.length !== searchedCount)
+		if(searchedPublicCollections.length !== searchedCount && isSearchUpdated)
 			setSearchedCount(searchedPublicCollections.length)
 
 		return () => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-	}, [setContent, setHeaderBorder, searchedPublicCollections])
+	}, [setHeaderBorder, searchedPublicCollections])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -76,9 +79,11 @@ const SearchPublicCollectionsContainer = props => {
 		})
 	}
 
-	const handleSubmit = e => {
+	const handleSubmit = (e) => {
 		e.preventDefault()
+
 		searchPublicCollections(searchQuery)
+		setIsSearchUpdated(true)
 	}
 
 	const handleSearchTextChange = e => {
@@ -128,7 +133,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 })
 
 const mapDispatchToProps = {
-	getCollections: collectionService.getCollections,
+	searchCollections: collectionService.searchCollections,
 	searchPublicCollections: adminService.searchPublicCollection,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
@@ -137,6 +142,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
+	// updateCollectionContents: collectionService.updateCollectionContents,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPublicCollectionsContainer)

@@ -36,6 +36,18 @@ const apiProxy = {
 						return result.data
 					},
 				},
+				content: {
+					get: async (term) => {
+						const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/content/${term}`, {withCredentials: true})
+
+						// result.data.forEach(element => {
+						// 	element[`name`] = element[`collection-name`]
+						// 	delete element[`collection-name`]
+						// })
+
+						return result
+					},
+				},
 			},
 		},
 		collection: {
@@ -233,6 +245,11 @@ const apiProxy = {
 			 *
 			 * @returns nothing, idk
 			 */
+			getContents: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/contents`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
+				updateSessionId(res.headers[`session-id`])
+
+				return res.data
+			}),
 			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, body, {
 				withCredentials: true,
 				headers: {
