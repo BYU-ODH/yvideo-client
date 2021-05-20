@@ -15,6 +15,7 @@ export default class SearchPublicCollections extends PureComponent {
 			searchQuery,
 			publicCollections,
 			searchedPublicCollections,
+			isSearched,
 		} = this.props.viewstate
 
 		const {
@@ -38,9 +39,10 @@ export default class SearchPublicCollections extends PureComponent {
 				</Search>
 
 				<div className='list'>
-					{ Object.keys(publicCollections).length > 0 ? (
+					{ Object.keys(publicCollections).length > 0 || Object.keys(searchedPublicCollections).length > 0 ? (
 						<>
 							{ searchedCount === 0 ?
+								// public collections the user own
 								Object.keys(publicCollections).map(key =>
 									<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
 								):
@@ -59,6 +61,7 @@ export default class SearchPublicCollections extends PureComponent {
 						<>
 							<h1 id='message'>Loading</h1>
 							{ setNoCollections() }
+							<div>Nothing is found from "{searchQuery}"</div>
 						</>
 					) }
 				</div>

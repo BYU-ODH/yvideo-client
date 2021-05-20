@@ -28,32 +28,34 @@ const SearchPublicCollectionsContainer = props => {
 
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [searchedCount, setSearchedCount] = useState(0)
-	const [isSearchUpdated, setIsSearchUpdated] = useState(false)
+	const [isSearched, setIsSearched] = useState(false)
 
 	useEffect(() => {
 		toggleTip()
 
-		if(user && !isSearchUpdated) searchCollections(true)
+		if(user && !isSearched) searchCollections(true)
 
 		if(searchQuery === ``) {
 			setSearchedCount(0)
-			setIsSearchUpdated(false)
+			setIsSearched(false)
 		}
-
-		const allContent = {}
-		Object.keys(collections).forEach(element => {
-			collections[element].content.forEach(item => {
-				allContent[item.id] = item
-			})
-		})
 
 		setHeaderBorder(false)
 
-		setContent(allContent)
-
 		// when public collection searched, find id and assiciated collection from collections
-		if(searchedPublicCollections.length !== searchedCount && isSearchUpdated)
+		if(searchedPublicCollections.length !== searchedCount && isSearched){
+
+			const allContent = {}
+			Object.keys(collections).forEach(element => {
+				collections[element].content.forEach(item => {
+					allContent[item.id] = item
+				})
+			})
+
+			setContent(allContent)
 			setSearchedCount(searchedPublicCollections.length)
+
+		}
 
 		return () => {
 			setHeaderBorder(true)
@@ -82,8 +84,10 @@ const SearchPublicCollectionsContainer = props => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 
-		searchPublicCollections(searchQuery)
-		setIsSearchUpdated(true)
+		if(searchQuery !== ``){
+			searchPublicCollections(searchQuery)
+			setIsSearched(true)
+		}
 	}
 
 	const handleSearchTextChange = e => {
@@ -109,6 +113,7 @@ const SearchPublicCollectionsContainer = props => {
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v),
 		searchedPublicCollections,
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		isSearched,
 	}
 
 	const handlers = {

@@ -5,9 +5,12 @@ import { adminService, collectionService, interfaceService } from 'services'
 
 import { PublicListCollection } from 'components'
 
+import MorePublicCollectionsContainer from 'components/modals/containers/MorePublicCollectionsContainer'
+
 const PublicListCollectionContainer = props => {
 
 	const {
+		toggleModal,
 		collection,
 		content,
 		setHeaderBorder,
@@ -16,6 +19,7 @@ const PublicListCollectionContainer = props => {
 		user,
 		isAdmin,
 		getPublicCollectionContents,
+		searchCollectionsByUserId,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
@@ -33,6 +37,28 @@ const PublicListCollectionContainer = props => {
 
 	const handlePublicCollection = async() => {
 		await updateCollectionPermissions(collection.id, `remove-user`, user.username)
+	}
+
+	const handleMorePublicCollection = async() =>{
+		const result = await searchCollectionsByUserId(collection.owner,true, true)
+		let morePublicCollections
+
+		// prevent null error
+		if(result) {
+			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k,v]) => v)
+
+			if(morePublicCollections.length > 0){
+				toggleModal({
+					component: MorePublicCollectionsContainer,
+					props: {
+						publicCollections: morePublicCollections,
+						ownerName,
+					},
+				})
+			}
+		}
+
+		// open toggle modal for presenting owner's more public collections
 	}
 
 	const isOpenEventHandler = async() => {
@@ -57,6 +83,7 @@ const PublicListCollectionContainer = props => {
 	const handlers = {
 		isOpenEventHandler,
 		handlePublicCollection,
+		handleMorePublicCollection,
 	}
 
 	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
@@ -80,6 +107,8 @@ const mapDispatchToProps = {
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
 	getUserById: adminService.getUserById,
 	getPublicCollectionContents: adminService.getPublicCollectionContents,
+	searchCollectionsByUserId: adminService.searchCollections,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicListCollectionContainer)
