@@ -108,7 +108,7 @@ export const PublicCollectionButton = styled.div`
 
 export const PublicCollectionsLable = styled.div`
 	display: grid;
-	grid-template-columns: auto 1rem;
+	grid-template-columns: auto auto 1rem;
 	align-items: center;
 
 		& .ownership{

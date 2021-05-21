@@ -23,22 +23,23 @@ const PublicListCollectionContainer = props => {
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
-	const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
+	// const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
 	const [ownerName, setOwnerName] = useState(user.username)
 
 	useEffect(() => {
 		toggleTip()
 		setHeaderBorder(false)
 
-		if(collection.content && contentsCount !== collection.content.length)
-			setContentsCount(collection.content.length)
+		// if(collection.content && contentsCount !== collection.content.length)
+		// 	setContentsCount(collection.content.length)
 
-	}, [isOpen, contentsCount, ownerName])
+	}, [isOpen, ownerName])
 
 	const handlePublicCollection = async() => {
 		await updateCollectionPermissions(collection.id, `remove-user`, user.username)
 	}
 
+	// TODO: we can modify this idea later
 	const handleMorePublicCollection = async() =>{
 		const result = await searchCollectionsByUserId(collection.owner,true, true)
 		let morePublicCollections
@@ -47,6 +48,7 @@ const PublicListCollectionContainer = props => {
 		if(result) {
 			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k,v]) => v)
 
+			// open toggle modal for presenting owner's more public collections
 			if(morePublicCollections.length > 0){
 				toggleModal({
 					component: MorePublicCollectionsContainer,
@@ -57,8 +59,6 @@ const PublicListCollectionContainer = props => {
 				})
 			}
 		}
-
-		// open toggle modal for presenting owner's more public collections
 	}
 
 	const isOpenEventHandler = async() => {
@@ -75,9 +75,7 @@ const PublicListCollectionContainer = props => {
 		isAdmin,
 		collection,
 		content,
-		contentsCount,
 		ownerName,
-		isOwner: collection.owner === user.id,
 	}
 
 	const handlers = {
