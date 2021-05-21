@@ -10,17 +10,19 @@ class PublicListCollection extends PureComponent {
 
 		const {
 			collection,
-			isOwner,
 			isOpen,
 			isAdmin,
 			contentsCount,
 			ownerName,
+			isSubscribed
 		} = this.props.viewstate
 
 		const {
 			isOpenEventHandler,
 			handlePublicCollection,
 		} = this.props.handlers
+		console.log(collection)
+		console.log(isSubscribed)
 
 		if (!collection) return null
 
@@ -51,7 +53,7 @@ class PublicListCollection extends PureComponent {
 										onClick={handlePublicCollection}
 										className={`public-button`}
 									>
-										{isOwner ? <>Unsubscribe</> : <>Subscribe</>} {/* needs to be changed => whether or not subscribed*/}
+										{isSubscribed ? <>Unsubscribe</> : <>Subscribee</>}
 									</PublicButton>
 								</PublicCollectionButton>
 							</PublicCollectionsLable>

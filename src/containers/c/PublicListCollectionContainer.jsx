@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import services from 'services'
 
 import { adminService, collectionService, interfaceService } from 'services'
 
 import { PublicListCollection } from 'components'
+import CollectionPermissionsContainer from './CollectionPermissionsContainer'
 
 const PublicListCollectionContainer = props => {
 
@@ -19,11 +21,17 @@ const PublicListCollectionContainer = props => {
 		getUserById,
 		searchedUser,
 		getPublicCollectionContents,
+		getSubscribers,
 	} = props
+	// console.log(collection)
+	// console.log(collections)
+	// console.log(users)
 
 	const [isOpen, setIsOpen] = useState(false)
 	const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
 	const [ownerName, setOwnerName] = useState(user.username)
+	const [isSubscribed, setIsSubscribed] = useState(false)
+	const [isUpdated, setIsUpdated] = useState(false)
 
 	useEffect(() => {
 		toggleTip()
@@ -40,18 +48,34 @@ const PublicListCollectionContainer = props => {
 		if(collection.content && contentsCount !== collection.content.length)
 			setContentsCount(collection.content.length)
 
-	}, [isOpen, contentsCount])
+		if(collection.subscribers) {
+			console.log(`object`)
+			collection.subscribers.forEach(subscriber => {
+				if(subscriber.id === user.id) {
+					setIsSubscribed(true)
+					return
+				}
+			})
+		}
+
+	}, [isOpen, contentsCount, collection])
 
 	const handlePublicCollection = async() => {
-		await updateCollectionPermissions(collection.id, `remove-user`, user.username)
+		if (isSubscribed) {
+			await updateCollectionPermissions(collection.id, `remove-user`, user)
+		} else {
+			await updateCollectionPermissions(collection.id, `add-user`, user)
+		}
 	}
 
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
 
 		// get contents that attached to collection
-		if(collection)
+		if(collection){
 			await getPublicCollectionContents(collection.id)
+			await getSubscribers(collection.id)
+		}
 	}
 
 	const viewstate = {
@@ -61,7 +85,8 @@ const PublicListCollectionContainer = props => {
 		content,
 		contentsCount,
 		ownerName,
-		isOwner: collection.owner === user.id,
+		// isOwner: collection.owner === user.id,
+		isSubscribed,
 	}
 
 	const handlers = {
@@ -90,6 +115,7 @@ const mapDispatchToProps = {
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
 	getUserById: adminService.getUserById,
 	getPublicCollectionContents: adminService.getPublicCollectionContents,
+	getSubscribers: services.collectionService.getSubscribers,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicListCollectionContainer)
