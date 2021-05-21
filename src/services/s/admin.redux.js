@@ -324,7 +324,6 @@ export default class AdminService {
 				}
 
 				dispatch(this.actions.adminSearch(finalData))
-
 			} catch (error) {
 				console.error(error.message)
 				dispatch(this.actions.adminError(error))

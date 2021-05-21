@@ -10,10 +10,9 @@ class PublicListCollection extends PureComponent {
 
 		const {
 			collection,
-			isOwner,
 			isOpen,
 			isAdmin,
-			contentsCount,
+			// contentsCount,
 			ownerName,
 		} = this.props.viewstate
 
@@ -35,25 +34,23 @@ class PublicListCollection extends PureComponent {
 				</CollectionRow>
 
 				{collection.content ? (
-					<Body isOpen={isOpen} count={contentsCount}>
-						{isAdmin ? (
-							<PublicCollectionsLable>
-								<div className='ownership'>
-									Owner: <div className='owner-name'>{ownerName}</div>
-								</div>
-								<PublicCollectionButton>
-									{/* TODO: possibely add */}
-									{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
-									<PublicButton
-										onClick={handlePublicCollection}
-										className={`public-button`}
-									>
-										{isOwner ? <>Unsubscribe</> : <>Subscribe</>} {/* needs to be changed => whether or not subscribed*/}
-									</PublicButton>
-								</PublicCollectionButton>
-							</PublicCollectionsLable>
-						) : null
-						}
+					<Body isOpen={isOpen}>
+						<PublicCollectionsLable>
+							<div className='ownership'>
+								<>Owner: <div className='owner-name'>{ownerName}</div></>
+								<>Copyright: <div className='owner-name'>No</div></>
+							</div>
+							<PublicCollectionButton>
+								{/* TODO: possibely add */}
+								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
+								<PublicButton
+									onClick={handlePublicCollection}
+									className={`public-button`}
+								>
+									<>Unsubscribe</> {/* needs to be changed => whether or not subscribed*/}
+								</PublicButton>
+							</PublicCollectionButton>
+						</PublicCollectionsLable>
 						{
 							collection.content.map(item => {
 								return <ListItem key={item.id} data={item} />

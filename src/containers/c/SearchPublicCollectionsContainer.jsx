@@ -6,6 +6,7 @@ import { collectionService, interfaceService, contentService, adminService } fro
 import { SearchPublicCollections } from 'components'
 
 import { Tooltip } from 'components/bits'
+import { set } from 'js-cookie'
 
 const SearchPublicCollectionsContainer = props => {
 
@@ -29,6 +30,7 @@ const SearchPublicCollectionsContainer = props => {
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [searchedCount, setSearchedCount] = useState(0)
 	const [isSearched, setIsSearched] = useState(false)
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		toggleTip()
@@ -44,24 +46,21 @@ const SearchPublicCollectionsContainer = props => {
 
 		// when public collection searched, find id and assiciated collection from collections
 		if(searchedPublicCollections.length !== searchedCount && isSearched){
-
 			const allContent = {}
 			Object.keys(collections).forEach(element => {
 				collections[element].content.forEach(item => {
 					allContent[item.id] = item
 				})
 			})
-
 			setContent(allContent)
 			setSearchedCount(searchedPublicCollections.length)
-
 		}
 
 		return () => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-	}, [setHeaderBorder, searchedPublicCollections])
+	}, [loading, setHeaderBorder, searchedPublicCollections])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -94,26 +93,31 @@ const SearchPublicCollectionsContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 
-		if(value === ``) setSearchedCount(0)
+		if(value === ``) {
+			setIsSearched(false)
+			setSearchedCount(0)
+		}
+
 	}
 
 	const setNoCollections = () => {
 		setTimeout(() => {
 			if(document.getElementById(`message`) !== null)
 				document.getElementById(`message`).innerHTML = `There are no public collections`
-
 		}, 2000)
 	}
 
 	const viewstate = {
 		isProf,
 		isAdmin,
+		user,
 		displayBlocks,
 		searchedCount,
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v),
 		searchedPublicCollections,
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 		isSearched,
+		loading,
 	}
 
 	const handlers = {
@@ -147,7 +151,6 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
-	// updateCollectionContents: collectionService.updateCollectionContents,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPublicCollectionsContainer)

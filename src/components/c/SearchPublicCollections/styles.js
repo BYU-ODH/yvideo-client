@@ -94,3 +94,8 @@ export const SearchIcon = styled.span`
 	height: 2rem;
 	width: 2rem;
 `
+
+export const ListLable = styled.h4`
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+`
