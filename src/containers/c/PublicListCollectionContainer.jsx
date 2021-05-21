@@ -23,10 +23,10 @@ const PublicListCollectionContainer = props => {
 		getPublicCollectionContents,
 		getSubscribers,
 		searchCollectionsByUserId,
+		searchedUser,
+		getUserById,
+		collections
 	} = props
-	// console.log(collection)
-	// console.log(collections)
-	// console.log(users)
 
 	const [isOpen, setIsOpen] = useState(false)
 	// const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
@@ -41,8 +41,17 @@ const PublicListCollectionContainer = props => {
 		// if(collection.content && contentsCount !== collection.content.length)
 		// 	setContentsCount(collection.content.length)
 
+		// if(user.id !== collection.owner && isOpen && (isUpdated === false)) {
+		// 	getUserById(collection.owner)
+		// 	setIsUpdated(true)
+		// 	console.log(isUpdated)
+		// }
+		// console.log(searchedUser.username)
+
+		// if(searchedUser && searchedUser.username) {
+		// 	setOwnerName(searchedUser.username)
+		// }
 		if(collection.subscribers) {
-			console.log(`object`)
 			collection.subscribers.forEach(subscriber => {
 				if(subscriber.id === user.id) {
 					setIsSubscribed(true)
@@ -50,14 +59,33 @@ const PublicListCollectionContainer = props => {
 				}
 			})
 		}
+		else {
+			Object.keys(collections).map(key =>
+				{
+					if(key == collection.id) {
+						if(collections[key].subscribers) {
+							collections[key].subscribers.forEach(subscriber => {
+								if(subscriber.id === user.id) {
+									setIsSubscribed(true)
+									return
+								}
+							})
+						}
+					}
+				}
+			)
+		}
 
-	}, [isOpen, contentsCount, collection, ownerName])
+	}, [isOpen, ownerName, collections])
 
 	const handlePublicCollection = async() => {
+		console.log(isSubscribed)
 		if (isSubscribed) {
 			await updateCollectionPermissions(collection.id, `remove-user`, user)
+			setIsSubscribed(false)
 		} else {
 			await updateCollectionPermissions(collection.id, `add-user`, user)
+			setIsSubscribed(true)
 		}
 	}
 
@@ -88,10 +116,10 @@ const PublicListCollectionContainer = props => {
 
 		// get contents that attached to collection
 		if(collection){
-			await getPublicCollectionContents(collection.id)
 			await getSubscribers(collection.id)
+			await getPublicCollectionContents(collection.id)
 		}
-		
+
 		if(collection.id && (!collection.content || collection.content.length === 0))
 			await getPublicCollectionContents(collection.id)
 		if(collection.username) setOwnerName(collection.username)

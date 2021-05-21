@@ -382,13 +382,9 @@ export default class CollectionService {
 			const currentUsers = getState().collectionStore.users
 
 			try {
-
+				
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
 				dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
-
-				console.log(getState().collectionStore.cache)
-				//console.log(users)
-				// return users
 
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))

@@ -22,8 +22,6 @@ class PublicListCollection extends PureComponent {
 			handlePublicCollection,
 			handleMorePublicCollection,
 		} = this.props.handlers
-		console.log(collection)
-		console.log(isSubscribed)
 
 		if (!collection) return null
 
@@ -50,7 +48,7 @@ class PublicListCollection extends PureComponent {
 									onClick={handlePublicCollection}
 									className={`public-button`}
 								>
-									<>Unsubscribe</> {/* needs to be changed => whether or not subscribed*/}
+								{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
 								</PublicButton>
 							</PublicCollectionButton>
 						</PublicCollectionsLable>
