@@ -12,6 +12,8 @@ export default Style
 
 export const CollectionRow = styled.div`
 
+	margin-top: 2rem;
+
 	& > button {
 		margin: 1rem;
 		float: right;
@@ -19,9 +21,9 @@ export const CollectionRow = styled.div`
 `
 
 export const Collection = styled.div`
-	display: grid;
+	/* display: grid; */
 	/* grid-template-columns: 8rem 15rem auto 2rem; */
-	grid-template-columns: 25rem auto 2rem;
+	/* grid-template-columns: 25rem auto 2rem; */
 	justify-items: start;
 	align-items: center;
 
@@ -107,8 +109,8 @@ export const PublicCollectionButton = styled.div`
 `
 
 export const PublicCollectionsLable = styled.div`
-	display: grid;
-	grid-template-columns: auto auto 1rem;
+	/* display: grid; */
+	/* grid-template-columns: auto 1rem; */
 	align-items: center;
 
 		& .ownership{
@@ -126,8 +128,8 @@ export const PublicCollectionsLable = styled.div`
 `
 
 export const PublicCollectionListItem = styled.div`
-	display: grid;
-	grid-template-columns: auto 10rem;
+	/* display: grid; */
+	/* grid-template-columns: auto 10rem; */
 `
 
 export const RemoveIcon = styled.span`

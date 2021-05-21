@@ -4,7 +4,11 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, {Search, SearchIcon} from './styles'
+import {
+	Load,
+} from 'components'
+
+import Style, {Search, SearchIcon, ListLable} from './styles'
 
 export default class SearchPublicCollections extends PureComponent {
 
@@ -15,6 +19,9 @@ export default class SearchPublicCollections extends PureComponent {
 			searchQuery,
 			publicCollections,
 			searchedPublicCollections,
+			loading,
+			isSearched,
+			user,
 		} = this.props.viewstate
 
 		const {
@@ -37,35 +44,51 @@ export default class SearchPublicCollections extends PureComponent {
 					<button type='submit'>Search</button>
 				</Search>
 
-				<div className='list'>
+				<div className='list-public-collections'>
 					{ Object.keys(publicCollections).length > 0 ? (
 						<>
-							{ searchedCount === 0 ?
-								Object.keys(publicCollections).map(key =>
-									<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
-								):
-								<>
-									{
-										Object.keys(searchedPublicCollections).map(key =>
-											// searchedPublicCollections[key].content && searchedPublicCollections[key].content.length > 0 ? (
-											// 	<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
-											// ):
-											// 	null
-											<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
-											,
-										)
-									}
 
+							{/* TODO: this needs to be combined into one single components after backend fixed */}
+							{ searchedCount === 0 ?
+							// public collections the user own
+								<>
+									<ListLable>Public Collections</ListLable>
+									{Object.keys(publicCollections).map(key =>
+										<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
+									)}
+								</>
+								:
+								<>
+									{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
+										<>
+											<ListLable>Search Results</ListLable>
+											{Object.keys(searchedPublicCollections).map(key =>
+												<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
+												,
+											)}
+										</>
+										:<h4>No collections matched your search</h4>
+									}
 								</>
 							}
 						</>
 					) : (
 						<>
 							<h1 id='message'>Loading</h1>
+							<Load loading={loading} />
 							{ setNoCollections() }
 						</>
 					) }
 				</div>
+				{user && !isSearched ? (
+					<div className='list-byu-collections'>
+						<ListLable>BYU Collections</ListLable>
+
+					</div>
+				)
+					:
+					<></>
+				}
 			</Style>
 		)
 	}

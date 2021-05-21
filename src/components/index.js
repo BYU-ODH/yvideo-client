@@ -25,6 +25,7 @@ import FileOverview from './c/FileOverview'
 import SearchPublicCollections from './c/SearchPublicCollections'
 import PublicManager from './c/PublicManager'
 import PublicListCollection from './c/PublicListCollection'
+import PublicMoreListCollection from './c/PublicMoreListCollection'
 
 export {
 	Admin,
@@ -54,4 +55,5 @@ export {
 	SearchPublicCollections,
 	PublicManager,
 	PublicListCollection,
+	PublicMoreListCollection,
 }

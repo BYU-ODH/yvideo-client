@@ -6,6 +6,7 @@ import { collectionService, interfaceService, contentService, adminService } fro
 import { SearchPublicCollections } from 'components'
 
 import { Tooltip } from 'components/bits'
+import { set } from 'js-cookie'
 
 const SearchPublicCollectionsContainer = props => {
 
@@ -27,42 +28,39 @@ const SearchPublicCollectionsContainer = props => {
 	} = props
 
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [previousSearchQuery, setPreviousSearchQuery] = useState(``)
 	const [searchedCount, setSearchedCount] = useState(0)
-	const [isDefault, setIsDefault] = useState(true)
-	const [isContentsUpdated, setIsContentUpdated] = useState(false)
+	const [isSearched, setIsSearched] = useState(false)
+	const [loading, setLoading] = useState(false)
 
-	// TODO: need to figure out publish issue
 	useEffect(() => {
 		toggleTip()
 
-		if(user && isDefault)
-			searchCollections(true)
-			// setIsDefault(false)
-		// }else if(searchedPublicCollections.length > 0 && searchedPublicCollections[0].owner)
-		// 	searchCollections(true)
-		// console.log(searchedPublicCollections[0].owner)
+		if(user && !isSearched) searchCollections(true)
 
-		const allContent = {}
-		Object.keys(collections).forEach(element => {
-			collections[element].content.forEach(item => {
-				allContent[item.id] = item
-			})
-		})
+		if(searchQuery === ``) {
+			setSearchedCount(0)
+			setIsSearched(false)
+		}
 
 		setHeaderBorder(false)
 
-		// setContent(allContent)
-
 		// when public collection searched, find id and assiciated collection from collections
-		if(searchedPublicCollections.length !== searchedCount)
+		if(searchedPublicCollections.length !== searchedCount && isSearched){
+			const allContent = {}
+			Object.keys(collections).forEach(element => {
+				collections[element].content.forEach(item => {
+					allContent[item.id] = item
+				})
+			})
+			setContent(allContent)
 			setSearchedCount(searchedPublicCollections.length)
+		}
 
 		return () => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-	}, [setHeaderBorder, searchedPublicCollections])
+	}, [loading, setHeaderBorder, searchedPublicCollections])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -85,11 +83,9 @@ const SearchPublicCollectionsContainer = props => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 
-		if(searchQuery !== previousSearchQuery){
+		if(searchQuery !== ``){
 			searchPublicCollections(searchQuery)
-			setPreviousSearchQuery(searchQuery)
-			setSearchQuery(``)
-			setIsContentUpdated(false)
+			setIsSearched(true)
 		}
 	}
 
@@ -97,25 +93,31 @@ const SearchPublicCollectionsContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 
-		if(value === ``) setSearchedCount(0)
+		if(value === ``) {
+			setIsSearched(false)
+			setSearchedCount(0)
+		}
+
 	}
 
 	const setNoCollections = () => {
 		setTimeout(() => {
 			if(document.getElementById(`message`) !== null)
 				document.getElementById(`message`).innerHTML = `There are no public collections`
-
 		}, 2000)
 	}
 
 	const viewstate = {
 		isProf,
 		isAdmin,
+		user,
 		displayBlocks,
 		searchedCount,
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v),
 		searchedPublicCollections,
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		isSearched,
+		loading,
 	}
 
 	const handlers = {
@@ -149,7 +151,6 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
-	// updateCollectionContents: collectionService.updateCollectionContents,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPublicCollectionsContainer)

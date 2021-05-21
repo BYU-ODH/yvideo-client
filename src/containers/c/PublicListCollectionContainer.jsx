@@ -7,28 +7,29 @@ import { adminService, collectionService, interfaceService } from 'services'
 import { PublicListCollection } from 'components'
 import CollectionPermissionsContainer from './CollectionPermissionsContainer'
 
+import MorePublicCollectionsContainer from 'components/modals/containers/MorePublicCollectionsContainer'
+
 const PublicListCollectionContainer = props => {
 
 	const {
+		toggleModal,
 		collection,
-		collections,
 		content,
 		setHeaderBorder,
 		toggleTip,
 		updateCollectionPermissions,
 		user,
 		isAdmin,
-		getUserById,
-		searchedUser,
 		getPublicCollectionContents,
 		getSubscribers,
+		searchCollectionsByUserId,
 	} = props
 	// console.log(collection)
 	// console.log(collections)
 	// console.log(users)
 
 	const [isOpen, setIsOpen] = useState(false)
-	const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
+	// const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
 	const [ownerName, setOwnerName] = useState(user.username)
 	const [isSubscribed, setIsSubscribed] = useState(false)
 	const [isUpdated, setIsUpdated] = useState(false)
@@ -37,16 +38,8 @@ const PublicListCollectionContainer = props => {
 		toggleTip()
 		setHeaderBorder(false)
 
-		if(user.id !== collection.owner && isOpen)
-		// getUserById(collection.owner)
-
-		{
-			if(searchedUser && searchedUser.username)
-				setOwnerName(searchedUser.username)
-		}
-
-		if(collection.content && contentsCount !== collection.content.length)
-			setContentsCount(collection.content.length)
+		// if(collection.content && contentsCount !== collection.content.length)
+		// 	setContentsCount(collection.content.length)
 
 		if(collection.subscribers) {
 			console.log(`object`)
@@ -58,13 +51,35 @@ const PublicListCollectionContainer = props => {
 			})
 		}
 
-	}, [isOpen, contentsCount, collection])
+	}, [isOpen, contentsCount, collection, ownerName])
 
 	const handlePublicCollection = async() => {
 		if (isSubscribed) {
 			await updateCollectionPermissions(collection.id, `remove-user`, user)
 		} else {
 			await updateCollectionPermissions(collection.id, `add-user`, user)
+		}
+	}
+
+	// TODO: we can modify this idea later
+	const handleMorePublicCollection = async() =>{
+		const result = await searchCollectionsByUserId(collection.owner,true, true)
+		let morePublicCollections
+
+		// prevent null error
+		if(result) {
+			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k,v]) => v)
+
+			// open toggle modal for presenting owner's more public collections
+			if(morePublicCollections.length > 0){
+				toggleModal({
+					component: MorePublicCollectionsContainer,
+					props: {
+						publicCollections: morePublicCollections,
+						ownerName,
+					},
+				})
+			}
 		}
 	}
 
@@ -76,6 +91,10 @@ const PublicListCollectionContainer = props => {
 			await getPublicCollectionContents(collection.id)
 			await getSubscribers(collection.id)
 		}
+		
+		if(collection.id && (!collection.content || collection.content.length === 0))
+			await getPublicCollectionContents(collection.id)
+		if(collection.username) setOwnerName(collection.username)
 	}
 
 	const viewstate = {
@@ -83,7 +102,6 @@ const PublicListCollectionContainer = props => {
 		isAdmin,
 		collection,
 		content,
-		contentsCount,
 		ownerName,
 		// isOwner: collection.owner === user.id,
 		isSubscribed,
@@ -92,6 +110,7 @@ const PublicListCollectionContainer = props => {
 	const handlers = {
 		isOpenEventHandler,
 		handlePublicCollection,
+		handleMorePublicCollection,
 	}
 
 	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
@@ -116,6 +135,8 @@ const mapDispatchToProps = {
 	getUserById: adminService.getUserById,
 	getPublicCollectionContents: adminService.getPublicCollectionContents,
 	getSubscribers: services.collectionService.getSubscribers,
+	searchCollectionsByUserId: adminService.searchCollections,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicListCollectionContainer)

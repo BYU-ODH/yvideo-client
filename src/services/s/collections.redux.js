@@ -188,7 +188,7 @@ export default class CollectionService {
 			dispatch(this.actions.collectionsStart())
 
 			try {
-				// this gets the collections directly linked to the user.
+				// this gets the collections directly connected to the user.
 				const result = await apiProxy.user.collections.get()
 
 				dispatch(this.actions.collectionsGet(result))

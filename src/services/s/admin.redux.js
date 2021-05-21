@@ -31,6 +31,7 @@ export default class AdminService {
 		ADMIN_CONTENT_DELETE_FROM_TABLE: `ADMIN_CONTENT_DELETE_FROM_TABLE`,
 		ADMIN_GET_USER_BY_ID: `ADMIN_GET_USER_BY_ID`,
 		ADMIN_GET_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_PUBLIC_COLLECTION_CONTENT`,
+		ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT`,
 	}
 
 	// action creators
@@ -55,6 +56,7 @@ export default class AdminService {
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
 		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
+		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 	}
 
 	// default store
@@ -66,6 +68,7 @@ export default class AdminService {
 		professors: [],
 		professor: {},
 		publicCollections: [],
+		morePublicCollections: [],
 		professorCollections: null,
 		profCollectionContent: null,
 		loading: false,
@@ -98,6 +101,7 @@ export default class AdminService {
 			ADMIN_CONTENT_DELETE_FROM_TABLE,
 			ADMIN_GET_USER_BY_ID,
 			ADMIN_GET_PUBLIC_COLLECTION_CONTENT,
+			ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT,
 		} = this.types
 
 		switch (action.type) {
@@ -215,6 +219,18 @@ export default class AdminService {
 				},
 			}
 
+		case ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT:
+			return{
+				...store,
+				morePublicCollections:{
+					...store.morePublicCollections,
+					[action.payload.collectionId]: {
+						...store.morePublicCollections[action.payload.collectionId],
+						content: action.payload.content,
+					},
+				},
+			}
+
 		case ADMIN_COLLECTION_EDIT:
 			return {
 				...store,
@@ -308,7 +324,6 @@ export default class AdminService {
 				}
 
 				dispatch(this.actions.adminSearch(finalData))
-
 			} catch (error) {
 				console.error(error.message)
 				dispatch(this.actions.adminError(error))
@@ -317,7 +332,7 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
-	getPublicCollectionContents = (collectionId) => async(dispatch, getState, { apiProxy }) => {
+	getPublicCollectionContents = (collectionId, isModal = false) => async(dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
 		try {
@@ -333,9 +348,14 @@ export default class AdminService {
 				})
 			}
 
-			dispatch(this.actions.adminGetPublicCollectionContents(contentResult, collectionId))
+			if(!isModal)
+				dispatch(this.actions.adminGetPublicCollectionContents(contentResult, collectionId))
 
-			console.log(getState().adminStore.publicCollections)
+			// handle different for more public collections
+			else{
+				getState().adminStore.morePublicCollections = getState().adminStore.publicCollections
+				dispatch(this.actions.adminGetMorePublicCollectionContents(contentResult, collectionId))
+			}
 
 		} catch (error) {
 			console.error(error.message)
@@ -363,7 +383,6 @@ export default class AdminService {
 
 				data.forEach(element => {
 					result[element.id]= element
-					// result.push(element)
 				})
 
 				dispatch(this.actions.adminSearchPublicCollections(result))
@@ -488,7 +507,7 @@ export default class AdminService {
 		}
 	}
 
-	searchCollections = (professorId, force = false) => async (dispatch, getState, { apiProxy }) => {
+	searchCollections = (professorId, force = false, isLookingForPublicCollections = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().adminStore.lastFetchedCollections
 
@@ -500,13 +519,19 @@ export default class AdminService {
 
 			try {
 
-				const results = await apiProxy.admin.collection.get(professorId)
+				if(isLookingForPublicCollections){
+					const results = await apiProxy.admin.collection.get(professorId)
 
-				// console.log(results)
+					const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
 
-				const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
+					return collections
+				}else{
+					const results = await apiProxy.admin.collection.get(professorId)
 
-				dispatch(this.actions.adminSearchCollections(collections))
+					const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
+
+					dispatch(this.actions.adminSearchCollections(collections))
+				}
 
 			} catch (error) {
 				dispatch(this.actions.adminError(error))

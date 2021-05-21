@@ -2,58 +2,50 @@ import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, MoreButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable } from './styles'
+import Style, { Collection, Body, PublicButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable } from './styles'
 
-class PublicListCollection extends PureComponent {
+class PublicMoreListCollection extends PureComponent {
 
 	render() {
 
 		const {
 			collection,
+			isOwner,
 			isOpen,
+			isLoading,
 			isAdmin,
-			// contentsCount,
-			ownerName,
-			isSubscribed
+			contentsCount,
 		} = this.props.viewstate
 
 		const {
 			isOpenEventHandler,
 			handlePublicCollection,
-			handleMorePublicCollection,
+			getContents,
 		} = this.props.handlers
-		console.log(collection)
-		console.log(isSubscribed)
 
 		if (!collection) return null
 
 		return (
 			<Style>
 				<CollectionRow>
-					{/* TODO: public collection is not attached to the user, how do we track if this is subscribed by which users */}
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
 					</Collection>
 				</CollectionRow>
 
 				{collection.content ? (
-					<Body isOpen={isOpen}>
+					<Body isOpen={isOpen} count={contentsCount}>
 						<PublicCollectionsLable>
-							<div className='ownership'>
-								<>Owner: <div className='owner-name'>{ownerName}</div></>
-								<>Copyright: <div className='owner-name'>No</div></>
-							</div>
 							<PublicCollectionButton>
-								{/* TODO: possibely add */}
-								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
 								<PublicButton
 									onClick={handlePublicCollection}
 									className={`public-button`}
 								>
-									<>Unsubscribe</> {/* needs to be changed => whether or not subscribed*/}
+									{isOwner ? <>Unsubscribe</> : <>Subscribe</>}
 								</PublicButton>
 							</PublicCollectionButton>
 						</PublicCollectionsLable>
+
 						{
 							collection.content.map(item => {
 								return <ListItem key={item.id} data={item} />
@@ -68,4 +60,4 @@ class PublicListCollection extends PureComponent {
 	}
 }
 
-export default PublicListCollection
+export default PublicMoreListCollection
