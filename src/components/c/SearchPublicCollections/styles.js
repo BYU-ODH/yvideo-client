@@ -8,32 +8,24 @@ max-width: 100rem;
 padding: 8.4rem 2.4rem 0 2.4rem;
 margin: 0 auto;
 
-& header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 2rem;
+	& > header {
+    height: 12rem;
+    padding: 0 3.8rem;
 
-	& > div {
-		display: flex;
-		align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-		& > h3 {
-			font-weight: bold;
-			font-size: 1.2rem;
-		}
+    & h6 {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
 
-		& a {
-			font-weight: 300;
-			font-size: 1.2rem;
-			text-decoration: none;
-			color: #000;
-		}
-
-		& > button {
-		}
-	}
-}
+    & p {
+      color: #a4a4a4;
+      margin-top: 1.7rem;
+    }
+  }
 `
 
 export default Style
@@ -47,7 +39,7 @@ export const Search = styled.form`
 		background: white;
 
 		height: 4rem;
-		width: 30rem;
+		width: 90%;
 
 		font-size: 1.5rem;
 

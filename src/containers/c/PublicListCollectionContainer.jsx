@@ -25,12 +25,12 @@ const PublicListCollectionContainer = props => {
 		searchCollectionsByUserId,
 		searchedUser,
 		getUserById,
-		collections
+		collections,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
 	// const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
-	const [ownerName, setOwnerName] = useState(user.username)
+	const [ownerName, setOwnerName] = useState(user ? user.username : ``)
 	const [isSubscribed, setIsSubscribed] = useState(false)
 	const [isUpdated, setIsUpdated] = useState(false)
 
@@ -38,19 +38,6 @@ const PublicListCollectionContainer = props => {
 		toggleTip()
 		setHeaderBorder(false)
 
-		// if(collection.content && contentsCount !== collection.content.length)
-		// 	setContentsCount(collection.content.length)
-
-		// if(user.id !== collection.owner && isOpen && (isUpdated === false)) {
-		// 	getUserById(collection.owner)
-		// 	setIsUpdated(true)
-		// 	console.log(isUpdated)
-		// }
-		// console.log(searchedUser.username)
-
-		// if(searchedUser && searchedUser.username) {
-		// 	setOwnerName(searchedUser.username)
-		// }
 		if(collection.subscribers) {
 			collection.subscribers.forEach(subscriber => {
 				if(subscriber.id === user.id) {
@@ -58,21 +45,19 @@ const PublicListCollectionContainer = props => {
 					return
 				}
 			})
-		}
-		else {
-			Object.keys(collections).map(key =>
-				{
-					if(key == collection.id) {
-						if(collections[key].subscribers) {
-							collections[key].subscribers.forEach(subscriber => {
-								if(subscriber.id === user.id) {
-									setIsSubscribed(true)
-									return
-								}
-							})
-						}
+		} else {
+			Object.keys(collections).map(key => {
+				if(key == collection.id) {
+					if(collections[key].subscribers) {
+						collections[key].subscribers.forEach(subscriber => {
+							if(subscriber.id === user.id) {
+								setIsSubscribed(true)
+								return
+							}
+						})
 					}
 				}
+			},
 			)
 		}
 
@@ -131,7 +116,6 @@ const PublicListCollectionContainer = props => {
 		collection,
 		content,
 		ownerName,
-		// isOwner: collection.owner === user.id,
 		isSubscribed,
 	}
 
@@ -145,9 +129,6 @@ const PublicListCollectionContainer = props => {
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore, adminStore }) => ({
-	isProf: authStore.user.roles === 2,
-	isAdmin: authStore.user.roles === 0,
-	isStu: authStore.user.roles === 3,
 	user: authStore.user,
 	displayBlocks: interfaceStore.displayBlocks,
 	content: contentStore.cache,

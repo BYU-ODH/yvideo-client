@@ -15,11 +15,8 @@ export default class SearchPublicCollections extends PureComponent {
 	render() {
 
 		const {
-			searchedCount,
 			searchQuery,
-			publicCollections,
 			searchedPublicCollections,
-			loading,
 			isSearched,
 			user,
 		} = this.props.viewstate
@@ -45,31 +42,27 @@ export default class SearchPublicCollections extends PureComponent {
 				</Search>
 
 				<div className='list-public-collections'>
-					{ Object.keys(publicCollections).length > 0 ? (
+					{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
 						<>
-
-							{/* TODO: this needs to be combined into one single components after backend fixed */}
-							{ searchedCount === 0 ?
-							// public collections the user own
+							<ListLable>Search Results</ListLable>
+							{Object.keys(searchedPublicCollections).map(key =>
+								<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
+								,
+							)}
+						</>
+						:<h4>No collections matched your search</h4>
+					}
+					{/* { Object.keys(publicCollections).length > 0 ? (
+						<>
+							{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
 								<>
-									<ListLable>Public Collections</ListLable>
-									{Object.keys(publicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
+									<ListLable>Search Results</ListLable>
+									{Object.keys(searchedPublicCollections).map(key =>
+										<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
+										,
 									)}
 								</>
-								:
-								<>
-									{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
-										<>
-											<ListLable>Search Results</ListLable>
-											{Object.keys(searchedPublicCollections).map(key =>
-												<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
-												,
-											)}
-										</>
-										:<h4>No collections matched your search</h4>
-									}
-								</>
+								:<h4>No collections matched your search</h4>
 							}
 						</>
 					) : (
@@ -78,9 +71,9 @@ export default class SearchPublicCollections extends PureComponent {
 							<Load loading={loading} />
 							{ setNoCollections() }
 						</>
-					) }
+					) } */}
 				</div>
-				{user && !isSearched ? (
+				{/* {user && !isSearched ? (
 					<div className='list-byu-collections'>
 						<ListLable>BYU Collections</ListLable>
 
@@ -88,7 +81,7 @@ export default class SearchPublicCollections extends PureComponent {
 				)
 					:
 					<></>
-				}
+				} */}
 			</Style>
 		)
 	}

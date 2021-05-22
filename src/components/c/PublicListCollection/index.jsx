@@ -11,8 +11,6 @@ class PublicListCollection extends PureComponent {
 		const {
 			collection,
 			isOpen,
-			isAdmin,
-			// contentsCount,
 			ownerName,
 			isSubscribed
 		} = this.props.viewstate
@@ -20,7 +18,6 @@ class PublicListCollection extends PureComponent {
 		const {
 			isOpenEventHandler,
 			handlePublicCollection,
-			handleMorePublicCollection,
 		} = this.props.handlers
 
 		if (!collection) return null

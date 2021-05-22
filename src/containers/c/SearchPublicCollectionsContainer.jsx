@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 import { collectionService, interfaceService, contentService, adminService } from 'services'
 
 import { SearchPublicCollections } from 'components'
 
 import { Tooltip } from 'components/bits'
-import { set } from 'js-cookie'
 
 const SearchPublicCollectionsContainer = props => {
 
@@ -30,12 +30,12 @@ const SearchPublicCollectionsContainer = props => {
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [searchedCount, setSearchedCount] = useState(0)
 	const [isSearched, setIsSearched] = useState(false)
-	const [loading, setLoading] = useState(false)
+	const location = useLocation()
 
 	useEffect(() => {
 		toggleTip()
 
-		if(user && !isSearched) searchCollections(true)
+		if(location) defaultSearch()
 
 		if(searchQuery === ``) {
 			setSearchedCount(0)
@@ -60,7 +60,14 @@ const SearchPublicCollectionsContainer = props => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-	}, [loading, setHeaderBorder, searchedPublicCollections])
+	}, [setHeaderBorder, searchedPublicCollections.length])
+
+	const defaultSearch = async() => {
+		await searchPublicCollections(location.state.searchQuery)
+		setSearchQuery(location.state.searchQuery)
+		setIsSearched(true)
+		console.log(`default search`)
+	}
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -113,11 +120,10 @@ const SearchPublicCollectionsContainer = props => {
 		user,
 		displayBlocks,
 		searchedCount,
-		publicCollections: Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v),
+		// publicCollections: Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v),
 		searchedPublicCollections,
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 		isSearched,
-		loading,
 	}
 
 	const handlers = {
