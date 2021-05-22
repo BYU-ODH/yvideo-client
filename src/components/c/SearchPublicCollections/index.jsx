@@ -4,10 +4,6 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import {
-	Load,
-} from 'components'
-
 import Style, {Search, SearchIcon, ListLable} from './styles'
 
 export default class SearchPublicCollections extends PureComponent {
@@ -51,36 +47,7 @@ export default class SearchPublicCollections extends PureComponent {
 						</>
 						:<h4>No collections matched your search</h4>
 					}
-					{/* { Object.keys(publicCollections).length > 0 ? (
-						<>
-							{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
-								<>
-									<ListLable>Search Results</ListLable>
-									{Object.keys(searchedPublicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]} content={searchedPublicCollections[key].content}/>
-										,
-									)}
-								</>
-								:<h4>No collections matched your search</h4>
-							}
-						</>
-					) : (
-						<>
-							<h1 id='message'>Loading</h1>
-							<Load loading={loading} />
-							{ setNoCollections() }
-						</>
-					) } */}
 				</div>
-				{/* {user && !isSearched ? (
-					<div className='list-byu-collections'>
-						<ListLable>BYU Collections</ListLable>
-
-					</div>
-				)
-					:
-					<></>
-				} */}
 			</Style>
 		)
 	}

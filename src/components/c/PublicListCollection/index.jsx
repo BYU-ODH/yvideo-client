@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, MoreButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable } from './styles'
+import Style, { Collection, Body, PublicButton, MoreButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
 
 class PublicListCollection extends PureComponent {
 
@@ -26,7 +26,6 @@ class PublicListCollection extends PureComponent {
 		return (
 			<Style>
 				<CollectionRow>
-					{/* TODO: public collection is not attached to the user, how do we track if this is subscribed by which users */}
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
 					</Collection>
@@ -54,10 +53,13 @@ class PublicListCollection extends PureComponent {
 								}
 							</PublicCollectionButton>
 						</PublicCollectionsLable>
-						{
+
+						{ collection.content.length > 0 ?
 							collection.content.map(item => {
 								return <ListItem key={item.id} data={item} />
 							})
+							:
+							<NoContentFiller>This collection currently has no content</NoContentFiller>
 						}
 					</Body>
 				):(

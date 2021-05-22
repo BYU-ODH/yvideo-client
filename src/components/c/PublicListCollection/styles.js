@@ -114,6 +114,8 @@ export const PublicCollectionsLable = styled.div`
 		& .ownership{
 			display:flex;
 			margin-left: 2rem;
+			margin-top: 1rem;
+			margin-bottom: 1rem;
 			flex: 2;
 			font-weight: 500;
 
@@ -157,4 +159,8 @@ export const RemoveButton = styled.button`
 	& > span {
 		margin-left: .5rem;
 	}
+`
+
+export const NoContentFiller = styled.h4`
+	margin: 3rem;
 `
