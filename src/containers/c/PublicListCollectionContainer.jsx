@@ -5,7 +5,6 @@ import services from 'services'
 import { adminService, collectionService, interfaceService } from 'services'
 
 import { PublicListCollection } from 'components'
-import CollectionPermissionsContainer from './CollectionPermissionsContainer'
 
 import MorePublicCollectionsContainer from 'components/modals/containers/MorePublicCollectionsContainer'
 
@@ -23,8 +22,6 @@ const PublicListCollectionContainer = props => {
 		getPublicCollectionContents,
 		getSubscribers,
 		searchCollectionsByUserId,
-		searchedUser,
-		getUserById,
 		collections,
 	} = props
 
@@ -32,7 +29,6 @@ const PublicListCollectionContainer = props => {
 	// const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
 	const [ownerName, setOwnerName] = useState(user ? user.username : ``)
 	const [isSubscribed, setIsSubscribed] = useState(false)
-	const [isUpdated, setIsUpdated] = useState(false)
 
 	useEffect(() => {
 		toggleTip()

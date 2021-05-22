@@ -18,7 +18,6 @@ const SearchPublicCollectionsContainer = props => {
 		setContent,
 		collections,
 		searchedPublicCollections,
-		searchCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,

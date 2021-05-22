@@ -18,7 +18,6 @@ export default class SearchPublicCollections extends PureComponent {
 			searchQuery,
 			searchedPublicCollections,
 			isSearched,
-			user,
 		} = this.props.viewstate
 
 		const {
