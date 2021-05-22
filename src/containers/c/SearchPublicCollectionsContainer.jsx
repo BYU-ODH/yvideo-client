@@ -44,16 +44,16 @@ const SearchPublicCollectionsContainer = props => {
 		setHeaderBorder(false)
 
 		// when public collection searched, find id and assiciated collection from collections
-		if(searchedPublicCollections.length !== searchedCount && isSearched){
-			const allContent = {}
-			Object.keys(collections).forEach(element => {
-				collections[element].content.forEach(item => {
-					allContent[item.id] = item
-				})
-			})
-			setContent(allContent)
-			setSearchedCount(searchedPublicCollections.length)
-		}
+		// if(searchedPublicCollections.length !== searchedCount && isSearched){
+		// 	const allContent = {}
+		// 	Object.keys(collections).forEach(element => {
+		// 		collections[element].content.forEach(item => {
+		// 			allContent[item.id] = item
+		// 		})
+		// 	})
+		// 	setContent(allContent)
+		// 	setSearchedCount(searchedPublicCollections.length)
+		// }
 
 		return () => {
 			setHeaderBorder(true)
@@ -65,7 +65,6 @@ const SearchPublicCollectionsContainer = props => {
 		await searchPublicCollections(location.state.searchQuery)
 		setSearchQuery(location.state.searchQuery)
 		setIsSearched(true)
-		console.log(`default search`)
 	}
 
 	const handleShowHelp = () => {

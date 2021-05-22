@@ -13,6 +13,7 @@ class PublicListCollection extends PureComponent {
 			isOpen,
 			ownerName,
 			isSubscribed,
+			isOwner,
 		} = this.props.viewstate
 
 		const {
@@ -41,12 +42,16 @@ class PublicListCollection extends PureComponent {
 							<PublicCollectionButton>
 								{/* TODO: possibely add */}
 								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
-								<PublicButton
-									onClick={handlePublicCollection}
-									className={`public-button`}
-								>
-									{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
-								</PublicButton>
+								{!isOwner ?
+									<PublicButton
+										onClick={handlePublicCollection}
+										className={`public-button`}
+									>
+										{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
+									</PublicButton>
+									:
+									<></>
+								}
 							</PublicCollectionButton>
 						</PublicCollectionsLable>
 						{

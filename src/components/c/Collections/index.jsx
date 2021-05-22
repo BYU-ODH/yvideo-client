@@ -107,12 +107,6 @@ export default class Collections extends PureComponent {
 						</TabHeader>
 
 					</div>
-
-					{/* <h3>Public Collections &nbsp;&nbsp;&nbsp;</h3> */}
-					{/* <div className='search-public-collection'>
-						<Link to={`/search-public-collections`}>Find More Public Collections</Link>
-					</div> */}
-
 					<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 						<SearchIcon />
 						<input className='resource-search-input' type='search' placeholder={`search more public collections`} onChange={handleSearchTextChange} value={searchQuery} />
@@ -130,7 +124,7 @@ export default class Collections extends PureComponent {
 									)
 								}
 							</>
-						) : ``
+						) : <>Public Collection is empty.</>
 
 						:
 						(<>BYU Collection is empty.</>)
