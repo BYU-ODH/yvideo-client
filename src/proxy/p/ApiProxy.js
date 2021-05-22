@@ -257,6 +257,7 @@ const apiProxy = {
 					'session-id': window.clj_session_id,
 				},
 			}).then(res => {
+				console.log(res)
 				updateSessionId(res.headers[`session-id`])
 				return res
 			}),

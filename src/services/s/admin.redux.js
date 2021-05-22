@@ -30,6 +30,7 @@ export default class AdminService {
 		ADMIN_CONTENT_DELETE: `ADMIN_CONTENT_DELETE`,
 		ADMIN_CONTENT_DELETE_FROM_TABLE: `ADMIN_CONTENT_DELETE_FROM_TABLE`,
 		ADMIN_GET_USER_BY_ID: `ADMIN_GET_USER_BY_ID`,
+		ADMIN_EMPTY_SEARCHED_USER: `ADMIN_EMPTY_SEARCHED_USER`,
 		ADMIN_GET_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_PUBLIC_COLLECTION_CONTENT`,
 		ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT`,
 	}
@@ -55,6 +56,7 @@ export default class AdminService {
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
+		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {}}),
 		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 	}
@@ -102,6 +104,7 @@ export default class AdminService {
 			ADMIN_GET_USER_BY_ID,
 			ADMIN_GET_PUBLIC_COLLECTION_CONTENT,
 			ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT,
+			ADMIN_EMPTY_SEARCHED_USER,
 		} = this.types
 
 		switch (action.type) {
@@ -277,6 +280,12 @@ export default class AdminService {
 				searchedUser: action.payload.user,
 			}
 
+		case ADMIN_EMPTY_SEARCHED_USER:
+			return{
+				...store,
+				searchedUser: {},
+			}
+
 		default:
 			return store
 		}
@@ -450,6 +459,20 @@ export default class AdminService {
 			const results = await apiProxy.admin.user.get(userId)
 
 			dispatch(this.actions.adminGetUserById(new User(results)))
+
+		} catch (error) {
+			console.error(`ERRROR`, error.message)
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	emptySearchedUser = () => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			dispatch(this.actions.adminEmptySearchedUser())
 
 		} catch (error) {
 			console.error(`ERRROR`, error.message)

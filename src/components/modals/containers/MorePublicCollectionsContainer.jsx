@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import MorePublicCollections from 'components/modals/components/MorePublicCollections'
@@ -46,7 +46,6 @@ const mapDispatchToProps = {
 	createCollection: collectionService.createCollection,
 	toggleModal: interfaceService.toggleModal,
 	adminSearchCollections: adminService.searchCollections,
-	getPublicCollectionContents: adminService.getPublicCollectionContents,
 	updateCollectionPermissions: collectionService.updateCollectionPermissions,
 	getUserById: adminService.getUserById,
 }
