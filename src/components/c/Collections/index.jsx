@@ -45,7 +45,6 @@ export default class Collections extends PureComponent {
 			setTimeout(() => {
 				if(document.getElementById(`message`) !== null)
 					document.getElementById(`message`).innerHTML = `There are no collections`
-
 			}, 2000)
 		}
 
@@ -76,12 +75,10 @@ export default class Collections extends PureComponent {
 						<>
 							{
 								isMobile ? Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>) :
-
 									displayBlocks ?
 										Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
 										:
 										Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
-
 							}
 						</>
 					) : (

@@ -34,7 +34,13 @@ const PublicListCollectionContainer = props => {
 	useEffect(() => {
 		toggleTip()
 		setHeaderBorder(false)
+		if(isOpen) readSubscription()
 
+		if(Object.keys(searchedUser).length !== 0) setOwnerName(searchedUser.username)
+
+	}, [isOpen, ownerName, collections, isSubscribed, searchedUser])
+
+	const readSubscription = () => {
 		if(collection.subscribers) {
 			collection.subscribers.forEach(subscriber => {
 				if(subscriber.id === user.id) {
@@ -42,25 +48,8 @@ const PublicListCollectionContainer = props => {
 					return
 				}
 			})
-		} else {
-			Object.keys(collections).forEach( key => {
-				if(key === collection.id) {
-					if(collections[key].subscribers) {
-						collections[key].subscribers.forEach(subscriber => {
-							if(subscriber.id === user.id) {
-								setIsSubscribed(true)
-								return
-							}
-						})
-					}
-				}
-			},
-			)
 		}
-
-		if(Object.keys(searchedUser).length !== 0) setOwnerName(searchedUser.username)
-
-	}, [isOpen, ownerName, collections, isSubscribed, searchedUser])
+	}
 
 	const handlePublicCollection = async() => {
 		if (isSubscribed) {
@@ -103,8 +92,6 @@ const PublicListCollectionContainer = props => {
 			await getPublicCollectionContents(collection.id)
 		}
 
-		// if(collection.id && (!collection.content || collection.content.length === 0))
-		// 	await getPublicCollectionContents(collection.id)
 		if(collection.owner !== user.id)
 			await getUserById(collection.owner)
 		else{

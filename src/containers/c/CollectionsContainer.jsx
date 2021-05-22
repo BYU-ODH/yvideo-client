@@ -132,7 +132,6 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
-	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

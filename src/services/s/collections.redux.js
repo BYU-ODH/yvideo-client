@@ -364,9 +364,8 @@ export default class CollectionService {
 				const strUsers = JSON.stringify(users)
 				const strCourses = JSON.stringify(courses)
 
-				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses)){
+				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses))
 					dispatch(this.actions.collectionGetInfo( { users, courses } ))
-				}
 
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
@@ -374,7 +373,7 @@ export default class CollectionService {
 		}
 	}
 
-	getSubscribers= (collectionId, force = false) => {
+	getSubscribers = (collectionId, force = false) => {
 		return async (dispatch, getState, { apiProxy }) => {
 
 			dispatch(this.actions.collectionsStart())
@@ -382,7 +381,7 @@ export default class CollectionService {
 			const currentUsers = getState().collectionStore.users
 
 			try {
-				
+
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
 				dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
 
@@ -437,7 +436,7 @@ export default class CollectionService {
 		try {
 
 			if(endpoint === `add-user`){
-				console.log('add-user')
+				console.log(`add-user`)
 				backEndBody = {
 					'username': body.username,
 					'account-role': body.roles,
@@ -453,7 +452,7 @@ export default class CollectionService {
 					'course-id': body,
 				}
 			} else if(endpoint === `remove-user`){
-				console.log('remove-user')
+				console.log(`remove-user`)
 				backEndBody = {
 					'username': body.username,
 				}
