@@ -50,9 +50,11 @@ const SearchPublicCollectionsContainer = props => {
 	}, [setHeaderBorder, searchedPublicCollections.length])
 
 	const defaultSearch = async() => {
-		await searchPublicCollections(location.state.searchQuery)
-		setSearchQuery(location.state.searchQuery)
-		setIsSearched(true)
+		if(location.state !== undefined){
+			await searchPublicCollections(location.state.searchQuery)
+			setSearchQuery(location.state.searchQuery)
+			setIsSearched(true)
+		}
 	}
 
 	const handleShowHelp = () => {
