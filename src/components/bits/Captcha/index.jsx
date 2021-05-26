@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Recaptcha from 'react-recaptcha'
 
-const Captcha = () => {
+const Captcha = props => {
+	const {
+		handleCaptchaChange
+	} = props
 	const _reCaptchaRef = React.createRef()
 
 	return (
@@ -11,6 +14,9 @@ const Captcha = () => {
 			// site key to config
 			render='explicit'
 			ref={_reCaptchaRef}
+			verifyCallback={handleCaptchaChange}
+			expiredCallback={handleCaptchaChange}
+			// onChange={setIsPerson(!this.props.isPerson)}
 		/>
 	)
 }

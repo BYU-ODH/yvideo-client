@@ -15,7 +15,7 @@ import { objectIsEmpty } from 'lib/util'
 const ManageCollectionContainer = props => {
 
 	const {
-		admin,
+		user,
 		collection,
 		content,
 		setContent,
@@ -25,34 +25,34 @@ const ManageCollectionContainer = props => {
 		toggleTip,
 	} = props
 
-	const [isContent, setIsContent] = useState(true)
+	const [isContentTap, setIsContentTap] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 	const [isEdited, setIsEdited] = useState(false)
+
+	const allContent = {}
+	collection.content.forEach(item => {
+		allContent[item.id] = item
+	})
 
 	useEffect(() => {
 		if(isEdited) {
 			getCollections(true)
 			setCollectionName(collection.name)
-			setIsContent(true)
+			setIsContentTap(true)
 
 			setIsEdited(false)
 		}
 		if(collection.content.length > 0){
-			if(content[collection.content[0].id]){
+			// compare old content to new content
+			if(content[collection.content[0].id] && content[collection.content[collection.content.length - 1].id]){
 				// console.log('got cached content')
 			} else {
 				// console.log('setting content')
-				const allContent = {}
-				collection.content.forEach(item => {
-					allContent[item.id] = item
-				})
 				setContent(allContent, true)
 			}
-		} else {
-			// console.log('no content')
 		}
-	}, [collection.name])
+	}, [collection.name, content])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -105,25 +105,19 @@ const ManageCollectionContainer = props => {
 		setIsEdited(true)
 	}
 
-	const setTab = isContent => _e => {
-		setIsContent(isContent)
+	const setTab = isContentTap => _e => {
+		setIsContentTap(isContentTap)
 	}
 
 	if (objectIsEmpty(content) && collection.content.length) return null
 
-	// Forces rerender when content and collection.content don't contain the same content, and when creating new content
-	const contentCheck = collection.content.map(item => content[item.id])
-	if (contentCheck.length > 0 &&
-		(contentCheck[0] === undefined || contentCheck[contentCheck.length - 1] === undefined))
-		return null
-
 	const viewstate = {
-		admin,
+		user,
 		isEditingCollectionName,
 		collection,
 		collectionName,
 		content: collection.content.map(item => content[item.id]),
-		isContent,
+		isContentTap,
 	}
 
 	const handlers = {
@@ -138,12 +132,28 @@ const ManageCollectionContainer = props => {
 		setTab,
 	}
 
+	/*
+		account-type
+		0 = admin
+		1 = lab assistant
+		2 = faculty / instructor
+		3 = student
+  */
+
+	/*
+		account-role
+		0 "instructor"
+		1 "ta"
+		2 "student"
+		3 "auditing"
+	*/
+
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = store => ({
 	content: store.contentStore.cache,
-	admin: store.authStore.user.roles,
+	user: store.authStore.user,
 })
 
 const mapDispatchToProps = {

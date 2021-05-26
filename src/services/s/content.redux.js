@@ -38,6 +38,7 @@ export default class ContentService {
 	// default store
 
 	store = {
+		errorMessage: '',
 		cache: {},
 		loading: false,
 		lastFetched: 0,
@@ -73,12 +74,14 @@ export default class ContentService {
 		case CONTENT_ABORT:
 			return {
 				...store,
+				errorMessage: '',
 				loading: false,
 			}
 
 		case CONTENT_CLEAN:
 			return {
 				...store,
+				errorMessage: '',
 				cache: {},
 			}
 
@@ -89,13 +92,15 @@ export default class ContentService {
 					...store.cache,
 					...action.payload.content,
 				},
+				errorMessage: '',
 				loading: false,
 			}
 
 		case CONTENT_ERROR:
-			console.error(action.payload.error)
+			// alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
+				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
 
@@ -106,6 +111,7 @@ export default class ContentService {
 					...store.cache,
 					...action.payload.content,
 				},
+				errorMessage: '',
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -116,6 +122,7 @@ export default class ContentService {
 				cache: {
 					[action.payload.content.id]: action.payload.content,
 				},
+				errorMessage: '',
 			}
 
 		case CONTENT_UPDATE:
@@ -125,6 +132,7 @@ export default class ContentService {
 					...store.cache,
 					[action.payload.content.id]: action.payload.content,
 				},
+				errorMessage: '',
 				loading: false,
 			}
 
@@ -137,6 +145,7 @@ export default class ContentService {
 						views: store.cache[action.payload.id].views + 1,
 					},
 				},
+				errorMessage: '',
 				loading: false,
 			}
 		case CONTENT_GET_SUBTITLES:
@@ -146,6 +155,7 @@ export default class ContentService {
 					...store.subtitlesIds,
 					...action.payload.content,
 				},
+				errorMessage: '',
 			}
 		case CONTENT_ADD_SUBTITLES:
 			return{
@@ -154,6 +164,7 @@ export default class ContentService {
 					...store.subtitlesIds,
 					...action.payload.content,
 				},
+				errorMessage: '',
 			}
 
 		default:
@@ -197,12 +208,13 @@ export default class ContentService {
 		dispatch(this.actions.contentStart())
 
 		try {
+
 			const result = await apiProxy.content.post(content)
 
 			const id = result.id
 			content[`id`] = id
 
-			const newContent = new Content(content)
+			const newContent = new Content(content) // POST https://yvideodev.byu.edu/api/content
 
 			// TODO: Why doesn't this update to state cause it to rerender?
 			dispatch(this.actions.contentCreate({ [id]: newContent}))
@@ -219,6 +231,7 @@ export default class ContentService {
 		dispatch(this.actions.contentStart())
 
 		try {
+			// let finalData = 'asd'
 			const finalData = new BackEndContent(content).backEndData
 
 			const results = await apiProxy.content.update(finalData)
@@ -226,7 +239,6 @@ export default class ContentService {
 			// console.log(content)
 
 			dispatch(this.actions.contentUpdate(content))
-
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}

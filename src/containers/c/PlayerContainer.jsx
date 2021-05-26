@@ -23,6 +23,7 @@ const PlayerContainer = props => {
 		resourceIdStream,
 		getSubtitles,
 		subtitles,
+		subtitlesContentId,
 		toggleModal,
 		toggleTip,
 	} = props
@@ -32,7 +33,9 @@ const PlayerContainer = props => {
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
+	const [isLandscape, setIsLandscape] = useState(false)
 
+	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
@@ -77,8 +80,11 @@ const PlayerContainer = props => {
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			if(contentCache[params.id].url !== ``){
+				if(subtitlesContentId !== params.id  && calledGetSubtitles === false){
+					getSubtitles(params.id)
+					setCalledGetSubtitles(true)
+				}
 				setUrl(contentCache[params.id].url)
-				getSubtitles(params.id)
 			} else {
 				// here we know that the type of content is from the server.
 				// so we reset the states to use for the new video.
@@ -99,8 +105,11 @@ const PlayerContainer = props => {
 						// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
 						// console.log(`%c Stream KEY ${streamKey}`, 'background-color: black; color: pink; font-weight: bold;')
 						// console.log(`%c getting stram media for ${content.id}`, 'color: green');
-						getSubtitles(params.id)
 						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+						if(subtitlesContentId !== params.id && calledGetSubtitles === false){
+							getSubtitles(params.id)
+							setCalledGetSubtitles(true)
+						}
 					}
 				}
 			}
@@ -109,8 +118,14 @@ const PlayerContainer = props => {
 		if(window.innerWidth < 1000){
 			setToggleTranscript(false)
 			setIsMobile(true)
+			if(window.innerHeight < window.innerWidth){
+				setIsLandscape(true)
+			}
+			else {
+				setIsLandscape(false)
+			}
 		}
-	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey])
+	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -132,6 +147,15 @@ const PlayerContainer = props => {
 
 	const handleMouseOut = e => {
 		// setHovering(false)
+	}
+
+	const handlePlayPause = () => {
+		if(playing){
+			setPlaying(false)
+		}
+		else {
+			setPlaying(true)
+		}
 	}
 
 	const handlePause = () => {
@@ -237,6 +261,9 @@ const PlayerContainer = props => {
 
 	const handleShowSubtitle = (value) => {
 		// console.log('CALED SUBTITLE')
+		// if(document.getElementById('subtitle-box') !== undefined){
+		// 	document.getElementById('subtitle-box').innerText = value
+		// }
 		setSubtitleText(value)
 	}
 
@@ -321,6 +348,7 @@ const PlayerContainer = props => {
 		isMobile,
 		censorPosition,
 		censorActive,
+		isLandscape
 	}
 
 	const handlers = {
@@ -349,6 +377,7 @@ const PlayerContainer = props => {
 		handleShowTip,
 		setCensorPosition,
 		setCensorActive,
+		handlePlayPause,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
@@ -362,6 +391,7 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 	streamKey: resourceStore.streamKey,
 	resourceIdStream: resourceStore.resourceIdStreamKey,
 	subtitles: subtitlesStore.cache,
+	subtitlesContentId: subtitlesStore.contentId,
 })
 
 const mapDispatchToProps = {

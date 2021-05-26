@@ -1,8 +1,8 @@
-import React, { PureComponent, useState } from 'react'
+import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, CollectionRow } from './styles'
+import Style, { Collection, Body, PublicButton, MoreButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
 
 class PublicListCollection extends PureComponent {
 
@@ -11,6 +11,9 @@ class PublicListCollection extends PureComponent {
 		const {
 			collection,
 			isOpen,
+			ownerName,
+			isSubscribed,
+			isOwner,
 		} = this.props.viewstate
 
 		const {
@@ -23,31 +26,41 @@ class PublicListCollection extends PureComponent {
 		return (
 			<Style>
 				<CollectionRow>
-					{/* TODO: public collection is not attached to the user, how do we track if this is subscribed by which users */}
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
-						{collection.content ? (
-							<p>{collection.content.length} Videos</p>
-						):(
-							<p>0 Videos</p>
-						)}
-						<div />
 					</Collection>
 				</CollectionRow>
 
 				{collection.content ? (
-					<Body isOpen={isOpen} count={collection.content.length}>
-						{
+					<Body isOpen={isOpen}>
+						<PublicCollectionsLable>
+							<div className='ownership'>
+								<>Owner: <div className='owner-name'>{ownerName}</div></>
+								<>Copyright: <div className='owner-name'>No</div></>
+							</div>
+							<PublicCollectionButton>
+								{/* TODO: possibely add */}
+								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
+								{!isOwner ?
+									<PublicButton
+										onClick={handlePublicCollection}
+										className={`public-button`}
+									>
+										{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
+									</PublicButton>
+									:
+									<></>
+								}
+							</PublicCollectionButton>
+						</PublicCollectionsLable>
+
+						{ collection.content.length > 0 ?
 							collection.content.map(item => {
 								return <ListItem key={item.id} data={item} />
 							})
+							:
+							<NoContentFiller>This collection currently has no content</NoContentFiller>
 						}
-						<PublicButton
-							onClick={handlePublicCollection}
-							className={`public-button`}
-						>
-							Remove
-						</PublicButton>
 					</Body>
 				):(
 					<></>

@@ -2,6 +2,7 @@ import styled, {css} from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
 import uploadIcon from 'assets/upload.svg'
+import personAddIcon from 'assets/person_add.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -115,6 +116,12 @@ export const SaveIcon = styled.span`
 
 export const UploadIcon = styled.span`
 	background: url(${uploadIcon}) center no-repeat;
+	height: 2.5rem;
+	width: 2rem;
+`
+
+export const PersonAddIcon = styled.span`
+	background: url(${personAddIcon}) center no-repeat;
 	height: 2.5rem;
 	width: 2rem;
 `

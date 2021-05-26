@@ -4,22 +4,22 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, {Search, SearchIcon} from './styles'
+import Style, {Search, SearchIcon, ListLable} from './styles'
 
 export default class SearchPublicCollections extends PureComponent {
 
 	render() {
 
 		const {
-			searchedCount,
 			searchQuery,
-			publicCollections,
 			searchedPublicCollections,
+			isSearched,
 		} = this.props.viewstate
 
 		const {
 			handleSubmit,
 			handleSearchTextChange,
+			setNoCollections,
 		} = this.props.handlers
 
 		return (
@@ -36,35 +36,17 @@ export default class SearchPublicCollections extends PureComponent {
 					<button type='submit'>Search</button>
 				</Search>
 
-				<div className='list'>
-					{ Object.keys(publicCollections).length > 0 ? (
+				<div className='list-public-collections'>
+					{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
 						<>
-							{ searchedCount === 0 ?
-								Object.keys(publicCollections).map(key =>
-									<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
-								):
-
-								Object.keys(searchedPublicCollections).map(key =>
-									<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]}/>,
-								)
-							}
+							<ListLable>Search Results</ListLable>
+							{Object.keys(searchedPublicCollections).map(key =>
+								<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]}/>
+								,
+							)}
 						</>
-					) : (
-						<>
-							<h1 id='message'>Loading</h1>
-							{
-								<>
-									{
-										setTimeout(() => {
-											if(document.getElementById(`message`) !== null)
-												document.getElementById(`message`).innerHTML = `There are no public collections`
-
-										}, 2000)
-									}
-								</>
-							}
-						</>
-					) }
+						:<h4>No collections matched your search</h4>
+					}
 				</div>
 			</Style>
 		)

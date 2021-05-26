@@ -40,7 +40,7 @@ const TrackEditorSideMenu = props => {
 	const [title, setTitle] = useState(``)
 	useEffect(() => {
 		setEvent(singleEvent)
-	}, [index])
+	}, [index, event])
 
 	const handleEditEventBTimeChange = (e) => {
 		if (isSub){
@@ -60,7 +60,6 @@ const TrackEditorSideMenu = props => {
 		cEvent.start = number
 
 		setEvent(cEvent)
-
 		updateEvents(index, cEvent, layer)
 	}
 
@@ -89,9 +88,10 @@ const TrackEditorSideMenu = props => {
 		const ind = index
 		let cEvent = event
 		const layer = cEvent.layer
-		cEvent = editComment
+		cEvent.position = editComment.position === undefined ? (cEvent.position) : (editComment.position)
+		cEvent.comment = editComment.comment === undefined ? (cEvent.comment) : (editComment.comment)
 
-		// console.log(event)
+		console.log(cEvent)
 
 		// setEditComment({})
 		updateEvents(ind, cEvent, layer)
@@ -126,6 +126,7 @@ const TrackEditorSideMenu = props => {
 			break
 		}
 	}
+
 	const editSub = (side, time, value,layer) => {
 		// console.log(time)
 		const sub = {...event}
@@ -202,6 +203,7 @@ const TrackEditorSideMenu = props => {
 					<div className='center' style={{ flexDirection: `column`}}>
 						<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
 						<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
+						<p><i>Save is only required when changing the X, Y, or comment values</i></p>
 						<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
 					</div>
 				</>

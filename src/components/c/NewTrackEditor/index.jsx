@@ -47,7 +47,14 @@ const TrackEditor = props => {
 
 	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles } = props
 
-	const { eventsArray, currentContent,subs, allSubs } = props.viewstate
+	const {
+		eventsArray,
+		currentContent,
+		subs,
+		allSubs,
+		contentError,
+		subtitleError,
+	} = props.viewstate
 
 	const { handleShowTip, toggleTip } = props.handlers
 
@@ -185,12 +192,6 @@ const TrackEditor = props => {
 
 		setLayers(initialLayers)
 		setEvents(allEvents)
-
-		if(annotationsSaved){
-			setTimeout(() => {
-				setSaved(false)
-			}, 3000)
-		}
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
@@ -520,15 +521,15 @@ const TrackEditor = props => {
 		})
 	}
 
-	const handleSaveAnnotation = () => {
+	const handleSaveAnnotation = async () => {
 		// console.log(subtitles)
-		setSaved(true)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
-		updateContent(content)
-		handleSaveSubtitles()
+		await updateContent(content)
+		await handleSaveSubtitles()
 		deleteSubtitles(subLayersToDelete)
 		setSubLayersToDelete([])
+		setSaved(true)
 	}
 
 	const handleSaveSubtitles = async() => {
@@ -1104,7 +1105,16 @@ const TrackEditor = props => {
 			</DndProvider>
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
-					<h2>Annotations saved successfully</h2>
+					<img src={closeIcon} width="20" height="20" onClick={ e => setSaved(false)}/>
+					{
+						contentError !== '' || subtitleError !== '' ? (
+							<h2 id="error">
+								<span>Content failed with: {contentError}</span><br/><br/><span>Subtitle failed with: {subtitleError}</span>
+							</h2>
+						) : (
+							<h2 id="success">Annotations saved successfully</h2>
+						)
+					}
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
