@@ -159,6 +159,7 @@ const TrackEditorContainer = props => {
 	const handlers = {
 		toggleTip,
 		handleShowTip,
+		handleShowHelp,
 	}
 
 	return <TrackEditor

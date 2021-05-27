@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
+import helpIcon from 'assets/help/help-icon-black.svg'
 
 import Style, {
 	EditButton,
@@ -47,6 +48,7 @@ export default class ContentOverview extends PureComponent {
 			handleDescription,
 			changeTag,
 			handleShowWordsModal,
+			handleShowHelp
 		} = this.props.handlers
 
 		const {
@@ -129,7 +131,9 @@ export default class ContentOverview extends PureComponent {
 							<textarea rows={4} onChange={handleDescription} value={description} />
 						</Column>
 						<Column>
-							<h4>Important Words</h4>
+							<h4>Important Words
+								<img src={helpIcon} onClick={handleShowHelp} width="20" height="20"/>
+							</h4>
 							<p>Add a list of important words to be highlighted in the transcript. The highlighted
 							words will have quick translation on click if there is
 							one available.</p><br/>
