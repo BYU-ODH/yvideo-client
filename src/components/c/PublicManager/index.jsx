@@ -73,11 +73,7 @@ export default class PublicManager extends PureComponent {
 							{
 								admin &&
 								<>
-									{/* <Accordion header={`Not Public`} active>
-										{sideLists.notPublic.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`}>{name}</Link></div>)}
-									</Accordion> */}
-
-									<Accordion header={`Public Collections`}>
+									<Accordion header={`Public Collections`} active>
 										{sideLists.publicCollections.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
 									</Accordion>
 

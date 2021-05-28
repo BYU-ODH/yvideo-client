@@ -69,46 +69,6 @@ export const Button = styled.button`
 		box-shadow: 0 3px 6px -2px #A0A0A0;
 	}
 `
-
-export const TabHeader = styled.div`
-
-  height: 2.5rem;
-
-  & > button {
-    padding: 0;
-    width: 10rem;
-    background: transparent;
-    height: 2.5rem;
-
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
-`
-
-export const Selector = styled.div`
-  position: relative;
-
-  bottom: 0;
-  left: ${props => props.isContentTap ? `0rem` : `10rem`};
-
-  transition: left 0.3s ease-in-out;
-
-  height: 0.25rem;
-  width: 10rem;
-
-  background-color: #0582ca;
-`
-
-export const Tab = styled.div`
-  background-color: white;
-  overflow-y: scroll;
-
-  border-top: 1px solid #c4c4c4;
-
-  padding: 2rem;
-`
-
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 10;
