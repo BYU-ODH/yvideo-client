@@ -27,7 +27,8 @@ const CreateCollectionContainer = props => {
 		e.preventDefault()
 
 		const defaultV = {
-			'public': isPublicCollection,
+			'public': isPublicCollection !== undefined ? isPublicCollection : false,
+			'copyrighted': false,
 			'published': false,
 			'archived': false,
 			'owner': `${isLabAssistantRoute ? professorId : userId}`,
