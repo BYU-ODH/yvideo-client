@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Style, { LinkStyled, Header, UserPic, LogoutButton, Footer } from './styles'
+import Style, { LinkStyled, Header, LogoutButton, Footer, MenuIcon } from './styles'
 
 class Menu extends PureComponent {
 	render() {
@@ -27,8 +27,7 @@ class Menu extends PureComponent {
 				onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
 				onMouseLeave={e => toggleTip()}>
 
-				<UserPic>{initials}</UserPic>
-				<h4>{user.name}</h4>
+				<MenuIcon />
 
 				<hr />
 

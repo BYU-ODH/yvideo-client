@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
+import menuIcon from 'assets/menu-black.svg'
+
 const Style = styled.div`
 	position: fixed;
 	top: 0;
@@ -23,7 +25,7 @@ const Style = styled.div`
 
 	& > button:first-of-type {
 		position: relative;
-		left: -8.4rem;
+		left: -10rem;
 		transition: left .4s ease-in-out;
 	}
 
@@ -126,4 +128,19 @@ export const Footer = styled.div`
 	max-height: 300px;
 	display: flex;
 	flex-direction: column;
+`
+
+export const MenuIcon = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 4rem;
+	width: 4rem;
+	border: .125rem solid white;
+	margin-right: 4rem;
+	background: url(${menuIcon}) center no-repeat;
+
+	:hover {
+		cursor: pointer;
+	}
 `
