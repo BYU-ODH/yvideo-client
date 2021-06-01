@@ -58,7 +58,7 @@ export default class BlockCollection extends Component {
 		// This way, the number of videos (<p>{content.length} Videos</p>) includes the unpublished ones
 		// const contentIds = this.props.contentIds
 
-		const publishContent = content.filter(item => item.published)
+		const publishContent = content ? content.filter(item => item.published) : []
 
 		if(this.props.collection.published){
 			return (

@@ -1,71 +1,125 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import services from 'services'
 
 import { adminService, collectionService, interfaceService } from 'services'
 
 import { PublicListCollection } from 'components'
 
+import MorePublicCollectionsContainer from 'components/modals/containers/MorePublicCollectionsContainer'
+
 const PublicListCollectionContainer = props => {
 
 	const {
+		toggleModal,
 		collection,
-		content,
 		setHeaderBorder,
 		toggleTip,
 		updateCollectionPermissions,
 		user,
 		isAdmin,
 		getPublicCollectionContents,
+		getSubscribers,
+		searchCollectionsByUserId,
+		collections,
+		getUserById,
+		searchedUser,
+		emptySearchedUser,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
-	const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
-	const [ownerName, setOwnerName] = useState(user.username)
+	const [ownerName, setOwnerName] = useState(``)
+	const [isSubscribed, setIsSubscribed] = useState(false)
 
 	useEffect(() => {
 		toggleTip()
 		setHeaderBorder(false)
+		if(isOpen) readSubscription()
 
-		if(collection.content && contentsCount !== collection.content.length)
-			setContentsCount(collection.content.length)
+		if(Object.keys(searchedUser).length !== 0) setOwnerName(searchedUser.username)
 
-	}, [isOpen, contentsCount, ownerName])
+	}, [isOpen, ownerName, collections, isSubscribed, searchedUser])
+
+	const readSubscription = () => {
+		if(collection.subscribers) {
+			collection.subscribers.forEach(subscriber => {
+				if(subscriber.id === user.id) {
+					setIsSubscribed(true)
+					return
+				}
+			})
+		}
+	}
 
 	const handlePublicCollection = async() => {
-		await updateCollectionPermissions(collection.id, `remove-user`, user.username)
+		if (isSubscribed) {
+			await updateCollectionPermissions(collection.id, `remove-user`, user)
+			setIsSubscribed(false)
+		} else {
+			await updateCollectionPermissions(collection.id, `add-user`, user)
+			setIsSubscribed(true)
+		}
+	}
+
+	// TODO: we can modify this idea later
+	const handleMorePublicCollection = async() =>{
+		const result = await searchCollectionsByUserId(collection.owner,true, true)
+		let morePublicCollections
+
+		// prevent null error
+		if(result) {
+			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k,v]) => v)
+
+			// open toggle modal for presenting owner's more public collections
+			if(morePublicCollections.length > 0){
+				toggleModal({
+					component: MorePublicCollectionsContainer,
+					props: {
+						publicCollections: morePublicCollections,
+						ownerName,
+					},
+				})
+			}
+		}
 	}
 
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
 
 		// get contents that attached to collection
-		if(collection.id && (!collection.content || collection.content.length === 0))
+		if(collection){
+			await getSubscribers(collection.id)
 			await getPublicCollectionContents(collection.id)
-		if(collection.username) setOwnerName(collection.username)
+		}
+
+		if(collection.owner !== user.id)
+			await getUserById(collection.owner)
+		else{
+			emptySearchedUser()
+			setOwnerName(user.username)
+		}
+
 	}
 
 	const viewstate = {
 		isOpen,
 		isAdmin,
 		collection,
-		content,
-		contentsCount,
 		ownerName,
-		isOwner: collection.owner === user.id,
+		isSubscribed,
+		isOwner: user ? user.id === collection.owner : false,
 	}
 
 	const handlers = {
 		isOpenEventHandler,
 		handlePublicCollection,
+		handleMorePublicCollection,
 	}
 
 	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore, adminStore }) => ({
-	isProf: authStore.user.roles === 2,
-	isAdmin: authStore.user.roles === 0,
-	isStu: authStore.user.roles === 3,
 	user: authStore.user,
 	displayBlocks: interfaceStore.displayBlocks,
 	content: contentStore.cache,
@@ -78,8 +132,12 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	updateCollectionPermissions: collectionService.updateCollectionPermissions,
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
-	getUserById: adminService.getUserById,
 	getPublicCollectionContents: adminService.getPublicCollectionContents,
+	getSubscribers: services.collectionService.getSubscribers,
+	searchCollectionsByUserId: adminService.searchCollections,
+	toggleModal: interfaceService.toggleModal,
+	getUserById: adminService.getUserById,
+	emptySearchedUser: adminService.emptySearchedUser,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicListCollectionContainer)

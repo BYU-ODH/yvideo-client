@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable } from './styles'
+import Style, { Collection, Body, PublicButton, MoreButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
 
 class PublicListCollection extends PureComponent {
 
@@ -10,11 +10,10 @@ class PublicListCollection extends PureComponent {
 
 		const {
 			collection,
-			isOwner,
 			isOpen,
-			isAdmin,
-			contentsCount,
 			ownerName,
+			isSubscribed,
+			isOwner,
 		} = this.props.viewstate
 
 		const {
@@ -27,35 +26,40 @@ class PublicListCollection extends PureComponent {
 		return (
 			<Style>
 				<CollectionRow>
-					{/* TODO: public collection is not attached to the user, how do we track if this is subscribed by which users */}
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
-						{/* <p>{contentsCount} Videos</p> */}
 					</Collection>
 				</CollectionRow>
 
 				{collection.content ? (
-					<Body isOpen={isOpen} count={contentsCount}>
-						{isAdmin ? (
-							<PublicCollectionsLable>
-								<div className='ownership'>
-									Ownership: <div className='owner-name'>{ownerName}</div>
-								</div>
-								<PublicCollectionButton>
+					<Body isOpen={isOpen}>
+						<PublicCollectionsLable>
+							<div className='ownership'>
+								<>Owner: <div className='owner-name'>{ownerName}</div></>
+								<>Copyright: <div className='owner-name'>No</div></>
+							</div>
+							<PublicCollectionButton>
+								{/* TODO: possibely add */}
+								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
+								{!isOwner ?
 									<PublicButton
 										onClick={handlePublicCollection}
 										className={`public-button`}
 									>
-										{isOwner ? <>Unsubscribe</> : <>Subscribe</>} {/* needs to be changed => whether or not subscribed*/}
+										{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
 									</PublicButton>
-								</PublicCollectionButton>
-							</PublicCollectionsLable>
-						) : null
-						}
-						{
+									:
+									<></>
+								}
+							</PublicCollectionButton>
+						</PublicCollectionsLable>
+
+						{ collection.content.length > 0 ?
 							collection.content.map(item => {
 								return <ListItem key={item.id} data={item} />
 							})
+							:
+							<NoContentFiller>This collection currently has no content</NoContentFiller>
 						}
 					</Body>
 				):(

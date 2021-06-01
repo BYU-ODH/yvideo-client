@@ -36,6 +36,7 @@ const ManageCollectionContainer = props => {
 	})
 
 	useEffect(() => {
+		setCollectionName(collection.name)
 		if(isEdited) {
 			getCollections(true)
 			setCollectionName(collection.name)
