@@ -13,6 +13,7 @@ import {
 } from 'components'
 
 import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 import { objectIsEmpty } from 'lib/util'
 
@@ -126,6 +127,13 @@ const ContentOverviewContainer = props => {
 		})
 	}
 
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: `Important Words`},
+		})
+	}
+
 	const viewstate = {
 		content: contentState,
 		showing,
@@ -147,6 +155,7 @@ const ContentOverviewContainer = props => {
 		removeTag,
 		changeTag,
 		handleShowWordsModal,
+		handleShowHelp,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

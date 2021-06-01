@@ -14,6 +14,7 @@ export default class CollectionService {
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
 		COLLECTION_UPDATE_CONTENTS: `COLLECTION_UPDATE_CONTENTS`,
 		PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS: `PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS`,
+		CREATED_COLLECTION_UPDATE: `CREATED_COLLECTION_UPDATE`,
 	}
 
 	roleEndpoints = {
@@ -38,6 +39,7 @@ export default class CollectionService {
 		collectionPermissionUpdate: object => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { object }}),
 		collectionUpdateContents: (result, collectionId) => ({ type: this.types.COLLECTION_UPDATE_CONTENTS, payload: { result, collectionId }}),
 		publicCollectionUpdateSubscribers: (users, collectionId) => ({type: this.types.PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS, payload: {users, collectionId}}),
+		createdCollectionUpdate: collectionId => ({ type: this.types.CREATED_COLLECTION_UPDATE, payload: { collectionId }}),
 	}
 
 	// default store
@@ -48,6 +50,7 @@ export default class CollectionService {
 		lastFetched: 0,
 		users: [],
 		courses: [],
+		newCollectionId: ``,
 	}
 
 	// reducer
@@ -67,6 +70,7 @@ export default class CollectionService {
 			COLLECTION_ROLES_UPDATE,
 			COLLECTION_UPDATE_CONTENTS,
 			PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS,
+			CREATED_COLLECTION_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -172,6 +176,12 @@ export default class CollectionService {
 				},
 			}
 
+		case CREATED_COLLECTION_UPDATE:
+			return{
+				...store,
+				newCollectionId: action.payload.collectionId,
+			}
+
 		default:
 			return store
 		}
@@ -259,10 +269,9 @@ export default class CollectionService {
 		let contentIndex = 0
 
 		currentState.content.forEach((element, index) => {
-			if(element.id === contentId){
-				// console.log(true)
+			if(element.id === contentId)
 				contentIndex = index
-			}
+
 		})
 		currentState.content.splice(contentIndex, 1)
 
@@ -282,18 +291,32 @@ export default class CollectionService {
 		dispatch(this.actions.collectionsStart())
 
 		try {
-			await apiProxy.collection.create(item)
+			const data = await apiProxy.collection.create(item)
 
 			const results = await apiProxy.user.collections.get()
 
 			// TODO: We need to update state
 			dispatch(this.actions.collectionsGet(results))
+			dispatch(this.actions.createdCollectionUpdate(data.id))
 
 		} catch (error) {
 			console.log(error.message)
 			dispatch(this.actions.collectionsError(error))
 		}
+	}
 
+	removeCreatedCollectionIdFromStore = () => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+
+			dispatch(this.actions.createdCollectionUpdate(``))
+
+		} catch (error) {
+			console.log(error.message)
+			dispatch(this.actions.collectionsError(error))
+		}
 	}
 
 	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {

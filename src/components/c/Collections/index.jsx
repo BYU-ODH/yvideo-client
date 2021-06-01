@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, TabHeader, Selector, Search, SearchIcon } from './styles'
+import Style, { ViewToggle, Help, Search, SearchIcon } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -91,18 +91,7 @@ export default class Collections extends PureComponent {
 
 				<header>
 					<div>
-						<TabHeader>
-							<button className={`public-collections-tab`} onClick={setTab(true)}><h4>Public Collections</h4></button>
-							<button className={`byu-collections-tab`} onClick={setTab(false)}><h4>BYU Collections</h4></button>
-
-							<Help id='collections-help-documentation'
-								src={helpIcon} onClick={handleShowHelp}
-								onMouseEnter={e => handleShowTip(`help`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})}
-								onMouseLeave={e => toggleTip()}
-							/>
-							<Selector isContentTap={isContentTap} />
-						</TabHeader>
-
+						<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
 					</div>
 					<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 						<SearchIcon />
@@ -112,7 +101,7 @@ export default class Collections extends PureComponent {
 
 				</header>
 				<div className='public-collections-list'>
-					{isContentTap ?
+					{
 						Object.keys(publicCollections).length > 0 ? (
 							<>
 								{
@@ -122,9 +111,6 @@ export default class Collections extends PureComponent {
 								}
 							</>
 						) : <>Public Collection is empty.</>
-
-						:
-						(<>BYU Collection is empty.</>)
 					}
 				</div>
 			</Style>
