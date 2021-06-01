@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {
@@ -35,6 +35,20 @@ const ContentOverviewContainer = props => {
 	const [tag, setTag] = useState(``)
 
 	const [contentState, setContentState] = useState(content)
+	const [blockLeave, setBlock] = useState(false)
+
+	useEffect(() => {
+		if(blockLeave) {
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [blockLeave])
 
 	if (objectIsEmpty(content)) return null
 	if (isExpired)
@@ -44,10 +58,13 @@ const ContentOverviewContainer = props => {
 		if (editing) {
 			await updateContent(contentState)
 			setShowing(false)
+			setBlock(false)
 			setTimeout(() => {
 				setEditing(false)
 			}, 500)
-		} else setEditing(true)
+		} else {
+			setEditing(true)
+		}
 	}
 
 	const handleNameChange = e => {
@@ -59,13 +76,18 @@ const ContentOverviewContainer = props => {
 				title: e.target.value,
 			},
 		})
+		setBlock(true)
 	}
 
 	const handleRemoveContent = e => {
-		if(isLabAssistant)
+		if(isLabAssistant)  {
 			adminRemoveCollectionContent(content.id)
-		else
+			setBlock(true)
+		}
+		else {
 			removeCollectionContent(content.collectionId, content.id)
+			setBlock(true)
+		}
 	}
 
 	const handleTogglePublish = e => {
@@ -73,6 +95,7 @@ const ContentOverviewContainer = props => {
 			...contentState,
 			published: !contentState.published,
 		})
+		setBlock(true)
 	}
 
 	const handleToggleSettings = e => {
@@ -84,6 +107,7 @@ const ContentOverviewContainer = props => {
 				[key]: !contentState.settings[key],
 			},
 		})
+		setBlock(true)
 	}
 
 	const handleDescription = e => {
@@ -91,6 +115,7 @@ const ContentOverviewContainer = props => {
 			...contentState,
 			description: e.target.value,
 		})
+		setBlock(true)
 	}
 
 	const addTag = (e) => {
@@ -104,6 +129,7 @@ const ContentOverviewContainer = props => {
 			},
 		})
 		setTag(``)
+		setBlock(true)
 	}
 
 	const removeTag = e => {
@@ -114,10 +140,12 @@ const ContentOverviewContainer = props => {
 				keywords: contentState.resource.keywords.filter(item => item !== e.target.dataset.value),
 			},
 		})
+		setBlock(true)
 	}
 
 	const changeTag = e => {
 		setTag(e.target.value)
+		setBlock(true)
 	}
 
 	const handleShowWordsModal = () => {
@@ -139,6 +167,7 @@ const ContentOverviewContainer = props => {
 		showing,
 		editing,
 		tag,
+		blockLeave,
 	}
 
 	const handlers = {

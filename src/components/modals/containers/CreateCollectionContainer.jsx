@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import CreateCollection from 'components/modals/components/CreateCollection'
@@ -18,9 +18,23 @@ const CreateCollectionContainer = props => {
 	} = props
 
 	const [name, setName] = useState(``)
+	const [blockLeave, setBlock] = useState(false)
+
+	useEffect(() => {
+		if(blockLeave) {
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+		return () => {
+			window.onbeforeunload = undefined
+		}
+	})
 
 	const handleNameChange = e => {
 		setName(e.target.value)
+		setBlock(true)
 	}
 
 	const handleSubmit = async e => {
@@ -41,11 +55,13 @@ const CreateCollectionContainer = props => {
 			await createCollection(defaultV)
 
 		toggleModal()
+		setBlock(false)
 	}
 
 	const viewstate = {
 		name,
 		isPublicCollection,
+		blockLeave,
 	}
 
 	const handlers = {

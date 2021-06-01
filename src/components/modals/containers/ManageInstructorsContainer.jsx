@@ -24,6 +24,7 @@ const ManageInstructorsContainer = props => {
 
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [countAccess, setCountAccess] = useState(0)
+	const [blockLeave, setBlock] = useState(false)
 
 	// add default user after creating new resource
 	useEffect(() => {
@@ -33,7 +34,17 @@ const ManageInstructorsContainer = props => {
 			setCountAccess(resourceAccess.length)
 		}
 
-	}, [resourceAccess])
+		if(blockLeave) {
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [resourceAccess, blockLeave])
 
 	const handleRegister = async (e) =>{
 		e.preventDefault()
@@ -54,11 +65,14 @@ const ManageInstructorsContainer = props => {
 			await addAccess(resource.id, searchQuery)
 			await readAccess(resource.id)
 		}
+		setBlock(true)
 	}
 
 	const removeInstructor = async(item) => {
-		if(item)
+		if(item) {
 			await removeAccess(resource.id, item)
+		}
+		setBlock(true)
 	}
 
 	const viewstate = {
