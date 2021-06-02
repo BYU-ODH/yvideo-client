@@ -89,7 +89,7 @@ export const Search = styled.form`
 		background: white;
 
 		height: 4rem;
-		width: 79%;
+		width: 70%;
 
 		font-size: 1.2rem;
 
@@ -104,7 +104,7 @@ export const Search = styled.form`
 	}
 
 	& > button {
-		width: 6rem;
+		width: 8rem;
     height: 3rem;
     color: white;
     background-color: var(--light-blue);
@@ -123,6 +123,10 @@ export const Search = styled.form`
 			background-color: var(--navy-blue);
 		}
 	}
+`
+
+export const SearchMobile = styled.form`
+	position: relative;
 
 	& > div {
 		width: 12rem;

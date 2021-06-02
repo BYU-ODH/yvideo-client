@@ -45,6 +45,7 @@ export class ResourceOverview extends PureComponent {
 			accessCount,
 			user,
 			blockLeave,
+			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -59,7 +60,7 @@ export class ResourceOverview extends PureComponent {
 			<>
 				<BoxRow>
 					<Style>
-						<Preview>
+						<Preview isMobile={isMobile} editing={editing}>
 							<div>
 								{editing ?
 									<ResourceTitle><h4>Title:</h4><TitleEdit type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
@@ -69,19 +70,19 @@ export class ResourceOverview extends PureComponent {
 							</div>
 							<Buttons>
 								{editing &&
-								<>
-									{/* TODO: need to figure out how it work on attaching files on resource */}
-									{/* <FileUploadButton className='file-attach-button' onClick={handleRegisterInstructors}>Register Instructor<PersonAddIcon/></FileUploadButton> */}
-									<FileUploadButton className='file-attach-button' onClick={handleFileUploadToResource}>Upload File<UploadIcon/></FileUploadButton>
-									<RemoveButton className='remove-resource-button' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
-								</>
+									<>
+										{/* TODO: need to figure out how it work on attaching files on resource */}
+										{/* <FileUploadButton className='file-attach-button' onClick={handleRegisterInstructors}>Register Instructor<PersonAddIcon/></FileUploadButton> */}
+										<FileUploadButton className='file-attach-button' onClick={handleFileUploadToResource}>Upload File<UploadIcon/></FileUploadButton>
+										<RemoveButton className='remove-resource-button' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
+									</>
 								}
 								<EditButton className='resource-edit' onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
 							</Buttons>
 						</Preview>
 					</Style>
 					{editing &&
-						<InnerContainer>
+						<InnerContainer isMobile={isMobile}>
 							<Column>
 								<h4>
 									published

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { AdminTable } from 'components/bits'
 
-import Style, { Search, SearchIcon, FeedbackMessage, CategorySelect } from './styles'
+import Style, { Search, SearchIcon, FeedbackMessage, CategorySelect, Mobile } from './styles'
 
 export class Admin extends PureComponent {
 	render() {
@@ -16,6 +16,7 @@ export class Admin extends PureComponent {
 			menuItemInfo,
 			mousePos,
 			placeholder,
+			isMobile
 		} = this.props.viewstate
 
 		const {
@@ -30,23 +31,21 @@ export class Admin extends PureComponent {
 			<Style>
 				<h1>Admin Dashboard</h1>
 
-				<div>
-
+				<Mobile isMobile={isMobile}>
 					{/* WE ARE ONLY SEARCHING FOR USERS NOW SO WE DO NOT NEED THE SELECT DROP DOWN */}
-					<CategorySelect id='categorySelect' onChange={updateCategory}>
+					<CategorySelect id='categorySelect' onChange={updateCategory} isMobile={isMobile}>
 						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
 								{category[c].name}
 							</option>
 						))}
 					</CategorySelect>
-					<Search id='searchSubmit' onSubmit={handleSubmit}>
+					<Search id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
 						<SearchIcon />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
-						<button type="submit">Search</button>
+						<button type="submit" isMobile={isMobile}>Search</button>
 					</Search>
-
-				</div>
+				</Mobile>
 
 				{ data !== null ?
 					data.length < 1 ?

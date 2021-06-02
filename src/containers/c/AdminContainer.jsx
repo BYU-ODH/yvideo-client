@@ -45,8 +45,17 @@ const AdminContainer = props => {
 	const [menuItemInfo, setMenuItemInfo] = useState({})
 	const [menuActive, setMenuActive] = useState(false)
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+	const [isMobile, setIsMobile] = useState(false)
+
 
 	useEffect(() => {
+		if(window.innerWidth < 1000) {
+			setIsMobile(true)
+		}
+		else {
+			setIsMobile(false)
+		}
+
 		clean()
 		setHeaderBorder(true)
 		return () => {
@@ -63,6 +72,7 @@ const AdminContainer = props => {
 		menuActive,
 		menuItemInfo,
 		mousePos,
+		isMobile,
 	}
 
 	const handlers = {

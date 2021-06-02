@@ -24,6 +24,9 @@ export default Style
 
 export const Search = styled.form`
 	position: relative;
+	display: ${props => props.isMobile ? `flex` : ``};
+	flex-direction: ${props => props.isMobile ? `column` : ``};
+	align-items: ${props => props.isMobile ? `center` : ``};
 
 	& > input {
 		z-index: 1;
@@ -64,6 +67,7 @@ export const Search = styled.form`
 		cursor: pointer;
 		transition: .5s ease;
 		font-weight: 500;
+		margin: ${props => props.isMobile ? `0.5rem` : ``};
 
 		:hover {
 			background-color: var(--navy-blue);
@@ -88,6 +92,7 @@ export const CategorySelect = styled.select`
 	width: 12rem;
 	display: flex;
 	font-size: 1.5rem;
+	margin: ${props => props.isMobile ? `0.5rem` : ``};
 
 	border: none;
 	border-radius: 2rem;
@@ -99,6 +104,12 @@ export const CategorySelect = styled.select`
 	& option {
 		margin: auto auto 6px auto;
 	}
+`
+
+export const Mobile = styled.div`
+	display: ${props => props.isMobile ? `flex` : ``};
+	flex-direction: ${props => props.isMobile ? `column` : ``};
+	align-items: ${props => props.isMobile ? `center` : ``};
 `
 
 export const FeedbackMessage = styled.div`

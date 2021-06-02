@@ -87,6 +87,7 @@ export const TableContainer = styled.div`
 
 export const Search = styled.form`
 	position: relative;
+	text-align: ${props => props.isMobile ? `center` : ``};
 
 	& > input {
 		z-index: 1;
@@ -123,6 +124,7 @@ export const Search = styled.form`
 		cursor: pointer;
 		transition: .5s ease;
 		font-weight: 500;
+		margin-top: ${props => props.isMobile ? `0.5rem` : ``};
 
 		:hover {
 			background-color: var(--navy-blue);

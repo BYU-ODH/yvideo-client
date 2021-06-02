@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, Search, SearchIcon } from './styles'
+import Style, { ViewToggle, Help, Search, SearchIcon, SearchMobile } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -95,11 +95,11 @@ export default class Collections extends PureComponent {
 					</div>
 					{
 						isMobile ?
-							<Search className='resource-search-submit' id='searchSubmit'>
+							<SearchMobile className='resource-search-submit' id='searchSubmit'>
 								<div>
-									<a href="/search-public-collections" class="button">search more public collections</a>
+									<a href="/search-public-collections" class="button">search public collections</a>
 								</div>
-							</Search>
+							</SearchMobile>
 							:
 							<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 								<SearchIcon />
