@@ -9,6 +9,7 @@ import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
 import ListCollection from './ListCollection'
 import ListItem from './ListItem'
+import ListItemDropDown from './ListItemDropDown'
 import Modal from './Modal'
 import PermissionTable from './PermissionTable'
 import PlayerControls from './PlayerControls'
@@ -37,6 +38,7 @@ export {
 	LazyImage,
 	ListCollection,
 	ListItem,
+	ListItemDropDown,
 	Modal,
 	PermissionTable,
 	PlayerControls,

@@ -95,7 +95,7 @@ const ClipEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Track Editor`},
+			props: { name: `Clip Editor`},
 		})
 	}
 

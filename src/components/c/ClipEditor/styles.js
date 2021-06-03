@@ -207,7 +207,8 @@ export const SideEditor = styled.div`
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
 	transition: .5s;
 	z-index: 20;
-	overflow: hidden;
+	//overflow: hidden;
+	overflow-y: scroll;
 	border-left: 1px solid black;
 
 	& .center {
@@ -305,7 +306,6 @@ export const SideEditor = styled.div`
 
 		& > span {
 			height: 100%;
-			width: 7rem;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -389,8 +389,10 @@ export const SideEditor = styled.div`
 		border: none;
 		height: 40px;
 		color: white;
-		border-radius: 5px;
+		border-radius: 2px;
 		cursor: pointer;
+		font-weight: 500;
+		font-size: 1.75rem;
 	}
 	& .createButton {
 		background-color: #9dccfa;
@@ -399,7 +401,7 @@ export const SideEditor = styled.div`
 		}
 	}
 	& .savedClip {
-		background-color: #7cf578;
+		background-color: var(--navy-blue);
 		& :hover {
 			opacity: 0.5;
 		}

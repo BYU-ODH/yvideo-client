@@ -227,7 +227,7 @@ const TrackEditorSideMenu = props => {
 							<tbody>
 								{event.type === `Censor`?
 									Object.keys(event.position).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-										<tr class={activeCensorPosition === item ? `censorActive` : ``} key={item} onClick={()=>setActiveCensorPosition(item)}>
+										<tr class={activeCensorPosition === item ? `censorActive` : ``} key={item} >
 											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' value={`${item}`}/></td>
 											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
 											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>

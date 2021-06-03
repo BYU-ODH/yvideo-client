@@ -90,7 +90,7 @@ class Root extends PureComponent {
 								<PublicManagerContainer />
 							</Route>
 
-							<Route path='/player/:id'>
+							<Route path='/player/:id/:clip?'>
 								<PlayerContainer />
 							</Route>
 

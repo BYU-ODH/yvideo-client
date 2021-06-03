@@ -58,15 +58,17 @@ const PlayerContainer = props => {
 	const [isCaption, setIsCaption] = useState( false ) // this is the state to toggle caption selection
 	const [indexToDisplay, setIndexToDisplay] = useState(0) // use index to display a desired subtitle based on selection from player controls.
 
+	// clip variables
+	const [clipTime, setClipTime] = useState([])
 	const ref = player => {
 		setPlayer(player)
 	}
-
 	useEffect(() => {
 		setPlaybackRate(1)
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
+		console.log(params)
 		if (!contentCache[params.id]){
 			// console.log('no cached content')
 			// get single content
@@ -76,6 +78,8 @@ const PlayerContainer = props => {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
+			const clips = JSON.parse(contentCache[params.id][`clips`])[params.clip]
+			if (params.clip) setClipTime([clips[`start`],clips[`end`]])
 			if(contentCache[params.id].url !== ``){
 				setUrl(contentCache[params.id].url)
 				getSubtitles(params.id)
@@ -141,7 +145,11 @@ const PlayerContainer = props => {
 	const handlePlay = () => {
 		setPlaying(true)
 	}
-
+	const handleStart = () => {
+		setPlaying(true)
+		if (clipTime.length > 0) player.seekTo(clipTime[0])
+		setPlaying(true)
+	}
 	const handleBlank = (bool) => {
 		setBlank(bool)
 	}
@@ -241,7 +249,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleChangeSubtitle = (index) => {
-		let temp = subtitles[index]
+		const temp = subtitles[index]
 		const currentContent = temp.content
 		if(typeof currentContent === `string`){
 			console.log(`String type`)
@@ -321,6 +329,7 @@ const PlayerContainer = props => {
 		isMobile,
 		censorPosition,
 		censorActive,
+		clipTime,
 	}
 
 	const handlers = {
@@ -329,6 +338,7 @@ const PlayerContainer = props => {
 		handleMouseOver,
 		handlePause,
 		handlePlay,
+		handleStart,
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,

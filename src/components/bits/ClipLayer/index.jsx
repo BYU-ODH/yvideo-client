@@ -37,15 +37,15 @@ const ClipLayer = props => {
 
 	// Drag within the layer
 	const handleDrag = (d) => {
-		const beginTimePercentage = d.x / layerWidth * 100
+		const beginTimePercentage = d.x / layerWidth * videoLength
 		const endPercentage = beginTimePercentage + (end - start)
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
 		let s = beginTimePercentage
 		let e = endPercentage
 
-		if(e > 100)
-			e = 100
+		if(e > videoLength)
+			e = videoLength
 
 		if(s < 0)
 			s = 0
@@ -57,12 +57,12 @@ const ClipLayer = props => {
 	const handleResize = (direction, ref, delta, event, index, e ) => {
 		let s = start
 		let en = end
-		const difference = delta.width / layerWidth * 100
+		const difference = delta.width / layerWidth * videoLength
 		if(direction === `right`){
 			en += difference
 
-			if(en > 100)
-				en = 100
+			if(en > videoLength)
+				en = videoLength
 
 		} else {
 			s -= difference
@@ -70,13 +70,13 @@ const ClipLayer = props => {
 			// console.log(cEvents[index])
 			if(s < 0)
 				s = 0
-			else if(s > 100){
-				s = 99
-				e = 100
+			else if(s > videoLength){
+				s = videoLength-30
+				en = videoLength
 			}
 		}
 		setStart(s)
-		setEnd(e)
+		setEnd(en)
 	}
 
 	return (
@@ -98,7 +98,7 @@ const ClipLayer = props => {
 							// onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 							key={`clip`}
 							// onClick={() => toggleEditor(layerIndex, index)}
-							style={{ left: `${start}% !important`, top: `0px`, backgroundColor:`rgba(255,255,0,0.5)`, borderLeft: `5px solid #000000`,borderRight:`5px solid #000000`}}
+							style={{ left: `${start}% !important`, top: `0px`, backgroundColor:`rgba(255,255,0,0.5)`, borderLeft: `3px solid #000000`,borderRight:`3px solid #000000`}}
 						>
 						</Rnd>
 					</div>
