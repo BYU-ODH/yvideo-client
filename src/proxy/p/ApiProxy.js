@@ -5,7 +5,16 @@ import Content from 'models/Content'
 const updateSessionId = (id) => {
 	// console.log(`OLD => `, window.clj_session_id)
 	// console.log(`NEW => `, id)
-	if(id !== ``) window.clj_session_id = id
+	if(id !== ``){
+		window.clj_session_id = id
+		if(id === "expired"){
+			console.log('got here')
+
+			alert("Your session has expired. Please, log back in")
+			apiProxy.auth.logout()
+			//CAS LOGOUT https://cas.byu.edu/cas/logout
+		}
+	}
 }
 
 const apiProxy = {
@@ -498,7 +507,7 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END // ${process.env.REACT_APP_SESSION_ID_BYPASS}
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/yrich/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']
