@@ -84,7 +84,7 @@ const ResourceOverviewContainer = props => {
 			window.onbeforeunload = undefined
 		}
 
-	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceAccess])
+	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceAccess, blockLeave])
 
 	if (objectIsEmpty(resource)) return null
 
