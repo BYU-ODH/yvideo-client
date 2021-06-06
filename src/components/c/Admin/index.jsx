@@ -41,7 +41,7 @@ export class Admin extends PureComponent {
 						))}
 					</CategorySelect>
 					<Search id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
-						<SearchIcon />
+						<SearchIcon isMobile={isMobile} />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
 						<button type="submit" isMobile={isMobile}>Search</button>
 					</Search>

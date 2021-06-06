@@ -24,9 +24,6 @@ export default Style
 
 export const Search = styled.form`
 	position: relative;
-	display: ${props => props.isMobile ? `flex` : ``};
-	flex-direction: ${props => props.isMobile ? `column` : ``};
-	align-items: ${props => props.isMobile ? `center` : ``};
 
 	& > input {
 		z-index: 1;
@@ -78,7 +75,7 @@ export const Search = styled.form`
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 9;
-	top: 1rem;
+	top: ${props => props.isMobile ? `1.5rem` : `1rem`};
 	left: 2rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
