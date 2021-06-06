@@ -37,6 +37,7 @@ export default class ContentOverview extends PureComponent {
 			content,
 			tag,
 			blockLeave,
+			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -84,7 +85,14 @@ export default class ContentOverview extends PureComponent {
 							<Icon className='annotations' checked={showAnnotations} />
 						</ul>
 						{editing ||
-							<StyledLink to={`/trackeditor/${content.id}`}>Track Editor</StyledLink>
+							<div>
+								{
+									isMobile ?
+										<p>&lt;Track Editor is disable on mobile device&gt;</p>
+									:
+									<StyledLink to={`/trackeditor/${content.id}`}>Track Editor</StyledLink>
+								}
+							</div>
 						}
 						{editing ?
 							<div>

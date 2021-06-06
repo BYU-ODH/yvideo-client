@@ -36,8 +36,16 @@ const ContentOverviewContainer = props => {
 
 	const [contentState, setContentState] = useState(content)
 	const [blockLeave, setBlock] = useState(false)
+	const [isMobile, setIsMobile] = useState(false)
 
 	useEffect(() => {
+		if(window.innerWidth < 1000) {
+			setIsMobile(true)
+		}
+		else {
+			setIsMobile(false)
+		}
+
 		if(blockLeave) {
 			window.onbeforeunload = () => true
 		}
@@ -168,6 +176,7 @@ const ContentOverviewContainer = props => {
 		editing,
 		tag,
 		blockLeave,
+		isMobile,
 	}
 
 	const handlers = {
