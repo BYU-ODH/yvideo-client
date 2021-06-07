@@ -18,6 +18,7 @@ const AdminContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
+		adminUpdateUserRole,
 	} = props
 
 	const category = {
@@ -46,6 +47,8 @@ const AdminContainer = props => {
 	const [menuActive, setMenuActive] = useState(false)
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 	const [isMobile, setIsMobile] = useState(false)
+	const [isEdit, setIsEdit] = useState(false)
+	const [role, setRole] = useState(null)
 
 
 	useEffect(() => {
@@ -73,6 +76,7 @@ const AdminContainer = props => {
 		menuItemInfo,
 		mousePos,
 		isMobile,
+		isEdit,
 	}
 
 	const handlers = {
@@ -114,6 +118,17 @@ const AdminContainer = props => {
 				},
 			})
 		},
+		handleEdit: e => {
+			setIsEdit(true)
+		},
+		roleChange: e => {
+			setRole(parseInt(e.target.value))
+		},
+
+		userRoleSave: e => {
+			adminUpdateUserRole(role, menuItemInfo.id)
+			setIsEdit(false)
+		}
 	}
 
 
@@ -145,6 +160,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	adminUpdateUserRole: adminService.updateUserRole,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

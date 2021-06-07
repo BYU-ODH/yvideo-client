@@ -16,7 +16,8 @@ export class Admin extends PureComponent {
 			menuItemInfo,
 			mousePos,
 			placeholder,
-			isMobile
+			isMobile,
+			isEdit,
 		} = this.props.viewstate
 
 		const {
@@ -25,6 +26,9 @@ export class Admin extends PureComponent {
 			toggleMenu,
 			handleConfirmDelete,
 			updateCategory,
+			handleEdit,
+			userRoleSave,
+			roleChange,
 		} = this.props.handlers
 
 		return (
@@ -43,7 +47,7 @@ export class Admin extends PureComponent {
 					<Search id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
 						<SearchIcon isMobile={isMobile} />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
-						<button type="submit" isMobile={isMobile}>Search</button>
+						<button type="submit">Search</button>
 					</Search>
 				</Mobile>
 
