@@ -23,6 +23,7 @@ import FileOverviewContainer from './c/FileOverviewContainer'
 import SearchPublicCollectionsContainer from './c/SearchPublicCollectionsContainer'
 import PublicManagerContainer from './c/PublicManagerContainer'
 import PublicListCollectionContainer from './c/PublicListCollectionContainer'
+import ClipEditorContainer from './c/ClipEditorContainer'
 import PublicMoreListCollectionContainer from './c/PublicMoreListCollectiionContainer'
 
 export {
@@ -51,5 +52,6 @@ export {
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
 	PublicListCollectionContainer,
+	ClipEditorContainer,
 	PublicMoreListCollectionContainer,
 }

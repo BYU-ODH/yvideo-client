@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { Prompt } from 'react-router'
 
@@ -152,7 +152,9 @@ const TrackEditor = props => {
 		width: window.innerWidth,
 	})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
-	// console.log(subtitles)
+	// refs
+	const controllerRef = useRef(null)
+
 	useEffect(() => {
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
@@ -178,9 +180,9 @@ const TrackEditor = props => {
 			largestLayer = eventsArray[eventsArray.length-1].layer
 		}
 
-		//eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
+		// eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
 
-		//Find the largets layer number
+		// Find the largets layer number
 		const initialLayers = []
 
 		// new Array(largestLayer+1).fill(0)
@@ -229,9 +231,8 @@ const TrackEditor = props => {
 		for (let i = 0; i < tempSubs.length; i++){
 			try {
 				tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
-			}
-			catch (e){
-				tempSubs[i]['content'] = []
+			} catch (e){
+				tempSubs[i][`content`] = []
 				console.log(e)
 			}
 		}
@@ -409,7 +410,11 @@ const TrackEditor = props => {
 		const index = eventToEdit
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
-
+		const posprev = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(b)<parseFloat(a))[-1]
+		const posnex = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) > parseFloat(item)).sort((a,b)=>parseFloat(b)>parseFloat(a))[0]
+		console.log(Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(a)>parseFloat(b)))
+		console.log(posprev, posnex, Object.keys(cEvent), item)
+		setActiveCensorPosition(posprev ? posprev:posnex)
 		delete cEvent.position[item]
 
 		updateEvents(index, cEvent, layer)
@@ -417,22 +422,23 @@ const TrackEditor = props => {
 	}
 
 	const handleAddCensor = () => {
+		const time = videoCurrentTime
+		console.info(time)
+		// console.log(controllerRef)
+		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
+			// console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
+			const index = eventToEdit
+			const cEvent = allEvents[index]
+			const layer = cEvent.layer
 
-		const temp = {...editCensor}
-		const last = Object.keys(temp)
-		console.log(`Current Time`,videoCurrentTime)
-		console.log(parseInt(videoCurrentTime).toFixed(1))
-		if(videoCurrentTime === 0 && last.length === 0)
-			temp[`0.0`] = [0 ,0, 30, 40]
-		 else if(videoCurrentTime == 0 && last.length > 0)
-			temp[`${(parseInt(last[last.length - 1]) + 1).toFixed(1)}`] = [0 ,0, 30, 40]
-		 else
-			temp[`${parseFloat(videoCurrentTime).toFixed(1)}`] = [0 ,0, 30, 40]
+			const value = Object.keys(cEvent.position).find(item => item >= time)
 
-		console.log(`temp`, temp)
-		document.getElementById(`tableBottom`).scrollIntoView(false)
-		setEditCensor(temp)
-		handleSaveCensor()
+			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
+			cEvent.position[`${parseFloat(time).toFixed(1)}`] = [50, 50, 30, 40]
+
+			// console.log(cEvent.position)
+			updateEvents(index, cEvent, layer)
+		}
 	}
 
 	const handleEditCensor = (e, item, int) => {
@@ -890,7 +896,8 @@ const TrackEditor = props => {
 				/>
 				<span style={{ zIndex: 0 }}>
 
-					<Controller className='video'
+					<Controller ref = {controllerRef}
+						className='video'
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
 						getDuration={getVideoDuration}

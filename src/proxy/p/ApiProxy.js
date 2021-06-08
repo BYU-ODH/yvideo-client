@@ -6,12 +6,12 @@ const updateSessionId = (id) => {
 	// console.log(`OLD => `, window.clj_session_id)
 	// console.log(`NEW => `, id)
 	if(id !== ``){
-		if(id === "expired"){
+		if(id === `expired`){
 			// console.log('got here')
 
-			alert("Your session has expired. Please, log back in")
+			alert(`Your session has expired. Please, log back in`)
 			apiProxy.auth.logout()
-			//CAS LOGOUT https://cas.byu.edu/cas/logout
+			// CAS LOGOUT https://cas.byu.edu/cas/logout
 		}
 		window.clj_session_id = id
 	}
@@ -506,8 +506,10 @@ const apiProxy = {
 		get: async () => {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
-					// CALL TO GET SESSION ID FROM CLOJURE BACK END // ${process.env.REACT_APP_SESSION_ID_BYPASS}
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					// CALL TO GET SESSION ID FROM CLOJURE BACK END
+					console.log(`step 1`)
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/hall31/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+						console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']

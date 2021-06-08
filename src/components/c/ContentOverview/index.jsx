@@ -82,7 +82,10 @@ export default class ContentOverview extends PureComponent {
 							<Icon className='annotations' checked={showAnnotations} />
 						</ul>
 						{editing ||
+						<>
 							<StyledLink to={`/trackeditor/${content.id}`}>Track Editor</StyledLink>
+							<StyledLink to={`/clipeditor/${content.id}`}>Clip Editor</StyledLink>
+						</>
 						}
 						{editing ?
 							<div>
