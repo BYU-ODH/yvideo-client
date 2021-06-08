@@ -5,7 +5,16 @@ import Content from 'models/Content'
 const updateSessionId = (id) => {
 	// console.log(`OLD => `, window.clj_session_id)
 	// console.log(`NEW => `, id)
-	if(id !== ``) window.clj_session_id = id
+	if(id !== ``){
+		if(id === `expired`){
+			// console.log('got here')
+
+			alert(`Your session has expired. Please, log back in`)
+			apiProxy.auth.logout()
+			// CAS LOGOUT https://cas.byu.edu/cas/logout
+		}
+		window.clj_session_id = id
+	}
 }
 
 const apiProxy = {
