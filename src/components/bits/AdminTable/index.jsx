@@ -28,11 +28,15 @@ export default class AdminTable extends PureComponent {
 			menuItemInfo,
 			data,
 			mousePos,
+			isEdit,
 		} = this.props.viewstate
 
 		const {
 			handleConfirmDelete,
+			handleEdit,
 			toggleMenu,
+			userRoleSave,
+			roleChange,
 		} = this.props.handlers
 
 		const {
@@ -124,14 +128,32 @@ export default class AdminTable extends PureComponent {
 			switch (category) {
 			case `Users`:
 				return (
-					<>
-						{/* <td>{item.id}</td> */}
-						<td>{item.username}</td>
-						<td>{item.name}</td>
-						<td>{item.roles}</td>
-						<td>{item.email}</td>
-						<td>{date.toString().substring(0, 16)}</td>
-					</>
+					isEdit ?
+						<>
+							{/* <td>{item.id}</td> */}
+							<td>{item.username}</td>
+							<td>{item.name}</td>
+							<td>
+							<select defaultValue={item.roles} name="roles" id="roles" onChange={roleChange}>
+								<option value="0">0: admin</option>
+								<option value="1">1: lab assistant</option>
+								<option value="2">2: instructor / professor</option>
+								<option value="3">3: student</option>
+							</select>
+							<button type='submit' className='userRoleSave' onClick={userRoleSave}>Save</button>
+							</td>
+							<td>{item.email}</td>
+							<td>{date.toString().substring(0, 16)}</td>
+						</>
+						:
+						<>
+							{/* <td>{item.id}</td> */}
+							<td>{item.username}</td>
+							<td>{item.name}</td>
+							<td>{item.roles}</td>
+							<td>{item.email}</td>
+							<td>{date.toString().substring(0, 16)}</td>
+						</>
 				)
 			case `Collections`:
 				return (
@@ -163,6 +185,9 @@ export default class AdminTable extends PureComponent {
 					<ul>
 						<li>
 							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
+						</li>
+						<li>
+							<button className='userEdit' onClick={handleEdit}>Edit</button>
 						</li>
 						<li>
 							<button className='userDelete' onClick={handleConfirmDelete}>Delete</button>

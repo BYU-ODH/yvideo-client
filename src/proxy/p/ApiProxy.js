@@ -140,7 +140,10 @@ const apiProxy = {
 				updateSessionId(res.headers[`session-id`])
 				return res.data
 			}),
-
+			edit: async (role, id) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}`, { "account-type": role }, { withCredentials: true, headers: {'session-id': window.clj_session_id }}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
 		},
 		content: {
 			delete: async (id) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`, { withCredentials: true, headers: {'session-id': window.clj_session_id }}).then(async res => {

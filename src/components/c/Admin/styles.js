@@ -64,6 +64,7 @@ export const Search = styled.form`
 		cursor: pointer;
 		transition: .5s ease;
 		font-weight: 500;
+		margin: ${props => props.isMobile ? `0.5rem` : ``};
 
 		:hover {
 			background-color: var(--navy-blue);
@@ -74,7 +75,7 @@ export const Search = styled.form`
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 9;
-	top: 1rem;
+	top: ${props => props.isMobile ? `1.5rem` : `1rem`};
 	left: 2rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
@@ -88,6 +89,7 @@ export const CategorySelect = styled.select`
 	width: 12rem;
 	display: flex;
 	font-size: 1.5rem;
+	margin: ${props => props.isMobile ? `0.5rem` : ``};
 
 	border: none;
 	border-radius: 2rem;
@@ -99,6 +101,12 @@ export const CategorySelect = styled.select`
 	& option {
 		margin: auto auto 6px auto;
 	}
+`
+
+export const Mobile = styled.div`
+	display: ${props => props.isMobile ? `flex` : ``};
+	flex-direction: ${props => props.isMobile ? `column` : ``};
+	align-items: ${props => props.isMobile ? `center` : ``};
 `
 
 export const FeedbackMessage = styled.div`

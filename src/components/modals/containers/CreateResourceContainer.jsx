@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {
@@ -19,6 +19,20 @@ const CreateResourceContainer = props => {
 	} = props
 
 	const [tab, setTab] = useState(`resource`)
+	const [blockLeave, setBlock] = useState(false)
+
+	useEffect(() => {
+		if(blockLeave) {
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [blockLeave])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -44,6 +58,7 @@ const CreateResourceContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
+		setBlock(true)
 	}
 
 	const handleTypeChange = e => {
@@ -52,6 +67,7 @@ const CreateResourceContainer = props => {
 			...data,
 			resourceType,
 		})
+		setBlock(true)
 	}
 
 	const handleSubmit = async (e) => {
@@ -77,6 +93,7 @@ const CreateResourceContainer = props => {
 			addAccess(result.id, user.username)
 
 		toggleModal()
+		setBlock(false)
 	}
 
 	const viewstate = {

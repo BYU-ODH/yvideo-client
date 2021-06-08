@@ -4,16 +4,16 @@ const Style = styled.div`
 	position: absolute;
 	z-index: 20;
 
-	border-radius: 3px;
+	border-radius: 5px;
 
-	width: 110px;
+	width: 70px;
 	min-height: 3vh;
 	max-height: auto;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 
-	padding: 10px;
+	padding: 5px;
 
 	transition: visibility 1s ease, opacity .5s ease;
 
@@ -22,7 +22,7 @@ const Style = styled.div`
 	/* if it is less than 1/4 of width display to the riht */
 	/* else display in to the middle  */
 
-	left: ${props => props.position ? (`${ props.position.x > window.innerWidth * .9 ? (`calc(${props.position.x + props.position.width / 2 - 10}px - 80px)`) : (`${props.position.x < window.innerWidth * .1 ? (`calc(${props.position.x + props.position.width / 2 - 10}px)`) : (`calc(${props.position.x + props.position.width / 2 - 10}px - 55px)`)}`) }`) : (`-10px`)};
+	left: ${props => props.position ? (`${ props.position.x > window.innerWidth * .9 ? (`calc(${props.position.x + props.position.width / 2 - 10}px - 80px)`) : (`${props.position.x < window.innerWidth * .1 ? (`calc(${props.position.x + props.position.width / 2 - 10}px)`) : (`calc(${props.position.x + props.position.width / 2 - 10}px - 35px)`)}`) }`) : (`-10px`)};
 
 	background-color: rgba(0, 46, 93, 0.8);
 	border: rgba(0, 46, 93, 0.8);

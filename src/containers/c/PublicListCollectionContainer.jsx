@@ -49,6 +49,22 @@ const PublicListCollectionContainer = props => {
 				}
 			})
 		}
+		else {
+			Object.keys(collections).map(key =>
+				{
+					if(key == collection.id) {
+						if(collections[key].subscribers) {
+							collections[key].subscribers.forEach(subscriber => {
+								if(subscriber.id === user.id) {
+									setIsSubscribed(true)
+									return
+								}
+							})
+						}
+					}
+				}
+			)
+		}
 	}
 
 	const handlePublicCollection = async() => {

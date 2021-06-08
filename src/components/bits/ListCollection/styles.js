@@ -9,7 +9,7 @@ export default Style
 
 export const Header = styled.div`
 	display: grid;
-	grid-template-columns: 18rem auto 1.5rem;
+	grid-template-columns: 14rem auto 1.5rem;
 	justify-items: start;
 
 	padding: 2rem;

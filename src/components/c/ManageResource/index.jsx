@@ -11,6 +11,7 @@ export class ManageResource extends PureComponent {
 			user,
 			searchQuery,
 			resources,
+			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -30,7 +31,7 @@ export class ManageResource extends PureComponent {
 					</div>
 				</header>
 
-				<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSubmit}>
+				<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
 					<SearchIcon />
 					<input className='resource-search-input' type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
 					<button type='submit'>Search</button>
