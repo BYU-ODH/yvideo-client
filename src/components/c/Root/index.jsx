@@ -16,6 +16,7 @@ import {
 	ManageResourceContainer,
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
+	ClipEditorContainer,
 } from 'containers'
 
 import {
@@ -89,12 +90,16 @@ class Root extends PureComponent {
 								<PublicManagerContainer />
 							</Route>
 
-							<Route path='/player/:id'>
+							<Route path='/player/:id/:clip?'>
 								<PlayerContainer />
 							</Route>
 
 							<Route path='/trackeditor/:id'>
 								<TrackEditorContainer />
+							</Route>
+
+							<Route path='/clipeditor/:id'>
+								<ClipEditorContainer />
 							</Route>
 
 							<Route path='/feedback'>

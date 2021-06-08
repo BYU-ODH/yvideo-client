@@ -24,6 +24,7 @@ export default class Player extends PureComponent {
 		// 	const {url} = this.props.viewstate
 		// 	if (!url) alert(`No media found, please check to see if you have the correct URL`)
 		// }, 4000)
+		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
 	}
 	censorRef = createRef(null)
 
@@ -50,7 +51,9 @@ export default class Player extends PureComponent {
 			isMobile,
 			censorPosition,
 			censorActive,
-			isLandscape
+			clipTime,
+			isLandscape,
+			hasPausedClip,
 		} = this.props.viewstate
 
 		const {
@@ -59,6 +62,7 @@ export default class Player extends PureComponent {
 			handleMouseOver,
 			handlePause,
 			handlePlay,
+			handleStart,
 			handleProgress,
 			handleSeekChange,
 			handlePlaybackRateChange,
@@ -73,7 +77,8 @@ export default class Player extends PureComponent {
 			toggleTip,
 			setCensorActive,
 			setCensorPosition,
-			handlePlayPause
+			handlePlayPause,
+			setHasPausedClip,
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -89,11 +94,17 @@ export default class Player extends PureComponent {
 			// setPlayed(played)
 			handleProgress({playedSeconds,played})
 			const test1 = performance.now()
+			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
+				if (!hasPausedClip){
+					handlePause()
+					setHasPausedClip(true)
+				}
+			}
 			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		}
 
 		// console.log(`%c Player component ${url}`, 'color:red;')
-
+		console.log(clipTime)
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>
@@ -112,6 +123,7 @@ export default class Player extends PureComponent {
 							// onStart={() => console.log(`onStart`)}
 							onPlay={handlePlay}
 							onPause={handlePause}
+							onStart = {handleStart}
 							// onBuffer={() => console.log(`onBuffer`)}
 							onSeek={e => console.log(`onSeek`, e)}
 							// onError={e => console.log(`onError`, e)}
@@ -136,7 +148,7 @@ export default class Player extends PureComponent {
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id="subtitle-box">{subtitleText}</h3></Subtitles>
+							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id='subtitle-box'>{subtitleText}</h3></Subtitles>
 							<Censor ref={this.censorRef} active={censorActive}><canvas></canvas></Censor>
 						</Blank>
 					</div>
