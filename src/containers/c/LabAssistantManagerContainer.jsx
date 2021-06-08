@@ -30,14 +30,11 @@ const LabAssistantManagerContainer = props => {
 		setHeaderBorder(true)
 
 		if(professorId !== undefined){
-			if(objectIsEmpty(professor)){
-				// console.log('EMPTY')
+			if(objectIsEmpty(professor))
 				setProfessor(professorId)
-			}
 			else {
-				if(!collections){
+				if(!collections)
 					searchCollections(professorId, true)
-				}
 			}
 		}
 
@@ -58,7 +55,7 @@ const LabAssistantManagerContainer = props => {
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}

@@ -27,12 +27,12 @@ const CreateCollectionContainer = props => {
 		e.preventDefault()
 
 		const defaultV = {
-			'public': isPublicCollection,
+			'public': isPublicCollection !== undefined ? isPublicCollection : false,
+			'copyrighted': false,
 			'published': false,
 			'archived': false,
 			'owner': `${isLabAssistantRoute ? professorId : userId}`,
 			'collection-name': name,
-			'public': false,
 		}
 
 		if(isLabAssistantRoute){
@@ -68,7 +68,6 @@ const mapDispatchToProps = {
 	adminCreateCollection: adminService.createCollection,
 	createCollection: collectionService.createCollection,
 	toggleModal: interfaceService.toggleModal,
-	// getCollections: collectionService.getCollections,
 	adminSearchCollections: adminService.searchCollections,
 }
 

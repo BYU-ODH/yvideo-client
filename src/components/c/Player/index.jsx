@@ -9,12 +9,12 @@ import { Transcript } from 'components/bits'
 
 import { PlayerSubtitlesContainer } from 'containers'
 
-import Style, { Blank, Comment, Subtitles, Censor } from './styles'
+import Style, { Blank, Comment, Subtitles, Censor, PlayButton } from './styles'
 
 import Position from './censorPosition'
 
 import chevron from 'assets/player-chevron-left.svg'
-
+import playButton from 'assets/hexborder.svg'
 import helpIcon from 'assets/help/help-icon-white.svg'
 
 export default class Player extends PureComponent {
@@ -52,6 +52,8 @@ export default class Player extends PureComponent {
 			censorPosition,
 			censorActive,
 			clipTime,
+			isLandscape,
+			hasPausedClip,
 		} = this.props.viewstate
 
 		const {
@@ -75,6 +77,8 @@ export default class Player extends PureComponent {
 			toggleTip,
 			setCensorActive,
 			setCensorPosition,
+			handlePlayPause,
+			setHasPausedClip,
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -90,7 +94,12 @@ export default class Player extends PureComponent {
 			// setPlayed(played)
 			handleProgress({playedSeconds,played})
 			const test1 = performance.now()
-			if (clipTime.length > 0 && playedSeconds > clipTime[1]) handlePause()
+			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
+				if (!hasPausedClip){
+					handlePause()
+					setHasPausedClip(true)
+				}
+			}
 			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		}
 
@@ -137,8 +146,9 @@ export default class Player extends PureComponent {
 						/>
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
+							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3>{subtitleText}</h3></Subtitles>
+							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id='subtitle-box'>{subtitleText}</h3></Subtitles>
 							<Censor ref={this.censorRef} active={censorActive}><canvas></canvas></Censor>
 						</Blank>
 					</div>

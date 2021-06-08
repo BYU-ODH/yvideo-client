@@ -21,16 +21,23 @@ const FeedbackContainer = props => {
 			attachment: {},
 	})
 
+	const handleCaptchaChange = () => {
+		setIsPerson(!isPerson)
+		setTimeout(() => {
+			setIsPerson(false)
+		}, 30000);
+	}
+
 	const handleSubmit = (e) => {
 			e.preventDefault()
 			if(isPerson){
 				if(file.attachment.name === undefined) {
-					var emailObject = {
+					let emailObject = {
 						"sender-email": email,
 						"subject": title,
 						"message": body,
-				}
-				sendNoAttachment(emailObject)
+					}
+					sendNoAttachment(emailObject)
 				}
 				else {
 					const formData = new FormData()
@@ -50,10 +57,6 @@ const FeedbackContainer = props => {
 			}
 	}
 
-	const handleCaptcha = (boolean) => {
-			setIsPerson(boolean)
-	}
-
 	const viewstate = {
 		email,
 		name,
@@ -68,8 +71,8 @@ const FeedbackContainer = props => {
 		setTitle,
 		setEmail,
 		setName,
-		handleCaptcha,
 		handleSubmit,
+		handleCaptchaChange
 	}
 
 	return <Feedback viewstate={viewstate} handlers={handlers}/>

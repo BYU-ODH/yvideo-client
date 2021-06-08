@@ -573,7 +573,7 @@ describe(`ApiProxy test`, () => {
 			data:[collection4],
 		}
 
-		const expected = {"1": {"archived": false, "content": [{"authKey": ``, "collectionId": `collectionsid1`, "contentType": `video`, "dateValidated": ``, "description": `test`, "expired": false, "fullVideo": false, "id": `contentid1`, "isCopyrighted": false, "name": `testname`, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com`, "url": `test url`, "views": 0}, {"authKey": ``, "collectionId": `collectionsid2`, "contentType": `video2`, "dateValidated": ``, "description": `test2`, "expired": false, "fullVideo": false, "id": `contentid2`, "isCopyrighted": false, "name": undefined, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com2`, "url": `test ur2l`, "views": 0}], "id": 1, "name": undefined, "owner": 22, "published": true, "thumbnail": `test@thumbnail`}}
+		const expected = {"1": {"archived": false, "content": [{"authKey": ``, "collectionId": `collectionsid1`, "contentType": `video`, "dateValidated": ``, "description": `test`, "expired": false, "fullVideo": false, "id": `contentid1`, "isCopyrighted": false, "name": `testname`, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "allowNote": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com`, "url": `test url`, "views": 0, "words": ""}, {"authKey": ``, "collectionId": `collectionsid2`, "contentType": `video2`, "dateValidated": ``, "description": `test2`, "expired": false, "fullVideo": false, "id": `contentid2`, "isCopyrighted": false, "name": undefined, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "allowNote": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com2`, "url": `test ur2l`, "views": 0, "words": ""}], "id": 1, "name": undefined, "owner": 22, "published": true, "thumbnail": `test@thumbnail`}}
 
 		axios.mockResolvedValue(data)
 		// axios.mockImplementation(() => Promise.resolve(data))
@@ -632,7 +632,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.file.post(`file`)).resolves.toEqual(`filePost`)
-		expect(axios.post).toBeCalledWith(`//api.yvideobeta.byu.edu/api/file`, `file`, {"headers": {"session-id": `id`}, "withCredentials": true})
+		expect(axios.post).toBeCalledWith(`//api.yvideobeta.byu.edu/api/file`, `file`, {"headers": {"Content-Type": "multipart/form-data", "session-id": `id`}, "onUploadProgress": undefined, "withCredentials": true})
 	})
 
 	it(`file patch`, async () => {

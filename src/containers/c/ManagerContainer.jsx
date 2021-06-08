@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { collectionService, interfaceService } from 'services'
@@ -22,10 +22,13 @@ const ManagerContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
+		newCollectionInfo,
+		removeCreatedCollectionIdFromStore,
 	} = props
 
 	const params = useParams()
 	const location = useLocation()
+	const history = useHistory()
 	const [count, setCount] = useState(0) // set a count just to keep track of how many times we call get collections and make sure we only call with force = true only once.
 
 	useEffect(() => {
@@ -38,13 +41,21 @@ const ManagerContainer = props => {
 			setCount(count + 1)
 		}
 
+		// open newly created collection immediately
+		if(Object.keys(newCollectionInfo).length !== 0){
+			history.push({
+				pathname: `/manager/${newCollectionInfo}`,
+			})
+			removeCreatedCollectionIdFromStore()
+		}
+
 		if(location.createCollection) {
 			toggleModal({
 				component: CreateCollectionContainer,
 				route: `manager`,
 			})
 		}
-	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal])
+	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
 	const createNew = () => {
 		toggleModal({
@@ -110,6 +121,7 @@ const ManagerContainer = props => {
 const mapStateToProps = store => ({
 	collections: store.collectionStore.cache,
 	admin: store.authStore.user.roles === 0,
+	newCollectionInfo: store.collectionStore.newCollectionId,
 })
 
 const mapDispatchToProps = {
@@ -117,6 +129,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	removeCreatedCollectionIdFromStore: collectionService.removeCreatedCollectionIdFromStore,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerContainer)

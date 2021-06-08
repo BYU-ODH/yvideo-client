@@ -32,6 +32,11 @@ const Style = styled.div`
 			width: 150px;
 			text-align: left;
 		}
+
+		& p {
+			font-size: 12px;
+			margin: 15px auto 15px auto;
+		}
 	}
 
 	& .sideButton {

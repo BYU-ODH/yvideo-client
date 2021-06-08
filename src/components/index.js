@@ -26,6 +26,7 @@ import SearchPublicCollections from './c/SearchPublicCollections'
 import PublicManager from './c/PublicManager'
 import PublicListCollection from './c/PublicListCollection'
 import ClipEditor from './c/ClipEditor'
+import PublicMoreListCollection from './c/PublicMoreListCollection'
 
 export {
 	Admin,
@@ -56,4 +57,5 @@ export {
 	PublicManager,
 	PublicListCollection,
 	ClipEditor,
+	PublicMoreListCollection,
 }

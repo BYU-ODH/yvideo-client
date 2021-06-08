@@ -40,7 +40,7 @@ const TrackEditorSideMenu = props => {
 	const [title, setTitle] = useState(``)
 	useEffect(() => {
 		setEvent(singleEvent)
-	}, [index])
+	}, [index, event])
 
 	const handleEditEventBTimeChange = (e) => {
 		if (isSub){
@@ -60,7 +60,6 @@ const TrackEditorSideMenu = props => {
 		cEvent.start = number
 
 		setEvent(cEvent)
-
 		updateEvents(index, cEvent, layer)
 	}
 
@@ -87,11 +86,12 @@ const TrackEditorSideMenu = props => {
 
 	const handleSaveComment = () => {
 		const ind = index
-		let cEvent = event
+		const cEvent = event
 		const layer = cEvent.layer
-		cEvent = editComment
+		cEvent.position = editComment.position === undefined ? cEvent.position : editComment.position
+		cEvent.comment = editComment.comment === undefined ? cEvent.comment : editComment.comment
 
-		// console.log(event)
+		console.log(cEvent)
 
 		// setEditComment({})
 		updateEvents(ind, cEvent, layer)
@@ -126,6 +126,7 @@ const TrackEditorSideMenu = props => {
 			break
 		}
 	}
+
 	const editSub = (side, time, value,layer) => {
 		// console.log(time)
 		const sub = {...event}
@@ -202,6 +203,7 @@ const TrackEditorSideMenu = props => {
 					<div className='center' style={{ flexDirection: `column`}}>
 						<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
 						<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
+						<p><i>Save is only required when changing the X, Y, or comment values</i></p>
 						<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
 					</div>
 				</>
@@ -227,8 +229,8 @@ const TrackEditorSideMenu = props => {
 							<tbody>
 								{event.type === `Censor`?
 									Object.keys(event.position).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-										<tr class={activeCensorPosition === item ? `censorActive` : ``} key={item} >
-											<td><input onClick={()=>setActiveCensorPosition(item)} type='number' value={`${item}`}/></td>
+										<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
+											<td><input pattern='[0-9]+\.+[0-9]' onClick={()=>setActiveCensorPosition(item)} className='censorRow' type='number' value={`${item}`}/></td>
 											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
 											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
 											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>

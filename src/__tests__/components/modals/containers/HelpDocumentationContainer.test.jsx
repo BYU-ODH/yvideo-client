@@ -1,12 +1,20 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
+import { render, ReactDOM } from 'react-dom';
+import { Router, Route, browserHistory, IndexRoute  } from 'react-router'
 import Container from '../../../../components/modals/containers/HelpDocumentationContainer'
+import { CloseHelp } from '../../../../components/modals/components/HelpDocumentation/styles'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 const props = {
 	name: `Track Editor`,
 	toggleModal: jest.fn(),
+	viewstate: {
+		help: {
+			htmlInstruction: 'instruction'
+		}
+	}
 }
 
 describe(`HelpDocumentationContainer test`, () => {
@@ -37,5 +45,16 @@ describe(`HelpDocumentationContainer test`, () => {
 
 		const viewstate = wrapper.props().viewstate
 		expect(viewstate.name).toBe(`Home Page`)
+	})
+	it(`test props should be true`, () => {
+		const div = document.createElement('content');
+		const wrapper = mount(
+			<Provider store={testutil.store}>
+				<Container {...props}/>
+			</Provider>, div
+		)
+		console.log(wrapper.debug())
+		const button = wrapper.find(CloseHelp).simulate('click')
+		expect(button).toBeDefined()
 	})
 })

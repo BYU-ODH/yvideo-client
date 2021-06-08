@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import {
-	EventEditor,
 	Player,
 	TimelineEditor,
 } from './../..'
@@ -57,17 +56,12 @@ class TrackEditor extends PureComponent {
 			handleVideoScrubChange,
 		}
 
-		const eventEditorViewstate = {
-
-		}
-
 		return (
 			<Style>
 				<LeftStyle>
 					<Player viewstate={playerViewstate} handlers={playerHandlers} />
 					<TimelineEditor viewstate={timelineEditorViewstate} handlers={timelineEditorHandlers}/>
 				</LeftStyle>
-				<EventEditor viewstate={eventEditorViewstate} />
 			</Style>
 		)
 	}

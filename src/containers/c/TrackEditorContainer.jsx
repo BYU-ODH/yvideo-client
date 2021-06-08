@@ -33,6 +33,8 @@ const TrackEditorContainer = props => {
 		toggleModal,
 		toggleTip,
 		setSubContentId,
+		contentError,
+		subtitleError,
 	} = props
 
 	const {id} = useParams()
@@ -150,11 +152,14 @@ const TrackEditorContainer = props => {
 		eventsArray,
 		subs,
 		allSubs,
+		contentError,
+		subtitleError,
 	}
 
 	const handlers = {
 		toggleTip,
 		handleShowTip,
+		handleShowHelp,
 	}
 
 	return <TrackEditor
@@ -176,6 +181,8 @@ const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
 	allSubs: subtitlesStore.cache,
 	subContentId: subtitlesStore.contentId,
 	streamKey: resourceStore.streamKey,
+	contentError: contentStore.errorMessage,
+	subtitleError: contentStore.errorMessage
 })
 
 const mapThunksToProps = {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { collectionService, interfaceService } from 'services'
@@ -13,24 +13,23 @@ import HelpDocumentation from 'components/modals/containers/HelpDocumentationCon
 
 import { objectIsEmpty } from 'lib/util'
 
-// TODO:
-
-// 1. just need endpoint to get public collections.
-// 2. need endpoint to update create new public collections
-
 const PublicManagerContainer = props => {
 
 	const {
 		admin,
+		user,
 		collections,
 		getCollections,
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
+		newCollectionInfo,
+		removeCreatedCollectionIdFromStore,
 	} = props
 
 	const params = useParams()
 	const location = useLocation()
+	const history = useHistory()
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
@@ -41,13 +40,20 @@ const PublicManagerContainer = props => {
 			setCount(count + 1)
 		}
 
+		if(Object.keys(newCollectionInfo).length !== 0){
+			history.push({
+				pathname: `/public-manager/${newCollectionInfo}`,
+			})
+			removeCreatedCollectionIdFromStore()
+		}
+
 		if(location.createCollection) {
 			toggleModal({
 				component: CreateCollectionContainer,
-				route: `manager`,
+				route: `public-manager`,
 			})
 		}
-	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal])
+	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
 	const createNew = () => {
 		toggleModal({
@@ -93,6 +99,9 @@ const PublicManagerContainer = props => {
 	Object.keys(collections).forEach(id => {
 		const { name } = collections[id]
 
+		// list only collections the user owns
+		if(collections[id].owner !== user.id) return
+
 		if (collections[id].public && collections[id].archived) sideLists.publicArchived.push({ id, name })
 		if (collections[id].public && !collections[id].archived) sideLists.publicCollections.push({ id, name })
 	})
@@ -111,6 +120,8 @@ const PublicManagerContainer = props => {
 const mapStateToProps = store => ({
 	collections: store.collectionStore.cache,
 	admin: store.authStore.user.roles === 0,
+	user: store.authStore.user,
+	newCollectionInfo: store.collectionStore.newCollectionId,
 })
 
 const mapDispatchToProps = {
@@ -118,6 +129,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	removeCreatedCollectionIdFromStore: collectionService.removeCreatedCollectionIdFromStore,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicManagerContainer)

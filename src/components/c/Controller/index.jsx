@@ -57,6 +57,20 @@ const Controller = props => {
 
 	useEffect(() => {
 		const indicator = document.getElementById(`time-indicator`)
+		console.log(document,document.querySelector(`.censorRow`),document.querySelectorAll(`.gEspeL`))
+		// if (document.querySelector(`.censorRow`)){
+		// 	if (Array.isArray(document.querySelectorAll(`.censorRow`))){
+		// 		document.querySelectorAll(`.censorRow`).array.forEach(element => {
+		// 			element.addEventListener(`click`,()=>{
+		// 				video.handleSeek(parseFloat(element.value))
+		// 			})
+		// 		})
+		// 	} else{
+		// 		document.querySelectorAll(`.censorRow`).addEventListener(`click`,()=>{
+		// 			video.handleSeek(parseFloat(document.querySelectorAll(`.censorRow`).value))
+		// 		})
+		// 	}
+		// }
 	})
 
 	// I hate using a global variable here, we'll just have to see if it works
@@ -242,7 +256,6 @@ const Controller = props => {
 	const dateElapsed = new Date(null)
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
-
 	// this is causing a problem with rendering the video. It does not work as expected.
 	// if(document.getElementById("controller")){
 	// 	document.getElementById("controller").addEventListener(`keydown`, event => {

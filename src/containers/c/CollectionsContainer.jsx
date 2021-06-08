@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import { collectionService, interfaceService, contentService } from 'services'
 
@@ -23,42 +24,28 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
-		getIsPublicCollectionSubscribed,
-		user,
 	} = props
 
 	const [isMobile, setIsMobile] = useState(false)
-	const [count, setCount] = useState(0)
+	const [isContentTap, setIsContentTap] = useState(true)
+	const [searchQuery, setSearchQuery] = useState(``)
+	const history = useHistory()
 
 	useEffect(() => {
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
 
-		// const allContent = {}
-		// Object.keys(collections).forEach(element => {
-		// 	collections[element].content.forEach(item => {
-		// 		allContent[item.id] = item
-		// 	})
-		// })
-
-		// setContent(allContent)
-
-		if(window.innerWidth < 600){
+		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		}
-		else (
+		else
 			setIsMobile(false)
-		)
 
 		return () => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
 	}, [setContent, setHeaderBorder])
-
-	// console.log(Object.entries(collections).sort((a, b) => a.name > b.name ? 1 : -1))
-	// console.log(collections)
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -78,8 +65,27 @@ const CollectionsContainer = props => {
 		})
 	}
 
-	// console.log(Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v))
-	// console.log(count)
+	const setTab = isContentTap => _e => {
+		setIsContentTap(isContentTap)
+	}
+
+	const handleSearchQuerySubmit = (e) => {
+		e.preventDefault()
+
+		if(searchQuery !== ``){
+			history.push({
+				pathname: `/search-public-collections`,
+				state:{
+					searchQuery,
+				},
+			})
+		}
+	}
+
+	const handleSearchTextChange = e => {
+		const { value } = e.target
+		setSearchQuery(value)
+	}
 
 	const viewstate = {
 		isProf,
@@ -92,6 +98,7 @@ const CollectionsContainer = props => {
 		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 		isMobile,
+		isContentTap,
 	}
 
 	const handlers = {
@@ -99,6 +106,9 @@ const CollectionsContainer = props => {
 		handleShowHelp,
 		handleShowTip,
 		toggleTip,
+		setTab,
+		handleSearchTextChange,
+		handleSearchQuerySubmit,
 	}
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
@@ -122,7 +132,6 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
-	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

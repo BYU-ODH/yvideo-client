@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 import { collectionService, interfaceService, contentService, adminService } from 'services'
 
@@ -17,46 +18,44 @@ const SearchPublicCollectionsContainer = props => {
 		setContent,
 		collections,
 		searchedPublicCollections,
-		getCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
 		searchPublicCollections,
-		getIsPublicCollectionSubscribed,
 		user,
 	} = props
 
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [searchedCount, setSearchedCount] = useState(searchedPublicCollections.length)
+	const [searchedCount, setSearchedCount] = useState(0)
+	const [isSearched, setIsSearched] = useState(false)
+	const location = useLocation()
 
-	// TODO: need to figure out publish issue
 	useEffect(() => {
 		toggleTip()
 
-		if(user) getCollections(true)
-		else console.log(`this is yvieo guest need to set up public collections here`)
+		if(location) defaultSearch()
+
+		if(searchQuery === ``) {
+			setSearchedCount(0)
+			setIsSearched(false)
+		}
 
 		setHeaderBorder(false)
-
-		const allContent = {}
-		Object.keys(collections).forEach(element => {
-			collections[element].content.forEach(item => {
-				allContent[item.id] = item
-			})
-		})
-
-		setContent(allContent)
-
-		// when public collection searched, find id and assiciated collection from collections
-		if(searchedPublicCollections.length !== searchedCount)
-			setSearchedCount(searchedPublicCollections.length)
 
 		return () => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-	}, [setContent, setHeaderBorder, searchedPublicCollections])
+	}, [setHeaderBorder, searchedPublicCollections.length])
+
+	const defaultSearch = async() => {
+		if(location.state !== undefined){
+			await searchPublicCollections(location.state.searchQuery)
+			setSearchQuery(location.state.searchQuery)
+			setIsSearched(true)
+		}
+	}
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -76,26 +75,42 @@ const SearchPublicCollectionsContainer = props => {
 		})
 	}
 
-	const handleSubmit = e => {
+	const handleSubmit = (e) => {
 		e.preventDefault()
-		searchPublicCollections(searchQuery)
+
+		if(searchQuery !== ``){
+			searchPublicCollections(searchQuery)
+			setIsSearched(true)
+		}
 	}
 
 	const handleSearchTextChange = e => {
 		const { value } = e.target
 		setSearchQuery(value)
 
-		if(value === ``) setSearchedCount(0)
+		if(value === ``) {
+			setIsSearched(false)
+			setSearchedCount(0)
+		}
+
+	}
+
+	const setNoCollections = () => {
+		setTimeout(() => {
+			if(document.getElementById(`message`) !== null)
+				document.getElementById(`message`).innerHTML = `There are no public collections`
+		}, 2000)
 	}
 
 	const viewstate = {
 		isProf,
 		isAdmin,
+		user,
 		displayBlocks,
 		searchedCount,
-		publicCollections: Object.entries(collections).filter(([k, v]) => v.public ).map(([k,v]) => v),
 		searchedPublicCollections,
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		isSearched,
 	}
 
 	const handlers = {
@@ -105,6 +120,7 @@ const SearchPublicCollectionsContainer = props => {
 		toggleTip,
 		handleSubmit,
 		handleSearchTextChange,
+		setNoCollections,
 	}
 
 	return <SearchPublicCollections viewstate={viewstate} handlers={handlers} />
@@ -119,7 +135,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 })
 
 const mapDispatchToProps = {
-	getCollections: collectionService.getCollections,
+	searchCollections: collectionService.searchCollections,
 	searchPublicCollections: adminService.searchPublicCollection,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,

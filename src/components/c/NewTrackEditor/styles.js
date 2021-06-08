@@ -391,19 +391,39 @@ export const AnnotationMessage = styled.div`
 	margin-top: calc(40vh - 150px);
 	margin-left: calc(60vw - 400px);
 	width: 400px;
-	height: 150px;
+	min-height: 150px;
+	height: auto;
 	z-index: 30;
-	background-color: var(--light-blue);
+	background-color: white;
 	display: flex;
-	border: 5px solid var(--light-blue);
+	flex-direction: column;
+	/* border: 5px solid var(--light-blue); */
 	border-radius: 25px;
 
 	transition: 1s ease;
 
+	& img {
+		position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+	}
+
 	& h2 {
+		position: relative;
 		margin: auto;
-		color: white;
 		font-size: 2.5rem;
+		font-weight: 500 !important;
+		padding: 5px;
+	}
+
+	& #error {
+		color: red;
+		font-size: 1.7rem;
+	}
+
+	& #success {
+		color: green;
 	}
 `
 

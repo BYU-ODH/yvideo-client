@@ -3,8 +3,8 @@ import User from 'models/User'
 import Content from 'models/Content'
 
 const updateSessionId = (id) => {
-	// console.log('OLD => ', window.clj_session_id)
-	// console.log('NEW => ', id)
+	// console.log(`OLD => `, window.clj_session_id)
+	// console.log(`NEW => `, id)
 	if(id !== ``) window.clj_session_id = id
 }
 
@@ -34,6 +34,18 @@ const apiProxy = {
 						})
 
 						return result.data
+					},
+				},
+				content: {
+					get: async (term) => {
+						const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/content/${term}`, {withCredentials: true})
+
+						// result.data.forEach(element => {
+						// 	element[`name`] = element[`collection-name`]
+						// 	delete element[`collection-name`]
+						// })
+
+						return result
 					},
 				},
 			},
@@ -88,7 +100,7 @@ const apiProxy = {
 
 					updateSessionId(results.headers[`session-id`])
 
-					return results.data.reduce((map, item) => {
+					return results.data.content.reduce((map, item) => {
 						map[item.id] = new Content(item)
 						return map
 					}, {})
@@ -233,6 +245,11 @@ const apiProxy = {
 			 *
 			 * @returns nothing, idk
 			 */
+			getContents: async id => axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/contents`, { withCredentials: true, headers: {'session-id': window.clj_session_id} }).then(res => {
+				updateSessionId(res.headers[`session-id`])
+
+				return res.data
+			}),
 			post: async (id, endpoint, body) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}/${endpoint}`, body, {
 				withCredentials: true,
 				headers: {
@@ -371,6 +388,44 @@ const apiProxy = {
 			updateSessionId(res.headers[`session-id`])
 			return res.data
 		}),
+
+		access: {
+			add: async (resourceId, username) => await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}/add-access`, { username }, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
+
+			read: async (resourceId) => await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}/read-all-access`, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
+
+			// request needs body
+			remove: async (resourceId, username) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}/remove-access`, {
+				headers: {
+					'session-id': window.clj_session_id,
+				},
+				data: {
+					username,
+				},
+			},
+			).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
+		},
 
 		delete: async (resourceId) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${resourceId}`, {
 			withCredentials: true,
@@ -710,12 +765,8 @@ const apiProxy = {
 		getTranslation: async (word, language) => {
 			const result = await axios({
 				method: `GET`,
-				headers: {
-					'Content-Type': `application/x-www-form-urlencoded`,
-					'Access-Control-Allow-Origin': `http://yvideodev.byu.edu`,
-				},
 				url: `/${language}/${word}`,
-				baseURL: `http://yvideodev.byu.edu:5001/translate`,
+				baseURL: process.env.REACT_APP_YVIDEO_SERVER_DICT,
 			})
 			// const result = axios({
 			// 		method: 'GET',

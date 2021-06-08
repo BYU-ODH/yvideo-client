@@ -18,17 +18,28 @@ const ManageResourceContainer = props => {
 	const defaultSearch = user.email.split(`@`)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [isDefaultSearched, setIsDefaultSearched] = useState(false)
+	const [resourceCount, setResourceCount] = useState(0)
 	const [selectedResource, setSelectedResource] = useState(``)
+
+	useEffect(() => {
+
+		// find default setup for the access
+		if(Object.keys(resources).length !== resourceCount){
+			setResourceCount(Object.keys(resources).length)
+			setIsDefaultSearched(false)
+		}
+
+		if (!isDefaultSearched && defaultSearch[0].length >1) {
+			searchResource(defaultSearch[0])
+			setIsDefaultSearched(true)
+		}
+
+	}, [])
 
 	const addResource = () => {
 		props.toggleModal({
 			component: CreateResourceContainer,
 		})
-	}
-
-	if (!isDefaultSearched && defaultSearch[0].length >1) {
-		searchResource(defaultSearch[0])
-		setIsDefaultSearched(true)
 	}
 
 	const handleSubmit = e => {
@@ -65,6 +76,7 @@ const ManageResourceContainer = props => {
 const mapStateToProps = store => ({
 	resources: store.resourceStore.cache,
 	user: store.authStore.user,
+	resourceAccess: store.resourceStore.access,
 })
 
 const mapDispatchToProps = {

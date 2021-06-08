@@ -12,7 +12,9 @@ export default class CollectionService {
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
 		COLLECTION_INFO_GET: `COLLECTION_INFO_GET`,
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
+		COLLECTION_UPDATE_CONTENTS: `COLLECTION_UPDATE_CONTENTS`,
 		PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS: `PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS`,
+		CREATED_COLLECTION_UPDATE: `CREATED_COLLECTION_UPDATE`,
 	}
 
 	roleEndpoints = {
@@ -35,7 +37,9 @@ export default class CollectionService {
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
 		collectionGetInfo: data => ({ type: this.types.COLLECTION_INFO_GET, payload: { data }}),
 		collectionPermissionUpdate: object => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { object }}),
-		publicCollectionUpdateSubscribers: data => ({type: this.types.PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS, payload: {data}}),
+		collectionUpdateContents: (result, collectionId) => ({ type: this.types.COLLECTION_UPDATE_CONTENTS, payload: { result, collectionId }}),
+		publicCollectionUpdateSubscribers: (users, collectionId) => ({type: this.types.PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS, payload: {users, collectionId}}),
+		createdCollectionUpdate: collectionId => ({ type: this.types.CREATED_COLLECTION_UPDATE, payload: { collectionId }}),
 	}
 
 	// default store
@@ -46,6 +50,7 @@ export default class CollectionService {
 		lastFetched: 0,
 		users: [],
 		courses: [],
+		newCollectionId: ``,
 	}
 
 	// reducer
@@ -63,7 +68,9 @@ export default class CollectionService {
 			COLLECTION_EDIT,
 			COLLECTION_INFO_GET,
 			COLLECTION_ROLES_UPDATE,
+			COLLECTION_UPDATE_CONTENTS,
 			PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS,
+			CREATED_COLLECTION_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -132,11 +139,11 @@ export default class CollectionService {
 
 		case COLLECTION_INFO_GET:
 			return {
-					...store,
-					users: action.payload.data.users,
-					courses: action.payload.data.courses,
-					loading: false,
-				}
+				...store,
+				users: action.payload.data.users,
+				courses: action.payload.data.courses,
+				loading: false,
+			}
 
 		case COLLECTION_ROLES_UPDATE:
 			return {
@@ -145,16 +152,62 @@ export default class CollectionService {
 				courses: action.payload.object.currentCourses,
 			}
 
+		case COLLECTION_UPDATE_CONTENTS:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collectionId]: {
+						...store.cache[action.payload.collectionId],
+						...action.payload.result.content,
+					},
+				},
+			}
+
 		case PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS:
 			return {
 				...store,
-				users: action.payload.object.currentUsers,
-				courses: action.payload.object.currentCourses,
+				cache: {
+					...store.cache,
+					[action.payload.collectionId]: {
+						...store.cache[action.payload.collectionId],
+						subscribers: action.payload.users,
+					},
+				},
+			}
+
+		case CREATED_COLLECTION_UPDATE:
+			return{
+				...store,
+				newCollectionId: action.payload.collectionId,
 			}
 
 		default:
 			return store
 		}
+	}
+
+	searchCollections = (force = false, doesIncludePublic = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().collectionStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.collectionsStart())
+
+			try {
+				// this gets the collections directly connected to the user.
+				const result = await apiProxy.user.collections.get()
+
+				dispatch(this.actions.collectionsGet(result))
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+
+		} else dispatch(this.actions.collectionsAbort())
 	}
 
 	// thunks
@@ -216,10 +269,9 @@ export default class CollectionService {
 		let contentIndex = 0
 
 		currentState.content.forEach((element, index) => {
-			if(element.id === contentId){
-				// console.log(true)
+			if(element.id === contentId)
 				contentIndex = index
-			}
+
 		})
 		currentState.content.splice(contentIndex, 1)
 
@@ -239,18 +291,32 @@ export default class CollectionService {
 		dispatch(this.actions.collectionsStart())
 
 		try {
-			await apiProxy.collection.create(item)
+			const data = await apiProxy.collection.create(item)
 
 			const results = await apiProxy.user.collections.get()
 
 			// TODO: We need to update state
 			dispatch(this.actions.collectionsGet(results))
+			dispatch(this.actions.createdCollectionUpdate(data.id))
 
 		} catch (error) {
 			console.log(error.message)
 			dispatch(this.actions.collectionsError(error))
 		}
+	}
 
+	removeCreatedCollectionIdFromStore = () => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+
+			dispatch(this.actions.createdCollectionUpdate(``))
+
+		} catch (error) {
+			console.log(error.message)
+			dispatch(this.actions.collectionsError(error))
+		}
 	}
 
 	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {
@@ -318,17 +384,48 @@ export default class CollectionService {
 
 				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 
-				let strUsers = JSON.stringify(users)
-				let strCourses = JSON.stringify(courses)
+				const strUsers = JSON.stringify(users)
+				const strCourses = JSON.stringify(courses)
 
-				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses)){
-					dispatch(this.actions.collectionGetInfo( { users: users, courses: courses } ))
-				}
+				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses))
+					dispatch(this.actions.collectionGetInfo( { users, courses } ))
 
-				// console.log(getState().collectionStore)
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
 			}
+		}
+	}
+
+	getSubscribers = (collectionId, force = false) => {
+		return async (dispatch, getState, { apiProxy }) => {
+
+			dispatch(this.actions.collectionsStart())
+
+			const currentUsers = getState().collectionStore.users
+
+			try {
+
+				const users = await apiProxy.collection.permissions.getUsers(collectionId)
+				dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+	}
+
+	updateCollectionContents = (collectionId, contentId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+			const result = await apiProxy.collection.permissions.getContents(collectionId)
+
+			dispatch(this.actions.collectionUpdateContents(result, collectionId))
+
+		} catch (error) {
+			console.log(error.message)
+			dispatch(this.actions.collectionsError(error))
 		}
 	}
 
@@ -362,9 +459,10 @@ export default class CollectionService {
 		try {
 
 			if(endpoint === `add-user`){
+				console.log(`add-user`)
 				backEndBody = {
 					'username': body.username,
-					'account-role': body.role,
+					'account-role': body.roles,
 				}
 			} else if(endpoint === `add-course`){
 				backEndBody = {
@@ -377,41 +475,40 @@ export default class CollectionService {
 					'course-id': body,
 				}
 			} else if(endpoint === `remove-user`){
+				console.log(`remove-user`)
 				backEndBody = {
-					'username': body,
+					'username': body.username,
 				}
 			}
 
 			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
-			// console.log(result)
+
 			let currentState = {}
 			currentState = getState().collectionStore.cache[collectionId]
-			let currentUsers = getState().collectionStore.users
-			let currentCourses = getState().collectionStore.courses
+			const currentUsers = getState().collectionStore.users
+			const currentCourses = getState().collectionStore.courses
 
-			//based on the endpoint edit the current store
+			// based on the endpoint edit the current store
 			if(endpoint === `add-user`){
-				let temp = []
-				if(currentUsers.length < 1){
+				const temp = []
+				if(currentUsers.length < 1)
 					temp.push(backEndBody)
-				}
+
 				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
-			}
-			else if(endpoint === `add-course`){
-				let temp = []
-				if(currentCourses.length < 1){
+			} else if(endpoint === `add-course`){
+				const temp = []
+				if(currentCourses.length < 1)
 					temp.push(backEndBody)
-				}
+
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
-			}
-			else if(endpoint === `remove-course`){
+			} else if(endpoint === `remove-course`)
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
-			}
-			else if(endpoint === `remove-user`){
+			else if(endpoint === `remove-user`)
 				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
-			}
+
 		} catch (error) {
+			console.log(error)
 			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))
 		}

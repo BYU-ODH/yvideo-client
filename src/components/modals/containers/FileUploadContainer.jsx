@@ -20,6 +20,8 @@ const FileUploadContainer = props => {
 		uploadFile,
 		getFiles,
 		langs,
+		didUpdate,
+		updateStatus,
 		filesCache,
 	} = props
 
@@ -37,27 +39,40 @@ const FileUploadContainer = props => {
 
 	const [doesGetFiles, setDoesGetFiles] = useState(false)
 
+	// const [didUpload, setDidUpload] = useState(0)
+
 	const [fileCount, setFileCount] = useState(0)
 
 	useEffect(() => {
 		if(isUploadComplete){
-			setFileCount(resources[resourceId].files.length)
+			setIsUploadComplete(false)
+			// setFileCount(resources[resourceId].files.length)
 			getUploadedFiles()
 		}
 
-	}, [isUploadComplete, resources, resourceId])
+		if(doesGetFiles)
+			exitout()
+
+	}, [resources, resourceId, doesGetFiles, didUpdate])
 
 	// this needs to save resource at the end of it
 	async function getUploadedFiles() {
-		setIsUploadComplete(false)
 		setDoesGetFiles(true)
 
 		// this causes the problem, it calls before updates db
-		// await getFiles(resourceId)
-		setTimeout(async() => {
+		// setTimeout(async() => {
+		// 	await getFiles(resourceId)
+		// }, 3000)
+		if(didUpdate)
 			await getFiles(resourceId)
+
+	}
+
+	function exitout(){
+		setDoesGetFiles(false)
+		setTimeout(() => {
 			toggleModal()
-		}, 5000)
+		}, 2000)
 	}
 
 	const handleFileChange = e =>{
@@ -96,12 +111,13 @@ const FileUploadContainer = props => {
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, ``)
 
-		uploadFile(formData, (event) => {
+		const result = await uploadFile(formData, (event) => {
 			const percent = Math.round(100 * event.loaded / event.total)
 			setProgress(percent)
 			if(percent === 100)
 				setIsUploadComplete(true)
 		})
+		updateStatus(true)
 	}
 
 	const viewstate = {
@@ -130,6 +146,7 @@ const mapStateToProps = store => ({
 	resources: store.resourceStore.cache,
 	langs: store.languageStore.cache.langs,
 	filesCache: store.fileStore.cache,
+	didUpdate: store.resourceStore.update,
 })
 
 const mapDispatchToProps = {
@@ -137,6 +154,7 @@ const mapDispatchToProps = {
 	uploadFile: fileService.upload,
 	updateFileVersion: resourceService.updateFileVersion,
 	editFileResource: resourceService.editFile,
+	updateStatus: resourceService.updateStatus,
 	getResource: resourceService.getResource,
 	getFiles: resourceService.getFiles,
 	getLanguages: languageService.get,

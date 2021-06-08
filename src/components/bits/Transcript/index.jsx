@@ -149,7 +149,7 @@ const Transcript = props => {
 					</div>
 					<div className={'transcript-title'}>
 						<h1>Transcript</h1>
-						<h2>Video - {content !== undefined ? (content.settings.targetLanguages) : (null)} | Caption - {displaySubtitles !== null ? (displaySubtitles.language) : (`No captions available`)}</h2>
+						<h2>{content !== undefined ? (content.settings.targetLanguages !== '' ? (`Video - ${content.settings.targetLanguages} |`) : (null) ) : (null)}  Caption - {displaySubtitles !== null ? (displaySubtitles.language) : (`No captions available`)}</h2>
 					</div>
 					<br/><br/><br/>
 					<div className={'transcript-content'}>
@@ -158,7 +158,7 @@ const Transcript = props => {
 									<div className={`transcript-row ${subtitleText === element.text ? ('active-sub') : ('') }`}
 										key={index}
 										>
-										<p onClick={getTranslation}>{highlightWords(element.text)}</p>
+										<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
 										<div onClick={e => handleSeekChange(null, (element.start * duration / 100) + .5)}
 											className="arrow"
 											onMouseEnter={e => handleShowTip('transcript-seek', {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
@@ -173,7 +173,6 @@ const Transcript = props => {
 						<br/>
 					</div>
 				</div>
-				<hr style={{ width: '120%'}}/>
 				<div className={isMobile ? ('transcript-translation translation-mobile') : ('transcript-translation')}>
 					<br/>
 					<h2>Quick Translation</h2><br/>

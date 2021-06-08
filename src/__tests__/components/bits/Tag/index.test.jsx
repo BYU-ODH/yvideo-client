@@ -10,6 +10,7 @@ const props = {
 	title: 'resource title',
 	description: 'description',
 	keywords: [ 'test' ],
+	words:[ 'wordTest' ],
 	languages: { iso639_3: [] },
 	files: [
 		{
@@ -32,12 +33,20 @@ const props = {
 
 const handlers = {
 	removeTag: jest.fn(),
+	removeWord: jest.fn(),
 }
 
 describe(`tag test`, () => {
-	it(`mou`, () => {
+	it(`mou removeTag`, () => {
 		const button = shallow(<Remove onClick={handlers.removeTag} data-value={props} />);
     button.find('StyledComponent').simulate('click');
 		expect(handlers.removeTag.mock.calls.length).toEqual(1);
+	})
+	it(`mou removeTag`, () => {
+		const wrapper = mount(
+			<BrowserRouter>
+				<Tag {...props} />
+			</BrowserRouter>,
+		)
 	})
 })

@@ -29,6 +29,10 @@ export default class AdminService {
 		ADMIN_USER_DELETE: `ADMIN_USER_DELETE`,
 		ADMIN_CONTENT_DELETE: `ADMIN_CONTENT_DELETE`,
 		ADMIN_CONTENT_DELETE_FROM_TABLE: `ADMIN_CONTENT_DELETE_FROM_TABLE`,
+		ADMIN_GET_USER_BY_ID: `ADMIN_GET_USER_BY_ID`,
+		ADMIN_EMPTY_SEARCHED_USER: `ADMIN_EMPTY_SEARCHED_USER`,
+		ADMIN_GET_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_PUBLIC_COLLECTION_CONTENT`,
+		ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT`,
 	}
 
 	// action creators
@@ -51,6 +55,10 @@ export default class AdminService {
 		adminUserDelete: data => ({ type: this.types.ADMIN_USER_DELETE, payload: { data }}),
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
+		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
+		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {}}),
+		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
+		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 	}
 
 	// default store
@@ -58,9 +66,11 @@ export default class AdminService {
 	store = {
 		data: null,
 		cache: {},
+		searchedUser:{}, // store user here from get by id
 		professors: [],
 		professor: {},
 		publicCollections: [],
+		morePublicCollections: [],
 		professorCollections: null,
 		profCollectionContent: null,
 		loading: false,
@@ -91,6 +101,10 @@ export default class AdminService {
 			ADMIN_USER_DELETE,
 			ADMIN_CONTENT_DELETE,
 			ADMIN_CONTENT_DELETE_FROM_TABLE,
+			ADMIN_GET_USER_BY_ID,
+			ADMIN_GET_PUBLIC_COLLECTION_CONTENT,
+			ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT,
+			ADMIN_EMPTY_SEARCHED_USER,
 		} = this.types
 
 		switch (action.type) {
@@ -196,6 +210,30 @@ export default class AdminService {
 				lastFetchedCollections: Date.now(),
 			}
 
+		case ADMIN_GET_PUBLIC_COLLECTION_CONTENT:
+			return{
+				...store,
+				publicCollections:{
+					...store.publicCollections,
+					[action.payload.collectionId]: {
+						...store.publicCollections[action.payload.collectionId],
+						content: action.payload.content,
+					},
+				},
+			}
+
+		case ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT:
+			return{
+				...store,
+				morePublicCollections:{
+					...store.morePublicCollections,
+					[action.payload.collectionId]: {
+						...store.morePublicCollections[action.payload.collectionId],
+						content: action.payload.content,
+					},
+				},
+			}
+
 		case ADMIN_COLLECTION_EDIT:
 			return {
 				...store,
@@ -234,6 +272,18 @@ export default class AdminService {
 				...store,
 				data: action.payload.content,
 				loading: false,
+			}
+
+		case ADMIN_GET_USER_BY_ID:
+			return{
+				...store,
+				searchedUser: action.payload.user,
+			}
+
+		case ADMIN_EMPTY_SEARCHED_USER:
+			return{
+				...store,
+				searchedUser: {},
 			}
 
 		default:
@@ -283,7 +333,6 @@ export default class AdminService {
 				}
 
 				dispatch(this.actions.adminSearch(finalData))
-
 			} catch (error) {
 				console.error(error.message)
 				dispatch(this.actions.adminError(error))
@@ -292,6 +341,38 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
+	getPublicCollectionContents = (collectionId, isModal = false) => async(dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			// get contents that connected to public collection
+			const response = await apiProxy.collection.permissions.getContents(collectionId)
+
+			const contentResult = []
+
+			if(response.content){
+				response.content.forEach((item) => {
+					contentResult.push(new Content(item))
+				})
+			}
+
+			if(!isModal)
+				dispatch(this.actions.adminGetPublicCollectionContents(contentResult, collectionId))
+
+			// handle different for more public collections
+			else{
+				getState().adminStore.morePublicCollections = getState().adminStore.publicCollections
+				dispatch(this.actions.adminGetMorePublicCollectionContents(contentResult, collectionId))
+			}
+
+		} catch (error) {
+			console.error(error.message)
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	// this calls public collection when user searchs
 	searchPublicCollection = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().adminStore.lastFetchedProfessors
@@ -304,15 +385,16 @@ export default class AdminService {
 
 			try {
 
-				const results = await apiProxy.admin.search.public.collection.get(searchQuery)
+				// I think we need to make this as a one api call from backend.
+				const data = await apiProxy.admin.search.public.collection.get(searchQuery)
 
-				const resultArr = []
+				const result = {}
 
-				results.forEach(element => {
-					resultArr.push(element)
+				data.forEach(element => {
+					result[element.id]= element
 				})
 
-				dispatch(this.actions.adminSearchPublicCollections(resultArr))
+				dispatch(this.actions.adminSearchPublicCollections(result))
 
 			} catch (error) {
 				console.error(error.message)
@@ -368,6 +450,36 @@ export default class AdminService {
 		}
 	}
 
+	getUserById = (userId, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const results = await apiProxy.admin.user.get(userId)
+
+			dispatch(this.actions.adminGetUserById(new User(results)))
+
+		} catch (error) {
+			console.error(`ERRROR`, error.message)
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	emptySearchedUser = () => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			dispatch(this.actions.adminEmptySearchedUser())
+
+		} catch (error) {
+			console.error(`ERRROR`, error.message)
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
 	getCollectionContent = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().adminStore.lastFetchedProfContent
@@ -380,9 +492,9 @@ export default class AdminService {
 
 			try {
 
-				const content = await apiProxy.admin.collection.content.get(id)
+				const results = await apiProxy.admin.collection.content.get(id)
 
-				dispatch(this.actions.adminGetCollectionContent(content))
+				dispatch(this.actions.adminGetCollectionContent(results))
 
 			} catch (error) {
 				console.error(error.message)
@@ -391,26 +503,6 @@ export default class AdminService {
 
 		} else dispatch(this.actions.adminAbort())
 	}
-
-	// createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
-
-	// 	dispatch(this.actions.adminStart())
-
-	// 	try {
-
-	// 		const ownerId = getState().adminStore.professor.id
-
-	// 		await apiProxy.admin.collection.create(name, parseInt(ownerId)) // maybe parseInt(ownerId) -> ownerId -Matthew
-
-	// 		dispatch(this.actions.adminCreateCollection())
-
-	// 		this.searchCollections(ownerId)
-
-	// 	} catch (error) {
-	// 		console.log(error.message)
-	// 		dispatch(this.actions.adminError(error))
-	// 	}
-	// }
 
 	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
@@ -438,7 +530,7 @@ export default class AdminService {
 		}
 	}
 
-	searchCollections = (professorId, force = false) => async (dispatch, getState, { apiProxy }) => {
+	searchCollections = (professorId, force = false, isLookingForPublicCollections = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().adminStore.lastFetchedCollections
 
@@ -450,15 +542,21 @@ export default class AdminService {
 
 			try {
 
-				const results = await apiProxy.admin.collection.get(professorId)
+				if(isLookingForPublicCollections){
+					const results = await apiProxy.admin.collection.get(professorId)
 
-				const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
+					const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
 
-				dispatch(this.actions.adminSearchCollections(collections))
+					return collections
+				}else{
+					const results = await apiProxy.admin.collection.get(professorId)
+
+					const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
+
+					dispatch(this.actions.adminSearchCollections(collections))
+				}
 
 			} catch (error) {
-				// console.log(`SEARCH COLLECTIONS FAILED`)
-				// console.error(error.message)
 				dispatch(this.actions.adminError(error))
 			}
 

@@ -59,12 +59,15 @@ export default class HighlightWords extends PureComponent {
 
 		return (
 			<Style>
-				<h2>Important Words &nbsp;&nbsp;<img src={closeIcon} width="25" height="25" id={`close-modal`} onClick={toggleModal}/></h2><br/>
+				<h2>
+					Important Words &nbsp;&nbsp;
+					<img src={closeIcon} width="25" height="25" id={`close-modal`} onClick={toggleModal}/>
+				</h2><br/>
 				<div id={`subtitles-selection`}>
 					<p>Working on subtitle: &nbsp;</p>
 					<Select onChange={handleChangeActive}>
 						{
-							subtitlesObjects != undefined ? (
+							subtitlesObjects.length != 0 ? (
 								subtitlesObjects.map((sub, index) =>
 								<option value={index} key={index + 1}>
 									{sub.language}

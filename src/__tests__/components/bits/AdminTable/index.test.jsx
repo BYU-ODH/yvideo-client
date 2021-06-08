@@ -50,6 +50,11 @@ const handlers = {
 	toggleMenu: jest.fn(),
 }
 
+const tipHandlers = {
+	handleShowTip: jest.fn(),
+	toggleTip: jest.fn(),
+}
+
 
 describe(`admin table test`, () => {
 	it(`menu options`, ()=> {
@@ -57,7 +62,7 @@ describe(`admin table test`, () => {
 
 		let wrapper = mount(
 			<BrowserRouter>
-				<AdminTable viewstate={viewstate} handlers={handlers}/>
+				<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers} />
 			</BrowserRouter>,
 		)
 
@@ -79,7 +84,7 @@ describe(`admin table test`, () => {
 		expect(wrapper.contains("Email")).toEqual(true)
 		expect(wrapper.contains("Last Login")).toEqual(true)
 
-		let button = shallow(<AdminTable viewstate={viewstate} handlers={handlers}/>);
+		let button = shallow(<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>);
 		button.find(".sorting-button").forEach(button => {
 			button.simulate("click")
 		})
@@ -94,7 +99,7 @@ describe(`admin table test`, () => {
 
 		wrapper = mount(
 			<BrowserRouter>
-				<AdminTable viewstate={viewstate} handlers={handlers}/>
+				<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
 
@@ -108,7 +113,7 @@ describe(`admin table test`, () => {
 		expect(wrapper.contains("Name")).toEqual(true)
 		expect(wrapper.contains("Owner")).toEqual(true)
 
-		button = shallow(<AdminTable viewstate={viewstate} handlers={handlers}/>);
+		button = shallow(<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>);
 		button.find(".sorting-button").forEach(button => {
 			button.simulate("click")
 		})
@@ -123,7 +128,7 @@ describe(`admin table test`, () => {
 
 		wrapper = mount(
 			<BrowserRouter>
-				<AdminTable viewstate={viewstate} handlers={handlers}/>
+				<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
 
@@ -148,7 +153,7 @@ describe(`admin table test`, () => {
 	  expect(wrapper.contains("Expired")).toEqual(true)
 		expect(wrapper.contains("ResourceID")).toEqual(true)
 
-		button = shallow(<AdminTable viewstate={viewstate} handlers={handlers}/>);
+		button = shallow(<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>);
 		//console.log(button.debug())
 
 		button.find(".sorting-button").forEach(button => {
@@ -176,6 +181,18 @@ describe(`admin table test`, () => {
     button.find('StyledComponent').simulate('click');
 		expect(mockCallBack.mock.calls.length).toEqual(1);
 	})
+	it(`ItemEdit onMouseEnter`, ()=> {
+		const mockCallBack = jest.fn();
+		const button = shallow(<ItemEdit onMouseEnter={mockCallBack}/>);
+    button.find('StyledComponent').simulate('MouseEnter');
+		expect(mockCallBack.mock.calls.length).toEqual(1);
+	})
+	it(`ItemEdit onMouseLeave`, ()=> {
+		const mockCallBack = jest.fn();
+		const button = shallow(<ItemEdit onMouseLeave={mockCallBack}/>);
+    button.find('StyledComponent').simulate('MouseLeave');
+		expect(mockCallBack.mock.calls.length).toEqual(1);
+	})
 	it(`ItemMenu onMouseLeave`, ()=> {
 		const mockCallBack = jest.fn();
 		const mockMousePos = jest.fn();
@@ -188,7 +205,7 @@ describe(`admin table test`, () => {
 	it(`Sorting`, ()=> {
 		const wrapper = mount(
 			<BrowserRouter>
-				<AdminTable viewstate={viewstate} handlers={handlers}/>
+				<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
 
@@ -207,7 +224,7 @@ describe(`admin table test`, () => {
 		viewstate.searchCategory = 'Users'
 		wrapper = mount(
 			<BrowserRouter>
-				<AdminTable viewstate={viewstate} handlers={handlers}/>
+				<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
 		headers = wrapper.find({"className": "headers"}).at(0)
@@ -225,7 +242,7 @@ describe(`admin table test`, () => {
 		viewstate.searchCategory = 'Collections'
 		wrapper = mount(
 			<BrowserRouter>
-				<AdminTable viewstate={viewstate} handlers={handlers}/>
+				<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
 		headers = wrapper.find({"className": "headers"}).at(0)
@@ -237,7 +254,7 @@ describe(`admin table test`, () => {
 		viewstate.searchCategory = 'Content'
 		wrapper = mount(
 			<BrowserRouter>
-				<AdminTable viewstate={viewstate} handlers={handlers}/>
+				<AdminTable viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
 		headers = wrapper.find({"className": "headers"}).at(0)

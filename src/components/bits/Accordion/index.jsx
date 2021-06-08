@@ -29,7 +29,7 @@ class AccordionMenu extends PureComponent {
 
 		return (
 			<Container>
-				<h6 onClick={handleToggle}>{header}<Arrow src={arrow} active={this.state.active} /></h6>
+				<h6 className='accordion' onClick={handleToggle}>{header}<Arrow src={arrow} active={this.state.active} /></h6>
 				<List numChildren={children.length} active={active}>
 					{children}
 				</List>

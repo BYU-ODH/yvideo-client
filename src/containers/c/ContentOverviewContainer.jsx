@@ -13,6 +13,7 @@ import {
 } from 'components'
 
 import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 import { objectIsEmpty } from 'lib/util'
 
@@ -36,9 +37,8 @@ const ContentOverviewContainer = props => {
 	const [contentState, setContentState] = useState(content)
 
 	if (objectIsEmpty(content)) return null
-	if (isExpired){
+	if (isExpired)
 		return <ContentOverview isExpired={true} content={content}/>
-	}
 
 	const handleToggleEdit = async () => {
 		if (editing) {
@@ -64,7 +64,7 @@ const ContentOverviewContainer = props => {
 	const handleRemoveContent = e => {
 		if(isLabAssistant)
 			adminRemoveCollectionContent(content.id)
-		 else
+		else
 			removeCollectionContent(content.collectionId, content.id)
 	}
 
@@ -127,6 +127,13 @@ const ContentOverviewContainer = props => {
 		})
 	}
 
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: `Important Words`},
+		})
+	}
+
 	const viewstate = {
 		content: contentState,
 		showing,
@@ -147,7 +154,8 @@ const ContentOverviewContainer = props => {
 		addTag,
 		removeTag,
 		changeTag,
-		handleShowWordsModal
+		handleShowWordsModal,
+		handleShowHelp,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

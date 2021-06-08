@@ -129,6 +129,12 @@ describe(`content service test`, () => {
 					loading: false,
 					lastFetched: 0,
 				},
+				authStore: {
+					user: {
+						id: testutil.id,
+						roles: testutil.roles
+					}
+				}
 			},
 			composeWithDevTools(
 				applyMiddleware(thunk.withExtraArgument(proxies)),
