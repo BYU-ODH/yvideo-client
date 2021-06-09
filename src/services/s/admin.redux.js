@@ -400,8 +400,17 @@ export default class AdminService {
 
 				const result = {}
 
-				data.forEach(element => {
-					result[element.id]= element
+				data.forEach(collection => {
+
+					const contentResult = []
+
+					if(collection.content){
+						collection.content.forEach((item) => {
+							contentResult.push(new Content(item))
+						})
+					}
+					collection.content = contentResult
+					result[collection.id]= collection
 				})
 
 				dispatch(this.actions.adminSearchPublicCollections(result))
@@ -716,7 +725,7 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 		try {
 			const result = await apiProxy.admin.user.edit(role, userId)
-			let currentResults = [...getState().adminStore.data]
+			const currentResults = [...getState().adminStore.data]
 
 			currentResults.forEach(element => {
 				if (element.id === userId) {
