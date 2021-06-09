@@ -38,7 +38,7 @@ export default class ContentService {
 	// default store
 
 	store = {
-		errorMessage: '',
+		errorMessage: ``,
 		cache: {},
 		loading: false,
 		lastFetched: 0,
@@ -74,14 +74,14 @@ export default class ContentService {
 		case CONTENT_ABORT:
 			return {
 				...store,
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 			}
 
 		case CONTENT_CLEAN:
 			return {
 				...store,
-				errorMessage: '',
+				errorMessage: ``,
 				cache: {},
 			}
 
@@ -92,7 +92,7 @@ export default class ContentService {
 					...store.cache,
 					...action.payload.content,
 				},
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 			}
 
@@ -111,7 +111,7 @@ export default class ContentService {
 					...store.cache,
 					...action.payload.content,
 				},
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -122,7 +122,7 @@ export default class ContentService {
 				cache: {
 					[action.payload.content.id]: action.payload.content,
 				},
-				errorMessage: '',
+				errorMessage: ``,
 			}
 
 		case CONTENT_UPDATE:
@@ -132,7 +132,7 @@ export default class ContentService {
 					...store.cache,
 					[action.payload.content.id]: action.payload.content,
 				},
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 			}
 
@@ -145,7 +145,7 @@ export default class ContentService {
 						views: store.cache[action.payload.id].views + 1,
 					},
 				},
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 			}
 		case CONTENT_GET_SUBTITLES:
@@ -155,7 +155,7 @@ export default class ContentService {
 					...store.subtitlesIds,
 					...action.payload.content,
 				},
-				errorMessage: '',
+				errorMessage: ``,
 			}
 		case CONTENT_ADD_SUBTITLES:
 			return{
@@ -164,7 +164,7 @@ export default class ContentService {
 					...store.subtitlesIds,
 					...action.payload.content,
 				},
-				errorMessage: '',
+				errorMessage: ``,
 			}
 
 		default:

@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, Search, SearchIcon, SearchMobile } from './styles'
+import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -25,7 +25,6 @@ export default class Collections extends PureComponent {
 			collections,
 			isMobile,
 			publicCollections,
-			isContentTap,
 			searchQuery,
 		} = this.props.viewstate
 
@@ -34,7 +33,6 @@ export default class Collections extends PureComponent {
 			handleShowHelp,
 			handleShowTip,
 			toggleTip,
-			setTab,
 			handleSearchQuerySubmit,
 			handleSearchTextChange,
 		} = this.props.handlers
@@ -50,7 +48,7 @@ export default class Collections extends PureComponent {
 
 		return (
 			<Style>
-				<header>
+				<header className='collections-header'>
 					<div>
 						<h3>Collections &nbsp;&nbsp;&nbsp;
 							<Help id='collections-help-documentation'
@@ -89,26 +87,32 @@ export default class Collections extends PureComponent {
 					) }
 				</div>
 
-				<header>
-					<div>
-						<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
-					</div>
-					{
-						isMobile ?
-							<SearchMobile className='resource-search-submit' id='searchSubmit'>
-								<div>
-									<a href="/search-public-collections" class="button">search public collections</a>
-								</div>
-							</SearchMobile>
-							:
+				{!isMobile ?
+					<header className= 'collections-header'>
+						<div>
+							<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+						</div>
+						<>
 							<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 								<SearchIcon />
 								<input className='resource-search-input' type='search' placeholder={`search more public collections`} onChange={handleSearchTextChange} value={searchQuery} />
 								<button type='submit'>Search</button>
 							</Search>
-					}
-
-				</header>
+						</>
+					</header>
+					:
+					<header className= 'collections-header-mobile'>
+						<div>
+							<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+						</div>
+						<>
+							<SearchMobile className='resource-search-submit-mobile' id='searchSubmitMobile' onSubmit={handleSearchQuerySubmit}>
+								<SearchIcon />
+								<input className='resource-search-input-mobile' type='search' placeholder={`search in public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+							</SearchMobile>
+						</>
+					</header>
+				}
 				<div className='public-collections-list'>
 					{
 						Object.keys(publicCollections).length > 0 ? (

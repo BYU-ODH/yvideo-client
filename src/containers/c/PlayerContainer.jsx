@@ -72,7 +72,7 @@ const PlayerContainer = props => {
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
-		console.log(params)
+		// console.log(params)
 		if (!contentCache[params.id]){
 			// console.log('no cached content')
 			// get single content
@@ -82,7 +82,8 @@ const PlayerContainer = props => {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			const clips = JSON.parse(contentCache[params.id][`clips`])[params.clip]
+			const clips = contentCache[params.id][`clips`] ? JSON.parse(contentCache[params.id][`clips`])[params.clip] : []
+
 			if (params.clip) setClipTime([clips[`start`],clips[`end`]])
 			if(contentCache[params.id].url !== ``){
 				if(subtitlesContentId !== params.id && calledGetSubtitles === false){
@@ -125,7 +126,7 @@ const PlayerContainer = props => {
 			setIsMobile(true)
 			if(window.innerHeight < window.innerWidth)
 				setIsLandscape(true)
-			 else
+			else
 				setIsLandscape(false)
 
 		}
@@ -156,7 +157,7 @@ const PlayerContainer = props => {
 	const handlePlayPause = () => {
 		if(playing)
 			setPlaying(false)
-		 else
+		else
 			setPlaying(true)
 
 	}

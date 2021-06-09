@@ -9,7 +9,7 @@ import defaultThumbnail from 'assets/default-thumb.svg'
 
 class ListItem extends PureComponent {
 	render() {
-		console.log(this.props.data)
+
 		const { id, name, thumbnail, translation, captions, annotations } = this.props.data
 
 		return (

@@ -38,7 +38,7 @@ const EventsContainer = props => {
 		if(duration !== 0 && events !== undefined && Array.isArray(events)){
 
 			events.forEach(event => {
-				//Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
+				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
 				const start = event.start / 100 * duration
 				const end = event.end / 100 * duration
 				switch (event.type) {

@@ -7,20 +7,27 @@ import { Menu } from 'components'
 import { Tooltip } from 'components/bits'
 
 import { getInitials } from 'lib/util'
+import User from 'models/User'
 
 const MenuContainer = props => {
 
 	const {
 		user,
-		isProf,
-		isAdmin,
-		isLab,
 		menuActive,
 		logout,
 		toggleMenu,
 		toggleTip,
 		editorStyle,
 	} = props
+
+	const guestUser = new User({
+		email: `yvideo_guest`,
+		id: `00000000-0000-0000-0000-000000000000`,
+		lastLogin: `Fri Jun 04 16:04:40 MDT 2021`,
+		name: `yvideo guest`,
+		roles: 4,
+		username: `guest`,
+	})
 
 	const handleLogout = async e => {
 		e.preventDefault()
@@ -38,12 +45,12 @@ const MenuContainer = props => {
 	}
 
 	const viewstate = {
-		user,
-		initials: getInitials(user.name),
+		user: user !== undefined && user !== null ? user : guestUser,
+		initials: user !== undefined && user !== null ? getInitials(user.name): getInitials(`Guest`),
 		menuActive,
-		isProf,
-		isAdmin,
-		isLab,
+		isProf: user !== undefined && user !== null ? user.roles === 2 : false,
+		isAdmin: user !== undefined && user !== null ? user.roles === 0 : false,
+		isLab: user !== undefined && user !== null ? user.roles === 1 : false,
 		editorStyle,
 	}
 
@@ -59,10 +66,6 @@ const MenuContainer = props => {
 
 const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 	user: authStore.user,
-	isProf: authStore.user.roles === 2,
-	isAdmin: authStore.user.roles === 0,
-	isStudent: authStore.user.roles === 3,
-	isLab: authStore.user.roles === 1,
 	menuActive: interfaceStore.menuActive,
 	editorStyle: interfaceStore.editorStyle,
 })

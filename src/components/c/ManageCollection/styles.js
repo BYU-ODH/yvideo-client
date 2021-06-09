@@ -72,6 +72,20 @@ export const ArchiveButton = styled.button`
   cursor: pointer;
   outline: none;
 `
+export const CopyrightedButton = styled.button`
+  color: #efcc00;
+  font-weight: bold;
+
+  letter-spacing: 0.05rem;
+
+  padding: 0;
+	margin-left: 3rem;
+  background: transparent;
+
+  border: none;
+  cursor: pointer;
+  outline: none;
+`
 
 export const Tab = styled.div`
   background-color: white;

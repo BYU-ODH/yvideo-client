@@ -11,6 +11,7 @@ import Style, {
 	TitleEditButton,
 	PublishButton,
 	ArchiveButton,
+	CopyrightedButton,
 	TabHeader,
 	Selector,
 	Tab,

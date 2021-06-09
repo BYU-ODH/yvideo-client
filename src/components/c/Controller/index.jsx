@@ -19,6 +19,8 @@ import carat from 'assets/carat_white.svg'
 
 const Controller = props => {
 
+	console.log(`controller`)
+
 	// console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
 
 	const {
@@ -127,9 +129,9 @@ const Controller = props => {
 			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
 		},
 		handleDuration: duration => {
-			console.log(`step 1`)
+			// console.log(`step 1`)
 			if(typeof getDuration === `function`){
-				console.log(`step 2`)
+				// console.log(`step 2`)
 				getDuration(duration)
 			}
 

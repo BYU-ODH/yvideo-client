@@ -104,7 +104,7 @@ export default class Player extends PureComponent {
 		}
 
 		// console.log(`%c Player component ${url}`, 'color:red;')
-		console.log(clipTime)
+		// console.log(clipTime)
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>
