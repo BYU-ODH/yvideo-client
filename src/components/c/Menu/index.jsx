@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Style, { LinkStyled, Header, LogoutButton, Footer, MenuIcon } from './styles'
+import Style, { LinkStyled, Header, LogoutButton, Footer, MenuIcon, UserPic } from './styles'
 
 class Menu extends PureComponent {
 	render() {
@@ -22,42 +22,45 @@ class Menu extends PureComponent {
 		} = this.props.handlers
 
 		return (
-			<Style editorStyle={editorStyle} className={menuActive && `active`}
-				onClick={toggleMenu}
-				onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
-				onMouseLeave={e => toggleTip()}>
+			// display only if user is not a guest
+			user.roles < 4 ?
+				<Style editorStyle={editorStyle} className={menuActive && `active`}
+					onClick={toggleMenu}
+					onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}>
 
-				<MenuIcon />
+					<UserPic>{initials}</UserPic>
+					<h4>{user.name}</h4>
 
-				<hr />
+					<hr />
 
-				{/* <LinkStyled to='/word-list'>My Word List</LinkStyled> */}
+					{/* <LinkStyled to='/word-list'>My Word List</LinkStyled> */}
 
-				{
-					isAdmin &&
+					{
+						isAdmin &&
 					<>
 						<LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
 					</>
-				}
+					}
 
-				{ (isLab || isAdmin) &&
+					{ (isLab || isAdmin) &&
 					<>
 						<LinkStyled to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
 						<LinkStyled to='/manage-resource'>Manage Resource</LinkStyled>
 					</>
-				}
+					}
 
-				{
-					!(isLab || isAdmin || isProf) &&
+					{
+						!(isLab || isAdmin || isProf) &&
 					<>
 						<LinkStyled to='/'>Collections</LinkStyled>
 					</>
-				}
+					}
 
-				<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
+					<LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
 
-				{
-					(isProf || isAdmin || isLab) &&
+					{
+						(isProf || isAdmin || isLab) &&
 					<>
 						<Header>Collections</Header>
 						<hr />
@@ -71,15 +74,37 @@ class Menu extends PureComponent {
 						}
 						<LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled>
 					</>
-				}
+					}
 
-				<Footer>
-					<Header>Connect With Us</Header>
+					<Footer>
+						<Header>Connect With Us</Header>
+						<hr />
+						<LinkStyled to='/feedback' >Contact Us</LinkStyled>
+					</Footer>
+
+				</Style>
+				:
+				// menu options for the guest user
+				<Style editorStyle={editorStyle} className={menuActive && `active`}
+					onClick={toggleMenu}
+					onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}>
+
+					<UserPic>{initials}</UserPic>
+					<h4>{user.name}</h4>
+
 					<hr />
-					<LinkStyled to='/feedback' >Contact Us</LinkStyled>
-				</Footer>
 
-			</Style>
+					<LinkStyled to='/'>Sign in</LinkStyled>
+
+					<Footer>
+						<Header>Connect With Us</Header>
+						<hr />
+						<LinkStyled to='/feedback' >Contact Us</LinkStyled>
+					</Footer>
+
+				</Style>
+
 		)
 	}
 }

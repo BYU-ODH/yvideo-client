@@ -113,17 +113,20 @@ class Root extends PureComponent {
 					</>
 					:
 					(
-						<Switch>
-							<Route exact path='/'>
-								<LandingContainer />
-							</Route>
-							<Route exact path='/search-public-collections' >
-								<SearchPublicCollectionsContainer />
-							</Route>
-							<Route>
-								<Error error='404' message={`You've wandered too far`} />
-							</Route>
-						</Switch>
+						<>
+							<MenuContainer />
+							<Switch>
+								<Route exact path='/'>
+									<LandingContainer />
+								</Route>
+								<Route exact path='/search-public-collections' >
+									<SearchPublicCollectionsContainer />
+								</Route>
+								<Route>
+									<Error error='404' message={`You've wandered too far`} />
+								</Route>
+							</Switch>
+						</>
 					)
 				}
 
