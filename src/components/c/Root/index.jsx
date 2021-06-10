@@ -114,12 +114,12 @@ class Root extends PureComponent {
 					:
 					(
 						<>
-							<MenuContainer />
 							<Switch>
 								<Route exact path='/'>
 									<LandingContainer />
 								</Route>
 								<Route exact path='/search-public-collections' >
+									<MenuContainer />
 									<SearchPublicCollectionsContainer />
 								</Route>
 								<Route>
