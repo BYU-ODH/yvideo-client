@@ -20,14 +20,14 @@ const MenuContainer = props => {
 		editorStyle,
 	} = props
 
-	const guestUser = new User({
-		email: `yvideo_guest`,
-		id: `00000000-0000-0000-0000-000000000000`,
-		lastLogin: `Fri Jun 04 16:04:40 MDT 2021`,
-		name: `yvideo guest`,
-		roles: 4,
-		username: `guest`,
-	})
+	// const guestUser = new User({
+	// 	email: `yvideo_guest`,
+	// 	id: `00000000-0000-0000-0000-000000000000`,
+	// 	lastLogin: `Fri Jun 04 16:04:40 MDT 2021`,
+	// 	name: `yvideo guest`,
+	// 	roles: 4,
+	// 	username: `guest`,
+	// })
 
 	const handleLogout = async e => {
 		e.preventDefault()
@@ -44,13 +44,23 @@ const MenuContainer = props => {
 		})
 	}
 
+	// const viewstate = {
+	// 	user: user !== undefined && user !== null ? user : guestUser,
+	// 	initials: user !== undefined && user !== null ? getInitials(user.name): getInitials(`Guest`),
+	// 	menuActive,
+	// 	isProf: user !== undefined && user !== null ? user.roles === 2 : false,
+	// 	isAdmin: user !== undefined && user !== null ? user.roles === 0 : false,
+	// 	isLab: user !== undefined && user !== null ? user.roles === 1 : false,
+	// 	editorStyle,
+	// }
+
 	const viewstate = {
-		user: user !== undefined && user !== null ? user : guestUser,
-		initials: user !== undefined && user !== null ? getInitials(user.name): getInitials(`Guest`),
+		user,
+		initials: getInitials(user.name),
 		menuActive,
-		isProf: user !== undefined && user !== null ? user.roles === 2 : false,
-		isAdmin: user !== undefined && user !== null ? user.roles === 0 : false,
-		isLab: user !== undefined && user !== null ? user.roles === 1 : false,
+		isProf: user.roles === 2,
+		isAdmin:user.roles === 0,
+		isLab: user.roles === 1,
 		editorStyle,
 	}
 

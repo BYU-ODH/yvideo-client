@@ -5,7 +5,7 @@ export const Wrapper = styled.form`
 	grid: repeat(3, 1fr) / 1fr;
 	grid-gap: 2rem;
 
-	min-width: 30rem;
+	min-width: 40rem;
 
 	& > input {
 		border: none;

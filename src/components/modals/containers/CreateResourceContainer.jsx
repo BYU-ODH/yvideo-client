@@ -22,12 +22,11 @@ const CreateResourceContainer = props => {
 	const [blockLeave, setBlock] = useState(false)
 
 	useEffect(() => {
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}
@@ -47,7 +46,7 @@ const CreateResourceContainer = props => {
 		views: 0,
 		fullVideo: true,
 		metadata: ``,
-		requesterEmail: user.email,
+		requesterEmail: ``,
 		allFileVersions: ``,
 		resourceType: `video`,
 		dateValidated: ``,
@@ -89,8 +88,7 @@ const CreateResourceContainer = props => {
 
 		const result = await addResource(backEndData, data)
 
-		if(result.id)
-			addAccess(result.id, user.username)
+		if(result.id) await addAccess(result.id, user.username)
 
 		toggleModal()
 		setBlock(false)

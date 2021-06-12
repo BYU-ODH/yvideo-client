@@ -119,7 +119,7 @@ class Root extends PureComponent {
 									<LandingContainer />
 								</Route>
 								<Route exact path='/search-public-collections' >
-									<MenuContainer />
+									{/* <MenuContainer /> */}
 									<SearchPublicCollectionsContainer />
 								</Route>
 								<Route>
