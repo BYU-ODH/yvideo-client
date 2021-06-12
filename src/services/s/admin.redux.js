@@ -469,6 +469,34 @@ export default class AdminService {
 		}
 	}
 
+	getUserByUsername = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().adminStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.adminStart())
+
+			try {
+				const results = await apiProxy.admin.search.get(`user`, searchQuery)
+
+				const finalData = []
+				results.forEach((item) => {
+					finalData.push(new User(item))
+				})
+
+				return finalData
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.adminError(error))
+			}
+
+		} else dispatch(this.actions.adminAbort())
+	}
+
 	getUserById = (userId, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.adminStart())

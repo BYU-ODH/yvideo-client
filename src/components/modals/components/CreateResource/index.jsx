@@ -4,11 +4,16 @@ import {
 	Form,
 	Button,
 	TypeButton,
+	WarningLable,
 } from './styles'
 
 export default class CreateResource extends PureComponent {
 
 	render() {
+
+		const {
+			isCorrectUsername,
+		} = this.props.viewstate
 
 		const {
 			resourceName,
@@ -65,6 +70,7 @@ export default class CreateResource extends PureComponent {
 						}
 					</div>
 				</Form>
+				{!isCorrectUsername && <WarningLable>'{requesterEmail}' does not exist. Please try again.</WarningLable> }
 			</>
 		)
 	}

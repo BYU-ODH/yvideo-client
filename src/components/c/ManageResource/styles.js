@@ -53,7 +53,8 @@ export const Button = styled.button`
     color: white;
     background-color: var(--light-blue);
     margin-left: 1rem;
-		margin-bottom: 1rem;
+		margin-bottom: 2rem;
+		margin-top: 2rem;
 		padding-right: 1rem;
     outline: none;
     box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
@@ -104,8 +105,10 @@ export const TableContainer = styled.div`
 `
 
 export const Search = styled.form`
+
 	position: relative;
 	text-align: ${props => props.isMobile ? `center` : ``};
+	margin-bottom: 3rem;
 
 	& > input {
 		z-index: 1;

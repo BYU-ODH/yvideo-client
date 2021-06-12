@@ -5,6 +5,7 @@ import {
 	interfaceService,
 	resourceService,
 	fileService,
+	adminService,
 } from 'services'
 
 import CreateResource from 'components/modals/components/CreateResource'
@@ -16,10 +17,12 @@ const CreateResourceContainer = props => {
 		addResource,
 		addAccess,
 		user,
+		getUserByUsername,
 	} = props
 
 	const [tab, setTab] = useState(`resource`)
 	const [blockLeave, setBlock] = useState(false)
+	const [isCorrectUsername, setIsCorrectUsername] = useState(true)
 
 	useEffect(() => {
 		if(blockLeave)
@@ -57,6 +60,7 @@ const CreateResourceContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
+		setIsCorrectUsername(true)
 		setBlock(true)
 	}
 
@@ -71,6 +75,13 @@ const CreateResourceContainer = props => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
+
+		const checkUserResult = await getUserByUsername(data.requesterEmail, true)
+
+		if(checkUserResult[0] === undefined){
+			setIsCorrectUsername(false)
+			return
+		}
 
 		const backEndData = {
 			"copyrighted": data.copyrighted,
@@ -91,13 +102,13 @@ const CreateResourceContainer = props => {
 		if(result.id) await addAccess(result.id, user.username)
 
 		toggleModal()
-		setBlock(false)
 	}
 
 	const viewstate = {
 		user,
 		data,
 		tab,
+		isCorrectUsername,
 	}
 
 	const handlers = {
@@ -121,6 +132,7 @@ const mapDispatchToProps = {
 	addResource: resourceService.addResource,
 	addAccess: resourceService.addAccess,
 	uploadFile: fileService.upload,
+	getUserByUsername: adminService.getUserByUsername,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateResourceContainer)
