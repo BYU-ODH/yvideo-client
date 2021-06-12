@@ -12,6 +12,7 @@ export class ManageResource extends PureComponent {
 			searchQuery,
 			resources,
 			isMobile,
+			isSearched,
 		} = this.props.viewstate
 
 		const {
@@ -27,7 +28,7 @@ export class ManageResource extends PureComponent {
 						{/* <h2>Manage Resources</h2> */}
 					</div>
 					<div>
-						<Button onClick={addResource}><PlusIcon/>Compose</Button>
+						<Button onClick={addResource}><PlusIcon/>Resource</Button>
 					</div>
 				</header>
 
@@ -39,6 +40,11 @@ export class ManageResource extends PureComponent {
 
 				<div>
 					{Object.keys(resources).map(index => <ResourceOverviewContainer key={resources[index].id} resource={resources[index]} />)}
+
+					{isSearched && Object.keys(resources).length === 0 ?
+						<h4>No resources matched your search</h4>
+						:
+						<></>}
 				</div>
 			</Style>
 		)
