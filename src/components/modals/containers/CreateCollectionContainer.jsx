@@ -21,12 +21,11 @@ const CreateCollectionContainer = props => {
 	const [blockLeave, setBlock] = useState(false)
 
 	useEffect(() => {
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		 else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}
@@ -47,7 +46,6 @@ const CreateCollectionContainer = props => {
 			'archived': false,
 			'owner': `${isLabAssistantRoute ? professorId : userId}`,
 			'collection-name': name,
-			'copyrighted': !isPublicCollection === true,
 		}
 
 		if(isLabAssistantRoute){

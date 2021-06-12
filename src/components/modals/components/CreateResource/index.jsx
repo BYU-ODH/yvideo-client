@@ -36,7 +36,7 @@ export default class CreateResource extends PureComponent {
 					</label>
 
 					<label htmlFor='create-resource-requester-email'>
-						<span>Email</span>
+						<span>NetID</span>
 						<input id='create-resource-requester-email' type='text' name='requesterEmail' value={requesterEmail} onChange={handleTextChange} required />
 					</label>
 

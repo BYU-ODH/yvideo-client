@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, {Button, Search, SearchIcon} from './styles'
+import Style, {Button, Search, SearchIcon, PlusIcon} from './styles'
 
 import ResourceOverviewContainer from '../../../containers/c/ResourceOverviewContainer'
 
@@ -24,10 +24,10 @@ export class ManageResource extends PureComponent {
 			<Style>
 				<header>
 					<div>
-						<h2>Manage Resources</h2>
+						{/* <h2>Manage Resources</h2> */}
 					</div>
 					<div>
-						<Button onClick={addResource}>Create Resource</Button>
+						<Button onClick={addResource}><PlusIcon/>Compose</Button>
 					</div>
 				</header>
 
