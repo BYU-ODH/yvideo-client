@@ -35,12 +35,10 @@ const ManageResourceContainer = props => {
 			setIsDefaultSearched(true)
 		}
 
-		if(window.innerWidth < 1000) {
+		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		}
-		else {
+		else
 			setIsMobile(false)
-		}
 
 	}, [])
 
@@ -52,7 +50,7 @@ const ManageResourceContainer = props => {
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		searchResource(searchQuery)
+		if(searchQuery !== ``)searchResource(searchQuery)
 	}
 
 	const handleSearchTextChange = e => {
