@@ -50,14 +50,11 @@ const AdminContainer = props => {
 	const [isEdit, setIsEdit] = useState(false)
 	const [role, setRole] = useState(null)
 
-
 	useEffect(() => {
-		if(window.innerWidth < 1000) {
+		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		}
-		else {
+		else
 			setIsMobile(false)
-		}
 
 		clean()
 		setHeaderBorder(true)
@@ -128,16 +125,15 @@ const AdminContainer = props => {
 		userRoleSave: e => {
 			adminUpdateUserRole(role, menuItemInfo.id)
 			setIsEdit(false)
-		}
+		},
 	}
-
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}
