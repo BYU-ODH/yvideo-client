@@ -253,10 +253,47 @@ export const TableHeader = styled.div`
 			text-align: center;
 			padding-bottom: 0rem;
 		}
-		
+
 		@media screen and (max-width: 320px) {
 			text-align: center;
 			padding-bottom: 1rem;
 		}
+	}
+`
+
+export const InnerContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1.5fr 1.5fr;
+	padding-bottom: 15px;
+`
+
+export const Column = styled.div`
+	margin-right: 1.5rem;
+
+	& > h4 {
+		align-items: center;
+		border-bottom: 1px solid #c4c4c4;
+		display: grid;
+		grid-gap: 1rem;
+		grid-template-columns: 1fr 1.8rem;
+		line-height: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	& > div {
+		display: flex;
+		align-items: center;
+		line-height: 2rem;
+		margin-bottom: 1rem;
+
+		& > button {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+
+	& textarea {
+		width: 100%;
 	}
 `

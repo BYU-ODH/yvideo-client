@@ -1,5 +1,6 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import searchIcon from 'assets/search.svg'
+import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
 max-width: 100rem;
@@ -9,9 +10,10 @@ margin: 0 auto;
 
 & header {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 2rem;
+	/* justify-content: space-between;
+	align-items: center; */
+	padding-top: 2rem;
+	padding-bottom: 2rem;
 
 	& > div {
 		display: flex;
@@ -43,16 +45,33 @@ export const Title = styled.div`
 `
 
 export const Button = styled.button`
-	background-size: contain;
-	border: none;
-	cursor: pointer;
-	height: 3rem;
-	outline: none;
-	width: 10rem;
-	border-radius: .5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 12rem;
+    height: 5rem;
+    color: white;
+    background-color: var(--light-blue);
+    margin-left: 1rem;
+		margin-bottom: 2rem;
+		margin-top: 2rem;
+		padding-right: 1rem;
+    outline: none;
+    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 6rem;
+    text-align: center;
+		cursor: pointer;
+		transition: .5s ease;
+		font-weight: 500;
 
-	&:hover {
-		box-shadow: 0 3px 6px -2px #A0A0A0;
+		:hover {
+			background-color: var(--navy-blue);
+		}
+
+		& > span {
+		margin-right: .5rem;
 	}
 `
 
@@ -87,13 +106,15 @@ export const TableContainer = styled.div`
 
 export const Search = styled.form`
 	position: relative;
+	text-align: ${props => props.isMobile ? `center` : ``};
+	margin-bottom: 3rem;
 
 	& > input {
 		z-index: 1;
 		background: white;
 
 		height: 4rem;
-		width: 30rem;
+		width: 90%;
 
 		font-size: 1.5rem;
 
@@ -147,4 +168,11 @@ export const SearchIcon = styled.span`
 	background-size: contain;
 	height: 2rem;
 	width: 2rem;
+`
+
+export const PlusIcon = styled.span`
+	background: url(${plusIcon}) center no-repeat;
+	color: white;
+	height: 1.5rem;
+	width: 1.5rem;
 `

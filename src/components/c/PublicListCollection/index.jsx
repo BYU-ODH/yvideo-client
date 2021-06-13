@@ -9,6 +9,7 @@ class PublicListCollection extends PureComponent {
 	render() {
 
 		const {
+			user,
 			collection,
 			isOpen,
 			ownerName,
@@ -21,7 +22,7 @@ class PublicListCollection extends PureComponent {
 			handlePublicCollection,
 		} = this.props.handlers
 
-		if (!collection) return null
+		if (!collection || collection === undefined) return null
 
 		return (
 			<Style>
@@ -33,13 +34,16 @@ class PublicListCollection extends PureComponent {
 					</Collection>
 				</CollectionRow>
 
-				{collection.content ? (
+				{collection.content && (user !== undefined && user !== null) ? (
 					<Body isOpen={isOpen}>
+						{user.roles < 3 &&
 						<PublicCollectionsLable>
+
 							<div className='ownership'>
 								<>Owner: <div className='owner-name'>{ownerName}</div></>
-								<>Copyright: <div className='owner-name'>No</div></>
+								<>Copyright: <div className='owner-name'>{collection.copyrighted ? `Yes` : `No`}</div></>
 							</div>
+
 							<PublicCollectionButton>
 								{/* TODO: possibely add */}
 								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
@@ -51,10 +55,11 @@ class PublicListCollection extends PureComponent {
 										{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
 									</PublicButton>
 									:
-									<></>
+									<div>You own this collection</div>
 								}
 							</PublicCollectionButton>
 						</PublicCollectionsLable>
+						}
 
 						{ collection.content.length > 0 ?
 							collection.content.map(item => {

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, {Button, Search, SearchIcon} from './styles'
+import Style, {Button, Search, SearchIcon, PlusIcon} from './styles'
 
 import ResourceOverviewContainer from '../../../containers/c/ResourceOverviewContainer'
 
@@ -12,6 +12,7 @@ export class ManageResource extends PureComponent {
 			searchQuery,
 			resources,
 			isMobile,
+			isSearched,
 		} = this.props.viewstate
 
 		const {
@@ -24,10 +25,10 @@ export class ManageResource extends PureComponent {
 			<Style>
 				<header>
 					<div>
-						<h2>Manage Resources</h2>
+						{/* <h2>Manage Resources</h2> */}
 					</div>
 					<div>
-						<Button onClick={addResource}>Create Resource</Button>
+						<Button onClick={addResource}><PlusIcon/>Resource</Button>
 					</div>
 				</header>
 
@@ -39,6 +40,11 @@ export class ManageResource extends PureComponent {
 
 				<div>
 					{Object.keys(resources).map(index => <ResourceOverviewContainer key={resources[index].id} resource={resources[index]} />)}
+
+					{isSearched && Object.keys(resources).length === 0 ?
+						<h4>No resources matched your search</h4>
+						:
+						<></>}
 				</div>
 			</Style>
 		)

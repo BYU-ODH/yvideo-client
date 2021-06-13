@@ -21,6 +21,7 @@ const ManageResourceContainer = props => {
 	const [resourceCount, setResourceCount] = useState(0)
 	const [selectedResource, setSelectedResource] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
+	const [isSearched, setIsSearched] = useState(false)
 
 	useEffect(() => {
 
@@ -35,12 +36,10 @@ const ManageResourceContainer = props => {
 			setIsDefaultSearched(true)
 		}
 
-		if(window.innerWidth < 1000) {
+		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		}
-		else {
+		else
 			setIsMobile(false)
-		}
 
 	}, [])
 
@@ -52,7 +51,10 @@ const ManageResourceContainer = props => {
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		searchResource(searchQuery)
+		if(searchQuery !== ``) {
+			searchResource(searchQuery)
+			setIsSearched(true)
+		}
 	}
 
 	const handleSearchTextChange = e => {
@@ -70,6 +72,7 @@ const ManageResourceContainer = props => {
 		searchQuery,
 		resources,
 		isMobile,
+		isSearched,
 	}
 
 	const handlers = {

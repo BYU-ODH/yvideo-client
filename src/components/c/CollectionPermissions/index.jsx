@@ -1,7 +1,24 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort, Loading, UserListTable, UserList, TableHeader, CourseTable } from './styles'
-
+import Style, {
+	Search,
+	DepartmentSelect,
+	CatalogInput,
+	SectionInput,
+	AddButton,
+	Table,
+	TableContainer,
+	AddManyButton,
+	Sort,
+	Loading,
+	UserListTable,
+	UserList,
+	TableHeader,
+	CourseTable,
+	InnerContainer,
+	Column,
+} from './styles'
+import { SwitchToggle } from 'components/bits'
 import logo from 'assets/hexborder.svg'
 
 import removeIcon from 'assets/trash_icon.svg'
@@ -23,6 +40,7 @@ export class CollectionPermissions extends PureComponent {
 		} = this.props
 
 		const {
+			collection,
 			users,
 			userTA,
 			courses,
@@ -77,7 +95,16 @@ export class CollectionPermissions extends PureComponent {
 
 		return (
 			<Style>
+				<InnerContainer>
+					<Column>
+						<h4>
+							BYU users only
+							<SwitchToggle on={collection.copyrighted} setToggle={handlers.handleBYUOnly} data_key='copyrighted' />
+						</h4>
+					</Column>
+				</InnerContainer>
 				<TableContainer>
+
 					<CourseTable id='course-table'>
 						<h4>Courses</h4>
 						<form onSubmit={handlers.addCourse}>
@@ -138,7 +165,7 @@ export class CollectionPermissions extends PureComponent {
 												<td>{element[`account-type`]}</td>
 												<td>{element[`last-login`].length > 2 ?
 													`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
-														 :
+													:
 													`NA`
 												}
 												</td>

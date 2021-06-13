@@ -5,33 +5,54 @@ import listView from 'assets/list-view.svg'
 import searchIcon from 'assets/search.svg'
 
 const Style = styled.div`
-max-width: 100rem;
 
+max-width: 100rem;
 padding: 8.4rem 2.4rem 0 2.4rem;
 margin: 0 auto;
 
-& header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 2rem;
-
-	& > div {
+& .collections-header{
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
+		padding: 2rem;
 
-		& > h3 {
-			font-weight: bold;
-			font-size: 1.2rem;
-		}
+		& > div {
+			display: flex;
+			align-items: center;
 
-		& a {
-			font-weight: 300;
-			font-size: 1.2rem;
-			text-decoration: none;
-			color: #000;
+			& > h3 {
+				font-weight: bold;
+				font-size: 1.2rem;
+			}
+
+			& a {
+				font-weight: 300;
+				font-size: 1.2rem;
+				text-decoration: none;
+				color: #000;
+			}
 		}
-	}
+}
+
+& .collections-header-mobile{
+		margin: 2rem;
+
+		& > div {
+			display: flex;
+			align-items: center;
+
+			& > h3 {
+				font-weight: bold;
+				font-size: 1.2rem;
+			}
+
+			& a {
+				font-weight: 300;
+				font-size: 1.2rem;
+				text-decoration: none;
+				color: #000;
+			}
+		}
 }
 `
 
@@ -81,6 +102,7 @@ export const SearchIcon = styled.span`
 `
 
 export const Search = styled.form`
+
 	position: relative;
 	width: 40%;
 
@@ -126,25 +148,26 @@ export const Search = styled.form`
 `
 
 export const SearchMobile = styled.form`
+
 	position: relative;
+	width: 100%;
 
-	& > div {
-		width: 12rem;
-    height: 3rem;
-    color: white;
-    background-color: var(--light-blue);
-    outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 2rem;
-    text-align: center;
-		cursor: pointer;
-		transition: .5s ease;
-		font-weight: 500;
+	& > input {
+		z-index: 1;
+		background: white;
 
-		:hover {
-			background-color: var(--navy-blue);
-		}
+		height: 4rem;
+		width: 100%;
+
+		font-size: 1.2rem;
+
+		border: none;
+		border-radius: 2rem;
+
+		margin-left: 1rem;
+		padding: 0 1.25rem 0 3.25rem;
+
+		outline: none;
+		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 	}
 `

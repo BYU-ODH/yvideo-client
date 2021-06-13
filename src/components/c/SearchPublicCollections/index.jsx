@@ -26,7 +26,7 @@ export default class SearchPublicCollections extends PureComponent {
 			<Style>
 				<header>
 					<div>
-						<h2>Search Public Collections</h2>
+						{/* <h2>Search Public Collections</h2> */}
 					</div>
 				</header>
 
@@ -45,7 +45,14 @@ export default class SearchPublicCollections extends PureComponent {
 								,
 							)}
 						</>
-						:<h4>No collections matched your search</h4>
+						:
+						<>
+							{isSearched ?
+								<h4>No collections matched your search</h4>
+								:
+								<></>
+							}
+						</>
 					}
 				</div>
 			</Style>

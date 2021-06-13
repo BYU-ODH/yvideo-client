@@ -14,26 +14,27 @@ class Load extends Component {
 					<Spinner />
 				</Wrapper>
 			),
-			document.getElementById(`load`)
+			document.getElementById(`load`),
 		)
 	}
 
 	componentDidUpdate = prevProps => {
 
-		if (!this.wrapper.current) return
+		if (!this.wrapper.current || this.wrapper.current.classList === null) return
+		else{
+			if (!prevProps.loading && this.props.loading) {
+				this.wrapper.current.classList.add(`active`)
+				this.wrapper.current.classList.remove(`hidden`)
+			}
 
-		if (!prevProps.loading && this.props.loading) {
-			this.wrapper.current.classList.add(`active`)
-			this.wrapper.current.classList.remove(`hidden`)
-		}
-
-		if (prevProps.loading && !this.props.loading) {
-			setTimeout(() => {
-				this.wrapper.current.classList.remove(`active`)
+			if (prevProps.loading && !this.props.loading) {
 				setTimeout(() => {
-					this.wrapper.current.classList.add(`hidden`)
-				}, 250)
-			}, 1000)
+					this.wrapper.current.classList.remove(`active`)
+					setTimeout(() => {
+						this.wrapper.current.classList.add(`hidden`)
+					}, 250)
+				}, 1000)
+			}
 		}
 	}
 

@@ -510,9 +510,9 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					console.log(`step 1`)
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/hall31/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
-						console.log(`%c From User 1` , `color: red;`)
+					// console.log(`step 1`)
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/yrich/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']
@@ -529,7 +529,7 @@ const apiProxy = {
 						await updateSessionId(res.headers[`session-id`])
 						return res
 					})
-
+					// console.log(result.data)
 					return new User(result.data)
 				}
 			} catch (error) {
@@ -578,9 +578,9 @@ const apiProxy = {
 			 */
 			get: async (id) => {
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/courses`,
-				 	{
-					 withCredentials: true,
-					 headers: {'session-id': window.clj_session_id},
+					{
+						withCredentials: true,
+						headers: {'session-id': window.clj_session_id},
 					})
 					.then(res => {
 						updateSessionId(res.headers[`session-id`])

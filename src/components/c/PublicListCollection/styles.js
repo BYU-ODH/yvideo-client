@@ -104,11 +104,15 @@ export const MoreButton = styled.button`
 export const PublicCollectionButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
+
+	& div{
+		width: 100%;
+	}
 `
 
 export const PublicCollectionsLable = styled.div`
 	display: grid;
-	grid-template-columns: auto auto 1rem;
+	grid-template-columns: auto auto 2rem;
 	align-items: center;
 
 		& .ownership{

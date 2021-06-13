@@ -345,7 +345,9 @@ export default class CollectionService {
 			currentState.published = false
 			currentState.archived = false
 			break
-
+		case `copyrighted`:
+			currentState.copyrighted = !currentState.copyrighted
+			break
 		default:
 			abort = true
 			break
@@ -354,9 +356,8 @@ export default class CollectionService {
 		const finalState = {
 			published: currentState.published,
 			archived: currentState.archived,
+			copyrighted: currentState.copyrighted,
 		}
-
-		// console.log(`finalState: `, finalState)
 
 		if (abort) dispatch(this.actions.collectionsAbort())
 		else {
@@ -459,7 +460,6 @@ export default class CollectionService {
 		try {
 
 			if(endpoint === `add-user`){
-				console.log(`add-user`)
 				backEndBody = {
 					'username': body.username,
 					'account-role': body.roles,
@@ -475,7 +475,6 @@ export default class CollectionService {
 					'course-id': body,
 				}
 			} else if(endpoint === `remove-user`){
-				console.log(`remove-user`)
 				backEndBody = {
 					'username': body.username,
 				}
@@ -488,6 +487,8 @@ export default class CollectionService {
 			currentState = getState().collectionStore.cache[collectionId]
 			const currentUsers = getState().collectionStore.users
 			const currentCourses = getState().collectionStore.courses
+
+			// console.log(getState().collectionStore)
 
 			// based on the endpoint edit the current store
 			if(endpoint === `add-user`){
@@ -504,8 +505,13 @@ export default class CollectionService {
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
 			} else if(endpoint === `remove-course`)
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
-			else if(endpoint === `remove-user`)
+			else if(endpoint === `remove-user`){
 				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
+				const updatedSubscribers = currentState.subscribers.filter(person => person.username !== body.username)
+				dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
+			}
+
+			// console.log(getState().collectionStore)
 
 		} catch (error) {
 			console.log(error)
