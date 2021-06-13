@@ -16,6 +16,7 @@ import Style, {
 	Tab,
 	NewContent,
 	Icon,
+	Publish,
 } from './styles'
 
 import plus from 'assets/plus_gray.svg'
@@ -75,7 +76,7 @@ export default class ManageCollection extends PureComponent {
 							{isEditingCollectionName ? `Save` : `Edit`}
 						</TitleEditButton>
 					</Title>
-					<div>
+					<Publish>
 						{collection.archived ? (
 							<>
 								{ user.roles !== undefined ? (
@@ -101,7 +102,7 @@ export default class ManageCollection extends PureComponent {
 								<ArchiveButton className={`archive-button`} onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
-					</div>
+					</Publish>
 				</header>
 				<TabHeader>
 					<button className={`content-button`} onClick={setTab(true)}>Content</button>

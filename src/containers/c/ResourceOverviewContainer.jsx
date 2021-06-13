@@ -39,7 +39,6 @@ const ResourceOverviewContainer = props => {
 	const [accessCount, setAccessCount] = useState(0)
 	const [numFileVersions, setNumFileVersions] = useState(0)
 	const [blockLeave, setBlock] = useState(false)
-	const [isMobile, setIsMobile] = useState(false)
 
 	useEffect(() => {
 
@@ -65,13 +64,6 @@ const ResourceOverviewContainer = props => {
 				updateAllFileVersions(resourceState, files)
 				editResource(resourceState, resourceState.id)
 			}
-		}
-
-		if(window.innerWidth < 1000) {
-			setIsMobile(true)
-		}
-		else {
-			setIsMobile(false)
 		}
 
 		if(blockLeave) {
@@ -225,7 +217,6 @@ const ResourceOverviewContainer = props => {
 		showing,
 		editing,
 		blockLeave,
-		isMobile,
 	}
 
 	const handlers = {

@@ -10,6 +10,10 @@ const Style = styled.div`
 		font-weight: normal;
 		margin-bottom: 1.6rem;
 	}
+
+	@media screen and (max-width: 1000px) {
+		padding: 0.1rem;
+	}
 `
 
 export default Style
@@ -166,10 +170,20 @@ export const Table = styled.table`
 			}
 		}
 	}
+
+	@media screen and (max-width: 1000px) {
+		width: 100%;
+		padding: 0px;
+		padding-bottom: 2rem;
+	}
 `
 
 export const TableContainer = styled.div`
 	display: flex;
+
+	@media screen and (max-width: 1000px) {
+		flex-direction: column;
+	}
 `
 
 export const Sort = styled.button`
@@ -213,11 +227,36 @@ export const UserListTable = styled.div`
 
 export const CourseTable = styled.div`
 	margin-right: 5rem;
+
+	@media screen and (max-width: 1000px) {
+		margin-bottom: 2rem;
+
+		& from {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+	}
 `
 
 export const UserList = styled.div`
 	margin-bottom: 5rem;
+
+	@media screen and (max-width: 1000px) {
+		margin-bottom: 2rem;
+	}
 `
 
 export const TableHeader = styled.div`
+	& div {
+		@media screen and (max-width: 1000px) {
+			text-align: center;
+			padding-bottom: 0rem;
+		}
+		
+		@media screen and (max-width: 320px) {
+			text-align: center;
+			padding-bottom: 1rem;
+		}
+	}
 `
