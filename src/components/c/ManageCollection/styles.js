@@ -2,12 +2,11 @@ import styled from 'styled-components'
 
 const Style = styled.div`
   & > header {
-    height: 12rem;
-    padding: 0 3.8rem;
-
+		height: 12rem;
+		padding: 0 3.8rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+		align-items: center;
+    justify-content: space-between
 
     & h6 {
       font-size: 1.8rem;
@@ -18,9 +17,16 @@ const Style = styled.div`
       color: #a4a4a4;
       margin-top: 1.7rem;
     }
+
+		@media screen and (max-width: 1000px) {
+			height: 7rem;
+			padding: 2rem 2.5rem;
+			flex-direction: column
+			align-items: flex-start;
+			justify-content: flex-start
+		}
   }
 `
-
 export default Style
 
 export const Title = styled.div`
@@ -40,6 +46,12 @@ export const TitleEditButton = styled.div`
   cursor: pointer;
   margin-top: 0;
   margin-left: 1rem;
+`
+
+export const Publish = styled.div`
+	@media screen and (max-width: 1000px) {
+		margin-top: 2rem;
+	}
 `
 
 export const PublishButton = styled.button`
@@ -99,8 +111,8 @@ export const Tab = styled.div`
 `
 
 export const TabHeader = styled.div`
-  position: absolute;
-  top: 18rem;
+	position: absolute;
+	top: 18rem;
 
   padding-left: 2rem;
 
@@ -116,6 +128,11 @@ export const TabHeader = styled.div`
     outline: none;
     cursor: pointer;
   }
+
+	@media screen and (max-width: 1000px) {
+		position: relative;
+		top: 0
+	}
 `
 
 export const Selector = styled.div`

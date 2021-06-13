@@ -64,23 +64,30 @@ export const Search = styled.form`
 		cursor: pointer;
 		transition: .5s ease;
 		font-weight: 500;
-		margin: ${props => props.isMobile ? `0.5rem` : ``};
 
 		:hover {
 			background-color: var(--navy-blue);
 		}
+
+		@media screen and (max-width: 1000px) {
+      margin: 0.5rem;
+    }
 	}
 `
 
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 9;
-	top: ${props => props.isMobile ? `1.5rem` : `1rem`};
+	top: 1rem;
 	left: 2rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
 	height: 2rem;
 	width: 2rem;
+
+	@media screen and (max-width: 1000px) {
+		top: 1.5rem;
+	}
 `
 
 export const CategorySelect = styled.select`
@@ -89,7 +96,6 @@ export const CategorySelect = styled.select`
 	width: 12rem;
 	display: flex;
 	font-size: 1.5rem;
-	margin: ${props => props.isMobile ? `0.5rem` : ``};
 
 	border: none;
 	border-radius: 2rem;
@@ -98,15 +104,22 @@ export const CategorySelect = styled.select`
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+
 	& option {
 		margin: auto auto 6px auto;
+	}
+
+	@media screen and (max-width: 1000px) {
+		margin: 0.5rem;
 	}
 `
 
 export const Mobile = styled.div`
-	display: ${props => props.isMobile ? `flex` : ``};
-	flex-direction: ${props => props.isMobile ? `column` : ``};
-	align-items: ${props => props.isMobile ? `center` : ``};
+	@media screen and (max-width: 1000px) {
+		display: flex;
+		flex-direction: column;
+		align-items: center
+	}
 `
 
 export const FeedbackMessage = styled.div`

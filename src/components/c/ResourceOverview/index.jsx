@@ -45,7 +45,6 @@ export class ResourceOverview extends PureComponent {
 			accessCount,
 			user,
 			blockLeave,
-			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -60,7 +59,7 @@ export class ResourceOverview extends PureComponent {
 			<>
 				<BoxRow>
 					<Style>
-						<Preview isMobile={isMobile} editing={editing}>
+						<Preview editing={editing}>
 							<div>
 								{editing ?
 									<ResourceTitle><h4>Title:</h4><TitleEdit type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
@@ -82,7 +81,7 @@ export class ResourceOverview extends PureComponent {
 						</Preview>
 					</Style>
 					{editing &&
-						<InnerContainer isMobile={isMobile}>
+						<InnerContainer>
 							<Column>
 								<h4>
 									published

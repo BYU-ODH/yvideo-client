@@ -30,6 +30,8 @@ const ManagerContainer = props => {
 	const location = useLocation()
 	const history = useHistory()
 	const [count, setCount] = useState(0) // set a count just to keep track of how many times we call get collections and make sure we only call with force = true only once.
+	const [isMobile, setIsMobile] = useState(false)
+	const [isOpen, setOpen] = useState(true)
 
 	useEffect(() => {
 		setHeaderBorder(true)
@@ -55,6 +57,14 @@ const ManagerContainer = props => {
 				route: `manager`,
 			})
 		}
+
+		if(window.innerWidth < 1000) {
+			setIsMobile(true)
+		}
+		else {
+			setIsMobile(false)
+		}
+
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
 	const createNew = () => {
@@ -81,12 +91,18 @@ const ManagerContainer = props => {
 		})
 	}
 
+	const handleToggleSideBar = () => {
+		setOpen(!isOpen)
+	}
+
 	const handlers = {
 		createNew,
 		handleShowHelp,
 		toggleTip,
 		handleShowTip,
+		handleToggleSideBar,
 	}
+
 
 	const sideLists = {
 		published: [],
@@ -113,6 +129,8 @@ const ManagerContainer = props => {
 		path: `manager`,
 		sideLists,
 		activeId: params.id,
+		isMobile,
+		isOpen,
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />

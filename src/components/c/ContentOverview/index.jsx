@@ -37,7 +37,6 @@ export default class ContentOverview extends PureComponent {
 			content,
 			tag,
 			blockLeave,
-			isMobile,
 		} = this.props.viewstate
 
 		const {
@@ -72,7 +71,7 @@ export default class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' />
+						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
 					</div>
 					<div>
 						{editing ?
