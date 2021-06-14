@@ -488,8 +488,6 @@ export default class CollectionService {
 			const currentUsers = getState().collectionStore.users
 			const currentCourses = getState().collectionStore.courses
 
-			// console.log(getState().collectionStore)
-
 			// based on the endpoint edit the current store
 			if(endpoint === `add-user`){
 				const temp = []
@@ -510,8 +508,6 @@ export default class CollectionService {
 				const updatedSubscribers = currentState.subscribers.filter(person => person.username !== body.username)
 				dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
 			}
-
-			// console.log(getState().collectionStore)
 
 		} catch (error) {
 			console.log(error)

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, {Button, Search, SearchIcon, PlusIcon} from './styles'
+import Style, {Button, Search, SearchIcon, PlusIcon, FeedbackMessage} from './styles'
 
 import ResourceOverviewContainer from '../../../containers/c/ResourceOverviewContainer'
 
@@ -42,7 +42,7 @@ export class ManageResource extends PureComponent {
 					{Object.keys(resources).map(index => <ResourceOverviewContainer key={resources[index].id} resource={resources[index]} />)}
 
 					{isSearched && Object.keys(resources).length === 0 ?
-						<h4>No resources matched your search</h4>
+						<FeedbackMessage><p>No resources matched your search</p></FeedbackMessage>
 						:
 						<></>}
 				</div>

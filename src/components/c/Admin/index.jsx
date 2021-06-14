@@ -33,7 +33,9 @@ export class Admin extends PureComponent {
 
 		return (
 			<Style>
-				<h1>Admin Dashboard</h1>
+				{/* <h1>Admin Dashboard</h1> */}
+
+				<h1></h1>
 
 				<Mobile isMobile={isMobile}>
 					{/* WE ARE ONLY SEARCHING FOR USERS NOW SO WE DO NOT NEED THE SELECT DROP DOWN */}
@@ -47,13 +49,13 @@ export class Admin extends PureComponent {
 					<Search id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
 						<SearchIcon isMobile={isMobile} />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
-						<button type="submit">Search</button>
+						<button type='submit'>Search</button>
 					</Search>
 				</Mobile>
 
 				{ data !== null ?
 					data.length < 1 ?
-						<FeedbackMessage><p>The are no results</p></FeedbackMessage>
+						<FeedbackMessage><p>No {searchCategory.toLowerCase()} matched your search</p></FeedbackMessage>
 						:
 						<AdminTable viewstate={this.props.viewstate} handlers={this.props.handlers} tipHandlers={this.props.tipHandlers}/>
 					:

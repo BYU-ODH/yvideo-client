@@ -124,11 +124,10 @@ export const Mobile = styled.div`
 
 export const FeedbackMessage = styled.div`
 	height: 100px;
-	width: 200px;
 	display: flex;
 
 	& > p {
-		font-weight: 500;
+		font-weight: 200;
 		font-size: 20px;
 		margin: auto;
 	}

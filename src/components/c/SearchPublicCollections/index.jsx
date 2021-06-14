@@ -4,7 +4,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, {Search, SearchIcon, ListLable} from './styles'
+import Style, {Search, SearchIcon, ListLable, FeedbackMessage} from './styles'
 
 export default class SearchPublicCollections extends PureComponent {
 
@@ -48,7 +48,7 @@ export default class SearchPublicCollections extends PureComponent {
 						:
 						<>
 							{isSearched ?
-								<h4>No collections matched your search</h4>
+								<FeedbackMessage><p>No collections matched your search</p></FeedbackMessage>
 								:
 								<></>
 							}
