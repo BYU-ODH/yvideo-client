@@ -29,7 +29,7 @@ class PublicListCollection extends PureComponent {
 				<CollectionRow>
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
-						<p />
+						<p>{collection.content.length} Contents</p>
 						<div />
 					</Collection>
 				</CollectionRow>

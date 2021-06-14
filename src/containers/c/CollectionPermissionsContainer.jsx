@@ -32,12 +32,12 @@ const CollectionPermissionsContainer = props => {
 
 	const [user, setUser] = useState({
 		username: ``,
-		role: 2,
+		roles: 2,
 	})
 
 	const [userTA, setUserTA] = useState({
 		username: ``,
-		role: 1,
+		roles: 1,
 	})
 
 	const [disabled, setDisable] = useState(true)
@@ -56,8 +56,6 @@ const CollectionPermissionsContainer = props => {
 				setLoaded(false)
 			}, 1000)
 		}
-
-		console.log(`object`)
 
 	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.copyrighted])
 

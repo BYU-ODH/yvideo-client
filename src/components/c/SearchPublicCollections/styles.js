@@ -91,3 +91,14 @@ export const ListLable = styled.h4`
 	margin-top: 2rem;
 	margin-bottom: 2rem;
 `
+
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	display: flex;
+
+	& > p {
+		font-weight: 200;
+		font-size: 20px;
+		margin: auto;
+	}
+`

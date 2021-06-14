@@ -46,10 +46,9 @@ const PublicMoreListCollectionContainer = props => {
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
 
-		if(!isLoading) {
+		if(!isLoading)
 			getContents()
-			console.log(`object`)
-		}
+
 	}
 
 	const viewstate = {

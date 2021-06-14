@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components'
+import styled from 'styled-components'
 import searchIcon from 'assets/search.svg'
 import plusIcon from 'assets/plus-white.svg'
 
@@ -175,4 +175,15 @@ export const PlusIcon = styled.span`
 	color: white;
 	height: 1.5rem;
 	width: 1.5rem;
+`
+
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	display: flex;
+
+	& > p {
+		font-weight: 200;
+		font-size: 20px;
+		margin: auto;
+	}
 `
