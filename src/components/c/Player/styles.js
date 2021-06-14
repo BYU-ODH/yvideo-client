@@ -87,8 +87,8 @@ export const PlayButton = styled.img`
 	border-radius: 50%;
 	z-index: 100;
 
-	&:hover {
-  	transform: rotate(360deg);
+	& :hover {
+  	/* transform: rotate(360deg); */
 	}
 `
 

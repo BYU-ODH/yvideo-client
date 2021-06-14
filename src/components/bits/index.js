@@ -9,6 +9,7 @@ import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
 import ListCollection from './ListCollection'
 import ListItem from './ListItem'
+import ListItemDropDown from './ListItemDropDown'
 import Modal from './Modal'
 import PermissionTable from './PermissionTable'
 import PlayerControls from './PlayerControls'
@@ -23,6 +24,7 @@ import ResourceOverview from '../c/ResourceOverview'
 import SubtitlesLayer from './SubtitlesLayer'
 import SubtitlesModal from './SubtitlesModal'
 import CensorDnD from './CensorDnD'
+import ClipLayer from './ClipLayer'
 export {
 	Accordion,
 	AdminTable,
@@ -35,6 +37,7 @@ export {
 	LazyImage,
 	ListCollection,
 	ListItem,
+	ListItemDropDown,
 	Modal,
 	PermissionTable,
 	PlayerControls,
@@ -49,4 +52,5 @@ export {
 	SubtitlesLayer,
 	SubtitlesModal,
 	CensorDnD,
+	ClipLayer,
 }

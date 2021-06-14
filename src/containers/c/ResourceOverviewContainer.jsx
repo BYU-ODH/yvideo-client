@@ -38,6 +38,7 @@ const ResourceOverviewContainer = props => {
 	const [files, setFiles] = useState([])
 	const [accessCount, setAccessCount] = useState(0)
 	const [numFileVersions, setNumFileVersions] = useState(0)
+	const [blockLeave, setBlock] = useState(false)
 
 	useEffect(() => {
 
@@ -65,7 +66,17 @@ const ResourceOverviewContainer = props => {
 			}
 		}
 
-	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceAccess])
+		if(blockLeave) {
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceAccess, blockLeave])
 
 	if (objectIsEmpty(resource)) return null
 
@@ -76,6 +87,7 @@ const ResourceOverviewContainer = props => {
 				resourceId: resource.id,
 			},
 		})
+		setBlock(true)
 	}
 
 	const handleToggleEdit = async () => {
@@ -84,6 +96,7 @@ const ResourceOverviewContainer = props => {
 			await editResource(resourceState, resourceState.id)
 			setShowing(false)
 			setEditing(false)
+			setBlock(false)
 
 		} else{
 			// set up languages on store before editing
@@ -113,6 +126,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceName: e.target.value,
 		})
+		setBlock(true)
 	}
 
 	const handleResourceEmail = e => {
@@ -134,6 +148,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceType: e.target.dataset.type,
 		})
+		setBlock(true)
 	}
 
 	const handleTogglePublish = e => {
@@ -141,6 +156,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			published: !resourceState.published,
 		})
+		setBlock(true)
 	}
 
 	const handleToggleCopyRighted = e => {
@@ -148,6 +164,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			copyrighted: !resourceState.copyrighted,
 		})
+		setBlock(true)
 	}
 
 	const handleTogglePhysicalCopyExists = e => {
@@ -162,6 +179,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			fullVideo: !resourceState.fullVideo,
 		})
+		setBlock(true)
 	}
 
 	const handleMetadata = e => {
@@ -198,6 +216,7 @@ const ResourceOverviewContainer = props => {
 		fileId,
 		showing,
 		editing,
+		blockLeave,
 	}
 
 	const handlers = {

@@ -32,6 +32,10 @@ const Style = styled.div`
 		}
 	}
 
+	@media screen and (max-width: 1000px) {
+		padding: 1rem;
+	}
+
 `
 
 export default Style
@@ -52,6 +56,11 @@ export const Preview = styled.div`
 	& > div:nth-child(1) {
 		min-width: 14rem;
 		margin: 0px 2rem 0px 0px;
+
+		@media screen and (max-width: 1000px) {
+			min-width: 0;
+			margin: 0;
+		}
 	}
 
 	& > div:nth-child(2) {
@@ -85,6 +94,10 @@ export const Preview = styled.div`
 	& > div:nth-child(3) {
 		display: flex;
 		justify-content: flex-end;
+	}
+
+	@media screen and (max-width: 1000px) {
+		align-items: center;
 	}
 `
 
@@ -204,6 +217,11 @@ export const InnerContainer = styled.div`
 	}
 
 	& .tag-input {
+	}
+	
+	@media screen and (max-width: 1000px) {
+		display: flex;
+		flex-direction: column;
 	}
 `
 

@@ -56,20 +56,23 @@ const PlayerContainer = props => {
 	const [displaySubtitles, setDisplaySubtitles] = useState(null) // this is the subtitle that will show in the transcript view
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, setCensorActive] = useState(false)
+	const [hasPausedClip, setHasPausedClip] = useState(false)
 
 	// this is for caption toggle
 	const [isCaption, setIsCaption] = useState( false ) // this is the state to toggle caption selection
 	const [indexToDisplay, setIndexToDisplay] = useState(0) // use index to display a desired subtitle based on selection from player controls.
 
+	// clip variables
+	const [clipTime, setClipTime] = useState([])
 	const ref = player => {
 		setPlayer(player)
 	}
-
 	useEffect(() => {
 		setPlaybackRate(1)
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
+		// console.log(params)
 		if (!contentCache[params.id]){
 			// console.log('no cached content')
 			// get single content
@@ -79,8 +82,11 @@ const PlayerContainer = props => {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
+			const clips = contentCache[params.id][`clips`] ? JSON.parse(contentCache[params.id][`clips`])[params.clip] : []
+
+			if (params.clip) setClipTime([clips[`start`],clips[`end`]])
 			if(contentCache[params.id].url !== ``){
-				if(subtitlesContentId !== params.id  && calledGetSubtitles === false){
+				if(subtitlesContentId !== params.id && calledGetSubtitles === false){
 					getSubtitles(params.id)
 					setCalledGetSubtitles(true)
 				}
@@ -118,12 +124,11 @@ const PlayerContainer = props => {
 		if(window.innerWidth < 1000){
 			setToggleTranscript(false)
 			setIsMobile(true)
-			if(window.innerHeight < window.innerWidth){
+			if(window.innerHeight < window.innerWidth)
 				setIsLandscape(true)
-			}
-			else {
+			else
 				setIsLandscape(false)
-			}
+
 		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId])
 
@@ -150,12 +155,11 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlayPause = () => {
-		if(playing){
+		if(playing)
 			setPlaying(false)
-		}
-		else {
+		else
 			setPlaying(true)
-		}
+
 	}
 
 	const handlePause = () => {
@@ -165,7 +169,11 @@ const PlayerContainer = props => {
 	const handlePlay = () => {
 		setPlaying(true)
 	}
-
+	const handleStart = () => {
+		setPlaying(true)
+		if (clipTime.length > 0) player.seekTo(clipTime[0])
+		setPlaying(true)
+	}
 	const handleBlank = (bool) => {
 		setBlank(bool)
 	}
@@ -268,7 +276,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleChangeSubtitle = (index) => {
-		let temp = subtitles[index]
+		const temp = subtitles[index]
 		const currentContent = temp.content
 		if(typeof currentContent === `string`){
 			console.log(`String type`)
@@ -348,7 +356,9 @@ const PlayerContainer = props => {
 		isMobile,
 		censorPosition,
 		censorActive,
-		isLandscape
+		clipTime,
+		isLandscape,
+		hasPausedClip,
 	}
 
 	const handlers = {
@@ -357,6 +367,7 @@ const PlayerContainer = props => {
 		handleMouseOver,
 		handlePause,
 		handlePlay,
+		handleStart,
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,
@@ -378,6 +389,7 @@ const PlayerContainer = props => {
 		setCensorPosition,
 		setCensorActive,
 		handlePlayPause,
+		setHasPausedClip,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, TabHeader, Selector, Search, SearchIcon } from './styles'
+import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -25,7 +25,6 @@ export default class Collections extends PureComponent {
 			collections,
 			isMobile,
 			publicCollections,
-			isContentTap,
 			searchQuery,
 		} = this.props.viewstate
 
@@ -34,7 +33,6 @@ export default class Collections extends PureComponent {
 			handleShowHelp,
 			handleShowTip,
 			toggleTip,
-			setTab,
 			handleSearchQuerySubmit,
 			handleSearchTextChange,
 		} = this.props.handlers
@@ -50,7 +48,7 @@ export default class Collections extends PureComponent {
 
 		return (
 			<Style>
-				<header>
+				<header className='collections-header'>
 					<div>
 						<h3>Collections &nbsp;&nbsp;&nbsp;
 							<Help id='collections-help-documentation'
@@ -89,30 +87,34 @@ export default class Collections extends PureComponent {
 					) }
 				</div>
 
-				<header>
-					<div>
-						<TabHeader>
-							<button className={`public-collections-tab`} onClick={setTab(true)}><h4>Public Collections</h4></button>
-							<button className={`byu-collections-tab`} onClick={setTab(false)}><h4>BYU Collections</h4></button>
-
-							<Help id='collections-help-documentation'
-								src={helpIcon} onClick={handleShowHelp}
-								onMouseEnter={e => handleShowTip(`help`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})}
-								onMouseLeave={e => toggleTip()}
-							/>
-							<Selector isContentTap={isContentTap} />
-						</TabHeader>
-
-					</div>
-					<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
-						<SearchIcon />
-						<input className='resource-search-input' type='search' placeholder={`search more public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-						<button type='submit'>Search</button>
-					</Search>
-
-				</header>
+				{!isMobile ?
+					<header className= 'collections-header'>
+						<div>
+							<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+						</div>
+						<>
+							<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
+								<SearchIcon />
+								<input className='resource-search-input' type='search' placeholder={`search more public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+								<button type='submit'>Search</button>
+							</Search>
+						</>
+					</header>
+					:
+					<header className= 'collections-header-mobile'>
+						<div>
+							<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+						</div>
+						<>
+							<SearchMobile className='resource-search-submit-mobile' id='searchSubmitMobile' onSubmit={handleSearchQuerySubmit}>
+								<SearchIcon />
+								<input className='resource-search-input-mobile' type='search' placeholder={`search in public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+							</SearchMobile>
+						</>
+					</header>
+				}
 				<div className='public-collections-list'>
-					{isContentTap ?
+					{
 						Object.keys(publicCollections).length > 0 ? (
 							<>
 								{
@@ -122,9 +124,6 @@ export default class Collections extends PureComponent {
 								}
 							</>
 						) : <>Public Collection is empty.</>
-
-						:
-						(<>BYU Collection is empty.</>)
 					}
 				</div>
 			</Style>

@@ -5,33 +5,54 @@ import listView from 'assets/list-view.svg'
 import searchIcon from 'assets/search.svg'
 
 const Style = styled.div`
-max-width: 100rem;
 
+max-width: 100rem;
 padding: 8.4rem 2.4rem 0 2.4rem;
 margin: 0 auto;
 
-& header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 2rem;
-
-	& > div {
+& .collections-header{
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
+		padding: 2rem;
 
-		& > h3 {
-			font-weight: bold;
-			font-size: 1.2rem;
-		}
+		& > div {
+			display: flex;
+			align-items: center;
 
-		& a {
-			font-weight: 300;
-			font-size: 1.2rem;
-			text-decoration: none;
-			color: #000;
+			& > h3 {
+				font-weight: bold;
+				font-size: 1.2rem;
+			}
+
+			& a {
+				font-weight: 300;
+				font-size: 1.2rem;
+				text-decoration: none;
+				color: #000;
+			}
 		}
-	}
+}
+
+& .collections-header-mobile{
+		margin: 2rem;
+
+		& > div {
+			display: flex;
+			align-items: center;
+
+			& > h3 {
+				font-weight: bold;
+				font-size: 1.2rem;
+			}
+
+			& a {
+				font-weight: 300;
+				font-size: 1.2rem;
+				text-decoration: none;
+				color: #000;
+			}
+		}
 }
 `
 
@@ -69,46 +90,6 @@ export const Button = styled.button`
 		box-shadow: 0 3px 6px -2px #A0A0A0;
 	}
 `
-
-export const TabHeader = styled.div`
-
-  height: 2.5rem;
-
-  & > button {
-    padding: 0;
-    width: 10rem;
-    background: transparent;
-    height: 2.5rem;
-
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
-`
-
-export const Selector = styled.div`
-  position: relative;
-
-  bottom: 0;
-  left: ${props => props.isContentTap ? `0rem` : `10rem`};
-
-  transition: left 0.3s ease-in-out;
-
-  height: 0.25rem;
-  width: 10rem;
-
-  background-color: #0582ca;
-`
-
-export const Tab = styled.div`
-  background-color: white;
-  overflow-y: scroll;
-
-  border-top: 1px solid #c4c4c4;
-
-  padding: 2rem;
-`
-
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 10;
@@ -121,6 +102,7 @@ export const SearchIcon = styled.span`
 `
 
 export const Search = styled.form`
+
 	position: relative;
 	width: 40%;
 
@@ -129,7 +111,7 @@ export const Search = styled.form`
 		background: white;
 
 		height: 4rem;
-		width: 79%;
+		width: 70%;
 
 		font-size: 1.2rem;
 
@@ -144,7 +126,7 @@ export const Search = styled.form`
 	}
 
 	& > button {
-		width: 6rem;
+		width: 8rem;
     height: 3rem;
     color: white;
     background-color: var(--light-blue);
@@ -162,5 +144,30 @@ export const Search = styled.form`
 		:hover {
 			background-color: var(--navy-blue);
 		}
+	}
+`
+
+export const SearchMobile = styled.form`
+
+	position: relative;
+	width: 100%;
+
+	& > input {
+		z-index: 1;
+		background: white;
+
+		height: 4rem;
+		width: 100%;
+
+		font-size: 1.2rem;
+
+		border: none;
+		border-radius: 2rem;
+
+		margin-left: 1rem;
+		padding: 0 1.25rem 0 3.25rem;
+
+		outline: none;
+		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 	}
 `

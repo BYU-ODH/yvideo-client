@@ -25,6 +25,7 @@ import FileOverview from './c/FileOverview'
 import SearchPublicCollections from './c/SearchPublicCollections'
 import PublicManager from './c/PublicManager'
 import PublicListCollection from './c/PublicListCollection'
+import ClipEditor from './c/ClipEditor'
 import PublicMoreListCollection from './c/PublicMoreListCollection'
 
 export {
@@ -55,5 +56,6 @@ export {
 	SearchPublicCollections,
 	PublicManager,
 	PublicListCollection,
+	ClipEditor,
 	PublicMoreListCollection,
 }

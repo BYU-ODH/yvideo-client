@@ -36,10 +36,9 @@ const CollectionsContainer = props => {
 		getCollections()
 		setHeaderBorder(false)
 
-		if(window.innerWidth < 600)
-			setIsMobile(true)
-		else
-			setIsMobile(false)
+		// determine mobiie size for different layout
+		if(window.innerWidth < 1000) setIsMobile(true)
+		else setIsMobile(false)
 
 		return () => {
 			setHeaderBorder(true)

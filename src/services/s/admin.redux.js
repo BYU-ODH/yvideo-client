@@ -27,6 +27,7 @@ export default class AdminService {
 		ADMIN_COLLECTION_EDIT: `ADMIN_COLLECTION_EDIT`,
 		ADMIN_COLLECTION_DELETE: `ADMIN_COLLECTION_DELETE`,
 		ADMIN_USER_DELETE: `ADMIN_USER_DELETE`,
+		ADMIN_USER_UPDATE: `ADMIN_USER_UPDATE`,
 		ADMIN_CONTENT_DELETE: `ADMIN_CONTENT_DELETE`,
 		ADMIN_CONTENT_DELETE_FROM_TABLE: `ADMIN_CONTENT_DELETE_FROM_TABLE`,
 		ADMIN_GET_USER_BY_ID: `ADMIN_GET_USER_BY_ID`,
@@ -53,6 +54,7 @@ export default class AdminService {
 		adminCollectionEdit: collection => ({ type: this.types.ADMIN_COLLECTION_EDIT, payload: { collection }}),
 		adminCollectionDelete: response => ({ type: this.types.ADMIN_COLLECTION_DELETE, payload: { response }}),
 		adminUserDelete: data => ({ type: this.types.ADMIN_USER_DELETE, payload: { data }}),
+		adminUserUpdate: data => ({ type: this.types.ADMIN_USER_UPDATE, payload: { data }}),
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
@@ -99,6 +101,7 @@ export default class AdminService {
 			ADMIN_COLLECTION_EDIT,
 			ADMIN_COLLECTION_DELETE,
 			ADMIN_USER_DELETE,
+			ADMIN_USER_UPDATE,
 			ADMIN_CONTENT_DELETE,
 			ADMIN_CONTENT_DELETE_FROM_TABLE,
 			ADMIN_GET_USER_BY_ID,
@@ -258,6 +261,13 @@ export default class AdminService {
 				loading: false,
 			}
 
+		case ADMIN_USER_UPDATE:
+			return {
+				...store,
+				data: action.payload.data,
+				loading: false,
+			}
+
 		// THIS IS DELETING CONTENT FROM MANAGE COLLECTION
 		case ADMIN_CONTENT_DELETE:
 			return {
@@ -390,8 +400,17 @@ export default class AdminService {
 
 				const result = {}
 
-				data.forEach(element => {
-					result[element.id]= element
+				data.forEach(collection => {
+
+					const contentResult = []
+
+					if(collection.content){
+						collection.content.forEach((item) => {
+							contentResult.push(new Content(item))
+						})
+					}
+					collection.content = contentResult
+					result[collection.id]= collection
 				})
 
 				dispatch(this.actions.adminSearchPublicCollections(result))
@@ -448,6 +467,34 @@ export default class AdminService {
 			console.error(`ERRROR`, error.message)
 			dispatch(this.actions.adminError(error))
 		}
+	}
+
+	getUserByUsername = (searchQuery, force = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().adminStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		if (stale || force) {
+
+			dispatch(this.actions.adminStart())
+
+			try {
+				const results = await apiProxy.admin.search.get(`user`, searchQuery)
+
+				const finalData = []
+				results.forEach((item) => {
+					finalData.push(new User(item))
+				})
+
+				return finalData
+
+			} catch (error) {
+				console.error(error.message)
+				dispatch(this.actions.adminError(error))
+			}
+
+		} else dispatch(this.actions.adminAbort())
 	}
 
 	getUserById = (userId, force = false) => async (dispatch, getState, { apiProxy }) => {
@@ -696,6 +743,26 @@ export default class AdminService {
 			const result = await apiProxy.admin.user.delete(userId)
 
 			dispatch(this.actions.adminUserDelete(currentResults))
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
+	updateUserRole = (role, userId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+		try {
+			const result = await apiProxy.admin.user.edit(role, userId)
+			const currentResults = [...getState().adminStore.data]
+
+			currentResults.forEach(element => {
+				if (element.id === userId) {
+					element.roles = role
+					return
+				}
+			})
+
+			dispatch(this.actions.adminUserUpdate(currentResults))
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))

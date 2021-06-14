@@ -18,6 +18,7 @@ const AdminContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
+		adminUpdateUserRole,
 	} = props
 
 	const category = {
@@ -45,8 +46,16 @@ const AdminContainer = props => {
 	const [menuItemInfo, setMenuItemInfo] = useState({})
 	const [menuActive, setMenuActive] = useState(false)
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+	const [isMobile, setIsMobile] = useState(false)
+	const [isEdit, setIsEdit] = useState(false)
+	const [role, setRole] = useState(null)
 
 	useEffect(() => {
+		if(window.innerWidth < 1000)
+			setIsMobile(true)
+		else
+			setIsMobile(false)
+
 		clean()
 		setHeaderBorder(true)
 		return () => {
@@ -63,6 +72,8 @@ const AdminContainer = props => {
 		menuActive,
 		menuItemInfo,
 		mousePos,
+		isMobile,
+		isEdit,
 	}
 
 	const handlers = {
@@ -104,15 +115,25 @@ const AdminContainer = props => {
 				},
 			})
 		},
-	}
+		handleEdit: e => {
+			setIsEdit(true)
+		},
+		roleChange: e => {
+			setRole(parseInt(e.target.value))
+		},
 
+		userRoleSave: e => {
+			adminUpdateUserRole(role, menuItemInfo.id)
+			setIsEdit(false)
+		},
+	}
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}
@@ -135,6 +156,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	adminUpdateUserRole: adminService.updateUserRole,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

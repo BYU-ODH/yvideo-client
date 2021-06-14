@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { ListItem } from 'components/bits'
+import { ListItem, ListItemDropDown } from 'components/bits'
 
 import Style, { Header, Body, PublicButton } from './styles'
 
@@ -33,13 +33,14 @@ class ListCollection extends PureComponent {
 			<Style>
 				<Header className='list-header' isOpen={isOpen} onClick={this.togglePanel} >
 					<h3>{name}</h3>
-					<p>{publishContent.length} Videos</p>
+					<p>{publishContent.length} Contents</p>
 					<div />
 				</Header>
 				<Body isOpen={isOpen} count={publishContent.length}>
+
 					{
 						publishContent.map(item => {
-							return <ListItem key={item.id} data={item} />
+							return item.clips.length < 3 ? <ListItem key={item.id} data={item}/> : <ListItemDropDown key={item.id} data={item}/>
 						})
 					}
 				</Body>

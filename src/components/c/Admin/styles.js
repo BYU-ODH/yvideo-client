@@ -68,6 +68,10 @@ export const Search = styled.form`
 		:hover {
 			background-color: var(--navy-blue);
 		}
+
+		@media screen and (max-width: 1000px) {
+      margin: 0.5rem;
+    }
 	}
 `
 
@@ -80,6 +84,10 @@ export const SearchIcon = styled.span`
 	background-size: contain;
 	height: 2rem;
 	width: 2rem;
+
+	@media screen and (max-width: 1000px) {
+		top: 1.5rem;
+	}
 `
 
 export const CategorySelect = styled.select`
@@ -96,18 +104,30 @@ export const CategorySelect = styled.select`
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+
 	& option {
 		margin: auto auto 6px auto;
+	}
+
+	@media screen and (max-width: 1000px) {
+		margin: 0.5rem;
+	}
+`
+
+export const Mobile = styled.div`
+	@media screen and (max-width: 1000px) {
+		display: flex;
+		flex-direction: column;
+		align-items: center
 	}
 `
 
 export const FeedbackMessage = styled.div`
 	height: 100px;
-	width: 200px;
 	display: flex;
 
 	& > p {
-		font-weight: 500;
+		font-weight: 200;
 		font-size: 20px;
 		margin: auto;
 	}

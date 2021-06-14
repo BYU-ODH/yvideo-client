@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {
 	interfaceService,
 	resourceService,
 	fileService,
+	adminService,
 } from 'services'
 
 import CreateResource from 'components/modals/components/CreateResource'
@@ -16,9 +17,24 @@ const CreateResourceContainer = props => {
 		addResource,
 		addAccess,
 		user,
+		getUserByUsername,
 	} = props
 
 	const [tab, setTab] = useState(`resource`)
+	const [blockLeave, setBlock] = useState(false)
+	const [isCorrectUsername, setIsCorrectUsername] = useState(true)
+
+	useEffect(() => {
+		if(blockLeave)
+			window.onbeforeunload = () => true
+		else
+			window.onbeforeunload = undefined
+
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [blockLeave])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -33,7 +49,7 @@ const CreateResourceContainer = props => {
 		views: 0,
 		fullVideo: true,
 		metadata: ``,
-		requesterEmail: user.email,
+		requesterEmail: ``,
 		allFileVersions: ``,
 		resourceType: `video`,
 		dateValidated: ``,
@@ -44,6 +60,8 @@ const CreateResourceContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
+		setIsCorrectUsername(true)
+		setBlock(true)
 	}
 
 	const handleTypeChange = e => {
@@ -52,10 +70,18 @@ const CreateResourceContainer = props => {
 			...data,
 			resourceType,
 		})
+		setBlock(true)
 	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
+
+		const checkUserResult = await getUserByUsername(data.requesterEmail, true)
+
+		if(checkUserResult[0] === undefined){
+			setIsCorrectUsername(false)
+			return
+		}
 
 		const backEndData = {
 			"copyrighted": data.copyrighted,
@@ -73,8 +99,7 @@ const CreateResourceContainer = props => {
 
 		const result = await addResource(backEndData, data)
 
-		if(result.id)
-			addAccess(result.id, user.username)
+		if(result.id) await addAccess(result.id, user.username)
 
 		toggleModal()
 	}
@@ -83,6 +108,7 @@ const CreateResourceContainer = props => {
 		user,
 		data,
 		tab,
+		isCorrectUsername,
 	}
 
 	const handlers = {
@@ -106,6 +132,7 @@ const mapDispatchToProps = {
 	addResource: resourceService.addResource,
 	addAccess: resourceService.addAccess,
 	uploadFile: fileService.upload,
+	getUserByUsername: adminService.getUserByUsername,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateResourceContainer)

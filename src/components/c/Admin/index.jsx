@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { AdminTable } from 'components/bits'
 
-import Style, { Search, SearchIcon, FeedbackMessage, CategorySelect } from './styles'
+import Style, { Search, SearchIcon, FeedbackMessage, CategorySelect, Mobile } from './styles'
 
 export class Admin extends PureComponent {
 	render() {
@@ -16,6 +16,8 @@ export class Admin extends PureComponent {
 			menuItemInfo,
 			mousePos,
 			placeholder,
+			isMobile,
+			isEdit,
 		} = this.props.viewstate
 
 		const {
@@ -24,33 +26,36 @@ export class Admin extends PureComponent {
 			toggleMenu,
 			handleConfirmDelete,
 			updateCategory,
+			handleEdit,
+			userRoleSave,
+			roleChange,
 		} = this.props.handlers
 
 		return (
 			<Style>
-				<h1>Admin Dashboard</h1>
+				{/* <h1>Admin Dashboard</h1> */}
 
-				<div>
+				<h1></h1>
 
+				<Mobile isMobile={isMobile}>
 					{/* WE ARE ONLY SEARCHING FOR USERS NOW SO WE DO NOT NEED THE SELECT DROP DOWN */}
-					<CategorySelect id='categorySelect' onChange={updateCategory}>
+					<CategorySelect id='categorySelect' onChange={updateCategory} isMobile={isMobile}>
 						{Object.keys(category).map((c, index) => (
 							<option value={category[c].name} key={index}>
 								{category[c].name}
 							</option>
 						))}
 					</CategorySelect>
-					<Search id='searchSubmit' onSubmit={handleSubmit}>
-						<SearchIcon />
+					<Search id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
+						<SearchIcon isMobile={isMobile} />
 						<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
-						<button type="submit">Search</button>
+						<button type='submit'>Search</button>
 					</Search>
-
-				</div>
+				</Mobile>
 
 				{ data !== null ?
 					data.length < 1 ?
-						<FeedbackMessage><p>The are no results</p></FeedbackMessage>
+						<FeedbackMessage><p>No {searchCategory.toLowerCase()} matched your search</p></FeedbackMessage>
 						:
 						<AdminTable viewstate={this.props.viewstate} handlers={this.props.handlers} tipHandlers={this.props.tipHandlers}/>
 					:

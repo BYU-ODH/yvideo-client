@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react'
 
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
+import { Prompt } from 'react-router'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
+import helpIcon from 'assets/help/help-icon-black.svg'
 
 import Style, {
 	EditButton,
@@ -34,6 +36,7 @@ export default class ContentOverview extends PureComponent {
 			editing,
 			content,
 			tag,
+			blockLeave,
 		} = this.props.viewstate
 
 		const {
@@ -47,6 +50,7 @@ export default class ContentOverview extends PureComponent {
 			handleDescription,
 			changeTag,
 			handleShowWordsModal,
+			handleShowHelp
 		} = this.props.handlers
 
 		const {
@@ -67,7 +71,7 @@ export default class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' />
+						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
 					</div>
 					<div>
 						{editing ?
@@ -80,7 +84,10 @@ export default class ContentOverview extends PureComponent {
 							<Icon className='annotations' checked={showAnnotations} />
 						</ul>
 						{editing ||
+						<>
 							<StyledLink to={`/trackeditor/${content.id}`}>Track Editor</StyledLink>
+							<StyledLink to={`/clipeditor/${content.id}`}>Clip Editor</StyledLink>
+						</>
 						}
 						{editing ?
 							<div>
@@ -129,7 +136,9 @@ export default class ContentOverview extends PureComponent {
 							<textarea rows={4} onChange={handleDescription} value={description} />
 						</Column>
 						<Column>
-							<h4>Important Words</h4>
+							<h4>Important Words
+								<img src={helpIcon} onClick={handleShowHelp} width="20" height="20"/>
+							</h4>
 							<p>Add a list of important words to be highlighted in the transcript. The highlighted
 							words will have quick translation on click if there is
 							one available.</p><br/>
@@ -137,6 +146,10 @@ export default class ContentOverview extends PureComponent {
 						</Column>
 					</InnerContainer>
 				}
+				<Prompt
+					when={blockLeave}
+					message="Have you saved your changes already?"
+				/>
 			</Style>
 		)
 	}

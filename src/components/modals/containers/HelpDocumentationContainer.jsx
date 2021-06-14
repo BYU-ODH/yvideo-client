@@ -12,12 +12,15 @@ import manager from 'assets/help/help-manager.png'
 import collection from 'assets/help/help-collection.png'
 
 import content from 'assets/help/help-content.png'
+import contentEdit from 'assets/help/help-content-edit.png'
 import eventHelp from 'assets/help/help-te-event.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomrHelp from 'assets/help/help-te-zoom.png'
 import playercontrolHelp from 'assets/help/help-playercontrols.png'
 import transcriptHelp from 'assets/help/help-transcriptview.png'
 import subHelp from 'assets/help/help-te-subtitle.png'
+import translationHelp from 'assets/help/help-translation.png'
+import importantWordHelp from 'assets/help/help-important-word.png'
 
 //player
 import clockIcon from 'assets/clock-black.svg'
@@ -88,13 +91,24 @@ const HelpDocumentationContainer = props => {
 				</div>
 				<hr/>
 				<div class="section large-img">
-					<p><b>Managing content:</b> Each collection will display a list of content. Each content will show the name, translation icon, captions icon, a link to edit content, and a link to edit the video.
-						<br/>
-					 	<b>Edit Content:</b> you can edit the content settings by clicking the edit button. This allows you to delete content, publish/unpublish a content even if the collection is visible to students, add a description,
-						tags related to the video content, and activate subtiltes or definitions.
-						<br/>
-						<b>Edit Video:</b> if you want to edit events and subtitles for a video, you can click on the "TrackEditor".</p>
+					<p><b>Managing content:</b> each collection will display a list of content. Each content will show the name, thumbnail, a link to edit content, and a link to edit the video "Track Editor".
+						To edit a content click on the edit button on the right.
+					</p>
 					<img src="${content}" />
+					<br/>
+					<p style="text-align: left; width: 100%;">
+						<b>Edit Content:</b>
+						<ul>
+							<li><b>Definitions:</b> allow quick translation to help students understand the meaning of a word</li>
+							<li><b>Caption:</b> turn captions on and off. This will turn off captions on the video and hide the transcript on the side of the video</li>
+							<li><b>Tags:</b> this is a way to let users find content based on topics</li>
+							<li><b>Important Words:</b> it is a list of words to be highlighted in the transcript.
+							These words will be clickable to allow students to get a quick translation for those specific words</li>
+						</ul>
+					</p>
+					<img src="${contentEdit}" />
+					<br/>
+					<p style="text-align: left; width: 100%;"><b>Edit Video:</b> if you want to edit events (skip, censor, blank, mute) and subtitles for a specific video, you can click on the "Track Editor" link below the content name.</p>
 				</div>`,
 		},
 		'Home Page': {
@@ -106,14 +120,21 @@ const HelpDocumentationContainer = props => {
 				</div>
 				<hr/>
 				<div class="section">
-					<p><b>Collections:</b><br/> Collections show all of the content available to a class. Click on a collection to show the videos available to you. Click the Icon shown on the right to switch between compact and block views.<br/>
-					For instructors, a “Manage Collections” Icon will appear in the top right, where you can create and edit collections.
+					<p><b>Collections:</b><br/> Collections contain a group of contents. To play a content in a collection just click on the content you want to watch.
+					For instructors, a “Manage Collections” button will appear in the top right, where you can create and edit collections.
 					</p><br/>
-					<div style="margin: 10px;">
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Toggle Icons:</b><br/> These buttons are used to toggle between a list view and a block view. A block view will display all contents in a collection horizontally, and the
+					list view will display contents vertically.
+					</p>
+					<div style="margin: 10px; display: flex; flex-direction: column;">
 						<img src="${list}" width="30px" style="margin: 5px;"/>
 						<img src="${block}" width="30px" style="margin: 5px;"/>
 					</div>
-				</div>`,
+				</div>
+				`,
 		},
 		'Track Editor': {
 			htmlInstruction: `
@@ -210,6 +231,30 @@ const HelpDocumentationContainer = props => {
 						<li>Each line in the transcript is clickable. When a line is clicked, the video will seek to the time in the video where that line is mentioned</li>
 						<li>Each line is highlighted to show which line in the transcript is being displayed in the video</li>
 					</ol>
+				</div>`,
+		},
+		'Important Words': {
+			htmlInstruction: `
+				<div class="section">
+						<p><b>Subtitle Selection:</b><br/>
+						Important words are added to a specific subtitle, so select the subtitle using the drop-down on the top left.
+					</p>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Translation:</b><br/>
+						The translation portion of this modal is on the left side. The translation portion allows users to see if there is a translation available from
+						a foreign language to english. Please, notice a few languages are supported. Check the bottom of the modal to find supported languages.
+					</p><br/>
+					<img src="${translationHelp}"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Important Words:</b><br/>
+						Adding important words to a subtitle allows instructors to point out words that the students should know.
+						<br/> Important words are highlighted in the transcript and they become clickable. When a student clicks on a word a translation is given if available.
+					</p>
+					<img src="${importantWordHelp}"/>
 				</div>`,
 		}
 	}

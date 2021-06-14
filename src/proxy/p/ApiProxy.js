@@ -5,7 +5,16 @@ import Content from 'models/Content'
 const updateSessionId = (id) => {
 	// console.log(`OLD => `, window.clj_session_id)
 	// console.log(`NEW => `, id)
-	if(id !== ``) window.clj_session_id = id
+	if(id !== ``){
+		if(id === `expired`){
+			// console.log('got here')
+
+			alert(`Your session has expired. Please, log back in`)
+			apiProxy.auth.logout()
+			// CAS LOGOUT https://cas.byu.edu/cas/logout
+		}
+		window.clj_session_id = id
+	}
 }
 
 const apiProxy = {
@@ -131,7 +140,10 @@ const apiProxy = {
 				updateSessionId(res.headers[`session-id`])
 				return res.data
 			}),
-
+			edit: async (role, id) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}`, { "account-type": role }, { withCredentials: true, headers: {'session-id': window.clj_session_id }}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
 		},
 		content: {
 			delete: async (id) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/content/${id}`, { withCredentials: true, headers: {'session-id': window.clj_session_id }}).then(async res => {
@@ -498,7 +510,9 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
+					// console.log(`step 1`)
 					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/yrich/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']
@@ -515,7 +529,7 @@ const apiProxy = {
 						await updateSessionId(res.headers[`session-id`])
 						return res
 					})
-
+					// console.log(result.data)
 					return new User(result.data)
 				}
 			} catch (error) {
@@ -564,9 +578,9 @@ const apiProxy = {
 			 */
 			get: async (id) => {
 				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/courses`,
-				 	{
-					 withCredentials: true,
-					 headers: {'session-id': window.clj_session_id},
+					{
+						withCredentials: true,
+						headers: {'session-id': window.clj_session_id},
 					})
 					.then(res => {
 						updateSessionId(res.headers[`session-id`])

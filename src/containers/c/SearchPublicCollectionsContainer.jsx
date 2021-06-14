@@ -123,6 +123,22 @@ const SearchPublicCollectionsContainer = props => {
 		setNoCollections,
 	}
 
+	/*
+				account-type
+				0 = admin
+				1 = lab assistant
+				2 = faculty / instructor
+				3 = student
+		  */
+
+	/*
+				account-role
+				0 "instructor"
+				1 "ta"
+				2 "student"
+				3 "auditing"
+			*/
+
 	return <SearchPublicCollections viewstate={viewstate} handlers={handlers} />
 }
 

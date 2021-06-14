@@ -20,6 +20,8 @@ const CollectionPermissionsContainer = props => {
 		updateCollectionPermissions,
 		getCollectionInfo,
 		toggleModal,
+		updateCollectionStatus,
+		getCollections,
 	} = props
 
 	const [course, setCourse] = useState({
@@ -30,41 +32,52 @@ const CollectionPermissionsContainer = props => {
 
 	const [user, setUser] = useState({
 		username: ``,
-		role: 2,
+		roles: 2,
 	})
 
 	const [userTA, setUserTA] = useState({
 		username: ``,
-		role: 1,
+		roles: 1,
 	})
 
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
 	const [disabledTA, setDisableTA] = useState(true)
 	const [loaded, setLoaded] = useState(false)
+	const [isEdited, setIsEdited] = useState(true)
 
 	useEffect(() => {
-		getCollectionInfo(collection.id)
+		if(isEdited){
+			getCollectionInfo(collection.id)
+			setIsEdited(false)
+		}
 		if(loaded === true) {
 			setTimeout(() => {
 				setLoaded(false)
 			}, 1000)
 		}
 
-	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses])
+	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.copyrighted])
 
 	const handlers = {
+		handleBYUOnly: e => {
+			e.preventDefault()
+			updateCollectionStatus(collection.id, `copyrighted`)
+			setIsEdited(true)
+		},
 		handleDepartmentChange: e => {
 			setCourse({
 				...course,
 				department: e.target.value,
 			})
+			setIsEdited(true)
 		},
 		handleCatalogChange: e => {
 			setCourse({
 				...course,
 				catalog: e.target.value,
 			})
+			setIsEdited(true)
 		},
 		handleSectionChange: e => {
 			if(e.target.value.length > 0)
@@ -76,6 +89,7 @@ const CollectionPermissionsContainer = props => {
 				...course,
 				section: e.target.value,
 			})
+			setIsEdited(true)
 		},
 		handleUserTAChange: e => {
 			if(e.target.value.length > 1)
@@ -87,6 +101,7 @@ const CollectionPermissionsContainer = props => {
 				...userTA,
 				username: e.target.value,
 			})
+			setIsEdited(true)
 		},
 		handleUserChange: e => {
 			if(e.target.value.length > 1)
@@ -98,6 +113,7 @@ const CollectionPermissionsContainer = props => {
 				...user,
 				username: e.target.value,
 			})
+			setIsEdited(true)
 		},
 		addCourse: e => {
 			e.preventDefault()
@@ -116,10 +132,11 @@ const CollectionPermissionsContainer = props => {
 				catalog: ``,
 				section: ``,
 			})
+			setIsEdited(true)
 		},
 		removeCourse: id => {
 			updateCollectionPermissions(collection.id, roleEndpoints.removeCourse, id)
-
+			setIsEdited(true)
 		},
 		addUser: e => {
 			e.preventDefault()
@@ -129,6 +146,7 @@ const CollectionPermissionsContainer = props => {
 				...user,
 				username: ``,
 			})
+			setIsEdited(true)
 		},
 		addTA: e => {
 
@@ -155,16 +173,18 @@ const CollectionPermissionsContainer = props => {
 				...userTA,
 				username: ``,
 			})
+			setIsEdited(true)
 		},
 		removeUser: value => {
 			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, value)
-
+			setIsEdited(true)
 		},
 		AddBatchNetids: () => {
 			toggleModal({
 				component: AddBatchNetidsContainer,
 				props: { collectionId: collection.id, setLoaded },
 			})
+			setIsEdited(true)
 		},
 	}
 
@@ -191,8 +211,10 @@ const mapStoreToProps = store => ({
 
 const mapDispatchToProps = {
 	getCollectionInfo: services.collectionService.getCollectionInfo,
+	getCollections: services.collectionService.getCollections,
 	updateCollectionPermissions: services.collectionService.updateCollectionPermissions,
 	toggleModal: interfaceService.toggleModal,
+	updateCollectionStatus: services.collectionService.updateCollectionStatus,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(CollectionPermissionsContainer)

@@ -51,3 +51,8 @@ export const TypeButton = styled.button`
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
 `
+
+export const WarningLable = styled.h4`
+	margin-top: 2rem;
+	color: red;
+`
