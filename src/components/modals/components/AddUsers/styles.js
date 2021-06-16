@@ -7,9 +7,12 @@ export const AddManyForm = styled.div`
 	min-width: 22rem;
 	min-height: 22rem;
 
-	& .textarea {
+	& >textarea {
 		width: 100%;
 		font-size: 1.5rem;
+		box-sizing: border-box;
+		border-radius: 3px;
+		resize: none;
 	}
 
 	& .submit-result{
@@ -17,10 +20,6 @@ export const AddManyForm = styled.div`
 		font-size: 1.5rem;
 		margin-left: 3rem;
 
-		& > textarea {
-			width: 100%;
-			font-size: 1.5rem;
-		}
 	}
 `
 
