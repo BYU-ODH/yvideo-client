@@ -3,12 +3,21 @@ import searchIcon from 'assets/search.svg'
 import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
-max-width: 100rem;
 
-padding: 8.4rem 2.4rem 0 2.4rem;
-margin: 0 auto;
+& .add-resource-button{
+	padding: 9rem 2rem 0 2rem;
+	/* float: right; */
+	margin: 0 auto;
+}
+
+& .resource-search{
+	max-width: 100rem;
+	padding: 2rem 2rem 0 2rem;
+	margin: 0 auto;
+}
 
 & header {
+
 	display: flex;
 	/* justify-content: space-between;
 	align-items: center; */
@@ -123,7 +132,7 @@ export const Search = styled.form`
 
 		margin-left: 1rem;
 
-		padding: 0 1.25rem 0 3.25rem;
+		padding: 0 1.5rem 0 4.5rem;
 
 		outline: none;
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
@@ -163,7 +172,7 @@ export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 10;
 	top: 1rem;
-	left: 2rem;
+	left: 3rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
 	height: 2rem;
