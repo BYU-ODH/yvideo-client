@@ -5,9 +5,9 @@ import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import proxies from 'proxy'
 import User from '../../../models/User'
+import Content from 'models/Content'
 
 const content = testutil.content
-
 const collection = testutil.collection
 
 const searchResults = [
@@ -242,14 +242,23 @@ describe(`content service test`, () => {
 	})
 
 	it(`searchPublicCollection`, async() => {
-
 		proxies.apiProxy.admin.search.public.collection.get = jest.fn()
 		proxies.apiProxy.admin.search.public.collection.get.mockImplementationOnce(()=>{
 			return Promise.resolve([collection])
 		})
+		const result = {}
+		const contentResult = []
+		if(collection.content){
+			collection.content.forEach((item) => {
+				contentResult.push(new Content(item))
+			})
+		}
+		collection.content = contentResult
+		result[collection.id]= collection
+
 		expect(store.getState().professors).toEqual([])
 		await adminServiceConstructor.searchPublicCollection(`testusername`, true)(dispatch, getState, { apiProxy })
-		expect(store.getState().publicCollections).toEqual([collection])
+		expect(store.getState().publicCollections).toEqual(result)
 		await adminServiceConstructor.searchProfessors(`testusername`, false)(dispatch, getState, { apiProxy })
 	})
 

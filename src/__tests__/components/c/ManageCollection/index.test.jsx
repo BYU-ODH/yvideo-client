@@ -80,7 +80,7 @@ const props = {
 			},
 		],
 		collectionName: `Collection 1`,
-		isContent: true,
+		isContentTap: true,
 		isEditingCollectionName: false,
 	},
 	handlers: {
@@ -108,7 +108,7 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`CollectionPermissionsContainer should be connected`, ()=> {
-		props.viewstate.isContent = false
+		props.viewstate.isContentTap = false
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
 		).dive()
@@ -118,7 +118,7 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`test viewstate`, ()=> {
-		props.viewstate.isContent = true
+		props.viewstate.isContentTap = true
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -127,7 +127,7 @@ describe(`manage collection test`, () => {
 			</Provider>,
 		)
 
-		const viewstate = wrapper.find(`ContentOverviewContainer`).childAt(0).props().viewstate
+		const viewstate = wrapper.find(`ContentOverviewContainer`).at(0).childAt(0).props().viewstate
 		expect(viewstate.content.id).toBe(115)
 		expect(viewstate.content.name).toBe(`testname`)
 		expect(viewstate.content.contentType).toBe(`video`)
@@ -148,7 +148,6 @@ describe(`manage collection test`, () => {
 			</Provider>,
 		)
 
-		console.log(wrapper.debug())
 		wrapper.find(`.content-button`).simulate('click')
 		wrapper.find(`.permissions-button`).simulate('mouseEnter')
 		wrapper.find(`.permissions-button`).simulate('mouseLeave')

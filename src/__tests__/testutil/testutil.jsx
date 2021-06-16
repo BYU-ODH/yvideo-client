@@ -339,6 +339,11 @@ export const collections = {
 	1:collection2,
 }
 
+export const collections1 = {
+	0:collection1,
+}
+collections1.content = content
+
 export const props = {
 	collection,
 	content,
