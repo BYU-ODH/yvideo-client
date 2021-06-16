@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { shallow, mount, render } from 'enzyme'
 import Controller from '../../../../components/c/Controller/index'
 import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from '../../../../components/c/Controller/styles'
@@ -25,10 +25,25 @@ const reactPlayer = { props: {
 } }
 const played = 0
 
+jest.mock('react', () => {
+  const originReact = jest.requireActual('react')
+  const mUseRef = jest.fn()
+  return {
+    ...originReact,
+    useRef: mUseRef,
+  }
+})
+
+jest.mock(`react`, () => ({
+	...jest.requireActual(`react`),
+	useRef: () => ({
+		current: { offsetWidth: 100 }
+	})
+}))
+
 describe(`Controller test`, () => {
 	it(`simulate onClick`, ()=> {
 		const wrapper = shallow(<Controller {...props}/>)
-		console.log(wrapper.debug())
 
 		wrapper.find('button').at(0).simulate('click')
 		wrapper.find('button').at(1).simulate('click')

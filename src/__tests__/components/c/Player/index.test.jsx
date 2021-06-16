@@ -39,6 +39,7 @@ const viewstate = {
 			}
 		]
 	},
+	clipTime: [`1:20`, `2:29`],
 }
 
 const handlers = {

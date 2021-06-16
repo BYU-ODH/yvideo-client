@@ -13,6 +13,7 @@ const collection = {
 			published: true,
 			thumbnail: `test@thumbnail`,
 			views: 0,
+			clips: [`item`, `item1`],
 		},
 		{
 			contentType: `video2`,
@@ -21,6 +22,7 @@ const collection = {
 			published: true,
 			thumbnail: `test2@thumbnail`,
 			views: 0,
+			clips: [`item21`, `item22`],
 		},
 	],
 	id: 65,
@@ -47,7 +49,7 @@ describe(`List collection test`, () => {
 		collection.content[1].published = false
 		const publishContent = collection.content.filter(item => item.published)
 		expect(publishContent.length).toBe(1)
-		expect(wrapper.contains(<p>2 Videos</p>)).toEqual(true)
+		expect(wrapper.contains(<p>2 Contents</p>)).toEqual(true)
 	})
 
 	it(`ListCollection togglePanel test`, ()=> {

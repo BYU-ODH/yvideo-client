@@ -26,6 +26,8 @@ const ManagerContainer = props => {
 		removeCreatedCollectionIdFromStore,
 	} = props
 
+	console.log(newCollectionInfo)
+
 	const params = useParams()
 	const location = useLocation()
 	const history = useHistory()

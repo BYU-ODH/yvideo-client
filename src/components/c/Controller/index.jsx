@@ -18,9 +18,6 @@ import unmute from 'assets/controls_muted.svg'
 import carat from 'assets/carat_white.svg'
 
 const Controller = props => {
-
-	console.log(`controller`)
-
 	// console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
 
 	const {
@@ -222,7 +219,7 @@ const Controller = props => {
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleUpdateCensorResize: (delta, pos)=>{
-			console.log(videoRef.current.offsetWidth,ref.current)
+			// console.log(videoRef.current.offsetWidth,ref.current)
 			const event = events[eventToEdit]
 			// console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
 			if (event.type === `Censor`){

@@ -3,8 +3,12 @@ import { shallow, mount } from 'enzyme'
 import CollectionPermissions from '../../../../components/c/CollectionPermissions'
 import { BrowserRouter } from 'react-router-dom'
 import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort, Loading } from '../../../../components/c/CollectionPermissions/styles'
+import * as testutil from '../../../testutil/testutil'
+
+const collection = testutil.collection
 
 const viewstate = {
+	collection: collection,
 	user: [
 		{
 			username: "test",
@@ -29,7 +33,27 @@ const viewstate = {
 			[`last-login`]: "2020-05-29"
 		},
  	],
-	 courses:[
+	userTA: [
+		{
+			[`account-name`]: "test1",
+			[`account-role`]: 1,
+			[`account-type`]: 4,
+			[`email`]: "email",
+			[`id`]: "b41e8339-8ece-4ed2-8f44-281c88433c55",
+			[`last-login`]: "na",
+			[`username`]: "qwe",
+		},
+		{
+			[`account-name`]: "test1",
+			[`account-role`]: 1,
+			[`account-type`]: 4,
+			[`email`]: "email",
+			[`id`]: "b41e8339-8ece-4ed2-8f44-281c88433c55",
+			[`last-login`]: "na",
+			[`username`]: "asd",
+		},
+	],
+	courses:[
 		{
 			[`catalog-number`]: "100",
 			department: "ENG",
@@ -92,10 +116,10 @@ describe(`CollectionPermissions test`, () => {
 		wrapper.find('td').at(7).simulate('click')
 
 		wrapper.setState({ sortType: { reverse: false } })
-		wrapper.find(Sort).at(0).simulate('click', props.viewstate.users, "Username")
-		wrapper.find(Sort).at(1).simulate('click', props.viewstate.users, "Name")
+		wrapper.find(Sort).at(0).simulate('click', props.viewstate.userTA, "Username")
+		wrapper.find(Sort).at(1).simulate('click', props.viewstate.userTA, "Name")
 		wrapper.setState({ sortType: { reverse: true } })
-		wrapper.find(Sort).at(0).simulate('click', props.viewstate.users, "Username")
-		wrapper.find(Sort).at(1).simulate('click', props.viewstate.users, "Name")
+		wrapper.find(Sort).at(0).simulate('click', props.viewstate.userTA, "Username")
+		wrapper.find(Sort).at(1).simulate('click', props.viewstate.userTA, "Name")
 	})
 })

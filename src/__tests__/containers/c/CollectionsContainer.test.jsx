@@ -21,6 +21,19 @@ const props = {
 	toggleCollectionsDisplay: jest.fn(),
 }
 
+jest.mock(`react-router-dom`, () => ({
+	...jest.requireActual(`react-router-dom`),
+	useHistory: () => ({
+		location: {
+			hash: "",
+			key: "efe1jw",
+			pathname: "/",
+			search: "",
+			state: undefined
+		}
+	}),
+}))
+
 describe(`collection container test`, () => {
 
 	it(`collections container check viewstate`, () => {

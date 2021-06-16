@@ -16,7 +16,7 @@ export const settings = {
 	showWordList:false,
 	aspectRatio:`1.77`,
 	description:``,
-	targetLanguages: [],
+	targetLanguages: `English`,
 	annotationDocument: [],
 	captionTrack: [],
 }
@@ -167,6 +167,7 @@ export const content = [
 		fullVideo: true,
 		id: 0,
 		isCopyrighted:false,
+		copyrighted: false,
 		name: `testname`,
 		physicalCopyExists:false,
 		published:true,
@@ -180,6 +181,7 @@ export const content = [
 		words: ['testWord1'],
 		tag: ['testTag1'],
 		editing: true,
+		clips: ``,
 	},
 	{
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -191,6 +193,7 @@ export const content = [
 		fullVideo: true,
 		id: 1,
 		isCopyrighted:false,
+		copyrighted: false,
 		name: `testname2`,
 		physicalCopyExists:false,
 		published:true,
@@ -204,6 +207,7 @@ export const content = [
 		words: ['testWord2'],
 		tag: ['testTag2'],
 		editing: true,
+		clips: ``,
 	},
 ]
 
@@ -222,6 +226,7 @@ export const contentBeforeModel = [
 		expired:true,
 		fullVideo: true,
 		isCopyrighted:false,
+		copyrighted: false,
 		"title": `testname`,
 		physicalCopyExists:false,
 		published:true,
@@ -248,6 +253,7 @@ export const contentBeforeModel = [
 		expired:true,
 		fullVideo: true,
 		isCopyrighted:false,
+		copyrighted: false,
 		name: `testname2`,
 		physicalCopyExists:false,
 		published:true,
@@ -607,6 +613,7 @@ export const emptyStore = mockStore(
 			cache: [],
 			users: [],
 			courses: [],
+			newCollectionId: `b3a29aff-235e-4261-9b08-7b32023afc9e`,
 		},
 		contentStore:{
 			cache: [],
@@ -656,6 +663,14 @@ export const store = mockStore(
 					resourceType: `video`,
 					views: 0,
 				},
+			},
+			access: {
+				"id1" : {
+					"0": {
+						username: `yrich`,
+						valid: true
+					}
+				}
 			},
 			streamKey: `key`,
 		},
@@ -743,6 +758,7 @@ export const store = mockStore(
 			cache: collections,
 			users: [],
 			courses: [],
+			newCollectionId: `b3a29aff-235e-4261-9b08-7b32023afc9e`,
 		},
 		contentStore:{
 			cache: [
@@ -756,6 +772,7 @@ export const store = mockStore(
 					fullVideo: true,
 					id: 0,
 					isCopyrighted:false,
+					copyrighted: false,
 					name: `testname`,
 					physicalCopyExists:false,
 					published:true,
@@ -777,6 +794,7 @@ export const store = mockStore(
 					fullVideo: true,
 					id: 1,
 					isCopyrighted:false,
+					copyrighted: false,
 					name: `testname2`,
 					physicalCopyExists:false,
 					published:true,
