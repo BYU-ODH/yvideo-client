@@ -10,6 +10,10 @@ max-width: 100rem;
 padding: 8.4rem 2.4rem 0 2.4rem;
 margin: 0 auto;
 
+& .list{
+	margin-bottom: 5rem;
+}
+
 & .collections-header{
 		display: flex;
 		justify-content: space-between;

@@ -186,11 +186,11 @@ export class CollectionPermissions extends PureComponent {
 							<TableHeader>
 								<h4>Current Users</h4>
 								<div>
-								<Search className='faculty-submit' onSubmit={handlers.addUser}>
-									<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
-									<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
-								</Search>
-								<AddManyButton type='button' onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
+									<Search className='faculty-submit' onSubmit={handlers.addUser}>
+										<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
+										<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
+									</Search>
+									<AddManyButton type='button' onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
 								</div>
 							</TableHeader>
 							<Table border='1'>
