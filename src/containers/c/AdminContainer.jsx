@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
+import AddUsersContainer from 'components/modals/containers/AddUsersContainer'
 
 import { Admin } from 'components'
 
@@ -125,6 +126,12 @@ const AdminContainer = props => {
 		userRoleSave: e => {
 			adminUpdateUserRole(role, menuItemInfo.id)
 			setIsEdit(false)
+		},
+
+		addUsers: e => {
+			toggleModal({
+				component: AddUsersContainer,
+			})
 		},
 	}
 

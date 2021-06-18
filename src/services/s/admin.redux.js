@@ -34,6 +34,7 @@ export default class AdminService {
 		ADMIN_EMPTY_SEARCHED_USER: `ADMIN_EMPTY_SEARCHED_USER`,
 		ADMIN_GET_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_PUBLIC_COLLECTION_CONTENT`,
 		ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT`,
+		ADMIN_POST_USERS: `ADMIN_POST_USERS`,
 	}
 
 	// action creators
@@ -61,6 +62,7 @@ export default class AdminService {
 		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {}}),
 		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
+		adminAddUsers: (successResult, failResult) => ({type: this.types.ADMIN_POST_USERS, payload:{successResult, failResult}}),
 	}
 
 	// default store
@@ -69,6 +71,7 @@ export default class AdminService {
 		data: null,
 		cache: {},
 		searchedUser:{}, // store user here from get by id
+		addedUsers: {},
 		professors: [],
 		professor: {},
 		publicCollections: [],
@@ -108,6 +111,7 @@ export default class AdminService {
 			ADMIN_GET_PUBLIC_COLLECTION_CONTENT,
 			ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT,
 			ADMIN_EMPTY_SEARCHED_USER,
+			ADMIN_POST_USERS,
 		} = this.types
 
 		switch (action.type) {
@@ -296,6 +300,12 @@ export default class AdminService {
 				searchedUser: {},
 			}
 
+		case ADMIN_POST_USERS:
+			return{
+				...store,
+				addedUsers: action.payload,
+			}
+
 		default:
 			return store
 		}
@@ -349,6 +359,42 @@ export default class AdminService {
 			}
 
 		} else dispatch(this.actions.adminAbort())
+	}
+
+	addUsers = (usernames) => async(dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+
+			const resultSuccess = []
+			const resultFail = []
+
+			usernames.forEach(async(username) => {
+				if(username === ``) return
+
+				const body = {
+					"account-role": 1,
+					"email": `${username}@byu.edu`,
+					"last-login": `string`,
+					"account-name": username,
+					"account-type": 0,
+					username,
+				}
+
+				const response = await apiProxy.user.post(body)
+
+				if(response.status === 200){
+					resultSuccess.push(response.data.id)
+					dispatch(this.actions.adminAddUsers(resultSuccess, resultFail))
+				} else{
+					resultFail.push(username)
+					dispatch(this.actions.adminAddUsers(resultSuccess, resultFail))
+				}
+			})
+
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
 	}
 
 	getPublicCollectionContents = (collectionId, isModal = false) => async(dispatch, getState, { apiProxy }) => {
