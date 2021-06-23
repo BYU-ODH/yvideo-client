@@ -76,7 +76,7 @@ describe(`admin dashboard test`, () => {
 				<Admin viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
-		expect(wrapper.contains(<p>The are no results</p>)).toEqual(true)
+		expect(wrapper.contains(<p>No users matched your search</p>)).toEqual(true)
 	})
 	it(`data is null `, ()=> {
 		viewstate.data = null

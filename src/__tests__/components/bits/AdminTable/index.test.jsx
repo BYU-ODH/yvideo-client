@@ -55,7 +55,6 @@ const tipHandlers = {
 	toggleTip: jest.fn(),
 }
 
-
 describe(`admin table test`, () => {
 	it(`menu options`, ()=> {
 		viewstate.searchCategory = 'Users'
@@ -91,6 +90,9 @@ describe(`admin table test`, () => {
 		button.find(ItemEdit).at(0).simulate('click');
 		button.find(ItemEdit).at(1).simulate('click');
 		button.find(ItemMenu).simulate('click');
+		button.find(ItemMenu).simulate('mouseEnter', { target: { x: 3, y: 4, width: 10 } })
+		button.find(ItemMenu).simulate('mouseLeave');
+
 
 		wrapper.find({"to": "/lab-assistant-manager/2323"}).simulate('click');
 		wrapper.find({"className": "userDelete"}).simulate('click');

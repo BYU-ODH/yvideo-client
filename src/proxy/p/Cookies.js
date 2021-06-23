@@ -10,13 +10,12 @@ const cookies = {
 		const decodedCookie = decodeURIComponent(document.cookie)
 		const ca = decodedCookie.split(`;`)
 
-		ca.forEach(c => {
-			while(c.charAt(0) === ` `)
-				c = c.substring(1)
-			if (c.indexOf(name) === 0)
+		for(let c of ca) {
+			c = c.trimStart()
+			if (c.indexOf(name) === 0) {
 				return c.substring(name.length, c.length)
-		})
-
+			}
+		}
 		return ``
 	},
 
@@ -34,8 +33,9 @@ const cookies = {
 	},
 
 	delete: (cookieName, path, domain) => {
-		if (this.get(cookieName))
+		if (cookies.get(cookieName)) {
 			document.cookie = `${cookieName}=${path && `;path=${path}`}${domain && `;domain=${domain}`};expires=Thu, 01 Jan 1970 00:00:01 GMT`
+		}
 	},
 }
 

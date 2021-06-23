@@ -116,7 +116,7 @@ describe(`LabAssistantManagerContainer container test`, () => {
 		)
 
 		expect(wrapper.find({"className" : `collection-username`}).text()).toBe(`testname professor1's Collections`)
-		expect(wrapper.find({"className" : `link`}).length).toBe(3)
+		expect(wrapper.find({"className" : `link`}).length).toBe(9)
 
 		// TODO: need to figure out how to check the toggle
 		wrapper.find({"className" : `collection-create`}).at(0).simulate(`click`)
