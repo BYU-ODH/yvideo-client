@@ -384,7 +384,7 @@ const ClipEditor = props => {
 				</span>
 				<SideEditor minimized={false}>
 					<header>
-						<div style={{position:`relative`,float:`none`, color:`#ffffff`, display:`flex`,justifyContent:`center`,alignItems:`center`,paddingTop:`20px`}}><h1 style={{margin:`0px`}}>Clip Editor</h1></div>
+						<div style={{position:`relative`,float:`none`, color:`#ffffff`, display:`flex`,justifyContent:`center`,alignItems:`center`,paddingTop:`20px`}}><h1 style={{margin:`0px`}}>Clip Manager</h1></div>
 					</header>
 					{active !== `` ? (<>
 						<div className='center' style={{ flexDirection: `column`}}>

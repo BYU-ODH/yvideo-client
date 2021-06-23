@@ -30,10 +30,21 @@ margin: 0 auto;
 			}
 
 			& a {
-				font-weight: 300;
 				font-size: 1.2rem;
-				text-decoration: none;
-				color: #000;
+				color: white;
+				background-color: var(--light-blue);
+				outline: none;
+				box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+				border: none;
+				border-radius: 6px;
+				text-align: center;
+				cursor: pointer;
+				font-weight:4300;
+				padding: 8px 5px;
+
+				:hover {
+					background-color: var(--navy-blue);
+				}
 			}
 		}
 }

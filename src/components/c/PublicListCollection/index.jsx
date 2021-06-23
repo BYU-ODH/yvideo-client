@@ -29,7 +29,17 @@ class PublicListCollection extends PureComponent {
 				<CollectionRow>
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
-						<p>{collection.content.length} Contents</p>
+						{
+							collection.content.length === 0 ? (
+								<p>The collection is empty</p>
+							)
+								:
+								collection.content.length === 1 ? (
+									<p>1 item</p>
+								)
+									:
+									<p>{collection.content.length} items</p>
+						}
 						<div />
 					</Collection>
 				</CollectionRow>

@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 const props = {
-	name: `Track Editor`,
+	name: `Video Editor`,
 	toggleModal: jest.fn(),
 	viewstate: {
 		help: {
@@ -24,7 +24,7 @@ describe(`HelpDocumentationContainer test`, () => {
 		).childAt(0).dive()
 
 		const viewstate = wrapper.props().viewstate
-		expect(viewstate.name).toBe(`Track Editor`)
+		expect(viewstate.name).toBe(`Video Editor`)
 	})
 
 	it(`test props should be true: Manage Collections`, () => {

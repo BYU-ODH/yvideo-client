@@ -69,6 +69,10 @@ export const SideMenu = styled.div`
 		position: relative;
 	}
 
+	& > div {
+		cursor: pointer;
+	}
+
 	& .link {
 		height: 4rem;
 		width: 100%;
