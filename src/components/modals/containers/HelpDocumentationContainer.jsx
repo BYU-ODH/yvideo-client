@@ -91,7 +91,7 @@ const HelpDocumentationContainer = props => {
 				</div>
 				<hr/>
 				<div class="section large-img">
-					<p><b>Managing content:</b> each collection will display a list of content. Each content will show the name, thumbnail, a link to edit content, and a link to edit the video "Track Editor".
+					<p><b>Managing content:</b> each collection will display a list of content. Each content will show the name, thumbnail, a link to edit content, and a link to edit the video "Video Editor".
 						To edit a content click on the edit button on the right.
 					</p>
 					<img src="${content}" />
@@ -108,7 +108,7 @@ const HelpDocumentationContainer = props => {
 					</p>
 					<img src="${contentEdit}" />
 					<br/>
-					<p style="text-align: left; width: 100%;"><b>Edit Video:</b> if you want to edit events (skip, censor, blank, mute) and subtitles for a specific video, you can click on the "Track Editor" link below the content name.</p>
+					<p style="text-align: left; width: 100%;"><b>Edit Video:</b> if you want to edit events (skip, censor, blank, mute) and subtitles for a specific video, you can click on the "Video Editor" link below the content name.</p>
 				</div>`,
 		},
 		'Home Page': {
@@ -136,7 +136,7 @@ const HelpDocumentationContainer = props => {
 				</div>
 				`,
 		},
-		'Track Editor': {
+		'Video Editor': {
 			htmlInstruction: `
 				<div class="section">
 					<p><b>Side Menu:</b>

@@ -267,9 +267,18 @@ export const EventList = styled.div`
 		& > .save {
 			position: relative;
 			float: right;
-			margin-right: 20px;
-			width: 10rem;
+			// margin-right: 20px;
+			width: 8rem;
 			height: 100%;
+			display: flex;
+
+			& i {
+				line-height: 5rem;
+			}
+
+			& .fa-check {
+				color: green;
+			}
 
 			& button {
 				width: 100%;
@@ -289,6 +298,7 @@ export const EventList = styled.div`
 				& span, img {
 					margin: auto;
 				}
+
 			}
 		}
 	}

@@ -63,37 +63,37 @@ export default class Manager extends PureComponent {
 				) : (
 					<>
 						<>
-						{
-							isMobile && collection && isOpen === false ?
+							{
+								isMobile && collection && isOpen === false ?
 								// <MenuIcon onClick={handleToggleSideBar} />
-								<MenuIcon type="button" onClick={handleToggleSideBar}>Back</MenuIcon>
-								:
-								<SideMenu isOpen={isOpen}>
-								<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
-									<Help
-										onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}
-									><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
-									</Help>
-								</h4>
+									<MenuIcon type='button' onClick={handleToggleSideBar}>Back</MenuIcon>
+									:
+									<SideMenu isOpen={isOpen}>
+										<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
+											<Help
+												onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+												onMouseLeave={e => toggleTip()}
+											><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
+											</Help>
+										</h4>
 
-								<Accordion className='collection-published' header={`Published`} active>
-									{sideLists.published.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link onClick={handleToggleSideBar} to={`/${path}/${id}`} >{name}</Link></div>)}
-								</Accordion>
+										<Accordion className='collection-published' header={`Published`} active>
+											{sideLists.published.map(({ id, name }, index) => <div key={index}><Link className={`${id === activeId ? `active-collection link` : `link`}`} onClick={handleToggleSideBar} to={`/${path}/${id}`} >{name}</Link></div>)}
+										</Accordion>
 
-								<Accordion header={`Unpublished`} active>
-									{sideLists.unpublished.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
-								</Accordion>
+										<Accordion header={`Unpublished`} active>
+											{sideLists.unpublished.map(({ id, name }, index) => <div key={index} ><Link className={`${id === activeId ? `active-collection link` : `link`}`} onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
+										</Accordion>
 
-								{
-									admin && <Accordion header={`Archived`}>
-										{sideLists.archived.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
-									</Accordion>
-								}
+										{
+											admin && <Accordion header={`Archived`}>
+												{sideLists.archived.map(({ id, name }, index) => <div key={index} ><Link className={`${id === activeId ? `active-collection link` : `link`}`} to={`/${path}/${id}`} >{name}</Link></div>)}
+											</Accordion>
+										}
 
-								<CreateButton className='collection-create' onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
-							</SideMenu>
-						}
+										<CreateButton className='collection-create' onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
+									</SideMenu>
+							}
 						</>
 
 						<Body>
@@ -108,14 +108,14 @@ export default class Manager extends PureComponent {
 												:
 												<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 											:
-												<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
-								:
-								collection ?
-									user ?
-										<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
-										:
-										<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 									:
+									collection ?
+										user ?
+											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+											:
+											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+										:
 										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 							}
 						</Body>

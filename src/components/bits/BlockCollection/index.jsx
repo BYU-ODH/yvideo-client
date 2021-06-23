@@ -65,7 +65,17 @@ export default class BlockCollection extends Component {
 				<Container>
 					<Header>
 						<Link to={`/`}>{name}</Link>
-						<p>{publishContent.length} Videos</p>
+						{
+							publishContent.length === 0 ? (
+								<p>This collection is empty</p>
+							)
+								:
+								publishContent.length === 1 ? (
+									<p>1 item</p>
+								)
+									:
+									<p>{publishContent.length} items</p>
+						}
 						{ this.props.collection.id === `public` ? (
 							<Link to={`/search-public-collections`}>Search Public Collections</Link>
 						) : ``}
