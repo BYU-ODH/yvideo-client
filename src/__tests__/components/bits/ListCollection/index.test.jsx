@@ -49,14 +49,13 @@ describe(`List collection test`, () => {
 		collection.content[1].published = false
 		const publishContent = collection.content.filter(item => item.published)
 		expect(publishContent.length).toBe(1)
-		expect(wrapper.contains(<p>2 Contents</p>)).toEqual(true)
+		expect(wrapper.contains(<p>2 items</p>)).toEqual(true)
 	})
 
 	it(`ListCollection togglePanel test`, ()=> {
 		const wrapper = shallow(
 			<ListCollection {...props} />,
 		)
-
 
 		const togglePanel = jest.spyOn(wrapper.instance(), `togglePanel`)
 		wrapper.instance().forceUpdate()
