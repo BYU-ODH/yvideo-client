@@ -24,6 +24,11 @@ describe(`content service test`, () => {
 	let dispatch
 	let getState
 	let apiProxy
+	const error = {
+		response: {
+			data: `SUBTITLES_ERROR test error message`
+		}
+	}
 
 	// reset store
 	beforeEach(() => {
@@ -110,8 +115,8 @@ describe(`content service test`, () => {
 	})
 
 	it(`subtitlesError`, () => {
-		const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesError(`SUBTITLES_ERROR test error message`))
-		expect(result.payload.error).toBe(`SUBTITLES_ERROR test error message`)
+		const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesError(error))
+		expect(result.payload.error).toEqual(error)
 		expect(result.type).toBe(`SUBTITLES_ERROR`)
 	})
 
@@ -160,7 +165,7 @@ describe(`content service test`, () => {
 
 	it(`getSubtitles: catch error`, async() => {
 		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		});
 		expect(store.getState().cache).toEqual([{sub1}])
 		await subtitleServiceConstructor.getSubtitles(`subtitle1`, true)(dispatch, getState, { apiProxy })
@@ -194,7 +199,7 @@ describe(`content service test`, () => {
 
 	it(`updateSubtitle: catch error`, async() => {
 		proxies.apiProxy.subtitles.edit.mockImplementationOnce(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		});
 		expect(store.getState().loading).toEqual(false)
 		await subtitleServiceConstructor.updateSubtitle(updateSubtitle1)(dispatch, getState, { apiProxy })
@@ -235,13 +240,11 @@ describe(`content service test`, () => {
 		})
 
 		proxies.apiProxy.subtitles.delete.mockImplementationOnce(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		})
 
 		await subtitleServiceConstructor.setSubtitles(subtitle1)(dispatch, getState, { apiProxy })
 		expect(store.getState().cache).toEqual(subtitle1)
 		await subtitleServiceConstructor.deleteSubtitle(subtitle1)(dispatch, getState, { apiProxy })
 	})
-
-
 })

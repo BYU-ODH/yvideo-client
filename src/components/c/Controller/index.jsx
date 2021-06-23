@@ -56,7 +56,7 @@ const Controller = props => {
 
 	useEffect(() => {
 		const indicator = document.getElementById(`time-indicator`)
-		console.log(document,document.querySelector(`.censorRow`),document.querySelectorAll(`.gEspeL`))
+		// console.log(document,document.querySelector(`.censorRow`),document.querySelectorAll(`.gEspeL`))
 		// if (document.querySelector(`.censorRow`)){
 		// 	if (Array.isArray(document.querySelectorAll(`.censorRow`))){
 		// 		document.querySelectorAll(`.censorRow`).array.forEach(element => {

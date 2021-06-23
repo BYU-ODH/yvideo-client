@@ -31,8 +31,13 @@ const newcontent = {
 }
 
 const contentBeforeModel = testutil.contentBeforeModel[0]
-
 const contentBeforeModel2 = testutil.contentBeforeModel[1]
+
+const error = {
+	response: {
+		data: `SUBTITLES_ERROR test error message`
+	}
+}
 
 proxies.apiProxy.content.post = jest.fn()
 proxies.apiProxy.content.post.mockImplementation(()=>{
@@ -119,10 +124,9 @@ describe(`content service test`, () => {
 
 	it(`content error`, () => {
 		console.error = jest.fn()
-		const result = store.dispatch(contentServiceConstructor.actions.contentError(`error message`))
-		expect(console.error).toBeCalled()
+		const result = store.dispatch(contentServiceConstructor.actions.contentError(error))
 		expect(result.type).toBe(`CONTENT_ERROR`)
-		expect(result.payload.error).toBe(`error message`)
+		expect(result.payload.error).toEqual(error)
 	})
 
 	it(`content get`, () => {
@@ -167,7 +171,7 @@ describe(`content service test`, () => {
 	it(`getContent: catch error`, async() => {
 		proxies.apiProxy.content.getSingleContent = jest.fn()
 		proxies.apiProxy.content.getSingleContent.mockImplementation(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		})
 		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
 		await contentServiceConstructor.getContent(`contentid1`)(dispatch, getState, { apiProxy })
@@ -187,7 +191,7 @@ describe(`content service test`, () => {
 	it(`updateContent: catch error`, async() => {
 		proxies.apiProxy.content.update = jest.fn()
 		proxies.apiProxy.content.update.mockImplementation(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		})
 		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
 		await contentServiceConstructor.updateContent(new Content(contentBeforeModel))(dispatch, getState, { apiProxy })
@@ -215,7 +219,7 @@ describe(`content service test`, () => {
 	it(`addView: catch error`, async() => {
 		proxies.apiProxy.content.addView.get = jest.fn()
 		proxies.apiProxy.content.addView.get.mockImplementation(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		})
 		expect(store.getState().cache[`contentid2`].views).toBe(0)
 		await contentServiceConstructor.addView(`contentid2`, true)(dispatch, getState, { apiProxy })
@@ -241,7 +245,7 @@ describe(`content service test`, () => {
 	it(`getSubtitles: catch error`, async() => {
 		proxies.apiProxy.content.getSubtitles = jest.fn()
 		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		})
 
 		store.dispatch(contentServiceConstructor.actions.contentCreate(newcontent, 85))
@@ -265,7 +269,7 @@ describe(`content service test`, () => {
 	it(`addSubtitles: catch error`, async() => {
 		proxies.apiProxy.content.addSubtitles = jest.fn()
 		proxies.apiProxy.content.addSubtitles.mockImplementationOnce(()=>{
-			return Promise.reject('error')
+			return Promise.reject(error)
 		})
 		expect(store.getState().loading).toEqual(undefined)
 		await contentServiceConstructor.addSubtitles(`sub`)(dispatch, getState, { apiProxy })

@@ -90,7 +90,6 @@ const EventsContainer = props => {
 				handleCensorActive(true)
 				break
 			case `Blank`:
-				console.log(`should blank`)
 				handleBlank(true)
 				break
 			default:
@@ -112,7 +111,6 @@ const EventsContainer = props => {
 				break
 			}
 		} else if (currentTime > element.end && element.type === `Censor`){
-			console.log(`what`)
 			handleCensorActive(false)
 		}
 

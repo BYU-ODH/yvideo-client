@@ -59,6 +59,7 @@ describe(`EventsContainer test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		console.log(wrapper.debug())
+
+		expect(wrapper).toBeDefined()
 	})
 })

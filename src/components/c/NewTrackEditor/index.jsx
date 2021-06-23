@@ -939,7 +939,7 @@ const TrackEditor = props => {
 										/>
 									</div>
 								))}
-								<NewLayer onClick={handleAddLayer}
+								<NewLayer className='new-layer' onClick={handleAddLayer}
 									onMouseEnter={e => handleShowTip(`te-add-layer`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 11, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}>
 									<Icon src={plus}/>
