@@ -530,7 +530,6 @@ const TrackEditor = props => {
 
 	const handleSaveAnnotation = async () => {
 		setIsLoading(true)
-		console.log(isLoading)
 		// console.log(subtitles)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
@@ -540,7 +539,6 @@ const TrackEditor = props => {
 		setSubLayersToDelete([])
 		// setSaved(true)
 		setIsLoading(false)
-		console.log(isLoading)
 
 	}
 
