@@ -24,6 +24,7 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
+		setBreadcrumb,
 	} = props
 
 	const [isMobile, setIsMobile] = useState(false)
@@ -32,6 +33,7 @@ const CollectionsContainer = props => {
 	const history = useHistory()
 
 	useEffect(() => {
+		setBreadcrumb([`Home`])
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
@@ -131,6 +133,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
+	setBreadcrumb: interfaceService.setBreadcrumb,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

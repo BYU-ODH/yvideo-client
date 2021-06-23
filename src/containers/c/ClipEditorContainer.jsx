@@ -33,6 +33,7 @@ const ClipEditorContainer = props => {
 		toggleModal,
 		toggleTip,
 		setSubContentId,
+		setBreadcrumb,
 	} = props
 
 	const {id} = useParams()
@@ -50,6 +51,8 @@ const ClipEditorContainer = props => {
 		return returnThis
 	}
 	useEffect(() => {
+		setBreadcrumb([`Home`, `Manage Collections`, `Clip Manager`])
+
 		// console.log('use effecct')
 		if(!content.hasOwnProperty(id)){
 			// console.log(`getContent`)
@@ -153,6 +156,7 @@ const mapThunksToProps = {
 	setSubContentId: subtitlesService.setContentId,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	setBreadcrumb: interfaceService.setBreadcrumb,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(ClipEditorContainer)

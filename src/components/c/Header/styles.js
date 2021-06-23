@@ -11,7 +11,7 @@ const Style = styled.div`
 	/* padding: 0 2.4rem; */
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
 
 	border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
 

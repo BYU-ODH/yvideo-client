@@ -37,6 +37,7 @@ const TrackEditorContainer = props => {
 		setSubContentId,
 		contentError,
 		subtitleError,
+		setBreadcrumb,
 	} = props
 
 	const {id} = useParams() // content id
@@ -63,6 +64,8 @@ const TrackEditorContainer = props => {
 	}
 
 	useEffect(() => {
+		setBreadcrumb([`Home`, `Manage Collections`, `Video Editor`])
+
 		// console.log('use effecct')
 		if(!content.hasOwnProperty(id)){
 			// console.log(`getContent`)
@@ -132,7 +135,7 @@ const TrackEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Track Editor`},
+			props: { name: `Video Editor`},
 		})
 	}
 
@@ -200,6 +203,7 @@ const mapThunksToProps = {
 	setSubContentId: subtitlesService.setContentId,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	setBreadcrumb: interfaceService.setBreadcrumb,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)
