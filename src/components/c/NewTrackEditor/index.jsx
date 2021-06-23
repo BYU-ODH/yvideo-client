@@ -152,6 +152,7 @@ const TrackEditor = props => {
 		width: window.innerWidth,
 	})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
+	const [isLoading,setIsLoading] = useState(false)
 	// refs
 	const controllerRef = useRef(null)
 
@@ -528,6 +529,8 @@ const TrackEditor = props => {
 	}
 
 	const handleSaveAnnotation = async () => {
+		setIsLoading(true)
+		console.log(isLoading)
 		// console.log(subtitles)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
@@ -535,7 +538,10 @@ const TrackEditor = props => {
 		await handleSaveSubtitles()
 		deleteSubtitles(subLayersToDelete)
 		setSubLayersToDelete([])
-		setSaved(true)
+		// setSaved(true)
+		setIsLoading(false)
+		console.log(isLoading)
+
 	}
 
 	const handleSaveSubtitles = async() => {
@@ -1032,7 +1038,19 @@ const TrackEditor = props => {
 
 					<header>
 						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
-						<div className={`save`}><button onClick={handleSaveAnnotation}><img src={`${saveIcon}`}/><span>Save</span></button></div>
+						<div className={`save`}>
+							<button onClick={handleSaveAnnotation}>
+								{isLoading ? (
+									<i className='fa fa-refresh fa-spin'/>
+								)
+									: (
+										<i class='fa fa-check'></i>
+									)
+
+								}
+								<span>Save</span>
+							</button>
+						</div>
 					</header>
 
 					{tab === `events` ?
@@ -1108,20 +1126,20 @@ const TrackEditor = props => {
 			</DndProvider>
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
-					<img src={closeIcon} width="20" height="20" onClick={ e => setSaved(false)}/>
+					<img src={closeIcon} width='20' height='20' onClick={ e => setSaved(false)}/>
 					{
-						contentError !== '' || subtitleError !== '' ? (
-							<h2 id="error">
+						contentError !== `` || subtitleError !== `` ? (
+							<h2 id='error'>
 								<span>Content failed with: {contentError}</span><br/><br/><span>Subtitle failed with: {subtitleError}</span>
 							</h2>
 						) : (
-							<h2 id="success">Annotations saved successfully</h2>
+							<h2 id='success'>Annotations saved successfully</h2>
 						)
 					}
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
-					message="Have you saved your changes already?"
+					message='Have you saved your changes already?'
 				/>
 			</>
 		</Style>
