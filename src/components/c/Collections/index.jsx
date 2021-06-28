@@ -61,13 +61,10 @@ export default class Collections extends PureComponent {
 						{
 							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip(`list-block`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
 						}
-						{/* {
+						{
 							(isProf || isAdmin) &&
-							<h3>
-								<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop+20, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
-							</h3>
-						} */}
-						<MenuIcon onClick={linkToManageCollection} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}/>
+								<MenuIcon onClick={linkToManageCollection} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}/>
+						}
 					</div>
 				</header>
 				<div className='list'>
@@ -104,10 +101,14 @@ export default class Collections extends PureComponent {
 								{/* <button type='submit'>Search</button> */}
 							</Search>
 						</>
-						{
-							(isProf || isAdmin) &&
-								<MenuIcon onClick={linkToManagePublicCollection}/>
-						}
+						<>
+							{
+								(isProf || isAdmin) &&
+								<div>
+									<MenuIcon onClick={linkToManagePublicCollection}/>
+								</div>
+							}
+						</>
 					</header>
 					:
 					<header className= 'collections-header-mobile'>

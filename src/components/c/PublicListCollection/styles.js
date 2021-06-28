@@ -21,7 +21,7 @@ export const CollectionRow = styled.div`
 export const Collection = styled.div`
 	display: grid;
 	/* grid-template-columns: 8rem 15rem auto 2rem; */
-	grid-template-columns: 18rem auto 1.5rem;
+	grid-template-columns: 20rem auto 1.5rem;
 	justify-items: start;
 	align-items: center;
 
