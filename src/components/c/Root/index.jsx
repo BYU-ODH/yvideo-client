@@ -53,7 +53,6 @@ class Root extends PureComponent {
 								<CollectionsContainer />
 							</Route>
 
-							{/* TODO: need to double check */}
 							<Route exact path='/search-public-collections' >
 								<SearchPublicCollectionsContainer />
 							</Route>
@@ -69,10 +68,6 @@ class Root extends PureComponent {
 							<Route path='/lab-assistant'>
 								<LabAssistantContainer />
 							</Route>
-
-							{/* <Route path='/lab-assistant-resource/:professorId'>
-								<ManageResourceContainer />
-							</Route> */}
 
 							<Route path='/manage-resource'>
 								<ManageResourceContainer />

@@ -86,6 +86,22 @@ const CollectionsContainer = props => {
 		setSearchQuery(value)
 	}
 
+	const linkToManageCollection = e => {
+		e.preventDefault()
+
+		history.push({
+			pathname: `/manager`,
+		})
+	}
+
+	const linkToManagePublicCollection = e => {
+		e.preventDefault()
+
+		history.push({
+			pathname: `/public-manager`,
+		})
+	}
+
 	const viewstate = {
 		isProf,
 		isAdmin,
@@ -108,6 +124,8 @@ const CollectionsContainer = props => {
 		setTab,
 		handleSearchTextChange,
 		handleSearchQuerySubmit,
+		linkToManageCollection,
+		linkToManagePublicCollection,
 	}
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
