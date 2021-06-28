@@ -177,7 +177,6 @@ export default class SubtitlesService {
 			tempSub[`content-id`] = subtitle[`content-id`]
 			tempSub[`content`] = JSON.stringify(subtitle[`content`])
 			tempSub['words'] = ''
-			console.log(subtitle)
 			const result = await apiProxy.subtitles.post(tempSub)
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))

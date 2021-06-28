@@ -71,10 +71,10 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
 
 		// test craete content button for initigating togglemodal
-		wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
-		setTimeout(() => {
-			expect(wrapper.props().children.props.toggleModal).toHaveBeenCalled()
-		}, 500)
+		// wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
+		// setTimeout(() => {
+		// 	expect(wrapper.props().children.props.toggleModal).toHaveBeenCalled()
+		// }, 500)
 	})
 
 	it(`event handlers`, () => {

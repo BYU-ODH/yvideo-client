@@ -35,7 +35,6 @@ describe(`CensorDnD test`, () => {
 				<CensorDnD {...props}/>
 			</BrowserRouter>,
 		)
-		console.log(wrapper.debug())
 		let item = wrapper.find(AfterButton).simulate('click');
 		expect(item).toBeDefined();
 	})

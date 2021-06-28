@@ -943,7 +943,7 @@ const TrackEditor = props => {
 										/>
 									</div>
 								))}
-								<NewLayer onClick={handleAddLayer}
+								<NewLayer className='new-layer' onClick={handleAddLayer}
 									onMouseEnter={e => handleShowTip(`te-add-layer`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 11, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}>
 									<Icon src={plus}/>
@@ -972,7 +972,7 @@ const TrackEditor = props => {
 									</div>
 								))
 								}
-								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`150px`,marginLeft:`2px`,marginTop:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} onClick={()=>{
+								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`150px`,marginLeft:`2px`,marginTop:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`}  onClick={()=>{
 									setSubModalVisible(true)
 									setSubModalMode(`create`)
 								}}>

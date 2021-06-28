@@ -18,7 +18,7 @@ const props = {
 }
 
 describe(`HelpDocumentationContainer test`, () => {
-	it(`test props should be true`, () => {
+	it(`test props should be true: Track Editor`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -27,7 +27,7 @@ describe(`HelpDocumentationContainer test`, () => {
 		expect(viewstate.name).toBe(`Video Editor`)
 	})
 
-	it(`test props should be true`, () => {
+	it(`test props should be true: Manage Collections`, () => {
 		props.name = `Manage Collections`
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
@@ -37,7 +37,7 @@ describe(`HelpDocumentationContainer test`, () => {
 		expect(viewstate.name).toBe(`Manage Collections`)
 	})
 
-	it(`test props should be true`, () => {
+	it(`test props should be true: Home Page`, () => {
 		props.name = `Home Page`
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
@@ -46,14 +46,17 @@ describe(`HelpDocumentationContainer test`, () => {
 		const viewstate = wrapper.props().viewstate
 		expect(viewstate.name).toBe(`Home Page`)
 	})
-	it(`test props should be true`, () => {
-		const div = document.createElement('content');
+	it(`test props should be true: mock document.getElementById (content)`, () => {
+		let parent = mount(
+			<div id='content'></div>
+		)
+		document.getElementById = jest.fn((tag) => parent.instance())
+
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>
-			</Provider>, div
+			</Provider>
 		)
-		console.log(wrapper.debug())
 		const button = wrapper.find(CloseHelp).simulate('click')
 		expect(button).toBeDefined()
 	})

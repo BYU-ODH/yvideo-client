@@ -13,8 +13,6 @@ import HelpDocumentation from 'components/modals/containers/HelpDocumentationCon
 
 const TrackEditorContainer = props => {
 
-	console.log(`track editor container`)
-
 	const {
 		content,
 		resource,

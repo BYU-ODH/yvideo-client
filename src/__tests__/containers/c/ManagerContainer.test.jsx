@@ -46,10 +46,10 @@ describe(`manager container test`, () => {
 			</Provider>,
 		)
 
-		// check each collection link
-		wrapper.find({"className" : `link`}).forEach((link, index) => {
-			expect(link.props().children.props.to).toBe(`/manager/${index}`)
-		})
+		// // check each collection link
+		// wrapper.find({"className" : `link`}).forEach((link, index) => {
+		// 	expect(link.props().children.props.to).toBe(`/manager/${index}`)
+		// })
 
 		// TODO: how to properly test toggleModal is initiated. I cannot find the way to see the interfaceStore is updated
 		wrapper.find({"className" : `collection-create`}).at(0).simulate(`click`)

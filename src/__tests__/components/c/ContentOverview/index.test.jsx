@@ -59,9 +59,12 @@ describe(`content overview test`, () => {
 		// edit button on click re rerendering behavior, click behavior should be tested in ContentOverviewContainer
 		expect(wrapper.find(`.edit-button`).length).toBe(3)
 		viewstate.editing = true
+
 		const wrapperRerendered = mount(
 			<Provider store={testutil.store}>
-				<ContentOverview {...props} />
+				<BrowserRouter>
+					<ContentOverview {...props} />
+				</BrowserRouter>
 			</Provider>,
 		)
 		// console.log(wrapperRerendered.debug())

@@ -11,6 +11,7 @@ const props = {
 		playbackRate : 1,
 		volume : 10,
 		muted : true,
+		clipTime: [`1:20`, `2:29`]
 	},
 	handlers : {
 		togglePlay: jest.fn(),

@@ -21,7 +21,6 @@ const Position = (events, time,duration) => {
 		const previous = next !== undefined ? Math.max(...filterKeys).toFixed(1).toString() : Math.max(...keys).toFixed(1).toString()
 		// console.log(`!!`,time,previous,next,filterKeys,keys,Math.max(...filterKeys),keys.map(num=>parseFloat(num)).filter(value=>value<parseFloat(next)))
 		if (next === undefined || next === `Infinity`){
-			console.log(`next doesn't exist`)
 			const values={
 				top1 : events[previous][1],
 				top2 : events[previous][1],
@@ -37,7 +36,6 @@ const Position = (events, time,duration) => {
 			return values
 		}
 		if (previous === `NaN` || previous === `-Infinity`){
-			console.log(`Previous doesn't exist`)
 			const values={
 				top1 : events[next][1],
 				top2 : events[next][1],

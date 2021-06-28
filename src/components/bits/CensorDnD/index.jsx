@@ -9,7 +9,6 @@ const CensorDnD = props => {
 		seekTo(null,parseFloat(time))
 	}
 	if(censorEdit === -1 || Object.keys(censorValues).length===0) {
-		console.log(`hallo`)
 		return (<></>)
 	}
 	const checkExisting = () =>{

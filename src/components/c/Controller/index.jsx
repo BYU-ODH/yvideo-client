@@ -18,9 +18,6 @@ import unmute from 'assets/controls_muted.svg'
 import carat from 'assets/carat_white.svg'
 
 const Controller = props => {
-
-	console.log(`controller`)
-
 	// console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
 
 	const {
@@ -59,7 +56,7 @@ const Controller = props => {
 
 	useEffect(() => {
 		const indicator = document.getElementById(`time-indicator`)
-		console.log(document,document.querySelector(`.censorRow`),document.querySelectorAll(`.gEspeL`))
+		// console.log(document,document.querySelector(`.censorRow`),document.querySelectorAll(`.gEspeL`))
 		// if (document.querySelector(`.censorRow`)){
 		// 	if (Array.isArray(document.querySelectorAll(`.censorRow`))){
 		// 		document.querySelectorAll(`.censorRow`).array.forEach(element => {
@@ -222,7 +219,7 @@ const Controller = props => {
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleUpdateCensorResize: (delta, pos)=>{
-			console.log(videoRef.current.offsetWidth,ref.current)
+			// console.log(videoRef.current.offsetWidth,ref.current)
 			const event = events[eventToEdit]
 			// console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
 			if (event.type === `Censor`){
