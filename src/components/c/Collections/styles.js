@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import blockView from 'assets/block-view.svg'
 import listView from 'assets/list-view.svg'
 import searchIcon from 'assets/search.svg'
+import menuIcon from 'assets/menu-black.svg'
 
 const Style = styled.div`
 
@@ -116,22 +117,32 @@ export const SearchIcon = styled.span`
 	width: 2rem;
 `
 
+export const MenuIcon = styled.span`
+	top: 1rem;
+	left: 2rem;
+	background: url(${menuIcon}) center no-repeat;
+	background-size: contain;
+	height: 2rem;
+	width: 2rem;
+	cursor: pointer;
+`
+
 export const Search = styled.form`
 
 	position: relative;
-	width: 60%;
+	width: 70%;
 
 	& > input {
 		z-index: 1;
 		background: white;
 
 		height: 4rem;
-		width: 70%;
+		width: 90%;
 
 		font-size: 1.2rem;
 
 		border: none;
-		border-radius: 2rem;
+		border-radius: .5rem;
 
 		margin-left: 1rem;
 		padding: 0 1.25rem 0 3.25rem;
