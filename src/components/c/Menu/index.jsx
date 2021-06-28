@@ -64,15 +64,15 @@ class Menu extends PureComponent {
 					<>
 						<Header>Collections</Header>
 						<hr />
-						<LinkStyled to='/'>View Collections</LinkStyled>
+						<LinkStyled to='/'>Collections</LinkStyled>
 						<LinkStyled to='/manager'>Manage Collections</LinkStyled>
 						{
 							isAdmin &&
 							<>
-								<LinkStyled to='/public-manager'>Public Collections</LinkStyled>
+								<LinkStyled to='/public-manager'>Manage Public Collections</LinkStyled>
 							</>
 						}
-						<LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled>
+						{/* <LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled> */}
 					</>
 					}
 
