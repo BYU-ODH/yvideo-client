@@ -11,6 +11,7 @@ const LabAssistantContainer = props => {
 		professors,
 		searchProfessors,
 		setHeaderBorder,
+		setBreadcrumb,
 	} = props
 
 	const category = {
@@ -25,6 +26,8 @@ const LabAssistantContainer = props => {
 	const [showResource, setShowResource] = useState(false)
 
 	useEffect(() => {
+		setBreadcrumb([`Home`, `Lab assistant Dashboard`])
+
 		setHeaderBorder(true)
 		return () => {
 			setHeaderBorder(false)
@@ -69,6 +72,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	searchProfessors: adminService.searchProfessors,
 	setHeaderBorder: interfaceService.setHeaderBorder,
+	setBreadcrumb: interfaceService.setBreadcrumb,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantContainer)

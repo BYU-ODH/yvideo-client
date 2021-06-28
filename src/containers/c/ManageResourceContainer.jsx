@@ -13,6 +13,7 @@ const ManageResourceContainer = props => {
 		searchResource,
 		resources,
 		user,
+		setBreadcrumb,
 	} = props
 
 	const defaultSearch = user.email.split(`@`)
@@ -24,6 +25,7 @@ const ManageResourceContainer = props => {
 	const [isSearched, setIsSearched] = useState(false)
 
 	useEffect(() => {
+		setBreadcrumb([`Home`, `Manage Resource`])
 
 		// find default setup for the access
 		if(Object.keys(resources).length !== resourceCount){
@@ -95,6 +97,7 @@ const mapDispatchToProps = {
 	addResource: resourceService.addResource,
 	toggleModal: interfaceService.toggleModal,
 	searchResource: resourceService.search,
+	setBreadcrumb: interfaceService.setBreadcrumb,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageResourceContainer)

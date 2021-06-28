@@ -35,8 +35,8 @@ export default class InterfaceService {
 		setEvents: events => ({ type: this.types.SET_EVENTS, payload: { events }}),
 		getEvents: events => ({ type: this.types.GET_EVENTS, payload: { events }}),
 		getTranslation: json => ({ type: this.types.GET_TRANSLATION, payload: { json }}),
-		setBreadcrumb: breadcrumb => ({ type: this.types.SET_BREADCRUMB, payload: { breadcrumb }}),
-		getBreadcrumb: breadcrumb => ({ type: this.types.GET_BREADCRUMB, payload: { breadcrumb }}),
+		setBreadcrumb: (breadcrumb, id) => ({ type: this.types.SET_BREADCRUMB, payload: { breadcrumb, id }}),
+		getBreadcrumb: (breadcrumb, id) => ({ type: this.types.GET_BREADCRUMB, payload: { breadcrumb, id }}),
 		interfaceError: error => ({ type: this.types.INTERFACE_ERROR, payload: { error } }),
 		// success: error => ({ type: this.types.SUCCESS, payload: { error } }),
 	}
@@ -70,6 +70,7 @@ export default class InterfaceService {
 			russian: `ru`,
 		},
 		breadcrumb: [`Home`],
+		id: ``,
 	}
 
 	// reducer
@@ -168,6 +169,7 @@ export default class InterfaceService {
 			return {
 				...store,
 				breadcrumb: action.payload.breadcrumb,
+				id: action.payload.id,
 			}
 
 		case this.types.GET_BREADCRUMB:
@@ -246,11 +248,11 @@ export default class InterfaceService {
 		}
 	}
 
-	setBreadcrumb = (breadcrumb) => async (dispatch, getState, { apiProxy }) => {
+	setBreadcrumb = (breadcrumb, id) => async (dispatch, getState, { apiProxy }) => {
 		try {
-			dispatch(this.actions.setBreadcrumb(breadcrumb))
+			dispatch(this.actions.setBreadcrumb(breadcrumb, id))
 		} catch (e) {
-			dispatch(this.actions.setBreadcrumb(``))
+			dispatch(this.actions.setBreadcrumb(`` , ``))
 		}
 	}
 

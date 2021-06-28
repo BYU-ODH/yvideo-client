@@ -7,11 +7,11 @@ import HexLogo from 'assets/hexborder.svg'
 const Style = styled.div`
 	height: 8.4rem;
 	width: 100%;
-	/* box-shadow: 0 -.5rem 3rem 0 rgba(0,0,0,0.25); */
-	/* padding: 0 2.4rem; */
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: flex-start;
+	flex-direction: column;
+	justify-content: space-evenly;
 
 	border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
 

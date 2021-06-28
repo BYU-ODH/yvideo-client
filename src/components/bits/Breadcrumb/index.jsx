@@ -2,34 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Style, { Slash } from './styles'
 
-function Breadcrumb(props) {
+const Breadcrumb = props => {
 
-	const isLast = (index) => {
-		return index === props.crumbs.length - 1
-	}
-
-	const toLink = (name) => {
-		let link = ``
-
-		switch(name) {
-		case `Home`:
-			link = `/`
-			break
-		case `Manage Collections`:
-			link = `/manager`
-			break
-		default:
-			link = `/`
-		}
-
-		return link
-	}
+	const {crumbs, id } = props.viewstate
+	const { isLast, toLink } = props.handler
 
 	return (
 		<Style>
 			<div>
 				{
-					props.crumbs.map((crumb, ci) => {
+					crumbs.map((crumb, ci) => {
 						const disabled = isLast(ci) ? `disabled` : ``
 						const link = toLink(crumb)
 						return (
@@ -37,10 +19,18 @@ function Breadcrumb(props) {
 								key={ ci }
 								className='breadcrumb-item align-items-center'
 							>
-								{/* <button to={`/manager`}>
-									{ crumb }
-								</button> */}
-								<button><Link to={link} >{ crumb }</Link></button>
+								{
+									isLast(ci)?
+										id ?
+											<button><Link to={link/id } onClick={() => window.location.reload()}>{ crumb }</Link></button>
+											:
+											<button><Link to={link} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+										:
+										id ?
+											<button><Link to={link/id }>{ crumb }</Link></button>
+											:
+											<button><Link to={link}>{ crumb }</Link></button>
+								}
 
 								<Slash disabled={disabled}> / </Slash>
 							</span>

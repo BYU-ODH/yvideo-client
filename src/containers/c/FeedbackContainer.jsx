@@ -10,7 +10,7 @@ import { interfaceService } from 'services'
 import Swal from 'sweetalert2'
 
 const FeedbackContainer = props => {
-	const { sendNoAttachment, sendWithAttachment } = props
+	const { sendNoAttachment, sendWithAttachment, setBreadcrumb } = props
 	const [isPerson, setIsPerson] = useState(false)
 	const [email, setEmail] = useState('')
 	const [title, setTitle] = useState('')
@@ -20,6 +20,10 @@ const FeedbackContainer = props => {
 			type: '',
 			attachment: {},
 	})
+
+	useEffect(() => {
+		setBreadcrumb([`Home`, `Feedback`])
+	}, [])
 
 	const handleCaptchaChange = () => {
 		setIsPerson(!isPerson)
@@ -84,7 +88,7 @@ const mapStoreToProps = store => ({
 const mapDispatchToProps = {
 	sendNoAttachment: interfaceService.sendNoAttachment,
 	sendWithAttachment: interfaceService.sendWithAttachment,
-
+	setBreadcrumb: interfaceService.setBreadcrumb,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(FeedbackContainer)
