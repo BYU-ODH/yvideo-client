@@ -90,6 +90,8 @@ export const SearchIcon = styled.span`
 export const ListLable = styled.h4`
 	margin-top: 2rem;
 	margin-bottom: 2rem;
+	font-weight: lighter;
+	font-size: 1.3rem;
 `
 
 export const FeedbackMessage = styled.div`

@@ -26,8 +26,8 @@ margin: 0 auto;
 			align-items: center;
 
 			& > h3 {
-				font-weight: bold;
-				font-size: 1.2rem;
+				font-weight: lighter;
+				font-size: 1.3rem;
 			}
 
 			& a {
@@ -113,8 +113,8 @@ export const SearchIcon = styled.span`
 	left: 2rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
-	height: 2rem;
-	width: 2rem;
+	height: 1.8rem;
+	width: 1.8rem;
 `
 
 export const MenuIcon = styled.span`
@@ -130,13 +130,13 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
-	width: 70%;
+	width: 74%;
 
 	& > input {
 		z-index: 1;
 		background: white;
 
-		height: 4rem;
+		height: 3.5rem;
 		width: 90%;
 
 		font-size: 1.2rem;

@@ -529,7 +529,6 @@ const apiProxy = {
 						await updateSessionId(res.headers[`session-id`])
 						return res
 					})
-					// console.log(result.data)
 					return new User(result.data)
 				}
 			} catch (error) {
