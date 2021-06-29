@@ -192,6 +192,8 @@ const TrackEditor = props => {
 		}
 	}, [eventsArray])
 
+	// end of useEffect
+
 	if(shouldUpdate === true)
 
 		setShouldUpdate(false)

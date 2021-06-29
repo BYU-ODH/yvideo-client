@@ -35,6 +35,7 @@ margin: 0 auto;
 				color: white;
 				outline: none;
 				background-color: var(--light-blue);
+				/* background-color: #A9A9A9; */
 				box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.15);
 				border: none;
 				border-radius: 6px;
@@ -130,7 +131,7 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
-	width: 66%;
+	width: 62%;
 
 	& > input {
 		z-index: 1;

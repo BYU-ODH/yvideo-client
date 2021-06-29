@@ -17,6 +17,7 @@ import {
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
 	ClipEditorContainer,
+	VideoEditorContainer,
 } from 'containers'
 
 import {
@@ -91,6 +92,10 @@ class Root extends PureComponent {
 
 							<Route path='/trackeditor/:id'>
 								<TrackEditorContainer />
+							</Route>
+
+							<Route path='/videoeditor/:id'>
+								<VideoEditorContainer />
 							</Route>
 
 							<Route path='/clipeditor/:id'>
