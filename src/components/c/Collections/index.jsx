@@ -63,7 +63,10 @@ export default class Collections extends PureComponent {
 						}
 						{
 							(isProf || isAdmin) &&
-								<MenuIcon onClick={linkToManageCollection} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}/>
+								// <MenuIcon onClick={linkToManageCollection} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}/>
+								<h3>
+									<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop+20, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
+								</h3>
 						}
 					</div>
 				</header>
@@ -104,8 +107,11 @@ export default class Collections extends PureComponent {
 						<>
 							{
 								(isProf || isAdmin) &&
+								// <div>
+								// 	<MenuIcon onClick={linkToManagePublicCollection}/>
+								// </div>
 								<div>
-									<MenuIcon onClick={linkToManagePublicCollection}/>
+									<h3><Link to={`/public-manager`} >Manage Collections</Link></h3>
 								</div>
 							}
 						</>

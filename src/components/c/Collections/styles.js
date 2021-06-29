@@ -130,14 +130,14 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
-	width: 74%;
+	width: 66%;
 
 	& > input {
 		z-index: 1;
 		background: white;
 
 		height: 3.5rem;
-		width: 90%;
+		width: 97%;
 
 		font-size: 1.2rem;
 
@@ -148,7 +148,7 @@ export const Search = styled.form`
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.35);
+		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 	}
 
 	& > button {
