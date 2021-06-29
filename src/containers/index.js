@@ -25,6 +25,7 @@ import PublicManagerContainer from './c/PublicManagerContainer'
 import PublicListCollectionContainer from './c/PublicListCollectionContainer'
 import ClipEditorContainer from './c/ClipEditorContainer'
 import PublicMoreListCollectionContainer from './c/PublicMoreListCollectiionContainer'
+import VideoEditorContainer from './c/VideoEditorContainer'
 
 export {
 	AdminContainer,
@@ -54,4 +55,5 @@ export {
 	PublicListCollectionContainer,
 	ClipEditorContainer,
 	PublicMoreListCollectionContainer,
+	VideoEditorContainer,
 }

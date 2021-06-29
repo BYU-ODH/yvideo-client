@@ -17,6 +17,7 @@ import {
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
 	ClipEditorContainer,
+	VideoEditorContainer,
 } from 'containers'
 
 import {
