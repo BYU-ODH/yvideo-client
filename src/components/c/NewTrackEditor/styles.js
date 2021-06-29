@@ -304,7 +304,7 @@ export const EventList = styled.div`
 	}
 
 	& > .breadcrumbs {
-		display: ${props => props.minimized !== false ? `none` : `flex`}
+		display: ${props => props.minimized !== false ? `none` : `flex`};
 
 		height: 5rem;
 
@@ -351,7 +351,7 @@ export const EventList = styled.div`
 	}
 
 	& > .eventsList {
-		display: ${props => props.minimized !== false ? `none` : `visible`}
+		display: ${props => props.minimized !== false ? `none` : `visible`};
 		padding: 3rem;
 	}
 	& .subCard {

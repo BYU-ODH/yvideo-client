@@ -9,8 +9,10 @@ export default Style
 
 export const Header = styled.div`
 	display: grid;
-	grid-template-columns: 14rem auto 1.5rem;
+	/* grid-template-columns: 8rem 15rem auto 2rem; */
+	grid-template-columns: 20rem auto 1.5rem;
 	justify-items: start;
+	align-items: center;
 
 	padding: 2rem;
 	border-top: 1px solid #ccc;

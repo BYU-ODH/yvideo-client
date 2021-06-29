@@ -33,14 +33,8 @@ const AddUsersContainer = props => {
 		e.preventDefault()
 		const usernamesArray = usernames.split(`\n`)
 
-		// props.setLoaded(true)
 		const result = await addUsers(usernamesArray)
 		setIsSubmitted(true)
-
-		// console.log(result)
-
-		// console.log(`${result.length} success out of ${usernamesArray.length}`)
-		// toggleModal()
 	}
 
 	const viewstate = {
