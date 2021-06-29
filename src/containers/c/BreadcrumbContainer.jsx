@@ -6,26 +6,26 @@ import Breadcrumb from '../../components/bits/Breadcrumb'
 const BreadcrumbContainer = props => {
 
 	const {
-		breadcrumb,
-		collectionId,
+		breadcrumbs,
 	} = props
 
-	const [crumbs, setCrumbs] = useState([`Home`])
-	const [id, serId] = useState(``)
+	const [crumbs, setCrumbs] = useState(
+		{	path: [],
+			collectionId: ``,
+			contentId: ``},
+	)
 
 	useEffect(() => {
-		setCrumbs(breadcrumb)
-		serId(collectionId)
-	}, [breadcrumb])
+		setCrumbs(breadcrumbs)
+	}, [breadcrumbs])
 
 	const viewstate = {
 		crumbs,
-		id,
 	}
 
 	const handler = {
 		isLast(index) {
-			return index === crumbs.length - 1
+			return index === crumbs.path.length - 1
 		},
 
 		toLink(name) {
@@ -33,37 +33,55 @@ const BreadcrumbContainer = props => {
 
 			switch(name) {
 			case `Home`:
-				link = `/`
+				link = ``
 				break
 			case `Manage Collections`:
-				link = `/manager`
+				link = `manager`
 				break
 			case `Lab Assistant Manager`:
-				link = `/lab-assistant-manager`
+				link = `lab-assistant-manager`
 				break
 			case `Admin Dashboard`:
-				link = `/admin`
+				link = `admin`
 				break
 			case `Lab assistant Dashboard`:
-				link = `/lab-assistant-manager`
+				link = `lab-assistant-manager`
 				break
 			case `Manage Resource`:
-				link = `/public-manager`
+				link = `manage-resource`
 				break
 			case `Manage Public Collections`:
-				link = `/manage-resource`
+				link = `public-manager`
 				break
 			case `Player`:
-				link = `/player`
+				link = `player`
+				break
+			case `Video Editor`:
+				link = `trackEditor`
+				break
+			case `Clip Manager`:
+				link = `clipEditor`
 				break
 			case `Feedback`:
-				link = `/feedback`
+				link = `feedback`
 				break
 			default:
-				link = `/`
+				link = ``
 			}
 
 			return link
+		},
+		isManager(name) {
+			if(name === `Manage Collections` || name === `Lab Assistant Manager` || name === `Manage Public Collections`) {
+				return true
+			}
+			else return false
+		},
+		isPlayer(name) {
+			if(name === `Player` || name === `Video Editor` || name === `Clip Manager`) {
+				return true
+			}
+			else return false
 		},
 	}
 
@@ -71,8 +89,7 @@ const BreadcrumbContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	breadcrumb: store.interfaceStore.breadcrumb,
-	collectionId: store.interfaceStore.id,
+	breadcrumbs: store.interfaceStore.breadcrumbs,
 })
 
 export default connect(mapStateToProps)(BreadcrumbContainer)

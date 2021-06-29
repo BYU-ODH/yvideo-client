@@ -23,7 +23,7 @@ const ManageCollectionContainer = props => {
 		updateCollectionName,
 		updateCollectionStatus,
 		toggleTip,
-		setBreadcrumb,
+		setBreadcrumbs,
 	} = props
 
 	const [isContentTap, setIsContentTap] = useState(true)
@@ -37,7 +37,7 @@ const ManageCollectionContainer = props => {
 	})
 
 	useEffect(() => {
-		setBreadcrumb([`Home`, `Manage Collections`], collection.id)
+		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: collection.id, contentId: ``})
 		setCollectionName(collection.name)
 		if(isEdited) {
 			getCollections(true)
@@ -166,7 +166,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	updateCollectionName: collectionService.updateCollectionName,
 	updateCollectionStatus: collectionService.updateCollectionStatus,
-	setBreadcrumb: interfaceService.setBreadcrumb,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCollectionContainer)

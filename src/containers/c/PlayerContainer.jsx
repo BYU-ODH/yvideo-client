@@ -26,7 +26,7 @@ const PlayerContainer = props => {
 		subtitlesContentId,
 		toggleModal,
 		toggleTip,
-		setBreadcrumb,
+		setBreadcrumbs,
 	} = props
 
 	const params = useParams()
@@ -69,7 +69,8 @@ const PlayerContainer = props => {
 		setPlayer(player)
 	}
 	useEffect(() => {
-		setBreadcrumb([`Home`, `Player`])
+		setBreadcrumbs({path:[`Home`, `Player`], collectionId: ``, contentId: ``})
+
 		setPlaybackRate(1)
 		setShowTranscript(false)
 		setSubtitleText(``)
@@ -416,7 +417,7 @@ const mapDispatchToProps = {
 	getSubtitles: subtitlesService.getSubtitles,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
-	setBreadcrumb: interfaceService.setBreadcrumb,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

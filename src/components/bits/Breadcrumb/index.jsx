@@ -4,14 +4,13 @@ import Style, { Slash } from './styles'
 
 const Breadcrumb = props => {
 
-	const {crumbs, id } = props.viewstate
-	const { isLast, toLink } = props.handler
-
+	const {crumbs } = props.viewstate
+	const { isLast, toLink, isManager, isPlayer } = props.handler
 	return (
 		<Style>
 			<div>
 				{
-					crumbs.map((crumb, ci) => {
+					Object.values(crumbs.path).map((crumb, ci) => {
 						const disabled = isLast(ci) ? `disabled` : ``
 						const link = toLink(crumb)
 						return (
@@ -20,18 +19,24 @@ const Breadcrumb = props => {
 								className='breadcrumb-item align-items-center'
 							>
 								{
-									isLast(ci)?
-										id ?
-											<button><Link to={link/id } onClick={() => window.location.reload()}>{ crumb }</Link></button>
+									isManager(crumb) ?
+										disabled ?
+											<button><Link to={`/${link}/${crumbs.collectionId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
 											:
-											<button><Link to={link} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+											<button><Link to={`/${link}/${crumbs.collectionId}`}>{ crumb }</Link></button>
 										:
-										id ?
-											<button><Link to={link/id }>{ crumb }</Link></button>
+										isPlayer(crumb) ?
+											disabled ?
+												<button><Link to={`/${link}/${crumbs.contentId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+												:
+												<button><Link to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></button>
 											:
-											<button><Link to={link}>{ crumb }</Link></button>
-								}
+											disabled ?
+												<button><Link to={`/${link}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+												:
+												<button><Link to={`/${link}`}>{ crumb }</Link></button>
 
+								}
 								<Slash disabled={disabled}> / </Slash>
 							</span>
 						)

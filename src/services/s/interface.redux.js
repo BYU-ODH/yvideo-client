@@ -16,8 +16,8 @@ export default class InterfaceService {
 		GET_EVENTS: `GET_EVENTS`,
 		SENT_EMAIL: `SENT_EMAIL`,
 		GET_TRANSLATION: `GET_TRANSLATION`,
-		SET_BREADCRUMB: `SET_BREADCRUMB`,
-		GET_BREADCRUMB: `GET_BREADCRUMB`,
+		SET_BREADCRUMBS: `SET_BREADCRUMBS`,
+		GET_BREADCRUMBS: `GET_BREADCRUMBS`,
 		INTERFACE_ERROR: `INTERFACE_ERROR`,
 		// SUCCESS: `SUCCESS`,
 	}
@@ -35,8 +35,8 @@ export default class InterfaceService {
 		setEvents: events => ({ type: this.types.SET_EVENTS, payload: { events }}),
 		getEvents: events => ({ type: this.types.GET_EVENTS, payload: { events }}),
 		getTranslation: json => ({ type: this.types.GET_TRANSLATION, payload: { json }}),
-		setBreadcrumb: (breadcrumb, id) => ({ type: this.types.SET_BREADCRUMB, payload: { breadcrumb, id }}),
-		getBreadcrumb: (breadcrumb, id) => ({ type: this.types.GET_BREADCRUMB, payload: { breadcrumb, id }}),
+		setBreadcrumbs: breadcrumbs => ({ type: this.types.SET_BREADCRUMBS, payload: { breadcrumbs }}),
+		getBreadcrumbs: breadcrumbs => ({ type: this.types.GET_BREADCRUMBS, payload: { breadcrumbs }}),
 		interfaceError: error => ({ type: this.types.INTERFACE_ERROR, payload: { error } }),
 		// success: error => ({ type: this.types.SUCCESS, payload: { error } }),
 	}
@@ -69,8 +69,11 @@ export default class InterfaceService {
 			german: `de`,
 			russian: `ru`,
 		},
-		breadcrumb: [`Home`],
-		id: ``,
+		breadcrumbs: {
+			path: [],
+			collectionId: ``,
+			contentId: ``,
+		},
 	}
 
 	// reducer
@@ -165,17 +168,16 @@ export default class InterfaceService {
 				jsonResponse: action.payload.json,
 			}
 
-		case this.types.SET_BREADCRUMB:
+		case this.types.SET_BREADCRUMBS:
 			return {
 				...store,
-				breadcrumb: action.payload.breadcrumb,
-				id: action.payload.id,
+				breadcrumbs: action.payload.breadcrumbs,
 			}
 
-		case this.types.GET_BREADCRUMB:
+		case this.types.GET_BREADCRUMBS:
 			return {
 				...store,
-				breadcrumb: action.payload.breadcrumb,
+				breadcrumbs: action.payload.breadcrumbs,
 			}
 
 		case this.types.INTERFACE_ERROR:
@@ -248,11 +250,11 @@ export default class InterfaceService {
 		}
 	}
 
-	setBreadcrumb = (breadcrumb, id) => async (dispatch, getState, { apiProxy }) => {
+	setBreadcrumbs = breadcrumbs => async (dispatch, getState, { apiProxy }) => {
 		try {
-			dispatch(this.actions.setBreadcrumb(breadcrumb, id))
+			dispatch(this.actions.setBreadcrumbs(breadcrumbs))
 		} catch (e) {
-			dispatch(this.actions.setBreadcrumb(`` , ``))
+			dispatch(this.actions.setBreadcrumbs(`` , ``))
 		}
 	}
 

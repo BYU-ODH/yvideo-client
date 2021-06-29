@@ -35,7 +35,7 @@ const TrackEditorContainer = props => {
 		setSubContentId,
 		contentError,
 		subtitleError,
-		setBreadcrumb,
+		setBreadcrumbs,
 	} = props
 
 	const {id} = useParams() // content id
@@ -62,8 +62,6 @@ const TrackEditorContainer = props => {
 	}
 
 	useEffect(() => {
-		setBreadcrumb([`Home`, `Manage Collections`, `Video Editor`])
-
 		// console.log('use effecct')
 		if(!content.hasOwnProperty(id)){
 			// console.log(`getContent`)
@@ -74,6 +72,7 @@ const TrackEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 			// we only want to set the url if it is not set.
 			if(url === ``){
 				if(content[id].url !== ``)
@@ -201,7 +200,7 @@ const mapThunksToProps = {
 	setSubContentId: subtitlesService.setContentId,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
-	setBreadcrumb: interfaceService.setBreadcrumb,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

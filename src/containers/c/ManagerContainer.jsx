@@ -24,7 +24,7 @@ const ManagerContainer = props => {
 		toggleTip,
 		newCollectionInfo,
 		removeCreatedCollectionIdFromStore,
-		setBreadcrumb,
+		setBreadcrumbs,
 	} = props
 
 	const params = useParams()
@@ -35,7 +35,7 @@ const ManagerContainer = props => {
 	const [isOpen, setOpen] = useState(true)
 
 	useEffect(() => {
-		setBreadcrumb([`Home`, `Manage Collections`])
+		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
 
 		setHeaderBorder(true)
 
@@ -61,12 +61,10 @@ const ManagerContainer = props => {
 			})
 		}
 
-		if(window.innerWidth < 1000) {
+		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		}
-		else {
+		 else
 			setIsMobile(false)
-		}
 
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
@@ -105,7 +103,6 @@ const ManagerContainer = props => {
 		handleShowTip,
 		handleToggleSideBar,
 	}
-
 
 	const sideLists = {
 		published: [],
@@ -151,7 +148,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	removeCreatedCollectionIdFromStore: collectionService.removeCreatedCollectionIdFromStore,
-	setBreadcrumb: interfaceService.setBreadcrumb,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerContainer)
