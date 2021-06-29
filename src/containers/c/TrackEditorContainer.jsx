@@ -17,7 +17,6 @@ const TrackEditorContainer = props => {
 		content,
 		resource,
 		setEvents,
-		getResource,
 		getContent,
 		updateContent,
 		allSubs,
@@ -32,7 +31,6 @@ const TrackEditorContainer = props => {
 		streamKey,
 		toggleModal,
 		toggleTip,
-		setSubContentId,
 		contentError,
 		subtitleError,
 		setBreadcrumbs,
@@ -46,27 +44,16 @@ const TrackEditorContainer = props => {
 	const [currentContent, setCurrentContent] = useState({})
 	const [subs,setSubs] = useState([])
 
-	const getData = async() => {
-		// console.log(`these subs are`, subs)
-		// await getContent([id])
-		const testsubs = await getSubtitles(id)
-		// console.log(`more testing`,testsubs)
-		setSubs(testsubs !== undefined?testsubs:[])
-	}
 	const getAllSubtitles = async() => {
-		// console.log(`yeep`,id)
 		const testsubs = await getSubtitles(id)
-		// console.log(`more testing`,testsubs)
 		const returnThis = testsubs !== undefined?testsubs:[]
 		return returnThis
 	}
 
 	useEffect(() => {
-		// console.log('use effecct')
-		if(!content.hasOwnProperty(id)){
-			// console.log(`getContent`)
+
+		if(!content.hasOwnProperty(id))
 			getContent(id)
-		}
 
 		if(content[id] !== undefined){
 			setCurrentContent(content[id])
@@ -125,9 +112,6 @@ const TrackEditorContainer = props => {
 	const setAllSubs = (subs) =>{
 		setSubtitles(subs)
 	}
-	// console.log(eventsArray)
-
-	// console.log(eventsArray)
 
 	const handleShowHelp = () => {
 		toggleModal({
