@@ -29,8 +29,9 @@ class Menu extends PureComponent {
 					onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}>
 
-					<UserPic>{initials}</UserPic>
-					<h4>{user.name}</h4>
+					{/* <UserPic>{initials}</UserPic>
+					<h4>{user.name}</h4> */}
+					<MenuIcon />
 
 					<hr />
 
