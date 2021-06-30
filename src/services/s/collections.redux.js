@@ -398,6 +398,7 @@ export default class CollectionService {
 	}
 
 	getSubscribers = (collectionId, force = false) => {
+
 		return async (dispatch, getState, { apiProxy }) => {
 
 			dispatch(this.actions.collectionsStart())
@@ -407,6 +408,7 @@ export default class CollectionService {
 			try {
 
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
+
 				dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
 
 			} catch (error) {

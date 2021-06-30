@@ -47,28 +47,28 @@ class PublicListCollection extends PureComponent {
 				{collection.content && (user !== undefined && user !== null) ? (
 					<Body isOpen={isOpen}>
 						{user.roles < 3 &&
-						<PublicCollectionsLable>
+							<PublicCollectionsLable>
 
-							<div className='ownership'>
-								<>Owner: <div className='owner-name'>{ownerName}</div></>
-								<>Copyright: <div className='owner-name'>{collection.copyrighted ? `Yes` : `No`}</div></>
-							</div>
+								<div className='ownership'>
+									{/* <>Owner: <div className='owner-name'>{ownerName}</div></>
+									<>Copyright: <div className='owner-name'>{collection.copyrighted ? `Yes` : `No`}</div></> */}
+								</div>
 
-							<PublicCollectionButton>
-								{/* TODO: possibely add */}
-								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
-								{!isOwner ?
-									<PublicButton
-										onClick={handlePublicCollection}
-										className={`public-button`}
-									>
-										{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
-									</PublicButton>
-									:
-									<div>You own this collection</div>
-								}
-							</PublicCollectionButton>
-						</PublicCollectionsLable>
+								<PublicCollectionButton>
+									{/* TODO: possibely add */}
+									{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
+									{!isOwner ?
+										<PublicButton
+											onClick={handlePublicCollection}
+											className={`public-button`}
+										>
+											{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
+										</PublicButton>
+										:
+										<div>You own this collection</div>
+									}
+								</PublicCollectionButton>
+							</PublicCollectionsLable>
 						}
 
 						{ collection.content.length > 0 ?
