@@ -156,21 +156,15 @@ const TrackEditorSideMenu = props => {
 				<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 				{isSub ? (
 					<>
-
 						<div className='center'>
 							<label>Title</label>
-							<label>Language</label>
 						</div>
 						<div className='center'>
-							<input type='text' className='sideTabInput' value={subs[subLayer].title} onChange={e => {
+							<input type='text' className='sideTabInput' style={{margin: `0px`, width: `100%`}} value={subs[subLayer].title} onChange={e => {
 								updateTitle(e.target.value)
 								setTitle(e.target.value)
 							}
 							}/>
-							<input type='text' className='sideTabInput' value={subs[subLayer].language} onChange={e => {
-								updateLanguage(e.target.value)
-								setLanguage(e.target.value)
-							}}/>
 						</div>
 
 					</>
@@ -228,13 +222,13 @@ const TrackEditorSideMenu = props => {
 						<table>
 							<tbody>
 								{event.type === `Censor`?
-									Object.keys(event.position).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+									Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 										<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
-											<td><input pattern='[0-9]+\.+[0-9]' onClick={()=>setActiveCensorPosition(item)} className='censorRow' type='number' value={`${item}`}/></td>
-											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+											<td><input onClick={()=>setActiveCensorPosition(item)} className='censorRow' type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+											<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][4]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
 											<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
 										</tr>
 									))

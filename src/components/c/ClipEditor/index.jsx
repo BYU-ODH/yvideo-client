@@ -19,13 +19,15 @@ import rIcon from 'assets/te-chevron-right.svg'
 import captions from 'assets/captions.svg'
 
 import helpIcon from 'assets/te-help-circle-white.svg'
+import trashIcon from 'assets/trash_icon.svg'
+import closeIcon from 'assets/close_icon.svg'
+
+import plus from 'assets/plus-square.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
-import plus from 'assets/plus-square.svg'
-
-import Style, { Timeline, AnnotationMessage, SideEditor} from './styles'
+import Style, { Timeline, AnnotationMessage, SideEditor, Icon} from './styles'
 
 const ClipEditor = props => {
 
@@ -293,6 +295,7 @@ const ClipEditor = props => {
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		updateContent(content)
+		window.location.href = `/manager`
 	}
 	return (
 		<Style>
@@ -386,57 +389,43 @@ const ClipEditor = props => {
 					<header>
 						<div style={{position:`relative`,float:`none`, color:`#ffffff`, display:`flex`,justifyContent:`center`,alignItems:`center`,paddingTop:`20px`}}><h1 style={{margin:`0px`}}>Clip Editor</h1></div>
 					</header>
-					{active !== `` ? (<>
-						<div className='center' style={{ flexDirection: `column`}}>
-							<label>Clip Name</label>
-							<input type='text' className='sideTabInput' style={{width:`80%`}} value={clipList[active][`title`]} onChange={e => {
-								titleSet(e.target.value)
-							}
-							}/>
+					<div className='clipItems'>
+						<table className='tableHeader'>
+							<thead>
+								<tr>
+									<th align='center'>Title</th>
+									<th align='center'>Start</th>
+									<th align='center'>Stop</th>
+									<th align='center'>&nbsp;</th>
+								</tr>
+							</thead>
+						</table>
+						<div className='clipList'>
+							<table>
+								<tbody>
+									{
+										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
+												<td><input onClick={()=>setActive(item)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+												<td><input onClick={()=>setActive(item)} type='number' value={`${clipList[item].start}`} onChange={(e) => setStartTime(e.target.value)}/></td>
+												<td><input onClick={()=>setActive(item)} type='number' value={`${clipList[item].end}`} onChange={(e) => setEndTime(e.target.value)}/></td>
+												<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/></td>
+											</tr>
+										))
+									}
+									{
+									// "foo: bar", "baz: 42"
+										// Object.entries(event.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
+									}
+								</tbody>
+							</table>
+							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
+							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
-						<div className='center'>
-							<label>Clip Start</label>
-							<label>Clip End</label>
-						</div>
-						<div className='center'>
-							<input type='number' className='sideTabInput' value={clipList[active][`start`]} onChange={e => {
-								setStartTime(e.target.value)
-							}
-							}/>
-							<input type='number' className='sideTabInput' value={clipList[active][`end`]} onChange={e => {
-								setEndTime(e.target.value)
-							}}/>
-						</div>
-						<div className='center'>
-							<button onClick={()=>{
-								console.log(`pressing the button`)
-								const val = deleteClip(active)
-								if (val) window.location.reload()
-							}} className='sideButton'>Delete This Clip</button>
-						</div>
-					</>):``}
-					<div className='breadcrumbs'>
-						<span>Saved Clips</span>
+
+						<button className='addCensor' onClick={createClip}><Icon src={plus}/></button>
+						{/* <button className='sideButton' onClick={handleSaveCensor}>Save Censor</button> */}
 					</div>
-					{Object.keys(clipList).filter((a)=> savedClips.includes(a)===true).map((val, index)=>(
-						<button key={`clip${index}`} onClick={()=>{
-							setActive(val)
-							console.log(clipList,clipList[val])
-						}} className='clipButton savedClip'>{clipList[val].title !== ``? clipList[val].title : `No Title`}</button>
-					))}
-					<div className='breadcrumbs'>
-						<span>Unsaved Clips</span>
-					</div>
-					{Object.keys(clipList).filter((a)=> savedClips.includes(a)===false).map((val, index)=>(
-						<button key={`clip${index}`} onClick={()=>{
-							setActive(val)
-							console.log(clipList,clipList[val])
-						}} className='clipButton unsavedClip'>{clipList[val].title !== ``? clipList[val].title : `No Title`}</button>
-					))}
-					<div className='breadcrumbs'></div>
-					<button onClick={()=>{
-						createClip()
-					}} className='clipButton createButton'>Add New Clip</button>
 					<button onClick={()=>{
 						console.log(`pressing the button`)
 						saveClips()

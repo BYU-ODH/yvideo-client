@@ -453,5 +453,67 @@ export const SideEditor = styled.div`
 			}
 		}
 	}
+	& .clipItems {
+		font-size: 1.5rem;
+		& label {
+			margin: 15px 5px 15px 15px;
+			width: 150px;
+			text-align: left;
+		}
 
+		& .tableHeader {
+			width: 90%;
+			margin-left: 10px;
+			& th {
+				width: 50px;
+			}
+		}
+	}
+	& .clipList {
+		width: 100%;
+		height: auto;
+		max-height: 30vh;
+		margin-left: 10px;
+		overflow-y: scroll;
+		position: relative;
+
+		& td {
+			display: inline-flex;
+			width: 75px !important;
+			margin: auto;
+			& input {
+				margin: auto;
+				width: 90% !important;
+				&::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+			}
+
+			& .trashIcon {
+				margin: auto;
+				cursor: pointer;
+			}
+		}
+
+		& #loader {
+			background-color: rgba(196, 196, 196, 0.7);
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: bolder;
+		}
+	}
+
+`
+export const Icon = styled.div`
+	/* transform: rotate(45deg); */
+  background: url(${props => props.src}) center no-repeat;
+  width: 20px;
+  height: 15px;
 `

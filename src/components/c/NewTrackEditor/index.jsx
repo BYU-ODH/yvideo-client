@@ -306,7 +306,7 @@ const TrackEditor = props => {
 			handleAddSubLayer()
 			return
 		}
-		console.log(item)
+		// console.log(item)
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
@@ -410,13 +410,10 @@ const TrackEditor = props => {
 		const index = eventToEdit
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
-		const posprev = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(b)<parseFloat(a))[-1]
-		const posnex = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) > parseFloat(item)).sort((a,b)=>parseFloat(b)>parseFloat(a))[0]
-		console.log(Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(a)>parseFloat(b)))
-		console.log(posprev, posnex, Object.keys(cEvent), item)
-		setActiveCensorPosition(posprev ? posprev:posnex)
+		const posprev = Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b)=>parseFloat(cEvent.position[b])-parseFloat(cEvent.position[a]))[0]
+		const posnex = Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
+		setActiveCensorPosition(posprev && posnex ? posprev? posprev:posnex:-1)
 		delete cEvent.position[item]
-
 		updateEvents(index, cEvent, layer)
 
 	}
@@ -430,11 +427,17 @@ const TrackEditor = props => {
 			const index = eventToEdit
 			const cEvent = allEvents[index]
 			const layer = cEvent.layer
-
+			const pos = cEvent.position
+			const id = Object.keys(pos).length === 0 ? `0` : `${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+			let exists = false
+			Object.keys(pos).forEach((val)=>{
+				if (pos[val][0].toString() === parseFloat(time).toFixed(1).toString()) exists = true
+			})
+			if(exists) return
 			const value = Object.keys(cEvent.position).find(item => item >= time)
 
 			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
-			cEvent.position[`${parseFloat(time).toFixed(1)}`] = [50, 50, 30, 40]
+			cEvent.position[id] = [`${parseFloat(time).toFixed(1)}`,50, 50, 30, 40]
 
 			// console.log(cEvent.position)
 			updateEvents(index, cEvent, layer)
@@ -443,32 +446,37 @@ const TrackEditor = props => {
 
 	const handleEditCensor = (e, item, int) => {
 		const object = editCensor
-		// console.log(editCensor)
+		const index = eventToEdit
+		const cEvent = allEvents[index]
+		const layer = cEvent.layer
+		const pos = cEvent.position
 		const value = parseFloat(e.target.value).toFixed(1)
 
 		switch (int) {
 		case 1:
-			object[item][0] = value
+			pos[item][0] = value
 			break
 		case 2:
-			object[item][1] = value
+			pos[item][1] = value
 			break
 		case 3:
-			object[item][2] = value
+			pos[item][2] = value
 			break
 		case 4:
-			object[item][3] = value
+			pos[item][3] = value
 			break
-
+		case 5:
+			pos[item][3] = value
+			break
 		default:
 			break
 		}
-
+		cEvent.position = pos
+		updateEvents(index, cEvent, layer)
 		setEditCensor(object)
 	}
 
 	const handleSaveCensor = () => {
-		console.log(`SAVE CENSOR`)
 		const index = eventToEdit
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
@@ -489,12 +497,19 @@ const TrackEditor = props => {
 			const layer = cEvent.layer
 
 			const value = Object.keys(cEvent.position).find(item => item >= time)
+			const pos = cEvent.position
+			const id = Object.keys(pos).length === 0 ? `0` : `${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
 
 			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
-			if(cEvent.position[`${time.toFixed(1)}`] !== undefined)
-				cEvent.position[`${time.toFixed(1)}`] = [x / width * 100, (y-86) / height * 100, cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
-				 else
-				cEvent.position[`${time.toFixed(1)}`] = [x / width * 100, (y-86) / height * 100, 30, 40]
+			let exists = false
+			Object.keys(pos).forEach((val)=>{
+				if (pos[val][0].toString() === time.toFixed(1).toString()) exists = true
+			})
+			if(exists){
+				const existId = Object.keys(cEvent.position).find(val => cEvent.position[val][0] === `${time.toFixed(1)}`)
+				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`,x / width * 100, (y-86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
+			} else
+				cEvent.position[`${id}`] = [`${time.toFixed(1)}`,x / width * 100, (y-86) / height * 100, 30, 40]
 
 			// console.log(cEvent.position)
 			updateEvents(index, cEvent, layer)
@@ -554,7 +569,6 @@ const TrackEditor = props => {
 	}
 	const handleZoomChange = (e, d) => {
 		toggleTip()
-		// console.log(d.x)
 		if(d.x < zoomFactor){
 			if(d.x === 0){
 			// console.log('zero')
@@ -589,64 +603,13 @@ const TrackEditor = props => {
 			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
 			// console.log(lastPossibleRight)
 			// console.log(cLeft)
-			switch (direction) {
-			case `start`:
-				scrubber.scrollLeft = 0
-				timeIndicator.scrollLeft = 0
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft = 0
-				})
-				scrollBar.style.left = `0px`
-
-				break
-			case `left`:
-				scrubber.scrollLeft -= currentLayerWidth * 0.03
-				timeIndicator.scrollLeft -= currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft -= currentLayerWidth * 0.03
-				})
-				// FIND 3 PERCENT OF PARENT
-				// CURRENT LEFT MINUS NEW LEFT
-				if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
-					scrollBar.style.left = `${cLeft - scrollBarOffset}px`
-				else if (cLeft - scrollBarOffset < 0)
-					scrollBar.style.left = `0px`
-
-				break
-			case `right`:
-				scrubber.scrollLeft += currentLayerWidth * 0.03
-				timeIndicator.scrollLeft += currentLayerWidth * 0.03
-				// console.log(scrollPercentage / scrollIndicatorWidth)
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth * 0.03
-				})
-				if(zoomFactor !== 0){
-					if(isNaN(cLeft) === true)
-						scrollBar.style.left = `${scrollBarOffset}px`
-					else
-						scrollBar.style.left = `${cLeft + scrollBarOffset}px`
-
-				}
-
-				if (cLeft + scrollBarOffset > lastPossibleRight){
-					// console.log(`got to the end`)
-					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-				}
-
-				break
-			case `end`:
-				scrubber.scrollLeft += currentLayerWidth
-				timeIndicator.scrollLeft += currentLayerWidth
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth
-				})
-				scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-				break
-
-			default:
-				break
-			}
+			const dis = direction/scrollBarContainer
+			scrubber.scrollLeft = currentLayerWidth * dis
+			timeIndicator.scrollLeft = currentLayerWidth * dis
+			// console.log(scrollPercentage / scrollIndicatorWidth)
+			alllayers.forEach((element, i) => {
+				alllayers[i].scrollLeft = currentLayerWidth * dis
+			})
 		}
 	}
 	const createSubtitleLayer = () =>{
@@ -707,7 +670,6 @@ const TrackEditor = props => {
 		// setEvents(currentEvents)
 		// setDisplayLayer(layerIndex)
 		setSubChanges(subChanges+1)
-		console.log(`?!?`,subChanges)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
@@ -895,7 +857,6 @@ const TrackEditor = props => {
 					setModalVisible = {setSubModalVisible}
 				/>
 				<span style={{ zIndex: 0 }}>
-
 					<Controller ref = {controllerRef}
 						className='video'
 						url={props.viewstate.url}
@@ -921,7 +882,7 @@ const TrackEditor = props => {
 								{layers.map((layer, index) => (
 									<div className={`layer`} key={index}>
 										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
-											<p>Layer {index} <img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={ e => handleRemoveLayer(e, index)}/></p>
+											<p>Layer {index+1} <img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={ e => handleRemoveLayer(e, index)}/></p>
 										</div>
 										{/* <HandleIcon /> */}
 										<TrackLayer
@@ -980,7 +941,15 @@ const TrackEditor = props => {
 						</section>
 						<div className='zoom-controls'>
 							{/* ADD ZOOM ICON */}
-							<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<div className='zoom-factor' id = 'zoom-factor'
+								onClick={(e)=>{
+									const rect = document.getElementById(`zoom-factor`).getBoundingClientRect()
+									const xpos = e.clientX - rect.left
+									// handleZoomChange(null,{x:xpos})
+									// setZoomFactor(xpos)
+									// setWidth(-(Math.abs(zoomFactor - xpos) * videoLength / 10))
+								}}
+								style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 								<img src={zoomOut} style={{ width: `20px` }}/>
 								<Rnd
 									className={`zoom-indicator`}
@@ -1005,9 +974,19 @@ const TrackEditor = props => {
 										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
 
 									<div className={`zoom-scroll-container`}>
-										<div className={`zoom-scroll-indicator`}
+										{/* <div className={`zoom-scroll-indicator`}
 											onMouseEnter={e => handleShowTip(`te-scroll`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-											onMouseLeave={e => toggleTip()}></div>
+											onMouseLeave={e => toggleTip()}></div> */}
+										<Rnd
+											className= 'zoom-scroll-indicator'
+											size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+											enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+											bounds = {`parent`}
+											onDragStop = {(e,d)=>{
+												handleScrollFactor(d.x)
+											}}
+										>
+										</Rnd>
 									</div>
 
 									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}
@@ -1108,20 +1087,20 @@ const TrackEditor = props => {
 			</DndProvider>
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
-					<img src={closeIcon} width="20" height="20" onClick={ e => setSaved(false)}/>
+					<img src={closeIcon} width='20' height='20' onClick={ e => setSaved(false)}/>
 					{
-						contentError !== '' || subtitleError !== '' ? (
-							<h2 id="error">
+						contentError !== `` || subtitleError !== `` ? (
+							<h2 id='error'>
 								<span>Content failed with: {contentError}</span><br/><br/><span>Subtitle failed with: {subtitleError}</span>
 							</h2>
 						) : (
-							<h2 id="success">Annotations saved successfully</h2>
+							<h2 id='success'>Annotations saved successfully</h2>
 						)
 					}
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
-					message="Have you saved your changes already?"
+					message='Have you saved your changes already?'
 				/>
 			</>
 		</Style>

@@ -86,7 +86,8 @@ const Style = styled.div`
 
 	& .censorList {
 		width: 100%;
-		height: 30vh;
+		height: auto;
+		max-height: 30vh;
 		margin-left: 10px;
 		overflow-y: scroll;
 		position: relative;

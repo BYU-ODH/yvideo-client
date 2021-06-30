@@ -57,7 +57,7 @@ const Controller = props => {
 
 	useEffect(() => {
 		const indicator = document.getElementById(`time-indicator`)
-		console.log(document,document.querySelector(`.censorRow`),document.querySelectorAll(`.gEspeL`))
+		// console.log(document,document.querySelector(`.censorRow`),document.querySelectorAll(`.gEspeL`))
 		// if (document.querySelector(`.censorRow`)){
 		// 	if (Array.isArray(document.querySelectorAll(`.censorRow`))){
 		// 		document.querySelectorAll(`.censorRow`).array.forEach(element => {
@@ -106,7 +106,7 @@ const Controller = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			// const test = performance.now()
+			const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
@@ -123,15 +123,11 @@ const Controller = props => {
 			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
 			// setPlayed(played)
 			setElapsed(playedSeconds)
-			// const test1 = performance.now()
-			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
+			const test1 = performance.now()
 		},
 		handleDuration: duration => {
-			console.log(`step 1`)
-			if(typeof getDuration === `function`){
-				console.log(`step 2`)
+			if(typeof getDuration === `function`)
 				getDuration(duration)
-			}
 
 			setDuration(duration)
 			setCurrentZone([0, duration])
@@ -212,25 +208,24 @@ const Controller = props => {
 			// console.log(pos.x/videoRef.current.offsetWidth*100 - event.position[activeCensorPosition][2]/2)
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
-					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + event.position[activeCensorPosition][2]/2
-					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + event.position[activeCensorPosition][3]/2
+					event.position[activeCensorPosition][1] = pos.x/videoRef.current.offsetWidth*100 + event.position[activeCensorPosition][3]/2
+					event.position[activeCensorPosition][2] = pos.y/videoRef.current.offsetHeight*100 + event.position[activeCensorPosition][4]/2
 				}
 			}
 			// console.log(event)
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleUpdateCensorResize: (delta, pos)=>{
-			console.log(videoRef.current.offsetWidth,ref.current)
 			const event = events[eventToEdit]
 			// console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
-					const width = event.position[activeCensorPosition][2] + delta.width/videoRef.current.offsetWidth*100
-					const height = event.position[activeCensorPosition][3] + delta.height/videoRef.current.offsetHeight*100
-					event.position[activeCensorPosition][2] = width
-					event.position[activeCensorPosition][3] = height
-					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + width/2
-					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + height/2
+					const width = event.position[activeCensorPosition][3] + delta.width/videoRef.current.offsetWidth*100
+					const height = event.position[activeCensorPosition][4] + delta.height/videoRef.current.offsetHeight*100
+					event.position[activeCensorPosition][3] = width
+					event.position[activeCensorPosition][4] = height
+					event.position[activeCensorPosition][1] = pos.x/videoRef.current.offsetWidth*100 + width/2
+					event.position[activeCensorPosition][2] = pos.y/videoRef.current.offsetHeight*100 + height/2
 				}
 			}
 			// console.log(event.position)
@@ -299,7 +294,9 @@ const Controller = props => {
 					<Subtitles>{subtitleText}</Subtitles>
 				) :``}
 
-				<Censor style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} ref={censorRef} active={censorActive}><canvas></canvas></Censor>
+				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
+
+				{/* <Censor style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} ref={censorRef} active={censorActive}><canvas></canvas></Censor> */}
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
@@ -322,7 +319,7 @@ const Controller = props => {
 				// onStart={() => console.log(`onStart`)}
 				// onBuffer={() => console.log(`onBuffer`)}
 				onError={()=>{
-					console.log(`Error is working`)
+					// console.log(`Error is working`)
 					showError()
 				}}
 
