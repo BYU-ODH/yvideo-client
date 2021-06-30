@@ -345,8 +345,8 @@ export default class CollectionService {
 			currentState.published = false
 			currentState.archived = false
 			break
-		case `copyrighted`:
-			currentState.copyrighted = !currentState.copyrighted
+		case `public`:
+			currentState.public = !currentState.public
 			break
 		default:
 			abort = true
@@ -356,7 +356,7 @@ export default class CollectionService {
 		const finalState = {
 			published: currentState.published,
 			archived: currentState.archived,
-			copyrighted: currentState.copyrighted,
+			public: currentState.public,
 		}
 
 		if (abort) dispatch(this.actions.collectionsAbort())

@@ -111,7 +111,7 @@ export default class Collections extends PureComponent {
 								// 	<MenuIcon onClick={linkToManagePublicCollection}/>
 								// </div>
 								<div>
-									<h3><Link to={`/public-manager`} >Manage Collections</Link></h3>
+									<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
 								</div>
 							}
 						</>

@@ -23,7 +23,7 @@ const CreateCollectionContainer = props => {
 	useEffect(() => {
 		if(blockLeave)
 			window.onbeforeunload = () => true
-		 else
+		else
 			window.onbeforeunload = undefined
 
 		return () => {

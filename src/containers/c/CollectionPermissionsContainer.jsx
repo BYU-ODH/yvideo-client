@@ -22,6 +22,7 @@ const CollectionPermissionsContainer = props => {
 		toggleModal,
 		updateCollectionStatus,
 		getCollections,
+		loggedinUser,
 	} = props
 
 	const [course, setCourse] = useState({
@@ -57,12 +58,12 @@ const CollectionPermissionsContainer = props => {
 			}, 1000)
 		}
 
-	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.copyrighted])
+	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public])
 
 	const handlers = {
-		handleBYUOnly: e => {
+		makePublic: e => {
 			e.preventDefault()
-			updateCollectionStatus(collection.id, `copyrighted`)
+			updateCollectionStatus(collection.id, `public`)
 			setIsEdited(true)
 		},
 		handleDepartmentChange: e => {
@@ -199,12 +200,14 @@ const CollectionPermissionsContainer = props => {
 		disabledUser,
 		disabledTA,
 		loaded,
+		loggedinUser,
 	}
 
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStoreToProps = store => ({
+	loggedinUser: store.authStore.user,
 	users: store.collectionStore.users,
 	courses: store.collectionStore.courses,
 })

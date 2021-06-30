@@ -130,7 +130,7 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
-	width: 66%;
+	width: 62%;
 
 	& > input {
 		z-index: 1;
