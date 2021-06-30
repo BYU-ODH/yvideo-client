@@ -7,12 +7,37 @@ import menuIcon from 'assets/menu-black.svg'
 
 const Style = styled.div`
 
-max-width: 100rem;
-padding: 8.4rem 2.4rem 0 2.4rem;
-margin: 0 auto;
+	max-width: 100rem;
+	padding: 8.4rem 2.4rem 0 2.4rem;
+	margin: 0 auto;
 
-& .list{
-	margin-bottom: 5rem;
+	& .list{
+		margin-bottom: 5rem;
+	}
+
+	& .resource-search-submit {
+		width: 62%;
+	}
+
+	& .resource-search-submit-not-admin{
+		width: 80%;
+		margin-left: 7rem;
+	}
+
+& .collections-header-not-admin {
+		display: flex;
+		align-items: center;
+		padding: 2rem;
+
+		& > div {
+			display: flex;
+			align-items: center;
+
+			& > h3 {
+				font-weight: lighter;
+				font-size: 1.3rem;
+			}
+		}
 }
 
 & .collections-header{
@@ -130,7 +155,6 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
-	width: 62%;
 
 	& > input {
 		z-index: 1;

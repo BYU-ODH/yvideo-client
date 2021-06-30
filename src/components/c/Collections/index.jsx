@@ -91,31 +91,38 @@ export default class Collections extends PureComponent {
 				</div>
 
 				{!isMobile ?
-					<header className= 'collections-header'>
-						<div>
-							<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
-						</div>
-						<div>
-						</div>
-						<>
-							<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
-								<SearchIcon />
-								<input className='resource-search-input' type='search' placeholder={`search more public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-								{/* <button type='submit'>Search</button> */}
-							</Search>
-						</>
-						<>
-							{
-								(isProf || isAdmin) &&
-								// <div>
-								// 	<MenuIcon onClick={linkToManagePublicCollection}/>
-								// </div>
-								<div>
-									<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
-								</div>
-							}
-						</>
-					</header>
+					<>
+						{
+							isProf || isAdmin ?
+								<header className= 'collections-header'>
+									<div>
+										<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+									</div>
+									<div>
+									</div>
+									<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
+										<SearchIcon />
+										<input className='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+										{/* <button type='submit'>Search</button> */}
+									</Search>
+									<div>
+										<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
+									</div>
+								</header>
+								:
+								<header className= 'collections-header-not-admin'>
+									<div>
+										<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+									</div>
+									<div>
+									</div>
+									<Search className='resource-search-submit-not-admin' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
+										<SearchIcon />
+										<input className='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+									</Search>
+								</header>
+						}
+					</>
 					:
 					<header className= 'collections-header-mobile'>
 						<div>

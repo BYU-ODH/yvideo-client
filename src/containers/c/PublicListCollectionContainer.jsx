@@ -40,8 +40,8 @@ const PublicListCollectionContainer = props => {
 	}, [isOpen, ownerName, collections, searchedUser, isSubscribed])
 
 	const readSubscription = () => {
-		if(collection.subscribers) {
 
+		if(collection.subscribers) {
 			collection.subscribers.forEach(subscriber => {
 				if(subscriber.id === user.id) {
 					setIsSubscribed(true)
@@ -50,7 +50,7 @@ const PublicListCollectionContainer = props => {
 			})
 		} else {
 			Object.keys(collections).map(key => {
-				if(key == collection.id) {
+				if(key === collection.id) {
 					if(collections[key].subscribers) {
 						collections[key].subscribers.forEach(subscriber => {
 							if(subscriber.id === user.id) {
@@ -74,8 +74,6 @@ const PublicListCollectionContainer = props => {
 			setIsSubscribed(true)
 		}
 	}
-
-	// console.log(collection)
 
 	// TODO: we can modify this idea later
 	const handleMorePublicCollection = async() =>{
