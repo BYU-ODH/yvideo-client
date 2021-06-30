@@ -182,7 +182,6 @@ const TrackEditor = props => {
 		setLayers(initialLayers)
 		setEvents(allEvents)
 
-		console.log(blockLeave)
 		if(blockLeave)
 			window.onbeforeunload = () => true
 		else
