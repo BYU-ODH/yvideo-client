@@ -976,13 +976,14 @@ const TrackEditor = props => {
 						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
 							<button onClick={handleSaveAnnotation}>
-								{isLoading ? (
-									<i className='fa fa-refresh fa-spin'/>
-								)
-									: (
-										<i class='fa fa-check'></i>
-									)
 
+								{blockLeave ?
+									null
+									:
+									isLoading ?
+										<i className='fa fa-refresh fa-spin'/>
+										:
+										<i className='fa fa-check'></i>
 								}
 								<span>Save</span>
 							</button>
