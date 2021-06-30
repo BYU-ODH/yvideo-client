@@ -97,18 +97,6 @@ export const TimeBar = styled.div`
 					height: 100%;
 					background-color: transparent;
 				}
-/*
-				& #time-indicator {
-					position: absolute;
-					float: left;
-					top: 0px;
-					left: ${props => props.played * 100}%;
-					margin: 0px;
-					width: 2px;
-					height: 100vh;
-					background-color: red;
-					z-index: 20;
-				} */
 			}
 		}
 

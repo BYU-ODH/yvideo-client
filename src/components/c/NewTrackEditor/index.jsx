@@ -4,9 +4,9 @@ import { Prompt } from 'react-router'
 
 import Style, { Timeline, EventList, AnnotationMessage } from './styles'
 
-import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 
+import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 
 import * as Subtitle from 'subtitle'
@@ -195,11 +195,9 @@ const TrackEditor = props => {
 	// end of useEffect
 
 	if(shouldUpdate === true)
-
 		setShouldUpdate(false)
 
 	const togglendTimeline = () => {
-
 		setTimelineMinimized(!timelineMinimized)
 	}
 
@@ -289,13 +287,11 @@ const TrackEditor = props => {
 		}
 
 		currentEvents.push(eventObj)
-		// console.log(currentEvents)
 		setAllEvents(currentEvents)
 		setDisplayLayer(index)
 	}
 
 	const updateEvents = (index, event, layerIndex) => {
-		// console.log(`Update`, event)
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
@@ -319,7 +315,6 @@ const TrackEditor = props => {
 		} else if(event.start > event.end){
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
-
 		}
 
 		// check end event times

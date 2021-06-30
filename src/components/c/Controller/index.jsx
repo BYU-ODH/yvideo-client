@@ -212,7 +212,6 @@ const Controller = props => {
 	const dateElapsed = new Date(null)
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
-
 	const showError = () => {
 		alert(`There was an error loading the video`)
 	}
