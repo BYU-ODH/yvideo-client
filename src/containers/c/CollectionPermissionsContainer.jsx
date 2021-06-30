@@ -22,6 +22,7 @@ const CollectionPermissionsContainer = props => {
 		toggleModal,
 		updateCollectionStatus,
 		getCollections,
+		loggedinUser,
 	} = props
 
 	const [course, setCourse] = useState({
@@ -188,8 +189,6 @@ const CollectionPermissionsContainer = props => {
 		},
 	}
 
-	console.log(user)
-
 	const viewstate = {
 		collection,
 		user,
@@ -201,12 +200,14 @@ const CollectionPermissionsContainer = props => {
 		disabledUser,
 		disabledTA,
 		loaded,
+		loggedinUser,
 	}
 
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStoreToProps = store => ({
+	loggedinUser: store.authStore.user,
 	users: store.collectionStore.users,
 	courses: store.collectionStore.courses,
 })

@@ -48,6 +48,7 @@ export class CollectionPermissions extends PureComponent {
 			disabledUser,
 			disabledTA,
 			loaded,
+			loggedinUser,
 		} = viewstate
 
 		const {
@@ -97,10 +98,14 @@ export class CollectionPermissions extends PureComponent {
 			<Style>
 				<InnerContainer>
 					<Column>
-						<h4>
+						{/* only shows only for the admin */}
+						{
+							loggedinUser.roles === 0 &&
+							<h4>
 							Public
-							<SwitchToggle on={collection.public} setToggle={handlers.makePublic} data_key='public' />
-						</h4>
+								<SwitchToggle on={collection.public} setToggle={handlers.makePublic} data_key='public' />
+							</h4>
+						}
 					</Column>
 				</InnerContainer>
 				<TableContainer>
