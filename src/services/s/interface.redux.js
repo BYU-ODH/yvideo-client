@@ -7,7 +7,7 @@ export default class InterfaceService {
 	types = {
 		MENU_TOGGLE: `MENU_TOGGLE`,
 		MODAL_TOGGLE: `MODAL_TOGGLE`,
-		TIP_TOGGLE: 'TIP_TOGGLE',
+		TIP_TOGGLE: `TIP_TOGGLE`,
 		COLLECTIONS_DISPLAY_TOGGLE: `COLLECTIONS_DISPLAY_TOGGLE`,
 		SET_HEADER_BORDER: `SET_HEADER_BORDER`,
 		SET_EDITOR_STYLE: `SET_EDITOR_STYLE`,
@@ -15,7 +15,9 @@ export default class InterfaceService {
 		SET_EVENTS: `SET_EVENTS`,
 		GET_EVENTS: `GET_EVENTS`,
 		SENT_EMAIL: `SENT_EMAIL`,
-		GET_TRANSLATION: 'GET_TRANSLATION',
+		GET_TRANSLATION: `GET_TRANSLATION`,
+		SET_BREADCRUMBS: `SET_BREADCRUMBS`,
+		GET_BREADCRUMBS: `GET_BREADCRUMBS`,
 		INTERFACE_ERROR: `INTERFACE_ERROR`,
 		// SUCCESS: `SUCCESS`,
 	}
@@ -33,6 +35,8 @@ export default class InterfaceService {
 		setEvents: events => ({ type: this.types.SET_EVENTS, payload: { events }}),
 		getEvents: events => ({ type: this.types.GET_EVENTS, payload: { events }}),
 		getTranslation: json => ({ type: this.types.GET_TRANSLATION, payload: { json }}),
+		setBreadcrumbs: breadcrumbs => ({ type: this.types.SET_BREADCRUMBS, payload: { breadcrumbs }}),
+		getBreadcrumbs: breadcrumbs => ({ type: this.types.GET_BREADCRUMBS, payload: { breadcrumbs }}),
 		interfaceError: error => ({ type: this.types.INTERFACE_ERROR, payload: { error } }),
 		// success: error => ({ type: this.types.SUCCESS, payload: { error } }),
 	}
@@ -60,11 +64,16 @@ export default class InterfaceService {
 		lost: false,
 		events: [],
 		languageCodes: {
-			//add language codes as needed
-			spanish: 'es',
-			german: 'de',
-			russian: 'ru',
-		}
+			// add language codes as needed
+			spanish: `es`,
+			german: `de`,
+			russian: `ru`,
+		},
+		breadcrumbs: {
+			path: [],
+			collectionId: ``,
+			contentId: ``,
+		},
 	}
 
 	// reducer
@@ -93,8 +102,8 @@ export default class InterfaceService {
 
 		case this.types.TIP_TOGGLE:
 			if(action.payload == null){
-				//console.log("IT IS NULL")
-				//we need to set modal to false and then pass a null component
+				// console.log("IT IS NULL")
+				// we need to set modal to false and then pass a null component
 				return {
 					...store,
 					tip: {
@@ -104,8 +113,7 @@ export default class InterfaceService {
 						props: null,
 					},
 				}
-			}
-			else {
+			} else {
 				return {
 					...store,
 					tip: {
@@ -160,6 +168,17 @@ export default class InterfaceService {
 				jsonResponse: action.payload.json,
 			}
 
+		case this.types.SET_BREADCRUMBS:
+			return {
+				...store,
+				breadcrumbs: action.payload.breadcrumbs,
+			}
+
+		case this.types.GET_BREADCRUMBS:
+			return {
+				...store,
+				breadcrumbs: action.payload.breadcrumbs,
+			}
 
 		case this.types.INTERFACE_ERROR:
 			console.error(action.payload.error)
@@ -226,9 +245,16 @@ export default class InterfaceService {
 			const json = await apiProxy.translation.getTranslation(word, language)
 			// console.log(json)
 			dispatch(this.actions.getTranslation(json))
+		} catch (e) {
+			dispatch(this.actions.getTranslation(``))
 		}
-		catch (e) {
-			dispatch(this.actions.getTranslation(''))
+	}
+
+	setBreadcrumbs = breadcrumbs => async (dispatch, getState, { apiProxy }) => {
+		try {
+			dispatch(this.actions.setBreadcrumbs(breadcrumbs))
+		} catch (e) {
+			dispatch(this.actions.setBreadcrumbs(`` , ``))
 		}
 	}
 
@@ -248,8 +274,7 @@ export default class InterfaceService {
 				json,
 				success: true,
 			}
-		}
-		catch (e) {
+		} catch (e) {
 			return {
 				json: {},
 				success: false,
@@ -264,17 +289,17 @@ export default class InterfaceService {
 				const results = await apiProxy.email.postNoAttachment(emailObject)
 				if(results.status == 200) {
 					Swal.fire({
-						icon: 'success',
-						title: 'You have successfully submitted the form',
+						icon: `success`,
+						title: `You have successfully submitted the form`,
 						showConfirmButton: false,
 						timer: 3000,
 						width: 500,
-						})
+					})
 				}
 			} catch (error) {
 				dispatch(this.actions.interfaceError(error))
 				Swal.fire({
-					title: 'There is something wrong, Please try again',
+					title: `There is something wrong, Please try again`,
 					showConfirmButton: true,
 					width: 500,
 				})
@@ -289,17 +314,17 @@ export default class InterfaceService {
 				const results = await apiProxy.email.postWithAttachment(emailObject)
 				if(results.status == 200) {
 					Swal.fire({
-						icon: 'success',
-						title: 'You have successfully submitted the form',
+						icon: `success`,
+						title: `You have successfully submitted the form`,
 						showConfirmButton: false,
 						timer: 3000,
 						width: 500,
-						})
+					})
 				}
 			} catch (error) {
 				dispatch(this.actions.interfaceError(error))
 				Swal.fire({
-					title: 'There is something wrong, Please try again',
+					title: `There is something wrong, Please try again`,
 					showConfirmButton: true,
 					width: 500,
 				})

@@ -115,7 +115,7 @@ const TrackEditor = props => {
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
-	const [blockLeave, setBlock] = useState(true)
+	const [blockLeave, setBlock] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [displayLayer, setDisplayLayer] = useState(0)
@@ -190,7 +190,7 @@ const TrackEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-	}, [eventsArray])
+	}, [eventsArray, blockLeave])
 
 	if(shouldUpdate === true)
 
@@ -225,6 +225,7 @@ const TrackEditor = props => {
 		setLayers(currentLayers)
 		setSideEditor(false)
 		setDisplayLayer(currentLayers.length-1)
+		setBlock(true)
 	}
 
 	const handleRemoveLayer = (e, index) => {
@@ -254,6 +255,7 @@ const TrackEditor = props => {
 			setDisplayLayer(currentLayers.length-1)
 			setAllEvents(currentEvents)
 			setEvents(currentEvents)
+			setBlock(true)
 		}
 	}
 
@@ -263,6 +265,7 @@ const TrackEditor = props => {
 		// READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
 		const newStart = videoCurrentTime * 100 / videoLength
 		addEventToLayer(item, index, newStart)
+		setBlock(true)
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
@@ -351,6 +354,7 @@ const TrackEditor = props => {
 		setEventToEdit(index)
 		setSubSelected(false)
 		setSideEditor(true)
+		setBlock(true)
 	}
 
 	const deleteEvent = () => {
@@ -361,6 +365,7 @@ const TrackEditor = props => {
 		setEvents(currentEvents)
 		setEventToEdit(1000)
 		setSideEditor(false)
+		setBlock(true)
 	}
 	const deleteSub = () =>{
 		const currentSubs = [...subtitles]
@@ -368,6 +373,7 @@ const TrackEditor = props => {
 		setSubs(currentSubs)
 		setAllSubs(currentSubs)
 		setSideEditor(false)
+		setBlock(true)
 	}
 	const handleCensorRemove = (item) => {
 		const index = eventToEdit
@@ -493,7 +499,7 @@ const TrackEditor = props => {
 		deleteSubtitles(subLayersToDelete)
 		setSubLayersToDelete([])
 		setIsLoading(false)
-
+		setBlock(false)
 	}
 
 	const handleSaveSubtitles = async() => {
@@ -646,6 +652,7 @@ const TrackEditor = props => {
 		activeUpdate(subLayerIndex)
 		setSubSelected(true)
 		sortSubtitles()
+		setBlock(true)
 	}
 	const addSubToLayer = (item,index) => {
 		// TODO: Change this to use real JS event objects and insert based on time
@@ -669,6 +676,7 @@ const TrackEditor = props => {
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
 			sortSubtitles()
+			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
 			console.error(error)
@@ -720,6 +728,7 @@ const TrackEditor = props => {
 		setSideEditor(false)
 		setSubModalVisible(false)
 		setSubModalMode(``)
+		setBlock(true)
 	}
 	const handleAddSubLayerFromFile = (url) => {
 		try{
@@ -790,18 +799,21 @@ const TrackEditor = props => {
 		tempSubs.splice(index, 1)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
+		setBlock(true)
 	}
 	const updateSubLayerTitle = (title) =>{
 		const temp = [...subtitles]
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
 		setAllSubs(temp)
+		setBlock(true)
 	}
 	const updateSubLayerLanguage = (language) =>{
 		const temp = [...subtitles]
 		temp[subLayerToEdit][`language`] = language
 		setSubs(temp)
 		setAllSubs(temp)
+		setBlock(true)
 	}
 	const sortSubtitles = () => {
 		const tempSubs = [...subtitles]
@@ -812,7 +824,7 @@ const TrackEditor = props => {
 		}
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
-
+		setBlock(true)
 	}
 	return (
 		<Style>
@@ -964,13 +976,14 @@ const TrackEditor = props => {
 						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
 							<button onClick={handleSaveAnnotation}>
-								{isLoading ? (
-									<i className='fa fa-refresh fa-spin'/>
-								)
-									: (
-										<i class='fa fa-check'></i>
-									)
 
+								{blockLeave ?
+									null
+									:
+									isLoading ?
+										<i className='fa fa-refresh fa-spin'/>
+										:
+										<i className='fa fa-check'></i>
 								}
 								<span>Save</span>
 							</button>

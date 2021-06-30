@@ -24,6 +24,7 @@ const ManagerContainer = props => {
 		toggleTip,
 		newCollectionInfo,
 		removeCreatedCollectionIdFromStore,
+		setBreadcrumbs,
 	} = props
 
 	const params = useParams()
@@ -34,6 +35,8 @@ const ManagerContainer = props => {
 	const [isOpen, setOpen] = useState(true)
 
 	useEffect(() => {
+		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
+
 		setHeaderBorder(true)
 
 		if(count === 0){ // if we have not called gt collections with force = true just call it once to make sure that we get all the collections.
@@ -58,12 +61,10 @@ const ManagerContainer = props => {
 			})
 		}
 
-		if(window.innerWidth < 1000) {
+		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		}
-		else {
+		 else
 			setIsMobile(false)
-		}
 
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
@@ -102,7 +103,6 @@ const ManagerContainer = props => {
 		handleShowTip,
 		handleToggleSideBar,
 	}
-
 
 	const sideLists = {
 		published: [],
@@ -148,6 +148,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	removeCreatedCollectionIdFromStore: collectionService.removeCreatedCollectionIdFromStore,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerContainer)
