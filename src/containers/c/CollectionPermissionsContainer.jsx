@@ -57,12 +57,12 @@ const CollectionPermissionsContainer = props => {
 			}, 1000)
 		}
 
-	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.copyrighted])
+	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public])
 
 	const handlers = {
-		handleBYUOnly: e => {
+		makePublic: e => {
 			e.preventDefault()
-			updateCollectionStatus(collection.id, `copyrighted`)
+			updateCollectionStatus(collection.id, `public`)
 			setIsEdited(true)
 		},
 		handleDepartmentChange: e => {
@@ -187,6 +187,8 @@ const CollectionPermissionsContainer = props => {
 			setIsEdited(true)
 		},
 	}
+
+	console.log(user)
 
 	const viewstate = {
 		collection,

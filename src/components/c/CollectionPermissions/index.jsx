@@ -98,8 +98,8 @@ export class CollectionPermissions extends PureComponent {
 				<InnerContainer>
 					<Column>
 						<h4>
-							BYU users only
-							<SwitchToggle on={collection.copyrighted} setToggle={handlers.handleBYUOnly} data_key='copyrighted' />
+							Public
+							<SwitchToggle on={collection.public} setToggle={handlers.makePublic} data_key='public' />
 						</h4>
 					</Column>
 				</InnerContainer>
