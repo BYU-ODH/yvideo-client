@@ -27,6 +27,11 @@ const VideoEditor = props => {
 		contentError,
 		controllerRef,
 		videoLength,
+		timelineMinimized,
+		displayLayer,
+		allEvents,
+		eventToEdit,
+		activeCensorPosition,
 	} = props.viewstate
 
 	const {
@@ -36,6 +41,9 @@ const VideoEditor = props => {
 		togglendTimeline,
 		getVideoDuration,
 		setCurrentTime,
+		handleLastClick,
+		updateEvents,
+		setActiveCensorPosition,
 	} = props.handlers
 
 	const events = [
@@ -97,7 +105,7 @@ const VideoEditor = props => {
 				<DndProvider backend={Backend}>
 					<span style={{ zIndex: 0 }}>
 
-						{/* <VideoContainer
+						<VideoContainer
 							ref = {controllerRef}
 							className='video'
 							url={props.viewstate.url}
@@ -113,7 +121,7 @@ const VideoEditor = props => {
 							activeCensorPosition = {activeCensorPosition}
 							setActiveCensorPosition = {setActiveCensorPosition}
 						>
-						</VideoContainer> */}
+						</VideoContainer>
 					</span>
 				</DndProvider>
 			</Style>
