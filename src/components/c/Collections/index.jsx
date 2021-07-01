@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon, MenuIcon } from './styles'
+import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -43,8 +43,10 @@ export default class Collections extends PureComponent {
 
 		const setNoCollections = () => {
 			setTimeout(() => {
-				if(document.getElementById(`message`) !== null)
-					document.getElementById(`message`).innerHTML = `There are no collections`
+				if(document.getElementById(`collection-message`) !== null)
+					document.getElementById(`collection-message`).innerHTML = `<p>There are no collections</p>`
+				if(document.getElementById(`message-public-collection`) !== null)
+					document.getElementById(`message-public-collection`).innerHTML = `<p>There are no public collections</p>`
 			}, 2000)
 		}
 
@@ -84,8 +86,8 @@ export default class Collections extends PureComponent {
 						</>
 					) : (
 						<>
-							<h1 id='message'>Loading</h1>
-							{	setNoCollections()}
+							<FeedbackMessage id='collection-message'><p>Loading..</p></FeedbackMessage>
+							<p>{	setNoCollections() }</p>
 						</>
 					) }
 				</div>
@@ -146,7 +148,12 @@ export default class Collections extends PureComponent {
 									)
 								}
 							</>
-						) : <>Public Collection is empty.</>
+						)
+							:
+							<>
+								<FeedbackMessage id='message-public-collection'><p>Loading..</p></FeedbackMessage>
+								<p>{	setNoCollections() }</p>
+							</>
 					}
 				</div>
 			</Style>

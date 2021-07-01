@@ -221,3 +221,16 @@ export const SearchMobile = styled.form`
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 	}
 `
+
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	display: flex;
+  justify-content: center;
+  align-items: center;
+
+	& > p {
+		font-weight: 200;
+		font-size: 20px;
+		margin: auto;
+	}
+`
