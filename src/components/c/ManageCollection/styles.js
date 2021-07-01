@@ -21,7 +21,7 @@ const Style = styled.div`
 		@media screen and (max-width: 1000px) {
 			height: 7rem;
 			padding: 2rem 2.5rem;
-			flex-direction: column
+			flex-direction: column;
 			align-items: flex-start;
 			justify-content: flex-start
 		}
@@ -166,6 +166,12 @@ export const NewContent = styled.button`
 
   outline: none;
   cursor: pointer;
+
+	& > p{
+		font-size: 1.5rem;
+		font-weight: lighter;
+		text-align: center;
+	}
 `
 
 export const Icon = styled.div`

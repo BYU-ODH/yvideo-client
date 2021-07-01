@@ -10,13 +10,14 @@ import {
 	Container,
 	CreateButton,
 	NoCollection,
-	Plus,
 	SideMenu,
 	Help,
 	MenuIcon,
+	FeedbackMessage,
+	PlusIcon,
+	Button,
 } from './styles'
 
-import plus from 'assets/plus.svg'
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
 export default class Manager extends PureComponent {
@@ -53,10 +54,8 @@ export default class Manager extends PureComponent {
 							</>
 						) : (
 							<>
-								<h1 className='no-collections'>There are no collections</h1>
-								<div id={`create-button`} >
-									<button onClick={createNew}>Create New Collection</button>
-								</div>
+								<Button onClick={createNew}><PlusIcon/>Collection</Button>
+								<FeedbackMessage><p>There are no collections</p></FeedbackMessage>
 							</>
 						) }
 					</>
@@ -69,6 +68,7 @@ export default class Manager extends PureComponent {
 									<MenuIcon type='button' onClick={handleToggleSideBar}>Back</MenuIcon>
 									:
 									<SideMenu isOpen={isOpen}>
+										<CreateButton className='collection-create' onClick={createNew}><PlusIcon/>Collection</CreateButton>
 										<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 											<Help
 												onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
@@ -91,7 +91,6 @@ export default class Manager extends PureComponent {
 											</Accordion>
 										}
 
-										<CreateButton className='collection-create' onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
 									</SideMenu>
 							}
 						</>

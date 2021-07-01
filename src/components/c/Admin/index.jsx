@@ -12,24 +12,15 @@ export class Admin extends PureComponent {
 			data,
 			searchQuery,
 			searchCategory,
-			menuActive,
-			menuItemInfo,
-			mousePos,
 			placeholder,
 			isMobile,
-			isEdit,
 		} = this.props.viewstate
 
 		const {
 			updateSearchBar,
 			handleSubmit,
-			toggleMenu,
-			handleConfirmDelete,
 			updateCategory,
 			addUsers,
-			handleEdit,
-			userRoleSave,
-			roleChange,
 		} = this.props.handlers
 
 		return (
