@@ -106,8 +106,8 @@ export const Timeline = styled.div`
 				& .zoom-scroll-indicator {
 					position: absolute;
 					min-width: 5%;
-					width: ${props => props.zoom !== 0 ? `${props.zoom}%` : `100%`} !important;
-					height: 100% !important;
+					/* width: ${props => props.zoom !== 0 ? `${props.zoom}%` : `100%`} !important; */
+					/* height: 100% !important; */
 					background-color: var(--light-blue);
 					border-radius: 20px;
 				}

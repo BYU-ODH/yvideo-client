@@ -57,37 +57,37 @@ class Root extends PureComponent {
 								<SearchPublicCollectionsContainer />
 							</Route>
 
-							{user.roles < 3 &&
-								<>
-									<Route path='/admin'>
-										<AdminContainer />
-									</Route>
+							{/* {user.roles < 3 && */}
+							{/* <> */}
+							<Route path='/admin'>
+								<AdminContainer />
+							</Route>
 
-									<Route path='/lab-assistant'>
-										<LabAssistantContainer />
-									</Route>
+							<Route path='/lab-assistant'>
+								<LabAssistantContainer />
+							</Route>
 
-									<Route path='/collections'>
-										<CollectionsContainer />
-									</Route>
+							<Route path='/collections'>
+								<CollectionsContainer />
+							</Route>
 
-									<Route path='/manage-resource'>
-										<ManageResourceContainer />
-									</Route>
+							<Route path='/manage-resource'>
+								<ManageResourceContainer />
+							</Route>
 
-									<Route path='/lab-assistant-manager/:professorId/:collectionId?'>
-										<LabAssistantManagerContainer />
-									</Route>
+							<Route path='/lab-assistant-manager/:professorId/:collectionId?'>
+								<LabAssistantManagerContainer />
+							</Route>
 
-									<Route path='/manager/:id?'>
-										<ManagerContainer />
-									</Route>
+							<Route path='/manager/:id?'>
+								<ManagerContainer />
+							</Route>
 
-									<Route path='/public-manager/:id?'>
-										<PublicManagerContainer />
-									</Route>
-								</>
-							}
+							<Route path='/public-manager/:id?'>
+								<PublicManagerContainer />
+							</Route>
+							{/* </> */}
+							{/* } */}
 
 							<Route path='/player/:id/:clip?'>
 								<PlayerContainer />
