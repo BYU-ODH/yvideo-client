@@ -53,26 +53,23 @@ class Root extends PureComponent {
 								<CollectionsContainer />
 							</Route>
 
-							{/* TODO: need to double check */}
 							<Route exact path='/search-public-collections' >
 								<SearchPublicCollectionsContainer />
 							</Route>
 
+							{/* {user.roles < 3 && */}
+							{/* <> */}
 							<Route path='/admin'>
 								<AdminContainer />
-							</Route>
-
-							<Route path='/collections'>
-								<CollectionsContainer />
 							</Route>
 
 							<Route path='/lab-assistant'>
 								<LabAssistantContainer />
 							</Route>
 
-							{/* <Route path='/lab-assistant-resource/:professorId'>
-								<ManageResourceContainer />
-							</Route> */}
+							<Route path='/collections'>
+								<CollectionsContainer />
+							</Route>
 
 							<Route path='/manage-resource'>
 								<ManageResourceContainer />
@@ -89,6 +86,8 @@ class Root extends PureComponent {
 							<Route path='/public-manager/:id?'>
 								<PublicManagerContainer />
 							</Route>
+							{/* </> */}
+							{/* } */}
 
 							<Route path='/player/:id/:clip?'>
 								<PlayerContainer />
@@ -113,17 +112,20 @@ class Root extends PureComponent {
 					</>
 					:
 					(
-						<Switch>
-							<Route exact path='/'>
-								<LandingContainer />
-							</Route>
-							<Route exact path='/search-public-collections' >
-								<SearchPublicCollectionsContainer />
-							</Route>
-							<Route>
-								<Error error='404' message={`You've wandered too far`} />
-							</Route>
-						</Switch>
+						<>
+							<Switch>
+								<Route exact path='/'>
+									<LandingContainer />
+								</Route>
+								<Route exact path='/search-public-collections' >
+									{/* <MenuContainer /> */}
+									<SearchPublicCollectionsContainer />
+								</Route>
+								<Route>
+									<Error error='404' message={`You've wandered too far`} />
+								</Route>
+							</Switch>
+						</>
 					)
 				}
 

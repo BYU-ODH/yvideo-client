@@ -18,7 +18,6 @@ import unmute from 'assets/controls_muted.svg'
 import carat from 'assets/carat_white.svg'
 
 const Controller = props => {
-
 	// console.log('%c Controller Component', 'color: green; font-weight: bolder; font-size: 12px;')
 
 	const {

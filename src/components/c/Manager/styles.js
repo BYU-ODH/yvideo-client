@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
+import menuIcon from 'assets/menu-black.svg'
+
 export const Container = styled.div`
+
 	padding-top: 8.4rem;
 	display: flex;
 
@@ -32,6 +35,10 @@ export const Container = styled.div`
 			}
 		}
 	}
+
+	@media screen and (max-width: 1000px) {
+		flex-direction: column;
+	}
 `
 
 export const SideMenu = styled.div`
@@ -50,10 +57,20 @@ export const SideMenu = styled.div`
 
 	overflow-y: scroll;
 
+
+	@media screen and (max-width: 1000px) {
+		width: -webkit-fill-available;
+		display: ${props =>  props.isOpen === false ? `none` : ``};
+	}
+
 	& > h4 {
 		padding: .8rem 0;
 		margin-bottom: 1rem;
 		position: relative;
+	}
+
+	& > div {
+		cursor: pointer;
 	}
 
 	& .link {
@@ -125,5 +142,22 @@ export const Help = styled.span`
     position: absolute;
     right: -3px;
     bottom: 5px;
+	}
+`
+
+export const MenuIcon = styled.div`
+	height: 2.5rem;
+	width: 5rem
+	border: .125rem solid gray;
+	border-radius: 3px;
+	margin-top: 1.5rem;
+	margin-left: 2.5rem;
+	text-align:center;
+	line-height: 2.5rem;
+	background-color: gray;
+	color: white;
+
+	:hover {
+		cursor: pointer;
 	}
 `

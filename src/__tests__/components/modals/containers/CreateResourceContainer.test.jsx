@@ -38,7 +38,7 @@ describe(`CreateResourceContainer test`, () => {
 		expect(wrapper.find(`#create-resource-name`).props().value).toBe(`changed resource name`)
 
 		// update requester email
-		expect(wrapper.find(`#create-resource-requester-email`).props().value).toBe(`email@testemail.com`)
+		expect(wrapper.find(`#create-resource-requester-email`).props().value).toBe(``)
 		wrapper.find(`#create-resource-requester-email`).simulate(`change`, {target: { name: `requesterEmail`, value: `chagned@email.com`}})
 		expect(wrapper.find(`#create-resource-requester-email`).props().value).toBe(`chagned@email.com`)
 

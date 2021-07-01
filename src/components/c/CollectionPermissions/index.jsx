@@ -1,7 +1,24 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort, Loading, UserListTable, UserList, TableHeader, CourseTable } from './styles'
-
+import Style, {
+	Search,
+	DepartmentSelect,
+	CatalogInput,
+	SectionInput,
+	AddButton,
+	Table,
+	TableContainer,
+	AddManyButton,
+	Sort,
+	Loading,
+	UserListTable,
+	UserList,
+	TableHeader,
+	CourseTable,
+	InnerContainer,
+	Column,
+} from './styles'
+import { SwitchToggle } from 'components/bits'
 import logo from 'assets/hexborder.svg'
 
 import removeIcon from 'assets/trash_icon.svg'
@@ -23,6 +40,7 @@ export class CollectionPermissions extends PureComponent {
 		} = this.props
 
 		const {
+			collection,
 			users,
 			userTA,
 			courses,
@@ -30,6 +48,7 @@ export class CollectionPermissions extends PureComponent {
 			disabledUser,
 			disabledTA,
 			loaded,
+			loggedinUser,
 		} = viewstate
 
 		const {
@@ -77,7 +96,20 @@ export class CollectionPermissions extends PureComponent {
 
 		return (
 			<Style>
+				<InnerContainer>
+					<Column>
+						{/* only shows only for the admin */}
+						{
+							loggedinUser.roles === 0 &&
+							<h4>
+							Public
+								<SwitchToggle on={collection.public} setToggle={handlers.makePublic} data_key='public' />
+							</h4>
+						}
+					</Column>
+				</InnerContainer>
 				<TableContainer>
+
 					<CourseTable id='course-table'>
 						<h4>Courses</h4>
 						<form onSubmit={handlers.addCourse}>
@@ -138,7 +170,7 @@ export class CollectionPermissions extends PureComponent {
 												<td>{element[`account-type`]}</td>
 												<td>{element[`last-login`].length > 2 ?
 													`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
-														 :
+													:
 													`NA`
 												}
 												</td>
@@ -158,11 +190,13 @@ export class CollectionPermissions extends PureComponent {
 						<UserList id='user-table'>
 							<TableHeader>
 								<h4>Current Users</h4>
-								<Search className='faculty-submit' onSubmit={handlers.addUser}>
-									<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
-									<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
-								</Search>
-								<AddManyButton type='button' onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
+								<div>
+									<Search className='faculty-submit' onSubmit={handlers.addUser}>
+										<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
+										<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
+									</Search>
+									<AddManyButton type='button' onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
+								</div>
 							</TableHeader>
 							<Table border='1'>
 								<thead>

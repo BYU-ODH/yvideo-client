@@ -20,7 +20,7 @@ class ListItemDropDown extends PureComponent {
 			isOpen,
 		} = this.state
 
-		console.log(this.props.data)
+		// console.log(this.props.data)
 		const { id, name, thumbnail, translation, captions, annotations, clips} = this.props.data
 		const parsedClips = JSON.parse(clips)
 		return (
@@ -49,7 +49,7 @@ class ListItemDropDown extends PureComponent {
 					{
 						Object.keys(parsedClips).map((item)=>{
 							return (
-								<Link to={`/player/${id}/${item}`}>
+								<Link key={item} to={`/player/${id}/${item}`}>
 									<Clip>
 										<div className='name'>
 										Clip - {parsedClips[item][`title`]}

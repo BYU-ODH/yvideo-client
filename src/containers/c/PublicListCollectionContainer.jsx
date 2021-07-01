@@ -18,7 +18,6 @@ const PublicListCollectionContainer = props => {
 		updateCollectionPermissions,
 		user,
 		isAdmin,
-		getPublicCollectionContents,
 		getSubscribers,
 		searchCollectionsByUserId,
 		collections,
@@ -38,9 +37,10 @@ const PublicListCollectionContainer = props => {
 
 		if(Object.keys(searchedUser).length !== 0) setOwnerName(searchedUser.username)
 
-	}, [isOpen, ownerName, collections, isSubscribed, searchedUser])
+	}, [isOpen, ownerName, collections, searchedUser, isSubscribed])
 
 	const readSubscription = () => {
+
 		if(collection.subscribers) {
 			collection.subscribers.forEach(subscriber => {
 				if(subscriber.id === user.id) {
@@ -48,6 +48,20 @@ const PublicListCollectionContainer = props => {
 					return
 				}
 			})
+		} else {
+			Object.keys(collections).map(key => {
+				if(key === collection.id) {
+					if(collections[key].subscribers) {
+						collections[key].subscribers.forEach(subscriber => {
+							if(subscriber.id === user.id) {
+								setIsSubscribed(true)
+								return
+							}
+						})
+					}
+				}
+			},
+			)
 		}
 	}
 
@@ -86,22 +100,21 @@ const PublicListCollectionContainer = props => {
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
 
-		// get contents that attached to collection
-		if(collection){
-			await getSubscribers(collection.id)
-			await getPublicCollectionContents(collection.id)
+		// handle if user has byu account and has to be at least student access level
+		if(user !== undefined && user.roles < 3 ){
+			// get contents that attached to collection
+			if(collection) await getSubscribers(collection.id)
+			if(collection.owner !== user.id)
+				await getUserById(collection.owner)
+			else{
+				emptySearchedUser()
+				setOwnerName(user.username)
+			}
 		}
-
-		if(collection.owner !== user.id)
-			await getUserById(collection.owner)
-		else{
-			emptySearchedUser()
-			setOwnerName(user.username)
-		}
-
 	}
 
 	const viewstate = {
+		user,
 		isOpen,
 		isAdmin,
 		collection,
@@ -131,8 +144,6 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleTip: interfaceService.toggleTip,
 	updateCollectionPermissions: collectionService.updateCollectionPermissions,
-	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
-	getPublicCollectionContents: adminService.getPublicCollectionContents,
 	getSubscribers: services.collectionService.getSubscribers,
 	searchCollectionsByUserId: adminService.searchCollections,
 	toggleModal: interfaceService.toggleModal,

@@ -33,7 +33,17 @@ class ListCollection extends PureComponent {
 			<Style>
 				<Header className='list-header' isOpen={isOpen} onClick={this.togglePanel} >
 					<h3>{name}</h3>
-					<p>{publishContent.length} Videos</p>
+					{
+						publishContent.length === 0 ? (
+							<p>This collection is empty</p>
+						)
+							:
+							publishContent.length === 1 ? (
+								<p>1 item</p>
+							)
+								:
+								<p>{publishContent.length} items</p>
+					}
 					<div />
 				</Header>
 				<Body isOpen={isOpen} count={publishContent.length}>

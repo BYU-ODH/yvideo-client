@@ -1,44 +1,44 @@
 import styled from 'styled-components'
 
-export const ActiveBox = styled.div `
-	height: ${props => props.height};
-	width: ${props => props.width};
-	top: ${props => props.top};
-	left: ${props => props.left};
-	border: 5px solid rgba(5, 130, 202,0.7);
-	& canvas {
-		width: 100%;
-		height: 100%;
-		background-color: transparent;
-		backdrop-filter: blur(30px);
-	}
-`
-export const BeforeBox = styled.div `
-	height: ${props => props.height};
-	width: ${props => props.width};
-	top: ${props => props.top};
-	left: ${props => props.left};
-	border: 5px solid rgba(202, 5, 5,0.7);
-	& canvas {
-		width: 100%;
-		height: 100%;
-		background-color: transparent;
-		backdrop-filter: blur(30px);
-	}
-`
-export const AfterBox = styled.div `
-	height: ${props => props.height};
-	width: ${props => props.width};
-	top: ${props => props.top};
-	left: ${props => props.left};
-	border: 5px solid rgba(5, 202, 12,0.7);
-	& canvas {
-		width: 100%;
-		height: 100%;
-		background-color: transparent;
-		backdrop-filter: blur(30px);
-	}
-`
+// export const ActiveBox = styled.div `
+// 	height: ${props => props.height};
+// 	width: ${props => props.width};
+// 	top: ${props => props.top};
+// 	left: ${props => props.left};
+// 	border: 5px solid rgba(5, 130, 202,0.7);
+// 	& canvas {
+// 		width: 100%;
+// 		height: 100%;
+// 		background-color: transparent;
+// 		backdrop-filter: blur(30px);
+// 	}
+// `
+// export const BeforeBox = styled.div `
+// 	height: ${props => props.height};
+// 	width: ${props => props.width};
+// 	top: ${props => props.top};
+// 	left: ${props => props.left};
+// 	border: 5px solid rgba(202, 5, 5,0.7);
+// 	& canvas {
+// 		width: 100%;
+// 		height: 100%;
+// 		background-color: transparent;
+// 		backdrop-filter: blur(30px);
+// 	}
+// `
+// export const AfterBox = styled.div `
+// 	height: ${props => props.height};
+// 	width: ${props => props.width};
+// 	top: ${props => props.top};
+// 	left: ${props => props.left};
+// 	border: 5px solid rgba(5, 202, 12,0.7);
+// 	& canvas {
+// 		width: 100%;
+// 		height: 100%;
+// 		background-color: transparent;
+// 		backdrop-filter: blur(30px);
+// 	}
+// `
 export const CloseBox = styled.div `
 	height: 7.5%;
 	width: 7.5%;

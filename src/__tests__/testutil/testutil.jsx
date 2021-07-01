@@ -1,4 +1,5 @@
 import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import proxies from 'proxy'
 import { browserStorage } from 'proxy'
@@ -15,7 +16,7 @@ export const settings = {
 	showWordList:false,
 	aspectRatio:`1.77`,
 	description:``,
-	targetLanguages: [],
+	targetLanguages: `English`,
 	annotationDocument: [],
 	captionTrack: [],
 }
@@ -166,6 +167,7 @@ export const content = [
 		fullVideo: true,
 		id: 0,
 		isCopyrighted:false,
+		copyrighted: false,
 		name: `testname`,
 		physicalCopyExists:false,
 		published:true,
@@ -179,6 +181,7 @@ export const content = [
 		words: ['testWord1'],
 		tag: ['testTag1'],
 		editing: true,
+		clips: ``,
 	},
 	{
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -190,6 +193,7 @@ export const content = [
 		fullVideo: true,
 		id: 1,
 		isCopyrighted:false,
+		copyrighted: false,
 		name: `testname2`,
 		physicalCopyExists:false,
 		published:true,
@@ -203,6 +207,7 @@ export const content = [
 		words: ['testWord2'],
 		tag: ['testTag2'],
 		editing: true,
+		clips: ``,
 	},
 ]
 
@@ -221,6 +226,7 @@ export const contentBeforeModel = [
 		expired:true,
 		fullVideo: true,
 		isCopyrighted:false,
+		copyrighted: false,
 		"title": `testname`,
 		physicalCopyExists:false,
 		published:true,
@@ -247,6 +253,7 @@ export const contentBeforeModel = [
 		expired:true,
 		fullVideo: true,
 		isCopyrighted:false,
+		copyrighted: false,
 		name: `testname2`,
 		physicalCopyExists:false,
 		published:true,
@@ -263,12 +270,13 @@ export const contentBeforeModel = [
 
 export const collection = {
 	archived: false,
-	content,
+	content: content,
 	id: 0,
 	name: `Collection 1`,
 	owner: 22,
 	published: true,
 	thumbnail: `test@thumbnail`,
+	'expired-content': content,
 }
 
 export const collection1 = {
@@ -321,10 +329,26 @@ export const collection5 = {
 	thumbnail: `test@thumbnail`,
 }
 
+export const collection6 = {
+	archived: false,
+	content: contentBeforeModel,
+	id: 1,
+	name: `Collection 5`,
+	owner: 22,
+	published: true,
+	thumbnail: `test@thumbnail`,
+	public: false
+}
+
 export const collections = {
 	0:collection1,
 	1:collection2,
 }
+
+export const collections1 = {
+	0:collection1,
+}
+collections1.content = content
 
 export const props = {
 	collection,
@@ -589,6 +613,7 @@ export const emptyStore = mockStore(
 			cache: [],
 			users: [],
 			courses: [],
+			newCollectionId: `b3a29aff-235e-4261-9b08-7b32023afc9e`,
 		},
 		contentStore:{
 			cache: [],
@@ -639,6 +664,14 @@ export const store = mockStore(
 					views: 0,
 				},
 			},
+			access: {
+				"id1" : {
+					"0": {
+						username: `yrich`,
+						valid: true
+					}
+				}
+			},
 			streamKey: `key`,
 		},
 		authStore: {
@@ -673,16 +706,24 @@ export const store = mockStore(
 			menuActive: false,
 			modal: {
 				active: false,
-				component: null,
 				collectionId: -1,
 				isLabAssistantRoute: false,
-				props: {},
+				component: (props) => (<div></div>),
+				props: { active: true }
 			},
 			displayBlocks: browserStorage.displayBlocks,
 			headerBorder: false,
 			editorStyle: false,
 			lost: false,
-			events: [],
+			events: [
+				{start: 1, end: 2, type: `Skip`},
+				{start: 1, end: 2, type: `Mute`},
+				{start: 1, end: 2, type: `Pause`},
+				{start: 1, end: 2, type: `Comment`},
+				{start: 1, end: 2, type: `Blank`},
+				{start: 1, end: 2, type: `Censor`},
+				{start: 1, end: 2, type: `Error`}
+			],
 			tip: {
 				active: true,
 				props: {
@@ -710,13 +751,14 @@ export const store = mockStore(
 						]
 					}
 				],
-			}
+			},
 		},
 		collectionStore: {
 			roles,
 			cache: collections,
 			users: [],
 			courses: [],
+			newCollectionId: `b3a29aff-235e-4261-9b08-7b32023afc9e`,
 		},
 		contentStore:{
 			cache: [
@@ -730,6 +772,7 @@ export const store = mockStore(
 					fullVideo: true,
 					id: 0,
 					isCopyrighted:false,
+					copyrighted: false,
 					name: `testname`,
 					physicalCopyExists:false,
 					published:true,
@@ -751,6 +794,7 @@ export const store = mockStore(
 					fullVideo: true,
 					id: 1,
 					isCopyrighted:false,
+					copyrighted: false,
 					name: `testname2`,
 					physicalCopyExists:false,
 					published:true,
@@ -779,7 +823,13 @@ export const store = mockStore(
 		subtitlesStore:{
 			cache: [
 				{
-				content: ``,
+				content: [
+					{
+						start: 0,
+						end: 200,
+						text: "First Line"
+					}
+				],
 				["content-id"]: `0`,
 				id: `1`,
 				language: `english`,
@@ -803,7 +853,7 @@ export const store = mockStore(
 	composeWithDevTools(thunk.withExtraArgument(proxies)),
 )
 
-export const subStore = mockStore(
+export const store2 = mockStore(
 	{
 		resourceStore: {},
 		authStore: {
@@ -815,6 +865,10 @@ export const subStore = mockStore(
 		},
 		interfaceStore: {
 			languageCodes: {},
+			modal: {
+				component: (props) => (<div></div>),
+				props: { active: false }
+			},
 		},
 		collectionStore: {
 			roles,
@@ -835,6 +889,7 @@ export const subStore = mockStore(
 			cache: [{
 				words: ``,
 			}],
+			active: 10,
 		},
 	},
 	composeWithDevTools(thunk.withExtraArgument(proxies)),

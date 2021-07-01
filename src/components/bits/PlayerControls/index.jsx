@@ -167,7 +167,7 @@ const PlayerControls = props => {
 					<h3>Select Caption</h3>
 					<div className='caption-list'>
 						{subtitles.map((element, index) =>
-							<input key={element.id} type='button' value={element.language} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? `active-value` : ``}/>,
+							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? `active-value` : ``}/>,
 						)
 						}
 					</div>

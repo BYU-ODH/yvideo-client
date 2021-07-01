@@ -30,6 +30,7 @@ const getPos = (events, t) => {
 			return values
 		}
 		if (previous === `NaN` || previous === `-Infinity`|| previous === undefined){
+			console.log(`Previous doesn't exist`)
 			const values = new Values(events[nextKey][2],events[nextKey][2],events[nextKey][1],events[nextKey][1],events[nextKey][3],events[nextKey][3],events[nextKey][4],events[nextKey][4],next,previous)
 			return values
 		}

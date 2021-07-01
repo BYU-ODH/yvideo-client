@@ -24,6 +24,7 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
+		setBreadcrumbs,
 	} = props
 
 	const [isMobile, setIsMobile] = useState(false)
@@ -32,14 +33,15 @@ const CollectionsContainer = props => {
 	const history = useHistory()
 
 	useEffect(() => {
+		setBreadcrumbs({path:[`Home`], collectionId: ``, contentId: ``})
+
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
 
-		if(window.innerWidth < 1000)
-			setIsMobile(true)
-		else
-			setIsMobile(false)
+		// determine mobiie size for different layout
+		if(window.innerWidth < 1000) setIsMobile(true)
+		else setIsMobile(false)
 
 		return () => {
 			setHeaderBorder(true)
@@ -87,6 +89,22 @@ const CollectionsContainer = props => {
 		setSearchQuery(value)
 	}
 
+	const linkToManageCollection = e => {
+		e.preventDefault()
+
+		history.push({
+			pathname: `/manager`,
+		})
+	}
+
+	const linkToManagePublicCollection = e => {
+		e.preventDefault()
+
+		history.push({
+			pathname: `/public-manager`,
+		})
+	}
+
 	const viewstate = {
 		isProf,
 		isAdmin,
@@ -109,6 +127,8 @@ const CollectionsContainer = props => {
 		setTab,
 		handleSearchTextChange,
 		handleSearchQuerySubmit,
+		linkToManageCollection,
+		linkToManagePublicCollection,
 	}
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
@@ -132,6 +152,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

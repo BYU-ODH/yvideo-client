@@ -33,6 +33,7 @@ const ClipEditorContainer = props => {
 		toggleModal,
 		toggleTip,
 		setSubContentId,
+		setBreadcrumbs,
 	} = props
 
 	const {id} = useParams()
@@ -60,6 +61,7 @@ const ClipEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Clip Manager`], collectionId: content[id].collectionId, contentId: content[id].id})
 			// we only want to set the url if it is not set.
 			if(url === ``){
 				if(content[id].url !== ``)
@@ -95,7 +97,7 @@ const ClipEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Clip Editor`},
+			props: { name: `Clip Manager`},
 		})
 	}
 
@@ -153,6 +155,7 @@ const mapThunksToProps = {
 	setSubContentId: subtitlesService.setContentId,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(ClipEditorContainer)

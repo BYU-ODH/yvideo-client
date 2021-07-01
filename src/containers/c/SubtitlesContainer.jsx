@@ -4,6 +4,7 @@ import { subtitlesService } from 'services'
 import { Events } from 'components'
 
 const SubtitlesContainer = props => {
+
 	const {subtitles, currentTime, handleShowSubtitle, active,duration} = props
 
 	const [subtitlesArray, setSubtitlesArray] = useState([])

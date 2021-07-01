@@ -15,9 +15,19 @@ export const Preview = styled.div`
 	justify-content: flex-end;
 	justify-content: space-between;
 
+	@media screen and (max-width: 1000px) {
+		flex-direction: ${props => props.editing ? `column` : ``};
+	}
+
 	& > div {
 		display: flex;
 		align-items: center;
+
+		@media screen and (max-width: 1000px) {
+      justify-content: ${props => props.editing ? `space-evenly` : ``};
+			margin-top: ${props =>  props.editing ? `1rem` : ``};
+    }
+
 	}
 `
 
@@ -61,6 +71,11 @@ export const InnerContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr 1.5fr;
 	padding: 15px;
+
+	@media screen and (max-width: 1000px) {
+		display: flex;
+		flex-direction: column;
+	}
 `
 
 export const Type = styled.div`
@@ -170,11 +185,13 @@ export const Title = styled.form`
 export const ResourceTitle = styled.form`
 	display: flex;
 	margin-left: 1rem;
+
 	& > h4 {
 		display: flex;
 		align-items: center;
 	}
 `
+
 
 export const TypeButton = styled.button`
 	background: transparent;

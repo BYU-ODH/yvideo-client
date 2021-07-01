@@ -24,14 +24,19 @@ const ManagerContainer = props => {
 		toggleTip,
 		newCollectionInfo,
 		removeCreatedCollectionIdFromStore,
+		setBreadcrumbs,
 	} = props
 
 	const params = useParams()
 	const location = useLocation()
 	const history = useHistory()
 	const [count, setCount] = useState(0) // set a count just to keep track of how many times we call get collections and make sure we only call with force = true only once.
+	const [isMobile, setIsMobile] = useState(false)
+	const [isOpen, setOpen] = useState(true)
 
 	useEffect(() => {
+		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
+
 		setHeaderBorder(true)
 
 		if(count === 0){ // if we have not called gt collections with force = true just call it once to make sure that we get all the collections.
@@ -55,6 +60,12 @@ const ManagerContainer = props => {
 				route: `manager`,
 			})
 		}
+
+		if(window.innerWidth < 1000)
+			setIsMobile(true)
+		 else
+			setIsMobile(false)
+
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
 	const createNew = () => {
@@ -81,11 +92,16 @@ const ManagerContainer = props => {
 		})
 	}
 
+	const handleToggleSideBar = () => {
+		setOpen(!isOpen)
+	}
+
 	const handlers = {
 		createNew,
 		handleShowHelp,
 		toggleTip,
 		handleShowTip,
+		handleToggleSideBar,
 	}
 
 	const sideLists = {
@@ -113,6 +129,8 @@ const ManagerContainer = props => {
 		path: `manager`,
 		sideLists,
 		activeId: params.id,
+		isMobile,
+		isOpen,
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />
@@ -130,6 +148,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	removeCreatedCollectionIdFromStore: collectionService.removeCreatedCollectionIdFromStore,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerContainer)

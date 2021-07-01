@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
+import { Prompt } from 'react-router'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 import helpIcon from 'assets/help/help-icon-black.svg'
@@ -35,6 +36,7 @@ export default class ContentOverview extends PureComponent {
 			editing,
 			content,
 			tag,
+			blockLeave,
 		} = this.props.viewstate
 
 		const {
@@ -69,7 +71,7 @@ export default class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' />
+						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
 					</div>
 					<div>
 						{editing ?
@@ -83,8 +85,8 @@ export default class ContentOverview extends PureComponent {
 						</ul>
 						{editing ||
 						<>
-							<StyledLink to={`/trackeditor/${content.id}`}>Track Editor</StyledLink>
-							<StyledLink to={`/clipeditor/${content.id}`}>Clip Editor</StyledLink>
+							<StyledLink to={`/trackeditor/${content.id}`}>Video Editor</StyledLink>
+							<StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink>
 						</>
 						}
 						{editing ?
@@ -144,6 +146,10 @@ export default class ContentOverview extends PureComponent {
 						</Column>
 					</InnerContainer>
 				}
+				<Prompt
+					when={blockLeave}
+					message="Have you saved your changes already?"
+				/>
 			</Style>
 		)
 	}

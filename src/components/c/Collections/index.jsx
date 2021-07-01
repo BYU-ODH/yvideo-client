@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, Search, SearchIcon } from './styles'
+import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon, MenuIcon } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -25,7 +25,6 @@ export default class Collections extends PureComponent {
 			collections,
 			isMobile,
 			publicCollections,
-			isContentTap,
 			searchQuery,
 		} = this.props.viewstate
 
@@ -34,9 +33,10 @@ export default class Collections extends PureComponent {
 			handleShowHelp,
 			handleShowTip,
 			toggleTip,
-			setTab,
 			handleSearchQuerySubmit,
 			handleSearchTextChange,
+			linkToManageCollection,
+			linkToManagePublicCollection,
 		} = this.props.handlers
 
 		collections.sort((a, b) => a.name > b.name ? 1 : -1)
@@ -50,22 +50,23 @@ export default class Collections extends PureComponent {
 
 		return (
 			<Style>
-				<header>
+				<header className='collections-header'>
 					<div>
 						<h3>Collections &nbsp;&nbsp;&nbsp;
 							<Help id='collections-help-documentation'
 								src={helpIcon} onClick={handleShowHelp}
-								onMouseEnter={e => handleShowTip(`help`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})}
-								onMouseLeave={e => toggleTip()}
 							/></h3>
 					</div>
 					<div>
 						{
-							(isProf || isAdmin) &&
-							<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
+							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip(`list-block`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
 						}
 						{
-							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip(`list-block`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
+							(isProf || isAdmin) &&
+								// <MenuIcon onClick={linkToManageCollection} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}/>
+								<h3>
+									<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop+20, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
+								</h3>
 						}
 					</div>
 				</header>
@@ -89,17 +90,52 @@ export default class Collections extends PureComponent {
 					) }
 				</div>
 
-				<header>
-					<div>
-						<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
-					</div>
-					<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
-						<SearchIcon />
-						<input className='resource-search-input' type='search' placeholder={`search more public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-						<button type='submit'>Search</button>
-					</Search>
-
-				</header>
+				{!isMobile ?
+					<>
+						{
+							isProf || isAdmin ?
+								<header className= 'collections-header'>
+									<div>
+										<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+									</div>
+									<div>
+									</div>
+									<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
+										<SearchIcon />
+										<input className='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+										{/* <button type='submit'>Search</button> */}
+									</Search>
+									<div>
+										<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
+									</div>
+								</header>
+								:
+								<header className= 'collections-header-not-admin'>
+									<div>
+										<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+									</div>
+									<div>
+									</div>
+									<Search className='resource-search-submit-not-admin' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
+										<SearchIcon />
+										<input className='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+									</Search>
+								</header>
+						}
+					</>
+					:
+					<header className= 'collections-header-mobile'>
+						<div>
+							<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+						</div>
+						<>
+							<SearchMobile className='resource-search-submit-mobile' id='searchSubmitMobile' onSubmit={handleSearchQuerySubmit}>
+								<SearchIcon />
+								<input className='resource-search-input-mobile' type='search' placeholder={`search in public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+							</SearchMobile>
+						</>
+					</header>
+				}
 				<div className='public-collections-list'>
 					{
 						Object.keys(publicCollections).length > 0 ? (

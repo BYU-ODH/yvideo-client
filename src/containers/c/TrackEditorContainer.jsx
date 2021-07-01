@@ -35,10 +35,10 @@ const TrackEditorContainer = props => {
 		setSubContentId,
 		contentError,
 		subtitleError,
+		setBreadcrumbs,
 	} = props
 
-	const {id} = useParams()
-
+	const {id} = useParams() // content id
 
 	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
 	const [url, setUrl] = useState(``)
@@ -60,6 +60,7 @@ const TrackEditorContainer = props => {
 		const returnThis = testsubs !== undefined?testsubs:[]
 		return returnThis
 	}
+
 	useEffect(() => {
 		// console.log('use effecct')
 		if(!content.hasOwnProperty(id)){
@@ -71,8 +72,9 @@ const TrackEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			//we only want to set the url if it is not set.
-			if(url === ''){
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
+			// we only want to set the url if it is not set.
+			if(url === ``){
 				if(content[id].url !== ``)
 					setUrl(content[id].url)
 				else {
@@ -84,15 +86,13 @@ const TrackEditorContainer = props => {
 						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
 						// console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
-			}
-			else{
-				//once the url is set we can get subtitles
+			} else{
+				// once the url is set we can get subtitles
 				if(!calledGetSubtitles){
 					// console.log("TRY TO GER SUBTITLES")
 					getSubtitles(id)
 					setCalledGetSubtitles(true)
-				}
-				else {
+				} else {
 					// console.log("SETTING SUBTITLES")
 					setSubs(allSubs)
 				}
@@ -114,7 +114,7 @@ const TrackEditorContainer = props => {
 					updateSubtitle(subtitles[i])
 			}
 		}catch(error){
-
+			console.error(error)
 		}
 
 	}
@@ -132,7 +132,7 @@ const TrackEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Track Editor`},
+			props: { name: `Video Editor`},
 		})
 	}
 
@@ -141,7 +141,7 @@ const TrackEditorContainer = props => {
 			component: Tooltip,
 			props: {
 				name: tipName,
-				position: position,
+				position,
 			},
 		})
 	}
@@ -163,16 +163,16 @@ const TrackEditorContainer = props => {
 	}
 
 	return <TrackEditor
-						viewstate={viewstate}
-						setEvents={setEvents}
-						updateContent={updateContent}
-						createSub={createAndAddSub}
-						setAllSubs={setAllSubs}
-						activeUpdate={activeUpdate}
-						deleteSubtitles={deleteSubs}
-						handleShowHelp={handleShowHelp}
-						getAllSubtitles={getAllSubtitles}
-						handlers={handlers}/>
+		viewstate={viewstate}
+		setEvents={setEvents}
+		updateContent={updateContent}
+		createSub={createAndAddSub}
+		setAllSubs={setAllSubs}
+		activeUpdate={activeUpdate}
+		deleteSubtitles={deleteSubs}
+		handleShowHelp={handleShowHelp}
+		getAllSubtitles={getAllSubtitles}
+		handlers={handlers}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
@@ -182,7 +182,7 @@ const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
 	subContentId: subtitlesStore.contentId,
 	streamKey: resourceStore.streamKey,
 	contentError: contentStore.errorMessage,
-	subtitleError: contentStore.errorMessage
+	subtitleError: contentStore.errorMessage,
 })
 
 const mapThunksToProps = {
@@ -200,6 +200,7 @@ const mapThunksToProps = {
 	setSubContentId: subtitlesService.setContentId,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

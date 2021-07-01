@@ -21,7 +21,7 @@ export const CollectionRow = styled.div`
 export const Collection = styled.div`
 	display: grid;
 	/* grid-template-columns: 8rem 15rem auto 2rem; */
-	grid-template-columns: 25rem auto 2rem;
+	grid-template-columns: 20rem auto 1.5rem;
 	justify-items: start;
 	align-items: center;
 
@@ -42,6 +42,7 @@ export const Collection = styled.div`
 
 	& > h3 {
 		flex: 2;
+		padding-right:1rem;
 		font-weight: 500;
 	}
 
@@ -104,11 +105,15 @@ export const MoreButton = styled.button`
 export const PublicCollectionButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
+
+	& div{
+		width: 100%;
+	}
 `
 
 export const PublicCollectionsLable = styled.div`
 	display: grid;
-	grid-template-columns: auto auto 1rem;
+	grid-template-columns: auto auto 2rem;
 	align-items: center;
 
 		& .ownership{

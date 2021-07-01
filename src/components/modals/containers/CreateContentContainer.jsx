@@ -32,6 +32,7 @@ const CreateContentContainer = props => {
 	const [languages, setLanguages] = useState([])
 	const [isTyping, setIsTyping] = useState(false)
 	const [isCalled, setIsCalled] = useState(false)
+	const [blockLeave, setBlock] = useState(false)
 
 	const [data, setData] = useState({
 		url: ``,
@@ -78,7 +79,17 @@ const CreateContentContainer = props => {
 				setHide(true)
 		}
 
-	}, [resourceContent, selectedResource, searchQuery, isTyping])
+		if(blockLeave) {
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [resourceContent, selectedResource, searchQuery, isTyping, blockLeave])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -96,6 +107,7 @@ const CreateContentContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
+		setBlock(true)
 	}
 
 	const handleSearchTextChange = e => {
@@ -123,6 +135,7 @@ const CreateContentContainer = props => {
 			...data,
 			contentType,
 		})
+		setBlock(true)
 	}
 
 	const addKeyword = element => {
@@ -182,6 +195,7 @@ const CreateContentContainer = props => {
 			getCollections(true)
 		}
 		toggleModal()
+		setBlock(false)
 	}
 
 	const handleAddResourceSubmit = async (e) => {
@@ -234,6 +248,7 @@ const CreateContentContainer = props => {
 				keywords: data.keywords.filter(keyword => keyword !== badkeyword),
 			},
 		})
+		setBlock(true)
 	}
 
 	const viewstate = {

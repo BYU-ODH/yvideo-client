@@ -267,9 +267,18 @@ export const EventList = styled.div`
 		& > .save {
 			position: relative;
 			float: right;
-			margin-right: 20px;
-			width: 10rem;
+			// margin-right: 20px;
+			width: 8rem;
 			height: 100%;
+			display: flex;
+
+			& i {
+				line-height: 5rem;
+			}
+
+			& .fa-check {
+				color: green;
+			}
 
 			& button {
 				width: 100%;
@@ -289,12 +298,13 @@ export const EventList = styled.div`
 				& span, img {
 					margin: auto;
 				}
+
 			}
 		}
 	}
 
 	& > .breadcrumbs {
-		display: ${props => props.minimized !== false ? `none` : `flex`}
+		display: ${props => props.minimized !== false ? `none` : `flex`};
 
 		height: 5rem;
 
@@ -341,7 +351,7 @@ export const EventList = styled.div`
 	}
 
 	& > .eventsList {
-		display: ${props => props.minimized !== false ? `none` : `visible`}
+		display: ${props => props.minimized !== false ? `none` : `visible`};
 		padding: 3rem;
 	}
 	& .subCard {

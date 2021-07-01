@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import services from 'services'
 
-import TrackEditor from 'lib/js/captionAider'
+// import TrackEditor from 'lib/js/captionAider'
 
 import { CaptionAider } from 'components'
 
@@ -26,7 +26,7 @@ const CaptionAiderContainer = props => {
 	useEffect(
 		() => {
 			if (!content) getContent([id])
-			if (target.current) setTrackEditor(new TrackEditor(content, target.current, toggleModal))
+			// if (target.current) setTrackEditor(new TrackEditor(content, target.current, toggleModal))
 		},
 		[content, getContent, id, toggleModal],
 	)

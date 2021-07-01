@@ -9,6 +9,7 @@ class PublicListCollection extends PureComponent {
 	render() {
 
 		const {
+			user,
 			collection,
 			isOpen,
 			ownerName,
@@ -21,38 +22,54 @@ class PublicListCollection extends PureComponent {
 			handlePublicCollection,
 		} = this.props.handlers
 
-		if (!collection) return null
+		if (!collection || collection === undefined) return null
 
 		return (
 			<Style>
 				<CollectionRow>
 					<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 						<h3>{collection.name}</h3>
+						{
+							collection.content.length === 0 ? (
+								<p>The collection is empty</p>
+							)
+								:
+								collection.content.length === 1 ? (
+									<p>1 item</p>
+								)
+									:
+									<p>{collection.content.length} items</p>
+						}
+						<div />
 					</Collection>
 				</CollectionRow>
 
-				{collection.content ? (
+				{collection.content && (user !== undefined && user !== null) ? (
 					<Body isOpen={isOpen}>
-						<PublicCollectionsLable>
-							<div className='ownership'>
-								<>Owner: <div className='owner-name'>{ownerName}</div></>
-								<>Copyright: <div className='owner-name'>No</div></>
-							</div>
-							<PublicCollectionButton>
-								{/* TODO: possibely add */}
-								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
-								{!isOwner ?
-									<PublicButton
-										onClick={handlePublicCollection}
-										className={`public-button`}
-									>
-										{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
-									</PublicButton>
-									:
-									<></>
-								}
-							</PublicCollectionButton>
-						</PublicCollectionsLable>
+						{user.roles < 3 &&
+							<PublicCollectionsLable>
+
+								<div className='ownership'>
+									{/* <>Owner: <div className='owner-name'>{ownerName}</div></>
+									<>Copyright: <div className='owner-name'>{collection.copyrighted ? `Yes` : `No`}</div></> */}
+								</div>
+
+								<PublicCollectionButton>
+									{/* TODO: possibely add */}
+									{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
+									{!isOwner ?
+										<PublicButton
+											onClick={handlePublicCollection}
+											className={`public-button`}
+										>
+											{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
+										</PublicButton>
+										:
+										<div>You own this collection</div>
+									}
+								</PublicCollectionButton>
+							</PublicCollectionsLable>
+						}
 
 						{ collection.content.length > 0 ?
 							collection.content.map(item => {

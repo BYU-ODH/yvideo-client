@@ -345,7 +345,9 @@ export default class CollectionService {
 			currentState.published = false
 			currentState.archived = false
 			break
-
+		case `public`:
+			currentState.public = !currentState.public
+			break
 		default:
 			abort = true
 			break
@@ -354,9 +356,8 @@ export default class CollectionService {
 		const finalState = {
 			published: currentState.published,
 			archived: currentState.archived,
+			public: currentState.public,
 		}
-
-		// console.log(`finalState: `, finalState)
 
 		if (abort) dispatch(this.actions.collectionsAbort())
 		else {
@@ -397,6 +398,7 @@ export default class CollectionService {
 	}
 
 	getSubscribers = (collectionId, force = false) => {
+
 		return async (dispatch, getState, { apiProxy }) => {
 
 			dispatch(this.actions.collectionsStart())
@@ -406,6 +408,7 @@ export default class CollectionService {
 			try {
 
 				const users = await apiProxy.collection.permissions.getUsers(collectionId)
+
 				dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
 
 			} catch (error) {
@@ -459,7 +462,6 @@ export default class CollectionService {
 		try {
 
 			if(endpoint === `add-user`){
-				console.log(`add-user`)
 				backEndBody = {
 					'username': body.username,
 					'account-role': body.roles,
@@ -475,7 +477,6 @@ export default class CollectionService {
 					'course-id': body,
 				}
 			} else if(endpoint === `remove-user`){
-				console.log(`remove-user`)
 				backEndBody = {
 					'username': body.username,
 				}
@@ -504,8 +505,11 @@ export default class CollectionService {
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
 			} else if(endpoint === `remove-course`)
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
-			else if(endpoint === `remove-user`)
+			else if(endpoint === `remove-user`){
 				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
+				const updatedSubscribers = currentState.subscribers.filter(person => person.username !== body.username)
+				dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
+			}
 
 		} catch (error) {
 			console.log(error)

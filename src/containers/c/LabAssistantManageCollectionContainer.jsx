@@ -26,6 +26,7 @@ const LabAssistantManageCollectionContainer = props => {
 		updateCollectionName,
 		updateCollectionStatus,
 		toggleTip,
+		setBreadcrumbs,
 	} = props
 
 	const [isContent, setIsContent] = useState(true)
@@ -33,6 +34,8 @@ const LabAssistantManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
+		setBreadcrumbs({path:[`Home`, `Lab Assistant Manager`], collectionId: collection.id, contentId: ``})
+
 		getCollectionContent(collection.id, true)
 		setCollectionName(collection.name)
 	}, [collection])
@@ -127,6 +130,7 @@ const mapDispatchToProps = {
 	updateCollectionName: collectionService.updateCollectionName,
 	searchCollections: adminService.searchCollections,
 	toggleTip: interfaceService.toggleTip,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManageCollectionContainer)

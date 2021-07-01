@@ -18,6 +18,10 @@ const Style = styled.div`
 		margin: 5rem 0 4rem 0;
 		font-weight: normal;
 	}
+
+	@media screen and (max-width: 1000px) {
+		text-align: center;
+	}
 `
 
 export default Style
@@ -64,6 +68,10 @@ export const Search = styled.form`
 		:hover {
 			background-color: var(--navy-blue);
 		}
+
+		@media screen and (max-width: 1000px) {
+			margin-top: 1rem;
+		}
 	}
 `
 
@@ -76,4 +84,8 @@ export const SearchIcon = styled.span`
 	background-size: contain;
 	height: 2rem;
 	width: 2rem;
+
+	@media screen and (max-width: 1000px) {
+		left: 5.5rem;
+	}
 `
