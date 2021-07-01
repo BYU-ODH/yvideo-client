@@ -12,7 +12,7 @@ class PublicListCollection extends PureComponent {
 			user,
 			collection,
 			isOpen,
-			ownerName,
+			// ownerName,
 			isSubscribed,
 			isOwner,
 		} = this.props.viewstate
@@ -46,7 +46,7 @@ class PublicListCollection extends PureComponent {
 
 				{collection.content && (user !== undefined && user !== null) ? (
 					<Body isOpen={isOpen}>
-						{user.roles < 3 &&
+						{user.roles < 4 &&
 							<PublicCollectionsLable>
 
 								<div className='ownership'>
