@@ -63,7 +63,6 @@ class Root extends PureComponent {
 									<AdminContainer />
 								</Route>
 							}
-
 							{
 								user.roles < 3 &&
 							<Route path='/lab-assistant'>
