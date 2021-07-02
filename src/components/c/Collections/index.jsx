@@ -19,8 +19,7 @@ export default class Collections extends PureComponent {
 	render() {
 
 		const {
-			isProf,
-			isAdmin,
+			user,
 			displayBlocks,
 			collections,
 			isMobile,
@@ -64,7 +63,7 @@ export default class Collections extends PureComponent {
 							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip(`list-block`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
 						}
 						{
-							(isProf || isAdmin) &&
+							user !== null && user.roles < 3 &&
 								// <MenuIcon onClick={linkToManageCollection} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}/>
 								<h3>
 									<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop+20, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
@@ -95,7 +94,7 @@ export default class Collections extends PureComponent {
 				{!isMobile ?
 					<>
 						{
-							isProf || isAdmin ?
+							user !== null && user.roles < 3 ?
 								<header className= 'collections-header'>
 									<div>
 										<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
@@ -144,7 +143,7 @@ export default class Collections extends PureComponent {
 							<>
 								{
 									Object.keys(publicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true}/>,
+										<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />,
 									)
 								}
 							</>

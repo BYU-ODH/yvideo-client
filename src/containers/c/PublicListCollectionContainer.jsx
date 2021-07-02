@@ -25,21 +25,20 @@ const PublicListCollectionContainer = props => {
 		searchedUser,
 		emptySearchedUser,
 		defaultSubscription,
+		// defaultCopyright,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
 	// const [ownerName, setOwnerName] = useState(``)
 	const [isSubscribed, setIsSubscribed] = useState(defaultSubscription)
+	// const [isCopyrighted, setIsCopyrighted] = useState(defaultCopyright)
 	const isOwner = user ? user.id === collection.owner : false
 
 	useEffect(() => {
 		toggleTip()
 		setHeaderBorder(false)
-		// if(isOpen) readSubscription()
 
-		// if(Object.keys(searchedUser).length !== 0) setOwnerName(searchedUser.username)
-
-	}, [isOpen, collections, searchedUser, isSubscribed])
+	}, [isOpen, collections, isSubscribed])
 
 	const handlePublicCollection = async() => {
 		if (isSubscribed) {
@@ -101,18 +100,7 @@ const PublicListCollectionContainer = props => {
 
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
-
-		// handle if user has byu account and has to be at least student access level
-		// if(user !== undefined && user.roles < 4){
-		// 	// get contents that attached to collection
-		// 	if(collection) await getSubscribers(collection.id, user.id)
-		// 	if(collection.owner !== user.id)
-		// 		await getUserById(collection.owner)
-		// 	else
-		// 		emptySearchedUser()
-		// 		// setOwnerName(user.username)
-
-		// }
+		// console.log(isCopyrighted)
 	}
 
 	const viewstate = {
@@ -120,7 +108,6 @@ const PublicListCollectionContainer = props => {
 		isOpen,
 		isAdmin,
 		collection,
-		// ownerName,
 		isSubscribed,
 		isOwner,
 	}

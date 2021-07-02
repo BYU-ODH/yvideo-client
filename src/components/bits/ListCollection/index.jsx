@@ -47,7 +47,6 @@ class ListCollection extends PureComponent {
 					<div />
 				</Header>
 				<Body isOpen={isOpen} count={publishContent.length}>
-
 					{
 						publishContent.map(item => {
 							return item.clips.length < 3 ? <ListItem key={item.id} data={item}/> : <ListItemDropDown key={item.id} data={item}/>
