@@ -14,10 +14,11 @@ export const Style = styled.div`
 
 		color: black;
 		text-decoration: none;
-		margin: 0 2rem;
+		margin: 0 9rem;
+		background: #efefef;
 
 		:hover {
-			background: #eee;
+			background: #d7d7d7;
 			cursor: pointer;
 		}
 

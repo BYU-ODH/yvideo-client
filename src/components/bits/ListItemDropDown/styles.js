@@ -18,8 +18,9 @@ export const Header = styled.div`
 		grid-template-columns: 18rem auto 1.5rem;
 		justify-items: start;
 		align-items: center;
-		margin: 0 2rem;
+		margin: 0 9rem;
 		padding: 2rem;
+		background: #efefef;
 
 		& > span {
 			flex: 1;
@@ -47,7 +48,7 @@ export const Header = styled.div`
 
 		:hover {
 			cursor: pointer;
-			background: #efefef;
+			background: #d7d7d7;
 		}
 
 	}
@@ -67,13 +68,14 @@ export const Clip = styled.div`
 		align-items: center;
 		height: 3.5rem;
 		padding: 1.5rem 2rem;
-		margin: 0 2rem;
+		margin: 0 12rem;
+		background: #efefef;
 
 		color: black;
 		text-decoration: none;
 
 		:hover {
-			background: #eee;
+			background: #d7d7d7;
 			cursor: pointer;
 		}
 
