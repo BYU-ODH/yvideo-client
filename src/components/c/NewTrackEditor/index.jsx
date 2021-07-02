@@ -518,8 +518,8 @@ const TrackEditor = props => {
 		await handleSaveSubtitles()
 		deleteSubtitles(subLayersToDelete)
 		setSubLayersToDelete([])
-		setIsLoading(false)
 		setBlock(false)
+		setIsLoading(false)
 	}
 
 	const handleSaveSubtitles = async() => {

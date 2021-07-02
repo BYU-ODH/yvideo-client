@@ -11,41 +11,48 @@ const Style = styled.div`
 export default Style
 
 export const Header = styled.div`
-	display: grid;
-	grid-template-columns: 18rem auto 1.5rem;
-	justify-items: start;
-
-	padding: 2rem;
 	border-top: 1px solid #ccc;
 
-	& > span {
-		flex: 1;
+	& > .list-header-content {
+		display: grid;
+		grid-template-columns: 18rem auto 1.5rem;
+		justify-items: start;
+		align-items: center;
+		margin: 0 2rem;
+		padding: 2rem;
 
-		background: url(${carrot}) center no-repeat;
-		background-size: contain;
-		height: 1.5rem;
-		width: 1.5rem;
+		& > span {
+			flex: 1;
 
-		transform: ${props => props.isOpen ? `rotate(-180deg)` : `rotate(0deg)`};
-		transition: transform .25s ease-in-out;
-	}
-	& >.name h4 {
-		font-weight:500;
-	}
-	& > h3 {
-		flex: 2;
-		font-weight: 500;
+			background: url(${carrot}) center no-repeat;
+			background-size: contain;
+			height: 1.5rem;
+			width: 1.5rem;
+
+			transform: ${props => props.isOpen ? `rotate(-180deg)` : `rotate(0deg)`};
+			transition: transform .25s ease-in-out;
+		}
+		& >.name h4 {
+			font-weight:500;
+		}
+		& > h3 {
+			flex: 2;
+			font-weight: 500;
+		}
+
+		& > p {
+			flex: 2;
+			color: #a4a4a4;
+		}
+
+		:hover {
+			cursor: pointer;
+			background: #efefef;
+		}
+
 	}
 
-	& > p {
-		flex: 2;
-		color: #a4a4a4;
-	}
 
-	:hover {
-		cursor: pointer;
-		background: #efefef;
-	}
 `
 
 export const Body = styled.div`
@@ -60,6 +67,7 @@ export const Clip = styled.div`
 		align-items: center;
 		height: 3.5rem;
 		padding: 1.5rem 2rem;
+		margin: 0 2rem;
 
 		color: black;
 		text-decoration: none;

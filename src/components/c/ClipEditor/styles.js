@@ -237,36 +237,27 @@ export const SideEditor = styled.div`
 
 		border-bottom: 5px solid var(--light-blue);
 
-		& > .carat {
-			float: left;
-			margin: auto 0px auto 1rem;
-			align-items: center;
-			padding-right: 1rem;
+		& > .headerTitle {
+			color: white;
+			line-height: 5rem;
+			font-size: 18px;
+			margin-left: 1rem;
 		}
 
-		/* & > .tab {
-			display: ${props => props.minimized !== false ? `none` : `visible`}
-			height: 5rem;
-			width: 7rem;
-			color: white;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 1.5rem;
-
-			font-weight: 500;
-
-			&.active {
-				background: var(--light-blue);
-			}
-		} */
-
-		& > .save {
+		& > .sideButton {
 			position: relative;
 			float: right;
-			margin-right: 20px;
-			width: 10rem;
+			width: 8rem;
 			height: 100%;
+			display: flex;
+
+			& i {
+				line-height: 5rem;
+			}
+
+			& .fa-check {
+				color: green;
+			}
 
 			& button {
 				width: 100%;
@@ -364,61 +355,7 @@ export const SideEditor = styled.div`
 			outline: none;
 		}
 	}
-	& .sideButton {
-		width: 50%;
-		margin-left: 25%;
-		margin-top: 25px;
-		border: none;
-		background-color: var(--light-blue);
-		height: 40px;
-		color: white;
-		border-radius: 5px;
-		transition: .5s ease-out;
-		cursor: pointer;
 
-		&:active {
-			border-radius: 5px;
-			border: none;
-			background-color: var(--navy-blue);
-		}
-	}
-	& .clipButton {
-		width: 75%;
-		margin-left: 15%;
-		margin-top: 10px;
-		border: none;
-		height: 40px;
-		color: white;
-		border-radius: 2px;
-		cursor: pointer;
-		font-weight: 500;
-		font-size: 1.75rem;
-	}
-	& .createButton {
-		background-color: #9dccfa;
-		& :hover {
-			opacity: 0.5;
-		}
-	}
-	& .savedClip {
-		background-color: var(--navy-blue);
-		& :hover {
-			opacity: 0.5;
-		}
-	}
-	& .deletedClip {
-		background-color: #e62c2c;
-		& :hover {
-			opacity: 0.5;
-		}
-	}
-	& .unsavedClip {
-		background-color: #faf575;
-		color: black;
-		& :hover {
-			opacity: 0.5
-		}
-	}
 	& .layer {
 		display: flex;
 		width: 100%;
@@ -464,6 +401,7 @@ export const SideEditor = styled.div`
 		& .tableHeader {
 			width: 90%;
 			margin-left: 10px;
+			margin-top: 8px;
 			& th {
 				width: 50px;
 			}
@@ -515,5 +453,6 @@ export const Icon = styled.div`
 	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
-  height: 15px;
+  height: 20px;
+	margin-left: 1rem;
 `

@@ -53,7 +53,6 @@ const ClipEditor = props => {
 	// 	parseSub[i].start = parseSub[i].start/1000
 	// 	parseSub[i].end = parseSub[i].end/1000
 	// }
-	const [blockLeave, setBlock] = useState(true)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 	const [layerWidth, setWidth] = useState(0)
@@ -69,6 +68,8 @@ const ClipEditor = props => {
 	const [active, setActive] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
 	const [clipsToDelete,setClipsToDelete] = useState({})
+	const [blockLeave, setBlock] = useState(false)
+	const [isLoading,setIsLoading] = useState(false)
 	// const [usingSubtitles, setSubtitles] = useState(false)
 	// const [subtitles, setSubs] = useState(subs)
 	// console.log(allEvents)
@@ -117,7 +118,7 @@ const ClipEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-	}, [eventsArray])
+	}, [eventsArray, blockLeave])
 
 	const getVideoDuration = (duration) => {
 		console.log(`setting video length`, duration)
@@ -231,6 +232,7 @@ const ClipEditor = props => {
 		const clips = {...clipList}
 		clips[active][`title`] = value
 		setClipList(clips)
+		setBlock(true)
 	}
 	const setStartTime = (value) => {
 		console.log(videoLength)
@@ -244,6 +246,7 @@ const ClipEditor = props => {
 		if (value > clips[active][`end`])
 			clips[active][`end`] = clips[active][`start`] + 20
 		setClipList(clips)
+		setBlock(true)
 	}
 	const setEndTime = (value) => {
 		const clips = {...clipList}
@@ -256,6 +259,7 @@ const ClipEditor = props => {
 		if (value < clips[active][`start`])
 			clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
 		setClipList(clips)
+		setBlock(true)
 	}
 	const createClip = () =>{
 		console.log(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a) ))
@@ -268,6 +272,7 @@ const ClipEditor = props => {
 		const clips = {...clipList}
 		clips[id] = clip
 		setClipList(clips)
+		setBlock(true)
 	}
 	const deleteClip = (toDelete) =>{
 		setActive(``)
@@ -282,12 +287,14 @@ const ClipEditor = props => {
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		setClipList(clips)
-		console.log(content)
+		// console.log(content)
 		updateContent(content)
-		console.log(savedClips)
+		setBlock(true)
+		// console.log(savedClips)
 		return savedClips.includes(active)
 	}
 	const saveClips = () => {
+		setIsLoading(true)
 		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length ===0)
 			return
 		const clips = {...clipList}
@@ -295,7 +302,9 @@ const ClipEditor = props => {
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		updateContent(content)
-		window.location.href = `/manager`
+		setBlock(false)
+		setIsLoading(false)
+		// window.location.href = `/manager`
 	}
 	return (
 		<Style>
@@ -387,7 +396,20 @@ const ClipEditor = props => {
 				</span>
 				<SideEditor minimized={false}>
 					<header>
-						<div style={{position:`relative`,float:`none`, color:`#ffffff`, display:`flex`,justifyContent:`center`,alignItems:`center`,paddingTop:`20px`}}><h1 style={{margin:`0px`}}>Clip Manager</h1></div>
+						<span className='headerTitle'>Clip Manager</span>
+						<div className='sideButton'>
+							<button onClick={saveClips}>
+								{blockLeave ?
+									null
+									:
+									isLoading ?
+										<i className='fa fa-refresh fa-spin'/>
+										:
+										<i className='fa fa-check'></i>
+								}
+								<span>Save</span>
+							</button>
+						</div>
 					</header>
 					<div className='clipItems'>
 						<table className='tableHeader'>
@@ -423,14 +445,8 @@ const ClipEditor = props => {
 							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
 
-						<button className='addCensor' onClick={createClip}><Icon src={plus}/></button>
-						{/* <button className='sideButton' onClick={handleSaveCensor}>Save Censor</button> */}
+						<Icon src={plus} onClick={createClip} />
 					</div>
-					<button onClick={()=>{
-						console.log(`pressing the button`)
-						saveClips()
-						// window.location.reload()
-					}} className='sideButton'>Save and Exit</button>
 				</SideEditor>
 			</DndProvider>
 			<>

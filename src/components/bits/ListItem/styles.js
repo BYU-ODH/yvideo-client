@@ -14,6 +14,7 @@ export const Style = styled.div`
 
 		color: black;
 		text-decoration: none;
+		margin: 0 2rem;
 
 		:hover {
 			background: #eee;

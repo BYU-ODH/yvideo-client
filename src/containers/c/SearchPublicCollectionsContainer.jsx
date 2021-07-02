@@ -24,6 +24,7 @@ const SearchPublicCollectionsContainer = props => {
 		toggleTip,
 		searchPublicCollections,
 		user,
+		setBreadcrumbs,
 	} = props
 
 	const [searchQuery, setSearchQuery] = useState(``)
@@ -32,6 +33,8 @@ const SearchPublicCollectionsContainer = props => {
 	const location = useLocation()
 
 	useEffect(() => {
+		setBreadcrumbs({path: [`Home`, `Search Public Collections`], collectionId: ``, contentId: ``})
+
 		toggleTip()
 
 		if(location) defaultSearch()
@@ -160,6 +163,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
 	getIsPublicCollectionSubscribed: collectionService.getIsPublicCollectionSubscribed,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPublicCollectionsContainer)
