@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, MoreButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
+import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
 
 class PublicListCollection extends PureComponent {
 
@@ -62,10 +62,10 @@ class PublicListCollection extends PureComponent {
 											onClick={handlePublicCollection}
 											className={`public-button`}
 										>
-											{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
+											{isSubscribed ? <h3>Unsubscribe</h3> : <h3>Subscribe</h3>}
 										</PublicButton>
 										:
-										<div>You own this collection</div>
+										<h3>You own this collection</h3>
 									}
 								</PublicCollectionButton>
 							</PublicCollectionsLable>
@@ -76,7 +76,7 @@ class PublicListCollection extends PureComponent {
 								return <ListItem key={item.id} data={item} />
 							})
 							:
-							<NoContentFiller>This collection currently has no content</NoContentFiller>
+							<FeedbackMessage><p>This collection has no content</p></FeedbackMessage>
 						}
 					</Body>
 				):(

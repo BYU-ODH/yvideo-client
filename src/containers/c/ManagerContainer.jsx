@@ -63,7 +63,7 @@ const ManagerContainer = props => {
 
 		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		 else
+		else
 			setIsMobile(false)
 
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])

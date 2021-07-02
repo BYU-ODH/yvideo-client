@@ -66,7 +66,10 @@ export const Body = styled.div`
 
 export const PublicButton = styled.button`
   color: white;
-  font-weight: bold;
+	& > h3{
+		font-weight: lighter;
+	}
+	font-size: 1rem;
   background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
 
   letter-spacing: 0.05rem;
@@ -106,8 +109,13 @@ export const PublicCollectionButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
 
-	& div{
+	& > h3{
 		width: 100%;
+		text-align: end !important;
+		margin-top: 1rem;
+		margin-right: 1rem;
+		font-weight: lighter;
+		font-size: 1.2rem;
 	}
 `
 
@@ -168,4 +176,17 @@ export const RemoveButton = styled.button`
 
 export const NoContentFiller = styled.h4`
 	margin: 3rem;
+`
+
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	display: flex;
+  justify-content: center;
+  align-items: center;
+
+	& > p {
+		font-weight: 200;
+		font-size: 15px;
+		margin: auto;
+	}
 `

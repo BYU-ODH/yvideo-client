@@ -43,7 +43,6 @@ const ManageCollectionContainer = props => {
 			getCollections(true)
 			setCollectionName(collection.name)
 			setIsContentTap(true)
-
 			setIsEdited(false)
 		}
 		if(collection.content.length > 0){
