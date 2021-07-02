@@ -144,7 +144,7 @@ export default class Collections extends PureComponent {
 							<>
 								{
 									Object.keys(publicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={publicCollections[key]}/>,
+										<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true}/>,
 									)
 								}
 							</>

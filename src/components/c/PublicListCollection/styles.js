@@ -43,7 +43,7 @@ export const Collection = styled.div`
 	& > h3 {
 		flex: 2;
 		padding-right:1rem;
-		font-weight: 500;
+		font-weight: 400;
 	}
 
 	& > p {
