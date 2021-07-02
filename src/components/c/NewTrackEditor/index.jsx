@@ -176,7 +176,7 @@ const TrackEditor = props => {
 		// Find the largets layer number
 		const initialLayers = []
 
-		for(let i = 0; i < largestLayer + 1; i++)
+		for(let i = 1; i < largestLayer + 1; i++)
 			initialLayers.push([i])
 
 		setLayers(initialLayers)
