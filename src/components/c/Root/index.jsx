@@ -58,7 +58,7 @@ class Root extends PureComponent {
 							</Route>
 
 							{
-								user.roles < 3 &&
+								user.roles === 0 &&
 								<Route path='/admin'>
 									<AdminContainer />
 								</Route>

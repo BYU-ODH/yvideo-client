@@ -63,7 +63,7 @@ const CollectionPermissionsContainer = props => {
 	const handlers = {
 		makePublic: e => {
 			e.preventDefault()
-			updateCollectionStatus(collection.id, `public`)
+			if(collection.public !== undefined) updateCollectionStatus(collection.id, `public`)
 			setIsEdited(true)
 		},
 		handleDepartmentChange: e => {

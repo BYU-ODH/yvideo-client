@@ -35,7 +35,6 @@ const Style = styled.div`
 
 			& > h3 {
 				font-weight: lighter;
-				font-size: 1.3rem;
 			}
 		}
 }

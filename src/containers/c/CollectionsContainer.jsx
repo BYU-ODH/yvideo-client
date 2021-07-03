@@ -13,8 +13,7 @@ import { Tooltip } from 'components/bits'
 const CollectionsContainer = props => {
 
 	const {
-		isProf,
-		isAdmin,
+		user,
 		displayBlocks,
 		content,
 		setContent,
@@ -106,8 +105,7 @@ const CollectionsContainer = props => {
 	}
 
 	const viewstate = {
-		isProf,
-		isAdmin,
+		user,
 		displayBlocks,
 		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
@@ -132,9 +130,6 @@ const CollectionsContainer = props => {
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
-	isProf: authStore.user.roles === 2,
-	isAdmin: authStore.user.roles === 0,
-	isStu: authStore.user.roles === 3,
 	user: authStore.user,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,

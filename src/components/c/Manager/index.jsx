@@ -102,18 +102,12 @@ export default class Manager extends PureComponent {
 										null
 										:
 										collection ?
-											user ?
-												<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
-												:
-												<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 											:
 											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 									:
 									collection ?
-										user ?
-											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
-											:
-											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+										<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 										:
 										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 							}
