@@ -12,13 +12,19 @@ export default Style
 
 export const Header = styled.div`
 	border-top: 1px solid #ccc;
+	background: #efefef;
+
+	:hover {
+		cursor: pointer;
+		background: #d7d7d7;
+	}
 
 	& > .list-header-content {
 		display: grid;
 		grid-template-columns: 18rem auto 1.5rem;
 		justify-items: start;
 		align-items: center;
-		margin: 0 2rem;
+		margin: 0 9rem;
 		padding: 2rem;
 
 		& > span {
@@ -44,15 +50,7 @@ export const Header = styled.div`
 			flex: 2;
 			color: #a4a4a4;
 		}
-
-		:hover {
-			cursor: pointer;
-			background: #efefef;
-		}
-
 	}
-
-
 `
 
 export const Body = styled.div`
@@ -60,6 +58,16 @@ export const Body = styled.div`
 	height: ${props => props.isOpen ? `auto` : `0`};
 	transition: height .25s ease-in-out;
 	overflow: hidden;
+
+	& > .link {
+		background: #efefef;
+
+		:hover {
+			background: #d7d7d7;
+			cursor: pointer;
+		}
+	}
+
 `
 export const Clip = styled.div`
 		display: grid;
@@ -67,15 +75,10 @@ export const Clip = styled.div`
 		align-items: center;
 		height: 3.5rem;
 		padding: 1.5rem 2rem;
-		margin: 0 2rem;
+		margin: 0 12rem;
 
 		color: black;
 		text-decoration: none;
-
-		:hover {
-			background: #eee;
-			cursor: pointer;
-		}
 
 		& .name h4 {
 			font-weight: 300;

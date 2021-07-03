@@ -13,6 +13,9 @@ export const Header = styled.div`
 	grid-template-columns: 20rem auto 1.5rem;
 	justify-items: start;
 	align-items: center;
+	// background: #d7d7d7;
+	background: ${props => props.isOpen ? ` #d7d7d7` : ``};
+
 
 	padding: 2rem;
 	border-top: 1px solid #ccc;
@@ -43,7 +46,7 @@ export const Header = styled.div`
 	:hover {
 		cursor: pointer;
 		text-decoration: underline;
-		background: #efefef;
+		background: #bfbfbf;
 	}
 `
 
