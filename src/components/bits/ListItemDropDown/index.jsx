@@ -40,27 +40,32 @@ class ListItemDropDown extends PureComponent {
 					</div>
 				</Header>
 				<Body isOpen={isOpen} count={parsedClips.length+1}>
-					<Link to={`/player/${id}`}>
-						<Clip>
-							<div className='name'>
-								<h4>Full Video</h4>
-							</div>
-							<div />
-						</Clip>
-					</Link>
+					<div className='link'>
+						<Link to={`/player/${id}`}>
+							<Clip>
+								<div className='name'>
+									<h4>Full Video</h4>
+								</div>
+								<div />
+							</Clip>
+						</Link>
+					</div>
+
 					{
 						Object.keys(parsedClips).map((item)=>{
 							return (
-								<Link key={item} to={`/player/${id}/${item}`}>
-									<Clip>
-										<div className='name'>
-										Clip - {parsedClips[item][`title`]}
-										</div>
-										<div>
-											<h4>From {new Date(parsedClips[item][`start`] * 1000).toISOString().substr(11, 8)} to {new Date(parsedClips[item][`end`] * 1000).toISOString().substr(11, 8)}</h4>
-										</div>
-									</Clip>
-								</Link>
+								<div className='link'>
+									<Link key={item} to={`/player/${id}/${item}`}>
+										<Clip>
+											<div className='name'>
+											Clip - {parsedClips[item][`title`]}
+											</div>
+											<div>
+												<h4>From {new Date(parsedClips[item][`start`] * 1000).toISOString().substr(11, 8)} to {new Date(parsedClips[item][`end`] * 1000).toISOString().substr(11, 8)}</h4>
+											</div>
+										</Clip>
+									</Link>
+								</div>
 							)
 						})
 					}

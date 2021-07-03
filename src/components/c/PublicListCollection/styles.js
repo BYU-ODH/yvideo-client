@@ -24,6 +24,7 @@ export const Collection = styled.div`
 	grid-template-columns: 20rem auto 1.5rem;
 	justify-items: start;
 	align-items: center;
+	background: ${props => props.isOpen ? ` #d7d7d7` : ``};
 
 	padding: 2rem;
 	border-top: 1px solid #ccc;
@@ -54,7 +55,7 @@ export const Collection = styled.div`
 	:hover {
 		cursor: pointer;
 		text-decoration: underline;
-		background: #efefef;
+		background: #bfbfbf;
 	}
 `
 
@@ -62,6 +63,8 @@ export const Body = styled.div`
 	height: ${props => props.isOpen ? `${(parseInt(props.count) * 7 + 6).toString()}rem` : `0`};
 	transition: height .25s ease-in-out;
 	overflow: hidden;
+	background: #efefef;
+
 `
 
 export const PublicButton = styled.button`
