@@ -51,7 +51,7 @@ export default class PublicManager extends PureComponent {
 							</>
 						) : (
 							<>
-								<Button onClick={createNew}><PlusIcon/>Public Collection</Button>
+								<CreateButton onClick={createNew}><PlusIcon/>Public Collection</CreateButton>
 								<FeedbackMessage><p>There are no public collections</p></FeedbackMessage>
 							</>
 						) }

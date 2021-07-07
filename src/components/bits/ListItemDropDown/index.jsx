@@ -54,8 +54,8 @@ class ListItemDropDown extends PureComponent {
 					{
 						Object.keys(parsedClips).map((item)=>{
 							return (
-								<div className='link'>
-									<Link key={item} to={`/player/${id}/${item}`}>
+								<div className='link' key={item}>
+									<Link to={`/player/${id}/${item}`}>
 										<Clip>
 											<div className='name'>
 											Clip - {parsedClips[item][`title`]}
