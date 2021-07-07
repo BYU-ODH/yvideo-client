@@ -89,3 +89,15 @@ export const SearchIcon = styled.span`
 		left: 5.5rem;
 	}
 `
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	display: flex;
+  justify-content: center;
+  align-items: center;
+
+	& > p {
+		font-weight: 200;
+		font-size: 20px;
+		margin: auto;
+	}
+`
