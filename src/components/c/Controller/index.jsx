@@ -25,7 +25,6 @@ const Controller = props => {
 		getDuration,
 		minimized,
 		handleLastClick,
-		togglendTimeline,
 		getVideoTime,
 		events,
 		updateEvents,
@@ -48,7 +47,6 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
-	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
@@ -91,7 +89,6 @@ const Controller = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
@@ -108,7 +105,6 @@ const Controller = props => {
 			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
 			// setPlayed(played)
 			setElapsed(playedSeconds)
-			const test1 = performance.now()
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
@@ -163,10 +159,6 @@ const Controller = props => {
 			setVideoComment(value)
 			setCommentPosition(position)
 
-		},
-		handleShowSubtitle: (value) => {
-			// console.log(value)
-			setSubtitleText(value)
 		},
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
@@ -252,9 +244,6 @@ const Controller = props => {
 				):``}
 
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-				{subtitleText !== `` ?(
-					<Subtitles>{subtitleText}</Subtitles>
-				) :``}
 
 				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
 
@@ -278,10 +267,7 @@ const Controller = props => {
 				// handlers
 
 				onReady={video.handleReady}
-				// onStart={() => console.log(`onStart`)}
-				// onBuffer={() => console.log(`onBuffer`)}
 				onError={()=>{
-					// console.log(`Error is working`)
 					showError()
 				}}
 
@@ -289,7 +275,6 @@ const Controller = props => {
 				onPause={video.handlePause}
 
 				onProgress={video.handleProgress}
-				// onProgress={()=>console.log(`1`)}
 				onDuration={video.handleDuration}
 
 				// blank style
@@ -311,14 +296,9 @@ const Controller = props => {
 							<div id={`time-bar-container`}>
 								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
 								<span id='time-dot'></span>
-								{/* <span id='time-indicator'></span> */}
 							</div>
 						</div>
 					</div>
-
-					{/* <ToggleCarat id={'carat-button'} className={`${minimized ? ` minimized` : ``}`} onClick={e => togglendTimeline()}>
-							<img src={carat} alt='Toggle Timeline' />
-						</ToggleCarat> */}
 				</header>
 			</TimeBar>
 			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
@@ -333,10 +313,6 @@ const Controller = props => {
 				handleCensorPosition={video.handleCensorPosition}
 				handleCensorActive={video.handleCensorActive}
 			></EventsContainer>
-			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
-				handleShowSubtitle={video.handleShowSubtitle}
-			>
-			</SubtitlesContainer>
 		</Style>
 	)
 }

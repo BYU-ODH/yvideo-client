@@ -12,7 +12,6 @@ import {
 	MenuContainer,
 	ManagerContainer,
 	PlayerContainer,
-	TrackEditorContainer,
 	ManageResourceContainer,
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
@@ -103,10 +102,6 @@ class Root extends PureComponent {
 
 							<Route path='/player/:id/:clip?'>
 								<PlayerContainer />
-							</Route>
-
-							<Route path='/trackeditor/:id'>
-								<TrackEditorContainer />
 							</Route>
 
 							<Route path='/videoeditor/:id'>

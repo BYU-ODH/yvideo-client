@@ -155,10 +155,7 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
-<<<<<<< HEAD
 	width: 62%;
-=======
->>>>>>> 5007aa6264dc047e88bf6027399be58b36f20160
 
 	& > input {
 		z-index: 1;
