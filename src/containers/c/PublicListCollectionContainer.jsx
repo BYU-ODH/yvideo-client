@@ -24,24 +24,35 @@ const PublicListCollectionContainer = props => {
 		getUserById,
 		searchedUser,
 		emptySearchedUser,
+		defaultSubscription,
+		// defaultCopyright,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
-	const [ownerName, setOwnerName] = useState(``)
-	const [isSubscribed, setIsSubscribed] = useState(false)
+	// const [ownerName, setOwnerName] = useState(``)
+	const [isSubscribed, setIsSubscribed] = useState(defaultSubscription)
+	// const [isCopyrighted, setIsCopyrighted] = useState(defaultCopyright)
+	const isOwner = user ? user.id === collection.owner : false
 
 	useEffect(() => {
 		toggleTip()
 		setHeaderBorder(false)
-		if(isOpen) readSubscription()
 
-		if(Object.keys(searchedUser).length !== 0) setOwnerName(searchedUser.username)
+	}, [isOpen, collections, isSubscribed])
 
-	}, [isOpen, ownerName, collections, searchedUser, isSubscribed])
+	const handlePublicCollection = async() => {
+		if (isSubscribed) {
+			await updateCollectionPermissions(collection.id, `remove-user`, user)
+			setIsSubscribed(false)
+		} else {
+			await updateCollectionPermissions(collection.id, `add-user`, user)
+			setIsSubscribed(true)
+		}
+	}
 
 	const readSubscription = () => {
-		if(collection.subscribers) {
 
+		if(collection.subscribers) {
 			collection.subscribers.forEach(subscriber => {
 				if(subscriber.id === user.id) {
 					setIsSubscribed(true)
@@ -50,7 +61,7 @@ const PublicListCollectionContainer = props => {
 			})
 		} else {
 			Object.keys(collections).map(key => {
-				if(key == collection.id) {
+				if(key === collection.id) {
 					if(collections[key].subscribers) {
 						collections[key].subscribers.forEach(subscriber => {
 							if(subscriber.id === user.id) {
@@ -64,18 +75,6 @@ const PublicListCollectionContainer = props => {
 			)
 		}
 	}
-
-	const handlePublicCollection = async() => {
-		if (isSubscribed) {
-			await updateCollectionPermissions(collection.id, `remove-user`, user)
-			setIsSubscribed(false)
-		} else {
-			await updateCollectionPermissions(collection.id, `add-user`, user)
-			setIsSubscribed(true)
-		}
-	}
-
-	// console.log(collection)
 
 	// TODO: we can modify this idea later
 	const handleMorePublicCollection = async() =>{
@@ -92,7 +91,7 @@ const PublicListCollectionContainer = props => {
 					component: MorePublicCollectionsContainer,
 					props: {
 						publicCollections: morePublicCollections,
-						ownerName,
+						// ownerName,
 					},
 				})
 			}
@@ -101,18 +100,7 @@ const PublicListCollectionContainer = props => {
 
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
-
-		// handle if user has byu account and has to be at least student access level
-		if(user !== undefined && user.roles < 3 ){
-			// get contents that attached to collection
-			if(collection) await getSubscribers(collection.id)
-			if(collection.owner !== user.id)
-				await getUserById(collection.owner)
-			else{
-				emptySearchedUser()
-				setOwnerName(user.username)
-			}
-		}
+		// console.log(isCopyrighted)
 	}
 
 	const viewstate = {
@@ -120,15 +108,13 @@ const PublicListCollectionContainer = props => {
 		isOpen,
 		isAdmin,
 		collection,
-		ownerName,
 		isSubscribed,
-		isOwner: user ? user.id === collection.owner : false,
+		isOwner,
 	}
 
 	const handlers = {
 		isOpenEventHandler,
 		handlePublicCollection,
-		handleMorePublicCollection,
 	}
 
 	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
@@ -146,7 +132,7 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleTip: interfaceService.toggleTip,
 	updateCollectionPermissions: collectionService.updateCollectionPermissions,
-	getSubscribers: services.collectionService.getSubscribers,
+	getSubscribers: collectionService.getSubscribers,
 	searchCollectionsByUserId: adminService.searchCollections,
 	toggleModal: interfaceService.toggleModal,
 	getUserById: adminService.getUserById,

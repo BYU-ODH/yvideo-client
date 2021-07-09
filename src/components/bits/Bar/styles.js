@@ -15,8 +15,8 @@ export default Style
 
 export const BarBall = styled.div.attrs(props => ({
 	style: {
-		left: `calc(${props.position * 100}% - .5rem)`
-	}
+		left: `calc(${props.position * 100}% - .5rem)`,
+	},
 }))`
 	position: absolute;
 	top: ${props => props.active ? `-.2rem` : `.3rem`};
@@ -31,8 +31,8 @@ export const BarBall = styled.div.attrs(props => ({
 
 export const BarCurrent = styled.div.attrs(props => ({
 	style: {
-		width: `${props.position * 100}%`
-	}
+		width: `${props.position * 100}%`,
+	},
 }))`
 	position: absolute;
 	left: 0;
@@ -47,4 +47,15 @@ export const BarBackground = styled.div`
 	transition: all ${transSpeed} linear;
 	height: ${barActive};
 	background-color: #fff;
+`
+export const BarClip = styled.div.attrs(props => ({
+	style: {
+		width: `${(props.clipTime[1]-props.clipTime[0]) * 100}%`,
+		left: `${props.clipTime[0]*100}%`,
+	},
+}))`
+	position: absolute;
+	background-color: rgba(200,200,0,1);
+	transition: all ${transSpeed} linear;
+	height: ${barActive};
 `

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, MoreButton, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
+import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
 
 class PublicListCollection extends PureComponent {
 
@@ -12,7 +12,7 @@ class PublicListCollection extends PureComponent {
 			user,
 			collection,
 			isOpen,
-			ownerName,
+			// ownerName,
 			isSubscribed,
 			isOwner,
 		} = this.props.viewstate
@@ -46,29 +46,29 @@ class PublicListCollection extends PureComponent {
 
 				{collection.content && (user !== undefined && user !== null) ? (
 					<Body isOpen={isOpen}>
-						{user.roles < 3 &&
-						<PublicCollectionsLable>
+						{user.roles < 4 &&
+							<PublicCollectionsLable>
 
-							<div className='ownership'>
-								<>Owner: <div className='owner-name'>{ownerName}</div></>
-								<>Copyright: <div className='owner-name'>{collection.copyrighted ? `Yes` : `No`}</div></>
-							</div>
+								<div className='ownership'>
+									{/* <>Owner: <div className='owner-name'>{ownerName}</div></>
+									<>Copyright: <div className='owner-name'>{collection.copyrighted ? `Yes` : `No`}</div></> */}
+								</div>
 
-							<PublicCollectionButton>
-								{/* TODO: possibely add */}
-								{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
-								{!isOwner ?
-									<PublicButton
-										onClick={handlePublicCollection}
-										className={`public-button`}
-									>
-										{isSubscribed ? <>Unsubscribe</> : <>Subscribe</>}
-									</PublicButton>
-									:
-									<div>You own this collection</div>
-								}
-							</PublicCollectionButton>
-						</PublicCollectionsLable>
+								<PublicCollectionButton>
+									{/* TODO: possibely add */}
+									{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
+									{!isOwner ?
+										<PublicButton
+											onClick={handlePublicCollection}
+											className={`public-button`}
+										>
+											{isSubscribed ? <h3>Unsubscribe</h3> : <h3>Subscribe</h3>}
+										</PublicButton>
+										:
+										<h3>You own this collection</h3>
+									}
+								</PublicCollectionButton>
+							</PublicCollectionsLable>
 						}
 
 						{ collection.content.length > 0 ?
@@ -76,7 +76,7 @@ class PublicListCollection extends PureComponent {
 								return <ListItem key={item.id} data={item} />
 							})
 							:
-							<NoContentFiller>This collection currently has no content</NoContentFiller>
+							<FeedbackMessage><p>This collection has no content</p></FeedbackMessage>
 						}
 					</Body>
 				):(

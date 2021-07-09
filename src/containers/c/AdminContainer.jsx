@@ -20,6 +20,7 @@ const AdminContainer = props => {
 		toggleModal,
 		toggleTip,
 		adminUpdateUserRole,
+		setBreadcrumbs,
 	} = props
 
 	const category = {
@@ -52,6 +53,7 @@ const AdminContainer = props => {
 	const [role, setRole] = useState(null)
 
 	useEffect(() => {
+		setBreadcrumbs({path: [`Home`, `Admin Dashboard`], collectionId: ``, contentId: ``})
 		if(window.innerWidth < 1000)
 			setIsMobile(true)
 		else
@@ -164,6 +166,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	adminUpdateUserRole: adminService.updateUserRole,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

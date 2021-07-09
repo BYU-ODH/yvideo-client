@@ -345,8 +345,8 @@ export default class CollectionService {
 			currentState.published = false
 			currentState.archived = false
 			break
-		case `copyrighted`:
-			currentState.copyrighted = !currentState.copyrighted
+		case `public`:
+			currentState.public = !currentState.public
 			break
 		default:
 			abort = true
@@ -356,7 +356,7 @@ export default class CollectionService {
 		const finalState = {
 			published: currentState.published,
 			archived: currentState.archived,
-			copyrighted: currentState.copyrighted,
+			public: currentState.public,
 		}
 
 		if (abort) dispatch(this.actions.collectionsAbort())
@@ -397,17 +397,23 @@ export default class CollectionService {
 		}
 	}
 
-	getSubscribers = (collectionId, force = false) => {
+	getSubscribers = (userId, force = false) => {
+
 		return async (dispatch, getState, { apiProxy }) => {
 
 			dispatch(this.actions.collectionsStart())
 
-			const currentUsers = getState().collectionStore.users
+			// const currentUsers = getState().collectionStore.users
 
 			try {
 
-				const users = await apiProxy.collection.permissions.getUsers(collectionId)
-				dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
+				// const users = await apiProxy.collection.permissions.getUsers(collectionId)
+				const collections = await apiProxy.user.collections.get(userId)
+
+				return collections
+				// console.log(collections)
+
+				// dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
 
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
@@ -501,13 +507,13 @@ export default class CollectionService {
 					temp.push(backEndBody)
 
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
-			} else if(endpoint === `remove-course`)
-				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
-			else if(endpoint === `remove-user`){
-				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
-				const updatedSubscribers = currentState.subscribers.filter(person => person.username !== body.username)
-				dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
 			}
+			// else if(endpoint === `remove-course`)
+			// 	dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
+			// else if(endpoint === `remove-user`)
+			// 	dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
+			// const updatedSubscribers = currentState.subscribers.filter(person => person.username !== body.username)
+			// dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
 
 		} catch (error) {
 			console.log(error)

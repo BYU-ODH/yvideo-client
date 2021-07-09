@@ -24,6 +24,7 @@ export const Collection = styled.div`
 	grid-template-columns: 20rem auto 1.5rem;
 	justify-items: start;
 	align-items: center;
+	background: ${props => props.isOpen ? ` #d7d7d7` : ``};
 
 	padding: 2rem;
 	border-top: 1px solid #ccc;
@@ -42,7 +43,8 @@ export const Collection = styled.div`
 
 	& > h3 {
 		flex: 2;
-		font-weight: 500;
+		padding-right:1rem;
+		font-weight: 400;
 	}
 
 	& > p {
@@ -53,7 +55,7 @@ export const Collection = styled.div`
 	:hover {
 		cursor: pointer;
 		text-decoration: underline;
-		background: #efefef;
+		background: #bfbfbf;
 	}
 `
 
@@ -61,11 +63,16 @@ export const Body = styled.div`
 	height: ${props => props.isOpen ? `${(parseInt(props.count) * 7 + 6).toString()}rem` : `0`};
 	transition: height .25s ease-in-out;
 	overflow: hidden;
+	background: #efefef;
+
 `
 
 export const PublicButton = styled.button`
   color: white;
-  font-weight: bold;
+	& > h3{
+		font-weight: lighter;
+	}
+	font-size: 1rem;
   background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
 
   letter-spacing: 0.05rem;
@@ -105,8 +112,13 @@ export const PublicCollectionButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
 
-	& div{
+	& > h3{
 		width: 100%;
+		text-align: end !important;
+		margin-top: 1rem;
+		margin-right: 1rem;
+		font-weight: lighter;
+		font-size: 1.2rem;
 	}
 `
 
@@ -167,4 +179,17 @@ export const RemoveButton = styled.button`
 
 export const NoContentFiller = styled.h4`
 	margin: 3rem;
+`
+
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	display: flex;
+  justify-content: center;
+  align-items: center;
+
+	& > p {
+		font-weight: 200;
+		font-size: 15px;
+		margin: auto;
+	}
 `

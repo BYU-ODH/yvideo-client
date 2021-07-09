@@ -58,33 +58,48 @@ class Root extends PureComponent {
 								<SearchPublicCollectionsContainer />
 							</Route>
 
-							<Route path='/admin'>
-								<AdminContainer />
+							{
+								user.roles === 0 &&
+								<Route path='/admin'>
+									<AdminContainer />
+								</Route>
+							}
+
+							{
+								user.roles < 3 &&
+							<Route path='/lab-assistant'>
+								<LabAssistantContainer />
 							</Route>
+							}
 
 							<Route path='/collections'>
 								<CollectionsContainer />
 							</Route>
 
-							<Route path='/lab-assistant'>
-								<LabAssistantContainer />
-							</Route>
-
-							<Route path='/manage-resource'>
-								<ManageResourceContainer />
-							</Route>
-
-							<Route path='/lab-assistant-manager/:professorId/:collectionId?'>
-								<LabAssistantManagerContainer />
-							</Route>
-
-							<Route path='/manager/:id?'>
-								<ManagerContainer />
-							</Route>
-
-							<Route path='/public-manager/:id?'>
-								<PublicManagerContainer />
-							</Route>
+							{
+								user.roles < 3 &&
+								<Route path='/manage-resource'>
+									<ManageResourceContainer />
+								</Route>
+							}
+							{
+								user.roles < 3 &&
+								<Route path='/lab-assistant-manager/:professorId/:collectionId?'>
+									<LabAssistantManagerContainer />
+								</Route>
+							}
+							{
+								user.roles < 3 &&
+								<Route path='/manager/:id?'>
+									<ManagerContainer />
+								</Route>
+							}
+							{
+								user.roles < 3 &&
+								<Route path='/public-manager/:id?'>
+									<PublicManagerContainer />
+								</Route>
+							}
 
 							<Route path='/player/:id/:clip?'>
 								<PlayerContainer />
@@ -102,6 +117,12 @@ class Root extends PureComponent {
 								<ClipEditorContainer />
 							</Route>
 
+							{
+								user.roles < 3 &&
+								<Route path='/clipeditor/:id'>
+									<ClipEditorContainer />
+								</Route>
+							}
 							<Route path='/feedback'>
 								<FeedbackContainer />
 							</Route>

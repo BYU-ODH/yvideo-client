@@ -25,6 +25,7 @@ const PublicManagerContainer = props => {
 		toggleTip,
 		newCollectionInfo,
 		removeCreatedCollectionIdFromStore,
+		setBreadcrumbs,
 	} = props
 
 	const params = useParams()
@@ -33,6 +34,8 @@ const PublicManagerContainer = props => {
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
+		setBreadcrumbs({path:[`Home`, `Manage Public Collections`], collectionId: ``, contentId: ``})
+
 		setHeaderBorder(true)
 
 		if(count === 0){
@@ -130,6 +133,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	removeCreatedCollectionIdFromStore: collectionService.removeCreatedCollectionIdFromStore,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicManagerContainer)

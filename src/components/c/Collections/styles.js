@@ -7,12 +7,36 @@ import menuIcon from 'assets/menu-black.svg'
 
 const Style = styled.div`
 
-max-width: 100rem;
-padding: 8.4rem 2.4rem 0 2.4rem;
-margin: 0 auto;
+	max-width: 100rem;
+	padding: 8.4rem 2.4rem 0 2.4rem;
+	margin: 0 auto;
 
-& .list{
-	margin-bottom: 5rem;
+	& .list{
+		margin-bottom: 5rem;
+	}
+
+	& .resource-search-submit {
+		width: 62%;
+	}
+
+	& .resource-search-submit-not-admin{
+		width: 80%;
+		margin-left: 7rem;
+	}
+
+& .collections-header-not-admin {
+		display: flex;
+		align-items: center;
+		padding: 2rem;
+
+		& > div {
+			display: flex;
+			align-items: center;
+
+			& > h3 {
+				font-weight: lighter;
+			}
+		}
 }
 
 & .collections-header{
@@ -131,7 +155,10 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
+<<<<<<< HEAD
 	width: 62%;
+=======
+>>>>>>> 5007aa6264dc047e88bf6027399be58b36f20160
 
 	& > input {
 		z-index: 1;
@@ -196,5 +223,18 @@ export const SearchMobile = styled.form`
 
 		outline: none;
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	}
+`
+
+export const FeedbackMessage = styled.div`
+	height: 100px;
+	display: flex;
+  justify-content: center;
+  align-items: center;
+
+	& > p {
+		font-weight: 200;
+		font-size: 20px;
+		margin: auto;
 	}
 `

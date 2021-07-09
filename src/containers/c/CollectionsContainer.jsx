@@ -13,8 +13,7 @@ import { Tooltip } from 'components/bits'
 const CollectionsContainer = props => {
 
 	const {
-		isProf,
-		isAdmin,
+		user,
 		displayBlocks,
 		content,
 		setContent,
@@ -24,6 +23,7 @@ const CollectionsContainer = props => {
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
+		setBreadcrumbs,
 	} = props
 
 	const [isMobile, setIsMobile] = useState(false)
@@ -32,6 +32,8 @@ const CollectionsContainer = props => {
 	const history = useHistory()
 
 	useEffect(() => {
+		setBreadcrumbs({path:[`Home`], collectionId: ``, contentId: ``})
+
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
@@ -103,14 +105,10 @@ const CollectionsContainer = props => {
 	}
 
 	const viewstate = {
-		isProf,
-		isAdmin,
+		user,
 		displayBlocks,
-		// TODO: When archiving a collection, make sure to unpublish it
-		// TODO: need to check to see if which way is right way to use
 		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
-		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 		isMobile,
 		isContentTap,
@@ -132,9 +130,6 @@ const CollectionsContainer = props => {
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
-	isProf: authStore.user.roles === 2,
-	isAdmin: authStore.user.roles === 0,
-	isStu: authStore.user.roles === 3,
 	user: authStore.user,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
@@ -149,6 +144,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

@@ -19,13 +19,15 @@ import rIcon from 'assets/te-chevron-right.svg'
 import captions from 'assets/captions.svg'
 
 import helpIcon from 'assets/te-help-circle-white.svg'
+import trashIcon from 'assets/trash_icon.svg'
+import closeIcon from 'assets/close_icon.svg'
+
+import plus from 'assets/plus-square.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
-import plus from 'assets/plus-square.svg'
-
-import Style, { Timeline, AnnotationMessage, SideEditor} from './styles'
+import Style, { Timeline, AnnotationMessage, SideEditor, Icon} from './styles'
 
 const ClipEditor = props => {
 
@@ -51,7 +53,6 @@ const ClipEditor = props => {
 	// 	parseSub[i].start = parseSub[i].start/1000
 	// 	parseSub[i].end = parseSub[i].end/1000
 	// }
-	const [blockLeave, setBlock] = useState(true)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 	const [layerWidth, setWidth] = useState(0)
@@ -67,6 +68,8 @@ const ClipEditor = props => {
 	const [active, setActive] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
 	const [clipsToDelete,setClipsToDelete] = useState({})
+	const [blockLeave, setBlock] = useState(false)
+	const [isLoading,setIsLoading] = useState(false)
 	// const [usingSubtitles, setSubtitles] = useState(false)
 	// const [subtitles, setSubs] = useState(subs)
 	// console.log(allEvents)
@@ -115,7 +118,7 @@ const ClipEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-	}, [eventsArray])
+	}, [eventsArray, blockLeave])
 
 	const getVideoDuration = (duration) => {
 		console.log(`setting video length`, duration)
@@ -229,6 +232,7 @@ const ClipEditor = props => {
 		const clips = {...clipList}
 		clips[active][`title`] = value
 		setClipList(clips)
+		setBlock(true)
 	}
 	const setStartTime = (value) => {
 		console.log(videoLength)
@@ -242,6 +246,7 @@ const ClipEditor = props => {
 		if (value > clips[active][`end`])
 			clips[active][`end`] = clips[active][`start`] + 20
 		setClipList(clips)
+		setBlock(true)
 	}
 	const setEndTime = (value) => {
 		const clips = {...clipList}
@@ -254,6 +259,7 @@ const ClipEditor = props => {
 		if (value < clips[active][`start`])
 			clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
 		setClipList(clips)
+		setBlock(true)
 	}
 	const createClip = () =>{
 		console.log(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a) ))
@@ -266,6 +272,7 @@ const ClipEditor = props => {
 		const clips = {...clipList}
 		clips[id] = clip
 		setClipList(clips)
+		setBlock(true)
 	}
 	const deleteClip = (toDelete) =>{
 		setActive(``)
@@ -280,12 +287,14 @@ const ClipEditor = props => {
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		setClipList(clips)
-		console.log(content)
+		// console.log(content)
 		updateContent(content)
-		console.log(savedClips)
+		setBlock(true)
+		// console.log(savedClips)
 		return savedClips.includes(active)
 	}
 	const saveClips = () => {
+		setIsLoading(true)
 		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length ===0)
 			return
 		const clips = {...clipList}
@@ -293,6 +302,9 @@ const ClipEditor = props => {
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		updateContent(content)
+		setBlock(false)
+		setIsLoading(false)
+		// window.location.href = `/manager`
 	}
 	return (
 		<Style>
@@ -384,64 +396,57 @@ const ClipEditor = props => {
 				</span>
 				<SideEditor minimized={false}>
 					<header>
-						<div style={{position:`relative`,float:`none`, color:`#ffffff`, display:`flex`,justifyContent:`center`,alignItems:`center`,paddingTop:`20px`}}><h1 style={{margin:`0px`}}>Clip Manager</h1></div>
+						<span className='headerTitle'>Clip Manager</span>
+						<div className='sideButton'>
+							<button onClick={saveClips}>
+								{blockLeave ?
+									null
+									:
+									isLoading ?
+										<i className='fa fa-refresh fa-spin'/>
+										:
+										<i className='fa fa-check'></i>
+								}
+								<span>Save</span>
+							</button>
+						</div>
 					</header>
-					{active !== `` ? (<>
-						<div className='center' style={{ flexDirection: `column`}}>
-							<label>Clip Name</label>
-							<input type='text' className='sideTabInput' style={{width:`80%`}} value={clipList[active][`title`]} onChange={e => {
-								titleSet(e.target.value)
-							}
-							}/>
+					<div className='clipItems'>
+						<table className='tableHeader'>
+							<thead>
+								<tr>
+									<th align='center'>Title</th>
+									<th align='center'>Start</th>
+									<th align='center'>Stop</th>
+									<th align='center'>&nbsp;</th>
+								</tr>
+							</thead>
+						</table>
+						<div className='clipList'>
+							<table>
+								<tbody>
+									{
+										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
+												<td><input onClick={()=>setActive(item)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+												<td><input onClick={()=>setActive(item)} type='number' value={`${clipList[item].start}`} onChange={(e) => setStartTime(e.target.value)}/></td>
+												<td><input onClick={()=>setActive(item)} type='number' value={`${clipList[item].end}`} onChange={(e) => setEndTime(e.target.value)}/></td>
+												<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/></td>
+											</tr>
+										))
+									}
+									{
+									// "foo: bar", "baz: 42"
+										// Object.entries(event.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
+									}
+								</tbody>
+							</table>
+							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
+							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
-						<div className='center'>
-							<label>Clip Start</label>
-							<label>Clip End</label>
-						</div>
-						<div className='center'>
-							<input type='number' className='sideTabInput' value={clipList[active][`start`]} onChange={e => {
-								setStartTime(e.target.value)
-							}
-							}/>
-							<input type='number' className='sideTabInput' value={clipList[active][`end`]} onChange={e => {
-								setEndTime(e.target.value)
-							}}/>
-						</div>
-						<div className='center'>
-							<button onClick={()=>{
-								console.log(`pressing the button`)
-								const val = deleteClip(active)
-								if (val) window.location.reload()
-							}} className='sideButton'>Delete This Clip</button>
-						</div>
-					</>):``}
-					<div className='breadcrumbs'>
-						<span>Saved Clips</span>
+
+						<Icon src={plus} onClick={createClip} />
 					</div>
-					{Object.keys(clipList).filter((a)=> savedClips.includes(a)===true).map((val, index)=>(
-						<button key={`clip${index}`} onClick={()=>{
-							setActive(val)
-							console.log(clipList,clipList[val])
-						}} className='clipButton savedClip'>{clipList[val].title !== ``? clipList[val].title : `No Title`}</button>
-					))}
-					<div className='breadcrumbs'>
-						<span>Unsaved Clips</span>
-					</div>
-					{Object.keys(clipList).filter((a)=> savedClips.includes(a)===false).map((val, index)=>(
-						<button key={`clip${index}`} onClick={()=>{
-							setActive(val)
-							console.log(clipList,clipList[val])
-						}} className='clipButton unsavedClip'>{clipList[val].title !== ``? clipList[val].title : `No Title`}</button>
-					))}
-					<div className='breadcrumbs'></div>
-					<button onClick={()=>{
-						createClip()
-					}} className='clipButton createButton'>Add New Clip</button>
-					<button onClick={()=>{
-						console.log(`pressing the button`)
-						saveClips()
-						// window.location.reload()
-					}} className='sideButton'>Save and Exit</button>
 				</SideEditor>
 			</DndProvider>
 			<>

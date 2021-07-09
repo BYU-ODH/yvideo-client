@@ -33,6 +33,7 @@ const TrackEditorContainer = props => {
 		toggleTip,
 		contentError,
 		subtitleError,
+		setBreadcrumbs,
 	} = props
 
 	const {id} = useParams() // content id
@@ -58,6 +59,7 @@ const TrackEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 			// we only want to set the url if it is not set.
 			if(url === ``){
 				if(content[id].url !== ``)
@@ -114,7 +116,7 @@ const TrackEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Track Editor`},
+			props: { name: `Video Editor`},
 		})
 	}
 
@@ -182,6 +184,7 @@ const mapThunksToProps = {
 	setSubContentId: subtitlesService.setContentId,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)

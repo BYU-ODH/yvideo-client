@@ -134,13 +134,13 @@ export default class AdminTable extends PureComponent {
 							<td>{item.username}</td>
 							<td>{item.name}</td>
 							<td>
-							<select defaultValue={item.roles} name="roles" id="roles" onChange={roleChange}>
-								<option value="0">0: admin</option>
-								<option value="1">1: lab assistant</option>
-								<option value="2">2: instructor / professor</option>
-								<option value="3">3: student</option>
-							</select>
-							<button type='submit' className='userRoleSave' onClick={userRoleSave}>Save</button>
+								<select defaultValue={item.roles} name='roles' id='roles' onChange={roleChange}>
+									<option value='0'>0: admin</option>
+									<option value='1'>1: lab assistant</option>
+									<option value='2'>2: instructor / professor</option>
+									<option value='3'>3: student</option>
+								</select>
+								<button type='submit' className='userRoleSave' onClick={userRoleSave}>Save</button>
 							</td>
 							<td>{item.email}</td>
 							<td>{date.toString().substring(0, 16)}</td>
@@ -184,7 +184,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
+							<Link to={`/manager/${data.id}`} target='_blank'>Collections</Link>
 						</li>
 						<li>
 							<button className='userEdit' onClick={handleEdit}>Edit</button>
@@ -199,7 +199,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/lab-assistant-manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
+							<Link to={`/manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
 						</li>
 						<li>
 							<button className='collectionsDelete' onClick={handleConfirmDelete}>Delete</button>
