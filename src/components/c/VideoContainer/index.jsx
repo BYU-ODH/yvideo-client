@@ -10,6 +10,8 @@ import { CensorDnD } from 'components/bits'
 
 import Position from './censorPosition'
 
+import {CurrentEvents, CensorChange} from './getCurrentEvents'
+
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
@@ -94,15 +96,9 @@ const VideoContainer = props => {
 				document.getElementById(`timeBarProgress`).value = `${played * 100}`
 			if(document.getElementById(`time-dot`) !== undefined)
 				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
-
-			censorData = Position(censorPosition,playedSeconds,duration)
-			const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
-			censorRef.current.style.width = `${width}%`
-			const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
-			censorRef.current.style.height = `${height}%`
-			censorRef.current.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
-			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
-			setElapsed(playedSeconds)
+			// setElapsed(playedSeconds)
+			const values = CurrentEvents(playedSeconds,events,duration)
+			for (let i = 0; i < values.censorValues.length; i++) CensorChange(i,values.censorValues[i],playedSeconds)
 		},
 		handleDuration: duration => {
 			// console.log(`step 1`)
