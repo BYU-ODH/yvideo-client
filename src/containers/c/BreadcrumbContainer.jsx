@@ -57,7 +57,7 @@ const BreadcrumbContainer = props => {
 				link = `player`
 				break
 			case `Video Editor`:
-				link = `trackEditor`
+				link = `videoEditor`
 				break
 			case `Clip Manager`:
 				link = `clipEditor`
@@ -72,16 +72,14 @@ const BreadcrumbContainer = props => {
 			return link
 		},
 		isManager(name) {
-			if(name === `Manage Collections` || name === `Lab Assistant Manager` || name === `Manage Public Collections`) {
+			if(name === `Manage Collections` || name === `Lab Assistant Manager` || name === `Manage Public Collections`)
 				return true
-			}
-			else return false
+			 else return false
 		},
 		isPlayer(name) {
-			if(name === `Player` || name === `Video Editor` || name === `Clip Manager`) {
+			if(name === `Player` || name === `Video Editor` || name === `Clip Manager`)
 				return true
-			}
-			else return false
+			 else return false
 		},
 	}
 
