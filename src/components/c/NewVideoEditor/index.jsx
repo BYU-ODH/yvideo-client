@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Prompt } from 'react-router'
 
-import Style, { Timeline, EventList, AnnotationMessage } from './styles'
+import Style, { Timeline, EventList, AnnotationMessage, PlusIcon } from './styles'
 
 import { Rnd } from 'react-rnd'
 
@@ -11,7 +11,7 @@ import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 
-import { Controller, TrackLayer, VideoContainer } from 'components'
+import { Controller, TrackLayer } from 'components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -21,9 +21,10 @@ import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
+import plusIcon from 'assets/plus.svg'
+
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-
 import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
 import lIcon from 'assets/te-chevron-left.svg'
@@ -43,6 +44,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
 
 	const events = [
 		{
@@ -98,7 +100,6 @@ const VideoEditor = props => {
 	]
 
 	const [allEvents, setAllEvents] = useState(eventsArray)
-	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
@@ -118,7 +119,6 @@ const VideoEditor = props => {
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
 	// refs
-	const controllerRef = useRef(null)
 
 	useEffect(() => {
 		function handleResize() {
@@ -129,22 +129,6 @@ const VideoEditor = props => {
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
-
-		let largestLayer = 0
-
-		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
-		if(eventsArray !== undefined && eventsArray.length > 0){
-			eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
-			largestLayer = eventsArray[eventsArray.length-1].layer
-		}
-
-		// Find the largets layer number
-		const initialLayers = []
-
-		for(let i = 0; i < 6; i++)
-			initialLayers.push([i])
-
-		setLayers(initialLayers)
 		setEvents(allEvents)
 
 		if(blockLeave)
@@ -170,58 +154,26 @@ const VideoEditor = props => {
 		setVideoLength(duration)
 	}
 
-	const handleAddLayer = () => {
-		const currentLayers = [...layers]
+	// const eventDropHandler = (item, index) => {
+	// 	const newStart = videoCurrentTime * 100 / videoLength
+	// 	addEventToLayer(item, index, newStart)
+	// 	setBlock(true)
+	// }
 
-		const newLayer = currentLayers.length
-
-		currentLayers.push(newLayer)
-		setLayers(currentLayers)
-		setSideEditor(false)
-		setDisplayLayer(currentLayers.length-1)
-		setBlock(true)
-	}
-
-	const handleRemoveLayer = (e, index) => {
-		if(e !== null){
-			const currentLayers = [...layers]
-			const currentEvents = [...allEvents]
-			const toDelete = []
-
-			currentLayers.splice(index, 1)
-
-			currentEvents.forEach((element, i) => {
-				if(element.layer === index)
-					toDelete.push(element)
-
-			})
-
-			toDelete.forEach((element) => {
-				currentEvents.splice(currentEvents.findIndex(item => item === element), 1)
-			})
-
-			setLayers(currentLayers)
-			setSideEditor(false)
-			setDisplayLayer(currentLayers.length-1)
-			setAllEvents(currentEvents)
-			setEvents(currentEvents)
-			setBlock(true)
-		}
-	}
-
-	const eventDropHandler = (item, index) => {
+	const addEventHandler = (item, index) => {
 		const newStart = videoCurrentTime * 100 / videoLength
 		addEventToLayer(item, index, newStart)
 		setBlock(true)
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
+
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
 
 		// console.log('ADDING NEW EVENT')
-		const matchingEvent = filterValue(events, `type`, item.id)
+		const matchingEvent = filterValue(events, `type`, item)
 
 		const eventObj = {
 			...matchingEvent,
@@ -316,7 +268,6 @@ const VideoEditor = props => {
 		setActiveCensorPosition(posprev && posnex ? posprev? posprev:posnex:-1)
 		delete cEvent.position[item]
 		updateEvents(index, cEvent, layer)
-
 	}
 
 	const handleAddCensor = () => {
@@ -481,7 +432,7 @@ const VideoEditor = props => {
 			<DndProvider backend={Backend}>
 
 				<span style={{ zIndex: 0 }}>
-					<VideoContainer ref = {controllerRef}
+					<Controller
 						className='video'
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
@@ -496,19 +447,20 @@ const VideoEditor = props => {
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
 					>
-					</VideoContainer>
+					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 						<section>
-							{/* //TODO: Add delete logic */}
 							<div className='event-layers'>
 
 								{layers.map((layer, index) => (
 									<div className={`layer`} key={index}>
 										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
-											<p>Layer {index} <img className={`layer-delete`} src={trashIcon} width='20px' width='20px' onClick={ e => handleRemoveLayer(e, index)}/></p>
+											{/* <div>{layer[index]}</div> */}
+											<EventCard event={events[index]} key={index}/>
+											<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
 										</div>
-										{/* <HandleIcon /> */}
+
 										<TrackLayer
 											videoLength={videoLength}
 											minimized={eventListMinimized}
@@ -516,7 +468,7 @@ const VideoEditor = props => {
 											events={allEvents}
 											activeEvent={eventToEdit}
 											index={index}
-											onDrop={(item) => eventDropHandler(item,index)}
+											// onDrop={(item) => eventDropHandler(item,index)}
 											sideEditor={openSideEditor}
 											updateEvents={updateEvents}
 											closeEditor={closeSideEditor}
@@ -524,12 +476,6 @@ const VideoEditor = props => {
 										/>
 									</div>
 								))}
-								<div className='new-layer' onClick={handleAddLayer}
-									onMouseEnter={e => handleShowTip(`te-add-layer`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 11, width: e.currentTarget.offsetWidth})}
-									onMouseLeave={e => toggleTip()} style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}}>
-									<p style={{fontWeight:700}}>Add New Layer +</p>
-								</div>
-								<div><br/><br/><br/><br/></div>
 							</div>
 						</section>
 						<div className='zoom-controls'>
@@ -610,8 +556,6 @@ const VideoEditor = props => {
 						</div>
 					</header>
 
-					{/* {tab === `events` ? */}
-
 					<>
 						<div className='breadcrumbs'>
 							<span>Events</span>
@@ -622,7 +566,6 @@ const VideoEditor = props => {
 										<span className='current'>{allEvents !== []? `${checkSideBarTitle()}` : ``}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
-
 								</>
 							}
 						</div>
@@ -642,14 +585,6 @@ const VideoEditor = props => {
 							></TrackEditorSideMenu>
 						) : (
 							<>
-								<div className='eventsList'
-									onMouseEnter={e => handleShowTip(`drag-and-drop`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y - 50, width: e.currentTarget.offsetWidth})}
-									onMouseLeave={e => toggleTip()}>
-									{events.map((event, i) => (
-										<EventCard event={event} key={i}/>
-									))}
-								</div>
-
 							</>
 						)}
 					</>

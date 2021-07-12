@@ -67,16 +67,7 @@ const EventsContainer = props => {
 		}
 		setEventArray([...tempArray])
 	}, [duration, events])
-	const getCensor = ()=>{
-		const censors = []
-		eventArray.filter(element => {
-			return element.type === `Censor`
-		}).map(element=>{
-			if(currentTime >= element.start && currentTime <= element.end && element.active !== true)
-				censors.push(element.position)
-		})
-		handleCensorPosition(censors)
-	}
+
 	eventArray.forEach(element => {
 		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
@@ -119,9 +110,8 @@ const EventsContainer = props => {
 			default:
 				break
 			}
-		} else if (currentTime > element.end && element.type === `Censor`){
+		} else if (currentTime > element.end && element.type === `Censor`)
 			handleCensorActive(false)
-		}
 
 	})
 
