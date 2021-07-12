@@ -15,7 +15,7 @@ const TrackLayer = props => {
 
 	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
 
-	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength, displayLayer} = props
+	const { events, sideEditor, updateEvents, activeEvent, width, videoLength, displayLayer} = props // onDrop
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
@@ -24,7 +24,7 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	const [isEditorOpen, setEditorOpen] = useState(false)
+	// const [isEditorOpen, setEditorOpen] = useState(false)
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -34,13 +34,13 @@ const TrackLayer = props => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
-		 else if (width === 0)
+		else if (width === 0)
 			setLayerWidth(initialWidth)
-		 else
+		else
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
- 	}, [width])
+	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
@@ -53,7 +53,7 @@ const TrackLayer = props => {
 	// Drag and Drop event to the layer
 	const [, dropRef] = useDrop({
 		accept: [`timeline-event`],
-		drop: onDrop,
+		// drop: onDrop,
 		hover: (item, monitor) => {
 		},
 	})
@@ -92,7 +92,7 @@ const TrackLayer = props => {
 			console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
-			 else if(cEvents[index].start > 100){
+			else if(cEvents[index].start > 100){
 				cEvents[index].start = 99
 				cEvents[index].end = 100
 			}
@@ -103,7 +103,7 @@ const TrackLayer = props => {
 
 	// This opens the side tab editor
 	const toggleEditor = (layerIndex, eventIndex) => {
-		setEditorOpen(true)
+		// setEditorOpen(true)
 		sideEditor(layerIndex, eventIndex)
 	}
 

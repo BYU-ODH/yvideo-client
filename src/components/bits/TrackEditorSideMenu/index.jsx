@@ -12,7 +12,6 @@ const TrackEditorSideMenu = props => {
 	const {
 		singleEvent,
 		index,
-		deleteEvent,
 		updateEvents,
 		videoLength,
 		closeSideEditor,
@@ -22,13 +21,10 @@ const TrackEditorSideMenu = props => {
 		changeSubIndex,
 		addSub,
 		subLayer,
-		updateLanguage,
 		updateTitle,
-		editCensor,
 		handleEditCensor,
 		handleCensorRemove,
 		handleAddCensor,
-		handleSaveCensor,
 		activeCensorPosition,
 		setActiveCensorPosition,
 	} = props
@@ -36,8 +32,6 @@ const TrackEditorSideMenu = props => {
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
 	const [subText, setSubText] = useState([])
-	const [language, setLanguage] = useState(``)
-	const [title, setTitle] = useState(``)
 	useEffect(() => {
 		setEvent(singleEvent)
 	}, [index, event])
@@ -77,7 +71,6 @@ const TrackEditorSideMenu = props => {
 			number = 0
 
 		number = number / videoLength * 100
-		// console.log(number)
 		cEvent.end = number
 
 		setEvent(cEvent)
@@ -91,7 +84,6 @@ const TrackEditorSideMenu = props => {
 		cEvent.position = editComment.position === undefined ? cEvent.position : editComment.position
 		cEvent.comment = editComment.comment === undefined ? cEvent.comment : editComment.comment
 
-		// setEditComment({})
 		updateEvents(ind, cEvent, layer)
 	}
 
@@ -101,21 +93,21 @@ const TrackEditorSideMenu = props => {
 		case 1:
 			if(editComment.position !== undefined)
 				setEditComment({...editComment, position: { x: parseInt(value), y: editComment.position.y }})
-					 else
+			else
 				setEditComment({...cEvent, position: { x: parseInt(value), y: cEvent.position.y }})
 
 			break
 		case 2:
 			if(editComment.position !== undefined)
 				setEditComment({...editComment, position: { x: editComment.position.x, y: parseInt(value) }})
-					 else
+			else
 				setEditComment({...cEvent, position: { x: cEvent.position.x, y: parseInt(value) }})
 
 			break
 		case 3:
 			if(editComment.position !== undefined)
 				setEditComment({...editComment, comment: value })
-					 else
+			else
 				setEditComment({...cEvent, comment: value })
 
 			break
@@ -126,7 +118,7 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const editSub = (side, time, value,layer) => {
-		// console.log(time)
+
 		const sub = {...event}
 		if (side === `beg`)
 			sub.start = time / videoLength * 100
@@ -138,9 +130,9 @@ const TrackEditorSideMenu = props => {
 				sub.text = value.target.value
 
 		}catch(error){
-
+			console.log(error)
 		}
-		// console.log(`why is`,layer)
+
 		setEvent(sub)
 		updateSubs(index,sub,layer)
 	}
@@ -160,7 +152,6 @@ const TrackEditorSideMenu = props => {
 						<div className='center'>
 							<input type='text' className='sideTabInput' style={{margin: `0px`, width: `100%`}} value={subs[subLayer].title} onChange={e => {
 								updateTitle(e.target.value)
-								setTitle(e.target.value)
 							}
 							}/>
 						</div>
@@ -231,10 +222,6 @@ const TrackEditorSideMenu = props => {
 										</tr>
 									))
 									:``}
-								{
-									// "foo: bar", "baz: 42"
-								// Object.entries(event.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
-								}
 							</tbody>
 						</table>
 						<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
@@ -242,7 +229,6 @@ const TrackEditorSideMenu = props => {
 					</div>
 
 					<button className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></button><br/><br/><br/><br/>
-					{/* <button className='sideButton' onClick={handleSaveCensor}>Save Censor</button> */}
 				</div>
 			) : null
 			}
@@ -275,10 +261,8 @@ const TrackEditorSideMenu = props => {
 							</thead>
 						</table>
 						<table>
-							{/* content is a string type. Maybe change to an array by parsing content? */}
 							<tbody>
 								{subs[subLayer][`content`].map((sub,ind)=>(
-									// <div className={`${ind === index ? `subActive`:``}`}>
 									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`} key={ind}>
 										<td>
 											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
@@ -288,19 +272,10 @@ const TrackEditorSideMenu = props => {
 										</td>
 										<td>
 											<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
-												// const text = subText
-												// text[ind] = value
-												// setSubText(text)
 												editSub(null,null,value,subLayer)
 											}} />
 										</td>
 									</tr>
-									// </div>
-								// <div className={`subCard ${ind === index ? `subActive`:``}`} onClick={()=>changeSubIndex(ind)} key={ind}>
-								// 	<p>
-								// 		{sub.text}
-								// 	</p>
-								// </div>
 								))}
 							</tbody>
 						</table>
