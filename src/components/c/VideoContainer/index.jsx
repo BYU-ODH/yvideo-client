@@ -92,13 +92,13 @@ const VideoContainer = props => {
 
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
-			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played * 100}`
-			if(document.getElementById(`time-dot`) !== undefined)
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+			// if(document.getElementById(`timeBarProgress`) !== undefined)
+			// 	document.getElementById(`timeBarProgress`).value = `${played * 100}`
+			// if(document.getElementById(`time-dot`) !== undefined)
+			// 	document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
 			// setElapsed(playedSeconds)
 			const values = CurrentEvents(playedSeconds,events,duration)
-			for (let i = 0; i < values.censorValues.length; i++) CensorChange(i,values.censorValues[i],playedSeconds)
+			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 		},
 		handleDuration: duration => {
 			// console.log(`step 1`)
@@ -245,13 +245,14 @@ const VideoContainer = props => {
 						seekTo = {video.handleSeek}
 					/>
 				):``}
-
+				<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+				</div>
+				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+				</div>
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
 				{subtitleText !== `` ?(
 					<Subtitles>{subtitleText}</Subtitles>
 				) :``}
-
-				<Censor style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} ref={censorRef} active={censorActive}><canvas></canvas></Censor>
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
@@ -290,21 +291,6 @@ const VideoContainer = props => {
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
 					</button>
-
-					<div className='scrubber'>
-						<span className='time'>{formattedElapsed}</span>
-
-						<button className='mute' onClick={video.toggleMute}>
-							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
-						</button>
-
-						<div id='time-bar'>
-							<div id={`time-bar-container`}>
-								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
-								<span id='time-dot'></span>
-							</div>
-						</div>
-					</div>
 				</header>
 			</TimeBar>
 			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}

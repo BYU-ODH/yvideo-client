@@ -185,7 +185,7 @@ export const Censor = styled.div`
 		width: 100%;
 		height: 100%;
 		background-color: transparent;
-		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(0px)`};
+		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(30px)`};
 	}
 `
 export const Comment = styled.div`
