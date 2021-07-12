@@ -165,6 +165,22 @@ export const Blank = styled.div`
 	z-index: 10;
 	width: 100%;
 	height: calc(100% - 50px);
+	& .censorBox{
+	position: absolute;
+	transition-timing-function: linear;
+		& canvas {
+			width: 100%;
+			height: 100%;
+			background-color: transparent;
+			backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(30px)`};
+		}
+	}
+	& .comment{
+	position: absolute;
+	font-size: 2rem;
+	color: white;
+	z-index: 15;
+	}
 `
 export const Censor = styled.div`
 	position: absolute;
