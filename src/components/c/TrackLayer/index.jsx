@@ -89,10 +89,10 @@ const TrackLayer = props => {
 		} else {
 			cEvents[index].start -= difference
 
-			console.log(cEvents[index])
+			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
-			 else if(cEvents[index].start > 100){
+			else if(cEvents[index].start > 100){
 				cEvents[index].start = 99
 				cEvents[index].end = 100
 			}

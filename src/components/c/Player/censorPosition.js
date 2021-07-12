@@ -12,15 +12,15 @@ function Values(top1,top2,left1,left2, width1, width2,height1,height2, next, pre
 }
 const getPos = (events, t) => {
 	const time = t !== undefined ? t : 0.0
-	console.log(time)
-	console.log(Object.keys(events).length)
+	// console.log(time)
+	// console.log(Object.keys(events).length)
 	if(Object.keys(events).length < 1 || events === {}){
 		const values = new Values(0,0,0,0,0,0,0,0,0,0)
 		return values
 	}else{
 		const keys = Object.keys(events).map(val => events[val][0])
 		// const next = Math.min(...keys.filter(value => parseFloat(value) > time)).toFixed(1).toString()
-		console.log(time,keys.filter(value => parseFloat(value) > parseFloat(time)))
+		// console.log(time,keys.filter(value => parseFloat(value) > parseFloat(time)))
 		const next = keys.filter(value => parseFloat(value) > time).sort((a,b) => parseFloat(a)-parseFloat(b))[0]
 		const previous = keys.filter(value => parseFloat(value) < time).sort((a,b) => parseFloat(b)-parseFloat(a))[0]
 		// const filterKeys = keys.map(num => parseFloat(num)).filter(value => value < parseFloat(next))
