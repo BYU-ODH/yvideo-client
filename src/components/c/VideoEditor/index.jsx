@@ -142,7 +142,7 @@ const VideoEditor = props => {
 		// Find the largets layer number
 		const initialLayers = []
 
-		for(let i = 1; i < largestLayer + 1; i++)
+		for(let i = 1; i < 6; i++)
 			initialLayers.push([i])
 
 		setLayers(initialLayers)
