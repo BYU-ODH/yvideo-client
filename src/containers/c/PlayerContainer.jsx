@@ -282,7 +282,7 @@ const PlayerContainer = props => {
 		const temp = subtitles[index]
 		const currentContent = temp.content
 		if(typeof currentContent === `string`){
-			console.log(`String type`)
+			// console.log(`String type`)
 			try {
 				temp.content = JSON.parse(subtitles[index].content)
 			} catch (e){
