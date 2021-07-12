@@ -167,6 +167,7 @@ export const Timeline = styled.div`
 		position: relative;
 		cursor: pointer;
 		border-bottom: 1px solid;
+		border-right: 1px solid;
 		border-color: white;
 		/* border-right: 1px solid var(--light-blue); */
 		transition: .5s;
@@ -197,13 +198,11 @@ export const HandleIcon = styled.div `
 	width: 2.5rem;
 	background: url(${menu}) center no-repeat;
 	background-size: contain;
-	/* display: inline-block; */
 	position: absolute;
 	right: 5px;
 	margin: auto 0;
 `
 export const Icon = styled.div`
-	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 15px;

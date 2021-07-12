@@ -569,33 +569,24 @@ const VideoEditor = props => {
 								</>
 							}
 						</div>
-						{/* { showSideEditor !== false && eventListMinimized !== true ? (
-							// <TrackEditorSideMenu
-							// 	singleEvent={allEvents[eventToEdit]}
-							// 	videoLength={videoLength}
-							// 	closeSideEditor={closeSideEditor}
-							// 	updateEvents={updateEvents}
-							// 	editCensor = {editCensor}
-							// 	handleEditCensor = {handleEditCensor}
-							// 	handleCensorRemove = {handleCensorRemove}
-							// 	handleAddCensor = {handleAddCensor}
-							// 	handleSaveCensor = {handleSaveCensor}
-							// 	activeCensorPosition = {activeCensorPosition}
-							// 	setActiveCensorPosition = {setActiveCensorPosition}
-							// ></TrackEditorSideMenu>
-							<></>
+						{ showSideEditor !== false && eventListMinimized !== true ? (
+							<TrackEditorSideMenu
+								singleEvent={allEvents[eventToEdit]}
+								videoLength={videoLength}
+								closeSideEditor={closeSideEditor}
+								updateEvents={updateEvents}
+								editCensor = {editCensor}
+								handleEditCensor = {handleEditCensor}
+								handleCensorRemove = {handleCensorRemove}
+								handleAddCensor = {handleAddCensor}
+								handleSaveCensor = {handleSaveCensor}
+								activeCensorPosition = {activeCensorPosition}
+								setActiveCensorPosition = {setActiveCensorPosition}
+							></TrackEditorSideMenu>
 						) : (
 							<>
-								<div className='eventsList'
-									onMouseEnter={e => handleShowTip(`drag-and-drop`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y - 50, width: e.currentTarget.offsetWidth})}
-									onMouseLeave={e => toggleTip()}>
-									{events.map((event, i) => (
-										<EventCard event={event} key={i}/>
-									))}
-								</div>
-
 							</>
-						)} */}
+						)}
 					</>
 
 					{/* :
