@@ -22,6 +22,7 @@ import ManageResource from './c/ManageResource'
 import ResourceOverview from './c/ResourceOverview'
 import FileOverview from './c/FileOverview'
 import SearchPublicCollections from './c/SearchPublicCollections'
+import SubtitleEditor from './c/SubtitleEditor'
 import PublicManager from './c/PublicManager'
 import PublicListCollection from './c/PublicListCollection'
 import ClipEditor from './c/ClipEditor'
@@ -54,6 +55,7 @@ export {
 	ResourceOverview,
 	FileOverview,
 	SearchPublicCollections,
+	SubtitleEditor,
 	PublicManager,
 	PublicListCollection,
 	ClipEditor,

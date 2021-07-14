@@ -2,34 +2,24 @@ import styled from 'styled-components'
 
 const Style = styled.div`
 
-	position: relative;
-	top: 0;
-	left: 0;
+	// position: relative;
 
 	display: flex;
-	justify-content: flex-start;
 	align-items: center;
-
 	background-color: var(--navy-blue);
 	color: white;
-	cursor: grab;
-
-	height: 5rem;
 	width: 100%;
+	height: 100%;
 
-	border: 1px solid #222;
+	border-left: 1px solid white;
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
 
-	margin-bottom: 1rem;
-
-	box-shadow: 0px 2px 4px -2px rgba(0,0,0,0.75);
-
-	opacity: ${props => props.opacity};
-
-	&.ghost {
-		z-index: 1000;
-		opacity: .75;
-		pointer-events: none;
-	}
+	// &.ghost {
+	// 	z-index: 1000;
+	// 	opacity: .75;
+	// 	pointer-events: none;
+	// }
 `
 
 export default Style
