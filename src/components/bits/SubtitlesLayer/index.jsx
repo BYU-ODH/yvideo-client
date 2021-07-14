@@ -15,7 +15,7 @@ const SubtitlesLayer = props => {
 
 	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
 
-	const { subs, onDrop, sideEditor, updateSubs, activeEvent, width, minimized, videoLength, displayLayer} = props
+	const { subs, sideEditor, updateSubs, activeEvent, width, videoLength, displayLayer} = props
 	const layerIndex = props.layer
 	const subIndex = parseInt(props.index)
 	const layerRef = useRef(null)
@@ -32,13 +32,13 @@ const SubtitlesLayer = props => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
-		 else if (width === 0)
+		else if (width === 0)
 			setLayerWidth(initialWidth)
-		 else
+		else
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
- 	}, [width])
+	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
@@ -51,7 +51,7 @@ const SubtitlesLayer = props => {
 	// Drag and Drop event to the layer
 	const [, dropRef] = useDrop({
 		accept: `subtitle-event`,
-		drop: onDrop,
+		// drop: onDrop,
 		hover: (item, monitor) => {},
 	})
 	// Drag within the layer
