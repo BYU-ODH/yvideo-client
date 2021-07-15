@@ -9,6 +9,8 @@ import {
 	Tab,
 	TypeButton,
 	FormResource,
+	Search,
+	SearchIcon,
 } from './styles'
 
 import plus from 'assets/plus_blue.svg'
@@ -24,6 +26,8 @@ export default class CreateContent extends PureComponent {
 			hideResources,
 			languages,
 			isResourceSelected,
+			selectedResource,
+			isAccess,
 		} = this.props.viewstate
 
 		const {
@@ -45,6 +49,7 @@ export default class CreateContent extends PureComponent {
 			handleTypeChange,
 			onKeyPress,
 			remove,
+			removeResource,
 			toggleModal,
 		} = this.props.handlers
 
@@ -82,7 +87,7 @@ export default class CreateContent extends PureComponent {
 						<label htmlFor='create-content-description'>
 							<span>Description</span>
 						</label>
-						<textarea className='url-content-description' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} required />
+						<textarea className='url-content-description' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} />
 
 						<label htmlFor='create-content-keywords'>
 							<span>Tags</span>
@@ -106,30 +111,44 @@ export default class CreateContent extends PureComponent {
 
 				{tab === `resource` &&
 					<FormResource onSubmit={handleAddResourceSubmit}>
+						<Search>
+							<SearchIcon />
+							<input className='resource-search-title' type='search' name='searchInput' placeholder={`Search Resource`} autoComplete='off' value={searchQuery} onChange={handleSearchTextChange} />
+						</Search>
+						<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
+							{
+								resourceContent && hideResources !== true &&
+							Object.keys(resourceContent).map(index =>
+								<li key={resourceContent[index].id}>
+									<label onClick={e => handleSelectResourceChange(e, resourceContent[index])}>{resourceContent[index].resourceName}</label>
+								</li>,
+							)
+							}
+						</TableContainer>
+
 						<label>
-							Search Resource Title<br/>
-							<input className='resource-search-title' type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
-						</label>
-						{!isResourceSelected &&
-							<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
+							<span>Resource</span><br/>
+							<div className='resource-content-remove'>
+								<input value={selectedResource} disabled required></input>
 								{
-									resourceContent && hideResources !== true &&
-								Object.keys(resourceContent).map(index =>
-									<li key={resourceContent[index].id}>
-										<input type='radio' value={resourceContent[index].id} name='resource' onChange={e => handleSelectResourceChange(e, resourceContent[index].resourceName)}/>
-										<label>{resourceContent[index].resourceName}</label>
-									</li>,
-								)
+									selectedResource &&
+										<RemoveKeyword className='resource-content-remove-button' src={plus} onClick={removeResource} type='button'/>
 								}
-							</TableContainer>
+							</div>
+						</label>
+						{
+							!isAccess &&
+								<label>
+									<p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact Y-video admin for more information.</p>
+								</label>
 						}
 						<label>
-							<span>Content Title</span><br/>
+							<span>Display Title</span><br/>
 							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange} required/>
 						</label>
 						<label>
 							<span>Description</span><br/>
-							<textarea className='resource-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} required />
+							<textarea className='resource-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
 						</label>
 						<label>
 							<span>Target Language</span>

@@ -9,6 +9,7 @@ import {
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
+import { escapeSelector } from 'jquery'
 
 const CreateContentContainer = props => {
 
@@ -22,6 +23,8 @@ const CreateContentContainer = props => {
 		getCollections,
 		resourceContent,
 		searchResource,
+		getAccess,
+		user,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -33,6 +36,7 @@ const CreateContentContainer = props => {
 	const [isTyping, setIsTyping] = useState(false)
 	const [isCalled, setIsCalled] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
+	const [isAccess, setIsAccess] = useState(true)
 
 	const [data, setData] = useState({
 		url: ``,
@@ -79,12 +83,12 @@ const CreateContentContainer = props => {
 				setHide(true)
 		}
 
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+
+		else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}
@@ -121,11 +125,35 @@ const CreateContentContainer = props => {
 			setIsTyping(true)
 	}
 
-	const handleSelectResourceChange = (e, name) => {
-		const { target } = e
-		setSelectedResource(target.value)
-		setIsResourceSelected(true)
-		setSearchQuery(name)
+	const handleSelectResourceChange = async (e, resource) => {
+		const access = await getAccess(resource.id)
+		let theAccess = true
+
+		if(access.length !== 0) {
+			for (let i = 0; i < access.length; i++) {
+				if(user.username === access[i].username) {
+					setIsAccess(true)
+					theAccess = true
+					break
+				}
+				if(i === access.length -1) {
+					console.log(`object`)
+					setIsAccess(false)
+					theAccess = false
+
+				}
+			}
+		} else {
+			theAccess = false
+		}
+
+		if(theAccess) {
+			setSelectedResource(resource.resourceName)
+			setIsResourceSelected(true)
+		} else {
+			setSelectedResource(``)
+		}
+		setSearchQuery(``)
 		setHide(true)
 	}
 
@@ -251,6 +279,11 @@ const CreateContentContainer = props => {
 		setBlock(true)
 	}
 
+	const removeResource = () => {
+		setSelectedResource(``)
+		setIsResourceSelected(false)
+	}
+
 	const viewstate = {
 		adminContent,
 		data,
@@ -261,6 +294,7 @@ const CreateContentContainer = props => {
 		selectedResource,
 		languages,
 		isResourceSelected,
+		isAccess,
 	}
 
 	const handlers = {
@@ -273,6 +307,7 @@ const CreateContentContainer = props => {
 		handleTypeChange,
 		onKeyPress,
 		remove,
+		removeResource,
 		toggleModal,
 	}
 
@@ -281,6 +316,7 @@ const CreateContentContainer = props => {
 
 const mapStateToProps = store => ({
 	admin: store.authStore.user.roles === 0,
+	user: store.authStore.user,
 	adminContent: store.adminStore.data,
 	resourceContent: store.resourceStore.cache,
 	modal: store.interfaceStore.modal,
@@ -296,6 +332,7 @@ const mapDispatchToProps = {
 	search: adminService.search,
 	searchResource: resourceService.search,
 	getCollections: collectionService.getCollections,
+	getAccess: resourceService.readAccess,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)
