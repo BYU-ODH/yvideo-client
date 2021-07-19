@@ -93,9 +93,6 @@ const SubtitleEditor = props => {
 	const controllerRef = useRef(null)
 
 	useEffect(() => {
-		console.log(subtitles)
-		console.log(subLayerToEdit)
-		console.log(subToEdit)
 
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
@@ -167,12 +164,14 @@ const SubtitleEditor = props => {
 		setAllSubs(tempSubs)
 	}
 
-	const deleteSub = () =>{
+	const deleteSub = (index) =>{
 		const currentSubs = [...subtitles]
-		currentSubs[subLayerToEdit][`content`].splice(subToEdit,1)
+		currentSubs[subLayerToEdit][`content`].splice(index,1)
 		setSubs(currentSubs)
 		setAllSubs(currentSubs)
-		setSideEditor(false)
+		setSubToEdit(index-1)
+
+		// setSideEditor(false)
 		setBlock(true)
 	}
 
@@ -309,7 +308,6 @@ const SubtitleEditor = props => {
 		}
 	}
 	const updateSubs = (index, sub, subLayerIndex) => {
-		console.log(sub)
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
@@ -359,6 +357,7 @@ const SubtitleEditor = props => {
 		const currentSubs = tempSubs[subLayerIndex]
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
+
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 		setSubChanges(subChanges+1)
@@ -370,27 +369,27 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const addSubToLayer = (index) => {
+		console.log(subtitles)
 		// TODO: Change this to use real JS event objects and insert based on time
 		const currentSubs = [...subtitles]
 		let subStart = 0
 		try{
-			if (currentSubs[index]){
-				if(currentSubs[index][`content`][subToEdit])
-					subStart = currentSubs[index][`content`][subToEdit].end + .01
-
-			}
+			if(currentSubs[index][`content`][subToEdit])
+				subStart = currentSubs[index][`content`][subToEdit].end + .01
 			const newSub = {
 				start: subStart,
 				end: subStart + 5,
 				text: ``,
 			}
-
 			currentSubs[index][`content`].push(newSub)
+
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
 			sortSubtitles()
+			setSubToEdit(subToEdit+1)
+			// openSubEditor(index, null)
 			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
@@ -407,6 +406,7 @@ const SubtitleEditor = props => {
 				language: ``,
 				content: [],
 				id: ``,
+				type: ``,
 			}
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
@@ -418,6 +418,7 @@ const SubtitleEditor = props => {
 				language: ``,
 				content: [],
 				id: ``,
+				type: ``,
 			}
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
@@ -526,15 +527,11 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const checkEventOrSub = () => {
-		console.log(subtitles)
-		console.log(subLayerToEdit)
-		console.log(subToEdit)
 		return subtitles[subLayerToEdit][`content`][subToEdit]
 	}
 	const handleChangeSubIndex = (index,subLayer) =>{
 		setSubToEdit(index)
 	}
-
 
 	return (
 		<Style>
@@ -571,15 +568,10 @@ const SubtitleEditor = props => {
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
 										<div className={`handle`} onClick={()=>addSubToLayer(index)}>
-											{/* <div className={`handle`}> */}
 											{/* <p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p> */}
 											<SubtitlesCard
 												title={sub.title !== `` ? sub.title : `No Title`}
-												// onClick={()=>setSideEditor(true)}
 											/>
-											{/* <button className={`plusIcon`} onClick={() => addSubToLayer(index)}/> */}
-
-											{/* <p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p> */}
 										</div>
 										<SubtitlesLayer
 											videoLength={videoLength}
@@ -601,6 +593,7 @@ const SubtitleEditor = props => {
 								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
 									setSubModalVisible(true)
 									setSubModalMode(`create`)
+									// addSubToLayer(subtitles.length+1)
 								}}>
 									<p style={{fontWeight:700}}>Add Subtitle Track +</p>
 								</div>
@@ -687,7 +680,8 @@ const SubtitleEditor = props => {
 									<span className='carat'></span>
 									<>
 										<span className='current'>{subToEdit !== undefined ? `Subtitle ${subToEdit + 1}` : ``}</span>
-										<button className='deleteEventButton' onClick={deleteSub}>Delete Event</button>
+										{/* <button className='deleteEventButton' onClick={deleteSub}>Delete Event</button> */}
+										<button className='deleteEventButton' onClick={()=>handleDeleteSubLayer(subLayerToEdit)}>Delete Layer</button>
 									</>
 								</>
 								}
@@ -709,7 +703,8 @@ const SubtitleEditor = props => {
 									activeCensorPosition = {activeCensorPosition}
 									setActiveCensorPosition = {setActiveCensorPosition}
 									deleteSub = {deleteSub}
-							></TrackEditorSideMenu>
+									index={subToEdit}
+								></TrackEditorSideMenu>
 							) : null}
 						</>
 

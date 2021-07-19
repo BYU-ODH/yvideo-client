@@ -120,9 +120,11 @@ const SubtitlesLayer = props => {
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
 				{ event.type !== `Pause` ? (
-					<p>{event.text} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
+					// <p>{event.text} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
+					<p>{event.text}</p>
 				) : (
-					<p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
+					// <p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
+					<p>{event.type}</p>
 				)
 				}
 			</Rnd>
