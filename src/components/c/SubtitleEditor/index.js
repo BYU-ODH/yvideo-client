@@ -96,7 +96,7 @@ const SubtitleEditor = props => {
 		console.log(subtitles)
 		console.log(subLayerToEdit)
 		console.log(subToEdit)
-		
+
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
 			setZoomFactor(0)
@@ -370,8 +370,6 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const addSubToLayer = (index) => {
-		setSubLayerToEdit(index)
-
 		// TODO: Change this to use real JS event objects and insert based on time
 		const currentSubs = [...subtitles]
 		let subStart = 0
@@ -388,12 +386,12 @@ const SubtitleEditor = props => {
 			}
 
 			currentSubs[index][`content`].push(newSub)
+			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
 			sortSubtitles()
 			setBlock(true)
-			openSubEditor()
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
 			console.error(error)
