@@ -99,10 +99,14 @@ export const Form = styled.form`
 export const Button = styled.button`
 	font-size: 1.5rem;
 	color: ${props => props.color || `black`};
-	background: transparent;
-	border: none;
-	outline: none;
 	cursor: pointer;
+	place-self: start;
+	background: transparent;
+	border-radius: 5px;
+	border: 1px solid lightgrey;
+	:hover {
+		border: 1px solid grey;
+	}
 `
 
 export const SearchIcon = styled.span`
