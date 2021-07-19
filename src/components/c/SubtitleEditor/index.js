@@ -309,6 +309,7 @@ const SubtitleEditor = props => {
 		}
 	}
 	const updateSubs = (index, sub, subLayerIndex) => {
+		console.log(sub)
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
@@ -709,6 +710,7 @@ const SubtitleEditor = props => {
 									editCensor = {editCensor}
 									activeCensorPosition = {activeCensorPosition}
 									setActiveCensorPosition = {setActiveCensorPosition}
+									deleteSub = {deleteSub}
 							></TrackEditorSideMenu>
 							) : null}
 						</>

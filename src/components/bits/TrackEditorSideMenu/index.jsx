@@ -27,8 +27,10 @@ const TrackEditorSideMenu = props => {
 		handleAddCensor,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		deleteSub,
 	} = props
 
+	console.log(subs)
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
 	const [subText, setSubText] = useState([])
@@ -117,8 +119,8 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
-	const editSub = (side, time, value,layer) => {
-
+	const editSub = (side, time, value, layer) => {
+		console.log(event)
 		const sub = {...event}
 		if (side === `beg`)
 			sub.start = time / videoLength * 100
@@ -126,15 +128,24 @@ const TrackEditorSideMenu = props => {
 			sub.end = time / videoLength * 100
 		setSubText(value)
 		try{
-			if(value.target)
+			if(value.target.value) {
 				sub.text = value.target.value
+				console.log(value.target.value)
+
+			}
 
 		}catch(error){
 			console.log(error)
 		}
 
+		console.log(sub)
 		setEvent(sub)
 		updateSubs(index,sub,layer)
+	}
+
+	const ConsoleLog = ({ children }) => {
+		console.log(children)
+		return false
 	}
 
 	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
@@ -145,7 +156,7 @@ const TrackEditorSideMenu = props => {
 			<div>
 				<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 				{isSub ? (
-					<>
+					<div className='title'>
 						<div className='center'>
 							<label>Title</label>
 						</div>
@@ -156,7 +167,7 @@ const TrackEditorSideMenu = props => {
 							}/>
 						</div>
 
-					</>
+					</div>
 				):``}
 				{!isSub ? (
 					<>
