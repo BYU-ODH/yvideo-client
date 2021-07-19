@@ -5,16 +5,26 @@ const Style = styled.div`
 	padding: 20px;
 	overflow: scroll;
 
+	& .titleContainer {
+		display: flex;
+    flex-direction: column;
+		align-items: center;
+	}
+
 	& .closeEditor {
 		width: 2rem;
 		text-align: right;
 		cursor: pointer;
-		float: right;
 		margin-right: 10px;
+		margin-left: 90%;
 	}
 
 	& .title {
 		display: flex;
+
+		& .titleLabel {
+			width: 6rem;
+		}
 	}
 
 	& .center {
@@ -150,21 +160,38 @@ const Style = styled.div`
 		padding: 1rem;
 		color: black;
 	}
+
+	& .subActive {
+    background-color: #eee;
+	}
+
 	& .subContainer {
 		display: flex;
     justify-content: space-evenly;
-		margin: 1rem;
+		margin: 0.5rem;
+		padding: 0.5rem 0;
+
+		& .subText {
+			width: 18rem;
+			resize: none;
+		}
 
 		& .subStartEnd {
 			display: flex;
 			flex-direction: column;
 
+			& .subStart {
+				width: 7rem;
+				margin-button: 0.5rem;
+			}
+
+			& .subEnd {
+				width: 7rem;
+				margin-top: 0.5rem;
+			}
 		}
 	}
-	& .subActive {
-		background-color: var(--navy-blue);
-		color: white;
-	}
+
 	& .censorActive {
 		background-color: var(--navy-blue);
 		color: white;
@@ -180,6 +207,7 @@ export const Icon = styled.div`
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 15px;
+	margin-left: 1rem;
 `
 export const Help = styled.span`
 	width: 20px;
