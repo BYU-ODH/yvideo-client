@@ -26,7 +26,7 @@ export default class CreateContent extends PureComponent {
 			hideResources,
 			languages,
 			isResourceSelected,
-			selectedResource,
+			selectedResourceName,
 			isAccess,
 		} = this.props.viewstate
 
@@ -129,9 +129,9 @@ export default class CreateContent extends PureComponent {
 						<label>
 							<span>Resource</span><br/>
 							<div className='resource-content-remove'>
-								<input value={selectedResource} disabled required></input>
+								<input value={selectedResourceName} disabled required></input>
 								{
-									selectedResource &&
+									selectedResourceName &&
 										<RemoveKeyword className='resource-content-remove-button' src={plus} onClick={removeResource} type='button'/>
 								}
 							</div>
@@ -152,14 +152,26 @@ export default class CreateContent extends PureComponent {
 						</label>
 						<label>
 							<span>Target Language</span>
-							{ languages.length > 0 &&
-								<select name='targetLanguages' onChange={handleTextChange} required>
-									<option value=''>Select</option>
-									{
-										languages.map((element, index) =>
-											<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option> )
-									}
-								</select>
+							{
+								isResourceSelected && (
+									languages.length > 0 ?
+										(
+											<select name='targetLanguages' onChange={handleTextChange} required>
+												<option value=''>Select</option>
+												{
+													languages.map((element, index) =>
+														<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option> )
+												}
+											</select>
+										)
+										:
+										(
+											<div>
+												<br/>
+												<p>No file associate to this resource</p>
+											</div>
+										)
+								)
 							}
 						</label>
 

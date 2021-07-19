@@ -30,7 +30,8 @@ const CreateContentContainer = props => {
 	const [tab, setTab] = useState(`url`)
 	const [hideResources, setHide] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [selectedResource, setSelectedResource] = useState(``)
+	const [selectedResourceId, setSelectedResourceId] = useState(``)
+	const [selectedResourceName, setSelectedResourceName] = useState(``)
 	const [isResourceSelected, setIsResourceSelected] = useState(false)
 	const [languages, setLanguages] = useState([])
 	const [isTyping, setIsTyping] = useState(false)
@@ -52,8 +53,8 @@ const CreateContentContainer = props => {
 	})
 
 	useEffect(() => {
-		if(resourceContent[selectedResource] !== undefined && isResourceSelected){
-			const langs = resourceContent[selectedResource].allFileVersions.split(`;`)
+		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
+			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
 			const finalLanguages = []
 			langs.forEach((element, i) => {
 				if(element === ``)
@@ -93,7 +94,7 @@ const CreateContentContainer = props => {
 			window.onbeforeunload = undefined
 		}
 
-	}, [resourceContent, selectedResource, searchQuery, isTyping, blockLeave])
+	}, [resourceContent, selectedResourceId, searchQuery, isTyping, blockLeave, isResourceSelected])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -134,6 +135,10 @@ const CreateContentContainer = props => {
 				if(user.username === access[i].username) {
 					setIsAccess(true)
 					theAccess = true
+					setData({
+						...data,
+						title: resource.resourceName,
+					})
 					break
 				}
 				if(i === access.length -1) {
@@ -148,10 +153,13 @@ const CreateContentContainer = props => {
 		}
 
 		if(theAccess) {
-			setSelectedResource(resource.resourceName)
+			setSelectedResourceName(resource.resourceName)
+			setSelectedResourceId(resource.id)
 			setIsResourceSelected(true)
 		} else {
-			setSelectedResource(``)
+			setSelectedResourceName(``)
+			setSelectedResourceId(``)
+			setIsResourceSelected(false)
 		}
 		setSearchQuery(``)
 		setHide(true)
@@ -243,7 +251,7 @@ const CreateContentContainer = props => {
 			"url": ``,
 			"allow-captions": true,
 			"content-type": data.contentType,
-			"resource-id": selectedResource,
+			"resource-id": selectedResourceId,
 			"tags": ``,
 			"clips": ``,
 			"words": ``,
@@ -280,7 +288,7 @@ const CreateContentContainer = props => {
 	}
 
 	const removeResource = () => {
-		setSelectedResource(``)
+		setSelectedResourceName(``)
 		setIsResourceSelected(false)
 	}
 
@@ -291,7 +299,8 @@ const CreateContentContainer = props => {
 		tab,
 		resourceContent,
 		hideResources,
-		selectedResource,
+		selectedResourceId,
+		selectedResourceName,
 		languages,
 		isResourceSelected,
 		isAccess,
