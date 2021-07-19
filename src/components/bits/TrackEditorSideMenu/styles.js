@@ -13,6 +13,10 @@ const Style = styled.div`
 		margin-right: 10px;
 	}
 
+	& .title {
+		display: flex;
+	}
+
 	& .center {
 		width: 100%;
 		display: flex;
@@ -145,6 +149,17 @@ const Style = styled.div`
 		border-bottom: 1px solid var(--light-blue);
 		padding: 1rem;
 		color: black;
+	}
+	& .subContainer {
+		display: flex;
+    justify-content: space-evenly;
+		margin: 1rem;
+
+		& .subStartEnd {
+			display: flex;
+			flex-direction: column;
+
+		}
 	}
 	& .subActive {
 		background-color: var(--navy-blue);
