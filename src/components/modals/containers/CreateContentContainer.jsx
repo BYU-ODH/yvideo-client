@@ -148,9 +148,8 @@ const CreateContentContainer = props => {
 
 				}
 			}
-		} else {
+		} else
 			theAccess = false
-		}
 
 		if(theAccess) {
 			setSelectedResourceName(resource.resourceName)

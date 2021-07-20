@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player'
 
 import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
-import { EventsContainer, SubtitlesContainer } from 'containers'
+import { EventsContainer } from 'containers'
 
 import { CensorDnD } from 'components/bits'
 
@@ -15,7 +15,6 @@ import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
-import carat from 'assets/carat_white.svg'
 
 const Controller = props => {
 
@@ -97,7 +96,6 @@ const Controller = props => {
 			censorRef.current.style.height = `${height}%`
 			censorRef.current.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
 			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
-
 			setElapsed(playedSeconds)
 		},
 		handleDuration: duration => {
@@ -262,7 +260,8 @@ const Controller = props => {
 				onDuration={video.handleDuration}
 				// blank style
 			/>
-			<TimeBar>
+
+			<TimeBar className='timeBar'>
 				<header>
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
@@ -284,7 +283,8 @@ const Controller = props => {
 					</div>
 				</header>
 			</TimeBar>
-			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
+
+			<EventsContainer className='eventContainer' currentTime={elapsed.toFixed(1)} duration={video.duration}
 				handleSeek={video.handleSeek}
 				handleMute={video.handleMute}
 				handlePlay={video.handlePlay}
