@@ -183,7 +183,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/manager/${data.id}`} target='_blank'>Collections</Link>
+							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
 						</li>
 						<li>
 							<button className='userEdit' onClick={handleEdit}>Edit</button>
