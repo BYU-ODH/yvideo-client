@@ -31,8 +31,6 @@ const ManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 	const [isEdited, setIsEdited] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
-	const [selectedCollection, setSelectedCollection] = useState()
-	const [isContentsUpdated, setIsContentUpdated] = useState(false)
 
 	const allContent = {}
 
