@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import { Prompt } from 'react-router'
 
-import Style, { Timeline, EventList, AnnotationMessage } from './styles'
+import Style, { Timeline, EventList, AnnotationMessage, Icon } from './styles'
 
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
 import * as Subtitle from 'subtitle'
-import { TrackEditorSideMenu, SubtitlesCard, SubtitlesLayer, EventCard } from 'components/bits'
+import { TrackEditorSideMenu, SubtitlesCard, SubtitlesLayer } from 'components/bits'
 import { Controller } from 'components'
 import { SubtitlesModal } from 'components/bits'
 
@@ -19,6 +19,9 @@ import commentIcon from 'assets/event_comment.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
 import trashIcon from 'assets/trash_icon.svg'
+import editIcon from 'assets/ca_tracks_edit.svg'
+import saveIcon from 'assets/check.svg'
+
 import closeIcon from 'assets/close_icon.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
@@ -89,10 +92,14 @@ const SubtitleEditor = props => {
 	})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
+	const [focus, setFocus] = useState(false)
+	const [isEdit, setIsEdit] = useState(false)
+	console.log(subtitles)
 	// refs
 	const controllerRef = useRef(null)
 
 	useEffect(() => {
+		console.log(isEdit)
 
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
@@ -136,7 +143,7 @@ const SubtitleEditor = props => {
 			window.onbeforeunload = undefined
 		}
 
-	}, [eventsArray, blockLeave])
+	}, [eventsArray, blockLeave, isEdit])
 
 	// end of useEffect
 
@@ -169,7 +176,13 @@ const SubtitleEditor = props => {
 		currentSubs[subLayerToEdit][`content`].splice(index,1)
 		setSubs(currentSubs)
 		setAllSubs(currentSubs)
-		setSubToEdit(index-1)
+
+		if(currentSubs[subLayerToEdit][`content`].length === 0 || currentSubs[subLayerToEdit][`content`].length === 1)
+			setSubToEdit(0)
+		else if(currentSubs[subLayerToEdit][`content`].length === index)
+			setSubToEdit(index-1)
+		else
+			setSubToEdit(index)
 
 		// setSideEditor(false)
 		setBlock(true)
@@ -308,53 +321,79 @@ const SubtitleEditor = props => {
 		}
 	}
 	const updateSubs = (index, sub, subLayerIndex) => {
+		let isOverlap = false
 		let canAccessDom = false
-		if(showSideEditor && eventListMinimized === false){
+		const tempSubs = [...subtitles]
+		const currentSubs = tempSubs[subLayerIndex]
+		const targetSubs = [...subtitles]
+		let isError = false
+
+		// console.log(targetSubs[subLayerIndex][`content`][index].start)
+		// console.log(index)
+		if(showSideEditor && eventListMinimized === false)
 			canAccessDom = true
-			document.getElementById(`sideTabMessage`).style.color=`red`
-		}
+			// document.getElementById(`sideTabMessage`).style.color=`red`
 
 		// check start event times
-		if(sub.start < 0){
+		if(sub.start < 0)
 			sub.start = 0
-			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
+			// if(canAccessDom)
+		// document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
 
-		} else if(sub.start >= 100) {
-			sub.start = 95
-			sub.end = 100
-			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
+		else if(sub.start >= 100) {
+			// sub.start = 95
+			// sub.end = 100
+			// if(canAccessDom)
+			// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
+		}
+		// console.log(targetSubs[subLayerIndex][`content`][index].start)
 
-		} else if(sub.start > sub.end){
-			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
-
+		if(index !== targetSubs[subLayerIndex][`content`].length-1){
+			const curStart = targetSubs[subLayerIndex][`content`][index].start
+			const nextStart = targetSubs[subLayerIndex][`content`][index+1].start
+			// console.log(curStart)
+			// console.log(nextStart)
+			if(curStart > nextStart){
+				// document.getElementById(`sideTabExplanation`).innerText=`Invalid input`
+				console.log(`Invalid input`)
+				isError = true
+			}
 		}
 
 		// check end event times
-		if(sub.end <= sub.start){
+		if(sub.end <= sub.start && isError===false){
 			if(canAccessDom){
-				document.getElementsByClassName(`sideTabInput`)[1].value=sub.end
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than star time`
+				// document.getElementsByClassName(`sideTabInput`)[1].value=sub.end
+				// document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than start time`
+				// document.getElementById(`subEnd`).style.border=`2px solid red`
+				// document.getElementById(`subStartEnd`).style.border=``
+				// document.getElementById(`sideTabExplanation`).innerHTML=``
+
+				isOverlap = true
 			}
 		} else if(sub.end > 100){
 			// event.end = 100
-			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number less than ${videoLength}`
-				document.getElementById(`sideTabExplanation`).innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
+			// if(canAccessDom)
+			// document.getElementById(`sideTabExplanation`).innerHTML=`End time cannot be larger than videoLength:${videoLength} <br/> Change value to ${videoLength} or less`
+		}
+		if(index !== targetSubs[subLayerIndex][`content`].length-1){
+			const curStart = targetSubs[subLayerIndex][`content`][index].end
+			const nextStart = targetSubs[subLayerIndex][`content`][index+1].start
+			// console.log(curStart)
+			// console.log(nextStart)
+			if(curStart > nextStart){
+				// document.getElementById(`sideTabExplanation`).innerText=`Invalid input`
+				console.log(`Invalid input`)
+				isError = true
 			}
 		}
 
-		if(sub.start >= 0 && sub.start < sub.end && sub.end <= 100){
-			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).style.color=`green`
-				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-				document.getElementById(`sideTabExplanation`).innerHTML=``
-			}
-		}
-		const tempSubs = [...subtitles]
-		const currentSubs = tempSubs[subLayerIndex]
+		// if(targetSubs[subLayerIndex][`content`][index].end > targetSubs[subLayerIndex][`content`][index+1].start){
+		// 	document.getElementById(`sideTabExplanation`).innerText=`Invalid input`
+		// }
+
+		// const tempSubs = [...subtitles]
+		// const currentSubs = tempSubs[subLayerIndex]
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 
@@ -365,29 +404,143 @@ const SubtitleEditor = props => {
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setSubSelected(true)
-		sortSubtitles()
+
+		// check if time overlaps
+		const subContent = [...subtitles[subLayerIndex][`content`]]
+
+		if (subContent.length !== 1 && isOverlap===false) {
+			subContent.sort((a,b)=> a.start - b.start)
+
+			for (let i = 0; i < subContent.length - 1; i++) {
+				const currentEndTime = subContent[i].end
+				const nextStartTime = subContent[i + 1].start
+
+				if (currentEndTime > nextStartTime) {
+					isOverlap = true
+					// document.getElementById(`sideTabExplanation`).innerHTML=`The time is overlapped`
+					// document.getElementById(`sideTabExplanation`).style.color=`red`
+					// document.getElementById(`subStartEnd`).style.border=`2px solid red`
+					break
+				}
+			}
+		}
+
+		if(isOverlap === false) {
+			if(sub.start >= 0 && sub.start < sub.end && sub.end <= 100){
+				if(canAccessDom){
+					// document.getElementById(`subStartEnd`).style.border=``
+					// document.getElementById(`sideTabMessage`).innerHTML=``
+					// document.getElementById(`sideTabExplanation`).innerHTML=``
+					// document.getElementById(`subEnd`).style.border=``
+					// sortSubtitles(subLayerIndex, index)
+				}
+			}
+		}
+
 		setBlock(true)
 	}
-	const addSubToLayer = (index) => {
-		console.log(subtitles)
+	const addSubToLayer = (index, subIndex, position) => {
 		// TODO: Change this to use real JS event objects and insert based on time
 		const currentSubs = [...subtitles]
+		let newSub = {}
 		let subStart = 0
+		let subEnd = 0
+		let isError = false
+		const initialTime = 10/videoLength*100
+		const addingTime = 2/videoLength*100
+
 		try{
-			if(currentSubs[index][`content`][subToEdit])
-				subStart = currentSubs[index][`content`][subToEdit].end + .01
-			const newSub = {
-				start: subStart,
-				end: subStart + 5,
-				text: ``,
+			if(currentSubs[index][`content`].length ===0){
+				newSub = {
+					start: 0,
+					end: initialTime,
+					text: ``,
+				}
+
+				currentSubs[index][`content`].push(newSub)
+				// openSubEditor(index, subIndex)
+				setSubToEdit(0)
+			} else {
+				if(position === `top`) {
+					if(currentSubs[index][`content`][subIndex].start <= 0) {
+						console.log(`Unable to add when the start is 0`)
+						isError = true
+					} else if(currentSubs[index][`content`][subIndex].start <= 2/videoLength*100) {
+						subStart = 0
+						subEnd = currentSubs[index][`content`][subIndex].start - 0.01
+					} else {
+						subStart = currentSubs[index][`content`][subIndex].start - addingTime
+						subEnd = currentSubs[index][`content`][subIndex].start - 0.01
+					}
+					newSub = {
+						start: subStart,
+						end: subEnd,
+						text: ``,
+					}
+					if(!isError) {
+						setSubToEdit(0)
+						currentSubs[index][`content`].unshift(newSub)
+					}
+
+				} else {
+					if(subIndex !== currentSubs[index][`content`].length-1) {
+						const curEndTime = currentSubs[index][`content`][subIndex].end
+						const preStartTime = currentSubs[index][`content`][subIndex+1].start-0.01
+
+						// console.log(curEndTime)
+						// console.log(preStartTime)
+
+						if(curEndTime === preStartTime || curEndTime === preStartTime+0.01) {
+							console.log(`Unable to add time between`)
+							isError = true
+						} else if(preStartTime-curEndTime > addingTime){
+							subStart = currentSubs[index][`content`][subIndex].end + .01
+							subEnd = currentSubs[index][`content`][subIndex].end + .01 + addingTime
+						} else {
+							subStart = currentSubs[index][`content`][subIndex].end + .01
+							subEnd = currentSubs[index][`content`][subIndex+1].start - .01
+						}
+						newSub = {
+							start: subStart,
+							end: subEnd,
+							text: ``,
+						}
+						if(!isError) {
+							// setSubToEdit(subIndex+2)
+							currentSubs[index][`content`].splice(subIndex+1, 0, newSub)
+						}
+					} else {
+						const curEndTime = currentSubs[index][`content`][subIndex].end
+						// console.log(curEndTime)
+
+						if(curEndTime === 100 || curEndTime === 100.01){
+							console.log(`Unable to add time because the time reach the video length`)
+							isError = true
+						} else if(curEndTime+addingTime>100){
+							subStart = currentSubs[index][`content`][subIndex].end + .01
+							subEnd = 100
+						} else {
+							subStart = currentSubs[index][`content`][subIndex].end + .01
+							subEnd = currentSubs[index][`content`][subIndex].end + .01 + addingTime
+						}
+
+						newSub = {
+							start: subStart,
+							end: subEnd,
+							text: ``,
+						}
+						if(!isError) {
+							setSubToEdit(subIndex+1)
+							currentSubs[index][`content`].push(newSub)
+						}
+					}
+				}
 			}
-			currentSubs[index][`content`].push(newSub)
 
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
-			sortSubtitles()
 			setSubToEdit(subToEdit+1)
 			// openSubEditor(index, null)
 			setBlock(true)
@@ -404,9 +557,8 @@ const SubtitleEditor = props => {
 			const tempSub = {
 				title : ``,
 				language: ``,
-				content: [],
+				content: [{start: 0, end: 2/videoLength*100, text: ``}],
 				id: ``,
-				type: ``,
 			}
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
@@ -416,16 +568,15 @@ const SubtitleEditor = props => {
 			const tempSub = {
 				title : ``,
 				language: ``,
-				content: [],
+				content: [{start: 0, end: 2/videoLength*100, text: ``}],
 				id: ``,
-				type: ``,
 			}
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
-
 		}
-		setSideEditor(false)
+		openSubEditor(subtitles.length, 0)
+		setSideEditor(true)
 		setSubModalVisible(false)
 		setSubModalMode(``)
 		setBlock(true)
@@ -457,6 +608,7 @@ const SubtitleEditor = props => {
 						language: ``,
 						content: filtered1,
 						id: ``,
+						type: ``,
 					}
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
@@ -468,6 +620,7 @@ const SubtitleEditor = props => {
 						language: ``,
 						content: filtered1,
 						id: ``,
+						type: ``,
 					}
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
@@ -515,22 +668,40 @@ const SubtitleEditor = props => {
 		setAllSubs(temp)
 		setBlock(true)
 	}
-	const sortSubtitles = () => {
+	const sortSubtitles = (subLayerIndex, currentSubInd) => {
 		const tempSubs = [...subtitles]
-		for(let i = 0; i< tempSubs.length; i++){
-			const tempContent = tempSubs[i][`content`]
-			tempContent.sort((a,b)=> a.start - b.start)
-			tempSubs[i][`content`] = tempContent
+		const tempContent = tempSubs[subLayerIndex][`content`]
+
+		const start = tempContent[currentSubInd].start
+		tempContent.sort((a,b)=> a.start - b.start)
+		tempSubs[subLayerIndex][`content`] = tempContent
+
+		for(let i = 0; i< tempContent.length; i++){
+			if(tempContent[i].start === start) {
+				if(i!==currentSubInd)
+					setFocus(true)
+
+				setSubToEdit(i)
+				break
+			}
 		}
+
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 		setBlock(true)
 	}
-	const checkEventOrSub = () => {
+	const checkSub = () => {
+		console.log(subtitles)
 		return subtitles[subLayerToEdit][`content`][subToEdit]
 	}
 	const handleChangeSubIndex = (index,subLayer) =>{
 		setSubToEdit(index)
+		setFocus(false)
+	}
+
+	const handleEditSubTitle = (index) => {
+		setIsEdit(true)
+		setSubLayerToEdit(index)
 	}
 
 	return (
@@ -567,11 +738,23 @@ const SubtitleEditor = props => {
 							<div className='event-layers'>
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
-										<div className={`handle`} onClick={()=>addSubToLayer(index)}>
+										<div className={`handle`}	onClick={()=>setSubLayerToEdit(index)}>
+											{/* <div className={`handle`} onClick={()=>addSubToLayer(index)}> */}
 											{/* <p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p> */}
 											<SubtitlesCard
-												title={sub.title !== `` ? sub.title : `No Title`}
+												title={sub.title !== `` ? sub.title : isEdit ? `` : `No Title`}
+												updateTitle={updateSubLayerTitle}
+												isEdit={isEdit}
+												subLayer={subLayerToEdit}
+												index={index}
 											/>
+											{
+												subLayerToEdit === index && isEdit ?
+													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
+													:
+													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
+											}
+											<Icon className={`trashIcon`} src={trashIcon} onClick={()=>handleDeleteSubLayer(index)}/>
 										</div>
 										<SubtitlesLayer
 											videoLength={videoLength}
@@ -671,46 +854,29 @@ const SubtitleEditor = props => {
 						</div>
 					</header>
 
-					{tab === `events` ?
-						<>
-							<div className='breadcrumbs'>
-								<span>Events</span>
-								{ showSideEditor &&
-								<>
-									<span className='carat'></span>
-									<>
-										<span className='current'>{subToEdit !== undefined ? `Subtitle ${subToEdit + 1}` : ``}</span>
-										{/* <button className='deleteEventButton' onClick={deleteSub}>Delete Event</button> */}
-										<button className='deleteEventButton' onClick={()=>handleDeleteSubLayer(subLayerToEdit)}>Delete Layer</button>
-									</>
-								</>
-								}
-							</div>
-							{ showSideEditor !== false && eventListMinimized !== true ? (
-								<TrackEditorSideMenu
-									updateLanguage = {updateSubLayerLanguage}
-									updateTitle = {updateSubLayerTitle}
-									singleEvent={subtitles[subLayerToEdit][`content`][subToEdit]}
-									videoLength={videoLength}
-									closeSideEditor={closeSideEditor}
-									updateSubs={updateSubs}
-									isSub={subSelected}
-									subs={subtitles}
-									subLayer={subLayerToEdit}
-									changeSubIndex={handleChangeSubIndex}
-									addSub={addSubToLayer}
-									editCensor = {editCensor}
-									activeCensorPosition = {activeCensorPosition}
-									setActiveCensorPosition = {setActiveCensorPosition}
-									deleteSub = {deleteSub}
-									index={subToEdit}
-								></TrackEditorSideMenu>
-							) : null}
-						</>
-
-						:
-						null
-					}
+					<>
+						{ showSideEditor !== false && (
+							<TrackEditorSideMenu
+								updateLanguage = {updateSubLayerLanguage}
+								updateTitle = {updateSubLayerTitle}
+								singleEvent={checkSub}
+								videoLength={videoLength}
+								closeSideEditor={closeSideEditor}
+								updateSubs={updateSubs}
+								isSub={subSelected}
+								subs={subtitles}
+								subLayer={subLayerToEdit}
+								changeSubIndex={handleChangeSubIndex}
+								addSub={addSubToLayer}
+								editCensor = {editCensor}
+								activeCensorPosition = {activeCensorPosition}
+								setActiveCensorPosition = {setActiveCensorPosition}
+								deleteSub = {deleteSub}
+								index={subToEdit}
+								focus={focus}
+							></TrackEditorSideMenu>
+						) }
+					</>
 				</EventList>
 			</DndProvider>
 			<>
