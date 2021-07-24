@@ -123,7 +123,6 @@ export default class AdminTable extends PureComponent {
 		}
 
 		const printTableValues = (category, item) => {
-			// console.log(item)
 			const date = new Date(item.lastLogin)
 			switch (category) {
 			case `Users`:
@@ -199,7 +198,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
+							<Link to={`/lab-assistant-manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
 						</li>
 						<li>
 							<button className='collectionsDelete' onClick={handleConfirmDelete}>Delete</button>

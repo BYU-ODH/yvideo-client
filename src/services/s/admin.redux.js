@@ -644,6 +644,22 @@ export default class AdminService {
 				}else{
 					const results = await apiProxy.admin.collection.get(professorId)
 
+					if(results.data !== undefined && results.data.length > 0){
+						results.data.forEach(async(collection, index) => {
+							const res = await apiProxy.collection.permissions.getContents(collection.id)
+
+							const contentResult = []
+
+							if(res.content){
+								res.content.forEach((item) => {
+									contentResult.push(new Content(item))
+								})
+							}
+
+							results.data[index].content = contentResult
+						})
+					}
+
 					const collections = results.data.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {})
 
 					dispatch(this.actions.adminSearchCollections(collections))

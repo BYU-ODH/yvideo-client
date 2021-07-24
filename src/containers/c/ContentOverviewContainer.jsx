@@ -39,19 +39,16 @@ const ContentOverviewContainer = props => {
 	const [isMobile, setIsMobile] = useState(false)
 
 	useEffect(() => {
-		if(window.innerWidth < 1000) {
+		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		}
-		else {
+		 else
 			setIsMobile(false)
-		}
 
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		 else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}
@@ -70,9 +67,9 @@ const ContentOverviewContainer = props => {
 			setTimeout(() => {
 				setEditing(false)
 			}, 500)
-		} else {
+		} else
 			setEditing(true)
-		}
+
 	}
 
 	const handleNameChange = e => {
@@ -88,11 +85,10 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleRemoveContent = e => {
-		if(isLabAssistant)  {
+		if(isLabAssistant) {
 			adminRemoveCollectionContent(content.id)
 			setBlock(true)
-		}
-		else {
+		} else {
 			removeCollectionContent(content.collectionId, content.id)
 			setBlock(true)
 		}

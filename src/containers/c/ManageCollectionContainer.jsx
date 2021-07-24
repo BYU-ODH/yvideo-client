@@ -10,8 +10,6 @@ import { Tooltip } from 'components/bits'
 
 import CreateContentContainer from 'components/modals/containers/CreateContentContainer'
 
-import { objectIsEmpty } from 'lib/util'
-
 const ManageCollectionContainer = props => {
 
 	const {
@@ -24,28 +22,44 @@ const ManageCollectionContainer = props => {
 		updateCollectionStatus,
 		toggleTip,
 		setBreadcrumbs,
+		professorCollections,
+		isLabassistantManager,
 	} = props
 
 	const [isContentTap, setIsContentTap] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 	const [isEdited, setIsEdited] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+	const [selectedCollection, setSelectedCollection] = useState()
+	const [isContentsUpdated, setIsContentUpdated] = useState(false)
 
 	const allContent = {}
-	collection.content.forEach(item => {
-		allContent[item.id] = item
-	})
+
+	if(collection.content !== undefined){
+		collection.content.forEach(item => {
+			allContent[item.id] = item
+		})
+	}
 
 	useEffect(() => {
 		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: collection.id, contentId: ``})
 		setCollectionName(collection.name)
+
 		if(isEdited) {
 			getCollections(true)
 			setCollectionName(collection.name)
 			setIsContentTap(true)
 			setIsEdited(false)
 		}
-		if(collection.content.length > 0){
+
+		if(isLoading === true) {
+			setTimeout(() => {
+				setIsLoading(false)
+			}, 1000)
+		}
+
+		if(collection.content !== undefined && collection.content.length > 0){
 			// compare old content to new content
 			if(content[collection.content[0].id] && content[collection.content[collection.content.length - 1].id]){
 				// console.log('got cached content')
@@ -54,7 +68,8 @@ const ManageCollectionContainer = props => {
 				setContent(allContent, true)
 			}
 		}
-	}, [collection.name, content])
+
+	}, [collection.name, content, collection, professorCollections, isLoading])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -111,15 +126,16 @@ const ManageCollectionContainer = props => {
 		setIsContentTap(isContentTap)
 	}
 
-	if (objectIsEmpty(content) && collection.content.length) return null
+	// if (collection.content === undefined) return null
 
 	const viewstate = {
 		user,
 		isEditingCollectionName,
 		collection,
 		collectionName,
-		content: collection.content.map(item => content[item.id]),
+		content: collection.content !== undefined ? collection.content.map(item => content[item.id]) : [],
 		isContentTap,
+		isLoading,
 	}
 
 	const handlers = {
@@ -155,6 +171,7 @@ const ManageCollectionContainer = props => {
 
 const mapStateToProps = store => ({
 	content: store.contentStore.cache,
+	professorCollections: store.adminStore.professorCollections,
 	user: store.authStore.user,
 })
 
