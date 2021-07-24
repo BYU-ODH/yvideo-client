@@ -129,7 +129,6 @@ export default class AdminTable extends PureComponent {
 				return (
 					isEdit ?
 						<>
-							{/* <td>{item.id}</td> */}
 							<td>{item.username}</td>
 							<td>{item.name}</td>
 							<td>
