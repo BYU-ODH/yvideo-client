@@ -172,6 +172,18 @@ export const Timeline = styled.div`
 		border-bottom: 1px solid #555;
 		border-right: 1px solid var(--light-blue);
 		transition: .5s;
+		background-color: var(--navy-blue);
+		border-bottom: 1px solid;
+		border-color: white;
+
+		& .trashIcon{
+			padding-right: 2rem;
+		}
+
+		& .saveIcon {
+			padding: 0 2.5px;
+    	transform: scale(0.7);
+		}
 
 		& p {
 			padding-left: 2rem;
@@ -204,6 +216,9 @@ export const Icon = styled.div`
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 15px;
+	:hover {
+		cursor: pointer;
+	}
 `
 export const NewLayer = styled.button`
 	height: 2.4rem;

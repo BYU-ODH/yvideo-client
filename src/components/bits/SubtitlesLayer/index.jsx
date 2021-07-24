@@ -56,41 +56,76 @@ const SubtitlesLayer = props => {
 	})
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
+		let isError = false
 		const cEvents = subs
 		const beginTimePercentage = d.x / layerWidth * 100
 		const endPercentage = beginTimePercentage + (event.end - event.start)
 
-		// LOGIC TO CHANGE THE TIME @params beginTime, end
-		cEvents[index].start = beginTimePercentage
-		cEvents[index].end = endPercentage
+		if(index===0 && index+1 === cEvents.length)
+			isError = false
+		else if(index+1 === cEvents.length) {
+			if(cEvents[index].end > 100)
+				cEvents[index].end = 100
 
-		if(cEvents[index].end > 100)
-			cEvents[index].end = 100
+			if(beginTimePercentage < cEvents[index-1].end) {
+				console.log(`Drag Overlapping`)
+				isError = true
+			}
+		} else if(index === 0) {
+			if(cEvents[index].start < 0)
+				cEvents[index].start = 0
 
-		if(cEvents[index].start < 0)
-			cEvents[index].start = 0
-		// call handler from parent
-		updateSubs(index, cEvents[index],layerIndex)
+			if(endPercentage > cEvents[index+1].start){
+				console.log(`Drag Overlapping`)
+				isError = true
+			}
+		} else if(endPercentage > cEvents[index+1].start || beginTimePercentage < cEvents[index-1].end) {
+			console.log(`Drag Overlapping`)
+			isError = true
+		}
+
+		if(!isError) {
+			// LOGIC TO CHANGE THE TIME @params beginTime, end
+			cEvents[index].start = beginTimePercentage
+			cEvents[index].end = endPercentage
+			updateSubs(index, cEvents[index],layerIndex)
+		}
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
 		const cEvents = subs
 		const difference = delta.width / layerWidth * 100
 		if(direction === `right`){
-			cEvents[index].end += difference
-
 			if(cEvents[index].end > 100)
 				cEvents[index].end = 100
 
+			if(index===0 && index+1 === cEvents.length){
+				cEvents[index].end += difference
+			} else {
+				if(index+1 === cEvents.length){
+					cEvents[index].end += difference
+				} else if(cEvents[index].end+difference > cEvents[index+1].start)
+					console.log(`Resize Overlapping`)
+				else
+					cEvents[index].end += difference
+			}
 		} else {
-			cEvents[index].start -= difference
-
-			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > 100){
 				cEvents[index].start = 99
 				cEvents[index].end = 100
+			}
+
+			if(index===0 && index+1 === cEvents.length){
+				cEvents[index].start -= difference
+			} else {
+				if(index===0){
+					cEvents[index].start -= difference
+				}else if(cEvents[index].start-difference < cEvents[index-1].end)
+					console.log(`Resize Overlapping`)
+				else
+					cEvents[index].start -= difference
 			}
 		}
 		updateSubs(index, cEvents[index],layerIndex)
