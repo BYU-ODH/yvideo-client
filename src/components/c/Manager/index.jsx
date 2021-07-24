@@ -31,6 +31,7 @@ export default class Manager extends PureComponent {
 			activeId,
 			isOpen,
 			isMobile,
+			isLabassistantManager,
 		} = this.props.viewstate
 
 		const {
@@ -95,6 +96,8 @@ export default class Manager extends PureComponent {
 							}
 						</>
 
+						{/* {console.log(collection)} */}
+
 						<Body>
 							{
 								isMobile ?
@@ -102,14 +105,20 @@ export default class Manager extends PureComponent {
 										null
 										:
 										collection ?
-											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+
+											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} isLabassistantManager={isLabassistantManager}/>
+
 											:
+
 											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
+
 									:
 									collection ?
-										<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+										<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} isLabassistantManager={isLabassistantManager} />
+
 										:
 										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
+
 							}
 						</Body>
 					</>
