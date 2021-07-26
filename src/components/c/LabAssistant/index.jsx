@@ -30,7 +30,6 @@ export class LabAssistant extends PureComponent {
 
 		return (
 			<Style>
-				{/* <h1>Lab Assistant Dashboard</h1> */}
 				<h1></h1>
 				<Search onSubmit={handleSubmit}>
 					<SearchIcon />
