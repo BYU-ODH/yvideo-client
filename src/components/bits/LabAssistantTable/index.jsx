@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 
 import Style, { Table, StyledLink } from './styles'
 
+import { Link } from 'react-router-dom'
+
 export default class LabAssistantTable extends PureComponent {
 
 	render() {
@@ -27,9 +29,7 @@ export default class LabAssistantTable extends PureComponent {
 						{data.map((item, index) =>
 							<tr key={item.id}>
 								<td>{item.name}</td>
-								<td><StyledLink key={index} to={`/lab-assistant-manager/${item.id}`} >View Collections</StyledLink></td>
-								{/* <td><StyledLink key={index} to={`/manager/${item.id}`} >View Collections</StyledLink></td> */}
-								{/* <td><StyledLink key={index} to={`/lab-assistant-resource/${item.id}`}>Manage Resources</StyledLink></td> */}
+								<td className='view-collections'><Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link></td>
 							</tr>,
 						)}
 					</tbody>

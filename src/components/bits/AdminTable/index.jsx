@@ -129,6 +129,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					isEdit ?
 						<>
+							{/* <td>{item.id}</td> */}
 							<td>{item.username}</td>
 							<td>{item.name}</td>
 							<td>
@@ -145,7 +146,6 @@ export default class AdminTable extends PureComponent {
 						</>
 						:
 						<>
-							{/* <td>{item.id}</td> */}
 							<td>{item.username}</td>
 							<td>{item.name}</td>
 							<td>{item.roles}</td>
