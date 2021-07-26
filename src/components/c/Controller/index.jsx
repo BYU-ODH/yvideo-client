@@ -49,6 +49,7 @@ const Controller = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
+	const [subtitleText, setSubtitleText] = useState(``)
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
@@ -146,6 +147,9 @@ const Controller = props => {
 			setCommentPosition(position)
 
 		},
+		handleShowSubtitle: (value) => {
+			setSubtitleText(value)
+		},
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
@@ -223,7 +227,9 @@ const Controller = props => {
 				):``}
 
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-
+				{subtitleText !== `` ?(
+					<Subtitles>{subtitleText}</Subtitles>
+				) :``}
 				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
 
 			</Blank>
@@ -296,6 +302,10 @@ const Controller = props => {
 				handleCensorPosition={video.handleCensorPosition}
 				handleCensorActive={video.handleCensorActive}
 			></EventsContainer>
+			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
+				handleShowSubtitle={video.handleShowSubtitle}
+			>
+			</SubtitlesContainer>
 		</Style>
 	)
 }
