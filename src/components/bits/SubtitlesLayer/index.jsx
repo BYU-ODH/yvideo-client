@@ -25,6 +25,7 @@ const SubtitlesLayer = props => {
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
 	const [isEditorOpen, setEditorOpen] = useState(false)
+	const [showError, setShowError] = useState(false)
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
@@ -68,7 +69,7 @@ const SubtitlesLayer = props => {
 				cEvents[index].end = 100
 
 			if(beginTimePercentage < cEvents[index-1].end) {
-				console.log(`Drag Overlapping`)
+				setShowError(true)
 				isError = true
 			}
 		} else if(index === 0) {
@@ -76,16 +77,17 @@ const SubtitlesLayer = props => {
 				cEvents[index].start = 0
 
 			if(endPercentage > cEvents[index+1].start){
-				console.log(`Drag Overlapping`)
+				setShowError(true)
 				isError = true
 			}
 		} else if(endPercentage > cEvents[index+1].start || beginTimePercentage < cEvents[index-1].end) {
-			console.log(`Drag Overlapping`)
+			setShowError(true)
 			isError = true
 		}
 
 		if(!isError) {
 			// LOGIC TO CHANGE THE TIME @params beginTime, end
+			setShowError(false)
 			cEvents[index].start = beginTimePercentage
 			cEvents[index].end = endPercentage
 			updateSubs(index, cEvents[index],layerIndex)
@@ -93,20 +95,22 @@ const SubtitlesLayer = props => {
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
+		let isError = false
 		const cEvents = subs
 		const difference = delta.width / layerWidth * 100
 		if(direction === `right`){
 			if(cEvents[index].end > 100)
 				cEvents[index].end = 100
 
-			if(index===0 && index+1 === cEvents.length){
+			if(index===0 && index+1 === cEvents.length)
 				cEvents[index].end += difference
-			} else {
-				if(index+1 === cEvents.length){
+			else {
+				if(index+1 === cEvents.length)
 					cEvents[index].end += difference
-				} else if(cEvents[index].end+difference > cEvents[index+1].start)
-					console.log(`Resize Overlapping`)
-				else
+				else if(cEvents[index].end+difference > cEvents[index+1].start) {
+					setShowError(true)
+					isError = true
+				} else
 					cEvents[index].end += difference
 			}
 		} else {
@@ -117,18 +121,22 @@ const SubtitlesLayer = props => {
 				cEvents[index].end = 100
 			}
 
-			if(index===0 && index+1 === cEvents.length){
+			if(index===0 && index+1 === cEvents.length)
 				cEvents[index].start -= difference
-			} else {
-				if(index===0){
+			else {
+				if(index===0)
 					cEvents[index].start -= difference
-				}else if(cEvents[index].start-difference < cEvents[index-1].end)
-					console.log(`Resize Overlapping`)
-				else
+				else if(cEvents[index].start-difference < cEvents[index-1].end) {
+					setShowError(true)
+					isError = true
+				} else
 					cEvents[index].start -= difference
 			}
 		}
-		updateSubs(index, cEvents[index],layerIndex)
+		if(!isError) {
+			setShowError(false)
+			updateSubs(index, cEvents[index],layerIndex)
+		}
 	}
 
 	// This opens the side tab editor
@@ -158,7 +166,7 @@ const SubtitlesLayer = props => {
 					// <p>{event.text} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
 					<p>{event.text}</p>
 				) : (
-					// <p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
+				// <p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
 					<p>{event.type}</p>
 				)
 				}
@@ -168,7 +176,7 @@ const SubtitlesLayer = props => {
 
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
@@ -176,7 +184,8 @@ const SubtitlesLayer = props => {
 							subs !== undefined ? (
 								<>
 									{subs.map((event, index) => (
-										<div key={index}>
+										<div key={index}
+										>
 											{printEvents(event, index)}
 										</div>
 									))}

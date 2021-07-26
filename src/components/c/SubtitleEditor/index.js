@@ -8,16 +8,10 @@ import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
 import * as Subtitle from 'subtitle'
-import { TrackEditorSideMenu, SubtitlesCard, SubtitlesLayer } from 'components/bits'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer } from 'components/bits'
 import { Controller } from 'components'
 import { SubtitlesModal } from 'components/bits'
 
-import skipIcon from 'assets/event_skip.svg'
-import muteIcon from 'assets/event_mute.svg'
-import pauseIcon from 'assets/event_pause.svg'
-import commentIcon from 'assets/event_comment.svg'
-import censorIcon from 'assets/event_censor.svg'
-import blankIcon from 'assets/event_blank.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import editIcon from 'assets/ca_tracks_edit.svg'
 import saveIcon from 'assets/check.svg'
@@ -25,13 +19,11 @@ import saveIcon from 'assets/check.svg'
 import closeIcon from 'assets/close_icon.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-
 import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
 import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
 import captions from 'assets/captions.svg'
-
 import helpIcon from 'assets/te-help-circle-white.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
@@ -94,13 +86,12 @@ const SubtitleEditor = props => {
 	const [isLoading,setIsLoading] = useState(false)
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
-	console.log(subtitles)
+	const [disablePlus, setDisablePlus] = useState(false)
+
 	// refs
 	const controllerRef = useRef(null)
 
 	useEffect(() => {
-		console.log(isEdit)
-
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
 			setZoomFactor(0)
@@ -184,7 +175,6 @@ const SubtitleEditor = props => {
 		else
 			setSubToEdit(index)
 
-		// setSideEditor(false)
 		setBlock(true)
 	}
 
@@ -446,14 +436,13 @@ const SubtitleEditor = props => {
 		let subStart = 0
 		let subEnd = 0
 		let isError = false
-		const initialTime = 10/videoLength*100
 		const addingTime = 2/videoLength*100
 
 		try{
 			if(currentSubs[index][`content`].length ===0){
 				newSub = {
 					start: 0,
-					end: initialTime,
+					end: addingTime,
 					text: ``,
 				}
 
@@ -563,6 +552,7 @@ const SubtitleEditor = props => {
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
+			setDisablePlus(true)
 		}else {
 			const tempSubList = [...subtitles]
 			const tempSub = {
@@ -652,6 +642,7 @@ const SubtitleEditor = props => {
 		tempSubs.splice(index, 1)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
+		// setSubLayerToEdit(0)
 		setBlock(true)
 	}
 	const updateSubLayerTitle = (title) =>{
@@ -691,8 +682,13 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const checkSub = () => {
-		console.log(subtitles)
+		// if(subs[subLayerToEdit] !== undefined)
+		// 	return subtitles[subLayerToEdit][`content`][subToEdit]
+		// else
+		// 	return []
+		// return subtitles[0][`content`][0]
 		return subtitles[subLayerToEdit][`content`][subToEdit]
+
 	}
 	const handleChangeSubIndex = (index,subLayer) =>{
 		setSubToEdit(index)
@@ -702,6 +698,11 @@ const SubtitleEditor = props => {
 	const handleEditSubTitle = (index) => {
 		setIsEdit(true)
 		setSubLayerToEdit(index)
+	}
+
+	const handleFocus = (index) => {
+		setSubLayerToEdit(index)
+		openSubEditor(index, 0)
 	}
 
 	return (
@@ -738,7 +739,7 @@ const SubtitleEditor = props => {
 							<div className='event-layers'>
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
-										<div className={`handle`}	onClick={()=>setSubLayerToEdit(index)}>
+										<div className={`handle`}	onClick={()=>handleFocus(index)}>
 											{/* <div className={`handle`} onClick={()=>addSubToLayer(index)}> */}
 											{/* <p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p> */}
 											<SubtitlesCard
@@ -856,7 +857,7 @@ const SubtitleEditor = props => {
 
 					<>
 						{ showSideEditor !== false && (
-							<TrackEditorSideMenu
+							<SubtitleEditorSideMenu
 								updateLanguage = {updateSubLayerLanguage}
 								updateTitle = {updateSubLayerTitle}
 								singleEvent={checkSub}
@@ -874,7 +875,7 @@ const SubtitleEditor = props => {
 								deleteSub = {deleteSub}
 								index={subToEdit}
 								focus={focus}
-							></TrackEditorSideMenu>
+							></SubtitleEditorSideMenu>
 						) }
 					</>
 				</EventList>
