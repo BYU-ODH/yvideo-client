@@ -311,79 +311,75 @@ const SubtitleEditor = props => {
 		}
 	}
 	const updateSubs = (index, sub, subLayerIndex) => {
-		let isOverlap = false
-		let canAccessDom = false
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
-		const targetSubs = [...subtitles]
+
 		let isError = false
-
-		// console.log(targetSubs[subLayerIndex][`content`][index].start)
-		// console.log(index)
-		if(showSideEditor && eventListMinimized === false)
-			canAccessDom = true
-			// document.getElementById(`sideTabMessage`).style.color=`red`
-
-		// check start event times
-		if(sub.start < 0)
-			sub.start = 0
-			// if(canAccessDom)
-		// document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
-
-		else if(sub.start >= 100) {
-			// sub.start = 95
-			// sub.end = 100
-			// if(canAccessDom)
-			// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
-		}
-		// console.log(targetSubs[subLayerIndex][`content`][index].start)
-
-		if(index !== targetSubs[subLayerIndex][`content`].length-1){
-			const curStart = targetSubs[subLayerIndex][`content`][index].start
-			const nextStart = targetSubs[subLayerIndex][`content`][index+1].start
-			// console.log(curStart)
-			// console.log(nextStart)
-			if(curStart > nextStart){
-				// document.getElementById(`sideTabExplanation`).innerText=`Invalid input`
-				console.log(`Invalid input`)
-				isError = true
+		// index !== targetSubs[subLayerIndex][`content`].length-1
+		// check start
+		const subStartTime = (sub.start/100 * videoLength).toFixed(0)
+		const subEndTime = (sub.end/100 * videoLength).toFixed(0)
+		console.log((sub.start/100 * videoLength).toFixed(0))
+		console.log((sub.end/100 * videoLength).toFixed(0))
+		if(sub.start===``){
+			document.getElementById(`subStart`).style.border=`2px solid red`
+			isError=true
+		} else {
+			if(sub.start < 0) {
+				isError=true
+				document.getElementById(`subStart`).style.border=`2px solid red`
+			} else if(sub.start >= 100) {
+				isError=true
+				document.getElementById(`subStart`).style.border=`2px solid red`
+				// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
+			} else if(Number(subStartTime) >= Number(subEndTime)) {
+				isError=true
+				document.getElementById(`subStart`).style.border=`2px solid red`
+			} else {
+				if(index !== tempSubs[subLayerIndex][`content`].length-1 && index !==0) {
+					if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
+						isError=true
+						document.getElementById(`subStart`).style.border=`2px solid red`
+					}
+				}
 			}
 		}
 
-		// check end event times
-		if(sub.end <= sub.start && isError===false){
-			if(canAccessDom){
-				// document.getElementsByClassName(`sideTabInput`)[1].value=sub.end
-				// document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than start time`
-				// document.getElementById(`subEnd`).style.border=`2px solid red`
-				// document.getElementById(`subStartEnd`).style.border=``
-				// document.getElementById(`sideTabExplanation`).innerHTML=``
-
-				isOverlap = true
+		// check end
+		if(sub.end===``){
+			isError=true
+			document.getElementById(`subEnd`).style.border=`2px solid red`
+		} else {
+			if(isError ===false) {
+				if(sub.end < 0){
+					isError=true
+					document.getElementById(`subEnd`).style.border=`2px solid red`
+					document.getElementById(`subStart`).style.border=``
+				} else if(sub.end >= 100) {
+					isError=true
+					document.getElementById(`subEnd`).style.border=`2px solid red`
+					document.getElementById(`subStart`).style.border=``
+					// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
+				} else if(Number((sub.end/100 * videoLength)).toFixed(0) <= Number((sub.start/100 * videoLength).toFixed(0))){
+					isError=true
+					document.getElementById(`subEnd`).style.border=`2px solid red`
+					document.getElementById(`subStart`).style.border=``
+				} else {
+					if(index !== tempSubs[subLayerIndex][`content`].length-1) {
+						if(sub.end > tempSubs[subLayerIndex][`content`][index+1].start){
+							isError=true
+							document.getElementById(`subEnd`).style.border=`2px solid red`
+							document.getElementById(`subStart`).style.border=``
+						}
+					}
+				}
 			}
-		} else if(sub.end > 100){
-			// event.end = 100
-			// if(canAccessDom)
-			// document.getElementById(`sideTabExplanation`).innerHTML=`End time cannot be larger than videoLength:${videoLength} <br/> Change value to ${videoLength} or less`
 		}
-		if(index !== targetSubs[subLayerIndex][`content`].length-1){
-			const curStart = targetSubs[subLayerIndex][`content`][index].end
-			const nextStart = targetSubs[subLayerIndex][`content`][index+1].start
-			// console.log(curStart)
-			// console.log(nextStart)
-			if(curStart > nextStart){
-				// document.getElementById(`sideTabExplanation`).innerText=`Invalid input`
-				console.log(`Invalid input`)
-				isError = true
-			}
+		if(isError === false) {
+			document.getElementById(`subStart`).style.border=``
+			document.getElementById(`subEnd`).style.border=``
 		}
 
-		// if(targetSubs[subLayerIndex][`content`][index].end > targetSubs[subLayerIndex][`content`][index+1].start){
-		// 	document.getElementById(`sideTabExplanation`).innerText=`Invalid input`
-		// }
-
-		// const tempSubs = [...subtitles]
-		// const currentSubs = tempSubs[subLayerIndex]
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 
@@ -394,39 +390,6 @@ const SubtitleEditor = props => {
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setSubSelected(true)
-
-		// check if time overlaps
-		const subContent = [...subtitles[subLayerIndex][`content`]]
-
-		if (subContent.length !== 1 && isOverlap===false) {
-			subContent.sort((a,b)=> a.start - b.start)
-
-			for (let i = 0; i < subContent.length - 1; i++) {
-				const currentEndTime = subContent[i].end
-				const nextStartTime = subContent[i + 1].start
-
-				if (currentEndTime > nextStartTime) {
-					isOverlap = true
-					// document.getElementById(`sideTabExplanation`).innerHTML=`The time is overlapped`
-					// document.getElementById(`sideTabExplanation`).style.color=`red`
-					// document.getElementById(`subStartEnd`).style.border=`2px solid red`
-					break
-				}
-			}
-		}
-
-		if(isOverlap === false) {
-			if(sub.start >= 0 && sub.start < sub.end && sub.end <= 100){
-				if(canAccessDom){
-					// document.getElementById(`subStartEnd`).style.border=``
-					// document.getElementById(`sideTabMessage`).innerHTML=``
-					// document.getElementById(`sideTabExplanation`).innerHTML=``
-					// document.getElementById(`subEnd`).style.border=``
-					// sortSubtitles(subLayerIndex, index)
-				}
-			}
-		}
-
 		setBlock(true)
 	}
 	const addSubToLayer = (index, subIndex, position) => {
@@ -630,8 +593,8 @@ const SubtitleEditor = props => {
 		setSubModalMode(``)
 	}
 	const handleDeleteSubLayer = (index) =>{
-		if (index === subLayerToEdit)
-			closeSideEditor()
+		// closeSideEditor()
+		setSideEditor(false)
 
 		const tempSubs = [...subtitles]
 		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
@@ -650,6 +613,7 @@ const SubtitleEditor = props => {
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
 		setAllSubs(temp)
+
 		setBlock(true)
 	}
 	const updateSubLayerLanguage = (language) =>{
@@ -682,13 +646,7 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const checkSub = () => {
-		// if(subs[subLayerToEdit] !== undefined)
-		// 	return subtitles[subLayerToEdit][`content`][subToEdit]
-		// else
-		// 	return []
-		// return subtitles[0][`content`][0]
 		return subtitles[subLayerToEdit][`content`][subToEdit]
-
 	}
 	const handleChangeSubIndex = (index,subLayer) =>{
 		setSubToEdit(index)
@@ -704,6 +662,11 @@ const SubtitleEditor = props => {
 		setSubLayerToEdit(index)
 		openSubEditor(index, 0)
 	}
+
+	// const ConsoleLog = ({ children }) => {
+	// 	console.log(children)
+	// 	return false
+	// }
 
 	return (
 		<Style>
@@ -859,7 +822,6 @@ const SubtitleEditor = props => {
 						{ showSideEditor !== false && (
 							<SubtitleEditorSideMenu
 								updateLanguage = {updateSubLayerLanguage}
-								updateTitle = {updateSubLayerTitle}
 								singleEvent={checkSub}
 								videoLength={videoLength}
 								closeSideEditor={closeSideEditor}
