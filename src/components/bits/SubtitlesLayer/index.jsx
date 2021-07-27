@@ -155,8 +155,8 @@ const SubtitlesLayer = props => {
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
-				onDragStop={(e, d) => handleDrag(d, event, index)}
-				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
+				onDrag={(e, d) => handleDrag(d, event, index)}
+				onResize={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}

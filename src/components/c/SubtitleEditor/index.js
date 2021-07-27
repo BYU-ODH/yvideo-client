@@ -87,6 +87,7 @@ const SubtitleEditor = props => {
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disablePlus, setDisablePlus] = useState(false)
+	const [disableSave, setDisableSave] = useState(false)
 
 	// refs
 	const controllerRef = useRef(null)
@@ -175,6 +176,15 @@ const SubtitleEditor = props => {
 		else
 			setSubToEdit(index)
 
+		for (let i = 0; i < currentSubs[subLayerToEdit][`content`].length; i++) {
+			if(i !== currentSubs[subLayerToEdit][`content`].length-1){
+				if(currentSubs[subLayerToEdit][`content`][i].end > currentSubs[subLayerToEdit][`content`][i+1].start)
+					break
+
+			}
+			document.getElementById(`subStart${i}`).style.border=``
+			document.getElementById(`subEnd${i}`).style.border=``
+		}
 		setBlock(true)
 	}
 
@@ -310,74 +320,119 @@ const SubtitleEditor = props => {
 			}
 		}
 	}
-	const updateSubs = (index, sub, subLayerIndex) => {
+	const updateSubs = (index, sub, subLayerIndex, side) => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 
 		let isError = false
-		// index !== targetSubs[subLayerIndex][`content`].length-1
-		// check start
+		let needCheck = true
 		const subStartTime = (sub.start/100 * videoLength).toFixed(0)
 		const subEndTime = (sub.end/100 * videoLength).toFixed(0)
-		console.log((sub.start/100 * videoLength).toFixed(0))
-		console.log((sub.end/100 * videoLength).toFixed(0))
-		if(sub.start===``){
-			document.getElementById(`subStart`).style.border=`2px solid red`
-			isError=true
-		} else {
-			if(sub.start < 0) {
+		if(side===`beg`) {
+			if(sub.start===``){
+				document.getElementById(`subStart${index}`).style.border=`2px solid red`
 				isError=true
-				document.getElementById(`subStart`).style.border=`2px solid red`
-			} else if(sub.start >= 100) {
-				isError=true
-				document.getElementById(`subStart`).style.border=`2px solid red`
-				// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
-			} else if(Number(subStartTime) >= Number(subEndTime)) {
-				isError=true
-				document.getElementById(`subStart`).style.border=`2px solid red`
+				needCheck=false
+				setDisableSave(true)
 			} else {
-				if(index !== tempSubs[subLayerIndex][`content`].length-1 && index !==0) {
-					if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
-						isError=true
-						document.getElementById(`subStart`).style.border=`2px solid red`
+				if(sub.start < 0) {
+					document.getElementById(`subStart${index}`).style.border=`2px solid red`
+					isError=true
+					needCheck=false
+					setDisableSave(true)
+				} else if(sub.start >= 100) {
+					document.getElementById(`subStart${index}`).style.border=`2px solid red`
+					isError=true
+					needCheck=false
+					setDisableSave(true)
+				// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
+				} else if(Number(subStartTime) >= Number(subEndTime)) {
+					document.getElementById(`subStart${index}`).style.border=`2px solid red`
+					isError=true
+					needCheck=false
+					setDisableSave(true)
+				} else {
+					if(index !== tempSubs[subLayerIndex][`content`].length-1 && index !==0) {
+						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
+							document.getElementById(`subStart${index}`).style.border=`2px solid red`
+							isError=true
+							setDisableSave(true)
+						}
 					}
 				}
 			}
-		}
-
-		// check end
-		if(sub.end===``){
-			isError=true
-			document.getElementById(`subEnd`).style.border=`2px solid red`
-		} else {
-			if(isError ===false) {
-				if(sub.end < 0){
-					isError=true
-					document.getElementById(`subEnd`).style.border=`2px solid red`
-					document.getElementById(`subStart`).style.border=``
-				} else if(sub.end >= 100) {
-					isError=true
-					document.getElementById(`subEnd`).style.border=`2px solid red`
-					document.getElementById(`subStart`).style.border=``
-					// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
-				} else if(Number((sub.end/100 * videoLength)).toFixed(0) <= Number((sub.start/100 * videoLength).toFixed(0))){
-					isError=true
-					document.getElementById(`subEnd`).style.border=`2px solid red`
-					document.getElementById(`subStart`).style.border=``
-				} else {
-					if(index !== tempSubs[subLayerIndex][`content`].length-1) {
-						if(sub.end > tempSubs[subLayerIndex][`content`][index+1].start){
-							isError=true
-							document.getElementById(`subEnd`).style.border=`2px solid red`
-							document.getElementById(`subStart`).style.border=``
+		} else if(side===`end`) {
+			// check end
+			if(sub.end===``) {
+				document.getElementById(`subEnd${index}`).style.border=`2px solid red`
+				isError=true
+				needCheck=false
+			} else {
+				if(isError ===false) {
+					if(sub.end < 0){
+						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
+						document.getElementById(`subStart${index}`).style.border=``
+						isError=true
+						needCheck=false
+						setDisableSave(true)
+					} else if(sub.end > 100) {
+						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
+						document.getElementById(`subStart${index}`).style.border=``
+						isError=true
+						needCheck=false
+						setDisableSave(true)
+						// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
+					} else if(Number(sub.end/100 * videoLength).toFixed(0) <= Number((sub.start/100 * videoLength).toFixed(0))){
+						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
+						document.getElementById(`subStart${index}`).style.border=``
+						isError=true
+						needCheck=false
+						setDisableSave(true)
+					} else {
+						if(index !== tempSubs[subLayerIndex][`content`].length-1) {
+							if(sub.end > tempSubs[subLayerIndex][`content`][index+1].start){
+								document.getElementById(`subEnd${index}`).style.border=`2px solid red`
+								document.getElementById(`subStart${index}`).style.border=``
+								isError=true
+								setDisableSave(true)
+							}
 						}
 					}
 				}
 			}
 		}
+
+		if(needCheck===true) {
+			for (let i = 0; i < tempSubs[subLayerIndex][`content`].length; i++) {
+				if(i !== tempSubs[subLayerIndex][`content`].length-1){
+					if(side===`beg` && i===index-1){
+						if(tempSubs[subLayerIndex][`content`][i].end > sub.start){
+							isError=true
+							break
+						}
+					} else if(side===`end` && i===index){
+						if(sub.end > tempSubs[subLayerIndex][`content`][i+1].start){
+							isError=true
+							break
+						}
+					} else {
+						if(tempSubs[subLayerIndex][`content`][i].end > tempSubs[subLayerIndex][`content`][i+1].start){
+							document.getElementById(`subEnd${i}`).style.border=`2px solid red`
+							isError=true
+							break
+						}
+					}
+				}
+				isError=false
+				document.getElementById(`subStart${i}`).style.border=``
+				document.getElementById(`subEnd${i}`).style.border=``
+			}
+		}
+
 		if(isError === false) {
-			document.getElementById(`subStart`).style.border=``
-			document.getElementById(`subEnd`).style.border=``
+			setDisableSave(false)
+			document.getElementById(`subStart${index}`).style.border=``
+			document.getElementById(`subEnd${index}`).style.border=``
 		}
 
 		currentSubs[`content`][index] = sub
@@ -414,16 +469,18 @@ const SubtitleEditor = props => {
 				setSubToEdit(0)
 			} else {
 				if(position === `top`) {
-					if(currentSubs[index][`content`][subIndex].start <= 0) {
-						console.log(`Unable to add when the start is 0`)
+					if(currentSubs[index][`content`][subIndex].start <= 0)
 						isError = true
-					} else if(currentSubs[index][`content`][subIndex].start <= 2/videoLength*100) {
-						subStart = 0
-						subEnd = currentSubs[index][`content`][subIndex].start - 0.01
-					} else {
-						subStart = currentSubs[index][`content`][subIndex].start - addingTime
-						subEnd = currentSubs[index][`content`][subIndex].start - 0.01
+					else {
+						if(currentSubs[index][`content`][subIndex].start <= 2/videoLength*100) {
+							subStart = 0
+							subEnd = currentSubs[index][`content`][subIndex].start - 0.01
+						} else {
+							subStart = currentSubs[index][`content`][subIndex].start - addingTime
+							subEnd = currentSubs[index][`content`][subIndex].start - 0.01
+						}
 					}
+
 					newSub = {
 						start: subStart,
 						end: subEnd,
@@ -439,11 +496,7 @@ const SubtitleEditor = props => {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
 						const preStartTime = currentSubs[index][`content`][subIndex+1].start-0.01
 
-						// console.log(curEndTime)
-						// console.log(preStartTime)
-
 						if(curEndTime === preStartTime || curEndTime === preStartTime+0.01) {
-							console.log(`Unable to add time between`)
 							isError = true
 						} else if(preStartTime-curEndTime > addingTime){
 							subStart = currentSubs[index][`content`][subIndex].end + .01
@@ -463,10 +516,8 @@ const SubtitleEditor = props => {
 						}
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
-						// console.log(curEndTime)
 
 						if(curEndTime === 100 || curEndTime === 100.01){
-							console.log(`Unable to add time because the time reach the video length`)
 							isError = true
 						} else if(curEndTime+addingTime>100){
 							subStart = currentSubs[index][`content`][subIndex].end + .01
@@ -489,12 +540,22 @@ const SubtitleEditor = props => {
 				}
 			}
 
+			// for (let i = 0; i < currentSubs[index][`content`].length; i++) {
+			// 	if(i > subIndex+1) {
+			// 		if(document.getElementById(`subStart${i}`).style.border===`2px solid red`)
+			// 			document.getElementById(`subStart${i+1}`).style.border=`2px solid red`
+			// 		else if(document.getElementById(`subEnd${i}`).style.border===`2px solid red`)
+			// 			document.getElementById(`subEnd${i+1}`).style.border=`2px solid red`
+			// 	}
+			// }
+			// document.getElementById(`subStart${index+1}`).style.border=``
+			// document.getElementById(`subEnd${index+1}`).style.border=``
+
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
 			setSubToEdit(subToEdit+1)
-			// openSubEditor(index, null)
 			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
@@ -593,9 +654,8 @@ const SubtitleEditor = props => {
 		setSubModalMode(``)
 	}
 	const handleDeleteSubLayer = (index) =>{
-		// closeSideEditor()
+		closeSideEditor()
 		setSideEditor(false)
-
 		const tempSubs = [...subtitles]
 		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
 			const deleteSub = subLayersToDelete
@@ -605,10 +665,12 @@ const SubtitleEditor = props => {
 		tempSubs.splice(index, 1)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
-		// setSubLayerToEdit(0)
 		setBlock(true)
 	}
-	const updateSubLayerTitle = (title) =>{
+	const updateSubLayerTitle = (title, fun) =>{
+		if(fun === `onKeyPress`)
+			setIsEdit(false)
+
 		const temp = [...subtitles]
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
@@ -646,7 +708,11 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const checkSub = () => {
-		return subtitles[subLayerToEdit][`content`][subToEdit]
+		if(subLayerToEdit === subtitles[subLayerToEdit].length-1)
+			return subtitles[0][`content`][0]
+		 else
+			return subtitles[subLayerToEdit][`content`][subToEdit]
+
 	}
 	const handleChangeSubIndex = (index,subLayer) =>{
 		setSubToEdit(index)
@@ -663,10 +729,10 @@ const SubtitleEditor = props => {
 		openSubEditor(index, 0)
 	}
 
-	// const ConsoleLog = ({ children }) => {
-	// 	console.log(children)
-	// 	return false
-	// }
+	const ConsoleLog = ({ children }) => {
+		console.log(children)
+		return false
+	}
 
 	return (
 		<Style>
@@ -702,22 +768,22 @@ const SubtitleEditor = props => {
 							<div className='event-layers'>
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
-										<div className={`handle`}	onClick={()=>handleFocus(index)}>
-											{/* <div className={`handle`} onClick={()=>addSubToLayer(index)}> */}
-											{/* <p>{sub.title !== `` ? sub.title : `No Title`}<img alt={`delete subtitle track`} className={`layer-delete`} src={trashIcon} width='20px' onClick={()=>handleDeleteSubLayer(index)} /></p> */}
-											<SubtitlesCard
-												title={sub.title !== `` ? sub.title : isEdit ? `` : `No Title`}
-												updateTitle={updateSubLayerTitle}
-												isEdit={isEdit}
-												subLayer={subLayerToEdit}
-												index={index}
-											/>
-											{
-												subLayerToEdit === index && isEdit ?
-													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
-													:
-													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
-											}
+										<div className={`handle`}>
+											<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
+												<SubtitlesCard
+													title={sub.title !== `` ? sub.title : isEdit ? `` : `No Title`}
+													updateTitle={updateSubLayerTitle}
+													isEdit={isEdit}
+													subLayer={subLayerToEdit}
+													index={index}
+												/>
+												{
+													subLayerToEdit === index && isEdit ?
+														<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
+														:
+														<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
+												}
+											</div>
 											<Icon className={`trashIcon`} src={trashIcon} onClick={()=>handleDeleteSubLayer(index)}/>
 										</div>
 										<SubtitlesLayer
@@ -728,7 +794,6 @@ const SubtitleEditor = props => {
 											activeEvent={subToEdit}
 											layer={index}
 											index={subToEdit}
-											// onDrop={(item)=>addSubToLayer(item,index)}
 											sideEditor={openSubEditor}
 											updateSubs={updateSubs}
 											closeEditor={closeSideEditor}
@@ -740,7 +805,6 @@ const SubtitleEditor = props => {
 								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
 									setSubModalVisible(true)
 									setSubModalMode(`create`)
-									// addSubToLayer(subtitles.length+1)
 								}}>
 									<p style={{fontWeight:700}}>Add Subtitle Track +</p>
 								</div>
@@ -801,20 +865,25 @@ const SubtitleEditor = props => {
 				<EventList minimized={eventListMinimized}>
 
 					<header>
-						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+						<img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
-							<button onClick={handleSaveAnnotation}>
-
-								{blockLeave ?
-									null
-									:
-									isLoading ?
-										<i className='fa fa-refresh fa-spin'/>
+							{disableSave ?
+								<button className={`disable`}>
+									<span>Save</span>
+								</button>
+								:
+								<button onClick={handleSaveAnnotation}>
+									{blockLeave ?
+										null
 										:
-										<i className='fa fa-check'></i>
-								}
-								<span>Save</span>
-							</button>
+										isLoading ?
+											<i className='fa fa-refresh fa-spin'/>
+											:
+											<i className='fa fa-check'></i>
+									}
+									<span>Save</span>
+								</button>
+							}
 						</div>
 					</header>
 

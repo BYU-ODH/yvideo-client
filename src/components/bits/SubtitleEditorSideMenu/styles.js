@@ -204,6 +204,12 @@ const Style = styled.div`
 					margin-top: 0.5rem;
 				}
 			}
+
+			& .subtitle-delete {
+				:hover {
+					cursor: pointer;
+				}
+			}
 		}
 	}
 
@@ -220,14 +226,14 @@ const Style = styled.div`
 export const Icon = styled.div`
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
-  height: 15px;
-	margin-left: 0.5rem;
+  height: 16px;
+	margin-left: 0.2rem;
 	margin-top: -1rem;
-	// display: none;
+	border-radius: 5px;
 
-	// :hover {
-	// 	display: ${props => props.index === 0 ? `block` : `none`};
-	// }
+	:hover {
+		cursor: pointer;
+	}
 `
 export const Help = styled.span`
 	width: 20px;

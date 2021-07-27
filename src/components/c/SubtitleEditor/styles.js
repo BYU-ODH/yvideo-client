@@ -176,8 +176,15 @@ export const Timeline = styled.div`
 		border-bottom: 1px solid;
 		border-color: white;
 
+		& .handleFocus{
+			display: flex;
+			width: 90%;
+			align-items: center;
+		}
+
 		& .trashIcon{
-			padding-right: 2rem;
+			padding: 0.6rem;
+			transform: scale(0.8)
 		}
 
 		& .saveIcon {
@@ -206,16 +213,15 @@ export const HandleIcon = styled.div `
 	width: 2.5rem;
 	background: url(${menu}) center no-repeat;
 	background-size: contain;
-	/* display: inline-block; */
 	position: absolute;
 	right: 5px;
 	margin: auto 0;
 `
 export const Icon = styled.div`
-	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 15px;
+
 	:hover {
 		cursor: pointer;
 	}
@@ -282,7 +288,6 @@ export const EventList = styled.div`
 		& > .save {
 			position: relative;
 			float: right;
-			// margin-right: 20px;
 			width: 8rem;
 			height: 100%;
 			display: flex;
@@ -296,24 +301,31 @@ export const EventList = styled.div`
 			}
 
 			& button {
+				color: white;
+				cursor: pointer;
 				width: 100%;
 				height: 100%;
 				font-size: 1.7rem;
 				display: flex;
 				border: none;
 				background-color: transparent;
-				color: white;
-				cursor: pointer;
+
 				transition: .5s ease;
 
 				:hover {
-					background-color: var(--light-blue)
+					background-color: var(--light-blue);
 				}
 
 				& span, img {
 					margin: auto;
 				}
-
+			}
+			& > .disable {
+				color: grey;
+				cursor: no-drop;
+				:hover {
+					background-color: transparent;
+				}
 			}
 		}
 	}
