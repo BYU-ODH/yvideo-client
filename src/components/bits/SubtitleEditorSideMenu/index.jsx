@@ -74,7 +74,7 @@ const SubtitleEditorSideMenu = props => {
 		}
 
 		setEvent(sub)
-		updateSubs(ind,sub,layer)
+		updateSubs(ind,sub,layer,side)
 	}
 
 	const ConsoleLog = ({ children }) => {
@@ -102,14 +102,16 @@ const SubtitleEditorSideMenu = props => {
 						<div className={`subContainer ${ind === index ? `subActive`:``}`}>
 							<textarea className={`subText`} type='text' onClick={()=>changeSubIndex(ind)} value={sub.text} onChange={(value)=>editSub(null,null,value,subLayer,ind)}></textarea>
 							<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
-								<input id={`${ind === index&&focus ? `focus`: ind === index?`subStart`: ``}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.start ===``? ``:(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind)}/>
-								<input id={`${ind === index&&focus ? `focus`: ind === index?`subEnd`: ``}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.end ===``? ``:(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer,ind)}/>
+								<input id={`subStart${ind}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.start ===``? ``:(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind)}/>
+								<input id={`subEnd${ind}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.end ===``? ``:(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer,ind)}/>
+								{/* <input id={`${ind === index&&focus ? `focus`: ind === index?`subStart`: ``}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.start ===``? ``:(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind)}/>
+								<input id={`${ind === index&&focus ? `focus`: ind === index?`subEnd`: ``}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.end ===``? ``:(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer,ind)}/> */}
 							</div>
 							<img alt={`delete subtitle`} className={`subtitle-delete`} src={trashIcon} width='20px' onClick={() => deleteSub(ind)} />
 						</div>
 						{
 							ind === subs[subLayer][`content`].length-1 ?
-								(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) - videoLength !== 0 &&
+								(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) - videoLength < 0 &&
 									<Icon className={`hide`} src={plus} ind={ind} index={index} onClick={()=>addSub(subLayer,ind,`button`)} />
 								:
 								(subs[subLayer][`content`][ind+1].start/ 100 * videoLength).toFixed(0)-(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) !== 0 &&

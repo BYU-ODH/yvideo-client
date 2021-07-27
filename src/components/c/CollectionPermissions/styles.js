@@ -115,7 +115,7 @@ export const AddButton = styled.button`
 
 	outline: none;
 
-	${props => props.disabled ? `` : `cursor: pointer;`}
+	${props => props.disabled ? `` : `cursor: pointer`}
 
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 
