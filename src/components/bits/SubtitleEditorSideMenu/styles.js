@@ -186,7 +186,7 @@ const Style = styled.div`
 			}
 
 			& .subText {
-				width: 18rem;
+				width: 20rem;
 				resize: none;
 			}
 
@@ -195,13 +195,17 @@ const Style = styled.div`
 				flex-direction: column;
 
 				& .subStart {
-					width: 7rem;
+					width: 5rem;
+					height: 2rem;
 					margin-button: 0.5rem;
+					padding-left: 0.8rem;
 				}
 
 				& .subEnd {
-					width: 7rem;
+					width: 5rem;
+					height: 2rem;
 					margin-top: 0.5rem;
+					padding-left: 0.8rem;
 				}
 			}
 

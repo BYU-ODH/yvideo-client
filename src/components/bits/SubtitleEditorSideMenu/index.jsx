@@ -23,6 +23,7 @@ const SubtitleEditorSideMenu = props => {
 		subLayer,
 		deleteSub,
 		focus,
+		disableSave
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -77,26 +78,21 @@ const SubtitleEditorSideMenu = props => {
 		updateSubs(ind,sub,layer,side)
 	}
 
-	const ConsoleLog = ({ children }) => {
-		console.log(children)
-		return false
-	}
-
 	return (
 		<Style>
 			<div>
 				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
 
-			<div className={`allSubs`} style={{overflowY:`scroll`, height:`40vh`}}>
+			<div className={`allSubs`} style={{overflowY:`scroll`, height:`65vh`}}>
 				{
 					subs[subLayer] !== undefined &&
-						subs[subLayer][`content`].length ===0 &&
+						subs[subLayer][`content`].length ===0 && disableSave===false &&
 							<Icon className={`initial`} src={plus} onClick={()=>addSub(subLayer,0,`top`)} />}
 				{subs[subLayer][`content`].map((sub,ind)=>(
 					<div className={`container`}>
 						{
-							subs[subLayer][`content`][0].start > 0.11 && ind===0 &&
+							subs[subLayer][`content`][0].start > 0.11 && ind===0 && disableSave===false &&
 								<Icon src={plus} index={ind} onClick={()=>addSub(subLayer,ind,`top`)} />
 						}
 						<div className={`subContainer ${ind === index ? `subActive`:``}`}>
@@ -111,10 +107,10 @@ const SubtitleEditorSideMenu = props => {
 						</div>
 						{
 							ind === subs[subLayer][`content`].length-1 ?
-								(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) - videoLength < 0 &&
+								(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) - videoLength < 0 && disableSave===false &&
 									<Icon className={`hide`} src={plus} ind={ind} index={index} onClick={()=>addSub(subLayer,ind,`button`)} />
 								:
-								(subs[subLayer][`content`][ind+1].start/ 100 * videoLength).toFixed(0)-(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) !== 0 &&
+								(subs[subLayer][`content`][ind+1].start/ 100 * videoLength).toFixed(0)-(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) !== 0 && disableSave===false &&
 									<Icon className={`hide`} src={plus} ind={ind} index={index} onClick={()=>addSub(subLayer,ind,`button`)} />
 						}
 					</div>
