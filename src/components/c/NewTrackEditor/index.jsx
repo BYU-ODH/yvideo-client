@@ -242,14 +242,9 @@ const TrackEditor = props => {
 
 			})
 
-			// console.log('%c to delete', 'color: red;', toDelete)
-
 			toDelete.forEach((element) => {
 				currentEvents.splice(currentEvents.findIndex(item => item === element), 1)
 			})
-
-			// console.log('%c left Events', 'color: blue;', currentEvents)
-
 			setLayers(currentLayers)
 			setSideEditor(false)
 			setDisplayLayer(currentLayers.length-1)
@@ -368,6 +363,7 @@ const TrackEditor = props => {
 		setSideEditor(false)
 		setBlock(true)
 	}
+
 	const deleteSub = () =>{
 		const currentSubs = [...subtitles]
 		currentSubs[subLayerToEdit][`content`].splice(subToEdit,1)
@@ -376,6 +372,7 @@ const TrackEditor = props => {
 		setSideEditor(false)
 		setBlock(true)
 	}
+
 	const handleCensorRemove = (item) => {
 		const index = eventToEdit
 		const cEvent = allEvents[index]
@@ -390,9 +387,9 @@ const TrackEditor = props => {
 
 	const handleAddCensor = () => {
 		const time = videoCurrentTime
-		// console.log(controllerRef)
+
 		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
-			// console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
+
 			const index = eventToEdit
 			const cEvent = allEvents[index]
 			const layer = cEvent.layer
@@ -405,10 +402,8 @@ const TrackEditor = props => {
 			if(exists) return
 			const value = Object.keys(cEvent.position).find(item => item >= time)
 
-			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
 			cEvent.position[id] = [`${parseFloat(time).toFixed(1)}`,50, 50, 30, 40]
 
-			// console.log(cEvent.position)
 			updateEvents(index, cEvent, layer)
 		}
 	}
@@ -452,15 +447,13 @@ const TrackEditor = props => {
 
 		cEvent.position = editCensor
 
-		// setEditCensor({})
 		updateEvents(index, cEvent, layer)
 	}
 	// THIS IS PART OF CENSOR
 	const handleLastClick = (height, width, x, y, time) => {
-		// console.log(height, width)
 
 		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
-			// console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
+
 			const index = eventToEdit
 			const cEvent = allEvents[index]
 			const layer = cEvent.layer
@@ -469,7 +462,6 @@ const TrackEditor = props => {
 			const pos = cEvent.position
 			const id = Object.keys(pos).length === 0 ? `0` : `${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
 
-			// cEvent.position[time] = [((x / width) * 100) - (((x / width) * 100)*.5), (((y-86) / height) * 100) - ((((y-86) / height) * 100)*.5)]
 			let exists = false
 			Object.keys(pos).forEach((val)=>{
 				if (pos[val][0].toString() === time.toFixed(1).toString()) exists = true
@@ -492,6 +484,7 @@ const TrackEditor = props => {
 		setDisplayLayer(layerIndex)
 		setSideEditor(true)
 	}
+
 	const openSubEditor = (layerIndex,subIndex) =>{
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
@@ -526,6 +519,7 @@ const TrackEditor = props => {
 		const rawSubs = subtitles
 		createSub(rawSubs)
 	}
+
 	const handleZoomChange = (e, d) => {
 		toggleTip()
 		if(d.x < zoomFactor){
@@ -556,17 +550,17 @@ const TrackEditor = props => {
 			const cLeft = parseInt(scrollBar.style.left)
 			const scrollBarOffset = scrollBarContainer * 0.03
 			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
-			// console.log(lastPossibleRight)
-			// console.log(cLeft)
+
 			const dis = direction/scrollBarContainer
 			scrubber.scrollLeft = currentLayerWidth * dis
 			timeIndicator.scrollLeft = currentLayerWidth * dis
-			// console.log(scrollPercentage / scrollIndicatorWidth)
+
 			alllayers.forEach((element, i) => {
 				alllayers[i].scrollLeft = currentLayerWidth * dis
 			})
 		}
 	}
+
 	const updateSubs = (index, sub, subLayerIndex) => {
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
@@ -627,6 +621,7 @@ const TrackEditor = props => {
 		sortSubtitles()
 		setBlock(true)
 	}
+
 	const addSubToLayer = (item,index) => {
 		// TODO: Change this to use real JS event objects and insert based on time
 		const currentSubs = [...subtitles]
@@ -893,14 +888,10 @@ const TrackEditor = props => {
 
 						</section>
 						<div className='zoom-controls'>
-							{/* ADD ZOOM ICON */}
 							<div className='zoom-factor' id = 'zoom-factor'
 								onClick={(e)=>{
 									const rect = document.getElementById(`zoom-factor`).getBoundingClientRect()
 									const xpos = e.clientX - rect.left
-									// handleZoomChange(null,{x:xpos})
-									// setZoomFactor(xpos)
-									// setWidth(-(Math.abs(zoomFactor - xpos) * videoLength / 10))
 								}}
 								style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 								<img src={zoomOut} style={{ width: `20px` }}/>
@@ -927,9 +918,6 @@ const TrackEditor = props => {
 										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
 
 									<div className={`zoom-scroll-container`}>
-										{/* <div className={`zoom-scroll-indicator`}
-											onMouseEnter={e => handleShowTip(`te-scroll`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-											onMouseLeave={e => toggleTip()}></div> */}
 										<Rnd
 											className= 'zoom-scroll-indicator'
 											size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}

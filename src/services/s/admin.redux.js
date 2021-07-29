@@ -35,6 +35,7 @@ export default class AdminService {
 		ADMIN_GET_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_PUBLIC_COLLECTION_CONTENT`,
 		ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT: `ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT`,
 		ADMIN_POST_USERS: `ADMIN_POST_USERS`,
+		ADMIN_EMPTY_USERS_RESULT: `ADMIN_EMPTY_USERS_RESULT`,
 	}
 
 	// action creators
@@ -63,6 +64,7 @@ export default class AdminService {
 		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
 		adminAddUsers: (successResult, failResult) => ({type: this.types.ADMIN_POST_USERS, payload:{successResult, failResult}}),
+		adminEmptyUsersResult: () => ({type: this.types.ADMIN_EMPTY_USERS_RESULT, payload:{}}),
 	}
 
 	// default store
@@ -112,6 +114,7 @@ export default class AdminService {
 			ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT,
 			ADMIN_EMPTY_SEARCHED_USER,
 			ADMIN_POST_USERS,
+			ADMIN_EMPTY_USERS_RESULT,
 		} = this.types
 
 		switch (action.type) {
@@ -306,6 +309,12 @@ export default class AdminService {
 				addedUsers: action.payload,
 			}
 
+		case ADMIN_EMPTY_USERS_RESULT:
+			return{
+				...store,
+				addedUsers: {},
+			}
+
 		default:
 			return store
 		}
@@ -361,6 +370,16 @@ export default class AdminService {
 		} else dispatch(this.actions.adminAbort())
 	}
 
+	emptyAddedUsersResult = () => async(dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.adminStart())
+
+		try {
+			dispatch(this.actions.adminEmptyUsersResult())
+		} catch (error) {
+			dispatch(this.actions.adminError(error))
+		}
+	}
+
 	addUsers = (usernames) => async(dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 
@@ -383,7 +402,7 @@ export default class AdminService {
 
 				const response = await apiProxy.user.post(body)
 
-				if(response.status === 200){
+				if(response.status === 200 && response.data.id.length > 30){
 					resultSuccess.push(response.data.id)
 					dispatch(this.actions.adminAddUsers(resultSuccess, resultFail))
 				} else{
