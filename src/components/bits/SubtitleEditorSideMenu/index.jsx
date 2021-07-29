@@ -12,10 +12,8 @@ const SubtitleEditorSideMenu = props => {
 	const {
 		singleEvent,
 		index,
-		updateEvents,
 		videoLength,
 		closeSideEditor,
-		isSub,
 		updateSubs,
 		subs,
 		changeSubIndex,
@@ -23,12 +21,10 @@ const SubtitleEditorSideMenu = props => {
 		subLayer,
 		deleteSub,
 		focus,
-		disableSave
+		disableSave,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
-	const [editComment, setEditComment] = useState({})
-	const [subText, setSubText] = useState([])
 
 	useEffect(() => {
 		setEvent(singleEvent)
@@ -59,9 +55,6 @@ const SubtitleEditorSideMenu = props => {
 			}
 			sub.text = subs[layer][`content`][ind].text
 
-		} else {
-			if(value)
-				setSubText(value)
 		}
 
 		try{

@@ -1,21 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
-
 import { Prompt } from 'react-router'
-
 import Style, { Timeline, EventList, AnnotationMessage, Icon } from './styles'
-
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
 import * as Subtitle from 'subtitle'
-import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer } from 'components/bits'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal } from 'components/bits'
 import { Controller } from 'components'
-import { SubtitlesModal } from 'components/bits'
 
+// ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
+// TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 import trashIcon from 'assets/trash_icon.svg'
 import editIcon from 'assets/ca_tracks_edit.svg'
 import saveIcon from 'assets/check.svg'
-
 import closeIcon from 'assets/close_icon.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
@@ -23,17 +20,11 @@ import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
 import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
-import captions from 'assets/captions.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
-
-// ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
-// TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
 const SubtitleEditor = props => {
 
-	// console.log('%c Editor Component', 'color: red; font-weight: bolder; font-size: 12px;')
-
-	const { setEvents, updateContent, createSub,setAllSubs,activeUpdate, deleteSubtitles } = props
+	const { setEvents, updateContent, createSub, setAllSubs, activeUpdate, deleteSubtitles } = props
 
 	const {
 		eventsArray,
@@ -45,23 +36,12 @@ const SubtitleEditor = props => {
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
 
-	const testingSubtitle = `1\n00:00:00,000 --> 00:00:20,500\nThis is a test\n\n2\n00:00:40,500 --> 00:01:20,700\nThis is another test`
-	const parseSub = Subtitle.parse(testingSubtitle)
-	for (let i = 0; i < parseSub.length; i++){
-		parseSub[i].start = parseSub[i].start/1000
-		parseSub[i].end = parseSub[i].end/1000
-	}
 	const [allEvents, setAllEvents] = useState(eventsArray)
-	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
-	const [eventToEdit, setEventToEdit] = useState(10000)
-	const [displayLayer, setDisplayLayer] = useState(0)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
-
-	const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
@@ -77,19 +57,16 @@ const SubtitleEditor = props => {
 	const [subModalVisible, setSubModalVisible] = useState(false)
 	const [subModalMode, setSubModalMode] = useState(``)
 	const [subChanges, setSubChanges] = useState(0)
-	const [editCensor, setEditCensor] = useState({})
+	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [dimensions, setDimensions] = useState({
 		height: window.innerHeight,
 		width: window.innerWidth,
 	})
-	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
-	const [disablePlus, setDisablePlus] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 
-	console.log(disableSave)
 	// refs
 	const controllerRef = useRef(null)
 
@@ -124,7 +101,6 @@ const SubtitleEditor = props => {
 		for(let i = 0; i < largestLayer + 1; i++)
 			initialLayers.push([i])
 
-		setLayers(initialLayers)
 		setEvents(allEvents)
 
 		if(blockLeave)
@@ -137,17 +113,11 @@ const SubtitleEditor = props => {
 		}
 
 	}, [eventsArray, blockLeave, isEdit])
-
 	// end of useEffect
 
 	if(shouldUpdate === true)
 
 		setShouldUpdate(false)
-
-	const togglendTimeline = () => {
-
-		setTimelineMinimized(!timelineMinimized)
-	}
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
@@ -163,7 +133,6 @@ const SubtitleEditor = props => {
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 	}
-
 	const deleteSub = (index) =>{
 		const currentSubs = [...subtitles]
 		currentSubs[subLayerToEdit][`content`].splice(index,1)
@@ -182,35 +151,15 @@ const SubtitleEditor = props => {
 
 		setBlock(true)
 	}
-
-	// THIS IS PART OF CENSOR
-	const handleLastClick = (height, width, x, y, time) => {
-		// console.log(height, width)
-
-		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
-			// console.log('%c Added position', 'color: red; font-weight: bold; font-size: 1.2rem;')
-			const index = eventToEdit
-			const cEvent = allEvents[index]
-
-			if(cEvent.position[`${time.toFixed(1)}`] !== undefined)
-				cEvent.position[`${time.toFixed(1)}`] = [x / width * 100, (y-86) / height * 100, cEvent.position[`${time.toFixed(1)}`][2], cEvent.position[`${time.toFixed(1)}`][3]]
-			else
-				cEvent.position[`${time.toFixed(1)}`] = [x / width * 100, (y-86) / height * 100, 30, 40]
-		}
-	}
-
 	const openSubEditor = (layerIndex,subIndex) =>{
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
 	}
-
 	const closeSideEditor = () => {
 		setSideEditor(false)
-		setActiveCensorPosition(-1)
 	}
-
 	const handleSaveAnnotation = async () => {
 		setIsLoading(true)
 		const content = currentContent
@@ -377,9 +326,10 @@ const SubtitleEditor = props => {
 			}
 		}
 
-		if(needCheck)
-			checkSubError(tempSubs, `update`, index, {sub, side})
-		else
+		if(needCheck){
+			const updateSub = {sub, side}
+			checkSubError(tempSubs, `update`, index, updateSub)
+		} else
 			setDisableSave(true)
 
 		currentSubs[`content`][index] = sub
@@ -445,7 +395,7 @@ const SubtitleEditor = props => {
 
 						if(curEndTime === preStartTime || curEndTime === preStartTime+0.01)
 							isError = true
-						 else if(preStartTime-curEndTime > addingTime){
+						else if(preStartTime-curEndTime > addingTime){
 							subStart = currentSubs[index][`content`][subIndex].end + .01
 							subEnd = currentSubs[index][`content`][subIndex].end + .01 + addingTime
 						} else {
@@ -466,7 +416,7 @@ const SubtitleEditor = props => {
 
 						if(curEndTime === 100 || curEndTime === 100.01)
 							isError = true
-						 else if(curEndTime+addingTime>100){
+						else if(curEndTime+addingTime>100){
 							subStart = currentSubs[index][`content`][subIndex].end + .01
 							subEnd = 100
 						} else {
@@ -522,7 +472,6 @@ const SubtitleEditor = props => {
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
-			setDisablePlus(true)
 		}else {
 			const tempSubList = [...subtitles]
 			const tempSub = {
@@ -621,17 +570,8 @@ const SubtitleEditor = props => {
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
 		setAllSubs(temp)
-
 		setBlock(true)
 	}
-	const updateSubLayerLanguage = (language) =>{
-		const temp = [...subtitles]
-		temp[subLayerToEdit][`language`] = language
-		setSubs(temp)
-		setAllSubs(temp)
-		setBlock(true)
-	}
-
 	const checkSub = () => {
 		if(subLayerToEdit === subtitles[subLayerToEdit].length-1)
 			return subtitles[0][`content`][0]
@@ -643,17 +583,14 @@ const SubtitleEditor = props => {
 		setSubToEdit(index)
 		setFocus(false)
 	}
-
 	const handleEditSubTitle = (index) => {
 		setIsEdit(true)
 		setSubLayerToEdit(index)
 	}
-
 	const handleFocus = (index) => {
 		setSubLayerToEdit(index)
 		openSubEditor(index, 0)
 	}
-
 	const checkSubError = (subs, checking, index, updateSub) => {
 		let checkError = false
 		for (let i = 0; i < subs[subLayerToEdit][`content`].length; i++) {
@@ -685,7 +622,7 @@ const SubtitleEditor = props => {
 					}
 				}
 			} else if(i !== subs[subLayerToEdit][`content`].length-1){
-				if(i===index-1)
+				if(i===index-1 && checking===`update`)
 					nextStart = updateSub.sub.start
 				else
 					nextStart = subs[subLayerToEdit][`content`][i+1].start
@@ -701,7 +638,6 @@ const SubtitleEditor = props => {
 							document.getElementById(`subStart${i+1}`).style.border=``
 						} else if(i === subs[subLayerToEdit][`content`].length-2)
 							document.getElementById(`subStart${i+1}`).style.border=`2px solid red`
-
 					}
 				}
 			}
@@ -730,22 +666,15 @@ const SubtitleEditor = props => {
 					<Controller ref = {controllerRef}
 						className='video'
 						url={props.viewstate.url}
-						handlers={togglendTimeline}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTime}
 						minimized={timelineMinimized}
-						togglendTimeline={togglendTimeline}
-						handleLastClick = {handleLastClick}
-						events = {allEvents}
-						eventToEdit={eventToEdit}
-						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
 					>
 					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 						<section>
-							{/* //TODO: Add delete logic */}
 							<div className='event-layers'>
 								{subtitles.map((sub, index) => (
 									<div className={`layer`} key={index}>
@@ -840,11 +769,9 @@ const SubtitleEditor = props => {
 							</div>
 						</div>
 					</Timeline>
-
 				</span>
 
 				<EventList minimized={eventListMinimized}>
-
 					<header>
 						<img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
@@ -871,21 +798,16 @@ const SubtitleEditor = props => {
 					<>
 						{ showSideEditor !== false && (
 							<SubtitleEditorSideMenu
-								updateLanguage = {updateSubLayerLanguage}
 								singleEvent={checkSub}
+								index={subToEdit}
 								videoLength={videoLength}
 								closeSideEditor={closeSideEditor}
 								updateSubs={updateSubs}
-								isSub={subSelected}
 								subs={subtitles}
-								subLayer={subLayerToEdit}
 								changeSubIndex={handleChangeSubIndex}
 								addSub={addSubToLayer}
-								editCensor = {editCensor}
-								activeCensorPosition = {activeCensorPosition}
-								setActiveCensorPosition = {setActiveCensorPosition}
+								subLayer={subLayerToEdit}
 								deleteSub = {deleteSub}
-								index={subToEdit}
 								focus={focus}
 								disableSave={disableSave}
 							></SubtitleEditorSideMenu>
@@ -894,18 +816,6 @@ const SubtitleEditor = props => {
 				</EventList>
 			</DndProvider>
 			<>
-				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
-					<img src={closeIcon} width='20' height='20' onClick={ e => setSaved(false)}/>
-					{
-						contentError !== `` || subtitleError !== `` ? (
-							<h2 id='error'>
-								<span>Content failed with: {contentError}</span><br/><br/><span>Subtitle failed with: {subtitleError}</span>
-							</h2>
-						) : (
-							<h2 id='success'>Annotations saved successfully</h2>
-						)
-					}
-				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
 					message='Have you saved your changes already?'
