@@ -432,27 +432,17 @@ const SubtitleEditor = props => {
 						if(!isError) {
 							setSubToEdit(subIndex+1)
 							currentSubs[index][`content`].push(newSub)
+							scrollToBottom()
 						}
 					}
 				}
 			}
 
-			// for (let i = 0; i < currentSubs[index][`content`].length; i++) {
-			// 	if(i > subIndex+1) {
-			// 		if(document.getElementById(`subStart${i}`).style.border===`2px solid red`)
-			// 			document.getElementById(`subStart${i+1}`).style.border=`2px solid red`
-			// 		else if(document.getElementById(`subEnd${i}`).style.border===`2px solid red`)
-			// 			document.getElementById(`subEnd${i+1}`).style.border=`2px solid red`
-			// 	}
-			// }
-			// document.getElementById(`subStart${index+1}`).style.border=``
-			// document.getElementById(`subEnd${index+1}`).style.border=``
-
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
-			setSubToEdit(subToEdit+1)
+			setSubToEdit(subIndex+1)
 			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
@@ -650,6 +640,9 @@ const SubtitleEditor = props => {
 			}
 		}
 	}
+	const scrollToBottom = () => {
+		this.messagesEnd.scrollIntoView({ behavior: `smooth` })
+	}
 
 	return (
 		<Style>
@@ -716,7 +709,7 @@ const SubtitleEditor = props => {
 									setSubModalVisible(true)
 									setSubModalMode(`create`)
 								}}>
-									<p style={{fontWeight:700}}>Add Subtitle Track +</p>
+									<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
 								</div>
 								<br/><br/><br/><br/><br/><br/><br/>
 							</div>

@@ -251,7 +251,7 @@ export const EventList = styled.div`
 	height: calc(100vh - var(--navbar-height));
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
 	transition: .5s;
-	z-index: 20;
+	z-index: 12;
 	overflow: hidden;
 	border-left: 1px solid black;
 
