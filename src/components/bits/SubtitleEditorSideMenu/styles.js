@@ -3,11 +3,11 @@ import styled from 'styled-components'
 const Style = styled.div`
 	display: ${props => props.minimized !== false ? `initial` : `none`};
 	padding: 20px;
-	overflow: scroll;
+	overflow-y: scroll;
 
 	& .allSubs {
 		margin-top: 1rem;
-		padding-top: 1rem;
+		padding-top: 2rem;
 	}
 
 	& .closeEditor {
@@ -164,25 +164,18 @@ const Style = styled.div`
 	& .subActive {
     background-color: #eee;
 	}
+
 	& .container {
 		display: flex;
 		flex-direction: column;
-		margin-top: ${props => props.ind === 0 ? `1rem` : ``};
 
 		& .subContainer {
 			display: flex;
 			justify-content: space-evenly;
-			padding: 0.5rem 0;
-
-			.hide {
-				display: block;
-			}
+			padding: 0.8rem 0;
 
 			:hover {
 				background-color: #eee;
-				.hide {
-					display: block;
-				}
 			}
 
 			& .subText {
@@ -217,23 +210,18 @@ const Style = styled.div`
 		}
 	}
 
-	& .censorActive {
-		background-color: var(--navy-blue);
-		color: white;
-	}
-	@keyframes spin {
-		0% { transform: rotate(0deg); }
-		100% { transform: rotate(360deg); }
-	}
-
 `
 export const Icon = styled.div`
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 16px;
 	margin-left: 0.2rem;
-	margin-top: -1rem;
+	margin-top: -0.8rem;
 	border-radius: 5px;
+	position: relative;
+	z-index: 1000;
+	margin-bottom: -1rem;
+	visibility: ${props => props.visibility ===`visible` ? `visible` : `hidden`};
 
 	:hover {
 		cursor: pointer;

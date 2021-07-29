@@ -237,4 +237,5 @@ export const Subtitles = styled.div`
 	z-index: 20;
 	width: 100%;
 	text-align: center;
+	white-space: pre-line;
 `
