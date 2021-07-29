@@ -26,7 +26,6 @@ export default class AddUsers extends PureComponent {
 		// TODO: search list all the resources related to the email
 		return (
 			<Form onSubmit={ handleSubmit }>
-				{/* <h1>Add Many</h1><br/> */}
 				{!isSubmitted &&<h3>Paste a list of usernames, one per line.</h3>}
 				<br/>
 				<AddManyForm >
