@@ -19,8 +19,8 @@ export default class AddUsers extends PureComponent {
 
 		const {
 			handleSubmit,
-			toggleModal,
 			handleIdChange,
+			handleClose,
 		} = this.props.handlers
 
 		// TODO: search list all the resources related to the email
@@ -53,7 +53,7 @@ export default class AddUsers extends PureComponent {
 				<br/>
 
 				<div>
-					<CloseButton type='button' onClick={e => toggleModal()}>Close</CloseButton>
+					<CloseButton type='button' onClick={handleClose}>Close</CloseButton>
 					<SubmitButton type='submit' color={`#0582CA`} disabled={isSubmitted} >Submit</SubmitButton>
 				</div>
 

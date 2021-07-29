@@ -491,33 +491,12 @@ const apiProxy = {
 			return res.data
 		}),
 
-		// post: (formData, onUploadProgress) => axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file`, formData, {
-		// 	withCredentials: true,
-		// 	headers: {
-		// 		'Content-Type': `multipart/form-data`,
-		// 		'session-id': window.clj_session_id,
-		// 	},
-		// 	onUploadProgress,
-		// }).then(res => {
-		// 	updateSessionId(res.headers[`session-id`])
-		// 	return res.data
-		// }),
-
-		files: (id, onDownloadProgress) => axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`,
+		files: async(id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`,
 			{
 				withCredentials: true,
 				headers: {
 					'session-id': window.clj_session_id,
 				},
-				onDownloadProgress,
-
-				// onDownloadProgress: (progressEvent) =>{
-				// 	const dataChunk = progressEvent.currentTarget.response
-				// 	const percentCompleted = Math.round(progressEvent.loaded * 100 /
-				// 		progressEvent.total)
-				// 	console.log(progressEvent.lengthComputable)
-				// 	console.log(dataChunk)
-				// },
 
 			}).then(async res => {
 
@@ -562,7 +541,7 @@ const apiProxy = {
 		},
 		post: async (body) => {
 			try {
-				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
+				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user/byu/create`
 				const result = await axios.post(url, body,{
 					withCredentials: true,
 					headers: {
@@ -573,6 +552,8 @@ const apiProxy = {
 					await updateSessionId(res.headers[`session-id`])
 					return res
 				})
+
+				console.log(result)
 				return result
 
 			} catch (error) {
