@@ -495,13 +495,13 @@ export default class ResourceService {
 		}
 	}
 
-	getStreamKey = (resourceId, language) => async (dispatch, getState, { apiProxy }) => {
+	getStreamKey = (resourceId, language, event) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.resourcesStart())
 
 		try {
 
-			const allFiles = await apiProxy.resources.files(resourceId)
+			const allFiles = await apiProxy.resources.files(resourceId, event)
 
 			const fileId = allFiles.find(element => element[`file-version`].includes(language) !== false)[`id`]
 
