@@ -588,8 +588,6 @@ const VideoEditor = props => {
 						)}
 					</>
 				</EventEditor>
-
-				{/* </span> */}
 			</DndProvider>
 
 			<>
