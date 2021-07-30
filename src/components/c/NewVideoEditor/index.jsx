@@ -165,8 +165,6 @@ const VideoEditor = props => {
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
-
-		// console.log('ADDING NEW EVENT')
 		const matchingEvent = filterValue(events, `type`, item)
 
 		const eventObj = {
