@@ -83,7 +83,7 @@ const SubtitleEditorSideMenu = props => {
 					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length ===0 && disableSave===false ? `visible`: `hidden`}
 				/>
 				{subs[subLayer][`content`].map((sub,ind)=>(
-					<div>
+					<div key={ind}>
 						<div className={`container`}>
 							<Icon src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
 								position={`top`}
