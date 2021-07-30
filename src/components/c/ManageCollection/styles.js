@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
+import logo from 'assets/hexborder.svg'
 
 const Style = styled.div`
   & > header {
@@ -180,4 +181,47 @@ export const Icon = styled.div`
 
   height: 2rem;
   width: 2rem;
+`
+
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+const fadein = keyframes`
+from {
+	opacity: 0;
+}
+to {
+	opacity: 1;
+}
+`
+
+const fadeout = keyframes`
+from {
+	opacity: 1;
+}
+to {
+	opacity: 0;
+}
+`
+
+export const Spinner = styled.div`
+	background: url(${logo}) center no-repeat;
+	background-size: cover;
+	width: 15rem;
+	height: 15rem;
+
+	position: fixed;
+	top: 30%;
+	left: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `
