@@ -54,9 +54,7 @@ const SubtitlesEditorContainer = props => {
 		setSubs(testsubs !== undefined?testsubs:[])
 	}
 	const getAllSubtitles = async() => {
-		// console.log(`yeep`,id)
 		const testsubs = await getSubtitles(id)
-		// console.log(`more testing`,testsubs)
 		const returnThis = testsubs !== undefined?testsubs:[]
 		return returnThis
 	}
@@ -64,7 +62,6 @@ const SubtitlesEditorContainer = props => {
 	useEffect(() => {
 		// console.log('use effecct')
 		if(!content.hasOwnProperty(id)){
-			// console.log(`getContent`)
 			getContent(id)
 		}
 
@@ -72,7 +69,7 @@ const SubtitlesEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 			// we only want to set the url if it is not set.
 			if(url === ``){
 				if(content[id].url !== ``)
@@ -84,21 +81,18 @@ const SubtitlesEditorContainer = props => {
 						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
 					} else if (streamKey !== `` && url === ``)
 						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
-						// console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
 			} else{
 				// once the url is set we can get subtitles
 				if(!calledGetSubtitles){
-					// console.log("TRY TO GER SUBTITLES")
 					getSubtitles(id)
 					setCalledGetSubtitles(true)
 				} else {
-					// console.log("SETTING SUBTITLES")
 					setSubs(allSubs)
 				}
 			}
 		}
-		// console.log(eventsArray,subs)
+
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId])
 
 	const createAndAddSub = async () =>{
@@ -125,9 +119,6 @@ const SubtitlesEditorContainer = props => {
 	const setAllSubs = (subs) =>{
 		setSubtitles(subs)
 	}
-	// console.log(eventsArray)
-
-	// console.log(eventsArray)
 
 	const handleShowHelp = () => {
 		toggleModal({

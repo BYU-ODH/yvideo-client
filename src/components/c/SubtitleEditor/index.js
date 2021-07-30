@@ -63,9 +63,11 @@ const SubtitleEditor = props => {
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
+	const [deleteTitle, setDeleteTitle] = useState(``)
 
 	// refs
 	const controllerRef = useRef(null)
+	const scrollRef = useRef()
 
 	useEffect(() => {
 		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
@@ -366,10 +368,10 @@ const SubtitleEditor = props => {
 					else {
 						if(currentSubs[index][`content`][subIndex].start <= 2/videoLength*100) {
 							subStart = 0
-							subEnd = currentSubs[index][`content`][subIndex].start - 0.01
+							subEnd = currentSubs[index][`content`][subIndex].start - 0.001
 						} else {
 							subStart = currentSubs[index][`content`][subIndex].start - addingTime
-							subEnd = currentSubs[index][`content`][subIndex].start - 0.01
+							subEnd = currentSubs[index][`content`][subIndex].start - 0.001
 						}
 					}
 
@@ -388,35 +390,34 @@ const SubtitleEditor = props => {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
 						const nextStartTime = currentSubs[index][`content`][subIndex+1].start
 
-						if(curEndTime === nextStartTime || curEndTime === nextStartTime+0.01)
+						if(curEndTime === nextStartTime || curEndTime === nextStartTime+0.001)
 							isError = true
 						else if(nextStartTime-curEndTime > addingTime){
-							subStart = currentSubs[index][`content`][subIndex].end + 0.01
-							subEnd = currentSubs[index][`content`][subIndex].end + 0.01 + addingTime
+							subStart = currentSubs[index][`content`][subIndex].end + 0.001
+							subEnd = currentSubs[index][`content`][subIndex].end + 0.001 + addingTime
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end + 0.01
-							subEnd = currentSubs[index][`content`][subIndex+1].start - 0.01
+							subStart = currentSubs[index][`content`][subIndex].end + 0.001
+							subEnd = currentSubs[index][`content`][subIndex+1].start - 0.001
 						}
 						newSub = {
 							start: subStart,
 							end: subEnd,
 							text: ``,
 						}
-						if(!isError) {
-							// setSubToEdit(subIndex+2)
+						if(!isError)
 							currentSubs[index][`content`].splice(subIndex+1, 0, newSub)
-						}
+
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
 
-						if(curEndTime === 100 || curEndTime === 100.01)
+						if(curEndTime === 100 || curEndTime === 100.001)
 							isError = true
 						else if(curEndTime+addingTime>100){
-							subStart = currentSubs[index][`content`][subIndex].end + 0.01
+							subStart = currentSubs[index][`content`][subIndex].end + 0.001
 							subEnd = 100
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end + 0.01
-							subEnd = currentSubs[index][`content`][subIndex].end + 0.01 + addingTime
+							subStart = currentSubs[index][`content`][subIndex].end + 0.001
+							subEnd = currentSubs[index][`content`][subIndex].end + 0.001 + addingTime
 						}
 
 						newSub = {
@@ -428,6 +429,7 @@ const SubtitleEditor = props => {
 							setSubToEdit(subIndex+1)
 							currentSubs[index][`content`].push(newSub)
 							setSubToEdit(subIndex+1)
+							scrollToMyRef()
 						}
 					}
 				}
@@ -646,6 +648,12 @@ const SubtitleEditor = props => {
 			setDisableSave(true)
 
 	}
+	const scrollToMyRef = () => {
+		setTimeout(() => {
+			const scroll = scrollRef.current.scrollHeight - scrollRef.current.clientHeight
+			scrollRef.current.scrollTo(0, scroll)
+		}, 50)
+	}
 
 	return (
 		<Style>
@@ -656,6 +664,8 @@ const SubtitleEditor = props => {
 					handleAddSubLayerFromFile = {handleAddSubLayerFromFile}
 					visible = {subModalVisible}
 					setModalVisible = {setSubModalVisible}
+					handleDeleteSubLayer={handleDeleteSubLayer}
+					deleteTitle={deleteTitle}
 				/>
 				<span style={{ zIndex: 0 }}>
 
@@ -690,7 +700,11 @@ const SubtitleEditor = props => {
 														<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
 												}
 											</div>
-											<Icon className={`trashIcon`} src={trashIcon} onClick={()=>handleDeleteSubLayer(index)}/>
+											<Icon className={`trashIcon`} src={trashIcon} onClick={()=>{
+												setSubModalVisible(true)
+												setSubModalMode(`delete`)
+												setDeleteTitle(sub.title !== `` ? sub.title : `No Title`)
+											}}/>
 										</div>
 										<SubtitlesLayer
 											videoLength={videoLength}
@@ -806,6 +820,7 @@ const SubtitleEditor = props => {
 								deleteSub = {deleteSub}
 								focus={focus}
 								disableSave={disableSave}
+								scrollRef={scrollRef}
 							></SubtitleEditorSideMenu>
 						) }
 					</>
