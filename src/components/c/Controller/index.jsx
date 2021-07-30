@@ -47,11 +47,15 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	// const [timelineZoomFactor, setTimelineZoomFactor] = useState(1)
 	const [currentZone, setCurrentZone] = useState([0, duration])
-	const [subtitleText, setSubtitleText] = useState(``)
+
+	useEffect(() => {
+		const indicator = document.getElementById(`time-indicator`)
+	})
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
