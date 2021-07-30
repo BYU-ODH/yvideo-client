@@ -51,13 +51,7 @@ const SubtitlesEditorContainer = props => {
 	}
 
 	useEffect(() => {
-<<<<<<<< HEAD:src/containers/c/SubtitlesEditorContainer.jsx
-		// console.log('use effecct')
-		if(!content.hasOwnProperty(id)){
-========
-
 		if(!content.hasOwnProperty(id))
->>>>>>>> fe7d4c4572542f863359d02cfba07f9a7d378be5:src/containers/c/TrackEditorContainer.jsx
 			getContent(id)
 
 		if(content[id] !== undefined){

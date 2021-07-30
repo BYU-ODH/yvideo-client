@@ -113,10 +113,6 @@ class Root extends PureComponent {
 								<SubtitlesEditorContainer />
 							</Route>
 
-							<Route path='/videoeditor/:id'>
-								<VideoEditorContainer />
-							</Route>
-
 							<Route path='/clipeditor/:id'>
 								<ClipEditorContainer />
 							</Route>
