@@ -9,6 +9,7 @@ import {
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
+import { escapeSelector } from 'jquery'
 
 const CreateContentContainer = props => {
 
@@ -22,17 +23,21 @@ const CreateContentContainer = props => {
 		getCollections,
 		resourceContent,
 		searchResource,
+		getAccess,
+		user,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
 	const [hideResources, setHide] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [selectedResource, setSelectedResource] = useState(``)
+	const [selectedResourceId, setSelectedResourceId] = useState(``)
+	const [selectedResourceName, setSelectedResourceName] = useState(``)
 	const [isResourceSelected, setIsResourceSelected] = useState(false)
 	const [languages, setLanguages] = useState([])
 	const [isTyping, setIsTyping] = useState(false)
 	const [isCalled, setIsCalled] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
+	const [isAccess, setIsAccess] = useState(true)
 
 	const [data, setData] = useState({
 		url: ``,
@@ -48,8 +53,8 @@ const CreateContentContainer = props => {
 	})
 
 	useEffect(() => {
-		if(resourceContent[selectedResource] !== undefined && isResourceSelected){
-			const langs = resourceContent[selectedResource].allFileVersions.split(`;`)
+		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
+			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
 			const finalLanguages = []
 			langs.forEach((element, i) => {
 				if(element === ``)
@@ -79,17 +84,17 @@ const CreateContentContainer = props => {
 				setHide(true)
 		}
 
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+
+		else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}
 
-	}, [resourceContent, selectedResource, searchQuery, isTyping, blockLeave])
+	}, [resourceContent, selectedResourceId, searchQuery, isTyping, blockLeave, isResourceSelected])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -121,11 +126,42 @@ const CreateContentContainer = props => {
 			setIsTyping(true)
 	}
 
-	const handleSelectResourceChange = (e, name) => {
-		const { target } = e
-		setSelectedResource(target.value)
-		setIsResourceSelected(true)
-		setSearchQuery(name)
+	const handleSelectResourceChange = async (e, resource) => {
+		const access = await getAccess(resource.id)
+		let theAccess = true
+
+		if(access.length !== 0) {
+			for (let i = 0; i < access.length; i++) {
+				if(user.username === access[i].username) {
+					setIsAccess(true)
+					theAccess = true
+					setData({
+						...data,
+						title: resource.resourceName,
+					})
+					break
+				}
+				if(i === access.length -1) {
+					console.log(`object`)
+					setIsAccess(false)
+					theAccess = false
+
+				}
+			}
+		} else {
+			theAccess = false
+		}
+
+		if(theAccess) {
+			setSelectedResourceName(resource.resourceName)
+			setSelectedResourceId(resource.id)
+			setIsResourceSelected(true)
+		} else {
+			setSelectedResourceName(``)
+			setSelectedResourceId(``)
+			setIsResourceSelected(false)
+		}
+		setSearchQuery(``)
 		setHide(true)
 	}
 
@@ -215,7 +251,7 @@ const CreateContentContainer = props => {
 			"url": ``,
 			"allow-captions": true,
 			"content-type": data.contentType,
-			"resource-id": selectedResource,
+			"resource-id": selectedResourceId,
 			"tags": ``,
 			"clips": ``,
 			"words": ``,
@@ -251,6 +287,11 @@ const CreateContentContainer = props => {
 		setBlock(true)
 	}
 
+	const removeResource = () => {
+		setSelectedResourceName(``)
+		setIsResourceSelected(false)
+	}
+
 	const viewstate = {
 		adminContent,
 		data,
@@ -258,9 +299,11 @@ const CreateContentContainer = props => {
 		tab,
 		resourceContent,
 		hideResources,
-		selectedResource,
+		selectedResourceId,
+		selectedResourceName,
 		languages,
 		isResourceSelected,
+		isAccess,
 	}
 
 	const handlers = {
@@ -273,6 +316,7 @@ const CreateContentContainer = props => {
 		handleTypeChange,
 		onKeyPress,
 		remove,
+		removeResource,
 		toggleModal,
 	}
 
@@ -281,6 +325,7 @@ const CreateContentContainer = props => {
 
 const mapStateToProps = store => ({
 	admin: store.authStore.user.roles === 0,
+	user: store.authStore.user,
 	adminContent: store.adminStore.data,
 	resourceContent: store.resourceStore.cache,
 	modal: store.interfaceStore.modal,
@@ -296,6 +341,7 @@ const mapDispatchToProps = {
 	search: adminService.search,
 	searchResource: resourceService.search,
 	getCollections: collectionService.getCollections,
+	getAccess: resourceService.readAccess,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)
