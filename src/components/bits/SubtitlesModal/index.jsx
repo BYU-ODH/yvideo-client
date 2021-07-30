@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Style from './styles'
 import closeIcon from 'assets/close_icon.svg'
 
@@ -6,7 +6,7 @@ import closeIcon from 'assets/close_icon.svg'
 
 const SubtitlesModal = props => {
 
-	const {mode, setSubtitles, deleteSubtitles, handleAddSubLayer, handleAddSubLayerFromFile,visible, setModalVisible} = props
+	const {mode, handleAddSubLayer, handleAddSubLayerFromFile,visible, setModalVisible} = props
 
 	const createLayer = {
 		fromScratch: () => {
@@ -33,7 +33,7 @@ const SubtitlesModal = props => {
 								</td>
 								<td className={`modalSectionRight`}>
 									<h4 style={{margin:`10px`}}>Import Srt or Vtt File</h4>
-									<input style={{margin:`10px`,width: `100%`}} type={`file`} accept={`.srt,.vtt`} id={`subFileInput`} onChange ={e => console.log(e.target.files)}/>
+									<input style={{margin:`10px`,width: `100%`}} type={`file`} accept={`.srt,.vtt`} id={`subFileInput`}/>
 									<button style={{margin:`10px`}} className={`modalButton`} onClick={()=>createLayer.fromFile()}>Submit</button>
 								</td>
 							</tr>

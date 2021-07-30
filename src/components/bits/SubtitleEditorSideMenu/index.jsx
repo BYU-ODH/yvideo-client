@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
@@ -77,7 +77,7 @@ const SubtitleEditorSideMenu = props => {
 				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
 
-			<div id={`allSubs`} className={`allSubs`} style={{overflowY:`scroll`, height:`75vh`}}>
+			<div className={`allSubs`} style={{overflowY:`scroll`, height:`68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={()=>addSub(subLayer,0,`top`)}
 					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length ===0 && disableSave===false ? `visible`: `hidden`}
 				/>

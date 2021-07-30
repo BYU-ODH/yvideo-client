@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
-import Style, { Timeline, EventList, AnnotationMessage, Icon } from './styles'
+import Style, { Timeline, EventList, Icon } from './styles'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
@@ -13,7 +13,6 @@ import { Controller } from 'components'
 import trashIcon from 'assets/trash_icon.svg'
 import editIcon from 'assets/ca_tracks_edit.svg'
 import saveIcon from 'assets/check.svg'
-import closeIcon from 'assets/close_icon.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import llIcon from 'assets/te-chevrons-left.svg'
@@ -30,12 +29,11 @@ const SubtitleEditor = props => {
 		eventsArray,
 		currentContent,
 		subs,
-		contentError,
-		subtitleError,
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
 
+	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
@@ -62,7 +60,6 @@ const SubtitleEditor = props => {
 		height: window.innerHeight,
 		width: window.innerWidth,
 	})
-	const [isLoading,setIsLoading] = useState(false)
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
@@ -146,9 +143,7 @@ const SubtitleEditor = props => {
 		else
 			setSubToEdit(index)
 
-		if(disableSave === true)
-			checkSubError(currentSubs, `delete`, index)
-
+		checkSubError(currentSubs, `delete`, index)
 		setBlock(true)
 	}
 	const openSubEditor = (layerIndex,subIndex) =>{
@@ -391,16 +386,16 @@ const SubtitleEditor = props => {
 				} else {
 					if(subIndex !== currentSubs[index][`content`].length-1) {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
-						const preStartTime = currentSubs[index][`content`][subIndex+1].start-0.01
+						const nextStartTime = currentSubs[index][`content`][subIndex+1].start
 
-						if(curEndTime === preStartTime || curEndTime === preStartTime+0.01)
+						if(curEndTime === nextStartTime || curEndTime === nextStartTime+0.01)
 							isError = true
-						else if(preStartTime-curEndTime > addingTime){
-							subStart = currentSubs[index][`content`][subIndex].end + .01
-							subEnd = currentSubs[index][`content`][subIndex].end + .01 + addingTime
+						else if(nextStartTime-curEndTime > addingTime){
+							subStart = currentSubs[index][`content`][subIndex].end + 0.01
+							subEnd = currentSubs[index][`content`][subIndex].end + 0.01 + addingTime
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end + .01
-							subEnd = currentSubs[index][`content`][subIndex+1].start - .01
+							subStart = currentSubs[index][`content`][subIndex].end + 0.01
+							subEnd = currentSubs[index][`content`][subIndex+1].start - 0.01
 						}
 						newSub = {
 							start: subStart,
@@ -417,11 +412,11 @@ const SubtitleEditor = props => {
 						if(curEndTime === 100 || curEndTime === 100.01)
 							isError = true
 						else if(curEndTime+addingTime>100){
-							subStart = currentSubs[index][`content`][subIndex].end + .01
+							subStart = currentSubs[index][`content`][subIndex].end + 0.01
 							subEnd = 100
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end + .01
-							subEnd = currentSubs[index][`content`][subIndex].end + .01 + addingTime
+							subStart = currentSubs[index][`content`][subIndex].end + 0.01
+							subEnd = currentSubs[index][`content`][subIndex].end + 0.01 + addingTime
 						}
 
 						newSub = {
@@ -432,7 +427,7 @@ const SubtitleEditor = props => {
 						if(!isError) {
 							setSubToEdit(subIndex+1)
 							currentSubs[index][`content`].push(newSub)
-							scrollToBottom()
+							setSubToEdit(subIndex+1)
 						}
 					}
 				}
@@ -442,7 +437,6 @@ const SubtitleEditor = props => {
 			activeUpdate(index)
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
-			setSubToEdit(subIndex+1)
 			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
@@ -485,17 +479,22 @@ const SubtitleEditor = props => {
 			const reader = new FileReader()
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
+				console.log(temp)
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000/videoLength * 100
 					temp[i].end = temp[i].end /1000/videoLength * 100
 				}
 				let removeArray = 0
 				const filtered = temp.filter(item => {
-					removeArray = removeArray + 1
+					if(item.start > 100){
+						removeArray++
+					}
 					return item.start < 100
 				})
 				const filtered1 = filtered.filter(item => {
-					removeArray = removeArray + 1
+					if(item.end > 100){
+						removeArray++
+					}
 					return item.end < 100
 				})
 				if (removeArray > 0)
@@ -529,6 +528,8 @@ const SubtitleEditor = props => {
 				setSideEditor(false)
 				setSubModalVisible(false)
 				setSubModalMode(``)
+				openSubEditor(subtitles.length, 0)
+				setBlock(true)
 			}
 			reader.readAsText(url)
 		}catch(error){
@@ -537,6 +538,7 @@ const SubtitleEditor = props => {
 		}
 		setSubModalVisible(false)
 		setSubModalMode(``)
+
 	}
 	const handleDeleteSubLayer = (index) =>{
 		closeSideEditor()
@@ -582,8 +584,9 @@ const SubtitleEditor = props => {
 		openSubEditor(index, 0)
 	}
 	const checkSubError = (subs, checking, index, updateSub) => {
-		let checkError = false
+		let disable = true
 		for (let i = 0; i < subs[subLayerToEdit][`content`].length; i++) {
+			let checkError = false
 			let curStart = 0
 			let curEnd = 0
 			let nextStart = 0
@@ -602,6 +605,7 @@ const SubtitleEditor = props => {
 
 			if(curStart > curEnd || curStart < 0 || curStart >= 100 || curEnd<=0 || curEnd>100) {
 				checkError = true
+				disable = false
 				if(checking===`delete` && i>=index) {
 					if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
 						document.getElementById(`subStart${i}`).style.border=`2px solid red`
@@ -619,6 +623,7 @@ const SubtitleEditor = props => {
 
 				if(curEnd > nextStart) {
 					checkError = true
+					disable = false
 					if(checking===`delete` && i>=index) {
 						if(	document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
 							document.getElementById(`subEnd${i}`).style.border=`2px solid red`
@@ -631,17 +636,15 @@ const SubtitleEditor = props => {
 					}
 				}
 			}
-			if(checkError)
-				setDisableSave(true)
-			else {
+			if(!checkError) {
 				document.getElementById(`subStart${i}`).style.border=``
 				document.getElementById(`subEnd${i}`).style.border=``
 				setDisableSave(false)
 			}
 		}
-	}
-	const scrollToBottom = () => {
-		this.messagesEnd.scrollIntoView({ behavior: `smooth` })
+		if(!disable)
+			setDisableSave(true)
+
 	}
 
 	return (

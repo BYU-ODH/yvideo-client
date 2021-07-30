@@ -1,24 +1,15 @@
-import styled, { keyframes } from 'styled-components'
-
-import carat from 'assets/carat_white.svg'
-
-import menu from 'assets/menu-white.svg'
+import styled from 'styled-components'
 
 const Style = styled.div`
-
 	background-color: white;
 	overflow: hidden;
-
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
 	z-index: 0;
-
 	display: flex;
 
 	& > span {
-
 		flex: 1;
-
 		display: flex;
 		flex-direction: column;
 	}
@@ -31,15 +22,9 @@ const Style = styled.div`
 `
 export default Style
 
-export const ItemContainer = styled.div`
-	& h4 {
-		font-weight: 500;
-	}
-`
 export const Timeline = styled.div`
 
 	--scale: ${props => props.scale};
-
 	--timeline-start: 16rem;
 	--header-height: 5rem;
 	/*
@@ -208,15 +193,6 @@ export const Timeline = styled.div`
 		}
 	}
 `
-export const HandleIcon = styled.div `
-	height: 2.5rem;
-	width: 2.5rem;
-	background: url(${menu}) center no-repeat;
-	background-size: contain;
-	position: absolute;
-	right: 5px;
-	margin: auto 0;
-`
 export const Icon = styled.div`
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
@@ -225,24 +201,6 @@ export const Icon = styled.div`
 	:hover {
 		cursor: pointer;
 	}
-`
-export const NewLayer = styled.button`
-	height: 2.4rem;
-	width: 2.5rem;
-	background-color: #0582ca;
-
-	margin-top: .75rem;
-	margin-left: 90px;
-
-	border: none;
-	border-radius: 0.3rem;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	outline: none;
-	cursor: pointer;
 `
 export const EventList = styled.div`
 	--minimized: ${props => props.minimized};
@@ -258,32 +216,7 @@ export const EventList = styled.div`
 	& > header {
 		height: 5rem;
 		background: var(--navy-blue);
-
 		border-bottom: 5px solid var(--light-blue);
-
-		& > .carat {
-			float: left;
-			margin: auto 0px auto 1rem;
-			align-items: center;
-			padding-right: 1rem;
-		}
-
-		/* & > .tab {
-			display: ${props => props.minimized !== false ? `none` : `visible`}
-			height: 5rem;
-			width: 7rem;
-			color: white;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 1.5rem;
-
-			font-weight: 500;
-
-			&.active {
-				background: var(--light-blue);
-			}
-		} */
 
 		& > .save {
 			position: relative;
@@ -329,100 +262,8 @@ export const EventList = styled.div`
 			}
 		}
 	}
-
-	& > .breadcrumbs {
-		display: ${props => props.minimized !== false ? `none` : `flex`};
-
-		height: 5rem;
-
-		position: relative;
-
-		box-sizing: border-box;
-
-		border-bottom: 1px solid #555;
-
-		color: black;
-		font-weight: 500;
-
-		& > span {
-			height: 100%;
-			width: 7rem;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 1.5rem;
-
-			border: none;
-			padding: 0;
-			margin: 0;
-
-			&.carat {
-				position: absolute;
-				left: 6.5rem;
-				top: 1.9rem;
-				height: 1rem;
-				width: 1rem;
-				transform: rotate(45deg);
-				border-top: 1px solid #555;
-				border-right: 1px solid #555;
-				background-color: white;
-			}
-
-			&.current {
-				flex: 1;
-				justify-content: flex-start;
-				padding-left: 2rem;
-				border-left: 1px solid #555;
-			}
-		}
-	}
-
-	& > .eventsList {
-		display: ${props => props.minimized !== false ? `none` : `visible`};
-		padding: 3rem;
-	}
-	& .subCard {
-		padding-left: 3rem;
-		padding-right: 3rem;
-	}
-
-	& .deleteEventButton {
-		width: 100px;
-		height: 30px;
-		margin: auto 10px auto auto;
-		border: 2px solid #eb6e79;
-		background-color: #eb6e79;
-		color: white;
-		font-size: 1.5rem;
-		font-weight: 500;
-		border-radius: 5px;
-		cursor: pointer;
-
-		&:active{
-			background-color: white;
-			color: #eb6e79;
-			border: 2px solid #eb6e79 !important;
-			outline: none;
-		}
-	}
 `
-export const EventListCarat = styled.button`
-	height: 2rem;
-	width: 2rem;
-	border: none;
-	outline: none;
-	cursor: pointer;
-	background: url(${carat}) center no-repeat;
-	background-size: contain;
-	padding: 0;
 
-	transform: rotate(-90deg);
-	transition: transform .25s ease-in-out;
-
-	&.minimized {
-		transform: rotate(90deg);
-	}
-`
 export const AnnotationMessage = styled.div`
 	position: fixed;
 	margin-top: calc(40vh - 150px);
