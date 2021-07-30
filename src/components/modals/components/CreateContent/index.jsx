@@ -30,6 +30,9 @@ export default class CreateContent extends PureComponent {
 			isAccess,
 		} = this.props.viewstate
 
+		console.log(languages)
+		console.log(languages[0])
+
 		const {
 			title,
 			contentType,
@@ -155,15 +158,25 @@ export default class CreateContent extends PureComponent {
 							{
 								isResourceSelected && (
 									languages.length > 0 ?
-										(
-											<select name='targetLanguages' onChange={handleTextChange} required>
-												<option value=''>Select</option>
-												{
-													languages.map((element, index) =>
-														<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option> )
-												}
-											</select>
-										)
+										languages.length ===1 ?
+											(
+												<select name='targetLanguages' onChange={handleTextChange} required>
+													<option value={languages[0]} key={0}>{languages[0]}</option>
+												</select>
+											)
+											:
+											(
+												<select name='targetLanguages' onChange={handleTextChange} required>
+													<option value=''>Select</option>
+
+													{
+														languages.map(
+															(element, index) =>
+																<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>)
+													}
+												</select>
+											)
+
 										:
 										(
 											<div>
