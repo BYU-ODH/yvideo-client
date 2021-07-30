@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
 
@@ -38,6 +38,7 @@ const Controller = props => {
 	const censorRef = useRef(null)
 
 	const [playing, setPlaying] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0)
@@ -57,7 +58,6 @@ const Controller = props => {
 	const video = {
 
 		// state
-
 		playing,
 		volume,
 		muted,
@@ -83,8 +83,10 @@ const Controller = props => {
 			setVolumeState(volume)
 			setMuted(muted)
 			setPlaybackRate(playbackRate)
+			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
+
 			const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
@@ -240,16 +242,19 @@ const Controller = props => {
 
 			</Blank>
 
-			<ReactPlayer ref={ref} config={config} url={url}
+			{!isReady && <div className='loading-spinner'><Spinner/></div>}
+
+			<ReactPlayer
+				ref={ref}
+				config={config}
+				url={url}
 				onContextMenu={e => e.preventDefault()}
 
 				// constants
-
 				className='video'
 				progressInterval={30}
 
 				// state
-
 				playing={playing}
 				volume={volume}
 				muted={muted}
@@ -267,7 +272,6 @@ const Controller = props => {
 
 				onProgress={video.handleProgress}
 				onDuration={video.handleDuration}
-
 				// blank style
 			/>
 			<TimeBar>

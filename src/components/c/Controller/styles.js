@@ -1,6 +1,7 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import carat from 'assets/carat_white.svg'
+import logo from 'assets/hexborder.svg'
 
 const Style = styled.div`
 	width: 100%;
@@ -14,6 +15,15 @@ const Style = styled.div`
 		height: calc(100% - 50px) !important;
 		width: 100% !important;
 	}
+
+	& .loading-spinner{
+		position: fixed;
+		top: 30%;
+		left: 35%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 `
 
 export default Style
@@ -24,13 +34,7 @@ export const TimeBar = styled.div`
 
 	--timeline-start: 16rem;
 	--header-height: 50px;
-	/*
-	--dark-gray: #303030;
-	--light-gray: #4F4F4F;
-	--lighter-gray: #565656;
-	color: #5F5F5F; */
 
-	/* position: relative; */
 	height: var(--header-height);
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
@@ -97,18 +101,6 @@ export const TimeBar = styled.div`
 					height: 100%;
 					background-color: transparent;
 				}
-/*
-				& #time-indicator {
-					position: absolute;
-					float: left;
-					top: 0px;
-					left: ${props => props.played * 100}%;
-					margin: 0px;
-					width: 2px;
-					height: 100vh;
-					background-color: red;
-					z-index: 20;
-				} */
 			}
 		}
 
@@ -210,8 +202,6 @@ export const ToggleCarat = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* background: url(${carat}) center no-repeat; */
-	/* background-size: contain; */
 	padding: 0;
 	background-color: var(--navy-blue);
 	z-index: 20;
@@ -237,4 +227,29 @@ export const Subtitles = styled.div`
 	z-index: 20;
 	width: 100%;
 	text-align: center;
+`
+
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Spinner = styled.div`
+	background: url(${logo})  no-repeat;
+	background-size: cover;
+	width: 15rem;
+	height: 15rem;
+
+	/* position: fixed;
+	top: 30%;
+	left: 30%;
+	display: flex;
+	align-items: center;
+	justify-content: center; */
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `
