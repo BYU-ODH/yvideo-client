@@ -14,23 +14,52 @@ const TrackEditorSideMenu = props => {
 		index,
 		updateEvents,
 		closeSideEditor,
-		subs,
 		handleEditCensor,
 		handleCensorRemove,
 		handleAddCensor,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		videoLength,
 	} = props
-
-	console.log(subs)
 
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
-
 	useEffect(() => {
 		setEvent(singleEvent)
-	}, [index, event])
+	}, [index, event, singleEvent])
 
+	const handleEditEventBTimeChange = (e) => {
+		document.getElementById(`sideTabMessage`).style.color=`red`
+		let number = parseFloat(e.target.value)
+		const cEvent = event
+		const layer = cEvent.layer
+
+		if(isNaN(number))
+			number = 0
+
+		number = number / videoLength * 100
+
+		cEvent.start = number
+
+		setEvent(cEvent)
+		updateEvents(index, cEvent, layer)
+	}
+
+	const handleEditEventETimeChange = (e) => {
+		document.getElementById(`sideTabMessage`).style.color=`red`
+		let number = parseFloat(e.target.value)
+		const cEvent = event
+		const layer = cEvent.layer
+
+		if(isNaN(number))
+			number = 0
+
+		number = number / videoLength * 100
+		cEvent.end = number
+
+		setEvent(cEvent)
+		updateEvents(index, cEvent, layer)
+	}
 
 	const handleSaveComment = () => {
 		const ind = index
@@ -72,10 +101,25 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
+	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
+	const end = (event.end / 100 * videoLength).toFixed(3) || undefined
+
 	return (
 		<Style>
 			<div>
-				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+				<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+				<>
+					<div className='center'>
+						<label>Start</label>
+						<label>End</label>
+					</div>
+					<div className='center'>
+						<input type='text' className='sideTabInput' value={`${parseFloat(start).toFixed(0)}`} onChange={e => handleEditEventBTimeChange(e)}/>
+						<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)}/>
+					</div>
+					<br/>
+				</>
+
 			</div>
 			{
 				event.type &&

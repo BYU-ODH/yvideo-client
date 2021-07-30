@@ -558,10 +558,8 @@ const VideoEditor = props => {
 
 					<>
 						<div className='breadcrumbs'>
-							{/* <span>Events</span> */}
 							{ showSideEditor &&
 								<>
-									{/* <span className='carat'></span> */}
 									<>
 										<span className='current'>{allEvents !== []? `${checkSideBarTitle()}` : ``}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
