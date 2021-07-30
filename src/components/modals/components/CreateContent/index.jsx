@@ -144,7 +144,7 @@ export default class CreateContent extends PureComponent {
 						}
 						<label>
 							<span>Display Title</span><br/>
-							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange} required/>
+							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange}/>
 						</label>
 						<label>
 							<span>Description</span><br/>

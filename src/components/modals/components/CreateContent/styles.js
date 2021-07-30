@@ -102,8 +102,8 @@ export const Button = styled.button`
 	cursor: pointer;
 	place-self: start;
 	background: transparent;
-	border-radius: 5px;
-	border: 1px solid lightgrey;
+	border-radius: 3px;
+	border: none
 	:hover {
 		border: 1px solid grey;
 	}
