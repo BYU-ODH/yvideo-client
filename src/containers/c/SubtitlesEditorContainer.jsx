@@ -61,9 +61,8 @@ const SubtitlesEditorContainer = props => {
 
 	useEffect(() => {
 		// console.log('use effecct')
-		if(!content.hasOwnProperty(id)){
+		if(!content.hasOwnProperty(id))
 			getContent(id)
-		}
 
 		if(content[id] !== undefined){
 			setCurrentContent(content[id])
@@ -87,9 +86,9 @@ const SubtitlesEditorContainer = props => {
 				if(!calledGetSubtitles){
 					getSubtitles(id)
 					setCalledGetSubtitles(true)
-				} else {
+				} else
 					setSubs(allSubs)
-				}
+
 			}
 		}
 
