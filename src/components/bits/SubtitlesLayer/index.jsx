@@ -1,30 +1,20 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
-
 import { useDrop } from 'react-dnd'
 import { Rnd } from 'react-rnd'
-
-import {
-	Icon, Style,
-} from './styles'
+import { Style } from './styles'
 
 // TODO: Copy styles from NewTrackEditor used by these components into this file
-
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
 const SubtitlesLayer = props => {
-
-	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
-
-	const { subs, sideEditor, updateSubs, activeEvent, width, videoLength, displayLayer} = props
+	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer} = props
 	const layerIndex = props.layer
-	const subIndex = parseInt(props.index)
 	const layerRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	const [isEditorOpen, setEditorOpen] = useState(false)
 	const [showError, setShowError] = useState(false)
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -60,6 +50,7 @@ const SubtitlesLayer = props => {
 		let isError = false
 		const cEvents = subs
 		const beginTimePercentage = d.x / layerWidth * 100
+		console.log(beginTimePercentage)
 		const endPercentage = beginTimePercentage + (event.end - event.start)
 
 		if(index===0 && index+1 === cEvents.length)
@@ -141,7 +132,6 @@ const SubtitlesLayer = props => {
 
 	// This opens the side tab editor
 	const toggleEditor = (layerIndex, subIndex) => {
-		// setEditorOpen(true)
 		sideEditor(layerIndex, subIndex)
 	}
 
@@ -156,17 +146,14 @@ const SubtitlesLayer = props => {
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
 				onDrag={(e, d) => handleDrag(d, event, index)}
-				onResize={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
+				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
 			>
-				{/* //TODO: Change the p tag to be an svg icon */}
 				{ event.type !== `Pause` ? (
-					// <p>{event.text} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
 					<p>{event.text}</p>
 				) : (
-				// <p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
 					<p>{event.type}</p>
 				)
 				}

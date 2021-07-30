@@ -3,7 +3,6 @@ import styled from 'styled-components'
 const Style = styled.div`
 	display: ${props => props.minimized !== false ? `initial` : `none`};
 	padding: 20px;
-	overflow-y: scroll;
 
 	& .allSubs {
 		margin-top: 1rem;
@@ -52,115 +51,6 @@ const Style = styled.div`
 		}
 	}
 
-	& .sideButton {
-		width: 50%;
-		margin-left: 25%;
-		border: none;
-		background-color: var(--light-blue);
-		height: 40px;
-		color: white;
-		border-radius: 5px;
-		transition: .5s ease-out;
-		cursor: pointer;
-
-		&:active {
-			border-radius: 5px;
-			border: none;
-			background-color: var(--navy-blue);
-		}
-	}
-
-	& #sideTabMessage{
-		margin-left: 10px;
-		font-size: 1.3rem;
-	}
-
-	& #sideTabExplanation{
-		margin-left: 10px;
-		font-size: 1.3rem;
-	}
-
-	& .censorMenu {
-		font-size: 1.5rem;
-		& label {
-			margin: 15px 5px 15px 15px;
-			width: 150px;
-			text-align: left;
-		}
-
-		& .tableHeader {
-			width: 90%;
-			margin-left: 10px;
-			& th {
-				width: 50px;
-			}
-		}
-	}
-
-	& .censorList {
-		width: 100%;
-		height: auto;
-		max-height: 30vh;
-		margin-left: 10px;
-		overflow-y: scroll;
-		position: relative;
-
-		& td {
-			display: inline-flex;
-			width: 50px !important;
-			margin: auto;
-			& input {
-				margin: auto;
-				width: 90% !important;
-				&::-webkit-inner-spin-button {
-					-webkit-appearance: none;
-					margin: 0;
-				}
-			}
-
-			& .trashIcon {
-				margin: auto;
-				cursor: pointer;
-			}
-		}
-
-		& #loader {
-			background-color: rgba(196, 196, 196, 0.7);
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-weight: bolder;
-		}
-	}
-
-	& .addCensor {
-		position: absolute;
-		float: left;
-		margin-left: 20px;
-	}
-
-	& .arrowDown {
-		width: 100%;
-		text-align: center;
-	}
-
-	& .subCard {
-		border-bottom: 1px solid var(--light-blue);
-		padding: 1rem;
-	}
-	& .subTitleCard {
-		font-size: 2rem;
-		border-bottom: 1px solid var(--light-blue);
-		padding: 1rem;
-		color: black;
-		margin-bottom: 1rem;
-	}
-
 	& .subActive {
     background-color: #eee;
 	}
@@ -172,7 +62,7 @@ const Style = styled.div`
 		& .subContainer {
 			display: flex;
 			justify-content: space-evenly;
-			padding: 0.8rem 0;
+			padding: 1rem 0;
 
 			:hover {
 				background-color: #eee;
@@ -216,7 +106,7 @@ export const Icon = styled.div`
   width: 20px;
   height: 16px;
 	margin-left: 0.2rem;
-	margin-top: -0.8rem;
+	margin-top: -1rem;
 	border-radius: 5px;
 	position: relative;
 	z-index: 1000;
