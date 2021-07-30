@@ -249,7 +249,6 @@ const Controller = props => {
 
 				onPlay={video.handlePlay}
 				onPause={video.handlePause}
-
 				onProgress={video.handleProgress}
 				onDuration={video.handleDuration}
 				// blank style
