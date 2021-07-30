@@ -15,13 +15,6 @@ const TrackEditorSideMenu = props => {
 		updateEvents,
 		videoLength,
 		closeSideEditor,
-		isSub,
-		updateSubs,
-		subs,
-		changeSubIndex,
-		addSub,
-		subLayer,
-		updateTitle,
 		handleEditCensor,
 		handleCensorRemove,
 		handleAddCensor,
@@ -31,16 +24,11 @@ const TrackEditorSideMenu = props => {
 
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
-	const [subText, setSubText] = useState([])
 	useEffect(() => {
 		setEvent(singleEvent)
-	}, [index, event])
+	}, [index, event, singleEvent])
 
 	const handleEditEventBTimeChange = (e) => {
-		if (isSub){
-			editSub(`beg`,e.target.value,subText)
-			return
-		}
 		document.getElementById(`sideTabMessage`).style.color=`red`
 		let number = parseFloat(e.target.value)
 		const cEvent = event
@@ -58,10 +46,6 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditEventETimeChange = (e) => {
-		if (isSub){
-			editSub(`end`,e.target.value,subText)
-			return
-		}
 		document.getElementById(`sideTabMessage`).style.color=`red`
 		let number = parseFloat(e.target.value)
 		const cEvent = event
@@ -117,26 +101,6 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
-	const editSub = (side, time, value,layer) => {
-
-		const sub = {...event}
-		if (side === `beg`)
-			sub.start = time / videoLength * 100
-		else if(side === `end`)
-			sub.end = time / videoLength * 100
-		setSubText(value)
-		try{
-			if(value.target)
-				sub.text = value.target.value
-
-		}catch(error){
-			console.log(error)
-		}
-
-		setEvent(sub)
-		updateSubs(index,sub,layer)
-	}
-
 	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
 	const end = (event.end / 100 * videoLength).toFixed(3) || undefined
 
@@ -144,33 +108,17 @@ const TrackEditorSideMenu = props => {
 		<Style>
 			<div>
 				<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
-				{isSub ? (
-					<>
-						<div className='center'>
-							<label>Title</label>
-						</div>
-						<div className='center'>
-							<input type='text' className='sideTabInput' style={{margin: `0px`, width: `100%`}} value={subs[subLayer].title} onChange={e => {
-								updateTitle(e.target.value)
-							}
-							}/>
-						</div>
-
-					</>
-				):``}
-				{!isSub ? (
-					<>
-						<div className='center'>
-							<label>Start</label>
-							<label style={{ visibility: `${event.type !== `Pause` ? `visible` : `hidden`}`}}>End</label>
-						</div>
-						<div className='center'>
-							<input type='text' className='sideTabInput' value={`${parseFloat(start).toFixed(0)}`} onChange={e => handleEditEventBTimeChange(e)}/>
-							<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)} style={{ visibility: `${event.type !== `Pause` ? `visible` : `hidden`}`}}/>
-						</div>
-						<br/>
-					</>
-				):``}
+				<>
+					<div className='center'>
+						<label>Start</label>
+						<label>End</label>
+					</div>
+					<div className='center'>
+						<input type='text' className='sideTabInput' value={`${parseFloat(start).toFixed(0)}`} onChange={e => handleEditEventBTimeChange(e)}/>
+						<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)}/>
+					</div>
+					<br/>
+				</>
 
 			</div>
 			{ event.type === `Comment` ? (
@@ -235,54 +183,6 @@ const TrackEditorSideMenu = props => {
 			<br/>
 			<p id='sideTabMessage'></p>
 			<p id='sideTabExplanation'></p>
-			{
-				isSub ?(
-					<div style={{overflowY:`scroll`, height:`40vh`}}>
-						<p className={`subTitleCard`} >All Subtitles</p>
-						<table>
-							<thead>
-								<tr>
-									<td>
-										<div style={{width:`8rem`}}>
-											<label>Start</label>
-										</div>
-									</td>
-									<td>
-										<div style={{width:`8rem`}}>
-											<label>End</label>
-										</div>
-									</td>
-									<td>
-										<div style={{width:`8rem`}}>
-											<label>Text</label>
-										</div>
-									</td>
-								</tr>
-							</thead>
-						</table>
-						<table>
-							<tbody>
-								{subs[subLayer][`content`].map((sub,ind)=>(
-									<tr style={{width: `100%`}} className={`${ind === index ? `subActive`:``}`} key={ind}>
-										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer)}/>
-										</td>
-										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `7rem`}} type='number' value={`${(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer)}/>
-										</td>
-										<td>
-											<input onClick={()=>changeSubIndex(ind)} style={{width: `14rem`}} type='text' value={sub.text} onChange={value=>{
-												editSub(null,null,value,subLayer)
-											}} />
-										</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-						<Icon src={plus} onClick={()=>addSub(null,subLayer)} />
-					</div>
-				) :``
-			}
 		</Style>
 	)
 }
