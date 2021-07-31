@@ -3,9 +3,9 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
 
-import { EventsContainer } from 'containers'
+import { EventsContainer, SubtitlesContainer } from 'containers'
 
 import { CensorDnD } from 'components/bits'
 
