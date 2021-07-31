@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Prompt } from 'react-router'
 
-import Style, { Timeline, EventList, AnnotationMessage, PlusIcon } from './styles'
+import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './styles'
 
 import { Rnd } from 'react-rnd'
 
@@ -154,12 +154,6 @@ const VideoEditor = props => {
 		setVideoLength(duration)
 	}
 
-	// const eventDropHandler = (item, index) => {
-	// 	const newStart = videoCurrentTime * 100 / videoLength
-	// 	addEventToLayer(item, index, newStart)
-	// 	setBlock(true)
-	// }
-
 	const addEventHandler = (item, index) => {
 		const newStart = videoCurrentTime * 100 / videoLength
 		addEventToLayer(item, index, newStart)
@@ -171,8 +165,6 @@ const VideoEditor = props => {
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
-
-		// console.log('ADDING NEW EVENT')
 		const matchingEvent = filterValue(events, `type`, item)
 
 		const eventObj = {
@@ -432,6 +424,7 @@ const VideoEditor = props => {
 			<DndProvider backend={Backend}>
 
 				<span style={{ zIndex: 0 }}>
+
 					<Controller
 						className='video'
 						url={props.viewstate.url}
@@ -448,6 +441,7 @@ const VideoEditor = props => {
 						setActiveCensorPosition = {setActiveCensorPosition}
 					>
 					</Controller>
+
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 						<section>
@@ -456,7 +450,6 @@ const VideoEditor = props => {
 								{layers.map((layer, index) => (
 									<div className={`layer`} key={index}>
 										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
-											{/* <div>{layer[index]}</div> */}
 											<EventCard event={events[index]} key={index}/>
 											<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
 										</div>
@@ -478,6 +471,7 @@ const VideoEditor = props => {
 								))}
 							</div>
 						</section>
+
 						<div className='zoom-controls'>
 							{/* ADD ZOOM ICON */}
 							<div className='zoom-factor' id = 'zoom-factor'
@@ -496,6 +490,7 @@ const VideoEditor = props => {
 								></Rnd>
 								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
 							</div>
+
 							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
 
 								<div style={{ width: `90%`, height: `100%`, display: `flex`, marginLeft: `5%` }}>
@@ -527,17 +522,20 @@ const VideoEditor = props => {
 										onMouseEnter={e => handleShowTip(`te-scroll-end`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
 										onMouseLeave={e => toggleTip()}><img src={rrIcon}/></span>
 								</div>
+
 								<div id={`time-indicator-container`}>
 									<div id={`layer-time-indicator`}>
 										<span id={`layer-time-indicator-line`}></span>
 									</div>
 								</div>
+
 							</div>
 						</div>
 					</Timeline>
 
 				</span>
-				<EventList minimized={eventListMinimized}>
+
+				<EventEditor minimized={eventListMinimized}>
 					<header>
 						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
@@ -558,10 +556,8 @@ const VideoEditor = props => {
 
 					<>
 						<div className='breadcrumbs'>
-							<span>Events</span>
 							{ showSideEditor &&
 								<>
-									<span className='carat'></span>
 									<>
 										<span className='current'>{allEvents !== []? `${checkSideBarTitle()}` : ``}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
@@ -569,6 +565,7 @@ const VideoEditor = props => {
 								</>
 							}
 						</div>
+
 						{ showSideEditor !== false && eventListMinimized !== true ? (
 							<TrackEditorSideMenu
 								singleEvent={allEvents[eventToEdit]}
@@ -588,12 +585,9 @@ const VideoEditor = props => {
 							</>
 						)}
 					</>
-
-					{/* :
-						null
-					} */}
-				</EventList>
+				</EventEditor>
 			</DndProvider>
+
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
 					<img src={closeIcon} width='20' height='20' onClick={ e => setSaved(false)}/>

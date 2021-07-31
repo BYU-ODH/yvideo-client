@@ -10,6 +10,7 @@ const Style = styled.div`
 	background-color: white;
 	overflow: hidden;
 
+	width: 100% ;
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
 	z-index: 0;
@@ -17,9 +18,7 @@ const Style = styled.div`
 	display: flex;
 
 	& > span {
-
 		flex: 1;
-
 		display: flex;
 		flex-direction: column;
 	}
@@ -46,16 +45,17 @@ export const Timeline = styled.div`
 
 	position: relative;
 	height: ${props => props.minimized ? `0vh` : `30vh`};
+	width: 100%;
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
-  	background-color: transparent;
-	z-index: 0;
+  background-color: transparent;
+	/* z-index: 0; */
 	overflow-y: scroll;
 	overflow-x: hidden;
 
 	& .zoom-controls {
-		width: calc(100% - 35rem);
+		width: 100%;
 		height: 40px;
 		display: flex;
 		left: 0px;
@@ -102,8 +102,6 @@ export const Timeline = styled.div`
 				& .zoom-scroll-indicator {
 					position: absolute;
 					min-width: 5%;
-					/* width: ${props => props.zoom !== 0 ? `${props.zoom}%` : `100%`} !important; */
-					/* height: 100% !important; */
 					background-color: var(--light-blue);
 					border-radius: 20px;
 				}
@@ -112,6 +110,7 @@ export const Timeline = styled.div`
 			& #time-indicator-container {
 				height: 27vh;
 				width: calc(100% - 162px);
+				/* width: calc(100% - 5rem) !important; */
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
@@ -120,6 +119,7 @@ export const Timeline = styled.div`
 
 				& #layer-time-indicator {
 					height: 10px;
+					width:100%;
 					position: absolute;
 					background-color: transparent;
 
@@ -129,11 +129,8 @@ export const Timeline = styled.div`
 						background-color: transparent;
 						border-right: 2px solid red;
 						z-Index: 20;
-						/* border-right: 2px dotted red; */
 					}
 				}
-
-
 			}
 		}
 	}
@@ -161,7 +158,6 @@ export const Timeline = styled.div`
 		height: 46px;
 		display: inline-flex;
 		align-items: center;
-		/* justify-content: flex-start; */
 		justify-content: space-between;
 		box-sizing: border-box;
 		position: relative;
@@ -169,28 +165,12 @@ export const Timeline = styled.div`
 		border-bottom: 1px solid;
 		border-right: 1px solid;
 		border-color: white;
-		/* border-right: 1px solid var(--light-blue); */
 		transition: .5s;
 		background-color: var(--navy-blue);
 
 		& .plusIcon{
 			padding-right: 2rem;
 		}
-
-		/* & p {
-			padding-left: 2rem;
-			color: black;
-			font-size: 1.5rem;
-			& .layer-delete {
-				margin: auto auto -3px 15px;
-				opacity: 0.3;
-
-				transition: .5s ease;
-				:hover {
-					opacity: 1;
-				}
-			}
-		} */
 	}
 `
 export const HandleIcon = styled.div `
@@ -209,8 +189,6 @@ export const Icon = styled.div`
 `
 
 export const PlusIcon = styled.div`
-	/* background-color: var(--navy-blue); */
-	/* color: white; */
   background: url(${plusIcon}) center no-repeat;
   width: 20px;
   height: 15px;
@@ -234,16 +212,19 @@ export const NewLayer = styled.button`
 	outline: none;
 	cursor: pointer;
 `
-export const EventList = styled.div`
+export const EventEditor = styled.div`
 	--minimized: ${props => props.minimized};
 
-	width: ${props => props.minimized !== false ? `4rem` : `35rem`};
-	height: calc(100vh - var(--navbar-height));
+	width: ${props => props.minimized !== false ? `4rem` : `30%`};
+	/* width: 4rem; */
+	height: calc(68.5vh - var(--navbar-height)); // 100vh
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
 	transition: .5s;
 	z-index: 20;
 	overflow: hidden;
 	border-left: 1px solid black;
+	position: absolute;
+	right: 0%;
 
 	& > header {
 		height: 5rem;
@@ -261,7 +242,6 @@ export const EventList = styled.div`
 		& > .save {
 			position: relative;
 			float: right;
-			// margin-right: 20px;
 			width: 8rem;
 			height: 100%;
 			display: flex;
@@ -306,7 +286,7 @@ export const EventList = styled.div`
 
 		box-sizing: border-box;
 
-		border-bottom: 1px solid #555;
+		/* border-bottom: 1px solid #555; */
 
 		color: black;
 		font-weight: 500;
@@ -339,7 +319,7 @@ export const EventList = styled.div`
 				flex: 1;
 				justify-content: flex-start;
 				padding-left: 2rem;
-				border-left: 1px solid #555;
+				/* border-left: 1px solid #555; */
 			}
 		}
 	}
@@ -401,7 +381,6 @@ export const AnnotationMessage = styled.div`
 	background-color: white;
 	display: flex;
 	flex-direction: column;
-	/* border: 5px solid var(--light-blue); */
 	border-radius: 25px;
 
 	transition: 1s ease;
