@@ -11,7 +11,7 @@ import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 
-import { Controller, TrackLayer } from 'components'
+import { Controller, TrackLayer, VideoContainer } from 'components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -424,8 +424,7 @@ const VideoEditor = props => {
 			<DndProvider backend={Backend}>
 
 				<span style={{ zIndex: 0 }}>
-
-					<Controller
+					<VideoContainer
 						className='video'
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
@@ -441,8 +440,7 @@ const VideoEditor = props => {
 						setActiveCensorPosition = {setActiveCensorPosition}
 						editorType={`video`}
 					>
-					</Controller>
-
+					</VideoContainer>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 						<section>

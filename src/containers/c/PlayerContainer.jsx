@@ -27,6 +27,7 @@ const PlayerContainer = props => {
 		toggleModal,
 		toggleTip,
 		setBreadcrumbs,
+		events,
 	} = props
 
 	const params = useParams()
@@ -196,7 +197,7 @@ const PlayerContainer = props => {
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-		// console.log(`seeking`, time, ` seconds`)
+		console.log(`seeking`, time, ` seconds`)
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
@@ -362,6 +363,7 @@ const PlayerContainer = props => {
 		clipTime,
 		isLandscape,
 		hasPausedClip,
+		events,
 	}
 
 	const handlers = {
@@ -398,7 +400,7 @@ const PlayerContainer = props => {
 	return <Player viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStore }) => ({
+const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStore, interfaceStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	userId: authStore.user.id,
@@ -407,6 +409,7 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 	resourceIdStream: resourceStore.resourceIdStreamKey,
 	subtitles: subtitlesStore.cache,
 	subtitlesContentId: subtitlesStore.contentId,
+	events: interfaceStore.events,
 })
 
 const mapDispatchToProps = {

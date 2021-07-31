@@ -181,6 +181,13 @@ export const Blank = styled.div`
 	color: white;
 	z-index: 15;
 	}
+	& #blankBox{
+		position:absolute;
+		width: 100%;
+		height: 100%;
+		background-color: black;
+		z-index: 100;
+	}
 `
 export const Censor = styled.div`
 	position: absolute;
@@ -233,12 +240,23 @@ export const ToggleCarat = styled.div`
 `
 export const Subtitles = styled.div`
 	position: absolute;
-	height: 10%;
+	height: 80px;
 	bottom:0;
-	background-color: rgba(0,0,0,0.5);
 	font-size: 1.5rem;
 	color: #ffffff;
 	z-index: 20;
 	width: 100%;
 	text-align: center;
+	& h3 {
+		background-color: rgba(0,0,0,0.5);
+		padding: 3px;
+		font-size: 1.8rem;
+		text-align: center;
+		margin: auto;
+		width: auto;
+		height: auto;
+		max-width: 60%;
+		line-height: 1.5;
+		letter-spacing: .7px;
+	}
 `
