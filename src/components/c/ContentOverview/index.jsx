@@ -86,6 +86,7 @@ export default class ContentOverview extends PureComponent {
 						{editing ||
 						<>
 							<StyledLink to={`/videoeditor/${content.id}`}>Video Editor</StyledLink>
+							<StyledLink to={`/subtileeditor/${content.id}`}>Subtitle Editor</StyledLink>
 							<StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink>
 						</>
 						}

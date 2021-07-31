@@ -3,9 +3,9 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
 
-import { EventsContainer } from 'containers'
+import { EventsContainer, SubtitlesContainer } from 'containers'
 
 import { CensorDnD } from 'components/bits'
 
@@ -29,6 +29,7 @@ const Controller = props => {
 		eventToEdit,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		editorType,
 	} = props
 
 	const ref = useRef(null)
@@ -45,6 +46,7 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
@@ -143,6 +145,9 @@ const Controller = props => {
 			setCommentPosition(position)
 
 		},
+		handleShowSubtitle: (value) => {
+			setSubtitleText(value)
+		},
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
@@ -221,7 +226,9 @@ const Controller = props => {
 				):``}
 
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-
+				{subtitleText !== `` ?(
+					<Subtitles type={editorType}>{subtitleText}</Subtitles>
+				) :``}
 				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
 			</Blank>
 
@@ -230,7 +237,7 @@ const Controller = props => {
 
 				// constants
 
-				className='video'
+				className={editorType}
 				progressInterval={30}
 
 				// state
@@ -289,6 +296,10 @@ const Controller = props => {
 				handleCensorPosition={video.handleCensorPosition}
 				handleCensorActive={video.handleCensorActive}
 			></EventsContainer>
+			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
+				handleShowSubtitle={video.handleShowSubtitle}
+			>
+			</SubtitlesContainer>
 		</Style>
 	)
 }

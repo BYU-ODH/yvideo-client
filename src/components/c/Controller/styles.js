@@ -13,6 +13,16 @@ const Style = styled.div`
 		width: 70% !important;
 	}
 
+	& .subtitle {
+		height: calc(100% - 50px) !important;
+		width:  100% !important;
+	}
+
+	& .clip {
+		height: calc(100% - 50px) !important;
+		width:  100% !important;
+	}
+
 	& .timeBar {
 		/* width: calc(100% + 35rem) !important; */
 		/* justify-content: space-between; */
@@ -214,4 +224,17 @@ export const ToggleCarat = styled.div`
 	&.minimized {
 		transform: rotate(90deg);
 	}
+`
+export const Subtitles = styled.div`
+	position: absolute;
+	height: 10%;
+	bottom:0;
+	background-color: rgba(0,0,0,0.5);
+	font-size: 1.5rem;
+	color: #ffffff;
+	z-index: 20;
+	// width: 100%;
+	width: ${props => props.type === `video` ? `70%` : `100%`};
+	text-align: center;
+	white-space: pre-line;
 `

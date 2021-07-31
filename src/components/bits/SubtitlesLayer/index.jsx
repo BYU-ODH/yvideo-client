@@ -1,30 +1,21 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
-
 import { useDrop } from 'react-dnd'
 import { Rnd } from 'react-rnd'
-
-import {
-	Icon, Style,
-} from './styles'
+import { Style } from './styles'
 
 // TODO: Copy styles from NewTrackEditor used by these components into this file
-
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
 const SubtitlesLayer = props => {
-
-	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
-
-	const { subs, onDrop, sideEditor, updateSubs, activeEvent, width, minimized, videoLength, displayLayer} = props
+	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer} = props
 	const layerIndex = props.layer
-	const subIndex = parseInt(props.index)
 	const layerRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	const [isEditorOpen, setEditorOpen] = useState(false)
+	const [showError, setShowError] = useState(false)
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
@@ -32,13 +23,13 @@ const SubtitlesLayer = props => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
-		 else if (width === 0)
+		else if (width === 0)
 			setLayerWidth(initialWidth)
-		 else
+		else
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
- 	}, [width])
+	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
@@ -51,54 +42,96 @@ const SubtitlesLayer = props => {
 	// Drag and Drop event to the layer
 	const [, dropRef] = useDrop({
 		accept: `subtitle-event`,
-		drop: onDrop,
+		// drop: onDrop,
 		hover: (item, monitor) => {},
 	})
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
+		let isError = false
 		const cEvents = subs
 		const beginTimePercentage = d.x / layerWidth * 100
+		console.log(beginTimePercentage)
 		const endPercentage = beginTimePercentage + (event.end - event.start)
 
-		// LOGIC TO CHANGE THE TIME @params beginTime, end
-		cEvents[index].start = beginTimePercentage
-		cEvents[index].end = endPercentage
-
-		if(cEvents[index].end > 100)
-			cEvents[index].end = 100
-
-		if(cEvents[index].start < 0)
-			cEvents[index].start = 0
-		// call handler from parent
-		updateSubs(index, cEvents[index],layerIndex)
-	}
-	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
-		const cEvents = subs
-		const difference = delta.width / layerWidth * 100
-		if(direction === `right`){
-			cEvents[index].end += difference
-
+		if(index===0 && index+1 === cEvents.length)
+			isError = false
+		else if(index+1 === cEvents.length) {
 			if(cEvents[index].end > 100)
 				cEvents[index].end = 100
 
-		} else {
-			cEvents[index].start -= difference
+			if(beginTimePercentage < cEvents[index-1].end) {
+				setShowError(true)
+				isError = true
+			}
+		} else if(index === 0) {
+			if(cEvents[index].start < 0)
+				cEvents[index].start = 0
 
-			// console.log(cEvents[index])
+			if(endPercentage > cEvents[index+1].start){
+				setShowError(true)
+				isError = true
+			}
+		} else if(endPercentage > cEvents[index+1].start || beginTimePercentage < cEvents[index-1].end) {
+			setShowError(true)
+			isError = true
+		}
+
+		if(!isError) {
+			// LOGIC TO CHANGE THE TIME @params beginTime, end
+			setShowError(false)
+			cEvents[index].start = beginTimePercentage
+			cEvents[index].end = endPercentage
+			updateSubs(index, cEvents[index],layerIndex)
+		}
+	}
+	// Resize within the layer
+	const handleResize = (direction, ref, delta, event, index, e ) => {
+		let isError = false
+		const cEvents = subs
+		const difference = delta.width / layerWidth * 100
+		if(direction === `right`){
+			if(cEvents[index].end > 100)
+				cEvents[index].end = 100
+
+			if(index===0 && index+1 === cEvents.length)
+				cEvents[index].end += difference
+			else {
+				if(index+1 === cEvents.length)
+					cEvents[index].end += difference
+				else if(cEvents[index].end+difference > cEvents[index+1].start) {
+					setShowError(true)
+					isError = true
+				} else
+					cEvents[index].end += difference
+			}
+		} else {
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > 100){
 				cEvents[index].start = 99
 				cEvents[index].end = 100
 			}
+
+			if(index===0 && index+1 === cEvents.length)
+				cEvents[index].start -= difference
+			else {
+				if(index===0)
+					cEvents[index].start -= difference
+				else if(cEvents[index].start-difference < cEvents[index-1].end) {
+					setShowError(true)
+					isError = true
+				} else
+					cEvents[index].start -= difference
+			}
 		}
-		updateSubs(index, cEvents[index],layerIndex)
+		if(!isError) {
+			setShowError(false)
+			updateSubs(index, cEvents[index],layerIndex)
+		}
 	}
 
 	// This opens the side tab editor
 	const toggleEditor = (layerIndex, subIndex) => {
-		// setEditorOpen(true)
 		sideEditor(layerIndex, subIndex)
 	}
 
@@ -112,17 +145,16 @@ const SubtitlesLayer = props => {
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
-				onDragStop={(e, d) => handleDrag(d, event, index)}
+				onDrag={(e, d) => handleDrag(d, event, index)}
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
 			>
-				{/* //TODO: Change the p tag to be an svg icon */}
 				{ event.type !== `Pause` ? (
-					<p>{event.text} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
+					<p>{event.text}</p>
 				) : (
-					<p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
+					<p>{event.type}</p>
 				)
 				}
 			</Rnd>
@@ -131,7 +163,7 @@ const SubtitlesLayer = props => {
 
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
@@ -139,7 +171,8 @@ const SubtitlesLayer = props => {
 							subs !== undefined ? (
 								<>
 									{subs.map((event, index) => (
-										<div key={index}>
+										<div key={index}
+										>
 											{printEvents(event, index)}
 										</div>
 									))}
