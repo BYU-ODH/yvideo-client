@@ -79,7 +79,7 @@ const Style = styled.div`
 
 	& .delete {
 		background-color: #ffffff;
-		margin-top: 18%;
+		margin-top: 15%;
 		margin-left: 32%;
 		margin-right: 32%;
 		margin-bottom: 0px;

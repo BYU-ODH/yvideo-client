@@ -542,7 +542,10 @@ const SubtitleEditor = props => {
 		setSubModalMode(``)
 
 	}
-	const handleDeleteSubLayer = (index) =>{
+	const handleDeleteSubLayer = () =>{
+		setSubModalVisible(false)
+
+		const index = subLayerToEdit
 		closeSideEditor()
 		setSideEditor(false)
 		const tempSubs = [...subtitles]
@@ -705,6 +708,7 @@ const SubtitleEditor = props => {
 												setSubModalVisible(true)
 												setSubModalMode(`delete`)
 												setDeleteTitle(sub.title !== `` ? sub.title : `No Title`)
+												setSubLayerToEdit(index)
 											}}/>
 										</div>
 										<SubtitlesLayer
