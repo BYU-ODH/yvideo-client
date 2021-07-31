@@ -13,13 +13,13 @@ const TrackEditorSideMenu = props => {
 		singleEvent,
 		index,
 		updateEvents,
+		videoLength,
 		closeSideEditor,
 		handleEditCensor,
 		handleCensorRemove,
 		handleAddCensor,
 		activeCensorPosition,
 		setActiveCensorPosition,
-		videoLength,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)

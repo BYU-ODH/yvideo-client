@@ -439,6 +439,7 @@ const VideoEditor = props => {
 						eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						editorType={`video`}
 					>
 					</Controller>
 

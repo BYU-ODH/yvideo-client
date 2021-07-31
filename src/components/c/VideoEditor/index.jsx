@@ -11,7 +11,11 @@ import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 
+<<<<<<< HEAD
 import { Controller, TrackLayer, VideoContainer } from 'components'
+=======
+import { Controller, TrackLayer } from 'components'
+>>>>>>> merge with develop-version-2
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -653,10 +657,6 @@ const VideoEditor = props => {
 							</>
 						)}
 					</>
-
-					{/* :
-						null
-					} */}
 				</EventList>
 			</DndProvider>
 			<>

@@ -676,6 +676,7 @@ const SubtitleEditor = props => {
 						getVideoTime={setCurrentTime}
 						minimized={timelineMinimized}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						editorType={`subtitle`}
 					>
 					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>

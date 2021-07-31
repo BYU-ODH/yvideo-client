@@ -29,6 +29,7 @@ const Controller = props => {
 		eventToEdit,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		editorType,
 	} = props
 
 	const ref = useRef(null)
@@ -49,7 +50,6 @@ const Controller = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
-	const [subtitleText, setSubtitleText] = useState(``)
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
@@ -228,7 +228,7 @@ const Controller = props => {
 
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
 				{subtitleText !== `` ?(
-					<Subtitles>{subtitleText}</Subtitles>
+					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
 				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
 
@@ -243,7 +243,8 @@ const Controller = props => {
 				onContextMenu={e => e.preventDefault()}
 
 				// constants
-				className='video'
+
+				className={editorType}
 				progressInterval={30}
 
 				// state
