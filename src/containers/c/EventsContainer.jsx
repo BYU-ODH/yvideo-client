@@ -22,7 +22,7 @@ const EventsContainer = props => {
 	} = props
 
 	const [eventArray, setEventArray] = useState([])
-	const [force, setForce] = useState(false)
+
 	// testing subitles class
 	useEffect(() => {
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.

@@ -158,7 +158,6 @@ const TrackLayer = props => {
 						}
 					</div>
 				</div>
-				{/* <div id='layer-message' ></div> */}
 			</Style>
 		</>
 	)

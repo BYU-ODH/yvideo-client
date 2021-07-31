@@ -22,7 +22,7 @@ import helpIcon from 'assets/te-help-circle-white.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
 
-import plus from 'assets/plus-square.svg'
+import plus from 'assets/plus-circle.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -323,6 +323,7 @@ const ClipEditor = props => {
 						// eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						editorType={`clip`}
 					>
 					</Controller>
 					<Timeline zoom={scrollBarWidth}>
@@ -441,7 +442,7 @@ const ClipEditor = props => {
 									}
 								</tbody>
 							</table>
-							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
+							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/>
 							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
 

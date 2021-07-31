@@ -79,12 +79,13 @@ const CreateContentContainer = props => {
 				setHide(true)
 		}
 
-		if(blockLeave) {
+		console.log(selectedResource)
+
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}

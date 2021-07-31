@@ -25,7 +25,7 @@ export const Style = styled.div`
 	}
 
 	& .events {
-		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : (`calc(100%)`)};
+		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : `calc(100%)`};
 		border-bottom: 1px dashed var(--light-blue);
 		display: flex;
 		height: 45px;
