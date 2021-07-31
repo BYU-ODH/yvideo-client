@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components'
+import logo from 'assets/hexborder.svg'
 
 const Style = styled.div`
 	width: 100%;
@@ -250,13 +251,6 @@ export const Spinner = styled.div`
 	background-size: cover;
 	width: 15rem;
 	height: 15rem;
-
-	/* position: fixed;
-	top: 30%;
-	left: 30%;
-	display: flex;
-	align-items: center;
-	justify-content: center; */
 
 	animation: ${rotate} 2.5s ease-in-out infinite;
 `

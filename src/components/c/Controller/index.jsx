@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player'
 
 import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
-import { EventsContainer } from 'containers'
+import { EventsContainer, SubtitlesContainer } from 'containers'
 
 import { CensorDnD } from 'components/bits'
 
