@@ -32,6 +32,30 @@ export const Blank = styled.div`
 	width: 100%;
 	height: 100%;
 	top: 0px;
+	& .censorBox{
+	position: absolute;
+	transition-timing-function: linear;
+		& canvas {
+			width: 100%;
+			height: 100%;
+			background-color: transparent;
+			backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(30px)`};
+		}
+	}
+	& .comment{
+	position: absolute;
+	font-size: 2rem;
+	color: white;
+	z-index: 15;
+	}
+	& #blankBox{
+		position:absolute;
+		width: 100%;
+		height: 100%;
+		background-color: black;
+		z-index: 100;
+		top:0;
+	}
 `
 export const Comment = styled.div`
 	--x: ${props => props.commentX !== 0 ? `${props.commentX}%` : `0%`};
@@ -76,12 +100,12 @@ export const Subtitles = styled.div`
 `
 
 export const PlayButton = styled.img`
-	display: ${props => props.playing ? ('none') : ('block')}
+	display: ${props => props.playing ? `none` : `block`}
 	width: 15rem;
 	height: 15rem;
 	position: relative;
 	margin: auto;
-	top: ${props => props.isLandscape ? ('20%') : ('40%')};
+	top: ${props => props.isLandscape ? `20%` : `40%`};
 	cursor: pointer;
 	transition: 3s ease;
 	border-radius: 50%;

@@ -10,7 +10,7 @@ import { CensorDnD } from 'components/bits'
 
 import Position from './censorPosition'
 
-import {CurrentEvents, CensorChange} from './getCurrentEvents'
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -31,8 +31,9 @@ const VideoContainer = props => {
 		eventToEdit,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		subtitles,
 	} = props
-
+	console.log(subtitles)
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 	const censorRef = useRef(null)
@@ -89,7 +90,7 @@ const VideoContainer = props => {
 			setPlaybackRate(playbackRate)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-
+			const t0 = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 			// if(document.getElementById(`timeBarProgress`) !== undefined)
@@ -99,6 +100,29 @@ const VideoContainer = props => {
 			// setElapsed(playedSeconds)
 			const values = CurrentEvents(playedSeconds,events,duration)
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+			console.log(values.allEvents,playedSeconds,subtitles)
+			if(subtitles)
+				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
+
+			for (let y = 0; y < values.allEvents.length; y++){
+				switch(values.allEvents[y].type){
+				case `Mute`:
+					video.handleMute()
+					break
+				case `Pause`:
+					video.handlePause()
+					break
+				case `Skip`:
+					console.log(values.allEvents[y].end)
+					video.handleSeek(null,video.handleSeek(null,values.allEvents[y].end))
+					break
+				default:
+					break
+				}
+			}
+			const t1 = performance.now()
+			// console.log(`performance is ${t1-t0} milliseconds`)
 		},
 		handleDuration: duration => {
 			// console.log(`step 1`)
@@ -114,6 +138,7 @@ const VideoContainer = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
+			console.log(time)
 			let newPlayed = 0
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()
@@ -231,7 +256,7 @@ const VideoContainer = props => {
 	return (
 		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
 			{/* <Style> */}
-			<Blank blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed):console.log(``)} ref={videoRef}>
+			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed):console.log(``)} ref={videoRef}>
 				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				{activeCensorPosition !== -1 ? (
 					<CensorDnD
@@ -249,10 +274,6 @@ const VideoContainer = props => {
 				</div>
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
-				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-				{subtitleText !== `` ?(
-					<Subtitles>{subtitleText}</Subtitles>
-				) :``}
 			</Blank>
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}

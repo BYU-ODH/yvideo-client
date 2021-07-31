@@ -30,7 +30,6 @@ import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
 
 import helpIcon from 'assets/te-help-circle-white.svg'
-
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 const VideoEditor = props => {
 
@@ -40,8 +39,9 @@ const VideoEditor = props => {
 		eventsArray,
 		currentContent,
 		contentError,
+		subtitles,
 	} = props.viewstate
-
+	console.log(subtitles)
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
 
 	const events = [
@@ -119,7 +119,7 @@ const VideoEditor = props => {
 	const [isLoading,setIsLoading] = useState(false)
 	// refs
 	const controllerRef = useRef(null)
-
+	console.log(`111`)
 	useEffect(() => {
 		function handleResize() {
 			setZoomFactor(0)
@@ -475,7 +475,7 @@ const VideoEditor = props => {
 			return ``
 		}
 	}
-
+	console.log(subtitles)
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
@@ -495,6 +495,7 @@ const VideoEditor = props => {
 						eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						subtitles = {subtitles}
 					>
 					</VideoContainer>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>

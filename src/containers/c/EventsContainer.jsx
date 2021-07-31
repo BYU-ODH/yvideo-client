@@ -79,7 +79,9 @@ const EventsContainer = props => {
 				handleMute()
 				break
 			case `Pause`:
+
 				handlePause()
+
 				break
 			case `Comment`:
 				handleShowComment(element.comment, element.position)
