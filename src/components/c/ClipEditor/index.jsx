@@ -323,6 +323,7 @@ const ClipEditor = props => {
 						// eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						editorType={`clip`}
 					>
 					</Controller>
 					<Timeline zoom={scrollBarWidth}>

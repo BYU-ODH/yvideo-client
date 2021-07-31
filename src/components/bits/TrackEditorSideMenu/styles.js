@@ -5,24 +5,12 @@ const Style = styled.div`
 	padding: 20px;
 	overflow: scroll;
 
-	& .allSubs {
-		margin-top: 1rem;
-	}
-
 	& .closeEditor {
 		width: 2rem;
 		text-align: right;
 		cursor: pointer;
+		float: right;
 		margin-right: 10px;
-		margin-left: 90%;
-	}
-
-	& .title {
-		display: flex;
-
-		& .titleLabel {
-			width: 6rem;
-		}
 	}
 
 	& .center {
@@ -157,55 +145,11 @@ const Style = styled.div`
 		border-bottom: 1px solid var(--light-blue);
 		padding: 1rem;
 		color: black;
-		margin-bottom: 1rem;
 	}
-
 	& .subActive {
-    background-color: #eee;
+		background-color: var(--navy-blue);
+		color: white;
 	}
-	& .container {
-		display: flex;
-		flex-direction: column;
-		margin-top: ${props => props.ind === 0 ? `1rem` : ``};
-
-		& .subContainer {
-			display: flex;
-			justify-content: space-evenly;
-			padding: 0.5rem 0;
-
-			.hide {
-				display: block;
-			}
-
-			:hover {
-				background-color: #eee;
-				.hide {
-					display: block;
-				}
-			}
-
-			& .subText {
-				width: 18rem;
-				resize: none;
-			}
-
-			& .subStartEnd {
-				display: flex;
-				flex-direction: column;
-
-				& .subStart {
-					width: 7rem;
-					margin-button: 0.5rem;
-				}
-
-				& .subEnd {
-					width: 7rem;
-					margin-top: 0.5rem;
-				}
-			}
-		}
-	}
-
 	& .censorActive {
 		background-color: var(--navy-blue);
 		color: white;
@@ -217,17 +161,10 @@ const Style = styled.div`
 
 `
 export const Icon = styled.div`
+	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 15px;
-	margin-left: 0.5rem;
-	margin-top: -1rem;
-	display: none;
-
-
-	// :hover {
-	// 	display: ${props => props.index === 0 ? `block` : `none`};
-	// }
 `
 export const Help = styled.span`
 	width: 20px;

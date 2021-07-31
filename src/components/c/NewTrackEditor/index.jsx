@@ -836,6 +836,7 @@ const TrackEditor = props => {
 						eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						editorType={`video`}
 					>
 					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
