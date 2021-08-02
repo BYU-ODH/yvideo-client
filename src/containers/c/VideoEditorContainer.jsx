@@ -26,6 +26,9 @@ const VideoEditorContainer = props => {
 		toggleTip,
 		contentError,
 		setBreadcrumbs,
+		subtitles,
+		subtitlesContentId,
+		getSubtitles,
 	} = props
 
 	const {id} = useParams() // content id
@@ -33,13 +36,18 @@ const VideoEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
-
+	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
+	console.log(subtitles)
 	useEffect(() => {
 
 		if(!content.hasOwnProperty(id))
 			getContent(id)
 
 		if(content[id] !== undefined){
+			if(subtitlesContentId !== id && calledGetSubtitles === false){
+				getSubtitles(id)
+				setCalledGetSubtitles(true)
+			}
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
@@ -82,6 +90,7 @@ const VideoEditorContainer = props => {
 		url,
 		eventsArray,
 		contentError,
+		subtitles,
 	}
 
 	const handlers = {
@@ -104,6 +113,8 @@ const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
 	content: contentStore.cache,
 	streamKey: resourceStore.streamKey,
 	contentError: contentStore.errorMessage,
+	subtitles: subtitlesStore.cache,
+	subtitlesContentId: subtitlesStore.contentId,
 })
 
 const mapThunksToProps = {
@@ -116,6 +127,8 @@ const mapThunksToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
+	getSubtitles: subtitlesService.getSubtitles,
+
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(VideoEditorContainer)

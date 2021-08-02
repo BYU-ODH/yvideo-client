@@ -11,6 +11,8 @@ import { PlayerSubtitlesContainer } from 'containers'
 
 import Style, { Blank, Comment, Subtitles, Censor, PlayButton } from './styles'
 
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
+
 import Position from './censorPosition'
 
 import chevron from 'assets/player-chevron-left.svg'
@@ -54,6 +56,7 @@ export default class Player extends PureComponent {
 			clipTime,
 			isLandscape,
 			hasPausedClip,
+			events,
 		} = this.props.viewstate
 
 		const {
@@ -82,25 +85,49 @@ export default class Player extends PureComponent {
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
-			const test = performance.now()
-			// document.getElementById('time-dot').scrollIntoView()
-			const censorData = Position(censorPosition,playedSeconds,duration)
-			const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
-			this.censorRef.current.style.width = `${width}%`
-			const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
-			this.censorRef.current.style.height = `${height}%`
-			this.censorRef.current.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
-			this.censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
-			// setPlayed(played)
-			handleProgress({playedSeconds,played})
-			const test1 = performance.now()
+			const t0 = performance.now()
+			const subtitles = displaySubtitles
+			// if(document.getElementById(`timeBarProgress`) !== undefined)
+			// 	document.getElementById(`timeBarProgress`).value = `${played * 100}`
+			// if(document.getElementById(`time-dot`) !== undefined)
+			// 	document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+			// setElapsed(playedSeconds)
+			if(subtitles)
+				HandleSubtitle(playedSeconds,subtitles,0,duration)
+
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
 					setHasPausedClip(true)
 				}
 			}
-			// console.log(`Performance ${(test1-test).toFixed(2)}ms`)
+			if(!events) return
+			const values = CurrentEvents(playedSeconds,events,duration)
+			console.log(values.allEvents,playedSeconds)
+			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+			for (let y = 0; y < values.allEvents.length; y++){
+				switch(values.allEvents[y].type){
+				case `Mute`:
+					handleMuted()
+					break
+				case `Pause`:
+					if(!values.allEvents[y].active){
+						values.allEvents[y].active = true
+						handlePause()
+					}
+					break
+				case `Skip`:
+					console.log(values.allEvents[y].end)
+					handleSeekChange(null,values.allEvents[y].end)
+					break
+				default:
+					break
+				}
+			}
+			const t1 = performance.now()
+
+			console.log(`Performance ${(t1-t0).toFixed(2)}ms`)
 		}
 
 		// console.log(`%c Player component ${url}`, 'color:red;')
@@ -147,9 +174,12 @@ export default class Player extends PureComponent {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
-							<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
-							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id='subtitle-box'>{subtitleText}</h3></Subtitles>
-							<Censor ref={this.censorRef} active={censorActive}><canvas></canvas></Censor>
+							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id='subtitle'></h3></Subtitles>
+							<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
+							</div>
+							<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
+							</div>
+
 						</Blank>
 					</div>
 					<Transcript viewstate={this.props.viewstate} handlers={this.props.handlers}>

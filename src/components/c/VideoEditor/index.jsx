@@ -11,7 +11,7 @@ import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 
-import { Controller, TrackLayer } from 'components'
+import { Controller, TrackLayer, VideoContainer } from 'components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -30,7 +30,6 @@ import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
 
 import helpIcon from 'assets/te-help-circle-white.svg'
-
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 const VideoEditor = props => {
 
@@ -40,8 +39,9 @@ const VideoEditor = props => {
 		eventsArray,
 		currentContent,
 		contentError,
+		subtitles,
 	} = props.viewstate
-
+	console.log(subtitles)
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
 
 	const events = [
@@ -119,7 +119,7 @@ const VideoEditor = props => {
 	const [isLoading,setIsLoading] = useState(false)
 	// refs
 	const controllerRef = useRef(null)
-
+	console.log(`111`)
 	useEffect(() => {
 		function handleResize() {
 			setZoomFactor(0)
@@ -475,13 +475,13 @@ const VideoEditor = props => {
 			return ``
 		}
 	}
-
+	console.log(subtitles)
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
 
 				<span style={{ zIndex: 0 }}>
-					<Controller ref = {controllerRef}
+					<VideoContainer ref = {controllerRef}
 						className='video'
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
@@ -495,9 +495,10 @@ const VideoEditor = props => {
 						eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						subtitles = {subtitles}
 						editorType={`video`}
 					>
-					</Controller>
+					</VideoContainer>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 						<section>
