@@ -370,6 +370,7 @@ const VideoEditor = props => {
 		setIsLoading(true)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
+		console.log(content)
 		await updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
@@ -417,6 +418,13 @@ const VideoEditor = props => {
 		} catch (error) {
 			return ``
 		}
+	}
+
+	const checkEvent = () => {
+		return allEvents[eventToEdit]
+	}
+	const checkIndex = () => {
+		return eventToEdit
 	}
 
 	return (
@@ -565,13 +573,14 @@ const VideoEditor = props => {
 							}
 						</div>
 
-						{ showSideEditor !== false && eventListMinimized !== true ? (
+						{ showSideEditor !== false && eventListMinimized !== true ?
 							<TrackEditorSideMenu
-								singleEvent={allEvents[eventToEdit]}
+								singleEvent={checkEvent()}
 								videoLength={videoLength}
 								closeSideEditor={closeSideEditor}
 								updateEvents={updateEvents}
 								editCensor = {editCensor}
+								index={checkIndex()}
 								handleEditCensor = {handleEditCensor}
 								handleCensorRemove = {handleCensorRemove}
 								handleAddCensor = {handleAddCensor}
@@ -579,10 +588,9 @@ const VideoEditor = props => {
 								activeCensorPosition = {activeCensorPosition}
 								setActiveCensorPosition = {setActiveCensorPosition}
 							></TrackEditorSideMenu>
-						) : (
-							<>
-							</>
-						)}
+							:
+							<></>
+					}
 					</>
 				</EventEditor>
 			</DndProvider>
