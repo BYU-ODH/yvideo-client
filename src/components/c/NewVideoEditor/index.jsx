@@ -370,7 +370,6 @@ const VideoEditor = props => {
 		setIsLoading(true)
 		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
-		console.log(content)
 		await updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
@@ -535,7 +534,6 @@ const VideoEditor = props => {
 										<span id={`layer-time-indicator-line`}></span>
 									</div>
 								</div>
-
 							</div>
 						</div>
 					</Timeline>

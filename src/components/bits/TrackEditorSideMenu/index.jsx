@@ -101,11 +101,8 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
-	// const start = (event.start / 100 * videoLength).toFixed(3) || undefined
-	// const end = (event.end / 100 * videoLength).toFixed(3) || undefined
-
-	const start = event !== undefined ? (event.start / 100 * videoLength).toFixed(3) : undefined
-	const end = event !== undefined ? (event.end / 100 * videoLength).toFixed(3) : undefined
+	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
+	const end = (event.end / 100 * videoLength).toFixed(3) || undefined
 
 	return (
 		<Style>
