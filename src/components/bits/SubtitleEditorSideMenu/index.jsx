@@ -92,8 +92,12 @@ const SubtitleEditorSideMenu = props => {
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive`:``}`}>
 								<textarea className={`subText`} type='text' onClick={()=>changeSubIndex(ind)} value={sub.text} onChange={(value)=>editSub(null,null,value,subLayer,ind)}></textarea>
 								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
-									<input id={`subStart${ind}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.start ===``? ``:(sub.start/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind)}/>
-									<input id={`subEnd${ind}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='number' value={`${sub.end ===``? ``:(sub.end/ 100 * videoLength).toFixed(0)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer,ind)}/>
+									<input id={`subStart${ind}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='number'
+										value={`${sub.start ===``? ``: Math.round(sub.start/ 100 * videoLength*100)/100}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind)}
+									/>
+									<input id={`subEnd${ind}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='number'
+										value={`${sub.end ===``? ``: Math.round(sub.end/ 100 * videoLength*100)/100}`} onChange={e => editSub(`end`,e.target.value,null,subLayer,ind)}
+									/>
 								</div>
 								<img alt={`delete subtitle`} className={`subtitle-delete`} src={trashIcon} width='20px' onClick={() => deleteSub(ind)} />
 							</div>
@@ -102,7 +106,7 @@ const SubtitleEditorSideMenu = props => {
 							ind === subs[subLayer][`content`].length-1 ?
 								<Icon id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
 									visibility={
-										(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) - videoLength < 0 && disableSave===false
+										(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(2) - videoLength < 0.00 && disableSave===false
 											? `visible`: `hidden`
 									}
 									active={ind === index ? `subActive`:`nonActive`}
@@ -110,7 +114,7 @@ const SubtitleEditorSideMenu = props => {
 								:
 								<Icon id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
 									visibility={
-										(subs[subLayer][`content`][ind+1].start/ 100 * videoLength).toFixed(0)-(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(0) !== 0 && disableSave===false
+										(subs[subLayer][`content`][ind+1].start/ 100 * videoLength).toFixed(2)-(subs[subLayer][`content`][ind].end/ 100 * videoLength).toFixed(2) !== 0 && disableSave===false
 											? `visible`: `hidden`
 									}
 									active={ind === index ? `subActive`:`nonActive`}

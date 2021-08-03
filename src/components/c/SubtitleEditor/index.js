@@ -264,8 +264,8 @@ const SubtitleEditor = props => {
 		const currentSubs = tempSubs[subLayerIndex]
 
 		let needCheck = true
-		const subStartTime = (sub.start/100 * videoLength).toFixed(0)
-		const subEndTime = (sub.end/100 * videoLength).toFixed(0)
+		const subStartTime = (sub.start/100 * videoLength).toFixed(2)
+		const subEndTime = (sub.end/100 * videoLength).toFixed(2)
 		if(side===`beg`) {
 			if(sub.start===``){
 				document.getElementById(`subStart${index}`).style.border=`2px solid red`
@@ -278,7 +278,7 @@ const SubtitleEditor = props => {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck=false
 				// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
-				} else if(Number(subStartTime) >= Number(subEndTime)) {
+				} else if(Number.parseFloat(subStartTime) >= Number.parseFloat(subEndTime)) {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck=false
 				} else {
@@ -306,7 +306,7 @@ const SubtitleEditor = props => {
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
 						// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
-					} else if(Number(sub.end/100 * videoLength).toFixed(0) <= Number((sub.start/100 * videoLength).toFixed(0))){
+					} else if(Number.parseFloat(sub.end/100 * videoLength).toFixed(2) <= Number.parseFloat((sub.start/100 * videoLength).toFixed(2))){
 						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
@@ -353,7 +353,7 @@ const SubtitleEditor = props => {
 		try{
 			if(currentSubs[index][`content`].length ===0){
 				newSub = {
-					start: 0,
+					start: 0.00,
 					end: addingTime,
 					text: ``,
 				}
@@ -788,7 +788,7 @@ const SubtitleEditor = props => {
 
 				<EventList minimized={eventListMinimized}>
 					<header>
-						<img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+						{/* <img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/> */}
 						<div className={`save`}>
 							{disableSave ?
 								<button className={`disable`}>
