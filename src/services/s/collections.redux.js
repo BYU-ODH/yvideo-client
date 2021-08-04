@@ -485,7 +485,7 @@ export default class CollectionService {
 				}
 			} else if(endpoint === `remove-user`){
 				backEndBody = {
-					'username': body.username,
+					'username': body,
 				}
 			}
 
@@ -510,11 +510,10 @@ export default class CollectionService {
 					temp.push(backEndBody)
 
 				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
-			}
-			// else if(endpoint === `remove-course`)
-			// 	dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
-			// else if(endpoint === `remove-user`)
-			// 	dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
+			} else if(endpoint === `remove-course`)
+				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
+			else if(endpoint === `remove-user`)
+				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
 			// const updatedSubscribers = currentState.subscribers.filter(person => person.username !== body.username)
 			// dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
 

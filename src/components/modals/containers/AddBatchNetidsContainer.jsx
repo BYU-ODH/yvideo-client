@@ -25,7 +25,7 @@ const AddBatchNetidsContainer = props => {
 		const temp = id.split(`\n`)
 		const body = {
 			usernames: temp,
-			"account-role": 1,
+			"account-role": 2,
 		}
 		props.setLoaded(true)
 		updateMany(props.collectionId, body)
