@@ -33,7 +33,7 @@ const VideoContainer = props => {
 		setActiveCensorPosition,
 		subtitles,
 	} = props
-	console.log(subtitles)
+
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 	const censorRef = useRef(null)
@@ -139,7 +139,6 @@ const VideoContainer = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
-			console.log(time)
 			let newPlayed = 0
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()
@@ -276,6 +275,7 @@ const VideoContainer = props => {
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
+
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
 

@@ -28,7 +28,7 @@ const VideoEditorContainer = props => {
 		contentError,
 	} = props
 
-	const {contentId} = useParams()
+	const {id} = useParams()
 
 	const [url, setUrl] = useState(``)
 
@@ -48,22 +48,22 @@ const VideoEditorContainer = props => {
 
 	useEffect(() => {
 
-		if(!content.hasOwnProperty(contentId))
-			getContent(contentId)
+		if(!content.hasOwnProperty(id))
+			getContent(id)
 
-		if(content[contentId] !== undefined){
-			setCurrentContent(content[contentId])
-			setEventsArray(content[contentId].settings.annotationDocument)
-			setEvents(content[contentId].settings.annotationDocument)
+		if(content[id] !== undefined){
+			setCurrentContent(content[id])
+			setEventsArray(content[id].settings.annotationDocument)
+			setEvents(content[id].settings.annotationDocument)
 			// we only want to set the url if it is not set.
 			if(url === ``){
-				if(content[contentId].url !== ``)
-					setUrl(content[contentId].url)
+				if(content[id].url !== ``)
+					setUrl(content[id].url)
 				else {
 					// CHECK RESOURCE ID
-					if(content[contentId].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
+					if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
 						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(content[contentId].resourceId, content[contentId].settings.targetLanguages)
+						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
 					} else if (streamKey !== `` && url === ``)
 						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
 						// console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
