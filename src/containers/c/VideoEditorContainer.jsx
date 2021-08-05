@@ -20,7 +20,6 @@ const VideoEditorContainer = props => {
 		getContent,
 		updateContent,
 		activeUpdate,
-		subContentId,
 		getStreamKey,
 		streamKey,
 		toggleModal,
@@ -66,11 +65,17 @@ const VideoEditorContainer = props => {
 						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
 					} else if (streamKey !== `` && url === ``)
 						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
-						// console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
 				}
 			}
 		}
-	}, [content, resource, eventsArray, currentContent, streamKey, url, subContentId])
+	}, [content, resource, eventsArray, currentContent, streamKey, url])
+
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: `Video Editor`},
+		})
+	}
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({

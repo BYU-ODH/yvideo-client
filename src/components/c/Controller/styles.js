@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import styled, { keyframes } from 'styled-components'
 import logo from 'assets/hexborder.svg'
+=======
+import styled from 'styled-components'
+>>>>>>> eb2b65d37a517e6e8c81c955efa6b880572beafb
 
 const Style = styled.div`
 	width: 100%;
@@ -27,6 +31,7 @@ const Style = styled.div`
 	& .timeBar {
 		/* width: calc(100% + 35rem) !important; */
 		/* justify-content: space-between; */
+<<<<<<< HEAD
 	}
 
 	& .loading-spinner{
@@ -36,6 +41,8 @@ const Style = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: center;
+=======
+>>>>>>> eb2b65d37a517e6e8c81c955efa6b880572beafb
 	}
 `
 

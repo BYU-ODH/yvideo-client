@@ -17,7 +17,6 @@ const SubtitlesEditorContainer = props => {
 		content,
 		resource,
 		setEvents,
-		getResource,
 		getContent,
 		updateContent,
 		allSubs,
@@ -32,7 +31,6 @@ const SubtitlesEditorContainer = props => {
 		streamKey,
 		toggleModal,
 		toggleTip,
-		setSubContentId,
 		contentError,
 		subtitleError,
 		setBreadcrumbs,
@@ -46,13 +44,6 @@ const SubtitlesEditorContainer = props => {
 	const [currentContent, setCurrentContent] = useState({})
 	const [subs,setSubs] = useState([])
 
-	const getData = async() => {
-		// console.log(`these subs are`, subs)
-		// await getContent([id])
-		const testsubs = await getSubtitles(id)
-		// console.log(`more testing`,testsubs)
-		setSubs(testsubs !== undefined?testsubs:[])
-	}
 	const getAllSubtitles = async() => {
 		const testsubs = await getSubtitles(id)
 		const returnThis = testsubs !== undefined?testsubs:[]
@@ -60,7 +51,6 @@ const SubtitlesEditorContainer = props => {
 	}
 
 	useEffect(() => {
-		// console.log('use effecct')
 		if(!content.hasOwnProperty(id))
 			getContent(id)
 

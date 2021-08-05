@@ -87,11 +87,10 @@ export default class Player extends PureComponent {
 		const handleOnProgress = ({ played, playedSeconds }) => {
 			const t0 = performance.now()
 			const subtitles = displaySubtitles
-			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played * 100}`
-			if(document.getElementById(`time-dot`) !== undefined)
+			if(document.getElementById(`timeBarProgress`))
+				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
+			if(document.getElementById(`time-dot`))
 				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
-			// setElapsed(playedSeconds)
 			if(subtitles)
 				HandleSubtitle(playedSeconds,subtitles,0,duration)
 
