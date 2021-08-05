@@ -11,7 +11,7 @@ import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 
-import { Controller, TrackLayer } from 'components'
+import { Controller, TrackLayer, VideoContainer } from 'components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -419,13 +419,19 @@ const VideoEditor = props => {
 		}
 	}
 
+	const checkEvent = () => {
+		return allEvents[eventToEdit]
+	}
+	const checkIndex = () => {
+		return eventToEdit
+	}
+
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
 
 				<span style={{ zIndex: 0 }}>
-
-					<Controller
+					<VideoContainer
 						className='video'
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
@@ -441,8 +447,7 @@ const VideoEditor = props => {
 						setActiveCensorPosition = {setActiveCensorPosition}
 						editorType={`video`}
 					>
-					</Controller>
-
+					</VideoContainer>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 						<section>
@@ -529,7 +534,6 @@ const VideoEditor = props => {
 										<span id={`layer-time-indicator-line`}></span>
 									</div>
 								</div>
-
 							</div>
 						</div>
 					</Timeline>
@@ -567,13 +571,14 @@ const VideoEditor = props => {
 							}
 						</div>
 
-						{ showSideEditor !== false && eventListMinimized !== true ? (
+						{ showSideEditor !== false && eventListMinimized !== true ?
 							<TrackEditorSideMenu
-								singleEvent={allEvents[eventToEdit]}
+								singleEvent={checkEvent()}
 								videoLength={videoLength}
 								closeSideEditor={closeSideEditor}
 								updateEvents={updateEvents}
 								editCensor = {editCensor}
+								index={checkIndex()}
 								handleEditCensor = {handleEditCensor}
 								handleCensorRemove = {handleCensorRemove}
 								handleAddCensor = {handleAddCensor}
@@ -581,10 +586,9 @@ const VideoEditor = props => {
 								activeCensorPosition = {activeCensorPosition}
 								setActiveCensorPosition = {setActiveCensorPosition}
 							></TrackEditorSideMenu>
-						) : (
-							<>
-							</>
-						)}
+							:
+							<></>
+					}
 					</>
 				</EventEditor>
 			</DndProvider>

@@ -1,5 +1,19 @@
 import styled, { keyframes } from 'styled-components'
 
+// import carat from 'assets/carat_white.svg'
+
+// import menu from 'assets/menu-white.svg'
+
+import skipIcon from 'assets/event_skip.svg'
+import muteIcon from 'assets/event_mute.svg'
+import pauseIcon from 'assets/event_pause.svg'
+import commentIcon from 'assets/event_comment.svg'
+import censorIcon from 'assets/event_censor.svg'
+import blankIcon from 'assets/event_blank.svg'
+import trashIcon from 'assets/trash_icon.svg'
+import closeIcon from 'assets/close_icon.svg'
+import zoomIn from 'assets/te-zoom-in.svg'
+import zoomOut from 'assets/te-zoom-out.svg'
 import carat from 'assets/carat_white.svg'
 
 import menu from 'assets/menu-white.svg'

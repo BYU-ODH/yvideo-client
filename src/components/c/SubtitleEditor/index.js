@@ -572,7 +572,7 @@ const SubtitleEditor = props => {
 	const checkSub = () => {
 		if(subLayerToEdit === subtitles[subLayerToEdit].length-1)
 			return subtitles[0][`content`][0]
-		 else
+		else
 			return subtitles[subLayerToEdit][`content`][subToEdit]
 
 	}

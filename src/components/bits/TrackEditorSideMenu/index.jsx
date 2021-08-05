@@ -107,18 +107,24 @@ const TrackEditorSideMenu = props => {
 	return (
 		<Style>
 			<div>
-				<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
-				<>
-					<div className='center'>
-						<label>Start</label>
-						<label>End</label>
-					</div>
-					<div className='center'>
-						<input type='text' className='sideTabInput' value={`${parseFloat(start).toFixed(0)}`} onChange={e => handleEditEventBTimeChange(e)}/>
-						<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)}/>
-					</div>
-					<br/>
-				</>
+				{event !== undefined ?
+					<>
+						<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+						<>
+							<div className='center'>
+								<label>Start</label>
+								<label>End</label>
+							</div>
+							<div className='center'>
+								<input type='text' className='sideTabInput' value={`${parseFloat(start).toFixed(0)}`} onChange={e => handleEditEventBTimeChange(e)}/>
+								<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)}/>
+							</div>
+							<br/>
+						</>
+					</>
+					:
+					<></>
+				}
 
 			</div>
 			{ event.type === `Comment` ? (
