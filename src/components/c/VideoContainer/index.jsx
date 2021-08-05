@@ -93,11 +93,13 @@ const VideoContainer = props => {
 			const t0 = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
-			// if(document.getElementById(`timeBarProgress`) !== undefined)
-			// 	document.getElementById(`timeBarProgress`).value = `${played * 100}`
-			// if(document.getElementById(`time-dot`) !== undefined)
-			// 	document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
-			// setElapsed(playedSeconds)
+			if(document.getElementById(`timeBarProgress`) !== undefined)
+				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+			if(document.getElementById(`time-dot`) !== undefined)
+				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+			setElapsed(playedSeconds)
+			console.log(ref)
+			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
@@ -228,6 +230,13 @@ const VideoContainer = props => {
 			// console.log(event.position)
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
+		handleBlankClick : (height, width, x, y) => {
+			let currentTime = ref.current.getCurrentTime()
+			if (!currentTime) currentTime = 0
+			// currentTime = currentTime.toFixed(1)
+			console.log(currentTime)
+			handleLastClick(height,width,x, y, currentTime)
+		},
 	}
 
 	const config = {
@@ -256,7 +265,7 @@ const VideoContainer = props => {
 	return (
 		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
 			{/* <Style> */}
-			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed):console.log(``)} ref={videoRef}>
+			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):console.log(``)} ref={videoRef}>
 				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				{activeCensorPosition !== -1 ? (
 					<CensorDnD
@@ -312,6 +321,21 @@ const VideoContainer = props => {
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
 					</button>
+
+					<div className='scrubber'>
+						<span className='time'>{formattedElapsed}</span>
+
+						<button className='mute' onClick={video.toggleMute}>
+							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
+						</button>
+
+						<div id='time-bar'>
+							<div id={`time-bar-container`}>
+								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
+								<span id='time-dot'></span>
+							</div>
+						</div>
+					</div>
 				</header>
 			</TimeBar>
 			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
