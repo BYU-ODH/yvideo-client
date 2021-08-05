@@ -93,15 +93,16 @@ const VideoContainer = props => {
 			const t0 = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
-			// if(document.getElementById(`timeBarProgress`) !== undefined)
-			// 	document.getElementById(`timeBarProgress`).value = `${played * 100}`
-			// if(document.getElementById(`time-dot`) !== undefined)
-			// 	document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
-			// setElapsed(playedSeconds)
+			if(document.getElementById(`timeBarProgress`) !== undefined)
+				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+			if(document.getElementById(`time-dot`) !== undefined)
+				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+			setElapsed(playedSeconds)
+			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
-			console.log(values.allEvents,playedSeconds,subtitles)
+
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
 
@@ -312,6 +313,18 @@ const VideoContainer = props => {
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
 					</button>
+					<div className='scrubber'>
+						<span className='time'>{formattedElapsed}</span>
+						<button className='mute' onClick={video.toggleMute}>
+							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
+						</button>
+						<div id='time-bar'>
+							<div id={`time-bar-container`}>
+								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
+								<span id='time-dot'></span>
+							</div>
+						</div>
+					</div>
 				</header>
 			</TimeBar>
 			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}

@@ -38,6 +38,7 @@ const Controller = props => {
 
 	const [playing, setPlaying] = useState(false)
 	const [isReady, setIsReady] = useState(false)
+	const [subtitleText, setSubtitleText] = useState(``)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0)
