@@ -33,7 +33,6 @@ const VideoContainer = props => {
 		setActiveCensorPosition,
 		subtitles,
 	} = props
-	console.log(subtitles)
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 	const censorRef = useRef(null)
@@ -98,12 +97,10 @@ const VideoContainer = props => {
 			if(document.getElementById(`time-dot`) !== undefined)
 				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
 			setElapsed(playedSeconds)
-			console.log(ref)
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
-			console.log(values.allEvents,playedSeconds,subtitles)
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
 
@@ -140,7 +137,6 @@ const VideoContainer = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
-			console.log(time)
 			let newPlayed = 0
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()

@@ -131,6 +131,7 @@ const ManagerContainer = props => {
 		activeId: params.id,
 		isMobile,
 		isOpen,
+		isLabassistantManager: false,
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />

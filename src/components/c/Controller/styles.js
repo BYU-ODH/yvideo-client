@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import logo from 'assets/hexborder.svg'
 
 const Style = styled.div`
 	width: 100%;
@@ -26,6 +27,15 @@ const Style = styled.div`
 	& .timeBar {
 		/* width: calc(100% + 35rem) !important; */
 		/* justify-content: space-between; */
+	}
+
+	& .loading-spinner{
+		position: fixed;
+		top: 30%;
+		left: 35%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 `
 
@@ -237,4 +247,21 @@ export const Subtitles = styled.div`
 	width: ${props => props.type === `video` ? `70%` : `100%`};
 	text-align: center;
 	white-space: pre-line;
+`
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Spinner = styled.div`
+	background: url(${logo})  no-repeat;
+	background-size: cover;
+	width: 15rem;
+	height: 15rem;
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `

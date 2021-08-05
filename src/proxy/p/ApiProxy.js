@@ -62,10 +62,12 @@ const apiProxy = {
 		collection: {
 			get: async (id) => {
 
-				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
+				const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, {
+					withCredentials: true,
+					headers: {'session-id': window.clj_session_id},
+				})
 
 				updateSessionId(result.headers[`session-id`])
-				// console.log(result.data)
 
 				result.data.forEach(element => {
 					element[`name`] = element[`collection-name`]
@@ -488,13 +490,15 @@ const apiProxy = {
 			return res.data
 		}),
 
-		files: async (id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`,
+		files: async(id) => await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/resource/${id}/files`,
 			{
 				withCredentials: true,
 				headers: {
 					'session-id': window.clj_session_id,
 				},
+
 			}).then(async res => {
+
 			await updateSessionId(res.headers[`session-id`])
 			return res.data
 		}),
@@ -510,7 +514,7 @@ const apiProxy = {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
 					// console.log(`step 1`)
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/hall31/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/yrich/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
@@ -536,7 +540,7 @@ const apiProxy = {
 		},
 		post: async (body) => {
 			try {
-				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user`
+				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user/byu/create`
 				const result = await axios.post(url, body,{
 					withCredentials: true,
 					headers: {
@@ -547,6 +551,8 @@ const apiProxy = {
 					await updateSessionId(res.headers[`session-id`])
 					return res
 				})
+
+				console.log(result)
 				return result
 
 			} catch (error) {

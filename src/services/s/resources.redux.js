@@ -249,6 +249,8 @@ export default class ResourceService {
 
 			dispatch(this.actions.resourceReadAccess(resourceId, result))
 
+			return result
+
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))
 		}

@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
 
@@ -37,6 +37,8 @@ const Controller = props => {
 	const censorRef = useRef(null)
 
 	const [playing, setPlaying] = useState(false)
+	const [isReady, setIsReady] = useState(false)
+	const [subtitleText, setSubtitleText] = useState(``)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0)
@@ -46,21 +48,15 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
-	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
-
-	useEffect(() => {
-		const indicator = document.getElementById(`time-indicator`)
-	})
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
 	const video = {
 
 		// state
-
 		playing,
 		volume,
 		muted,
@@ -86,6 +82,7 @@ const Controller = props => {
 			setVolumeState(volume)
 			setMuted(muted)
 			setPlaybackRate(playbackRate)
+			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
@@ -114,10 +111,12 @@ const Controller = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
+
 			let newPlayed = 0
 			if(e !== null){
 				const scrubber = e.currentTarget.getBoundingClientRect()
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
+
 			} else
 				newPlayed = time / duration
 
@@ -214,7 +213,6 @@ const Controller = props => {
 
 	return (
 		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
-
 			<Blank blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? handleLastClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY, video.elapsed):console.log(``)} ref={videoRef}>
 				{activeCensorPosition !== -1 ? (
 					<CensorDnD
@@ -234,9 +232,15 @@ const Controller = props => {
 					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
 				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
+
 			</Blank>
 
-			<ReactPlayer ref={ref} config={config} url={url}
+			{!isReady && <div className='loading-spinner'><Spinner/></div>}
+
+			<ReactPlayer
+				ref={ref}
+				config={config}
+				url={url}
 				onContextMenu={e => e.preventDefault()}
 
 				// constants
@@ -245,7 +249,6 @@ const Controller = props => {
 				progressInterval={30}
 
 				// state
-
 				playing={playing}
 				volume={volume}
 				muted={muted}

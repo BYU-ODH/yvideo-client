@@ -18,6 +18,7 @@ const AddUsersContainer = props => {
 		user,
 		addUsers,
 		addedUsersResult,
+		emptyAddedUsersResult,
 	} = props
 
 	useEffect(() => {
@@ -37,6 +38,11 @@ const AddUsersContainer = props => {
 		setIsSubmitted(true)
 	}
 
+	const handleClose = () => {
+		emptyAddedUsersResult()
+		toggleModal()
+	}
+
 	const viewstate = {
 		addedUsersResult,
 		user,
@@ -46,7 +52,7 @@ const AddUsersContainer = props => {
 	const handlers = {
 		handleIdChange,
 		handleSubmit,
-		toggleModal,
+		handleClose,
 	}
 
 	return <AddUsers viewstate={viewstate} handlers={handlers}/>
@@ -61,6 +67,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	addUsers: adminService.addUsers,
+	emptyAddedUsersResult: adminService.emptyAddedUsersResult,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddUsersContainer)

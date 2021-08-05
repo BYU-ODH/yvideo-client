@@ -76,9 +76,9 @@ const SubtitlesEditorContainer = props => {
 				if(!calledGetSubtitles){
 					getSubtitles(id)
 					setCalledGetSubtitles(true)
-				} else {
+				} else
 					setSubs(allSubs)
-				}
+
 			}
 		}
 

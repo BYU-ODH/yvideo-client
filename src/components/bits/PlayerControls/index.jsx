@@ -83,7 +83,7 @@ const PlayerControls = props => {
 	const clipPercent = clipTime.map(e =>{
 		return e/duration
 	})
-	console.log((clipPercent[1]-clipPercent[0])*100)
+	// console.log((clipPercent[1]-clipPercent[0])*100)
 	// const handleSubmitSpeed = (e) => {
 	// 	e.preventDefault()
 	// }

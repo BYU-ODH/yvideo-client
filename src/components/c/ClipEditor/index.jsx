@@ -90,9 +90,9 @@ const ClipEditor = props => {
 		const initialLayers = []
 
 		if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
-			console.log(currentContent)
+			// console.log(currentContent)
 			const clips = JSON.parse(currentContent[`clips`])
-			console.log(clips)
+			// console.log(clips)
 			setClipList(clips)
 			const saved = Object.keys(clips)
 			setSavedClips(saved)
@@ -121,7 +121,7 @@ const ClipEditor = props => {
 	}, [eventsArray, blockLeave])
 
 	const getVideoDuration = (duration) => {
-		console.log(`setting video length`, duration)
+		// console.log(`setting video length`, duration)
 		setVideoLength(duration)
 		const tempSubs = subs
 		for (let i = 0; i < tempSubs.length; i++)
@@ -235,7 +235,7 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const setStartTime = (value) => {
-		console.log(videoLength)
+		// console.log(videoLength)
 		const clips = {...clipList}
 		if(value > videoLength)
 			clips[active][`start`] = videoLength - 30
@@ -262,7 +262,7 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const createClip = () =>{
-		console.log(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a) ))
+		// console.log(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a) ))
 		const id = Object.keys(clipList).length === 0 ? `0` : `${parseInt(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
 		const clip = {
 			start: 0,
@@ -283,7 +283,7 @@ const ClipEditor = props => {
 		delete clips[toDelete]
 		// setClipList(clips)
 		// setClipsToDelete(del)
-		console.log(del)
+		// console.log(del)
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		setClipList(clips)
@@ -298,7 +298,7 @@ const ClipEditor = props => {
 		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length ===0)
 			return
 		const clips = {...clipList}
-		console.log(clips)
+		// console.log(clips)
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		updateContent(content)
