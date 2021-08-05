@@ -87,13 +87,6 @@ const VideoEditorContainer = props => {
 		})
 	}
 
-	const handleShowHelp = () => {
-		toggleModal({
-			component: HelpDocumentation,
-			props: { name: `Track Editor`},
-		})
-	}
-
 	const togglendTimeline = () => {
 		setTimelineMinimized(!timelineMinimized)
 	}
