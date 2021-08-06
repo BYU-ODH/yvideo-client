@@ -46,11 +46,14 @@ const CollectionPermissionsContainer = props => {
 	const [disabledTA, setDisableTA] = useState(true)
 	const [loaded, setLoaded] = useState(false)
 	const [isEdited, setIsEdited] = useState(true)
+	const [isUserUpdated, setIsUserUpdated] = useState(false)
 
 	useEffect(() => {
 		if(isEdited){
 			getCollectionInfo(collection.id)
 			setIsEdited(false)
+
+			if(isUserUpdated) setIsUserUpdated(false)
 		}
 		if(loaded === true) {
 			setTimeout(() => {
@@ -58,7 +61,7 @@ const CollectionPermissionsContainer = props => {
 			}, 1000)
 		}
 
-	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public])
+	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isUserUpdated])
 
 	const handlers = {
 		makePublic: e => {
@@ -177,8 +180,9 @@ const CollectionPermissionsContainer = props => {
 			setIsEdited(true)
 		},
 		removeUser: value => {
-			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, value)
+			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
 			setIsEdited(true)
+			setIsUserUpdated(true)
 		},
 		AddBatchNetids: () => {
 			toggleModal({
