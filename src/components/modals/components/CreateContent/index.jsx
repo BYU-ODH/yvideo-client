@@ -30,9 +30,6 @@ export default class CreateContent extends PureComponent {
 			isAccess,
 		} = this.props.viewstate
 
-		console.log(languages)
-		console.log(languages[0])
-
 		const {
 			title,
 			contentType,

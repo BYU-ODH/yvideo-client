@@ -27,7 +27,7 @@ import PublicManager from './c/PublicManager'
 import PublicListCollection from './c/PublicListCollection'
 import ClipEditor from './c/ClipEditor'
 import PublicMoreListCollection from './c/PublicMoreListCollection'
-import VideoEditor from './c/NewVideoEditor'
+import VideoEditor from './c/VideoEditor'
 import VideoContainer from './c/VideoContainer'
 
 export {
