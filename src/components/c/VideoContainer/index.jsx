@@ -53,10 +53,6 @@ const VideoContainer = props => {
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
 
-	useEffect(() => {
-		const indicator = document.getElementById(`time-indicator`)
-	})
-
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
 	const video = {

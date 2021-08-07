@@ -8,7 +8,7 @@ import * as testutil from '../../../testutil/testutil'
 const props = {
 	updateMany: jest.fn(),
 	toggleModal: jest.fn(),
-	setLoaded: jest.fn(),
+	setIsLoading: jest.fn(),
 	handleIdChange: jest.fn(),
 }
 
