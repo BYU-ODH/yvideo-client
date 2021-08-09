@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-
+import styled, { keyframes } from 'styled-components'
+import logo from 'assets/hexborder.svg'
 import carat from 'assets/carat_white.svg'
 
 const Style = styled.div`
@@ -10,9 +10,18 @@ const Style = styled.div`
 	z-index: 20;
 	overflow-y: visible;
 
-	& .video {
+	& .react-player {
 		height: calc(100% - 50px) !important;
-		width: 100% !important;
+		width: 70% !important;
+	}
+
+	& .loading-spinner{
+		position: fixed;
+		top: 30%;
+		left: 30%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 `
 
@@ -259,4 +268,22 @@ export const Subtitles = styled.div`
 		line-height: 1.5;
 		letter-spacing: .7px;
 	}
+`
+
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Spinner = styled.div`
+	background: url(${logo})  no-repeat;
+	background-size: cover;
+	width: 15rem;
+	height: 15rem;
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `

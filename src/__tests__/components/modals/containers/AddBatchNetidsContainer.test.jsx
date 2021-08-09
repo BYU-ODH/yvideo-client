@@ -8,7 +8,7 @@ import * as testutil from '../../../testutil/testutil'
 const props = {
 	updateMany: jest.fn(),
 	toggleModal: jest.fn(),
-	setLoaded: jest.fn(),
+	setIsLoading: jest.fn(),
 	handleIdChange: jest.fn(),
 }
 
@@ -25,13 +25,13 @@ describe(`AddBatchNetidsContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-		let button = wrapper.find(Form).simulate(`submit`);
-		expect(button).toBeDefined();
-		button = wrapper.find(`textarea`).simulate(`change`, {target: {value: `test`}});
-		expect(button).toBeDefined();
-		button = wrapper.find(`textarea`).simulate(`change`, {target: {value: `t`}});
-		expect(button).toBeDefined();
-		button = wrapper.find(CancelButton).simulate(`click`);
-		expect(button).toBeDefined();
+		let button = wrapper.find(Form).simulate(`submit`)
+		expect(button).toBeDefined()
+		button = wrapper.find(`textarea`).simulate(`change`, {target: {value: `test`}})
+		expect(button).toBeDefined()
+		button = wrapper.find(`textarea`).simulate(`change`, {target: {value: `t`}})
+		expect(button).toBeDefined()
+		button = wrapper.find(CancelButton).simulate(`click`)
+		expect(button).toBeDefined()
 	})
 })

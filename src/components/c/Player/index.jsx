@@ -102,7 +102,7 @@ export default class Player extends PureComponent {
 			}
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
-			console.log(values.allEvents,playedSeconds)
+
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 			for (let y = 0; y < values.allEvents.length; y++){
@@ -117,7 +117,7 @@ export default class Player extends PureComponent {
 					}
 					break
 				case `Skip`:
-					console.log(values.allEvents[y].end)
+
 					handleSeekChange(null,values.allEvents[y].end)
 					break
 				default:
@@ -125,12 +125,7 @@ export default class Player extends PureComponent {
 				}
 			}
 			const t1 = performance.now()
-
-			console.log(`Performance ${(t1-t0).toFixed(2)}ms`)
 		}
-
-		// console.log(`%c Player component ${url}`, 'color:red;')
-		// console.log(clipTime)
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
 
@@ -41,6 +41,7 @@ const VideoContainer = props => {
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0)
+	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
@@ -51,10 +52,6 @@ const VideoContainer = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
-
-	useEffect(() => {
-		const indicator = document.getElementById(`time-indicator`)
-	})
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
@@ -87,9 +84,10 @@ const VideoContainer = props => {
 			setVolumeState(volume)
 			setMuted(muted)
 			setPlaybackRate(playbackRate)
+			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			const t0 = performance.now()
+			// const t0 = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
@@ -113,22 +111,17 @@ const VideoContainer = props => {
 					video.handlePause()
 					break
 				case `Skip`:
-					console.log(values.allEvents[y].end)
-					video.handleSeek(null,video.handleSeek(null,values.allEvents[y].end))
+					// Video Editor is working without this. However, there is an error with this.
+					// video.handleSeek(null,values.allEvents[y].end)
 					break
 				default:
 					break
 				}
 			}
-			const t1 = performance.now()
-			// console.log(`performance is ${t1-t0} milliseconds`)
 		},
 		handleDuration: duration => {
-			// console.log(`step 1`)
-			if(typeof getDuration === `function`){
-				// console.log(`step 2`)
+			if(typeof getDuration === `function`)
 				getDuration(duration)
-			}
 
 			setDuration(duration)
 			setCurrentZone([0, duration])
@@ -145,43 +138,34 @@ const VideoContainer = props => {
 				newPlayed = time / duration
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
-				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed.toFixed(10) * duration)
-				// console.log(newPlayed.toFixed(10) * duration)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
 			getVideoTime(elapsed.toFixed(1))
-			// console.log(elapsed.toFixed(1))
 		},
 		handlePlay: () => {
 			setPlaying(true)
 			getVideoTime(elapsed.toFixed(1))
-			// console.log(elapsed.toFixed(1))
 			setActiveCensorPosition(-1)
 		},
 		handleMute: () => {
-			// console.log('mute event')
 			setMuted(true)
 		},
 		handleUnMute: () => {
-			// console.log('Unmute event')
 			setMuted(false)
 		},
 		handleBlank: (bool) => {
 			setBlank(bool)
 		},
 		handleShowComment: (value, position) => {
-			// console.log(position)
-			// console.log(value)
 			setVideoComment(value)
 			setCommentPosition(position)
 
 		},
 		handleShowSubtitle: (value) => {
-			// console.log(value)
 			setSubtitleText(value)
 		},
 		// For when returning values of two subtitles
@@ -197,22 +181,20 @@ const VideoContainer = props => {
 			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
-			// console.log(events)
 			const event = events[eventToEdit]
-			// console.log(pos.x/videoRef.current.offsetWidth*100 - event.position[activeCensorPosition][2]/2)
+
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
 					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + event.position[activeCensorPosition][2]/2
 					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + event.position[activeCensorPosition][3]/2
 				}
 			}
-			// console.log(event)
+
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleUpdateCensorResize: (delta, pos)=>{
-			// console.log(videoRef.current.offsetWidth,ref.current)
+
 			const event = events[eventToEdit]
-			// console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
 					const width = event.position[activeCensorPosition][2] + delta.width/videoRef.current.offsetWidth*100
@@ -223,14 +205,11 @@ const VideoContainer = props => {
 					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + height/2
 				}
 			}
-			// console.log(event.position)
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleBlankClick : (height, width, x, y) => {
 			let currentTime = ref.current.getCurrentTime()
 			if (!currentTime) currentTime = 0
-			// currentTime = currentTime.toFixed(1)
-			console.log(currentTime)
 			handleLastClick(height,width,x, y, currentTime)
 		},
 	}
@@ -280,12 +259,15 @@ const VideoContainer = props => {
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
+
+			{!isReady && <div className='loading-spinner'><Spinner/></div>}
+
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
 
 				// constants
 
-				className='video'
+				className={`react-player`}
 				progressInterval={30}
 
 				// state

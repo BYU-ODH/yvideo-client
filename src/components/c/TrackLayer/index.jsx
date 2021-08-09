@@ -30,7 +30,7 @@ const TrackLayer = props => {
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
-		// console.log(events)
+
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
@@ -76,6 +76,12 @@ const TrackLayer = props => {
 		// call handler from parent
 		updateEvents(index, cEvents[index], layerIndex)
 	}
+
+	const convertSecondsToMinute = (time) =>{
+		if(Number(time) === 0) return `00:00:00`
+		return new Date(Number(time) * 1000).toISOString().substr(11, 8)
+	}
+
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position ) => {
 		const cEvents = events
@@ -126,9 +132,9 @@ const TrackLayer = props => {
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
 				{ event.type !== `Pause` ? (
-					<p>{event.type} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
+					<p>{convertSecondsToMinute((event.start / 100 * videoLength).toFixed(1))} - {convertSecondsToMinute((event.end / 100 * videoLength).toFixed(1))}</p>
 				) : (
-					<p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
+					<p>{convertSecondsToMinute((event.start / 100 * videoLength).toFixed(1))}</p>
 				)
 				}
 			</Rnd>

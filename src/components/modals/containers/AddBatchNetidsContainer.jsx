@@ -27,7 +27,7 @@ const AddBatchNetidsContainer = props => {
 			usernames: temp,
 			"account-role": 1,
 		}
-		props.setLoaded(true)
+		props.setIsLoading(true)
 		updateMany(props.collectionId, body)
 		toggleModal()
 	}

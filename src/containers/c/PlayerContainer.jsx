@@ -197,7 +197,7 @@ const PlayerContainer = props => {
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-		console.log(`seeking`, time, ` seconds`)
+
 		let newPlayed = 0
 		if(e !== null){
 			const scrubber = e.currentTarget.getBoundingClientRect()
