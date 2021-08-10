@@ -30,7 +30,7 @@ const VideoEditorContainer = props => {
 		subtitlesContentId,
 		getSubtitles,
 	} = props
-
+	console.log(contentError)
 	const {id} = useParams() // content id
 
 	const [url, setUrl] = useState(``)

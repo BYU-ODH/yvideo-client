@@ -25,6 +25,9 @@ const ManagerContainer = props => {
 		newCollectionInfo,
 		removeCreatedCollectionIdFromStore,
 		setBreadcrumbs,
+		collectionError,
+		collectionErrorPrev,
+		collectionSyncError,
 	} = props
 
 	const params = useParams()
@@ -122,7 +125,10 @@ const ManagerContainer = props => {
 		else sideLists.unpublished.push({ id, name })
 
 	})
-
+	if (collectionError !== collectionErrorPrev) {
+		alert(collectionError)
+		collectionSyncError()
+	}
 	const viewstate = {
 		admin,
 		collection: collections[params.id],
@@ -140,6 +146,8 @@ const mapStateToProps = store => ({
 	collections: store.collectionStore.cache,
 	admin: store.authStore.user.roles === 0,
 	newCollectionInfo: store.collectionStore.newCollectionId,
+	collectionError: store.collectionStore.errorMessage,
+	collectionErrorPrev : store.collectionStore.errorMessagePrev,
 })
 
 const mapDispatchToProps = {
@@ -149,6 +157,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	removeCreatedCollectionIdFromStore: collectionService.removeCreatedCollectionIdFromStore,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
+	collectionSyncError: collectionService.syncError,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerContainer)
