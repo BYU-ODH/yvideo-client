@@ -72,6 +72,7 @@ const SubtitleEditorSideMenu = props => {
 		updateSubs(ind,sub,layer,side)
 	}
 
+	// TODO: put into the same place(subtitle editor, video editor, clip editor)
 	const convertSecondsToMinute = (time) =>{
 		try {
 			if(videoLength<3600)
