@@ -78,17 +78,17 @@ const Style = styled.div`
 				flex-direction: column;
 
 				& .subStart {
-					width: 5rem;
+					width: 6.5rem;
 					height: 2rem;
 					margin-button: 0.5rem;
-					padding-left: 0.8rem;
+					padding-left: 0.3rem;
 				}
 
 				& .subEnd {
-					width: 5rem;
+					width: 6.5rem;
 					height: 2rem;
 					margin-top: 0.5rem;
-					padding-left: 0.8rem;
+					padding-left: 0.3rem;
 				}
 			}
 

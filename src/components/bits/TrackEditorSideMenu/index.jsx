@@ -108,9 +108,11 @@ const TrackEditorSideMenu = props => {
 	return (
 		<Style>
 			<div>
+				<p id={`sideTabMessage`}></p>
+				<p id={`sideTabExplanation`}></p>
 				{event !== undefined ?
 					<>
-						<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+						<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 						<>
 							<div className='center'>
 								<label>Start</label>

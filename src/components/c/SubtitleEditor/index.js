@@ -359,8 +359,13 @@ const SubtitleEditor = props => {
 	}
 	const covertToSeconds = (time) => {
 		const t = time.split(`:`)
-		const s = t[1].split(`.`)
-		return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		if(t.length > 2) {
+			const s = t[2].split(`.`)
+			return Number(+t[0]) * 3600 + Number(+t[1]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		} else {
+			const s = t[1].split(`.`)
+			return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		}
 	}
 	const addSubToLayer = (index, subIndex, position) => {
 		const currentSubs = [...subtitles]
@@ -854,7 +859,7 @@ const SubtitleEditor = props => {
 			<>
 				<Prompt
 					when={blockLeave}
-					message='Have you saved your changes already?'
+					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
 				/>
 			</>
 		</Style>

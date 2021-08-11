@@ -119,6 +119,8 @@ const VideoEditor = props => {
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
+	const [disableSave, setDisableSave] = useState(false)
+
 	// refs
 	// console.log(videoCurrentTime)
 
@@ -199,15 +201,18 @@ const VideoEditor = props => {
 			if(side === `beg`) {
 				if(event.start.match(/\d{2}:\d{2}\.\d{2}/))
 					event.start = covertToSeconds(event.start)
-				else
-					canAccessDom = false
+				else {
+					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					canAccessDom=false
+				}
 
 			} else if(side === `end`) {
 				if(event.end.match(/\d{2}:\d{2}\.\d{2}/))
 					event.end = covertToSeconds(event.end)
-				else
-					canAccessDom = false
-
+				else {
+					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					canAccessDom=false
+				}
 			}
 		} catch (e) {
 			console.log(`catch`)
@@ -249,8 +254,10 @@ const VideoEditor = props => {
 				document.getElementById(`sideTabMessage`).style.color=`green`
 				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
 				document.getElementById(`sideTabExplanation`).innerHTML=``
+				setDisableSave(false)
 			}
-		}
+		} else
+			setDisableSave(true)
 
 		currentEvents[index] = event
 
@@ -267,8 +274,13 @@ const VideoEditor = props => {
 	}
 	const covertToSeconds = (time) => {
 		const t = time.split(`:`)
-		const s = t[1].split(`.`)
-		return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		if(t.length > 2) {
+			const s = t[2].split(`.`)
+			return Number(+t[0]) * 3600 + Number(+t[1]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		} else {
+			const s = t[1].split(`.`)
+			return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		}
 	}
 
 	const deleteEvent = () => {
@@ -573,20 +585,25 @@ const VideoEditor = props => {
 
 				<EventEditor minimized={eventListMinimized}>
 					<header>
-						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+						<img src={helpIcon} alt={`helpIcon`} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
-							<button onClick={handleSaveAnnotation}>
-
-								{blockLeave ?
-									null
-									:
-									isLoading ?
-										<i className='fa fa-refresh fa-spin'/>
+							{disableSave ?
+								<button className={`disable`}>
+									<span>Save</span>
+								</button>
+								:
+								<button onClick={handleSaveAnnotation}>
+									{blockLeave ?
+										null
 										:
-										<i className='fa fa-check'></i>
-								}
-								<span>Save</span>
-							</button>
+										isLoading ?
+											<i className='fa fa-refresh fa-spin'/>
+											:
+											<i className='fa fa-check'></i>
+									}
+									<span>Save</span>
+								</button>
+							}
 						</div>
 					</header>
 
@@ -639,7 +656,7 @@ const VideoEditor = props => {
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
-					message='Have you saved your changes already?'
+					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
 				/>
 			</>
 		</Style>
