@@ -18,8 +18,10 @@ import Style, {
 	NewContent,
 	Icon,
 	Publish,
+	Spinner,
 } from './styles'
 
+import logo from 'assets/hexborder.svg'
 import plus from 'assets/plus_gray.svg'
 
 export default class ManageCollection extends PureComponent {
@@ -32,6 +34,7 @@ export default class ManageCollection extends PureComponent {
 			isContentTap,
 			content,
 			isLabAssistant,
+			isLoading,
 		} = this.props.viewstate
 
 		const {
@@ -113,41 +116,51 @@ export default class ManageCollection extends PureComponent {
 					>Permissions</button>
 					<Selector isContentTap={isContentTap} />
 				</TabHeader>
-				<Tab>
-					{isContentTap ?
-						content.map((item, index) => (
-							<div key={index}>
-								{ item !== undefined ? (
-									<>
-										{ isLabAssistant !== undefined ? (
-											<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
-										) : (
-											<ContentOverviewContainer key={item.id} content={item}/>
-										)}
-									</>
-								) : null
-								}
-							</div>
-						))
-						: (
-							<CollectionPermissionsContainer collection={collection} />
-						)}
-					{isContentTap && collection[`expired-content`] ?
-						collection[`expired-content`].map((item, index) => (
-							<ContentOverviewContainer key={index} content={item} isExpired={true}/>
-						))
-						:
-						null
-					}
-					{isContentTap && (
-						<NewContent className={`newcontent-button`} onClick={createContent}>
-							<Icon src={plus}
-								onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-								onMouseLeave={e => toggleTip()}
-							/>
-						</NewContent>
-					)}
-				</Tab>
+
+				{collection.content === undefined ?
+
+					<Spinner/>
+					:
+					<>
+
+						<Tab>
+							{isContentTap ?
+								content.map((item, index) => (
+									<div key={index}>
+										{ item !== undefined ? (
+											<>
+												{ isLabAssistant !== undefined ? (
+													<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
+												) : (
+													<ContentOverviewContainer key={item.id} content={item}/>
+												)}
+											</>
+										) : null
+										}
+									</div>
+								))
+								: (
+									<CollectionPermissionsContainer collection={collection} />
+								)}
+							{isContentTap && collection[`expired-content`] ?
+								collection[`expired-content`].map((item, index) => (
+									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
+								))
+								:
+								null
+							}
+							{isContentTap && (
+								<NewContent className={`newcontent-button`} onClick={createContent}>
+									<Icon src={plus}
+										onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}
+									/>
+								</NewContent>
+							)}
+						</Tab>
+					</>
+
+				}
 			</Style>
 		)
 	}

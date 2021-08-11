@@ -42,7 +42,9 @@ export const CurrentEvents = (time,events,duration) => {
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
 	handleBlank(blanks)
 	const censorContainer = document.getElementById(`censorContainer`)
+	console.log(censorContainer)
 	if (censorContainer){
+		console.log(`help`)
 		const censorChildren = censorContainer.children
 		for (let i = 0; i<censorValues.length; i++){
 			let exists = false
@@ -58,6 +60,7 @@ export const CurrentEvents = (time,events,duration) => {
 				censorContainer.appendChild(cen)
 			}
 		}
+		console.log(censorChildren,censorValues)
 		// destroy any that shouldn't be there
 		if (censorChildren.length > censorValues.length){
 			for (let x = 0; x < censorChildren.length; x++){
@@ -105,6 +108,7 @@ export const CurrentEvents = (time,events,duration) => {
 }
 export const CensorChange = (ind,censorData, playedSeconds) =>{
 	const censorBox = document.getElementById(`censorBox-${ind}`)
+	if(!censorBox) return
 	const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
 	censorBox.style.width = `${width}%`
 	const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0

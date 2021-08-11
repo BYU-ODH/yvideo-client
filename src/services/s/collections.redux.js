@@ -1,3 +1,5 @@
+import Content from 'models/Content'
+
 export default class CollectionService {
 	// types
 
@@ -412,17 +414,11 @@ export default class CollectionService {
 
 			dispatch(this.actions.collectionsStart())
 
-			// const currentUsers = getState().collectionStore.users
-
 			try {
 
-				// const users = await apiProxy.collection.permissions.getUsers(collectionId)
 				const collections = await apiProxy.user.collections.get(userId)
 
 				return collections
-				// console.log(collections)
-
-				// dispatch(this.actions.publicCollectionUpdateSubscribers( users, collectionId ))
 
 			} catch (error) {
 				dispatch(this.actions.collectionsError(error))
@@ -435,9 +431,16 @@ export default class CollectionService {
 		dispatch(this.actions.collectionsStart())
 
 		try {
-			const result = await apiProxy.collection.permissions.getContents(collectionId)
+			const res = await apiProxy.collection.permissions.getContents(collectionId)
 
-			dispatch(this.actions.collectionUpdateContents(result, collectionId))
+			const result = []
+			res.content.forEach(item => {
+				result.push(new Content(item))
+			})
+
+			dispatch(this.actions.collectionUpdateContents(res, collectionId))
+
+			return result
 
 		} catch (error) {
 			console.log(error.message)

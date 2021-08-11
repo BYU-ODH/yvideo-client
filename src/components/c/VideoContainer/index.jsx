@@ -99,6 +99,7 @@ const VideoContainer = props => {
 				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
 			setElapsed(playedSeconds)
 			console.log(ref)
+			console.log(events)
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
