@@ -111,8 +111,7 @@ const VideoContainer = props => {
 					video.handlePause()
 					break
 				case `Skip`:
-					// Video Editor is working without this. However, there is an error with this.
-					// video.handleSeek(null,values.allEvents[y].end)
+					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
@@ -143,6 +142,13 @@ const VideoContainer = props => {
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed)
+			}
+		},
+		handleSkip: (time) => {
+			const newPlayed = duration / time
+			if(newPlayed !== Infinity && newPlayed !== -Infinity){
+				ref.current.seekTo(time)
+				getVideoTime(time)
 			}
 		},
 		handlePause: () => {
@@ -317,18 +323,6 @@ const VideoContainer = props => {
 					</div>
 				</header>
 			</TimeBar>
-			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
-				handleSeek={video.handleSeek}
-				handleMute={video.handleMute}
-				handlePlay={video.handlePlay}
-				handlePause={video.handlePause}
-				handleUnMute={video.handleUnMute}
-				toggleMute={video.toggleMute}
-				handleBlank={video.handleBlank}
-				handleShowComment={video.handleShowComment}
-				handleCensorPosition={video.handleCensorPosition}
-				handleCensorActive={video.handleCensorActive}
-			></EventsContainer>
 			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
 				handleShowSubtitle={video.handleShowSubtitle}
 			>
