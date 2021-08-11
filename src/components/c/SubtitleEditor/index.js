@@ -851,6 +851,8 @@ const SubtitleEditor = props => {
 								focus={focus}
 								disableSave={disableSave}
 								scrollRef={scrollRef}
+								handleShowTip={handleShowTip}
+								toggleTip={toggleTip}
 							></SubtitleEditorSideMenu>
 						) }
 					</>

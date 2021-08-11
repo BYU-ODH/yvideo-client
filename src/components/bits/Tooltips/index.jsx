@@ -45,61 +45,62 @@ export const ToolTip = (props) => {
 		tip,
 	} = props
 
-	const [name, setName] = useState('')
+	const [name, setName] = useState(``)
 	const [position, setPosition] = useState(null)
 
 	useEffect(() => {
 		if(window.innerWidth < 600){
-			document.getElementById("tip-box").style.visibility = "hidden"
-			return;
+			document.getElementById(`tip-box`).style.visibility = `hidden`
+			return
 		}
 		if(tip.active){
-			document.getElementById("tip-box").style.visibility = "visible"
-			document.getElementById("tip-box").style.opacity = 1
-		}
-		else {
-			document.getElementById("tip-box").style.visibility = "hidden"
-			document.getElementById("tip-box").style.opacity = 0
+			document.getElementById(`tip-box`).style.visibility = `visible`
+			document.getElementById(`tip-box`).style.opacity = 1
+		} else {
+			document.getElementById(`tip-box`).style.visibility = `hidden`
+			document.getElementById(`tip-box`).style.opacity = 0
 		}
 
 		if(tip.props != undefined && tip.props.name){
 			setName(tip.props.name)
-			if(tip.props.position){
+			if(tip.props.position)
 				setPosition(tip.props.position)
-			}
+
 		}
 	}, [tip, name, position])
 
 	const tips = {
-		"help": 'Help',
-		"list-block": 'Change view',
-		"manage-collections": 'Edit collections',
-		"home": 'Home page',
-		"menu": 'Menu',
-		"collection-publish": "Show/Hide collection",
-		"collection-permissions": "Edit collection users",
-		"collection-edit-name": "Edit collection name",
-		"collection-add-content": "Add content to collection",
-		"content-edit": "Edit content",
-		"playback-rate": "Change video speed",
-		"closed-captions": "On/Off Captions",
-		"transcript-hide": "Show/Hide",
-		"transcript-seek": "Click to seek",
-		"drag-and-drop": "Drag & Drop card into layer",
-		"te-add-layer": "Add Event Layer",
-		"te-zoom": "Drag to zoom in/out",
-		"te-scroll": "Scroll indicator",
-		"te-scroll-right": "Scroll right",
-		"te-scroll-left": "Scroll left",
-		"te-scroll-end": "Scroll to end",
-		"te-scroll-start": "Scroll to start",
-		"actions": "Actions"
+		"help": `Help`,
+		"list-block": `Change view`,
+		"manage-collections": `Edit collections`,
+		"home": `Home page`,
+		"menu": `Menu`,
+		"collection-publish": `Show/Hide collection`,
+		"collection-permissions": `Edit collection users`,
+		"collection-edit-name": `Edit collection name`,
+		"collection-add-content": `Add content to collection`,
+		"content-edit": `Edit content`,
+		"playback-rate": `Change video speed`,
+		"closed-captions": `On/Off Captions`,
+		"transcript-hide": `Show/Hide`,
+		"transcript-seek": `Click to seek`,
+		"drag-and-drop": `Drag & Drop card into layer`,
+		"te-add-layer": `Add Event Layer`,
+		"te-zoom": `Drag to zoom in/out`,
+		"te-scroll": `Scroll indicator`,
+		"te-scroll-right": `Scroll right`,
+		"te-scroll-left": `Scroll left`,
+		"te-scroll-end": `Scroll to end`,
+		"te-scroll-start": `Scroll to start`,
+		"actions": `Actions`,
+		"MMSSMS": `MM:SS.MS`,
+		"HHMMSSMS": `HH:MM:SS.MS`,
 	}
 
 	// console.log("POSITION", position)
 
 	return(
-		<Style id="tip-box" position={position}><h3>{tips[`${name}`]}</h3></Style>
+		<Style id='tip-box' position={position}><h3>{tips[`${name}`]}</h3></Style>
 	)
 }
 

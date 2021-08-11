@@ -23,6 +23,8 @@ const SubtitleEditorSideMenu = props => {
 		focus,
 		disableSave,
 		scrollRef,
+		handleShowTip,
+		toggleTip,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -102,10 +104,16 @@ const SubtitleEditorSideMenu = props => {
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive`:``}`}>
 								<textarea className={`subText`} type='text' onClick={()=>changeSubIndex(ind)} value={sub.text} onChange={(value)=>editSub(null,null,value,subLayer,ind)}></textarea>
 								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
-									<input id={`subStart${ind}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='text'
+									<input id={`subStart${ind}`} className={`subStart sideTabInput`}
+										onClick={()=>changeSubIndex(ind)} type='text'
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HHMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y+25, width: e.currentTarget.offsetWidth+20})}
+										onMouseLeave={e => toggleTip()}
 										value={`${sub.start ===``? ``: convertSecondsToMinute(sub.start)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind)}
 									/>
-									<input id={`subEnd${ind}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='text'
+									<input id={`subEnd${ind}`} className={`subEnd`}
+										onClick={()=>changeSubIndex(ind)} type='text'
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HHMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
+										onMouseLeave={e => toggleTip()}
 										value={`${sub.end ===``? ``: convertSecondsToMinute(sub.end)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer,ind)}
 									/>
 								</div>
