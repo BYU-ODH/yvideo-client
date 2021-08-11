@@ -60,15 +60,15 @@ const TrackLayer = props => {
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		const cEvents = events
-		const beginTimePercentage = d.x / layerWidth * 100
-		const endPercentage = beginTimePercentage + (event.end - event.start)
+		const beginTimePercentage = d.x / layerWidth * 100*videoLength/100
+		const endPercentage = beginTimePercentage + event.end - event.start
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
 		cEvents[index].start = beginTimePercentage
 		cEvents[index].end = endPercentage
 
-		if(cEvents[index].end > 100)
-			cEvents[index].end = 100
+		if(cEvents[index].end > videoLength)
+			cEvents[index].end = videoLength
 
 		if(cEvents[index].start < 0)
 			cEvents[index].start = 0
@@ -77,20 +77,35 @@ const TrackLayer = props => {
 		updateEvents(index, cEvents[index], layerIndex)
 	}
 
+	// const convertSecondsToMinute = (time) =>{
+	// 	console.log(time)
+	// 	if(Number(time) === 0) return `00:00:00`
+	// 	return new Date(Number(time) * 1000).toISOString().substr(11, 8)
+	// }
+
 	const convertSecondsToMinute = (time) =>{
-		if(Number(time) === 0) return `00:00:00`
-		return new Date(Number(time) * 1000).toISOString().substr(11, 8)
+		try {
+			if(Number(time) === 0) return `00:00:00`
+
+			if(videoLength<3600)
+				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
+			else
+				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
+
+		} catch (e) {
+			return time
+		}
 	}
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position ) => {
 		const cEvents = events
-		const difference = delta.width / layerWidth * 100
+		const difference = delta.width / layerWidth * 100*videoLength/100
 		if(direction === `right`){
 			cEvents[index].end += difference
 
-			if(cEvents[index].end > 100)
-				cEvents[index].end = 100
+			if(cEvents[index].end > videoLength)
+				cEvents[index].end = videoLength
 
 		} else {
 			cEvents[index].start -= difference
@@ -98,9 +113,9 @@ const TrackLayer = props => {
 			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
-			else if(cEvents[index].start > 100){
-				cEvents[index].start = 99
-				cEvents[index].end = 100
+			else if(cEvents[index].start > videoLength){
+				cEvents[index].start = videoLength-0.001
+				cEvents[index].end = videoLength
 			}
 		}
 
@@ -118,23 +133,23 @@ const TrackLayer = props => {
 			<Rnd
 				className={`layer-event ${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
-				size={{width: `${(event.end - event.start)/100 * layerWidth}px`, height: `46px`}}
-				position={{ x: parseFloat(event.start / 100 * layerWidth), y: 0}}
+				size={{width: `${(event.end - event.start)/videoLength*100/100 * layerWidth}px`, height: `46px`}}
+				position={{ x: event.start/videoLength*100/100 * layerWidth, y: 0}}
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
 				onDragStop={(e, d) => handleDrag(d, event, index)}
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
-				onClick={() => toggleEditor(layerIndex, index)}
+				// onClick={() => toggleEditor(layerIndex, index)}
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
 				{ event.type !== `Pause` ? (
-					<p>{convertSecondsToMinute((event.start / 100 * videoLength).toFixed(1))} - {convertSecondsToMinute((event.end / 100 * videoLength).toFixed(1))}</p>
+					<p>{convertSecondsToMinute(event.start)} - {convertSecondsToMinute(event.end)}</p>
 				) : (
-					<p>{convertSecondsToMinute((event.start / 100 * videoLength).toFixed(1))}</p>
+					<p>{convertSecondsToMinute(event.start)}</p>
 				)
 				}
 			</Rnd>

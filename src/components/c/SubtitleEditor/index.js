@@ -262,11 +262,29 @@ const SubtitleEditor = props => {
 	const updateSubs = (index, sub, subLayerIndex, side) => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
-
 		let needCheck = true
-		const subStartTime = (sub.start/100 * videoLength).toFixed(0)
-		const subEndTime = (sub.end/100 * videoLength).toFixed(0)
-		if(side===`beg`) {
+
+		try {
+			if(side === `beg`) {
+				if(sub.start.match(/\d{2}:\d{2}\.\d{2}/))
+					sub.start = covertToSeconds(sub.start)
+				else {
+					document.getElementById(`subStart${index}`).style.border=`2px solid red`
+					needCheck = false
+				}
+			} else {
+				if(sub.end.match(/\d{2}:\d{2}\.\d{2}/))
+					sub.end = covertToSeconds(sub.end)
+				else {
+					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
+					needCheck = false
+				}
+			}
+		} catch (e) {
+			console.log(`catch`)
+		}
+
+		if(side===`beg` && needCheck === true) {
 			if(sub.start===``){
 				document.getElementById(`subStart${index}`).style.border=`2px solid red`
 				needCheck=false
@@ -274,11 +292,10 @@ const SubtitleEditor = props => {
 				if(sub.start < 0) {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck=false
-				} else if(sub.start >= 100) {
+				} else if(sub.start >= videoLength) {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck=false
-				// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
-				} else if(subStartTime >= subEndTime) {
+				} else if(sub.start >= sub.end) {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck=false
 				} else {
@@ -290,7 +307,7 @@ const SubtitleEditor = props => {
 					}
 				}
 			}
-		} else if(side===`end`) {
+		} else if(side===`end` && needCheck === true) {
 			// check end
 			if(sub.end===``) {
 				document.getElementById(`subEnd${index}`).style.border=`2px solid red`
@@ -301,13 +318,11 @@ const SubtitleEditor = props => {
 						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
-					} else if(sub.end > 100) {
+					} else if(sub.end >= videoLength) {
 						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
-						// document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than videoLength:${videoLength} <br/> Changed values to match criteria`
-					// } else if(Number.parseFloat(sub.end/100 * videoLength).toFixed(2) <= Number.parseFloat((sub.start/100 * videoLength).toFixed(2))){
-					} else if((sub.end/100 * videoLength).toFixed(0) <= (sub.start/100 * videoLength).toFixed(0)){
+					} else if(sub.end <= sub.start){
 						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
@@ -342,37 +357,40 @@ const SubtitleEditor = props => {
 		setSubSelected(true)
 		setBlock(true)
 	}
+	const covertToSeconds = (time) => {
+		const t = time.split(`:`)
+		const s = t[1].split(`.`)
+		return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+	}
 	const addSubToLayer = (index, subIndex, position) => {
-		// TODO: Change this to use real JS event objects and insert based on time
 		const currentSubs = [...subtitles]
 		let newSub = {}
 		let subStart = 0
 		let subEnd = 0
 		let isError = false
-		const addingTime = 2/videoLength*100
+		const addingTime = 2
 
 		try{
 			if(currentSubs[index][`content`].length ===0){
 				newSub = {
-					start: 0.00,
+					start: 0,
 					end: addingTime,
 					text: ``,
 				}
 
 				currentSubs[index][`content`].push(newSub)
-				// openSubEditor(index, subIndex)
 				setSubToEdit(0)
 			} else {
 				if(position === `top`) {
 					if(currentSubs[index][`content`][subIndex].start <= 0)
 						isError = true
 					else {
-						if(currentSubs[index][`content`][subIndex].start <= 2/videoLength*100) {
+						if(currentSubs[index][`content`][subIndex].start <= 2) {
 							subStart = 0
-							subEnd = currentSubs[index][`content`][subIndex].start - 0.001
+							subEnd = currentSubs[index][`content`][subIndex].start
 						} else {
 							subStart = currentSubs[index][`content`][subIndex].start - addingTime
-							subEnd = currentSubs[index][`content`][subIndex].start - 0.001
+							subEnd = currentSubs[index][`content`][subIndex].start
 						}
 					}
 
@@ -391,14 +409,14 @@ const SubtitleEditor = props => {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
 						const nextStartTime = currentSubs[index][`content`][subIndex+1].start
 
-						if(curEndTime === nextStartTime || curEndTime === nextStartTime+0.001)
+						if(curEndTime === nextStartTime)
 							isError = true
 						else if(nextStartTime-curEndTime > addingTime){
-							subStart = currentSubs[index][`content`][subIndex].end + 0.001
-							subEnd = currentSubs[index][`content`][subIndex].end + 0.001 + addingTime
+							subStart = currentSubs[index][`content`][subIndex].end
+							subEnd = currentSubs[index][`content`][subIndex].end + addingTime
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end + 0.001
-							subEnd = currentSubs[index][`content`][subIndex+1].start - 0.001
+							subStart = currentSubs[index][`content`][subIndex].end
+							subEnd = currentSubs[index][`content`][subIndex+1].start
 						}
 						newSub = {
 							start: subStart,
@@ -411,14 +429,14 @@ const SubtitleEditor = props => {
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
 
-						if(curEndTime === 100 || curEndTime === 100.001)
+						if(curEndTime >= videoLength)
 							isError = true
-						else if(curEndTime+addingTime>100){
-							subStart = currentSubs[index][`content`][subIndex].end + 0.001
-							subEnd = 100
+						else if(curEndTime+addingTime >= videoLength){
+							subStart = currentSubs[index][`content`][subIndex].end
+							subEnd = videoLength
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end + 0.001
-							subEnd = currentSubs[index][`content`][subIndex].end + 0.001 + addingTime
+							subStart = currentSubs[index][`content`][subIndex].end
+							subEnd = currentSubs[index][`content`][subIndex].end + addingTime
 						}
 
 						newSub = {
@@ -453,7 +471,7 @@ const SubtitleEditor = props => {
 			const tempSub = {
 				title : ``,
 				language: ``,
-				content: [{start: 0, end: 2/videoLength*100, text: ``}],
+				content: [{start: 0, end: 2, text: ``}],
 				id: ``,
 			}
 			tempSubList.push(tempSub)
@@ -464,7 +482,7 @@ const SubtitleEditor = props => {
 			const tempSub = {
 				title : ``,
 				language: ``,
-				content: [{start: 0, end: 2/videoLength*100, text: ``}],
+				content: [{start: 0, end: 2, text: ``}],
 				id: ``,
 			}
 			tempSubList.push(tempSub)
@@ -482,7 +500,6 @@ const SubtitleEditor = props => {
 			const reader = new FileReader()
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
-				console.log(temp)
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000/videoLength * 100
 					temp[i].end = temp[i].end /1000/videoLength * 100
@@ -609,7 +626,7 @@ const SubtitleEditor = props => {
 				curEnd = subs[subLayerToEdit][`content`][i].end
 			}
 
-			if(curStart > curEnd || curStart < 0 || curStart >= 100 || curEnd<=0 || curEnd>100) {
+			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd<=0 || curEnd>videoLength) {
 				checkError = true
 				disable = false
 				if(checking===`delete` && i>=index) {
@@ -643,8 +660,10 @@ const SubtitleEditor = props => {
 				}
 			}
 			if(!checkError) {
-				document.getElementById(`subStart${i}`).style.border=``
-				document.getElementById(`subEnd${i}`).style.border=``
+				if(document.getElementById(`subStart${i}`).style){
+					document.getElementById(`subStart${i}`).style.border=``
+					document.getElementById(`subEnd${i}`).style.border=``
+				}
 				setDisableSave(false)
 			}
 		}

@@ -120,6 +120,7 @@ const VideoEditor = props => {
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
 	// refs
+	// console.log(videoCurrentTime)
 
 	useEffect(() => {
 		function handleResize() {
@@ -156,8 +157,7 @@ const VideoEditor = props => {
 	}
 
 	const addEventHandler = (item, index) => {
-		const newStart = videoCurrentTime * 100 / videoLength
-		addEventToLayer(item, index, newStart)
+		addEventToLayer(item, index, videoCurrentTime)
 		setBlock(true)
 	}
 
@@ -173,8 +173,8 @@ const VideoEditor = props => {
 			layer: index,
 		}
 
-		eventObj.start = startPercentage
-		eventObj.end = startPercentage + 10
+		eventObj.start = Number(startPercentage)
+		eventObj.end = Number(startPercentage) + 10
 
 		currentEvents.push(eventObj)
 		// setAllEvents(currentEvents)
@@ -185,7 +185,8 @@ const VideoEditor = props => {
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
 
-	const updateEvents = (index, event, layerIndex) => {
+	const updateEvents = (index, event, layerIndex, side) => {
+
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
 			canAccessDom = true
@@ -193,6 +194,23 @@ const VideoEditor = props => {
 		}
 
 		const currentEvents = [...allEvents]
+		try {
+			if(side === `beg`) {
+				if(event.start.match(/\d{2}:\d{2}\.\d{2}/))
+					event.start = covertToSeconds(event.start)
+				else
+					canAccessDom = false
+
+			} else if(side === `end`) {
+				if(event.end.match(/\d{2}:\d{2}\.\d{2}/))
+					event.end = covertToSeconds(event.end)
+				else
+					canAccessDom = false
+
+			}
+		} catch (e) {
+			console.log(`catch`)
+		}
 
 		// check start event times
 		if(event.start < 0){
@@ -200,9 +218,9 @@ const VideoEditor = props => {
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
 
-		} else if(event.start >= 100) {
-			event.start = 95
-			event.end = 100
+		} else if(event.start >= videoLength) {
+			// event.start = 95
+			// event.end = 100
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
@@ -217,7 +235,7 @@ const VideoEditor = props => {
 				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
 				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than star time`
 			}
-		} else if(event.end > 100){
+		} else if(event.end > videoLength){
 			// event.end = 100
 			if(canAccessDom){
 				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number less than ${videoLength}`
@@ -225,7 +243,7 @@ const VideoEditor = props => {
 			}
 		}
 
-		if(event.start >= 0 && event.start < event.end && event.end <= 100){
+		if(event.start >= 0 && event.start < event.end && event.end <= videoLength){
 			if(canAccessDom){
 				document.getElementById(`sideTabMessage`).style.color=`green`
 				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
@@ -245,6 +263,11 @@ const VideoEditor = props => {
 		setEventToEdit(index)
 		setSideEditor(true)
 		setBlock(true)
+	}
+	const covertToSeconds = (time) => {
+		const t = time.split(`:`)
+		const s = t[1].split(`.`)
+		return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
 	}
 
 	const deleteEvent = () => {

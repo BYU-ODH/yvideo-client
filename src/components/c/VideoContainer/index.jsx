@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useLayoutEffect, useCallback } from 'react'
 
 import ReactPlayer from 'react-player'
 
@@ -32,10 +32,12 @@ const VideoContainer = props => {
 		activeCensorPosition,
 		setActiveCensorPosition,
 		subtitles,
+		width,
 	} = props
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 	const censorRef = useRef(null)
+	const layerRef = useRef(null)
 
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
@@ -52,6 +54,21 @@ const VideoContainer = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
+	const [initialWidth, setInitialWidth] = useState(0)
+	const [layerWidth, setLayerWidth] = useState(0)
+
+	// useLayoutEffect(() => {
+
+	// 	setInitialWidth(layerRef.current.offsetWidth)
+	// 	if(layerWidth === 0)
+	// 		setLayerWidth(layerRef.current.offsetWidth + width)
+	// 	else if (width === 0)
+	// 		setLayerWidth(initialWidth)
+	// 	else
+	// 		setLayerWidth(layerWidth + width)
+
+	// 	setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+	// }, [width])
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
@@ -87,13 +104,14 @@ const VideoContainer = props => {
 			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
+			// console.log(played)
 			// const t0 = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
-				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
+				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played*100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+				document.getElementById(`timeBarProgress`).value = `${played}`
 			if(document.getElementById(`time-dot`) !== undefined)
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+				document.getElementById(`time-dot`).style.left = played ? `calc(${played*100}% - 2px)` : `calc(${played*100}% - 2px)`
 			setElapsed(playedSeconds)
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
@@ -139,7 +157,7 @@ const VideoContainer = props => {
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
-				getVideoTime(newPlayed.toFixed(10) * duration)
+				getVideoTime(newPlayed*100)
 			}
 		},
 		handlePause: () => {
