@@ -14,7 +14,7 @@ import HelpDocumentation from 'components/modals/containers/HelpDocumentationCon
 const VideoEditorContainer = props => {
 
 	const {
-		content,
+		contentCache,
 		resource,
 		setEvents,
 		getContent,
@@ -22,6 +22,7 @@ const VideoEditorContainer = props => {
 		activeUpdate,
 		getStreamKey,
 		streamKey,
+		resourceIdStream,
 		toggleModal,
 		toggleTip,
 		contentError,
@@ -32,43 +33,46 @@ const VideoEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 
 	const [eventsArray, setEventsArray] = useState([])
-	const [currentContent, setCurrentContent] = useState({})
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	const [showSideEditor, setSideEditor] = useState(false)
-	const [eventListMinimized, setEventListMinimized] = useState(false)
+
 	const [videoLength, setVideoLength] = useState(0)
 	const [displayLayer, setDisplayLayer] = useState(0)
 	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [allEvents, setAllEvents] = useState(eventsArray)
-	const [layers, setLayers] = useState([])
+
+	const [content, setContent] = useState({})
+	const [sKey, setKey] = useState(``)
 
 	const controllerRef = useRef(null)
 
 	useEffect(() => {
 
-		if(!content.hasOwnProperty(id))
+		if (!contentCache.hasOwnProperty(id))
 			getContent(id)
+		else {
+			setContent(contentCache[id])
+			setEventsArray(contentCache[id].settings.annotationDocument)
+			setEvents(contentCache[id].settings.annotationDocument)
 
-		if(content[id] !== undefined){
-			setCurrentContent(content[id])
-			setEventsArray(content[id].settings.annotationDocument)
-			setEvents(content[id].settings.annotationDocument)
-			// we only want to set the url if it is not set.
-			if(url === ``){
-				if(content[id].url !== ``)
-					setUrl(content[id].url)
-				else {
-					// CHECK RESOURCE ID
-					if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
-						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-					} else if (streamKey !== `` && url === ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${streamKey}`)
+			if(contentCache[id].url !== ``)
+				setUrl(contentCache[id].url)
+			else {
+				setKey(``)
+				setUrl(``)
+				if(content !== undefined){
+					if(sKey === `` && contentCache[id].resourceId !== resourceIdStream)
+						getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
+					else if(streamKey)
+						setKey(streamKey)
+
+					if (sKey !== ``)
+						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+
 				}
 			}
 		}
-	}, [content, resource, eventsArray, currentContent, streamKey, url])
+	}, [contentCache, getContent, streamKey, content, sKey, eventsArray]) // content, resource, eventsArray, currentContent, streamKey, url, isContentChanged])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -96,7 +100,7 @@ const VideoEditorContainer = props => {
 	}
 
 	const viewstate = {
-		currentContent,
+		content,
 		url,
 		eventsArray,
 		contentError,
@@ -128,15 +132,18 @@ const VideoEditorContainer = props => {
 
 const mapStoreToProps = ({ contentStore, resourceStore }) => ({
 	resource: resourceStore.cache,
-	content: contentStore.cache,
+	contentCache: contentStore.cache,
 	streamKey: resourceStore.streamKey,
+	resourceIdStream: resourceStore.resourceIdStreamKey,
 	contentError: contentStore.errorMessage,
+	isContentChanged: contentStore.isContentChanged,
 })
 
 const mapThunksToProps = {
 	setEvents: interfaceService.setEvents,
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
+	selectedContent: contentService.selectedContent,
 	getStreamKey: resourceService.getStreamKey, // file media
 	updateContent: contentService.updateContent,
 	activeUpdate: subtitlesService.activeUpdate,

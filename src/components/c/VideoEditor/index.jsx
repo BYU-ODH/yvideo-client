@@ -39,7 +39,7 @@ const VideoEditor = props => {
 
 	const {
 		eventsArray,
-		currentContent,
+		content,
 		contentError,
 	} = props.viewstate
 
@@ -375,7 +375,6 @@ const VideoEditor = props => {
 
 	const handleSaveAnnotation = async () => {
 		setIsLoading(true)
-		const content = currentContent
 		content.settings.annotationDocument = [...allEvents]
 		await updateContent(content)
 		setBlock(false)

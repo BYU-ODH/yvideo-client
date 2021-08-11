@@ -55,6 +55,7 @@ const VideoContainer = props => {
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
+
 	const video = {
 
 		// state
@@ -264,6 +265,7 @@ const VideoContainer = props => {
 
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
+				key={url}
 
 				// constants
 
@@ -281,7 +283,6 @@ const VideoContainer = props => {
 
 				onReady={video.handleReady}
 				onError={()=>{
-					console.log(`Error is working`)
 					showError()
 				}}
 
@@ -289,9 +290,7 @@ const VideoContainer = props => {
 				onPause={video.handlePause}
 
 				onProgress={video.handleProgress}
-				// onProgress={()=>console.log(`1`)}
 				onDuration={video.handleDuration}
-
 				// blank style
 			/>
 			<TimeBar>
