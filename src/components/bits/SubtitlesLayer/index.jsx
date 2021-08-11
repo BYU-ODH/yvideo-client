@@ -7,7 +7,7 @@ import { Style } from './styles'
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
 const SubtitlesLayer = props => {
-	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer} = props
+	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer, videoLength} = props
 	const layerIndex = props.layer
 	const layerRef = useRef(null)
 
@@ -49,15 +49,14 @@ const SubtitlesLayer = props => {
 	const handleDrag = (d, event, index) => {
 		let isError = false
 		const cEvents = subs
-		const beginTimePercentage = d.x / layerWidth * 100
-		console.log(beginTimePercentage)
+		const beginTimePercentage = d.x /layerWidth*100*videoLength/100
 		const endPercentage = beginTimePercentage + (event.end - event.start)
 
 		if(index===0 && index+1 === cEvents.length)
 			isError = false
 		else if(index+1 === cEvents.length) {
-			if(cEvents[index].end > 100)
-				cEvents[index].end = 100
+			if(cEvents[index].end > videoLength)
+				cEvents[index].end = videoLength
 
 			if(beginTimePercentage < cEvents[index-1].end) {
 				setShowError(true)
@@ -88,10 +87,10 @@ const SubtitlesLayer = props => {
 	const handleResize = (direction, ref, delta, event, index, e ) => {
 		let isError = false
 		const cEvents = subs
-		const difference = delta.width / layerWidth * 100
+		const difference = delta.width/layerWidth*100*videoLength/100
 		if(direction === `right`){
-			if(cEvents[index].end > 100)
-				cEvents[index].end = 100
+			if(cEvents[index].end > videoLength)
+				cEvents[index].end = videoLength
 
 			if(index===0 && index+1 === cEvents.length)
 				cEvents[index].end += difference
@@ -107,9 +106,9 @@ const SubtitlesLayer = props => {
 		} else {
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
-			else if(cEvents[index].start > 100){
-				cEvents[index].start = 99
-				cEvents[index].end = 100
+			else if(cEvents[index].start > videoLength){
+				cEvents[index].start = videoLength-0.01
+				cEvents[index].end = videoLength
 			}
 
 			if(index===0 && index+1 === cEvents.length)
@@ -140,8 +139,8 @@ const SubtitlesLayer = props => {
 			<Rnd
 				className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`}
 				id={`event-${index}`}
-				size={{width: `${(event.end - event.start)/100 * layerWidth}px`, height: `46px`}}
-				position={{ x: parseFloat(event.start / 100 * layerWidth), y: 0}}
+				size={{width: `${(event.end - event.start)/videoLength * layerWidth}px`, height: `46px`}}
+				position={{ x: event.start/videoLength*layerWidth, y: 0}}
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
@@ -168,7 +167,7 @@ const SubtitlesLayer = props => {
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
 						{
-							subs !== undefined ? (
+							subs !== undefined && videoLength!==0 ? (
 								<>
 									{subs.map((event, index) => (
 										<div key={index}

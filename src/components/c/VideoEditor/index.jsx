@@ -176,6 +176,7 @@ const VideoEditor = props => {
 		eventObj.start = Number(startPercentage)
 		eventObj.end = Number(startPercentage) + 10
 
+		setCurrentTime(Number(startPercentage)+10)
 		currentEvents.push(eventObj)
 		// setAllEvents(currentEvents)
 		// setDisplayLayer(index)
@@ -447,6 +448,10 @@ const VideoEditor = props => {
 			return ``
 		}
 	}
+	const setCurrentTimePercentage = (time) => {
+		const seconds = time * videoLength
+		setCurrentTime(seconds)
+	}
 
 	const checkEvent = () => {
 		return allEvents[eventToEdit] !== undefined ? allEvents[eventToEdit] : currentEvent
@@ -462,7 +467,7 @@ const VideoEditor = props => {
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
 						getDuration={getVideoDuration}
-						getVideoTime={setCurrentTime}
+						getVideoTime={setCurrentTimePercentage} // set current time
 						minimized={timelineMinimized}
 						togglendTimeline={togglendTimeline}
 						handleLastClick = {handleLastClick}

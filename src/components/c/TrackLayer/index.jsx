@@ -60,7 +60,7 @@ const TrackLayer = props => {
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		const cEvents = events
-		const beginTimePercentage = d.x / layerWidth * 100*videoLength/100
+		const beginTimePercentage = d.x/layerWidth*100*videoLength/100
 		const endPercentage = beginTimePercentage + event.end - event.start
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
@@ -133,8 +133,8 @@ const TrackLayer = props => {
 			<Rnd
 				className={`layer-event ${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
-				size={{width: `${(event.end - event.start)/videoLength*100/100 * layerWidth}px`, height: `46px`}}
-				position={{ x: event.start/videoLength*100/100 * layerWidth, y: 0}}
+				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `46px`}}
+				position={{ x: event.start/videoLength*layerWidth, y: 0}}
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
@@ -142,7 +142,7 @@ const TrackLayer = props => {
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				// onClick={() => toggleEditor(layerIndex, index)}
-				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
+				style={{ left: `${event.start/videoLength*100}% !important`, top: `-${layerHeight}px !important`}}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
@@ -163,7 +163,7 @@ const TrackLayer = props => {
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
 						{
-							events !== undefined && events.length > 0 ? (
+							events !== undefined && events.length > 0 && videoLength!==0? (
 								<>
 									{ events.map((event, index) => (
 										<div key={index}>
