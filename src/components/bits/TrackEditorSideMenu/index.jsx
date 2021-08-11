@@ -29,36 +29,25 @@ const TrackEditorSideMenu = props => {
 	}, [index, event, singleEvent])
 
 	const handleEditEventBTimeChange = (e) => {
-		document.getElementById(`sideTabMessage`).style.color=`red`
-		let number = parseFloat(e.target.value)
+		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
 
-		if(isNaN(number))
-			number = 0
-
-		number = number / videoLength * 100
-
-		cEvent.start = number
+		cEvent.start = e.target.value
 
 		setEvent(cEvent)
-		updateEvents(index, cEvent, layer)
+		updateEvents(index, cEvent, layer, `beg`)
 	}
 
 	const handleEditEventETimeChange = (e) => {
-		document.getElementById(`sideTabMessage`).style.color=`red`
-		let number = parseFloat(e.target.value)
+		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
 
-		if(isNaN(number))
-			number = 0
-
-		number = number / videoLength * 100
-		cEvent.end = number
+		cEvent.end = e.target.value
 
 		setEvent(cEvent)
-		updateEvents(index, cEvent, layer)
+		updateEvents(index, cEvent, layer, `end`)
 	}
 
 	const handleSaveComment = () => {
@@ -68,7 +57,7 @@ const TrackEditorSideMenu = props => {
 		cEvent.position = editComment.position === undefined ? cEvent.position : editComment.position
 		cEvent.comment = editComment.comment === undefined ? cEvent.comment : editComment.comment
 
-		updateEvents(ind, cEvent, layer)
+		updateEvents(ind, cEvent, layer, `null`)
 	}
 
 	const handleEditComment = (value, cEvent, int) => {
@@ -101,23 +90,37 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
-	const start = (event.start / 100 * videoLength).toFixed(3) || undefined
-	const end = (event.end / 100 * videoLength).toFixed(3) || undefined
+	const convertSecondsToMinute = (time) =>{
+		try {
+			if(videoLength<3600)
+				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
+			else
+				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
+
+		} catch (e) {
+			return time
+		}
+	}
+
+	const start = event.start
+	const end = event.end
 
 	return (
 		<Style>
 			<div>
+				<p id={`sideTabMessage`}></p>
+				<p id={`sideTabExplanation`}></p>
 				{event !== undefined ?
 					<>
-						<img className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+						<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 						<>
 							<div className='center'>
 								<label>Start</label>
 								<label>End</label>
 							</div>
 							<div className='center'>
-								<input type='text' className='sideTabInput' value={`${parseFloat(start).toFixed(0)}`} onChange={e => handleEditEventBTimeChange(e)}/>
-								<input type='text' className='sideTabInput' value={`${parseFloat(end).toFixed(0)}`} onChange={e => handleEditEventETimeChange(e)}/>
+								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start)}`} onChange={e => handleEditEventBTimeChange(e)}/>
+								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end)}`} onChange={e => handleEditEventETimeChange(e)}/>
 							</div>
 							<br/>
 						</>

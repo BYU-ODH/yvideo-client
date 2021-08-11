@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useLayoutEffect, useCallback } from 'react'
 
 import ReactPlayer from 'react-player'
 
@@ -88,13 +88,12 @@ const VideoContainer = props => {
 			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			// const t0 = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
-				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
+				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played*100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+				document.getElementById(`timeBarProgress`).value = `${played*100}`
 			if(document.getElementById(`time-dot`) !== undefined)
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+				document.getElementById(`time-dot`).style.left = played ? `calc(${played*100}% - 2px)` : `calc(${played*100}% - 2px)`
 			setElapsed(playedSeconds)
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
@@ -112,8 +111,7 @@ const VideoContainer = props => {
 					video.handlePause()
 					break
 				case `Skip`:
-					// Video Editor is working without this. However, there is an error with this.
-					// video.handleSeek(null,values.allEvents[y].end)
+					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
@@ -133,23 +131,33 @@ const VideoContainer = props => {
 		handleSeek: (e, time) => {
 			let newPlayed = 0
 			if(e !== null){
+				// onclick to time bar
 				const scrubber = e.currentTarget.getBoundingClientRect()
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
-			} else
-				newPlayed = time / duration
+			} else {
+				// add event to layer
+				newPlayed = duration / time
+			}
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
-				getVideoTime(newPlayed.toFixed(10) * duration)
+				getVideoTime(newPlayed)
+			}
+		},
+		handleSkip: (time) => {
+			const newPlayed = duration / time
+			if(newPlayed !== Infinity && newPlayed !== -Infinity){
+				ref.current.seekTo(time)
+				getVideoTime(time)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
-			getVideoTime(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(2)/duration)
 		},
 		handlePlay: () => {
 			setPlaying(true)
-			getVideoTime(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(2)/duration)
 			setActiveCensorPosition(-1)
 		},
 		handleMute: () => {
@@ -315,18 +323,6 @@ const VideoContainer = props => {
 					</div>
 				</header>
 			</TimeBar>
-			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
-				handleSeek={video.handleSeek}
-				handleMute={video.handleMute}
-				handlePlay={video.handlePlay}
-				handlePause={video.handlePause}
-				handleUnMute={video.handleUnMute}
-				toggleMute={video.toggleMute}
-				handleBlank={video.handleBlank}
-				handleShowComment={video.handleShowComment}
-				handleCensorPosition={video.handleCensorPosition}
-				handleCensorActive={video.handleCensorActive}
-			></EventsContainer>
 			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
 				handleShowSubtitle={video.handleShowSubtitle}
 			>

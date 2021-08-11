@@ -26,6 +26,7 @@ const VideoEditorContainer = props => {
 		toggleModal,
 		toggleTip,
 		contentError,
+		setBreadcrumbs,
 	} = props
 
 	const {id} = useParams()
@@ -54,6 +55,7 @@ const VideoEditorContainer = props => {
 			setContent(contentCache[id])
 			setEventsArray(contentCache[id].settings.annotationDocument)
 			setEvents(contentCache[id].settings.annotationDocument)
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
 
 			if(contentCache[id].url !== ``)
 				setUrl(contentCache[id].url)
@@ -149,6 +151,7 @@ const mapThunksToProps = {
 	activeUpdate: subtitlesService.activeUpdate,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(VideoEditorContainer)

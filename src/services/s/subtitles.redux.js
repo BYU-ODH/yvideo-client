@@ -189,7 +189,6 @@ export default class SubtitlesService {
 	}
 
 	updateSubtitle = subtitle => async (dispatch, _getState, { apiProxy }) => {
-
 		dispatch(this.actions.subtitlesStart())
 
 		try {

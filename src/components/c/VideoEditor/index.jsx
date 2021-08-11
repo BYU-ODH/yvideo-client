@@ -119,7 +119,10 @@ const VideoEditor = props => {
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
+	const [disableSave, setDisableSave] = useState(false)
+
 	// refs
+	// console.log(videoCurrentTime)
 
 	useEffect(() => {
 		function handleResize() {
@@ -156,8 +159,7 @@ const VideoEditor = props => {
 	}
 
 	const addEventHandler = (item, index) => {
-		const newStart = videoCurrentTime * 100 / videoLength
-		addEventToLayer(item, index, newStart)
+		addEventToLayer(item, index, videoCurrentTime)
 		setBlock(true)
 	}
 
@@ -173,9 +175,10 @@ const VideoEditor = props => {
 			layer: index,
 		}
 
-		eventObj.start = startPercentage
-		eventObj.end = startPercentage + 10
+		eventObj.start = Number(startPercentage)
+		eventObj.end = Number(startPercentage) + 10
 
+		setCurrentTime(Number(startPercentage)+10)
 		currentEvents.push(eventObj)
 		// setAllEvents(currentEvents)
 		// setDisplayLayer(index)
@@ -185,7 +188,8 @@ const VideoEditor = props => {
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
 
-	const updateEvents = (index, event, layerIndex) => {
+	const updateEvents = (index, event, layerIndex, side) => {
+
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
 			canAccessDom = true
@@ -193,6 +197,26 @@ const VideoEditor = props => {
 		}
 
 		const currentEvents = [...allEvents]
+		try {
+			if(side === `beg`) {
+				if(event.start.match(/\d{2}:\d{2}\.\d{2}/))
+					event.start = covertToSeconds(event.start)
+				else {
+					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					canAccessDom=false
+				}
+
+			} else if(side === `end`) {
+				if(event.end.match(/\d{2}:\d{2}\.\d{2}/))
+					event.end = covertToSeconds(event.end)
+				else {
+					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					canAccessDom=false
+				}
+			}
+		} catch (e) {
+			console.log(`catch`)
+		}
 
 		// check start event times
 		if(event.start < 0){
@@ -200,9 +224,9 @@ const VideoEditor = props => {
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
 
-		} else if(event.start >= 100) {
-			event.start = 95
-			event.end = 100
+		} else if(event.start >= videoLength) {
+			// event.start = 95
+			// event.end = 100
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
@@ -217,7 +241,7 @@ const VideoEditor = props => {
 				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
 				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than star time`
 			}
-		} else if(event.end > 100){
+		} else if(event.end > videoLength){
 			// event.end = 100
 			if(canAccessDom){
 				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number less than ${videoLength}`
@@ -225,13 +249,15 @@ const VideoEditor = props => {
 			}
 		}
 
-		if(event.start >= 0 && event.start < event.end && event.end <= 100){
+		if(event.start >= 0 && event.start < event.end && event.end <= videoLength){
 			if(canAccessDom){
 				document.getElementById(`sideTabMessage`).style.color=`green`
 				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
 				document.getElementById(`sideTabExplanation`).innerHTML=``
+				setDisableSave(false)
 			}
-		}
+		} else
+			setDisableSave(true)
 
 		currentEvents[index] = event
 
@@ -245,6 +271,16 @@ const VideoEditor = props => {
 		setEventToEdit(index)
 		setSideEditor(true)
 		setBlock(true)
+	}
+	const covertToSeconds = (time) => {
+		const t = time.split(`:`)
+		if(t.length > 2) {
+			const s = t[2].split(`.`)
+			return Number(+t[0]) * 3600 + Number(+t[1]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		} else {
+			const s = t[1].split(`.`)
+			return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		}
 	}
 
 	const deleteEvent = () => {
@@ -424,6 +460,10 @@ const VideoEditor = props => {
 			return ``
 		}
 	}
+	const setCurrentTimePercentage = (time) => {
+		const seconds = time * videoLength
+		setCurrentTime(seconds)
+	}
 
 	const checkEvent = () => {
 		return allEvents[eventToEdit] !== undefined ? allEvents[eventToEdit] : currentEvent
@@ -439,7 +479,7 @@ const VideoEditor = props => {
 						url={props.viewstate.url}
 						handlers={togglendTimeline}
 						getDuration={getVideoDuration}
-						getVideoTime={setCurrentTime}
+						getVideoTime={setCurrentTimePercentage} // set current time
 						minimized={timelineMinimized}
 						togglendTimeline={togglendTimeline}
 						handleLastClick = {handleLastClick}
@@ -545,20 +585,25 @@ const VideoEditor = props => {
 
 				<EventEditor minimized={eventListMinimized}>
 					<header>
-						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+						<img src={helpIcon} alt={`helpIcon`} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
-							<button onClick={handleSaveAnnotation}>
-
-								{blockLeave ?
-									null
-									:
-									isLoading ?
-										<i className='fa fa-refresh fa-spin'/>
+							{disableSave ?
+								<button className={`disable`}>
+									<span>Save</span>
+								</button>
+								:
+								<button onClick={handleSaveAnnotation}>
+									{blockLeave ?
+										null
 										:
-										<i className='fa fa-check'></i>
-								}
-								<span>Save</span>
-							</button>
+										isLoading ?
+											<i className='fa fa-refresh fa-spin'/>
+											:
+											<i className='fa fa-check'></i>
+									}
+									<span>Save</span>
+								</button>
+							}
 						</div>
 					</header>
 
@@ -611,7 +656,7 @@ const VideoEditor = props => {
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
-					message='Have you saved your changes already?'
+					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
 				/>
 			</>
 		</Style>

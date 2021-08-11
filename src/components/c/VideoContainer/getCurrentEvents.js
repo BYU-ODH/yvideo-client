@@ -29,8 +29,8 @@ export const HandleSubtitle = (time,subtitles,ind) => {
 export const CurrentEvents = (time,events,duration) => {
 	const activeEvents = []
 	events.forEach((val,ind)=>{
-		const start = val.start / 100 * duration
-		const end = val.end / 100 * duration
+		const start = val.start
+		const end = val.end
 		if (time >= start && time <= end) activeEvents.push(val)
 	})
 	const censors = activeEvents.filter(val => val.type === `Censor`)

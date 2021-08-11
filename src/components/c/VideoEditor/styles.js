@@ -272,7 +272,13 @@ export const EventEditor = styled.div`
 				& span, img {
 					margin: auto;
 				}
-
+			}
+			& > .disable {
+				color: grey;
+				cursor: no-drop;
+				:hover {
+					background-color: transparent;
+				}
 			}
 		}
 	}
