@@ -420,17 +420,15 @@ export const SideEditor = styled.div`
 		}
 	}
 	& .clipList {
-		width: 95%;
 		height: auto;
 		max-height: 30vh;
-		margin-left: 10px;
 		overflow-y: scroll;
 		position: relative;
 
 			& .singleClip {
 				display: flex;
-				margin-bottom: 5px;
-
+				padding: 0.5rem;
+				
 				& td {
 					display: inline-flex;
 					width: 30% !important;
@@ -444,11 +442,13 @@ export const SideEditor = styled.div`
 						}
 					}
 			}
-
 			& .trashIcon {
 				margin-left: -7%;
 				cursor: pointer;
 			}
+		}
+		& .clipActive {
+			background-color: #eee;
 		}
 
 		& #loader {

@@ -64,6 +64,7 @@ const ClipEditor = props => {
 	const [clipsToDelete,setClipsToDelete] = useState({})
 	const [blockLeave, setBlock] = useState(false)
 	const [isLoading,setIsLoading] = useState(false)
+	const [clipIndex,setClipIndex] = useState(0)
 	const [disableSave, setDisableSave] = useState(false)
 
 	// const [usingSubtitles, setSubtitles] = useState(false)
@@ -94,9 +95,9 @@ const ClipEditor = props => {
 
 		// new Array(largestLayer+1).fill(0)
 
-		for(let i = 0; i < largestLayer + 1; i++){
+		for(let i = 0; i < largestLayer + 1; i++)
 			initialLayers.push([i])
-		}
+
 		if(annotationsSaved){
 			setTimeout(() => {
 				setSaved(false)
@@ -190,9 +191,8 @@ const ClipEditor = props => {
 
 				}
 
-				if (cLeft + scrollBarOffset > lastPossibleRight){
+				if (cLeft + scrollBarOffset > lastPossibleRight)
 					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-				}
 
 				break
 			case `end`:
@@ -218,62 +218,69 @@ const ClipEditor = props => {
 	}
 	const setStartTime = (value, type) => {
 		const input = value
-		if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
-			value = convertToSeconds(value, videoLength)
-
+		if(type === `input` || type === `onBlur`) {
+			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				value = convertToSeconds(value, videoLength)
+		}
 		const clips = {...clipList}
 		if(value > videoLength)
 			clips[active][`start`] = videoLength - 30
 		else if(value < 0)
 			clips[active][`start`] = 0
-		else
+		else {
 			clips[active][`start`] = value
-
-		if (value > clips[active][`end`]) {
-			if(document.getElementById(`clipMessage`)) {
-				document.getElementById(`clipMessage`).style.color=`red`
-				document.getElementById(`clipMessage`).innerHTML=`Please, enter a number smaller than end time`
-				setDisableSave(true)
+			if (value > clips[active][`end`]) {
+				if(document.getElementById(`clipMessage`)) {
+					document.getElementById(`clipMessage`).style.color=`red`
+					document.getElementById(`clipMessage`).innerHTML=`Please, enter a number smaller than end time`
+					setDisableSave(true)
+				}
+			} else {
+				if(document.getElementById(`clipMessage`))
+					document.getElementById(`clipMessage`).innerHTML=``
+				setDisableSave(false)
 			}
-		} else {
-			if(document.getElementById(`clipMessage`))
-				document.getElementById(`clipMessage`).innerHTML=``
-			setDisableSave(false)
 		}
 
-		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-			clips[active][`start`] = input
+		if(type === `input` || type === `onBlur`) {
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+				clips[active][`start`] = input
+		}
 
 		setClipList(clips)
 		setBlock(true)
 	}
 	const setEndTime = (value, type) => {
 		const input = value
-		if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
-			value = convertToSeconds(value, videoLength)
+		if(type === `input` || type === `onBlur`) {
+			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				value = convertToSeconds(value, videoLength)
+		}
 
 		const clips = {...clipList}
 		if(value > videoLength)
 			clips[active][`end`] = videoLength
 		else if(value < 0)
 			clips[active][`end`] = 30
-		else
+		else {
 			clips[active][`end`] = value
-
-		if (value < clips[active][`start`]) {
-			if(document.getElementById(`clipMessage`)) {
-				document.getElementById(`clipMessage`).style.color=`red`
-				document.getElementById(`clipMessage`).innerHTML=`Please, enter a number bigger than start time`
-				setDisableSave(true)
+			if (value < clips[active][`start`]) {
+				if(document.getElementById(`clipMessage`)) {
+					document.getElementById(`clipMessage`).style.color=`red`
+					document.getElementById(`clipMessage`).innerHTML=`Please, enter a number bigger than start time`
+					setDisableSave(true)
+				}
+			} else {
+				if(document.getElementById(`clipMessage`))
+					document.getElementById(`clipMessage`).innerHTML=``
+				setDisableSave(false)
 			}
-		} else {
-			if(document.getElementById(`clipMessage`))
-				document.getElementById(`clipMessage`).innerHTML=``
-			setDisableSave(false)
 		}
 
-		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-			clips[active][`end`] = input
+		if(type === `input` || type === `onBlur`) {
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+				clips[active][`end`] = input
+		}
 
 		setClipList(clips)
 		setBlock(true)
@@ -311,13 +318,18 @@ const ClipEditor = props => {
 		setIsLoading(true)
 		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length ===0)
 			return
-		const clips = {...clipList})
+		const clips = {...clipList}
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
 		// window.location.href = `/manager`
+	}
+
+	const handleEditClip = (item, index) => {
+		setActive(item)
+		setClipIndex(index)
 	}
 
 	return (
@@ -450,19 +462,19 @@ const ClipEditor = props => {
 								<tbody>
 									{
 										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-											<div className={`singleClip`}>
+											<div className={`singleClip ${i === clipIndex ? `clipActive`:``}`}>
 												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
-													<td><input onClick={()=>setActive(item)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
 													<td>
-														<input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
-															onChange={(e) => setStartTime(e.target.value, null)}
+														<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+															onChange={(e) => setStartTime(e.target.value, `input`)}
 															onBlur={(e) => setStartTime(e.target.value, `onBlur`)}
 															onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-5, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
 															onMouseLeave={e => toggleTip()}
 														/>
 													</td>
-													<td><input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
-														onChange={(e) => setEndTime(e.target.value, null)}
+													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
+														onChange={(e) => setEndTime(e.target.value, `input`)}
 														onBlur={(e) => setEndTime(e.target.value, `onBlur`)}
 														onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+35, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
 														onMouseLeave={e => toggleTip()}
@@ -482,7 +494,6 @@ const ClipEditor = props => {
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/>
 							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
-
 						<Icon src={plus} onClick={createClip} />
 					</div>
 				</SideEditor>

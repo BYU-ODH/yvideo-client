@@ -122,7 +122,7 @@ const Controller = props => {
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
-				getVideoTime(newPlayed.toFixed(10) * duration)
+				getVideoTime(newPlayed)
 			}
 		},
 		handlePause: () => {
