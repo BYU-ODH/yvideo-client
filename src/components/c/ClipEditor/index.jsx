@@ -234,7 +234,7 @@ const ClipEditor = props => {
 	}
 	const setStartTime = (value, type) => {
 		const input = value
-		if(value.match(/\d{1,2}:\d{1,2}.?\d{0,2}/) || value.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+		if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 			value = convertToSeconds(value, videoLength)
 
 		const clips = {...clipList}
@@ -248,7 +248,7 @@ const ClipEditor = props => {
 		// if (value > clips[active][`end`])
 		// 	clips[active][`end`] = clips[active][`start`] + 20
 
-		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) === null ) && type !== `onBlur`)
+		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
 			clips[active][`start`] = input
 
 		setClipList(clips)
@@ -256,7 +256,7 @@ const ClipEditor = props => {
 	}
 	const setEndTime = (value, type) => {
 		const input = value
-		if(value.match(/\d{1,2}:\d{1,2}.?\d{0,2}/) || value.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+		if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 			value = convertToSeconds(value, videoLength)
 
 		const clips = {...clipList}
@@ -270,7 +270,7 @@ const ClipEditor = props => {
 		// if (value < clips[active][`start`])
 		// 	clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
 
-		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
 			clips[active][`end`] = input
 
 		setClipList(clips)
@@ -451,11 +451,15 @@ const ClipEditor = props => {
 														<input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
 															onChange={(e) => setStartTime(e.target.value, null)}
 															onBlur={(e) => setStartTime(e.target.value, `onBlur`)}
+															onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-5, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+															onMouseLeave={e => toggleTip()}
 														/>
 													</td>
 													<td><input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
 														onChange={(e) => setEndTime(e.target.value, null)}
 														onBlur={(e) => setEndTime(e.target.value, `onBlur`)}
+														onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+35, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+														onMouseLeave={e => toggleTip()}
 													/>
 													</td>
 												</tr>

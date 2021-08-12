@@ -269,7 +269,7 @@ const SubtitleEditor = props => {
 		try {
 			if(side === `beg`) {
 				input = sub.start
-				if(sub.start.match(/\d{2}:\d{2}.\d{2}/) || sub.start.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(sub.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || sub.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					sub.start = convertToSeconds(sub.start, videoLength)
 				else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
@@ -277,7 +277,7 @@ const SubtitleEditor = props => {
 				}
 			} else {
 				input = sub.end
-				if(sub.end.match(/\d{2}:\d{2}.\d{2}/) || sub.end.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(sub.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || sub.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					sub.end = convertToSeconds(sub.end, videoLength)
 				else {
 					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
@@ -350,11 +350,11 @@ const SubtitleEditor = props => {
 			setDisableSave(true)
 
 		if(side === `beg`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
 				sub.start = input
 
 		} else if(side === `end`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
 				sub.end = input
 		}
 

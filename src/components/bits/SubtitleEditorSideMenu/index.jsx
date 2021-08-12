@@ -96,7 +96,7 @@ const SubtitleEditorSideMenu = props => {
 										value={`${sub.start ===``? ``: convertSecondsToMinute(sub.start, videoLength)}`}
 										onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind,null)}
 										onBlur={e => editSub(`beg`,e.target.value,null,subLayer,ind, `onBlur`)}
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HHMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 
 									/>
@@ -104,7 +104,7 @@ const SubtitleEditorSideMenu = props => {
 										value={`${sub.end ===``? ``: convertSecondsToMinute(sub.end, videoLength)}`}
 										onChange={e => editSub(`end`,e.target.value,null,subLayer,ind, null)}
 										onBlur={e => editSub(`end`,e.target.value,null,subLayer,ind,`onBlur`)}
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HHMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 									/>
 								</div>

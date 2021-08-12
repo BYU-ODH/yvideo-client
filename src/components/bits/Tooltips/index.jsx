@@ -93,8 +93,8 @@ export const ToolTip = (props) => {
 		"te-scroll-end": `Scroll to end`,
 		"te-scroll-start": `Scroll to start`,
 		"actions": `Actions`,
-		"MMSSMS": `MM:SS.MS`,
-		"HHMMSSMS": `HH:MM:SS.MS`,
+		"MMSSMS": `MM:SS`,
+		"HMMSSMS": `H:MM:SS`,
 	}
 
 	// console.log("POSITION", position)

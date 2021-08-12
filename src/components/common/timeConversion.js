@@ -5,7 +5,7 @@ export const convertSecondsToMinute = (time, videoLength) =>{
 			if(videoLength<3600)
 				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
 			else
-				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
+				return new Date(Number(time) * 1000).toISOString().substr(12, 10)
 		} else
 			return time
 	} catch (e) {

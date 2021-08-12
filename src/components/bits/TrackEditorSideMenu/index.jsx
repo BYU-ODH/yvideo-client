@@ -21,6 +21,8 @@ const TrackEditorSideMenu = props => {
 		handleAddCensor,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		toggleTip,
+		handleShowTip,
 	} = props
 
 	const timeInputConstrain = /^[0-9,.,:\b]+$/
@@ -137,10 +139,16 @@ const TrackEditorSideMenu = props => {
 							<div className='center'>
 								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`}
 									onChange={e => handleEditEventBTimeChange(e)}
-									onBlur={e => handleEditEventBTimeFinalChange(e)}/>
+									onBlur={e => handleEditEventBTimeFinalChange(e)}
+									onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
+									onMouseLeave={e => toggleTip()}
+								/>
 								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`}
 									onChange={e => handleEditEventETimeChange(e)}
-									onBlur={e => handleEditEventETimeFinalChange(e)}/>
+									onBlur={e => handleEditEventETimeFinalChange(e)}
+									onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
+									onMouseLeave={e => toggleTip()}
+								/>
 							</div>
 							<br/>
 						</>

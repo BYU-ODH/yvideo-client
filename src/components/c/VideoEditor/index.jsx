@@ -195,7 +195,7 @@ const VideoEditor = props => {
 		try {
 			if(side === `beg`) {
 				input = event.start
-				if(event.start.match(/\d{1,2}:\d{1,2}.?\d{0,2}/) || event.start.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(event.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
@@ -204,7 +204,7 @@ const VideoEditor = props => {
 
 			} else if(side === `end`) {
 				input = event.end
-				if(event.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.end.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(event.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
@@ -257,11 +257,11 @@ const VideoEditor = props => {
 			setDisableSave(true)
 
 		if(side === `beg`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
 				event.start = input
 
 		} else if(side === `end`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
 				event.end = input
 		}
 
@@ -629,6 +629,8 @@ const VideoEditor = props => {
 								handleSaveCensor = {handleSaveCensor}
 								activeCensorPosition = {activeCensorPosition}
 								setActiveCensorPosition = {setActiveCensorPosition}
+								toggleTip={toggleTip}
+								handleShowTip={handleShowTip}
 							></TrackEditorSideMenu>
 							:
 							<></>
