@@ -40,12 +40,14 @@ const VideoEditorContainer = props => {
 
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
+	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 
 	useEffect(() => {
 
 		if (!contentCache.hasOwnProperty(id))
 			getContent(id)
-		else {
+
+		if(contentCache[id]) {
 			setContent(contentCache[id])
 			setEventsArray(contentCache[id].settings.annotationDocument)
 			setEvents(contentCache[id].settings.annotationDocument)
@@ -56,21 +58,18 @@ const VideoEditorContainer = props => {
 			else {
 				setKey(``)
 				setUrl(``)
-				if(content !== undefined){
-					console.log(sKey)
-					if(sKey === `` && contentCache[id].resourceId !== resourceIdStream){
-						getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
-						console.log(`1`)
-					} else if(streamKey){
-						// getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
-						setKey(streamKey)
-						console.log(`2`)
-					}
-					if (sKey !== ``){
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-						console.log(`3`)
-					}
+
+				if(contentCache[id].resourceId && !isStreamKeyLoaded){
+					getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
+					setIsStreamKeyLoaded(true)
 				}
+
+				if(streamKey)
+					setKey(streamKey)
+
+				if (sKey !== ``)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+
 			}
 		}
 	}, [contentCache, getContent, streamKey, content, sKey, eventsArray])

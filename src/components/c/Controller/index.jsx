@@ -16,6 +16,7 @@ import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
 
+// TODO: trim the code
 const Controller = props => {
 
 	const {

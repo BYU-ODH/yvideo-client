@@ -66,6 +66,9 @@ const PlayerContainer = props => {
 
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
+	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
+	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
+
 	const ref = player => {
 		setPlayer(player)
 	}
@@ -76,19 +79,17 @@ const PlayerContainer = props => {
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
-		// console.log(params)
-		if (!contentCache[params.id]){
-			// console.log('no cached content')
-			// get single content
+
+		if (!contentCache.hasOwnProperty(params.id))
 			getContent(params.id)
-		} else {
-			// console.log('yes cached content')
+
+		if(contentCache[params.id]) {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			const clips = contentCache[params.id][`clips`] ? JSON.parse(contentCache[params.id][`clips`])[params.clip] : []
-
 			if (params.clip) setClipTime([clips[`start`],clips[`end`]])
+
 			if(contentCache[params.id].url !== ``){
 				if(subtitlesContentId !== params.id && calledGetSubtitles === false){
 					getSubtitles(params.id)
@@ -96,32 +97,26 @@ const PlayerContainer = props => {
 				}
 				setUrl(contentCache[params.id].url)
 			} else {
-				// here we know that the type of content is from the server.
-				// so we reset the states to use for the new video.
 				setKey(``)
 				setUrl(``)
-				if(content !== undefined){
-					// CHECK RESOURCE ID
-					if(sKey === `` && contentCache[params.id].resourceId !== resourceIdStream){
-						// console.log(sKey)
-						// console.log(`%c getting streaming key for resource ${contentCache[params.id].resourceId}`,  'background-color: black; color: yellow; font-weight: bold;');
-						// console.log(`%c and content ${params.id}`, 'background-color: black; color: yellow; font-weight: bold;')
-						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
-					} else if(streamKey)
-						setKey(streamKey)
 
-					if (sKey !== ``){
-						// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${sKey}`)
-						// console.log(`%c Stream KEY ${streamKey}`, 'background-color: black; color: pink; font-weight: bold;')
-						// console.log(`%c getting stram media for ${content.id}`, 'color: green');
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-						if(subtitlesContentId !== params.id && calledGetSubtitles === false){
-							getSubtitles(params.id)
-							setCalledGetSubtitles(true)
-						}
+				if(contentCache[params.id].resourceId && !isStreamKeyLoaded){
+					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+					setIsStreamKeyLoaded(true)
+				}
+
+				if(streamKey)
+					setKey(streamKey)
+
+				if (sKey !== `` && !isUrlLoaded){
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+					// setIsUrlLoaded(true)
+					if(subtitlesContentId !== params.id && calledGetSubtitles === false){
+						getSubtitles(params.id)
+						setCalledGetSubtitles(true)
 					}
 				}
+
 			}
 		}
 
@@ -132,7 +127,6 @@ const PlayerContainer = props => {
 				setIsLandscape(true)
 			else
 				setIsLandscape(false)
-
 		}
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId])
 
@@ -188,7 +182,6 @@ const PlayerContainer = props => {
 	}
 
 	const handleProgress = progression => {
-		// console.log(`progress`, progression)
 		setProgress(progression)
 	}
 
@@ -205,10 +198,9 @@ const PlayerContainer = props => {
 		} else
 			newPlayed = time / duration
 
-		if(newPlayed !== Infinity && newPlayed !== -Infinity){
-			// console.log(`in fraction: `, newPlayed)
+		if(newPlayed !== Infinity && newPlayed !== -Infinity)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
-		}
+
 	}
 
 	const handleToggleFullscreen = () => {
@@ -251,28 +243,22 @@ const PlayerContainer = props => {
 	}
 
 	const handleMuted = () => {
-		// console.log('calling mute', muted)
 		setMuted(true)
 	}
 
 	const handleUnmuted = () => {
-		// console.log('calling unmute', muted)
 		setMuted(false)
 	}
 
 	const handleVolumeChange = e => {
-		// console.log(e.target)
 	}
 
 	const handleShowComment = (value, position) => {
-		// console.log(position)
-		// console.log('VALUE', value)
 		setVideoComment(value)
 		setCommentPosition(position)
 	}
 
 	const handleShowSubtitle = (value) => {
-		// console.log('CALED SUBTITLE')
 		// if(document.getElementById('subtitle-box') !== undefined){
 		// 	document.getElementById('subtitle-box').innerText = value
 		// }
@@ -283,7 +269,6 @@ const PlayerContainer = props => {
 		const temp = subtitles[index]
 		const currentContent = temp.content
 		if(typeof currentContent === `string`){
-			// console.log(`String type`)
 			try {
 				temp.content = JSON.parse(subtitles[index].content)
 			} catch (e){
@@ -319,9 +304,7 @@ const PlayerContainer = props => {
 
 			let result = 0
 			for(let i = 0; i < subtitles.length; i++){
-				// console.log(`in loop`)
 				const temp = subtitles[i]
-				// console.log(`TEMP CONTENT`, temp)
 				// now that we have an actual object lets check language
 				// go through all subtitles and find there index where subtitle language = audio language
 				if(temp.language.toLowerCase() === audioLanguage.toLowerCase()){
