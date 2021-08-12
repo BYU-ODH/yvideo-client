@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
-
 import plus from 'assets/plus-circle.svg'
-
 import Style, {Icon} from './styles.js'
+
+import { convertSecondsToMinute } from '../../common/timeConvertion'
 
 const SubtitleEditorSideMenu = props => {
 
@@ -37,7 +37,7 @@ const SubtitleEditorSideMenu = props => {
 
 	}, [index, event])
 
-	const editSub = (side, time, value, layer, ind) => {
+	const editSub = (side, time, value, layer, ind, type) => {
 		const sub = {...event}
 		if (side === `beg`) {
 			if(time===``)
@@ -69,20 +69,7 @@ const SubtitleEditorSideMenu = props => {
 		}
 
 		setEvent(sub)
-		updateSubs(ind,sub,layer,side)
-	}
-
-	// TODO: put into the same place(subtitle editor, video editor, clip editor)
-	const convertSecondsToMinute = (time) =>{
-		try {
-			if(videoLength<3600)
-				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
-			else
-				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
-
-		} catch (e) {
-			return time
-		}
+		updateSubs(ind,sub,layer,side,type)
 	}
 
 	return (
@@ -105,17 +92,20 @@ const SubtitleEditorSideMenu = props => {
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive`:``}`}>
 								<textarea className={`subText`} type='text' onClick={()=>changeSubIndex(ind)} value={sub.text} onChange={(value)=>editSub(null,null,value,subLayer,ind)}></textarea>
 								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
-									<input id={`subStart${ind}`} className={`subStart sideTabInput`}
-										onClick={()=>changeSubIndex(ind)} type='text'
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HHMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y+25, width: e.currentTarget.offsetWidth+20})}
-										onMouseLeave={e => toggleTip()}
-										value={`${sub.start ===``? ``: convertSecondsToMinute(sub.start)}`} onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind)}
-									/>
-									<input id={`subEnd${ind}`} className={`subEnd`}
-										onClick={()=>changeSubIndex(ind)} type='text'
+									<input id={`subStart${ind}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='text'
+										value={`${sub.start ===``? ``: convertSecondsToMinute(sub.start, videoLength)}`}
+										onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind,null)}
+										onBlur={e => editSub(`beg`,e.target.value,null,subLayer,ind, `onBlur`)}
 										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HHMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
-										value={`${sub.end ===``? ``: convertSecondsToMinute(sub.end)}`} onChange={e => editSub(`end`,e.target.value,null,subLayer,ind)}
+
+									/>
+									<input id={`subEnd${ind}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='text'
+										value={`${sub.end ===``? ``: convertSecondsToMinute(sub.end, videoLength)}`}
+										onChange={e => editSub(`end`,e.target.value,null,subLayer,ind, null)}
+										onBlur={e => editSub(`end`,e.target.value,null,subLayer,ind,`onBlur`)}
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HHMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
+										onMouseLeave={e => toggleTip()}
 									/>
 								</div>
 								<img alt={`delete subtitle`} className={`subtitle-delete`} src={trashIcon} width='20px' onClick={() => deleteSub(ind)} />

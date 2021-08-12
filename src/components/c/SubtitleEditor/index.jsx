@@ -7,6 +7,7 @@ import Backend from 'react-dnd-html5-backend'
 import * as Subtitle from 'subtitle'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal } from 'components/bits'
 import { Controller } from 'components'
+import { convertToSeconds } from '../../common/timeConvertion'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -259,22 +260,22 @@ const SubtitleEditor = props => {
 			}
 		}
 	}
-	const updateSubs = (index, sub, subLayerIndex, side) => {
+	const updateSubs = (index, sub, subLayerIndex, side, type) => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
 
 		try {
 			if(side === `beg`) {
-				if(sub.start.match(/\d{2}:\d{2}\.\d{2}/))
-					sub.start = covertToSeconds(sub.start)
+				if(sub.start.match(/\d{2}:\d{2}\.\d{2}/) || sub.start.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+					sub.start = convertToSeconds(sub.start, videoLength)
 				else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
 			} else {
-				if(sub.end.match(/\d{2}:\d{2}\.\d{2}/))
-					sub.end = covertToSeconds(sub.end)
+				if(sub.end.match(/\d{2}:\d{2}\.\d{2}/) || sub.end.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+					sub.end = convertToSeconds(sub.end, videoLength)
 				else {
 					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 					needCheck = false
@@ -357,16 +358,7 @@ const SubtitleEditor = props => {
 		setSubSelected(true)
 		setBlock(true)
 	}
-	const covertToSeconds = (time) => {
-		const t = time.split(`:`)
-		if(t.length > 2) {
-			const s = t[2].split(`.`)
-			return Number(+t[0]) * 3600 + Number(+t[1]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
-		} else {
-			const s = t[1].split(`.`)
-			return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
-		}
-	}
+
 	const addSubToLayer = (index, subIndex, position) => {
 		const currentSubs = [...subtitles]
 		let newSub = {}
