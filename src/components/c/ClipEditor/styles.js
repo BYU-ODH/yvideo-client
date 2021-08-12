@@ -278,6 +278,13 @@ export const SideEditor = styled.div`
 					margin: auto;
 				}
 			}
+			& > .disable {
+				color: grey;
+				cursor: no-drop;
+				:hover {
+					background-color: transparent;
+				}
+			}
 		}
 	}
 
@@ -406,6 +413,10 @@ export const SideEditor = styled.div`
 			& th {
 				width: 30%;
 			}
+		}
+
+		& #clipMessage{
+			margin: 1rem 0 1rem 1rem;
 		}
 	}
 	& .clipList {
