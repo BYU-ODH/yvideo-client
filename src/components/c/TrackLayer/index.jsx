@@ -2,6 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { useDrop } from 'react-dnd'
 import { Rnd } from 'react-rnd'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 import {
 	Icon, Style,
@@ -77,26 +78,6 @@ const TrackLayer = props => {
 		updateEvents(index, cEvents[index], layerIndex)
 	}
 
-	// const convertSecondsToMinute = (time) =>{
-	// 	console.log(time)
-	// 	if(Number(time) === 0) return `00:00:00`
-	// 	return new Date(Number(time) * 1000).toISOString().substr(11, 8)
-	// }
-
-	const convertSecondsToMinute = (time) =>{
-		try {
-			if(Number(time) === 0) return `00:00:00`
-
-			if(videoLength<3600)
-				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
-			else
-				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
-
-		} catch (e) {
-			return time
-		}
-	}
-
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position ) => {
 		const cEvents = events
@@ -147,9 +128,9 @@ const TrackLayer = props => {
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
 				{ event.type !== `Pause` ? (
-					<p>{convertSecondsToMinute(event.start)} - {convertSecondsToMinute(event.end)}</p>
+					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
 				) : (
-					<p>{convertSecondsToMinute(event.start)}</p>
+					<p>{convertSecondsToMinute(event.start, videoLength)}</p>
 				)
 				}
 			</Rnd>

@@ -6,22 +6,19 @@ import {ClipLayer} from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
+import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 
 // import * as Subtitle from 'subtitle'
-
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-
 import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
 import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
 import captions from 'assets/captions.svg'
-
 import helpIcon from 'assets/te-help-circle-white.svg'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
-
 import plus from 'assets/plus-circle.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
@@ -235,10 +232,10 @@ const ClipEditor = props => {
 		setClipList(clips)
 		setBlock(true)
 	}
-	const setStartTime = (value) => {
-
-		if(value.match(/\d{2}:\d{2}\.\d{2}/))
-			value = covertToSeconds(value)
+	const setStartTime = (value, type) => {
+		const input = value
+		if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+			value = convertToSeconds(value, videoLength)
 
 		const clips = {...clipList}
 		if(value > videoLength)
@@ -247,14 +244,20 @@ const ClipEditor = props => {
 			clips[active][`start`] = 0
 		else
 			clips[active][`start`] = value
-		if (value > clips[active][`end`])
-			clips[active][`end`] = clips[active][`start`] + 20
+
+		// if (value > clips[active][`end`])
+		// 	clips[active][`end`] = clips[active][`start`] + 20
+
+		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+			clips[active][`start`] = input
+
 		setClipList(clips)
 		setBlock(true)
 	}
-	const setEndTime = (value) => {
-		if(value.match(/\d{2}:\d{2}\.\d{2}/))
-			value = covertToSeconds(value)
+	const setEndTime = (value, type) => {
+		const input = value
+		if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+			value = convertToSeconds(value, videoLength)
 
 		const clips = {...clipList}
 		if(value > videoLength)
@@ -263,24 +266,18 @@ const ClipEditor = props => {
 			clips[active][`end`] = 30
 		else
 			clips[active][`end`] = value
-		if (value < clips[active][`start`])
-			clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
+
+		// if (value < clips[active][`start`])
+		// 	clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
+
+		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+			clips[active][`end`] = input
 
 		setClipList(clips)
 		setBlock(true)
 	}
-	const covertToSeconds = (time) => {
-		const t = time.split(`:`)
-		if(t.length > 2) {
-			const s = t[2].split(`.`)
-			return Number(+t[0]) * 3600 + Number(+t[1]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
-		} else {
-			const s = t[1].split(`.`)
-			return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
-		}
-	}
+
 	const createClip = () =>{
-		// console.log(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a) ))
 		const id = Object.keys(clipList).length === 0 ? `0` : `${parseInt(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
 		const clip = {
 			start: 0,
@@ -324,18 +321,7 @@ const ClipEditor = props => {
 		setIsLoading(false)
 		// window.location.href = `/manager`
 	}
-	const convertSecondsToMinute = (time) =>{
-		console.log(time)
-		try {
-			if(videoLength<3600)
-				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
-			else
-				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
 
-		} catch (e) {
-			return time
-		}
-	}
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
@@ -461,8 +447,21 @@ const ClipEditor = props => {
 											<div className={`singleClip`}>
 												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
 													<td><input onClick={()=>setActive(item)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
-													<td><input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].start)}`} onChange={(e) => setStartTime(e.target.value)}/></td>
-													<td><input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].end)}`} onChange={(e) => setEndTime(e.target.value)}/></td>
+													<td>
+														<input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+															onChange={(e) => setStartTime(e.target.value, null)}
+															onBlur={(e) => setStartTime(e.target.value, `onBlur`)}
+															onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-5, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+															onMouseLeave={e => toggleTip()}
+														/>
+													</td>
+													<td><input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
+														onChange={(e) => setEndTime(e.target.value, null)}
+														onBlur={(e) => setEndTime(e.target.value, `onBlur`)}
+														onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+35, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+														onMouseLeave={e => toggleTip()}
+													/>
+													</td>
 												</tr>
 												<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
 											</div>
