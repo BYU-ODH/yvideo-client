@@ -321,7 +321,6 @@ const ClipEditor = props => {
 		setIsLoading(false)
 		// window.location.href = `/manager`
 	}
-
 	return (
 		<Style>
 			<DndProvider backend={Backend}>

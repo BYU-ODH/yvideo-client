@@ -14,8 +14,6 @@ import {
 
 const TrackLayer = props => {
 
-	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
-
 	const { events, sideEditor, updateEvents, activeEvent, width, videoLength, displayLayer} = props // onDrop
 	const layerIndex = parseInt(props.index)
 
@@ -25,7 +23,6 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	// const [isEditorOpen, setEditorOpen] = useState(false)
 
 	if(shouldUpdate)
 		setShouldUpdate(false)

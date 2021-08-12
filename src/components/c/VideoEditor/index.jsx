@@ -5,7 +5,7 @@ import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
-import { Controller, TrackLayer, VideoContainer } from 'components'
+import { TrackLayer, VideoContainer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './styles'
 
@@ -15,9 +15,8 @@ import pauseIcon from 'assets/event_pause.svg'
 import commentIcon from 'assets/event_comment.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
-import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
-import plusIcon from 'assets/plus.svg'
+
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import llIcon from 'assets/te-chevrons-left.svg'
@@ -35,6 +34,7 @@ const VideoEditor = props => {
 		eventsArray,
 		content,
 		contentError,
+		url,
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
@@ -103,7 +103,6 @@ const VideoEditor = props => {
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 
-	// const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
@@ -116,7 +115,6 @@ const VideoEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 
 	// refs
-	// console.log(videoCurrentTime)
 
 	useEffect(() => {
 		function handleResize() {
@@ -169,13 +167,12 @@ const VideoEditor = props => {
 			layer: index,
 		}
 
+		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
 		eventObj.end = Number(startPercentage) + 10
 
 		setCurrentTime(Number(startPercentage)+10)
 		currentEvents.push(eventObj)
-		// setAllEvents(currentEvents)
-		// setDisplayLayer(index)
 		setCurrentEvent(eventObj)
 
 		const eventIndex = currentEvents.length-1 < 0 ? 0 : currentEvents.length-1
@@ -222,8 +219,6 @@ const VideoEditor = props => {
 				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
 
 		} else if(event.start >= videoLength) {
-			// event.start = 95
-			// event.end = 100
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
@@ -472,7 +467,7 @@ const VideoEditor = props => {
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
 						className='video'
-						url={props.viewstate.url}
+						url={url}
 						handlers={togglendTimeline}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTimePercentage} // set current time

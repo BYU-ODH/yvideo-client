@@ -9,7 +9,6 @@ import {
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
-import { escapeSelector } from 'jquery'
 
 const CreateContentContainer = props => {
 
@@ -142,7 +141,6 @@ const CreateContentContainer = props => {
 					break
 				}
 				if(i === access.length -1) {
-					console.log(`object`)
 					setIsAccess(false)
 					theAccess = false
 
