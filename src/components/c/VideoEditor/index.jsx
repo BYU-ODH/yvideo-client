@@ -182,7 +182,7 @@ const VideoEditor = props => {
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
 
-	const updateEvents = (index, event, layerIndex, side) => {
+	const updateEvents = (index, event, layerIndex, side, type) => {
 
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
@@ -191,13 +191,14 @@ const VideoEditor = props => {
 		}
 
 		const currentEvents = [...allEvents]
+		let input = ``
 		try {
 			if(side === `beg`) {
 				input = event.start
 				if(event.start.match(/\d{1,2}:\d{1,2}.?\d{0,2}/) || event.start.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
-					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 
@@ -206,7 +207,7 @@ const VideoEditor = props => {
 				if(event.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.end.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
-					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 			}
@@ -254,6 +255,15 @@ const VideoEditor = props => {
 			}
 		} else
 			setDisableSave(true)
+
+		if(side === `beg`) {
+			if(input.match(/\d{2}:\d{2}\.\d{2}/) === null && type !== `onBlur`)
+				event.start = input
+
+		} else if(side === `end`) {
+			if(input.match(/\d{2}:\d{2}\.\d{2}/) === null && type !== `onBlur`)
+				event.end = input
+		}
 
 		currentEvents[index] = event
 
