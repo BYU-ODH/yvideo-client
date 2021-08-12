@@ -117,7 +117,6 @@ export default class Player extends PureComponent {
 					}
 					break
 				case `Skip`:
-
 					handleSeekChange(null,values.allEvents[y].end)
 					break
 				default:
@@ -146,7 +145,7 @@ export default class Player extends PureComponent {
 							onPause={handlePause}
 							onStart = {handleStart}
 							// onBuffer={() => console.log(`onBuffer`)}
-							onSeek={e => console.log(`onSeek`, e)}
+							onSeek={e => e}
 							// onError={e => console.log(`onError`, e)}
 							progressInterval={30}
 							onProgress={handleOnProgress}
@@ -182,7 +181,7 @@ export default class Player extends PureComponent {
 				{/* <div className={`collection-container`}>
 					<CollectionsContainer/>
 				</div> */}
-				<EventsContainer
+				{/* <EventsContainer
 					currentTime={progress.playedSeconds.toFixed(1)}
 					duration={duration}
 					handleSeek={handleSeekChange}
@@ -195,7 +194,7 @@ export default class Player extends PureComponent {
 					handleShowComment={handleShowComment}
 					handleCensorPosition={setCensorPosition}
 					handleCensorActive={setCensorActive}
-				/>
+				/> */}
 				{
 					url !== `` && showTranscript ? (
 						// showsubtitles

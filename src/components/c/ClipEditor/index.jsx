@@ -321,22 +321,15 @@ const ClipEditor = props => {
 		setIsLoading(false)
 		// window.location.href = `/manager`
 	}
-
 	return (
 		<Style>
 			<DndProvider backend={Backend}>
 				<span style={{ zIndex: 0 }}>
 					<Controller className='video'
 						url={props.viewstate.url}
-						// handlers={togglendTimeline}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTime}
-						// minimized={timelineMinimized}
-						// togglendTimeline={togglendTimeline}
-						// handleLastClick = {handleLastClick}
 						events = {clipList}
-						// updateEvents={updateEvents}
-						// eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
 						editorType={`clip`}

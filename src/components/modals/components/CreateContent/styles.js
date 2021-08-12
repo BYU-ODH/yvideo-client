@@ -224,7 +224,7 @@ export const TypeButton = styled.button`
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
 `
-export const Search = styled.form`
+export const Search = styled.div`
 	position: relative;
 	margin-bottom: -2rem;
 

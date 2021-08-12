@@ -285,7 +285,7 @@ const SubtitleEditor = props => {
 				}
 			}
 		} catch (e) {
-			console.log(`catch`)
+			console.error(`updateSubs error`)
 		}
 
 		if(side===`beg` && needCheck === true) {
@@ -669,7 +669,7 @@ const SubtitleEditor = props => {
 				}
 			}
 			if(!checkError) {
-				if(document.getElementById(`subStart${i}`).style){
+				if(document.getElementById(`subStart${i}`) && document.getElementById(`subStart${i}`).style){
 					document.getElementById(`subStart${i}`).style.border=``
 					document.getElementById(`subEnd${i}`).style.border=``
 				}
