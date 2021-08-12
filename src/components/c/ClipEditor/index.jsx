@@ -6,7 +6,7 @@ import {ClipLayer} from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
-import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConvertion'
+import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 
 // import * as Subtitle from 'subtitle'
 import zoomIn from 'assets/te-zoom-in.svg'
@@ -233,8 +233,8 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const setStartTime = (value, type) => {
-
-		if(value.match(/\d{2}:\d{2}\.\d{2}/) || value.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+		const input = value
+		if(value.match(/\d{1,2}:\d{1,2}.?\d{0,2}/) || value.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 			value = convertToSeconds(value, videoLength)
 
 		const clips = {...clipList}
@@ -244,13 +244,19 @@ const ClipEditor = props => {
 			clips[active][`start`] = 0
 		else
 			clips[active][`start`] = value
-		if (value > clips[active][`end`])
-			clips[active][`end`] = clips[active][`start`] + 20
+
+		// if (value > clips[active][`end`])
+		// 	clips[active][`end`] = clips[active][`start`] + 20
+
+		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) === null ) && type !== `onBlur`)
+			clips[active][`start`] = input
+
 		setClipList(clips)
 		setBlock(true)
 	}
 	const setEndTime = (value, type) => {
-		if(value.match(/\d{2}:\d{2}\.\d{2}/) || value.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+		const input = value
+		if(value.match(/\d{1,2}:\d{1,2}.?\d{0,2}/) || value.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 			value = convertToSeconds(value, videoLength)
 
 		const clips = {...clipList}
@@ -260,8 +266,12 @@ const ClipEditor = props => {
 			clips[active][`end`] = 30
 		else
 			clips[active][`end`] = value
-		if (value < clips[active][`start`])
-			clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
+
+		// if (value < clips[active][`start`])
+		// 	clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
+
+		if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+			clips[active][`end`] = input
 
 		setClipList(clips)
 		setBlock(true)

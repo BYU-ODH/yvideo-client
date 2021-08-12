@@ -6,7 +6,7 @@ import closeIcon from 'assets/close_icon.svg'
 import plus from 'assets/plus-square.svg'
 
 import Style, {Icon} from './styles.js'
-import { convertSecondsToMinute } from '../../common/timeConvertion'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 const TrackEditorSideMenu = props => {
 

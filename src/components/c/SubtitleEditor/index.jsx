@@ -7,7 +7,7 @@ import Backend from 'react-dnd-html5-backend'
 import * as Subtitle from 'subtitle'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal } from 'components/bits'
 import { Controller } from 'components'
-import { convertToSeconds } from '../../common/timeConvertion'
+import { convertToSeconds } from '../../common/timeConversion'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -264,17 +264,20 @@ const SubtitleEditor = props => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
+		let input = ``
 
 		try {
 			if(side === `beg`) {
-				if(sub.start.match(/\d{2}:\d{2}\.\d{2}/) || sub.start.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				input = sub.start
+				if(sub.start.match(/\d{2}:\d{2}.\d{2}/) || sub.start.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					sub.start = convertToSeconds(sub.start, videoLength)
 				else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
 			} else {
-				if(sub.end.match(/\d{2}:\d{2}\.\d{2}/) || sub.end.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				input = sub.end
+				if(sub.end.match(/\d{2}:\d{2}.\d{2}/) || sub.end.match(/\d{1,2}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					sub.end = convertToSeconds(sub.end, videoLength)
 				else {
 					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
@@ -345,6 +348,15 @@ const SubtitleEditor = props => {
 			checkSubError(tempSubs, `update`, index, updateSub)
 		} else
 			setDisableSave(true)
+
+		if(side === `beg`) {
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+				sub.start = input
+
+		} else if(side === `end`) {
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
+				sub.end = input
+		}
 
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs

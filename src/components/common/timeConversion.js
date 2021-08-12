@@ -1,7 +1,7 @@
 export const convertSecondsToMinute = (time, videoLength) =>{
 	try {
 		// here is meant to use two equal
-		if(typeof time === `number`) {
+		if(typeof time == `number`) {
 			if(videoLength<3600)
 				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
 			else

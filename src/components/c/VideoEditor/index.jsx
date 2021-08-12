@@ -6,7 +6,7 @@ import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { Controller, TrackLayer, VideoContainer } from 'components'
-import { convertToSeconds } from '../../common/timeConvertion'
+import { convertToSeconds } from '../../common/timeConversion'
 import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'
@@ -257,11 +257,11 @@ const VideoEditor = props => {
 			setDisableSave(true)
 
 		if(side === `beg`) {
-			if(input.match(/\d{2}:\d{2}\.\d{2}/) === null && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
 				event.start = input
 
 		} else if(side === `end`) {
-			if(input.match(/\d{2}:\d{2}\.\d{2}/) === null && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1,2}:\d{1,2}:\d{1,2}\.?\d{0,2}/) === null ) && type !== `onBlur`)
 				event.end = input
 		}
 
