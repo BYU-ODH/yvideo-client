@@ -102,7 +102,7 @@ export const TimeBar = styled.div`
 					width: 100% !important;
 
 					& #timeBarProgress {
-						/* width: calc(100% - 5rem) !important; */
+						width: calc(100% - 5rem) !important;
 					}
 				}
 
