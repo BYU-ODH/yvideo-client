@@ -14,6 +14,7 @@ import collection from 'assets/help/help-collection.png'
 import content from 'assets/help/help-content.png'
 import contentEdit from 'assets/help/help-content-edit.png'
 import eventHelp from 'assets/help/help-te-event.png'
+import subtitleHelp from 'assets/help/help-te-subtitle.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomrHelp from 'assets/help/help-te-zoom.png'
 import playercontrolHelp from 'assets/help/help-playercontrols.png'
@@ -145,6 +146,51 @@ const HelpDocumentationContainer = props => {
 						all your changes</i></b>
 					</p><br/>
 					<img src="${eventHelp}" width="200px"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Layers:</b>
+							<br/> -&nbsp; <b>Add Events:</b> drag an event from the right side menu and drop it in the desired layer. The event will be added at the beginning of the layer as default.
+							<br/> -&nbsp; <b>Edit Events:</b> you can drag the event inside of the layer to change the time in which the event gets executed. And, you can resize an event from the edges to
+							extend the length of the event. If you prefer, you can click on an event and the right side menu will show the event properties that you can edit.
+							<br/> -&nbsp; <b>Add Layer:</b> you can add as many layers as you want. Layers let you organize your events and it makes it easier to work with overlapping events. To add a layer just click
+							the plus icon on the bottom left of the screen.
+							<br/> -&nbsp; <b>Delete Layer:</b> click on the trash can icon next to the layer number. <u>This will delete a layer and all the events inside of such layer.</u>
+					</p><br/>
+					<img src="${layerHelp}" width="250px"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Subtitles:</b>
+							<br/> -&nbsp;You can create a new subtitle track either from scratch or from a file ending in .srt or .vtt.
+							<br/> -&nbsp; <b>Start from Scratch:</b> This option will start you out with an entirely empty subtitle track.
+							<br/> -&nbsp; <b>Start from File:</b> Choose an SRT or VTT file, and a new track will be created with the subtitles from the file.
+							<br/> -&nbsp; <b>Add Subtitle:</b> Once you have a subtitle track, a new event card below the others will appear titled "Add Subtitle", drag this card to a subtitle track to add a subtitle.
+							<br/> -&nbsp; <b>Delete Subtitle:</b> click on the trash can icon next to the track Title. <u>This will delete the subtitle track.</u>
+							<br/> -&nbsp; <b>Side Editor</b> Clicking on a subtitle will open the side editor where you can edit the Title and the Language. There is also a table where you can edit start/end times and the text of all subtitles, as shown to the right.
+					</p><br/>
+					<img src="${subHelp}" width="250px"/>
+				</div>
+				<hr/>
+				<div class="section large-img">
+					<p><b>Zoom & Scroll:</b>
+							<br/> -&nbsp; <b>Zoom:</b> when working with large videos, you can zoom in to edit your events more acurrately. To zoom in and out drag and drop the small blue dot in the left bottom of the screen
+							and move it right to zoom in and left to zoom out.
+							<br/> -&nbsp; <b>Scroll:</b> when you zoom in or out the scroll indicator (blue bar at the bottom of the screen) will change size. To scroll you can use the arrows next to the scroll indicator.
+							Double arrows will take you to the respective end of the layer, and single arrows will scroll a short distance to the indicated side.
+					</p><br/>
+					<img src="${zoomrHelp}"/>
+				</div>`,
+		},
+		'Subtitle Editor': {
+			htmlInstruction: `
+				<div class="section">
+					<p><b>Side Menu:</b>
+						<br/> -&nbsp; <b>Subtitles:</b> Click on the blue title of the layer and the right side of the screen.
+						<br/> -&nbsp; <b>Save:</b> After you made your changes to the video the last step is to save the video by clicking the save button. <b><i>If you do not save it you will lose
+						all your changes.</i> The green check icon represent that there is nothing changed.</b>
+					</p><br/>
+					<img src="${subtitleHelp}" width="200px"/>
 				</div>
 				<hr/>
 				<div class="section">

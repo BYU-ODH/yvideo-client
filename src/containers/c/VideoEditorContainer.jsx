@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { connect } from 'react-redux'
@@ -14,7 +14,7 @@ import HelpDocumentation from 'components/modals/containers/HelpDocumentationCon
 const VideoEditorContainer = props => {
 
 	const {
-		content,
+		contentCache,
 		resource,
 		setEvents,
 		getContent,
@@ -22,51 +22,59 @@ const VideoEditorContainer = props => {
 		activeUpdate,
 		getStreamKey,
 		streamKey,
+		resourceIdStream,
 		toggleModal,
 		toggleTip,
 		contentError,
 		setBreadcrumbs,
-		subtitles,
-		subtitlesContentId,
-		getSubtitles,
 	} = props
-	console.log(contentError)
-	const {id} = useParams() // content id
+
+	const {id} = useParams()
 
 	const [url, setUrl] = useState(``)
+
 	const [eventsArray, setEventsArray] = useState([])
-	const [currentContent, setCurrentContent] = useState({})
-	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
-	console.log(subtitles)
+	const [timelineMinimized, setTimelineMinimized] = useState(false)
+
+	const [videoLength, setVideoLength] = useState(0)
+	const [displayLayer, setDisplayLayer] = useState(0)
+	const [eventToEdit, setEventToEdit] = useState(10000)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
+	const [allEvents, setAllEvents] = useState(eventsArray)
+
+	const [content, setContent] = useState({})
+	const [sKey, setKey] = useState(``)
+
+	const controllerRef = useRef(null)
+
 	useEffect(() => {
 
-		if(!content.hasOwnProperty(id))
+		if (!contentCache.hasOwnProperty(id))
 			getContent(id)
+		else {
+			setContent(contentCache[id])
+			setEventsArray(contentCache[id].settings.annotationDocument)
+			setEvents(contentCache[id].settings.annotationDocument)
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
 
-		if(content[id] !== undefined){
-			if(subtitlesContentId !== id && calledGetSubtitles === false){
-				getSubtitles(id)
-				setCalledGetSubtitles(true)
-			}
-			setCurrentContent(content[id])
-			setEventsArray(content[id].settings.annotationDocument)
-			setEvents(content[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
-			// we only want to set the url if it is not set.
-			if(url === ``){
-				if(content[id].url !== ``)
-					setUrl(content[id].url)
-				else {
-					// CHECK RESOURCE ID
-					if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
-						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-					} else if (streamKey !== `` && url === ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
+			if(contentCache[id].url !== ``)
+				setUrl(contentCache[id].url)
+			else {
+				setKey(``)
+				setUrl(``)
+				if(content !== undefined){
+					if(sKey === `` && contentCache[id].resourceId !== resourceIdStream)
+						getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
+					else if(streamKey)
+						setKey(streamKey)
+
+					if (sKey !== ``)
+						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+
 				}
 			}
 		}
-	}, [content, resource, eventsArray, currentContent, streamKey, url])
+	}, [contentCache, getContent, streamKey, content, sKey, eventsArray]) // content, resource, eventsArray, currentContent, streamKey, url, isContentChanged])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -85,18 +93,35 @@ const VideoEditorContainer = props => {
 		})
 	}
 
+	const togglendTimeline = () => {
+		setTimelineMinimized(!timelineMinimized)
+	}
+
+	const getVideoDuration = (duration) => {
+		setVideoLength(duration)
+	}
+
 	const viewstate = {
-		currentContent,
+		content,
 		url,
 		eventsArray,
 		contentError,
-		subtitles,
+		controllerRef,
+		videoLength,
+		timelineMinimized,
+		displayLayer,
+		allEvents,
+		eventToEdit,
+		activeCensorPosition,
 	}
 
 	const handlers = {
 		toggleTip,
 		handleShowTip,
 		handleShowHelp,
+		togglendTimeline,
+		getVideoDuration,
+		setActiveCensorPosition,
 	}
 
 	return <VideoEditor
@@ -104,31 +129,29 @@ const VideoEditorContainer = props => {
 		setEvents={setEvents}
 		updateContent={updateContent}
 		activeUpdate={activeUpdate}
-		handleShowHelp={handleShowHelp}
 		handlers={handlers}/>
 }
 
-const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({
+const mapStoreToProps = ({ contentStore, resourceStore }) => ({
 	resource: resourceStore.cache,
-	content: contentStore.cache,
+	contentCache: contentStore.cache,
 	streamKey: resourceStore.streamKey,
+	resourceIdStream: resourceStore.resourceIdStreamKey,
 	contentError: contentStore.errorMessage,
-	subtitles: subtitlesStore.cache,
-	subtitlesContentId: subtitlesStore.contentId,
+	isContentChanged: contentStore.isContentChanged,
 })
 
 const mapThunksToProps = {
 	setEvents: interfaceService.setEvents,
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
-	getStreamKey: resourceService.getStreamKey,
+	selectedContent: contentService.selectedContent,
+	getStreamKey: resourceService.getStreamKey, // file media
 	updateContent: contentService.updateContent,
 	activeUpdate: subtitlesService.activeUpdate,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
-	getSubtitles: subtitlesService.getSubtitles,
-
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(VideoEditorContainer)

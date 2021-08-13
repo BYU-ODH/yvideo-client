@@ -25,14 +25,14 @@ export const HandleSubtitle = (time,subtitles,ind,duration) => {
 }
 export const CurrentEvents = (time,events,duration) => {
 	const activeEvents = []
-	console.log(time)
+
 	events.forEach((val,ind)=>{
 		const newVal = {...val}
-		const start = val.start / 100 * duration
-		const end = val.end / 100 * duration
+		const start = val.start
+		const end = val.end
 		newVal.start = start
 		newVal.end = end
-		console.log(newVal)
+
 		if (time >= start && time <= end) activeEvents.push(newVal)
 	})
 	const censors = activeEvents.filter(val => val.type === `Censor`)
@@ -66,9 +66,10 @@ export const CurrentEvents = (time,events,duration) => {
 				let del = true
 				for (let i; i < comments.length;i++)
 					if (censorChildren[i].className.search(i.toString()) < -1) del = false
-				if (del) censorContainer.remove(`${censorChildren[x].id}`)
+				if (del) censorContainer.removeChild(censorChildren[x])
 			}
 		}
+		console.log(censorContainer)
 	}
 	const commentContainer = document.getElementById(`commentContainer`)
 	if (commentContainer){
@@ -92,7 +93,7 @@ export const CurrentEvents = (time,events,duration) => {
 				for (let i; i < comments.length;i++)
 					if (commentChildren[i].className.search(i.toString()) < -1) del = false
 
-				if (del) commentContainer.remove(`${commentChildren[x].id}`)
+				if (del) commentContainer.removeChild(commentChildren[x])
 			}
 		}
 	}
@@ -106,18 +107,22 @@ export const CurrentEvents = (time,events,duration) => {
 	return eventValues
 }
 export const CensorChange = (ind,censorData, playedSeconds) =>{
-	const censorBox = document.getElementById(`censorBox-${ind}`)
-	const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
-	censorBox.style.width = `${width}%`
-	const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
-	censorBox.style.height = `${height}%`
-	censorBox.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
-	censorBox.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
+	if(document.getElementById(`censorBox-${ind}`)){
+		const censorBox = document.getElementById(`censorBox-${ind}`)
+		const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
+		censorBox.style.width = `${width}%`
+		const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
+		censorBox.style.height = `${height}%`
+		censorBox.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
+		censorBox.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
+	}
 }
 export const CommentChange = (ind,commentData, playedSeconds) =>{
-	const commentBox = document.getElementById(`comment-${ind}`)
-	commentBox.style.top = `${commentData.y}%`
-	commentBox.style.left = `${commentData.x}%`
+	if(document.getElementById(`comment-${ind}`)){
+		const commentBox = document.getElementById(`comment-${ind}`)
+		commentBox.style.top = `${commentData.y}%`
+		commentBox.style.left = `${commentData.x}%`
+	}
 }
 export const subtitleChange = (subtitles) => {
 	const container = document.getElementById(`subtitleContainer`)

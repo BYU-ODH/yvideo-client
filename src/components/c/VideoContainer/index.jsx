@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useLayoutEffect, useCallback } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
 
@@ -33,7 +33,6 @@ const VideoContainer = props => {
 		setActiveCensorPosition,
 		subtitles,
 	} = props
-	console.log(subtitles)
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 	const censorRef = useRef(null)
@@ -42,6 +41,7 @@ const VideoContainer = props => {
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0)
+	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
@@ -52,11 +52,7 @@ const VideoContainer = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
-
-	useEffect(() => {
-		const indicator = document.getElementById(`time-indicator`)
-	})
-
+	const [pausedTimes,setPausedTimes] = useState([])
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
 	const video = {
@@ -88,51 +84,53 @@ const VideoContainer = props => {
 			setVolumeState(volume)
 			setMuted(muted)
 			setPlaybackRate(playbackRate)
+			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			const t0 = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
-				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
+				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played*100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+				document.getElementById(`timeBarProgress`).value = `${played*100}`
 			if(document.getElementById(`time-dot`) !== undefined)
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+				document.getElementById(`time-dot`).style.left = played ? `calc(${played*100}% - 2px)` : `calc(${played*100}% - 2px)`
 			setElapsed(playedSeconds)
-			console.log(ref)
-			console.log(events)
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
-			console.log(values.allEvents,playedSeconds,subtitles)
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
-
+			const testMute = values.allEvents.map(val => val.type)
+			if (!testMute.includes(`Mute`)) video.handleUnMute()
 			for (let y = 0; y < values.allEvents.length; y++){
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					video.handleMute()
 					break
 				case `Pause`:
-					video.handlePause()
+					let paused = true
+					for (let i = 0; i < pausedTimes.length;i++){
+						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)
+							paused = false
+					}
+					if(paused) {
+						const times = [...pausedTimes]
+						times.push(values.allEvents[y].start)
+						setPausedTimes(times)
+						video.handlePause()
+					}
 					break
 				case `Skip`:
-					console.log(values.allEvents[y].end)
-					video.handleSeek(null,video.handleSeek(null,values.allEvents[y].end))
+					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
 				}
 			}
-			const t1 = performance.now()
-			// console.log(`performance is ${t1-t0} milliseconds`)
 		},
 		handleDuration: duration => {
-			// console.log(`step 1`)
-			if(typeof getDuration === `function`){
-				// console.log(`step 2`)
+			if(typeof getDuration === `function`)
 				getDuration(duration)
-			}
 
 			setDuration(duration)
 			setCurrentZone([0, duration])
@@ -141,52 +139,52 @@ const VideoContainer = props => {
 			setPlaybackRate(rate)
 		},
 		handleSeek: (e, time) => {
-			console.log(time)
 			let newPlayed = 0
 			if(e !== null){
+				// onclick to time bar
 				const scrubber = e.currentTarget.getBoundingClientRect()
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
-			} else
-				newPlayed = time / duration
+			} else {
+				// add event to layer
+				newPlayed = duration / time
+			}
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
-				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
-				getVideoTime(newPlayed.toFixed(10) * duration)
-				// console.log(newPlayed.toFixed(10) * duration)
+				getVideoTime(newPlayed)
+			}
+		},
+		handleSkip: (time) => {
+			const newPlayed = duration / time
+			if(newPlayed !== Infinity && newPlayed !== -Infinity){
+				ref.current.seekTo(time)
+				getVideoTime(time)
 			}
 		},
 		handlePause: () => {
 			setPlaying(false)
-			getVideoTime(elapsed.toFixed(1))
-			// console.log(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(2)/duration)
 		},
 		handlePlay: () => {
 			setPlaying(true)
-			getVideoTime(elapsed.toFixed(1))
-			// console.log(elapsed.toFixed(1))
+			getVideoTime(elapsed.toFixed(2)/duration)
 			setActiveCensorPosition(-1)
 		},
 		handleMute: () => {
-			// console.log('mute event')
 			setMuted(true)
 		},
 		handleUnMute: () => {
-			// console.log('Unmute event')
 			setMuted(false)
 		},
 		handleBlank: (bool) => {
 			setBlank(bool)
 		},
 		handleShowComment: (value, position) => {
-			// console.log(position)
-			// console.log(value)
 			setVideoComment(value)
 			setCommentPosition(position)
 
 		},
 		handleShowSubtitle: (value) => {
-			// console.log(value)
 			setSubtitleText(value)
 		},
 		// For when returning values of two subtitles
@@ -202,22 +200,20 @@ const VideoContainer = props => {
 			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
-			// console.log(events)
 			const event = events[eventToEdit]
-			// console.log(pos.x/videoRef.current.offsetWidth*100 - event.position[activeCensorPosition][2]/2)
+
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
 					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + event.position[activeCensorPosition][2]/2
 					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + event.position[activeCensorPosition][3]/2
 				}
 			}
-			// console.log(event)
+
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleUpdateCensorResize: (delta, pos)=>{
-			// console.log(videoRef.current.offsetWidth,ref.current)
+
 			const event = events[eventToEdit]
-			// console.log(pos,delta,event.position[activeCensorPosition][0],videoRef.current.offsetWidth)
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
 					const width = event.position[activeCensorPosition][2] + delta.width/videoRef.current.offsetWidth*100
@@ -228,14 +224,11 @@ const VideoContainer = props => {
 					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + height/2
 				}
 			}
-			// console.log(event.position)
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleBlankClick : (height, width, x, y) => {
 			let currentTime = ref.current.getCurrentTime()
 			if (!currentTime) currentTime = 0
-			// currentTime = currentTime.toFixed(1)
-			console.log(currentTime)
 			handleLastClick(height,width,x, y, currentTime)
 		},
 	}
@@ -285,12 +278,16 @@ const VideoContainer = props => {
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
+
+			{!isReady && <div className='loading-spinner'><Spinner/></div>}
+
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
+				key={url}
 
 				// constants
 
-				className='video'
+				className={`react-player`}
 				progressInterval={30}
 
 				// state
@@ -304,7 +301,6 @@ const VideoContainer = props => {
 
 				onReady={video.handleReady}
 				onError={()=>{
-					console.log(`Error is working`)
 					showError()
 				}}
 
@@ -312,9 +308,7 @@ const VideoContainer = props => {
 				onPause={video.handlePause}
 
 				onProgress={video.handleProgress}
-				// onProgress={()=>console.log(`1`)}
 				onDuration={video.handleDuration}
-
 				// blank style
 			/>
 			<TimeBar>
@@ -339,18 +333,6 @@ const VideoContainer = props => {
 					</div>
 				</header>
 			</TimeBar>
-			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
-				handleSeek={video.handleSeek}
-				handleMute={video.handleMute}
-				handlePlay={video.handlePlay}
-				handlePause={video.handlePause}
-				handleUnMute={video.handleUnMute}
-				toggleMute={video.toggleMute}
-				handleBlank={video.handleBlank}
-				handleShowComment={video.handleShowComment}
-				handleCensorPosition={video.handleCensorPosition}
-				handleCensorActive={video.handleCensorActive}
-			></EventsContainer>
 			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
 				handleShowSubtitle={video.handleShowSubtitle}
 			>

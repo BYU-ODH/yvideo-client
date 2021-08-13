@@ -89,13 +89,14 @@ const ClipEditor = props => {
 		// Find the largets layer number
 		const initialLayers = []
 
-		if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
-			// console.log(currentContent)
-			const clips = JSON.parse(currentContent[`clips`])
-			// console.log(clips)
-			setClipList(clips)
-			const saved = Object.keys(clips)
-			setSavedClips(saved)
+		if(Object.keys(clipList).length ===0) {
+			if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
+				const clips = JSON.parse(currentContent[`clips`])
+				// console.log(clips)
+				setClipList(clips)
+				const saved = Object.keys(clips)
+				setSavedClips(saved)
+			}
 		}
 
 		// new Array(largestLayer+1).fill(0)
@@ -235,7 +236,10 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const setStartTime = (value) => {
-		// console.log(videoLength)
+
+		if(value.match(/\d{2}:\d{2}\.\d{2}/))
+			value = covertToSeconds(value)
+
 		const clips = {...clipList}
 		if(value > videoLength)
 			clips[active][`start`] = videoLength - 30
@@ -249,6 +253,9 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const setEndTime = (value) => {
+		if(value.match(/\d{2}:\d{2}\.\d{2}/))
+			value = covertToSeconds(value)
+
 		const clips = {...clipList}
 		if(value > videoLength)
 			clips[active][`end`] = videoLength
@@ -258,8 +265,19 @@ const ClipEditor = props => {
 			clips[active][`end`] = value
 		if (value < clips[active][`start`])
 			clips[active][`start`] = clips[active][`end`] - 20 > 0 ? clips[active][`end`] - 20 : 0
+
 		setClipList(clips)
 		setBlock(true)
+	}
+	const covertToSeconds = (time) => {
+		const t = time.split(`:`)
+		if(t.length > 2) {
+			const s = t[2].split(`.`)
+			return Number(+t[0]) * 3600 + Number(+t[1]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		} else {
+			const s = t[1].split(`.`)
+			return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
+		}
 	}
 	const createClip = () =>{
 		// console.log(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a) ))
@@ -298,13 +316,25 @@ const ClipEditor = props => {
 		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length ===0)
 			return
 		const clips = {...clipList}
-		// console.log(clips)
+		console.log(clips)
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
 		// window.location.href = `/manager`
+	}
+	const convertSecondsToMinute = (time) =>{
+		console.log(time)
+		try {
+			if(videoLength<3600)
+				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
+			else
+				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
+
+		} catch (e) {
+			return time
+		}
 	}
 	return (
 		<Style>
@@ -428,12 +458,14 @@ const ClipEditor = props => {
 								<tbody>
 									{
 										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
-												<td><input onClick={()=>setActive(item)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
-												<td><input onClick={()=>setActive(item)} type='number' value={`${clipList[item].start}`} onChange={(e) => setStartTime(e.target.value)}/></td>
-												<td><input onClick={()=>setActive(item)} type='number' value={`${clipList[item].end}`} onChange={(e) => setEndTime(e.target.value)}/></td>
-												<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/></td>
-											</tr>
+											<div className={`singleClip`}>
+												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
+													<td><input onClick={()=>setActive(item)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+													<td><input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].start)}`} onChange={(e) => setStartTime(e.target.value)}/></td>
+													<td><input onClick={()=>setActive(item)} type='text' value={`${convertSecondsToMinute(clipList[item].end)}`} onChange={(e) => setEndTime(e.target.value)}/></td>
+												</tr>
+												<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
+											</div>
 										))
 									}
 									{
@@ -456,7 +488,7 @@ const ClipEditor = props => {
 				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
-					message='If you leave you will lose all your changes. Have you saved your changes already?'
+					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
 				/>
 			</>
 		</Style>

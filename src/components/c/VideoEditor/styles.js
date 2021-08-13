@@ -1,28 +1,16 @@
 import styled, { keyframes } from 'styled-components'
 
-// import carat from 'assets/carat_white.svg'
-
-// import menu from 'assets/menu-white.svg'
-
-import skipIcon from 'assets/event_skip.svg'
-import muteIcon from 'assets/event_mute.svg'
-import pauseIcon from 'assets/event_pause.svg'
-import commentIcon from 'assets/event_comment.svg'
-import censorIcon from 'assets/event_censor.svg'
-import blankIcon from 'assets/event_blank.svg'
-import trashIcon from 'assets/trash_icon.svg'
-import closeIcon from 'assets/close_icon.svg'
-import zoomIn from 'assets/te-zoom-in.svg'
-import zoomOut from 'assets/te-zoom-out.svg'
 import carat from 'assets/carat_white.svg'
 
 import menu from 'assets/menu-white.svg'
+import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
 
 	background-color: white;
 	overflow: hidden;
 
+	width: 100% ;
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
 	z-index: 0;
@@ -30,9 +18,7 @@ const Style = styled.div`
 	display: flex;
 
 	& > span {
-
 		flex: 1;
-
 		display: flex;
 		flex-direction: column;
 	}
@@ -56,24 +42,20 @@ export const Timeline = styled.div`
 
 	--timeline-start: 16rem;
 	--header-height: 5rem;
-	/*
-	--dark-gray: #303030;
-	--light-gray: #4F4F4F;
-	--lighter-gray: #565656;
-	color: #5F5F5F; */
 
 	position: relative;
 	height: ${props => props.minimized ? `0vh` : `30vh`};
+	width: 100%;
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
-  	background-color: transparent;
-	z-index: 0;
+  background-color: transparent;
+	/* z-index: 0; */
 	overflow-y: scroll;
 	overflow-x: hidden;
 
 	& .zoom-controls {
-		width: calc(100% - 35rem);
+		width: 100%;
 		height: 40px;
 		display: flex;
 		left: 0px;
@@ -120,8 +102,6 @@ export const Timeline = styled.div`
 				& .zoom-scroll-indicator {
 					position: absolute;
 					min-width: 5%;
-					/* width: ${props => props.zoom !== 0 ? `${props.zoom}%` : `100%`} !important; */
-					/* height: 100% !important; */
 					background-color: var(--light-blue);
 					border-radius: 20px;
 				}
@@ -130,6 +110,7 @@ export const Timeline = styled.div`
 			& #time-indicator-container {
 				height: 27vh;
 				width: calc(100% - 162px);
+				/* width: calc(100% - 5rem) !important; */
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
@@ -138,6 +119,7 @@ export const Timeline = styled.div`
 
 				& #layer-time-indicator {
 					height: 10px;
+					width:100%;
 					position: absolute;
 					background-color: transparent;
 
@@ -147,11 +129,8 @@ export const Timeline = styled.div`
 						background-color: transparent;
 						border-right: 2px solid red;
 						z-Index: 20;
-						/* border-right: 2px dotted red; */
 					}
 				}
-
-
 			}
 		}
 	}
@@ -179,27 +158,18 @@ export const Timeline = styled.div`
 		height: 46px;
 		display: inline-flex;
 		align-items: center;
-		justify-content: flex-start;
+		justify-content: space-between;
 		box-sizing: border-box;
 		position: relative;
 		cursor: pointer;
-		border-bottom: 1px solid #555;
-		border-right: 1px solid var(--light-blue);
+		border-bottom: 1px solid;
+		border-right: 1px solid;
+		border-color: white;
 		transition: .5s;
+		background-color: var(--navy-blue);
 
-		& p {
-			padding-left: 2rem;
-			color: black;
-			font-size: 1.5rem;
-			& .layer-delete {
-				margin: auto auto -3px 15px;
-				opacity: 0.3;
-
-				transition: .5s ease;
-				:hover {
-					opacity: 1;
-				}
-			}
+		& .plusIcon{
+			padding-right: 2rem;
 		}
 	}
 `
@@ -208,17 +178,22 @@ export const HandleIcon = styled.div `
 	width: 2.5rem;
 	background: url(${menu}) center no-repeat;
 	background-size: contain;
-	/* display: inline-block; */
 	position: absolute;
 	right: 5px;
 	margin: auto 0;
 `
 export const Icon = styled.div`
-	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
   width: 20px;
   height: 15px;
 `
+
+export const PlusIcon = styled.div`
+  background: url(${plusIcon}) center no-repeat;
+  width: 20px;
+  height: 15px;
+`
+
 export const NewLayer = styled.button`
 	height: 2.4rem;
 	width: 2.5rem;
@@ -237,16 +212,19 @@ export const NewLayer = styled.button`
 	outline: none;
 	cursor: pointer;
 `
-export const EventList = styled.div`
+export const EventEditor = styled.div`
 	--minimized: ${props => props.minimized};
 
-	width: ${props => props.minimized !== false ? `4rem` : `35rem`};
-	height: calc(100vh - var(--navbar-height));
+	width: ${props => props.minimized !== false ? `4rem` : `30%`};
+	/* width: 4rem; */
+	height: calc(68.5vh - var(--navbar-height)); // 100vh
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
 	transition: .5s;
 	z-index: 20;
 	overflow: hidden;
 	border-left: 1px solid black;
+	position: absolute;
+	right: 0%;
 
 	& > header {
 		height: 5rem;
@@ -261,27 +239,9 @@ export const EventList = styled.div`
 			padding-right: 1rem;
 		}
 
-		/* & > .tab {
-			display: ${props => props.minimized !== false ? `none` : `visible`}
-			height: 5rem;
-			width: 7rem;
-			color: white;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 1.5rem;
-
-			font-weight: 500;
-
-			&.active {
-				background: var(--light-blue);
-			}
-		} */
-
 		& > .save {
 			position: relative;
 			float: right;
-			// margin-right: 20px;
 			width: 8rem;
 			height: 100%;
 			display: flex;
@@ -312,7 +272,13 @@ export const EventList = styled.div`
 				& span, img {
 					margin: auto;
 				}
-
+			}
+			& > .disable {
+				color: grey;
+				cursor: no-drop;
+				:hover {
+					background-color: transparent;
+				}
 			}
 		}
 	}
@@ -326,7 +292,7 @@ export const EventList = styled.div`
 
 		box-sizing: border-box;
 
-		border-bottom: 1px solid #555;
+		/* border-bottom: 1px solid #555; */
 
 		color: black;
 		font-weight: 500;
@@ -359,7 +325,7 @@ export const EventList = styled.div`
 				flex: 1;
 				justify-content: flex-start;
 				padding-left: 2rem;
-				border-left: 1px solid #555;
+				/* border-left: 1px solid #555; */
 			}
 		}
 	}
@@ -421,7 +387,6 @@ export const AnnotationMessage = styled.div`
 	background-color: white;
 	display: flex;
 	flex-direction: column;
-	/* border: 5px solid var(--light-blue); */
 	border-radius: 25px;
 
 	transition: 1s ease;

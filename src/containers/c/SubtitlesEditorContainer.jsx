@@ -43,8 +43,6 @@ const SubtitlesEditorContainer = props => {
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
 	const [subs,setSubs] = useState([])
-	const [progress, setProgress] = useState(0)
-	const [isUploadComplete, setIsUploadComplete] = useState(false)
 
 	const getAllSubtitles = async() => {
 		const testsubs = await getSubtitles(id)
@@ -70,7 +68,6 @@ const SubtitlesEditorContainer = props => {
 					if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
 						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
 						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-						// downloadFile()
 					} else if (streamKey !== `` && url === ``)
 						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media//stream-media/${streamKey}`)
 				}
@@ -113,7 +110,7 @@ const SubtitlesEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Video Editor`},
+			props: { name: `Subtitle Editor`},
 		})
 	}
 

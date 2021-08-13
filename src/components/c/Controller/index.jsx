@@ -38,6 +38,7 @@ const Controller = props => {
 
 	const [playing, setPlaying] = useState(false)
 	const [isReady, setIsReady] = useState(false)
+	const [subtitleText, setSubtitleText] = useState(``)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0)
@@ -47,7 +48,6 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
-	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
@@ -89,8 +89,6 @@ const Controller = props => {
 			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-
-			const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
@@ -250,7 +248,8 @@ const Controller = props => {
 				onContextMenu={e => e.preventDefault()}
 
 				// constants
-				className='video'
+
+				className={editorType}
 				progressInterval={30}
 
 				// state
