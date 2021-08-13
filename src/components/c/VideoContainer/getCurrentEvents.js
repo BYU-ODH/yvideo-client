@@ -36,7 +36,9 @@ export const CurrentEvents = (time,events,duration) => {
 	const censors = activeEvents.filter(val => val.type === `Censor`)
 	const comments = activeEvents.filter(val => val.type === `Comment`)
 	const censorValues = []
+
 	censors.forEach((val,ind)=>{
+		console.log(val.position,time)
 		censorValues.push(Position(val.position,time))
 	})
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
@@ -64,7 +66,10 @@ export const CurrentEvents = (time,events,duration) => {
 				let del = true
 				for (let i; i < comments.length;i++)
 					if (censorChildren[i].className.search(i.toString()) < -1) del = false
-				if (del) censorContainer.remove(`${censorChildren[x].id}`)
+				if (del){
+					console.log(`del`,`${censorChildren[x].id}`)
+					censorContainer.removeChild(censorChildren[x])
+				}
 			}
 		}
 	}
@@ -90,7 +95,7 @@ export const CurrentEvents = (time,events,duration) => {
 				for (let i; i < comments.length;i++)
 					if (commentChildren[i].className.search(i.toString()) < -1) del = false
 
-				if (del) commentContainer.remove(`${commentChildren[x].id}`)
+				if (del) commentContainer.removeChild(commentChildren[x])
 			}
 		}
 	}
@@ -104,15 +109,15 @@ export const CurrentEvents = (time,events,duration) => {
 	return eventValues
 }
 export const CensorChange = (ind,censorData, playedSeconds) =>{
-	if(document.getElementById(`censorBox-${ind}`)){
-		const censorBox = document.getElementById(`censorBox-${ind}`)
-		const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
-		censorBox.style.width = `${width}%`
-		const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
-		censorBox.style.height = `${height}%`
-		censorBox.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
-		censorBox.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
-	}
+	console.log(ind,censorData)
+	const censorBox = document.getElementById(`censorBox-${ind}`)
+	if(!censorBox) return
+	const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
+	censorBox.style.width = `${width}%`
+	const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
+	censorBox.style.height = `${height}%`
+	censorBox.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
+	censorBox.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
 }
 export const CommentChange = (ind,commentData, playedSeconds) =>{
 	if(document.getElementById(`comment-${ind}`)){

@@ -1,4 +1,6 @@
 import styled, { keyframes } from 'styled-components'
+
+import carat from 'assets/carat_white.svg'
 import logo from 'assets/hexborder.svg'
 
 const Style = styled.div`

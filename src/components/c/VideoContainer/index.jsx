@@ -52,10 +52,9 @@ const VideoContainer = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
-
+	const [pausedTimes,setPausedTimes] = useState([])
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
-
 	const video = {
 
 		// state
@@ -101,14 +100,25 @@ const VideoContainer = props => {
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
-
+			const testMute = values.allEvents.map(val => val.type)
+			if (!testMute.includes(`Mute`)) video.handleUnMute()
 			for (let y = 0; y < values.allEvents.length; y++){
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					video.handleMute()
 					break
 				case `Pause`:
-					video.handlePause()
+					let paused = true
+					for (let i = 0; i < pausedTimes.length;i++){
+						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)
+							paused = false
+					}
+					if(paused) {
+						const times = [...pausedTimes]
+						times.push(values.allEvents[y].start)
+						setPausedTimes(times)
+						video.handlePause()
+					}
 					break
 				case `Skip`:
 					video.handleSkip(values.allEvents[y].end)

@@ -118,7 +118,6 @@ const SubtitlesEditorContainer = props => {
 	const setAllSubs = (subs) =>{
 		setSubtitles(subs)
 	}
-
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,

@@ -28,8 +28,8 @@ export const CurrentEvents = (time,events,duration) => {
 
 	events.forEach((val,ind)=>{
 		const newVal = {...val}
-		const start = val.start / 100 * duration
-		const end = val.end / 100 * duration
+		const start = val.start
+		const end = val.end
 		newVal.start = start
 		newVal.end = end
 
@@ -66,9 +66,10 @@ export const CurrentEvents = (time,events,duration) => {
 				let del = true
 				for (let i; i < comments.length;i++)
 					if (censorChildren[i].className.search(i.toString()) < -1) del = false
-				if (del) censorContainer.remove(`${censorChildren[x].id}`)
+				if (del) censorContainer.removeChild(censorChildren[x])
 			}
 		}
+		console.log(censorContainer)
 	}
 	const commentContainer = document.getElementById(`commentContainer`)
 	if (commentContainer){
@@ -92,7 +93,7 @@ export const CurrentEvents = (time,events,duration) => {
 				for (let i; i < comments.length;i++)
 					if (commentChildren[i].className.search(i.toString()) < -1) del = false
 
-				if (del) commentContainer.remove(`${commentChildren[x].id}`)
+				if (del) commentContainer.removeChild(commentChildren[x])
 			}
 		}
 	}
