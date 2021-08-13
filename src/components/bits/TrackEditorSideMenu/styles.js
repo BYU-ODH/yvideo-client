@@ -6,7 +6,7 @@ const Style = styled.div`
 
 	& .event-content {
 		overflow-y: scroll;
-    height: 27rem;
+    height: 60%;
 	}
 
 

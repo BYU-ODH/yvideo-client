@@ -2,13 +2,9 @@ import React, { useRef, useState, useLayoutEffect, useCallback } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
-
-import { EventsContainer, SubtitlesContainer } from 'containers'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Spinner } from './styles'
 
 import { CensorDnD } from 'components/bits'
-
-import Position from './censorPosition'
 
 import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
 
@@ -107,6 +103,8 @@ const VideoContainer = props => {
 				case `Mute`:
 					video.handleMute()
 					break
+
+				// TODO: pause logic has to be improved
 				case `Pause`:
 					let paused = true
 					for (let i = 0; i < pausedTimes.length;i++){
@@ -182,10 +180,6 @@ const VideoContainer = props => {
 		handleShowComment: (value, position) => {
 			setVideoComment(value)
 			setCommentPosition(position)
-
-		},
-		handleShowSubtitle: (value) => {
-			setSubtitleText(value)
 		},
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
@@ -258,9 +252,7 @@ const VideoContainer = props => {
 
 	return (
 		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
-			{/* <Style> */}
 			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):console.log(``)} ref={videoRef}>
-				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				{activeCensorPosition !== -1 ? (
 					<CensorDnD
 						censorValues = {censorPosition}
@@ -273,6 +265,7 @@ const VideoContainer = props => {
 						seekTo = {video.handleSeek}
 					/>
 				):``}
+
 				<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
@@ -333,10 +326,6 @@ const VideoContainer = props => {
 					</div>
 				</header>
 			</TimeBar>
-			<SubtitlesContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
-				handleShowSubtitle={video.handleShowSubtitle}
-			>
-			</SubtitlesContainer>
 		</Style>
 	)
 }

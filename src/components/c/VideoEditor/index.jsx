@@ -38,7 +38,8 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
+	// TODO: enable after fixing comment logic.
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Censor`}, {4: `Blank`}] // {5: `Comment`}
 
 	const events = [
 		{
@@ -63,25 +64,12 @@ const VideoEditor = props => {
 			layer: 0,
 		},
 		{
-			type: `Comment`,
-			icon: commentIcon,
-			start: 0,
-			end: 10,
-			layer: 0,
-			comment: ``,
-			position: {
-				x: 0,
-				y: 0,
-			},
-		},
-		{
 			type: `Censor`,
 			icon: censorIcon,
 			start: 0,
 			end: 10,
 			layer: 0,
 			position: {
-
 			},
 		},
 		{
@@ -91,6 +79,19 @@ const VideoEditor = props => {
 			end: 10,
 			layer: 0,
 		},
+		// TODO: enable after fixing comment logic.
+		// {
+		// 	type: `Comment`,
+		// 	icon: commentIcon,
+		// 	start: 0,
+		// 	end: 10,
+		// 	layer: 0,
+		// 	comment: ``,
+		// 	position: {
+		// 		x: 0,
+		// 		y: 0,
+		// 	},
+		// },
 	]
 
 	const [allEvents, setAllEvents] = useState(eventsArray)
@@ -562,7 +563,6 @@ const VideoEditor = props => {
 										onMouseEnter={e => handleShowTip(`te-scroll-end`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
 										onMouseLeave={e => toggleTip()}><img src={rrIcon}/></span>
 								</div>
-
 								<div id={`time-indicator-container`}>
 									<div id={`layer-time-indicator`}>
 										<span id={`layer-time-indicator-line`}></span>

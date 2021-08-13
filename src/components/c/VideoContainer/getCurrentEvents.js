@@ -31,14 +31,19 @@ export const CurrentEvents = (time,events,duration) => {
 	events.forEach((val,ind)=>{
 		const start = val.start
 		const end = val.end
+
+		// TODO: comment logic has to be improved.
+		// TODO: it has to be off after the end of the time.
+		// TODO: there is a bug what is in comment. it looks like comment events share current comment.
+
 		if (time >= start && time <= end) activeEvents.push(val)
 	})
 	const censors = activeEvents.filter(val => val.type === `Censor`)
 	const comments = activeEvents.filter(val => val.type === `Comment`)
+	// console.log(events)
 	const censorValues = []
 
 	censors.forEach((val,ind)=>{
-
 		censorValues.push(Position(val.position,time))
 	})
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
