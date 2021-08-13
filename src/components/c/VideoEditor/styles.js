@@ -144,6 +144,7 @@ export const Timeline = styled.div`
 	& .event-layers {
 		height: 100%;
 		display: block;
+		margin-bottom: 4rem;
 	}
 
 	& .layer {
