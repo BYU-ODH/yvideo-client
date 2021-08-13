@@ -231,7 +231,7 @@ const VideoEditor = props => {
 		if(event.end <= event.start){
 			if(canAccessDom){
 				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than star time`
+				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than start time`
 			}
 		} else if(event.end > videoLength){
 			// event.end = 100
