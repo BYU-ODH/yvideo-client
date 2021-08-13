@@ -16,6 +16,7 @@ import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
 
+// TODO: trim the code
 const Controller = props => {
 
 	const {
@@ -126,7 +127,7 @@ const Controller = props => {
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
-				getVideoTime(newPlayed.toFixed(10) * duration)
+				getVideoTime(newPlayed)
 			}
 		},
 		handlePause: () => {

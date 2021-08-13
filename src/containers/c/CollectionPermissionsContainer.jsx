@@ -58,8 +58,6 @@ const CollectionPermissionsContainer = props => {
 
 		if(numUsers !== users.length) setIsLoading(true)
 
-		console.log(numUsers)
-
 		if(isLoading === true) {
 			getCollectionInfo(collection.id)
 			setTimeout(() => {

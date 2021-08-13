@@ -43,6 +43,8 @@ const SubtitlesEditorContainer = props => {
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
 	const [subs,setSubs] = useState([])
+	const [sKey, setKey] = useState(``)
+	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 
 	const getAllSubtitles = async() => {
 		const testsubs = await getSubtitles(id)
@@ -64,12 +66,20 @@ const SubtitlesEditorContainer = props => {
 				if(content[id].url !== ``)
 					setUrl(content[id].url)
 				else {
+					setKey(``)
+					setUrl(``)
 					// CHECK RESOURCE ID
-					if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
+					if(content[id].resourceId && !isStreamKeyLoaded){
 						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
 						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-					} else if (streamKey !== `` && url === ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media//stream-media/${streamKey}`)
+						setIsStreamKeyLoaded(true)
+					}
+					if (streamKey){
+						// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${streamKey}`)
+						setKey(streamKey)
+					}
+					if (sKey !== ``)
+						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				}
 			} else{
 				// once the url is set we can get subtitles
@@ -81,7 +91,8 @@ const SubtitlesEditorContainer = props => {
 
 			}
 		}
-	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId])
+
+	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 
 	const createAndAddSub = async () =>{
 		const subtitles = [...allSubs]

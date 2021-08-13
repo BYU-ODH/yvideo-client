@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { connect } from 'react-redux'
@@ -15,7 +15,6 @@ const VideoEditorContainer = props => {
 
 	const {
 		contentCache,
-		resource,
 		setEvents,
 		getContent,
 		updateContent,
@@ -37,21 +36,18 @@ const VideoEditorContainer = props => {
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 
 	const [videoLength, setVideoLength] = useState(0)
-	const [displayLayer, setDisplayLayer] = useState(0)
-	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
-	const [allEvents, setAllEvents] = useState(eventsArray)
 
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
-
-	const controllerRef = useRef(null)
+	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 
 	useEffect(() => {
 
 		if (!contentCache.hasOwnProperty(id))
 			getContent(id)
-		else {
+
+		if(contentCache[id]) {
 			setContent(contentCache[id])
 			setEventsArray(contentCache[id].settings.annotationDocument)
 			setEvents(contentCache[id].settings.annotationDocument)
@@ -62,19 +58,21 @@ const VideoEditorContainer = props => {
 			else {
 				setKey(``)
 				setUrl(``)
-				if(content !== undefined){
-					if(sKey === `` && contentCache[id].resourceId !== resourceIdStream)
-						getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
-					else if(streamKey)
-						setKey(streamKey)
 
-					if (sKey !== ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-
+				if(contentCache[id].resourceId && !isStreamKeyLoaded){
+					getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
+					setIsStreamKeyLoaded(true)
 				}
+
+				if(streamKey)
+					setKey(streamKey)
+
+				if (sKey !== ``)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+
 			}
 		}
-	}, [contentCache, getContent, streamKey, content, sKey, eventsArray]) // content, resource, eventsArray, currentContent, streamKey, url, isContentChanged])
+	}, [contentCache, getContent, streamKey, content, sKey, eventsArray])
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -102,17 +100,10 @@ const VideoEditorContainer = props => {
 	}
 
 	const viewstate = {
-		content,
-		url,
 		eventsArray,
+		content,
 		contentError,
-		controllerRef,
-		videoLength,
-		timelineMinimized,
-		displayLayer,
-		allEvents,
-		eventToEdit,
-		activeCensorPosition,
+		url,
 	}
 
 	const handlers = {
@@ -138,14 +129,12 @@ const mapStoreToProps = ({ contentStore, resourceStore }) => ({
 	streamKey: resourceStore.streamKey,
 	resourceIdStream: resourceStore.resourceIdStreamKey,
 	contentError: contentStore.errorMessage,
-	isContentChanged: contentStore.isContentChanged,
 })
 
 const mapThunksToProps = {
 	setEvents: interfaceService.setEvents,
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
-	selectedContent: contentService.selectedContent,
 	getStreamKey: resourceService.getStreamKey, // file media
 	updateContent: contentService.updateContent,
 	activeUpdate: subtitlesService.activeUpdate,

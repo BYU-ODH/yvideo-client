@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react'
-
 import { Prompt } from 'react-router'
-
-import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './styles'
-
 import { Rnd } from 'react-rnd'
-
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
-
-import { Controller, TrackLayer, VideoContainer } from 'components'
+import { TrackLayer, VideoContainer } from 'components'
+import { convertToSeconds } from '../../common/timeConversion'
+import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -19,9 +15,7 @@ import pauseIcon from 'assets/event_pause.svg'
 import commentIcon from 'assets/event_comment.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
-import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
-import plusIcon from 'assets/plus.svg'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
@@ -29,7 +23,6 @@ import llIcon from 'assets/te-chevrons-left.svg'
 import rrIcon from 'assets/te-chevrons-right.svg'
 import lIcon from 'assets/te-chevron-left.svg'
 import rIcon from 'assets/te-chevron-right.svg'
-
 import helpIcon from 'assets/te-help-circle-white.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
@@ -41,6 +34,7 @@ const VideoEditor = props => {
 		eventsArray,
 		content,
 		contentError,
+		url,
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
@@ -109,7 +103,6 @@ const VideoEditor = props => {
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 
-	// const [tab, setTab] = useState(`events`)
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
@@ -122,7 +115,6 @@ const VideoEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 
 	// refs
-	// console.log(videoCurrentTime)
 
 	useEffect(() => {
 		function handleResize() {
@@ -175,20 +167,19 @@ const VideoEditor = props => {
 			layer: index,
 		}
 
+		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
 		eventObj.end = Number(startPercentage) + 10
 
 		setCurrentTime(Number(startPercentage)+10)
 		currentEvents.push(eventObj)
-		// setAllEvents(currentEvents)
-		// setDisplayLayer(index)
 		setCurrentEvent(eventObj)
 
 		const eventIndex = currentEvents.length-1 < 0 ? 0 : currentEvents.length-1
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
 
-	const updateEvents = (index, event, layerIndex, side) => {
+	const updateEvents = (index, event, layerIndex, side, type) => {
 
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
@@ -197,20 +188,23 @@ const VideoEditor = props => {
 		}
 
 		const currentEvents = [...allEvents]
+		let input = ``
 		try {
 			if(side === `beg`) {
-				if(event.start.match(/\d{2}:\d{2}\.\d{2}/))
-					event.start = covertToSeconds(event.start)
+				input = event.start
+				if(event.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+					event.start = convertToSeconds(event.start, videoLength)
 				else {
-					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 
 			} else if(side === `end`) {
-				if(event.end.match(/\d{2}:\d{2}\.\d{2}/))
-					event.end = covertToSeconds(event.end)
+				input = event.end
+				if(event.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+					event.end = convertToSeconds(event.end, videoLength)
 				else {
-					document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 			}
@@ -225,8 +219,6 @@ const VideoEditor = props => {
 				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
 
 		} else if(event.start >= videoLength) {
-			// event.start = 95
-			// event.end = 100
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
@@ -239,7 +231,7 @@ const VideoEditor = props => {
 		if(event.end <= event.start){
 			if(canAccessDom){
 				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than star time`
+				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than start time`
 			}
 		} else if(event.end > videoLength){
 			// event.end = 100
@@ -259,6 +251,15 @@ const VideoEditor = props => {
 		} else
 			setDisableSave(true)
 
+		if(side === `beg`) {
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+				event.start = input
+
+		} else if(side === `end`) {
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+				event.end = input
+		}
+
 		currentEvents[index] = event
 
 		// wait til events are set up
@@ -271,16 +272,6 @@ const VideoEditor = props => {
 		setEventToEdit(index)
 		setSideEditor(true)
 		setBlock(true)
-	}
-	const covertToSeconds = (time) => {
-		const t = time.split(`:`)
-		if(t.length > 2) {
-			const s = t[2].split(`.`)
-			return Number(+t[0]) * 3600 + Number(+t[1]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
-		} else {
-			const s = t[1].split(`.`)
-			return Number(+t[0]) * 60 + Number(s[0]) + Number(+s[1]) * 0.01
-		}
 	}
 
 	const deleteEvent = () => {
@@ -476,7 +467,7 @@ const VideoEditor = props => {
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
 						className='video'
-						url={props.viewstate.url}
+						url={url}
 						handlers={togglendTimeline}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTimePercentage} // set current time
@@ -633,6 +624,8 @@ const VideoEditor = props => {
 								handleSaveCensor = {handleSaveCensor}
 								activeCensorPosition = {activeCensorPosition}
 								setActiveCensorPosition = {setActiveCensorPosition}
+								toggleTip={toggleTip}
+								handleShowTip={handleShowTip}
 							></TrackEditorSideMenu>
 							:
 							<></>

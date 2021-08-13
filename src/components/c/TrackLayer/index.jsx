@@ -2,6 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { useDrop } from 'react-dnd'
 import { Rnd } from 'react-rnd'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 import {
 	Icon, Style,
@@ -13,8 +14,6 @@ import {
 
 const TrackLayer = props => {
 
-	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
-
 	const { events, sideEditor, updateEvents, activeEvent, width, videoLength, displayLayer} = props // onDrop
 	const layerIndex = parseInt(props.index)
 
@@ -24,7 +23,6 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	// const [isEditorOpen, setEditorOpen] = useState(false)
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -77,26 +75,6 @@ const TrackLayer = props => {
 		updateEvents(index, cEvents[index], layerIndex)
 	}
 
-	// const convertSecondsToMinute = (time) =>{
-	// 	console.log(time)
-	// 	if(Number(time) === 0) return `00:00:00`
-	// 	return new Date(Number(time) * 1000).toISOString().substr(11, 8)
-	// }
-
-	const convertSecondsToMinute = (time) =>{
-		try {
-			if(Number(time) === 0) return `00:00:00`
-
-			if(videoLength<3600)
-				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
-			else
-				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
-
-		} catch (e) {
-			return time
-		}
-	}
-
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position ) => {
 		const cEvents = events
@@ -147,9 +125,9 @@ const TrackLayer = props => {
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
 				{ event.type !== `Pause` ? (
-					<p>{convertSecondsToMinute(event.start)} - {convertSecondsToMinute(event.end)}</p>
+					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
 				) : (
-					<p>{convertSecondsToMinute(event.start)}</p>
+					<p>{convertSecondsToMinute(event.start, videoLength)}</p>
 				)
 				}
 			</Rnd>

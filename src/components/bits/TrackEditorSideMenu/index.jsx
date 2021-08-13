@@ -6,6 +6,7 @@ import closeIcon from 'assets/close_icon.svg'
 import plus from 'assets/plus-square.svg'
 
 import Style, {Icon} from './styles.js'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 const TrackEditorSideMenu = props => {
 
@@ -20,8 +21,11 @@ const TrackEditorSideMenu = props => {
 		handleAddCensor,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		toggleTip,
+		handleShowTip,
 	} = props
 
+	const timeInputConstrain = /^[0-9,.,:\b]+$/
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
 	useEffect(() => {
@@ -33,10 +37,23 @@ const TrackEditorSideMenu = props => {
 		const cEvent = event
 		const layer = cEvent.layer
 
-		cEvent.start = e.target.value
+		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
+			cEvent.start = e.target.value
+			setEvent(cEvent)
+			updateEvents(index, cEvent, layer, `beg`)
+		}
+	}
 
-		setEvent(cEvent)
-		updateEvents(index, cEvent, layer, `beg`)
+	const handleEditEventBTimeFinalChange = (e) => {
+		// document.getElementById(`sideTabMessage`).style.color=`red`
+		const cEvent = event
+		const layer = cEvent.layer
+
+		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
+			cEvent.start = e.target.value
+			setEvent(cEvent)
+			updateEvents(index, cEvent, layer, `beg`, `onBlur`)
+		}
 	}
 
 	const handleEditEventETimeChange = (e) => {
@@ -44,10 +61,23 @@ const TrackEditorSideMenu = props => {
 		const cEvent = event
 		const layer = cEvent.layer
 
-		cEvent.end = e.target.value
+		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
+			cEvent.end = e.target.value
+			setEvent(cEvent)
+			updateEvents(index, cEvent, layer, `end`)
+		}
+	}
 
-		setEvent(cEvent)
-		updateEvents(index, cEvent, layer, `end`)
+	const handleEditEventETimeFinalChange = (e) => {
+		// document.getElementById(`sideTabMessage`).style.color=`red`
+		const cEvent = event
+		const layer = cEvent.layer
+
+		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
+			cEvent.end = e.target.value
+			setEvent(cEvent)
+			updateEvents(index, cEvent, layer, `end`, `onBlur`)
+		}
 	}
 
 	const handleSaveComment = () => {
@@ -90,18 +120,6 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
-	const convertSecondsToMinute = (time) =>{
-		try {
-			if(videoLength<3600)
-				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
-			else
-				return new Date(Number(time) * 1000).toISOString().substr(11, 11)
-
-		} catch (e) {
-			return time
-		}
-	}
-
 	const start = event.start
 	const end = event.end
 
@@ -119,8 +137,18 @@ const TrackEditorSideMenu = props => {
 								<label>End</label>
 							</div>
 							<div className='center'>
-								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start)}`} onChange={e => handleEditEventBTimeChange(e)}/>
-								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end)}`} onChange={e => handleEditEventETimeChange(e)}/>
+								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`}
+									onChange={e => handleEditEventBTimeChange(e)}
+									onBlur={e => handleEditEventBTimeFinalChange(e)}
+									onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
+									onMouseLeave={e => toggleTip()}
+								/>
+								<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`}
+									onChange={e => handleEditEventETimeChange(e)}
+									onBlur={e => handleEditEventETimeFinalChange(e)}
+									onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
+									onMouseLeave={e => toggleTip()}
+								/>
 							</div>
 							<br/>
 						</>

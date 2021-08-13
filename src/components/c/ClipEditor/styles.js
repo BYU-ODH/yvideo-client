@@ -278,6 +278,13 @@ export const SideEditor = styled.div`
 					margin: auto;
 				}
 			}
+			& > .disable {
+				color: grey;
+				cursor: no-drop;
+				:hover {
+					background-color: transparent;
+				}
+			}
 		}
 	}
 
@@ -407,19 +414,21 @@ export const SideEditor = styled.div`
 				width: 30%;
 			}
 		}
+
+		& #clipMessage{
+			margin: 1rem 0 1rem 1rem;
+		}
 	}
 	& .clipList {
-		width: 95%;
 		height: auto;
 		max-height: 30vh;
-		margin-left: 10px;
 		overflow-y: scroll;
 		position: relative;
 
 			& .singleClip {
 				display: flex;
-				margin-bottom: 5px;
-
+				padding: 0.5rem;
+				
 				& td {
 					display: inline-flex;
 					width: 30% !important;
@@ -433,11 +442,13 @@ export const SideEditor = styled.div`
 						}
 					}
 			}
-
 			& .trashIcon {
 				margin-left: -7%;
 				cursor: pointer;
 			}
+		}
+		& .clipActive {
+			background-color: #eee;
 		}
 
 		& #loader {
