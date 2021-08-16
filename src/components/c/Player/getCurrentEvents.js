@@ -19,7 +19,7 @@ export const HandleSubtitle = (time,subtitles,ind,duration) => {
 	const subtitleNode = document.getElementById(`subtitle`)
 	const currentsub = subtitles.content
 	let subtext = ``
-	const filtered = currentsub.filter(val => time < val.end/100*duration && time > val.start/100*duration)
+	const filtered = currentsub.filter(val => time < val.end && time > val.start)
 	if (filtered.length > 0) subtext = filtered[0].text
 	subtitleNode.innerHTML = subtext
 }
