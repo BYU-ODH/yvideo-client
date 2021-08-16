@@ -122,7 +122,6 @@ export default class ManageCollection extends PureComponent {
 					<Spinner/>
 					:
 					<>
-
 						<Tab>
 							{isContentTap ?
 								content.map((item, index) => (

@@ -7,13 +7,28 @@ const Style = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
-	/* max-height: 65vh; */
 	z-index: 20;
 	overflow-y: visible;
 
+
 	& .video {
 		height: calc(100% - 50px) !important;
-		width: 100% !important;
+		width: 70% !important;
+	}
+
+	& .subtitle {
+		height: calc(100% - 50px) !important;
+		width:  100% !important;
+	}
+
+	& .clip {
+		height: calc(100% - 50px) !important;
+		width:  100% !important;
+	}
+
+	& .timeBar {
+		/* width: calc(100% + 35rem) !important;
+		justify-content: space-between; */
 	}
 
 	& .loading-spinner{
@@ -41,7 +56,8 @@ export const TimeBar = styled.div`
 	cursor: ${props => props.cursor};
 	display: flex;
 	flex-direction: column;
-	z-index: 20;
+
+	/* z-index: 20; */
 
 	& > header {
 		width: 100%;
@@ -60,7 +76,6 @@ export const TimeBar = styled.div`
 			justify-content: space-evenly;
 
 			width: 100%;
-
 			cursor: pointer;
 
 			& > .time {
@@ -86,6 +101,11 @@ export const TimeBar = styled.div`
 					margin-top: 20px;
 					position: absolute;
 					height: .75rem;
+					width: 100% !important;
+
+					& #timeBarProgress {
+						width: calc(100%) !important;
+					}
 				}
 
 				& .total {
@@ -177,7 +197,7 @@ export const Censor = styled.div`
 		width: 100%;
 		height: 100%;
 		background-color: transparent;
-		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(0px)`};
+		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(30px)`};
 	}
 `
 export const Comment = styled.div`
@@ -225,10 +245,11 @@ export const Subtitles = styled.div`
 	font-size: 1.5rem;
 	color: #ffffff;
 	z-index: 20;
-	width: 100%;
+	// width: 100%;
+	width: ${props => props.type === `video` ? `70%` : `100%`};
 	text-align: center;
+	white-space: pre-line;
 `
-
 const rotate = keyframes`
 	from {
 		transform: rotate(0deg);
@@ -243,13 +264,6 @@ export const Spinner = styled.div`
 	background-size: cover;
 	width: 15rem;
 	height: 15rem;
-
-	/* position: fixed;
-	top: 30%;
-	left: 30%;
-	display: flex;
-	align-items: center;
-	justify-content: center; */
 
 	animation: ${rotate} 2.5s ease-in-out infinite;
 `

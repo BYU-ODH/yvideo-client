@@ -37,62 +37,46 @@ const ClipEditorContainer = props => {
 	} = props
 
 	const {id} = useParams()
-	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
+
 	const [url, setUrl] = useState(``)
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
 	const [subs,setSubs] = useState([])
 
-	const getAllSubtitles = async() => {
-		// console.log(`yeep`,id)
-		const testsubs = await getSubtitles(id)
-		// console.log(`more testing`,testsubs)
-		const returnThis = testsubs !== undefined?testsubs:[]
-		return returnThis
-	}
-	useEffect(() => {
-		// console.log('use effecct')
-		if(!content.hasOwnProperty(id)){
-			// console.log(`getContent`)
-			getContent(id)
-		}
+	const [sKey, setKey] = useState(``)
+	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 
-		if(content[id] !== undefined){
+	useEffect(() => {
+
+		if (!content.hasOwnProperty(id))
+			getContent(id)
+
+		if(content[id]) {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
 			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Clip Manager`], collectionId: content[id].collectionId, contentId: content[id].id})
-			// we only want to set the url if it is not set.
-			if(url === ``){
-				if(content[id].url !== ``)
-					setUrl(content[id].url)
-				else {
-					// CHECK RESOURCE ID
-					if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
-						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-					} else if (streamKey !== `` && url === ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}`)
-						// console.log('URL SHOULD BE ,', `${process.env.REACT_APP_YVIDEO_SERVER}/api/media/stream-media/${streamKey}` )
+
+			if(content[id].url !== ``)
+				setUrl(content[id].url)
+			else {
+				setKey(``)
+				setUrl(``)
+
+				if(content[id].resourceId && !isStreamKeyLoaded){
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
+					setIsStreamKeyLoaded(true)
 				}
-			} else{
-				// once the url is set we can get subtitles
-				if(!calledGetSubtitles){
-					// console.log("TRY TO GER SUBTITLES")
-					getSubtitles(id)
-					setCalledGetSubtitles(true)
-				} else {
-					// console.log("SETTING SUBTITLES")
-					setSubs(allSubs)
-				}
+
+				if(streamKey)
+					setKey(streamKey)
+
+				if (sKey !== ``)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+
 			}
 		}
-		// console.log(eventsArray,subs)
-	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId])
-
-	// console.log(eventsArray)
-
-	// console.log(eventsArray)
+	}, [content, resource, eventsArray, currentContent, streamKey, url, sKey])
 
 	const handleShowHelp = () => {
 		toggleModal({

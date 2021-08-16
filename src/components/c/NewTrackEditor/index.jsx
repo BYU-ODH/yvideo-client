@@ -4,9 +4,9 @@ import { Prompt } from 'react-router'
 
 import Style, { Timeline, EventList, AnnotationMessage } from './styles'
 
-import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 
+import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 
 import * as Subtitle from 'subtitle'
@@ -115,7 +115,7 @@ const TrackEditor = props => {
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [layers, setLayers] = useState([])
 	const [shouldUpdate, setShouldUpdate] = useState(false)
-	const [blockLeave, setBlock] = useState(false)
+	const [blockLeave, setBlock] = useState(true)
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [eventToEdit, setEventToEdit] = useState(10000)
 	const [displayLayer, setDisplayLayer] = useState(0)
@@ -190,14 +190,14 @@ const TrackEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-	}, [eventsArray, blockLeave])
+	}, [eventsArray])
+
+	// end of useEffect
 
 	if(shouldUpdate === true)
-
 		setShouldUpdate(false)
 
 	const togglendTimeline = () => {
-
 		setTimelineMinimized(!timelineMinimized)
 	}
 
@@ -225,7 +225,6 @@ const TrackEditor = props => {
 		setLayers(currentLayers)
 		setSideEditor(false)
 		setDisplayLayer(currentLayers.length-1)
-		setBlock(true)
 	}
 
 	const handleRemoveLayer = (e, index) => {
@@ -250,7 +249,6 @@ const TrackEditor = props => {
 			setDisplayLayer(currentLayers.length-1)
 			setAllEvents(currentEvents)
 			setEvents(currentEvents)
-			setBlock(true)
 		}
 	}
 
@@ -260,7 +258,6 @@ const TrackEditor = props => {
 		// READ CURRENT TIME * 100 / VIDEO LENGTH WHICH YIELDS THE PERCENTAGE OF THE VIDEO PLAYED
 		const newStart = videoCurrentTime * 100 / videoLength
 		addEventToLayer(item, index, newStart)
-		setBlock(true)
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
@@ -268,7 +265,6 @@ const TrackEditor = props => {
 			handleAddSubLayer()
 			return
 		}
-		// console.log(item)
 		let currentEvents = []
 		if(allEvents !== undefined)
 			currentEvents = [...allEvents]
@@ -287,13 +283,11 @@ const TrackEditor = props => {
 		}
 
 		currentEvents.push(eventObj)
-		// console.log(currentEvents)
 		setAllEvents(currentEvents)
 		setDisplayLayer(index)
 	}
 
 	const updateEvents = (index, event, layerIndex) => {
-		// console.log(`Update`, event)
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false){
 			canAccessDom = true
@@ -317,7 +311,6 @@ const TrackEditor = props => {
 		} else if(event.start > event.end){
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
-
 		}
 
 		// check end event times
@@ -350,7 +343,6 @@ const TrackEditor = props => {
 		setEventToEdit(index)
 		setSubSelected(false)
 		setSideEditor(true)
-		setBlock(true)
 	}
 
 	const deleteEvent = () => {
@@ -361,7 +353,6 @@ const TrackEditor = props => {
 		setEvents(currentEvents)
 		setEventToEdit(1000)
 		setSideEditor(false)
-		setBlock(true)
 	}
 
 	const deleteSub = () =>{
@@ -370,17 +361,19 @@ const TrackEditor = props => {
 		setSubs(currentSubs)
 		setAllSubs(currentSubs)
 		setSideEditor(false)
-		setBlock(true)
 	}
 
 	const handleCensorRemove = (item) => {
 		const index = eventToEdit
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
-		const posprev = Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b)=>parseFloat(cEvent.position[b])-parseFloat(cEvent.position[a]))[0]
-		const posnex = Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
-		setActiveCensorPosition(posprev && posnex ? posprev? posprev:posnex:-1)
+		const posprev = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(b)<parseFloat(a))[-1]
+		const posnex = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) > parseFloat(item)).sort((a,b)=>parseFloat(b)>parseFloat(a))[0]
+		console.log(Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(a)>parseFloat(b)))
+		console.log(posprev, posnex, Object.keys(cEvent), item)
+		setActiveCensorPosition(posprev ? posprev:posnex)
 		delete cEvent.position[item]
+
 		updateEvents(index, cEvent, layer)
 
 	}
@@ -393,13 +386,7 @@ const TrackEditor = props => {
 			const index = eventToEdit
 			const cEvent = allEvents[index]
 			const layer = cEvent.layer
-			const pos = cEvent.position
-			const id = Object.keys(pos).length === 0 ? `0` : `${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
-			let exists = false
-			Object.keys(pos).forEach((val)=>{
-				if (pos[val][0].toString() === parseFloat(time).toFixed(1).toString()) exists = true
-			})
-			if(exists) return
+
 			const value = Object.keys(cEvent.position).find(item => item >= time)
 
 			cEvent.position[id] = [`${parseFloat(time).toFixed(1)}`,50, 50, 30, 40]
@@ -410,33 +397,27 @@ const TrackEditor = props => {
 
 	const handleEditCensor = (e, item, int) => {
 		const object = editCensor
-		const index = eventToEdit
-		const cEvent = allEvents[index]
-		const layer = cEvent.layer
-		const pos = cEvent.position
+		// console.log(editCensor)
 		const value = parseFloat(e.target.value).toFixed(1)
 
 		switch (int) {
 		case 1:
-			pos[item][0] = value
+			object[item][0] = value
 			break
 		case 2:
-			pos[item][1] = value
+			object[item][1] = value
 			break
 		case 3:
-			pos[item][2] = value
+			object[item][2] = value
 			break
 		case 4:
-			pos[item][3] = value
+			object[item][3] = value
 			break
-		case 5:
-			pos[item][3] = value
-			break
+
 		default:
 			break
 		}
-		cEvent.position = pos
-		updateEvents(index, cEvent, layer)
+
 		setEditCensor(object)
 	}
 
@@ -511,8 +492,8 @@ const TrackEditor = props => {
 		await handleSaveSubtitles()
 		deleteSubtitles(subLayersToDelete)
 		setSubLayersToDelete([])
-		setBlock(false)
 		setIsLoading(false)
+
 	}
 
 	const handleSaveSubtitles = async() => {
@@ -619,7 +600,6 @@ const TrackEditor = props => {
 		activeUpdate(subLayerIndex)
 		setSubSelected(true)
 		sortSubtitles()
-		setBlock(true)
 	}
 
 	const addSubToLayer = (item,index) => {
@@ -644,7 +624,6 @@ const TrackEditor = props => {
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
 			sortSubtitles()
-			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
 			console.error(error)
@@ -696,7 +675,6 @@ const TrackEditor = props => {
 		setSideEditor(false)
 		setSubModalVisible(false)
 		setSubModalMode(``)
-		setBlock(true)
 	}
 	const handleAddSubLayerFromFile = (url) => {
 		try{
@@ -767,21 +745,18 @@ const TrackEditor = props => {
 		tempSubs.splice(index, 1)
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
-		setBlock(true)
 	}
 	const updateSubLayerTitle = (title) =>{
 		const temp = [...subtitles]
 		temp[subLayerToEdit][`title`] = title
 		setSubs(temp)
 		setAllSubs(temp)
-		setBlock(true)
 	}
 	const updateSubLayerLanguage = (language) =>{
 		const temp = [...subtitles]
 		temp[subLayerToEdit][`language`] = language
 		setSubs(temp)
 		setAllSubs(temp)
-		setBlock(true)
 	}
 	const sortSubtitles = () => {
 		const tempSubs = [...subtitles]
@@ -792,7 +767,7 @@ const TrackEditor = props => {
 		}
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
-		setBlock(true)
+
 	}
 	return (
 		<Style>
@@ -805,6 +780,7 @@ const TrackEditor = props => {
 					setModalVisible = {setSubModalVisible}
 				/>
 				<span style={{ zIndex: 0 }}>
+
 					<Controller ref = {controllerRef}
 						className='video'
 						url={props.viewstate.url}
@@ -819,6 +795,7 @@ const TrackEditor = props => {
 						eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
+						editorType={`video`}
 					>
 					</Controller>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -954,14 +931,13 @@ const TrackEditor = props => {
 						<img src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 						<div className={`save`}>
 							<button onClick={handleSaveAnnotation}>
+								{isLoading ? (
+									<i className='fa fa-refresh fa-spin'/>
+								)
+									: (
+										<i class='fa fa-check'></i>
+									)
 
-								{blockLeave ?
-									null
-									:
-									isLoading ?
-										<i className='fa fa-refresh fa-spin'/>
-										:
-										<i className='fa fa-check'></i>
 								}
 								<span>Save</span>
 							</button>

@@ -212,7 +212,7 @@ export default class AdminTable extends PureComponent {
 							<Link to={`/player/${data.id}`} target='_blank'>View</Link>
 						</li>
 						<li>
-							<Link to={`/trackeditor/${data.id}`}>Edit</Link>
+							<Link to={`/videoeditor/${data.id}`}>Edit</Link>
 						</li>
 						<li>
 							<button>Disable</button>

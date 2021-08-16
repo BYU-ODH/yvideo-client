@@ -34,8 +34,6 @@ export default class Collections extends PureComponent {
 			toggleTip,
 			handleSearchQuerySubmit,
 			handleSearchTextChange,
-			linkToManageCollection,
-			linkToManagePublicCollection,
 		} = this.props.handlers
 
 		collections.sort((a, b) => a.name > b.name ? 1 : -1)

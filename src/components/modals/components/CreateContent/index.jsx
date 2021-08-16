@@ -30,9 +30,6 @@ export default class CreateContent extends PureComponent {
 			isAccess,
 		} = this.props.viewstate
 
-		console.log(languages)
-		console.log(languages[0])
-
 		const {
 			title,
 			contentType,
@@ -58,7 +55,7 @@ export default class CreateContent extends PureComponent {
 
 		return (
 			<>
-				<h2>Create New Content</h2>
+				<h2 className='create-content-title'>Create New Content</h2>
 
 				<Tabs>
 					<Tab className='tab-url' selected={tab === `url`} onClick={changeTab} name={`url`}>From URL</Tab>
@@ -158,24 +155,15 @@ export default class CreateContent extends PureComponent {
 							{
 								isResourceSelected && (
 									languages.length > 0 ?
-										languages.length ===1 ?
-											(
-												<select name='targetLanguages' onChange={handleTextChange} required>
-													<option value={languages[0]} key={0}>{languages[0]}</option>
-												</select>
-											)
-											:
-											(
-												<select name='targetLanguages' onChange={handleTextChange} required>
-													<option value=''>Select</option>
+										<select name='targetLanguages' onChange={handleTextChange} required>
+											<option value=''>Select</option>
 
-													{
-														languages.map(
-															(element, index) =>
-																<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>)
-													}
-												</select>
-											)
+											{
+												languages.map(
+													(element, index) =>
+														<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>)
+											}
+										</select>
 
 										:
 										(
@@ -189,6 +177,7 @@ export default class CreateContent extends PureComponent {
 						</label>
 
 						<div>
+
 							<Button className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
 							{targetLanguages.length > 0 ?
 								(

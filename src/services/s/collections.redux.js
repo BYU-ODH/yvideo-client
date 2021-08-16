@@ -33,6 +33,7 @@ export default class CollectionService {
 		collectionsAbort: () => ({ type: this.types.COLLECTIONS_ABORT }),
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
+		collectionsErrorSync: error => ({type: this.types.COLLECTIONS_ERROR_SYNC, payload:{ error }}),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
 		collectionsRemoveContent: (id, collection) => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT, payload: {id, collection} }),
 		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
@@ -47,6 +48,8 @@ export default class CollectionService {
 	// default store
 
 	store = {
+		errorMessage: ``,
+		errorMessagePrev: ``,
 		cache: {},
 		loading: false,
 		lastFetched: 0,
@@ -64,6 +67,7 @@ export default class CollectionService {
 			COLLECTIONS_ABORT,
 			COLLECTIONS_CLEAN,
 			COLLECTIONS_ERROR,
+			COLLECTIONS_ERROR_SYNC,
 			COLLECTIONS_GET,
 			COLLECTIONS_REMOVE_CONTENT,
 			COLLECTION_CREATE,
@@ -105,9 +109,14 @@ export default class CollectionService {
 			console.error(action.payload.error)
 			return {
 				...store,
+				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
-
+		case COLLECTIONS_ERROR_SYNC:
+			return{
+				...store,
+				errorMessagePrev: action.payload.error,
+			}
 		case COLLECTIONS_GET:
 			return {
 				...store,
@@ -534,5 +543,10 @@ export default class CollectionService {
 			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))
 		}
+	}
+
+	syncError = () => async (dispatch, getState) => {
+		const err = getState().collectionStore.errorMessage
+		dispatch(this.actions.collectionsErrorSync(err))
 	}
 }

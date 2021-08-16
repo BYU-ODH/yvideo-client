@@ -19,6 +19,7 @@ import Tag from './Tag'
 import Tooltip from './Tooltips'
 import TrackEditorSideMenu from './TrackEditorSideMenu'
 import Transcript from './Transcript'
+import SubtitleEditorSideMenu from './SubtitleEditorSideMenu'
 import SubtitlesCard from './SubtitlesCard'
 import ResourceOverview from '../c/ResourceOverview'
 import SubtitlesLayer from './SubtitlesLayer'
@@ -48,6 +49,7 @@ export {
 	TrackEditorSideMenu,
 	Transcript,
 	ResourceOverview,
+	SubtitleEditorSideMenu,
 	SubtitlesCard,
 	SubtitlesLayer,
 	SubtitlesModal,

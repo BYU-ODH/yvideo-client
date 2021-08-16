@@ -41,12 +41,12 @@ const ContentOverviewContainer = props => {
 	useEffect(() => {
 		if(window.innerWidth < 1000)
 			setIsMobile(true)
-		 else
+		else
 			setIsMobile(false)
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
-		 else
+		else
 			window.onbeforeunload = undefined
 
 		return () => {

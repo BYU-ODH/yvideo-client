@@ -10,7 +10,7 @@ import Style, {
 	TableContainer,
 	AddManyButton,
 	Sort,
-	Loading,
+	Spinner,
 	UserListTable,
 	UserList,
 	TableHeader,
@@ -19,7 +19,6 @@ import Style, {
 	Column,
 } from './styles'
 import { SwitchToggle } from 'components/bits'
-import logo from 'assets/hexborder.svg'
 
 import removeIcon from 'assets/trash_icon.svg'
 
@@ -47,7 +46,7 @@ export class CollectionPermissions extends PureComponent {
 			disabled,
 			disabledUser,
 			disabledTA,
-			loaded,
+			isLoading,
 			loggedinUser,
 		} = viewstate
 
@@ -161,8 +160,11 @@ export class CollectionPermissions extends PureComponent {
 										<th>Remove</th>
 									</tr>
 								</thead>
+								{/* {isLoading === true ?
+									<tbody><tr className='loading'><Spinner/></tr></tbody>
+									: */}
 								<tbody>
-									{loaded === false ? userTA.length > 0 ?
+									{userTA.length > 0 ?
 										userTA.map((element, index) =>
 											<tr key={index}>
 												<td>{element[`username`]}</td>
@@ -177,14 +179,10 @@ export class CollectionPermissions extends PureComponent {
 												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
 											</tr>,
 										)
-										:
-										null
-										:
-										(
-											<tr className='loading'><Loading colSpan={4} rowSpan={6} loaded={loaded}><img src={logo} /></Loading></tr>
-										)
+										: <></>
 									}
 								</tbody>
+								{/* } */}
 							</Table>
 						</UserList>
 						<UserList id='user-table'>
@@ -208,8 +206,11 @@ export class CollectionPermissions extends PureComponent {
 										<th>Remove</th>
 									</tr>
 								</thead>
+								{/* {isLoading === true ?
+									<tbody><tr className='loading'><Spinner/></tr></tbody>
+									: */}
 								<tbody>
-									{loaded === false ? users.length > 0 ?
+									{users.length > 0 ?
 										users.map((element, index) =>
 											<tr key={index}>
 												<td>{element[`username`]}</td>
@@ -219,15 +220,10 @@ export class CollectionPermissions extends PureComponent {
 												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
 											</tr>,
 										)
-										:
-										null
-
-										:
-										(
-											<tr className='loading'><Loading colSpan={4} rowSpan={6} loaded={loaded}><img src={logo} /></Loading></tr>
-										)
+										: <></>
 									}
 								</tbody>
+								{/* } */}
 							</Table>
 						</UserList>
 					</UserListTable>

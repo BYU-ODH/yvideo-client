@@ -22,7 +22,7 @@ const EventsContainer = props => {
 	} = props
 
 	const [eventArray, setEventArray] = useState([])
-	const [force, setForce] = useState(false)
+
 	// testing subitles class
 	useEffect(() => {
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
@@ -39,8 +39,8 @@ const EventsContainer = props => {
 
 			events.forEach(event => {
 				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
-				const start = event.start / 100 * duration
-				const end = event.end / 100 * duration
+				const start = event.start
+				const end = event.end
 				switch (event.type) {
 				case `Skip`:
 					tempArray.push(new SkipEvent(event.type, start, end))
@@ -67,16 +67,7 @@ const EventsContainer = props => {
 		}
 		setEventArray([...tempArray])
 	}, [duration, events])
-	const getCensor = ()=>{
-		const censors = []
-		eventArray.filter(element => {
-			return element.type === `Censor`
-		}).map(element=>{
-			if(currentTime >= element.start && currentTime <= element.end && element.active !== true)
-				censors.push(element.position)
-		})
-		handleCensorPosition(censors)
-	}
+
 	eventArray.forEach(element => {
 		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
@@ -88,7 +79,9 @@ const EventsContainer = props => {
 				handleMute()
 				break
 			case `Pause`:
+
 				handlePause()
+
 				break
 			case `Comment`:
 				handleShowComment(element.comment, element.position)
@@ -119,9 +112,8 @@ const EventsContainer = props => {
 			default:
 				break
 			}
-		} else if (currentTime > element.end && element.type === `Censor`){
+		} else if (currentTime > element.end && element.type === `Censor`)
 			handleCensorActive(false)
-		}
 
 	})
 

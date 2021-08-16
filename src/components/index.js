@@ -16,17 +16,19 @@ import Menu from './c/Menu'
 import Overlay from './c/Overlay'
 import Player from './c/Player'
 import Root from './c/Root'
-import TrackEditor from './c/NewTrackEditor'
 import TrackLayer from './c/TrackLayer'
 import VideoControls from './c/VideoControls'
 import ManageResource from './c/ManageResource'
 import ResourceOverview from './c/ResourceOverview'
 import FileOverview from './c/FileOverview'
 import SearchPublicCollections from './c/SearchPublicCollections'
+import SubtitleEditor from './c/SubtitleEditor'
 import PublicManager from './c/PublicManager'
 import PublicListCollection from './c/PublicListCollection'
 import ClipEditor from './c/ClipEditor'
 import PublicMoreListCollection from './c/PublicMoreListCollection'
+import VideoEditor from './c/VideoEditor'
+import VideoContainer from './c/VideoContainer'
 
 export {
 	Admin,
@@ -47,15 +49,17 @@ export {
 	Overlay,
 	Player,
 	Root,
-	TrackEditor,
 	TrackLayer,
 	VideoControls,
 	ManageResource,
 	ResourceOverview,
 	FileOverview,
 	SearchPublicCollections,
+	SubtitleEditor,
 	PublicManager,
 	PublicListCollection,
 	ClipEditor,
 	PublicMoreListCollection,
+	VideoEditor,
+	VideoContainer,
 }

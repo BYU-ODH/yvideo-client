@@ -12,11 +12,12 @@ import {
 	MenuContainer,
 	ManagerContainer,
 	PlayerContainer,
-	TrackEditorContainer,
 	ManageResourceContainer,
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
 	ClipEditorContainer,
+	VideoEditorContainer,
+	SubtitlesEditorContainer,
 } from 'containers'
 
 import {
@@ -104,12 +105,17 @@ class Root extends PureComponent {
 								<PlayerContainer />
 							</Route>
 
-							{
-								user.roles < 3 &&
-								<Route path='/trackeditor/:id'>
-									<TrackEditorContainer />
-								</Route>
-							}
+							<Route path='/videoeditor/:id'>
+								<VideoEditorContainer />
+							</Route>
+
+							<Route path='/subtileeditor/:id'>
+								<SubtitlesEditorContainer />
+							</Route>
+
+							<Route path='/clipeditor/:id'>
+								<ClipEditorContainer />
+							</Route>
 
 							{
 								user.roles < 3 &&
