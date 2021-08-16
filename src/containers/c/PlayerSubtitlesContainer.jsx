@@ -44,11 +44,10 @@ const PlayerSubtitlesContainer = props => {
 	for(let i = 0; i < subtitlesArray.length; i++){
 		// console.log(subtitlesArray[i])
 		const element = subtitlesArray[i]
-		const start = element.start / 100 * duration
-		const end = element.end / 100 * duration
+		const start = element.start
+		const end = element.end
 
 		if(currentTime >= start && currentTime <= end){
-      // console.log('calling')
 			props.handleShowSubtitle(element.text)
 			break
 		}

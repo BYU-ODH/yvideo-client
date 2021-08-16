@@ -146,7 +146,7 @@ const Transcript = props => {
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start * duration / 100 + .5)}
+								<div onClick={e => handleSeekChange(null, element.start)}
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`, {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
