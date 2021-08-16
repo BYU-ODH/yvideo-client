@@ -38,7 +38,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Censor`}, {4: `Blank`}] // {3: `Comment`},
 
 	const events = [
 		{
@@ -62,18 +62,18 @@ const VideoEditor = props => {
 			end: 10,
 			layer: 0,
 		},
-		{
-			type: `Comment`,
-			icon: commentIcon,
-			start: 0,
-			end: 10,
-			layer: 0,
-			comment: ``,
-			position: {
-				x: 0,
-				y: 0,
-			},
-		},
+		// {
+		// 	type: `Comment`,
+		// 	icon: commentIcon,
+		// 	start: 0,
+		// 	end: 10,
+		// 	layer: 0,
+		// 	comment: ``,
+		// 	position: {
+		// 		x: 0,
+		// 		y: 0,
+		// 	},
+		// },
 		{
 			type: `Censor`,
 			icon: censorIcon,

@@ -123,7 +123,7 @@ const Controller = props => {
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
 
 			} else
-				newPlayed = time / duration
+				newPlayed = duration / time
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)

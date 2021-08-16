@@ -62,35 +62,32 @@ const SubtitlesEditorContainer = props => {
 			setEvents(content[id].settings.annotationDocument)
 			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 			// we only want to set the url if it is not set.
-			if(url === ``){
-				if(content[id].url !== ``)
-					setUrl(content[id].url)
-				else {
-					setKey(``)
-					setUrl(``)
-					// CHECK RESOURCE ID
-					if(content[id].resourceId && !isStreamKeyLoaded){
-						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-						setIsStreamKeyLoaded(true)
-					}
-					if (streamKey){
-						// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${streamKey}`)
-						setKey(streamKey)
-					}
-					if (sKey !== ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-				}
-			} else{
-				// once the url is set we can get subtitles
-				if(!calledGetSubtitles){
-					getSubtitles(id)
-					setCalledGetSubtitles(true)
-				} else
-					setSubs(allSubs)
 
+			if(content[id].url !== ``)
+				setUrl(content[id].url)
+			else {
+				setKey(``)
+				setUrl(``)
+				// CHECK RESOURCE ID
+				if(content[id].resourceId && !isStreamKeyLoaded){
+					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
+					setIsStreamKeyLoaded(true)
+				}
+				if (streamKey){
+					// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${streamKey}`)
+					setKey(streamKey)
+				}
+				if (sKey !== ``)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 			}
 		}
+		// once the url is set we can get subtitles
+		if(!calledGetSubtitles){
+			getSubtitles(id)
+			setCalledGetSubtitles(true)
+		} else
+			setSubs(allSubs)
 
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 

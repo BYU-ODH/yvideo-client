@@ -39,8 +39,8 @@ const EventsContainer = props => {
 
 			events.forEach(event => {
 				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
-				const start = event.start / 100 * duration
-				const end = event.end / 100 * duration
+				const start = event.start
+				const end = event.end
 				switch (event.type) {
 				case `Skip`:
 					tempArray.push(new SkipEvent(event.type, start, end))
