@@ -21,15 +21,12 @@ const PlayerSubtitlesContainer = props => {
 	const {id} = useParams()
 
 	useEffect(() => {
-		// console.log("use effect in subs")
 		if(subtitles.length != 0){
 			let temp = subtitles[indexToDisplay]
 			let currentContent = temp.content
 
 			try {
-
 				if(typeof currentContent === "string"){
-					// console.log("String type")
 					temp.content = JSON.parse(subtitles[indexToDisplay].content)
 				}
 
@@ -42,13 +39,11 @@ const PlayerSubtitlesContainer = props => {
 	}, [duration, subtitles, indexToDisplay])
 
 	for(let i = 0; i < subtitlesArray.length; i++){
-		// console.log(subtitlesArray[i])
 		const element = subtitlesArray[i]
-		const start = element.start / 100 * duration
-		const end = element.end / 100 * duration
+		const start = element.start
+		const end = element.end
 
 		if(currentTime >= start && currentTime <= end){
-      // console.log('calling')
 			props.handleShowSubtitle(element.text)
 			break
 		}
@@ -56,8 +51,6 @@ const PlayerSubtitlesContainer = props => {
 			// console.log("overwriting ")
 			props.handleShowSubtitle(``)
 	}
-
-	// console.log('%c Player Subtitles Container', 'color: orange; font-weight: bolder; font-size: 12px;')
 
 	return <div></div>
 

@@ -178,23 +178,6 @@ export default class Player extends PureComponent {
 					<Transcript viewstate={this.props.viewstate} handlers={this.props.handlers}>
 					</Transcript>
 				</div>
-				{/* <div className={`collection-container`}>
-					<CollectionsContainer/>
-				</div> */}
-				{/* <EventsContainer
-					currentTime={progress.playedSeconds.toFixed(1)}
-					duration={duration}
-					handleSeek={handleSeekChange}
-					handleMute={handleMuted}
-					handlePlay={handlePlay}
-					handlePause={handlePause}
-					handleUnMute={handleUnmuted}
-					// toggleMute={toggleMute}
-					handleBlank={handleBlank}
-					handleShowComment={handleShowComment}
-					handleCensorPosition={setCensorPosition}
-					handleCensorActive={setCensorActive}
-				/> */}
 				{
 					url !== `` && showTranscript ? (
 						// showsubtitles
