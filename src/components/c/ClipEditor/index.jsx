@@ -138,7 +138,7 @@ const ClipEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		if(document.getElementsByClassName(`layer-container`)[0]) setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 	}
 
 	const handleScrollFactor = (direction) => {
@@ -146,7 +146,7 @@ const ClipEditor = props => {
 			const scrubber = document.getElementById(`time-bar`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const alllayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			const currentLayerWidth = document.getElementsByClassName(`events`)[0] && document.getElementsByClassName(`events`)[0].clientWidth
 			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
 			const scrollBar = document.getElementsByClassName(`zoom-scroll-indicator`)[0]
 
