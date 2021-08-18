@@ -1,38 +1,36 @@
-import React from 'react'
-
-import { useDrag } from 'react-dnd'
-
+import React, {useState} from 'react'
 import Style, { I } from './styles'
 import captions from 'assets/captions.svg'
 
-const SubtitlesCard = () => {
+const SubtitlesCard = (props) => {
 
-	const [{ isDragging }, ref] = useDrag({
+	const { title, updateTitle, isEdit, subLayer, index } = props
+	const [value, setValue] = useState(title)
 
-		// REQUIRED
-		item: {
-			id: `subtitle`,
-			type: `subtitle-event`,
-		},
-
-		// Use this if you need to do something here when the item is dropped
-		// end: (item, monitor) => {
-		// 	const dropResult = monitor.getDropResult()
-		// 	if (item && dropResult) console.log(`You just dropped:`, item)
-		// },
-
-		// Updates the props you get in the array at the top
-		collect: monitor => ({
-			isDragging: monitor.isDragging(),
-		}),
-	})
-
-	const opacity = isDragging ? 0.5 : 1
-
+	const handleChange = e => {
+		setValue(e.target.value)
+		updateTitle(e.target.value, `onChange`)
+	}
 	return (
-		<Style ref={ref} opacity={opacity} >
+		<Style>
 			<I src={captions}/>
-			Add Subtitles
+			{
+				isEdit ?
+					subLayer === index ?
+						<input type='text' className='sideTabInput' style={{margin: `0px`, width: `100%`}} value={value}
+							onChange={handleChange}
+							onKeyPress={event => {
+								if (event.charCode ===13) {
+									updateTitle(event.target.value, `onKeyPress`)
+								}
+							}}
+						/>
+						:
+						title
+					:
+					title
+
+			}
 		</Style>
 	)
 }

@@ -1,5 +1,5 @@
-import styled, { keyframes, css } from 'styled-components'
-
+import styled, { keyframes } from 'styled-components'
+import logo from 'assets/hexborder.svg'
 import searchIcon from 'assets/search.svg'
 import iconSort from 'assets/admin-icon-sort.svg'
 
@@ -115,7 +115,7 @@ export const AddButton = styled.button`
 
 	outline: none;
 
-	${props => props.disabled ? `` : `cursor: pointer;`}
+	${props => props.disabled ? `` : `cursor: pointer`}
 
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 
@@ -162,11 +162,12 @@ export const Table = styled.table`
 	}
 
 	& .loading {
+
 		& td {
 			border-bottom: none;
 
 			& img {
-				opacity: 1;
+				/* opacity: 1; */
 			}
 		}
 	}
@@ -191,34 +192,6 @@ export const Sort = styled.button`
 	border: none;
 	height: 1.5rem;
 	cursor: pointer;
-`
-const rotate = keyframes`
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(720deg);
-	}
-`
-
-export const Loading = styled.td`
-	width: 15rem;
-	height: 15rem;
-
-	& img {
-		width: 15rem;
-		height: 15rem;
-	}
-
-	${
-	props => !props.loaded ?
-		css`
-		`
-		:
-		css`
-			animation: ${rotate} 2.5s infinite;
-		`
-}
 `
 
 export const UserListTable = styled.div`
@@ -300,4 +273,22 @@ export const Column = styled.div`
 	& textarea {
 		width: 100%;
 	}
+`
+
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Spinner = styled.td`
+	background: url(${logo})  no-repeat;
+	background-size: cover;
+	width: 12rem;
+	height: 12rem;
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `

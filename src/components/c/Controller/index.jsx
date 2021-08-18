@@ -15,8 +15,8 @@ import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
-import carat from 'assets/carat_white.svg'
 
+// TODO: trim the code
 const Controller = props => {
 
 	const {
@@ -24,13 +24,13 @@ const Controller = props => {
 		getDuration,
 		minimized,
 		handleLastClick,
-		togglendTimeline,
 		getVideoTime,
 		events,
 		updateEvents,
 		eventToEdit,
 		activeCensorPosition,
 		setActiveCensorPosition,
+		editorType,
 	} = props
 
 	const ref = useRef(null)
@@ -39,6 +39,7 @@ const Controller = props => {
 
 	const [playing, setPlaying] = useState(false)
 	const [isReady, setIsReady] = useState(false)
+	const [subtitleText, setSubtitleText] = useState(``)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0)
@@ -48,10 +49,13 @@ const Controller = props => {
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
-	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
+
+	useEffect(() => {
+		const indicator = document.getElementById(`time-indicator`)
+	})
 
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
@@ -86,8 +90,6 @@ const Controller = props => {
 			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-
-			const test = performance.now()
 			if(document.getElementById(`layer-time-indicator`) !== undefined)
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
@@ -101,9 +103,7 @@ const Controller = props => {
 			censorRef.current.style.height = `${height}%`
 			censorRef.current.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
 			censorRef.current.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
-
 			setElapsed(playedSeconds)
-			const test1 = performance.now()
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
@@ -123,11 +123,11 @@ const Controller = props => {
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
 
 			} else
-				newPlayed = time / duration
+				newPlayed = duration / time
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
-				getVideoTime(newPlayed.toFixed(10) * duration)
+				getVideoTime(newPlayed)
 			}
 		},
 		handlePause: () => {
@@ -212,7 +212,6 @@ const Controller = props => {
 	const dateElapsed = new Date(null)
 	dateElapsed.setSeconds(elapsed)
 	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
-
 	const showError = () => {
 		alert(`There was an error loading the video`)
 	}
@@ -235,9 +234,8 @@ const Controller = props => {
 
 				<Comment commentX={commentPosition.x} commentY={commentPosition.y}>{videoComment}</Comment>
 				{subtitleText !== `` ?(
-					<Subtitles>{subtitleText}</Subtitles>
+					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
-
 				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
 
 			</Blank>
@@ -251,7 +249,8 @@ const Controller = props => {
 				onContextMenu={e => e.preventDefault()}
 
 				// constants
-				className='video'
+
+				className={editorType}
 				progressInterval={30}
 
 				// state
@@ -269,12 +268,12 @@ const Controller = props => {
 
 				onPlay={video.handlePlay}
 				onPause={video.handlePause}
-
 				onProgress={video.handleProgress}
 				onDuration={video.handleDuration}
 				// blank style
 			/>
-			<TimeBar>
+
+			<TimeBar className='timeBar'>
 				<header>
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
@@ -296,7 +295,8 @@ const Controller = props => {
 					</div>
 				</header>
 			</TimeBar>
-			<EventsContainer currentTime={elapsed.toFixed(1)} duration={video.duration}
+
+			<EventsContainer className='eventContainer' currentTime={elapsed.toFixed(1)} duration={video.duration}
 				handleSeek={video.handleSeek}
 				handleMute={video.handleMute}
 				handlePlay={video.handlePlay}

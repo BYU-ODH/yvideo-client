@@ -15,7 +15,7 @@ const ManageCollectionContainer = props => {
 	const {
 		user,
 		collection,
-		content,
+		contentCache,
 		setContent,
 		getCollections,
 		updateCollectionName,
@@ -59,7 +59,7 @@ const ManageCollectionContainer = props => {
 
 		if(collection.content !== undefined && collection.content.length > 0){
 			// compare old content to new content
-			if(content[collection.content[0].id] && content[collection.content[collection.content.length - 1].id]){
+			if(contentCache[collection.content[0].id] && contentCache[collection.content[collection.content.length - 1].id]){
 				// console.log('got cached content')
 			} else {
 				// console.log('setting content')
@@ -67,7 +67,7 @@ const ManageCollectionContainer = props => {
 			}
 		}
 
-	}, [collection.name, content, collection, professorCollections, isLoading])
+	}, [collection.name, contentCache, collection, professorCollections, isLoading])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -131,7 +131,7 @@ const ManageCollectionContainer = props => {
 		isEditingCollectionName,
 		collection,
 		collectionName,
-		content: collection.content !== undefined ? collection.content.map(item => content[item.id]) : [],
+		content: collection.content !== undefined ? collection.content.map(item => contentCache[item.id]) : [],
 		isContentTap,
 		isLoading,
 	}
@@ -168,7 +168,7 @@ const ManageCollectionContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	content: store.contentStore.cache,
+	contentCache: store.contentStore.cache,
 	professorCollections: store.adminStore.professorCollections,
 	user: store.authStore.user,
 })

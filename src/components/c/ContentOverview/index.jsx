@@ -50,7 +50,7 @@ export default class ContentOverview extends PureComponent {
 			handleDescription,
 			changeTag,
 			handleShowWordsModal,
-			handleShowHelp
+			handleShowHelp,
 		} = this.props.handlers
 
 		const {
@@ -85,7 +85,8 @@ export default class ContentOverview extends PureComponent {
 						</ul>
 						{editing ||
 						<>
-							<StyledLink to={`/trackeditor/${content.id}`}>Video Editor</StyledLink>
+							<StyledLink to={`/videoeditor/${content.id}`}>Video Editor</StyledLink>
+							<StyledLink to={`/subtileeditor/${content.id}`}>Subtitle Editor</StyledLink>
 							<StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink>
 						</>
 						}
@@ -137,7 +138,7 @@ export default class ContentOverview extends PureComponent {
 						</Column>
 						<Column>
 							<h4>Important Words
-								<img src={helpIcon} onClick={handleShowHelp} width="20" height="20"/>
+								<img src={helpIcon} onClick={handleShowHelp} width='20' height='20'/>
 							</h4>
 							<p>Add a list of important words to be highlighted in the transcript. The highlighted
 							words will have quick translation on click if there is
@@ -148,7 +149,7 @@ export default class ContentOverview extends PureComponent {
 				}
 				<Prompt
 					when={blockLeave}
-					message="Have you saved your changes already?"
+					message='Have you saved your changes already?'
 				/>
 			</Style>
 		)

@@ -5,19 +5,18 @@ import { connect } from 'react-redux'
 
 import { interfaceService, resourceService, contentService, subtitlesService } from 'services'
 
-import { TrackEditor } from 'components'
+import { SubtitleEditor } from 'components'
 
 import { Tooltip } from 'components/bits'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
-const TrackEditorContainer = props => {
+const SubtitlesEditorContainer = props => {
 
 	const {
 		content,
 		resource,
 		setEvents,
-		getResource,
 		getContent,
 		updateContent,
 		allSubs,
@@ -32,7 +31,6 @@ const TrackEditorContainer = props => {
 		streamKey,
 		toggleModal,
 		toggleTip,
-		setSubContentId,
 		contentError,
 		subtitleError,
 		setBreadcrumbs,
@@ -45,62 +43,53 @@ const TrackEditorContainer = props => {
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
 	const [subs,setSubs] = useState([])
-	const [progress, setProgress] = useState(0)
-	const [isUploadComplete, setIsUploadComplete] = useState(false)
+	const [sKey, setKey] = useState(``)
+	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 
-	const getData = async() => {
-		// console.log(`these subs are`, subs)
-		// await getContent([id])
-		const testsubs = await getSubtitles(id)
-		// console.log(`more testing`,testsubs)
-		setSubs(testsubs !== undefined?testsubs:[])
-	}
 	const getAllSubtitles = async() => {
-		// console.log(`yeep`,id)
 		const testsubs = await getSubtitles(id)
-		// console.log(`more testing`,testsubs)
 		const returnThis = testsubs !== undefined?testsubs:[]
 		return returnThis
 	}
 
 	useEffect(() => {
-		// console.log('use effecct')
-		if(!content.hasOwnProperty(id)){
-			// console.log(`getContent`)
+		if(!content.hasOwnProperty(id))
 			getContent(id)
-		}
 
 		if(content[id] !== undefined){
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
+			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 			// we only want to set the url if it is not set.
-			if(url === ``){
-				if(content[id].url !== ``)
-					setUrl(content[id].url)
-				else {
-					// CHECK RESOURCE ID
-					if(content[id].resourceId !== `00000000-0000-0000-0000-000000000000` && streamKey === ``){
-						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-						// downloadFile()
-					} else if (streamKey !== `` && url === ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media//stream-media/${streamKey}`)
+
+			if(content[id].url !== ``)
+				setUrl(content[id].url)
+			else {
+				setKey(``)
+				setUrl(``)
+				// CHECK RESOURCE ID
+				if(content[id].resourceId && !isStreamKeyLoaded){
+					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
+					setIsStreamKeyLoaded(true)
 				}
-			} else{
-				// once the url is set we can get subtitles
-				if(!calledGetSubtitles){
-					// console.log("TRY TO GER SUBTITLES")
-					getSubtitles(id)
-					setCalledGetSubtitles(true)
-				} else {
-					// console.log("SETTING SUBTITLES")
-					setSubs(allSubs)
+				if (streamKey){
+					// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${streamKey}`)
+					setKey(streamKey)
 				}
+				if (sKey !== ``)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 			}
 		}
-	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId])
+		// once the url is set we can get subtitles
+		if(!calledGetSubtitles){
+			getSubtitles(id)
+			setCalledGetSubtitles(true)
+		} else
+			setSubs(allSubs)
+
+	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 
 	const createAndAddSub = async () =>{
 		const subtitles = [...allSubs]
@@ -126,10 +115,11 @@ const TrackEditorContainer = props => {
 	const setAllSubs = (subs) =>{
 		setSubtitles(subs)
 	}
+
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Video Editor`},
+			props: { name: `Subtitle Editor`},
 		})
 	}
 
@@ -159,7 +149,7 @@ const TrackEditorContainer = props => {
 		handleShowHelp,
 	}
 
-	return <TrackEditor
+	return <SubtitleEditor
 		viewstate={viewstate}
 		setEvents={setEvents}
 		updateContent={updateContent}
@@ -200,4 +190,4 @@ const mapThunksToProps = {
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
-export default connect(mapStoreToProps, mapThunksToProps)(TrackEditorContainer)
+export default connect(mapStoreToProps, mapThunksToProps)(SubtitlesEditorContainer)

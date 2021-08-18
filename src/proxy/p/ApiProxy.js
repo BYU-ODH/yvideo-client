@@ -137,6 +137,10 @@ const apiProxy = {
 				updateSessionId(res.headers[`session-id`])
 				return res.data
 			}),
+			deleteWithCollections: async (id) => await axios.delete(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id }}).then(res => {
+				updateSessionId(res.headers[`session-id`])
+				return res.data
+			}),
 			/* This is to delete a user by just getting the user ID  ^^ */
 			get: async (id) => await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${id}`, { withCredentials: true, headers: {'session-id': window.clj_session_id }}).then(res => {
 				updateSessionId(res.headers[`session-id`])
@@ -487,7 +491,6 @@ const apiProxy = {
 			}).then( async res => {
 			await updateSessionId(res.headers[`session-id`])
 
-			// console.log(res.data)
 			return res.data
 		}),
 
