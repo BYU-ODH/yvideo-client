@@ -30,6 +30,10 @@ export const Table = styled.table`
 		font-size: 1.4rem;
 		text-align: left;
 	}
+
+	& .view-collections{
+			color: var(--light-blue);
+		}
 `
 
 export const StyledLink = styled(Link)`

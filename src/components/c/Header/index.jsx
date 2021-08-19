@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 
 import Style, { LogoWrapper, Name, Shadow, Logo} from './styles'
 
+import BreadcrumbContainer from '../../../containers/c/BreadcrumbContainer'
+
 export default class Header extends PureComponent {
 	render() {
 
@@ -23,6 +25,7 @@ export default class Header extends PureComponent {
 					<Name>YVIDEO</Name>
 					<Shadow>YVIDEO</Shadow>
 				</LogoWrapper>
+				<BreadcrumbContainer />
 			</Style>
 		)
 	}

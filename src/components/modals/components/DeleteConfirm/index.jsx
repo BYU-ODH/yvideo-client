@@ -31,8 +31,8 @@ export default class DeleteConfirm extends PureComponent {
 							</div>
 							<p>Are you sure you want to delete '{title}'?<br/>Once deleted it cannot be recovered.</p>
 							<div>
-								<button onClick={toggleModal}>Cancel</button>
-								<ConfirmButton onClick={handleRemoveItem}>Delete</ConfirmButton>
+								<button id='confirm-delete-cancel' onClick={toggleModal}>Cancel</button>
+								<ConfirmButton id='confirm-delete' onClick={handleRemoveItem}>Delete</ConfirmButton>
 							</div>
 						</ConfirmBox>
 					</ConfirmDeleteBox>

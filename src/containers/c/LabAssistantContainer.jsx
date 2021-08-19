@@ -11,6 +11,7 @@ const LabAssistantContainer = props => {
 		professors,
 		searchProfessors,
 		setHeaderBorder,
+		setBreadcrumbs,
 	} = props
 
 	const category = {
@@ -23,8 +24,11 @@ const LabAssistantContainer = props => {
 
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [showResource, setShowResource] = useState(false)
+	const [isSubmitted, setIsSubmitted] = useState(false)
 
 	useEffect(() => {
+		setBreadcrumbs({path:[`Home`, `Lab assistant Dashboard`], collectionId: ``, contentId: ``})
+
 		setHeaderBorder(true)
 		return () => {
 			setHeaderBorder(false)
@@ -34,11 +38,13 @@ const LabAssistantContainer = props => {
 	const updateSearchBar = e => {
 		const { value } = e.target
 		setSearchQuery(value)
+		setIsSubmitted(false)
 	}
 
 	const handleSubmit = e => {
 		e.preventDefault()
 		searchProfessors(searchQuery, true)
+		setIsSubmitted(true)
 	}
 
 	const handleShowResource = () => {
@@ -51,6 +57,7 @@ const LabAssistantContainer = props => {
 		data: professors ? professors.filter(item => item.roles === 2 || item.roles === 0) : [],
 		placeholder: category.Users.placeholder,
 		showResource,
+		isSubmitted,
 	}
 
 	const handlers = {
@@ -69,6 +76,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	searchProfessors: adminService.searchProfessors,
 	setHeaderBorder: interfaceService.setHeaderBorder,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantContainer)

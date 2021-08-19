@@ -3,6 +3,7 @@ import CollectionsContainer from './c/CollectionsContainer'
 import ContentOverviewContainer from './c/ContentOverviewContainer'
 import CollectionPermissionsContainer from './c/CollectionPermissionsContainer'
 import EventsContainer from './c/EventsContainer'
+import FeedbackContainer from './c/FeedbackContainer'
 import HeaderContainer from './c/HeaderContainer'
 import LabAssistantContainer from './c/LabAssistantContainer'
 import LabAssistantManageCollectionContainer from './c/LabAssistantManageCollectionContainer'
@@ -14,11 +15,17 @@ import ManagerContainer from './c/ManagerContainer'
 import MenuContainer from './c/MenuContainer'
 import PlayerContainer from './c/PlayerContainer'
 import RootContainer from './c/RootContainer'
-import TrackEditorContainer from './c/TrackEditorContainer'
 import ManageResourceContainer from './c/ManageResourceContainer'
 import SubtitlesContainer from './c/SubtitlesContainer'
+import SubtitlesEditorContainer from './c/SubtitlesEditorContainer'
 import PlayerSubtitlesContainer from './c/PlayerSubtitlesContainer'
 import FileOverviewContainer from './c/FileOverviewContainer'
+import SearchPublicCollectionsContainer from './c/SearchPublicCollectionsContainer'
+import PublicManagerContainer from './c/PublicManagerContainer'
+import PublicListCollectionContainer from './c/PublicListCollectionContainer'
+import ClipEditorContainer from './c/ClipEditorContainer'
+import PublicMoreListCollectionContainer from './c/PublicMoreListCollectiionContainer'
+import VideoEditorContainer from './c/VideoEditorContainer'
 
 export {
 	AdminContainer,
@@ -27,6 +34,7 @@ export {
 	CollectionPermissionsContainer,
 	EventsContainer,
 	HeaderContainer,
+	FeedbackContainer,
 	LabAssistantContainer,
 	LabAssistantManageCollectionContainer,
 	LabAssistantManagerContainer,
@@ -38,8 +46,14 @@ export {
 	PlayerContainer,
 	PlayerSubtitlesContainer,
 	RootContainer,
-	TrackEditorContainer,
 	ManageResourceContainer,
 	SubtitlesContainer,
+	SubtitlesEditorContainer,
 	FileOverviewContainer,
+	SearchPublicCollectionsContainer,
+	PublicManagerContainer,
+	PublicListCollectionContainer,
+	ClipEditorContainer,
+	PublicMoreListCollectionContainer,
+	VideoEditorContainer,
 }
