@@ -136,6 +136,7 @@ const props = {
 		owner: 22,
 		published: true,
 		thumbnail: `test@thumbnail`,
+		'expired-content': content,
 	},
 	content,
 	getContent: jest.fn(),
@@ -230,14 +231,14 @@ describe(`manage collection container test`, () => {
 		wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
 
 		// switching back and forth Content and Permissions componenets
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTap).toBe(true)
 		const permissionsButton = wrapper.find({"className" : `permissions-button`})
 		permissionsButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(false)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTap).toBe(false)
 
 		const contentButton = wrapper.find({"className" : `content-button`})
 		contentButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTap).toBe(true)
 	})
 
 	it(`test rest of event handlers`, ()=> {

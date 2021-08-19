@@ -1,13 +1,13 @@
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
+import logo from 'assets/hexborder.svg'
 
 const Style = styled.div`
   & > header {
-    height: 12rem;
-    padding: 0 3.8rem;
-
+		height: 12rem;
+		padding: 0 3.8rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+		align-items: center;
+    justify-content: space-between
 
     & h6 {
       font-size: 1.8rem;
@@ -18,9 +18,16 @@ const Style = styled.div`
       color: #a4a4a4;
       margin-top: 1.7rem;
     }
+
+		@media screen and (max-width: 1000px) {
+			height: 7rem;
+			padding: 2rem 2.5rem;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-start
+		}
   }
 `
-
 export default Style
 
 export const Title = styled.div`
@@ -40,6 +47,12 @@ export const TitleEditButton = styled.div`
   cursor: pointer;
   margin-top: 0;
   margin-left: 1rem;
+`
+
+export const Publish = styled.div`
+	@media screen and (max-width: 1000px) {
+		margin-top: 2rem;
+	}
 `
 
 export const PublishButton = styled.button`
@@ -72,6 +85,20 @@ export const ArchiveButton = styled.button`
   cursor: pointer;
   outline: none;
 `
+export const CopyrightedButton = styled.button`
+  color: #efcc00;
+  font-weight: bold;
+
+  letter-spacing: 0.05rem;
+
+  padding: 0;
+	margin-left: 3rem;
+  background: transparent;
+
+  border: none;
+  cursor: pointer;
+  outline: none;
+`
 
 export const Tab = styled.div`
   background-color: white;
@@ -85,8 +112,8 @@ export const Tab = styled.div`
 `
 
 export const TabHeader = styled.div`
-  position: absolute;
-  top: 18rem;
+	position: absolute;
+	top: 18rem;
 
   padding-left: 2rem;
 
@@ -102,13 +129,18 @@ export const TabHeader = styled.div`
     outline: none;
     cursor: pointer;
   }
+
+	@media screen and (max-width: 1000px) {
+		position: relative;
+		top: 0
+	}
 `
 
 export const Selector = styled.div`
   position: absolute;
 
   bottom: 0;
-  left: ${props => props.isContent ? `2rem` : `12rem`};
+  left: ${props => props.isContentTap ? `2rem` : `12rem`};
 
   transition: left 0.3s ease-in-out;
 
@@ -135,6 +167,12 @@ export const NewContent = styled.button`
 
   outline: none;
   cursor: pointer;
+
+	& > p{
+		font-size: 1.5rem;
+		font-weight: lighter;
+		text-align: center;
+	}
 `
 
 export const Icon = styled.div`
@@ -143,4 +181,47 @@ export const Icon = styled.div`
 
   height: 2rem;
   width: 2rem;
+`
+
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+const fadein = keyframes`
+from {
+	opacity: 0;
+}
+to {
+	opacity: 1;
+}
+`
+
+const fadeout = keyframes`
+from {
+	opacity: 1;
+}
+to {
+	opacity: 0;
+}
+`
+
+export const Spinner = styled.div`
+	background: url(${logo}) center no-repeat;
+	background-size: cover;
+	width: 15rem;
+	height: 15rem;
+
+	position: fixed;
+	top: 30%;
+	left: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `

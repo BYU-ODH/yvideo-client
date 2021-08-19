@@ -12,15 +12,24 @@ import manager from 'assets/help/help-manager.png'
 import collection from 'assets/help/help-collection.png'
 
 import content from 'assets/help/help-content.png'
+import contentEdit from 'assets/help/help-content-edit.png'
 import eventHelp from 'assets/help/help-te-event.png'
+import subtitleHelp from 'assets/help/help-te-subtitle.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomrHelp from 'assets/help/help-te-zoom.png'
 import playercontrolHelp from 'assets/help/help-playercontrols.png'
 import transcriptHelp from 'assets/help/help-transcriptview.png'
 import subHelp from 'assets/help/help-te-subtitle.png'
+import translationHelp from 'assets/help/help-translation.png'
+import importantWordHelp from 'assets/help/help-important-word.png'
+
+//player
+import clockIcon from 'assets/clock-black.svg'
+import bookIcon from 'assets/sidebar-black.svg'
+import closedCaption from 'assets/controls_closed_captions.svg'
+import chevron from 'assets/player-chevron-left-black.svg'
 
 import {
-	// adminService,
 	interfaceService,
 } from 'services'
 
@@ -30,7 +39,7 @@ Help documentation is available as an object. Each key will be the name of a com
 which will provide the necessary help to the user. Resources can be a video, an image, or maybe a detailed tutorial
 
 To open up the modal you can import the question mark icon from the assets folder:
--> @path =>> import helpIcon from 'assets/help/help-icon-black.svg' ** NOTE THAT IF YOU WILL CHANGE THE STYLE OF THE SVG MAKE A COPY AND SAVE IT WITH A NEW NAME **
+-> @path =>> import helpIcon from 'assets/manage-collection-help-circle.svg'
 
 to show the modal you need to import the modal from
 --> @path =>> import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
@@ -57,6 +66,7 @@ const HelpDocumentationContainer = props => {
 	const {
 		name,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const index = {
@@ -82,13 +92,24 @@ const HelpDocumentationContainer = props => {
 				</div>
 				<hr/>
 				<div class="section large-img">
-					<p><b>Managing content:</b> Each collection will display a list of content. Each content will show the name, translation icon, captions icon, a link to edit content, and a link to edit the video.
-						<br/>
-					 	<b>Edit Content:</b> you can edit the content settings by clicking the edit button. This allows you to delete content, publish/unpublish a content even if the collection is visible to students, add a description,
-						tags related to the video content, and activate subtiltes or definitions.
-						<br/>
-						<b>Edit Video:</b> if you want to edit events and subtitles for a video, you can click on the "TrackEditor".</p>
+					<p><b>Managing content:</b> each collection will display a list of content. Each content will show the name, thumbnail, a link to edit content, and a link to edit the video "Video Editor".
+						To edit a content click on the edit button on the right.
+					</p>
 					<img src="${content}" />
+					<br/>
+					<p style="text-align: left; width: 100%;">
+						<b>Edit Content:</b>
+						<ul>
+							<li><b>Definitions:</b> allow quick translation to help students understand the meaning of a word</li>
+							<li><b>Caption:</b> turn captions on and off. This will turn off captions on the video and hide the transcript on the side of the video</li>
+							<li><b>Tags:</b> this is a way to let users find content based on topics</li>
+							<li><b>Important Words:</b> it is a list of words to be highlighted in the transcript.
+							These words will be clickable to allow students to get a quick translation for those specific words</li>
+						</ul>
+					</p>
+					<img src="${contentEdit}" />
+					<br/>
+					<p style="text-align: left; width: 100%;"><b>Edit Video:</b> if you want to edit events (skip, censor, blank, mute) and subtitles for a specific video, you can click on the "Video Editor" link below the content name.</p>
 				</div>`,
 		},
 		'Home Page': {
@@ -100,16 +121,23 @@ const HelpDocumentationContainer = props => {
 				</div>
 				<hr/>
 				<div class="section">
-					<p><b>Collections:</b><br/> Collections show all of the content available to a class. Click on a collection to show the videos available to you. Click the Icon shown on the right to switch between compact and block views.<br/>
-					For instructors, a “Manage Collections” Icon will appear in the top right, where you can create and edit collections.
+					<p><b>Collections:</b><br/> Collections contain a group of contents. To play a content in a collection just click on the content you want to watch.
+					For instructors, a “Manage Collections” button will appear in the top right, where you can create and edit collections.
 					</p><br/>
-					<div style="margin: 10px;">
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Toggle Icons:</b><br/> These buttons are used to toggle between a list view and a block view. A block view will display all contents in a collection horizontally, and the
+					list view will display contents vertically.
+					</p>
+					<div style="margin: 10px; display: flex; flex-direction: column;">
 						<img src="${list}" width="30px" style="margin: 5px;"/>
 						<img src="${block}" width="30px" style="margin: 5px;"/>
 					</div>
-				</div>`,
+				</div>
+				`,
 		},
-		'Track Editor': {
+		'Video Editor': {
 			htmlInstruction: `
 				<div class="section">
 					<p><b>Side Menu:</b>
@@ -154,41 +182,127 @@ const HelpDocumentationContainer = props => {
 					<img src="${zoomrHelp}"/>
 				</div>`,
 		},
-		'Player': {
+		'Subtitle Editor': {
 			htmlInstruction: `
 				<div class="section">
-					<p><b>Video Controls:</b> The video screen covers almost half of the screen. Video controls can be found at the bottom of the video screen. There is a play/pause button on the left side and
-						on the right side there are closed caption, playback rate, and full screen buttons.
-					</p>
-				</div>
-				<div class="section">
-					<p>
-						- &nbsp;<b>CC</b> (Closed Captions) are created by the instructor. A green arrow indicates which captions is currently active.
-							To see available captions click on the CC icon located at the bottom right of the video. To select a desired caption just click the desired language.
-						<br/>- &nbsp;<b>Playback Rate</b> indicates how fast the video plays. A green arrow indicates which rate is currently active.
-							Normal playback rate is 1. <b>Slower </b> is less than one, and  <b>faster </b> is larger than one with 3 as the highest.
-						<br/>- &nbsp;<b>Full Screen</b> changes to a full screen view but takes away the transcript view.
+					<p><b>Side Menu:</b>
+						<br/> -&nbsp; <b>Subtitles:</b> Click on the blue title of the layer and the right side of the screen.
+						<br/> -&nbsp; <b>Save:</b> After you made your changes to the video the last step is to save the video by clicking the save button. <b><i>If you do not save it you will lose
+						all your changes.</i> The green check icon represent that there is nothing changed.</b>
 					</p><br/>
-					<img src="${playercontrolHelp}" width="150px" height="55px" style="margin: 30px 10px 10px 10px;"/>
+					<img src="${subtitleHelp}" width="200px"/>
 				</div>
 				<hr/>
 				<div class="section">
-					<p><b>Middle Bar:</b> If captions are allowed there will be a middle bar which divides the video screen from the transcript. To hide/display the transcript on the right just click the
-						arrow on the top of the bar.
+					<p><b>Layers:</b>
+							<br/> -&nbsp; <b>Add Events:</b> drag an event from the right side menu and drop it in the desired layer. The event will be added at the beginning of the layer as default.
+							<br/> -&nbsp; <b>Edit Events:</b> you can drag the event inside of the layer to change the time in which the event gets executed. And, you can resize an event from the edges to
+							extend the length of the event. If you prefer, you can click on an event and the right side menu will show the event properties that you can edit.
+							<br/> -&nbsp; <b>Add Layer:</b> you can add as many layers as you want. Layers let you organize your events and it makes it easier to work with overlapping events. To add a layer just click
+							the plus icon on the bottom left of the screen.
+							<br/> -&nbsp; <b>Delete Layer:</b> click on the trash can icon next to the layer number. <u>This will delete a layer and all the events inside of such layer.</u>
+					</p><br/>
+					<img src="${layerHelp}" width="250px"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Subtitles:</b>
+							<br/> -&nbsp;You can create a new subtitle track either from scratch or from a file ending in .srt or .vtt.
+							<br/> -&nbsp; <b>Start from Scratch:</b> This option will start you out with an entirely empty subtitle track.
+							<br/> -&nbsp; <b>Start from File:</b> Choose an SRT or VTT file, and a new track will be created with the subtitles from the file.
+							<br/> -&nbsp; <b>Add Subtitle:</b> Once you have a subtitle track, a new event card below the others will appear titled "Add Subtitle", drag this card to a subtitle track to add a subtitle.
+							<br/> -&nbsp; <b>Delete Subtitle:</b> click on the trash can icon next to the track Title. <u>This will delete the subtitle track.</u>
+							<br/> -&nbsp; <b>Side Editor</b> Clicking on a subtitle will open the side editor where you can edit the Title and the Language. There is also a table where you can edit start/end times and the text of all subtitles, as shown to the right.
+					</p><br/>
+					<img src="${subHelp}" width="250px"/>
 				</div>
 				<hr/>
 				<div class="section large-img">
-					<p>
-						<b>Transcript View:</b> If captions are allowed, the transcript will be on the right side of the screen. The transcript will display the captions that are currently active and
-						divide them in lines ordered by time. The transcript view will display the language of the audio and the current caption language.<br/>
-					 	<b>Transcript Lines</b> are clickable. When you click a line, the video will go to the time when that line is set to execute and highlight the active line. Transcript lines are highlighted
-						 when they are displayed in the video, so users can follow along, review words, or practice phrases.
-						<br/>
-					</p>
-					<img src="${transcriptHelp}" style="width: 500px !important; height: 100px;"/>
+					<p><b>Zoom & Scroll:</b>
+							<br/> -&nbsp; <b>Zoom:</b> when working with large videos, you can zoom in to edit your events more acurrately. To zoom in and out drag and drop the small blue dot in the left bottom of the screen
+							and move it right to zoom in and left to zoom out.
+							<br/> -&nbsp; <b>Scroll:</b> when you zoom in or out the scroll indicator (blue bar at the bottom of the screen) will change size. To scroll you can use the arrows next to the scroll indicator.
+							Double arrows will take you to the respective end of the layer, and single arrows will scroll a short distance to the indicated side.
+					</p><br/>
+					<img src="${zoomrHelp}"/>
 				</div>`,
 		},
-
+		'Player Mobile': {
+			htmlInstruction: `
+				<div class="section">
+					<p><b>Toolbar:</b><br/>
+						The toolbar contains icons to manage the video
+					</p>
+				</div>
+				<div class="section">
+					<ul>
+						<li><img className="icon" src="${bookIcon}"/>: This icon shows the transcript which contains all the subtitles in the video to follow along</li>
+						<li><img className="icon" src="${clockIcon}"/>: This icon allows you to change the speed of the video. Faster is any number above normal speed or 1</li>
+						<li>&nbsp;<b>CC</b>&nbsp;&nbsp;: This icon allows you to turn on or off the captions</li>
+						<li>Play/Pause and Full screen icons: Common video functionality</li>
+					</ul>
+				</div>
+				<hr/>
+				<div class="section">
+					<ol>
+						<label><b>Transcript Usage</b></label>
+						<li>The transcript represents all the captions or subtitles for this video</li>
+						<li>Each line in the transcript is clickable. When a line is clicked, the video will seek to the time in the video where that line is mentioned</li>
+						<li>Each line is highlighted to show which line in the transcript is being displayed in the video</li>
+						<li>Even when the video is playing the transcript can be shown to follow along the audio</li>
+					</ol>
+				</div>`,
+		},
+		'Player': {
+			htmlInstruction: `
+				<div class="section">
+					<ul>
+						<label><b>Toolbar</b></label>
+						<li><img className="icon" src="${clockIcon}"/>: This icon allows you to change the speed of the video. Faster is any number above normal speed or 1</li>
+						<li>&nbsp;<b>CC</b>&nbsp;&nbsp;: This icon allows you to turn on or off the captions</li>
+						<li>Play/Pause and Full screen icons: These support common video functionality</li>
+					</ul>
+				</div>
+				<div class="section">
+					<ul>
+						<label><b>Side Bar</b></label>
+						<li><img className="icon" src="${chevron}"/>: This icon displays or hides the transcript which contains the captions, or subtitles in some cases, for the entire video</li>
+					</ul>
+				</div>
+				<hr/>
+				<div class="section">
+					<ol>
+						<label><b>Transcript Usage</b></label>
+						<li>The transcript represents all the captions or subtitles for this video</li>
+						<li>Each line in the transcript is clickable. When a line is clicked, the video will seek to the time in the video where that line is mentioned</li>
+						<li>Each line is highlighted to show which line in the transcript is being displayed in the video</li>
+					</ol>
+				</div>`,
+		},
+		'Important Words': {
+			htmlInstruction: `
+				<div class="section">
+						<p><b>Subtitle Selection:</b><br/>
+						Important words are added to a specific subtitle, so select the subtitle using the drop-down on the top left.
+					</p>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Translation:</b><br/>
+						The translation portion of this modal is on the left side. The translation portion allows users to see if there is a translation available from
+						a foreign language to english. Please, notice a few languages are supported. Check the bottom of the modal to find supported languages.
+					</p><br/>
+					<img src="${translationHelp}"/>
+				</div>
+				<hr/>
+				<div class="section">
+					<p><b>Important Words:</b><br/>
+						Adding important words to a subtitle allows instructors to point out words that the students should know.
+						<br/> Important words are highlighted in the transcript and they become clickable. When a student clicks on a word a translation is given if available.
+					</p>
+					<img src="${importantWordHelp}"/>
+				</div>`,
+		}
 	}
 
 	const viewstate = {
@@ -200,16 +314,11 @@ const HelpDocumentationContainer = props => {
 }
 
 const mapStateToProps = store => ({
-	// admin: store.authStore.user.roles === 0,
-	// adminContent: store.adminStore.data,
 })
 
 const mapDispatchToProps = {
-	// search: adminService.search,
-	// adminDeleteCollection: adminService.deleteCollection,
-	// adminDeleteUser: adminService.deleteUser,
-	// adminDeleteContent: adminService.deleteContent,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HelpDocumentationContainer)

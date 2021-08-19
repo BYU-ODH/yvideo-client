@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {
 	collectionService,
+	interfaceService,
 	contentService,
 	adminService,
 } from 'services'
@@ -11,16 +12,21 @@ import {
 	ContentOverview,
 } from 'components'
 
+import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
+
 import { objectIsEmpty } from 'lib/util'
 
 const ContentOverviewContainer = props => {
 
 	const {
+		isExpired,
 		content,
 		removeCollectionContent,
 		updateContent,
 		isLabAssistant,
 		adminRemoveCollectionContent,
+		toggleModal,
 	} = props
 
 	const [editing, setEditing] = useState(false)
@@ -29,17 +35,41 @@ const ContentOverviewContainer = props => {
 	const [tag, setTag] = useState(``)
 
 	const [contentState, setContentState] = useState(content)
+	const [blockLeave, setBlock] = useState(false)
+	const [isMobile, setIsMobile] = useState(false)
+
+	useEffect(() => {
+		if(window.innerWidth < 1000)
+			setIsMobile(true)
+		else
+			setIsMobile(false)
+
+		if(blockLeave)
+			window.onbeforeunload = () => true
+		else
+			window.onbeforeunload = undefined
+
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [blockLeave])
 
 	if (objectIsEmpty(content)) return null
+	if (isExpired)
+		return <ContentOverview isExpired={true} content={content}/>
 
 	const handleToggleEdit = async () => {
 		if (editing) {
 			await updateContent(contentState)
 			setShowing(false)
+			setBlock(false)
 			setTimeout(() => {
 				setEditing(false)
 			}, 500)
-		} else setEditing(true)
+		} else
+			setEditing(true)
+
 	}
 
 	const handleNameChange = e => {
@@ -51,14 +81,17 @@ const ContentOverviewContainer = props => {
 				title: e.target.value,
 			},
 		})
+		setBlock(true)
 	}
 
 	const handleRemoveContent = e => {
-		if(isLabAssistant)
+		if(isLabAssistant) {
 			adminRemoveCollectionContent(content.id)
-		 else
+			setBlock(true)
+		} else {
 			removeCollectionContent(content.collectionId, content.id)
-
+			setBlock(true)
+		}
 	}
 
 	const handleTogglePublish = e => {
@@ -66,6 +99,7 @@ const ContentOverviewContainer = props => {
 			...contentState,
 			published: !contentState.published,
 		})
+		setBlock(true)
 	}
 
 	const handleToggleSettings = e => {
@@ -77,6 +111,7 @@ const ContentOverviewContainer = props => {
 				[key]: !contentState.settings[key],
 			},
 		})
+		setBlock(true)
 	}
 
 	const handleDescription = e => {
@@ -84,6 +119,7 @@ const ContentOverviewContainer = props => {
 			...contentState,
 			description: e.target.value,
 		})
+		setBlock(true)
 	}
 
 	const addTag = (e) => {
@@ -97,6 +133,7 @@ const ContentOverviewContainer = props => {
 			},
 		})
 		setTag(``)
+		setBlock(true)
 	}
 
 	const removeTag = e => {
@@ -107,10 +144,26 @@ const ContentOverviewContainer = props => {
 				keywords: contentState.resource.keywords.filter(item => item !== e.target.dataset.value),
 			},
 		})
+		setBlock(true)
 	}
 
 	const changeTag = e => {
 		setTag(e.target.value)
+		setBlock(true)
+	}
+
+	const handleShowWordsModal = () => {
+		toggleModal({
+			component: HighlightWordsContainer,
+			props:{ contentId: content.id},
+		})
+	}
+
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: `Important Words`},
+		})
 	}
 
 	const viewstate = {
@@ -118,6 +171,8 @@ const ContentOverviewContainer = props => {
 		showing,
 		editing,
 		tag,
+		blockLeave,
+		isMobile,
 	}
 
 	const handlers = {
@@ -133,6 +188,8 @@ const ContentOverviewContainer = props => {
 		addTag,
 		removeTag,
 		changeTag,
+		handleShowWordsModal,
+		handleShowHelp,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />
@@ -142,6 +199,7 @@ const mapDispatchToProps = {
 	removeCollectionContent: collectionService.removeCollectionContent,
 	updateContent: contentService.updateContent,
 	adminRemoveCollectionContent: adminService.deleteContent,
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(null, mapDispatchToProps)(ContentOverviewContainer)

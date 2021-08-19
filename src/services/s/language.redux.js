@@ -128,7 +128,6 @@ export default class LanguageService {
 	}
 
 	get = () => async (dispatch, getState, { apiProxy }) => {
-
 		dispatch(this.actions.languageStart())
 
 		try {

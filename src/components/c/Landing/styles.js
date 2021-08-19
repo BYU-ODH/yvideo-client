@@ -41,6 +41,7 @@ export const Welcome = styled.div`
 	justify-content: center;
 
 	& > div {
+		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -59,6 +60,7 @@ export const Welcome = styled.div`
 		}
 
 		&.button-wrapper {
+
 			flex-direction: column;
 			margin-top: 8rem;
 		}
