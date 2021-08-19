@@ -2,6 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { useDrop } from 'react-dnd'
 import { Rnd } from 'react-rnd'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 import {
 	Icon, Style,
@@ -13,9 +14,7 @@ import {
 
 const TrackLayer = props => {
 
-	// console.log('%c Layer Component', 'color: blue; font-weight: bolder; font-size: 12px;')
-
-	const { events, onDrop, sideEditor, updateEvents, activeEvent, width, minimized, videoLength, displayLayer} = props
+	const { events, sideEditor, updateEvents, activeEvent, width, videoLength, displayLayer} = props // onDrop
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
@@ -24,22 +23,22 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0)
-	const [isEditorOpen, setEditorOpen] = useState(false)
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
+
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
-		 else if (width === 0)
+		else if (width === 0)
 			setLayerWidth(initialWidth)
-		 else
+		else
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
- 	}, [width])
+	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
@@ -52,22 +51,22 @@ const TrackLayer = props => {
 	// Drag and Drop event to the layer
 	const [, dropRef] = useDrop({
 		accept: [`timeline-event`],
-		drop: onDrop,
+		// drop: onDrop,
 		hover: (item, monitor) => {
 		},
 	})
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		const cEvents = events
-		const beginTimePercentage = d.x / layerWidth * 100
-		const endPercentage = beginTimePercentage + (event.end - event.start)
+		const beginTimePercentage = d.x/layerWidth*100*videoLength/100
+		const endPercentage = beginTimePercentage + event.end - event.start
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
 		cEvents[index].start = beginTimePercentage
 		cEvents[index].end = endPercentage
 
-		if(cEvents[index].end > 100)
-			cEvents[index].end = 100
+		if(cEvents[index].end > videoLength)
+			cEvents[index].end = videoLength
 
 		if(cEvents[index].start < 0)
 			cEvents[index].start = 0
@@ -75,25 +74,26 @@ const TrackLayer = props => {
 		// call handler from parent
 		updateEvents(index, cEvents[index], layerIndex)
 	}
+
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
+	const handleResize = (direction, ref, delta, event, index, e, position ) => {
 		const cEvents = events
-		const difference = delta.width / layerWidth * 100
+		const difference = delta.width / layerWidth * 100*videoLength/100
 		if(direction === `right`){
 			cEvents[index].end += difference
 
-			if(cEvents[index].end > 100)
-				cEvents[index].end = 100
+			if(cEvents[index].end > videoLength)
+				cEvents[index].end = videoLength
 
 		} else {
 			cEvents[index].start -= difference
 
-			console.log(cEvents[index])
+			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
-			 else if(cEvents[index].start > 100){
-				cEvents[index].start = 99
-				cEvents[index].end = 100
+			else if(cEvents[index].start > videoLength){
+				cEvents[index].start = videoLength-0.001
+				cEvents[index].end = videoLength
 			}
 		}
 
@@ -102,7 +102,7 @@ const TrackLayer = props => {
 
 	// This opens the side tab editor
 	const toggleEditor = (layerIndex, eventIndex) => {
-		setEditorOpen(true)
+		// setEditorOpen(true)
 		sideEditor(layerIndex, eventIndex)
 	}
 
@@ -111,23 +111,23 @@ const TrackLayer = props => {
 			<Rnd
 				className={`layer-event ${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
-				size={{width: `${(event.end - event.start)/100 * layerWidth}px`, height: `46px`}}
-				position={{ x: parseFloat(event.start / 100 * layerWidth), y: 0}}
+				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `46px`}}
+				position={{ x: event.start/videoLength*layerWidth, y: 0}}
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
 				onDragStop={(e, d) => handleDrag(d, event, index)}
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
-				onClick={() => toggleEditor(layerIndex, index)}
-				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
+				// onClick={() => toggleEditor(layerIndex, index)}
+				style={{ left: `${event.start/videoLength*100}% !important`, top: `-${layerHeight}px !important`}}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon}/>
 				{ event.type !== `Pause` ? (
-					<p>{event.type} - From: {(event.start / 100 * videoLength).toFixed(1)}s - To: {(event.end / 100 * videoLength).toFixed(1)}s</p>
+					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
 				) : (
-					<p>{event.type} - At: {(event.start / 100 * videoLength).toFixed(1)}s</p>
+					<p>{convertSecondsToMinute(event.start, videoLength)}</p>
 				)
 				}
 			</Rnd>
@@ -141,23 +141,22 @@ const TrackLayer = props => {
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
 						{
-							events !== undefined ? (
+							events !== undefined && events.length > 0 && videoLength!==0? (
 								<>
-									{events.map((event, index) => (
-										<>
+									{ events.map((event, index) => (
+										<div key={index}>
 											{event.layer === layerIndex ? (
-												<div key={index}>
+												<div>
 													{printEvents(event, index)}
 												</div>
 											) : null}
-										</>
+										</div>
 									))}
 								</>
 							) : null
 						}
 					</div>
 				</div>
-				{/* <div id='layer-message' ></div> */}
 			</Style>
 		</>
 	)

@@ -35,7 +35,3 @@ export const Form = styled.form`
 		justify-content: space-between;
 	}
 `
-
-
-
-

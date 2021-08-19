@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
@@ -10,6 +9,8 @@ import {
 } from 'services'
 
 import { ManageCollection } from 'components'
+
+import { Tooltip } from 'components/bits'
 
 import CreateContentContainer from 'components/modals/containers/CreateContentContainer'
 
@@ -24,16 +25,17 @@ const LabAssistantManageCollectionContainer = props => {
 		getCollectionContent,
 		updateCollectionName,
 		updateCollectionStatus,
+		toggleTip,
+		setBreadcrumbs,
 	} = props
 
-	// console.log(collection)
 	const [isContent, setIsContent] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
-		// console.log('useeffect')
-		// console.log(collection.id)
+		setBreadcrumbs({path:[`Home`, `Lab Assistant Manager`], collectionId: collection.id, contentId: ``})
+
 		getCollectionContent(collection.id, true)
 		setCollectionName(collection.name)
 	}, [collection])
@@ -78,6 +80,16 @@ const LabAssistantManageCollectionContainer = props => {
 		setCollectionName(value)
 	}
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position,
+			},
+		})
+	}
+
 	if(!content) return null
 
 	const viewstate = {
@@ -98,6 +110,8 @@ const LabAssistantManageCollectionContainer = props => {
 		archive,
 		setTab,
 		unarchive,
+		toggleTip,
+		handleShowTip,
 	}
 
 	return <ManageCollection viewstate={viewstate} handlers={handlers} />
@@ -115,6 +129,8 @@ const mapDispatchToProps = {
 	updateCollectionStatus: adminService.updateCollectionStatus,
 	updateCollectionName: collectionService.updateCollectionName,
 	searchCollections: adminService.searchCollections,
+	toggleTip: interfaceService.toggleTip,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManageCollectionContainer)

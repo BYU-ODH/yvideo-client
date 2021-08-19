@@ -28,6 +28,7 @@ export default class SubtitlesService {
 	}
 
 	store = {
+		errorMessage: '',
 		cache: [],
 		loading: false,
 		lastFetched: 0,
@@ -62,14 +63,16 @@ export default class SubtitlesService {
 		case SUBTITLES_ABORT:
 			return {
 				...store,
+				errorMessage: '',
 				loading: false,
 			}
 
 		case SUBTITLES_CLEAN:
 			return {
 				...store,
+				errorMessage: '',
 				cache: [],
-				contentId: '',
+				contentId: ``,
 			}
 
 		case SUBTITLES_CREATE:
@@ -79,22 +82,25 @@ export default class SubtitlesService {
 					...store.cache,
 					...action.payload.subtitles,
 				},
+				errorMessage: '',
 				loading: false,
 			}
 
 		case SUBTITLES_ERROR:
-			console.error(action.payload.error)
+			//alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
+				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
 
 		case SUBTITLES_GET:
-			console.log(`??//`,action.payload)
+			// console.log(`??//`,action.payload)
 			return {
 				...store,
 				cache: action.payload.subtitles,
 				contentId: action.payload.id,
+				errorMessage: '',
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -103,17 +109,20 @@ export default class SubtitlesService {
 			return {
 				...store,
 				cache:action.payload.subtitles,
+				errorMessage: '',
 				loading: false,
 			}
 		case ACTIVE_UPDATE:
 			return {
 				...store,
 				active: action.payload.active,
+				errorMessage: '',
 			}
 		case SET_CONTENT_ID:
 			return{
 				...store,
 				contentId: action.payload.id,
+				errorMessage: '',
 			}
 		default:
 			return store
@@ -135,14 +144,14 @@ export default class SubtitlesService {
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 		// console.log('updated store', contentIds)
-		let currentContentId = getState().subtitlesStore.contentId
+		const currentContentId = getState().subtitlesStore.contentId
+
+		// console.log(`USED SESSION ID`, window.clj_session_id)
 
 		dispatch(this.actions.subtitlesStart())
 
-		if(currentContentId !== id){
+		if(currentContentId !== id)
 			dispatch(this.actions.subtitlesClean())
-		}
-
 
 		try {
 			const result = await apiProxy.content.getSubtitles(id)
@@ -154,7 +163,6 @@ export default class SubtitlesService {
 			return[]
 		}
 
-		// } else dispatch(this.actions.subtitlesAbort())
 	}
 
 	createSubtitle = (subtitle) => async (dispatch, getState, { apiProxy }) => {
@@ -168,6 +176,7 @@ export default class SubtitlesService {
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
 			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			tempSub['words'] = ''
 			const result = await apiProxy.subtitles.post(tempSub)
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
@@ -180,23 +189,28 @@ export default class SubtitlesService {
 	}
 
 	updateSubtitle = subtitle => async (dispatch, _getState, { apiProxy }) => {
-
-		// console.log(content)
-
 		dispatch(this.actions.subtitlesStart())
 
 		try {
 			const tempSub = {}
-			tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			if(typeof subtitle['content'] !== 'string'){
+				tempSub[`content`] = JSON.stringify(subtitle[`content`])
+			}
+			else {
+				tempSub['content'] = subtitle['content']
+			}
 			tempSub[`language`] = subtitle[`language`]
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
+			tempSub['words'] = subtitle['words']
+			// console.log(tempSub)
 
 			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {
 			dispatch(this.actions.subtitlesError(error))
 		}
 	}
+
 	activeUpdate = active => async (dispatch, _getState, { apiProxy }) => {
 		dispatch(this.actions.activeUpdate(active))
 	}

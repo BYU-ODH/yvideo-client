@@ -84,11 +84,20 @@ export const ItemMenu = styled.div`
 			}
 		}
 	}
-
 	& button {
 		border: none;
 		background: transparent;
 		color: red;
+		margin: 0;
+		padding: 0;
+		outline: none;
+		cursor: pointer;
+	}
+
+	.userEdit {
+		border: none;
+		background: transparent;
+		color: black;
 		margin: 0;
 		padding: 0;
 		outline: none;

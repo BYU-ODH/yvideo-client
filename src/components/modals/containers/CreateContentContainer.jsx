@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-
-import Content from 'models/Content'
-
 import {
 	contentService,
 	collectionService,
@@ -18,24 +15,29 @@ const CreateContentContainer = props => {
 	const {
 		adminContent,
 		adminCreateContent,
-		adminCreateContentFromResource,
 		adminGetCollectionContent,
 		createContent,
 		modal,
-		search,
 		toggleModal,
 		getCollections,
 		resourceContent,
 		searchResource,
-		getFiles,
+		getAccess,
+		user,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
 	const [hideResources, setHide] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
-	const [selectedResource, setSelectedResource] = useState(``)
+	const [selectedResourceId, setSelectedResourceId] = useState(``)
+	const [selectedResourceName, setSelectedResourceName] = useState(``)
+	const [isResourceSelected, setIsResourceSelected] = useState(false)
 	const [languages, setLanguages] = useState([])
-	const [files, setFiles] = useState([])
+	const [isTyping, setIsTyping] = useState(false)
+	const [isCalled, setIsCalled] = useState(false)
+	const [blockLeave, setBlock] = useState(false)
+	const [isAccess, setIsAccess] = useState(true)
+
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -50,33 +52,48 @@ const CreateContentContainer = props => {
 	})
 
 	useEffect(() => {
-		if(resourceContent[selectedResource] !== undefined){
-			let langs = resourceContent[selectedResource].allFileVersions.split(";")
-			let finalLanguages = []
+		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
+			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
+			const finalLanguages = []
 			langs.forEach((element, i) => {
-				if(element === ""){
-					// console.log('empty')
+				if(element === ``)
 					delete langs[i]
-				}
 				else {
-					// console.log('not empty')
-					let newLetter = element[0].toUpperCase()
+					const newLetter = element[0].toUpperCase()
 					element = newLetter + element.slice(1)
-					// console.log(element)
 					finalLanguages.push(element)
 				}
-			});
-			// console.log(langs)
-			// console.log(finalLanguages)
+			})
 			setLanguages(finalLanguages)
-			// console.log(resourceContent[selectedResource])
 		}
 
-		// if(resourceContent[selectedResource].files !== undefined) {
-		// 	setFiles(resourceContent.files)
-		// 	console.log(files)
-		// }
-	}, [resourceContent, selectedResource, files])
+		if(isTyping){
+			setTimeout(() => {
+				setIsTyping(false)
+				setIsCalled(false)
+			}, 1000)
+		} else{
+			if (searchQuery.length > 0 && searchQuery.match(/^[0-9a-zA-Z]+$/) && !isTyping) {
+				if(!isCalled){
+					searchResource(searchQuery)
+					setHide(false)
+					setIsCalled(true)
+				}
+			}else
+				setHide(true)
+		}
+
+		if(blockLeave)
+			window.onbeforeunload = () => true
+
+		else
+			window.onbeforeunload = undefined
+
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [resourceContent, selectedResourceId, searchQuery, isTyping, blockLeave, isResourceSelected])
 
 	const changeTab = e => {
 		setTab(e.target.name)
@@ -94,24 +111,54 @@ const CreateContentContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
+		setBlock(true)
 	}
 
 	const handleSearchTextChange = e => {
 		const { value } = e.target
 		setSearchQuery(value)
-		if (value.length > 1) {
-			// search(`content`, value, true)
-			searchResource(value)
-			setHide(false)
-		} else
-			setHide(true)
 
+		if(isResourceSelected && value === ``)
+			setIsResourceSelected(false)
+
+		if(!isTyping)
+			setIsTyping(true)
 	}
 
-	const handleSelectResourceChange = (e, name) => {
-		const { target } = e
-		setSelectedResource(target.value)
-		setSearchQuery(name)
+	const handleSelectResourceChange = async (e, resource) => {
+		const access = await getAccess(resource.id)
+		let theAccess = true
+
+		if(access.length !== 0) {
+			for (let i = 0; i < access.length; i++) {
+				if(user.username === access[i].username) {
+					setIsAccess(true)
+					theAccess = true
+					setData({
+						...data,
+						title: resource.resourceName,
+					})
+					break
+				}
+				if(i === access.length -1) {
+					setIsAccess(false)
+					theAccess = false
+
+				}
+			}
+		} else
+			theAccess = false
+
+		if(theAccess) {
+			setSelectedResourceName(resource.resourceName)
+			setSelectedResourceId(resource.id)
+			setIsResourceSelected(true)
+		} else {
+			setSelectedResourceName(``)
+			setSelectedResourceId(``)
+			setIsResourceSelected(false)
+		}
+		setSearchQuery(``)
 		setHide(true)
 	}
 
@@ -121,6 +168,7 @@ const CreateContentContainer = props => {
 			...data,
 			contentType,
 		})
+		setBlock(true)
 	}
 
 	const addKeyword = element => {
@@ -143,12 +191,10 @@ const CreateContentContainer = props => {
 
 		if(data.resource.keywords.length !== 0){
 			data.resource.keywords.forEach((element, i) => {
-
 				if(i !== data.resource.keywords.length -1)
 					tags += `${element}; `
 				else
 					tags += `${element}`
-
 			})
 		}
 
@@ -164,12 +210,14 @@ const CreateContentContainer = props => {
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
 			"file-version": ``,
 			"collection-id": modal.collectionId,
+			"published": true,
 			"views": 0,
 			"annotations": ``,
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
-			"published": true,
+			"words": ``,
+			"clips": ``,
 		}
 
 		if(modal.isLabAssistantRoute){
@@ -180,14 +228,15 @@ const CreateContentContainer = props => {
 			getCollections(true)
 		}
 		toggleModal()
+		setBlock(false)
 	}
 
 	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
 
-		if(data.targetLanguages === ''){
-			alert('Please, select a valid language')
-			return;
+		if(data.targetLanguages === ``){
+			alert(`Please, select a valid language`)
+			return
 		}
 
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
@@ -199,17 +248,19 @@ const CreateContentContainer = props => {
 			"url": ``,
 			"allow-captions": true,
 			"content-type": data.contentType,
-			"resource-id": selectedResource,
+			"resource-id": selectedResourceId,
 			"tags": ``,
+			"clips": ``,
+			"words": ``,
 			"thumbnail": `empty`,
 			"file-version": data.targetLanguages,
 			"collection-id": modal.collectionId,
+			"published": true,
 			"views": 0,
 			"annotations": ``,
 			"title": data.title,
 			"allow-notes": true,
 			"description": data.description,
-			"published": true,
 		}
 
 		if(modal.isLabAssistantRoute){
@@ -230,6 +281,12 @@ const CreateContentContainer = props => {
 				keywords: data.keywords.filter(keyword => keyword !== badkeyword),
 			},
 		})
+		setBlock(true)
+	}
+
+	const removeResource = () => {
+		setSelectedResourceName(``)
+		setIsResourceSelected(false)
 	}
 
 	const viewstate = {
@@ -239,8 +296,11 @@ const CreateContentContainer = props => {
 		tab,
 		resourceContent,
 		hideResources,
-		selectedResource,
+		selectedResourceId,
+		selectedResourceName,
 		languages,
+		isResourceSelected,
+		isAccess,
 	}
 
 	const handlers = {
@@ -253,6 +313,7 @@ const CreateContentContainer = props => {
 		handleTypeChange,
 		onKeyPress,
 		remove,
+		removeResource,
 		toggleModal,
 	}
 
@@ -261,6 +322,7 @@ const CreateContentContainer = props => {
 
 const mapStateToProps = store => ({
 	admin: store.authStore.user.roles === 0,
+	user: store.authStore.user,
 	adminContent: store.adminStore.data,
 	resourceContent: store.resourceStore.cache,
 	modal: store.interfaceStore.modal,
@@ -275,8 +337,8 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
 	searchResource: resourceService.search,
-	getFiles: resourceService.getFiles,
 	getCollections: collectionService.getCollections,
+	getAccess: resourceService.readAccess,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)
