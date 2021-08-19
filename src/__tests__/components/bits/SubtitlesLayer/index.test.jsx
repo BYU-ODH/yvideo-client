@@ -1,18 +1,18 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import SubtitlesLayer from '../../../../components/bits/SubtitlesLayer'
 import { BrowserRouter } from 'react-router-dom'
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
-import { Rnd } from 'react-rnd'
-import { useDrop } from 'react-dnd'
 
-let subs = [{
-	end: 10,
-	start: 1,
-	text: `123`,
-	type: 'skip'
-}]
+const subs = [
+	{
+		end: 10,
+		start: 1,
+		text: `123`,
+		type: `skip`,
+	},
+]
 
 const props = {
 	subs,
@@ -27,30 +27,28 @@ describe(`Subtitles Layer test`, () => {
 	beforeEach(() => {
 		wrapper = mount(
 			<BrowserRouter>
-			<DndProvider backend={Backend}>
-			<SubtitlesLayer {...props} />
-			</DndProvider>
-		</BrowserRouter>,
+				<DndProvider backend={Backend}>
+					<SubtitlesLayer {...props} />
+				</DndProvider>
+			</BrowserRouter>,
 		)
 	})
 	it(`event type !== Pause`, () => {
-		expect(wrapper.contains(<p>123 - From: 0.3s - To: 3.0s</p>)).toEqual(true)
-			// console.log(wrapper.debug())
-		// headers = wrapper.find({"className": "subs"}).at(0)
+		expect(wrapper.contains(<p>123</p>)).toEqual(true)
 	})
 
 	it(`event type === Pause`, () => {
 		const d = { x: 2 }
-		subs[0].type = 'Pause'
+		subs[0].type = `Pause`
 		wrapper = mount(
 			<BrowserRouter>
 				<DndProvider backend={Backend}>
 					<SubtitlesLayer {...props} />
 				</DndProvider>
-		</BrowserRouter>,
+			</BrowserRouter>,
 		)
-		expect(wrapper.contains(<p>Pause - At: 0.3s</p>)).toEqual(true)
-		wrapper.find("Rnd").simulate('click')
+		expect(wrapper.contains(<p>Pause</p>)).toEqual(true)
+		wrapper.find(`Rnd`).simulate(`click`)
 	})
 
 })

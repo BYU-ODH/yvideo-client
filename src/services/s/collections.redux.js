@@ -292,7 +292,7 @@ export default class CollectionService {
 			// You also have to be an admin to do this, I'm pretty sure
 			dispatch(this.actions.collectionsRemoveContent(id, currentState))
 		} catch (error) {
-			console.log(error)
+			// console.log(error)
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
@@ -311,7 +311,7 @@ export default class CollectionService {
 			dispatch(this.actions.createdCollectionUpdate(data.id))
 
 		} catch (error) {
-			console.log(error.message)
+			// console.log(error.message)
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
@@ -527,7 +527,7 @@ export default class CollectionService {
 			// dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
 
 		} catch (error) {
-			console.log(error)
+			// console.log(error)
 			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))
 		}

@@ -26,6 +26,7 @@ const viewstate = {
 	],
 	placeholder: `Search for a professor`,
 	searchCategory: `testquery`,
+	isSubmitted: true,
 }
 
 const handlers = {
@@ -52,7 +53,6 @@ describe(`admin dashboard test`, () => {
 		// href="/lab-assistant-manager/22"
 
 		const testViewstate = wrapper.props().children.props.viewstate.data
-		// console.log(testViewstate)
 		expect(testViewstate[0].email).toBe(`test@email.com`)
 		expect(testViewstate[0].name).toBe(`professor testname`)
 		expect(testViewstate[0].roles[0]).toBe(`admin`)

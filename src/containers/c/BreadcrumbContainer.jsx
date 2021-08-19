@@ -77,12 +77,12 @@ const BreadcrumbContainer = props => {
 		isManager(name) {
 			if(name === `Manage Collections` || name === `Lab Assistant Manager` || name === `Manage Public Collections`)
 				return true
-			 else return false
+			else return false
 		},
 		isPlayer(name) {
 			if(name === `Player` || name === `Video Editor` || name === `Clip Manager`)
 				return true
-			 else return false
+			else return false
 		},
 	}
 
