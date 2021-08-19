@@ -6,19 +6,20 @@ const transSpeed = `.1s`
 
 const Style = styled.div`
 	transition: all ${transSpeed} linear;
-	height: ${props => props.active ? barActive : barInactive};
+	height: ${barActive}
 
 	position: relative;
 `
 
 export default Style
 
-export const BarBall = styled.div`
-
+export const BarBall = styled.div.attrs(props => ({
+	style: {
+		left: `calc(${props.position * 100}% - .5rem)`,
+	},
+}))`
 	position: absolute;
 	top: ${props => props.active ? `-.2rem` : `.3rem`};
-
-	left: calc(${props => props.position * 100}% - .5rem);
 
 	transition: all ${transSpeed} linear;
 	height: ${props => props.active ? `1rem` : `0`};
@@ -28,12 +29,15 @@ export const BarBall = styled.div`
 	background-color: #0057b8;
 `
 
-export const BarCurrent = styled.div`
+export const BarCurrent = styled.div.attrs(props => ({
+	style: {
+		width: `${props.position * 100}%`,
+	},
+}))`
 	position: absolute;
 	left: 0;
-	width: ${props => props.position * 100}%;
 	transition: all ${transSpeed} linear;
-	height: ${props => props.active ? barActive : barInactive};
+	height: ${barActive};
 	background-color: #0057b8;
 `
 
@@ -41,6 +45,17 @@ export const BarBackground = styled.div`
 	position: absolute;
 	width: 100%;
 	transition: all ${transSpeed} linear;
-	height: ${props => props.active ? barActive : barInactive};
+	height: ${barActive};
 	background-color: #fff;
+`
+export const BarClip = styled.div.attrs(props => ({
+	style: {
+		width: `${(props.clipTime[1]-props.clipTime[0]) * 100}%`,
+		left: `${props.clipTime[0]*100}%`,
+	},
+}))`
+	position: absolute;
+	background-color: rgba(200,200,0,1);
+	transition: all ${transSpeed} linear;
+	height: ${barActive};
 `

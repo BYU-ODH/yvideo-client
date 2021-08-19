@@ -56,12 +56,13 @@ const content = [
 const props = {
 	contentCache: content,
 	getContent: jest.fn(),
+	setEvents: jest.fn(),
+	getStreamKey: jest.fn(),
 	resourceCache: jest.fn(),
 	getResources: jest.fn(),
 	addView: jest.fn(),
-	isAdmin: true,
-	isProf: false,
-	userId: 10,
+	streamKey: `key`,
+	indexToDisplay: 0,
 }
 
 // mock useParams
@@ -72,6 +73,16 @@ jest.mock(`react-router-dom`, () => ({
 	}),
 	useRouteMatch: () => ({ url: `/player/0` }),
 }))
+
+proxies.apiProxy.user.get = jest.fn()
+proxies.apiProxy.user.get.mockImplementation(()=>{
+	return Promise.resolve(testutil.user)
+})
+
+proxies.apiProxy.content.get = jest.fn()
+proxies.apiProxy.content.get.mockImplementation(()=>{
+	return Promise.resolve({0: content[0]})
+})
 
 // TODO: need to re-write player container test
 describe(`PlayerContainer test`, () => {
@@ -85,27 +96,19 @@ describe(`PlayerContainer test`, () => {
 		authServiceConstructor = new AuthService()
 		contentServiceConstructor = new ContentService()
 
-		dispatch = store.dispatch
-		getState = store.getState
+		dispatch = testutil.store.dispatch
+		getState = testutil.store.getState
 		apiProxy = proxies.apiProxy
 
-		proxies.apiProxy.user.get = jest.fn()
-		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
-			return Promise.resolve(testutil.user)
-		})
-		await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
+		// await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
 
-		proxies.apiProxy.content.get = jest.fn()
-		proxies.apiProxy.content.get.mockImplementationOnce(()=>{
-			return Promise.resolve({0: content[0]})
-		})
-		await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
+		// await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
 	})
 
 	it(`test viewstate`, async() => {
 
 		const wrapper = mount(
-			<Provider store={store}>
+			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
 				</BrowserRouter>

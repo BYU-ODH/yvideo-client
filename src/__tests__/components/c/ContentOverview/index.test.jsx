@@ -11,6 +11,7 @@ const viewstate = {
 	content,
 	editing: false,
 	showing: false,
+	tag: [],
 }
 
 const handlers = {
@@ -20,6 +21,11 @@ const handlers = {
 	handleTogglePublish: jest.fn(),
 	setContentState: jest.fn(),
 	setShowing: jest.fn(),
+	addTag: jest.fn(),
+	removeTag: jest.fn(),
+	handleToggleSettings: jest.fn(),
+	handleDescription: jest.fn(),
+	changeTag: jest.fn(),
 }
 
 const props = {
@@ -38,7 +44,6 @@ describe(`content overview test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-
 		// thumbnail
 		expect(wrapper.find(`img`).length).toBe(1)
 		expect(wrapper.find(`img`).props().src).toBe(`test@thumbnail.com`)
@@ -54,9 +59,12 @@ describe(`content overview test`, () => {
 		// edit button on click re rerendering behavior, click behavior should be tested in ContentOverviewContainer
 		expect(wrapper.find(`.edit-button`).length).toBe(3)
 		viewstate.editing = true
+
 		const wrapperRerendered = mount(
 			<Provider store={testutil.store}>
-				<ContentOverview {...props} />
+				<BrowserRouter>
+					<ContentOverview {...props} />
+				</BrowserRouter>
 			</Provider>,
 		)
 		// console.log(wrapperRerendered.debug())
