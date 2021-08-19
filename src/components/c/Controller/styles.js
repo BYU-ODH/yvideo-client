@@ -1,18 +1,43 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import carat from 'assets/carat_white.svg'
+import logo from 'assets/hexborder.svg'
 
 const Style = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
-	/* max-height: 65vh; */
 	z-index: 20;
 	overflow-y: visible;
 
+
 	& .video {
 		height: calc(100% - 50px) !important;
-		width: 100% !important;
+		width: 70% !important;
+	}
+
+	& .subtitle {
+		height: calc(100% - 50px) !important;
+		width:  100% !important;
+	}
+
+	& .clip {
+		height: calc(100% - 50px) !important;
+		width:  100% !important;
+	}
+
+	& .timeBar {
+		/* width: calc(100% + 35rem) !important;
+		justify-content: space-between; */
+	}
+
+	& .loading-spinner{
+		position: fixed;
+		top: 30%;
+		left: 35%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 `
 
@@ -24,20 +49,15 @@ export const TimeBar = styled.div`
 
 	--timeline-start: 16rem;
 	--header-height: 50px;
-	/*
-	--dark-gray: #303030;
-	--light-gray: #4F4F4F;
-	--lighter-gray: #565656;
-	color: #5F5F5F; */
 
-	/* position: relative; */
 	height: var(--header-height);
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
 	display: flex;
 	flex-direction: column;
-	z-index: 20;
+
+	/* z-index: 20; */
 
 	& > header {
 		width: 100%;
@@ -56,7 +76,6 @@ export const TimeBar = styled.div`
 			justify-content: space-evenly;
 
 			width: 100%;
-
 			cursor: pointer;
 
 			& > .time {
@@ -82,6 +101,11 @@ export const TimeBar = styled.div`
 					margin-top: 20px;
 					position: absolute;
 					height: .75rem;
+					width: 100% !important;
+
+					& #timeBarProgress {
+						width: calc(100%) !important;
+					}
 				}
 
 				& .total {
@@ -92,23 +116,10 @@ export const TimeBar = styled.div`
 					position: absolute;
 					top: 2px;
 					float: left;
-					left: ${props => props.played ? `calc(${props.played * 100}% - 2px)` : `calc(${props.played * 100}% - 2px)`};
 					margin: 0px;
 					width: 4px;
 					height: 100%;
 					background-color: transparent;
-				}
-
-				& #time-indicator {
-					position: absolute;
-					float: left;
-					top: 0px;
-					left: ${props => props.played * 100}%;
-					margin: 0px;
-					width: 2px;
-					height: 100vh;
-					background-color: red;
-					z-index: 20;
 				}
 			}
 		}
@@ -180,25 +191,13 @@ export const Blank = styled.div`
 	height: calc(100% - 50px);
 `
 export const Censor = styled.div`
-	--top: ${props => props.y !== 0 ? `${props.y}%` : `0%`};
-	--left: ${props => props.x !== 0 ? `${props.x}%` : `0%`};
-	--wProp: ${props => props.wProp !== 0 ? `${props.wProp}%` : `0%`};
-	--hProp: ${props => props.hProp !== 0 ? `${props.hProp}%` : `0%`};
-
-	/* TIME X Y WIDTH HEIHT */
-	/* FIND BLUR EFFECT */
-
 	position: absolute;
-	top: calc((var(--top)) - (var(--hProp)/2)) !important;
-	left: calc(var(--left) - (var(--wProp)/2)) !important;
-	width: var(--wProp);
-	height: var(--hProp);
-	transition: .5s ease;
+	transition-timing-function: linear;
 	& canvas {
 		width: 100%;
 		height: 100%;
 		background-color: transparent;
-		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(0px)`};
+		backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(30px)`};
 	}
 `
 export const Comment = styled.div`
@@ -223,8 +222,6 @@ export const ToggleCarat = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* background: url(${carat}) center no-repeat; */
-	/* background-size: contain; */
 	padding: 0;
 	background-color: var(--navy-blue);
 	z-index: 20;
@@ -248,6 +245,25 @@ export const Subtitles = styled.div`
 	font-size: 1.5rem;
 	color: #ffffff;
 	z-index: 20;
-	width: 100%;
+	// width: 100%;
+	width: ${props => props.type === `video` ? `70%` : `100%`};
 	text-align: center;
+	white-space: pre-line;
+`
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Spinner = styled.div`
+	background: url(${logo})  no-repeat;
+	background-size: cover;
+	width: 15rem;
+	height: 15rem;
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `
