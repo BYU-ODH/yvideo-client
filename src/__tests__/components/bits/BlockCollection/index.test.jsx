@@ -45,6 +45,8 @@ describe(`collections test`, () => {
 		)
 
 		collection.content[1].published = false
+		const publishContent = collection.content.filter(item => item.published)
+		expect(publishContent.length).toBe(1)
 		expect(wrapper.contains(<p>1 Videos</p>)).toEqual(false)
 
 		wrapper.find(`.block-collection-link`).forEach((node, index) => {
@@ -86,5 +88,10 @@ describe(`collections test`, () => {
 			node.props().onScroll({target: {scrollLeft: 5}})
 		})
 		expect(spyScrollListener).toBeCalled()
+	})
+
+	it(`simulate onClick`, ()=> {
+		const wrapper = shallow(<BlockCollection {...props}/>)
+		wrapper.find(".slide-wrapper").simulate('scroll', { target: { scrollLeft: 0 } })
 	})
 })

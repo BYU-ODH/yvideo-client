@@ -25,7 +25,6 @@ export class FileOverview extends PureComponent {
 		const {
 			file,
 			langs,
-			category,
 		} = this.props.viewstate
 
 		return (

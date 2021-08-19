@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import FileUploadContainer from 'components/modals/containers/FileUploadContainer'
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
 import ManageFilesContainer from 'components/modals/containers/ManageFilesContainer'
+import ManageInstructorsContainer from 'components/modals/containers/ManageInstructorsContainer'
 
 import {
 	resourceService,
@@ -26,20 +27,26 @@ const ResourceOverviewContainer = props => {
 		updateAllFileVersions,
 		fileId,
 		getLangs,
+		user,
+		readAccess,
+		resourceAccess,
 	} = props
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
 	const [resourceState, setResourceState] = useState(resource)
 	const [files, setFiles] = useState([])
+	const [accessCount, setAccessCount] = useState(0)
 	const [numFileVersions, setNumFileVersions] = useState(0)
-	// const [fileVersions, setFileVersions] = useState(resource.allFileVersions)
+	const [blockLeave, setBlock] = useState(false)
 
-	// TODO: file versions not updated when it is uploaded
 	useEffect(() => {
 
 		if(editing && resourceCache[resource.id].files !== undefined)
 			setFiles(resourceCache[resource.id].files)
+
+		if(resourceAccess[resource.id] && resourceAccess[resource.id].length !== accessCount)
+			setAccessCount(resourceAccess[resource.id].length)
 
 		if(files.length !== numFileVersions){
 			setNumFileVersions(files.length)
@@ -54,43 +61,56 @@ const ResourceOverviewContainer = props => {
 					...resourceState,
 					allFileVersions: langs,
 				})
-
 				updateAllFileVersions(resourceState, files)
+				editResource(resourceState, resourceState.id)
 			}
 		}
-	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions])
+
+		if(blockLeave) {
+			window.onbeforeunload = () => true
+		}
+		else {
+			window.onbeforeunload = undefined
+		}
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceAccess, blockLeave])
 
 	if (objectIsEmpty(resource)) return null
 
 	const handleFileUploadToResource = async() => {
-
-		// need to set up languages on store before post new one
-		await getLangs()
-
 		props.toggleModal({
 			component: FileUploadContainer,
 			props: {
 				resourceId: resource.id,
 			},
 		})
+		setBlock(true)
 	}
 
 	const handleToggleEdit = async () => {
-		// need to set up languages on store before editing
-		await getLangs()
-		await getResourceFiles(resource.id)
 
 		if (editing) {
 			await editResource(resourceState, resourceState.id)
 			setShowing(false)
-			setTimeout(() => {
-				setEditing(false)
-			}, 500)
-		} else
+			setEditing(false)
+			setBlock(false)
+
+		} else{
+			// set up languages on store before editing
+			await getLangs()
+			await getResourceFiles(resource.id)
+
+			// read access
+			await readAccess(resource.id)
 			setEditing(true)
+		}
 
 	}
 
+	// this should delete related contents as well
 	const handleRemoveResource = e => {
 		props.toggleModal({
 			component: DeleteConfirmContainer,
@@ -106,6 +126,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceName: e.target.value,
 		})
+		setBlock(true)
 	}
 
 	const handleResourceEmail = e => {
@@ -127,6 +148,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			resourceType: e.target.dataset.type,
 		})
+		setBlock(true)
 	}
 
 	const handleTogglePublish = e => {
@@ -134,6 +156,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			published: !resourceState.published,
 		})
+		setBlock(true)
 	}
 
 	const handleToggleCopyRighted = e => {
@@ -141,6 +164,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			copyrighted: !resourceState.copyrighted,
 		})
+		setBlock(true)
 	}
 
 	const handleTogglePhysicalCopyExists = e => {
@@ -155,6 +179,7 @@ const ResourceOverviewContainer = props => {
 			...resourceState,
 			fullVideo: !resourceState.fullVideo,
 		})
+		setBlock(true)
 	}
 
 	const handleMetadata = e => {
@@ -173,18 +198,31 @@ const ResourceOverviewContainer = props => {
 		})
 	}
 
+	const handleInstructors = () => {
+		props.toggleModal({
+			component: ManageInstructorsContainer,
+			props: {
+				resource,
+			},
+		})
+	}
+
 	const viewstate = {
 		resourceCache,
 		resource: resourceState,
 		files,
+		accessCount,
+		user,
 		fileId,
 		showing,
 		editing,
+		blockLeave,
 	}
 
 	const handlers = {
 		handleFileUploadToResource,
 		handleFiles,
+		handleInstructors,
 		handleResourceName,
 		handleResourceMetadata,
 		handleRemoveResource,
@@ -200,6 +238,14 @@ const ResourceOverviewContainer = props => {
 		handleMetadata,
 	}
 
+	/*
+			account-type
+			0 = admin
+			1 = lab assistant
+			2 = faculty / instructor
+			3 = student
+		*/
+
 	return <ResourceOverview viewstate={viewstate} handlers={handlers} />
 }
 
@@ -207,6 +253,9 @@ const mapStateToProps = store => ({
 	thisfiles: store.fileStore.cache,
 	fileId: store.fileStore.cache,
 	resourceCache: store.resourceStore.cache,
+	resourceAccess: store.resourceStore.access,
+	filesCache: store.fileStore.cache,
+	user: store.authStore.user,
 })
 
 const mapDispatchToProps = {
@@ -215,7 +264,9 @@ const mapDispatchToProps = {
 	updateAllFileVersions: resourceService.updateFileVersion,
 	toggleModal: interfaceService.toggleModal,
 	getResourceFiles: resourceService.getFiles,
+	readAccess: resourceService.readAccess,
 	getLangs: languageService.get,
+	getFiles: resourceService.getFiles,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceOverviewContainer)

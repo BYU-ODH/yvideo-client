@@ -40,7 +40,6 @@ describe(`root container test`, () => {
 		expect(viewstate.loading).toBe(false)
 		expect(viewstate.modal.active).toBe(false)
 		expect(viewstate.modal.collectionId).toBe(-1)
-		expect(viewstate.modal.componenet).toBe(null)
 		expect(viewstate.modal.isLabAssistantRoute).toBe(false)
 	})
 })
