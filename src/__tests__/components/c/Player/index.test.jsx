@@ -1,43 +1,43 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Player from '../../../../components/c/Player/index'
-import { Blank, Comment, Subtitles, Censor } from '../../../../components/c/Player/styles'
+import { Blank } from '../../../../components/c/Player/styles'
 import { BrowserRouter} from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 const viewstate = {
-	ref: 'ref',
-	url: 'url',
+	ref: `ref`,
+	url: `url`,
 	playing: true,
 	playbackRate: 10,
 	progress: {
-		playedSeconds: 10.12
+		playedSeconds: 10.12,
 	},
 	volume: 1,
 	muted: true,
 	blank: true,
-	videoComment: 'videoComment',
+	videoComment: `videoComment`,
 	commentPosition: {
 		x: 10,
-		y:10
+		y:10,
 	},
 	duration: 10,
 	showTranscript: true,
-	subtitleText: 'subtitle text',
+	subtitleText: `subtitle text`,
 	indexToDisplay: 1,
 	censorPosition: 10,
 	censorActive: true,
 	displaySubtitles: {
-		language: 'english',
-		words: '',
+		language: `english`,
+		words: ``,
 		content: [
 			{
 				end: 20.227533345404066,
 				start: 0,
-				text: "First Line",
-			}
-		]
+				text: `First Line`,
+			},
+		],
 	},
 	clipTime: [`1:20`, `2:29`],
 }
@@ -66,23 +66,23 @@ const handlers = {
 
 const props = {
 	viewstate,
-	handlers
+	handlers,
 }
 
 describe(`Overlay test`, () => {
 	it(`wrapper simulate click`, ()=> {
-		let wrapper = mount(
+		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
-				<Player {...props} />
+					<Player {...props} />
 				</BrowserRouter>
-			</Provider>
+			</Provider>,
 		)
-		wrapper.find(Blank).simulate("contextMenu", {
+		wrapper.find(Blank).simulate(`contextMenu`, {
 			preventDefault: () => {
-			}
-		 })
-		 wrapper.find('ReactPlayer').prop('onProgress')(true, 1)
-		 wrapper.find('ReactPlayer').prop('onSeek')()
+			},
+		})
+		wrapper.find(`ReactPlayer`).prop(`onProgress`)(true, 1)
+		wrapper.find(`ReactPlayer`).prop(`onSeek`)()
 	})
 })
