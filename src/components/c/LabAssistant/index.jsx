@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { LabAssistantTable } from 'components/bits'
 
-import Style, { Search, SearchIcon } from './styles'
+import Style, { Search, SearchIcon, FeedbackMessage } from './styles'
 
 export class LabAssistant extends PureComponent {
 	render() {
@@ -12,6 +12,7 @@ export class LabAssistant extends PureComponent {
 			placeholder,
 			searchQuery,
 			showResource,
+			isSubmitted,
 		} = this.props.viewstate
 
 		const {
@@ -20,15 +21,34 @@ export class LabAssistant extends PureComponent {
 			handleShowResource,
 		} = this.props.handlers
 
+		const setNoCollections = () => {
+			setTimeout(() => {
+				if(document.getElementById(`no-matched-users`) !== null)
+					document.getElementById(`no-matched-users`).innerHTML = `<p>No users matched your search</p>`
+			}, 2000)
+		}
+
 		return (
 			<Style>
-				<h1>Lab Assistant Dashboard</h1>
+				<h1></h1>
 				<Search onSubmit={handleSubmit}>
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />
-					<button type="submit">Search</button>
+					<button type='submit'>Search</button>
 				</Search>
-				<LabAssistantTable data={data} show={showResource} handleShowResource={handleShowResource}/>
+				{isSubmitted && data !== null &&
+					<>
+						{data.length > 0 ?
+							<LabAssistantTable data={data} show={showResource} handleShowResource={handleShowResource}/>
+							:
+							<>
+								<FeedbackMessage id='no-matched-users'><p>Loading..</p></FeedbackMessage>
+								<p>{	setNoCollections() }</p>
+							</>
+						}
+					</>
+				}
+
 			</Style>
 		)
 	}

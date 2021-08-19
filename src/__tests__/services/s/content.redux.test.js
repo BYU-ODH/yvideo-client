@@ -4,12 +4,11 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import proxies from 'proxy'
+import Content from 'models/Content'
 
 const resource = testutil.resource
 
 const settings = testutil.settings
-
-const changedSettings = testutil.changedSettings
 
 const newcontent = {
 	id: 0,
@@ -31,25 +30,19 @@ const newcontent = {
 	views: 0,
 }
 
-const contentSettingsChanged = {
-	id: 0,
-	name: `newcontent`,
-	contentType: `newcontent`,
-	collectionId: 85,
-	thumbnail: `test@thumbnail.com`,
-	physicalCopyExists:false,
-	isCopyrighted:false,
-	expired:true,
-	dateValidated:``,
-	requester:``,
-	resourceId:`5ebdaef833e57cec218b457c`,
-	published:true,
-	settings: changedSettings,
-	resource,
-	fullVideo: true,
-	authKey: `5377628e855d31ad4d84a8fdedf5758b`,
-	views: 0,
+const contentBeforeModel = testutil.contentBeforeModel[0]
+const contentBeforeModel2 = testutil.contentBeforeModel[1]
+
+const error = {
+	response: {
+		data: `SUBTITLES_ERROR test error message`
+	}
 }
+
+proxies.apiProxy.content.post = jest.fn()
+proxies.apiProxy.content.post.mockImplementation(()=>{
+	return Promise.resolve(contentBeforeModel)
+})
 
 describe(`content service test`, () => {
 
@@ -67,20 +60,12 @@ describe(`content service test`, () => {
 			contentServiceConstructor.reducer,
 			{
 				cache:{
-					0:{
-						views: 0,
-					},
-					loading: false,
-					lastFetched: 0,
+					"contentid2": new Content(contentBeforeModel2),
 				},
 				contentStore:{
 					cache:{
-						0:{
-							views: 0,
-						},
+						"contentid2": new Content(contentBeforeModel2),
 					},
-					loading: false,
-					lastFetched: 0,
 				},
 			},
 			composeWithDevTools(
@@ -139,10 +124,9 @@ describe(`content service test`, () => {
 
 	it(`content error`, () => {
 		console.error = jest.fn()
-		const result = store.dispatch(contentServiceConstructor.actions.contentError(`error message`))
-		expect(console.error).toBeCalled()
+		const result = store.dispatch(contentServiceConstructor.actions.contentError(error))
 		expect(result.type).toBe(`CONTENT_ERROR`)
-		expect(result.payload.error).toBe(`error message`)
+		expect(result.payload.error).toEqual(error)
 	})
 
 	it(`content get`, () => {
@@ -156,9 +140,9 @@ describe(`content service test`, () => {
 		expect(store.getState().cache.name).toBe(`newcontent`)
 		expect(content.payload.content.name).toBe(`newcontent`)
 
-		expect(store.getState().cache[0].views).toBe(0)
-		store.dispatch(contentServiceConstructor.actions.contentAddView(0))
-		expect(store.getState().cache[0].views).toBe(1)
+		expect(store.getState().cache[`contentid2`].views).toBe(0)
+		store.dispatch(contentServiceConstructor.actions.contentAddView(`contentid2`))
+		expect(store.getState().cache[`contentid2`].views).toBe(1)
 	})
 
 	it(`content update`, () => {
@@ -168,118 +152,81 @@ describe(`content service test`, () => {
 		expect(result.type).toBe(`CONTENT_UPDATE`)
 	})
 
-	// thunk
-	// TODO: need to figure out how to check actions to be called
+	it(`setContent`, async() => {
+		expect(store.getState().cache[`id`]).toEqual(undefined)
+		await contentServiceConstructor.setContent(contentBeforeModel)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`id`]).toEqual(`contentid1`)
+	})
+
 	it(`getContent`, async() => {
-
-		proxies.apiProxy.content.post = jest.fn()
-		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					authKey: `1c4c003ef6a10b5e0278e36f4e4eb967`,
-					collectionId: 85,
-					contentType: `video`,
-					dateValidated: ``,
-					expired: true,
-					fullVideo: true,
-					id: 0,
-					isCopyrighted: false,
-					name: `newcontent`,
-					physicalCopyExists: false,
-					published: true,
-					requester: ``,
-					resourceId: `5efd21c433e57c47058b456e`,
-					settings,
-					thumbnail: ``,
-					views: 0,
-				},
-			})
+		proxies.apiProxy.content.getSingleContent = jest.fn()
+		proxies.apiProxy.content.getSingleContent.mockImplementation(()=>{
+			return Promise.resolve(contentBeforeModel)
 		})
+		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
+		await contentServiceConstructor.getContent(`contentid1`)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`contentid1`]).toEqual(new Content(contentBeforeModel))
+	})
 
-		proxies.apiProxy.content.get = jest.fn()
-		proxies.apiProxy.content.get.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					authKey: `1c4c003ef6a10b5e0278e36f4e4eb967`,
-					collectionId: 85,
-					contentType: `video`,
-					dateValidated: ``,
-					expired: true,
-					fullVideo: true,
-					id: 0,
-					isCopyrighted: false,
-					name: `newcontent`,
-					physicalCopyExists: false,
-					published: true,
-					requester: ``,
-					resourceId: `5efd21c433e57c47058b456e`,
-					settings,
-					thumbnail: ``,
-					views: 0,
-				},
-			})
+	it(`getContent: catch error`, async() => {
+		proxies.apiProxy.content.getSingleContent = jest.fn()
+		proxies.apiProxy.content.getSingleContent.mockImplementation(()=>{
+			return Promise.reject(error)
 		})
+		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
+		await contentServiceConstructor.getContent(`contentid1`)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
+	})
 
-		expect(store.getState().cache[0].name).toBe(undefined)
-		await contentServiceConstructor.createContent(newcontent, 85)(dispatch, getState, { apiProxy })
-		// expect(store.getState().cache[0].name).toBe(`newcontent`)
+	it(`updateContent`, async() => {
+		proxies.apiProxy.content.update = jest.fn()
+		proxies.apiProxy.content.update.mockImplementation(()=>{
+			return Promise.resolve(contentBeforeModel)
+		})
+		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
+		await contentServiceConstructor.updateContent(new Content(contentBeforeModel))(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`contentid1`]).toEqual(new Content(contentBeforeModel))
+	})
 
-		// TODO: function called success, just need to check if it actually gets content
-		await contentServiceConstructor.getContent([0])(dispatch, getState, { apiProxy })
+	it(`updateContent: catch error`, async() => {
+		proxies.apiProxy.content.update = jest.fn()
+		proxies.apiProxy.content.update.mockImplementation(()=>{
+			return Promise.reject(error)
+		})
+		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
+		await contentServiceConstructor.updateContent(new Content(contentBeforeModel))(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`contentid1`]).toEqual(undefined)
 	})
 
 	it(`createContent`, async() => {
-
-		proxies.apiProxy.content.post = jest.fn()
-		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
-			return Promise.resolve({
-				status: 200,
-				data: {
-					authKey: `1c4c003ef6a10b5e0278e36f4e4eb967`,
-					collectionId: 85,
-					contentType: `video`,
-					dateValidated: ``,
-					expired: true,
-					fullVideo: true,
-					id: 0,
-					isCopyrighted: false,
-					name: `newcontent`,
-					physicalCopyExists: false,
-					published: true,
-					requester: ``,
-					resourceId: `5efd21c433e57c47058b456e`,
-					settings,
-					thumbnail: ``,
-					views: 0,
-				},
-			})
-		})
-
-		expect(store.getState().cache[0].name).toBe(undefined)
-		await contentServiceConstructor.createContent(newcontent, 85)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`contentid1`]).toBe(undefined)
+		await contentServiceConstructor.createContent(contentBeforeModel)(dispatch, getState, { apiProxy })
 		// expect(store.getState().cache[0].name).toBe(`newcontent`)
 	})
 
 	it(`addView`, async() => {
-
 		proxies.apiProxy.content.addView.get = jest.fn()
-		proxies.apiProxy.content.addView.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.addView.get.mockImplementation(()=>{
 			return Promise.resolve({
 				status: 200,
 			})
 		})
+		expect(store.getState().cache[`contentid2`].views).toBe(0)
+		await contentServiceConstructor.addView(`contentid2`, true)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`contentid2`].views).toBe(1)
+	})
 
-		store.dispatch(contentServiceConstructor.actions.contentCreate(newcontent, 85))
-
-		expect(store.getState().cache[0].views).toBe(0)
-		await contentServiceConstructor.addView(0, true)(dispatch, getState, { apiProxy })
-		expect(store.getState().cache[0].views).toBe(1)
+	it(`addView: catch error`, async() => {
+		proxies.apiProxy.content.addView.get = jest.fn()
+		proxies.apiProxy.content.addView.get.mockImplementation(()=>{
+			return Promise.reject(error)
+		})
+		expect(store.getState().cache[`contentid2`].views).toBe(0)
+		await contentServiceConstructor.addView(`contentid2`, true)(dispatch, getState, { apiProxy })
+		expect(store.getState().cache[`contentid2`].views).toBe(0)
 	})
 
 	it(`getSubtitles`, async() => {
-
 		proxies.apiProxy.content.getSubtitles = jest.fn()
 		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
 			return Promise.resolve({
@@ -288,87 +235,47 @@ describe(`content service test`, () => {
 		})
 
 		store.dispatch(contentServiceConstructor.actions.contentCreate(newcontent, 85))
-
+		expect(store.getState().loading).toEqual(false)
 		// expect(store.getState().cache[0].views).toBe(0)
 		await contentServiceConstructor.getSubtitles(0)(dispatch, getState, { apiProxy })
 		// expect(store.getState().cache[0].views).toBe(1)
+		expect(store.getState().loading).toEqual(true)
+	})
+
+	it(`getSubtitles: catch error`, async() => {
+		proxies.apiProxy.content.getSubtitles = jest.fn()
+		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
+			return Promise.reject(error)
+		})
+
+		store.dispatch(contentServiceConstructor.actions.contentCreate(newcontent, 85))
+		expect(store.getState().loading).toEqual(false)
+		await contentServiceConstructor.getSubtitles(0)(dispatch, getState, { apiProxy })
+		expect(store.getState().loading).toEqual(false)
 	})
 
 	it(`addSubtitles`, async() => {
-
-		proxies.apiProxy.content.getSubtitles = jest.fn()
-		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.addSubtitles = jest.fn()
+		proxies.apiProxy.content.addSubtitles.mockImplementationOnce(()=>{
 			return Promise.resolve({
 				status: 200,
 			})
 		})
-
-		store.dispatch(contentServiceConstructor.actions.contentCreate(newcontent, 85))
-
-		// expect(store.getState().cache[0].views).toBe(0)
-		await contentServiceConstructor.getSubtitles(0)(dispatch, getState, { apiProxy })
-		// expect(store.getState().cache[0].views).toBe(1)
+		expect(store.getState().subtitlesIds).toEqual(undefined)
+		await contentServiceConstructor.addSubtitles(`sub`)(dispatch, getState, { apiProxy })
+		expect(store.getState().subtitlesIds).toEqual({})
 	})
 
-	// it(`updateContent`, async() => {
+	it(`addSubtitles: catch error`, async() => {
+		proxies.apiProxy.content.addSubtitles = jest.fn()
+		proxies.apiProxy.content.addSubtitles.mockImplementationOnce(()=>{
+			return Promise.reject(error)
+		})
+		expect(store.getState().loading).toEqual(undefined)
+		await contentServiceConstructor.addSubtitles(`sub`)(dispatch, getState, { apiProxy })
+		expect(store.getState().loading).toEqual(false)
+	})
 
-	// 	proxies.apiProxy.content.post = jest.fn()
-	// 	proxies.apiProxy.content.post.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({
-	// 			status: 200,
-	// 			data: {
-	// 				authKey: `1c4c003ef6a10b5e0278e36f4e4eb967`,
-	// 				collectionId: 85,
-	// 				contentType: `video`,
-	// 				dateValidated: ``,
-	// 				expired: true,
-	// 				fullVideo: true,
-	// 				id: 0,
-	// 				isCopyrighted: false,
-	// 				name: `newcontent`,
-	// 				physicalCopyExists: false,
-	// 				published: true,
-	// 				requester: ``,
-	// 				resourceId: `5efd21c433e57c47058b456e`,
-	// 				settings,
-	// 				thumbnail: ``,
-	// 				views: 0,
-	// 			},
-	// 		})
-	// 	})
-	// 	proxies.apiProxy.content.settings.post = jest.fn()
-	// 	proxies.apiProxy.content.settings.post.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({
-	// 			status: 200,
-	// 		})
-	// 	})
-	// 	proxies.apiProxy.content.metadata.post = jest.fn()
-	// 	proxies.apiProxy.content.metadata.post.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({
-	// 			status: 200,
-	// 		})
-	// 	})
 
-	// 	// create content before changing
-	// 	expect(store.getState().cache[0].name).toBe(undefined)
-	// 	await contentServiceConstructor.createContent(newcontent, 85)(dispatch, getState, { apiProxy })
-	// 	// expect(store.getState().cache[0].name).toBe(`newcontent`)
 
-	// 	// check default settings
-	// 	expect(store.getState().cache[0].settings.allowDefinitions).toBe(false)
-	// 	expect(store.getState().cache[0].settings.showAnnotations).toBe(false)
-	// 	expect(store.getState().cache[0].settings.showCaptions).toBe(false)
-	// 	expect(store.getState().cache[0].settings.showTranscripts).toBe(false)
-	// 	expect(store.getState().cache[0].settings.showWordList).toBe(false)
-	// 	expect(store.getState().cache[0].settings.description).toBe(``)
-
-	// 	// update content and check changed settings
-	// 	await contentServiceConstructor.updateContent(contentSettingsChanged)(dispatch, getState, { apiProxy })
-	// 	expect(store.getState().cache[0].settings.allowDefinitions).toBe(true)
-	// 	expect(store.getState().cache[0].settings.showAnnotations).toBe(true)
-	// 	expect(store.getState().cache[0].settings.showCaptions).toBe(true)
-	// 	expect(store.getState().cache[0].settings.showTranscripts).toBe(true)
-	// 	expect(store.getState().cache[0].settings.showWordList).toBe(true)
-	// 	expect(store.getState().cache[0].settings.description).toBe(`changed`)
-	// })
 })

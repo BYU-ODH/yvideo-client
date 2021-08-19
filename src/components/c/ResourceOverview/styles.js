@@ -2,6 +2,7 @@ import styled, {css} from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
 import uploadIcon from 'assets/upload.svg'
+import personAddIcon from 'assets/person_add.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -14,9 +15,19 @@ export const Preview = styled.div`
 	justify-content: flex-end;
 	justify-content: space-between;
 
+	@media screen and (max-width: 1000px) {
+		flex-direction: ${props => props.editing ? `column` : ``};
+	}
+
 	& > div {
 		display: flex;
 		align-items: center;
+
+		@media screen and (max-width: 1000px) {
+      justify-content: ${props => props.editing ? `space-evenly` : ``};
+			margin-top: ${props =>  props.editing ? `1rem` : ``};
+    }
+
 	}
 `
 
@@ -60,6 +71,11 @@ export const InnerContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr 1.5fr;
 	padding: 15px;
+
+	@media screen and (max-width: 1000px) {
+		display: flex;
+		flex-direction: column;
+	}
 `
 
 export const Type = styled.div`
@@ -119,6 +135,12 @@ export const UploadIcon = styled.span`
 	width: 2rem;
 `
 
+export const PersonAddIcon = styled.span`
+	background: url(${personAddIcon}) center no-repeat;
+	height: 2.5rem;
+	width: 2rem;
+`
+
 export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
@@ -163,11 +185,13 @@ export const Title = styled.form`
 export const ResourceTitle = styled.form`
 	display: flex;
 	margin-left: 1rem;
+
 	& > h4 {
 		display: flex;
 		align-items: center;
 	}
 `
+
 
 export const TypeButton = styled.button`
 	background: transparent;

@@ -17,11 +17,32 @@ export const Container = styled.div`
 	height: auto;
 	overflow-y: scroll !important;
 	background-color: white;
-	border-radius: 10px;
+	border-radius: 5px;
 	padding: 0px 20px 20px 20px;
 	position: relative;
 	text-align: center;
-	overflow: scroll;
+
+	::-webkit-scrollbar {
+		display: block !important;
+		width: 10px;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: #DDDDDD;
+		border-radius: 10px;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: var(--light-blue);
+		border-radius: 10px;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--navy-blue);
+	}
 
 	& #title {
 		position: fixed;
@@ -37,6 +58,7 @@ export const Container = styled.div`
 		width: 80%;
 		margin: 70px auto auto auto;
 		text-align: left;
+		position: relative;
 
 		& .large-img{
 			flex-direction: column;
@@ -46,7 +68,7 @@ export const Container = styled.div`
 		}
 
 		& .section {
-			font-size: 1.5rem;
+			font-size: 1.5rem !important;
 			padding: 10px;
 			display: flex;
 
@@ -54,15 +76,19 @@ export const Container = styled.div`
 				margin: auto;
 				flex: 1;
 				line-height: 20px;
-
-				& ul {
-					text-align: left;
-					border: 1px solid red;
-				}
 			}
 
 			& img {
 				margin: auto;
+			}
+
+			& .icon {
+				width: 20px;
+				height: 20px;
+			}
+
+			& li {
+				padding: 3px 0px 3px 0px;
 			}
 		}
 	}
@@ -77,6 +103,6 @@ export const CloseHelp = styled.span`
 		height: 30px;
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 20px;
 	}
 `

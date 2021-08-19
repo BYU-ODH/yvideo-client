@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 
-import { ListItem } from 'components/bits'
+import { ListItem, ListItemDropDown } from 'components/bits'
 
-import { Header, Body } from './styles'
+import Style, { Header, Body, PublicButton } from './styles'
 
 class ListCollection extends PureComponent {
 	state = {
@@ -25,25 +25,35 @@ class ListCollection extends PureComponent {
 
 		const contentIds = this.props.contentIds
 
-		const publishContent = content.filter(item => item.published)
+		const publishContent = content ? content.filter(item => item.published) : []
 
 		if (!content || this.props.collection.published !== true ) return null
 
 		return (
-			<div>
-				<Header isOpen={isOpen} onClick={this.togglePanel} >
+			<Style>
+				<Header className='list-header' isOpen={isOpen} onClick={this.togglePanel} >
 					<h3>{name}</h3>
-					<p>{publishContent.length} Videos</p>
+					{
+						publishContent.length === 0 ? (
+							<p>This collection is empty</p>
+						)
+							:
+							publishContent.length === 1 ? (
+								<p>1 item</p>
+							)
+								:
+								<p>{publishContent.length} items</p>
+					}
 					<div />
 				</Header>
 				<Body isOpen={isOpen} count={publishContent.length}>
 					{
 						publishContent.map(item => {
-							return <ListItem key={item.id} data={item} />
+							return item.clips.length < 3 ? <ListItem key={item.id} data={item}/> : <ListItemDropDown key={item.id} data={item}/>
 						})
 					}
 				</Body>
-			</div>
+			</Style>
 		)
 	}
 }
