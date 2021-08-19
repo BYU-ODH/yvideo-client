@@ -14,14 +14,14 @@ const Style = styled.div`
 	color: white;
 	cursor: grab;
 
-	height: 5rem;
+	height: 100%;
 	width: 100%;
 
-	border: 1px solid #222;
-
-	margin-bottom: 1rem;
-
-	box-shadow: 0px 2px 4px -2px rgba(0,0,0,0.75);
+	border-left: 1px solid;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	/* margin-bottom: 1rem; */
+	/* box-shadow: 0px 2px 4px -2px rgba(0,0,0,0.75); */
 
 	opacity: ${props => props.opacity};
 

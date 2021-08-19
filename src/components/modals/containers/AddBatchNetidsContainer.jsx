@@ -15,19 +15,19 @@ import AddBatchNetids from 'components/modals/components/AddBatchNetids'
 
 const AddBatchNetidsContainer = props => {
 	const { updateMany, toggleModal } = props
-	const [ list, setList ] = useState([])
-	const [ id, setId ] = useState("")
+	const [list, setList] = useState([])
+	const [id, setId] = useState(``)
 	const [disabledUser, setDisableUser] = useState(true)
 	const viewState = { list, id, disabledUser }
 
 	const handleNewId = ( e ) => {
 		e.preventDefault()
-		let temp = id.split('\n')
-		let body = {
+		const temp = id.split(`\n`)
+		const body = {
 			usernames: temp,
-			["account-role"]: 1
+			"account-role": 1,
 		}
-		props.setLoaded(true)
+		props.setIsLoading(true)
 		updateMany(props.collectionId, body)
 		toggleModal()
 	}
@@ -35,12 +35,11 @@ const AddBatchNetidsContainer = props => {
 	const handleIdChange = ( value ) => {
 		setId(value)
 
-		if(value.length > 1){
+		if(value.length > 1)
 			setDisableUser(false)
-		}
-		else {
+		else
 			setDisableUser(true)
-		}
+
 	}
 
 	const handler = {
@@ -57,7 +56,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
 	updateMany: collectionService.updateMany,
-	toggleModal: interfaceService.toggleModal
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBatchNetidsContainer)

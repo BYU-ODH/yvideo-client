@@ -10,7 +10,7 @@ const viewstate = {
 		id: 22,
 		lastLogin: `last login`,
 		name: `test user`,
-		roles: [`admin`],
+		roles: 0,
 		username: `testusername`,
 	},
 	modal: {
@@ -34,8 +34,15 @@ describe(`root route paring test`, () => {
 		expect(pathMap[`/admin`]).toBe(`AdminContainer`)
 		expect(pathMap[`/collections`]).toBe(`CollectionsContainer`)
 		expect(pathMap[`/lab-assistant`]).toBe(`LabAssistantContainer`)
+		expect(pathMap[`/manage-resource`]).toBe(`ManageResourceContainer`)
 		expect(pathMap[`/lab-assistant-manager/:professorId/:collectionId?`]).toBe(`LabAssistantManagerContainer`)
 		expect(pathMap[`/manager/:id?`]).toBe(`ManagerContainer`)
-		expect(pathMap[`/player/:id`]).toBe(`PlayerContainer`)
+		expect(pathMap[`/public-manager/:id?`]).toBe(`PublicManagerContainer`)
+		expect(pathMap[`/player/:id/:clip?`]).toBe(`PlayerContainer`)
+		expect(pathMap[`/videoeditor/:id`]).toBe(`VideoEditorContainer`)
+		expect(pathMap[`/subtileeditor/:id`]).toBe(`SubtitlesEditorContainer`)
+		expect(pathMap[`/clipeditor/:id`]).toBe(`ClipEditorContainer`)
+		expect(pathMap[`/feedback`]).toBe(`FeedbackContainer`)
+		expect(pathMap[`/search-public-collections`]).toBe(`SearchPublicCollectionsContainer`)
 	})
 })

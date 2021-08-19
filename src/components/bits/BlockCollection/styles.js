@@ -3,6 +3,20 @@ import styled from 'styled-components'
 import arrowLeft from 'assets/arrow-left.svg'
 import arrowRight from 'assets/arrow-right.svg'
 
+export const Button = styled.button`
+	background-size: contain;
+	border: none;
+	cursor: pointer;
+	height: 2.5rem;
+	outline: none;
+	width: 20rem;
+	border-radius: .5rem;
+
+	&:hover {
+		box-shadow: 0 3px 6px -2px #A0A0A0;
+	}
+`
+
 export const Container = styled.div`
 	padding: 2rem;
 
@@ -15,7 +29,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
 	display: grid;
-	grid-template-columns: 18rem auto;
+	grid-template-columns: 18rem auto auto;
 	justify-items: start;
 	padding-bottom: 2rem;
 
