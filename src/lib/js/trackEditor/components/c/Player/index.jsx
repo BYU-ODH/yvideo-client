@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react'
 
 import ReactPlayer from 'react-player'
 
-import { Caption } from './../..'
-
 import Style from './styles'
 
 export default class Player extends PureComponent {
@@ -72,7 +70,6 @@ export default class Player extends PureComponent {
 						onProgress={(progress) => handleCurrentTimeChange(progress.playedSeconds)} // handleProgress //handleCurrentTimeChange(progress * 100
 						onDuration={(duration) => handleTotalTimeChange(duration)} // TODO: Might want to switch back to seconds (React Player uses seconds) we are converting to milliseconds
 					/>
-					<Caption />
 				</div>
 			</Style>
 		)

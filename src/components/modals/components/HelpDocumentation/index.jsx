@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { Container, Back, CloseHelp } from './styles'
+import { Container, Back, CloseHelp, ScrollIndicator, ScrollBack } from './styles'
 
 import closeIcon from 'assets/x.svg'
 
@@ -10,7 +10,7 @@ export default class HelpDocumentation extends PureComponent {
 	}
 
 	componentDidMount(){
-		document.getElementById('content').innerHTML = this.props.viewstate.help.htmlInstruction
+		document.getElementById(`content`).innerHTML = this.props.viewstate.help.htmlInstruction
 	}
 
 	render() {
@@ -20,11 +20,9 @@ export default class HelpDocumentation extends PureComponent {
 		return (
 			<>
 				<Back>
-					<Container>
-						<div id="title">
-							<h1>Help Documentation: {name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
-						</div>
-						<div id="content">
+					<Container id='help-documentation-container' onScroll={this.handleScroll}>
+						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
+						<div id='content'>
 						</div>
 					</Container>
 				</Back>
