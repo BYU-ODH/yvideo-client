@@ -494,7 +494,7 @@ export default class CollectionService {
 				}
 			} else if(endpoint === `remove-user`){
 				backEndBody = {
-					'username': body,
+					'username': body.username,
 				}
 			}
 
