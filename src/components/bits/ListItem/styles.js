@@ -5,6 +5,12 @@ import captions from 'assets/captions.svg'
 import annotations from 'assets/annotations.svg'
 
 export const Style = styled.div`
+	background: #efefef;
+	:hover {
+		background: #d7d7d7;
+		cursor: pointer;
+	}
+
 	& > a {
 		display: grid;
 		grid-template-columns: 18rem auto;
@@ -14,12 +20,8 @@ export const Style = styled.div`
 
 		color: black;
 		text-decoration: none;
-
-		:hover {
-			background: #eee;
-			cursor: pointer;
-		}
-
+		margin: 0 9rem;
+		
 		& .name h4 {
 			font-weight: 500;
 		}

@@ -4,12 +4,9 @@ import { Events } from 'components'
 
 import { interfaceService } from 'services'
 
-import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, BlankEvent } from 'models/events/'
+import { SkipEvent, MuteEvent, PauseEvent, CommentEvent, BlankEvent, CensorEvent } from 'models/events/'
 
 const EventsContainer = props => {
-
-	// console.log('%c Event Container', 'color: orange; font-weight: bolder; font-size: 12px;')
-
 	const {
 		events,
 		currentTime,
@@ -20,29 +17,30 @@ const EventsContainer = props => {
 		handleUnMute,
 		handleBlank,
 		handleShowComment,
-		// handleCensorPosition,
-		// handleCensorActive,
+		handleCensorPosition,
+		handleCensorActive,
 	} = props
 
 	const [eventArray, setEventArray] = useState([])
-	const [force, setForce] = useState(false)
 
+	// testing subitles class
 	useEffect(() => {
-		// console.log('reset')
 		// after every re render we set blank to false and mute to false. We do this because blank does not update in the parent when we render this component.
 		// If the blank or mute event is active the event will be executed.
+		// console.log(props)
 		handleBlank(false)
 		handleUnMute()
-		// handleCensorActive(false)
+		handleCensorActive(false)
 		handleShowComment(``, {x: 0, y: 0})
 
 		// We need to keep track of all the events. we need this code here so every time there is a change to the events we get those changes.
 		const tempArray = []
-		if(duration !== 0 && events !== undefined){
+		if(duration !== 0 && events !== undefined && Array.isArray(events)){
+
 			events.forEach(event => {
 				// Events time is in percentages so we can use that and figure out the exact seconds by doing time / 100 * videoLength.
-				const start = event.start / 100 * duration
-				const end = event.end / 100 * duration
+				const start = event.start
+				const end = event.end
 				switch (event.type) {
 				case `Skip`:
 					tempArray.push(new SkipEvent(event.type, start, end))
@@ -56,9 +54,9 @@ const EventsContainer = props => {
 				case `Comment`:
 					tempArray.push(new CommentEvent(event.type, start, end, event.comment, event.position))
 					break
-					// case 'Censor':
-					// 		tempArray.push(new CensorEvent(event.type, start, end, event.position))
-					// 	break;
+				case `Censor`:
+					tempArray.push(new CensorEvent(event.type, start, end, event.position))
+					break
 				case `Blank`:
 					tempArray.push(new BlankEvent(event.type, start, end))
 					break
@@ -71,7 +69,6 @@ const EventsContainer = props => {
 	}, [duration, events])
 
 	eventArray.forEach(element => {
-		// console.log(element)
 		if(currentTime >= element.start && currentTime <= element.end && element.active !== true){
 			element.active = true
 			switch (element.type) {
@@ -82,26 +79,19 @@ const EventsContainer = props => {
 				handleMute()
 				break
 			case `Pause`:
+
 				handlePause()
+
 				break
 			case `Comment`:
-				// console.log(element)
 				handleShowComment(element.comment, element.position)
 				break
-				// case 'Censor':
-				// 		element.active = false
-				// 		let value = Object.keys(element.position).find(time => time >= currentTime)
-				// 		//let includes = Object.keys(element.position).includes(currentTime)
-
-				// 		console.log('current Time', currentTime)
-				// 		console.log('value', value)
-
-				// 		handleCensorActive(true)
-				// 		handleCensorPosition(element.position[value])
-
-				// 	break;
+			case `Censor`:
+				element.active = false
+				handleCensorPosition(element.position)
+				handleCensorActive(true)
+				break
 			case `Blank`:
-				console.log('should blank')
 				handleBlank(true)
 				break
 			default:
@@ -122,10 +112,9 @@ const EventsContainer = props => {
 			default:
 				break
 			}
-		}
-		// else if (currentTime > element.end && element.type === 'Censor'){
-		// 	handleCensorActive(false)
-		// }
+		} else if (currentTime > element.end && element.type === `Censor`)
+			handleCensorActive(false)
+
 	})
 
 	const viewstate = {

@@ -21,13 +21,6 @@ const handlers = {
 }
 
 describe(`MenuContainer test`, () => {
-
-	it(`shallow`, () => {
-		const wrapper = shallow(
-			<Menu viewstate={viewstate} handlers={handlers}/>,
-		)
-	})
-
 	it(`should map to link correctly`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
@@ -45,13 +38,13 @@ describe(`MenuContainer test`, () => {
 			if(to === `/lab-assistant`)
 				expect(children).toBe(`Lab Assistant Dashboard`)
 			if(to === `/`)
-				expect(children).toBe(`View Collections`)
-			if(to === `/manager`) {
-				if(to.createCollection === true)
-					expect(children).toBe(`Create New Collection`)
-				else
-					expect(children).toBe(`Manage Collections`)
-			}
+				expect(children).toBe(`Collections`)
+			if(to === `/manager`)
+				expect(children).toBe(`Manage Collections`)
+			if(to === `/public-manager`)
+				expect(children).toBe(`Manage Public Collections`)
+			if(to === `/feedback`)
+				expect(children).toBe(`Contact Us`)
 		})
 	})
 })

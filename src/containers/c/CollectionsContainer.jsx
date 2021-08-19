@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import { collectionService, interfaceService, contentService } from 'services'
 
@@ -7,11 +8,12 @@ import { Collections } from 'components'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
+import { Tooltip } from 'components/bits'
+
 const CollectionsContainer = props => {
 
 	const {
-		isProf,
-		isAdmin,
+		user,
 		displayBlocks,
 		content,
 		setContent,
@@ -20,56 +22,115 @@ const CollectionsContainer = props => {
 		toggleCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
+		toggleTip,
+		setBreadcrumbs,
 	} = props
 
+	const [isMobile, setIsMobile] = useState(false)
+	const [isContentTap, setIsContentTap] = useState(true)
+	const [searchQuery, setSearchQuery] = useState(``)
+	const history = useHistory()
+
 	useEffect(() => {
-		getCollections(true)
+		setBreadcrumbs({path:[`Home`], collectionId: ``, contentId: ``})
+
+		toggleTip()
+		getCollections()
 		setHeaderBorder(false)
 
-		const allContent = {}
-		Object.keys(collections).forEach(element => {
-			collections[element].content.forEach(item => {
-				allContent[item.id] = item
-			})
-		})
-
-		setContent(allContent)
+		// determine mobiie size for different layout
+		if(window.innerWidth < 1000) setIsMobile(true)
+		else setIsMobile(false)
 
 		return () => {
 			setHeaderBorder(true)
+			toggleTip(null)
 		}
 	}, [setContent, setHeaderBorder])
 
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: 'Home Page'},
+			props:{ name: `Home Page`},
+		})
+		toggleTip()
+	}
+
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position,
+			},
+		})
+	}
+
+	const setTab = isContentTap => _e => {
+		setIsContentTap(isContentTap)
+	}
+
+	const handleSearchQuerySubmit = (e) => {
+		e.preventDefault()
+
+		if(searchQuery !== ``){
+			history.push({
+				pathname: `/search-public-collections`,
+				state:{
+					searchQuery,
+				},
+			})
+		}
+	}
+
+	const handleSearchTextChange = e => {
+		const { value } = e.target
+		setSearchQuery(value)
+	}
+
+	const linkToManageCollection = e => {
+		e.preventDefault()
+
+		history.push({
+			pathname: `/manager`,
+		})
+	}
+
+	const linkToManagePublicCollection = e => {
+		e.preventDefault()
+
+		history.push({
+			pathname: `/public-manager`,
 		})
 	}
 
 	const viewstate = {
-		isProf,
-		isAdmin,
+		user,
 		displayBlocks,
-		// TODO: When archiving a collection, make sure to unpublish it
-		// TODO: need to check to see if which way is right way to use
-		collections, // : Object.fromEntries(Object.entries(collections).filter(([k,v]) => v.published && !v.archived)),
-		collectionsLength: Object.keys(collections).length,
-		// TODO: When recreating the backend, add a collection.content.published value, so that we don't need to call getContent
+		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
+		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		isMobile,
+		isContentTap,
 	}
 
 	const handlers = {
 		toggleCollectionsDisplay,
 		handleShowHelp,
+		handleShowTip,
+		toggleTip,
+		setTab,
+		handleSearchTextChange,
+		handleSearchQuerySubmit,
+		linkToManageCollection,
+		linkToManagePublicCollection,
 	}
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
-	isProf: authStore.user.roles === 2,
-	isAdmin: authStore.user.roles === 0,
+	user: authStore.user,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,
@@ -80,8 +141,10 @@ const mapDispatchToProps = {
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	updateContent: contentService.updateContent,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsContainer)

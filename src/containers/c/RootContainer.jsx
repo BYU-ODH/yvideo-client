@@ -14,6 +14,7 @@ const RootContainer = props => {
 		loading,
 		tried,
 		modal,
+		tip,
 		checkAuth,
 	} = props
 
@@ -25,6 +26,7 @@ const RootContainer = props => {
 		user,
 		loading,
 		modal,
+		tip,
 	}
 
 	return <Root viewstate={viewstate} />
@@ -35,6 +37,7 @@ const mapStoreToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 	loading: authStore.loading,
 	tried: authStore.tried,
 	modal: interfaceStore.modal,
+	tip: interfaceStore.tip,
 })
 
 const mapDispatchToProps = {

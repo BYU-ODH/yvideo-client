@@ -39,6 +39,8 @@ describe(`content service test`, () => {
 				editorStyle: false,
 				lost: false,
 				events: [],
+				error: '',
+				jsonResponse: undefined,
 				interfaceStore:{
 					menuActive: false,
 					modal: {
@@ -53,6 +55,9 @@ describe(`content service test`, () => {
 					lost: false,
 					editorStyle: false,
 					events: [],
+					languageCodes : {
+						spanish: "es"
+					}
 				},
 			},
 			composeWithDevTools(
@@ -64,6 +69,11 @@ describe(`content service test`, () => {
 		apiProxy = proxies.apiProxy
 	})
 
+	proxies.apiProxy.translation.getTranslation = jest.fn()
+	proxies.apiProxy.email.postNoAttachment = jest.fn()
+	proxies.apiProxy.email.postWithAttachment = jest.fn()
+
+
 	// types
 	it(`should return correct types`, ()=> {
 		const types = interfaceServiceConstructor.types
@@ -73,6 +83,14 @@ describe(`content service test`, () => {
 		expect(types.COLLECTIONS_DISPLAY_TOGGLE).toBe(`COLLECTIONS_DISPLAY_TOGGLE`)
 		expect(types.SET_HEADER_BORDER).toBe(`SET_HEADER_BORDER`)
 		expect(types.SET_LOST).toBe(`SET_LOST`)
+		expect(types.SET_HEADER_BORDER).toBe(`SET_HEADER_BORDER`)
+		expect(types.SET_EDITOR_STYLE).toBe(`SET_EDITOR_STYLE`)
+		expect(types.SET_EVENTS).toBe(`SET_EVENTS`)
+		expect(types.GET_EVENTS).toBe(`GET_EVENTS`)
+		expect(types.GET_TRANSLATION).toBe(`GET_TRANSLATION`)
+		expect(types.INTERFACE_ERROR).toBe(`INTERFACE_ERROR`)
+		expect(types.SENT_EMAIL).toBe(`SENT_EMAIL`)
+
 	})
 
 	// reducers and actions
@@ -109,6 +127,34 @@ describe(`content service test`, () => {
 		const result = store.dispatch(interfaceServiceConstructor.actions.setLost(true))
 		expect(store.getState().lost).toBe(true)
 		expect(result.type).toBe(`SET_LOST`)
+	})
+
+	it(`setEvents`, () => {
+		expect(store.getState().events).toEqual([])
+		const result = store.dispatch(interfaceServiceConstructor.actions.setEvents(['event']))
+		expect(store.getState().events).toEqual(['event'])
+		expect(result.type).toBe(`SET_EVENTS`)
+	})
+
+	it(`getEvents`, () => {
+		expect(store.getState().events).toEqual([])
+		const result = store.dispatch(interfaceServiceConstructor.actions.getEvents(['event']))
+		expect(store.getState().events).toEqual(['event'])
+		expect(result.type).toBe(`GET_EVENTS`)
+	})
+
+	it(`getTranslation`, () => {
+		expect(store.getState().jsonResponse).toEqual(undefined)
+		const result = store.dispatch(interfaceServiceConstructor.actions.getTranslation('text'))
+		expect(store.getState().jsonResponse).toEqual('text')
+		expect(result.type).toBe(`GET_TRANSLATION`)
+	})
+
+	it(`interfaceError`, () => {
+		expect(store.getState().error).toEqual('')
+		const result = store.dispatch(interfaceServiceConstructor.actions.interfaceError('error!'))
+		expect(result.payload.error).toBe(`error!`)
+		expect(result.type).toBe(`INTERFACE_ERROR`)
 	})
 
 	// thunk
@@ -152,6 +198,76 @@ describe(`content service test`, () => {
 		expect(store.getState().events).toEqual([])
 		await interfaceServiceConstructor.setEvents(testEvent)(dispatch)
 		expect(store.getState().events).toEqual(testEvent)
+	})
+
+	it(`getTranslation`, async() => {
+		const unTranslate = `manzana`
+		const translate = `apple`
+		const language = 'spanish'
+
+		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(()=>{
+			return Promise.resolve(translate)
+		})
+		expect(store.getState().jsonResponse).toEqual(undefined)
+		await interfaceServiceConstructor.getTranslation(unTranslate, language)(dispatch, getState, { apiProxy })
+		expect(store.getState().jsonResponse).toEqual('apple')
+	})
+
+	it(`checkTranslation: find match language`, async() => {
+		const language = `spanish`
+		const translate = `apple`
+
+		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(()=>{
+			return Promise.resolve(translate, language)
+		})
+		const json = await interfaceServiceConstructor.checkTranslation(translate, language)(dispatch, getState, { apiProxy })
+		expect(json).toEqual({ "json": 'apple', "success": true})
+	})
+
+	it(`checkTranslation: can't find match language`, async() => {
+		const language = `english`
+		const translate = `apple`
+
+		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(()=>{
+			return Promise.resolve(translate, language)
+		})
+		const json = await interfaceServiceConstructor.checkTranslation(translate, language)(dispatch, getState, { apiProxy })
+		expect(json).toEqual({ "json": {}, "success": false})
+	})
+
+	it(`sendNoAttachment`, async() => {
+		const success = 200
+		var emailObject = {
+			"sender-email": "email",
+			"subject": "title",
+			"message": "body",
+		}
+
+		proxies.apiProxy.email.postNoAttachment.mockImplementationOnce(()=>{
+			return Promise.resolve(success)
+		})
+
+		await interfaceServiceConstructor.sendNoAttachment(emailObject)(dispatch, getState, { apiProxy })
+	})
+
+	it(`sendNoAttachment`, async() => {
+		const attachment = {
+			name: "test.jpg",
+			size: 4377,
+			type: "image/jpeg",
+			webkitRelativePath: "",
+		}
+		const formData = new FormData()
+		formData.append(`attachment`, attachment)
+		formData.append(`sender-email`, "test#byu.edu")
+		formData.append(`subject`, "title")
+		formData.append(`message`, "body")
+
+		proxies.apiProxy.email.postWithAttachment.mockImplementationOnce(()=>{
+			return Promise.resolve(200)
+		})
+
+		await interfaceServiceConstructor.sendWithAttachment(formData)(dispatch, getState, { apiProxy })
 	})
 
 })
