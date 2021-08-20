@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import {
 	collectionService,
@@ -28,6 +29,8 @@ const ContentOverviewContainer = props => {
 		adminRemoveCollectionContent,
 		toggleModal,
 	} = props
+
+	const history = useHistory()
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
@@ -166,6 +169,27 @@ const ContentOverviewContainer = props => {
 		})
 	}
 
+	const handleLinks = e => {
+		e.preventDefault()
+		const classname = e.target.className
+		if(classname){
+			if(classname.includes(`video-editor`)){
+				history.push({
+					pathname: `/videoeditor/${content.id}`,
+				})
+			} else if(classname.includes(`subtitle-editor`)){
+				history.push({
+					pathname: `/subtileeditor/${content.id}`,
+				})
+			} else if(classname.includes(`clip-manager`)){
+				history.push({
+					pathname: `/clipeditor/${content.id}`,
+				})
+			}
+
+		}
+	}
+
 	const viewstate = {
 		content: contentState,
 		showing,
@@ -190,6 +214,7 @@ const ContentOverviewContainer = props => {
 		changeTag,
 		handleShowWordsModal,
 		handleShowHelp,
+		handleLinks,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />
