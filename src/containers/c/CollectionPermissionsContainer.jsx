@@ -49,21 +49,18 @@ const CollectionPermissionsContainer = props => {
 	const [numUsers, setNumUsers] = useState(0)
 
 	useEffect(() => {
+
 		if(isEdited){
 			getCollectionInfo(collection.id)
 			setIsEdited(false)
 		}
 
-		if(users.length > 0) setNumUsers(users.length)
-
-		if(numUsers !== users.length) setIsLoading(true)
-
 		if(isLoading === true) {
-			getCollectionInfo(collection.id)
 			setTimeout(() => {
 				setIsLoading(false)
 			}, 100)
-		}
+		} else
+			getCollectionInfo(collection.id)
 
 	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
 

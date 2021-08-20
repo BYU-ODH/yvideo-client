@@ -71,7 +71,6 @@ const Controller = props => {
 		playbackRate,
 
 		// handlers
-
 		toggleMute: () => setMuted(!muted),
 		setVolume: volume => setVolumeState(volume),
 
