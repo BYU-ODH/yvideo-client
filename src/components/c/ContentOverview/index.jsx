@@ -105,7 +105,7 @@ export default class ContentOverview extends PureComponent {
 							<IconWrapper onClick={handleLinks} className='clip-manager-wrapper'><ContentIcons className='clip-manager'/><StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink></IconWrapper>
 						</LinksWrapper>
 					}
-					<SettingsIcon onClick={handleToggleEdit}/>
+					{!editing && <SettingsIcon onClick={handleToggleEdit} />}
 					<EditButton className='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : ``}</EditButton>
 				</Preview>
 				{editing &&
