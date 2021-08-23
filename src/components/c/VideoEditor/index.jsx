@@ -59,7 +59,7 @@ const VideoEditor = props => {
 			type: `Pause`,
 			icon: pauseIcon,
 			start: 0,
-			end: 10,
+			end: 1,
 			layer: 0,
 		},
 		// {
@@ -156,6 +156,7 @@ const VideoEditor = props => {
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
+		// console.log("Start Percentage", startPercentage)
 
 		let currentEvents = []
 		if(allEvents !== undefined)
@@ -169,9 +170,10 @@ const VideoEditor = props => {
 
 		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
-		eventObj.end = Number(startPercentage) + 10
+		eventObj.end = Number(startPercentage) + eventObj.end
 
-		setCurrentTime(Number(startPercentage)+10)
+		// console.log("Last final time for event start", eventObj.start)
+		// setCurrentTime(Number(startPercentage) + eventObj.end)
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 
@@ -452,7 +454,9 @@ const VideoEditor = props => {
 		}
 	}
 	const setCurrentTimePercentage = (time) => {
+		// console.log("Time", time)
 		const seconds = time * videoLength
+		// console.log("Seconds", seconds)
 		setCurrentTime(seconds)
 	}
 
