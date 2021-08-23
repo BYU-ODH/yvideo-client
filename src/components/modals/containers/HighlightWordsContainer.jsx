@@ -110,7 +110,13 @@ const HighlightWordsContainer = props => {
 			let allWords = ''
 			let allMeanings = ''
 
-			if(Object.keys(jsonResponse).length < 1){
+			if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined){
+				setTranslationWords('Unsupported language. Please, check the list of available languages')
+				setTranslationMeanings('')
+				return;
+			}
+
+			if(jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].length < 1){
 				setTranslationWords('No matches found')
 				setTranslationMeanings('')
 				return;

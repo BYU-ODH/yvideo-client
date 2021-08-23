@@ -51,10 +51,10 @@ const Transcript = props => {
 		let allWords = ``
 		let allMeanings = ``
 
-		if(Object.keys(jsonResponse).length < 1){
-			setWords(`No matches found`)
-			setMeanings(``)
-			return
+		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined || jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].length < 1){
+			setWords('No matches found')
+			setMeanings('')
+			return;
 		}
 
 		jsonResponse[Object.keys(jsonResponse)[0]][0][`meanings`].forEach((item, index) => {
@@ -111,7 +111,7 @@ const Transcript = props => {
 			wordArray.forEach(word => {
 				foundWord = word
 			})
-			translate(foundWord, languageCodes[displaySubtitles.language])
+			translate(foundWord, languageCodes[content.settings.targetLanguages.toLowerCase()])
 		}
 	}
 
@@ -146,7 +146,8 @@ const Transcript = props => {
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start)}
+								<div onClick={e => handleSeekChange(null, element.start + element.start * .01)}
+									//passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`, {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
