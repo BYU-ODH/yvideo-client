@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 import { DndProvider } from 'react-dnd'
@@ -416,7 +416,7 @@ const VideoEditor = props => {
 			if(d.x === 0){
 				setZoomFactor(0)
 				setWidth(0)
-				handleScrollFactor(`start`)
+				handleScrollFactor(0)
 			} else {
 				setZoomFactor(d.x)
 				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
@@ -425,26 +425,35 @@ const VideoEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		handleScrollFactor(((videoCurrentTime * .95) / videoLength), true)
 	}
 
-	const handleScrollFactor = (direction) => {
+	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const alllayers = Array.from(document.getElementsByClassName(`layer-container`))
+			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
 
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
+			if(!zoom){
+				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
+				timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
 
-			alllayers.forEach((element, i) => {
-				alllayers[i].scrollLeft = currentLayerWidth * dis
-			})
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
+				})
+			}
+			else {
+				scrubber.scrollLeft = currentLayerWidth * direction
+				timeIndicator.scrollLeft = currentLayerWidth * direction
+
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = currentLayerWidth * direction
+				})
+			}
 		}
 	}
+
 	const checkSideBarTitle = () => {
 		try {
 			const title = allEvents[eventToEdit].type
@@ -478,12 +487,14 @@ const VideoEditor = props => {
 						minimized={timelineMinimized}
 						togglendTimeline={togglendTimeline}
 						handleLastClick = {handleLastClick}
+						handleScroll = {handleScrollFactor}
 						events = {allEvents}
 						updateEvents={updateEvents}
 						eventToEdit={eventToEdit}
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
 						editorType={`video`}
+						ref={childRef}
 					>
 					</VideoContainer>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -518,10 +529,7 @@ const VideoEditor = props => {
 
 						<div className='zoom-controls'>
 							{/* ADD ZOOM ICON */}
-							<div className='zoom-factor' id = 'zoom-factor'
-								onClick={(e)=>{
-								}}
-								style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<div className='zoom-factor' id = 'zoom-factor'>
 								<img src={zoomOut} style={{ width: `20px` }}/>
 								<Rnd
 									className={`zoom-indicator`}
@@ -535,36 +543,10 @@ const VideoEditor = props => {
 								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
 							</div>
 
-							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<div className='zoom-scroll'>
 
-								<div style={{ width: `90%`, height: `100%`, display: `flex`, marginLeft: `5%` }}>
-									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-start`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}
-									><img src={llIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-left`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
+								<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
 
-									<div className={`zoom-scroll-container`}>
-										<Rnd
-											className= 'zoom-scroll-indicator'
-											size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
-											enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-											bounds = {`parent`}
-											onDragStop = {(e,d)=>{
-												handleScrollFactor(d.x)
-											}}
-										>
-										</Rnd>
-									</div>
-
-									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-right`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y+ 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={rIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-end`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={rrIcon}/></span>
 								</div>
 
 								<div id={`time-indicator-container`}>
