@@ -494,7 +494,6 @@ const VideoEditor = props => {
 						activeCensorPosition = {activeCensorPosition}
 						setActiveCensorPosition = {setActiveCensorPosition}
 						editorType={`video`}
-						ref={childRef}
 					>
 					</VideoContainer>
 					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
