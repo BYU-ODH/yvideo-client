@@ -91,13 +91,14 @@ export default class CreateContent extends PureComponent {
 						<textarea className='url-content-description' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} />
 
 						<label htmlFor='create-content-keywords'>
-							<span>Tags - <i>Ex: GoCougars</i></span>
+							<span>Tags</span>
 						</label>
+						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add tag...'/>
 						<div className='keywords-list'>
+							{resource.keywords.length < 1 ? (<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>) : (null)}
 							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword className='url-content-remove' src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
 						</div>
 						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
-						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add tags. Single words with no spaces'/>
 
 						<label>
 							<span>Target Language</span>
@@ -132,13 +133,13 @@ export default class CreateContent extends PureComponent {
 							{
 								resourceContent && hideResources !== true &&
 							Object.keys(resourceContent).map(index =>
-								<li key={resourceContent[index].id}>
-									<label onClick={e => handleSelectResourceChange(e, resourceContent[index])}>{resourceContent[index].resourceName}</label>
+								<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
+									<label>{resourceContent[index].resourceName}</label>
 								</li>,
 							)
 							}
 						</TableContainer>
-
+						<br/>
 						<label>
 							<span>Resource</span><br/>
 							<div className='resource-content-remove'>
@@ -149,6 +150,7 @@ export default class CreateContent extends PureComponent {
 								}
 							</div>
 						</label>
+						<br/>
 						{
 							!isAccess &&
 								<label>
@@ -159,10 +161,11 @@ export default class CreateContent extends PureComponent {
 							<span>Display Title</span><br/>
 							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange}/>
 						</label>
+						<br/>
 						<label>
 							<span>Description</span><br/>
 							<textarea className='resource-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
-						</label>
+						</label><br/>
 						<label>
 							<span>Target Language</span>
 							{
