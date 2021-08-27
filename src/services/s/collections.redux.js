@@ -512,7 +512,7 @@ export default class CollectionService {
 				if(currentUsers.length < 1)
 					temp.push(backEndBody)
 
-				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
+				dispatch(this.actions.collectionGetInfo( { users: temp, courses: currentCourses } ))
 			} else if(endpoint === `add-course`){
 				const temp = []
 				if(currentCourses.length < 1)

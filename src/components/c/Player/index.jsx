@@ -84,6 +84,9 @@ export default class Player extends PureComponent {
 			setHasPausedClip,
 		} = this.props.handlers
 
+		if(!events) return
+
+
 		const handleOnProgress = ({ played, playedSeconds }) => {
 			const t0 = performance.now()
 			handleProgress(playedSeconds)
@@ -98,32 +101,66 @@ export default class Player extends PureComponent {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
+					console.log('setting pause')
 					setHasPausedClip(true)
 				}
 			}
-			if(!events) return
+
 			const values = CurrentEvents(playedSeconds,events,duration)
 
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+
 			for (let y = 0; y < values.allEvents.length; y++){
+				let index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
+
+				if(!events[index].active){
+					return
+				}
+
 				switch(values.allEvents[y].type){
-				case `Mute`:
-					handleMuted()
-					break
-				case `Pause`:
-					if(!values.allEvents[y].active){
-						values.allEvents[y].active = true
+					case `Mute`:
+						if(!muted){
+							handleMuted()
+							// console.log("muting")
+						}
+						break
+					case `Pause`:
+						events[index].active = false
 						handlePause()
-					}
-					break
-				case `Skip`:
-					handleSeekChange(null,values.allEvents[y].end)
-					break
-				default:
-					break
+						// console.log("pausing")
+						break
+					case `Skip`:
+						events[index].active = false
+						handleSeekChange(null,values.allEvents[y].end)
+						// console.log('skipping')
+						break
+					default:
+						break
 				}
 			}
+
+			for(let j = 0; j < values.doneEvents.length; j++){
+				//needed for unmuting after muting event is done
+				let index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
+
+				if(!events[index].active){
+					return
+				}
+
+				switch(values.doneEvents[j].type){
+					case `Mute`:
+						if(muted){
+							handleUnmuted()
+							// console.log("unmuting")
+							events[index].active = false
+						}
+						break
+					default:
+						break
+				}
+			}
+
 			const t1 = performance.now()
 		}
 		return (

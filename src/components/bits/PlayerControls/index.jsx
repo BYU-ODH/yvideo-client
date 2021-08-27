@@ -177,13 +177,12 @@ const PlayerControls = props => {
 				<div className='menu-modal' onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>
 					<div className='caption-list'>
-						<input type='button' value={displaySubtitles.language} className={`active-value`}/>
+						<input type='button' value={displaySubtitles.title} className={`active-value`}/>
 					</div>
 				</div>
 			}
 		</Style>
 	)
-
 }
 
 export default PlayerControls

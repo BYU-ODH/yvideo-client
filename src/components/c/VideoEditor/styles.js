@@ -92,8 +92,8 @@ export const Timeline = styled.div`
 
 			& .zoom-scroll-container {
 				margin: auto;
-				width: 90%;
-				height: 50%;
+				width: 100%;
+				height: 10%;
 				border-radius: 10px;
 				background-color: rgba(220, 220, 220, 0.5);
 				position: relative;
@@ -101,7 +101,7 @@ export const Timeline = styled.div`
 
 				& .zoom-scroll-indicator {
 					position: absolute;
-					min-width: 5%;
+					min-width: .5%;
 					background-color: var(--light-blue);
 					border-radius: 20px;
 				}
@@ -114,6 +114,7 @@ export const Timeline = styled.div`
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
+				scroll-behavior: smooth;
 				pointer-events: none;
 				bottom: 0px;
 

@@ -101,7 +101,7 @@ const PlayerContainer = props => {
 				setUrl(``)
 
 				if(contentCache[params.id].resourceId && !isStreamKeyLoaded){
-					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguages)
+					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguage)
 					setIsStreamKeyLoaded(true)
 				}
 
@@ -128,6 +128,9 @@ const PlayerContainer = props => {
 			else
 				setIsLandscape(false)
 		}
+
+		if(events) events.forEach(event => { event.active = true })
+
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId])
 
 	const handleShowTip = (tipName, position) => {
@@ -187,6 +190,7 @@ const PlayerContainer = props => {
 
 	const handleSeekChange = (e, time) => {
 		toggleTip()
+		//reset events
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
@@ -201,6 +205,12 @@ const PlayerContainer = props => {
 		if(newPlayed !== Infinity && newPlayed !== -Infinity)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 
+		//for all of the events. If the new seek time goes before events that were already executed activate the events again
+		events.forEach(event => {
+			if(event.end >= newPlayed && event.active === false){
+				event.active = true
+			}
+		})
 	}
 
 	const handleToggleFullscreen = () => {
@@ -300,7 +310,7 @@ const PlayerContainer = props => {
 			handleChangeSubtitle(0)
 		} else if(subtitles.length > 1) {
 			// pick the subtitle to display to be the one with the same language as the audio
-			const audioLanguage = content.settings.targetLanguages
+			const audioLanguage = content.settings.targetLanguage
 
 			let result = 0
 			for(let i = 0; i < subtitles.length; i++){

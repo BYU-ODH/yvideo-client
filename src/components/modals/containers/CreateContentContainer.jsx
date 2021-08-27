@@ -6,6 +6,7 @@ import {
 	interfaceService,
 	adminService,
 	resourceService,
+	languageService,
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
@@ -24,6 +25,8 @@ const CreateContentContainer = props => {
 		searchResource,
 		getAccess,
 		user,
+		getLanguages,
+		allLanguages,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -48,10 +51,12 @@ const CreateContentContainer = props => {
 			keywords: [],
 		},
 		thumbnail: ``,
-		targetLanguages: ``,
+		targetLanguage: ``,
 	})
 
 	useEffect(() => {
+		getLanguages()
+
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
 			const finalLanguages = []
@@ -184,7 +189,6 @@ const CreateContentContainer = props => {
 		document.getElementById(`create-content-form`).reset()
 	}
 
-	// TODO: need to add create content from the resource
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		let tags = ``
@@ -200,6 +204,11 @@ const CreateContentContainer = props => {
 
 		const videoId = new URL(data.url).search.split(`=`)[1]
 
+		if(data.targetLanguage === ``){
+			alert(`Please, select a valid language`)
+			return
+		}
+
 		const backEndData = {
 			"allow-definitions": true,
 			"url": data.url,
@@ -208,7 +217,7 @@ const CreateContentContainer = props => {
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": ``,
+			"file-version": data.targetLanguage === `` ? ('English') : (data.targetLanguage),
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -234,7 +243,7 @@ const CreateContentContainer = props => {
 	const handleAddResourceSubmit = async (e) => {
 		e.preventDefault()
 
-		if(data.targetLanguages === ``){
+		if(data.targetLanguage === ``){
 			alert(`Please, select a valid language`)
 			return
 		}
@@ -253,7 +262,7 @@ const CreateContentContainer = props => {
 			"clips": ``,
 			"words": ``,
 			"thumbnail": `empty`,
-			"file-version": data.targetLanguages,
+			"file-version": data.targetLanguage,
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -278,7 +287,7 @@ const CreateContentContainer = props => {
 		setData({
 			...data,
 			resource: {
-				keywords: data.keywords.filter(keyword => keyword !== badkeyword),
+				keywords: data.resource.keywords.filter(keyword => keyword !== badkeyword),
 			},
 		})
 		setBlock(true)
@@ -301,6 +310,7 @@ const CreateContentContainer = props => {
 		languages,
 		isResourceSelected,
 		isAccess,
+		allLanguages,
 	}
 
 	const handlers = {
@@ -327,6 +337,7 @@ const mapStateToProps = store => ({
 	resourceContent: store.resourceStore.cache,
 	modal: store.interfaceStore.modal,
 	collections: store.collectionStore.cache,
+	allLanguages: store.languageStore.cache.langs,
 })
 
 const mapDispatchToProps = {
@@ -339,6 +350,7 @@ const mapDispatchToProps = {
 	searchResource: resourceService.search,
 	getCollections: collectionService.getCollections,
 	getAccess: resourceService.readAccess,
+	getLanguages: languageService.get,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)

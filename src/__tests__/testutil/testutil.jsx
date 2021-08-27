@@ -16,7 +16,7 @@ export const settings = {
 	showWordList:false,
 	aspectRatio:`1.77`,
 	description:``,
-	targetLanguages: `English`,
+	targetLanguage: `English`,
 	annotationDocument: [],
 	captionTrack: [],
 }
@@ -29,7 +29,7 @@ export const changedSettings = {
 	showWordList:true,
 	aspectRatio:`1.77`,
 	description:`changed`,
-	targetLanguages: [`english`],
+	targetLanguage: `english`,
 	annotationDocument: [],
 	captionTrack: [],
 }

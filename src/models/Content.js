@@ -26,7 +26,7 @@ export default class Content {
 		captionTrack: [],
 		showTranscripts: false,
 		showWordList: false,
-		targetLanguages: ``,
+		targetLanguage: ``,
 		showCaptions: true,
 		allowDefinitions: true,
 		annotationDocument: [],
@@ -52,7 +52,7 @@ export default class Content {
 				allowDefinitions: obj[`allow-definitions`],
 				annotationDocument: obj[`annotations`] ? this.stringToArray(obj[`annotations`]) : ``,
 				showCaptions: obj[`allow-captions`],
-				targetLanguages: obj[`file-version`],
+				targetLanguage: obj[`file-version`] !== `` ?  (obj[`file-version`]) : ('English'),
 				allowNote: obj[`allow-notes`],
 			}
 		}

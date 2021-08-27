@@ -51,10 +51,10 @@ const Transcript = props => {
 		let allWords = ``
 		let allMeanings = ``
 
-		if(Object.keys(jsonResponse).length < 1){
-			setWords(`No matches found`)
-			setMeanings(``)
-			return
+		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined || jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].length < 1){
+			setWords('No matches found')
+			setMeanings('')
+			return;
 		}
 
 		jsonResponse[Object.keys(jsonResponse)[0]][0][`meanings`].forEach((item, index) => {
@@ -111,7 +111,7 @@ const Transcript = props => {
 			wordArray.forEach(word => {
 				foundWord = word
 			})
-			translate(foundWord, languageCodes[displaySubtitles.language])
+			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
 		}
 	}
 
@@ -136,7 +136,7 @@ const Transcript = props => {
 				</div>
 				<div className={`transcript-title`}>
 					<h1>Transcript</h1>
-					<h2>{content !== undefined ? content.settings.targetLanguages !== `` ? `Video - ${content.settings.targetLanguages} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `No captions available`}</h2>
+					<h2>{content !== undefined ? content.settings.targetLanguage !== `` ? `Video - ${content.settings.targetLanguage} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `No captions available`}</h2>
 				</div>
 				<br/><br/><br/>
 				<div className={`transcript-content`}>
@@ -146,7 +146,8 @@ const Transcript = props => {
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start)}
+								<div onClick={e => handleSeekChange(null, element.start + element.start * .1)}
+									//passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`, {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}

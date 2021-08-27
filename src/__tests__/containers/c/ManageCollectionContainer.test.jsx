@@ -21,7 +21,7 @@ const settings = {
 	showWordList:false,
 	aspectRatio:`1.77`,
 	description:``,
-	targetLanguages: [],
+	targetLanguage: ``,
 	annotationDocument: [],
 	captionTrack: [],
 }

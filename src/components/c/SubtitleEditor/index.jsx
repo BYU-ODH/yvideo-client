@@ -720,7 +720,7 @@ const SubtitleEditor = props => {
 										<div className={`handle`}>
 											<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
 												<SubtitlesCard
-													title={sub.title !== `` ? sub.title : isEdit ? `` : `No Title`}
+													title={sub.title !== `` ? sub.title : isEdit ? `` : `No Language`}
 													updateTitle={updateSubLayerTitle}
 													isEdit={isEdit}
 													subLayer={subLayerToEdit}
@@ -736,7 +736,7 @@ const SubtitleEditor = props => {
 											<Icon className={`trashIcon`} src={trashIcon} onClick={()=>{
 												setSubModalVisible(true)
 												setSubModalMode(`delete`)
-												setDeleteTitle(sub.title !== `` ? sub.title : `No Title`)
+												setDeleteTitle(sub.title !== `` ? sub.title : `No Language`)
 												setSubLayerToEdit(index)
 											}}/>
 										</div>
@@ -768,7 +768,7 @@ const SubtitleEditor = props => {
 						</section>
 						<div className='zoom-controls'>
 							{/* ADD ZOOM ICON */}
-							<div className='zoom-factor' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<div className='zoom-factor'>
 								<img src={zoomOut} style={{ width: `20px` }}/>
 								<Rnd
 									className={`zoom-indicator`}
@@ -781,7 +781,7 @@ const SubtitleEditor = props => {
 								></Rnd>
 								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
 							</div>
-							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
+							<div className='zoom-scroll'>
 
 								<div style={{ width: `90%`, height: `100%`, display: `flex`, marginLeft: `5%` }}>
 									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}

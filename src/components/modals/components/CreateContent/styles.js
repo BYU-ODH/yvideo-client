@@ -62,6 +62,12 @@ export const Form = styled.form`
 		outline: none;
 	}
 
+	& select {
+		margin-left: 20px;
+		width: 150px !important;
+		background-color: transparent;
+	}
+
 	& > label{
 
 		display: flex;
@@ -92,6 +98,13 @@ export const Form = styled.form`
 			margin: 0 .5rem 0 0;
 			display: flex;
 			align-items: center;
+		}
+	}
+
+	& #create-content-keywords {
+
+		& option {
+			font-size: 12px;
 		}
 	}
 `

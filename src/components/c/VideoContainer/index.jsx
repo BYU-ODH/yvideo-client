@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, useCallback } from 'react'
+import React, { useRef, useState, useLayoutEffect, useCallback, useImperativeHandle } from 'react'
 
 import ReactPlayer from 'react-player'
 
@@ -32,7 +32,9 @@ const VideoContainer = props => {
 		activeCensorPosition,
 		setActiveCensorPosition,
 		subtitles,
+		handleScroll,
 	} = props
+
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 	const censorRef = useRef(null)
@@ -55,6 +57,7 @@ const VideoContainer = props => {
 	const [pausedTimes,setPausedTimes] = useState([])
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
+
 	const video = {
 
 		// state
@@ -87,21 +90,38 @@ const VideoContainer = props => {
 			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			if(document.getElementById(`layer-time-indicator`) !== undefined)
-				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played*100}%)`
+			if(document.getElementById(`layer-time-indicator`) !== undefined){
+				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
+				let elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
+
+				if(elementRightSide >= (window.innerWidth * .6)){
+					handleScroll(1 / duration, false)
+				}
+			}
+
 			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played*100}`
-			if(document.getElementById(`time-dot`) !== undefined)
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played*100}% - 2px)` : `calc(${played*100}% - 2px)`
+				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+
+			// if(document.getElementById(`zoom-scroll-movable-bar`) !== undefined){
+			// 	document.getElementById(`zoom-scroll-movable-bar`).style.width = `${played * 100}%`
+			// }
+			//move layers and scroll indicator
+			//find the pixes to move
+
 			setElapsed(playedSeconds)
+
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
+
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
 			const testMute = values.allEvents.map(val => val.type)
+
 			if (!testMute.includes(`Mute`)) video.handleUnMute()
+
 			for (let y = 0; y < values.allEvents.length; y++){
 				switch(values.allEvents[y].type){
 				case `Mute`:
