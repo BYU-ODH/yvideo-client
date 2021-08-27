@@ -410,6 +410,25 @@ const VideoEditor = props => {
 		setIsLoading(false)
 	}
 
+	const handleExportAnnotation = async () => {
+		//Convert JSON Array to string.
+		//Convert JSON string to BLOB.
+		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : 'application/json'});
+
+		//get the current website url
+		let url = window.URL || window.webkitURL;
+		//create a link pointing to the blob or binary object
+		let link = url.createObjectURL(blob);
+		//create an anchor element to open the link we created
+		let a = document.createElement("a");
+		//trigger download and append file name
+		a.download = `${content.name}_annotations.json`;
+		a.href = link;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	}
+
 	const handleZoomChange = (e, d) => {
 		toggleTip()
 		if(d.x < zoomFactor){
@@ -579,6 +598,15 @@ const VideoEditor = props => {
 									}
 									<span>Save</span>
 								</button>
+							}
+						</div>
+						<div className={`save`}>
+							{!disableSave && !blockLeave && !isLoading ?
+								<button onClick={handleExportAnnotation}>
+									<span>Export</span>
+								</button>
+								:
+								null
 							}
 						</div>
 					</header>
