@@ -115,7 +115,7 @@ export default class ContentOverview extends PureComponent {
 								<h4>
 								Target Language:
 								</h4>
-								{content.settings.targetLanguages}
+								{content.settings.targetLanguage}
 							</div>
 							<h4>
 								Allow automatic definitions

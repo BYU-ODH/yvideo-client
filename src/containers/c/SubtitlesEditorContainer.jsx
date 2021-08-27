@@ -71,7 +71,7 @@ const SubtitlesEditorContainer = props => {
 				// CHECK RESOURCE ID
 				if(content[id].resourceId && !isStreamKeyLoaded){
 					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-					getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguage)
 					setIsStreamKeyLoaded(true)
 				}
 				if (streamKey){

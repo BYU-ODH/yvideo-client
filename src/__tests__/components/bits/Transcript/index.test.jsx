@@ -29,7 +29,7 @@ const viewstate = {
 	},
 	content: {
 		settings: {
-			targetLanguages: 'english'
+			targetLanguage: 'english'
 		}
 	},
 	subtitleText: 'a'

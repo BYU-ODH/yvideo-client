@@ -111,7 +111,7 @@ const Transcript = props => {
 			wordArray.forEach(word => {
 				foundWord = word
 			})
-			translate(foundWord, languageCodes[content.settings.targetLanguages.toLowerCase()])
+			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
 		}
 	}
 
@@ -136,7 +136,7 @@ const Transcript = props => {
 				</div>
 				<div className={`transcript-title`}>
 					<h1>Transcript</h1>
-					<h2>{content !== undefined ? content.settings.targetLanguages !== `` ? `Video - ${content.settings.targetLanguages} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `No captions available`}</h2>
+					<h2>{content !== undefined ? content.settings.targetLanguage !== `` ? `Video - ${content.settings.targetLanguage} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `No captions available`}</h2>
 				</div>
 				<br/><br/><br/>
 				<div className={`transcript-content`}>
