@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, useCallback, useImperativeHandle } from 'react'
+import React, { useRef, useEffect, useState, useLayoutEffect, useCallback, useImperativeHandle } from 'react'
 
 import ReactPlayer from 'react-player'
 
@@ -32,7 +32,7 @@ const VideoContainer = props => {
 		activeCensorPosition,
 		setActiveCensorPosition,
 		subtitles,
-		handleScroll,
+		handleScroll
 	} = props
 
 	const ref = useRef(null)
@@ -90,6 +90,9 @@ const VideoContainer = props => {
 			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
+			if(document.getElementById(`timeBarProgress`) !== undefined)
+				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+
 			if(document.getElementById(`layer-time-indicator`) !== undefined){
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 				let elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
@@ -99,8 +102,6 @@ const VideoContainer = props => {
 				}
 			}
 
-			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played * 100}`
 
 			// if(document.getElementById(`zoom-scroll-movable-bar`) !== undefined){
 			// 	document.getElementById(`zoom-scroll-movable-bar`).style.width = `${played * 100}%`
@@ -276,6 +277,44 @@ const VideoContainer = props => {
 		alert(`There was an error loading the video`)
 	}
 
+	useEffect(() => {
+		let count = 0
+		if(document.getElementById('time-bar') !== null && count === 0 && duration !== 0){
+			count++
+			document.getElementById('time-bar').addEventListener('mousemove', (e) => {
+				//calculate current time based on mouse position
+				let currentLayerWidth = document.getElementById('time-bar-container').clientWidth
+				let currentScrollLeft = document.getElementById('time-bar-container').scrollLeft
+
+				let secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
+
+				const dateElapsed = new Date(null)
+				dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
+				const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+
+				console.log('offset', e.offsetX)
+				console.log('ratio for time', secondsCurrentTimePercent)
+				console.log('currentLayer Width', currentLayerWidth)
+				console.log('pixels', e.offsetX + currentScrollLeft)
+				// console.log('ratio for time', widthToLayerRatio)
+
+				//set new x position to the red bar
+				document.getElementById('time-bar-shadow').style.visibility = `visible`
+				document.getElementById('time-bar-shadow').style.transform = `translateX(${e.offsetX - 2}px)`
+				document.getElementById('time-bar-shadow-text').innerText = `${formattedElapsed}`
+				if(e.offsetX > (window.innerWidth / 2)){
+					document.getElementById('time-bar-shadow-text').style.right = `6rem`
+				}
+				else {
+					document.getElementById('time-bar-shadow-text').style.right = `0`
+				}
+
+				document.getElementById('layer-time-indicator-line-shadow').style.visibility = `visible`
+				document.getElementById('layer-time-indicator-line-shadow').style.transform = `translateX(${e.offsetX}px)`
+			})
+		}
+	}, [duration])
+
 	return (
 		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
 			{/* <Style> */}
@@ -344,10 +383,14 @@ const VideoContainer = props => {
 							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
 						</button>
 
-						<div id='time-bar'>
+						<div id='time-bar' onMouseLeave={(e) => {
+							document.getElementById('time-bar-shadow').style.visibility = `hidden`
+							document.getElementById('layer-time-indicator-line-shadow').style.visibility = `hidden`
+						}}>
 							<div id={`time-bar-container`}>
 								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
-								<span id='time-dot'></span>
+								<span id='time-text'></span>
+								<span id='time-bar-shadow'><p id="time-bar-shadow-text"></p></span>
 							</div>
 						</div>
 					</div>

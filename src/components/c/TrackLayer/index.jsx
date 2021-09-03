@@ -1,6 +1,5 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 
-import { useDrop } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
 
@@ -49,12 +48,12 @@ const TrackLayer = props => {
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
 	// Drag and Drop event to the layer
-	const [, dropRef] = useDrop({
-		accept: [`timeline-event`],
-		// drop: onDrop,
-		hover: (item, monitor) => {
-		},
-	})
+	// const [, dropRef] = useDrop({
+	// 	accept: [`timeline-event`],
+	// 	// drop: onDrop,
+	// 	hover: (item, monitor) => {
+	// 	},
+	// })
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		const cEvents = events
@@ -139,7 +138,7 @@ const TrackLayer = props => {
 			<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='eventsbox'>
-					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
+					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
 						{
 							events !== undefined && events.length > 0 && videoLength!==0? (
 								<>

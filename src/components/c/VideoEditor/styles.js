@@ -131,6 +131,15 @@ export const Timeline = styled.div`
 						border-right: 2px solid red;
 						z-Index: 20;
 					}
+
+					& #layer-time-indicator-line-shadow {
+						position: absolute;
+						width: 2px;
+						height: calc(27vh - 40px);
+						background-color: rgba(5, 130, 202, 0.7);
+						z-Index: 20;
+						visibility: hidden;
+					}
 				}
 			}
 		}
