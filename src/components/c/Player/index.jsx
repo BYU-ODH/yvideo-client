@@ -84,9 +84,6 @@ export default class Player extends PureComponent {
 			setHasPausedClip,
 		} = this.props.handlers
 
-		if(!events) return
-
-
 		const handleOnProgress = ({ played, playedSeconds }) => {
 			const t0 = performance.now()
 			handleProgress(playedSeconds)
@@ -105,6 +102,8 @@ export default class Player extends PureComponent {
 					setHasPausedClip(true)
 				}
 			}
+
+			if(!events) return
 
 			const values = CurrentEvents(playedSeconds,events,duration)
 
@@ -163,6 +162,7 @@ export default class Player extends PureComponent {
 
 			const t1 = performance.now()
 		}
+
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>
