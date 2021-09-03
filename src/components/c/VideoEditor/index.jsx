@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
-import { DndProvider } from 'react-dnd'
-import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
@@ -450,6 +448,7 @@ const VideoEditor = props => {
 	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
+			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
@@ -494,7 +493,6 @@ const VideoEditor = props => {
 
 	return (
 		<Style>
-			<DndProvider backend={Backend}>
 
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
@@ -570,6 +568,7 @@ const VideoEditor = props => {
 								<div id={`time-indicator-container`}>
 									<div id={`layer-time-indicator`}>
 										<span id={`layer-time-indicator-line`}></span>
+										<span id={`layer-time-indicator-line-shadow`}></span>
 									</div>
 								</div>
 							</div>
@@ -645,7 +644,6 @@ const VideoEditor = props => {
 						}
 					</>
 				</EventEditor>
-			</DndProvider>
 
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
