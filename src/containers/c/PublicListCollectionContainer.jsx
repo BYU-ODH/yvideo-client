@@ -18,13 +18,13 @@ const PublicListCollectionContainer = props => {
 		updateCollectionPermissions,
 		user,
 		isAdmin,
-		getSubscribers,
 		searchCollectionsByUserId,
 		collections,
-		getUserById,
-		searchedUser,
-		emptySearchedUser,
 		defaultSubscription,
+		// getSubscribers,
+		// getUserById,
+		// searchedUser,
+		// emptySearchedUser,
 		// defaultCopyright,
 	} = props
 

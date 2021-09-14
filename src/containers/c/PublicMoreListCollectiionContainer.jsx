@@ -31,7 +31,7 @@ const PublicMoreListCollectionContainer = props => {
 			setIsLoading(false)
 		}
 
-		console.log(collection)
+		// console.log(collection)
 	}, [isOpen, contentsCount, collection, morePublicCollections, isLoading])
 
 	const getContents = async() => {

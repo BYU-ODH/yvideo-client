@@ -22,6 +22,9 @@ const ManageInstructorsContainer = props => {
 		removeAccess,
 	} = props
 
+	console.log(resource)
+	console.log(resourceAccess)
+
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [countAccess, setCountAccess] = useState(0)
 	const [blockLeave, setBlock] = useState(false)
@@ -54,10 +57,10 @@ const ManageInstructorsContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 	}
-	const handleSearchSubmit = e => {
-		e.preventDefault()
-		search(`user`, searchQuery, true)
-	}
+	// const handleSearchSubmit = e => {
+	// 	e.preventDefault()
+	// 	search(`user`, searchQuery, true)
+	// }
 
 	const addInstructor = async() => {
 
@@ -84,7 +87,7 @@ const ManageInstructorsContainer = props => {
 	const handlers = {
 		handleRegister,
 		updateSearchBar,
-		handleSearchSubmit,
+		// handleSearchSubmit,
 		toggleModal,
 		addInstructor,
 		removeInstructor,

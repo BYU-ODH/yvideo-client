@@ -178,8 +178,8 @@ export const content = [
 		url: `test url`,
 		views: 0,
 		resource,
-		words: ['testWord1'],
-		tag: ['testTag1'],
+		words: [`testWord1`],
+		tag: [`testTag1`],
 		editing: true,
 		clips: ``,
 	},
@@ -204,8 +204,8 @@ export const content = [
 		url: `test url2`,
 		views: 0,
 		resource,
-		words: ['testWord2'],
-		tag: ['testTag2'],
+		words: [`testWord2`],
+		tag: [`testTag2`],
 		editing: true,
 		clips: ``,
 	},
@@ -270,7 +270,7 @@ export const contentBeforeModel = [
 
 export const collection = {
 	archived: false,
-	content: content,
+	content,
 	id: 0,
 	name: `Collection 1`,
 	owner: 22,
@@ -337,7 +337,18 @@ export const collection6 = {
 	owner: 22,
 	published: true,
 	thumbnail: `test@thumbnail`,
-	public: false
+	public: false,
+}
+
+export const collection7 = {
+	archived: false,
+	content: [{thumbnail: `test@thumbnail`}],
+	id: 1,
+	name: `Collection 5`,
+	owner: 12,
+	published: true,
+	thumbnail: `test@thumbnail`,
+	public: false,
 }
 
 export const collections = {
@@ -552,7 +563,7 @@ export const adminCategory = {
 export const subtitle =
 {
 	content: ``,
-	["content-id"]: `0`,
+	"content-id": `0`,
 	id: `1`,
 	language: `english`,
 	title: `title`,
@@ -562,7 +573,7 @@ export const subtitle =
 export const updateSubtitle =
 {
 	content: ``,
-	["content-id"]: `0`,
+	"content-id": `0`,
 	id: `1`,
 	language: `english`,
 	title: `title`,
@@ -572,7 +583,7 @@ export const updateSubtitle =
 export const updateSubtitle1 =
 {
 	content: 0,
-	["content-id"]: `0`,
+	"content-id": `0`,
 	id: `1`,
 	language: `english`,
 	title: `title`,
@@ -583,29 +594,42 @@ export const subtitle1 =
 [
 	{
 		content: ``,
-		["content-id"]: `0`,
+		"content-id": `0`,
 		id: `1`,
 		language: `english`,
 		title: `title`,
 		words: `b, a, c`,
-	}
+	},
 ]
 
 export const emptyStore = mockStore(
 	{
-		resourceStore: {},
+		resourceStore: {
+			access: {
+				"id1" : [],
+			},
+		},
 		authStore: {
 			user,
 		},
 		adminStore: {
-			data: [],
+			data: null,
 			professor: professor1,
+			morePublicCollections: {
+				collections1,
+			},
 		},
 		interfaceStore: {
 			languageCodes: {},
 			jsonResponse: {},
 			tip: {
 				active: false,
+			},
+			breadcrumbs: {	path: [``],
+				collectionId: ``,
+				contentId: ``},
+			modal: {
+				isLabAssistantRoute: false,
 			},
 		},
 		collectionStore: {
@@ -665,12 +689,13 @@ export const store = mockStore(
 				},
 			},
 			access: {
-				"id1" : {
-					"0": {
-						username: `yrich`,
-						valid: true
-					}
-				}
+				"id1" :
+					[
+						{
+							username: `yrich`,
+							valid: true,
+						},
+					],
 			},
 			streamKey: `key`,
 		},
@@ -701,6 +726,9 @@ export const store = mockStore(
 				190:content[0],
 			},
 			professor: professor1,
+			morePublicCollections: {
+				collections1,
+			},
 		},
 		interfaceStore: {
 			menuActive: false,
@@ -709,7 +737,7 @@ export const store = mockStore(
 				collectionId: -1,
 				isLabAssistantRoute: false,
 				component: (props) => (<div></div>),
-				props: { active: true }
+				props: { active: true },
 			},
 			displayBlocks: browserStorage.displayBlocks,
 			headerBorder: false,
@@ -727,32 +755,32 @@ export const store = mockStore(
 			tip: {
 				active: true,
 				props: {
-					name: 'help',
+					name: `help`,
 					position: {
 						width: 20,
 						x: 136,
-						y: 108
-					}
-				}
+						y: 108,
+					},
+				},
 			},
 			languageCodes: {
-				german: "de",
-				russian: "ru",
-				spanish: "es"
+				german: `de`,
+				russian: `ru`,
+				spanish: `es`,
 			},
 			jsonResponse: {
 				json: [
 					{
 						meanings: [
 							{
-								meaning: ' meaning ',
-								lemma: 'lemma'
-							}
-						]
-					}
+								meaning: ` meaning `,
+								lemma: `lemma`,
+							},
+						],
+					},
 				],
 			},
-			breadcrumbs: {	path: [`Home`, `Admin Dashboard`],
+			breadcrumbs: {	path: [`Home`, `Manage Collections`, `Video Editor`],
 				collectionId: `collectionId`,
 				contentId: `contentId`},
 		},
@@ -826,27 +854,28 @@ export const store = mockStore(
 		subtitlesStore:{
 			cache: [
 				{
-				content: [
-					{
-						start: 0,
-						end: 200,
-						text: "First Line"
-					}
-				],
-				["content-id"]: `0`,
-				id: `1`,
-				language: `english`,
-				title: `title`,
-				words: `b, a, c`,
-			},
-			{
-				content: ``,
-				["content-id"]: `1`,
-				id: `1`,
-				language: `spanish`,
-				title: `title1`,
-				words: `a, d c`,
-			}],
+					content: [
+						{
+							start: 0,
+							end: 200,
+							text: `First Line`,
+						},
+					],
+					[`content-id`]: `0`,
+					id: `1`,
+					language: `english`,
+					title: `title`,
+					words: `b, a, c`,
+				},
+				{
+					content: ``,
+					[`content-id`]: `1`,
+					id: `1`,
+					language: `spanish`,
+					title: `title1`,
+					words: `a, d c`,
+				},
+			],
 			loading: false,
 			lastFetched: 0,
 			active: 0,
@@ -870,8 +899,11 @@ export const store2 = mockStore(
 			languageCodes: {},
 			modal: {
 				component: (props) => (<div></div>),
-				props: { active: false }
+				props: { active: false },
 			},
+			breadcrumbs: {	path: [`Home`, `Feedback`, `Lab Assistant Manager`, `Admin Dashboard`, `Lab assistant Dashboard`, `Manage Resource`, `Manage Public Collections`, `Player`, `Subtitle Editor`, `Clip Manager`, `Manage Collections`],
+				collectionId: `collectionId`,
+				contentId: `contentId`},
 		},
 		collectionStore: {
 			roles,
@@ -889,9 +921,11 @@ export const store2 = mockStore(
 			cache: {},
 		},
 		subtitlesStore:{
-			cache: [{
-				words: ``,
-			}],
+			cache: [
+				{
+					words: ``,
+				},
+			],
 			active: 10,
 		},
 	},

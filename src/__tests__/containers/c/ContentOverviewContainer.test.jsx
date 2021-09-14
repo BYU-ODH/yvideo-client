@@ -1,6 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Container from '../../../containers/c/ContentOverviewContainer'
+import { EditButton } from '../../../components/c/ContentOverview/styles'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
@@ -43,8 +44,7 @@ describe(`manage collection test`, () => {
 		// console.log(wrapper.find(`ContentOverview`).instance().props.handlers)
 
 		// simulate edit button clicks, it should show 3 other buttons when it is clicked
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		wrapper.find(EditButton).simulate(`click`)
 
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 		expect(wrapper.find(`button`).at(1).props().children).toBe(`Delete`)
@@ -53,8 +53,7 @@ describe(`manage collection test`, () => {
 
 	it(`Unpublish event handler test`, ()=> {
 
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		wrapper.find(EditButton).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 
 		expect(wrapper.find(`ContentOverview`).props().viewstate.content.published).toBe(true)
@@ -64,8 +63,7 @@ describe(`manage collection test`, () => {
 
 	it(`delete event handler test`, ()=> {
 
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		wrapper.find(EditButton).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 
 		// method should not be called before click
@@ -83,8 +81,7 @@ describe(`manage collection test`, () => {
 
 	it(`save event handler test`, ()=> {
 
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		wrapper.find(EditButton).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(2).props().children).toBe(`Save`)
 
 		// edit event handler
