@@ -339,7 +339,7 @@ const VideoContainer = props => {
 				key={url}
 
 				// constants
-				className={`react-player`}
+				className={`react-player .${editorType}`}
 				progressInterval={30}
 
 				// state

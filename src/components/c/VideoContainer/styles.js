@@ -12,8 +12,7 @@ const Style = styled.div`
 
 	& .react-player {
 		height: calc(100% - 50px) !important;
-		width: 70% !important;
-		// width: ${props => props.type === `video` ? `70% !important` : `100% !important`};
+		width: ${props => props.type === `video` ? `70% !important` : `100% !important`};
 	}
 
 	& .loading-spinner{
@@ -25,7 +24,6 @@ const Style = styled.div`
 		justify-content: center;
 	}
 `
-
 export default Style
 
 export const TimeBar = styled.div`
