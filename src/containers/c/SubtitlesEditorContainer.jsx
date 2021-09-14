@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
 import { connect } from 'react-redux'
-
 import { interfaceService, resourceService, contentService, subtitlesService } from 'services'
-
 import { SubtitleEditor } from 'components'
-
 import { Tooltip } from 'components/bits'
-
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const SubtitlesEditorContainer = props => {
@@ -86,8 +81,21 @@ const SubtitlesEditorContainer = props => {
 		if(!calledGetSubtitles){
 			getSubtitles(id)
 			setCalledGetSubtitles(true)
-		} else
-			setSubs(allSubs)
+		} else {
+			if(allSubs.length === 0) {
+				const tempSubList = []
+				const tempSub = {
+					title : ``,
+					language: ``,
+					content: [{start: 0, end: 2, text: ``}],
+					id: ``,
+				}
+				tempSubList.push(tempSub)
+				setSubs(tempSubList)
+				setSubtitles(tempSubList)
+			} else
+				setSubs(allSubs)
+		}
 
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 
