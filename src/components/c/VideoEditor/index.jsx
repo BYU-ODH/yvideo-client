@@ -414,22 +414,22 @@ const VideoEditor = props => {
 	}
 
 	const handleExportAnnotation = async () => {
-		//Convert JSON Array to string.
-		//Convert JSON string to BLOB.
-		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : 'application/json'});
+		// Convert JSON Array to string.
+		// Convert JSON string to BLOB.
+		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
 
-		//get the current website url
-		let url = window.URL || window.webkitURL;
-		//create a link pointing to the blob or binary object
-		let link = url.createObjectURL(blob);
-		//create an anchor element to open the link we created
-		let a = document.createElement("a");
-		//trigger download and append file name
-		a.download = `${content.name}_annotations.json`;
-		a.href = link;
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
+		// get the current website url
+		const url = window.URL || window.webkitURL
+		// create a link pointing to the blob or binary object
+		const link = url.createObjectURL(blob)
+		// create an anchor element to open the link we created
+		const a = document.createElement(`a`)
+		// trigger download and append file name
+		a.download = `${content.name}_annotations.json`
+		a.href = link
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
 	}
 
 	const handleZoomChange = (e, d) => {
@@ -447,7 +447,7 @@ const VideoEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		handleScrollFactor(((videoCurrentTime * .95) / videoLength), true)
+		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
@@ -465,8 +465,7 @@ const VideoEditor = props => {
 				allLayers.forEach((element, i) => {
 					allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
 				})
-			}
-			else {
+			} else {
 				scrubber.scrollLeft = currentLayerWidth * direction
 				timeIndicator.scrollLeft = currentLayerWidth * direction
 
@@ -498,154 +497,152 @@ const VideoEditor = props => {
 
 	return (
 		<Style>
-				<span style={{ zIndex: 0 }}>
-					<VideoContainer
-						className='video'
-						url={url}
-						handlers={togglendTimeline}
-						getDuration={getVideoDuration}
-						getVideoTime={setCurrentTimePercentage} // set current time
-						handleLastClick = {handleLastClick}
-						handleScroll = {handleScrollFactor}
-						events = {allEvents}
-						updateEvents={updateEvents}
-						eventToEdit={eventToEdit}
-						activeCensorPosition = {activeCensorPosition}
-						setActiveCensorPosition = {setActiveCensorPosition}
-						editorType={`video`}
-					>
-					</VideoContainer>
-					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+			<span style={{ zIndex: 0 }}>
+				<VideoContainer
+					className='video'
+					url={url}
+					handlers={togglendTimeline}
+					getDuration={getVideoDuration}
+					getVideoTime={setCurrentTimePercentage} // set current time
+					handleLastClick = {handleLastClick}
+					handleScroll = {handleScrollFactor}
+					events = {allEvents}
+					updateEvents={updateEvents}
+					eventToEdit={eventToEdit}
+					activeCensorPosition = {activeCensorPosition}
+					setActiveCensorPosition = {setActiveCensorPosition}
+					editorType={`video`}
+					></VideoContainer>
 
-						<section>
-							<div className='event-layers'>
+				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
-								{layers.map((layer, index) => (
-									<div id={`layer-${index}`} className={`layer`} key={index}>
-										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
-											<EventCard event={events[index]} key={index}/>
-											<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
-										</div>
+					<section>
+						<div className='event-layers'>
 
-										<TrackLayer
-											videoLength={videoLength}
-											minimized={eventListMinimized}
-											width={layerWidth}
-											events={allEvents}
-											activeEvent={eventToEdit}
-											index={index}
-											// onDrop={(item) => eventDropHandler(item,index)}
-											sideEditor={openSideEditor}
-											updateEvents={updateEvents}
-											closeEditor={closeSideEditor}
-											displayLayer={displayLayer}
-										/>
+							{layers.map((layer, index) => (
+								<div id={`layer-${index}`} className={`layer`} key={index}>
+									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
+										<EventCard event={events[index]} key={index}/>
+										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
 									</div>
-								))}
-							</div>
-						</section>
 
-						<div className='zoom-controls'>
-							{/* ADD ZOOM ICON */}
-							<div className='zoom-factor' id = 'zoom-factor'>
-								<img src={zoomOut} style={{ width: `20px` }}/>
-								<Rnd
-									className={`zoom-indicator`}
-									bounds={`parent`}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-									dragAxis='x'
-									onDragStop={(e, d) => handleZoomChange(e, d)}
-									onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-									onMouseLeave={e => toggleTip()}
-								></Rnd>
-								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
-							</div>
-
-							<div className='zoom-scroll'>
-
-								<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-
+									<TrackLayer
+										videoLength={videoLength}
+										minimized={eventListMinimized}
+										width={layerWidth}
+										events={allEvents}
+										activeEvent={eventToEdit}
+										index={index}
+										// onDrop={(item) => eventDropHandler(item,index)}
+										sideEditor={openSideEditor}
+										updateEvents={updateEvents}
+										closeEditor={closeSideEditor}
+										displayLayer={displayLayer}
+									/>
 								</div>
+							))}
+						</div>
+					</section>
 
-								<div id={`time-indicator-container`}>
-									<div id={`layer-time-indicator`}>
-										<span id={`layer-time-indicator-line`}></span>
-										<span id={`layer-time-indicator-line-shadow`}></span>
-									</div>
+					<div className='zoom-controls'>
+						{/* ADD ZOOM ICON */}
+						<div className='zoom-factor' id = 'zoom-factor'>
+							<img src={zoomOut} style={{ width: `20px` }}/>
+							<Rnd
+								className={`zoom-indicator`}
+								bounds={`parent`}
+								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								dragAxis='x'
+								onDragStop={(e, d) => handleZoomChange(e, d)}
+								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseLeave={e => toggleTip()}
+							></Rnd>
+							<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+						</div>
+
+						<div className='zoom-scroll'>
+							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
+
+							</div>
+
+							<div id={`time-indicator-container`}>
+								<div id={`layer-time-indicator`}>
+									<span id={`layer-time-indicator-line`}></span>
+									<span id={`layer-time-indicator-line-shadow`}></span>
 								</div>
 							</div>
 						</div>
-					</Timeline>
+					</div>
+				</Timeline>
+			</span>
 
-				</span>
-
-				<EventEditor minimized={eventListMinimized}>
-					<header>
-						<img src={helpIcon} alt={`helpIcon`} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
-						<div className={`save`}>
-							{disableSave ?
-								<button className={`disable`}>
-									<span>Save</span>
-								</button>
-								:
-								<button onClick={handleSaveAnnotation}>
-									{blockLeave ?
-										null
+			<EventEditor minimized={eventListMinimized}>
+				<header>
+					<img src={helpIcon} alt={`helpIcon`} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+					<div className={`save`}>
+						{disableSave ?
+							<button className={`disable`}>
+								<span>Save</span>
+							</button>
+							:
+							<button onClick={handleSaveAnnotation}>
+								{blockLeave ?
+									null
+									:
+									isLoading ?
+										<i className='fa fa-refresh fa-spin'/>
 										:
-										isLoading ?
-											<i className='fa fa-refresh fa-spin'/>
-											:
-											<i className='fa fa-check'></i>
-									}
-									<span>Save</span>
-								</button>
-							}
-						</div>
-						<div className={`save`}>
-							{!disableSave && !blockLeave && !isLoading ?
-								<button onClick={handleExportAnnotation}>
-									<span>Export</span>
-								</button>
-								:
-								null
-							}
-						</div>
-					</header>
+										<i className='fa fa-check'></i>
+								}
+								<span>Save</span>
+							</button>
+						}
+					</div>
+					<div className={`save`}>
+						{!disableSave && !blockLeave && !isLoading ?
+							<button onClick={handleExportAnnotation}>
+								<span>Export</span>
+							</button>
+							:
+							null
+						}
+					</div>
+				</header>
 
-					<>
-						<div className='breadcrumbs'>
-							{ showSideEditor &&
+				<>
+					<div className='breadcrumbs'>
+						{ showSideEditor &&
 								<>
 									<>
 										<span className='current'>{allEvents !== []? `${checkSideBarTitle()}` : ``}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>
-							}
-						</div>
-
-						{ showSideEditor !== false && eventListMinimized !== true ?
-							<TrackEditorSideMenu
-								singleEvent={checkEvent()}
-								videoLength={videoLength}
-								closeSideEditor={closeSideEditor}
-								updateEvents={updateEvents}
-								editCensor = {editCensor}
-								index={eventToEdit}
-								handleEditCensor = {handleEditCensor}
-								handleCensorRemove = {handleCensorRemove}
-								handleAddCensor = {handleAddCensor}
-								handleSaveCensor = {handleSaveCensor}
-								activeCensorPosition = {activeCensorPosition}
-								setActiveCensorPosition = {setActiveCensorPosition}
-								toggleTip={toggleTip}
-								handleShowTip={handleShowTip}
-							></TrackEditorSideMenu>
-							:
-							<></>
 						}
-					</>
-				</EventEditor>
+					</div>
+
+					{ showSideEditor !== false && eventListMinimized !== true ?
+						<TrackEditorSideMenu
+							singleEvent={checkEvent()}
+							videoLength={videoLength}
+							closeSideEditor={closeSideEditor}
+							updateEvents={updateEvents}
+							editCensor = {editCensor}
+							index={eventToEdit}
+							handleEditCensor = {handleEditCensor}
+							handleCensorRemove = {handleCensorRemove}
+							handleAddCensor = {handleAddCensor}
+							handleSaveCensor = {handleSaveCensor}
+							activeCensorPosition = {activeCensorPosition}
+							setActiveCensorPosition = {setActiveCensorPosition}
+							toggleTip={toggleTip}
+							handleShowTip={handleShowTip}
+						></TrackEditorSideMenu>
+						:
+						<></>
+					}
+				</>
+			</EventEditor>
 
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
