@@ -166,7 +166,7 @@ export const Timeline = styled.div`
 	& .handle {
 		width: 162px !important;
 		min-width: 162px;
-		height: 46px;
+		height: 100%;
 		display: inline-flex;
 		align-items: center;
 		justify-content: space-between;

@@ -402,6 +402,11 @@ const VideoEditor = props => {
 
 	const handleSaveAnnotation = async () => {
 		setIsLoading(true)
+		allEvents.forEach((event) => {
+			if(event.halfLayer){
+				delete event.halfLayer
+			}
+		})
 		content.settings.annotationDocument = [...allEvents]
 		await updateContent(content)
 		setBlock(false)
@@ -507,15 +512,15 @@ const VideoEditor = props => {
 					activeCensorPosition = {activeCensorPosition}
 					setActiveCensorPosition = {setActiveCensorPosition}
 					editorType={`video`}
-				>
-				</VideoContainer>
+					></VideoContainer>
+
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 					<section>
 						<div className='event-layers'>
 
 							{layers.map((layer, index) => (
-								<div className={`layer`} key={index}>
+								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
 										<EventCard event={events[index]} key={index}/>
 										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
@@ -569,7 +574,6 @@ const VideoEditor = props => {
 						</div>
 					</div>
 				</Timeline>
-
 			</span>
 
 			<EventEditor minimized={eventListMinimized}>

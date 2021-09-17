@@ -34,8 +34,6 @@ const VideoContainer = props => {
 		editorType,
 	} = props
 
-	console.log(editorType)
-
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 
@@ -102,13 +100,6 @@ const VideoContainer = props => {
 				}
 			}
 
-
-			// if(document.getElementById(`zoom-scroll-movable-bar`) !== undefined){
-			// 	document.getElementById(`zoom-scroll-movable-bar`).style.width = `${played * 100}%`
-			// }
-			//move layers and scroll indicator
-			//find the pixes to move
-
 			setElapsed(playedSeconds)
 
 			if(!events) return
@@ -129,6 +120,9 @@ const VideoContainer = props => {
 					video.handleMute()
 					break
 				case `Pause`:
+					//TODO: this pause logic is way too expensive.
+					//This can be solved with a boolean active flag
+					//this yiels O(a * b) when it can be constant time
 					let paused = true
 					for (let i = 0; i < pausedTimes.length;i++){
 						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)

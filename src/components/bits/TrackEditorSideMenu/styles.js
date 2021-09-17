@@ -5,8 +5,7 @@ const Style = styled.div`
 	padding: 20px;
 
 	& .event-content {
-		overflow-y: scroll;
-    height: 27rem;
+    height: 80%;
 	}
 
 
@@ -74,6 +73,8 @@ const Style = styled.div`
 
 	& .censorMenu {
 		font-size: 1.5rem;
+		height: 65%;
+
 		& label {
 			margin: 15px 5px 15px 15px;
 			width: 150px;
@@ -91,8 +92,7 @@ const Style = styled.div`
 
 	& .censorList {
 		width: 100%;
-		height: auto;
-		max-height: 30vh;
+		height: 85%;
 		margin-left: 10px;
 		overflow-y: scroll;
 		position: relative;
