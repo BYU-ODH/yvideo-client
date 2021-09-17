@@ -292,10 +292,10 @@ const VideoContainer = props => {
 				dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
 				const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-				console.log('offset', e.offsetX)
-				console.log('ratio for time', secondsCurrentTimePercent)
-				console.log('currentLayer Width', currentLayerWidth)
-				console.log('pixels', e.offsetX + currentScrollLeft)
+				// console.log('offset', e.offsetX)
+				// console.log('ratio for time', secondsCurrentTimePercent)
+				// console.log('currentLayer Width', currentLayerWidth)
+				// console.log('pixels', e.offsetX + currentScrollLeft)
 				// console.log('ratio for time', widthToLayerRatio)
 
 				//set new x position to the red bar
