@@ -38,7 +38,7 @@ export const CurrentEvents = (time,events,duration) => {
 	const censorValues = []
 
 	censors.forEach((val,ind)=>{
-		console.log(val.position,time)
+
 		censorValues.push(Position(val.position,time))
 	})
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
@@ -66,13 +66,13 @@ export const CurrentEvents = (time,events,duration) => {
 				let del = true
 				for (let i; i < comments.length;i++)
 					if (censorChildren[i].className.search(i.toString()) < -1) del = false
-				if (del){
-					console.log(`del`,`${censorChildren[x].id}`)
+				if (del)
 					censorContainer.removeChild(censorChildren[x])
-				}
+
 			}
 		}
 	}
+
 	const commentContainer = document.getElementById(`commentContainer`)
 	if (commentContainer){
 		const commentChildren = commentContainer.children
@@ -109,7 +109,7 @@ export const CurrentEvents = (time,events,duration) => {
 	return eventValues
 }
 export const CensorChange = (ind,censorData, playedSeconds) =>{
-	console.log(ind,censorData)
+
 	const censorBox = document.getElementById(`censorBox-${ind}`)
 	if(!censorBox) return
 	const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0

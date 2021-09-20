@@ -86,6 +86,7 @@ export default class Player extends PureComponent {
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
 			const t0 = performance.now()
+			handleProgress(playedSeconds)
 			const subtitles = displaySubtitles
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
@@ -97,34 +98,71 @@ export default class Player extends PureComponent {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
+					console.log('setting pause')
 					setHasPausedClip(true)
 				}
 			}
+
 			if(!events) return
+
 			const values = CurrentEvents(playedSeconds,events,duration)
 
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+
 			for (let y = 0; y < values.allEvents.length; y++){
+				let index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
+
+				if(!events[index].active){
+					return
+				}
+
 				switch(values.allEvents[y].type){
-				case `Mute`:
-					handleMuted()
-					break
-				case `Pause`:
-					if(!values.allEvents[y].active){
-						values.allEvents[y].active = true
+					case `Mute`:
+						if(!muted){
+							handleMuted()
+							// console.log("muting")
+						}
+						break
+					case `Pause`:
+						events[index].active = false
 						handlePause()
-					}
-					break
-				case `Skip`:
-					handleSeekChange(null,values.allEvents[y].end)
-					break
-				default:
-					break
+						// console.log("pausing")
+						break
+					case `Skip`:
+						events[index].active = false
+						handleSeekChange(null,values.allEvents[y].end)
+						// console.log('skipping')
+						break
+					default:
+						break
 				}
 			}
+
+			for(let j = 0; j < values.doneEvents.length; j++){
+				//needed for unmuting after muting event is done
+				let index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
+
+				if(!events[index].active){
+					return
+				}
+
+				switch(values.doneEvents[j].type){
+					case `Mute`:
+						if(muted){
+							handleUnmuted()
+							// console.log("unmuting")
+							events[index].active = false
+						}
+						break
+					default:
+						break
+				}
+			}
+
 			const t1 = performance.now()
 		}
+
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>
@@ -167,7 +205,7 @@ export default class Player extends PureComponent {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
-							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id='subtitle'></h3></Subtitles>
+							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>
 							<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
 							</div>
 							<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
@@ -178,28 +216,11 @@ export default class Player extends PureComponent {
 					<Transcript viewstate={this.props.viewstate} handlers={this.props.handlers}>
 					</Transcript>
 				</div>
-				{/* <div className={`collection-container`}>
-					<CollectionsContainer/>
-				</div> */}
-				{/* <EventsContainer
-					currentTime={progress.playedSeconds.toFixed(1)}
-					duration={duration}
-					handleSeek={handleSeekChange}
-					handleMute={handleMuted}
-					handlePlay={handlePlay}
-					handlePause={handlePause}
-					handleUnMute={handleUnmuted}
-					// toggleMute={toggleMute}
-					handleBlank={handleBlank}
-					handleShowComment={handleShowComment}
-					handleCensorPosition={setCensorPosition}
-					handleCensorActive={setCensorActive}
-				/> */}
 				{
 					url !== `` && showTranscript ? (
 						// showsubtitles
 						<PlayerSubtitlesContainer
-							currentTime={progress.playedSeconds.toFixed(1)}
+							currentTime={progress}
 							duration={duration}
 							handleShowSubtitle={handleShowSubtitle}
 							indexToDisplay={indexToDisplay}

@@ -1,5 +1,4 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
-import { useDrop } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -39,12 +38,6 @@ const SubtitlesLayer = props => {
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
-	// Drag and Drop event to the layer
-	const [, dropRef] = useDrop({
-		accept: `subtitle-event`,
-		// drop: onDrop,
-		hover: (item, monitor) => {},
-	})
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		let isError = false
@@ -165,7 +158,7 @@ const SubtitlesLayer = props => {
 			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='eventsbox'>
-					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`} ref={dropRef}>
+					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
 						{
 							subs !== undefined && videoLength!==0 ? (
 								<>

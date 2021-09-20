@@ -3,7 +3,11 @@ import styled from 'styled-components'
 const Style = styled.div`
 	display: ${props => props.minimized !== false ? `initial` : `none`};
 	padding: 20px;
-	overflow: scroll;
+
+	& .event-content {
+    height: 80%;
+	}
+
 
 	& .closeEditor {
 		width: 2rem;
@@ -69,6 +73,8 @@ const Style = styled.div`
 
 	& .censorMenu {
 		font-size: 1.5rem;
+		height: 65%;
+
 		& label {
 			margin: 15px 5px 15px 15px;
 			width: 150px;
@@ -76,7 +82,7 @@ const Style = styled.div`
 		}
 
 		& .tableHeader {
-			width: 90%;
+			width: 70%;
 			margin-left: 10px;
 			& th {
 				width: 50px;
@@ -86,8 +92,7 @@ const Style = styled.div`
 
 	& .censorList {
 		width: 100%;
-		height: auto;
-		max-height: 30vh;
+		height: 85%;
 		margin-left: 10px;
 		overflow-y: scroll;
 		position: relative;
@@ -126,9 +131,11 @@ const Style = styled.div`
 	}
 
 	& .addCensor {
-		position: absolute;
 		float: left;
-		margin-left: 20px;
+		margin-left: 5px;
+		background: none;
+		border: none;
+}
 	}
 
 	& .arrowDown {

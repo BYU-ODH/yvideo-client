@@ -100,7 +100,7 @@ export default class ContentService {
 			// alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
-				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,
+				errorMessage: `${action.payload.error.response ? (`${action.payload.error.response.data}`) : ('')}. Status: ${action.payload.error.response ? (`${action.payload.error.response.status}`) : ('')}`,
 				loading: false,
 			}
 

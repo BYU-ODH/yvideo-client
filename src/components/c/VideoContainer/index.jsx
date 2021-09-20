@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, useCallback } from 'react'
+import React, { useRef, useEffect, useState, useLayoutEffect, useCallback, useImperativeHandle } from 'react'
 
 import ReactPlayer from 'react-player'
 
@@ -22,9 +22,7 @@ const VideoContainer = props => {
 	const {
 		url,
 		getDuration,
-		minimized,
 		handleLastClick,
-		togglendTimeline,
 		getVideoTime,
 		events,
 		updateEvents,
@@ -32,10 +30,12 @@ const VideoContainer = props => {
 		activeCensorPosition,
 		setActiveCensorPosition,
 		subtitles,
+		handleScroll,
+		editorType,
 	} = props
+
 	const ref = useRef(null)
 	const videoRef = useRef(null)
-	const censorRef = useRef(null)
 
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
@@ -55,6 +55,7 @@ const VideoContainer = props => {
 	const [pausedTimes,setPausedTimes] = useState([])
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
+
 	const video = {
 
 		// state
@@ -87,27 +88,41 @@ const VideoContainer = props => {
 			setIsReady(true)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			if(document.getElementById(`layer-time-indicator`) !== undefined)
-				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played*100}%)`
 			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played*100}`
-			if(document.getElementById(`time-dot`) !== undefined)
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played*100}% - 2px)` : `calc(${played*100}% - 2px)`
+				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+
+			if(document.getElementById(`layer-time-indicator`) !== undefined){
+				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
+				let elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
+
+				if(elementRightSide >= (window.innerWidth * .6)){
+					handleScroll(1 / duration, false)
+				}
+			}
+
 			setElapsed(playedSeconds)
+
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
+
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
 			const testMute = values.allEvents.map(val => val.type)
+
 			if (!testMute.includes(`Mute`)) video.handleUnMute()
+
 			for (let y = 0; y < values.allEvents.length; y++){
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					video.handleMute()
 					break
 				case `Pause`:
+					//TODO: this pause logic is way too expensive.
+					//This can be solved with a boolean active flag
+					//this yiels O(a * b) when it can be constant time
 					let paused = true
 					for (let i = 0; i < pausedTimes.length;i++){
 						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)
@@ -256,9 +271,40 @@ const VideoContainer = props => {
 		alert(`There was an error loading the video`)
 	}
 
+	useEffect(() => {
+		let count = 0
+		if(document.getElementById('time-bar') !== null && count === 0 && duration !== 0){
+			count++
+			document.getElementById('time-bar').addEventListener('mousemove', (e) => {
+				//calculate current time based on mouse position
+				let currentLayerWidth = document.getElementById('time-bar-container').clientWidth
+				let currentScrollLeft = document.getElementById('time-bar-container').scrollLeft
+
+				let secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
+
+				const dateElapsed = new Date(null)
+				dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
+				const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+
+				//set new x position to the red bar
+				document.getElementById('time-bar-shadow').style.visibility = `visible`
+				document.getElementById('time-bar-shadow').style.transform = `translateX(${e.offsetX - 2}px)`
+				document.getElementById('time-bar-shadow-text').innerText = `${formattedElapsed}`
+				if(e.offsetX > (window.innerWidth / 2)){
+					document.getElementById('time-bar-shadow-text').style.right = `6rem`
+				}
+				else {
+					document.getElementById('time-bar-shadow-text').style.right = `0`
+				}
+
+				document.getElementById('layer-time-indicator-line-shadow').style.visibility = `visible`
+				document.getElementById('layer-time-indicator-line-shadow').style.transform = `translateX(${e.offsetX}px)`
+			})
+		}
+	}, [duration])
+
 	return (
-		<Style style={{ maxHeight: `${!minimized ? `65vh` : `100vh`}`}} id='controller'>
-			{/* <Style> */}
+		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):console.log(``)} ref={videoRef}>
 				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				{activeCensorPosition !== -1 ? (
@@ -278,6 +324,7 @@ const VideoContainer = props => {
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
+			{/* console.log(editorType) */}
 
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 
@@ -286,19 +333,16 @@ const VideoContainer = props => {
 				key={url}
 
 				// constants
-
-				className={`react-player`}
+				className={`react-player .${editorType}`}
 				progressInterval={30}
 
 				// state
-
 				playing={playing}
 				volume={volume}
 				muted={muted}
 				playbackRate={playbackRate}
 
 				// handlers
-
 				onReady={video.handleReady}
 				onError={()=>{
 					showError()
@@ -324,10 +368,16 @@ const VideoContainer = props => {
 							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
 						</button>
 
-						<div id='time-bar'>
+						<div id='time-bar' onMouseLeave={(e) => {
+							if(document.getElementById('time-bar-shadow') !== null && document.getElementById('layer-time-indicator-line-shadow') !== null) {
+								document.getElementById('time-bar-shadow').style.visibility = `hidden`
+								document.getElementById('layer-time-indicator-line-shadow').style.visibility = `hidden`
+							}
+						}}>
 							<div id={`time-bar-container`}>
 								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
-								<span id='time-dot'></span>
+								<span id='time-text'></span>
+								<span id='time-bar-shadow'><p id="time-bar-shadow-text"></p></span>
 							</div>
 						</div>
 					</div>

@@ -51,10 +51,10 @@ const Transcript = props => {
 		let allWords = ``
 		let allMeanings = ``
 
-		if(Object.keys(jsonResponse).length < 1){
-			setWords(`No matches found`)
-			setMeanings(``)
-			return
+		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined || jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].length < 1){
+			setWords('No matches found')
+			setMeanings('')
+			return;
 		}
 
 		jsonResponse[Object.keys(jsonResponse)[0]][0][`meanings`].forEach((item, index) => {
@@ -68,12 +68,10 @@ const Transcript = props => {
 
 	const highlightWords = (text) => {
 		// initialize the string where we can make changes
-		// console.log(displaySubtitles)
 		if(displaySubtitles === undefined)
 			return
 
 		const words = displaySubtitles.words.split(/[, ]+/)
-		// console.log(words)
 
 		let newString = text
 
@@ -84,8 +82,6 @@ const Transcript = props => {
 			// do not execute if the string is empty
 
 			const regex = new RegExp(`(^|[\\s|.|,|;])${word}([\\s|.|,|;|\\n]|$)`, `gmi`)
-			// let regex = new RegExp(`(?:^|\\W)${word}(?:$|\\W)`)
-			// console.log(regex)
 			const matches = newString.match(regex)
 			if(matches !== null){
 				// highlight and push changes
@@ -93,13 +89,11 @@ const Transcript = props => {
 					const cleanString = m.replace(/\s/g,``)
 					// console.log('Matched', cleanString)
 					const rep = new RegExp(`${cleanString}`, `gmi`)
-					// console.log(rep)
 
 					if(cleanString !== `. ` && cleanString !== `, ` && cleanString !== `` && cleanString !== `.`)
 						newString = newString.replace(rep, `<span class="highlight">${cleanString}</span>`)
 
 				})
-				// console.log(newString)
 			}
 		})
 
@@ -110,25 +104,21 @@ const Transcript = props => {
 		if(e.target.tagName.toLowerCase() !== `p`){
 			const elementText = e.target.innerText
 			const wordArray = elementText.split(` `)
-			// console.log(wordArray)
 			let foundWord = ``
 			// we only want to translate if and only if the word is highlighted
 			// single possible word
 			// there would only be one valid word in this array
 			wordArray.forEach(word => {
-				// console.log(word)
 				foundWord = word
 			})
-			translate(foundWord, languageCodes[displaySubtitles.language])
+			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
 		}
 	}
-
-	// console.log(displaySubtitles)
 
 	return (
 		<Style style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
 			<div className={isMobile ? `hide-element` : `side-bar`}>
-				<img src={chevron} className={`toggle-transcript`} onClick={handleToggleTranscript}
+				<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
 					onMouseEnter={e => handleShowTip(`transcript-hide`, {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
@@ -139,14 +129,14 @@ const Transcript = props => {
 			</div>
 			<div className={isMobile ? `main-bar main-mobile` : `main-bar`} >
 				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
-					<img src={closeIcon} className={`toggle-transcript`} onClick={handleToggleTranscript}
+					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
 						onMouseEnter={e => handleShowTip(`transcript-hide`, {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					/>
 				</div>
 				<div className={`transcript-title`}>
 					<h1>Transcript</h1>
-					<h2>{content !== undefined ? content.settings.targetLanguages !== `` ? `Video - ${content.settings.targetLanguages} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `No captions available`}</h2>
+					<h2>{content !== undefined ? content.settings.targetLanguage !== `` ? `Video - ${content.settings.targetLanguage} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `No captions available`}</h2>
 				</div>
 				<br/><br/><br/>
 				<div className={`transcript-content`}>
@@ -156,16 +146,17 @@ const Transcript = props => {
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start * duration / 100 + .5)}
+								<div onClick={e => handleSeekChange(null, element.start + element.start * .1)}
+									//passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`, {x: e.target.getBoundingClientRect().x - 50, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
 								>
-									<span><img src={seek} width='20' height='20'/></span>
+									<span><img src={seek} alt={`seek`} width='20' height='20'/></span>
 								</div>
 							</div>,
 						)
-							 : null
+						: null
 					}
 					<br/>
 				</div>

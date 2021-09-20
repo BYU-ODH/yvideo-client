@@ -15,8 +15,6 @@ const props = {
 	displayBlocks: false,
 	getCollections: jest.fn(),
 	getContent: jest.fn(),
-	isAdmin: true,
-	isProf: false,
 	setHeaderBorder: jest.fn(),
 	toggleCollectionsDisplay: jest.fn(),
 }
@@ -25,12 +23,12 @@ jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`),
 	useHistory: () => ({
 		location: {
-			hash: "",
-			key: "efe1jw",
-			pathname: "/",
-			search: "",
-			state: undefined
-		}
+			hash: ``,
+			key: `efe1jw`,
+			pathname: `/`,
+			search: ``,
+			state: undefined,
+		},
 	}),
 }))
 
@@ -42,9 +40,6 @@ describe(`collection container test`, () => {
 		).childAt(0).dive()
 
 		const viewstate = wrapper.find(`Collections`).props().viewstate
-
-		expect(viewstate.isProf).toBe(false)
-		expect(viewstate.isAdmin).toBe(true)
 
 		expect(viewstate.collections[0].archived).toBe(false)
 		expect(viewstate.collections[0].id).toBe(0)

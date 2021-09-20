@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
-import { DndProvider } from 'react-dnd'
-import Backend from 'react-dnd-html5-backend'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
@@ -38,7 +36,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Censor`}, {4: `Blank`}] // {3: `Comment`},
 
 	const events = [
 		{
@@ -59,21 +57,21 @@ const VideoEditor = props => {
 			type: `Pause`,
 			icon: pauseIcon,
 			start: 0,
-			end: 10,
+			end: 1,
 			layer: 0,
 		},
-		{
-			type: `Comment`,
-			icon: commentIcon,
-			start: 0,
-			end: 10,
-			layer: 0,
-			comment: ``,
-			position: {
-				x: 0,
-				y: 0,
-			},
-		},
+		// {
+		// 	type: `Comment`,
+		// 	icon: commentIcon,
+		// 	start: 0,
+		// 	end: 10,
+		// 	layer: 0,
+		// 	comment: ``,
+		// 	position: {
+		// 		x: 0,
+		// 		y: 0,
+		// 	},
+		// },
 		{
 			type: `Censor`,
 			icon: censorIcon,
@@ -156,6 +154,7 @@ const VideoEditor = props => {
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
+		// console.log("Start Percentage", startPercentage)
 
 		let currentEvents = []
 		if(allEvents !== undefined)
@@ -169,9 +168,10 @@ const VideoEditor = props => {
 
 		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
-		eventObj.end = Number(startPercentage) + 10
+		eventObj.end = Number(startPercentage) + eventObj.end
 
-		setCurrentTime(Number(startPercentage)+10)
+		// console.log("Last final time for event start", eventObj.start)
+		// setCurrentTime(Number(startPercentage) + eventObj.end)
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 
@@ -402,10 +402,34 @@ const VideoEditor = props => {
 
 	const handleSaveAnnotation = async () => {
 		setIsLoading(true)
+		allEvents.forEach((event) => {
+			if(event.halfLayer){
+				delete event.halfLayer
+			}
+		})
 		content.settings.annotationDocument = [...allEvents]
 		await updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
+	}
+
+	const handleExportAnnotation = async () => {
+		// Convert JSON Array to string.
+		// Convert JSON string to BLOB.
+		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
+
+		// get the current website url
+		const url = window.URL || window.webkitURL
+		// create a link pointing to the blob or binary object
+		const link = url.createObjectURL(blob)
+		// create an anchor element to open the link we created
+		const a = document.createElement(`a`)
+		// trigger download and append file name
+		a.download = `${content.name}_annotations.json`
+		a.href = link
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
 	}
 
 	const handleZoomChange = (e, d) => {
@@ -414,7 +438,7 @@ const VideoEditor = props => {
 			if(d.x === 0){
 				setZoomFactor(0)
 				setWidth(0)
-				handleScrollFactor(`start`)
+				handleScrollFactor(0)
 			} else {
 				setZoomFactor(d.x)
 				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
@@ -423,26 +447,35 @@ const VideoEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 	}
 
-	const handleScrollFactor = (direction) => {
+	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
+			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const alllayers = Array.from(document.getElementsByClassName(`layer-container`))
+			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
 
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
+			if(!zoom){
+				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
+				timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
 
-			alllayers.forEach((element, i) => {
-				alllayers[i].scrollLeft = currentLayerWidth * dis
-			})
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
+				})
+			} else {
+				scrubber.scrollLeft = currentLayerWidth * direction
+				timeIndicator.scrollLeft = currentLayerWidth * direction
+
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = currentLayerWidth * direction
+				})
+			}
 		}
 	}
+
 	const checkSideBarTitle = () => {
 		try {
 			const title = allEvents[eventToEdit].type
@@ -452,7 +485,9 @@ const VideoEditor = props => {
 		}
 	}
 	const setCurrentTimePercentage = (time) => {
+		// console.log("Time", time)
 		const seconds = time * videoLength
+		// console.log("Seconds", seconds)
 		setCurrentTime(seconds)
 	}
 
@@ -462,177 +497,152 @@ const VideoEditor = props => {
 
 	return (
 		<Style>
-			<DndProvider backend={Backend}>
+			<span style={{ zIndex: 0 }}>
+				<VideoContainer
+					className='video'
+					url={url}
+					handlers={togglendTimeline}
+					getDuration={getVideoDuration}
+					getVideoTime={setCurrentTimePercentage} // set current time
+					handleLastClick = {handleLastClick}
+					handleScroll = {handleScrollFactor}
+					events = {allEvents}
+					updateEvents={updateEvents}
+					eventToEdit={eventToEdit}
+					activeCensorPosition = {activeCensorPosition}
+					setActiveCensorPosition = {setActiveCensorPosition}
+					editorType={`video`}
+					></VideoContainer>
 
-				<span style={{ zIndex: 0 }}>
-					<VideoContainer
-						className='video'
-						url={url}
-						handlers={togglendTimeline}
-						getDuration={getVideoDuration}
-						getVideoTime={setCurrentTimePercentage} // set current time
-						minimized={timelineMinimized}
-						togglendTimeline={togglendTimeline}
-						handleLastClick = {handleLastClick}
-						events = {allEvents}
-						updateEvents={updateEvents}
-						eventToEdit={eventToEdit}
-						activeCensorPosition = {activeCensorPosition}
-						setActiveCensorPosition = {setActiveCensorPosition}
-						editorType={`video`}
-					>
-					</VideoContainer>
-					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
-						<section>
-							<div className='event-layers'>
+					<section>
+						<div className='event-layers'>
 
-								{layers.map((layer, index) => (
-									<div className={`layer`} key={index}>
-										<div className={`handle`} onClick={() => setDisplayLayer(index)}>
-											<EventCard event={events[index]} key={index}/>
-											<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
-										</div>
-
-										<TrackLayer
-											videoLength={videoLength}
-											minimized={eventListMinimized}
-											width={layerWidth}
-											events={allEvents}
-											activeEvent={eventToEdit}
-											index={index}
-											// onDrop={(item) => eventDropHandler(item,index)}
-											sideEditor={openSideEditor}
-											updateEvents={updateEvents}
-											closeEditor={closeSideEditor}
-											displayLayer={displayLayer}
-										/>
-									</div>
-								))}
-							</div>
-						</section>
-
-						<div className='zoom-controls'>
-							{/* ADD ZOOM ICON */}
-							<div className='zoom-factor' id = 'zoom-factor'
-								onClick={(e)=>{
-								}}
-								style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
-								<img src={zoomOut} style={{ width: `20px` }}/>
-								<Rnd
-									className={`zoom-indicator`}
-									bounds={`parent`}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-									dragAxis='x'
-									onDragStop={(e, d) => handleZoomChange(e, d)}
-									onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-									onMouseLeave={e => toggleTip()}
-								></Rnd>
-								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
-							</div>
-
-							<div className='zoom-scroll' style={{ visibility: `${timelineMinimized ? ` hidden` : `initial`}`}}>
-
-								<div style={{ width: `90%`, height: `100%`, display: `flex`, marginLeft: `5%` }}>
-									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-start`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}
-									><img src={llIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-left`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
-
-									<div className={`zoom-scroll-container`}>
-										<Rnd
-											className= 'zoom-scroll-indicator'
-											size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
-											enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-											bounds = {`parent`}
-											onDragStop = {(e,d)=>{
-												handleScrollFactor(d.x)
-											}}
-										>
-										</Rnd>
+							{layers.map((layer, index) => (
+								<div id={`layer-${index}`} className={`layer`} key={index}>
+									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
+										<EventCard event={events[index]} key={index}/>
+										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
 									</div>
 
-									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-right`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y+ 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={rIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-end`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={rrIcon}/></span>
+									<TrackLayer
+										videoLength={videoLength}
+										minimized={eventListMinimized}
+										width={layerWidth}
+										events={allEvents}
+										activeEvent={eventToEdit}
+										index={index}
+										// onDrop={(item) => eventDropHandler(item,index)}
+										sideEditor={openSideEditor}
+										updateEvents={updateEvents}
+										closeEditor={closeSideEditor}
+										displayLayer={displayLayer}
+									/>
 								</div>
+							))}
+						</div>
+					</section>
 
-								<div id={`time-indicator-container`}>
-									<div id={`layer-time-indicator`}>
-										<span id={`layer-time-indicator-line`}></span>
-									</div>
+					<div className='zoom-controls'>
+						{/* ADD ZOOM ICON */}
+						<div className='zoom-factor' id = 'zoom-factor'>
+							<img src={zoomOut} style={{ width: `20px` }}/>
+							<Rnd
+								className={`zoom-indicator`}
+								bounds={`parent`}
+								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								dragAxis='x'
+								onDragStop={(e, d) => handleZoomChange(e, d)}
+								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseLeave={e => toggleTip()}
+							></Rnd>
+							<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+						</div>
+
+						<div className='zoom-scroll'>
+							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
+
+							</div>
+
+							<div id={`time-indicator-container`}>
+								<div id={`layer-time-indicator`}>
+									<span id={`layer-time-indicator-line`}></span>
+									<span id={`layer-time-indicator-line-shadow`}></span>
 								</div>
 							</div>
 						</div>
-					</Timeline>
+					</div>
+				</Timeline>
+			</span>
 
-				</span>
-
-				<EventEditor minimized={eventListMinimized}>
-					<header>
-						<img src={helpIcon} alt={`helpIcon`} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
-						<div className={`save`}>
-							{disableSave ?
-								<button className={`disable`}>
-									<span>Save</span>
-								</button>
-								:
-								<button onClick={handleSaveAnnotation}>
-									{blockLeave ?
-										null
+			<EventEditor minimized={eventListMinimized}>
+				<header>
+					<img src={helpIcon} alt={`helpIcon`} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+					<div className={`save`}>
+						{disableSave ?
+							<button className={`disable`}>
+								<span>Save</span>
+							</button>
+							:
+							<button onClick={handleSaveAnnotation}>
+								{blockLeave ?
+									null
+									:
+									isLoading ?
+										<i className='fa fa-refresh fa-spin'/>
 										:
-										isLoading ?
-											<i className='fa fa-refresh fa-spin'/>
-											:
-											<i className='fa fa-check'></i>
-									}
-									<span>Save</span>
-								</button>
-							}
-						</div>
-					</header>
+										<i className='fa fa-check'></i>
+								}
+								<span>Save</span>
+							</button>
+						}
+					</div>
+					<div className={`save`}>
+						{!disableSave && !blockLeave && !isLoading ?
+							<button onClick={handleExportAnnotation}>
+								<span>Export</span>
+							</button>
+							:
+							null
+						}
+					</div>
+				</header>
 
-					<>
-						<div className='breadcrumbs'>
-							{ showSideEditor &&
+				<>
+					<div className='breadcrumbs'>
+						{ showSideEditor &&
 								<>
 									<>
 										<span className='current'>{allEvents !== []? `${checkSideBarTitle()}` : ``}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>
-							}
-						</div>
-
-						{ showSideEditor !== false && eventListMinimized !== true ?
-							<TrackEditorSideMenu
-								singleEvent={checkEvent()}
-								videoLength={videoLength}
-								closeSideEditor={closeSideEditor}
-								updateEvents={updateEvents}
-								editCensor = {editCensor}
-								index={eventToEdit}
-								handleEditCensor = {handleEditCensor}
-								handleCensorRemove = {handleCensorRemove}
-								handleAddCensor = {handleAddCensor}
-								handleSaveCensor = {handleSaveCensor}
-								activeCensorPosition = {activeCensorPosition}
-								setActiveCensorPosition = {setActiveCensorPosition}
-								toggleTip={toggleTip}
-								handleShowTip={handleShowTip}
-							></TrackEditorSideMenu>
-							:
-							<></>
 						}
-					</>
-				</EventEditor>
-			</DndProvider>
+					</div>
+
+					{ showSideEditor !== false && eventListMinimized !== true ?
+						<TrackEditorSideMenu
+							singleEvent={checkEvent()}
+							videoLength={videoLength}
+							closeSideEditor={closeSideEditor}
+							updateEvents={updateEvents}
+							editCensor = {editCensor}
+							index={eventToEdit}
+							handleEditCensor = {handleEditCensor}
+							handleCensorRemove = {handleCensorRemove}
+							handleAddCensor = {handleAddCensor}
+							handleSaveCensor = {handleSaveCensor}
+							activeCensorPosition = {activeCensorPosition}
+							setActiveCensorPosition = {setActiveCensorPosition}
+							toggleTip={toggleTip}
+							handleShowTip={handleShowTip}
+						></TrackEditorSideMenu>
+						:
+						<></>
+					}
+				</>
+			</EventEditor>
 
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>

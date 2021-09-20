@@ -70,7 +70,7 @@ export default class HighlightWords extends PureComponent {
 							subtitlesObjects.length != 0 ? (
 								subtitlesObjects.map((sub, index) =>
 								<option value={index} key={index + 1}>
-									{sub.language}
+									{sub.title}
 								</option>
 							)
 							) : (

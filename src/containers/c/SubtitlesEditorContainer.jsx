@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
 import { connect } from 'react-redux'
-
 import { interfaceService, resourceService, contentService, subtitlesService } from 'services'
-
 import { SubtitleEditor } from 'components'
-
 import { Tooltip } from 'components/bits'
-
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const SubtitlesEditorContainer = props => {
@@ -62,34 +57,44 @@ const SubtitlesEditorContainer = props => {
 			setEvents(content[id].settings.annotationDocument)
 			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 			// we only want to set the url if it is not set.
-			if(url === ``){
-				if(content[id].url !== ``)
-					setUrl(content[id].url)
-				else {
-					setKey(``)
-					setUrl(``)
-					// CHECK RESOURCE ID
-					if(content[id].resourceId && !isStreamKeyLoaded){
-						// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
-						getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
-						setIsStreamKeyLoaded(true)
-					}
-					if (streamKey){
-						// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${streamKey}`)
-						setKey(streamKey)
-					}
-					if (sKey !== ``)
-						setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-				}
-			} else{
-				// once the url is set we can get subtitles
-				if(!calledGetSubtitles){
-					getSubtitles(id)
-					setCalledGetSubtitles(true)
-				} else
-					setSubs(allSubs)
 
+			if(content[id].url !== ``)
+				setUrl(content[id].url)
+			else {
+				setKey(``)
+				setUrl(``)
+				// CHECK RESOURCE ID
+				if(content[id].resourceId && !isStreamKeyLoaded){
+					// VALID RESOURCE ID SO WE KEEP GOING TO FIND STREAMING URL
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguage)
+					setIsStreamKeyLoaded(true)
+				}
+				if (streamKey){
+					// setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${streamKey}`)
+					setKey(streamKey)
+				}
+				if (sKey !== ``)
+					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 			}
+		}
+		// once the url is set we can get subtitles
+		if(!calledGetSubtitles){
+			getSubtitles(id)
+			setCalledGetSubtitles(true)
+		} else {
+			if(allSubs.length === 0) {
+				const tempSubList = []
+				const tempSub = {
+					title : ``,
+					language: ``,
+					content: [{start: 0, end: 2, text: ``}],
+					id: ``,
+				}
+				tempSubList.push(tempSub)
+				setSubs(tempSubList)
+				setSubtitles(tempSubList)
+			} else
+				setSubs(allSubs)
 		}
 
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
@@ -118,6 +123,7 @@ const SubtitlesEditorContainer = props => {
 	const setAllSubs = (subs) =>{
 		setSubtitles(subs)
 	}
+
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,

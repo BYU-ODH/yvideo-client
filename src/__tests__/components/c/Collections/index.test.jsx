@@ -4,6 +4,9 @@ import Collections from '../../../../components/c/Collections/index'
 import BlockCollection from '../../../../components/bits/BlockCollection'
 import { interfaceService } from 'services'
 import { Link, BrowserRouter } from 'react-router-dom'
+import * as testutil from '../../../testutil/testutil'
+
+const user = testutil.user
 
 const collection1 = {
 	archived: false,
@@ -46,9 +49,7 @@ const viewstate = {
 		collection2,
 	],
 	contentIds: [110],
-	displayBlocks: true,
-	isAdmin: true,
-	isProf: false,
+	user,
 	allPublic: [
 		{ isSubscribed: true },
 	],

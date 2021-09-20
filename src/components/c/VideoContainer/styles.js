@@ -12,7 +12,7 @@ const Style = styled.div`
 
 	& .react-player {
 		height: calc(100% - 50px) !important;
-		width: 70% !important;
+		width: ${props => props.type === `video` ? `70% !important` : `100% !important`};
 	}
 
 	& .loading-spinner{
@@ -24,7 +24,6 @@ const Style = styled.div`
 		justify-content: center;
 	}
 `
-
 export default Style
 
 export const TimeBar = styled.div`
@@ -82,6 +81,7 @@ export const TimeBar = styled.div`
 			& > #time-bar {
 				overflow-x: scroll;
 				overflow-y: hidden;
+				scroll-behavior: smooth;
 				position: relative;
 				height: 50px;
 				flex: 1;
@@ -91,20 +91,35 @@ export const TimeBar = styled.div`
 					margin-top: 20px;
 					position: absolute;
 					height: .75rem;
+
+					& #time-bar-shadow {
+						position: absolute;
+						top: -19px;
+						float: left;
+						margin: 0px;
+						width: 2px;
+						height: calc(27vh + 50px);
+						background-color: rgba(5, 130, 202, 0.7);
+						visibility: hidden;
+						color: white;
+						pointer-events: none;
+
+						& #time-bar-shadow-text {
+							color: white;
+							font-weight: 700;
+							margin-top: 5px;
+							margin-left: 5px;
+							position: relative;
+							width: 5rem;
+							height: auto;
+						}
+					}
+
+
 				}
 
 				& .total {
 					position: absolute;
-				}
-
-				& #time-dot {
-					position: absolute;
-					top: 2px;
-					float: left;
-					margin: 0px;
-					width: 4px;
-					height: 100%;
-					background-color: transparent;
 				}
 			}
 		}

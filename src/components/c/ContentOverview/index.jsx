@@ -16,6 +16,11 @@ import Style, {
 	StyledLink,
 	Column,
 	InnerContainer,
+	LinksWrapper,
+	ContentIcons,
+	IconWrapper,
+	TitleWrapper,
+	SettingsIcon,
 } from './styles'
 
 export default class ContentOverview extends PureComponent {
@@ -51,6 +56,7 @@ export default class ContentOverview extends PureComponent {
 			changeTag,
 			handleShowWordsModal,
 			handleShowHelp,
+			handleLinks,
 		} = this.props.handlers
 
 		const {
@@ -77,19 +83,12 @@ export default class ContentOverview extends PureComponent {
 						{editing ?
 							<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
 							:
-							<h3 className={`content-title`}>{content.name}</h3>}
+							<TitleWrapper><h3 className={`content-title`}>{content.name}</h3></TitleWrapper>}
 						<ul>
 							<Icon className='translation' checked={allowDefinitions} />
 							<Icon className='captions' checked={showCaptions} />
 							<Icon className='annotations' checked={showAnnotations} />
 						</ul>
-						{editing ||
-						<>
-							<StyledLink to={`/videoeditor/${content.id}`}>Video Editor</StyledLink>
-							<StyledLink to={`/subtileeditor/${content.id}`}>Subtitle Editor</StyledLink>
-							<StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink>
-						</>
-						}
 						{editing ?
 							<div>
 								<PublishButton className='publish-button' published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
@@ -99,9 +98,15 @@ export default class ContentOverview extends PureComponent {
 							<em>{content.published ? `Published` : `Unpublished`}</em>
 						}
 					</div>
-					<div>
-						<EditButton className='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}</EditButton>
-					</div>
+					{editing ||
+						<LinksWrapper>
+							<IconWrapper onClick={handleLinks} className='video-editor-wrapper'><ContentIcons className='video-editor'/><StyledLink to={`/videoeditor/${content.id}`}>Video Editor</StyledLink></IconWrapper>
+							<IconWrapper onClick={handleLinks} className='subtitle-editor-wrapper'><ContentIcons className='subtitle-editor'/><StyledLink to={`/subtileeditor/${content.id}`}>Subtitle Editor</StyledLink></IconWrapper>
+							<IconWrapper onClick={handleLinks} className='clip-manager-wrapper'><ContentIcons className='clip-manager'/><StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink></IconWrapper>
+						</LinksWrapper>
+					}
+					{!editing && <SettingsIcon onClick={handleToggleEdit} />}
+					<EditButton className='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : ``}</EditButton>
 				</Preview>
 				{editing &&
 					<InnerContainer>
@@ -110,7 +115,7 @@ export default class ContentOverview extends PureComponent {
 								<h4>
 								Target Language:
 								</h4>
-								{content.settings.targetLanguages}
+								{content.settings.targetLanguage}
 							</div>
 							<h4>
 								Allow automatic definitions

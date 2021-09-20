@@ -92,8 +92,8 @@ export const Timeline = styled.div`
 
 			& .zoom-scroll-container {
 				margin: auto;
-				width: 90%;
-				height: 50%;
+				width: 100%;
+				height: 10%;
 				border-radius: 10px;
 				background-color: rgba(220, 220, 220, 0.5);
 				position: relative;
@@ -101,7 +101,7 @@ export const Timeline = styled.div`
 
 				& .zoom-scroll-indicator {
 					position: absolute;
-					min-width: 5%;
+					min-width: .5%;
 					background-color: var(--light-blue);
 					border-radius: 20px;
 				}
@@ -114,6 +114,7 @@ export const Timeline = styled.div`
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
+				scroll-behavior: smooth;
 				pointer-events: none;
 				bottom: 0px;
 
@@ -130,6 +131,15 @@ export const Timeline = styled.div`
 						border-right: 2px solid red;
 						z-Index: 20;
 					}
+
+					& #layer-time-indicator-line-shadow {
+						position: absolute;
+						width: 2px;
+						height: calc(27vh - 40px);
+						background-color: rgba(5, 130, 202, 0.7);
+						z-Index: 20;
+						visibility: hidden;
+					}
 				}
 			}
 		}
@@ -144,6 +154,7 @@ export const Timeline = styled.div`
 	& .event-layers {
 		height: 100%;
 		display: block;
+		margin-bottom: 4rem;
 	}
 
 	& .layer {
@@ -155,7 +166,7 @@ export const Timeline = styled.div`
 	& .handle {
 		width: 162px !important;
 		min-width: 162px;
-		height: 46px;
+		height: 100%;
 		display: inline-flex;
 		align-items: center;
 		justify-content: space-between;

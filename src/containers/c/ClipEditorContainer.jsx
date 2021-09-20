@@ -64,7 +64,7 @@ const ClipEditorContainer = props => {
 				setUrl(``)
 
 				if(content[id].resourceId && !isStreamKeyLoaded){
-					getStreamKey(content[id].resourceId, content[id].settings.targetLanguages)
+					getStreamKey(content[id].resourceId, content[id].settings.targetLanguage)
 					setIsStreamKeyLoaded(true)
 				}
 

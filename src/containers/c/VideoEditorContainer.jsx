@@ -60,7 +60,7 @@ const VideoEditorContainer = props => {
 				setUrl(``)
 
 				if(contentCache[id].resourceId && !isStreamKeyLoaded){
-					getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguages)
+					getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguage)
 					setIsStreamKeyLoaded(true)
 				}
 

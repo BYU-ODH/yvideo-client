@@ -19,12 +19,13 @@ export const HandleSubtitle = (time,subtitles,ind,duration) => {
 	const subtitleNode = document.getElementById(`subtitle`)
 	const currentsub = subtitles.content
 	let subtext = ``
-	const filtered = currentsub.filter(val => time < val.end/100*duration && time > val.start/100*duration)
+	const filtered = currentsub.filter(val => time < val.end && time > val.start)
 	if (filtered.length > 0) subtext = filtered[0].text
 	subtitleNode.innerHTML = subtext
 }
 export const CurrentEvents = (time,events,duration) => {
 	const activeEvents = []
+	const doneEvents = []
 
 	events.forEach((val,ind)=>{
 		const newVal = {...val}
@@ -33,7 +34,12 @@ export const CurrentEvents = (time,events,duration) => {
 		newVal.start = start
 		newVal.end = end
 
-		if (time >= start && time <= end) activeEvents.push(newVal)
+		if (time >= start && time <= end){
+			 activeEvents.push(newVal)
+		}
+		else if (time > end){
+			doneEvents.push(newVal)
+		}
 	})
 	const censors = activeEvents.filter(val => val.type === `Censor`)
 	const comments = activeEvents.filter(val => val.type === `Comment`)
@@ -69,7 +75,7 @@ export const CurrentEvents = (time,events,duration) => {
 				if (del) censorContainer.removeChild(censorChildren[x])
 			}
 		}
-		console.log(censorContainer)
+		// console.log(censorContainer)
 	}
 	const commentContainer = document.getElementById(`commentContainer`)
 	if (commentContainer){
@@ -103,6 +109,7 @@ export const CurrentEvents = (time,events,duration) => {
 		allEvents: activeEvents,
 		censors: censorValues,
 		comments,
+		doneEvents,
 	}
 	return eventValues
 }

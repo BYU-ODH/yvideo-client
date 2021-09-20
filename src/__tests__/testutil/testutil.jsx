@@ -16,7 +16,7 @@ export const settings = {
 	showWordList:false,
 	aspectRatio:`1.77`,
 	description:``,
-	targetLanguages: `English`,
+	targetLanguage: `English`,
 	annotationDocument: [],
 	captionTrack: [],
 }
@@ -29,7 +29,7 @@ export const changedSettings = {
 	showWordList:true,
 	aspectRatio:`1.77`,
 	description:`changed`,
-	targetLanguages: [`english`],
+	targetLanguage: `english`,
 	annotationDocument: [],
 	captionTrack: [],
 }
@@ -722,7 +722,7 @@ export const store = mockStore(
 				{start: 1, end: 2, type: `Comment`},
 				{start: 1, end: 2, type: `Blank`},
 				{start: 1, end: 2, type: `Censor`},
-				{start: 1, end: 2, type: `Error`}
+				{start: 1, end: 2, type: `Error`},
 			],
 			tip: {
 				active: true,
@@ -752,6 +752,9 @@ export const store = mockStore(
 					}
 				],
 			},
+			breadcrumbs: {	path: [`Home`, `Admin Dashboard`],
+				collectionId: `collectionId`,
+				contentId: `contentId`},
 		},
 		collectionStore: {
 			roles,

@@ -1,16 +1,9 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/LabAssistantManagerContainer'
-import CreateCollectionContainer from '../../../components/modals/containers/CreateCollectionContainer'
-import { interfaceService } from 'services'
 import * as testutil from '../../testutil/testutil'
-import configureMockStore from 'redux-mock-store'
-
-const thunk = require(`redux-thunk`).default
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
 
 const content = testutil.content
 
@@ -43,8 +36,6 @@ const collection3 = {
 	thumbnail: `test@thumbnail`,
 }
 
-const user = testutil.user
-
 const collections = [
 	collection1,
 	collection2,
@@ -63,16 +54,6 @@ const props = {
 	toggleModal: jest.fn(),
 }
 
-const store = mockStore({
-	adminStore:{
-		professor,
-		professorCollections: collections,
-	},
-	authStore:{
-		user,
-	},
-})
-
 jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`), // use actual for all non-hook parts
 	useParams: () => ({
@@ -86,7 +67,7 @@ describe(`LabAssistantManagerContainer container test`, () => {
 
 	it(`test props should be true`, () => {
 		const wrapper = mount(
-			<Provider store={store}>
+			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props} createNew={jest.fn()}/>
 				</BrowserRouter>
@@ -108,7 +89,7 @@ describe(`LabAssistantManagerContainer container test`, () => {
 
 	it(`render`, () => {
 		const wrapper = mount(
-			<Provider store={store}>
+			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
 				</BrowserRouter>
@@ -116,7 +97,7 @@ describe(`LabAssistantManagerContainer container test`, () => {
 		)
 
 		expect(wrapper.find({"className" : `collection-username`}).text()).toBe(`testname professor1's Collections`)
-		expect(wrapper.find({"className" : `link`}).length).toBe(9)
+		expect(wrapper.find({"className" : `link`}).length).toBe(6)
 
 		// TODO: need to figure out how to check the toggle
 		wrapper.find({"className" : `collection-create`}).at(0).simulate(`click`)

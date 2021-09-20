@@ -821,7 +821,7 @@ export default class AdminService {
 
 		try {
 
-			const result = await apiProxy.admin.user.delete(userId)
+			const result = await apiProxy.admin.user.deleteWithCollections(userId)
 
 			dispatch(this.actions.adminUserDelete(currentResults))
 

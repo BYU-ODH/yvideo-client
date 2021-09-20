@@ -105,7 +105,9 @@ export default class Collections extends PureComponent {
 										{/* <button type='submit'>Search</button> */}
 									</Search>
 									<div>
+										{user.roles === 0 &&
 										<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
+										}
 									</div>
 								</header>
 								:
