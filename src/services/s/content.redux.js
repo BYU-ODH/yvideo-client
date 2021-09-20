@@ -199,6 +199,8 @@ export default class ContentService {
 
 			dispatch(this.actions.contentGet(newContent))
 		} catch (error) {
+			console.log(`this is an error`, error.response.status)
+			if (error.response.status === 403) alert(`You do not have access to this video, if you believe this to be a mistake, please contact ____`)
 			dispatch(this.actions.contentError(error))
 		}
 	}
