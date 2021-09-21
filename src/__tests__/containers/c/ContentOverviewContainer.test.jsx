@@ -5,15 +5,14 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
 
-
 const content = testutil.content[0]
 
-let props = {
+const props = {
 	content,
 	removeCollectionContent: jest.fn(),
 	updateContent: jest.fn(),
 	adminRemoveCollectionContent: jest.fn(),
-	isLabAssistant: false
+	isLabAssistant: false,
 }
 
 // TODO: need to fix `UnhandledPromiseRejectionWarning`. This is from the not mocked functions from the child componenet
@@ -43,8 +42,8 @@ describe(`manage collection test`, () => {
 		// console.log(wrapper.find(`ContentOverview`).instance().props.handlers)
 
 		// simulate edit button clicks, it should show 3 other buttons when it is clicked
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
 
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 		expect(wrapper.find(`button`).at(1).props().children).toBe(`Delete`)
@@ -53,8 +52,8 @@ describe(`manage collection test`, () => {
 
 	it(`Unpublish event handler test`, ()=> {
 
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 
 		expect(wrapper.find(`ContentOverview`).props().viewstate.content.published).toBe(true)
@@ -64,8 +63,8 @@ describe(`manage collection test`, () => {
 
 	it(`delete event handler test`, ()=> {
 
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 
 		// method should not be called before click
@@ -76,15 +75,12 @@ describe(`manage collection test`, () => {
 		setTimeout(() => {
 			expect(props.removeCollectionContent).toHaveBeenCalled()
 		}, 500)
-
-		//if isLabAssistant = true
-
 	})
 
 	it(`save event handler test`, ()=> {
 
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(2).props().children).toBe(`Save`)
 
 		// edit event handler
@@ -134,6 +130,6 @@ describe(`manage collection test`, () => {
 		wrapper.find(`Tag`).find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`Tag`).length).toBe(0)
 
-		//edit button
+		// edit button
 	})
 })
