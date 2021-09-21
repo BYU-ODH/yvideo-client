@@ -36,7 +36,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Censor`}, {4: `Blank`}] // {3: `Comment`},
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Blur`}, {4: `Blank`}] // {3: `Comment`},
 
 	const events = [
 		{
@@ -73,7 +73,7 @@ const VideoEditor = props => {
 		// 	},
 		// },
 		{
-			type: `Censor`,
+			type: `Blur`,
 			icon: censorIcon,
 			start: 0,
 			end: 10,
@@ -298,7 +298,7 @@ const VideoEditor = props => {
 
 	const handleAddCensor = () => {
 		const time = videoCurrentTime
-		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
+		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Blur`){
 			const index = eventToEdit
 			const cEvent = allEvents[index]
 			const layer = cEvent.layer
@@ -358,7 +358,7 @@ const VideoEditor = props => {
 	// THIS IS PART OF CENSOR
 	const handleLastClick = (height, width, x, y, time) => {
 
-		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
+		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Blur`){
 
 			const index = eventToEdit
 			const cEvent = allEvents[index]

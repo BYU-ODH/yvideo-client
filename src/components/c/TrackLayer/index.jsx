@@ -70,7 +70,7 @@ const TrackLayer = props => {
 		for(let i = 0; i < sortedEvents.length; i++){
 			let currentEvent = sortedEvents[i]
 
-			if(currentEvent.type === "Censor"){
+			if(currentEvent.type === "Blur"){
 				let eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
 				// console.log('found', eventIndex)
 				if(lastCensorEvent === null){
