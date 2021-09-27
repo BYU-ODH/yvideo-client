@@ -163,13 +163,14 @@ const SubtitleEditor = props => {
 		const rawSubs = subtitles
 		createSub(rawSubs)
 	}
+
 	const handleZoomChange = (e, d) => {
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
 				setZoomFactor(0)
 				setWidth(0)
-				handleScrollFactor(`start`)
+				handleScrollFactor(0)
 			} else {
 				setZoomFactor(d.x)
 				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
@@ -178,78 +179,35 @@ const SubtitleEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 	}
-	const handleScrollFactor = (direction) => {
+
+	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
+			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const alllayers = Array.from(document.getElementsByClassName(`layer-container`))
+			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
-			const scrollBar = document.getElementsByClassName(`zoom-scroll-indicator`)[0]
 
-			const cLeft = parseInt(scrollBar.style.left)
-			const scrollBarOffset = scrollBarContainer * 0.03
-			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
+			if(!zoom){
+				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
+				timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
 
-			switch (direction) {
-			case `start`:
-				scrubber.scrollLeft = 0
-				timeIndicator.scrollLeft = 0
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft = 0
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
 				})
-				scrollBar.style.left = `0px`
+			} else {
+				scrubber.scrollLeft = currentLayerWidth * direction
+				timeIndicator.scrollLeft = currentLayerWidth * direction
 
-				break
-			case `left`:
-				scrubber.scrollLeft -= currentLayerWidth * 0.03
-				timeIndicator.scrollLeft -= currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft -= currentLayerWidth * 0.03
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = currentLayerWidth * direction
 				})
-				// FIND 3 PERCENT OF PARENT
-				// CURRENT LEFT MINUS NEW LEFT
-				if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
-					scrollBar.style.left = `${cLeft - scrollBarOffset}px`
-				else if (cLeft - scrollBarOffset < 0)
-					scrollBar.style.left = `0px`
-
-				break
-			case `right`:
-				scrubber.scrollLeft += currentLayerWidth * 0.03
-				timeIndicator.scrollLeft += currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth * 0.03
-				})
-				if(zoomFactor !== 0){
-					if(isNaN(cLeft) === true)
-						scrollBar.style.left = `${scrollBarOffset}px`
-					else
-						scrollBar.style.left = `${cLeft + scrollBarOffset}px`
-
-				}
-
-				if (cLeft + scrollBarOffset > lastPossibleRight)
-					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-				break
-			case `end`:
-				scrubber.scrollLeft += currentLayerWidth
-				timeIndicator.scrollLeft += currentLayerWidth
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth
-				})
-				scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-				break
-
-			default:
-				break
 			}
 		}
 	}
+
 	const updateSubs = (index, sub, subLayerIndex, side, type) => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
@@ -775,16 +733,15 @@ const SubtitleEditor = props => {
 							<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
 								setSubModalVisible(true)
 								setSubModalMode(`create`)
-							}}>
+								}}>
 								<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
 							</div>
-							<br/><br/><br/><br/><br/><br/><br/>
 						</div>
 
 					</section>
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
-						<div className='zoom-factor'>
+						<div className='zoom-factor' id="zoom-factor">
 							<img src={zoomOut} style={{ width: `20px` }}/>
 							<Rnd
 								className={`zoom-indicator`}

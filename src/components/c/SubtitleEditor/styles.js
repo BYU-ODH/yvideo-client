@@ -101,14 +101,17 @@ export const Timeline = styled.div`
 			& #time-indicator-container {
 				height: 27vh;
 				width: calc(100% - 162px);
+				/* width: calc(100% - 5rem) !important; */
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
+				scroll-behavior: smooth;
 				pointer-events: none;
 				bottom: 0px;
 
 				& #layer-time-indicator {
 					height: 10px;
+					width:100%;
 					position: absolute;
 					background-color: transparent;
 
@@ -118,11 +121,17 @@ export const Timeline = styled.div`
 						background-color: transparent;
 						border-right: 2px solid red;
 						z-Index: 20;
-						/* border-right: 2px dotted red; */
+					}
+
+					& #layer-time-indicator-line-shadow {
+						position: absolute;
+						width: 2px;
+						height: calc(27vh - 40px);
+						background-color: rgba(5, 130, 202, 0.7);
+						z-Index: 20;
+						visibility: hidden;
 					}
 				}
-
-
 			}
 		}
 	}
