@@ -78,11 +78,11 @@ describe(`Overlay test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		wrapper.find(Blank).simulate(`contextMenu`, {
-			preventDefault: () => {
-			},
-		})
-		wrapper.find(`ReactPlayer`).prop(`onProgress`)(true, 1)
-		wrapper.find(`ReactPlayer`).prop(`onSeek`)()
+		// wrapper.find(Blank).simulate(`contextMenu`, {
+		// 	preventDefault: () => {
+		// 	},
+		// })
+		// wrapper.find(`ReactPlayer`).prop(`onProgress`)(true, 1)
+		// wrapper.find(`ReactPlayer`).prop(`onSeek`)()
 	})
 })
