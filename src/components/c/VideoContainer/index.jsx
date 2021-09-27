@@ -34,8 +34,6 @@ const VideoContainer = props => {
 		editorType,
 	} = props
 
-	console.log(editorType)
-
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 
@@ -282,6 +280,7 @@ const VideoContainer = props => {
 		if(document.getElementById('time-bar') !== null && count === 0 && duration !== 0){
 			count++
 			document.getElementById('time-bar').addEventListener('mousemove', (e) => {
+
 				//calculate current time based on mouse position
 				let currentLayerWidth = document.getElementById('time-bar-container').clientWidth
 				let currentScrollLeft = document.getElementById('time-bar-container').scrollLeft

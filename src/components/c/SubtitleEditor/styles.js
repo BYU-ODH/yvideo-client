@@ -218,6 +218,16 @@ export const EventList = styled.div`
 		background: var(--navy-blue);
 		border-bottom: 5px solid var(--light-blue);
 
+		& > .allow-event {
+			position: relative;
+			float: left;
+			height: 100%;
+			display: flex;
+			transform: scale(1.5);
+			margin-top: 3rem;
+			margin-left: 1rem;
+		}
+
 		& > .save {
 			position: relative;
 			float: right;

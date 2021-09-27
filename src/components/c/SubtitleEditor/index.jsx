@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
 import Style, { Timeline, EventList, Icon } from './styles'
-import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
-import Backend from 'react-dnd-html5-backend'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle } from 'components/bits'
 import * as Subtitle from 'subtitle'
-import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal } from 'components/bits'
+
 import { VideoContainer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 
@@ -16,11 +15,6 @@ import editIcon from 'assets/ca_tracks_edit.svg'
 import saveIcon from 'assets/check.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-import llIcon from 'assets/te-chevrons-left.svg'
-import rrIcon from 'assets/te-chevrons-right.svg'
-import lIcon from 'assets/te-chevron-left.svg'
-import rIcon from 'assets/te-chevron-right.svg'
-import helpIcon from 'assets/te-help-circle-white.svg'
 
 const SubtitleEditor = props => {
 
@@ -31,6 +25,8 @@ const SubtitleEditor = props => {
 		currentContent,
 		subs,
 	} = props.viewstate
+
+	console.log(eventsArray)
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
 
@@ -65,6 +61,7 @@ const SubtitleEditor = props => {
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 	const [deleteTitle, setDeleteTitle] = useState(``)
+	const [allowEvents, setAllowEvents] = useState(false)
 
 	// refs
 	const controllerRef = useRef(null)
@@ -679,6 +676,9 @@ const SubtitleEditor = props => {
 			scrollRef.current.scrollTo(0, scroll)
 		}, 50)
 	}
+	const handleAllowEvents = () => {
+		setAllowEvents(!allowEvents)
+	}
 
 	return (
 		<Style>
@@ -691,7 +691,7 @@ const SubtitleEditor = props => {
 					setActiveCensorPosition = {setActiveCensorPosition}
 					handleLastClick = {null}
 					handleScroll = {handleScrollFactor}
-					events = {allEvents}
+					events = {allowEvents ? allEvents : null}
 					updateEvents={null}
 					eventToEdit={null}
 					activeCensorPosition = {activeCensorPosition}
@@ -723,6 +723,9 @@ const SubtitleEditor = props => {
 												index={index}
 											/>
 											{
+												console.log(sub[`content`])
+											}
+											{
 												subLayerToEdit === index && isEdit ?
 													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
 													:
@@ -751,6 +754,23 @@ const SubtitleEditor = props => {
 									/>
 								</div>
 							))
+							}
+							{
+								subtitles.length === 0 &&
+								<SubtitlesLayer
+									videoLength={videoLength}
+									minimized={eventListMinimized}
+									width={layerWidth}
+									subs={[]}
+									activeEvent={subToEdit}
+									layer={null}
+									index={subToEdit}
+									sideEditor={openSubEditor}
+									updateSubs={updateSubs}
+									closeEditor={closeSideEditor}
+									displayLayer={subLayerToEdit}
+								/>
+
 							}
 							<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
 								setSubModalVisible(true)
@@ -794,6 +814,11 @@ const SubtitleEditor = props => {
 			<EventList minimized={eventListMinimized}>
 				<header>
 					{/* <img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/> */}
+					<div className={`allow-event`}
+						onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}>
+						<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
+					</div>
 					<div className={`save`}>
 						{disableSave ?
 							<button className={`disable`}>
