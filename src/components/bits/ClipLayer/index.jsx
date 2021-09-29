@@ -8,12 +8,15 @@ import {
 
 const ClipLayer = props => {
 
-	const {width, start, end, setStart, setEnd,videoLength} = props
+	const { width, start, end, setStart, setEnd, videoLength, active} = props
 	const layerRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
+
+	const style = active !== `` ? { left: `${start}% !important`, top: `0px`, backgroundColor:`rgba(255,255,0,0.5)`, borderLeft: `3px solid #000000`,borderRight:`3px solid #000000`} : {}
+
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
@@ -32,6 +35,8 @@ const ClipLayer = props => {
 		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
+
+
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
@@ -66,8 +71,6 @@ const ClipLayer = props => {
 
 		} else {
 			s -= difference
-
-			// console.log(cEvents[index])
 			if(s < 0)
 				s = 0
 			else if(s > videoLength){
@@ -94,16 +97,13 @@ const ClipLayer = props => {
 							bounds={`.clip-layer`}
 							onDragStop={(e, d) => handleDrag(d)}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
-
-							// onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 							key={`clip`}
 							// onClick={() => toggleEditor(layerIndex, index)}
-							style={{ left: `${start}% !important`, top: `0px`, backgroundColor:`rgba(255,255,0,0.5)`, borderLeft: `3px solid #000000`,borderRight:`3px solid #000000`}}
+							style={style}
 						>
 						</Rnd>
 					</div>
 				</div>
-				{/* <div id='layer-message' ></div> */}
 			</Style>
 		</>
 	)

@@ -478,7 +478,7 @@ const VideoEditor = props => {
 
 	const checkSideBarTitle = () => {
 		try {
-			const title = allEvents[eventToEdit].type
+			const title = allEvents[eventToEdit].type === "Censor" ? ('Blur') : (allEvents[eventToEdit].type)
 			return title
 		} catch (error) {
 			return ``
