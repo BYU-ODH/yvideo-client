@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
-import Style, { Timeline, EventList, Icon } from './styles'
-import { DndProvider } from 'react-dnd'
+import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
-import Backend from 'react-dnd-html5-backend'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle, EventCard } from 'components/bits'
 import * as Subtitle from 'subtitle'
-import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal } from 'components/bits'
-import { VideoContainer } from 'components'
+
+import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
@@ -16,11 +15,6 @@ import editIcon from 'assets/ca_tracks_edit.svg'
 import saveIcon from 'assets/check.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-import llIcon from 'assets/te-chevrons-left.svg'
-import rrIcon from 'assets/te-chevrons-right.svg'
-import lIcon from 'assets/te-chevron-left.svg'
-import rIcon from 'assets/te-chevron-right.svg'
-import helpIcon from 'assets/te-help-circle-white.svg'
 
 const SubtitleEditor = props => {
 
@@ -33,6 +27,7 @@ const SubtitleEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
+	const layers = [{0: `Skip`}] // {3: `Comment`},
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
@@ -65,6 +60,7 @@ const SubtitleEditor = props => {
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 	const [deleteTitle, setDeleteTitle] = useState(``)
+	const [allowEvents, setAllowEvents] = useState(true)
 
 	// refs
 	const controllerRef = useRef(null)
@@ -637,6 +633,9 @@ const SubtitleEditor = props => {
 			scrollRef.current.scrollTo(0, scroll)
 		}, 50)
 	}
+	const handleAllowEvents = () => {
+		setAllowEvents(!allowEvents)
+	}
 
 	return (
 		<Style>
@@ -649,7 +648,7 @@ const SubtitleEditor = props => {
 					setActiveCensorPosition = {setActiveCensorPosition}
 					handleLastClick = {null}
 					handleScroll = {handleScrollFactor}
-					events = {allEvents}
+					events = {allowEvents ? allEvents : null}
 					updateEvents={null}
 					eventToEdit={null}
 					activeCensorPosition = {activeCensorPosition}
@@ -669,9 +668,26 @@ const SubtitleEditor = props => {
 
 					<section>
 						<div className='event-layers'>
+							{layers.map((layer, index) => (
+								<div id={`layer-${index}`} className={`layer`} key={index}>
+									<div className={`skip-handle`}>
+										<p>Allow Skip</p>
+										<div className={`allow-event`}
+											onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+											onMouseLeave={e => toggleTip()}>
+											<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
+										</div>
+									</div>
+									<SkipLayer
+										videoLength={videoLength}
+										width={layerWidth}
+										events={allEvents}
+									/>
+								</div>
+							))}
 							{subtitles.map((sub, index) => (
 								<div className={`layer`} key={index}>
-									<div className={`handle`}>
+									<div className={`handle`} >
 										<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
 											<SubtitlesCard
 												title={sub.title !== `` ? sub.title : isEdit ? `` : `No Language`}
@@ -708,11 +724,29 @@ const SubtitleEditor = props => {
 										displayLayer={subLayerToEdit}
 									/>
 								</div>
-							))}
+							))
+							}
+							{
+								subtitles.length === 0 &&
+								<SubtitlesLayer
+									videoLength={videoLength}
+									minimized={eventListMinimized}
+									width={layerWidth}
+									subs={[]}
+									activeEvent={subToEdit}
+									layer={null}
+									index={subToEdit}
+									sideEditor={openSubEditor}
+									updateSubs={updateSubs}
+									closeEditor={closeSideEditor}
+									displayLayer={subLayerToEdit}
+								/>
+
+							}
 							<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
 								setSubModalVisible(true)
 								setSubModalMode(`create`)
-								}}>
+							}}>
 								<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
 							</div>
 						</div>
@@ -720,7 +754,7 @@ const SubtitleEditor = props => {
 					</section>
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
-						<div className='zoom-factor' id="zoom-factor">
+						<div className='zoom-factor' id='zoom-factor'>
 							<img src={zoomOut} style={{ width: `20px` }}/>
 							<Rnd
 								className={`zoom-indicator`}

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
 	background-color: white;
@@ -34,7 +35,7 @@ export const Timeline = styled.div`
 	color: #5F5F5F; */
 
 	position: relative;
-	height: ${props => props.minimized ? `0vh` : `30vh`};
+	height: ${props => props.minimized ? `0vh` : `18vh`};
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
@@ -150,7 +151,7 @@ export const Timeline = styled.div`
 	& .layer {
 		display: flex;
 		width: 100%;
-		height: 46px;
+		border-bottom: 1px dashed var(--light-blue);
 	}
 
 	& .handle {
@@ -201,6 +202,38 @@ export const Timeline = styled.div`
 			}
 		}
 	}
+
+	& .skip-handle {
+		width: 162px !important;
+		min-width: 162px;
+		height: 31px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		box-sizing: border-box;
+		position: relative;
+		cursor: pointer;
+		border-bottom: 1px solid #555;
+		border-right: 1px solid var(--light-blue);
+		transition: .5s;
+		background-color: var(--navy-blue);
+		border-bottom: 1px solid;
+		border-color: white;
+
+		& p {
+			padding-left: 2rem;
+			color: white;
+			font-size: 1.5rem;
+		}
+
+		& > .allow-event {
+			position: relative;
+			display: flex;
+			transform: scale(1.5);
+			margin-left: 1.5rem;
+
+		}
+	}
 `
 export const Icon = styled.div`
   background: url(${props => props.src}) center no-repeat;
@@ -218,7 +251,7 @@ export const EventList = styled.div`
 	height: calc(100vh - var(--navbar-height));
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
 	transition: .5s;
-	z-index: 12;
+	// z-index: 12;
 	overflow: hidden;
 	border-left: 1px solid black;
 
@@ -320,4 +353,10 @@ export const Help = styled.img`
 	margin-left: 10px;
 	position: relative;
 	top: 10px;
+`
+
+export const PlusIcon = styled.div`
+  background: url(${plusIcon}) center no-repeat;
+  width: 20px;
+  height: 15px;
 `

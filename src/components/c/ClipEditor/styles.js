@@ -237,6 +237,16 @@ export const SideEditor = styled.div`
 
 		border-bottom: 5px solid var(--light-blue);
 
+		& > .allow-event {
+			position: relative;
+			float: left;
+			height: 100%;
+			display: flex;
+			transform: scale(1.5);
+			margin-top: 3rem;
+			margin-left: 1rem;
+		}
+
 		& > .headerTitle {
 			color: white;
 			line-height: 5rem;
@@ -428,7 +438,7 @@ export const SideEditor = styled.div`
 			& .singleClip {
 				display: flex;
 				padding: 0.5rem;
-				
+
 				& td {
 					display: inline-flex;
 					width: 30% !important;
