@@ -40,14 +40,14 @@ const TrackLayer = props => {
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
 
 		if(events && layerIndex === 3){
-			//we are in censor, calculate overlapping
-			//overlap count tells us how many half layers we need
-			let overlapCount = calculateOverlaps()
+			// we are in censor, calculate overlapping
+			// overlap count tells us how many half layers we need
+			const overlapCount = calculateOverlaps()
 			// console.log(overlapCount.length)
 
 			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
 
-			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? (46) : (26 * (overlapCount.length + 1)) }px`
+			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? 46 : 26 * (overlapCount.length + 1)}px`
 		}
 
 	}, [width, events, layerOverlap])
@@ -61,30 +61,31 @@ const TrackLayer = props => {
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
 	const calculateOverlaps = () => {
-		let sortedEvents = JSON.parse(JSON.stringify(events))
-		sortedEvents.sort((a, b) => { return a.start - b.start })
+		const sortedEvents = JSON.parse(JSON.stringify(events))
+		sortedEvents.sort((a, b) => {
+			return a.start - b.start
+		})
 		let lastCensorEvent = null
-		let overlapCount = []
+		const overlapCount = []
 		let halfLayer = 0
 
 		for(let i = 0; i < sortedEvents.length; i++){
-			let currentEvent = sortedEvents[i]
+			const currentEvent = sortedEvents[i]
 
-			if(currentEvent.type === "Censor"){
-				let eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
+			if(currentEvent.type === `Censor`){
+				const eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
 				// console.log('found', eventIndex)
 				if(lastCensorEvent === null){
 
 					events[eventIndex].halfLayer = halfLayer
 					lastCensorEvent = currentEvent
 					continue
-				}
-				else {
-					//compare previous and current
-					//if current overlaps with previous
-					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){
-						//find index in the main events object
-						//we find the first overlap so pass anything from beginning to now
+				} else {
+					// compare previous and current
+					// if current overlaps with previous
+					if(currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end || currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end){
+						// find index in the main events object
+						// we find the first overlap so pass anything from beginning to now
 						// console.log('comparing')
 						// console.log(`start ${currentEvent.start} end ${currentEvent.end}`)
 						// console.log(`start ${lastCensorEvent.start} end ${lastCensorEvent.end}`)
@@ -99,7 +100,7 @@ const TrackLayer = props => {
 			}
 		}
 
-		//if there is one overlap we need 2 half layers. for every overlap one half layer more is added
+		// if there is one overlap we need 2 half layers. for every overlap one half layer more is added
 		return overlapCount
 	}
 
@@ -147,7 +148,6 @@ const TrackLayer = props => {
 			}
 		}
 
-
 		updateEvents(index, cEvents[index], layerIndex)
 	}
 
@@ -158,16 +158,15 @@ const TrackLayer = props => {
 	}
 
 	const printEvents = (event, index, isMultiEvent) => {
-		if(event['layer'] !== layerIndex){
-			return;
-		}
+		if(event[`layer`] !== layerIndex)
+			return
 
 		return (
 			<Rnd
-				className={`layer-event ${isMultiEvent ? ('half-event') : ('')} ${activeEvent === index ? `active-event` : ``}`}
+				className={`layer-event ${isMultiEvent ? `half-event` : ``} ${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
-				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `${isMultiEvent ? (23) : (46)}px`}}
+				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `${isMultiEvent ? 23 : 46}px`}}
 				position={{ x: event.start/videoLength * layerWidth, y: 0}}
 				enableResizing={Enable}
 				dragAxis='x'
@@ -176,7 +175,7 @@ const TrackLayer = props => {
 				key={index}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
-				<Icon src={event.icon} className={isMultiEvent ? ('half-icon') : ('')}/>
+				<Icon src={event.icon} className={isMultiEvent ? `half-icon` : ``}/>
 				{ event.type !== `Pause` ? (
 					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
 				) : (
@@ -204,34 +203,34 @@ const TrackLayer = props => {
 						</div>
 					</div>
 				} {/* new layer function that will provide maximum layer overlap */ }
-				{(layerIndex === 3) && layerOverlap !== null &&
+				{layerIndex === 3 && layerOverlap !== null &&
 					<div ref={layerRef} className='eventsbox'>
-						<div className={`layer-${layerIndex} ${ layerOverlap.length > 0 ? ('half-layer') : ('')} events ${displayLayer === layerIndex ? `active-layer` : ``}`}
-							style={{ marginTop: layerOverlap.length > 0 ? (`${26 * (layerOverlap.length)}px`) : ('0px'), backgroundColor: 'rgba(5, 130, 202, 0.1)'}}>
+						<div className={`layer-${layerIndex} ${layerOverlap.length > 0 ? `half-layer` : ``} events ${displayLayer === layerIndex ? `active-layer` : ``}`}
+							style={{ marginTop: layerOverlap.length > 0 ? `${26 * layerOverlap.length}px` : `0px`, backgroundColor: `rgba(5, 130, 202, 0.1)`}}>
 							{
 								events !== undefined && events.length > 0 && videoLength !== 0 ? (
 									<>
-										{events.map((event, index) => (
-												event.halfLayer === 0 || event.halfLayer === undefined ? (printEvents(event, index, layerOverlap.length > 0)) : (null)
-										))}
+										{events.map((event, index) =>
+											event.halfLayer === 0 || event.halfLayer === undefined ? printEvents(event, index, layerOverlap.length > 0) : null,
+										)}
 									</>
 								) : null
 							}
 						</div>
 						{ layerOverlap.map((halfLayer, overlapIndex) => (
-								<div key={overlapIndex} className={`layer-${layerIndex} half-layer events ${displayLayer === layerIndex ? `active-layer` : ``}`}
-									style={{ marginTop: overlapIndex > 0 ? (`${26 * overlapIndex}px`) : ('0px'), backgroundColor: overlapIndex % 2 !== 0 ? ('rgba(5, 130, 202, 0.1)') : ('')}}>
-									{
-										events !== undefined && events.length > 0 && videoLength !== 0 && halfLayer !== 0 ? (
-											<>
-												{events.map((event, index) => (
-													event.halfLayer === halfLayer ? (printEvents(event, index, true)) : (null)
-												))}
-											</>
-										) : null
-									}
-								</div>
-							))
+							<div key={overlapIndex} className={`layer-${layerIndex} half-layer events ${displayLayer === layerIndex ? `active-layer` : ``}`}
+								style={{ marginTop: overlapIndex > 0 ? `${26 * overlapIndex}px` : `0px`, backgroundColor: overlapIndex % 2 !== 0 ? `rgba(5, 130, 202, 0.1)` : ``}}>
+								{
+									events !== undefined && events.length > 0 && videoLength !== 0 && halfLayer !== 0 ? (
+										<>
+											{events.map((event, index) =>
+												event.halfLayer === halfLayer ? printEvents(event, index, true) : null,
+											)}
+										</>
+									) : null
+								}
+							</div>
+						))
 						}
 					</div>
 				}

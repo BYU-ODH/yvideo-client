@@ -90,23 +90,6 @@ export const Timeline = styled.div`
 			flex-direction: column;
 			overflow-x: scroll;
 
-			& .zoom-scroll-container {
-				margin: auto;
-				width: 100%;
-				height: 10%;
-				border-radius: 10px;
-				background-color: rgba(220, 220, 220, 0.5);
-				position: relative;
-				overflow: hidden;
-
-				& .zoom-scroll-indicator {
-					position: absolute;
-					min-width: .5%;
-					background-color: var(--light-blue);
-					border-radius: 20px;
-				}
-			}
-
 			& #time-indicator-container {
 				height: 27vh;
 				width: calc(100% - 162px);

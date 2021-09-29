@@ -6,6 +6,9 @@ import { Style } from './styles'
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
 const SubtitlesLayer = props => {
+
+	console.log("here!")
+	
 	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer, videoLength} = props
 	const layerIndex = props.layer
 	const layerRef = useRef(null)

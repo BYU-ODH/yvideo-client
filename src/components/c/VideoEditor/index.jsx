@@ -478,7 +478,7 @@ const VideoEditor = props => {
 
 	const checkSideBarTitle = () => {
 		try {
-			const title = allEvents[eventToEdit].type
+			const title = allEvents[eventToEdit].type === "Censor" ? ('Blur') : (allEvents[eventToEdit].type)
 			return title
 		} catch (error) {
 			return ``
@@ -496,7 +496,7 @@ const VideoEditor = props => {
 	}
 
 	return (
-		<Style>
+		<Style id='video-editor'>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
 					className='video'
@@ -517,7 +517,7 @@ const VideoEditor = props => {
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 					<section>
-						<div className='event-layers'>
+						<div className='event-layers' id="layers-component">
 
 							{layers.map((layer, index) => (
 								<div id={`layer-${index}`} className={`layer`} key={index}>
