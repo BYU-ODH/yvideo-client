@@ -156,6 +156,9 @@ const VideoContainer = props => {
 		},
 		handleSeek: (e, time) => {
 			let newPlayed = 0
+
+			if(ref.current === null) return
+
 			if(e !== null){
 				// onclick to time bar
 				const scrubber = e.currentTarget.getBoundingClientRect()
@@ -243,6 +246,8 @@ const VideoContainer = props => {
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleBlankClick : (height, width, x, y) => {
+			if(editorType !== 'video') return
+
 			let currentTime = ref.current.getCurrentTime()
 			if (!currentTime) currentTime = 0
 			handleLastClick(height,width,x, y, currentTime)
