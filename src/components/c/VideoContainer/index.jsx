@@ -93,14 +93,15 @@ const VideoContainer = props => {
 
 			if(document.getElementById(`layer-time-indicator`) !== undefined){
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
-				let elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
+				const elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
 
-				if(elementRightSide >= (window.innerWidth * .6)){
+				if(elementRightSide >= window.innerWidth * .6)
 					handleScroll(1 / duration, false)
-				}
+
 			}
 
 			setElapsed(playedSeconds)
+			document.getElementById('seconds-time-holder').innerText = playedSeconds
 
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
@@ -120,9 +121,9 @@ const VideoContainer = props => {
 					video.handleMute()
 					break
 				case `Pause`:
-					//TODO: this pause logic is way too expensive.
-					//This can be solved with a boolean active flag
-					//this yiels O(a * b) when it can be constant time
+					// TODO: this pause logic is way too expensive.
+					// This can be solved with a boolean active flag
+					// this yiels O(a * b) when it can be constant time
 					let paused = true
 					for (let i = 0; i < pausedTimes.length;i++){
 						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)
@@ -155,16 +156,19 @@ const VideoContainer = props => {
 		},
 		handleSeek: (e, time) => {
 			let newPlayed = 0
+
+			if(ref.current === null) return
+
 			if(e !== null){
 				// onclick to time bar
 				const scrubber = e.currentTarget.getBoundingClientRect()
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
 			} else {
-				// add event to layer
-				newPlayed = duration / time
+				newPlayed = time / duration
 			}
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
+				console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed)
 			}
@@ -242,9 +246,13 @@ const VideoContainer = props => {
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleBlankClick : (height, width, x, y) => {
+			if(editorType !== 'video') return
+
 			let currentTime = ref.current.getCurrentTime()
 			if (!currentTime) currentTime = 0
-			handleLastClick(height,width,x, y, currentTime)
+			if(handleLastClick)
+				handleLastClick(height,width,x, y, currentTime)
+
 		},
 	}
 
@@ -271,35 +279,74 @@ const VideoContainer = props => {
 		alert(`There was an error loading the video`)
 	}
 
+	let count = 0 //this is to make sure that event listeners are applied only once
+
+	const handleHotKeys = (e) => {
+		let playedTime = parseFloat(document.getElementById('seconds-time-holder').innerHTML)
+		console.log('keycode', e.code)
+		console.log('elapsed', playedTime)
+		switch (e.code) {
+			case "ArrowRight":
+				console.log('new time', playedTime + 1)
+				video.handleSeek(null, playedTime + 1)
+				break;
+			case "ArrowLeft":
+				console.log('new time', playedTime - 1)
+				video.handleSeek(null, playedTime - 1)
+				break;
+			case "Comma":
+				console.log('new time', playedTime - .1)
+				video.handleSeek(null, playedTime - .1)
+				break;
+			case "Period":
+				console.log('new time', playedTime + .1)
+				video.handleSeek(null, playedTime + .1)
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	useEffect(() => {
-		let count = 0
-		if(document.getElementById('time-bar') !== null && count === 0 && duration !== 0){
+		if(count === 0){
 			count++
-			document.getElementById('time-bar').addEventListener('mousemove', (e) => {
-				//calculate current time based on mouse position
-				let currentLayerWidth = document.getElementById('time-bar-container').clientWidth
-				let currentScrollLeft = document.getElementById('time-bar-container').scrollLeft
+			//checking for time bar and setting event listener
+			if(document.getElementById('time-bar') !== null && duration !== 0){
+				document.getElementById('time-bar').addEventListener('mousemove', (e) => {
+					//calculate current time based on mouse position
+					let currentLayerWidth = document.getElementById('time-bar-container').clientWidth
+					let currentScrollLeft = document.getElementById('time-bar-container').scrollLeft
 
-				let secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
+					let secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
 
-				const dateElapsed = new Date(null)
-				dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
-				const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+					const dateElapsed = new Date(null)
+					dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
+					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-				//set new x position to the red bar
-				document.getElementById('time-bar-shadow').style.visibility = `visible`
-				document.getElementById('time-bar-shadow').style.transform = `translateX(${e.offsetX - 2}px)`
-				document.getElementById('time-bar-shadow-text').innerText = `${formattedElapsed}`
-				if(e.offsetX > (window.innerWidth / 2)){
-					document.getElementById('time-bar-shadow-text').style.right = `6rem`
-				}
-				else {
-					document.getElementById('time-bar-shadow-text').style.right = `0`
-				}
+					//set new x position to the red bar
+					document.getElementById('time-bar-shadow').style.visibility = `visible`
+					document.getElementById('time-bar-shadow').style.transform = `translateX(${e.offsetX - 2}px)`
+					document.getElementById('time-bar-shadow-text').innerText = `${formattedElapsed}`
+					if(e.offsetX > (window.innerWidth / 2)){
+						document.getElementById('time-bar-shadow-text').style.right = `6rem`
+					}
+					else {
+						document.getElementById('time-bar-shadow-text').style.right = `0`
+					}
 
-				document.getElementById('layer-time-indicator-line-shadow').style.visibility = `visible`
-				document.getElementById('layer-time-indicator-line-shadow').style.transform = `translateX(${e.offsetX}px)`
+					document.getElementById('layer-time-indicator-line-shadow').style.visibility = `visible`
+					document.getElementById('layer-time-indicator-line-shadow').style.transform = `translateX(${e.offsetX}px)`
+				})
+			}
+			//checking video container and setting event listener for hot keys
+			window.addEventListener('keyup', (e) => {
+				handleHotKeys(e)
 			})
+		}
+
+		return function cleanup(){
+			window.removeEventListener('keyup', (e) => {}, false)
 		}
 	}, [duration])
 
@@ -355,7 +402,7 @@ const VideoContainer = props => {
 				onDuration={video.handleDuration}
 				// blank style
 			/>
-			<TimeBar>
+			<TimeBar id="timeline">
 				<header>
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
@@ -369,15 +416,15 @@ const VideoContainer = props => {
 						</button>
 
 						<div id='time-bar' onMouseLeave={(e) => {
-							if(document.getElementById('time-bar-shadow') !== null && document.getElementById('layer-time-indicator-line-shadow') !== null) {
-								document.getElementById('time-bar-shadow').style.visibility = `hidden`
-								document.getElementById('layer-time-indicator-line-shadow').style.visibility = `hidden`
+							if(document.getElementById(`time-bar-shadow`) !== null && document.getElementById(`layer-time-indicator-line-shadow`) !== null) {
+								document.getElementById(`time-bar-shadow`).style.visibility = `hidden`
+								document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
 							}
 						}}>
 							<div id={`time-bar-container`}>
 								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
 								<span id='time-text'></span>
-								<span id='time-bar-shadow'><p id="time-bar-shadow-text"></p></span>
+								<span id='time-bar-shadow'><p id='time-bar-shadow-text'></p></span>
 							</div>
 						</div>
 					</div>
@@ -387,6 +434,7 @@ const VideoContainer = props => {
 				handleShowSubtitle={video.handleShowSubtitle}
 			>
 			</SubtitlesContainer>
+			<p id="seconds-time-holder" style={{ visibility: 'hidden', position: 'absolute', top: '0px', right: '0px' }}></p>
 		</Style>
 	)
 }
