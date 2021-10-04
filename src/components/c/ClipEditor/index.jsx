@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { Prompt } from 'react-router'
-import { VideoContainer } from 'components'
+import { VideoContainer, SkipLayer } from 'components'
 import {ClipLayer, SwitchToggle} from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
@@ -34,6 +34,8 @@ const ClipEditor = props => {
 	} = props.handlers
 
 	const updateContent = props.updateContent
+	const layers = [{0: `Skip`}]
+
 	// const parseSub = Subtitle.parse(testingSubtitle)
 
 	// for (let i = 0; i < parseSub.length; i++){
@@ -366,23 +368,43 @@ const ClipEditor = props => {
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
+
 						<div className={`layer`}>
 							{active !== `` ? (
-								<>
-									<div className={`handle`}>
+								<div>
+									{layers.map((layer, index) => (
+										<div className={`flex`} key={index}>
+											<div className={`skip-handle`}>
+												<p>Allow Skip</p>
+												<div className={`allow-event`}
+													onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+													onMouseLeave={e => toggleTip()}>
+													<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
+												</div>
+											</div>
+											<SkipLayer
+												videoLength={videoLength}
+												width={layerWidth}
+												events={allEvents}
+											/>
+										</div>
+									))}
+									<div className={`flex`}>
+										<div className={`handle`}>
+										</div>
+										<ClipLayer
+											start={clipList[active][`start`]}
+											setStart={setStartTime}
+											end={clipList[active][`end`]}
+											setEnd={setEndTime}
+											width={0}
+											videoLength = {videoLength}
+											active = {active}
+										/>
 									</div>
-									<ClipLayer
-										start={clipList[active][`start`]}
-										setStart={setStartTime}
-										end={clipList[active][`end`]}
-										setEnd={setEndTime}
-										width={0}
-										videoLength = {videoLength}
-										active = {active}
-									/>
-								</>
+								</div>
 							):
-								<>
+								<div className={`flex`}>
 									<div className={`handle`}>
 									</div>
 									<ClipLayer
@@ -392,9 +414,9 @@ const ClipEditor = props => {
 										setEnd={setEndTime}
 										width={0}
 										videoLength = {videoLength}
-										active = {active}
+										active = {``}
 									/>
-								</>
+								</div>
 							}
 
 						</div>

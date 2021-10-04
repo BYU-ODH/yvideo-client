@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
 import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
-import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle, EventCard } from 'components/bits'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle } from 'components/bits'
 import * as Subtitle from 'subtitle'
 
 import { VideoContainer, SkipLayer } from 'components'
@@ -27,7 +27,7 @@ const SubtitleEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}] // {3: `Comment`},
+	const layers = [{0: `Skip`}]
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)

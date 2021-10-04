@@ -13,6 +13,7 @@ export const Style = styled.div`
 	z-index: 0;
 	overflow-x: scroll;
 	scroll-behavior: smooth;
+	border-bottom: 1px dashed var(--light-blue);
 
 	& .eventsbox {
     position: relative;
@@ -41,6 +42,8 @@ export const Style = styled.div`
 		background-color: white;
 		box-shadow: 2px 2px 3px rgba(0,0,0, 0.2), -2px -2px 3px rgba(0,0,0, 0.2);
 		overflow-x: scroll !important;
+		background-color: darkgray;
+
 
 		&	p {
 			font-size: 1.3rem;

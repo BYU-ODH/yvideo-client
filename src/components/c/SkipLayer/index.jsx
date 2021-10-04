@@ -1,7 +1,6 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
-import { convertSecondsToMinute } from '../../common/timeConversion'
 
 import {
 	Icon, Style,
@@ -49,8 +48,8 @@ const SkipLayer = props => {
 		return (
 			<Rnd
 				className={`layer-event half-event`}
-				id={`event-${index}`}
-				bounds={`.layer-${layerIndex}`}
+				// id={`event-${index}`}
+				// bounds={`.layer-${layerIndex}`}
 				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `31px`}}
 				position={{ x: event.start/videoLength * layerWidth, y: 0}}
 				key={index}
