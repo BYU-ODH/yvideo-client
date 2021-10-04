@@ -54,10 +54,10 @@ const ManageInstructorsContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 	}
-	const handleSearchSubmit = e => {
-		e.preventDefault()
-		search(`user`, searchQuery, true)
-	}
+	// const handleSearchSubmit = e => {
+	// 	e.preventDefault()
+	// 	search(`user`, searchQuery, true)
+	// }
 
 	const addInstructor = async() => {
 
@@ -84,7 +84,7 @@ const ManageInstructorsContainer = props => {
 	const handlers = {
 		handleRegister,
 		updateSearchBar,
-		handleSearchSubmit,
+		// handleSearchSubmit,
 		toggleModal,
 		addInstructor,
 		removeInstructor,
