@@ -23,7 +23,6 @@ describe(`MorePublicCollectionsContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-		console.log(wrapper.debug())
 		wrapper.find(`input`).simulate(`change`, { target: { value: `value` } })
 		wrapper.find(AddButton).simulate(`click`)
 		expect(wrapper.contains(<td>yrich</td>))

@@ -22,9 +22,6 @@ const ManageInstructorsContainer = props => {
 		removeAccess,
 	} = props
 
-	console.log(resource)
-	console.log(resourceAccess)
-
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [countAccess, setCountAccess] = useState(0)
 	const [blockLeave, setBlock] = useState(false)
