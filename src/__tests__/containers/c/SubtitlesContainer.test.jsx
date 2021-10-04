@@ -5,7 +5,7 @@ import { Router, BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/SubtitlesContainer'
 import * as testutil from '../../testutil/testutil'
 
-let props = {
+const props = {
 	currentTime: 10,
 	handleShowSubtitle: jest.fn(),
 	duration: 10,
@@ -21,7 +21,8 @@ describe(`Subtitles container test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-			expect(wrapper).toBeDefined()
+		expect(wrapper).toBeDefined()
+		console.log(wrapper.debug())
 	})
 	it(`wrapper: currentTime > end || currentTime < start`, () => {
 		props.currentTime = 300
@@ -33,7 +34,7 @@ describe(`Subtitles container test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-			expect(wrapper).toBeDefined()
+		expect(wrapper).toBeDefined()
 	})
 	it(`subtitles[active] === undefined`, () => {
 		const wrapper = mount(
@@ -43,6 +44,6 @@ describe(`Subtitles container test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-			expect(wrapper).toBeDefined()
+		expect(wrapper).toBeDefined()
 	})
 })

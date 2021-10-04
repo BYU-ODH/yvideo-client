@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
-import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
+import Style, { Timeline, EventList, Icon } from './styles'
 import { Rnd } from 'react-rnd'
-import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle, EventCard } from 'components/bits'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle } from 'components/bits'
 import * as Subtitle from 'subtitle'
 
 import { VideoContainer, SkipLayer } from 'components'
@@ -26,8 +26,8 @@ const SubtitleEditor = props => {
 		subs,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}] // {3: `Comment`},
+	const { handleShowTip, toggleTip } = props.handlers
+	const layers = [{0: `Skip`}]
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
@@ -40,22 +40,15 @@ const SubtitleEditor = props => {
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
-	const [scrollWidth, setScrollWidth] = useState(0)
-	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
-	const [subSelected, setSubSelected] = useState(false)
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
 	const [subModalVisible, setSubModalVisible] = useState(false)
 	const [subModalMode, setSubModalMode] = useState(``)
 	const [subChanges, setSubChanges] = useState(0)
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
-	const [dimensions, setDimensions] = useState({
-		height: window.innerHeight,
-		width: window.innerWidth,
-	})
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
@@ -63,7 +56,6 @@ const SubtitleEditor = props => {
 	const [allowEvents, setAllowEvents] = useState(true)
 
 	// refs
-	const controllerRef = useRef(null)
 	const scrollRef = useRef()
 
 	useEffect(() => {
@@ -84,7 +76,7 @@ const SubtitleEditor = props => {
 			largestLayer = eventsArray[eventsArray.length-1].layer
 		}
 
-		// Find the largets layer number
+		// Find the largest layer number
 		const initialLayers = []
 
 		for(let i = 0; i < largestLayer + 1; i++)
@@ -314,7 +306,6 @@ const SubtitleEditor = props => {
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
-		setSubSelected(true)
 		setBlock(true)
 	}
 
@@ -783,7 +774,6 @@ const SubtitleEditor = props => {
 
 			<EventList minimized={eventListMinimized}>
 				<header>
-					{/* <img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/> */}
 					<div className={`save`}>
 						{disableSave ?
 							<button className={`disable`}>

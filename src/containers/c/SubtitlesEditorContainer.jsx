@@ -84,22 +84,6 @@ const SubtitlesEditorContainer = props => {
 		} else
 			setSubs(allSubs)
 
-		// } else {
-		// 	if(allSubs.length === 0) {
-		// 		const tempSubList = []
-		// 		const tempSub = {
-		// 			title : ``,
-		// 			language: ``,
-		// 			content: [{start: 0, end: 2, text: ``}],
-		// 			id: ``,
-		// 		}
-		// 		tempSubList.push(tempSub)
-		// 		setSubs(tempSubList)
-		// 		setSubtitles(tempSubList)
-		// 	} else
-		// 		setSubs(allSubs)
-		// }
-
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 
 	const createAndAddSub = async () =>{
