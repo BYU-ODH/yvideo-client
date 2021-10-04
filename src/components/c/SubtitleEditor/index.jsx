@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
-import Style, { Timeline, EventList, Icon } from './styles'
-import { DndProvider } from 'react-dnd'
+import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
-import Backend from 'react-dnd-html5-backend'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle, EventCard } from 'components/bits'
 import * as Subtitle from 'subtitle'
-import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal } from 'components/bits'
-import { Controller } from 'components'
+
+import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
@@ -16,11 +15,6 @@ import editIcon from 'assets/ca_tracks_edit.svg'
 import saveIcon from 'assets/check.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-import llIcon from 'assets/te-chevrons-left.svg'
-import rrIcon from 'assets/te-chevrons-right.svg'
-import lIcon from 'assets/te-chevron-left.svg'
-import rIcon from 'assets/te-chevron-right.svg'
-import helpIcon from 'assets/te-help-circle-white.svg'
 
 const SubtitleEditor = props => {
 
@@ -33,6 +27,7 @@ const SubtitleEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
+	const layers = [{0: `Skip`}] // {3: `Comment`},
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
@@ -65,22 +60,16 @@ const SubtitleEditor = props => {
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 	const [deleteTitle, setDeleteTitle] = useState(``)
+	const [allowEvents, setAllowEvents] = useState(true)
 
 	// refs
 	const controllerRef = useRef(null)
 	const scrollRef = useRef()
 
 	useEffect(() => {
-		setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
 			setZoomFactor(0)
 			setWidth(0)
-			setTimeout(() => {
-				setDimensions({
-					height: window.innerHeight,
-					width: window.innerWidth,
-				})
-			}, 500)
 			setZoomFactor(1)
 			setWidth(1)
 		}
@@ -173,13 +162,14 @@ const SubtitleEditor = props => {
 		const rawSubs = subtitles
 		createSub(rawSubs)
 	}
+
 	const handleZoomChange = (e, d) => {
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
 				setZoomFactor(0)
 				setWidth(0)
-				handleScrollFactor(`start`)
+				handleScrollFactor(0)
 			} else {
 				setZoomFactor(d.x)
 				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
@@ -188,78 +178,35 @@ const SubtitleEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 	}
-	const handleScrollFactor = (direction) => {
+
+	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
+			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const alllayers = Array.from(document.getElementsByClassName(`layer-container`))
+			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
-			const scrollBar = document.getElementsByClassName(`zoom-scroll-indicator`)[0]
 
-			const cLeft = parseInt(scrollBar.style.left)
-			const scrollBarOffset = scrollBarContainer * 0.03
-			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
+			if(!zoom){
+				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
+				timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
 
-			switch (direction) {
-			case `start`:
-				scrubber.scrollLeft = 0
-				timeIndicator.scrollLeft = 0
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft = 0
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
 				})
-				scrollBar.style.left = `0px`
+			} else {
+				scrubber.scrollLeft = currentLayerWidth * direction
+				timeIndicator.scrollLeft = currentLayerWidth * direction
 
-				break
-			case `left`:
-				scrubber.scrollLeft -= currentLayerWidth * 0.03
-				timeIndicator.scrollLeft -= currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft -= currentLayerWidth * 0.03
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = currentLayerWidth * direction
 				})
-				// FIND 3 PERCENT OF PARENT
-				// CURRENT LEFT MINUS NEW LEFT
-				if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
-					scrollBar.style.left = `${cLeft - scrollBarOffset}px`
-				else if (cLeft - scrollBarOffset < 0)
-					scrollBar.style.left = `0px`
-
-				break
-			case `right`:
-				scrubber.scrollLeft += currentLayerWidth * 0.03
-				timeIndicator.scrollLeft += currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth * 0.03
-				})
-				if(zoomFactor !== 0){
-					if(isNaN(cLeft) === true)
-						scrollBar.style.left = `${scrollBarOffset}px`
-					else
-						scrollBar.style.left = `${cLeft + scrollBarOffset}px`
-
-				}
-
-				if (cLeft + scrollBarOffset > lastPossibleRight)
-					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-				break
-			case `end`:
-				scrubber.scrollLeft += currentLayerWidth
-				timeIndicator.scrollLeft += currentLayerWidth
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth
-				})
-				scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-				break
-
-			default:
-				break
 			}
 		}
 	}
+
 	const updateSubs = (index, sub, subLayerIndex, side, type) => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
@@ -686,10 +633,28 @@ const SubtitleEditor = props => {
 			scrollRef.current.scrollTo(0, scroll)
 		}, 50)
 	}
+	const handleAllowEvents = () => {
+		setAllowEvents(!allowEvents)
+	}
 
 	return (
 		<Style>
-			<DndProvider backend={Backend}>
+			<span style={{ zIndex: 0 }}>
+				<VideoContainer
+					className='video'
+					url={props.viewstate.url}
+					getDuration={getVideoDuration}
+					getVideoTime={setCurrentTime} // set current time
+					setActiveCensorPosition = {setActiveCensorPosition}
+					handleLastClick = {null}
+					handleScroll = {handleScrollFactor}
+					events = {allowEvents ? allEvents : null}
+					updateEvents={null}
+					eventToEdit={null}
+					activeCensorPosition = {activeCensorPosition}
+					editorType={`subtitle`}
+				>
+				</VideoContainer>
 				<SubtitlesModal
 					mode = {subModalMode}
 					handleAddSubLayer = {handleAddSubLayer}
@@ -699,169 +664,169 @@ const SubtitleEditor = props => {
 					handleDeleteSubLayer={handleDeleteSubLayer}
 					deleteTitle={deleteTitle}
 				/>
-				<span style={{ zIndex: 0 }}>
+				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
-					<Controller ref = {controllerRef}
-						className='video'
-						url={props.viewstate.url}
-						getDuration={getVideoDuration}
-						getVideoTime={setCurrentTime}
-						minimized={timelineMinimized}
-						setActiveCensorPosition = {setActiveCensorPosition}
-						editorType={`subtitle`}
-					>
-					</Controller>
-					<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
-
-						<section>
-							<div className='event-layers'>
-								{subtitles.map((sub, index) => (
-									<div className={`layer`} key={index}>
-										<div className={`handle`}>
-											<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
-												<SubtitlesCard
-													title={sub.title !== `` ? sub.title : isEdit ? `` : `No Language`}
-													updateTitle={updateSubLayerTitle}
-													isEdit={isEdit}
-													subLayer={subLayerToEdit}
-													index={index}
-												/>
-												{
-													subLayerToEdit === index && isEdit ?
-														<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
-														:
-														<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
-												}
-											</div>
-											<Icon className={`trashIcon`} src={trashIcon} onClick={()=>{
-												setSubModalVisible(true)
-												setSubModalMode(`delete`)
-												setDeleteTitle(sub.title !== `` ? sub.title : `No Language`)
-												setSubLayerToEdit(index)
-											}}/>
+					<section>
+						<div className='event-layers'>
+							{layers.map((layer, index) => (
+								<div id={`layer-${index}`} className={`layer`} key={index}>
+									<div className={`skip-handle`}>
+										<p>Allow Skip</p>
+										<div className={`allow-event`}
+											onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+											onMouseLeave={e => toggleTip()}>
+											<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 										</div>
-										<SubtitlesLayer
-											videoLength={videoLength}
-											minimized={eventListMinimized}
-											width={layerWidth}
-											subs={sub[`content`]}
-											activeEvent={subToEdit}
-											layer={index}
-											index={subToEdit}
-											sideEditor={openSubEditor}
-											updateSubs={updateSubs}
-											closeEditor={closeSideEditor}
-											displayLayer={subLayerToEdit}
-										/>
 									</div>
-								))
-								}
-								<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
-									setSubModalVisible(true)
-									setSubModalMode(`create`)
-								}}>
-									<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
+									<SkipLayer
+										videoLength={videoLength}
+										width={layerWidth}
+										events={allEvents}
+									/>
 								</div>
-								<br/><br/><br/><br/><br/><br/><br/>
-							</div>
-
-						</section>
-						<div className='zoom-controls'>
-							{/* ADD ZOOM ICON */}
-							<div className='zoom-factor'>
-								<img src={zoomOut} style={{ width: `20px` }}/>
-								<Rnd
-									className={`zoom-indicator`}
-									bounds={`parent`}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-									dragAxis='x'
-									onDragStop={(e, d) => handleZoomChange(e, d)}
-									onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-									onMouseLeave={e => toggleTip()}
-								></Rnd>
-								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
-							</div>
-							<div className='zoom-scroll'>
-
-								<div style={{ width: `90%`, height: `100%`, display: `flex`, marginLeft: `5%` }}>
-									<span onClick={ e => handleScrollFactor(`start`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-start`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}
-									><img src={llIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`left`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-left`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
-
-									<div className={`zoom-scroll-container`}>
-										<div className={`zoom-scroll-indicator`}
-											onMouseEnter={e => handleShowTip(`te-scroll`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-											onMouseLeave={e => toggleTip()}></div>
+							))}
+							{subtitles.map((sub, index) => (
+								<div className={`layer`} key={index}>
+									<div className={`handle`} >
+										<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
+											<SubtitlesCard
+												title={sub.title !== `` ? sub.title : isEdit ? `` : `No Language`}
+												updateTitle={updateSubLayerTitle}
+												isEdit={isEdit}
+												subLayer={subLayerToEdit}
+												index={index}
+											/>
+											{
+												subLayerToEdit === index && isEdit ?
+													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
+													:
+													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
+											}
+										</div>
+										<Icon className={`trashIcon`} src={trashIcon} onClick={()=>{
+											setSubModalVisible(true)
+											setSubModalMode(`delete`)
+											setDeleteTitle(sub.title !== `` ? sub.title : `No Language`)
+											setSubLayerToEdit(index)
+										}}/>
 									</div>
-
-									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-right`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y+ 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={rIcon}/></span>
-									<span onClick={ e => handleScrollFactor(`end`) } style={{ margin: `auto` }}
-										onMouseEnter={e => handleShowTip(`te-scroll-end`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}><img src={rrIcon}/></span>
+									<SubtitlesLayer
+										videoLength={videoLength}
+										minimized={eventListMinimized}
+										width={layerWidth}
+										subs={sub[`content`]}
+										activeEvent={subToEdit}
+										layer={index}
+										index={subToEdit}
+										sideEditor={openSubEditor}
+										updateSubs={updateSubs}
+										closeEditor={closeSideEditor}
+										displayLayer={subLayerToEdit}
+									/>
 								</div>
-								<div id={`time-indicator-container`}>
-									<div id={`layer-time-indicator`}>
-										<span id={`layer-time-indicator-line`}></span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</Timeline>
-				</span>
-
-				<EventList minimized={eventListMinimized}>
-					<header>
-						{/* <img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/> */}
-						<div className={`save`}>
-							{disableSave ?
-								<button className={`disable`}>
-									<span>Save</span>
-								</button>
-								:
-								<button onClick={handleSaveAnnotation}>
-									{blockLeave ?
-										null
-										:
-										isLoading ?
-											<i className='fa fa-refresh fa-spin'/>
-											:
-											<i className='fa fa-check'></i>
-									}
-									<span>Save</span>
-								</button>
+							))
 							}
-						</div>
-					</header>
+							{
+								subtitles.length === 0 &&
+								<SubtitlesLayer
+									videoLength={videoLength}
+									minimized={eventListMinimized}
+									width={layerWidth}
+									subs={[]}
+									activeEvent={subToEdit}
+									layer={null}
+									index={subToEdit}
+									sideEditor={openSubEditor}
+									updateSubs={updateSubs}
+									closeEditor={closeSideEditor}
+									displayLayer={subLayerToEdit}
+								/>
 
-					<>
-						{ showSideEditor !== false && (
-							<SubtitleEditorSideMenu
-								singleEvent={checkSub}
-								index={subToEdit}
-								videoLength={videoLength}
-								closeSideEditor={closeSideEditor}
-								updateSubs={updateSubs}
-								subs={subtitles}
-								changeSubIndex={handleChangeSubIndex}
-								addSub={addSubToLayer}
-								subLayer={subLayerToEdit}
-								deleteSub = {deleteSub}
-								focus={focus}
-								disableSave={disableSave}
-								scrollRef={scrollRef}
-								handleShowTip={handleShowTip}
-								toggleTip={toggleTip}
-							></SubtitleEditorSideMenu>
-						) }
-					</>
-				</EventList>
-			</DndProvider>
+							}
+							<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
+								setSubModalVisible(true)
+								setSubModalMode(`create`)
+							}}>
+								<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
+							</div>
+						</div>
+
+					</section>
+					<div className='zoom-controls'>
+						{/* ADD ZOOM ICON */}
+						<div className='zoom-factor' id='zoom-factor'>
+							<img src={zoomOut} style={{ width: `20px` }}/>
+							<Rnd
+								className={`zoom-indicator`}
+								bounds={`parent`}
+								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								dragAxis='x'
+								onDragStop={(e, d) => handleZoomChange(e, d)}
+								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseLeave={e => toggleTip()}
+							></Rnd>
+							<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+						</div>
+						<div className='zoom-scroll'>
+							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
+							</div>
+							<div id={`time-indicator-container`}>
+								<div id={`layer-time-indicator`}>
+									<span id={`layer-time-indicator-line`}></span>
+									<span id={`layer-time-indicator-line-shadow`}></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</Timeline>
+			</span>
+
+			<EventList minimized={eventListMinimized}>
+				<header>
+					{/* <img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/> */}
+					<div className={`save`}>
+						{disableSave ?
+							<button className={`disable`}>
+								<span>Save</span>
+							</button>
+							:
+							<button onClick={handleSaveAnnotation}>
+								{blockLeave ?
+									null
+									:
+									isLoading ?
+										<i className='fa fa-refresh fa-spin'/>
+										:
+										<i className='fa fa-check'></i>
+								}
+								<span>Save</span>
+							</button>
+						}
+					</div>
+				</header>
+
+				<>
+					{ showSideEditor !== false && (
+						<SubtitleEditorSideMenu
+							singleEvent={checkSub}
+							index={subToEdit}
+							videoLength={videoLength}
+							closeSideEditor={closeSideEditor}
+							updateSubs={updateSubs}
+							subs={subtitles}
+							changeSubIndex={handleChangeSubIndex}
+							addSub={addSubToLayer}
+							subLayer={subLayerToEdit}
+							deleteSub = {deleteSub}
+							focus={focus}
+							disableSave={disableSave}
+							scrollRef={scrollRef}
+							handleShowTip={handleShowTip}
+							toggleTip={toggleTip}
+						></SubtitleEditorSideMenu>
+					) }
+				</>
+			</EventList>
 			<>
 				<Prompt
 					when={blockLeave}

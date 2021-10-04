@@ -95,6 +95,8 @@ export const ToolTip = (props) => {
 		"actions": `Actions`,
 		"MMSSMS": `MM:SS`,
 		"HMMSSMS": `H:MM:SS`,
+		"allow-events": `Allow Events`,
+
 	}
 
 	// console.log("POSITION", position)

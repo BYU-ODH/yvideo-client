@@ -18,9 +18,9 @@ export const Container = styled.div`
 	overflow-y: scroll !important;
 	background-color: white;
 	border-radius: 5px;
-	padding: 0px 20px 20px 20px;
 	position: relative;
 	text-align: center;
+
 
 	::-webkit-scrollbar {
 		display: block !important;
@@ -44,19 +44,15 @@ export const Container = styled.div`
 		background: var(--navy-blue);
 	}
 
-	& #title {
-		position: fixed;
-		width: 80vw;
-		height: 50px;
-		text-align: center;
+	& h1 {
+		border-bottom: 2px solid #0582ca;
 		padding-top: 5px;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-		background-color: white;
+		height: 30px;
 	}
 
 	& #content {
 		width: 80%;
-		margin: 70px auto auto auto;
+		margin: auto auto auto auto;
 		text-align: left;
 		position: relative;
 
@@ -72,24 +68,50 @@ export const Container = styled.div`
 			padding: 10px;
 			display: flex;
 
+			border: 2.5px solid rgba(200, 200, 200, .7);
+			border-radius: 10px;
+			padding: 10px;
+			margin: 25px 0px;
+			position: relative;
+
+			& h3 {
+				margin-left: -12px;
+				margin-top: -12px;
+				width: calc(100% + 4px);
+				padding: 5px 10px;
+				margin-bottom: 5px;
+				background-color: rgba(5, 130, 202, 0.2);
+				border-radius: 10px 10px 0px 0px;
+			}
+
 			& p {
 				margin: auto;
 				flex: 1;
 				line-height: 20px;
-			}
 
-			& img {
-				margin: auto;
-			}
-
-			& .icon {
-				width: 20px;
-				height: 20px;
+				& img {
+					float: right;
+					margin: auto;
+					padding: 5px;
+					border: .1px solid transparent;
+					border-radius: 10px;
+				}
 			}
 
 			& li {
 				padding: 3px 0px 3px 0px;
+
+				& .icon {
+					position: relative;
+					top: 5px;
+					width: 20px;
+					height: 20px;
+				}
 			}
+		}
+
+		& .flex-column {
+			flex-direction: column;
 		}
 	}
 

@@ -138,13 +138,13 @@ const TrackEditorSideMenu = props => {
 									<label>End</label>
 								</div>
 								<div className='center'>
-									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`}
+									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`} onKeyUp={e => {e.stopPropagation()}}
 										onChange={e => handleEditEventBTimeChange(e)}
 										onBlur={e => handleEditEventBTimeFinalChange(e)}
 										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 									/>
-									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`}
+									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`} onKeyUp={e => {e.stopPropagation()}}
 										style={{ visibility: `${event.type === "Pause" ? (`hidden`) : (`visible`)}` }}
 										onChange={e => handleEditEventETimeChange(e)}
 										onBlur={e => handleEditEventETimeFinalChange(e)}
