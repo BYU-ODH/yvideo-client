@@ -128,3 +128,6 @@ export const CloseHelp = styled.span`
     right: 20px;
 	}
 `
+
+export const Tutorial = styled.div`
+`
