@@ -11,7 +11,7 @@ const Breadcrumb = props => {
 			<div>
 				{
 					Object.values(crumbs.path).map((crumb, ci) => {
-						const disabled = isLast(ci) ? `disabled` : ``
+						const disabled = isLast(ci)
 						const link = toLink(crumb)
 						return (
 							<span
