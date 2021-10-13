@@ -309,26 +309,26 @@ const HelpDocumentationContainer = props => {
 		},
 		'Important Words': {
 			htmlInstruction: `
-				<div class="section">
-						<p><b>Subtitle Selection:</b><br/>
+				<div class="section flex-column">
+					<h3>Subtitle Selection & Translation</h3>
+					<p style="text-align: left; width: 100%;">
 						Important words are added to a specific subtitle, so select the subtitle using the drop-down on the top left.
 					</p>
-				</div>
-				<hr/>
-				<div class="section">
-					<p><b>Translation:</b><br/>
+					<br/>
+					<h4>Translation</h4>
+					<p>
+						<img src="${translationHelp}"/>
 						The translation portion of this modal is on the left side. The translation portion allows users to see if there is a translation available from
 						a foreign language to english. Please, notice a few languages are supported. Check the bottom of the modal to find supported languages.
-					</p><br/>
-					<img src="${translationHelp}"/>
+					</p>
 				</div>
-				<hr/>
-				<div class="section">
-					<p><b>Important Words:</b><br/>
+				<div class="section flex-column">
+					<h3>Important Words</h3>
+					<p>
+						<img src="${importantWordHelp}"/>
 						Adding important words to a subtitle allows instructors to point out words that the students should know.
 						<br/> Important words are highlighted in the transcript and they become clickable. When a student clicks on a word a translation is given if available.
 					</p>
-					<img src="${importantWordHelp}"/>
 				</div>`,
 		}
 	}

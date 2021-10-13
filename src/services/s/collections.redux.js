@@ -109,7 +109,7 @@ export default class CollectionService {
 			console.error(action.payload.error)
 			return {
 				...store,
-				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,
+				errorMessage: `${action.payload.error.response.data ? (action.payload.error.response.data) : (null) }. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
 		case COLLECTIONS_ERROR_SYNC:
