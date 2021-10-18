@@ -31,7 +31,6 @@ const SubtitleEditor = props => {
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
-	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
@@ -96,10 +95,6 @@ const SubtitleEditor = props => {
 	}, [eventsArray, blockLeave, isEdit])
 	// end of useEffect
 
-	if(shouldUpdate === true)
-
-		setShouldUpdate(false)
-
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
 		const tempSubs = subs
@@ -156,6 +151,7 @@ const SubtitleEditor = props => {
 	}
 
 	const handleZoomChange = (e, d) => {
+		// console.log("object")
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
@@ -179,7 +175,12 @@ const SubtitleEditor = props => {
 			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			let currentLayerWidth
+
+			if(document.getElementsByClassName(`events`).length > 1)
+				currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			else
+				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
 
 			if(!zoom){
 				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
@@ -203,20 +204,17 @@ const SubtitleEditor = props => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-		let input = ``
 
 		try {
 			if(side === `beg`) {
-				input = sub.start
-				if(sub.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || sub.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					sub.start = convertToSeconds(sub.start, videoLength)
 				else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
 			} else {
-				input = sub.end
-				if(sub.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || sub.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					sub.end = convertToSeconds(sub.end, videoLength)
 				else {
 					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
@@ -243,6 +241,8 @@ const SubtitleEditor = props => {
 					needCheck=false
 				} else {
 					if(index !==0) {
+						// console.log(sub.start)
+						// console.log(tempSubs[subLayerIndex][`content`][index-1].end)
 						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
 							document.getElementById(`subStart${index}`).style.border=`2px solid red`
 							needCheck=false
@@ -287,15 +287,6 @@ const SubtitleEditor = props => {
 			checkSubError(tempSubs, `update`, index, updateSub)
 		} else
 			setDisableSave(true)
-
-		if(side === `beg`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				sub.start = input
-
-		} else if(side === `end`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				sub.end = input
-		}
 
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs

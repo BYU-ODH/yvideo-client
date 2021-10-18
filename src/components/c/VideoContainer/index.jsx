@@ -1,15 +1,8 @@
-import React, { useRef, useEffect, useState, useLayoutEffect, useCallback, useImperativeHandle } from 'react'
-
+import React, { useRef, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
-
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
-
-import { EventsContainer, SubtitlesContainer } from 'containers'
-
+import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
+import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
-
-import Position from './censorPosition'
-
 import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
@@ -68,6 +61,7 @@ const VideoContainer = props => {
 		elapsed,
 		playbackRate,
 
+
 		// handlers
 
 		toggleMute: () => setMuted(!muted),
@@ -101,7 +95,7 @@ const VideoContainer = props => {
 			}
 
 			setElapsed(playedSeconds)
-			document.getElementById('seconds-time-holder').innerText = playedSeconds
+			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
 
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
@@ -163,12 +157,10 @@ const VideoContainer = props => {
 				// onclick to time bar
 				const scrubber = e.currentTarget.getBoundingClientRect()
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
-			} else {
+			} else
 				newPlayed = time / duration
-			}
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
-				console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed)
 			}
@@ -246,7 +238,7 @@ const VideoContainer = props => {
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
 		handleBlankClick : (height, width, x, y) => {
-			if(editorType !== 'video') return
+			if(editorType !== `video`) return
 
 			let currentTime = ref.current.getCurrentTime()
 			if (!currentTime) currentTime = 0
@@ -279,74 +271,65 @@ const VideoContainer = props => {
 		alert(`There was an error loading the video`)
 	}
 
-	let count = 0 //this is to make sure that event listeners are applied only once
+	let count = 0 // this is to make sure that event listeners are applied only once
 
 	const handleHotKeys = (e) => {
-		let playedTime = parseFloat(document.getElementById('seconds-time-holder').innerHTML)
-		console.log('keycode', e.code)
-		console.log('elapsed', playedTime)
+		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
-			case "ArrowRight":
-				console.log('new time', playedTime + 1)
-				video.handleSeek(null, playedTime + 1)
-				break;
-			case "ArrowLeft":
-				console.log('new time', playedTime - 1)
-				video.handleSeek(null, playedTime - 1)
-				break;
-			case "Comma":
-				console.log('new time', playedTime - .1)
-				video.handleSeek(null, playedTime - .1)
-				break;
-			case "Period":
-				console.log('new time', playedTime + .1)
-				video.handleSeek(null, playedTime + .1)
-				break;
-
-			default:
-				break;
+		case `ArrowRight`:
+			video.handleSeek(null, playedTime + 1)
+			break
+		case `ArrowLeft`:
+			video.handleSeek(null, playedTime - 1)
+			break
+		case `Comma`:
+			video.handleSeek(null, playedTime - .1)
+			break
+		case `Period`:
+			video.handleSeek(null, playedTime + .1)
+			break
+		default:
+			break
 		}
 	}
 
 	useEffect(() => {
 		if(count === 0){
 			count++
-			//checking for time bar and setting event listener
-			if(document.getElementById('time-bar') !== null && duration !== 0){
-				document.getElementById('time-bar').addEventListener('mousemove', (e) => {
-					//calculate current time based on mouse position
-					let currentLayerWidth = document.getElementById('time-bar-container').clientWidth
-					let currentScrollLeft = document.getElementById('time-bar-container').scrollLeft
+			// checking for time bar and setting event listener
+			if(document.getElementById(`time-bar`) !== null && duration !== 0){
+				document.getElementById(`time-bar`).addEventListener(`mousemove`, (e) => {
+					// calculate current time based on mouse position
+					const currentLayerWidth = document.getElementById(`time-bar-container`).clientWidth
+					const currentScrollLeft = document.getElementById(`time-bar-container`).scrollLeft
 
-					let secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
+					const secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
 
 					const dateElapsed = new Date(null)
 					dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
 					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-					//set new x position to the red bar
-					document.getElementById('time-bar-shadow').style.visibility = `visible`
-					document.getElementById('time-bar-shadow').style.transform = `translateX(${e.offsetX - 2}px)`
-					document.getElementById('time-bar-shadow-text').innerText = `${formattedElapsed}`
-					if(e.offsetX > (window.innerWidth / 2)){
-						document.getElementById('time-bar-shadow-text').style.right = `6rem`
-					}
-					else {
-						document.getElementById('time-bar-shadow-text').style.right = `0`
-					}
+					// set new x position to the red bar
+					document.getElementById(`time-bar-shadow`).style.visibility = `visible`
+					document.getElementById(`time-bar-shadow`).style.transform = `translateX(${e.offsetX - 2}px)`
+					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
+					if(e.offsetX > window.innerWidth / 2)
+						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
+					else
+						document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
-					document.getElementById('layer-time-indicator-line-shadow').style.visibility = `visible`
-					document.getElementById('layer-time-indicator-line-shadow').style.transform = `translateX(${e.offsetX}px)`
+					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
+					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
 				})
 			}
-			//checking video container and setting event listener for hot keys
-			window.addEventListener('keyup', (e) => {
+			// checking video container and setting event listener for hot keys
+			window.addEventListener(`keyup`, (e) => {
 				handleHotKeys(e)
 			})
 		}
 
 		return function cleanup(){
-			window.removeEventListener('keyup', (e) => {}, false)
+			window.removeEventListener(`keyup`, (e) => {}, false)
 		}
 	}, [duration])
 
@@ -374,7 +357,6 @@ const VideoContainer = props => {
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
-			{/* console.log(editorType) */}
 
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 
@@ -405,7 +387,7 @@ const VideoContainer = props => {
 				onDuration={video.handleDuration}
 				// blank style
 			/>
-			<TimeBar id="timeline">
+			<TimeBar id='timeline'>
 				<header>
 					<button className='play-btn' onClick={playing ? video.handlePause : video.handlePlay}>
 						<img src={playing ? pause : play} alt={playing ? `pause` : `play`}/>
@@ -437,7 +419,7 @@ const VideoContainer = props => {
 				handleShowSubtitle={video.handleShowSubtitle}
 			>
 			</SubtitlesContainer>
-			<p id="seconds-time-holder" style={{ visibility: 'hidden', position: 'absolute', top: '0px', right: '0px' }}></p>
+			<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
 		</Style>
 	)
 }

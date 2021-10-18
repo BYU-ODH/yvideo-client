@@ -78,6 +78,13 @@ const SubtitlesLayer = props => {
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
+		// console.log(`here`)
+		// console.log(direction)
+		// console.log(ref)
+		// console.log(delta)
+		// console.log(event)
+		// console.log(index)
+		// console.log(e)
 		let isError = false
 		const cEvents = subs
 		const difference = delta.width/layerWidth*100*videoLength/100

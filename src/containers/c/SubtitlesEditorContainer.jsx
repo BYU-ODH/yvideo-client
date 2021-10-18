@@ -56,7 +56,6 @@ const SubtitlesEditorContainer = props => {
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
 			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
-			// we only want to set the url if it is not set.
 
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
@@ -83,6 +82,7 @@ const SubtitlesEditorContainer = props => {
 			setCalledGetSubtitles(true)
 		} else
 			setSubs(allSubs)
+
 
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 
@@ -119,6 +119,8 @@ const SubtitlesEditorContainer = props => {
 	}
 
 	const handleShowTip = (tipName, position) => {
+
+		// console.log(position)
 		toggleTip({
 			component: Tooltip,
 			props: {
