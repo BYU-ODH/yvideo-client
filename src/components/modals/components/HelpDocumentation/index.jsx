@@ -26,6 +26,21 @@ export default class HelpDocumentation extends PureComponent {
 						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
 						<div id='content'>
 						</div>
+						{
+							name === "Manage Resource" ? (
+							<>
+								<div className="video-section">
+									<h2>Create Resource Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/create-resource.webm`} type="video/webm"/>
+										</video>
+									</div>
+								</div>
+								<br/>
+							</>
+							) : (null)
+						}
 						<div className="video-section">
 							<h2>{name} Video Tutorial</h2>
 							<div>

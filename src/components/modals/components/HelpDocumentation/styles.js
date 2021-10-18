@@ -115,7 +115,7 @@ export const Container = styled.div`
 		}
 	}
 
-	& .video-section{
+	& .video-section {
 		width: 80%;
 		margin: auto auto auto auto;
 		text-align: center;
