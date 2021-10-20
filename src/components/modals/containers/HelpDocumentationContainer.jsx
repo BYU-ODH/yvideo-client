@@ -86,14 +86,7 @@ const HelpDocumentationContainer = props => {
 						<br/><br/>
 						<b>Create New Collection:</b> this button allows you to create a new collection and add it as an unpublished collection, so students can't see it.
 					</p>
-				</div>
-				<div class="section large-img">
-					<h3>Managing Collections</h3>
-					<p>
-						<img src="${collection}">
-						When you click on a collection name, you will see on the right a collection menu where you can edit the collection name, see "Content" or "Permissions",
-						change status to publish/unpublish to show or hide collection from students, and archive/unarchive a collection.
-					</p>
+					<h4>Managing Collections</h4><br/>
 					<ul>
 						<p>Under content and permissions you can do the following</p>
 						<li><b>Content</b>: edit all the content that belongs to your collection including creating new videos, adding subtitles, editting the video, and more</li>
@@ -349,6 +342,25 @@ const HelpDocumentationContainer = props => {
 						<li>A resource lets you manage who can access your files. So, you can share your files with other professors and vice versa</li>
 					</ul>
 				</div>`,
+		},
+		'Subtitle Editor': {
+			htmlInstruction: `
+			<div class="section flex-column">
+				<h3>Creating Subtitles/Captions</h3>
+				<p style="text-align: left; width: 100%;">
+					Subtitles and captions can be created from an existing subtitles file (SRT or VTT), or they can be created manually. Follow the create subtitles tutorial to learn how to do it.<br/>
+					One video can have many captions or subtitles in different languages. The subtitle or captions that a content uses is based on the target language of the video.
+				</p>
+				<br/>
+				<h4>Editing</h4><br/>
+				<ul>
+					<li><b>Tracks</b> at the bottom of the page allows you to create a new caption and or subtitle track</li>
+					<li>Click on any text slot in the <b>track bar</b> you want to edit to open the <b>side editor</b></li>
+					<li>In the side editor you can <b>edit the text and the start and end times</b> for each of the slots</li>
+					<li>To <b>add</b> a new text slot you can click on the plus icon at the bottom of the last text slot. And, to <b>delete</b> a text slot click on the red trash can on the right</li>
+				</ul>
+			</div>
+			`
 		}
 	}
 

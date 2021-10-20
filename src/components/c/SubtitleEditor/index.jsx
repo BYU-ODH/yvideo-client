@@ -15,6 +15,7 @@ import editIcon from 'assets/ca_tracks_edit.svg'
 import saveIcon from 'assets/check.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
+import helpIcon from 'assets/te-help-circle-white.svg'
 
 const SubtitleEditor = props => {
 
@@ -783,7 +784,7 @@ const SubtitleEditor = props => {
 
 			<EventList minimized={eventListMinimized}>
 				<header>
-					{/* <img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/> */}
+					<img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
 					<div className={`save`}>
 						{disableSave ?
 							<button className={`disable`}>
