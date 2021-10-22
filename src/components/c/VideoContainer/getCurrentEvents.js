@@ -27,6 +27,9 @@ export const HandleSubtitle = (time,subtitles,ind) => {
 	subtitleNode.innerHTML = text
 }
 export const CurrentEvents = (time,events,duration) => {
+
+	console.log('Starting current events')
+
 	const activeEvents = []
 	events.forEach((val,ind)=>{
 		const start = val.start
@@ -38,9 +41,9 @@ export const CurrentEvents = (time,events,duration) => {
 	const censorValues = []
 
 	censors.forEach((val,ind)=>{
-
 		censorValues.push(Position(val.position,time))
 	})
+
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
 	handleBlank(blanks)
 	const censorContainer = document.getElementById(`censorContainer`)
@@ -62,14 +65,20 @@ export const CurrentEvents = (time,events,duration) => {
 		}
 		// destroy any that shouldn't be there
 		if (censorChildren.length > censorValues.length){
+			console.log('Destroying censor box')
 			for (let x = 0; x < censorChildren.length; x++){
 				let del = true
-				for (let i; i < comments.length;i++)
+				for (let i = 0; i < censors.length;i++)
 					if (censorChildren[i].className.search(i.toString()) < -1) del = false
 				if (del)
 					censorContainer.removeChild(censorChildren[x])
-
 			}
+		}
+
+		if(time === duration){
+			while (censorContainer.firstChild) {
+        censorContainer.removeChild(censorContainer.firstChild);
+    	}
 		}
 	}
 
