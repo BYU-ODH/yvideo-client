@@ -52,14 +52,32 @@ export default class HelpDocumentation extends PureComponent {
 						<br/>
 						{
 							name === "Manage Collections" ? (
-							<div className="video-section">
-								<h2>Manage Content Video Tutorial</h2>
-								<div>
-									<video controls>
-										<source src={`/videos/manage-content.webm`} type="video/webm"/>
-									</video>
+							<>
+								<div className="video-section">
+									<h2>Manage Content Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/manage-content.webm`} type="video/webm"/>
+										</video>
+									</div>
 								</div>
-							</div>
+								<div className="video-section">
+									<h2>Create Content From Online Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/content-from-online.webm`} type="video/webm"/>
+										</video>
+									</div>
+								</div>
+								<div className="video-section">
+									<h2>Create Content From Resource Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/content-from-resource.webm`} type="video/webm"/>
+										</video>
+									</div>
+								</div>
+							</>
 							) : (null)
 						}
 						<br/>
