@@ -30,13 +30,19 @@ export class FileOverview extends PureComponent {
 		return (
 			<BoxRow>
 				<InnerContainer>
+
 					<Column className='file-column'>
+
 						<div>
-							<h4>File Name:</h4> {file[`filepath`]}
+							<h4>Name:</h4> {file[`metadata`]}
 						</div>
 
 						<div>
-							<h4>File version:</h4>
+							<h4>Path:</h4> {file[`filepath`]}
+						</div>
+
+						<div>
+							<h4>version:</h4>
 							<CategorySelect className='file-change-lang' defaultValue={file[`file-version`]} id='categorySelect' onChange={handleFileVersion}>
 								{langs !== undefined && langs.map( (lang, index) => (
 									<option value={lang} key={index}>
