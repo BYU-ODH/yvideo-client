@@ -364,6 +364,9 @@ const VideoContainer = props => {
 						seekTo = {video.handleSeek}
 					/>
 				):``}
+				{subtitleText !== `` ?(
+					<Subtitles type={editorType}>{subtitleText}</Subtitles>
+				) :``}
 				<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 				</div>
 				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>

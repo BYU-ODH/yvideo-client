@@ -9,6 +9,9 @@ import { Manager } from 'components'
 import { Tooltip } from 'components/bits'
 
 import CreateCollectionContainer from 'components/modals/containers/CreateCollectionContainer'
+
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
+
 import { objectIsEmpty } from 'lib/util'
 
 const LabAssistantManagerContainer = props => {
@@ -65,6 +68,13 @@ const LabAssistantManagerContainer = props => {
 		})
 	}
 
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: `Manage Collections`},
+		})
+	}
+
 	const handleToggleSideBar = () => {
 		if(collections && collectionId)
 			setSingleCollection(collections[collectionId])
@@ -104,6 +114,7 @@ const LabAssistantManagerContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleToggleSideBar,
+		handleShowHelp,
 	}
 
 	if(!collections) return <Manager viewstate={viewstate} handlers={handlers} archived={[]} published={[]} unpublished={[]} empty={true}/>
