@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
-import { convertSecondsToMinute } from '../../common/timeConversion'
+import skipIcon from 'assets/event_skip_gray.svg'
 
 import {
 	Icon, Style,
@@ -13,6 +13,8 @@ const SkipLayer = props => {
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
+	const Enable = {top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
+
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
@@ -54,8 +56,10 @@ const SkipLayer = props => {
 				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `31px`}}
 				position={{ x: event.start/videoLength * layerWidth, y: 0}}
 				key={index}
+				enableResizing={Enable}
+				disableDragging={true}
 			>
-				<Icon src={event.icon}/>
+				<Icon src={skipIcon}/>
 			</Rnd>
 		)
 	}

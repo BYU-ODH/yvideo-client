@@ -283,8 +283,6 @@ const VideoContainer = props => {
 
 	const handleHotKeys = (e) => {
 		let playedTime = parseFloat(document.getElementById('seconds-time-holder').innerHTML)
-		console.log('keycode', e.code)
-		console.log('elapsed', playedTime)
 		switch (e.code) {
 			case "ArrowRight":
 				console.log('new time', playedTime + 1)
