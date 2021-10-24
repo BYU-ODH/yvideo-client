@@ -1,20 +1,16 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-
 	background-color: white;
 	overflow: hidden;
-
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
 	z-index: 0;
-
 	display: flex;
 
 	& > span {
 
 		flex: 1;
-
 		display: flex;
 		flex-direction: column;
 	}
@@ -123,7 +119,6 @@ export const Timeline = styled.div`
 						background-color: transparent;
 						border-right: 2px solid red;
 						z-Index: 20;
-						/* border-right: 2px dotted red; */
 					}
 				}
 
@@ -143,11 +138,9 @@ export const Timeline = styled.div`
 		display: block;
 	}
 
-	& .layer {
-		display: flex;
-		width: 100%;
-		height: 46px;
-	}
+		.flex {
+			display: flex;
+		}
 
 	& .handle {
 		width: 162px !important;
@@ -167,15 +160,33 @@ export const Timeline = styled.div`
 			padding-left: 2rem;
 			color: black;
 			font-size: 1.5rem;
-			& .layer-delete {
-				margin: auto auto -3px 15px;
-				opacity: 0.3;
+		}
+	}
 
-				transition: .5s ease;
-				:hover {
-					opacity: 1;
-				}
-			}
+	& .skip-handle {
+		width: 162px !important;
+		min-width: 162px;
+		height: 31px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		box-sizing: border-box;
+		position: relative;
+		border-bottom: 1px solid #555;
+		border-right: 1px solid var(--light-blue);
+		transition: .5s;
+
+		& p {
+			padding-left: 2rem;
+			font-size: 1.5rem;
+		}
+
+		& > .allow-event {
+			position: relative;
+			display: flex;
+			transform: scale(1.5);
+			margin-left: 1.5rem;
+
 		}
 	}
 `
@@ -298,52 +309,6 @@ export const SideEditor = styled.div`
 		}
 	}
 
-	& > .breadcrumbs {
-		display: ${props => props.minimized !== false ? `none` : `flex`}
-
-		height: 5rem;
-
-		position: relative;
-
-		box-sizing: border-box;
-
-		border-bottom: 1px solid #555;
-
-		color: black;
-		font-weight: 500;
-
-		& > span {
-			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 1.5rem;
-
-			border: none;
-			padding: 0;
-			margin: 0;
-
-			&.carat {
-				position: absolute;
-				left: 6.5rem;
-				top: 1.9rem;
-				height: 1rem;
-				width: 1rem;
-				transform: rotate(45deg);
-				border-top: 1px solid #555;
-				border-right: 1px solid #555;
-				background-color: white;
-			}
-
-			&.current {
-				flex: 1;
-				justify-content: flex-start;
-				padding-left: 2rem;
-				border-left: 1px solid #555;
-			}
-		}
-	}
-
 	& > .eventsList {
 		display: ${props => props.minimized !== false ? `none` : `visible`}
 		padding: 3rem;
@@ -370,41 +335,6 @@ export const SideEditor = styled.div`
 			color: #eb6e79;
 			border: 2px solid #eb6e79 !important;
 			outline: none;
-		}
-	}
-
-	& .layer {
-		display: flex;
-		width: 100%;
-		height: 46px;
-	}
-	& .handle {
-		width: 162px !important;
-		min-width: 162px;
-		height: 46px;
-		display: inline-flex;
-		align-items: center;
-		justify-content: flex-start;
-		box-sizing: border-box;
-		position: relative;
-		cursor: pointer;
-		border-bottom: 1px solid #555;
-		border-right: 1px solid var(--light-blue);
-		transition: .5s;
-
-		& p {
-			padding-left: 2rem;
-			color: black;
-			font-size: 1.5rem;
-			& .layer-delete {
-				margin: auto auto -3px 15px;
-				opacity: 0.3;
-
-				transition: .5s ease;
-				:hover {
-					opacity: 1;
-				}
-			}
 		}
 	}
 	& .clipItems {

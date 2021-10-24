@@ -13,6 +13,7 @@ export const Style = styled.div`
 	z-index: 0;
 	overflow-x: scroll;
 	scroll-behavior: smooth;
+	border-bottom: 1px dashed var(--light-blue);
 
 	& .eventsbox {
     position: relative;
@@ -31,7 +32,7 @@ export const Style = styled.div`
 	}
 
 	& .layer-event {
-		border: 1px solid var(--light-blue) !important;
+		border: 1px solid gray !important;
 		border-radius: 3px;
 		height: 30px;
 		padding: 1px;
@@ -41,6 +42,8 @@ export const Style = styled.div`
 		background-color: white;
 		box-shadow: 2px 2px 3px rgba(0,0,0, 0.2), -2px -2px 3px rgba(0,0,0, 0.2);
 		overflow-x: scroll !important;
+		background-color: lightgray;
+
 
 		&	p {
 			font-size: 1.3rem;
@@ -48,7 +51,6 @@ export const Style = styled.div`
 			margin: auto 0px auto 2px;
 			padding: 1px 2px 1px 2px;
 			background-color: transparent;
-
 		}
 		&	div{
 			text-align: right;

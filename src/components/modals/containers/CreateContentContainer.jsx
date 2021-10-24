@@ -58,6 +58,7 @@ const CreateContentContainer = props => {
 		getLanguages()
 
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
+
 			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
 			const finalLanguages = []
 			langs.forEach((element, i) => {
@@ -217,7 +218,7 @@ const CreateContentContainer = props => {
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": data.targetLanguage === `` ? ('English') : (data.targetLanguage),
+			"file-version": data.targetLanguage === `` ? `English` : data.targetLanguage,
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,

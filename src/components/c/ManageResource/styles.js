@@ -196,3 +196,16 @@ export const FeedbackMessage = styled.div`
 		margin: auto;
 	}
 `
+
+export const Help = styled.span`
+	width: 20px;
+	height: 20px;
+
+	& img {
+		width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -3px;
+    bottom: 5px;
+	}
+`

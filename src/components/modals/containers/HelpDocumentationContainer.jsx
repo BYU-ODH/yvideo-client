@@ -48,11 +48,11 @@ to show the modal you need to import the modal from
 to the component where you are and then add the following code:
 
 const handleShowHelp = () => {
-		toggleModal({
-			component: HelpDocumentation,
-			props: { name: 'Page Name'},
-		})
-	}
+	toggleModal({
+		component: HelpDocumentation,
+		props: { name: 'Page Name'},
+	})
+}
 
 pass this code as a handler and then pass that to the onClick even of the icon that you imported
 To see this you can go to the manager container and see how we used it there.
@@ -86,14 +86,7 @@ const HelpDocumentationContainer = props => {
 						<br/><br/>
 						<b>Create New Collection:</b> this button allows you to create a new collection and add it as an unpublished collection, so students can't see it.
 					</p>
-				</div>
-				<div class="section large-img">
-					<h3>Managing Collections</h3>
-					<p>
-						<img src="${collection}">
-						When you click on a collection name, you will see on the right a collection menu where you can edit the collection name, see "Content" or "Permissions",
-						change status to publish/unpublish to show or hide collection from students, and archive/unarchive a collection.
-					</p>
+					<h4>Managing Collections</h4><br/>
 					<ul>
 						<p>Under content and permissions you can do the following</p>
 						<li><b>Content</b>: edit all the content that belongs to your collection including creating new videos, adding subtitles, editting the video, and more</li>
@@ -122,7 +115,9 @@ const HelpDocumentationContainer = props => {
 							<li><b>Important Words:</b> it is a list of words to be highlighted in the transcript.
 							These words will be clickable to allow students to get a quick translation for those specific words</li>
 						</ul>
-						<img src="${contentEdit}" />
+						<div style="display: flex; width: 100%; height: auto;">
+							<img src="${contentEdit}" width="auto" height="auto" style="max-width: 800px; margin: auto;"/>
+						</div>
 					</div>
 				</div>`,
 		},
@@ -330,6 +325,42 @@ const HelpDocumentationContainer = props => {
 						<br/> Important words are highlighted in the transcript and they become clickable. When a student clicks on a word a translation is given if available.
 					</p>
 				</div>`,
+		},
+		'Manage Resource': {
+			htmlInstruction: `
+				<div class="section flex-column">
+					<h3>Resources</h3>
+					<p style="text-align: left; width: 100%;">
+						Yvideo stores files in a server, and the same file can be used to create more than one content. <b>Resources let you upload files to create content</b>. You can learn to create a resource following
+						the video tutorial below
+					</p>
+					<br/>
+					<label><b>Resource tips</b></label><br/>
+					<ul>
+						<li>The resource is a general placeholder for your files</li>
+						<li>A single resouce lets you upload files to work with different languages</li>
+						<li>A resource lets you manage who can access your files. So, you can share your files with other professors and vice versa</li>
+					</ul>
+				</div>`,
+		},
+		'Subtitle Editor': {
+			htmlInstruction: `
+			<div class="section flex-column">
+				<h3>Creating Subtitles/Captions</h3>
+				<p style="text-align: left; width: 100%;">
+					Subtitles and captions can be created from an existing subtitles file (SRT or VTT), or they can be created manually. Follow the create subtitles tutorial to learn how to do it.<br/>
+					One video can have many captions or subtitles in different languages. The subtitle or captions that a content uses is based on the target language of the video.
+				</p>
+				<br/>
+				<h4>Editing</h4><br/>
+				<ul>
+					<li><b>Tracks</b> at the bottom of the page allows you to create a new caption and or subtitle track</li>
+					<li>Click on any text slot in the <b>track bar</b> you want to edit to open the <b>side editor</b></li>
+					<li>In the side editor you can <b>edit the text and the start and end times</b> for each of the slots</li>
+					<li>To <b>add</b> a new text slot you can click on the plus icon at the bottom of the last text slot. And, to <b>delete</b> a text slot click on the red trash can on the right</li>
+				</ul>
+			</div>
+			`
 		}
 	}
 
