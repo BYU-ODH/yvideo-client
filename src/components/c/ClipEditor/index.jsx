@@ -452,11 +452,6 @@ const ClipEditor = props => {
 				</span>
 				<SideEditor minimized={false}>
 					<header>
-						<div className={`allow-event`}
-							onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-							onMouseLeave={e => toggleTip()}>
-							<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
-						</div>
 						<div className='sideButton'>
 							{disableSave ?
 								<button className={`disable`}>
