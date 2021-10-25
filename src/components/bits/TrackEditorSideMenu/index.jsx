@@ -195,29 +195,25 @@ const TrackEditorSideMenu = props => {
 										<th align='center'>&nbsp;</th>
 									</tr>
 								</thead>
-							</table>
-							<div className='censorList'>
-								<table>
-									<tbody>
+								<tbody className={"censorList"}>
 										{event.type === `Censor`?
 											Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
 													<td><input onClick={()=>setActiveCensorPosition(item)} className='censorRow' type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
 													<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
 													<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-													<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-													<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][4]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+													<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+													<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][4]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
 													<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
 												</tr>
 											))
 											:``}
-									</tbody>
-								</table>
-								<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
-								<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
-							</div>
+								</tbody>
+							</table>
+							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
+							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 
-							<button className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></button><br/><br/><br/><br/>
+							<button className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></button>
 						</div>
 					) : null
 				}

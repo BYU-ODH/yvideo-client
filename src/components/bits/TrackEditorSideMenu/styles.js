@@ -82,11 +82,7 @@ const Style = styled.div`
 		}
 
 		& .tableHeader {
-			width: 70%;
 			margin-left: 10px;
-			& th {
-				width: 50px;
-			}
 		}
 	}
 
@@ -98,8 +94,8 @@ const Style = styled.div`
 		position: relative;
 
 		& td {
-			display: inline-flex;
 			width: 50px !important;
+			padding: 2px;
 			margin: auto;
 			& input {
 				margin: auto;
