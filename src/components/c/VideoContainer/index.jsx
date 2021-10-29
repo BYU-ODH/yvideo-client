@@ -168,7 +168,7 @@ const VideoContainer = props => {
 			}
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
-				console.log(newPlayed)
+				// console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed)
 			}
@@ -283,23 +283,23 @@ const VideoContainer = props => {
 
 	const handleHotKeys = (e) => {
 		let playedTime = parseFloat(document.getElementById('seconds-time-holder').innerHTML)
-		console.log('keycode', e.code)
-		console.log('elapsed', playedTime)
+		// console.log('keycode', e.code)
+		// console.log('elapsed', playedTime)
 		switch (e.code) {
 			case "ArrowRight":
-				console.log('new time', playedTime + 1)
+				// console.log('new time', playedTime + 1)
 				video.handleSeek(null, playedTime + 1)
 				break;
 			case "ArrowLeft":
-				console.log('new time', playedTime - 1)
+				// console.log('new time', playedTime - 1)
 				video.handleSeek(null, playedTime - 1)
 				break;
 			case "Comma":
-				console.log('new time', playedTime - .1)
+				// console.log('new time', playedTime - .1)
 				video.handleSeek(null, playedTime - .1)
 				break;
 			case "Period":
-				console.log('new time', playedTime + .1)
+				// console.log('new time', playedTime + .1)
 				video.handleSeek(null, playedTime + .1)
 				break;
 

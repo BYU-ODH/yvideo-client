@@ -28,7 +28,7 @@ export const HandleSubtitle = (time,subtitles,ind) => {
 }
 export const CurrentEvents = (time,events,duration) => {
 
-	console.log('Starting current events')
+	// console.log('Starting current events')
 
 	const activeEvents = []
 	events.forEach((val,ind)=>{
@@ -50,14 +50,15 @@ export const CurrentEvents = (time,events,duration) => {
 	if (censorContainer){
 		const censorChildren = censorContainer.children
 		for (let i = 0; i<censorValues.length; i++){
-			let exists = false
-			for (let x = 0; x < censorChildren.length; x++)
-				if (censorChildren[i]) exists = true
+			//MATCH CENSOR VALUES BY UNIQUE IDENTIFIER NOT INDEX
+			//IF WE TAKE THE NEXT VALUE INTO ACCOUNT EACH CENSOR VALUE HAS A UNIQUE NEXT
+			// console.log('censor value', censorValues[i])
 
-			if (!exists){
+			if(document.getElementById(`censorBox-${censorValues[i].next}-${censorValues[i].left1.toFixed(2)}`) === null){
+				//if the censor does not exist we create a new one
 				const cen = document.createElement(`div`)
 				cen.setAttribute(`class`,`censorBox`)
-				cen.setAttribute(`id`,`censorBox-${i}`)
+				cen.setAttribute(`id`,`censorBox-${censorValues[i].next}-${censorValues[i].left1.toFixed(2)}`)
 				const can =document.createElement(`canvas`)
 				cen.appendChild(can)
 				censorContainer.appendChild(cen)
@@ -65,13 +66,25 @@ export const CurrentEvents = (time,events,duration) => {
 		}
 		// destroy any that shouldn't be there
 		if (censorChildren.length > censorValues.length){
-			console.log('Destroying censor box')
+			// console.log('Destroying censor box')
 			for (let x = 0; x < censorChildren.length; x++){
+				//loop through all the childs and try to match then to the censor values
+				//if it matches then good. if it doesn't remove such child
+				let childUniqueId = `${censorChildren[x].id.replace(/[^0-9.]/g, '')}`
 				let del = true
-				for (let i = 0; i < censors.length;i++)
-					if (censorChildren[i].className.search(i.toString()) < -1) del = false
-				if (del)
+
+				for (let i = 0; i < censorValues.length; i++){
+					let uniqueId = `${censorValues[i].next}${censorValues[i].left1.toFixed(2)}`
+
+					if(uniqueId === childUniqueId){
+						del = false
+					}
+				}
+
+				if(del){
+					// console.log('Deleting', censorChildren[x])
 					censorContainer.removeChild(censorChildren[x])
+				}
 			}
 		}
 
@@ -99,7 +112,7 @@ export const CurrentEvents = (time,events,duration) => {
 		}
 		// destroy any that shouldn't be there
 		if (commentChildren.length > comments.length){
-			for (let x = 0; x < commentChildren.length, x++;){
+			for (let x = 0; x < commentChildren.length; x++){
 				let del = true
 				for (let i; i < comments.length;i++)
 					if (commentChildren[i].className.search(i.toString()) < -1) del = false
@@ -119,7 +132,7 @@ export const CurrentEvents = (time,events,duration) => {
 }
 export const CensorChange = (ind,censorData, playedSeconds) =>{
 
-	const censorBox = document.getElementById(`censorBox-${ind}`)
+	const censorBox = document.getElementById(`censorBox-${censorData.next}-${censorData.left1.toFixed(2)}`)
 	if(!censorBox) return
 	const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
 	censorBox.style.width = `${width}%`
