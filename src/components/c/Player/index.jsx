@@ -11,9 +11,9 @@ import { PlayerSubtitlesContainer } from 'containers'
 
 import Style, { Blank, Comment, Subtitles, Censor, PlayButton } from './styles'
 
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
-import Position from './censorPosition'
+import Position from 'components/vanilla_scripts/censorPosition'
 
 import chevron from 'assets/player-chevron-left.svg'
 import playButton from 'assets/hexborder.svg'

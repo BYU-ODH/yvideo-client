@@ -8,9 +8,9 @@ import { EventsContainer, SubtitlesContainer } from 'containers'
 
 import { CensorDnD } from 'components/bits'
 
-import Position from './censorPosition'
+import Position from 'components/vanilla_scripts/censorPosition'
 
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -282,6 +282,9 @@ const VideoContainer = props => {
 	let count = 0 //this is to make sure that event listeners are applied only once
 
 	const handleHotKeys = (e) => {
+		if(document.getElementById('seconds-time-holder') === null){
+			return;
+		}
 		let playedTime = parseFloat(document.getElementById('seconds-time-holder').innerHTML)
 		// console.log('keycode', e.code)
 		// console.log('elapsed', playedTime)
@@ -351,7 +354,7 @@ const VideoContainer = props => {
 	}, [duration])
 
 	return (
-		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
+		<Style style={{ maxHeight: `65vh`}} type={editorType} id='controller'>
 			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):console.log(``)} ref={videoRef}>
 				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				{activeCensorPosition !== -1 ? (
@@ -369,9 +372,9 @@ const VideoContainer = props => {
 				{subtitleText !== `` ?(
 					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
-				<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+				<div id='censorContainer' style={{width:`70%`,height:`100%`,position:`absolute`}}>
 				</div>
-				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+				<div id ='commentContainer' style={{width:`70%`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
 			{/* console.log(editorType) */}
@@ -381,6 +384,8 @@ const VideoContainer = props => {
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
 				key={url}
+				width="70%"
+				height="100%"
 
 				// constants
 				className={`react-player .${editorType}`}
