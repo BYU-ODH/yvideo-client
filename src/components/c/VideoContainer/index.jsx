@@ -56,6 +56,10 @@ const VideoContainer = props => {
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
 
+	const executeCensors = async (values, playedSeconds) => {
+		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+	}
+
 	const video = {
 
 		// state
@@ -106,8 +110,8 @@ const VideoContainer = props => {
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 
-			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
-			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+			executeCensors(values, playedSeconds);
+			// for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
@@ -354,7 +358,7 @@ const VideoContainer = props => {
 	}, [duration])
 
 	return (
-		<Style style={{ maxHeight: `65vh`}} type={editorType} id='controller'>
+		<Style style={{ maxHeight: `70vh`}} type={editorType} id='controller'>
 			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):console.log(``)} ref={videoRef}>
 				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				{activeCensorPosition !== -1 ? (
@@ -372,9 +376,9 @@ const VideoContainer = props => {
 				{subtitleText !== `` ?(
 					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
-				<div id='censorContainer' style={{width:`70%`,height:`100%`,position:`absolute`}}>
+				<div id='censorContainer' style={{width:`60%`,height:`100%`,position:`absolute`}}>
 				</div>
-				<div id ='commentContainer' style={{width:`70%`,height:`100%`,position:`absolute`}}>
+				<div id ='commentContainer' style={{width:`60%`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
 			{/* console.log(editorType) */}
@@ -384,7 +388,7 @@ const VideoContainer = props => {
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
 				key={url}
-				width="70%"
+				width="60%"
 				height="100%"
 
 				// constants

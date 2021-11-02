@@ -209,7 +209,7 @@ export const NewLayer = styled.button`
 export const EventEditor = styled.div`
 	--minimized: ${props => props.minimized};
 
-	width: ${props => props.minimized !== false ? `4rem` : `30%`};
+	width: ${props => props.minimized !== false ? `4rem` : `40%`};
 	/* width: 4rem; */
 	height: calc(68.5vh - var(--navbar-height)); // 100vh
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};

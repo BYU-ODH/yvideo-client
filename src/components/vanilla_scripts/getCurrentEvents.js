@@ -135,7 +135,7 @@ export const CurrentEvents = (time,events,duration) => {
 	}
 	return eventValues
 }
-export const CensorChange = (ind,censorData, playedSeconds) =>{
+export const CensorChange = async (ind,censorData, playedSeconds) =>{
 	if(document.getElementById(`censorBox-${censorData.next}-${censorData.left1.toFixed(2)}`)){
 		const censorBox = document.getElementById(`censorBox-${censorData.next}-${censorData.left1.toFixed(2)}`)
 		const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
@@ -143,9 +143,9 @@ export const CensorChange = (ind,censorData, playedSeconds) =>{
 		const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
 		censorBox.style.height = `${height}%`
 		let top = censorData.top1 + censorData.top2 !== 0 ? censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1) : 0
-		let left = censorData.left1 + censorData.left2 !== 0 ? censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1) : 0
+		let left = censorData.left1 + censorData.left2 !== 0 ? censorData.left1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1) : 0
 		censorBox.style.top = `${top < 0 ? ('0%') : (`${top}%`)}`
-		censorBox.style.left = `${left < 0 ? ('0%') : (`${left}%`)}`
+		censorBox.style.left = `${left < 0 ? ('0%') : (`${left + left * .2}%`)}`
 	}
 }
 export const CommentChange = (ind,commentData, playedSeconds) =>{
