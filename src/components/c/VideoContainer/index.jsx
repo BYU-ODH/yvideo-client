@@ -115,37 +115,45 @@ const VideoContainer = props => {
 
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
-			const testMute = values.allEvents.map(val => val.type)
+			// const testMute = values.allEvents.map(val => val.type)
 
-			if (!testMute.includes(`Mute`)) video.handleUnMute()
+			// if (!testMute.includes(`Mute`)) video.handleUnmute()
 
 			for (let y = 0; y < values.allEvents.length; y++){
+				let index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
+
+				if(!events[index].active && values.allEvents[y].type !== 'Mute'){
+					return
+				}
+
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					video.handleMute()
+					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+						events[index].active = false
+						video.handleMute()
+					}
+					else if(!values.allEvents[y].active && ((values.allEvents[y].end - .1) <= playedSeconds)){
+						video.handleUnmute()
+					}
 					break
 				case `Pause`:
-					// TODO: this pause logic is way too expensive.
-					// This can be solved with a boolean active flag
-					// this yiels O(a * b) when it can be constant time
-					let paused = true
-					for (let i = 0; i < pausedTimes.length;i++){
-						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)
-							paused = false
-					}
-					if(paused) {
-						const times = [...pausedTimes]
-						times.push(values.allEvents[y].start)
-						setPausedTimes(times)
-						video.handlePause()
-					}
+					events[index].active = false
+					video.handlePause()
 					break
 				case `Skip`:
+					events[index].active = false
 					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
 				}
+			}
+
+			if(playedSeconds === duration){
+				//for all of the events. If the new seek time goes before events that were already executed activate the events again
+				events.forEach(event => {
+						event.active = true
+				})
 			}
 		},
 		handleDuration: duration => {
@@ -196,7 +204,7 @@ const VideoContainer = props => {
 		handleMute: () => {
 			setMuted(true)
 		},
-		handleUnMute: () => {
+		handleUnmute: () => {
 			setMuted(false)
 		},
 		handleBlank: (bool) => {
@@ -352,6 +360,8 @@ const VideoContainer = props => {
 			})
 		}
 
+		if(events) events.forEach(event => { event.active = true })
+
 		return function cleanup(){
 			window.removeEventListener('keyup', (e) => {}, false)
 		}
@@ -376,9 +386,9 @@ const VideoContainer = props => {
 				{subtitleText !== `` ?(
 					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
-				<div id='censorContainer' style={{width:`60%`,height:`100%`,position:`absolute`}}>
+				<div id='censorContainer' style={{width:`${editorType === 'video' ? ('70%') : ('100%')}`,height:`100%`,position:`absolute`}}>
 				</div>
-				<div id ='commentContainer' style={{width:`60%`,height:`100%`,position:`absolute`}}>
+				<div id ='commentContainer' style={{width:`${editorType === 'video' ? ('70%') : ('100%')}`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
 			{/* console.log(editorType) */}
@@ -388,8 +398,6 @@ const VideoContainer = props => {
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
 				key={url}
-				width="60%"
-				height="100%"
 
 				// constants
 				className={`react-player .${editorType}`}

@@ -6,15 +6,11 @@ import menu from 'assets/menu-white.svg'
 import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
-
 	background-color: white;
 	overflow: hidden;
-
-	width: 100% ;
 	padding-top: var(--navbar-height);
 	height: calc(100vh - var(--navbar-height));
 	z-index: 0;
-
 	display: flex;
 
 	& > span {
@@ -209,9 +205,9 @@ export const NewLayer = styled.button`
 export const EventEditor = styled.div`
 	--minimized: ${props => props.minimized};
 
-	width: ${props => props.minimized !== false ? `4rem` : `40%`};
+	width: 30%;
 	/* width: 4rem; */
-	height: calc(68.5vh - var(--navbar-height)); // 100vh
+	height: calc(72.4vh - var(--navbar-height)); // 100vh
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
 	transition: .5s;
 	z-index: 20;
