@@ -895,6 +895,11 @@ const TrackEditor = props => {
 										onMouseLeave={e => toggleTip()}><img src={lIcon}/></span>
 
 									<div className={`zoom-scroll-container`}>
+<<<<<<< HEAD
+										<div className={`zoom-scroll-indicator`}
+											onMouseEnter={e => handleShowTip(`te-scroll`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+											onMouseLeave={e => toggleTip()}></div>
+=======
 										<Rnd
 											className= 'zoom-scroll-indicator'
 											size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
@@ -905,6 +910,7 @@ const TrackEditor = props => {
 											}}
 										>
 										</Rnd>
+>>>>>>> 5fa6dcd8a40517f1d060791aa25a6843c224d1d9
 									</div>
 
 									<span onClick={ e => handleScrollFactor(`right`) } style={{ margin: `auto` }}

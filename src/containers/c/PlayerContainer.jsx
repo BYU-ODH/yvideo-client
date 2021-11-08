@@ -9,6 +9,8 @@ import { Tooltip } from 'components/bits'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
+import ErrorContainer from 'components/modals/containers/ErrorContainer'
+
 const PlayerContainer = props => {
 
 	const {
@@ -28,6 +30,9 @@ const PlayerContainer = props => {
 		toggleTip,
 		setBreadcrumbs,
 		events,
+		errorMessage,
+		errorPrev,
+		errorSync,
 	} = props
 
 	const params = useParams()
@@ -129,9 +134,17 @@ const PlayerContainer = props => {
 				setIsLandscape(false)
 		}
 
-		if(events) events.forEach(event => { event.active = true })
+		if(events) {
+			events.forEach(event => {
+				event.active = true
+			})
+		}
+		if (errorMessage !== errorPrev){
+			handleError()
+			console.log(errorMessage,errorPrev)
+		}
 
-	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId])
+	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage,errorPrev])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -190,7 +203,7 @@ const PlayerContainer = props => {
 
 	const handleSeekChange = (e, time) => {
 		toggleTip()
-		//reset events
+		// reset events
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
@@ -205,11 +218,11 @@ const PlayerContainer = props => {
 		if(newPlayed !== Infinity && newPlayed !== -Infinity)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 
-		//for all of the events. If the new seek time goes before events that were already executed activate the events again
+		// for all of the events. If the new seek time goes before events that were already executed activate the events again
 		events.forEach(event => {
-			if(event.end >= newPlayed && event.active === false){
+			if(event.end >= newPlayed && event.active === false)
 				event.active = true
-			}
+
 		})
 	}
 
@@ -295,7 +308,12 @@ const PlayerContainer = props => {
 			props: { name: `${isMobile === true ? `Player Mobile` : `Player`}`},
 		})
 	}
-
+	const handleError = () => {
+		toggleModal({
+			component: ErrorContainer,
+		})
+		errorSync()
+	}
 	const handleToggleTranscript = () => {
 		toggleTip()
 		setToggleTranscript(!toggleTranscript)
@@ -403,6 +421,8 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 	subtitles: subtitlesStore.cache,
 	subtitlesContentId: subtitlesStore.contentId,
 	events: interfaceStore.events,
+	errorMessage: contentStore.errorMessage,
+	errorPrev: contentStore.errorMessagePrev,
 })
 
 const mapDispatchToProps = {
@@ -414,6 +434,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
+	errorSync: contentService.syncError,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

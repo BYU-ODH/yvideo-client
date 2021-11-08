@@ -15,7 +15,7 @@ const ClipLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 
-	const style = active !== `` ? { left: `${start}% !important`, top: `0px`, backgroundColor:`rgba(255,255,0,0.5)`, borderLeft: `3px solid #000000`,borderRight:`3px solid #000000`} : {}
+	const style = active !== `` ? { left: `${start}% !important`, top: `0px`, backgroundColor:`#002e5d`,border:`1px solid #0582ca`,color:`#fff`} : {}
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -36,19 +36,19 @@ const ClipLayer = props => {
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 
-
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
 	// Drag within the layer
 	const handleDrag = (d) => {
+		console.log(d)
 		const beginTimePercentage = d.x / layerWidth * videoLength
 		const endPercentage = beginTimePercentage + (end - start)
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
 		let s = beginTimePercentage
 		let e = endPercentage
-
+		console.log(s,e)
 		if(e > videoLength)
 			e = videoLength
 
@@ -81,7 +81,8 @@ const ClipLayer = props => {
 		setStart(s)
 		setEnd(en)
 	}
-
+	console.log(end, start,videoLength,layerWidth)
+	console.log(`${(end - start)/videoLength * layerWidth}px`,parseFloat(start/videoLength * layerWidth))
 	return (
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>
@@ -95,12 +96,16 @@ const ClipLayer = props => {
 							enableResizing={Enable}
 							dragAxis='x'
 							bounds={`.clip-layer`}
-							onDragStop={(e, d) => handleDrag(d)}
+							onDragStop={(e, d) => {
+								console.log(e,d)
+								handleDrag(d)
+							}}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
 							key={`clip`}
 							// onClick={() => toggleEditor(layerIndex, index)}
 							style={style}
 						>
+							<p>Clip: {start} - {end}</p>
 						</Rnd>
 					</div>
 				</div>
