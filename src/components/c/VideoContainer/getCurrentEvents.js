@@ -24,7 +24,7 @@ export const HandleSubtitle = (time,subtitles,ind) => {
 		if (filtered.length > 0) subtext = filtered[0].text
 		return subtext
 	}
-	subtitleNode.innerHTML = text
+	subtitleNode.innerHTML = text()
 }
 export const CurrentEvents = (time,events,duration) => {
 	const activeEvents = []
@@ -90,7 +90,7 @@ export const CurrentEvents = (time,events,duration) => {
 		}
 		// destroy any that shouldn't be there
 		if (commentChildren.length > comments.length){
-			for (let x = 0; x < commentChildren.length, x++;){
+			for (let x = 0; x < commentChildren.length; x++){
 				let del = true
 				for (let i; i < comments.length;i++)
 					if (commentChildren[i].className.search(i.toString()) < -1) del = false
@@ -124,10 +124,5 @@ export const CommentChange = (ind,commentData, playedSeconds) =>{
 		const commentBox = document.getElementById(`comment-${ind}`)
 		commentBox.style.top = `${commentData.y}%`
 		commentBox.style.left = `${commentData.x}%`
-	}
-}
-export const subtitleChange = (subtitles) => {
-	if(document.getElementById(`subtitleContainer`)){
-		const container = document.getElementById(`subtitleContainer`)
 	}
 }

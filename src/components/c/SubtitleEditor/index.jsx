@@ -152,7 +152,6 @@ const SubtitleEditor = props => {
 	}
 
 	const handleZoomChange = (e, d) => {
-		// console.log("object")
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
@@ -231,10 +230,7 @@ const SubtitleEditor = props => {
 				document.getElementById(`subStart${index}`).style.border=`2px solid red`
 				needCheck=false
 			} else {
-				if(sub.start < 0) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
-				} else if(sub.start >= videoLength) {
+				if(sub.start >= videoLength) {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck=false
 				} else if(sub.start >= sub.end) {
@@ -242,8 +238,6 @@ const SubtitleEditor = props => {
 					needCheck=false
 				} else {
 					if(index !==0) {
-						// console.log(sub.start)
-						// console.log(tempSubs[subLayerIndex][`content`][index-1].end)
 						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
 							document.getElementById(`subStart${index}`).style.border=`2px solid red`
 							needCheck=false
@@ -258,11 +252,7 @@ const SubtitleEditor = props => {
 				needCheck=false
 			} else {
 				if(needCheck ===true) {
-					if(sub.end < 0){
-						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
-						document.getElementById(`subStart${index}`).style.border=``
-						needCheck=false
-					} else if(sub.end >= videoLength) {
+					if(sub.end >= videoLength) {
 						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
@@ -321,16 +311,12 @@ const SubtitleEditor = props => {
 				setSubToEdit(0)
 			} else {
 				if(position === `top`) {
-					if(currentSubs[index][`content`][subIndex].start <= 0)
-						isError = true
-					else {
-						if(currentSubs[index][`content`][subIndex].start <= 2) {
-							subStart = 0
-							subEnd = currentSubs[index][`content`][subIndex].start
-						} else {
-							subStart = currentSubs[index][`content`][subIndex].start - addingTime
-							subEnd = currentSubs[index][`content`][subIndex].start
-						}
+					if(currentSubs[index][`content`][subIndex].start <= 2) {
+						subStart = 0
+						subEnd = currentSubs[index][`content`][subIndex].start
+					} else {
+						subStart = currentSubs[index][`content`][subIndex].start - addingTime
+						subEnd = currentSubs[index][`content`][subIndex].start
 					}
 
 					newSub = {
@@ -338,6 +324,7 @@ const SubtitleEditor = props => {
 						end: subEnd,
 						text: ``,
 					}
+
 					if(!isError) {
 						setSubToEdit(0)
 						currentSubs[index][`content`].unshift(newSub)
@@ -367,10 +354,7 @@ const SubtitleEditor = props => {
 
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
-
-						if(curEndTime >= videoLength)
-							isError = true
-						else if(curEndTime+addingTime >= videoLength){
+						if(curEndTime + addingTime >= videoLength){
 							subStart = currentSubs[index][`content`][subIndex].end
 							subEnd = videoLength
 						} else {
@@ -383,6 +367,7 @@ const SubtitleEditor = props => {
 							end: subEnd,
 							text: ``,
 						}
+
 						if(!isError) {
 							setSubToEdit(subIndex+1)
 							currentSubs[index][`content`].push(newSub)
@@ -565,7 +550,7 @@ const SubtitleEditor = props => {
 				curEnd = subs[subLayerToEdit][`content`][i].end
 			}
 
-			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd<=0 || curEnd>videoLength) {
+			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd <= 0 || curEnd > videoLength) {
 				checkError = true
 				disable = false
 				if(checking===`delete` && i>=index) {
@@ -590,11 +575,12 @@ const SubtitleEditor = props => {
 						if(	document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
 							document.getElementById(`subEnd${i}`).style.border=`2px solid red`
 							document.getElementById(`subEnd${i+1}`).style.border=``
-						} else if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
+						} else if(document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
 							document.getElementById(`subStart${i}`).style.border=`2px solid red`
 							document.getElementById(`subStart${i+1}`).style.border=``
-						} else if(i === subs[subLayerToEdit][`content`].length-2)
+						} else if(i === subs[subLayerToEdit][`content`].length-2) {
 							document.getElementById(`subStart${i+1}`).style.border=`2px solid red`
+						}
 					}
 				}
 			}
@@ -611,6 +597,7 @@ const SubtitleEditor = props => {
 
 	}
 	const scrollToMyRef = () => {
+		console.log(`scrollToMyRef`)
 		setTimeout(() => {
 			const scroll = scrollRef.current.scrollHeight - scrollRef.current.clientHeight
 			scrollRef.current.scrollTo(0, scroll)

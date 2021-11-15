@@ -33,10 +33,6 @@ const VideoEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 
 	const [eventsArray, setEventsArray] = useState([])
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-
-	const [videoLength, setVideoLength] = useState(0)
-	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
@@ -91,14 +87,6 @@ const VideoEditorContainer = props => {
 		})
 	}
 
-	const togglendTimeline = () => {
-		setTimelineMinimized(!timelineMinimized)
-	}
-
-	const getVideoDuration = (duration) => {
-		setVideoLength(duration)
-	}
-
 	const viewstate = {
 		eventsArray,
 		content,
@@ -110,9 +98,6 @@ const VideoEditorContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleShowHelp,
-		togglendTimeline,
-		getVideoDuration,
-		setActiveCensorPosition,
 	}
 
 	return <VideoEditor

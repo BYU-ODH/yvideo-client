@@ -43,7 +43,6 @@ const VideoContainer = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
-	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
 	const [pausedTimes,setPausedTimes] = useState([])
 	// I hate using a global variable here, we'll just have to see if it works
@@ -60,7 +59,6 @@ const VideoContainer = props => {
 		duration,
 		elapsed,
 		playbackRate,
-
 
 		// handlers
 
@@ -145,9 +143,9 @@ const VideoContainer = props => {
 			setDuration(duration)
 			setCurrentZone([0, duration])
 		},
-		handlePlaybackRate: rate => {
-			setPlaybackRate(rate)
-		},
+		// handlePlaybackRate: rate => {
+		// 	setPlaybackRate(rate)
+		// },
 		handleSeek: (e, time) => {
 			let newPlayed = 0
 
@@ -187,29 +185,22 @@ const VideoContainer = props => {
 		handleUnMute: () => {
 			setMuted(false)
 		},
-		handleBlank: (bool) => {
-			setBlank(bool)
-		},
-		handleShowComment: (value, position) => {
-			setVideoComment(value)
-			setCommentPosition(position)
-
-		},
+		// handleShowComment: (value, position) => {
+		// 	setVideoComment(value)
+		// 	setCommentPosition(position)
+		// },
 		handleShowSubtitle: (value) => {
 			setSubtitleText(value)
 		},
 		// For when returning values of two subtitles
-		handleCensorPosition: (position) => {
-			if(position !== undefined){
-				censorData = position
-				setCensorPosition(
-					position,
-				)
-			}
-		},
-		handleCensorActive: (bool) => {
-			SetCensorActive(bool)
-		},
+		// handleCensorPosition: (position) => {
+		// 	if(position !== undefined){
+		// 		censorData = position
+		// 		setCensorPosition(
+		// 			position,
+		// 		)
+		// 	}
+		// },
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
 

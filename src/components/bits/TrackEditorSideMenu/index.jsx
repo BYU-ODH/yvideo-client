@@ -27,7 +27,8 @@ const TrackEditorSideMenu = props => {
 
 	const timeInputConstrain = /^[0-9,.,:\b]+$/
 	const [event, setEvent] = useState(singleEvent)
-	const [editComment, setEditComment] = useState({})
+	// const [editComment, setEditComment] = useState({})
+
 	useEffect(() => {
 		setEvent(singleEvent)
 	}, [index, event, singleEvent])
@@ -80,45 +81,45 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
-	const handleSaveComment = () => {
-		const ind = index
-		const cEvent = event
-		const layer = cEvent.layer
-		cEvent.position = editComment.position === undefined ? cEvent.position : editComment.position
-		cEvent.comment = editComment.comment === undefined ? cEvent.comment : editComment.comment
+	// const handleSaveComment = () => {
+	// 	const ind = index
+	// 	const cEvent = event
+	// 	const layer = cEvent.layer
+	// 	cEvent.position = editComment.position === undefined ? cEvent.position : editComment.position
+	// 	cEvent.comment = editComment.comment === undefined ? cEvent.comment : editComment.comment
 
-		updateEvents(ind, cEvent, layer, `null`)
-	}
+	// 	updateEvents(ind, cEvent, layer, `null`)
+	// }
 
-	const handleEditComment = (value, cEvent, int) => {
+	// const handleEditComment = (value, cEvent, int) => {
 
-		switch (int) {
-		case 1:
-			if(editComment.position !== undefined)
-				setEditComment({...editComment, position: { x: parseInt(value), y: editComment.position.y }})
-			else
-				setEditComment({...cEvent, position: { x: parseInt(value), y: cEvent.position.y }})
+	// 	switch (int) {
+	// 	case 1:
+	// 		if(editComment.position !== undefined)
+	// 			setEditComment({...editComment, position: { x: parseInt(value), y: editComment.position.y }})
+	// 		else
+	// 			setEditComment({...cEvent, position: { x: parseInt(value), y: cEvent.position.y }})
 
-			break
-		case 2:
-			if(editComment.position !== undefined)
-				setEditComment({...editComment, position: { x: editComment.position.x, y: parseInt(value) }})
-			else
-				setEditComment({...cEvent, position: { x: cEvent.position.x, y: parseInt(value) }})
+	// 		break
+	// 	case 2:
+	// 		if(editComment.position !== undefined)
+	// 			setEditComment({...editComment, position: { x: editComment.position.x, y: parseInt(value) }})
+	// 		else
+	// 			setEditComment({...cEvent, position: { x: cEvent.position.x, y: parseInt(value) }})
 
-			break
-		case 3:
-			if(editComment.position !== undefined)
-				setEditComment({...editComment, comment: value })
-			else
-				setEditComment({...cEvent, comment: value })
+	// 		break
+	// 	case 3:
+	// 		if(editComment.position !== undefined)
+	// 			setEditComment({...editComment, comment: value })
+	// 		else
+	// 			setEditComment({...cEvent, comment: value })
 
-			break
+	// 		break
 
-		default:
-			break
-		}
-	}
+	// 	default:
+	// 		break
+	// 	}
+	// }
 
 	const start = event.start
 	const end = event.end
@@ -159,7 +160,7 @@ const TrackEditorSideMenu = props => {
 						<></>
 					}
 				</div>
-				{
+				{/* {
 					event.type === `Comment` ? (
 						<div>
 							<div className='center'>
@@ -178,7 +179,7 @@ const TrackEditorSideMenu = props => {
 							</div>
 						</div>
 					) : null
-				}
+				} */}
 
 				{
 					event.type === `Censor` ? (
