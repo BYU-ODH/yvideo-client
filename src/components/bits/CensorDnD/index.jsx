@@ -1,6 +1,6 @@
 import React from 'react'
 import { Rnd } from 'react-rnd'
-import {ActiveBox, BeforeBox, AfterBox, CloseBox, BeforeButton, AfterButton} from './styles'
+import { CloseBox, BeforeButton, AfterButton} from './styles'
 const CensorDnD = props => {
 	const {censorValues, censorEdit, handleUpdateCensorPosition, handleUpdateCensorResize,setCensorEdit,screenWidth,screenHeight,seekTo} = props
 	const Enable = {top:true, right:true, bottom:true, left:true, topRight:true, bottomRight:true, bottomLeft:true, topLeft:true}
@@ -17,6 +17,7 @@ const CensorDnD = props => {
 		const previous = keys.filter(value => parseFloat(value) < parseFloat(censorValues[censorEdit][0])).sort((a,b) => parseFloat(b)-parseFloat(a))[0]
 		const prevKey = Object.keys(censorValues).find(val => censorValues[val][0] === previous)
 		const nextKey = Object.keys(censorValues).find(val => censorValues[val][0] === next)
+
 		return(<div style={{width:`100%`,height:`100%`,position:`absolute`}}>
 			{prevKey !== `-Infinity`&& prevKey !== undefined ? (
 				<BeforeButton onClick={()=>handleChange(prevKey)}>

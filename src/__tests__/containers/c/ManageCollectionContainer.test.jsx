@@ -210,11 +210,11 @@ describe(`manage collection container test`, () => {
 		// viewstate content
 		expect(viewstate.content[0].name).toBe(`testname`)
 		expect(viewstate.content[0].contentType).toBe(`video`)
-		expect(viewstate.content[0].thumbnail).toBe(`test@thumbnail.com`)
+		expect(viewstate.content[0].thumbnail).toBe(`https://i.ytimg.com/vi/HK7SPnGSxLM/default.jpg`)
 		expect(viewstate.content[0].physicalCopyExists).toBe(false)
 		expect(viewstate.content[0].isCopyrighted).toBe(false)
-		expect(viewstate.content[0].expired).toBe(true)
-		expect(viewstate.content[0].resourceId).toBe(`5ebdaef833e57cec218b457c`)
+		expect(viewstate.content[0].expired).toBe(false)
+		expect(viewstate.content[0].resourceId).toBe(`00000000-0000-0000-0000-000000000000`)
 	})
 
 	it(`testing buttons`, () => {

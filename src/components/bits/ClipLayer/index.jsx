@@ -36,13 +36,15 @@ const ClipLayer = props => {
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 
-
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
 
 	// Drag within the layer
 	const handleDrag = (d) => {
-		const beginTimePercentage = d.x / layerWidth * videoLength
+		// const beginTimePercentage = d.x / layerWidth * videoLength
+		// const endPercentage = beginTimePercentage + (end - start)
+
+		const beginTimePercentage = d.x /layerWidth*100*videoLength/100
 		const endPercentage = beginTimePercentage + (end - start)
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
@@ -78,6 +80,7 @@ const ClipLayer = props => {
 				en = videoLength
 			}
 		}
+
 		setStart(s)
 		setEnd(en)
 	}
@@ -95,7 +98,7 @@ const ClipLayer = props => {
 							enableResizing={Enable}
 							dragAxis='x'
 							bounds={`.clip-layer`}
-							onDragStop={(e, d) => handleDrag(d)}
+							onDrag={(e, d) => handleDrag(d)}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
 							key={`clip`}
 							// onClick={() => toggleEditor(layerIndex, index)}
