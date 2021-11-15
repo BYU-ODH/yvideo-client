@@ -4,9 +4,7 @@ import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/SubtitlesEditorContainer'
-import { Timeline, EventList } from '../../../components/c/SubtitleEditor'
-import { Icon } from '../../../components/bits/SubtitleEditorSideMenu/styles'
-// import { interfaceService } from 'services'
+import { act } from 'react-dom/test-utils'
 import * as testutil from '../../testutil/testutil'
 
 const props = {
@@ -26,6 +24,7 @@ const props = {
 	toggleTip: jest.fn(),
 	setBreadcrumbs: jest.fn(),
 }
+const mock = {x: 100, y: 50}
 
 jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`), // use actual for all non-hook parts
@@ -48,8 +47,9 @@ jest.mock(`react`, () => ({
 	...jest.requireActual(`react`),
 	useRef: () => ({
 		current: {
-			scrollHeight: 50,
-			clientHeight: 100,
+			// scrollTo: () => {},
+			// scrollHeight: 100,
+			// clientHeight: 50,
 		},
 	}),
 }))
@@ -65,9 +65,27 @@ describe(`SubtitlesEditorContainer testing`, () => {
 			</Provider>,
 		)
 	})
+	jest.useFakeTimers()
+	jest.spyOn(global, `setTimeout`)
+
+	const listenerMock = {offsetX: 100}
+	const boundingMock = {x: 100, y: 50}
+	const scrubberMock = { scrollLeft: 10, style: {color: `red`},
+		addEventListener: () => {
+			return listenerMock
+		},
+		getBoundingClientRect: () => {
+			return boundingMock
+		} }
+	document.getElementById = jest.fn((tag) => {
+		return scrubberMock
+	})
 
 	it(`Add subtitle`, () => {
-		// Add subtitle Layer
+		act(() => {
+			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
+		})
+
 		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(false)
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
 		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(true)
@@ -84,72 +102,155 @@ describe(`SubtitlesEditorContainer testing`, () => {
 
 		wrapper.find(`.save`).simulate(`click`)
 
-		// Allow skip
+		wrapper.find(`.allow-event`).prop(`onMouseEnter`)({ target:
+			{ getBoundingClientRect: () => {
+				return mock
+			}}
+		, currentTarget: {offsetWidth: 10},
+		})
 		wrapper.find(`.allow-event`).prop(`onMouseLeave`)()
+		wrapper.find(`.switch-toggle`).at(0).simulate(`click`)
 
-		// Delete Subtitle
-		wrapper.find(`.subtitle-delete`).simulate(`click`)
+		act(() => {
+			wrapper.find(`.play-btn`).simulate(`click`)
+			wrapper.find(`.play-btn`).simulate(`click`)
+		})
 
-		// Delete Layer
 		wrapper.find(`.trashIcon`).at(0).simulate(`click`)
+		wrapper.find(`.url-content-cancel`).at(0).simulate(`click`)
 
-		wrapper.find(`.play-btn`).simulate(`click`)
-		wrapper.find(`.play-btn`).simulate(`click`)
+		wrapper.find(`.trashIcon`).at(0).simulate(`click`)
+		wrapper.find(`.url-content-delete`).at(0).simulate(`click`)
 	})
 
-	it(`SubtitleEditorSideMenu: Edit text & time $ plus button`, () => {
-		// Add subtitle Layer
+	it(`SubtitleEditorSideMenu: Edit text & time $ add top button`, () => {
+		act(() => {
+			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
+		})
+
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
-		// edit text & time
-		wrapper.find(`.handleFocus`).simulate(`click`)
-		wrapper.find(`.subText`).at(0).simulate(`change`, { target: { value: `Updated text` } })
+		wrapper.find(`.subText`).simulate(`change`, { target: { value: `Updated text` } })
 		expect(wrapper.find(`textarea`).props().value).toBe(`Updated text`)
 		wrapper.find(`#subStart0`).simulate(`click`)
-		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 
-		// wrapper.find(`.play-btn`).simulate(`click`)
-
-		// Edit start time
 		expect(wrapper.find(`#subStart0`).at(0).props().value).toBe(`00:00.00`)
 		wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `00:01.30` } })
 		expect(wrapper.find(`#subStart0`).at(0).props().value).toBe(`00:01.30`)
 
-		// Edit end time
 		expect(wrapper.find(`#subEnd0`).at(0).props().value).toBe(`00:02.00`)
 		wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:02.30` } })
 		expect(wrapper.find(`#subEnd0`).at(0).props().value).toBe(`00:02.30`)
 
-		// Simulate top plus icon
+		wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `00:03.30` } })
+		wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `` } })
+		wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `10:03.30` } })
+
+		wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `00:01.30` } })
+
+		wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `` } })
+		wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `10:03.30` } })
+		wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:01.20` } })
+
+		wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:02.20` } })
+
 		wrapper.find(`.initial`).at(0).simulate(`click`)
 		expect(wrapper.find(`#subStart0`).props().value).toBe(`00:00.00`)
+		expect(wrapper.find(`#subEnd0`).props().value).toBe(`00:01.30`)
 
-		// Simulate middle plus icon
-		wrapper.find(Icon).at(4).simulate(`click`)
-		expect(wrapper.find(`#subStart2`).props().value).toBe(`00:02.30`)
-		expect(wrapper.find(`#subEnd2`).props().value).toBe(`00:04.30`)
-		wrapper.find(`#subEnd2`).simulate(`change`, { target: { value: `03:19.00` } })
-		expect(wrapper.find(`#subEnd2`).props().value).toBe(`03:19.00`)
+		wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `00:01.20` } })
+		wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:01.30` } })
+		wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `00:02.00` } })
 
-		// Simulate button plus icon
-		wrapper.find(`#icon2`).at(0).simulate(`click`)
+		expect(wrapper.find(`#subStart0`).props().value).toBe(`00:00.00`)
+		expect(wrapper.find(`#subEnd0`).props().value).toBe(`00:01.30`)
+		expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
+		expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:02.20`)
+	})
+
+	it(`SubtitleEditorSideMenu: add middle and bottom button & onBlur`, () => {
+		act(() => {
+			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
+		})
+
+		wrapper.find(`.setSubModalVisible`).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
+
+		wrapper.find(`.iconBottom`).at(0).simulate(`click`)
+		expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
+		expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:04.00`)
+
+		wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `00:03.00` } })
+		wrapper.find(`#subEnd1`).simulate(`change`, { target: { value: `03:19.00` } })
+
+		wrapper.find(`.iconBottom`).at(0).simulate(`click`)
+		expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
+		expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:03.00`)
+
+		wrapper.find(`.iconBottom`).at(8).simulate(`click`)
+		expect(wrapper.find(`#subStart3`).props().value).toBe(`03:19.00`)
 		expect(wrapper.find(`#subEnd3`).props().value).toBe(`03:20.00`)
 
-		// Incomplete input time
-		wrapper.find(`#subEnd2`).prop(`onBlur`)( { target: { value: `03:` } })
+		act(() => {
+			wrapper.find(`#subStart3`).prop(`onBlur`)( { target: { value: `03:` } })
+		})
 		wrapper.find(`#subEnd2`).simulate(`click`)
-		expect(wrapper.find(`#subEnd2`).props().value).toBe(`03:00.00`)
+		expect(wrapper.find(`#subStart3`).props().value).toBe(`03:00.00`)
+
+		act(() => {
+			wrapper.find(`#subEnd3`).prop(`onBlur`)( { target: { value: `03:01` } })
+		})
+		wrapper.find(`#subEnd2`).simulate(`click`)
+		expect(wrapper.find(`#subEnd3`).props().value).toBe(`03:01.00`)
+	})
+
+	it(`SubtitleEditorSideMenu: delete sub`, () => {
+		act(() => {
+			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
+		})
+
+		wrapper.find(`.setSubModalVisible`).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
+
+		wrapper.find(`.iconBottom`).at(0).simulate(`click`)
+
+		wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `10:00.00` } })
+		wrapper.find(`.subtitle-delete`).at(1).simulate(`click`)
+
+		wrapper.find(`.iconBottom`).at(0).simulate(`click`)
+		wrapper.find(`#subEnd1`).simulate(`change`, { target: { value: `10:00.00` } })
+		wrapper.find(`.subtitle-delete`).at(1).simulate(`click`)
+
+		wrapper.find(`.iconBottom`).at(0).simulate(`click`)
+		wrapper.find(`.iconBottom`).at(5).simulate(`click`)
+		wrapper.find(`#subEnd1`).simulate(`change`, { target: { value: `01:00.00` } })
+		wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
+		wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
+
+		wrapper.find(`.iconBottom`).at(0).simulate(`click`)
+		wrapper.find(`.iconBottom`).at(5).simulate(`click`)
+		wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `01:00.00` } })
+		wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
+		wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
 	})
 
 	it(`SubtitlesLayer: drag and drop`, () => {
-		// Add subtitle Layer
+
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		wrapper.find(`Rnd`).simulate(`click`)
 		wrapper.find(`Rnd`).prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
 		wrapper.find(`Rnd`).prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
+		wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
+			{ target:
+				{ getBoundingClientRect: () => {
+					return mock
+				}}
+			, currentTarget: {offsetWidth: 10},
+			},
+		)
 	})
 
 	it(`Zoom control`, () => {
@@ -174,11 +275,7 @@ describe(`SubtitlesEditorContainer testing`, () => {
 		wrapper.find(`Rnd`).prop(`onDragStop`)( ``, {d: {x: 10}})
 		// wrapper.find(`Rnd`).prop(`onMouseEnter`)()
 		wrapper.find(`Rnd`).prop(`onMouseLeave`)()
-
-
-		console.log(wrapper.debug())
-
-
 	})
-
 })
+
+// 69.88

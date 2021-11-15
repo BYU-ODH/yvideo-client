@@ -6,78 +6,55 @@ import sinon from 'sinon'
 import { BrowserRouter } from 'react-router-dom'
 
 const singleEvent = {
-	type: ``,
+	type: `Skip`,
 	comment: ``,
 	icon: `/static/media/event_skip.cbe8f9bf.svg`,
 	start: 10,
 	end: 20,
 	layer: 1,
-	position:
-	{
-		x: 0,
-		y: 0,
-	},
+	position: {"0": [`2320.0`, 50, 50, 30, 40]},
 }
-const subLayer = 0
-
-const subs = [
-	{
-		content : [
-			{
-				end: 5,
-				start: 1,
-				text: `text`,
-			},
-		],
-		contentId:1,
-		id: `123`,
-		language: ``,
-		title: `title`,
-	},
-]
 
 const props = {
-	isSub: false,
 	singleEvent,
-	subLayer,
-	subs,
-	index: 2,
-	videoLength:189,
-	updateTitle: jest.fn(),
-	updateLanguage: jest.fn(),
-	changeSubIndex: jest.fn(),
+	index: 0,
 	updateEvents: jest.fn(),
-	updateSubs: jest.fn(),
+	videoLength: 200,
+	closeSideEditor: jest.fn(),
+	handleEditCensor: jest.fn(),
+	handleCensorRemove: jest.fn(),
+	handleAddCensor: jest.fn(),
+	activeCensorPosition: jest.fn(),
 	setActiveCensorPosition: jest.fn(),
-	minimized: true,
-	src: `src`,
+	toggleTip: jest.fn(),
+	handleShowTip: jest.fn(),
 }
 
 describe(`TrackEditorSideMenu test`, () => {
-	it(`TrackEditorSideMenu onChange`, ()=> {
-		props.singleEvent.type = `Comment`
-		const handleClick = sinon.spy()
-		const wrapper = shallow(<TrackEditorSideMenu closeSideEditor={handleClick} {...props}/>)
-		wrapper.find(`img`).prop(`onClick`)()
-		expect(handleClick.calledOnce).toBe(true)
+	// it(`TrackEditorSideMenu onChange`, ()=> {
+	// 	props.singleEvent.type = `Comment`
+	// 	const handleClick = sinon.spy()
+	// 	const wrapper = shallow(<TrackEditorSideMenu closeSideEditor={handleClick} {...props}/>)
+	// 	wrapper.find(`img`).prop(`onClick`)()
+	// 	expect(handleClick.calledOnce).toBe(true)
 
-		expect(wrapper.contains(<label >Start</label>)).toEqual(true)
-		expect(wrapper.contains(<label >End</label>)).toEqual(true)
-		expect(wrapper.contains(<label >X</label>)).toEqual(true)
-		expect(wrapper.contains(<label >Y</label>)).toEqual(true)
-		expect(wrapper.contains(<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>)).toEqual(true)
+	// 	expect(wrapper.contains(<label >Start</label>)).toEqual(true)
+	// 	expect(wrapper.contains(<label >End</label>)).toEqual(true)
+	// 	expect(wrapper.contains(<label >X</label>)).toEqual(true)
+	// 	expect(wrapper.contains(<label >Y</label>)).toEqual(true)
+	// 	expect(wrapper.contains(<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>)).toEqual(true)
 
-		wrapper.find(`.sideTabInput`).at(2).simulate(`change`, { target: { value: 10 } })
-		let checked = wrapper.find(`[value=10]`).first()
-		expect(checked).toBeDefined()
-		wrapper.find(`.sideTabInput`).at(3).simulate(`change`, { target: { value: 10 } })
-		checked = wrapper.find(`[value=10]`).first()
-		expect(checked).toBeDefined()
-		wrapper.find(`textarea`).simulate(`change`, { target: { value: 10 } })
-		checked = wrapper.find(`[value=10]`).first()
-  	expect(checked).toBeDefined()
-		wrapper.find(`.sideButton`).simulate(`click`)
-	})
+	// 	wrapper.find(`.sideTabInput`).at(2).simulate(`change`, { target: { value: 10 } })
+	// 	let checked = wrapper.find(`[value=10]`).first()
+	// 	expect(checked).toBeDefined()
+	// 	wrapper.find(`.sideTabInput`).at(3).simulate(`change`, { target: { value: 10 } })
+	// 	checked = wrapper.find(`[value=10]`).first()
+	// 	expect(checked).toBeDefined()
+	// 	wrapper.find(`textarea`).simulate(`change`, { target: { value: 10 } })
+	// 	checked = wrapper.find(`[value=10]`).first()
+	// 	expect(checked).toBeDefined()
+	// 	wrapper.find(`.sideButton`).simulate(`click`)
+	// })
 
 	it(`TrackEditorSideMenu onChange`, ()=> {
 		const mElement = { style: {color: `red`} }
@@ -90,60 +67,68 @@ describe(`TrackEditorSideMenu test`, () => {
 	})
 
 	it(`TrackEditorSideMenu onChange`, ()=> {
-		const mElement = { style: {color: `red`} }
-		const color = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
-		const wrapper = shallow(<TrackEditorSideMenu {...props}/>,{ attachTo: color })
+		let wrapper
+		wrapper = mount(
+			<BrowserRouter>
+				<TrackEditorSideMenu {...props}/>
+			</BrowserRouter>,
+		)
+		const boundingMock = {x: 100, y: 50}
 
-		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: 10 } })
-		const checked = wrapper.find(`[value=10]`).first()
-  	expect(checked).toBeDefined()
+		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `` } })
+		wrapper.find(`.sideTabInput`).at(0).prop(`onBlur`)( { target: { value: `` } })
+		wrapper.find(`.center`).at(0).simulate(`click`)
+		wrapper.find(`.sideTabInput`).at(0).prop(`onKeyUp`)({stopPropagation: () => { return 1 } })
+
+		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseEnter`)(
+			{ target:
+				{ getBoundingClientRect: () => {
+					return boundingMock
+				}}
+			, currentTarget: {offsetWidth: 10},
+			},
+		)
+		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseLeave`)()
+
+		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `` } })
+		wrapper.find(`.sideTabInput`).at(1).prop(`onBlur`)( { target: { value: `` } })
+		wrapper.find(`.center`).at(0).simulate(`click`)
+		wrapper.find(`.sideTabInput`).at(1).prop(`onKeyUp`)({stopPropagation: () => { return 1 } })
+
+		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseEnter`)(
+			{ target:
+				{ getBoundingClientRect: () => {
+					return boundingMock
+				}}
+			, currentTarget: {offsetWidth: 10},
+			},
+		)
+		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseLeave`)()
 	})
 
-	// it(`TrackEditorSideMenu onChange`, ()=> {
-	// 	props.singleEvent.type = ``
-	// 	props.isSub = true
-	// 	const wrapper = shallow(<TrackEditorSideMenu {...props}/>)
+	it(`TrackEditorSideMenu censor`, ()=> {
+		props.singleEvent.type = `Censor`
 
-	// 	expect(wrapper.contains(<p className='subTitleCard'>All Subtitles</p>)).toEqual(true)
-	// 	expect(wrapper.contains(<label >Start</label>)).toEqual(true)
-	// 	expect(wrapper.contains(<label >End</label>)).toEqual(true)
-	// 	expect(wrapper.contains(<label >Text</label>)).toEqual(true)
-
-	// 	wrapper.find(`input`).at(0).simulate(`click`)
-	// 	wrapper.find(`input`).at(0).simulate(`change`, { target: { value: 10 } })
-	// 	wrapper.find(`input`).at(1).simulate(`click`)
-	// 	wrapper.find(`input`).at(1).simulate(`change`, { target: { value: 10 } })
-	// 	wrapper.find(`input`).at(2).simulate(`click`)
-	// 	wrapper.find(`input`).at(2).simulate(`change`, { target: { value: 10 } })
-	// })
-
-	it(`TrackEditorSideMenu onChange`, ()=> {
-		const mockCallBack = jest.fn()
-		const button = shallow(<Icon onClick={mockCallBack}/>)
-
-		button.find(`StyledComponent`).simulate(`click`)
-		expect(mockCallBack.mock.calls.length).toEqual(1)
+		let wrapper
+		wrapper = mount(
+			<BrowserRouter>
+				<TrackEditorSideMenu {...props}/>
+			</BrowserRouter>,
+		)
+		wrapper.find(`.addCensor`).simulate(`click`)
+		wrapper.find(`.censorRow`).at(0).simulate(`change`, { target: { value: `10` } })
+		wrapper.find(`input`).at(2).simulate(`click`)
+		wrapper.find(`input`).at(2).simulate(`change`, { target: { value: `10` } })
+		wrapper.find(`input`).at(3).simulate(`click`)
+		wrapper.find(`input`).at(3).simulate(`change`, { target: { value: `10` } })
+		wrapper.find(`input`).at(4).simulate(`click`)
+		wrapper.find(`input`).at(4).simulate(`change`, { target: { value: `10` } })
+		wrapper.find(`input`).at(5).simulate(`click`)
+		wrapper.find(`input`).at(5).simulate(`change`, { target: { value: `10` } })
+		wrapper.find(`input`).at(6).simulate(`click`)
+		wrapper.find(`input`).at(6).simulate(`change`, { target: { value: `10` } })
+		wrapper.find(`.trashIcon`).simulate(`click`)
+		wrapper.find(`.closeEditor`).simulate(`click`)
 	})
-
-	// it(`TrackEditorSideMenu onChange`, ()=> {
-	// 	props.singleEvent.type = `Comment`
-	// 	props.isSub = true
-	// 	const handleClick = sinon.spy()
-	// 	const wrapper = shallow(<TrackEditorSideMenu closeSideEditor={handleClick} {...props}/>)
-
-	// 	expect(wrapper.contains(<label >Title</label>)).toEqual(true)
-	// 	expect(wrapper.contains(<label >Language</label>)).toEqual(true)
-	// 	wrapper.find(`input`).at(0).simulate(`change`, { target: { value: `title` } })
-	// 	wrapper.find(`input`).at(0).simulate(`change`, { target: { value: `language` } })
-	// })
-	// it(`mount`, () => {
-	// 	const wrapper = mount(
-	// 		<BrowserRouter>
-	// 			<TrackEditorSideMenu {...props} />
-	// 		</BrowserRouter>,
-	// 	)
-	// 	expect(wrapper.contains(<label >Title</label>)).toEqual(true)
-
-	// })
 
 })

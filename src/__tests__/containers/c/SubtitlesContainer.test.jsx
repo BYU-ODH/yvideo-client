@@ -22,7 +22,6 @@ describe(`Subtitles container test`, () => {
 			</Provider>,
 		)
 		expect(wrapper).toBeDefined()
-		console.log(wrapper.debug())
 	})
 	it(`wrapper: currentTime > end || currentTime < start`, () => {
 		props.currentTime = 300

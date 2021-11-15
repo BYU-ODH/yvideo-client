@@ -1,14 +1,9 @@
-
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-// import { createMemoryHistory } from 'history'
 import Container from '../../../containers/c/VideoEditorContainer'
-// import { Timeline, EventList, EventListCarat, NewLayer, Icon, AnnotationMessage, Help } from '../../../components/c/NewTrackEditor/styles'
-// import { interfaceService } from 'services'
 import * as testutil from '../../testutil/testutil'
-import ReactRouter from 'react-router'
 
 const props = {
 	contentCache: {},
@@ -26,32 +21,16 @@ const props = {
 	resourceIdStream:  `000000-000000-00000`,
 }
 
-// TODO: need to find how to pass match as a param, useParams.
-// describe(`Subtitles container test`, () => {
-// 	const clientWidth = [{ clientWidth: 10, style: { width: 10} }]
-// 	document.getElementsByClassName = jest.fn((tag) => {
-// 		return clientWidth
-// 	})
-// 	const cElement = { style: { color: `red`, width: 10} }
-// 	document.getElementById = jest.fn((tag) => {
-// 		return cElement
-// 	})
-// 	jest.spyOn(ReactRouter, `useParams`).mockReturnValue({ id: 0 })
+jest.mock(`react-router-dom`, () => ({
+	...jest.requireActual(`react-router-dom`), // use actual for all non-hook parts
+	useParams: () => ({
+		id: 0,
+	}),
+}))
 
-// 	it(`wrapper: TrackEditorContainer)`, () => {
-// 		const wrapper = shallow(
-// 			<Container store={testutil.store} {...props}/>,
-// 		).childAt(0).dive()
-
-// 		expect(wrapper).toBeDefined()
-// 	})
-// })
-
-describe(`Simulate Event`, () => {
-	// const setState = jest.fn()
-	// const useStateMock = (initState) => [initState, setState]
-	let wrapper
-	beforeEach(() => {
+describe(`VideoEditorContainer testing`, () => {
+	it(`simulate event`, () => {
+		let wrapper
 		wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -59,58 +38,28 @@ describe(`Simulate Event`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-	})
+		const mock = {x: 100, y: 50}
+		wrapper.find(`.helpIcon`).simulate(`click`)
+		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseLeave`)()
+		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseEnter`)(
+			{ target:
+				{ getBoundingClientRect: () => { return mock }}
+			, currentTarget: {offsetWidth: 10},
+			},
+		)
 
-	// it(`TrackEditor wrapper`, () => {
-	// 	// wrapper.find(`SubtitlesModal`).prop(`handleAddSubLayer`)()
-	// 	// wrapper.find(`SubtitlesModal`).prop(`handleAddSubLayerFromFile`)(`url`)
-	// 	// wrapper.find(`SubtitlesModal`).prop(`setModalVisible`)()
-	// 	wrapper.find(`Controller`).prop(`togglendTimeline`)()
-	// 	wrapper.find(`Controller`).prop(`getDuration`)(10)
-	// 	wrapper.find(`Controller`).prop(`getVideoTime`)()
-	// 	wrapper.find(`Controller`).prop(`handleLastClick`)(10, 10 ,1, 1,20)
-	// 	wrapper.find(`Controller`).prop(`updateEvents`)(10, { start: 10, end: 20 } ,0)
-	// 	wrapper.find(`Controller`).prop(`setActiveCensorPosition`)()
-	// 	wrapper.find(`.handle`).simulate(`click`)
-	// 	wrapper.find(`TrackLayer`).prop(`onDrop`)({id: `subtitle`}, 1)
-	// 	// wrapper.find('TrackLayer').prop('sideEditor')(1 ,1)
-	// 	// wrapper.find('TrackLayer').prop('updateEvents')(10, { start: 10, end: 20, events: { layer: 10}} ,0)
-	// 	wrapper.find(`TrackLayer`).prop(`closeEditor`)()
-	// 	// wrapper.find(NewLayer).simulate('click')
-	// 	// wrapper.find(NewLayer).simulate('mouseEnter')
-	// 	// wrapper.find(NewLayer).simulate('mouseLeave')
-	// 	wrapper.find(`SubtitlesLayer`).prop(`onDrop`)()
-	// 	wrapper.find(`SubtitlesLayer`).prop(`sideEditor`)()
-	// 	wrapper.find(`SubtitlesLayer`).prop(`updateSubs`)(0, { start: 10, end: 20 } ,0)
-	// 	wrapper.find(`SubtitlesLayer`).prop(`closeEditor`)()
-	// 	wrapper.find(`Rnd`).prop(`onDragStop`)(0, {d: {x: 10}})
-	// 	wrapper.find(`Rnd`).simulate(`mouseEnter`)
-	// 	wrapper.find(`Rnd`).at(0).simulate(`mouseLeave`)
-	// 	wrapper.find(`.save`).simulate(`click`)
-	// 	// wrapper.find('.deleteEventButton').simulate('click')
-	// 	wrapper.find(`.eventsList`).simulate(`mouseEnter`)
-	// 	wrapper.find(`.eventsList`).simulate(`mouseLeave`)
-	// 	wrapper.find(`.zoom-scroll-indicator`).simulate(`mouseEnter`)
-	// 	wrapper.find(`.zoom-scroll-indicator`).simulate(`mouseLeave`)
-	// 	wrapper.find(`span`).at(5).simulate(`click`)
-	// 	wrapper.find(`span`).at(5).simulate(`mouseEnter`)
-	// 	wrapper.find(`span`).at(5).simulate(`mouseLeave`)
-	// 	wrapper.find(`span`).at(6).simulate(`click`)
-	// 	wrapper.find(`span`).at(6).simulate(`mouseEnter`)
-	// 	wrapper.find(`span`).at(6).simulate(`mouseLeave`)
-	// 	wrapper.find(`span`).at(7).simulate(`click`)
-	// 	wrapper.find(`span`).at(7).simulate(`mouseEnter`)
-	// 	wrapper.find(`span`).at(7).simulate(`mouseLeave`)
-	// 	wrapper.find(`span`).at(8).simulate(`click`)
-	// 	wrapper.find(`span`).at(8).simulate(`mouseEnter`)
-	// 	wrapper.find(`span`).at(8).simulate(`mouseLeave`)
-	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
-	// 	// wrapper.find('.handle').prop('onClick')()
-	// 	// wrapper.find(".layer-delete").prop('onClick')()
-	// })
-	// it(`TrackEditor wrapper: SubtitlesModal`, () => {
-	// 	// wrapper.find(".layer-handle").simulate('click')
-	// 	// console.log(wrapper.debug())
-	// })
+	})
+	it(`contentCache[id].url === empty`, () => {
+		let wrapper
+		wrapper = mount(
+			<Provider store={testutil.store2}>
+				<BrowserRouter>
+					<Container {...props}/>
+				</BrowserRouter>
+			</Provider>,
+		)
+		expect(wrapper).toBeDefined()
+		wrapper.find(`.helpIcon`).simulate(`click`)
+	})
 
 })
