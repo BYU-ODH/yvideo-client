@@ -103,21 +103,21 @@ describe(`content service test`, () => {
 	})
 
 	it(`checkAuth: window.location.href not includes localhost`, async() => {
-	const mockLocation = new URL("https://example.com");
-	mockLocation.replace = jest.fn()
-	delete window.location
-	window.location = mockLocation
+		const mockLocation = new URL(`https://example.com`)
+		mockLocation.replace = jest.fn()
+		delete window.location
+		window.location = mockLocation
 
-	proxies.apiProxy.user.get = jest.fn()
-	proxies.apiProxy.user.get.mockImplementationOnce(()=>{
-		return Promise.resolve(testutil.user)
+		proxies.apiProxy.user.get = jest.fn()
+		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
+			return Promise.resolve(testutil.user)
+		})
+
+		expect(store.getState().user).toEqual(null)
+		await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
+		expect(store.getState().user).toEqual(testutil.user)
+		window.location = `localhost`
 	})
-
-	expect(store.getState().user).toEqual(null)
-	await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
-	expect(store.getState().user).toEqual(testutil.user)
-	window.location = `localhost`
-})
 
 	it(`login`, async() => {
 		proxies.apiProxy.auth.cas = jest.fn()

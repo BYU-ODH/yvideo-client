@@ -23,7 +23,6 @@ describe(`PublicListCollectionContainer test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		// console.log(wrapper.debug())
 		expect(wrapper).toBeDefined()
 		expect(wrapper.contains(<h3>Collection 1</h3>))
 		expect(wrapper.contains(<p>2 items</p>))
