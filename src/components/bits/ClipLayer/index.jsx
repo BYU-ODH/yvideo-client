@@ -41,7 +41,6 @@ const ClipLayer = props => {
 
 	// Drag within the layer
 	const handleDrag = (d) => {
-		console.log(d)
 		// const beginTimePercentage = d.x / layerWidth * videoLength
 		// const endPercentage = beginTimePercentage + (end - start)
 
@@ -82,7 +81,6 @@ const ClipLayer = props => {
 			}
 		}
 
-		console.log(s)
 		setStart(s)
 		setEnd(en)
 	}
