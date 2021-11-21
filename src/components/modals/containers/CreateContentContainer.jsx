@@ -27,6 +27,7 @@ const CreateContentContainer = props => {
 		user,
 		getLanguages,
 		allLanguages,
+		getFiles,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -40,6 +41,7 @@ const CreateContentContainer = props => {
 	const [isCalled, setIsCalled] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
 	const [isAccess, setIsAccess] = useState(true)
+	const [resourceFiles, setResourceFiles] = useState()
 
 	const [data, setData] = useState({
 		url: ``,
@@ -112,6 +114,15 @@ const CreateContentContainer = props => {
 		}
 	}
 
+	// TODO: looks like backend needs to be update so it can look up file by id not file-version
+	const handleSelectLanguage = e => {
+		setData({
+			...data,
+			[e.target.name]: e.target.value,
+		})
+		setBlock(true)
+	}
+
 	const handleTextChange = e => {
 		setData({
 			...data,
@@ -159,6 +170,10 @@ const CreateContentContainer = props => {
 			setSelectedResourceName(resource.resourceName)
 			setSelectedResourceId(resource.id)
 			setIsResourceSelected(true)
+
+			// get files that attached to the resource
+			const files = await getFiles(resource.id)
+			setResourceFiles(files)
 		} else {
 			setSelectedResourceName(``)
 			setSelectedResourceId(``)
@@ -312,6 +327,7 @@ const CreateContentContainer = props => {
 		isResourceSelected,
 		isAccess,
 		allLanguages,
+		resourceFiles,
 	}
 
 	const handlers = {
@@ -321,6 +337,7 @@ const CreateContentContainer = props => {
 		handleSelectResourceChange,
 		handleSubmit,
 		handleTextChange,
+		handleSelectLanguage,
 		handleTypeChange,
 		onKeyPress,
 		remove,
@@ -351,6 +368,7 @@ const mapDispatchToProps = {
 	searchResource: resourceService.search,
 	getCollections: collectionService.getCollections,
 	getAccess: resourceService.readAccess,
+	getFiles: resourceService.getFiles,
 	getLanguages: languageService.get,
 }
 
