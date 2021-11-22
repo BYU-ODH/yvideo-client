@@ -59,7 +59,5 @@ describe(`Simulate Event`, () => {
 		wrapper.find(`.sideButton`).simulate(`click`)
 		wrapper.update()
 		// expect(wrapper.contains(<i className='fa fa-check'></i>)).toEqual(true)
-
-		console.log(wrapper.debug())
 	})
 })

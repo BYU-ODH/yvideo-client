@@ -28,6 +28,11 @@ jest.mock(`react-router-dom`, () => ({
 	}),
 }))
 
+const mockElementId = { style: {height: 10} }
+document.getElementById = jest.fn((tag) => {
+	return mockElementId
+})
+
 describe(`VideoEditorContainer testing`, () => {
 	it(`simulate event`, () => {
 		let wrapper
@@ -39,7 +44,7 @@ describe(`VideoEditorContainer testing`, () => {
 			</Provider>,
 		)
 		const mock = {x: 100, y: 50}
-		wrapper.find(`.helpIcon`).simulate(`click`)
+		// wrapper.find(`.helpIcon`).simulate(`click`)
 		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseLeave`)()
 		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseEnter`)(
 			{ target:
@@ -59,7 +64,7 @@ describe(`VideoEditorContainer testing`, () => {
 			</Provider>,
 		)
 		expect(wrapper).toBeDefined()
-		wrapper.find(`.helpIcon`).simulate(`click`)
+		// wrapper.find(`.helpIcon`).simulate(`click`)
 	})
 
 })
