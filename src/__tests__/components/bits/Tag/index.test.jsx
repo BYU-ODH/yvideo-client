@@ -1,6 +1,6 @@
 import React from 'react'
 import Tag from '../../../../components/bits/Tag'
-import { Remove } from '../../../../components/bits/tag/styles'
+import { Remove } from '../../../../components/bits/Tag/styles'
 import { shallow, mount, render } from 'enzyme'
 import { BrowserRouter} from 'react-router-dom'
 
