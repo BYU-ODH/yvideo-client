@@ -157,14 +157,14 @@ export default class AdminTable extends PureComponent {
 				return (
 					<>
 						<td>{item.name}</td>
-						<td>{item.owner}</td>
+						<td>{item.username}</td>
 					</>
 				)
 			case `Content`:
 				return (
 					<>
 						<td>{item.name}</td>
-						<td>{item.collectionId}</td>
+						<td><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></td>
 						<td>{item.contentType}</td>
 						<td>{item.expired.toString()}</td>
 						<td>{item.resourceId}</td>
