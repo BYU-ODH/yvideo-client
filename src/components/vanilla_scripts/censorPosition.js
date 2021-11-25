@@ -28,6 +28,7 @@ const getPos = (events, t) => {
 		const nextKey = Object.keys(events).find(val => events[val][0] === next)
 		if (next === undefined || next === `Infinity`){
 			const values = new Values(events[prevKey][2],events[prevKey][2],events[prevKey][1],events[prevKey][1],events[prevKey][3],events[prevKey][3],events[prevKey][4],events[prevKey][4],next,previous)
+			// const values = {}
 			return values
 		}
 		if (previous === `NaN` || previous === `-Infinity`|| previous === undefined){

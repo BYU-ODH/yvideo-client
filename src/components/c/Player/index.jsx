@@ -11,9 +11,9 @@ import { PlayerSubtitlesContainer } from 'containers'
 
 import Style, { Blank, Comment, Subtitles, Censor, PlayButton } from './styles'
 
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
-import Position from './censorPosition'
+import Position from 'components/vanilla_scripts/censorPosition'
 
 import chevron from 'assets/player-chevron-left.svg'
 import playButton from 'assets/hexborder.svg'
@@ -113,16 +113,20 @@ export default class Player extends PureComponent {
 			for (let y = 0; y < values.allEvents.length; y++){
 				let index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
-				if(!events[index].active){
+				if(!events[index].active && values.allEvents[y].type !== 'Mute'){
 					return
 				}
 
 				switch(values.allEvents[y].type){
 					case `Mute`:
-						if(!muted){
+						if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+							events[index].active = false
 							handleMuted()
-							// console.log("muting")
 						}
+						else if(!values.allEvents[y].active && ((values.allEvents[y].end - .1) <= playedSeconds)){
+							handleUnmuted()
+						}
+
 						break
 					case `Pause`:
 						events[index].active = false
@@ -139,34 +143,13 @@ export default class Player extends PureComponent {
 				}
 			}
 
-			for(let j = 0; j < values.doneEvents.length; j++){
-				//needed for unmuting after muting event is done
-				let index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
-
-				if(!events[index].active){
-					return
-				}
-
-				switch(values.doneEvents[j].type){
-					case `Mute`:
-						if(muted){
-							handleUnmuted()
-							// console.log("unmuting")
-							events[index].active = false
-						}
-						break
-					default:
-						break
-				}
-			}
-
 			const t1 = performance.now()
 		}
 
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>
-					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1}}>
+					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}
 							className='react-player'

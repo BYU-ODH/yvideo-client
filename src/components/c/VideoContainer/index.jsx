@@ -3,7 +3,10 @@ import ReactPlayer from 'react-player'
 import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
+
+import Position from 'components/vanilla_scripts/censorPosition'
+
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -48,6 +51,10 @@ const VideoContainer = props => {
 	const [pausedTimes,setPausedTimes] = useState([])
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
+
+	const executeCensors = async (values, playedSeconds) => {
+		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+	}
 
 	const video = {
 
@@ -100,42 +107,50 @@ const VideoContainer = props => {
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 
-			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
-			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+			executeCensors(values, playedSeconds);
+			// for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
-			const testMute = values.allEvents.map(val => val.type)
+			// const testMute = values.allEvents.map(val => val.type)
 
-			if (!testMute.includes(`Mute`)) video.handleUnMute()
+			// if (!testMute.includes(`Mute`)) video.handleUnmute()
 
 			for (let y = 0; y < values.allEvents.length; y++){
+				let index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
+
+				if(!events[index].active && values.allEvents[y].type !== 'Mute'){
+					return
+				}
+
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					video.handleMute()
+					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+						events[index].active = false
+						video.handleMute()
+					}
+					else if(!values.allEvents[y].active && ((values.allEvents[y].end - .1) <= playedSeconds)){
+						video.handleUnmute()
+					}
 					break
 				case `Pause`:
-					// TODO: this pause logic is way too expensive.
-					// This can be solved with a boolean active flag
-					// this yiels O(a * b) when it can be constant time
-					let paused = true
-					for (let i = 0; i < pausedTimes.length;i++){
-						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)
-							paused = false
-					}
-					if(paused) {
-						const times = [...pausedTimes]
-						times.push(values.allEvents[y].start)
-						setPausedTimes(times)
-						video.handlePause()
-					}
+					events[index].active = false
+					video.handlePause()
 					break
 				case `Skip`:
+					events[index].active = false
 					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
 				}
+			}
+
+			if(playedSeconds === duration){
+				//for all of the events. If the new seek time goes before events that were already executed activate the events again
+				events.forEach(event => {
+						event.active = true
+				})
 			}
 		},
 		handleDuration: duration => {
@@ -184,7 +199,7 @@ const VideoContainer = props => {
 		handleMute: () => {
 			setMuted(true)
 		},
-		handleUnMute: () => {
+		handleUnmute: () => {
 			setMuted(false)
 		},
 		handleBlank: (bool) => {
@@ -274,22 +289,26 @@ const VideoContainer = props => {
 	let count = 0 // this is to make sure that event listeners are applied only once
 
 	const handleHotKeys = (e) => {
-		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
+		if(document.getElementById('seconds-time-holder') === null){
+			return;
+		}
+		let playedTime = parseFloat(document.getElementById('seconds-time-holder').innerHTML)
 		switch (e.code) {
-		case `ArrowRight`:
-			video.handleSeek(null, playedTime + 1)
-			break
-		case `ArrowLeft`:
-			video.handleSeek(null, playedTime - 1)
-			break
-		case `Comma`:
-			video.handleSeek(null, playedTime - .1)
-			break
-		case `Period`:
-			video.handleSeek(null, playedTime + .1)
-			break
-		default:
-			break
+			case "ArrowRight":
+				video.handleSeek(null, playedTime + 1)
+				break;
+			case "ArrowLeft":
+				video.handleSeek(null, playedTime - 1)
+				break;
+			case "Comma":
+				video.handleSeek(null, playedTime - .1)
+				break;
+			case "Period":
+				video.handleSeek(null, playedTime + .1)
+				break;
+
+			default:
+				break;
 		}
 	}
 
@@ -328,13 +347,15 @@ const VideoContainer = props => {
 			})
 		}
 
+		if(events) events.forEach(event => { event.active = true })
+
 		return function cleanup(){
 			window.removeEventListener(`keyup`, (e) => {}, false)
 		}
 	}, [duration])
 
 	return (
-		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
+		<Style style={{ maxHeight: `70vh`}} type={editorType} id='controller'>
 			<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):console.log(``)} ref={videoRef}>
 				{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 				{activeCensorPosition !== -1 ? (
@@ -352,9 +373,9 @@ const VideoContainer = props => {
 				{subtitleText !== `` ?(
 					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
-				<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+				<div id='censorContainer' style={{width:`${editorType === 'video' ? ('70%') : ('100%')}`,height:`100%`,position:`absolute`}}>
 				</div>
-				<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+				<div id ='commentContainer' style={{width:`${editorType === 'video' ? ('70%') : ('100%')}`,height:`100%`,position:`absolute`}}>
 				</div>
 			</Blank>
 

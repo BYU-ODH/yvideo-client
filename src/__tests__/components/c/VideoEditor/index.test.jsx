@@ -118,7 +118,7 @@ describe(`VideoEditor testing`, () => {
 		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `03:01.30` } })
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `03:10.30` } })
 
-		wrapper.find(`.video`).prop(`handleScroll`)(0, true)
+		wrapper.find(`.video`).at(0).prop(`handleScroll`)(0, true)
 
 		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseEnter`)(
 			{
@@ -154,12 +154,12 @@ describe(`VideoEditor testing`, () => {
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		})
-		expect(wrapper.contains(<label>Censor Times</label>)).toEqual(false)
+		expect(wrapper.contains(<label>Blur Times</label>)).toEqual(false)
 		wrapper.find(`.plusIcon`).at(9).simulate(`click`)
 		act(() => {
 			jest.advanceTimersByTime(100)
 		})
-		expect(wrapper.contains(<label>Censor Times</label>)).toEqual(true)
+		expect(wrapper.contains(<label>Blur Times</label>)).toEqual(true)
 
 		wrapper.find(`.addCensor`).simulate(`click`)
 		wrapper.find(`.handle`).at(2).simulate(`click`)

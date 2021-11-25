@@ -323,21 +323,20 @@ const VideoEditor = props => {
 		const pos = cEvent.position
 		const value = parseFloat(e.target.value).toFixed(1)
 
+		//0 by default is the actual time of the video when the censor is added
 		switch (int) {
-		case 1:
-			pos[item][0] = value
-			break
-		case 2:
+		case 1: //x in %
 			pos[item][1] = value
 			break
-		case 3:
+		case 2: //y in %
 			pos[item][2] = value
 			break
-		case 4:
+		case 3: //width in %
+			console.log(value)
 			pos[item][3] = value
 			break
-		case 5:
-			pos[item][3] = value
+		case 4: //height in %
+			pos[item][4] = value
 			break
 		default:
 			break
@@ -499,7 +498,7 @@ const VideoEditor = props => {
 		<Style id='video-editor'>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
-					className='video'
+					className="video"
 					url={url}
 					handlers={togglendTimeline}
 					getDuration={getVideoDuration}
@@ -512,7 +511,8 @@ const VideoEditor = props => {
 					activeCensorPosition = {activeCensorPosition}
 					setActiveCensorPosition = {setActiveCensorPosition}
 					editorType={`video`}
-					></VideoContainer>
+				></VideoContainer>
+
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
