@@ -55,7 +55,7 @@ const SubtitlesModal = props => {
 						<h2>Are you sure to delete subtitle: {deleteTitle}?</h2>
 						<div className={`delete-button`}>
 							<Button className='url-content-cancel' type='button' onClick={()=>setModalVisible(false)}>Cancel</Button>
-							<Button className='url-content-create' type='submit' onClick={handleDeleteSubLayer} color={`#ff4c4c`}>Delete</Button>
+							<Button className='url-content-delete' type='submit' onClick={handleDeleteSubLayer} color={`#ff4c4c`}>Delete</Button>
 						</div>
 					</div>
 				}

@@ -27,6 +27,7 @@ const CreateContentContainer = props => {
 		user,
 		getLanguages,
 		allLanguages,
+		getFiles,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -40,6 +41,7 @@ const CreateContentContainer = props => {
 	const [isCalled, setIsCalled] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
 	const [isAccess, setIsAccess] = useState(true)
+	const [resourceFiles, setResourceFiles] = useState()
 
 	const [data, setData] = useState({
 		url: ``,
@@ -58,6 +60,7 @@ const CreateContentContainer = props => {
 		getLanguages()
 
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
+
 			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
 			const finalLanguages = []
 			langs.forEach((element, i) => {
@@ -111,6 +114,15 @@ const CreateContentContainer = props => {
 		}
 	}
 
+	// TODO: looks like backend needs to be update so it can look up file by id not file-version
+	const handleSelectLanguage = e => {
+		setData({
+			...data,
+			[e.target.name]: e.target.value,
+		})
+		setBlock(true)
+	}
+
 	const handleTextChange = e => {
 		setData({
 			...data,
@@ -158,6 +170,10 @@ const CreateContentContainer = props => {
 			setSelectedResourceName(resource.resourceName)
 			setSelectedResourceId(resource.id)
 			setIsResourceSelected(true)
+
+			// get files that attached to the resource
+			const files = await getFiles(resource.id)
+			setResourceFiles(files)
 		} else {
 			setSelectedResourceName(``)
 			setSelectedResourceId(``)
@@ -217,7 +233,8 @@ const CreateContentContainer = props => {
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": data.targetLanguage === `` ? ('English') : (data.targetLanguage),
+			"file-version": resourceFiles.filter(file => file.id === data.targetLanguage)['file-version'],
+			"file-id": '00000000-0000-0000-0000-000000000000',
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -262,7 +279,8 @@ const CreateContentContainer = props => {
 			"clips": ``,
 			"words": ``,
 			"thumbnail": `empty`,
-			"file-version": data.targetLanguage,
+			"file-version": resourceFiles.filter(file => file.id === data.targetLanguage)[0]['file-version'],
+			"file-id": data.targetLanguage,
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -311,6 +329,7 @@ const CreateContentContainer = props => {
 		isResourceSelected,
 		isAccess,
 		allLanguages,
+		resourceFiles,
 	}
 
 	const handlers = {
@@ -320,6 +339,7 @@ const CreateContentContainer = props => {
 		handleSelectResourceChange,
 		handleSubmit,
 		handleTextChange,
+		handleSelectLanguage,
 		handleTypeChange,
 		onKeyPress,
 		remove,
@@ -350,6 +370,7 @@ const mapDispatchToProps = {
 	searchResource: resourceService.search,
 	getCollections: collectionService.getCollections,
 	getAccess: resourceService.readAccess,
+	getFiles: resourceService.getFiles,
 	getLanguages: languageService.get,
 }
 

@@ -29,6 +29,7 @@ export default class CreateContent extends PureComponent {
 			isResourceSelected,
 			selectedResourceName,
 			isAccess,
+			resourceFiles,
 		} = this.props.viewstate
 
 		const {
@@ -47,6 +48,7 @@ export default class CreateContent extends PureComponent {
 			handleSelectResourceChange,
 			handleSubmit,
 			handleTextChange,
+			handleSelectLanguage,
 			handleTypeChange,
 			onKeyPress,
 			remove,
@@ -95,7 +97,7 @@ export default class CreateContent extends PureComponent {
 						</label>
 						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add tag...'/>
 						<div className='keywords-list'>
-							{resource.keywords.length < 1 ? (<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>) : (null)}
+							{resource.keywords.length < 1 ? (<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>) : null}
 							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword className='url-content-remove' src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
 						</div>
 						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
@@ -104,9 +106,8 @@ export default class CreateContent extends PureComponent {
 							<span>Target Language</span>
 							{
 								allLanguages &&
-									<select name="targetLanguage" onChange={handleTextChange} required>
+									<select name='targetLanguage' onChange={handleTextChange} required>
 										<option value=''>Select</option>
-
 										{
 											allLanguages.map(
 												(element, index) =>
@@ -133,9 +134,12 @@ export default class CreateContent extends PureComponent {
 							{
 								resourceContent && hideResources !== true &&
 							Object.keys(resourceContent).map(index =>
+
 								<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
 									<label>{resourceContent[index].resourceName}</label>
-								</li>,
+								</li>
+
+								,
 							)
 							}
 						</TableContainer>
@@ -167,17 +171,20 @@ export default class CreateContent extends PureComponent {
 							<textarea className='resource-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
 						</label><br/>
 						<label>
+
 							<span>Target Language</span>
 							{
-								isResourceSelected && (
+								isResourceSelected && resourceFiles &&(
 									languages.length > 0 ?
-										<select name='targetLanguage' onChange={handleTextChange} required>
+										<select name='targetLanguage' onChange={handleSelectLanguage} required>
 											<option value=''>Select</option>
 
 											{
-												languages.map(
+												resourceFiles.map(
 													(element, index) =>
-														<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>)
+														<option value={element[`id`]} key={index}>{`${element[`file-version`]}: ${element[`metadata`]}`}</option>,
+													// <option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>,
+												)
 											}
 										</select>
 

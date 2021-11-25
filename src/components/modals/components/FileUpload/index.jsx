@@ -18,6 +18,7 @@ export default class FileUpload extends PureComponent {
 			selectedFile,
 			isOther,
 			customLang,
+			metadata,
 			langs,
 			progress,
 		} = this.props.viewstate
@@ -25,6 +26,7 @@ export default class FileUpload extends PureComponent {
 		const {
 			handleFileVersion,
 			handleFileChange,
+			handleFileName,
 			handleFileUpload,
 			toggleModal,
 			onKeyPress,
@@ -53,6 +55,11 @@ export default class FileUpload extends PureComponent {
 						<input id='type-language' type='text' name='customLang' value={customLang} onChange={handleOtherLanguage} />
 					</label>
 				}
+
+				<label>
+					<h4>File Name</h4>
+					<input id='type-file-name' type='text' name='customLang' value={metadata} onChange={handleFileName} />
+				</label>
 
 				<label htmlFor='create-resource-file-version'>
 					<h4>Select File</h4>

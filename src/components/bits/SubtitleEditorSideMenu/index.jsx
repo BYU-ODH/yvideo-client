@@ -85,7 +85,7 @@ const SubtitleEditorSideMenu = props => {
 				{subs[subLayer][`content`].map((sub,ind)=>(
 					<div key={ind}>
 						<div className={`container`}>
-							<Icon src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
+							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
 								position={`top`}
 								visibility={subs[subLayer][`content`][0].start > 0.11 && ind===0 && disableSave===false ? `visible`: `hidden`}
 							/>
@@ -113,7 +113,7 @@ const SubtitleEditorSideMenu = props => {
 						</div>
 						{
 							ind === subs[subLayer][`content`].length-1 ?
-								<Icon id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
+								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
 									visibility={
 										subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave===false
 											? `visible`: `hidden`
@@ -121,7 +121,7 @@ const SubtitleEditorSideMenu = props => {
 									active={ind === index ? `subActive`:`nonActive`}
 								/>
 								:
-								<Icon id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
+								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
 									visibility={
 										subs[subLayer][`content`][ind+1].start-subs[subLayer][`content`][ind].end !== 0 && disableSave===false
 											? `visible`: `hidden`

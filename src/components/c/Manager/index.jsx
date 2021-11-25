@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { LabAssistantManageCollectionContainer, ManageCollectionContainer } from 'containers'
+import { ManageCollectionContainer } from 'containers'
 
 import { Accordion } from 'components/bits'
 
@@ -65,7 +65,6 @@ export default class Manager extends PureComponent {
 						<>
 							{
 								isMobile && collection && isOpen === false ?
-								// <MenuIcon onClick={handleToggleSideBar} />
 									<MenuIcon type='button' onClick={handleToggleSideBar}>Back</MenuIcon>
 									:
 									<SideMenu isOpen={isOpen}>
@@ -95,9 +94,6 @@ export default class Manager extends PureComponent {
 									</SideMenu>
 							}
 						</>
-
-						{/* {console.log(collection)} */}
-
 						<Body>
 							{
 								isMobile ?

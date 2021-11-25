@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { Prompt } from 'react-router'
-import { VideoContainer } from 'components'
+import { VideoContainer, SkipLayer } from 'components'
 import {ClipLayer, SwitchToggle} from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
@@ -34,6 +34,8 @@ const ClipEditor = props => {
 	} = props.handlers
 
 	const updateContent = props.updateContent
+	const layers = [{0: `Skip`}]
+
 	// const parseSub = Subtitle.parse(testingSubtitle)
 
 	// for (let i = 0; i < parseSub.length; i++){
@@ -84,26 +86,12 @@ const ClipEditor = props => {
 
 		if(Object.keys(clipList).length ===0) {
 			if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
-				// const id = Object.keys(clipList).length === 0 ? `0` : `${parseInt(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
-				// const clip = {
-				// 	start: 0,
-				// 	end: 60,
-				// 	title: ``,
-				// }
-				// const clips = {...clipList}
-				// clips[id] = clip
-				// setClipList(clips)
-
 				const clips = JSON.parse(currentContent[`clips`])
 				setClipList(clips)
 				const saved = Object.keys(clips)
 				setSavedClips(saved)
-				// setActive(0)
-				// setClipIndex(0)
 			}
 		}
-
-		// new Array(largestLayer+1).fill(0)
 
 		for(let i = 0; i < largestLayer + 1; i++)
 			initialLayers.push([i])
@@ -126,12 +114,6 @@ const ClipEditor = props => {
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
-		const tempSubs = subs
-		for (let i = 0; i < tempSubs.length; i++)
-			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
-
-		// setSubs(tempSubs)
-		// setAllSubs(tempSubs)
 	}
 	const handleZoomChange = (e, d) => {
 		toggleTip()
@@ -229,8 +211,10 @@ const ClipEditor = props => {
 	const setStartTime = (value, type) => {
 		const input = value
 		if(type === `input` || type === `onBlur`) {
-			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) || type === `onBlur`)
 				value = convertToSeconds(value, videoLength)
+			else
+				value = input
 		}
 		const clips = {...clipList}
 		if(value > videoLength)
@@ -238,6 +222,8 @@ const ClipEditor = props => {
 		else if(value < 0)
 			clips[active][`start`] = 0
 		else {
+			// console.log("object")
+			// console.log(value)
 			clips[active][`start`] = value
 			if (value > clips[active][`end`]) {
 				if(document.getElementById(`clipMessage`)) {
@@ -252,19 +238,17 @@ const ClipEditor = props => {
 			}
 		}
 
-		if(type === `input` || type === `onBlur`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				clips[active][`start`] = input
-		}
-
 		setClipList(clips)
 		setBlock(true)
 	}
 	const setEndTime = (value, type) => {
 		const input = value
 		if(type === `input` || type === `onBlur`) {
-			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 				value = convertToSeconds(value, videoLength)
+			else
+				value = input
+
 		}
 
 		const clips = {...clipList}
@@ -285,11 +269,6 @@ const ClipEditor = props => {
 					document.getElementById(`clipMessage`).innerHTML=``
 				setDisableSave(false)
 			}
-		}
-
-		if(type === `input` || type === `onBlur`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				clips[active][`end`] = input
 		}
 
 		setClipList(clips)
@@ -334,7 +313,6 @@ const ClipEditor = props => {
 		updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
-		// window.location.href = `/manager`
 	}
 
 	const handleEditClip = (item, index) => {
@@ -366,23 +344,43 @@ const ClipEditor = props => {
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
+
 						<div className={`layer`}>
 							{active !== `` ? (
-								<>
-									<div className={`handle`}>
+								<div>
+									{layers.map((layer, index) => (
+										<div className={`flex`} key={index}>
+											<div className={`skip-handle`}>
+												<p>Allow Skip</p>
+												<div className={`allow-event`}
+													onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+													onMouseLeave={e => toggleTip()}>
+													<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
+												</div>
+											</div>
+											<SkipLayer
+												videoLength={videoLength}
+												width={layerWidth}
+												events={allEvents}
+											/>
+										</div>
+									))}
+									<div className={`flex`}>
+										<div className={`handle`}>
+										</div>
+										<ClipLayer
+											start={clipList[active][`start`]}
+											setStart={setStartTime}
+											end={clipList[active][`end`]}
+											setEnd={setEndTime}
+											width={0}
+											videoLength = {videoLength}
+											active = {active}
+										/>
 									</div>
-									<ClipLayer
-										start={clipList[active][`start`]}
-										setStart={setStartTime}
-										end={clipList[active][`end`]}
-										setEnd={setEndTime}
-										width={0}
-										videoLength = {videoLength}
-										active = {active}
-									/>
-								</>
+								</div>
 							):
-								<>
+								<div className={`flex`}>
 									<div className={`handle`}>
 									</div>
 									<ClipLayer
@@ -392,9 +390,9 @@ const ClipEditor = props => {
 										setEnd={setEndTime}
 										width={0}
 										videoLength = {videoLength}
-										active = {active}
+										active = {``}
 									/>
-								</>
+								</div>
 							}
 
 						</div>
@@ -430,11 +428,6 @@ const ClipEditor = props => {
 				</span>
 				<SideEditor minimized={false}>
 					<header>
-						<div className={`allow-event`}
-							onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-							onMouseLeave={e => toggleTip()}>
-							<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
-						</div>
 						<div className='sideButton'>
 							{disableSave ?
 								<button className={`disable`}>
@@ -495,10 +488,6 @@ const ClipEditor = props => {
 												<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
 											</div>
 										))
-									}
-									{
-									// "foo: bar", "baz: 42"
-										// Object.entries(event.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
 									}
 								</tbody>
 							</table>

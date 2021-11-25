@@ -462,6 +462,8 @@ export default class ResourceService {
 
 			dispatch(this.actions.resourceUpdateCount(false))
 			dispatch(this.actions.resourcesFiles(id, result))
+
+			return result
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))
 		}
