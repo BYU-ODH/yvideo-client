@@ -5,9 +5,9 @@ name: yvideo frontend CI
 
 on:
   push:
-    branches: [ develop, build ]
+    branches: [ master, develop, build ]
   pull_request:
-    branches: [ develop, build ]
+    branches: [ master, develop, build ]
 
 jobs:
   build:
@@ -27,5 +27,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: npm test
-    - run: npm build
+
+    - name: Run project test
+      run: npm test
+
+    - name: Run project build
+      run: npm build
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
