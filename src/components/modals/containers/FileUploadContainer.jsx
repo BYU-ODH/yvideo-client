@@ -117,6 +117,7 @@ const FileUploadContainer = props => {
 		formData.append(`file-version`, fileVersion)
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, metadata)
+		formData.append(`aspect-ratio`, '')
 
 		const result = await uploadFile(formData, (event) => {
 			const percent = Math.round(100 * event.loaded / event.total)
