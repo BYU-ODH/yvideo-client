@@ -498,6 +498,7 @@ const VideoEditor = props => {
 		<Style id='video-editor'>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
+					className="video"
 					url={url}
 					handlers={togglendTimeline}
 					getDuration={getVideoDuration}
