@@ -71,7 +71,7 @@ export default class Manager extends PureComponent {
 										<CreateButton className='collection-create' onClick={createNew}><PlusIcon/>Collection</CreateButton>
 										<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 											<Help
-												onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+												onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 												onMouseLeave={e => toggleTip()}
 											><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
 											</Help>
