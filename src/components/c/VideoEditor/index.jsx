@@ -578,7 +578,14 @@ const VideoEditor = props => {
 
 			<EventEditor minimized={eventListMinimized}>
 				<header>
-					<img src={helpIcon} alt={`helpIcon`} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+					<img
+						src={helpIcon}
+						alt={`helpIcon`}
+						onClick={handleShowHelp}
+						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}
+						style={{marginLeft:10,marginTop:15}}
+					/>
 					<div className={`save`}>
 						{disableSave ?
 							<button className={`disable`}>

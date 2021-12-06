@@ -764,7 +764,14 @@ const SubtitleEditor = props => {
 
 			<EventList minimized={eventListMinimized}>
 				<header>
-					<img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+					<img
+						alt={`helpIcon`}
+						src={helpIcon}
+						onClick={handleShowHelp}
+						style={{marginLeft:10,marginTop:15}}
+						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}
+					/>
 					<div className={`save`}>
 						{disableSave ?
 							<button className={`disable`}>

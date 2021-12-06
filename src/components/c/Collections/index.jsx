@@ -53,7 +53,10 @@ export default class Collections extends PureComponent {
 					<div>
 						<h3>Collections &nbsp;&nbsp;&nbsp;
 							<Help id='collections-help-documentation'
-								src={helpIcon} onClick={handleShowHelp}
+								src={helpIcon}
+								onClick={handleShowHelp}
+								onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+								onMouseLeave={e => toggleTip()}
 							/></h3>
 					</div>
 					<div>

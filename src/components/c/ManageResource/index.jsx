@@ -22,6 +22,8 @@ export class ManageResource extends PureComponent {
 			handleSearchTextChange,
 			handleSubmit,
 			handleShowHelp,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		return (
@@ -31,8 +33,13 @@ export class ManageResource extends PureComponent {
 				</div>
 
 				<div className='resource-search'>
-					<Help style={{ position: 'relative' }}>
-						<img src={helpIcon} onClick={handleShowHelp}/>
+					<Help style={{ position: `relative` }}>
+						<img src={helpIcon}
+							alt={`help`}
+							onClick={handleShowHelp}
+							onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+							onMouseLeave={e => toggleTip()}
+						/>
 					</Help>
 
 					<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>

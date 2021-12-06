@@ -57,6 +57,8 @@ export default class ContentOverview extends PureComponent {
 			handleShowWordsModal,
 			handleShowHelp,
 			handleLinks,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
 
 		const {
@@ -143,7 +145,11 @@ export default class ContentOverview extends PureComponent {
 						</Column>
 						<Column>
 							<h4>Important Words
-								<img src={helpIcon} onClick={handleShowHelp} width='20' height='20'/>
+								<img src={helpIcon} alt={`help`}
+									onClick={handleShowHelp}
+									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 45, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}
+									width='20' height='20'/>
 							</h4>
 							<p>Add a list of important words to be highlighted in the transcript. The highlighted
 							words will have quick translation on click if there is
