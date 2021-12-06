@@ -102,13 +102,6 @@ describe(`SubtitlesEditorContainer testing`, () => {
 
 		wrapper.find(`.save`).simulate(`click`)
 
-		wrapper.find(`.allow-event`).prop(`onMouseEnter`)({ target:
-			{ getBoundingClientRect: () => {
-				return mock
-			}}
-		, currentTarget: {offsetWidth: 10},
-		})
-		wrapper.find(`.allow-event`).prop(`onMouseLeave`)()
 		wrapper.find(`.switch-toggle`).at(0).simulate(`click`)
 
 		act(() => {

@@ -292,7 +292,7 @@ export default class AdminTable extends PureComponent {
 							item => <tr key={item.id}>
 								{ printTableValues(searchCategory, item) }
 								<td>
-									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip(`actions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip(`actions`, {x: e.target.getBoundingClientRect().x + 40, y: e.target.getBoundingClientRect().y +15, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 									></ItemEdit>
 								</td>

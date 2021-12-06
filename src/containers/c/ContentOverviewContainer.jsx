@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { Tooltip } from 'components/bits'
 
 import {
 	collectionService,
@@ -28,6 +29,7 @@ const ContentOverviewContainer = props => {
 		isLabAssistant,
 		adminRemoveCollectionContent,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const history = useHistory()
@@ -190,6 +192,16 @@ const ContentOverviewContainer = props => {
 		}
 	}
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position,
+			},
+		})
+	}
+
 	const viewstate = {
 		content: contentState,
 		showing,
@@ -215,6 +227,8 @@ const ContentOverviewContainer = props => {
 		handleShowWordsModal,
 		handleShowHelp,
 		handleLinks,
+		handleShowTip,
+		toggleTip,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />
@@ -225,6 +239,7 @@ const mapDispatchToProps = {
 	updateContent: contentService.updateContent,
 	adminRemoveCollectionContent: adminService.deleteContent,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(null, mapDispatchToProps)(ContentOverviewContainer)
