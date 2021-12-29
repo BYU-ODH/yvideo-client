@@ -574,8 +574,10 @@ const apiProxy = {
 				const collections_result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collections`, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 					.then(async res => {
 						await updateSessionId(res.headers[`session-id`])
-						return res.data
+						return res.data.sort((a, b) => { return a["collection-name"].toLowerCase() > b["collection-name"].toLowerCase() ? 1 : -1})
 					})
+
+				console.log(collections_result)
 
 				return collections_result.reduce((map, collection) => {
 					collection[`name`] = collection[`collection-name`]

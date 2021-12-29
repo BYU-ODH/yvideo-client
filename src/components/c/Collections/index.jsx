@@ -36,7 +36,7 @@ export default class Collections extends PureComponent {
 			handleSearchTextChange,
 		} = this.props.handlers
 
-		collections.sort((a, b) => a.name > b.name ? 1 : -1)
+		// collections.sort((a, b) => a.name > b.name ? 1 : -1)
 
 		const setNoCollections = () => {
 			setTimeout(() => {
