@@ -27,6 +27,9 @@ class ListCollection extends PureComponent {
 
 		const publishContent = content ? content.filter(item => item.published) : []
 
+
+		publishContent.sort((a, b) => {return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1})
+
 		if (!content || this.props.collection.published !== true ) return null
 
 		return (
