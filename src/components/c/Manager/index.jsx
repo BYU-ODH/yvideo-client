@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { ManageCollectionContainer } from 'containers'
+import { ManageCollectionContainer, LabAssistantManageCollectionContainer } from 'containers'
 
 import { Accordion } from 'components/bits'
 
@@ -31,7 +31,7 @@ export default class Manager extends PureComponent {
 			activeId,
 			isOpen,
 			isMobile,
-			isLabassistantManager,
+			isLabAssistant,
 		} = this.props.viewstate
 
 		const {
@@ -102,16 +102,19 @@ export default class Manager extends PureComponent {
 										:
 										collection ?
 
-											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} isLabassistantManager={isLabassistantManager}/>
-
+											isLabAssistant ?
+												<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+												:
+												<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
 											:
-
 											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 
 									:
 									collection ?
-										<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} isLabassistantManager={isLabassistantManager} />
-
+										isLabAssistant ?
+											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+											:
+											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
 										:
 										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 

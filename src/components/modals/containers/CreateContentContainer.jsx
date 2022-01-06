@@ -54,11 +54,11 @@ const CreateContentContainer = props => {
 		},
 		thumbnail: ``,
 		targetLanguage: ``,
+		fileId: "00000000-0000-0000-0000-000000000000",
 	})
 
 	useEffect(() => {
 		getLanguages()
-		console.log(modal)
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
 			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
@@ -112,15 +112,6 @@ const CreateContentContainer = props => {
 			e.preventDefault()
 			addKeyword(e.target)
 		}
-	}
-
-	// TODO: looks like backend needs to be update so it can look up file by id not file-version
-	const handleSelectLanguage = e => {
-		setData({
-			...data,
-			[e.target.name]: e.target.value,
-		})
-		setBlock(true)
 	}
 
 	const handleTextChange = e => {
@@ -233,7 +224,7 @@ const CreateContentContainer = props => {
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": resourceFiles.filter(file => file.id === data.targetLanguage)['file-version'],
+			"file-version": data.targetLanguage,
 			"file-id": '00000000-0000-0000-0000-000000000000',
 			"collection-id": modal.collectionId,
 			"published": true,
@@ -286,8 +277,8 @@ const CreateContentContainer = props => {
 			"clips": ``,
 			"words": ``,
 			"thumbnail": `empty`,
-			"file-version": resourceFiles.filter(file => file.id === data.targetLanguage)[0]['file-version'],
-			"file-id": data.targetLanguage,
+			"file-version": data.targetLanguage,
+			"file-id": data.fileId,
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -346,7 +337,6 @@ const CreateContentContainer = props => {
 		handleSelectResourceChange,
 		handleSubmit,
 		handleTextChange,
-		handleSelectLanguage,
 		handleTypeChange,
 		onKeyPress,
 		remove,
