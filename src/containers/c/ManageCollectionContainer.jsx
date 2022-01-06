@@ -103,6 +103,9 @@ const ManageCollectionContainer = props => {
 		props.toggleModal({
 			component: CreateContentContainer,
 			collectionId: collection.id,
+			props: {
+				isPublic: collection.public,
+			}
 		})
 
 		setIsEdited(true)

@@ -58,7 +58,7 @@ const CreateContentContainer = props => {
 
 	useEffect(() => {
 		getLanguages()
-
+		console.log(modal)
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
 			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
@@ -263,6 +263,13 @@ const CreateContentContainer = props => {
 		if(data.targetLanguage === ``){
 			alert(`Please, select a valid language`)
 			return
+		}
+
+		//FIND IF THE COLLECTION IS PUBLIC
+		//IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
+		if(modal.props.isPublic && resourceContent[selectedResourceId].copyrighted){
+			alert('The resource you are trying to add is copyrighted and cannot be added to a public collection')
+			return;
 		}
 
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
