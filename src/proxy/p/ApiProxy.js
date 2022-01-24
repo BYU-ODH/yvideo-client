@@ -577,7 +577,7 @@ const apiProxy = {
 						return res.data.sort((a, b) => { return a["collection-name"].toLowerCase() > b["collection-name"].toLowerCase() ? 1 : -1})
 					})
 
-				console.log(collections_result)
+				// console.log(collections_result)
 
 				return collections_result.reduce((map, collection) => {
 					collection[`name`] = collection[`collection-name`]

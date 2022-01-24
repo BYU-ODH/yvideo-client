@@ -144,7 +144,7 @@ const Transcript = props => {
 				</div>
 				<div className={`transcript-title`}>
 					<h1>Transcript</h1>
-					<h2>{content !== undefined ? content.settings.targetLanguage !== `` ? `Video - ${content.settings.targetLanguage} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `No captions available`}</h2>
+					<h2>{content !== undefined ? content.settings.targetLanguage !== `` ? `Video - ${content.settings.targetLanguage} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}</h2>
 				</div>
 				<br/><br/><br/>
 				<div className={`transcript-content`}>

@@ -28,6 +28,7 @@ const ManagerContainer = props => {
 		collectionError,
 		collectionErrorPrev,
 		collectionSyncError,
+		isLabAssistant
 	} = props
 
 	const params = useParams()
@@ -137,7 +138,7 @@ const ManagerContainer = props => {
 		activeId: params.id,
 		isMobile,
 		isOpen,
-		isLabassistantManager: false,
+		isLabAssistant: isLabAssistant,
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />
@@ -146,6 +147,7 @@ const ManagerContainer = props => {
 const mapStateToProps = store => ({
 	collections: store.collectionStore.cache,
 	admin: store.authStore.user.roles === 0,
+	isLabAssistant: store.authStore.user.roles === 1,
 	newCollectionInfo: store.collectionStore.newCollectionId,
 	collectionError: store.collectionStore.errorMessage,
 	collectionErrorPrev : store.collectionStore.errorMessagePrev,

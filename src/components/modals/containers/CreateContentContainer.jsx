@@ -54,11 +54,11 @@ const CreateContentContainer = props => {
 		},
 		thumbnail: ``,
 		targetLanguage: ``,
+		fileId: "00000000-0000-0000-0000-000000000000",
 	})
 
 	useEffect(() => {
 		getLanguages()
-
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
 			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
@@ -112,15 +112,6 @@ const CreateContentContainer = props => {
 			e.preventDefault()
 			addKeyword(e.target)
 		}
-	}
-
-	// TODO: looks like backend needs to be update so it can look up file by id not file-version
-	const handleSelectLanguage = e => {
-		setData({
-			...data,
-			[e.target.name]: e.target.value,
-		})
-		setBlock(true)
 	}
 
 	const handleTextChange = e => {
@@ -233,7 +224,7 @@ const CreateContentContainer = props => {
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": resourceFiles.filter(file => file.id === data.targetLanguage)['file-version'],
+			"file-version": data.targetLanguage,
 			"file-id": '00000000-0000-0000-0000-000000000000',
 			"collection-id": modal.collectionId,
 			"published": true,
@@ -265,6 +256,13 @@ const CreateContentContainer = props => {
 			return
 		}
 
+		//FIND IF THE COLLECTION IS PUBLIC
+		//IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
+		if(modal.props.isPublic && resourceContent[selectedResourceId].copyrighted){
+			alert('The resource you are trying to add is copyrighted and cannot be added to a public collection')
+			return;
+		}
+
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
 		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
 		// THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
@@ -279,8 +277,8 @@ const CreateContentContainer = props => {
 			"clips": ``,
 			"words": ``,
 			"thumbnail": `empty`,
-			"file-version": resourceFiles.filter(file => file.id === data.targetLanguage)[0]['file-version'],
-			"file-id": data.targetLanguage,
+			"file-version": data.targetLanguage,
+			"file-id": data.fileId,
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -339,7 +337,6 @@ const CreateContentContainer = props => {
 		handleSelectResourceChange,
 		handleSubmit,
 		handleTextChange,
-		handleSelectLanguage,
 		handleTypeChange,
 		onKeyPress,
 		remove,

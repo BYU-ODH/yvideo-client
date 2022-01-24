@@ -140,7 +140,7 @@ export const Selector = styled.div`
   position: absolute;
 
   bottom: 0;
-  left: ${props => props.isContentTap ? `2rem` : `12rem`};
+  left: ${props => props.isContentTab ? `2rem` : `12rem`};
 
   transition: left 0.3s ease-in-out;
 
