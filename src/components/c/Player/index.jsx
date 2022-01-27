@@ -1,24 +1,12 @@
-import React, { PureComponent, useRef, createRef } from 'react'
-
+import React, { PureComponent, createRef } from 'react'
 import ReactPlayer from 'react-player'
 
-import { CollectionsContainer, EventsContainer } from 'containers'
-import { PlayerControls } from 'components/bits'
-
-import { Transcript } from 'components/bits'
-
+import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
-
-import Style, { Blank, Comment, Subtitles, Censor, PlayButton } from './styles'
-
 import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
-import Position from 'components/vanilla_scripts/censorPosition'
-
-import chevron from 'assets/player-chevron-left.svg'
 import playButton from 'assets/hexborder.svg'
-import helpIcon from 'assets/help/help-icon-white.svg'
-
+import Style, { Blank, Subtitles, PlayButton } from './styles'
 export default class Player extends PureComponent {
 
 	componentDidMount(){
@@ -37,6 +25,7 @@ export default class Player extends PureComponent {
 			playing,
 			playbackRate,
 			progress,
+			playTime,
 			volume,
 			muted,
 			blank,
@@ -98,7 +87,6 @@ export default class Player extends PureComponent {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					console.log('setting pause')
 					setHasPausedClip(true)
 				}
 			}
@@ -111,35 +99,32 @@ export default class Player extends PureComponent {
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			for (let y = 0; y < values.allEvents.length; y++){
-				let index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
+				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
-				if(!events[index].active && values.allEvents[y].type !== 'Mute'){
+				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
-				}
 
 				switch(values.allEvents[y].type){
-					case `Mute`:
-						if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
-							events[index].active = false
-							handleMuted()
-						}
-						else if(!values.allEvents[y].active && ((values.allEvents[y].end - .1) <= playedSeconds)){
-							handleUnmuted()
-						}
+				case `Mute`:
+					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+						events[index].active = false
+						handleMuted()
+					} else if(!values.allEvents[y].active && values.allEvents[y].end - .1 <= playedSeconds)
+						handleUnmuted()
 
-						break
-					case `Pause`:
-						events[index].active = false
-						handlePause()
-						// console.log("pausing")
-						break
-					case `Skip`:
-						events[index].active = false
-						handleSeekChange(null,values.allEvents[y].end)
-						// console.log('skipping')
-						break
-					default:
-						break
+					break
+				case `Pause`:
+					events[index].active = false
+					handlePause()
+					// console.log("pausing")
+					break
+				case `Skip`:
+					events[index].active = false
+					handleSeekChange(null,values.allEvents[y].end)
+					// console.log('skipping')
+					break
+				default:
+					break
 				}
 			}
 
@@ -160,14 +145,10 @@ export default class Player extends PureComponent {
 							playbackRate={parseFloat(playbackRate)}
 							volume={volume}
 							muted={muted}
-							// onReady={() => console.log(`onReady`)}
-							// onStart={() => console.log(`onStart`)}
 							onPlay={handlePlay}
 							onPause={handlePause}
 							onStart = {handleStart}
-							// onBuffer={() => console.log(`onBuffer`)}
 							onSeek={e => e}
-							// onError={e => console.log(`onError`, e)}
 							progressInterval={30}
 							onProgress={handleOnProgress}
 							onDuration={handleDuration}
@@ -185,7 +166,7 @@ export default class Player extends PureComponent {
 								},
 							}}
 						/>
-						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers}/>
+						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>
