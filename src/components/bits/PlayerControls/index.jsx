@@ -23,6 +23,7 @@ const PlayerControls = props => {
 		fullscreen,
 		hovering,
 		progress,
+		playTime,
 		volume,
 		muted,
 		playing,
@@ -112,10 +113,11 @@ const PlayerControls = props => {
 	return (
 		<Style playing={playing} >
 
-			<Scrubber clipTime={clipTime} clipPercent={clipPercent} progress={progress.played} active={hovering} handleClick={handleSeekChange} />
+			<Scrubber clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} />
 
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
+				<p className='play-time'>{playTime}</p>
 				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'/>
 			</div>
 			<div className='right'>
