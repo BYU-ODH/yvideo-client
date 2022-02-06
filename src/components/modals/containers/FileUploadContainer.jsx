@@ -31,6 +31,8 @@ const FileUploadContainer = props => {
 
 	const [customLang, setCustomLang] = useState(``)
 
+	const [metadata, setMetadata] = useState(``)
+
 	const [progress, setProgress] = useState(0)
 
 	const [isUploadComplete, setIsUploadComplete] = useState(false)
@@ -91,6 +93,11 @@ const FileUploadContainer = props => {
 		}
 	}
 
+	const handleFileName = e =>{
+		e.preventDefault()
+		setMetadata(e.target.value)
+	}
+
 	const handleOtherLanguage = e => {
 		e.preventDefault()
 		setCustomLang(e.target.value)
@@ -109,7 +116,7 @@ const FileUploadContainer = props => {
 		formData.append(`resource-id`, resourceId)
 		formData.append(`file-version`, fileVersion)
 		formData.append(`mime`, ``)
-		formData.append(`metadata`, ``)
+		formData.append(`metadata`, metadata)
 
 		const result = await uploadFile(formData, (event) => {
 			const percent = Math.round(100 * event.loaded / event.total)
@@ -126,6 +133,7 @@ const FileUploadContainer = props => {
 		selectedFile,
 		langs,
 		progress,
+		metadata,
 	}
 
 	const handlers = {
@@ -134,6 +142,7 @@ const FileUploadContainer = props => {
 		handleFileUpload,
 		handleOtherLanguage,
 		handleCancelUpload,
+		handleFileName,
 		toggleModal,
 	}
 

@@ -98,7 +98,7 @@ export default class Player extends PureComponent {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					console.log('setting pause')
+					console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
@@ -111,56 +111,55 @@ export default class Player extends PureComponent {
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			for (let y = 0; y < values.allEvents.length; y++){
-				let index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
+				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
-				if(!events[index].active){
+				if(!events[index].active)
 					return
-				}
 
 				switch(values.allEvents[y].type){
-					case `Mute`:
-						if(!muted){
-							handleMuted()
-							// console.log("muting")
-						}
-						break
-					case `Pause`:
-						events[index].active = false
-						handlePause()
-						// console.log("pausing")
-						break
-					case `Skip`:
-						events[index].active = false
-						handleSeekChange(null,values.allEvents[y].end)
-						// console.log('skipping')
-						break
-					default:
-						break
+				case `Mute`:
+					if(!muted)
+						handleMuted()
+					// console.log("muting")
+
+					break
+				case `Pause`:
+					events[index].active = false
+					handlePause()
+					// console.log("pausing")
+					break
+				case `Skip`:
+					events[index].active = false
+					handleSeekChange(null,values.allEvents[y].end)
+					// console.log('skipping')
+					break
+				default:
+					break
 				}
 			}
 
 			for(let j = 0; j < values.doneEvents.length; j++){
-				//needed for unmuting after muting event is done
-				let index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
+				// needed for unmuting after muting event is done
+				const index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
 
-				if(!events[index].active){
+				if(!events[index].active)
 					return
-				}
 
 				switch(values.doneEvents[j].type){
-					case `Mute`:
-						if(muted){
-							handleUnmuted()
-							// console.log("unmuting")
-							events[index].active = false
-						}
-						break
-					default:
-						break
+				case `Mute`:
+					if(muted){
+						handleUnmuted()
+						// console.log("unmuting")
+						events[index].active = false
+					}
+					break
+				default:
+					break
 				}
 			}
 
 			const t1 = performance.now()
+
 		}
 
 		return (

@@ -115,6 +115,40 @@ export const Container = styled.div`
 		}
 	}
 
+	& .video-section {
+		width: 80%;
+		margin: auto auto auto auto;
+		text-align: center;
+		position: relative;
+		border: 2.5px solid #0582ca;
+		border-radius: 10px;
+
+		& h2 {
+			background-color: #0582ca;
+			height: 22px;
+			padding-top: 10px;
+			width: calc(100% + 4px);
+			border-radius: 10px 10px 0px 0px;
+			color: white;
+			margin-left: -2px;
+			margin-top: -2px;
+		}
+
+		& div {
+			margin: auto;
+			width: 100%;
+			display: flex;
+
+			& video {
+				width: 100%;
+				height: 100%;
+				margin: auto;
+				max-width: 800px;
+				max-height: 600px;
+			}
+		}
+	}
+
 `
 export const CloseHelp = styled.span`
 	height: 30px;
@@ -127,4 +161,7 @@ export const CloseHelp = styled.span`
     top: 10px;
     right: 20px;
 	}
+`
+
+export const Tutorial = styled.div`
 `

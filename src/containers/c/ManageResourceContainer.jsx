@@ -7,6 +7,8 @@ import { interfaceService, resourceService } from 'services'
 
 import CreateResourceContainer from 'components/modals/containers/CreateResourceContainer'
 
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
+
 const ManageResourceContainer = props => {
 
 	const {
@@ -14,6 +16,7 @@ const ManageResourceContainer = props => {
 		resources,
 		user,
 		setBreadcrumbs,
+		toggleModal,
 	} = props
 
 	const defaultSearch = user.email.split(`@`)
@@ -69,6 +72,13 @@ const ManageResourceContainer = props => {
 		setSelectedResource(target.value)
 	}
 
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: 'Manage Resource'},
+		})
+	}
+
 	const viewstate = {
 		user,
 		searchQuery,
@@ -82,6 +92,7 @@ const ManageResourceContainer = props => {
 		handleSearchTextChange,
 		addResource,
 		handleSubmit,
+		handleShowHelp,
 	}
 
 	return <ManageResource viewstate={viewstate} handlers={handlers} />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { Prompt } from 'react-router'
-import { VideoContainer } from 'components'
+import { VideoContainer, SkipLayer } from 'components'
 import {ClipLayer, SwitchToggle} from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
@@ -34,6 +34,8 @@ const ClipEditor = props => {
 	} = props.handlers
 
 	const updateContent = props.updateContent
+	const layers = [{0: `Skip`}]
+
 	// const parseSub = Subtitle.parse(testingSubtitle)
 
 	// for (let i = 0; i < parseSub.length; i++){
@@ -226,7 +228,8 @@ const ClipEditor = props => {
 		setClipList(clips)
 		setBlock(true)
 	}
-	const setStartTime = (value, type) => {
+	const setStartTime = (value, type, name) => {
+		console.log(clipList,value,name)
 		const input = value
 		if(type === `input` || type === `onBlur`) {
 			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
@@ -234,12 +237,12 @@ const ClipEditor = props => {
 		}
 		const clips = {...clipList}
 		if(value > videoLength)
-			clips[active][`start`] = videoLength - 30
+			clips[name][`start`] = videoLength - 30
 		else if(value < 0)
-			clips[active][`start`] = 0
+			clips[name][`start`] = 0
 		else {
-			clips[active][`start`] = value
-			if (value > clips[active][`end`]) {
+			clips[name][`start`] = value
+			if (value > clips[name][`end`]) {
 				if(document.getElementById(`clipMessage`)) {
 					document.getElementById(`clipMessage`).style.color=`red`
 					document.getElementById(`clipMessage`).innerHTML=`Please, enter a number smaller than end time`
@@ -254,27 +257,27 @@ const ClipEditor = props => {
 
 		if(type === `input` || type === `onBlur`) {
 			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				clips[active][`start`] = input
+				clips[name][`start`] = input
 		}
 
 		setClipList(clips)
 		setBlock(true)
 	}
-	const setEndTime = (value, type) => {
+	const setEndTime = (value, type, name) => {
 		const input = value
 		if(type === `input` || type === `onBlur`) {
 			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 				value = convertToSeconds(value, videoLength)
 		}
-
 		const clips = {...clipList}
+		console.log(`beeeeps`,name, clips[name])
 		if(value > videoLength)
-			clips[active][`end`] = videoLength
+			clips[name][`end`] = videoLength
 		else if(value < 0)
-			clips[active][`end`] = 30
+			clips[name][`end`] = 30
 		else {
-			clips[active][`end`] = value
-			if (value < clips[active][`start`]) {
+			clips[name][`end`] = value
+			if (value < clips[name][`start`]) {
 				if(document.getElementById(`clipMessage`)) {
 					document.getElementById(`clipMessage`).style.color=`red`
 					document.getElementById(`clipMessage`).innerHTML=`Please, enter a number bigger than start time`
@@ -289,7 +292,7 @@ const ClipEditor = props => {
 
 		if(type === `input` || type === `onBlur`) {
 			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				clips[active][`end`] = input
+				clips[name][`end`] = input
 		}
 
 		setClipList(clips)
@@ -366,36 +369,49 @@ const ClipEditor = props => {
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
-						<div className={`layer`}>
-							{active !== `` ? (
-								<>
-									<div className={`handle`}>
+
+						<div className={`layer`} style={{paddingBottom:`40px`}}>
+							<div>
+								{layers.map((layer, index) => (
+									<div className={`flex`} key={index}>
+										<div className={`skip-handle`}>
+											<p>Allow Skip</p>
+											<div className={`allow-event`}
+												onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+												onMouseLeave={e => toggleTip()}>
+												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
+											</div>
+										</div>
+										<SkipLayer
+											videoLength={videoLength}
+											width={layerWidth}
+											events={allEvents}
+										/>
 									</div>
-									<ClipLayer
-										start={clipList[active][`start`]}
-										setStart={setStartTime}
-										end={clipList[active][`end`]}
-										setEnd={setEndTime}
-										width={0}
-										videoLength = {videoLength}
-										active = {active}
-									/>
-								</>
-							):
-								<>
-									<div className={`handle`}>
+								))}
+								{Object.keys(clipList).map((clip,index)=>(
+									<div className={`flex`}>
+										<div className={`handle`} style={active===clip?{backgroundColor:`#002e5d`,color:`#fff`}:{backgroundColor:`#fff`,color:`#000`}}>
+											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
+										</div>
+										<ClipLayer
+											clipName = {clip}
+											start={clipList[clip][`start`]}
+											setStart={setStartTime}
+											end={clipList[clip][`end`]}
+											setEnd={setEndTime}
+											width={0}
+											videoLength = {videoLength}
+											active = {active}
+											index = {index}
+											handleEditClip = {handleEditClip}
+										/>
 									</div>
-									<ClipLayer
-										start={null}
-										setStart={setStartTime}
-										end={null}
-										setEnd={setEndTime}
-										width={0}
-										videoLength = {videoLength}
-										active = {active}
-									/>
-								</>
-							}
+								),
+
+								)}
+
+							</div>
 
 						</div>
 						<section>
@@ -430,11 +446,6 @@ const ClipEditor = props => {
 				</span>
 				<SideEditor minimized={false}>
 					<header>
-						<div className={`allow-event`}
-							onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-							onMouseLeave={e => toggleTip()}>
-							<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
-						</div>
 						<div className='sideButton'>
 							{disableSave ?
 								<button className={`disable`}>
@@ -478,15 +489,15 @@ const ClipEditor = props => {
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
 													<td>
 														<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
-															onChange={(e) => setStartTime(e.target.value, `input`)}
-															onBlur={(e) => setStartTime(e.target.value, `onBlur`)}
+															onChange={(e) => setStartTime(e.target.value, `input`,item)}
+															onBlur={(e) => setStartTime(e.target.value, `onBlur`,item)}
 															onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-5, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
 															onMouseLeave={e => toggleTip()}
 														/>
 													</td>
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
-														onChange={(e) => setEndTime(e.target.value, `input`)}
-														onBlur={(e) => setEndTime(e.target.value, `onBlur`)}
+														onChange={(e) => setEndTime(e.target.value, `input`,item)}
+														onBlur={(e) => setEndTime(e.target.value, `onBlur`,item)}
 														onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+35, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
 														onMouseLeave={e => toggleTip()}
 													/>
