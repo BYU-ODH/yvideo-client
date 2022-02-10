@@ -85,8 +85,8 @@ const CollectionPermissionsContainer = props => {
 			setIsEdited(true)
 		},
 		handleCatalogBlur: e => {
-			if(e.target.value.length < 3) {
-				let catalog = e.target.value
+			let catalog = e.target.value
+			if(catalog.length < 3 && catalog.length !== 0) {
 				for(let i = catalog.length; i < 3; i++)
 					catalog = `0${catalog}`
 
@@ -109,8 +109,8 @@ const CollectionPermissionsContainer = props => {
 			setIsEdited(true)
 		},
 		handleSectionBlur: e => {
-			if(e.target.value.length < 2) {
-				let section = e.target.value
+			let section = e.target.value
+			if(section.length < 2 && section.length !== 0) {
 				section = `0${section}`
 
 				setCourse({
@@ -145,25 +145,12 @@ const CollectionPermissionsContainer = props => {
 		},
 		addCourse: e => {
 			e.preventDefault()
-
+			console.log(`here1`)
 			let {
 				department,
 				catalog,
 				section,
 			} = course
-
-			if(catalog.length < 3) {
-				for(let i = catalog.length; i < 3; i++)
-					catalog = `0${catalog}`
-			}
-			if(section.length < 2)
-				section = `0${section}`
-
-			setCourse({
-				...course,
-				catalog,
-				section,
-			})
 
 			updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
 			setDisable(true)
