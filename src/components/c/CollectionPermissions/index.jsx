@@ -112,7 +112,7 @@ export class CollectionPermissions extends PureComponent {
 					<CourseTable id='course-table'>
 						<h4>Courses</h4>
 						<form onSubmit={handlers.addCourse}>
-							<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Department - ENG'/>
+							<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Dept - Ex: ENGL'/>
 							<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} value={catalog} placeholder='Catalog - Ex: 101' required/>
 							<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} value={section} placeholder='Section - Ex: 01' required/>
 							<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
