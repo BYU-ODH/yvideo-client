@@ -14,7 +14,7 @@ This project includes an `.eslintrc` file which contains the linting rules that 
 
 It's recommended to use VSCode to work on YVideo. The project includes a `.vscode` folder containing workspace settings that should take priority over the user settings when working on this code.
 
-### VSCode Settings
+### VSCode Settings (Optional)
 
 ### `keybindings.json`
 - This will unset <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd> from the default VSCode formatting task, and re-bind it to the ESLint linting task for `.js`, `.jsx`, `.ts`, and `.tsx` files only
