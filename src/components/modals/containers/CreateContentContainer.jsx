@@ -61,7 +61,7 @@ const CreateContentContainer = props => {
 		getLanguages()
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
-			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
+			const langs = resourceContent[selectedResourceId].allFileVersions ? (resourceContent[selectedResourceId].allFileVersions.split(`;`)) : ([])
 			const finalLanguages = []
 			langs.forEach((element, i) => {
 				if(element === ``)
@@ -119,6 +119,12 @@ const CreateContentContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
+		if(e.target.name === "fileId"){
+			setData({
+				...data,
+				targetLanguage: resourceFiles.filter(file => file.id === e.target.value)[0]['file-version']
+			})
+		}
 		setBlock(true)
 	}
 
@@ -258,7 +264,7 @@ const CreateContentContainer = props => {
 
 		//FIND IF THE COLLECTION IS PUBLIC
 		//IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
-		if(modal.props.isPublic && resourceContent[selectedResourceId].copyrighted){
+		if(modal.props !== undefined && modal.props.isPublic && resourceContent[selectedResourceId].copyrighted){
 			alert('The resource you are trying to add is copyrighted and cannot be added to a public collection')
 			return;
 		}
