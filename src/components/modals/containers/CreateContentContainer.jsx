@@ -27,6 +27,7 @@ const CreateContentContainer = props => {
 		user,
 		getLanguages,
 		allLanguages,
+		getFiles,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -40,6 +41,7 @@ const CreateContentContainer = props => {
 	const [isCalled, setIsCalled] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
 	const [isAccess, setIsAccess] = useState(true)
+	const [resourceFiles, setResourceFiles] = useState()
 
 	const [data, setData] = useState({
 		url: ``,
@@ -52,11 +54,11 @@ const CreateContentContainer = props => {
 		},
 		thumbnail: ``,
 		targetLanguage: ``,
+		fileId: "00000000-0000-0000-0000-000000000000",
 	})
 
 	useEffect(() => {
 		getLanguages()
-
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
 			const langs = resourceContent[selectedResourceId].allFileVersions.split(`;`)
@@ -159,6 +161,10 @@ const CreateContentContainer = props => {
 			setSelectedResourceName(resource.resourceName)
 			setSelectedResourceId(resource.id)
 			setIsResourceSelected(true)
+
+			// get files that attached to the resource
+			const files = await getFiles(resource.id)
+			setResourceFiles(files)
 		} else {
 			setSelectedResourceName(``)
 			setSelectedResourceId(``)
@@ -218,7 +224,8 @@ const CreateContentContainer = props => {
 			"resource-id": `00000000-0000-0000-0000-000000000000`,
 			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": data.targetLanguage === `` ? `English` : data.targetLanguage,
+			"file-version": data.targetLanguage,
+			"file-id": '00000000-0000-0000-0000-000000000000',
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -249,6 +256,13 @@ const CreateContentContainer = props => {
 			return
 		}
 
+		//FIND IF THE COLLECTION IS PUBLIC
+		//IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
+		if(modal.props.isPublic && resourceContent[selectedResourceId].copyrighted){
+			alert('The resource you are trying to add is copyrighted and cannot be added to a public collection')
+			return;
+		}
+
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
 		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
 		// THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
@@ -264,6 +278,7 @@ const CreateContentContainer = props => {
 			"words": ``,
 			"thumbnail": `empty`,
 			"file-version": data.targetLanguage,
+			"file-id": data.fileId,
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -312,6 +327,7 @@ const CreateContentContainer = props => {
 		isResourceSelected,
 		isAccess,
 		allLanguages,
+		resourceFiles,
 	}
 
 	const handlers = {
@@ -351,6 +367,7 @@ const mapDispatchToProps = {
 	searchResource: resourceService.search,
 	getCollections: collectionService.getCollections,
 	getAccess: resourceService.readAccess,
+	getFiles: resourceService.getFiles,
 	getLanguages: languageService.get,
 }
 

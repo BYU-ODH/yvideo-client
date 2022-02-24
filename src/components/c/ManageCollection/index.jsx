@@ -31,7 +31,7 @@ export default class ManageCollection extends PureComponent {
 			collection,
 			collectionName,
 			isEditingCollectionName,
-			isContentTap,
+			isContentTab,
 			content,
 			isLabAssistant,
 			isLoading,
@@ -111,10 +111,10 @@ export default class ManageCollection extends PureComponent {
 				<TabHeader>
 					<button className={`content-button`} onClick={setTab(true)}>Content</button>
 					<button className={`permissions-button`} onClick={setTab(false)}
-						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					>Permissions</button>
-					<Selector isContentTap={isContentTap} />
+					<Selector isContentTab={isContentTab} />
 				</TabHeader>
 
 				{collection.content === undefined ?
@@ -123,7 +123,7 @@ export default class ManageCollection extends PureComponent {
 					:
 					<>
 						<Tab>
-							{isContentTap ?
+							{isContentTab ?
 								content.map((item, index) => (
 									<div key={index}>
 										{ item !== undefined ? (
@@ -141,18 +141,20 @@ export default class ManageCollection extends PureComponent {
 								: (
 									<CollectionPermissionsContainer collection={collection} />
 								)}
-							{isContentTap && collection[`expired-content`] ?
+							{isContentTab && collection[`expired-content`] ?
 								collection[`expired-content`].map((item, index) => (
 									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
 								))
 								:
 								null
 							}
-							{isContentTap && (
-								<NewContent className={`newcontent-button`} onClick={createContent}>
+							{isContentTab && (
+								<NewContent className={`newcontent-button`}
+									onClick={createContent}
+									onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x + 5, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}>
 									<Icon src={plus}
-										onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-										onMouseLeave={e => toggleTip()}
+
 									/>
 								</NewContent>
 							)}

@@ -86,26 +86,12 @@ const ClipEditor = props => {
 
 		if(Object.keys(clipList).length ===0) {
 			if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
-				// const id = Object.keys(clipList).length === 0 ? `0` : `${parseInt(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
-				// const clip = {
-				// 	start: 0,
-				// 	end: 60,
-				// 	title: ``,
-				// }
-				// const clips = {...clipList}
-				// clips[id] = clip
-				// setClipList(clips)
-
 				const clips = JSON.parse(currentContent[`clips`])
 				setClipList(clips)
 				const saved = Object.keys(clips)
 				setSavedClips(saved)
-				// setActive(0)
-				// setClipIndex(0)
 			}
 		}
-
-		// new Array(largestLayer+1).fill(0)
 
 		for(let i = 0; i < largestLayer + 1; i++)
 			initialLayers.push([i])
@@ -128,12 +114,6 @@ const ClipEditor = props => {
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
-		const tempSubs = subs
-		for (let i = 0; i < tempSubs.length; i++)
-			tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
-
-		// setSubs(tempSubs)
-		// setAllSubs(tempSubs)
 	}
 	const handleZoomChange = (e, d) => {
 		toggleTip()
@@ -232,8 +212,10 @@ const ClipEditor = props => {
 		console.log(clipList,value,name)
 		const input = value
 		if(type === `input` || type === `onBlur`) {
-			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) || type === `onBlur`)
 				value = convertToSeconds(value, videoLength)
+			else
+				value = input
 		}
 		const clips = {...clipList}
 		if(value > videoLength)
@@ -266,11 +248,13 @@ const ClipEditor = props => {
 	const setEndTime = (value, type, name) => {
 		const input = value
 		if(type === `input` || type === `onBlur`) {
-			if(value.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || value.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 				value = convertToSeconds(value, videoLength)
+			else
+				value = input
+
 		}
 		const clips = {...clipList}
-		console.log(`beeeeps`,name, clips[name])
 		if(value > videoLength)
 			clips[name][`end`] = videoLength
 		else if(value < 0)
@@ -337,7 +321,6 @@ const ClipEditor = props => {
 		updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
-		// window.location.href = `/manager`
 	}
 
 	const handleEditClip = (item, index) => {
@@ -506,10 +489,6 @@ const ClipEditor = props => {
 												<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
 											</div>
 										))
-									}
-									{
-									// "foo: bar", "baz: 42"
-										// Object.entries(event.position).forEach(([key, value]) => console.log(`${key}: ${value}`)) // "foo: bar", "baz: 42"
 									}
 								</tbody>
 							</table>

@@ -767,14 +767,9 @@ export default class AdminService {
 
 			const currentResults = [...getState().adminStore.data]
 
-			// console.log(currentResults)
-
 			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId) ,1)
 
 			const result = await apiProxy.admin.collection.delete(collectionId)
-			// console.log(result)
-
-			// console.log(currentResults)
 
 			dispatch(this.actions.adminCollectionDelete(currentResults))
 

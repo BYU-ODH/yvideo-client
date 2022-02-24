@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { LabAssistantManageCollectionContainer, ManageCollectionContainer } from 'containers'
+import { ManageCollectionContainer, LabAssistantManageCollectionContainer } from 'containers'
 
 import { Accordion } from 'components/bits'
 
@@ -31,7 +31,7 @@ export default class Manager extends PureComponent {
 			activeId,
 			isOpen,
 			isMobile,
-			isLabassistantManager,
+			isLabAssistant,
 		} = this.props.viewstate
 
 		const {
@@ -65,14 +65,13 @@ export default class Manager extends PureComponent {
 						<>
 							{
 								isMobile && collection && isOpen === false ?
-								// <MenuIcon onClick={handleToggleSideBar} />
 									<MenuIcon type='button' onClick={handleToggleSideBar}>Back</MenuIcon>
 									:
 									<SideMenu isOpen={isOpen}>
 										<CreateButton className='collection-create' onClick={createNew}><PlusIcon/>Collection</CreateButton>
 										<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 											<Help
-												onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+												onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 												onMouseLeave={e => toggleTip()}
 											><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
 											</Help>
@@ -95,9 +94,6 @@ export default class Manager extends PureComponent {
 									</SideMenu>
 							}
 						</>
-
-						{/* {console.log(collection)} */}
-
 						<Body>
 							{
 								isMobile ?
@@ -106,16 +102,19 @@ export default class Manager extends PureComponent {
 										:
 										collection ?
 
-											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} isLabassistantManager={isLabassistantManager}/>
-
+											isLabAssistant ?
+												<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+												:
+												<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
 											:
-
 											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 
 									:
 									collection ?
-										<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} isLabassistantManager={isLabassistantManager} />
-
+										isLabAssistant ?
+											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+											:
+											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
 										:
 										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 

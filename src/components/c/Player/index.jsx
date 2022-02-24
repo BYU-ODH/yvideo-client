@@ -1,24 +1,12 @@
-import React, { PureComponent, useRef, createRef } from 'react'
-
+import React, { PureComponent, createRef } from 'react'
 import ReactPlayer from 'react-player'
 
-import { CollectionsContainer, EventsContainer } from 'containers'
-import { PlayerControls } from 'components/bits'
-
-import { Transcript } from 'components/bits'
-
+import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
-import Style, { Blank, Comment, Subtitles, Censor, PlayButton } from './styles'
-
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
-
-import Position from './censorPosition'
-
-import chevron from 'assets/player-chevron-left.svg'
 import playButton from 'assets/hexborder.svg'
-import helpIcon from 'assets/help/help-icon-white.svg'
-
+import Style, { Blank, Subtitles, PlayButton } from './styles'
 export default class Player extends PureComponent {
 
 	componentDidMount(){
@@ -37,6 +25,7 @@ export default class Player extends PureComponent {
 			playing,
 			playbackRate,
 			progress,
+			playTime,
 			volume,
 			muted,
 			blank,
@@ -165,7 +154,7 @@ export default class Player extends PureComponent {
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>
-					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1}}>
+					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}
 							className='react-player'
@@ -176,14 +165,10 @@ export default class Player extends PureComponent {
 							playbackRate={parseFloat(playbackRate)}
 							volume={volume}
 							muted={muted}
-							// onReady={() => console.log(`onReady`)}
-							// onStart={() => console.log(`onStart`)}
 							onPlay={handlePlay}
 							onPause={handlePause}
 							onStart = {handleStart}
-							// onBuffer={() => console.log(`onBuffer`)}
 							onSeek={e => e}
-							// onError={e => console.log(`onError`, e)}
 							progressInterval={30}
 							onProgress={handleOnProgress}
 							onDuration={handleDuration}
@@ -201,7 +186,7 @@ export default class Player extends PureComponent {
 								},
 							}}
 						/>
-						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers}/>
+						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>

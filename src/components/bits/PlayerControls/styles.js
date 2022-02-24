@@ -47,7 +47,12 @@ const Style = styled.div`
 
 		& #start-over {
 			cursor: pointer;
-			margin-left: 5px;
+			margin: 1rem;
+		}
+
+		& .play-time {
+			color: white;
+			margin: 1rem;
 		}
 	}
 

@@ -27,7 +27,7 @@ const CollectionsContainer = props => {
 	} = props
 
 	const [isMobile, setIsMobile] = useState(false)
-	const [isContentTap, setIsContentTap] = useState(true)
+	const [isContentTab, setIsContentTab] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const history = useHistory()
 
@@ -66,8 +66,8 @@ const CollectionsContainer = props => {
 		})
 	}
 
-	const setTab = isContentTap => _e => {
-		setIsContentTap(isContentTap)
+	const setTab = isContentTab => _e => {
+		setIsContentTab(isContentTab)
 	}
 
 	const handleSearchQuerySubmit = (e) => {
@@ -111,7 +111,7 @@ const CollectionsContainer = props => {
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 		isMobile,
-		isContentTap,
+		isContentTab,
 	}
 
 	const handlers = {

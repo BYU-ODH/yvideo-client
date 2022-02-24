@@ -50,8 +50,8 @@ const PlayerContainer = props => {
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
-	const [progress, setProgress] = useState({played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0})
-	const [seeking, setSeeking] = useState(false) // Set to true or false, is player seeking
+	const [progress, setProgress] = useState(0)
+	const [playTime, setPlaytime] = useState(0)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
 	const [blank, setBlank] = useState(false)
@@ -198,7 +198,11 @@ const PlayerContainer = props => {
 	}
 
 	const handleProgress = progression => {
+		const dateElapsed = new Date(null)
+		dateElapsed.setSeconds(progression)
+		setPlaytime(dateElapsed.toISOString().substr(11, 8))
 		setProgress(progression)
+
 	}
 
 	const handleSeekChange = (e, time) => {
@@ -353,6 +357,7 @@ const PlayerContainer = props => {
 		playbackRate,
 		playing,
 		progress,
+		playTime,
 		ref,
 		url,
 		volume,

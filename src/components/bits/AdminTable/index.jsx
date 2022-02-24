@@ -157,14 +157,14 @@ export default class AdminTable extends PureComponent {
 				return (
 					<>
 						<td>{item.name}</td>
-						<td>{item.owner}</td>
+						<td>{item.username}</td>
 					</>
 				)
 			case `Content`:
 				return (
 					<>
 						<td>{item.name}</td>
-						<td>{item.collectionId}</td>
+						<td><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></td>
 						<td>{item.contentType}</td>
 						<td>{item.expired.toString()}</td>
 						<td>{item.resourceId}</td>
@@ -292,7 +292,7 @@ export default class AdminTable extends PureComponent {
 							item => <tr key={item.id}>
 								{ printTableValues(searchCategory, item) }
 								<td>
-									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip(`actions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip(`actions`, {x: e.target.getBoundingClientRect().x + 40, y: e.target.getBoundingClientRect().y +15, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 									></ItemEdit>
 								</td>

@@ -62,7 +62,7 @@ export default class PublicManager extends PureComponent {
 							<CreateButton className='collection-create' onClick={createNew}><PlusIcon />Public Collection</CreateButton>
 							<h4 className='collection-username'>{user ? `${user.name}'s Public Collections` : `Public Collections`}
 								<Help
-									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
 								>
 									<img className='help-document' src={helpIcon} onClick={handleShowHelp}/>

@@ -1,16 +1,12 @@
-import React, { useRef, useEffect, useState, useLayoutEffect, useCallback, useImperativeHandle } from 'react'
-
+import React, { useRef, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
-
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
-
-import { EventsContainer, SubtitlesContainer } from 'containers'
-
+import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
+import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-import Position from './censorPosition'
+import Position from 'components/vanilla_scripts/censorPosition'
 
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from './getCurrentEvents'
+import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -32,6 +28,7 @@ const VideoContainer = props => {
 		subtitles,
 		handleScroll,
 		editorType,
+		aspectRatio,
 	} = props
 
 	const ref = useRef(null)
@@ -53,10 +50,14 @@ const VideoContainer = props => {
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
 	const [pausedTimes,setPausedTimes] = useState([])
-	const [aspectRatio, setAspectRatio] = useState([16,9])
+	// const [aspectRatio, setAspectRatio] = useState([16,9])
 	const [playerPadding,setPlayerPadding] = useState([0,0])
 	// I hate using a global variable here, we'll just have to see if it works
 	let censorData = {}
+
+	const executeCensors = async (values, playedSeconds) => {
+		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+	}
 
 	const video = {
 
@@ -110,42 +111,48 @@ const VideoContainer = props => {
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
 
-			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
-			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+			executeCensors(values, playedSeconds)
+			// for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
-			const testMute = values.allEvents.map(val => val.type)
+			// const testMute = values.allEvents.map(val => val.type)
 
-			if (!testMute.includes(`Mute`)) video.handleUnMute()
+			// if (!testMute.includes(`Mute`)) video.handleUnmute()
 
 			for (let y = 0; y < values.allEvents.length; y++){
+				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
+
+				if(!events[index].active && values.allEvents[y].type !== `Mute`)
+					return
+
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					video.handleMute()
+					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+						events[index].active = false
+						video.handleMute()
+					} else if(!values.allEvents[y].active && values.allEvents[y].end - .1 <= playedSeconds)
+						video.handleUnmute()
+
 					break
 				case `Pause`:
-					// TODO: this pause logic is way too expensive.
-					// This can be solved with a boolean active flag
-					// this yiels O(a * b) when it can be constant time
-					let paused = true
-					for (let i = 0; i < pausedTimes.length;i++){
-						if (Math.abs(pausedTimes[i]-values.allEvents[y].start) < 0.05)
-							paused = false
-					}
-					if(paused) {
-						const times = [...pausedTimes]
-						times.push(values.allEvents[y].start)
-						setPausedTimes(times)
-						video.handlePause()
-					}
+					events[index].active = false
+					video.handlePause()
 					break
 				case `Skip`:
+					events[index].active = false
 					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
 				}
+			}
+
+			if(playedSeconds === duration){
+				// for all of the events. If the new seek time goes before events that were already executed activate the events again
+				events.forEach(event => {
+					event.active = true
+				})
 			}
 		},
 		handleDuration: duration => {
@@ -171,7 +178,6 @@ const VideoContainer = props => {
 				newPlayed = time / duration
 
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
-				console.log(newPlayed)
 				ref.current.seekTo(newPlayed.toFixed(10), `fraction`)
 				getVideoTime(newPlayed)
 			}
@@ -195,7 +201,7 @@ const VideoContainer = props => {
 		handleMute: () => {
 			setMuted(true)
 		},
-		handleUnMute: () => {
+		handleUnmute: () => {
 			setMuted(false)
 		},
 		handleBlank: (bool) => {
@@ -260,7 +266,6 @@ const VideoContainer = props => {
 
 		},
 		handleAspectRatio: ()=>{
-			console.log(`BEEEEESSSSS`)
 			const cont = document.getElementById(`blankContainer`)
 			const width = cont.offsetWidth
 			const height = cont.offsetHeight -50
@@ -370,6 +375,12 @@ const VideoContainer = props => {
 			// checking video container and setting event listener for hot keys
 			window.addEventListener(`keyup`, (e) => {
 				handleHotKeys(e)
+			})
+		}
+
+		if(events) {
+			events.forEach(event => {
+				event.active = true
 			})
 		}
 

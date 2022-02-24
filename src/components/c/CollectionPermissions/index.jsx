@@ -167,7 +167,6 @@ export class CollectionPermissions extends PureComponent {
 									{userTA.length > 0 ?
 										userTA.map((element, index) =>
 											<tr key={index}>
-												{console.log(element)}
 												<td>{element[`username`]}</td>
 												<td>{element[`account-name`]}</td>
 												<td>{element[`account-type`]}</td>

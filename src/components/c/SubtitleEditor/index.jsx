@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
-import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
+import Style, { Timeline, EventList, Icon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle } from 'components/bits'
 import * as Subtitle from 'subtitle'
@@ -32,7 +32,6 @@ const SubtitleEditor = props => {
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
-	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [blockLeave, setBlock] = useState(false)
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
@@ -41,22 +40,15 @@ const SubtitleEditor = props => {
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
-	const [scrollWidth, setScrollWidth] = useState(0)
-	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
-	const [subSelected, setSubSelected] = useState(false)
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
 	const [subModalVisible, setSubModalVisible] = useState(false)
 	const [subModalMode, setSubModalMode] = useState(``)
 	const [subChanges, setSubChanges] = useState(0)
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
-	const [dimensions, setDimensions] = useState({
-		height: window.innerHeight,
-		width: window.innerWidth,
-	})
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
@@ -64,7 +56,6 @@ const SubtitleEditor = props => {
 	const [allowEvents, setAllowEvents] = useState(true)
 
 	// refs
-	const controllerRef = useRef(null)
 	const scrollRef = useRef()
 
 	useEffect(() => {
@@ -85,7 +76,7 @@ const SubtitleEditor = props => {
 			largestLayer = eventsArray[eventsArray.length-1].layer
 		}
 
-		// Find the largets layer number
+		// Find the largest layer number
 		const initialLayers = []
 
 		for(let i = 0; i < largestLayer + 1; i++)
@@ -104,10 +95,6 @@ const SubtitleEditor = props => {
 
 	}, [eventsArray, blockLeave, isEdit])
 	// end of useEffect
-
-	if(shouldUpdate === true)
-
-		setShouldUpdate(false)
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
@@ -165,6 +152,7 @@ const SubtitleEditor = props => {
 	}
 
 	const handleZoomChange = (e, d) => {
+		// console.log("object")
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
@@ -188,7 +176,12 @@ const SubtitleEditor = props => {
 			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			let currentLayerWidth
+
+			if(document.getElementsByClassName(`events`).length > 1)
+				currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			else
+				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
 
 			if(!zoom){
 				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
@@ -212,20 +205,17 @@ const SubtitleEditor = props => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-		let input = ``
 
 		try {
 			if(side === `beg`) {
-				input = sub.start
-				if(sub.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || sub.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					sub.start = convertToSeconds(sub.start, videoLength)
 				else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
 			} else {
-				input = sub.end
-				if(sub.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || sub.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					sub.end = convertToSeconds(sub.end, videoLength)
 				else {
 					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
@@ -252,6 +242,8 @@ const SubtitleEditor = props => {
 					needCheck=false
 				} else {
 					if(index !==0) {
+						// console.log(sub.start)
+						// console.log(tempSubs[subLayerIndex][`content`][index-1].end)
 						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
 							document.getElementById(`subStart${index}`).style.border=`2px solid red`
 							needCheck=false
@@ -297,15 +289,6 @@ const SubtitleEditor = props => {
 		} else
 			setDisableSave(true)
 
-		if(side === `beg`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				sub.start = input
-
-		} else if(side === `end`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				sub.end = input
-		}
-
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 
@@ -315,7 +298,6 @@ const SubtitleEditor = props => {
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
-		setSubSelected(true)
 		setBlock(true)
 	}
 
@@ -673,9 +655,7 @@ const SubtitleEditor = props => {
 								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`skip-handle`}>
 										<p>Allow Skip</p>
-										<div className={`allow-event`}
-											onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-											onMouseLeave={e => toggleTip()}>
+										<div className={`allow-event`}>
 											<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 										</div>
 									</div>
@@ -784,7 +764,14 @@ const SubtitleEditor = props => {
 
 			<EventList minimized={eventListMinimized}>
 				<header>
-					<img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+					<img
+						alt={`helpIcon`}
+						src={helpIcon}
+						onClick={handleShowHelp}
+						style={{marginLeft:10,marginTop:15}}
+						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}
+					/>
 					<div className={`save`}>
 						{disableSave ?
 							<button className={`disable`}>
