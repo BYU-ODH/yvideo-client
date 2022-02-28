@@ -110,12 +110,13 @@ const CollectionPermissionsContainer = props => {
 		},
 		handleSectionBlur: e => {
 			let section = e.target.value
-			if(section.length < 2 && section.length !== 0) {
-				section = `0${section}`
+			if(section.length < 3 && section.length !== 0) {
+				for(let i = section.length; i < 3; i++)
+					section = `0${section}`
 
 				setCourse({
-					...course,
-					section,
+				...course,
+				section,
 				})
 			}
 		},
@@ -145,7 +146,7 @@ const CollectionPermissionsContainer = props => {
 		},
 		addCourse: e => {
 			e.preventDefault()
-			console.log(`here1`)
+
 			let {
 				department,
 				catalog,
