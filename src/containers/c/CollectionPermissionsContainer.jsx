@@ -73,21 +73,26 @@ const CollectionPermissionsContainer = props => {
 		handleDepartmentChange: e => {
 			setCourse({
 				...course,
-				department: e.target.value,
+				department: (e.target.value).toUpperCase(),
 			})
 			setIsEdited(true)
 		},
 		handleCatalogChange: e => {
 			setCourse({
 				...course,
-				catalog: e.target.value,
+				catalog: (e.target.value).toUpperCase(),
 			})
 			setIsEdited(true)
 		},
 		handleCatalogBlur: e => {
 			let catalog = e.target.value
-			if(catalog.length < 3 && catalog.length !== 0) {
-				for(let i = catalog.length; i < 3; i++)
+			let courseLength = 3
+			if (catalog.includes("r") || catalog.includes("R")) {
+				courseLength = 4
+			}
+
+			if(catalog.length < courseLength && catalog.length !== 0) {
+				for(let i = catalog.length; i < courseLength; i++)
 					catalog = `0${catalog}`
 
 				setCourse({
