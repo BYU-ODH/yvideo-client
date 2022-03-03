@@ -90,14 +90,12 @@ const VideoEditorContainer = props => {
 						console.log(value)
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
-							if (file.aspectRatio)
-								setAspectRatio(file.aspectRatio.split(`,`))
+							if (file[`aspect-ratio`])
+								setAspectRatio(file[`aspect-ratio`].split(`,`))
 						}
 					})
-
 				}
 				if(resource[resourceIdStream]){
-					console.log(`bees1`)
 					if(resource[resourceIdStream][`files`]){
 						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
 					}

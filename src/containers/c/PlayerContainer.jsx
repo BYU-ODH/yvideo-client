@@ -33,6 +33,8 @@ const PlayerContainer = props => {
 		errorMessage,
 		errorPrev,
 		errorSync,
+		resource,
+		getFiles,
 	} = props
 
 	const params = useParams()
@@ -74,6 +76,8 @@ const PlayerContainer = props => {
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 
+	// aspect ratio
+	const [aspectRatio, setAspectRatio] = useState([16,9])
 	const ref = player => {
 		setPlayer(player)
 	}
@@ -101,6 +105,17 @@ const PlayerContainer = props => {
 					setCalledGetSubtitles(true)
 				}
 				setUrl(contentCache[params.id].url)
+				if(contentCache[params.id].url.includes(`youtube`)){
+					const fetchData = async() => {
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`,{method:`GET`})
+						const data = await rawData.json()
+						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
+							setAspectRatio([data.width,data.height])
+
+						return data
+					}
+					const d =fetchData()
+				}
 			} else {
 				setKey(``)
 				setUrl(``)
@@ -121,8 +136,30 @@ const PlayerContainer = props => {
 						setCalledGetSubtitles(true)
 					}
 				}
+				if (resourceIdStream !== ``){
+					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
+						if (value){
+							const file = value.find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
+							if (file[`aspect-ratio`])
+								setAspectRatio(file[`aspect-ratio`].split(`,`))
+						}
+					})
+
+				}
+				if(resource[resourceIdStream]){
+					if(resource[resourceIdStream][`files`]){
+						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
+					}
+				}
 
 			}
+			const wrap = document.getElementById(`player-container`)
+			const wraplisten = new ResizeObserver(()=>{
+				handleAspectRatio()
+			})
+			if(wrap)
+				wraplisten.observe(wrap)
+
 		}
 
 		if(window.innerWidth < 1000){
@@ -323,6 +360,41 @@ const PlayerContainer = props => {
 		setToggleTranscript(!toggleTranscript)
 	}
 
+	const handleAspectRatio = ()=>{
+		const cont = document.getElementById(`player-container`)
+		if(!cont)
+			return
+
+		const width = cont.offsetWidth
+		const height = cont.offsetHeight
+		const blank = document.getElementById(`blank`)
+		const comment = document.getElementById(`commentContainer`)
+		const censor = document.getElementById(`censorContainer`)
+		if(width/height > aspectRatio[0]/aspectRatio[1]){
+			const videoWidth = height*(aspectRatio[0]/aspectRatio[1])
+			const pad = (width-videoWidth)/2
+			blank.style.marginLeft = `${pad}px`
+			blank.style.marginTop = `0px`
+			blank.style.width = `${videoWidth}px`
+			comment.style.width = `${videoWidth}px`
+			censor.style.width = `${videoWidth}px`
+			blank.style.height = `${height}px`
+			comment.style.height = `${height}px`
+			censor.style.height = `${height}px`
+		} else if(width/height < aspectRatio[0]/aspectRatio[1]){
+			const videoHeight = width * aspectRatio[1]/aspectRatio[0]
+			const pad = (height - videoHeight)/2
+			blank.style.marginTop = `${pad}px`
+			blank.style.marginLeft = `0px`
+			blank.style.height = `${videoHeight}px`
+			comment.style.height = `${videoHeight}px`
+			censor.style.height = `${videoHeight}px`
+			blank.style.width = `${width}px`
+			comment.style.width = `${width}px`
+			censor.style.width = `${width}px`
+		}
+	}
+
 	if(displaySubtitles == null && content != undefined){
 		// This statement prevents displaySubtitles from being null.
 		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
@@ -411,6 +483,7 @@ const PlayerContainer = props => {
 		setCensorActive,
 		handlePlayPause,
 		setHasPausedClip,
+		handleAspectRatio,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
@@ -428,6 +501,7 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 	events: interfaceStore.events,
 	errorMessage: contentStore.errorMessage,
 	errorPrev: contentStore.errorMessagePrev,
+	resource: resourceStore.cache,
 })
 
 const mapDispatchToProps = {
@@ -440,6 +514,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
 	errorSync: contentService.syncError,
+	getFiles: resourceService.getFiles,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer)

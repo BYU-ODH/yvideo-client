@@ -59,6 +59,7 @@ const PlayerControls = props => {
 		handleShowTip,
 		handleShowHelp,
 		toggleTip,
+		handleAspectRatio,
 	} = props.handlers
 
 	useEffect(() => {
@@ -106,8 +107,10 @@ const PlayerControls = props => {
 	}
 
 	const handleToggleSubtitles = () => {
+		console.lot(`fat bees`)
 		setShowTranscript(!showTranscript)
 		handleShowSubtitle(``)
+		handleAspectRatio()
 	}
 
 	return (

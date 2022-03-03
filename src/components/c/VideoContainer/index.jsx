@@ -59,6 +59,16 @@ const VideoContainer = props => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 	}
 
+	useEffect(()=>{
+		const wrap = document.getElementById(`blankContainer`)
+		const wraplisten = new ResizeObserver(()=>{
+			video.handleAspectRatio()
+		})
+		if(wrap)
+			wraplisten.observe(wrap)
+
+	})
+
 	const video = {
 
 		// state
@@ -256,7 +266,7 @@ const VideoContainer = props => {
 		},
 		handleBlankClick : (height, width, x, y) => {
 			if(editorType !== `video`) return
-			console.log(x,y)
+			// console.log(x,y)
 			const newX = x-playerPadding[0]
 			const newY = y-playerPadding[1]
 			let currentTime = ref.current.getCurrentTime()
@@ -267,6 +277,9 @@ const VideoContainer = props => {
 		},
 		handleAspectRatio: ()=>{
 			const cont = document.getElementById(`blankContainer`)
+			if (!cont || !aspectRatio)
+				return
+
 			const width = cont.offsetWidth
 			const height = cont.offsetHeight -50
 			const blank = document.getElementById(`blank`)
@@ -275,20 +288,26 @@ const VideoContainer = props => {
 			if(width/height > aspectRatio[0]/aspectRatio[1]){
 				const videoWidth = height*(aspectRatio[0]/aspectRatio[1])
 				const pad = (width-videoWidth)/2
-				console.log(videoWidth,pad,width,height)
 				blank.style.marginLeft = `${pad}px`
+				blank.style.marginTop = `0px`
 				blank.style.width = `${videoWidth}px`
 				comment.style.width = `${videoWidth}px`
 				censor.style.width = `${videoWidth}px`
+				blank.style.height = `${height}px`
+				comment.style.height = `${height}px`
+				censor.style.height = `${height}px`
 				setPlayerPadding([pad,0])
 			} else if(width/height < aspectRatio[0]/aspectRatio[1]){
 				const videoHeight = width * aspectRatio[1]/aspectRatio[0]
 				const pad = (height - videoHeight)/2
-				console.log(videoHeight,pad,width,height)
 				blank.style.marginTop = `${pad}px`
+				blank.style.marginLeft = `0px`
 				blank.style.height = `${videoHeight}px`
 				comment.style.height = `${videoHeight}px`
 				censor.style.height = `${videoHeight}px`
+				blank.style.width = `${width}px`
+				comment.style.width = `${width}px`
+				censor.style.width = `${width}px`
 			}
 		},
 	}
@@ -388,8 +407,6 @@ const VideoContainer = props => {
 			window.removeEventListener(`keyup`, (e) => {}, false)
 		}
 	}, [duration])
-
-	window.addEventListener(`resize`, video.handleAspectRatio)
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>

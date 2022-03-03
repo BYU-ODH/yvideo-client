@@ -439,22 +439,23 @@ const SubtitleEditor = props => {
 			const reader = new FileReader()
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
+				console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
-					temp[i].start = temp[i].start /1000/videoLength * 100
-					temp[i].end = temp[i].end /1000/videoLength * 100
+					temp[i].start = temp[i].start /1000
+					temp[i].end = temp[i].end /1000
 				}
 				let removeArray = 0
 				const filtered = temp.filter(item => {
-					if(item.start > 100){
+					if(item.start > videoLength){
 						removeArray++
 					}
-					return item.start < 100
+					return item.start < videoLength
 				})
 				const filtered1 = filtered.filter(item => {
-					if(item.end > 100){
+					if(item.end > videoLength){
 						removeArray++
 					}
-					return item.end < 100
+					return item.end < videoLength
 				})
 				if (removeArray > 0)
 					alert(`Some subtitles had to be cut because the subtitles are longer than the video`)

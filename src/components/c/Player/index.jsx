@@ -71,6 +71,7 @@ export default class Player extends PureComponent {
 			setCensorPosition,
 			handlePlayPause,
 			setHasPausedClip,
+			handleAspectRatio,
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -87,7 +88,7 @@ export default class Player extends PureComponent {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					console.log(`setting pause`)
+					// console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
@@ -168,6 +169,7 @@ export default class Player extends PureComponent {
 							onPlay={handlePlay}
 							onPause={handlePause}
 							onStart = {handleStart}
+							onReady = {handleAspectRatio}
 							onSeek={e => e}
 							progressInterval={30}
 							onProgress={handleOnProgress}
