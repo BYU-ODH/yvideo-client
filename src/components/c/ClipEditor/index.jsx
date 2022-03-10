@@ -209,7 +209,7 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const setStartTime = (value, type, name) => {
-		console.log(clipList,value,name)
+		// console.log(clipList,value,name)
 		const input = value
 		if(type === `input` || type === `onBlur`) {
 			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) || type === `onBlur`)
