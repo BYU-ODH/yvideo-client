@@ -155,6 +155,7 @@ const PlayerContainer = props => {
 			}
 			const wrap = document.getElementById(`player-container`)
 			const wraplisten = new ResizeObserver(()=>{
+				console.log(`1`)
 				handleAspectRatio()
 			})
 			if(wrap)

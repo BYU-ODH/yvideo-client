@@ -17,7 +17,6 @@ const ClipLayer = props => {
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
-	console.log(start,end,clipName)
 	const style = active !== clipName ? {top: `0px`, backgroundColor:`#fff`,border:`1px solid #0582ca`,color:`#000`,fontSize:`1.3rem`,justifyContent:`center`,alignItems:`center`} :{ left: `${start}% !important`, top: `0px`, backgroundColor:`#002e5d`,border:`1px solid #0582ca`,color:`#fff`,fontSize:`1.3rem`,justifyContent:`center`,alignItems:`center`}
 
 	if(shouldUpdate)
@@ -44,16 +43,12 @@ const ClipLayer = props => {
 
 	// Drag within the layer
 	const handleDrag = (d) => {
-		console.log(dragRef.current)
-		console.log(d)
+
 		const beginTimePercentage = d.x / layerWidth * videoLength
 		const endPercentage = beginTimePercentage + (end - start)
-
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
 		let s = beginTimePercentage
 		let e = endPercentage
-		console.log(d,s,e)
-		console.log(s,e)
 		if(e > videoLength)
 			e = videoLength
 
@@ -86,11 +81,8 @@ const ClipLayer = props => {
 		setStart(s,null,clipName)
 		setEnd(en,null,clipName)
 	}
-	console.log(parseFloat(start/videoLength * layerWidth))
-	console.log(end, start,videoLength,layerWidth)
-	console.log(`${(end - start)/videoLength * layerWidth}px`,parseFloat(start/videoLength * layerWidth))
+
 	const curr = {...dragRef.current}
-	console.log(curr)
 	return (
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>
@@ -105,7 +97,7 @@ const ClipLayer = props => {
 							dragAxis='x'
 							bounds={`.clip-layer-${clipName}`}
 							onDragStop={(e, d) => {
-								console.log(e,d)
+
 								handleDrag(d)
 							}}
 							onClick = {()=>handleEditClip(clipName,index)}

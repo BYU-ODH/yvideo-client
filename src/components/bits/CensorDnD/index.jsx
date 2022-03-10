@@ -8,6 +8,7 @@ const CensorDnD = props => {
 		setCensorEdit(time.toString())
 		seekTo(null,parseFloat(censorValues[time][0]))
 	}
+	console.log(censorValues)
 	if(censorEdit === -1 || Object.keys(censorValues).length===0)
 		return (<></>)
 

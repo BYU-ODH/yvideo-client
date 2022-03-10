@@ -59,16 +59,6 @@ const VideoContainer = props => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 	}
 
-	useEffect(()=>{
-		const wrap = document.getElementById(`blankContainer`)
-		const wraplisten = new ResizeObserver(()=>{
-			video.handleAspectRatio()
-		})
-		if(wrap)
-			wraplisten.observe(wrap)
-
-	})
-
 	const video = {
 
 		// state
@@ -341,19 +331,19 @@ const VideoContainer = props => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
-			console.log(`new time`, playedTime + 1)
+			// console.log(`new time`, playedTime + 1)
 			video.handleSeek(null, playedTime + 1)
 			break
 		case `ArrowLeft`:
-			console.log(`new time`, playedTime - 1)
+			// console.log(`new time`, playedTime - 1)
 			video.handleSeek(null, playedTime - 1)
 			break
 		case `Comma`:
-			console.log(`new time`, playedTime - .1)
+			// console.log(`new time`, playedTime - .1)
 			video.handleSeek(null, playedTime - .1)
 			break
 		case `Period`:
-			console.log(`new time`, playedTime + .1)
+			// console.log(`new time`, playedTime + .1)
 			video.handleSeek(null, playedTime + .1)
 			break
 
@@ -402,7 +392,12 @@ const VideoContainer = props => {
 				event.active = true
 			})
 		}
-
+		const wrap = document.getElementById(`blankContainer`)
+		const wraplisten = new ResizeObserver((entry)=>{
+			video.handleAspectRatio()
+		})
+		if(wrap)
+			wraplisten.observe(wrap)
 		return function cleanup(){
 			window.removeEventListener(`keyup`, (e) => {}, false)
 		}

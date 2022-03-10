@@ -107,7 +107,6 @@ const PlayerControls = props => {
 	}
 
 	const handleToggleSubtitles = () => {
-		console.lot(`fat bees`)
 		setShowTranscript(!showTranscript)
 		handleShowSubtitle(``)
 		handleAspectRatio()

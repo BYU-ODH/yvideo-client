@@ -47,7 +47,6 @@ const VideoEditorContainer = props => {
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	const [aspectRatio,setAspectRatio] = useState([16,9])
 	useEffect(() => {
-		console.log(resourcetest)
 		if (!contentCache.hasOwnProperty(id))
 			getContent(id)
 
@@ -63,14 +62,12 @@ const VideoEditorContainer = props => {
 					const fetchData = async() => {
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`,{method:`GET`})
 						const data = await rawData.json()
-						console.log(data)
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
 							setAspectRatio([data.width,data.height])
 
 						return data
 					}
 					const d =fetchData()
-					console.log(d)
 				}
 			} else {
 				setKey(``)
@@ -87,7 +84,6 @@ const VideoEditorContainer = props => {
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				if (resourceIdStream !== ``){
 					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
-						console.log(value)
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
 							if (file[`aspect-ratio`])
@@ -103,7 +99,6 @@ const VideoEditorContainer = props => {
 			}
 		}
 	}, [contentCache, getContent, streamKey, content, sKey, eventsArray])
-	console.log(resource)
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
