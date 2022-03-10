@@ -155,7 +155,7 @@ const PlayerContainer = props => {
 			}
 			const wrap = document.getElementById(`player-container`)
 			const wraplisten = new ResizeObserver(()=>{
-				console.log(`1`)
+
 				handleAspectRatio()
 			})
 			if(wrap)
@@ -177,10 +177,8 @@ const PlayerContainer = props => {
 				event.active = true
 			})
 		}
-		if (errorMessage !== errorPrev){
+		if (errorMessage !== errorPrev)
 			handleError()
-			console.log(errorMessage,errorPrev)
-		}
 
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage,errorPrev])
 
