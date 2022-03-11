@@ -27,6 +27,7 @@ const Transcript = props => {
 		content,
 		displaySubtitles,
 		subtitleText,
+		subtitleTextIndex,
 		duration,
 		toggleTranscript,
 		showTranscript,
@@ -68,7 +69,7 @@ const Transcript = props => {
 
 	const highlightWords = (text) => {
 		// initialize the string where we can make changes
-		if(displaySubtitles === undefined)
+		if(displaySubtitles === undefined || displaySubtitles.words === undefined)
 			return
 
 		const words = displaySubtitles.words.split(/[, ]+/)
@@ -81,7 +82,7 @@ const Transcript = props => {
 			// after matching the word. we want the word to finish with a punctuation character or with a space, new line, or end of string.
 			// do not execute if the string is empty
 
-			const regex = new RegExp(`(^|[\\s|.|,|;])${word}([\\s|.|,|;|\\n]|$)`, `gmi`)
+			const regex = new RegExp(`\\b${word}\\b`, `gmi`)
 			const matches = newString.match(regex)
 			if(matches !== null){
 				// highlight and push changes
@@ -150,7 +151,7 @@ const Transcript = props => {
 				<div className={`transcript-content`}>
 					{	displaySubtitles !== null && displaySubtitles.content !== `` ?
 						displaySubtitles[`content`].map((element, index) =>
-							<div className={`transcript-row ${subtitleText === element.text ? `active-sub` : ``}`}
+							<div className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index ? `active-sub` : ``}`}
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>

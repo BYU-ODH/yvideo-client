@@ -36,6 +36,7 @@ export default class Player extends PureComponent {
 			toggleTranscript,
 			content,
 			subtitleText,
+			subtitleTextIndex,
 			displaySubtitles,
 			isCaption,
 			indexToDisplay,

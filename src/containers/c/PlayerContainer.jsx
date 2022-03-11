@@ -55,6 +55,7 @@ const PlayerContainer = props => {
 	const [showTranscript, setShowTranscript] = useState(false)
 	const [toggleTranscript, setToggleTranscript] = useState(true)
 	const [subtitleText, setSubtitleText] = useState(``)
+	const [subtitleTextIndex, setSubtitleTextIndex] = useState(null)
 	const [displaySubtitles, setDisplaySubtitles] = useState(null) // this is the subtitle that will show in the transcript view
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, setCensorActive] = useState(false)
@@ -209,12 +210,14 @@ const PlayerContainer = props => {
 		if(newPlayed !== Infinity && newPlayed !== -Infinity)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 
-		//for all of the events. If the new seek time goes before events that were already executed activate the events again
-		events.forEach(event => {
-			if(event.end >= newPlayed && event.active === false){
-				event.active = true
-			}
-		})
+		if(events){
+			//for all of the events. If the new seek time goes before events that were already executed activate the events again
+			events.forEach(event => {
+				if(event.end >= newPlayed && event.active === false){
+					event.active = true
+				}
+			})
+		}
 	}
 
 	const handleToggleFullscreen = () => {
@@ -272,11 +275,12 @@ const PlayerContainer = props => {
 		setCommentPosition(position)
 	}
 
-	const handleShowSubtitle = (value) => {
+	const handleShowSubtitle = (value, index) => {
 		// if(document.getElementById('subtitle-box') !== undefined){
 		// 	document.getElementById('subtitle-box').innerText = value
 		// }
 		setSubtitleText(value)
+		setSubtitleTextIndex(index)
 	}
 
 	const handleChangeSubtitle = (index) => {
@@ -350,6 +354,7 @@ const PlayerContainer = props => {
 		content,
 		isCaption,
 		subtitleText,
+		subtitleTextIndex,
 		displaySubtitles,
 		subtitles,
 		indexToDisplay,
