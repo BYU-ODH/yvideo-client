@@ -52,15 +52,19 @@ const Transcript = props => {
 		let allWords = ``
 		let allMeanings = ``
 
-		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined || jsonResponse[Object.keys(jsonResponse)[0]][0][`meanings`].length < 1){
+		console.log(jsonResponse)
+
+		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined){
 			setWords(`No matches found`)
 			setMeanings(``)
 			return
 		}
 
-		jsonResponse[Object.keys(jsonResponse)[0]][0][`meanings`].forEach((item, index) => {
+		jsonResponse[Object.keys(jsonResponse)[0]].forEach((item, i) => {
 			allWords += `${item.lemma}; `
-			allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
+			item[`meanings`].forEach((meaning, index) => {
+				allMeanings += `<b>${index}.</b>${meaning.meaning.substring(1, meaning.meaning.length - 1)} `
+			})
 		})
 
 		setWords(allWords)
