@@ -46,9 +46,31 @@ export const Style = styled.div`
 		/* height: calc(100vh - 84px); */
 		overflow-y: scroll !important;
 		background-color: white;
+		width: calc(100% - 35px);
 		height: 70vh;
 		/* overflow-y: scroll !important; */
 		/* border: 1px solid black; */
+		::-webkit-scrollbar {
+			display: block !important;
+			width: 20px;
+		}
+
+		/* Track */
+		::-webkit-scrollbar-track {
+			background: #DDDDDD;
+			border-radius: 10px;
+		}
+
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			background: var(--light-blue);
+			border-radius: 10px;
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+			background: var(--navy-blue);
+		}
 
 		& .transcript-title {
 			display: flex;
@@ -106,7 +128,8 @@ export const Style = styled.div`
 			text-align: center;
 			cursor: pointer;
 			display: flex;
-			border-left: 1.5px solid rgba(5, 130, 202, 0.2); /* make ligther #0582ca or 5, 130, 202 */
+			//border-left: 1.5px solid rgba(5, 130, 202, 0.2); /* make ligther #0582ca or 5, 130, 202 */
+			visibility: hidden;
 
 			& span {
 				margin: auto;
@@ -121,6 +144,10 @@ export const Style = styled.div`
 
 		:hover {
 			background-color: rgba(210, 210, 210, 0.5);
+
+			& .arrow {
+				visibility: visible;
+			}
 		}
 	}
 
