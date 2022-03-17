@@ -144,12 +144,16 @@ const PlayerControls = props => {
 				<div className='menu-modal' onMouseLeave={e => setShowSpeed(false)}>
 					<h3>Playback Rate</h3>
 					<div>
-						<input type='button' value={3.0} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 3 ? `active-value` : ``}/><br/>
-						<input type='button' value={2.0} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 2 ? `active-value` : ``}/><br/>
-						<input type='button' value={1.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.5 ? `active-value` : ``}/><br/>
-						<input type='button' value='Normal' onClick={e => handlePlaybackRateChange(1)} className={playbackRate === 1 ? `active-value` : ``}/><br/>
 						<input type='button' value={0.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.5 ? `active-value` : ``}/><br/>
-						<input type='button' value={0.25} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.25 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.6} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.6 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.7} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.7 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.8} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.8 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.9} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.9 ? `active-value` : ``}/><br/>
+						<input type='button' value='Normal' onClick={e => handlePlaybackRateChange(1)} className={playbackRate === 1 ? `active-value` : ``}/><br/>
+						<input type='button' value={1.25} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.25 ? `active-value` : ``}/><br/>
+						<input type='button' value={1.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.5 ? `active-value` : ``}/><br/>
+						<input type='button' value={1.75} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.75 ? `active-value` : ``}/><br/>
+						<input type='button' value={2.0} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 2 ? `active-value` : ``}/><br/>
 					</div>
 				</div>
 			}
