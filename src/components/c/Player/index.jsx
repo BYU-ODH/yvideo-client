@@ -134,7 +134,7 @@ export default class Player extends PureComponent {
 
 		return (
 			<Style>
-				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`}}>
+				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: "hidden"}}>
 					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}

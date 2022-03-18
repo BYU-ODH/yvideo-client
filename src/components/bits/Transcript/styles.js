@@ -6,7 +6,7 @@ export const Style = styled.div`
 	width: ${props => props.displayTranscript ? ( props.isMobile ? ('calc(100vw)') : ('40rem') ) : ( props.isMobile ? ('0rem') : ('2rem'))};
 	height: 100%;
 	padding: ${props => props.isMobile ? (`0px`) : (`0px 10px 0px 10px`)};
-	border-top: 1px solid black;
+	border-top: 1px solid #c4c4c4;
 	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
 	z-index: 20;

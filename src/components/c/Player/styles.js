@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 export const Style = styled.div`
 
-	overflow: hidden !important;
-	padding-top: 8.4rem;
+	margin-top: 8.4rem;
 	height: calc(100vh - 8.4rem);
 	overflow: hidden;
 
 	& > div {
+
 		& .ayamelPlayer,
 		& .videoBox,
 		& .mediaPlayer {
