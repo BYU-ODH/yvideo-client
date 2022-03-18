@@ -15,6 +15,8 @@ import Style, {
 import clockIcon from 'assets/te-clock.svg'
 import startOverIcon from 'assets/start_over_icon.svg'
 import helpIcon from 'assets/help/help-icon-white.svg'
+import skipBack from 'assets/skip-back-white.svg'
+import skipForward from 'assets/skip-forward-white.svg'
 
 const PlayerControls = props => {
 
@@ -35,6 +37,7 @@ const PlayerControls = props => {
 		playbackRate,
 		indexToDisplay,
 		displaySubtitles,
+		subtitleTextIndex,
 		isMobile,
 		clipTime,
 		duration,
@@ -110,6 +113,29 @@ const PlayerControls = props => {
 		handleShowSubtitle(``)
 	}
 
+	const handleSeekToSubtitle= (e) => {
+		let seekToIndex = 0
+
+		if(displaySubtitles && subtitleTextIndex !== undefined){
+			if(e.target.id === "prev-sub"){
+				if(subtitleTextIndex > 1){
+					seekToIndex = subtitleTextIndex - 1
+				}
+			}
+			else {
+				if(subtitleTextIndex < displaySubtitles.content.length - 1){
+					seekToIndex = subtitleTextIndex + 1
+				}
+				else {
+					seekToIndex = displaySubtitles.content.length - 1
+				}
+			}
+		}
+
+		let start = displaySubtitles.content[seekToIndex].start;
+		handleSeekChange(null, start + start * .001)
+	}
+
 	return (
 		<Style playing={playing} >
 
@@ -119,6 +145,8 @@ const PlayerControls = props => {
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
 				<p className='play-time'>{playTime}</p>
 				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'/>
+				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Previous Subtitle"/>
+				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Next Subtitle"/>
 			</div>
 			<div className='right'>
 				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
