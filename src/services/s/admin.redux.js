@@ -700,6 +700,7 @@ export default class AdminService {
 		// Grab the current collection from the admin store
 		const professorId = { ...getState().adminStore.professor.id }
 		let currentCollection
+		console.log(collections)
 		Object.keys(collections).forEach(item => {
 			const {id} = collections[item]
 			if (id === colId){

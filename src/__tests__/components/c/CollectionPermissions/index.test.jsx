@@ -92,7 +92,7 @@ describe(`CollectionPermissions test`, () => {
 		)
 		expect(wrapper.contains(<h4>Courses</h4>)).toEqual(true)
 		expect(wrapper.contains(<th>Department</th>)).toEqual(true)
-		expect(wrapper.contains(<th>Catalog</th>)).toEqual(true)
+		expect(wrapper.contains(<th>Course</th>)).toEqual(true)
 		expect(wrapper.contains(<th>Section</th>)).toEqual(true)
 		expect(wrapper.contains(<th>Remove</th>)).toEqual(true)
 		expect(wrapper.contains(<h4>Current Users</h4>)).toEqual(true)

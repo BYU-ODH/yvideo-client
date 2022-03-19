@@ -105,7 +105,7 @@ const LabAssistantManagerContainer = props => {
 		sideLists,
 		user: professor,
 		activeId: collectionId,
-		isLabassistantManager: true,
+		isLabAssistant: true,
 	}
 
 	const handlers = {

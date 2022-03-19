@@ -58,17 +58,18 @@ const PlayerContainer = props => {
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
-	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [commentPosition, setCommentPosition] = useState({ x: 0, y: 0 })
 	const [showTranscript, setShowTranscript] = useState(false)
 	const [toggleTranscript, setToggleTranscript] = useState(true)
 	const [subtitleText, setSubtitleText] = useState(``)
+	const [subtitleTextIndex, setSubtitleTextIndex] = useState(null)
 	const [displaySubtitles, setDisplaySubtitles] = useState(null) // this is the subtitle that will show in the transcript view
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, setCensorActive] = useState(false)
 	const [hasPausedClip, setHasPausedClip] = useState(false)
 
 	// this is for caption toggle
-	const [isCaption, setIsCaption] = useState( false ) // this is the state to toggle caption selection
+	const [isCaption, setIsCaption] = useState(false) // this is the state to toggle caption selection
 	const [indexToDisplay, setIndexToDisplay] = useState(0) // use index to display a desired subtitle based on selection from player controls.
 
 	// clip variables
@@ -82,7 +83,7 @@ const PlayerContainer = props => {
 		setPlayer(player)
 	}
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Player`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
 
 		setPlaybackRate(1)
 		setShowTranscript(false)
@@ -92,15 +93,15 @@ const PlayerContainer = props => {
 		if (!contentCache.hasOwnProperty(params.id))
 			getContent(params.id)
 
-		if(contentCache[params.id]) {
+		if (contentCache[params.id]) {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			const clips = contentCache[params.id][`clips`] ? JSON.parse(contentCache[params.id][`clips`])[params.clip] : []
-			if (params.clip) setClipTime([clips[`start`],clips[`end`]])
+			if (params.clip) setClipTime([clips[`start`], clips[`end`]])
 
-			if(contentCache[params.id].url !== ``){
-				if(subtitlesContentId !== params.id && calledGetSubtitles === false){
+			if (contentCache[params.id].url !== ``) {
+				if (subtitlesContentId !== params.id && calledGetSubtitles === false) {
 					getSubtitles(params.id)
 					setCalledGetSubtitles(true)
 				}
@@ -120,18 +121,18 @@ const PlayerContainer = props => {
 				setKey(``)
 				setUrl(``)
 
-				if(contentCache[params.id].resourceId && !isStreamKeyLoaded){
+				if (contentCache[params.id].resourceId && !isStreamKeyLoaded) {
 					getStreamKey(contentCache[params.id].resourceId, contentCache[params.id].settings.targetLanguage)
 					setIsStreamKeyLoaded(true)
 				}
 
-				if(streamKey)
+				if (streamKey)
 					setKey(streamKey)
 
-				if (sKey !== `` && !isUrlLoaded){
+				if (sKey !== `` && !isUrlLoaded) {
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 					// setIsUrlLoaded(true)
-					if(subtitlesContentId !== params.id && calledGetSubtitles === false){
+					if (subtitlesContentId !== params.id && calledGetSubtitles === false) {
 						getSubtitles(params.id)
 						setCalledGetSubtitles(true)
 					}
@@ -163,14 +164,15 @@ const PlayerContainer = props => {
 
 		}
 
-		if(window.innerWidth < 1000){
+		if (window.innerWidth < 1000) {
 			setToggleTranscript(false)
 			setIsMobile(true)
-			if(window.innerHeight < window.innerWidth)
+			if (window.innerHeight < window.innerWidth)
 				setIsLandscape(true)
 			else
 				setIsLandscape(false)
 		}
+
 
 		if(events) {
 			events.forEach(event => {
@@ -205,7 +207,7 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlayPause = () => {
-		if(playing)
+		if (playing)
 			setPlaying(false)
 		else
 			setPlaying(true)
@@ -249,21 +251,23 @@ const PlayerContainer = props => {
 		// player.seekTo(played)
 
 		let newPlayed = 0
-		if(e !== null){
+		if (e !== null) {
 			const scrubber = e.currentTarget.getBoundingClientRect()
 			newPlayed = (e.pageX - scrubber.left) / scrubber.width
 		} else
 			newPlayed = time / duration
 
-		if(newPlayed !== Infinity && newPlayed !== -Infinity)
+		if (newPlayed !== Infinity && newPlayed !== -Infinity)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 
-		// for all of the events. If the new seek time goes before events that were already executed activate the events again
-		events.forEach(event => {
-			if(event.end >= newPlayed && event.active === false)
-				event.active = true
-
-		})
+		if (events) {
+			//for all of the events. If the new seek time goes before events that were already executed activate the events again
+			events.forEach(event => {
+				if (event.end >= newPlayed && event.active === false) {
+					event.active = true
+				}
+			})
+		}
 	}
 
 	const handleToggleFullscreen = () => {
@@ -275,7 +279,7 @@ const PlayerContainer = props => {
 		// For more info read full screen api https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
 		// This is a functionality that behaves like F11. This is not video full screen mode.
 		// Video full screen mode would break the subtitles and events.
-		if(!fullscreen){
+		if (!fullscreen) {
 
 			if (elem.requestFullscreen)
 				elem.requestFullscreen()
@@ -321,20 +325,35 @@ const PlayerContainer = props => {
 		setCommentPosition(position)
 	}
 
-	const handleShowSubtitle = (value) => {
+	const handleShowSubtitle = (value, index) => {
 		// if(document.getElementById('subtitle-box') !== undefined){
 		// 	document.getElementById('subtitle-box').innerText = value
 		// }
+		if (subtitleTextIndex !== index) {
+			if (document.getElementsByClassName('transcript-row')[index]) {
+				console.log("scrolling")
+				//grab the elements height and scroll that in pixels for the entire parent element
+				let parentElement = document.getElementsByClassName('main-bar')[0]
+				let currentSubtitleElement = document.getElementsByClassName('transcript-row')[index]
+
+				if (subtitleTextIndex < index || subtitleTextIndex === undefined) {
+					parentElement.scrollTop += currentSubtitleElement.offsetHeight;
+				}
+
+			}
+		}
+
+		setSubtitleTextIndex(index)
 		setSubtitleText(value)
 	}
 
 	const handleChangeSubtitle = (index) => {
 		const temp = subtitles[index]
 		const currentContent = temp.content
-		if(typeof currentContent === `string`){
+		if (typeof currentContent === `string`) {
 			try {
 				temp.content = JSON.parse(subtitles[index].content)
-			} catch (e){
+			} catch (e) {
 				console.log(e)
 			}
 		}
@@ -345,7 +364,7 @@ const PlayerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `${isMobile === true ? `Player Mobile` : `Player`}`},
+			props: { name: `${isMobile === true ? `Player Mobile` : `Player`}` },
 		})
 	}
 	const handleError = () => {
@@ -395,22 +414,23 @@ const PlayerContainer = props => {
 	}
 
 	if(displaySubtitles == null && content != undefined){
+
 		// This statement prevents displaySubtitles from being null.
 		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
 
-		if(subtitles.length == 1){
+		if (subtitles.length == 1) {
 			// some logic to pick the subtitle
 			handleChangeSubtitle(0)
-		} else if(subtitles.length > 1) {
+		} else if (subtitles.length > 1) {
 			// pick the subtitle to display to be the one with the same language as the audio
 			const audioLanguage = content.settings.targetLanguage
 
 			let result = 0
-			for(let i = 0; i < subtitles.length; i++){
+			for (let i = 0; i < subtitles.length; i++) {
 				const temp = subtitles[i]
 				// now that we have an actual object lets check language
 				// go through all subtitles and find there index where subtitle language = audio language
-				if(temp.language.toLowerCase() === audioLanguage.toLowerCase()){
+				if (temp.language.toLowerCase() === audioLanguage.toLowerCase()) {
 					result = i
 					break
 				}
@@ -439,6 +459,7 @@ const PlayerContainer = props => {
 		content,
 		isCaption,
 		subtitleText,
+		subtitleTextIndex,
 		displaySubtitles,
 		subtitles,
 		indexToDisplay,

@@ -45,7 +45,7 @@ const Style = styled.div`
 		display: flex;
 		align-items: center;
 
-		& #start-over {
+		& img {
 			cursor: pointer;
 			margin: 1rem;
 		}

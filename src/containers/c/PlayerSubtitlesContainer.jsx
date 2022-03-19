@@ -44,7 +44,7 @@ const PlayerSubtitlesContainer = props => {
 		const end = element.end
 
 		if(currentTime >= start && currentTime <= end){
-			props.handleShowSubtitle(element.text)
+			props.handleShowSubtitle(element.text, i)
 			break
 		}
 		else if (currentTime > end || currentTime < start)

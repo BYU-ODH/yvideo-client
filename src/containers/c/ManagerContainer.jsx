@@ -130,6 +130,7 @@ const ManagerContainer = props => {
 		alert(collectionError)
 		collectionSyncError()
 	}
+
 	const viewstate = {
 		admin,
 		collection: collections[params.id],
@@ -138,7 +139,7 @@ const ManagerContainer = props => {
 		activeId: params.id,
 		isMobile,
 		isOpen,
-		isLabAssistant: isLabAssistant,
+		isLabAssistant: false,
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />
