@@ -22,6 +22,7 @@ const props = {
 		handleShowTip: jest.fn(),
 		handleShowHelp: jest.fn(),
 		toggleTip: jest.fn(),
+		handleAspectRatio: jest.fn(),
 	},
 	viewstate : {
 		fullscreen: true,

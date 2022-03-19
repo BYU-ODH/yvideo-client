@@ -72,6 +72,7 @@ export default class Player extends PureComponent {
 			setCensorPosition,
 			handlePlayPause,
 			setHasPausedClip,
+			handleAspectRatio,
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -88,6 +89,7 @@ export default class Player extends PureComponent {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
+					// console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
@@ -102,16 +104,14 @@ export default class Player extends PureComponent {
 			for (let y = 0; y < values.allEvents.length; y++){
 				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
-				if(!events[index].active && values.allEvents[y].type !== `Mute`)
+				if(!events[index].active)
 					return
 
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
-						events[index].active = false
+					if(!muted)
 						handleMuted()
-					} else if(!values.allEvents[y].active && values.allEvents[y].end - .1 <= playedSeconds)
-						handleUnmuted()
+					// console.log("muting")
 
 					break
 				case `Pause`:
@@ -129,7 +129,28 @@ export default class Player extends PureComponent {
 				}
 			}
 
+			for(let j = 0; j < values.doneEvents.length; j++){
+				// needed for unmuting after muting event is done
+				const index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
+
+				if(!events[index].active)
+					return
+
+				switch(values.doneEvents[j].type){
+				case `Mute`:
+					if(muted){
+						handleUnmuted()
+						// console.log("unmuting")
+						events[index].active = false
+					}
+					break
+				default:
+					break
+				}
+			}
+
 			const t1 = performance.now()
+
 		}
 
 		return (
@@ -149,6 +170,7 @@ export default class Player extends PureComponent {
 							onPlay={handlePlay}
 							onPause={handlePause}
 							onStart = {handleStart}
+							onReady = {handleAspectRatio}
 							onSeek={e => e}
 							progressInterval={30}
 							onProgress={handleOnProgress}

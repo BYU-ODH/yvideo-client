@@ -62,6 +62,7 @@ const PlayerControls = props => {
 		handleShowTip,
 		handleShowHelp,
 		toggleTip,
+		handleAspectRatio,
 	} = props.handlers
 
 	useEffect(() => {
@@ -111,6 +112,7 @@ const PlayerControls = props => {
 	const handleToggleSubtitles = () => {
 		setShowTranscript(!showTranscript)
 		handleShowSubtitle(``)
+		handleAspectRatio()
 	}
 
 	const handleSeekToSubtitle= (e) => {

@@ -104,10 +104,12 @@ class Root extends PureComponent {
 							<Route path='/player/:id/:clip?'>
 								<PlayerContainer />
 							</Route>
-
-							<Route path='/videoeditor/:id'>
-								<VideoEditorContainer />
-							</Route>
+							{
+								user.roles < 3 &&
+								<Route path='/videoeditor/:id'>
+									<VideoEditorContainer />
+								</Route>
+							}
 
 							<Route path='/subtileeditor/:id'>
 								<SubtitlesEditorContainer />

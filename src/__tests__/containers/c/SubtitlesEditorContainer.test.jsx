@@ -25,6 +25,13 @@ const props = {
 	setBreadcrumbs: jest.fn(),
 }
 const mock = {x: 100, y: 50}
+window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
 
 jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`), // use actual for all non-hook parts

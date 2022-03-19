@@ -63,6 +63,7 @@ const props = {
 	subtitles: {},
 	handleScroll: jest.fn(),
 	editorType: `video`,
+	aspectRatio: [16,9],
 }
 
 const reactPlayerProps = {
@@ -71,6 +72,14 @@ const reactPlayerProps = {
 	muted: true,
 	playbackRate: 1,
 }
+
+window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
 
 describe(`VideoContainer test`, () => {
 	const setup = () => mount(

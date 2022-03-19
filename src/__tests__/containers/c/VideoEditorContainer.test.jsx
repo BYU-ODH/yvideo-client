@@ -20,7 +20,13 @@ const props = {
 	streamKey: `000000-000000-000000-000000`,
 	resourceIdStream:  `000000-000000-00000`,
 }
-
+window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
 jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`), // use actual for all non-hook parts
 	useParams: () => ({
@@ -48,7 +54,9 @@ describe(`VideoEditorContainer testing`, () => {
 		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseLeave`)()
 		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseEnter`)(
 			{ target:
-				{ getBoundingClientRect: () => { return mock }}
+				{ getBoundingClientRect: () => {
+					return mock
+				}}
 			, currentTarget: {offsetWidth: 10},
 			},
 		)

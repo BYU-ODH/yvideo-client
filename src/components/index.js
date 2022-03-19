@@ -30,6 +30,7 @@ import ClipEditor from './c/ClipEditor'
 import PublicMoreListCollection from './c/PublicMoreListCollection'
 import VideoEditor from './c/VideoEditor'
 import VideoContainer from './c/VideoContainer'
+import ErrorContainer from './modals/containers/ErrorContainer'
 
 export {
 	Admin,
@@ -64,4 +65,5 @@ export {
 	PublicMoreListCollection,
 	VideoEditor,
 	VideoContainer,
+	ErrorContainer,
 }

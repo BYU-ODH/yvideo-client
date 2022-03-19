@@ -10,6 +10,7 @@ import { VideoEditor } from 'components'
 import { Tooltip } from 'components/bits'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
+// import { resource } from 'src/__tests__/testutil/testutil'
 
 const VideoEditorContainer = props => {
 
@@ -26,6 +27,9 @@ const VideoEditorContainer = props => {
 		toggleTip,
 		contentError,
 		setBreadcrumbs,
+		getFiles,
+		resource,
+		resourcetest,
 	} = props
 
 	const {id} = useParams()
@@ -41,9 +45,8 @@ const VideoEditorContainer = props => {
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-
+	const [aspectRatio,setAspectRatio] = useState([16,9])
 	useEffect(() => {
-
 		if (!contentCache.hasOwnProperty(id))
 			getContent(id)
 
@@ -53,9 +56,20 @@ const VideoEditorContainer = props => {
 			setEvents(contentCache[id].settings.annotationDocument)
 			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
 
-			if(contentCache[id].url !== ``)
+			if(contentCache[id].url !== ``){
 				setUrl(contentCache[id].url)
-			else {
+				if(contentCache[id].url.includes(`youtube`)){
+					const fetchData = async() => {
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`,{method:`GET`})
+						const data = await rawData.json()
+						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
+							setAspectRatio([data.width,data.height])
+
+						return data
+					}
+					const d =fetchData()
+				}
+			} else {
 				setKey(``)
 				setUrl(``)
 
@@ -63,17 +77,28 @@ const VideoEditorContainer = props => {
 					getStreamKey(contentCache[id].resourceId, contentCache[id].settings.targetLanguage)
 					setIsStreamKeyLoaded(true)
 				}
-
 				if(streamKey)
 					setKey(streamKey)
 
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-
+				if (resourceIdStream !== ``){
+					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
+						if (value){
+							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
+							if (file[`aspect-ratio`])
+								setAspectRatio(file[`aspect-ratio`].split(`,`))
+						}
+					})
+				}
+				if(resource[resourceIdStream]){
+					if(resource[resourceIdStream][`files`]){
+						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
+					}
+				}
 			}
 		}
 	}, [contentCache, getContent, streamKey, content, sKey, eventsArray])
-
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
@@ -104,6 +129,7 @@ const VideoEditorContainer = props => {
 		content,
 		contentError,
 		url,
+		aspectRatio,
 	}
 
 	const handlers = {
@@ -120,7 +146,8 @@ const VideoEditorContainer = props => {
 		setEvents={setEvents}
 		updateContent={updateContent}
 		activeUpdate={activeUpdate}
-		handlers={handlers}/>
+		handlers={handlers}
+	/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore }) => ({
@@ -129,6 +156,7 @@ const mapStoreToProps = ({ contentStore, resourceStore }) => ({
 	streamKey: resourceStore.streamKey,
 	resourceIdStream: resourceStore.resourceIdStreamKey,
 	contentError: contentStore.errorMessage,
+	resourcetest: resourceStore,
 })
 
 const mapThunksToProps = {
@@ -136,6 +164,7 @@ const mapThunksToProps = {
 	getResource: resourceService.getResources,
 	getContent: contentService.getContent,
 	getStreamKey: resourceService.getStreamKey, // file media
+	getFiles: resourceService.getFiles,
 	updateContent: contentService.updateContent,
 	activeUpdate: subtitlesService.activeUpdate,
 	toggleModal: interfaceService.toggleModal,

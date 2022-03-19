@@ -17,6 +17,7 @@ export default class ContentService {
 		CONTENT_UPDATE: `CONTENT_UPDATE`,
 		CONTENT_GET_SUBTITLES: `CONTENT_GET_SUBTITLES`,
 		CONTENT_ADD_SUBTITLES: `CONTENT_ADD_SUBTITLES`,
+		CONTENT_ERROR_SYNC: `CONTENT_ERROR_SYNC`,
 	}
 
 	// action creators
@@ -27,6 +28,7 @@ export default class ContentService {
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
 		contentCreate: (content) => ({ type: this.types.CONTENT_CREATE, payload: { content }}),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
+		contentErrorSync: error => ({type: this.types.CONTENT_ERROR_SYNC, payload:{ error }}),
 		contentSet: content => ({ type: this.types.CONTENT_SET, payload: { content } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
@@ -39,6 +41,7 @@ export default class ContentService {
 
 	store = {
 		errorMessage: ``,
+		errorMessagePrev: ``,
 		cache: {},
 		loading: false,
 		lastFetched: 0,
@@ -55,6 +58,7 @@ export default class ContentService {
 			CONTENT_CLEAN,
 			CONTENT_CREATE,
 			CONTENT_ERROR,
+			CONTENT_ERROR_SYNC,
 			CONTENT_SET,
 			CONTENT_GET,
 			CONTENT_ADD_VIEW,
@@ -100,10 +104,14 @@ export default class ContentService {
 			// alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
-				errorMessage: `${action.payload.error.response ? (`${action.payload.error.response.data}`) : ('')}. Status: ${action.payload.error.response ? (`${action.payload.error.response.status}`) : ('')}`,
+				errorMessage: `Status: ${action.payload.error.response ? `${action.payload.error.response.status}` : ``}`,
 				loading: false,
 			}
-
+		case CONTENT_ERROR_SYNC:
+			return{
+				...store,
+				errorMessagePrev: action.payload.error,
+			}
 		case CONTENT_SET:
 			return {
 				...store,
@@ -199,6 +207,7 @@ export default class ContentService {
 
 			dispatch(this.actions.contentGet(newContent))
 		} catch (error) {
+			console.log(`this is an error`, error.response.status)
 			dispatch(this.actions.contentError(error))
 		}
 	}
@@ -301,5 +310,10 @@ export default class ContentService {
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}
+	}
+
+	syncError = () => async (dispatch, getState) => {
+		const err = getState().contentStore.errorMessage
+		dispatch(this.actions.contentErrorSync(err))
 	}
 }
