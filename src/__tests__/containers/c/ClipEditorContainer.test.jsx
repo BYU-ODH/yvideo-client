@@ -38,8 +38,16 @@ describe(`Simulate Event`, () => {
 		)
 	})
 
+	window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
+
 	it(`Add subtitle`, () => {
-		expect(wrapper.contains(<th align="center">Title</th>)).toEqual(true)
+		expect(wrapper.contains(<th align='center'>Title</th>)).toEqual(true)
 		wrapper.find(Icon).simulate(`click`)
 		wrapper.find(`input`).at(0).simulate(`click`)
 		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)

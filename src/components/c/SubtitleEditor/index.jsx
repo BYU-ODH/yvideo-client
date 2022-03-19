@@ -439,7 +439,7 @@ const SubtitleEditor = props => {
 			const reader = new FileReader()
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
-				console.log(Subtitle.parse(e.target.result))
+				// console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000
 					temp[i].end = temp[i].end /1000

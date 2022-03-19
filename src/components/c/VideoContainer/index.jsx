@@ -90,7 +90,6 @@ const VideoContainer = props => {
 			setPlaybackRate(playbackRate)
 			setIsReady(true)
 			video.handleAspectRatio()
-			console.log(`ready`)
 		},
 		handleProgress: ({ played, playedSeconds }) => {
 			if(document.getElementById(`timeBarProgress`) !== undefined)

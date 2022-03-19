@@ -333,7 +333,6 @@ const VideoEditor = props => {
 			pos[item][2] = value
 			break
 		case 3: // width in %
-			console.log(value)
 			pos[item][3] = value
 			break
 		case 4: // height in %

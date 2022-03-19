@@ -64,7 +64,13 @@ const props = {
 	handlers,
 	viewstate,
 }
-
+window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
 describe(`VideoEditor testing`, () => {
 	let wrapper
 	jest.useFakeTimers()
@@ -252,6 +258,13 @@ describe(`VideoEditor testing`, () => {
 	})
 
 	it(`halfLayer eventsArray`, async ()=> {
+		window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
 		props.viewstate.eventsArray = [
 			{
 				end: 10,
