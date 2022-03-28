@@ -17,6 +17,7 @@ export default class ContentService {
 		CONTENT_UPDATE: `CONTENT_UPDATE`,
 		CONTENT_GET_SUBTITLES: `CONTENT_GET_SUBTITLES`,
 		CONTENT_ADD_SUBTITLES: `CONTENT_ADD_SUBTITLES`,
+		CONTENT_ERROR_SYNC: `CONTENT_ERROR_SYNC`,
 	}
 
 	// action creators
@@ -27,6 +28,7 @@ export default class ContentService {
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
 		contentCreate: (content) => ({ type: this.types.CONTENT_CREATE, payload: { content }}),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
+		contentErrorSync: error => ({type: this.types.CONTENT_ERROR_SYNC, payload:{ error }}),
 		contentSet: content => ({ type: this.types.CONTENT_SET, payload: { content } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
@@ -38,6 +40,8 @@ export default class ContentService {
 	// default store
 
 	store = {
+		errorMessage: ``,
+		errorMessagePrev: ``,
 		cache: {},
 		loading: false,
 		lastFetched: 0,
@@ -54,6 +58,7 @@ export default class ContentService {
 			CONTENT_CLEAN,
 			CONTENT_CREATE,
 			CONTENT_ERROR,
+			CONTENT_ERROR_SYNC,
 			CONTENT_SET,
 			CONTENT_GET,
 			CONTENT_ADD_VIEW,
@@ -73,12 +78,14 @@ export default class ContentService {
 		case CONTENT_ABORT:
 			return {
 				...store,
+				errorMessage: ``,
 				loading: false,
 			}
 
 		case CONTENT_CLEAN:
 			return {
 				...store,
+				errorMessage: ``,
 				cache: {},
 			}
 
@@ -89,16 +96,22 @@ export default class ContentService {
 					...store.cache,
 					...action.payload.content,
 				},
+				errorMessage: ``,
 				loading: false,
 			}
 
 		case CONTENT_ERROR:
-			console.error(action.payload.error)
+			// alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
+				errorMessage: `Status: ${action.payload.error.response ? `${action.payload.error.response.status}` : ``}`,
 				loading: false,
 			}
-
+		case CONTENT_ERROR_SYNC:
+			return{
+				...store,
+				errorMessagePrev: action.payload.error,
+			}
 		case CONTENT_SET:
 			return {
 				...store,
@@ -106,6 +119,7 @@ export default class ContentService {
 					...store.cache,
 					...action.payload.content,
 				},
+				errorMessage: ``,
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -114,9 +128,9 @@ export default class ContentService {
 			return {
 				...store,
 				cache: {
-					...store.cache,
 					[action.payload.content.id]: action.payload.content,
 				},
+				errorMessage: ``,
 			}
 
 		case CONTENT_UPDATE:
@@ -126,6 +140,7 @@ export default class ContentService {
 					...store.cache,
 					[action.payload.content.id]: action.payload.content,
 				},
+				errorMessage: ``,
 				loading: false,
 			}
 
@@ -138,6 +153,7 @@ export default class ContentService {
 						views: store.cache[action.payload.id].views + 1,
 					},
 				},
+				errorMessage: ``,
 				loading: false,
 			}
 		case CONTENT_GET_SUBTITLES:
@@ -147,6 +163,7 @@ export default class ContentService {
 					...store.subtitlesIds,
 					...action.payload.content,
 				},
+				errorMessage: ``,
 			}
 		case CONTENT_ADD_SUBTITLES:
 			return{
@@ -155,6 +172,7 @@ export default class ContentService {
 					...store.subtitlesIds,
 					...action.payload.content,
 				},
+				errorMessage: ``,
 			}
 
 		default:
@@ -185,91 +203,51 @@ export default class ContentService {
 		try {
 
 			const result = await apiProxy.content.getSingleContent(id)
-
 			const newContent = new Content(result)
 
 			dispatch(this.actions.contentGet(newContent))
 		} catch (error) {
+			console.log(`this is an error`, error.response.status)
 			dispatch(this.actions.contentError(error))
 		}
 	}
-
-	// getContent = (contentIds, force = false) => async (dispatch, getState, { apiProxy }) => {
-
-	// 	const time = Date.now() - getState().contentStore.lastFetched
-
-	// 	const stale = time >= process.env.REACT_APP_STALE_TIME
-
-	// 	const { cache } = getState().contentStore
-	// 	const cachedIds = Object.keys(cache).map(id => id)
-	// 	const notCached = contentIds.filter(id => !cachedIds.includes(id))
-
-	// 	// console.log('updated store', contentIds)
-
-	// 	if (stale || notCached.length || force) {
-
-	// 		dispatch(this.actions.contentStart())
-
-	// 		try {
-
-	// 			const result = await apiProxy.content.get(notCached)
-
-	// 			dispatch(this.actions.contentGet(result))
-
-	// 		} catch (error) {
-
-	// 			console.error(error.message)
-	// 			dispatch(this.actions.contentError(error))
-	// 		}
-
-	// 	} else dispatch(this.actions.contentAbort())
-	// }
 
 	createContent = (content) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.contentStart())
 
 		try {
+
 			const result = await apiProxy.content.post(content)
+
 			const id = result.id
 			content[`id`] = id
 
-			// const data = { [result.data.id]: result.data }
+			const newContent = new Content(content) // POST https://yvideodev.byu.edu/api/content
 
-			const newContent = new Content(content)
-			// console.log(result)
-
-			// // TODO: Why doesn't this update to state cause it to rerender?
+			// TODO: Why doesn't this update to state cause it to rerender?
 			dispatch(this.actions.contentCreate({ [id]: newContent}))
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {
+			console.log(error)
 			dispatch(this.actions.contentError(error))
 		}
 	}
 
 	updateContent = content => async (dispatch, _getState, { apiProxy }) => {
 
-		// console.log(content)
-
 		dispatch(this.actions.contentStart())
 
 		try {
-
+			// let finalData = 'asd'
 			const finalData = new BackEndContent(content).backEndData
-
-			// console.log(finalData)
 
 			const results = await apiProxy.content.update(finalData)
 
-			// console.log(results)
-
-			// await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
+			// console.log(content)
 
 			dispatch(this.actions.contentUpdate(content))
-
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}
@@ -309,16 +287,12 @@ export default class ContentService {
 		try {
 			const result = await apiProxy.content.getSubtitles(id)
 			return result
-
 		} catch (error) {
 			console.error(error.message)
-			console.log(`oof`)
 			dispatch(this.actions.contentError(error))
 		}
 	}
 	addSubtitles = subs => async (dispatch, getState, { apiProxy }) => {
-
-		// console.log(content)
 
 		dispatch(this.actions.contentStart())
 
@@ -336,5 +310,10 @@ export default class ContentService {
 		} catch (error) {
 			dispatch(this.actions.contentError(error))
 		}
+	}
+
+	syncError = () => async (dispatch, getState) => {
+		const err = getState().contentStore.errorMessage
+		dispatch(this.actions.contentErrorSync(err))
 	}
 }

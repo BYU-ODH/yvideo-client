@@ -10,6 +10,7 @@ import volumeIcon from 'assets/controls_volume.svg'
 import volumeIconMute from 'assets/controls_muted.svg'
 import clockIcon from 'assets/te-clock.svg'
 import playerCheck from 'assets/player-check.svg'
+import bookIcon from 'assets/sidebar-white.svg'
 
 const Style = styled.div`
 	position: absolute;
@@ -43,6 +44,16 @@ const Style = styled.div`
 		grid-area: left;
 		display: flex;
 		align-items: center;
+
+		& img {
+			cursor: pointer;
+			margin: 1rem;
+		}
+
+		& .play-time {
+			color: white;
+			margin: 1rem;
+		}
 	}
 
 	& > div > button {
@@ -76,26 +87,20 @@ const Style = styled.div`
 		}
 
 		& .active-value {
-			transition: none !important;
 			background: url(${playerCheck}) center no-repeat !important;
 			background-position: calc(100% - 10px) center !important;
-
-			:hover {
-				background-color: rgba(5,130,202,1);
-				color: white;
-			}
 		}
 	}
 
 	& h3 {
 		display: flex;
-    padding: 2px 2px 2px 5px;
-    margin-bottom: 2px;
-    font-weight: 500 !important;
-    border-bottom: 2px solid white;
-    height: 25px;
-    font-size: 1.55rem;
-    text-align: left;
+		padding: 2px 2px 2px 5px;
+		margin-bottom: 2px;
+		font-weight: 500 !important;
+		border-bottom: 2px solid white;
+		height: 25px;
+		font-size: 1.55rem;
+		text-align: left;
 		align-items: center;
 	}
 
@@ -118,22 +123,15 @@ const Style = styled.div`
 		}
 	}
 `
-
 export default Style
 
 export const PlayPause = styled.button`
 	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
 `
-
-export const Volume = styled.button`
-	background: ${ props => props.muted ? `url(${volumeIconMute}) center no-repeat` : (`url(${volumeIcon}) center no-repeat`) };
-`
-
 export const ClosedCaptions = styled.button`
 	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
 	background: url(${closedCaption}) center no-repeat;
 `
-
 export const Fullscreen = styled.button`
 	width: 20px;
 	height: 20px;
@@ -143,4 +141,14 @@ export const Speed = styled.button`
 	width: 20px;
 	height: 20px;
 	background: url(${clockIcon}) center no-repeat;
+`
+export const Book = styled.button`
+	width: 20px;
+	height: 20px;
+	background: url(${bookIcon}) center no-repeat;
+`
+export const Help = styled.img`
+	margin: 0px;
+	width: 22px;
+	height: 22px;
 `

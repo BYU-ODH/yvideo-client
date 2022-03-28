@@ -1,12 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { interfaceService, adminService } from 'services'
+import { interfaceService, adminService, collectionService } from 'services'
 
 import { Manager } from 'components'
 
+import { Tooltip } from 'components/bits'
+
 import CreateCollectionContainer from 'components/modals/containers/CreateCollectionContainer'
+
+import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
+
 import { objectIsEmpty } from 'lib/util'
 
 const LabAssistantManagerContainer = props => {
@@ -19,27 +24,31 @@ const LabAssistantManagerContainer = props => {
 		setHeaderBorder,
 		setProfessor,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const { professorId, collectionId } = useParams()
+	const [singleCollection, setSingleCollection] = useState()
 
 	useEffect(() => {
 		setHeaderBorder(true)
 
-		if (!collections)
-			searchCollections(professorId, true)
-
-		if(objectIsEmpty(professor)){
-			setProfessor(professorId)
-
-			if (!collections)
-				searchCollections(professorId, true)
+		if(professorId !== undefined){
+			if(objectIsEmpty(professor))
+				setProfessor(professorId)
+			else {
+				if(!collections)
+					searchCollections(professorId)
+			}
 		}
+
+		if(collectionId && collections)
+			setSingleCollection(collections[collectionId])
 
 		return () => {
 			setHeaderBorder(false)
 		}
-	}, [collections, professor, professorId, searchCollections, setHeaderBorder, setProfessor])
+	}, [collections, professor, professorId, searchCollections, setHeaderBorder, setProfessor, singleCollection, collectionId])
 
 	const createNew = () => {
 		toggleModal({
@@ -48,13 +57,33 @@ const LabAssistantManagerContainer = props => {
 		})
 	}
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position,
+			},
+		})
+	}
+
+	const handleShowHelp = () => {
+		toggleModal({
+			component: HelpDocumentation,
+			props: { name: `Manage Collections`},
+		})
+	}
+
+	const handleToggleSideBar = () => {
+		if(collections && collectionId)
+			setSingleCollection(collections[collectionId])
+	}
+
 	const sideLists = {
 		published: [],
 		unpublished: [],
 		archived: [],
 	}
-
-	let singleCollection = {}
 
 	if(collections !== undefined && collections !== null){
 		// This populates the sideList object to display all the collections based on
@@ -67,23 +96,7 @@ const LabAssistantManagerContainer = props => {
 			else if (published) sideLists.published.push({ id, name })
 			else sideLists.unpublished.push({ id, name })
 		})
-
-		// This is to pass the right collection based on the ID of the collection
-		// instead of the old way that changed the array index and then pointed to the new index
-		// Doing it this way we get the collection from the props and not from a
-		// static new array that will not update after a handler action
-
-		Object.keys(collections).forEach(item => {
-			const {id} = collections[item]
-			const cId = collectionId
-			if (id === cId){
-				singleCollection = collections[item]
-				return
-			}
-		})
 	}
-
-	// console.log('single collection', singleCollection)
 
 	const viewstate = {
 		admin,
@@ -92,10 +105,15 @@ const LabAssistantManagerContainer = props => {
 		sideLists,
 		user: professor,
 		activeId: collectionId,
+		isLabAssistant: true,
 	}
 
 	const handlers = {
 		createNew,
+		toggleTip,
+		handleShowTip,
+		handleToggleSideBar,
+		handleShowHelp,
 	}
 
 	if(!collections) return <Manager viewstate={viewstate} handlers={handlers} archived={[]} published={[]} unpublished={[]} empty={true}/>
@@ -114,6 +132,8 @@ const mapDispatchToProps = {
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	setProfessor: adminService.setProfessor,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
+	updateCollectionContents: collectionService.updateCollectionContents,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabAssistantManagerContainer)

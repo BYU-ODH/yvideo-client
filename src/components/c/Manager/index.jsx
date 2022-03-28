@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { LabAssistantManageCollectionContainer, ManageCollectionContainer } from 'containers'
+import { ManageCollectionContainer, LabAssistantManageCollectionContainer } from 'containers'
 
 import { Accordion } from 'components/bits'
 
@@ -10,19 +10,18 @@ import {
 	Container,
 	CreateButton,
 	NoCollection,
-	Plus,
 	SideMenu,
 	Help,
+	MenuIcon,
+	FeedbackMessage,
+	PlusIcon,
+	Button,
 } from './styles'
 
-import plus from 'assets/plus.svg'
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
 export default class Manager extends PureComponent {
 	render() {
-
-		// console.log('render manager')
-
 		const {
 			admin,
 			collection,
@@ -30,64 +29,94 @@ export default class Manager extends PureComponent {
 			sideLists,
 			user,
 			activeId,
+			isOpen,
+			isMobile,
+			isLabAssistant,
 		} = this.props.viewstate
 
 		const {
 			createNew,
 			handleShowHelp,
+			handleShowTip,
+			toggleTip,
+			handleToggleSideBar,
 		} = this.props.handlers
 
 		return (
 			<Container>
-				{ this.props.empty !== undefined ? (
+				{this.props.empty !== undefined ? (
 					<>
-						{ user ? (
+						{user ? (
 							<>
-								<h1 className='no-collections'>{ user.name } does not have any collections</h1>
-								<div id={'create-button'}>
+								<h1 className='no-collections'>{user.name} does not have any collections</h1>
+								<div id={`create-button`}>
 									<button onClick={createNew}>Create New Collection</button>
 								</div>
 							</>
 						) : (
 							<>
-								<h1 className='no-collections'>There are no collections</h1>
-								<div id={'create-button'} >
-									<button onClick={createNew}>Create New Collection</button>
-								</div>
+								<Button onClick={createNew}><PlusIcon />Collection</Button>
+								<FeedbackMessage><p>There are no collections</p></FeedbackMessage>
 							</>
-						) }
+						)}
 					</>
 				) : (
 					<>
-						<SideMenu>
-
-							<h4>{user ? (`${user.name}'s Collections`) : `My Collections`} &nbsp;<Help><img src={helpIcon} onClick={handleShowHelp}/></Help></h4>
-
-							<Accordion header={`Published`} active>
-								{sideLists.published.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
-							</Accordion>
-
-							<Accordion header={`Unpublished`} active>
-								{sideLists.unpublished.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`}>{name}</Link></div>)}
-							</Accordion>
-
+						<>
 							{
-								admin && <Accordion header={`Archived`}>
-									{sideLists.archived.map(({ id, name }, index) => <div key={index} className={`${ id === activeId ? ('active-collection link') : ('link')}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
-								</Accordion>
-							}
-
-							<CreateButton onClick={createNew}><Plus src={plus} />Create New Collection</CreateButton>
-
-						</SideMenu>
-						<Body>
-							{collection ?
-								user ?
-									<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+								isMobile && collection && isOpen === false ?
+									<MenuIcon type='button' onClick={handleToggleSideBar}>Back</MenuIcon>
 									:
-									<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
-								:
-								<NoCollection>Select a Collection to get started.</NoCollection>}
+									<SideMenu isOpen={isOpen}>
+										<CreateButton className='collection-create' onClick={createNew}><PlusIcon />Collection</CreateButton>
+										<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
+											<Help
+												onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth })}
+												onMouseLeave={e => toggleTip()}
+											><img className='help-document' src={helpIcon} onClick={handleShowHelp} />
+											</Help>
+										</h4>
+
+										<Accordion className='collection-published' header={`Published`} active>
+											{sideLists.published.map(({ id, name }, index) => <div key={index}><Link className={`${id === activeId ? `active-collection link` : `link`}`} onClick={handleToggleSideBar} to={`/${path}/${id}`} >{name}</Link></div>)}
+										</Accordion>
+
+										<Accordion header={`Unpublished`} active>
+											{sideLists.unpublished.map(({ id, name }, index) => <div key={index} ><Link className={`${id === activeId ? `active-collection link` : `link`}`} onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
+										</Accordion>
+
+										{
+											admin && <Accordion header={`Archived`}>
+												{sideLists.archived.map(({ id, name }, index) => <div key={index} ><Link className={`${id === activeId ? `active-collection link` : `link`}`} to={`/${path}/${id}`} >{name}</Link></div>)}
+											</Accordion>
+										}
+
+									</SideMenu>
+							}
+						</>
+						<Body>
+							{
+								isMobile ?
+									isOpen ?
+										null
+										:
+										collection ?
+											!isLabAssistant ?
+												<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+												:
+												<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+											:
+											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
+
+									:
+									collection ?
+										!isLabAssistant ?
+											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+											:
+											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
+										:
+										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
+							}
 						</Body>
 					</>
 				)}

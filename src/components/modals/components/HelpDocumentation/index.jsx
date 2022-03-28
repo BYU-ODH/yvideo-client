@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 
-import { Container, Back, CloseHelp } from './styles'
+import { Container, Back, CloseHelp, Tutorial } from './styles'
+
+import ReactPlayer from 'react-player'
 
 import closeIcon from 'assets/x.svg'
 
@@ -10,7 +12,7 @@ export default class HelpDocumentation extends PureComponent {
 	}
 
 	componentDidMount(){
-		document.getElementById('content').innerHTML = this.props.viewstate.help.htmlInstruction
+		document.getElementById(`content`).innerHTML += this.props.viewstate.help.htmlInstruction
 	}
 
 	render() {
@@ -20,12 +22,65 @@ export default class HelpDocumentation extends PureComponent {
 		return (
 			<>
 				<Back>
-					<Container>
-						<div id="title">
-							<h1>Help Documentation: {name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
+					<Container id='help-documentation-container' onScroll={this.handleScroll}>
+						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
+						<div id='content'>
 						</div>
-						<div id="content">
+						{
+							name === "Manage Resource" ? (
+							<>
+								<div className="video-section">
+									<h2>Create Resource Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/create-resource.webm`} type="video/webm"/>
+										</video>
+									</div>
+								</div>
+								<br/>
+							</>
+							) : (null)
+						}
+						<div className="video-section">
+							<h2>{name} Video Tutorial</h2>
+							<div>
+								<video controls>
+									<source src={`/videos/${name.toLowerCase().replace(" ", "-")}.webm`} type="video/webm"/>
+								</video>
+							</div>
 						</div>
+						<br/>
+						{
+							name === "Manage Collections" ? (
+							<>
+								<div className="video-section">
+									<h2>Manage Content Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/manage-content.webm`} type="video/webm"/>
+										</video>
+									</div>
+								</div>
+								<div className="video-section">
+									<h2>Create Content From Online Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/content-from-online.webm`} type="video/webm"/>
+										</video>
+									</div>
+								</div>
+								<div className="video-section">
+									<h2>Create Content From Resource Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/content-from-resource.webm`} type="video/webm"/>
+										</video>
+									</div>
+								</div>
+							</>
+							) : (null)
+						}
+						<br/>
 					</Container>
 				</Back>
 			</>

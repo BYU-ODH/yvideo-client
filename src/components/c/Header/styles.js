@@ -7,18 +7,20 @@ import HexLogo from 'assets/hexborder.svg'
 const Style = styled.div`
 	height: 8.4rem;
 	width: 100%;
-	/* box-shadow: 0 -.5rem 3rem 0 rgba(0,0,0,0.25); */
-	/* padding: 0 2.4rem; */
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-direction: column;
+	justify-content: space-evenly;
 
 	border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
 
 	position: fixed;
+	top: 0px;
+	right: 0px;
 	background-color: ${props => props.backgroundColor};
 
-	z-index: 16;
+	z-index: 25;
 
 	& > button {
 		background-color: #0157b8;

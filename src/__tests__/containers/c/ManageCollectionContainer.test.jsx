@@ -21,7 +21,7 @@ const settings = {
 	showWordList:false,
 	aspectRatio:`1.77`,
 	description:``,
-	targetLanguages: [],
+	targetLanguage: ``,
 	annotationDocument: [],
 	captionTrack: [],
 }
@@ -136,6 +136,7 @@ const props = {
 		owner: 22,
 		published: true,
 		thumbnail: `test@thumbnail`,
+		'expired-content': content,
 	},
 	content,
 	getContent: jest.fn(),
@@ -209,11 +210,11 @@ describe(`manage collection container test`, () => {
 		// viewstate content
 		expect(viewstate.content[0].name).toBe(`testname`)
 		expect(viewstate.content[0].contentType).toBe(`video`)
-		expect(viewstate.content[0].thumbnail).toBe(`test@thumbnail.com`)
+		expect(viewstate.content[0].thumbnail).toBe(`https://i.ytimg.com/vi/HK7SPnGSxLM/default.jpg`)
 		expect(viewstate.content[0].physicalCopyExists).toBe(false)
 		expect(viewstate.content[0].isCopyrighted).toBe(false)
-		expect(viewstate.content[0].expired).toBe(true)
-		expect(viewstate.content[0].resourceId).toBe(`5ebdaef833e57cec218b457c`)
+		expect(viewstate.content[0].expired).toBe(false)
+		expect(viewstate.content[0].resourceId).toBe(`00000000-0000-0000-0000-000000000000`)
 	})
 
 	it(`testing buttons`, () => {
@@ -230,14 +231,14 @@ describe(`manage collection container test`, () => {
 		wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
 
 		// switching back and forth Content and Permissions componenets
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 		const permissionsButton = wrapper.find({"className" : `permissions-button`})
 		permissionsButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(false)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(false)
 
 		const contentButton = wrapper.find({"className" : `content-button`})
 		contentButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 	})
 
 	it(`test rest of event handlers`, ()=> {

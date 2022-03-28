@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {
 	interfaceService,
 	resourceService,
 	fileService,
+	adminService,
 } from 'services'
 
 import CreateResource from 'components/modals/components/CreateResource'
@@ -14,17 +15,30 @@ const CreateResourceContainer = props => {
 	const {
 		toggleModal,
 		addResource,
+		addAccess,
 		user,
+		getUserByUsername,
 	} = props
 
 	const [tab, setTab] = useState(`resource`)
-	const [selectedFile, setSelectedFile] = useState()
+	const [blockLeave, setBlock] = useState(false)
+	const [isCorrectUsername, setIsCorrectUsername] = useState(true)
+
+	useEffect(() => {
+		if(blockLeave)
+			window.onbeforeunload = () => true
+		else
+			window.onbeforeunload = undefined
+
+		return () => {
+			window.onbeforeunload = undefined
+		}
+
+	}, [blockLeave])
 
 	const changeTab = e => {
 		setTab(e.target.name)
 	}
-
-	// const [fileVersion, setFileVersion] = useState(category.English.name)
 
 	const [data, setData] = useState({
 		id: 0,
@@ -35,7 +49,7 @@ const CreateResourceContainer = props => {
 		views: 0,
 		fullVideo: true,
 		metadata: ``,
-		requesterEmail: user.email,
+		requesterEmail: ``,
 		allFileVersions: ``,
 		resourceType: `video`,
 		dateValidated: ``,
@@ -46,6 +60,8 @@ const CreateResourceContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
+		setIsCorrectUsername(true)
+		setBlock(true)
 	}
 
 	const handleTypeChange = e => {
@@ -54,31 +70,18 @@ const CreateResourceContainer = props => {
 			...data,
 			resourceType,
 		})
+		setBlock(true)
 	}
-
-	const handleFileChange = e =>{
-		console.log(e.target.files[0])
-		setSelectedFile(e.target.files[0])
-	}
-
-	// const handleFileUpload = async(e) =>{
-	// 	e.preventDefault()
-
-	// 	const formData = new FormData()
-	// 	formData.append(`file`, selectedFile)
-
-	// 	const backEndData = {
-	// 		file: formData,
-	// 		"resource-id": 0,
-	// 		"file-version": 0,
-	// 		mime: 0,
-	// 		metadata: ``,
-	// 	}
-	// 	uploadFile(backEndData)
-	// }
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
+
+		const checkUserResult = await getUserByUsername(data.requesterEmail, true)
+
+		if(checkUserResult[0] === undefined){
+			setIsCorrectUsername(false)
+			return
+		}
 
 		const backEndData = {
 			"copyrighted": data.copyrighted,
@@ -94,29 +97,25 @@ const CreateResourceContainer = props => {
 			"date-validated": data.dateValidated,
 		}
 
-		await addResource(backEndData, data)
-		toggleModal()
-	}
+		const result = await addResource(backEndData, data)
 
-	const handleAddResourceSubmit = e => {
-		e.preventDefault()
+		if(result.id) await addAccess(result.id, user.username)
+
 		toggleModal()
 	}
 
 	const viewstate = {
-		selectedFile,
 		user,
 		data,
 		tab,
+		isCorrectUsername,
 	}
 
 	const handlers = {
-		handleAddResourceSubmit,
 		handleSubmit,
 		handleTextChange,
 		handleTypeChange,
 		changeTab,
-		handleFileChange,
 		toggleModal,
 	}
 
@@ -131,7 +130,9 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	addResource: resourceService.addResource,
+	addAccess: resourceService.addAccess,
 	uploadFile: fileService.upload,
+	getUserByUsername: adminService.getUserByUsername,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateResourceContainer)

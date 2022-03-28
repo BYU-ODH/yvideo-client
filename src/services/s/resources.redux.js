@@ -18,6 +18,10 @@ export default class ResourceService {
 		RESOURCE_DELETE: `RESOURCE_DELETE`,
 		RESOURCE_STREAM: `RESOURCE_STREAM`,
 		RESOURCE_FILES_EDIT: `RESOURCE_FILES_EDIT`,
+		RESOURCE_ADD_ACCESS: `RESOURCE_ADD_ACCESS`,
+		RESOURCE_READ_ACCESS: `RESOURCE_READ_ACCESS`,
+		RESOURCE_REMOVE_ACCESS: `RESOURCE_REMOVE_ACCESS`,
+		RESOURCE_UPDATE_COUNT: `RESOURCE_UPDATE_COUNT`,
 	}
 
 	// action creators
@@ -35,7 +39,11 @@ export default class ResourceService {
 		resourceSearch: resource => ({ type: this.types.RESOURCE_SEARCH, payload: { resource } }),
 		resourceEdit: resource => ({ type: this.types.RESOURCE_EDIT, payload: { resource } }),
 		resourceDelete: filteredResources => ({ type: this.types.RESOURCE_DELETE, payload: { filteredResources } }),
-		resourceStream: key => ({ type: this.types.RESOURCE_STREAM, payload: { key } }),
+		resourceStream: (key, resourceId) => ({ type: this.types.RESOURCE_STREAM, payload: { key, resourceId } }),
+		resourceAddAccess: access => ({ type: this.types.RESOURCE_ADD_ACCESS, payload: { access } }),
+		resourceReadAccess: (resourceId, access) => ({ type: this.types.RESOURCE_READ_ACCESS, payload: { resourceId, access } }),
+		resourceRemoveAccess: (resourceId, access) => ({ type: this.types.RESOURCE_REMOVE_ACCESS, payload: { resourceId, access } }),
+		resourceUpdateCount: update => ({ type: this.types.RESOURCE_UPDATE_COUNT, payload: { update } }),
 	}
 
 	// default store
@@ -45,6 +53,9 @@ export default class ResourceService {
 		loading: false,
 		lastFetched: 0,
 		streamKey: ``,
+		resourceIdStreamKey: ``, // this resource id is to make sure that we have a stream key for the current resource id
+		access: [],
+		update: false,
 	}
 
 	// reducer
@@ -65,6 +76,10 @@ export default class ResourceService {
 			RESOURCE_STREAM,
 			RESOURCE_FILES_EDIT,
 			RESOURCE_FILE_DELETE,
+			RESOURCE_ADD_ACCESS,
+			RESOURCE_READ_ACCESS,
+			RESOURCE_REMOVE_ACCESS,
+			RESOURCE_UPDATE_COUNT,
 		} = this.types
 
 		switch (action.type) {
@@ -172,6 +187,36 @@ export default class ResourceService {
 			return {
 				...store,
 				streamKey: action.payload.key,
+				resourceIdStreamKey: action.payload.resourceId,
+			}
+
+		case RESOURCE_ADD_ACCESS:
+			return {
+				...store,
+			}
+
+		case RESOURCE_READ_ACCESS:
+			return {
+				...store,
+				access: {
+					...store.access,
+					[action.payload.resourceId]: action.payload.access,
+				},
+			}
+
+		case RESOURCE_REMOVE_ACCESS:
+			return {
+				...store,
+				access:{
+					...store.access,
+					[action.payload.resourceId]: action.payload.access,
+				},
+			}
+
+		case RESOURCE_UPDATE_COUNT:
+			return {
+				...store,
+				update: action.payload.update,
 			}
 
 		default:
@@ -180,6 +225,53 @@ export default class ResourceService {
 	}
 
 	// thunks
+
+	addAccess = (resourceId, username) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			// add access to resource
+			const result = await apiProxy.resources.access.add(resourceId, username)
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	readAccess = (resourceId) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+
+			// read access
+			const result = await apiProxy.resources.access.read(resourceId)
+
+			dispatch(this.actions.resourceReadAccess(resourceId, result))
+
+			return result
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	removeAccess = (resourceId, username) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+			// remove access from resource
+			const result = await apiProxy.resources.access.remove(resourceId, username)
+
+			// get access and filter out the name that just got deleted
+
+			const newAccess = getState().resourceStore.access[resourceId].filter(item => item !== username)
+			dispatch(this.actions.resourceRemoveAccess(resourceId, newAccess))
+
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
 
 	search = (term, force = false) => async (dispatch, getState, { apiProxy }) => {
 
@@ -354,8 +446,9 @@ export default class ResourceService {
 			const result = await apiProxy.resources.post(resource)
 
 			data.id = result.id
-
 			dispatch(this.actions.resourcesAdd(data))
+
+			return result
 		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}
@@ -365,17 +458,28 @@ export default class ResourceService {
 		dispatch(this.actions.resourcesStart())
 
 		try {
-
 			const result = await apiProxy.resources.files(id)
 
+			dispatch(this.actions.resourceUpdateCount(false))
 			dispatch(this.actions.resourcesFiles(id, result))
+
+			return result
+		} catch (error) {
+			dispatch(this.actions.resourcesError(error))
+		}
+	}
+
+	updateStatus = (status) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.resourcesStart())
+
+		try {
+			dispatch(this.actions.resourceUpdateCount(status))
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))
 		}
 	}
 
 	removeResource = (resourceId) => async (dispatch, getState, { apiProxy }) => {
-
 		dispatch(this.actions.resourcesStart())
 
 		try {
@@ -407,8 +511,7 @@ export default class ResourceService {
 
 			const result = await apiProxy.media.getKey(fileId)
 
-			dispatch(this.actions.resourceStream(result[`file-key`]))
-
+			dispatch(this.actions.resourceStream(result[`file-key`], resourceId))
 		} catch(error){
 			dispatch(this.actions.resourcesError(error))
 		}

@@ -16,16 +16,18 @@ export default class Content {
 	thumbnail = ``
 	views = 0
 	url = ``
+	clips = ``
 	resource = {
 		keywords: [],
 	}
+	fileId = ''
 
 	settings = {
 		aspectRatio:`1.77`,
 		captionTrack: [],
 		showTranscripts: false,
 		showWordList: false,
-		targetLanguages: '',
+		targetLanguage: ``,
 		showCaptions: true,
 		allowDefinitions: true,
 		annotationDocument: [],
@@ -42,31 +44,33 @@ export default class Content {
 			this.thumbnail = obj[`thumbnail`]
 			this.description = obj[`description`]
 			this.resourceId = obj[`resource-id`]
-			this.resource.keywords = obj[`tags`].split(`; `)
+			this.resource.keywords = obj[`tags`] ? obj[`tags`].split(`; `) : ``
 			this.name = obj[`title`]
-			this.published = obj['published']
+			this.published = obj[`published`]
+			this.clips = obj[`clips`] ? obj[`clips`] : ``
+			this.fileId = obj['file-id']
 
 			this.settings = {
-				allowDefinitions: obj['allow-definitions'],
-				annotationDocument: this.stringToArray(obj['annotations']),
-				showCaptions: obj['allow-captions'],
-				targetLanguages: obj['file-version'],
+				allowDefinitions: obj[`allow-definitions`],
+				annotationDocument: obj[`annotations`] ? this.stringToArray(obj[`annotations`]) : ``,
+				showCaptions: obj[`allow-captions`],
+				targetLanguage: obj[`file-version`] !== `` ?  (obj[`file-version`]) : ('English'),
+				allowNote: obj[`allow-notes`],
 			}
+
 		}
 
 	}
 
 	stringToArray(string){
-		let array = []
+		const array = []
 
-		let temp = string.split("; ")
-
-		//console.log(temp)
+		const temp = string.split(`; `)
 
 		temp.forEach(element => {
-			if(element !== ''){
+			if(element !== ``)
 				array.push(JSON.parse(element))
-			}
+
 		})
 
 		return array

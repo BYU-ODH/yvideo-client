@@ -19,27 +19,6 @@ const FileOverviewContainer = props => {
 		resources,
 	} = props
 
-	const category = {
-		English: {
-			name: `English`,
-		},
-		French: {
-			name: `French`,
-		},
-		Mandarin: {
-			name: `Mandarin`,
-		},
-		Japanese: {
-			name: `Japanese`,
-		},
-		Spainsh: {
-			name: `Spanish`,
-		},
-		Korean: {
-			name: `Korean`,
-		},
-	}
-
 	const [fileState, setFileState] = useState(file)
 
 	useEffect(() => {
@@ -80,7 +59,6 @@ const FileOverviewContainer = props => {
 	const viewstate = {
 		file,
 		langs,
-		category,
 	}
 
 	const handlers = {

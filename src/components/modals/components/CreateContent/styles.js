@@ -11,7 +11,8 @@ export const FormResource = styled.form`
 
 	& > label {
 		font-size: 1.4rem;
-		height: 20px;
+		height: 25px;
+
 
 		& input {
 			width: 100%;
@@ -19,12 +20,23 @@ export const FormResource = styled.form`
 			border-bottom: 1px solid rgba(0,0,0,0.3);
 			/* background-color: rgba(0,0,0,0.03); */
 			outline: none;
-			margin: 10px 0px 2px 0px; 
+			margin: 10px 0px 2px 0px;
 		}
 
 		& select {
 			margin-left: 20px;
 			width: 150px;
+		}
+
+		& > .resource-content-remove {
+			display: flex;
+			align-items: baseline;
+		}
+
+		& > .unauthorized-message {
+			color: red;
+			font-size: 1.2rem;
+			width: 300px;
 		}
 	}
 
@@ -50,15 +62,21 @@ export const Form = styled.form`
 		outline: none;
 	}
 
+	& select {
+		margin-left: 20px;
+		width: 150px !important;
+		background-color: transparent;
+	}
+
 	& > label{
 
 		display: flex;
 		justify-content: space-between;
+		margin-top: 1rem;
 
 		& > span {
 			flex: 1;
 		}
-
 	}
 
 	& > div {
@@ -82,22 +100,33 @@ export const Form = styled.form`
 			align-items: center;
 		}
 	}
+
+	& #create-content-keywords {
+
+		& option {
+			font-size: 12px;
+		}
+	}
 `
 
 export const Button = styled.button`
 	font-size: 1.5rem;
 	color: ${props => props.color || `black`};
-	background: transparent;
-	border: none;
-	outline: none;
 	cursor: pointer;
+	place-self: start;
+	background: transparent;
+	border-radius: 3px;
+	border: none
+	:hover {
+		border: 1px solid grey;
+	}
 `
 
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 10;
 	top: 1rem;
-	left: 2rem;
+	left: 1rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
 	height: 2rem;
@@ -115,6 +144,11 @@ export const RemoveKeyword = styled.button`
 	cursor: pointer;
 	padding: 0;
 	margin: 0 -.25rem 0 .25rem;
+
+	$ > .resource-content-remove-button {
+		height: 2.5rem;
+		width: 2.5rem;
+	}
 `
 
 export const TableContainer = styled.div`
@@ -124,6 +158,7 @@ export const TableContainer = styled.div`
 	margin-top: 10%;
 	background-color: white;
 	overflow-y: scroll;
+	z-index: 1;
 
 	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3), 0px 0px 5px rgba(0, 0, 0, 0.3);
 
@@ -135,6 +170,11 @@ export const TableContainer = styled.div`
 		padding: 5px;
 		display: flex;
 
+		:hover {
+			background-color: #0582ca;
+			cursor: pointer;
+		}
+
 		& input, label {
 			margin: auto 0px auto 5%;
 		}
@@ -145,7 +185,7 @@ export const Table = styled.table`
 	/*background: white;*/
 	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
 
-	height: ${props => props.height ? (`${props.height * 15}px`): ('0px')};
+	height: ${props => props.height ? `${props.height * 15}px`: `0px`};
 	width: 80%;
 	position: absolute;
 	z-index: 10;
@@ -196,4 +236,43 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
+`
+export const Search = styled.div`
+	position: relative;
+	margin-bottom: -2rem;
+
+	& > input {
+		z-index: 1;
+		background: white;
+
+		height: 4rem;
+		width: 100%;
+		font-size: 1.5rem;
+		border: none;
+		border-radius: 1.5rem;
+		outline: none;
+		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		padding: 0 1.25rem 0 3.25rem;
+	}
+
+	& > button {
+		width: 8rem;
+    height: 4rem;
+    color: white;
+    background-color: var(--light-blue);
+    margin-left: 1rem;
+    outline: none;
+    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 2rem;
+    text-align: center;
+		cursor: pointer;
+		transition: .5s ease;
+		font-weight: 500;
+
+		:hover {
+			background-color: var(--navy-blue);
+		}
+	}
 `

@@ -1,0 +1,120 @@
+import React, { useState, useRef, useLayoutEffect } from 'react'
+
+import { Rnd } from 'react-rnd'
+
+import {
+	Style,
+} from './styles'
+
+import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
+
+const ClipLayer = props => {
+
+	const {clipName, width, start, end, setStart, setEnd, videoLength, active, index, handleEditClip} = props
+	const layerRef = useRef(null)
+	const dragRef = useRef(null)
+
+	const [initialWidth, setInitialWidth] = useState(0)
+	const [shouldUpdate, setShouldUpdate] = useState(false)
+	const [layerWidth, setLayerWidth] = useState(0)
+	const style = active !== clipName ? {top: `0px`, backgroundColor:`#fff`,border:`1px solid #0582ca`,color:`#000`,fontSize:`1.3rem`,justifyContent:`center`,alignItems:`center`} :{ left: `${start}% !important`, top: `0px`, backgroundColor:`#002e5d`,border:`1px solid #0582ca`,color:`#fff`,fontSize:`1.3rem`,justifyContent:`center`,alignItems:`center`}
+
+	if(shouldUpdate)
+		setShouldUpdate(false)
+
+	useLayoutEffect(() => {
+		setInitialWidth(layerRef.current.offsetWidth)
+		if(layerWidth === 0)
+			setLayerWidth(layerRef.current.offsetWidth + width)
+		else if (width === 0)
+			setLayerWidth(initialWidth)
+		else
+			setLayerWidth(layerWidth + width)
+	}, [width])
+
+	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
+		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
+		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
+		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
+	}
+
+	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
+	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
+
+	// Drag within the layer
+	const handleDrag = (d) => {
+
+		const beginTimePercentage = d.x / layerWidth * videoLength
+		const endPercentage = beginTimePercentage + (end - start)
+		// LOGIC TO CHANGE THE TIME @params beginTime, end
+		let s = beginTimePercentage
+		let e = endPercentage
+		if(e > videoLength)
+			e = videoLength
+
+		if(s < 0)
+			s = 0
+		// call handler from parent
+		setStart(s,null,clipName)
+		setEnd(e,null,clipName)
+	}
+	// Resize within the layer
+	const handleResize = (direction, ref, delta, event, index, e ) => {
+		let s = start
+		let en = end
+		const difference = delta.width / layerWidth * videoLength
+		if(direction === `right`){
+			en += difference
+
+			if(en > videoLength)
+				en = videoLength
+
+		} else {
+			s -= difference
+			if(s < 0)
+				s = 0
+			else if(s > videoLength){
+				s = videoLength-30
+				en = videoLength
+			}
+		}
+		setStart(s,null,clipName)
+		setEnd(en,null,clipName)
+	}
+
+	const curr = {...dragRef.current}
+	return (
+		<>
+			<Style layerWidth={layerWidth} className='layer-container'>
+				{/* overflow-x should be like scroll or something */}
+				<div ref={layerRef} className='clipbox'>
+					<div className={`clip-layer-${clipName} events`}>
+						<Rnd
+							ref={dragRef}
+							size={{width: `${(end - start)/videoLength * layerWidth}px`, height: `46px`}}
+							position={{ x: start/videoLength * layerWidth === Infinity || isNaN(start/videoLength * layerWidth) ? 0: start/videoLength * layerWidth , y: 0}}
+							enableResizing={Enable}
+							dragAxis='x'
+							bounds={`.clip-layer-${clipName}`}
+							onDragStop={(e, d) => {
+
+								handleDrag(d)
+							}}
+							onClick = {()=>handleEditClip(clipName,index)}
+							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
+							key={`clip-${clipName}`}
+							// onClick={() => toggleEditor(layerIndex, index)}
+							style={style}
+						>
+							{/* {!active?<p style={{margin:`auto`}}>Clip: {convertSecondsToMinute(start, videoLength)} - {convertSecondsToMinute(end, videoLength)}</p>:``} */}
+							<p style={{margin: `auto 0px auto 2px`}}>Clip: {convertSecondsToMinute(start, videoLength)} - {convertSecondsToMinute(end, videoLength)}</p>
+						</Rnd>
+					</div>
+				</div>
+			</Style>
+		</>
+	)
+}
+
+export default ClipLayer
+

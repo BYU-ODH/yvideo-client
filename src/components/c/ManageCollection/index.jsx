@@ -11,25 +11,30 @@ import Style, {
 	TitleEditButton,
 	PublishButton,
 	ArchiveButton,
+	CopyrightedButton,
 	TabHeader,
 	Selector,
 	Tab,
 	NewContent,
 	Icon,
+	Publish,
+	Spinner,
 } from './styles'
 
+import logo from 'assets/hexborder.svg'
 import plus from 'assets/plus_gray.svg'
 
 export default class ManageCollection extends PureComponent {
 	render() {
 		const {
-			admin,
+			user,
 			collection,
 			collectionName,
 			isEditingCollectionName,
-			isContent,
+			isContentTab,
 			content,
 			isLabAssistant,
+			isLoading,
 		} = this.props.viewstate
 
 		const {
@@ -40,9 +45,9 @@ export default class ManageCollection extends PureComponent {
 			archive,
 			setTab,
 			createContent,
+			handleShowTip,
+			toggleTip,
 		} = this.props.handlers
-
-		// console.log(content)
 
 		return (
 			<Style>
@@ -69,59 +74,94 @@ export default class ManageCollection extends PureComponent {
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
 							className={`title-edit-button`}
+							onMouseEnter={e => handleShowTip(`collection-edit-name`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+							onMouseLeave={e => toggleTip()}
 						>
 							{isEditingCollectionName ? `Save` : `Edit`}
 						</TitleEditButton>
 					</Title>
-					<div>
+					<Publish>
 						{collection.archived ? (
 							<>
-								{ admin !== undefined ? (
-									<>{admin === 0 || admin === 1 ? (
-										<ArchiveButton onClick={unarchive}>Unarchive</ArchiveButton>
+								{ user.roles !== undefined ? (
+									<>{user.roles === 0 || user.roles === 1 ? (
+										<ArchiveButton className={`archive-button`} onClick={unarchive}>Unarchive</ArchiveButton>
 									) : ( <p>Cannot unarchive</p> )}
 									</>
 								) : null }
 							</>
 						) : (
 							<>
-								<PublishButton
-									published={collection.published}
-									onClick={togglePublish}
-								>
-									{collection.published ? `Unpublish` : `Publish`}
-								</PublishButton>
-								<ArchiveButton onClick={archive}>Archive</ArchiveButton>
+								{ !collection.public ? (
+									<PublishButton
+										published={collection.published}
+										onClick={togglePublish}
+										className={`publish-button`}
+										onMouseEnter={e => handleShowTip(`collection-publish`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth})}
+										onMouseLeave={e => toggleTip()}
+									>
+										{collection.published ? `Unpublish` : `Publish`}
+									</PublishButton>
+								): (<></>)}
+								<ArchiveButton className={`archive-button`} onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
-					</div>
+					</Publish>
 				</header>
 				<TabHeader>
 					<button className={`content-button`} onClick={setTab(true)}>Content</button>
-					<button className={`permissions-button`} onClick={setTab(false)}>Permissions</button>
-					<Selector isContent={isContent} />
+					<button className={`permissions-button`} onClick={setTab(false)}
+						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}
+					>Permissions</button>
+					<Selector isContentTab={isContentTab} />
 				</TabHeader>
-				<Tab>
-					{isContent ?
-						content.map(item => (
-							<>
-								{ isLabAssistant !== undefined ? (
-									<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
-								) : (
-									<ContentOverviewContainer key={item.id} content={item} />
-								)}
-							</>
-						))
-						: (
-							<CollectionPermissionsContainer collection={collection} />
-						)}
 
-					{isContent && (
-						<NewContent className={`newcontent-button`} onClick={createContent}>
-							<Icon src={plus} />
-						</NewContent>
-					)}
-				</Tab>
+				{collection.content === undefined ?
+
+					<Spinner/>
+					:
+					<>
+						<Tab>
+							{isContentTab ?
+								content.map((item, index) => (
+									<div key={index}>
+										{ item !== undefined ? (
+											<>
+												{ isLabAssistant !== undefined ? (
+													<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
+												) : (
+													<ContentOverviewContainer key={item.id} content={item}/>
+												)}
+											</>
+										) : null
+										}
+									</div>
+								))
+								: (
+									<CollectionPermissionsContainer collection={collection} />
+								)}
+							{isContentTab && collection[`expired-content`] ?
+								collection[`expired-content`].map((item, index) => (
+									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
+								))
+								:
+								null
+							}
+							{isContentTab && (
+								<NewContent className={`newcontent-button`}
+									onClick={createContent}
+									onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x + 5, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseLeave={e => toggleTip()}>
+									<Icon src={plus}
+
+									/>
+								</NewContent>
+							)}
+						</Tab>
+					</>
+
+				}
 			</Style>
 		)
 	}

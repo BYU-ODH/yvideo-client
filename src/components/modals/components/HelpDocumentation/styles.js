@@ -17,26 +17,44 @@ export const Container = styled.div`
 	height: auto;
 	overflow-y: scroll !important;
 	background-color: white;
-	border-radius: 10px;
-	padding: 0px 20px 20px 20px;
+	border-radius: 5px;
 	position: relative;
 	text-align: center;
-	overflow: scroll;
 
-	& #title {
-		position: fixed;
-		width: 80vw;
-		height: 50px;
-		text-align: center;
+
+	::-webkit-scrollbar {
+		display: block !important;
+		width: 10px;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: #DDDDDD;
+		border-radius: 10px;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: var(--light-blue);
+		border-radius: 10px;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--navy-blue);
+	}
+
+	& h1 {
+		border-bottom: 2px solid #0582ca;
 		padding-top: 5px;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-		background-color: white;
+		height: 30px;
 	}
 
 	& #content {
 		width: 80%;
-		margin: 70px auto auto auto;
+		margin: auto auto auto auto;
 		text-align: left;
+		position: relative;
 
 		& .large-img{
 			flex-direction: column;
@@ -46,23 +64,87 @@ export const Container = styled.div`
 		}
 
 		& .section {
-			font-size: 1.5rem;
+			font-size: 1.5rem !important;
 			padding: 10px;
 			display: flex;
+
+			border: 2.5px solid rgba(200, 200, 200, .7);
+			border-radius: 10px;
+			padding: 10px;
+			margin: 25px 0px;
+			position: relative;
+
+			& h3 {
+				margin-left: -12px;
+				margin-top: -12px;
+				width: calc(100% + 4px);
+				padding: 5px 10px;
+				margin-bottom: 5px;
+				background-color: rgba(5, 130, 202, 0.2);
+				border-radius: 10px 10px 0px 0px;
+			}
 
 			& p {
 				margin: auto;
 				flex: 1;
 				line-height: 20px;
 
-				& ul {
-					text-align: left;
-					border: 1px solid red;
+				& img {
+					float: right;
+					margin: auto;
+					padding: 5px;
+					border: .1px solid transparent;
+					border-radius: 10px;
 				}
 			}
 
-			& img {
+			& li {
+				padding: 3px 0px 3px 0px;
+
+				& .icon {
+					position: relative;
+					top: 5px;
+					width: 20px;
+					height: 20px;
+				}
+			}
+		}
+
+		& .flex-column {
+			flex-direction: column;
+		}
+	}
+
+	& .video-section {
+		width: 80%;
+		margin: auto auto auto auto;
+		text-align: center;
+		position: relative;
+		border: 2.5px solid #0582ca;
+		border-radius: 10px;
+
+		& h2 {
+			background-color: #0582ca;
+			height: 22px;
+			padding-top: 10px;
+			width: calc(100% + 4px);
+			border-radius: 10px 10px 0px 0px;
+			color: white;
+			margin-left: -2px;
+			margin-top: -2px;
+		}
+
+		& div {
+			margin: auto;
+			width: 100%;
+			display: flex;
+
+			& video {
+				width: 100%;
+				height: 100%;
 				margin: auto;
+				max-width: 800px;
+				max-height: 600px;
 			}
 		}
 	}
@@ -77,6 +159,9 @@ export const CloseHelp = styled.span`
 		height: 30px;
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 20px;
 	}
+`
+
+export const Tutorial = styled.div`
 `
