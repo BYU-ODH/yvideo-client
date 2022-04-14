@@ -13,6 +13,7 @@ export const AddManyForm = styled.div`
 		box-sizing: border-box;
 		border-radius: 3px;
 		resize: none;
+		outline-color: var(--royal-blue);
 	}
 
 	& .submit-result{
@@ -28,6 +29,7 @@ export const CloseButton = styled.button`
 	background: transparent;
 	border: none;
 	cursor: pointer;
+	outline-color: var(--royal-blue);
 `
 
 export const SubmitButton = styled.button`
@@ -36,6 +38,7 @@ export const SubmitButton = styled.button`
 	background: transparent;
 	${props => props.disabled ? `` : `cursor: pointer;`}
 	color: ${props => props.disabled ? `#eee` : `#0582CA`};
+	outline-color: var(--royal-blue);
 `
 
 export const Form = styled.form`
