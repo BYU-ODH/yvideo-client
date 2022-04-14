@@ -109,6 +109,28 @@ export const Preview = styled.div`
 	@media screen and (max-width: 1000px) {
 		align-items: center;
 	}
+
+	:hover{
+		& .LinksWrapper{
+			& .video-editor-wrapper{
+				& .video-editor{
+					background: url(${videoeditorIcon}) center no-repeat;
+				}
+			}
+
+			& .subtitle-editor-wrapper{
+				& .subtitle-editor {
+					background: url(${subtitlesIcon}) center no-repeat;
+				}
+			}
+
+			& .clip-manager-wrapper{
+				& .clip-manager {
+					background: url(${clipIcon}) center no-repeat;
+				}
+			}
+		}
+	}
 `
 
 const TextButton = css`
@@ -246,26 +268,6 @@ export const StyledLink = styled(Link)`
 
 export const LinksWrapper = styled.div`
 	align-items: center;
-
-	:hover{
-		& .video-editor-wrapper{
-			& .video-editor{
-				background: url(${videoeditorIcon}) center no-repeat;
-			}
-		}
-
-		& .subtitle-editor-wrapper{
-			& .subtitle-editor {
-				background: url(${subtitlesIcon}) center no-repeat;
-			}
-		}
-
-		& .clip-manager-wrapper{
-			& .clip-manager {
-				background: url(${clipIcon}) center no-repeat;
-			}
-		}
-	}
 `
 
 export const IconWrapper = styled.div`
