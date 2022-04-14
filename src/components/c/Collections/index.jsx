@@ -25,6 +25,7 @@ export default class Collections extends PureComponent {
 			isMobile,
 			publicCollections,
 			searchQuery,
+			hasCollectionPermissions
 		} = this.props.viewstate
 
 		const {
@@ -94,7 +95,7 @@ export default class Collections extends PureComponent {
 				{!isMobile ?
 					<>
 						{
-							user !== null && user.roles < 3 ?
+							user !== null && (user.roles < 3 || hasCollectionPermissions) ?
 								<header className= 'collections-header'>
 									<div>
 										<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
