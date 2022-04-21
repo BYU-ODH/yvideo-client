@@ -25,6 +25,13 @@ const props = {
 	setBreadcrumbs: jest.fn(),
 }
 const mock = {x: 100, y: 50}
+window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
 
 jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`), // use actual for all non-hook parts
@@ -102,13 +109,6 @@ describe(`SubtitlesEditorContainer testing`, () => {
 
 		wrapper.find(`.save`).simulate(`click`)
 
-		wrapper.find(`.allow-event`).prop(`onMouseEnter`)({ target:
-			{ getBoundingClientRect: () => {
-				return mock
-			}}
-		, currentTarget: {offsetWidth: 10},
-		})
-		wrapper.find(`.allow-event`).prop(`onMouseLeave`)()
 		wrapper.find(`.switch-toggle`).at(0).simulate(`click`)
 
 		act(() => {

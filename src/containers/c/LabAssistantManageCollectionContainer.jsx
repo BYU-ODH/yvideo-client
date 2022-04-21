@@ -37,8 +37,7 @@ const LabAssistantManageCollectionContainer = props => {
 		setBreadcrumbs({path:[`Home`, `Lab Assistant Manager`], collectionId: collection.id, contentId: ``})
 
 		getCollectionContent(collection.id, true)
-		setCollectionName(collection.name)
-	}, [collection])
+		}, [collection])
 
 	const togglePublish = e => {
 		e.preventDefault()
@@ -96,7 +95,7 @@ const LabAssistantManageCollectionContainer = props => {
 		admin,
 		collection,
 		content: Object.keys(content).map(key => content[key]),
-		isContent,
+		isContentTab: isContent,
 		isEditingCollectionName,
 		collectionName,
 		isLabAssistant: true,

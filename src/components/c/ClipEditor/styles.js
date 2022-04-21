@@ -140,6 +140,7 @@ export const Timeline = styled.div`
 
 		.flex {
 			display: flex;
+			width: 100%;
 		}
 
 	& .handle {

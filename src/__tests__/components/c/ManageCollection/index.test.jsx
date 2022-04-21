@@ -80,7 +80,7 @@ const props = {
 			},
 		],
 		collectionName: `Collection 1`,
-		isContentTap: true,
+		isContentTab: true,
 		isEditingCollectionName: false,
 	},
 	handlers: {
@@ -108,7 +108,7 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`CollectionPermissionsContainer should be connected`, ()=> {
-		props.viewstate.isContentTap = false
+		props.viewstate.isContentTab = false
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
 		).dive()
@@ -118,7 +118,7 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`test viewstate`, ()=> {
-		props.viewstate.isContentTap = true
+		props.viewstate.isContentTab = true
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>

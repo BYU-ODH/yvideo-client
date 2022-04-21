@@ -23,10 +23,9 @@ const ManageCollectionContainer = props => {
 		toggleTip,
 		setBreadcrumbs,
 		professorCollections,
-		isLabassistantManager,
 	} = props
 
-	const [isContentTap, setIsContentTap] = useState(true)
+	const [isContentTab, setIsContentTab] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
 	const [collectionName, setCollectionName] = useState(collection.name)
 	const [isEdited, setIsEdited] = useState(false)
@@ -47,7 +46,7 @@ const ManageCollectionContainer = props => {
 		if(isEdited) {
 			getCollections(true)
 			setCollectionName(collection.name)
-			setIsContentTap(true)
+			setIsContentTab(true)
 			setIsEdited(false)
 		}
 
@@ -103,6 +102,9 @@ const ManageCollectionContainer = props => {
 		props.toggleModal({
 			component: CreateContentContainer,
 			collectionId: collection.id,
+			props: {
+				isPublic: collection.public,
+			}
 		})
 
 		setIsEdited(true)
@@ -120,8 +122,8 @@ const ManageCollectionContainer = props => {
 		setIsEdited(true)
 	}
 
-	const setTab = isContentTap => _e => {
-		setIsContentTap(isContentTap)
+	const setTab = isContentTab => _e => {
+		setIsContentTab(isContentTab)
 	}
 
 	// if (collection.content === undefined) return null
@@ -132,7 +134,7 @@ const ManageCollectionContainer = props => {
 		collection,
 		collectionName,
 		content: collection.content !== undefined ? collection.content.map(item => contentCache[item.id]) : [],
-		isContentTap,
+		isContentTab,
 		isLoading,
 	}
 

@@ -53,14 +53,15 @@ export const CurrentEvents = (time,events,duration) => {
 	if (censorContainer){
 		const censorChildren = censorContainer.children
 		for (let i = 0; i<censorValues.length; i++){
-			let exists = false
-			for (let x = 0; x < censorChildren.length; x++)
-				if (censorChildren[i]) exists = true
+			//MATCH CENSOR VALUES BY UNIQUE IDENTIFIER NOT INDEX
+			//IF WE TAKE THE NEXT VALUE INTO ACCOUNT EACH CENSOR VALUE HAS A UNIQUE NEXT
+			// console.log('censor value', censorValues[i])
 
-			if (!exists){
+			if(document.getElementById(`censorBox-${censorValues[i].next}-${censorValues[i].left1.toFixed(2)}`) === null){
+				//if the censor does not exist we create a new one
 				const cen = document.createElement(`div`)
 				cen.setAttribute(`class`,`censorBox`)
-				cen.setAttribute(`id`,`censorBox-${i}`)
+				cen.setAttribute(`id`,`censorBox-${censorValues[i].next}-${censorValues[i].left1.toFixed(2)}`)
 				const can =document.createElement(`canvas`)
 				cen.appendChild(can)
 				censorContainer.appendChild(cen)
@@ -68,14 +69,33 @@ export const CurrentEvents = (time,events,duration) => {
 		}
 		// destroy any that shouldn't be there
 		if (censorChildren.length > censorValues.length){
+			// console.log('Destroying censor box')
 			for (let x = 0; x < censorChildren.length; x++){
+				//loop through all the childs and try to match then to the censor values
+				//if it matches then good. if it doesn't remove such child
+				let childUniqueId = `${censorChildren[x].id.replace(/[^0-9.]/g, '')}`
 				let del = true
-				for (let i; i < comments.length;i++)
-					if (censorChildren[i].className.search(i.toString()) < -1) del = false
-				if (del) censorContainer.removeChild(censorChildren[x])
+
+				for (let i = 0; i < censorValues.length; i++){
+					let uniqueId = `${censorValues[i].next}${censorValues[i].left1.toFixed(2)}`
+
+					if(uniqueId === childUniqueId){
+						del = false
+					}
+				}
+
+				if(del){
+					// console.log('Deleting', censorChildren[x])
+					censorContainer.removeChild(censorChildren[x])
+				}
 			}
 		}
-		// console.log(censorContainer)
+
+		if(time === duration){
+			while (censorContainer.firstChild) {
+        censorContainer.removeChild(censorContainer.firstChild);
+    	}
+		}
 	}
 	const commentContainer = document.getElementById(`commentContainer`)
 	if (commentContainer){
@@ -132,6 +152,7 @@ export const CommentChange = (ind,commentData, playedSeconds) =>{
 	}
 }
 export const subtitleChange = (subtitles) => {
-	const container = document.getElementById(`subtitleContainer`)
-
+	if(document.getElementById(`subtitleContainer`)){
+		const container = document.getElementById(`subtitleContainer`)
+	}
 }

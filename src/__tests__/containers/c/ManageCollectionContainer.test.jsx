@@ -231,14 +231,14 @@ describe(`manage collection container test`, () => {
 		wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
 
 		// switching back and forth Content and Permissions componenets
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTap).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 		const permissionsButton = wrapper.find({"className" : `permissions-button`})
 		permissionsButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTap).toBe(false)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(false)
 
 		const contentButton = wrapper.find({"className" : `content-button`})
 		contentButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTap).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 	})
 
 	it(`test rest of event handlers`, ()=> {

@@ -25,7 +25,6 @@ const LabAssistantManagerContainer = props => {
 		setProfessor,
 		toggleModal,
 		toggleTip,
-		updateCollectionContents,
 	} = props
 
 	const { professorId, collectionId } = useParams()
@@ -106,7 +105,7 @@ const LabAssistantManagerContainer = props => {
 		sideLists,
 		user: professor,
 		activeId: collectionId,
-		isLabassistantManager: true,
+		isLabAssistant: true,
 	}
 
 	const handlers = {

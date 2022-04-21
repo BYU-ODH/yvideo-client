@@ -61,14 +61,14 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 		)
 
 		// switching back and forth Content and Permissions componenets
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 		const permissionsButton = wrapper.find({"className" : `permissions-button`})
 		permissionsButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(false)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(false)
 
 		const contentButton = wrapper.find({"className" : `content-button`})
 		contentButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 
 		// test craete content button for initigating togglemodal
 		// wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)

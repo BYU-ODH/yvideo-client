@@ -45,9 +45,14 @@ const Style = styled.div`
 		display: flex;
 		align-items: center;
 
-		& #start-over {
+		& img {
 			cursor: pointer;
-			margin-left: 5px;
+			margin: 1rem;
+		}
+
+		& .play-time {
+			color: white;
+			margin: 1rem;
 		}
 	}
 

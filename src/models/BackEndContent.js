@@ -9,6 +9,7 @@ export default class BackEndContent {
 		"tags": `string`,
 		"thumbnail": `string`,
 		"file-version": `string`,
+		"file-id": 'string',
 		"collection-id": `string`,
 		"views": 0,
 		"annotations": `string`,
@@ -40,6 +41,7 @@ export default class BackEndContent {
 			this.backEndData[`annotations`] = this.arrayToString(obj.settings.annotationDocument)// settings
 
 			this.backEndData[`file-version`] = obj.settings.targetLanguage
+			this.backEndData[`file-id`] = obj.fileId
 
 			this.backEndData[`tags`] = obj.resource.keywords ? obj.resource.keywords.join(`; `) : ``
 			this.backEndData[`words`] = obj.words ? obj.words.join(`; `) : ``

@@ -424,22 +424,23 @@ const SubtitleEditor = props => {
 			const reader = new FileReader()
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
+				// console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
-					temp[i].start = temp[i].start /1000/videoLength * 100
-					temp[i].end = temp[i].end /1000/videoLength * 100
+					temp[i].start = temp[i].start /1000
+					temp[i].end = temp[i].end /1000
 				}
 				let removeArray = 0
 				const filtered = temp.filter(item => {
-					if(item.start > 100){
+					if(item.start > videoLength){
 						removeArray++
 					}
-					return item.start < 100
+					return item.start < videoLength
 				})
 				const filtered1 = filtered.filter(item => {
-					if(item.end > 100){
+					if(item.end > videoLength){
 						removeArray++
 					}
-					return item.end < 100
+					return item.end < videoLength
 				})
 				if (removeArray > 0)
 					alert(`Some subtitles had to be cut because the subtitles are longer than the video`)
@@ -642,9 +643,7 @@ const SubtitleEditor = props => {
 								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`skip-handle`}>
 										<p>Allow Skip</p>
-										<div className={`allow-event`}
-											onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-											onMouseLeave={e => toggleTip()}>
+										<div className={`allow-event`}>
 											<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 										</div>
 									</div>
@@ -753,7 +752,14 @@ const SubtitleEditor = props => {
 
 			<EventList minimized={eventListMinimized}>
 				<header>
-					<img alt={`helpIcon`} src={helpIcon} onClick={handleShowHelp} style={{marginLeft:10,marginTop:15}}/>
+					<img
+						alt={`helpIcon`}
+						src={helpIcon}
+						onClick={handleShowHelp}
+						style={{marginLeft:10,marginTop:15}}
+						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+						onMouseLeave={e => toggleTip()}
+					/>
 					<div className={`save`}>
 						{disableSave ?
 							<button className={`disable`}>

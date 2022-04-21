@@ -8,7 +8,6 @@ const Style = styled.div`
     height: 80%;
 	}
 
-
 	& .closeEditor {
 		width: 2rem;
 		text-align: right;
@@ -74,6 +73,7 @@ const Style = styled.div`
 	& .censorMenu {
 		font-size: 1.5rem;
 		height: 65%;
+		overflow-y: scroll;
 
 		& label {
 			margin: 15px 5px 15px 15px;
@@ -82,11 +82,7 @@ const Style = styled.div`
 		}
 
 		& .tableHeader {
-			width: 70%;
 			margin-left: 10px;
-			& th {
-				width: 50px;
-			}
 		}
 	}
 
@@ -96,10 +92,11 @@ const Style = styled.div`
 		margin-left: 10px;
 		overflow-y: scroll;
 		position: relative;
+		top: 20px;
 
 		& td {
-			display: inline-flex;
-			width: 50px !important;
+			width: 15%;
+			padding: 2px;
 			margin: auto;
 			& input {
 				margin: auto;
@@ -135,7 +132,8 @@ const Style = styled.div`
 		margin-left: 5px;
 		background: none;
 		border: none;
-}
+		position: absolute;
+		bottom: 0px;
 	}
 
 	& .arrowDown {

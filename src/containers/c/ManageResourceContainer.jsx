@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { ManageResource } from 'components'
-
 import { interfaceService, resourceService } from 'services'
 
+import { Tooltip } from 'components/bits'
 import CreateResourceContainer from 'components/modals/containers/CreateResourceContainer'
-
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const ManageResourceContainer = props => {
@@ -17,6 +16,7 @@ const ManageResourceContainer = props => {
 		user,
 		setBreadcrumbs,
 		toggleModal,
+		toggleTip,
 	} = props
 
 	const defaultSearch = user.email.split(`@`)
@@ -79,6 +79,16 @@ const ManageResourceContainer = props => {
 		})
 	}
 
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position,
+			},
+		})
+	}
+
 	const viewstate = {
 		user,
 		searchQuery,
@@ -93,6 +103,8 @@ const ManageResourceContainer = props => {
 		addResource,
 		handleSubmit,
 		handleShowHelp,
+		handleShowTip,
+		toggleTip,
 	}
 
 	return <ManageResource viewstate={viewstate} handlers={handlers} />
@@ -109,6 +121,7 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	searchResource: resourceService.search,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
+	toggleTip: interfaceService.toggleTip,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageResourceContainer)

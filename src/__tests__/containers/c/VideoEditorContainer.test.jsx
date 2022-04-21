@@ -20,13 +20,24 @@ const props = {
 	streamKey: `000000-000000-000000-000000`,
 	resourceIdStream:  `000000-000000-00000`,
 }
-
+window.ResizeObserver =
+	window.ResizeObserver ||
+	jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn(),
+	}))
 jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`), // use actual for all non-hook parts
 	useParams: () => ({
 		id: 0,
 	}),
 }))
+
+const mockElementId = { style: {height: 10} }
+document.getElementById = jest.fn((tag) => {
+	return mockElementId
+})
 
 describe(`VideoEditorContainer testing`, () => {
 	it(`simulate event`, () => {
@@ -39,11 +50,13 @@ describe(`VideoEditorContainer testing`, () => {
 			</Provider>,
 		)
 		const mock = {x: 100, y: 50}
-		wrapper.find(`.helpIcon`).simulate(`click`)
+		// wrapper.find(`.helpIcon`).simulate(`click`)
 		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseLeave`)()
 		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseEnter`)(
 			{ target:
-				{ getBoundingClientRect: () => { return mock }}
+				{ getBoundingClientRect: () => {
+					return mock
+				}}
 			, currentTarget: {offsetWidth: 10},
 			},
 		)
@@ -59,7 +72,7 @@ describe(`VideoEditorContainer testing`, () => {
 			</Provider>,
 		)
 		expect(wrapper).toBeDefined()
-		wrapper.find(`.helpIcon`).simulate(`click`)
+		// wrapper.find(`.helpIcon`).simulate(`click`)
 	})
 
 })

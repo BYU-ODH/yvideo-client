@@ -1,0 +1,80 @@
+CICD - YVideo
+
+High-Level Work Flow
+
+(Work flow can be changed)
+(Frontend)
+Git push (develop) and merge request => Build and run the unit test in Git Actions
+=> repository_dispatch from (front) to (back) => backend git action is triggered
+=> WebHook =>Jenkins (backend project) to pull new commit from frontend
+
+Git Actions
+
+* Git Action is to build and test before push and merge events. Scheduled actions are written in ‘yvideo_frontend_integration.yml’.
+* How to set up:
+    * Developer’s setting => Personal access tokens => give yourself workflow token (check workflow then and save)
+    * Developers can add what branch can be tested and extra steps can be added in the future.
+    * Secrets set up: username:token
+        * ex> youthrich40:ghp_GfVGywfXlrtbqqZY6TkU5B6E7nzcN10VMcv7
+Git WebHooks
+
+* Git Webhooks will trigger Jenkins build after push event.
+* Set Webhooks URL: http://128.187.108.34:8081/github-webhook/
+* Jenkins
+    * Jenkins project,
+
+Docker & Jenkins
+* Jenkins image is running under Docker container
+    * Docker
+        * Docker provides the containerized environment. A Docker container is an open-source software development platform. Its main benefit is to package applications in containers, allowing them to be portable to any OS.
+        * More research is on https://www.docker.com/resources/what-container
+* Access Docker and Jenkins
+    * Docker
+        * ssh BYU\\{username}@yvideodev.byu.edu
+        * sudo docker container ls -a
+            * This will display containers status such as port, status, image
+            * 8081->8080. Docker has its port. For this project, port 8081 is opened for the Jenkins docker image, and internally in the container, it is using 8080. Further resource: https://docs.docker.com/config/containers/container-networking/
+        * sudo docker start <container id>
+            * Start existing container
+        * Install npm in docker container
+            * To use the npm command in shell command in Jenkins configuration, npm has to be installed ‘inside’ container. The container is an independent environment.
+            * sudo docker exec -it <container id> bash
+            * apk add --update npm
+            * TODO: Using shell script with npm does not work for some reason in a docker container: “Tracker "idealTree" already exists”. To use Jenkins to build and test, this needs to be figured out.
+    * Jenkins
+        * The console can be accessed from the browser.
+            * http://128.187.108.34:8081/ (dev server)
+            * Port 8081 is for browser access and 8080 is container networking (8081->8080)
+        * Console login
+        * Configuration
+            * Connect Jenkins with GitHub
+                * Manage Jenkins => Configure Systems => GitHub
+                * Add Credentials
+                    * Go to GitHub
+                    * Settings => Developers Setting => Personal Access Token => Generate Token for Jenkins => save token and name of the token
+                    * Click Add
+                    * Select ‘Secret Text’ under 'kind'
+                    * Secret => put token from GitHub
+                    * ID => token ID (not GitHub ID)
+                    * Save
+            * Configure Jenkins Project (Trigger Jenkins from GitHub)
+                * Click Configure
+                * General
+                    * GitHub Project
+                    * Put Repository URL
+                * Source Code Management
+                    * Put Repository URL
+                    * Add Credentials
+                        * Kind: Username and password
+                        * Username: GitHub username
+                        * Password: token (not GitHub password)
+                        * ID: write anything for identifier
+                * Build Triggers
+                    * GitHub Pull Requests
+                    * Add Trigger Events
+                    * Pull Request Closed
+                        * Git actions will take care of npm build and test, so anything that fails should not trigger Jenkins.
+                    * GitHub hook trigger for GITScm polling
+
+TODO
+* Auto deploy new changes on backend to our remote dev server.
