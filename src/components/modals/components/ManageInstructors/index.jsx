@@ -28,13 +28,13 @@ export default class ManageInstructors extends PureComponent {
 		} = this.props.handlers
 
 		return (
-			<Form onSubmit={handleRegister} id='upload-file-form'>
+			<Form className="std-outline-color" onSubmit={handleRegister} id='upload-file-form'>
 
 				<h2>Instructors</h2>
 
 				<InputForm className='faculty-submit'>
 					<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={updateSearchBar} value={searchQuery} />
-					<AddButton onClick={addInstructor} type='submit'>Add</AddButton>
+					<AddButton className="std-outline-color" onClick={addInstructor} type='submit'>Add</AddButton>
 				</InputForm>
 				{
 					resourceAccess.length > 0 ?
@@ -48,13 +48,13 @@ export default class ManageInstructors extends PureComponent {
 											<td>{item.username}</td>
 											<td></td>
 											<td></td>
-											<td><RemoveButton onClick={e => removeInstructor(item.username)}><RemoveIcon/></RemoveButton></td>
+											<td><RemoveButton onClick={e => removeInstructor(item.username)}><RemoveIcon /></RemoveButton></td>
 										</tr>,
 								)}
 							</tbody>
 						</RegisteredListTable>
 						:
-						<>There is no registered user</>
+						<div><b>There is no registered user</b></div>
 				}
 
 				<div>

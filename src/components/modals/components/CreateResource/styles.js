@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 
+export const darken = () => {
+
+}
 export const Form = styled.form`
 	display: grid;
 	grid-gap: 6rem;
@@ -38,21 +41,19 @@ export const Button = styled.button`
 	color: ${props => props.color || `black`};
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 `
 
 export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
 `
 
-export const WarningLable = styled.h4`
+export const WarningLabel = styled.h4`
 	margin-top: 2rem;
 	color: red;
 `
