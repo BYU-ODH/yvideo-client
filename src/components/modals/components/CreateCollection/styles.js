@@ -24,6 +24,8 @@ export const Button = styled.button`
 	color: ${props => props.color || `black`};
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 `
+export const secondInput = {
+	borderBottom: "1px solid black",
+}

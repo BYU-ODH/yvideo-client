@@ -1,5 +1,6 @@
 import styled, { keyframes, css } from 'styled-components'
 import logo from 'assets/hexborder.svg'
+import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
   & > header {
@@ -69,7 +70,6 @@ export const PublishButton = styled.button`
   border-radius: 0.3rem;
 
   cursor: pointer;
-  outline: none;
 `
 
 export const ArchiveButton = styled.button`
@@ -83,7 +83,6 @@ export const ArchiveButton = styled.button`
 
   border: none;
   cursor: pointer;
-  outline: none;
 `
 export const CopyrightedButton = styled.button`
   color: #efcc00;
@@ -126,7 +125,6 @@ export const TabHeader = styled.div`
     height: 2.5rem;
 
     border: none;
-    outline: none;
     cursor: pointer;
   }
 
@@ -157,16 +155,19 @@ export const NewContent = styled.button`
   margin: 2rem;
 
   border: none;
-  border-radius: 0.3rem;
+  border-radius: 20px;
 
-  background-color: #eee;
+  background-color: #aaa;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  outline: none;
   cursor: pointer;
+
+	:hover {
+		background-color: #999;
+	}
 
 	& > p{
 		font-size: 1.5rem;
@@ -176,7 +177,7 @@ export const NewContent = styled.button`
 `
 
 export const Icon = styled.div`
-  background: url(${props => props.src}) center no-repeat;
+  background: url(${plusIcon}) center no-repeat;
   background-size: contain;
 
   height: 2rem;

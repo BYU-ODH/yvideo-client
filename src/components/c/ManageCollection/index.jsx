@@ -96,21 +96,21 @@ export default class ManageCollection extends PureComponent {
 									<PublishButton
 										published={collection.published}
 										onClick={togglePublish}
-										className={`publish-button`}
+										className={`publish-button std-outline-color`}
 										onMouseEnter={e => handleShowTip(`collection-publish`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth})}
 										onMouseLeave={e => toggleTip()}
 									>
 										{collection.published ? `Unpublish` : `Publish`}
 									</PublishButton>
 								): (<></>)}
-								<ArchiveButton className={`archive-button`} onClick={archive}>Archive</ArchiveButton>
+								<ArchiveButton className={`archive-button std-outline-color`} onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
 					</Publish>
 				</header>
 				<TabHeader>
-					<button className={`content-button`} onClick={setTab(true)}>Content</button>
-					<button className={`permissions-button`} onClick={setTab(false)}
+					<button className={`content-button std-outline-color`} onClick={setTab(true)}>Content</button>
+					<button className={`permissions-button std-outline-color`} onClick={setTab(false)}
 						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					>Permissions</button>
@@ -149,13 +149,12 @@ export default class ManageCollection extends PureComponent {
 								null
 							}
 							{isContentTab && (
-								<NewContent className={`newcontent-button`}
+								<NewContent
+									className="newcontent-button std-outline-color"
 									onClick={createContent}
 									onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x + 5, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}>
-									<Icon src={plus}
-
-									/>
+									<Icon />
 								</NewContent>
 							)}
 						</Tab>

@@ -62,7 +62,7 @@ export class ResourceOverview extends PureComponent {
 						<Preview editing={editing}>
 							<div>
 								{editing ?
-									<ResourceTitle><h4>Title:</h4><TitleEdit type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
+									<ResourceTitle><h4>Title:</h4><TitleEdit className="std-outline-color"type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
 									:
 									<h4 className='resource-name'>{resourceName}</h4>
 								}
@@ -72,11 +72,11 @@ export class ResourceOverview extends PureComponent {
 									<>
 										{/* TODO: need to figure out how it work on attaching files on resource */}
 										{/* <FileUploadButton className='file-attach-button' onClick={handleRegisterInstructors}>Register Instructor<PersonAddIcon/></FileUploadButton> */}
-										<FileUploadButton className='file-attach-button' onClick={handleFileUploadToResource}>Upload File<UploadIcon/></FileUploadButton>
-										<RemoveButton className='remove-resource-button' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
+										<FileUploadButton className='file-attach-button std-outline-color' onClick={handleFileUploadToResource}>Upload File<UploadIcon/></FileUploadButton>
+										<RemoveButton className='remove-resource-button std-outline-color' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
 									</>
 								}
-								<EditButton className='resource-edit' onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
+								<EditButton className='resource-edit std-outline-color' onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
 							</Buttons>
 						</Preview>
 					</Style>
@@ -106,7 +106,7 @@ export class ResourceOverview extends PureComponent {
 								{user.roles === 0 || user.roles === 1 ?
 									(
 										<div>
-											<h4>Instructors: </h4>{ <> <EditButton onClick={handleInstructors}> {accessCount} registered</EditButton></>}
+											<h4>Instructors: </h4>{ <> <EditButton className="std-outline-color" onClick={handleInstructors}> {accessCount} registered</EditButton></>}
 										</div>
 									) :
 									null
@@ -117,10 +117,10 @@ export class ResourceOverview extends PureComponent {
 								{/* <div><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></div> */}
 								<Type>
 									<h4>Type:</h4>
-									<TypeButton type='button' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
-									<TypeButton type='button' selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
-									<TypeButton type='button' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
-									<TypeButton type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
 								</Type>
 
 								<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>

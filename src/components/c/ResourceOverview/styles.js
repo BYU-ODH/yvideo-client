@@ -50,7 +50,6 @@ const TextButton = css`
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	outline: none;
 `
 
 export const EditButton = styled.button`
@@ -196,7 +195,6 @@ export const ResourceTitle = styled.form`
 export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 
 	font-weight: ${props => props.selected ? `500` : `300`};
