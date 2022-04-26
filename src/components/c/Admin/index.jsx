@@ -26,7 +26,7 @@ export class Admin extends PureComponent {
 		return (
 			<Style>
 				<div className='add-users-button'>
-					<Button onClick={addUsers}><PlusIcon/>Users</Button>
+					<Button className="std-outline-color" onClick={addUsers}><PlusIcon/>Users</Button>
 				</div>
 
 				<div className='admin-dashboard'>
