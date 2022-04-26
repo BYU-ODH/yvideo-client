@@ -196,7 +196,21 @@ export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
 	cursor: pointer;
+	margin: 3px;
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
+	box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+	border-radius: 3px;
+
+	& > i {
+		margin-right: 3px;
+	}
+
+
+	:hover{
+		transition: .2s;
+		background-color: #f3f3f3;
+	}
+
 `

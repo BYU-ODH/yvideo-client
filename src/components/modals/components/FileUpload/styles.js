@@ -23,7 +23,7 @@ export const Form = styled.form`
 		}
 
 		& > input {
-			width: 18rem;
+			width: 23rem;
 		}
 
 		& > h4 {
@@ -47,7 +47,6 @@ export const Button = styled.button`
 	color: ${props => props.color || `black`};
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 `
 

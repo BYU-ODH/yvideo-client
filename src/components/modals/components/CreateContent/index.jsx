@@ -68,12 +68,12 @@ export default class CreateContent extends PureComponent {
 				{tab === `url` &&
 					<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} className='create-content-form' id='create-content-form' >
 						<label htmlFor='create-content-title'>
-							<span>Title</span>
+							<span>Title:</span>
 							<input className='url-title-input' id='create-content-title' type='text' name='title' value={title} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-type'>
-							<span>Type</span>
+							<span>Type:</span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
 								<TypeButton className='url-type-video' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
 								<TypeButton className='url-type-audio' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
@@ -83,14 +83,14 @@ export default class CreateContent extends PureComponent {
 						</label>
 
 						<label htmlFor='create-content-url'>
-							<span>URL</span>
+							<span>URL:</span>
 							<input className='url-content-url' id='create-content-url' type='text' name='url' value={url} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-description'>
 							<span>Description</span>
 						</label>
-						<textarea className='url-content-description' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} />
+						<textarea className='url-content-description std-outline-color' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} />
 
 						<label htmlFor='create-content-keywords'>
 							<span>Tags</span>
@@ -168,7 +168,7 @@ export default class CreateContent extends PureComponent {
 						<br/>
 						<label>
 							<span>Description</span><br/>
-							<textarea className='resource-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
+							<textarea className='resource-content-description std-outline-color' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
 						</label><br/>
 						<label>
 
@@ -183,7 +183,6 @@ export default class CreateContent extends PureComponent {
 												resourceFiles.map(
 													(element, index) =>
 														<option value={element[`id`]} key={index}>{`${element[`file-version`]}: ${element[`metadata`]}`}</option>,
-													// <option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>,
 												)
 											}
 										</select>
@@ -201,14 +200,14 @@ export default class CreateContent extends PureComponent {
 
 						<div>
 
-							<Button className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+							<Button className='url-content-cancel std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
 							{targetLanguage.length > 0 ?
 								(
-									<Button className='url-content-create' type='submit' color={`#0582CA`}>Create</Button>
+									<Button className='url-content-create std-outline-color' type='submit' color={`#0582CA`}>Create</Button>
 								)
 								:
 								(
-									<Button className='url-content-create' type='submit' color={`#A0A0A0`} disabled>Create</Button>
+									<Button className='url-content-create std-outline-color' type='submit' color={`#A0A0A0`} disabled>Create</Button>
 								)
 							}
 						</div>

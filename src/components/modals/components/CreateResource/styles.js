@@ -19,6 +19,10 @@ export const Form = styled.form`
 		outline: none;
 	}
 
+	input:focus {
+		border-bottom: 1px solid #242F36;
+	}
+
 	& > label{
 
 		display: flex;

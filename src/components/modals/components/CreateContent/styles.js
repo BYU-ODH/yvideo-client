@@ -23,6 +23,10 @@ export const FormResource = styled.form`
 			margin: 10px 0px 2px 0px;
 		}
 
+			input:focus {
+				border-bottom: 1px solid #242F36;
+			}
+
 		& select {
 			margin-left: 20px;
 			width: 150px;
@@ -61,6 +65,10 @@ export const Form = styled.form`
 		border-bottom: 1px solid #ccc;
 		outline: none;
 	}
+
+		input:focus {
+			border-bottom: 1px solid #242F36;
+		}
 
 	& select {
 		margin-left: 20px;
@@ -236,6 +244,10 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
+
+	:hover {
+		box-shadow: 0 2px 5px -1px rgba(0,0,0,0.3);
+	}
 `
 export const Search = styled.div`
 	position: relative;

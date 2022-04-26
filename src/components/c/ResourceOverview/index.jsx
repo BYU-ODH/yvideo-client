@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, } from 'react'
 import Style, {
 	InnerContainer,
 	Column,
@@ -117,10 +117,12 @@ export class ResourceOverview extends PureComponent {
 								{/* <div><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></div> */}
 								<Type>
 									<h4>Type:</h4>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
+									{/* <span> */}
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" />Video</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" />Audio</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" />Image</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" />Text</TypeButton>
+									{/* </span> */}
 								</Type>
 
 								<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
