@@ -23,7 +23,7 @@
 		"not op_mini all"
 	],
 	"dependencies": {
-		"axios": "^0.21.1",
+		"axios": "^0.21.2",
 		"axois": "0.0.1-security",
 		"bootstrap": "^4.6.0",
 		"deep-object-diff": "^1.1.0",
