@@ -125,6 +125,10 @@ export const Help = styled.span`
     right: -3px;
     bottom: 5px;
 	}
+
+	:hover {
+		cursor: pointer;
+	}
 `
 
 export const MenuIcon = styled.div`

@@ -79,7 +79,7 @@ export default class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
+						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='12rem' width='21rem' heightSm='4.5rem' widthSm='6.5rem' />
 					</div>
 					<div>
 						{editing ?

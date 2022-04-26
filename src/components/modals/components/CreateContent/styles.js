@@ -239,14 +239,24 @@ export const Tab = styled.button`
 export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
+	box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+	border-radius: 3px;
 
-	:hover {
-		box-shadow: 0 2px 5px -1px rgba(0,0,0,0.3);
+	& > i {
+		margin-right: 3px;
+	}
+	& > i:firstchild {
+		margin-right: none;
+	}
+
+
+	:hover{
+		transition: .2s;
+		background-color: #f3f3f3;
 	}
 `
 export const Search = styled.div`

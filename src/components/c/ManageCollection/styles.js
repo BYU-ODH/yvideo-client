@@ -3,6 +3,8 @@ import logo from 'assets/hexborder.svg'
 import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
+	overflow: auto;
+
   & > header {
 		height: 12rem;
 		padding: 0 3.8rem;
@@ -149,13 +151,13 @@ export const Selector = styled.div`
 `
 
 export const NewContent = styled.button`
-  width: calc(100% - 4rem);
-  height: 6.1rem;
+  height: 12rem;
+  width: 21rem;
+
 
   margin: 2rem;
 
   border: none;
-  border-radius: 20px;
 
   background-color: #aaa;
 
@@ -166,6 +168,7 @@ export const NewContent = styled.button`
   cursor: pointer;
 
 	:hover {
+		transition: 0.5s;
 		background-color: #999;
 	}
 

@@ -68,32 +68,32 @@ export default class CreateContent extends PureComponent {
 				{tab === `url` &&
 					<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} className='create-content-form' id='create-content-form' >
 						<label htmlFor='create-content-title'>
-							<span>Title:</span>
+							<span><b>Title:</b></span>
 							<input className='url-title-input' id='create-content-title' type='text' name='title' value={title} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-type'>
-							<span>Type:</span>
+							<span><b>Type:</b></span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton className='url-type-video' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
-								<TypeButton className='url-type-audio' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
-								<TypeButton className='url-type-image' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
-								<TypeButton className='url-type-text' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
+								<TypeButton className='url-type-video std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" />Video</TypeButton>
+								<TypeButton className='url-type-audio std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" />Audio</TypeButton>
+								<TypeButton className='url-type-image std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" />Image</TypeButton>
+								<TypeButton className='url-type-text std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" />Text</TypeButton>
 							</div>
 						</label>
 
 						<label htmlFor='create-content-url'>
-							<span>URL:</span>
+							<span><b>URL:</b></span>
 							<input className='url-content-url' id='create-content-url' type='text' name='url' value={url} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-description'>
-							<span>Description</span>
+							<span><b>Description:</b></span>
 						</label>
 						<textarea className='url-content-description std-outline-color' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} />
 
 						<label htmlFor='create-content-keywords'>
-							<span>Tags</span>
+							<span><b>Tags</b></span>
 						</label>
 						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add tag...'/>
 						<div className='keywords-list'>
@@ -103,7 +103,7 @@ export default class CreateContent extends PureComponent {
 						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
 
 						<label>
-							<span>Target Language</span>
+							<span><b>Target Language:</b></span>
 							{
 								allLanguages &&
 									<select name='targetLanguage' onChange={handleTextChange} required>
@@ -118,8 +118,8 @@ export default class CreateContent extends PureComponent {
 						</label><br/>
 
 						<div>
-							<Button type='button' onClick={toggleModal}>Cancel</Button>
-							<Button type='submit' color={`#0582CA`}>Create</Button>
+							<Button type='button' className="std-outline-color" onClick={toggleModal}>Cancel</Button>
+							<Button type='submit' className="std-outline-color" color={`#0582CA`}>Create</Button>
 						</div>
 					</Form>
 				}
