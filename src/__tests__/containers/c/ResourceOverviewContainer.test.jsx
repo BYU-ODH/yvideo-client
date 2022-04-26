@@ -53,6 +53,6 @@ describe(`manage collection test`, () => {
 
 		// // make sure there is at least one file
 		expect(wrapper.find({className: `resource-name`}).props().children).toBe(`test resource name`)
-		wrapper.find({className: `resource-edit`}).at(0).simulate(`click`)
+		wrapper.find({id: `resource-edit`}).at(0).simulate(`click`)
 	})
 })

@@ -76,7 +76,7 @@ export class ResourceOverview extends PureComponent {
 										<RemoveButton className='remove-resource-button std-outline-color' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
 									</>
 								}
-								<EditButton className='resource-edit std-outline-color' onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
+								<EditButton id='resource-edit' className="std-outline-color" onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
 							</Buttons>
 						</Preview>
 					</Style>
@@ -117,12 +117,10 @@ export class ResourceOverview extends PureComponent {
 								{/* <div><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></div> */}
 								<Type>
 									<h4>Type:</h4>
-									{/* <span> */}
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" />Video</TypeButton>
+									<TypeButton type='button' className="std-outline-color" selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" /><>Video</></TypeButton>
 									<TypeButton type='button' className="std-outline-color" selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" />Audio</TypeButton>
 									<TypeButton type='button' className="std-outline-color" selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" />Image</TypeButton>
 									<TypeButton type='button' className="std-outline-color" selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" />Text</TypeButton>
-									{/* </span> */}
 								</Type>
 
 								<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>

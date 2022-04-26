@@ -180,8 +180,8 @@ export const NewContent = styled.button`
 `
 
 export const Icon = styled.div`
-  background: url(${plusIcon}) center no-repeat;
-  background-size: contain;
+  background: url(${plusIcon}) center;
+  background-size: 50px;
 
   height: 2rem;
   width: 2rem;

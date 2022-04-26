@@ -145,7 +145,7 @@ export default class CreateContent extends PureComponent {
 						</TableContainer>
 						<br/>
 						<label>
-							<span>Resource</span><br/>
+							<span><b>Resource</b></span><br/>
 							<div className='resource-content-remove'>
 								<input value={selectedResourceName} disabled required></input>
 								{
@@ -162,12 +162,12 @@ export default class CreateContent extends PureComponent {
 								</label>
 						}
 						<label>
-							<span>Display Title</span><br/>
+							<span><b>Display Title</b></span><br/>
 							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange}/>
 						</label>
 						<br/>
 						<label>
-							<span>Description</span><br/>
+							<span><b>Description</b></span><br/>
 							<textarea className='resource-content-description std-outline-color' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
 						</label><br/>
 						<label>
