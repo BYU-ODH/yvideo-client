@@ -57,6 +57,8 @@ border-radius: 3px;
 
 & > i {
 	margin-right: 3px;
+	font-weight: ${props => props.selected ? `500` : `300`};
+	color: ${props => props.selected ? `#0057B8` : `black`};
 }
 & > i:firstchild {
 	margin-right: none;

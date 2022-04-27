@@ -75,10 +75,10 @@ export default class CreateContent extends PureComponent {
 						<label htmlFor='create-content-type'>
 							<span><b>Type:</b></span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton className='url-type-video std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" />Video</TypeButton>
-								<TypeButton className='url-type-audio std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" />Audio</TypeButton>
-								<TypeButton className='url-type-image std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" />Image</TypeButton>
-								<TypeButton className='url-type-text std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" />Text</TypeButton>
+								<TypeButton className='url-type-video std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" data-type='video' />Video</TypeButton>
+								<TypeButton className='url-type-audio std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" data-type='audio' />Audio</TypeButton>
+								<TypeButton className='url-type-image std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" data-type='image' />Image</TypeButton>
+								<TypeButton className='url-type-text std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" data-type='text' />Text</TypeButton>
 							</div>
 						</label>
 
