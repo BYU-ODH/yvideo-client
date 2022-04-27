@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-
+import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
 import { Prompt } from 'react-router'
 
@@ -77,9 +77,11 @@ export default class ContentOverview extends PureComponent {
 
 		return (
 			<Style>
-				<Preview>
+				<Preview onClick={handleToggleEdit}>
 					<div>
-						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
+						<Link to={`/player/${content.id}`}>
+							<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
+						</Link>
 					</div>
 					<div>
 						{editing ?
