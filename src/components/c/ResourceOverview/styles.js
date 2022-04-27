@@ -62,7 +62,7 @@ export const EditButton = styled.button`
 
 	text-align: center !important;
 	& > span {
-		margin-left: .5rem;
+		margin-right: .1rem;
 	}
 `
 
@@ -149,7 +149,7 @@ export const RemoveButton = styled.button`
 	text-align: center !important;
 
 	& > span {
-		margin-left: .5rem;
+		margin-right: .1rem;
 	}
 `
 
@@ -162,7 +162,7 @@ export const FileUploadButton = styled.button`
 	text-align: center !important;
 
 	& > span {
-		margin-left: .5rem;
+		margin-right: .1rem;
 	}
 `
 

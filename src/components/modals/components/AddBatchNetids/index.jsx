@@ -11,7 +11,7 @@ export default class AddBatchNetids extends PureComponent {
 		return (
 			<Form onSubmit={ handleNewId }>
 				{/* <h1>Add Many</h1><br/> */}
-				<h3>Paste a list of netids, one per line. WAFFE</h3>
+				<h3>Paste a list of netids, one per line.</h3>
 				<br/>
 				<AddManyForm >
 					<textarea className='textarea' type='text' value={id} onChange={ e => handleIdChange(e.target.value) } />

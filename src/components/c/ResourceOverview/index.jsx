@@ -68,15 +68,15 @@ export class ResourceOverview extends PureComponent {
 								}
 							</div>
 							<Buttons>
+								<EditButton id='resource-edit' className="std-outline-color" onClick={handleToggleEdit}>{editing ? <SaveIcon/> : <></>}{editing ? `Save` : `Edit`}</EditButton>
 								{editing &&
 									<>
 										{/* TODO: need to figure out how it work on attaching files on resource */}
 										{/* <FileUploadButton className='file-attach-button' onClick={handleRegisterInstructors}>Register Instructor<PersonAddIcon/></FileUploadButton> */}
-										<FileUploadButton className='file-attach-button std-outline-color' onClick={handleFileUploadToResource}>Upload File<UploadIcon/></FileUploadButton>
-										<RemoveButton className='remove-resource-button std-outline-color' onClick={handleRemoveResource}>Delete<RemoveIcon/></RemoveButton>
+										<FileUploadButton className='file-attach-button std-outline-color' onClick={handleFileUploadToResource}><UploadIcon/>Upload File</FileUploadButton>
+										<RemoveButton className='remove-resource-button std-outline-color' onClick={handleRemoveResource}><RemoveIcon/>Delete</RemoveButton>
 									</>
 								}
-								<EditButton id='resource-edit' className="std-outline-color" onClick={handleToggleEdit}>{editing ? `Save` : `Edit`}{editing ? <SaveIcon/> : <></>}</EditButton>
 							</Buttons>
 						</Preview>
 					</Style>

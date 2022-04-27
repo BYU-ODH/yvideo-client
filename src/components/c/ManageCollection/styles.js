@@ -153,9 +153,14 @@ export const Selector = styled.div`
 export const NewContent = styled.button`
   height: 12rem;
   width: 21rem;
-
+	object-fit: cover;
+  object-position: center;
 
   margin: 2rem;
+
+	@media screen and (max-width: 1000px) {
+		margin: 1rem;
+	}
 
   border: none;
 
