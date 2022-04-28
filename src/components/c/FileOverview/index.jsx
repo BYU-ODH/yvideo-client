@@ -54,8 +54,8 @@ export class FileOverview extends PureComponent {
 					</Column>
 				</InnerContainer>
 				<div>
-					<EditButton className='edit-file-button' onClick={handleUpdateFile}>Update<SaveIcon/></EditButton>
-					<RemoveButton className='remove-file-button' onClick={handleRemoveFile}>Delete<RemoveIcon/></RemoveButton>
+					<EditButton className='edit-file-button' onClick={handleUpdateFile}><SaveIcon/>Update</EditButton>
+					<RemoveButton className='remove-file-button' onClick={handleRemoveFile}><RemoveIcon/>Delete</RemoveButton>
 				</div>
 			</BoxRow>
 		)
