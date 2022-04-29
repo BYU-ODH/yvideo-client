@@ -326,30 +326,30 @@ const VideoContainer = props => {
 
 	let count = 0 // this is to make sure that event listeners are applied only once
 
-	const handleHotKeys = (e) => {
-		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
-		switch (e.code) {
-		case `ArrowRight`:
-			// console.log(`new time`, playedTime + 1)
-			video.handleSeek(null, playedTime + 1)
-			break
-		case `ArrowLeft`:
-			// console.log(`new time`, playedTime - 1)
-			video.handleSeek(null, playedTime - 1)
-			break
-		case `Comma`:
-			// console.log(`new time`, playedTime - .1)
-			video.handleSeek(null, playedTime - .1)
-			break
-		case `Period`:
-			// console.log(`new time`, playedTime + .1)
-			video.handleSeek(null, playedTime + .1)
-			break
+	// const handleHotKeys = (e) => { /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */
+	// 	const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML) /*The hotkeys don't even work btw. */
+	// 	switch (e.code) {
+	// 	case `ArrowRight`:
+	// 		// console.log(`new time`, playedTime + 1)
+	// 		video.handleSeek(null, playedTime + 1)
+	// 		break
+	// 	case `ArrowLeft`:
+	// 		// console.log(`new time`, playedTime - 1)
+	// 		video.handleSeek(null, playedTime - 1)
+	// 		break
+	// 	case `Comma`:
+	// 		// console.log(`new time`, playedTime - .1)
+	// 		video.handleSeek(null, playedTime - .1)
+	// 		break
+	// 	case `Period`:
+	// 		// console.log(`new time`, playedTime + .1)
+	// 		video.handleSeek(null, playedTime + .1)
+	// 		break
 
-		default:
-			break
-		}
-	}
+	// 	default:
+	// 		break
+	// 	}
+	// }
 
 	useEffect(() => {
 		if(count === 0){
@@ -380,10 +380,10 @@ const VideoContainer = props => {
 					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
 				})
 			}
-			// checking video container and setting event listener for hot keys
-			window.addEventListener(`keyup`, (e) => {
-				handleHotKeys(e)
-			})
+			// // checking video container and setting event listener for hot keys
+			// window.addEventListener(`keyup`, (e) => {   /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */q
+			// 	handleHotKeys(e)													/*The hotkeys don't even work btw. */
+			// })
 		}
 
 		if(events) {
