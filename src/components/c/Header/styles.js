@@ -16,9 +16,11 @@ const Style = styled.div`
 	border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
 
 	position: fixed;
+	top: 0px;
+	right: 0px;
 	background-color: ${props => props.backgroundColor};
 
-	z-index: 16;
+	z-index: 25;
 
 	& > button {
 		background-color: #0157b8;

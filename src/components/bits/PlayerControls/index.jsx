@@ -15,6 +15,8 @@ import Style, {
 import clockIcon from 'assets/te-clock.svg'
 import startOverIcon from 'assets/start_over_icon.svg'
 import helpIcon from 'assets/help/help-icon-white.svg'
+import skipBack from 'assets/skip-back-white.svg'
+import skipForward from 'assets/skip-forward-white.svg'
 
 const PlayerControls = props => {
 
@@ -35,6 +37,7 @@ const PlayerControls = props => {
 		playbackRate,
 		indexToDisplay,
 		displaySubtitles,
+		subtitleTextIndex,
 		isMobile,
 		clipTime,
 		duration,
@@ -112,18 +115,63 @@ const PlayerControls = props => {
 		handleAspectRatio()
 	}
 
+	const handleSeekToSubtitle= (e) => {
+		let seekToIndex = 0
+
+		if(displaySubtitles && subtitleTextIndex !== undefined){
+			if(e.target.id === "prev-sub"){
+				if(subtitleTextIndex > 1){
+					seekToIndex = subtitleTextIndex - 1
+				}
+			}
+			else {
+				if(subtitleTextIndex < displaySubtitles.content.length - 1){
+					seekToIndex = subtitleTextIndex + 1
+				}
+				else {
+					seekToIndex = displaySubtitles.content.length - 1
+				}
+			}
+		}
+
+		let start = displaySubtitles.content[seekToIndex].start;
+		handleSeekChange(null, start + start * .001)
+	}
+
 	return (
 		<Style playing={playing} >
 
 			<Scrubber clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} />
 
 			<div className='left'>
-				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
+				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay}
+					onMouseEnter={e => handleShowTip(`play`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
 				<p className='play-time'>{playTime}</p>
-				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'/>
+				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
+					onMouseEnter={e => handleShowTip(`restart`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
+				{ subtitleTextIndex !== null &&
+				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Previous Subtitle"
+					onMouseEnter={e => handleShowTip(`prev-sub`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
+				}
+				{ subtitleTextIndex !== null &&
+				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Next Subtitle"
+					onMouseEnter={e => handleShowTip(`next-sub`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
+				}
+
 			</div>
 			<div className='right'>
-				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
+				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen}
+					onMouseEnter={e => handleShowTip(`fullscr`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
 				<Speed src={clockIcon} onClick={handleChangeSpeed}
 					onMouseEnter={e => handleShowTip(`playback-rate`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
@@ -146,12 +194,16 @@ const PlayerControls = props => {
 				<div className='menu-modal' onMouseLeave={e => setShowSpeed(false)}>
 					<h3>Playback Rate</h3>
 					<div>
-						<input type='button' value={3.0} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 3 ? `active-value` : ``}/><br/>
-						<input type='button' value={2.0} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 2 ? `active-value` : ``}/><br/>
-						<input type='button' value={1.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.5 ? `active-value` : ``}/><br/>
-						<input type='button' value='Normal' onClick={e => handlePlaybackRateChange(1)} className={playbackRate === 1 ? `active-value` : ``}/><br/>
 						<input type='button' value={0.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.5 ? `active-value` : ``}/><br/>
-						<input type='button' value={0.25} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.25 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.6} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.6 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.7} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.7 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.8} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.8 ? `active-value` : ``}/><br/>
+						<input type='button' value={0.9} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.9 ? `active-value` : ``}/><br/>
+						<input type='button' value='Normal' onClick={e => handlePlaybackRateChange(1)} className={playbackRate === 1 ? `active-value` : ``}/><br/>
+						<input type='button' value={1.25} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.25 ? `active-value` : ``}/><br/>
+						<input type='button' value={1.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.5 ? `active-value` : ``}/><br/>
+						<input type='button' value={1.75} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.75 ? `active-value` : ``}/><br/>
+						<input type='button' value={2.0} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 2 ? `active-value` : ``}/><br/>
 					</div>
 				</div>
 			}

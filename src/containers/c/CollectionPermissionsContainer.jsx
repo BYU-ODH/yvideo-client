@@ -73,21 +73,26 @@ const CollectionPermissionsContainer = props => {
 		handleDepartmentChange: e => {
 			setCourse({
 				...course,
-				department: e.target.value,
+				department: (e.target.value).toUpperCase(),
 			})
 			setIsEdited(true)
 		},
 		handleCatalogChange: e => {
 			setCourse({
 				...course,
-				catalog: e.target.value,
+				catalog: (e.target.value).toUpperCase(),
 			})
 			setIsEdited(true)
 		},
 		handleCatalogBlur: e => {
 			let catalog = e.target.value
-			if(catalog.length < 3 && catalog.length !== 0) {
-				for(let i = catalog.length; i < 3; i++)
+			let courseLength = 3
+			if (catalog.includes("r") || catalog.includes("R")) {
+				courseLength = 4
+			}
+
+			if(catalog.length < courseLength && catalog.length !== 0) {
+				for(let i = catalog.length; i < courseLength; i++)
 					catalog = `0${catalog}`
 
 				setCourse({
@@ -110,12 +115,13 @@ const CollectionPermissionsContainer = props => {
 		},
 		handleSectionBlur: e => {
 			let section = e.target.value
-			if(section.length < 2 && section.length !== 0) {
-				section = `0${section}`
+			if(section.length < 3 && section.length !== 0) {
+				for(let i = section.length; i < 3; i++)
+					section = `0${section}`
 
 				setCourse({
-					...course,
-					section,
+				...course,
+				section,
 				})
 			}
 		},
@@ -145,7 +151,7 @@ const CollectionPermissionsContainer = props => {
 		},
 		addCourse: e => {
 			e.preventDefault()
-			console.log(`here1`)
+
 			let {
 				department,
 				catalog,

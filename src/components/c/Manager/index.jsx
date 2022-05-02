@@ -44,21 +44,21 @@ export default class Manager extends PureComponent {
 
 		return (
 			<Container>
-				{ this.props.empty !== undefined ? (
+				{this.props.empty !== undefined ? (
 					<>
-						{ user ? (
+						{user ? (
 							<>
-								<h1 className='no-collections'>{ user.name } does not have any collections</h1>
+								<h1 className='no-collections'>{user.name} does not have any collections</h1>
 								<div id={`create-button`}>
 									<button onClick={createNew}>Create New Collection</button>
 								</div>
 							</>
 						) : (
 							<>
-								<Button onClick={createNew}><PlusIcon/>Collection</Button>
+								<Button onClick={createNew}><PlusIcon />Collection</Button>
 								<FeedbackMessage><p>There are no collections</p></FeedbackMessage>
 							</>
-						) }
+						)}
 					</>
 				) : (
 					<>
@@ -68,12 +68,12 @@ export default class Manager extends PureComponent {
 									<MenuIcon type='button' onClick={handleToggleSideBar}>Back</MenuIcon>
 									:
 									<SideMenu isOpen={isOpen}>
-										<CreateButton className='collection-create' onClick={createNew}><PlusIcon/>Collection</CreateButton>
+										<CreateButton className='collection-create' onClick={createNew}><PlusIcon />Collection</CreateButton>
 										<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 											<Help
-												onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
+												onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth })}
 												onMouseLeave={e => toggleTip()}
-											><img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
+											><img className='help-document' src={helpIcon} onClick={handleShowHelp} />
 											</Help>
 										</h4>
 
@@ -101,23 +101,21 @@ export default class Manager extends PureComponent {
 										null
 										:
 										collection ?
-
-											isLabAssistant ?
-												<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+											!isLabAssistant ?
+												<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 												:
-												<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+												<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 											:
 											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
 
 									:
 									collection ?
-										isLabAssistant ?
-											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+										!isLabAssistant ?
+											<ManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 											:
-											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived}/>
+											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 										:
 										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
-
 							}
 						</Body>
 					</>
