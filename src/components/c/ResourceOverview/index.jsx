@@ -64,7 +64,7 @@ export class ResourceOverview extends PureComponent {
 								{editing ?
 									<ResourceTitle><h4>Title:</h4><TitleEdit className="std-outline-color"type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
 									:
-									<h4 className='resource-name'>{resourceName}</h4>
+									<h4 id='resource-name'>{resourceName}</h4>
 								}
 							</div>
 							<Buttons>

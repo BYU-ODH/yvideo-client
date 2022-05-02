@@ -75,10 +75,10 @@ export default class CreateContent extends PureComponent {
 						<label htmlFor='create-content-type'>
 							<span><b>Type:</b></span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton className='url-type-video std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" data-type='video' />Video</TypeButton>
-								<TypeButton className='url-type-audio std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" data-type='audio' />Audio</TypeButton>
-								<TypeButton className='url-type-image std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" data-type='image' />Image</TypeButton>
-								<TypeButton className='url-type-text std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" data-type='text' />Text</TypeButton>
+								<TypeButton id='url-type-video' className='std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" data-type='video' />Video</TypeButton>
+								<TypeButton id='url-type-audio' className='std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" data-type='audio' />Audio</TypeButton>
+								<TypeButton id='url-type-image' className='std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" data-type='image' />Image</TypeButton>
+								<TypeButton id='url-type-text' className='std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" data-type='text' />Text</TypeButton>
 							</div>
 						</label>
 
@@ -90,7 +90,7 @@ export default class CreateContent extends PureComponent {
 						<label htmlFor='create-content-description'>
 							<span><b>Description:</b></span>
 						</label>
-						<textarea className='url-content-description std-outline-color' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} />
+						<textarea id='create-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={4} />
 
 						<label htmlFor='create-content-keywords'>
 							<span><b>Tags</b></span>
@@ -168,7 +168,7 @@ export default class CreateContent extends PureComponent {
 						<br/>
 						<label>
 							<span><b>Description</b></span><br/>
-							<textarea className='resource-content-description std-outline-color' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
+							<textarea id='resource-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
 						</label><br/>
 						<label>
 
@@ -200,14 +200,14 @@ export default class CreateContent extends PureComponent {
 
 						<div>
 
-							<Button className='url-content-cancel std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
+							<Button id='url-content-cancel' className='std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
 							{targetLanguage.length > 0 ?
 								(
-									<Button className='url-content-create std-outline-color' type='submit' color={`#0582CA`}>Create</Button>
+									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#0582CA`}>Create</Button>
 								)
 								:
 								(
-									<Button className='url-content-create std-outline-color' type='submit' color={`#A0A0A0`} disabled>Create</Button>
+									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#A0A0A0`} disabled>Create</Button>
 								)
 							}
 						</div>

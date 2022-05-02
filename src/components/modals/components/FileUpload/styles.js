@@ -52,7 +52,9 @@ export const Button = styled.button`
 
 export const Upload = styled.div`
 
-	& .files-input {
+	& .files{ position:relative }
+
+	& #files-input {
 		/* outline: 2px dashed #92b0b3; */
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
@@ -62,8 +64,6 @@ export const Upload = styled.div`
 		margin-left: 10px;
     width: 70% !important;
 	}
-
-	& .files{ position:relative }
 `
 
 export const CategorySelect = styled.select`

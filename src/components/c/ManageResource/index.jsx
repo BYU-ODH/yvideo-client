@@ -42,9 +42,9 @@ export class ManageResource extends PureComponent {
 						/>
 					</Help>
 
-					<Search className='resource-search-submit std-outline-color' id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
+					<Search id='searchSubmit' className='std-outline-color' onSubmit={handleSubmit} isMobile={isMobile}>
 						<SearchIcon />
-						<input className='resource-search-input std-outline-color' type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
+						<input id='resource-search-input' className='std-outline-color' type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
 						<button className="std-outline-color" type='submit'>Search</button>
 					</Search>
 

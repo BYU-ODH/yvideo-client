@@ -296,9 +296,6 @@ export const InnerContainer = styled.div`
 		flex-wrap: wrap;
 	}
 
-	& .tag-input {
-	}
-
 	@media screen and (max-width: 1000px) {
 		display: flex;
 		flex-direction: column;
@@ -338,7 +335,7 @@ export const Column = styled.div`
 		border-bottom: 1px solid #c4c4c4;
 	}
 
-	& .add-tag {
+	& #add-tag {
 		border-radius: 10px;
     font-size: 1.3rem;
     color: white;
