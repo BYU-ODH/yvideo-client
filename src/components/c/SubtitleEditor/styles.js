@@ -45,7 +45,7 @@ export const Timeline = styled.div`
 	overflow-x: hidden;
 
 	& .zoom-controls {
-		width: calc(100% - 35rem);
+		width: calc(100% - 35rem - 1px);
 		height: 40px;
 		display: flex;
 		left: 0px;

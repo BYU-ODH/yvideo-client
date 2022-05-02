@@ -52,20 +52,21 @@ export const Search = styled.div`
 `
 
 export const InputForm = styled.div`
-	position: relative;
-	display: inline;
+	position: absolute;
+	top: 50px;
+	margin-top: 31px;
+	left: 50px;
 
 	& > input {
 		background: white;
 		border-radius: 1.3rem;
-		border: none;
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 		height: 2.6rem;
 		margin-bottom: 1rem;
 		margin-right: 2rem;
 		padding-left: 1rem;
 		padding-right: 1rem;
-		width: 14rem;
+		width: 23rem;
 		z-index: 1;
 	}
 `
@@ -154,6 +155,9 @@ export const Button = styled.button`
 	border: none;
 	outline: none;
 	cursor: pointer;
+	position: absolute;
+	top: 16px;
+  right: 12px;
 `
 
 export const FeedbackMessage = styled.div`
@@ -167,15 +171,16 @@ export const FeedbackMessage = styled.div`
 		margin: auto;
 	}
 `
+
 export const Form = styled.form`
 	display: grid;
-	/* grid: repeat(3, 1fr) / 1fr; */
 	grid-gap: 2rem;
 
 	min-width: 30rem;
-	min-height: 35rem;
-	max-height: 70rem;
+	min-height: 20rem;
+	max-height: 25rem;
 	overflow: scroll;
+	scroll-behavior: smooth;
 
 	& input, select {
 		flex: 5;
@@ -200,28 +205,39 @@ export const Form = styled.form`
 		justify-content: space-between;
 	}
 
+	& > h2 {
+		position: absolute;
+		top: 50px;
+	}
+
 	.keywords-list {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: start;
 		max-width: 30rem;
 
-		& > span {
-			color: white;
-			background-color: #0582CA;
-			padding: .5rem .75rem;
-			border-radius: 1.2rem;
-			margin: 0 .5rem 0 0;
-			display: flex;
-			align-items: center;
-		}
+	& > span {
+		color: white;
+		background-color: #0582CA;
+		padding: .5rem .75rem;
+		border-radius: 1.2rem;
+		margin: 0 .5rem 0 0;
+		display: flex;
+		align-items: center;
 	}
+
+`
+
+export const Hr = styled.hr`
+	position: absolute;
+	top: 50px;
+	width: 29.8rem;
+	margin-top: 76px;
+	border: 1px solid lightgray;
 `
 
 export const Table = styled.table`
 	background: white;
-	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
-	border-radius: 10px;
 	width: 100%;
 
 	& th {
@@ -240,9 +256,10 @@ export const Table = styled.table`
 
 export const RegisteredListTable = styled.table`
 	background: white;
-	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
 	border-radius: 10px;
 	width: 100%;
+	margin-top: 15px;
+
 
 	& th {
 		padding: 1.5rem;
@@ -252,9 +269,17 @@ export const RegisteredListTable = styled.table`
 	}
 
 	& td {
-		padding: 1.5rem;
+		padding-top: .5rem;
+		padding-bottom: .5rem;
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
 		font-size: 1.4rem;
 		text-align: center;
+
+	& > tbody {
+		position: relative:
+		padding-bottom: 50px;
+	}
 
 	}
 `

@@ -6,6 +6,8 @@ import {
 	RemoveIcon,
 	RegisteredListTable,
 	InputForm,
+	Hr,
+	Div,
 	AddButton,
 	RemoveButton,
 } from './styles'
@@ -62,6 +64,7 @@ export default class ManageInstructors extends PureComponent {
 					<Button type='submit' onClick={toggleModal} color={`#0582CA`}>Save</Button>
 				</div>
 			</Form>
+
 		)
 	}
 }
