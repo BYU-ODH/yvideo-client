@@ -116,21 +116,21 @@ describe(`VideoContainer test`, () => {
 
 	document.getElementById = jest.fn(() => scrubberMock)
 
-	const map1 = {}
-	window.addEventListener = jest.fn((event, cb) => {
-		map1[event] = cb
-	})
+	// const map1 = {}
+	// window.addEventListener = jest.fn((event, cb) => {
+	// 	map1[event] = cb
+	// })
 
-	it(`keyup`, () => {
-		setup()
-		act(() => {
-			map1.keyup({ code: `ArrowRight` })
-			map1.keyup({ code: `ArrowLeft` })
-			map1.keyup({ code: `Comma` })
-			map1.keyup({ code: `Period` })
-			map1.keyup({ code: `default` })
-		})
-	})
+	// it(`keyup`, () => {
+	// 	setup()
+	// 	act(() => {
+	// 		map1.keyup({ code: `ArrowRight` })
+	// 		map1.keyup({ code: `ArrowLeft` })
+	// 		map1.keyup({ code: `Comma` })
+	// 		map1.keyup({ code: `Period` })
+	// 		map1.keyup({ code: `default` })
+	// 	})
+	// })
 
 	it(`wrapper simulate click`, ()=> {
 		const wrapper = setup()
