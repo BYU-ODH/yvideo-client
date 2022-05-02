@@ -1,11 +1,14 @@
-// import React from 'react'
-// import { mount } from 'enzyme'
-// import VideoContainer from '../../../../components/c/VideoContainer'
-// import { BrowserRouter} from 'react-router-dom'
-// import { Provider } from 'react-redux'
-// import * as testutil from '../../../testutil/testutil'
-// import { act } from 'react-dom/test-utils'
+import React from 'react'
+import { mount } from 'enzyme'
+import VideoContainer from '../../../../components/c/VideoContainer'
+import { BrowserRouter} from 'react-router-dom'
+import { Provider } from 'react-redux'
+import * as testutil from '../../../testutil/testutil'
+import { act } from 'react-dom/test-utils'
 
+const var1 = 1
+const var2 = 2
+expect(var1).toEqual(var2)
 // const props = {
 // 	url: `url`,
 // 	getDuration: jest.fn(),
@@ -168,3 +171,4 @@
 // 		wrapper.find(`.blank`).at(0).prop(`onClick`)({ clientX: 60, clientY: 50 })
 // 	})
 // })
+// 
