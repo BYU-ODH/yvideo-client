@@ -398,7 +398,7 @@ const VideoContainer = props => {
 		if(wrap)
 			wraplisten.observe(wrap)
 		return function cleanup(){
-			window.removeEventListener(`keyup`, (e) => {}, false)
+			// window.removeEventListener(`keyup`, (e) => {}, false)
 		}
 	}, [duration])
 
