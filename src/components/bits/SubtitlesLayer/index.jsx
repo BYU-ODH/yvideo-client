@@ -137,7 +137,7 @@ const SubtitlesLayer = props => {
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
-				onDrag={(e, d) => handleDrag(d, event, index)}
+				onDragStop={(e, d) => handleDrag(d, event, index)}
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
@@ -150,6 +150,13 @@ const SubtitlesLayer = props => {
 				)
 				}
 			</Rnd>
+		)
+	}
+
+	const testPrint = (event, index) => {
+		return(
+			<div className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`} key={index} style={{width: `${(event.end - event.start)/videoLength * layerWidth}px`, height: `46px`,left:`${event.start}% !important`,top: `-${layerHeight}px !important`}} onClick={() => toggleEditor(layerIndex, index)} >
+			</div>
 		)
 	}
 
@@ -166,6 +173,7 @@ const SubtitlesLayer = props => {
 										<div key={index}
 										>
 											{printEvents(event, index)}
+											{/* {testPrint(event, index)} */}
 										</div>
 									))}
 								</>

@@ -27,8 +27,34 @@ export const Style = styled.div`
 		height: 30px;
 		position: absolute;
 		border-right: 2px solid var(--light-blue);
-		background-size: 200px 100%; */
+		background-size: 200px 100%;
 		border-bottom: 1px dashed var(--light-blue);
+
+		& .timemarker{
+			color: var(--light-blue);
+			font-size: 1rem;
+			position: absolute;
+			top:0px;
+			height:100%;
+			display:inherit;
+					-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+			& .tickbar{
+				width: 1px;
+				background-color: var(--light-blue);
+				height:100%;
+				margin:0;
+			}
+			&.time{
+				top: 5px;
+
+			}
+		}
+
 	}
 
 	& .layer-event {

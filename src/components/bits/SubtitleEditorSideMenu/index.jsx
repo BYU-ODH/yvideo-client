@@ -36,7 +36,7 @@ const SubtitleEditorSideMenu = props => {
 			document.getElementById(`focus`).focus()
 
 	}, [index, event])
-
+	console.log(`render sub side menu`)
 	const editSub = (side, time, value, layer, ind, type) => {
 		const sub = {...event}
 		if (side === `beg`) {

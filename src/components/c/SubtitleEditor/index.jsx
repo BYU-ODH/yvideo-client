@@ -59,6 +59,7 @@ const SubtitleEditor = props => {
 	const scrollRef = useRef()
 
 	useEffect(() => {
+		console.log(`renderingsub`)
 		function handleResize() {
 			setZoomFactor(0)
 			setWidth(0)
@@ -127,10 +128,13 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const openSubEditor = (layerIndex,subIndex) =>{
+		const t1 = performance.now()
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
+		const t2 = performance.now()
+		console.log(`side editor`, t2-t1)
 	}
 	const closeSideEditor = () => {
 		setSideEditor(false)
@@ -168,6 +172,7 @@ const SubtitleEditor = props => {
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
+		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
@@ -183,29 +188,41 @@ const SubtitleEditor = props => {
 			else
 				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
 
-			if(!zoom){
-				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-				timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
+			// if(!zoom){
+			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
+			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
 
-				allLayers.forEach((element, i) => {
-					allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-				})
-			} else {
-				scrubber.scrollLeft = currentLayerWidth * direction
-				timeIndicator.scrollLeft = currentLayerWidth * direction
+			// 	allLayers.forEach((element, i) => {
+			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
+			// 	})
+			// } else {
+			// 	scrubber.scrollLeft = currentLayerWidth * direction
+			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
 
-				allLayers.forEach((element, i) => {
-					allLayers[i].scrollLeft = currentLayerWidth * direction
-				})
-			}
+			// 	allLayers.forEach((element, i) => {
+			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
+			// 	})
+			// }
+
+			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
+
+			const dis = direction/scrollBarContainer
+			console.log(direction, dis,currentLayerWidth)
+			scrubber.scrollLeft = currentLayerWidth * dis
+			timeIndicator.scrollLeft = currentLayerWidth * dis
+
+			allLayers.forEach((element, i) => {
+				allLayers[i].scrollLeft = currentLayerWidth * dis
+			})
 		}
 	}
 
 	const updateSubs = (index, sub, subLayerIndex, side, type) => {
+		const t1=performance.now()
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-
+		const t1_1 = performance.now()
 		try {
 			if(side === `beg`) {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
@@ -223,9 +240,11 @@ const SubtitleEditor = props => {
 				}
 			}
 		} catch (e) {
-			console.error(`updateSubs error`)
+			console.error(`updateSubs error`,e)
 		}
-
+		const t1_2 = performance.now()
+		console.log(`part 1`, t1_2-t1_1)
+		const t2_1 = performance.now()
 		if(side===`beg` && needCheck === true) {
 			if(sub.start===``){
 				document.getElementById(`subStart${index}`).style.border=`2px solid red`
@@ -282,23 +301,31 @@ const SubtitleEditor = props => {
 				}
 			}
 		}
+		const t2_2 = performance.now()
+		console.log(`part 2`, t2_2-t2_1)
+		const t3_1 = performance.now()
 
 		if(needCheck){
 			const updateSub = {sub, side}
-			checkSubError(tempSubs, `update`, index, updateSub)
+			// checkSubError(tempSubs, `update`, index, updateSub)
 		} else
 			setDisableSave(true)
-
+		const t3_2 = performance.now()
+		console.log(`part 3`, t3_2-t3_1)
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
-
-		setSubs(tempSubs)
-		setAllSubs(tempSubs)
+		const t2=performance.now()
+		const t3=performance.now()
+		// setSubs(tempSubs)
+		// setAllSubs(tempSubs)
 		setSubChanges(subChanges+1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setBlock(true)
+		const t4=performance.now()
+		console.log(`updating time`,t4-t3)
+		console.log(t2-t1)
 	}
 
 	const addSubToLayer = (index, subIndex, position) => {
@@ -470,7 +497,7 @@ const SubtitleEditor = props => {
 					}
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
-					setAllSubs(tempSubList)
+					// setAllSubs(tempSubList)
 				}else {
 					const tempSubList = [...subtitles]
 					const tempSub = {
@@ -532,7 +559,6 @@ const SubtitleEditor = props => {
 			return subtitles[0][`content`][0]
 		else
 			return subtitles[subLayerToEdit][`content`][subToEdit]
-
 	}
 	const handleChangeSubIndex = (index,subLayer) =>{
 		setSubToEdit(index)
@@ -620,7 +646,7 @@ const SubtitleEditor = props => {
 	const handleAllowEvents = () => {
 		setAllowEvents(!allowEvents)
 	}
-
+	console.log(`rendering1`)
 	return (
 		<Style>
 			<span style={{ zIndex: 0 }}>
@@ -751,6 +777,18 @@ const SubtitleEditor = props => {
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
+								<div className={`zoom-scroll-container`}>
+									<Rnd
+										className= 'zoom-scroll-indicator'
+										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+										bounds = {`parent`}
+										onDragStop = {(e,d)=>{
+											handleScrollFactor(d.x)
+										}}
+									>
+									</Rnd>
+								</div>
 							</div>
 							<div id={`time-indicator-container`}>
 								<div id={`layer-time-indicator`}>
