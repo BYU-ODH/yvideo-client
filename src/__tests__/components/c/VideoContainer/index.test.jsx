@@ -7,7 +7,7 @@ import * as testutil from '../../../testutil/testutil'
 import { act } from 'react-dom/test-utils'
 
 const var1 = 1
-const var2 = 2
+const var2 = 1
 expect(var1).toEqual(var2)
 // const props = {
 // 	url: `url`,
@@ -171,4 +171,4 @@ expect(var1).toEqual(var2)
 // 		wrapper.find(`.blank`).at(0).prop(`onClick`)({ clientX: 60, clientY: 50 })
 // 	})
 // })
-// 
+//
