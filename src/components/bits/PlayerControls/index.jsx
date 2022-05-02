@@ -119,22 +119,20 @@ const PlayerControls = props => {
 		let seekToIndex = 0
 
 		if(displaySubtitles && subtitleTextIndex !== undefined){
-			if(e.target.id === "prev-sub"){
-				if(subtitleTextIndex > 1){
+			if(e.target.id === `prev-sub`){
+				if(subtitleTextIndex > 1)
 					seekToIndex = subtitleTextIndex - 1
-				}
-			}
-			else {
-				if(subtitleTextIndex < displaySubtitles.content.length - 1){
+
+			} else {
+				if(subtitleTextIndex < displaySubtitles.content.length - 1)
 					seekToIndex = subtitleTextIndex + 1
-				}
-				else {
+				 else
 					seekToIndex = displaySubtitles.content.length - 1
-				}
+
 			}
 		}
 
-		let start = displaySubtitles.content[seekToIndex].start;
+		const start = displaySubtitles.content[seekToIndex].start
 		handleSeekChange(null, start + start * .001)
 	}
 
@@ -154,13 +152,13 @@ const PlayerControls = props => {
 					onMouseLeave={e => toggleTip()}
 				/>
 				{ subtitleTextIndex !== null &&
-				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Previous Subtitle"
+				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt='Previous Subtitle'
 					onMouseEnter={e => handleShowTip(`prev-sub`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
 				}
 				{ subtitleTextIndex !== null &&
-				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Next Subtitle"
+				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt='Next Subtitle'
 					onMouseEnter={e => handleShowTip(`next-sub`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
@@ -176,12 +174,14 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`playback-rate`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
+				{ subtitleTextIndex !== null &&
 				<ClosedCaptions
 					isCaptions={isCaption}
 					onClick={ isAdmin || isProf ? handleChangeCaption : handleToggleSubtitles}
 					onMouseEnter={e => handleShowTip(`closed-captions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
+				}
 				{ isMobile &&
 				<Book onClick={handleToggleTranscript}/>}
 				{ isMobile &&
