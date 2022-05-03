@@ -20,7 +20,7 @@ export default class Header extends PureComponent {
 
 		return (
 			<Style backgroundColor={backgroundColor} border={border}>
-				<LogoWrapper to='/'>
+				<LogoWrapper className="std-outline-color" to='/'>
 					<Logo />
 					<Name>YVIDEO</Name>
 					<Shadow>YVIDEO</Shadow>

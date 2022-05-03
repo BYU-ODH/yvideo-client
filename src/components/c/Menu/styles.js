@@ -67,6 +67,7 @@ export default Style
 
 export const LinkStyled = styled(Link)`
 	margin-bottom: 1rem;
+	width: fit-content;
 
 	text-decoration: none;
 	font-weight: 300;
@@ -85,9 +86,9 @@ export const LogoutButton = styled.button`
 	padding: 0;
 	width: fit-content;
 	text-decoration: none;
-	outline: none;
 	font-weight: 300;
 	color: #FF6161;
+	outline-color: #FF6161;
 	background: transparent;
 	border: none;
 	cursor: pointer;

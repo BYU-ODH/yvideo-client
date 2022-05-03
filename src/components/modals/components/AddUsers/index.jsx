@@ -29,7 +29,7 @@ export default class AddUsers extends PureComponent {
 				{!isSubmitted &&<h3>Paste a list of usernames, one per line.</h3>}
 				<br/>
 				<AddManyForm >
-					<textarea className='textarea' type='text' value={usernames} onChange={ e => handleIdChange(e.target.value) } />
+					<textarea className='textarea std-outline-color' type='text' value={usernames} onChange={ e => handleIdChange(e.target.value) } />
 					{
 						addedUsersResult.failResult && addedUsersResult.failResult.length > 0 ?
 							<textarea className='submit-result' readOnly={true} value={`Failed\n${addedUsersResult.failResult}`}/>
@@ -52,8 +52,8 @@ export default class AddUsers extends PureComponent {
 				<br/>
 
 				<div>
-					<CloseButton type='button' onClick={handleClose}>Close</CloseButton>
-					<SubmitButton type='submit' color={`#0582CA`} disabled={isSubmitted} >Submit</SubmitButton>
+					<CloseButton className="std-outline-color" type='button' onClick={handleClose}>Close</CloseButton>
+					<SubmitButton className="std-outline-color" type='submit' color={`#0582CA`} disabled={isSubmitted} >Submit</SubmitButton>
 				</div>
 
 			</Form>

@@ -80,8 +80,6 @@ export const AddButton = styled.button`
 	border: none;
 	border-radius: 1.3rem;
 
-	outline: none;
-
 	${props => props.disabled ? `` : `cursor: pointer;`}
 
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
@@ -105,6 +103,7 @@ export const RemoveIcon = styled.span`
 	background: url(${removeIcon}) center no-repeat;
 	height: 2.5rem;
 	width: 2rem;
+	outline: 1px black;
 `
 
 const TextButton = css`
@@ -171,10 +170,6 @@ export const FeedbackMessage = styled.div`
 		font-size: 20px;
 		margin: auto;
 	}
-`
-
-export const Div = styled.div`
-	padding-top: 88px;
 `
 
 export const Form = styled.form`

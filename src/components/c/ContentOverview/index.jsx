@@ -79,7 +79,7 @@ export default class ContentOverview extends PureComponent {
 			<Style>
 				<Preview>
 					<div>
-						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
+						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='12rem' width='21rem' heightSm='4.5rem' widthSm='6.5rem' />
 					</div>
 					<div>
 						{editing ?
@@ -108,7 +108,7 @@ export default class ContentOverview extends PureComponent {
 						</LinksWrapper>
 					}
 					{!editing && <SettingsIcon onClick={handleToggleEdit} />}
-					<EditButton className='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : ``}</EditButton>
+					<EditButton id='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : ``}</EditButton>
 				</Preview>
 				{editing &&
 					<InnerContainer>
@@ -121,18 +121,18 @@ export default class ContentOverview extends PureComponent {
 							</div>
 							<h4>
 								Allow automatic definitions
-								<SwitchToggle className='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
+								<SwitchToggle id='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
 							</h4>
 							<h4>
 								Captions
-								<SwitchToggle className='captions-toggle'on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
+								<SwitchToggle id='captions-toggle'on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
 							</h4>
 						</Column>
 						<Column>
 							<h4>Tags</h4>
 							<div style={{ display: `flex` }}>
-								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} className='tag-input' />
-								<button className={`add-tag`} onClick={addTag}>Add</button>
+								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} id='tag-input' />
+								<button id={`add-tag`} onClick={addTag}>Add</button>
 							</div>
 							<br/>
 							<div className='tags'>

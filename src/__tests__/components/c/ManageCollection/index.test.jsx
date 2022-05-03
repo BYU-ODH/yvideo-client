@@ -148,9 +148,9 @@ describe(`manage collection test`, () => {
 			</Provider>,
 		)
 
-		wrapper.find(`.content-button`).simulate('click')
-		wrapper.find(`.permissions-button`).simulate('mouseEnter')
-		wrapper.find(`.permissions-button`).simulate('mouseLeave')
+		wrapper.find(`#content-button`).simulate('click')
+		wrapper.find(`#permissions-button`).simulate('mouseEnter')
+		wrapper.find(`#permissions-button`).simulate('mouseLeave')
 		wrapper.find(Icon).simulate('mouseEnter')
 		wrapper.find(Icon).simulate('mouseLeave')
 		wrapper.find('h6').simulate('click')

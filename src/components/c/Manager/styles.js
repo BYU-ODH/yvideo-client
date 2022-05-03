@@ -8,7 +8,7 @@ export const Container = styled.div`
 	padding-top: 8.4rem;
 	display: flex;
 
-	& .no-collections {
+	& #no-collections {
 		text-align: center;
 		width: 80%;
 		margin: 5% 10% 2% 10%;
@@ -124,6 +124,10 @@ export const Help = styled.span`
     position: absolute;
     right: -3px;
     bottom: 5px;
+	}
+
+	:hover {
+		cursor: pointer;
 	}
 `
 

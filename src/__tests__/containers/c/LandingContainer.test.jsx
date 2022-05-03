@@ -29,7 +29,7 @@ describe(`LandingContainer test`, () => {
 
 		expect(wrapper.text().includes(`YVIDEO`)).toBe(true)
 
-		wrapper.find({className: `primary`}).at(0).simulate(`click`)
+		wrapper.find({id: `primary`}).at(0).simulate(`click`)
 
 		// click 'About' to show toggle modal
 		expect(wrapper.find(`Overlay`).length).toBe(0)
