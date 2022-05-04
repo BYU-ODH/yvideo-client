@@ -144,14 +144,34 @@ const PlayerControls = props => {
 			<Scrubber clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} />
 
 			<div className='left'>
-				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
+				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay}
+					onMouseEnter={e => handleShowTip(`play`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
 				<p className='play-time'>{playTime}</p>
-				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'/>
-				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Previous Subtitle"/>
-				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Next Subtitle"/>
+				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
+					onMouseEnter={e => handleShowTip(`restart`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
+				{ subtitleTextIndex !== null &&
+				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Previous Subtitle"
+					onMouseEnter={e => handleShowTip(`prev-sub`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
+				}
+				{ subtitleTextIndex !== null &&
+				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt="Next Subtitle"
+					onMouseEnter={e => handleShowTip(`next-sub`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
+				}
+
 			</div>
 			<div className='right'>
-				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen} />
+				<Fullscreen fullscreen={fullscreen} onClick={handleToggleFullscreen}
+					onMouseEnter={e => handleShowTip(`fullscr`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+					onMouseLeave={e => toggleTip()}
+				/>
 				<Speed src={clockIcon} onClick={handleChangeSpeed}
 					onMouseEnter={e => handleShowTip(`playback-rate`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}

@@ -87,9 +87,9 @@ describe(`collection container test`, () => {
 
 		expect(wrapper.find(`ResourceOverviewContainer`).length).toBe(2)
 
-		wrapper.find({className: `resource-search-input`}).simulate(`change`, {target: {value: `search text`}})
-		expect(wrapper.find({className: `resource-search-input`}).props().value).toBe(`search text`)
+		wrapper.find({id: `resource-search-input`}).simulate(`change`, {target: {value: `search text`}})
+		expect(wrapper.find({id: `resource-search-input`}).props().value).toBe(`search text`)
 
-		wrapper.find({className: `resource-search-submit`}).at(0).simulate(`click`)
+		wrapper.find({id: `searchSubmit`}).at(0).simulate(`click`)
 	})
 })

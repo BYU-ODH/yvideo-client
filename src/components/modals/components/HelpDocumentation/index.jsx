@@ -21,8 +21,8 @@ export default class HelpDocumentation extends PureComponent {
 
 		return (
 			<>
-				<Back>
-					<Container id='help-documentation-container' onScroll={this.handleScroll}>
+				<Back onClick={this.props.toggleModal}>
+					<Container id='help-documentation-container' onClick={e => {e.stopPropagation()}} onScroll={this.handleScroll}>
 						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
 						<div id='content'>
 						</div>

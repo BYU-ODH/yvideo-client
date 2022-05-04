@@ -5,7 +5,7 @@ import { BrowserRouter} from 'react-router-dom'
 
 let viewstate = {
 	category:{
-		Collectios:{
+		Collections:{
 			name: `Collections`,
 			placeholder: `Search for a collection`,
 			url: `collection`,
