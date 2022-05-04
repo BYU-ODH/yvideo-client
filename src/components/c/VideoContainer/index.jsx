@@ -326,30 +326,30 @@ const VideoContainer = props => {
 
 	let count = 0 // this is to make sure that event listeners are applied only once
 
-	// const handleHotKeys = (e) => { /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */
-	// 	const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML) /*The hotkeys don't even work btw. */
-	// 	switch (e.code) {
-	// 	case `ArrowRight`:
-	// 		// console.log(`new time`, playedTime + 1)
-	// 		video.handleSeek(null, playedTime + 1)
-	// 		break
-	// 	case `ArrowLeft`:
-	// 		// console.log(`new time`, playedTime - 1)
-	// 		video.handleSeek(null, playedTime - 1)
-	// 		break
-	// 	case `Comma`:
-	// 		// console.log(`new time`, playedTime - .1)
-	// 		video.handleSeek(null, playedTime - .1)
-	// 		break
-	// 	case `Period`:
-	// 		// console.log(`new time`, playedTime + .1)
-	// 		video.handleSeek(null, playedTime + .1)
-	// 		break
+	const handleHotKeys = (e) => {
+		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
+		switch (e.code) {
+		case `ArrowRight`:
+			// console.log(`new time`, playedTime + 1)
+			video.handleSeek(null, playedTime + 1)
+			break
+		case `ArrowLeft`:
+			// console.log(`new time`, playedTime - 1)
+			video.handleSeek(null, playedTime - 1)
+			break
+		case `Comma`:
+			// console.log(`new time`, playedTime - .1)
+			video.handleSeek(null, playedTime - .1)
+			break
+		case `Period`:
+			// console.log(`new time`, playedTime + .1)
+			video.handleSeek(null, playedTime + .1)
+			break
 
-	// 	default:
-	// 		break
-	// 	}
-	// }
+		default:
+			break
+		}
+	}
 
 	useEffect(() => {
 		if(count === 0){
@@ -406,7 +406,6 @@ const VideoContainer = props => {
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
 				<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):``} ref={videoRef}>
-					{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
 							censorValues = {censorPosition}
@@ -428,7 +427,6 @@ const VideoContainer = props => {
 					</div>
 				</Blank>
 			</div>
-			{/* console.log(editorType) */}
 
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 
