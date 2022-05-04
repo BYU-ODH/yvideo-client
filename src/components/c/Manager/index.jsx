@@ -48,7 +48,7 @@ export default class Manager extends PureComponent {
 					<>
 						{user ? (
 							<>
-								<h1 className='no-collections'>{user.name} does not have any collections</h1>
+								<h1 id='no-collections'>{user.name} does not have any collections</h1>
 								<div id={`create-button`}>
 									<button onClick={createNew}>Create New Collection</button>
 								</div>
@@ -68,26 +68,26 @@ export default class Manager extends PureComponent {
 									<MenuIcon type='button' onClick={handleToggleSideBar}>Back</MenuIcon>
 									:
 									<SideMenu isOpen={isOpen}>
-										<CreateButton className='collection-create' onClick={createNew}><PlusIcon />Collection</CreateButton>
-										<h4 className='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
+										<CreateButton id='collection-create' className='std-outline-color' onClick={createNew}><PlusIcon />Collection</CreateButton>
+										<h4 id='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 											<Help
 												onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth })}
 												onMouseLeave={e => toggleTip()}
-											><img className='help-document' src={helpIcon} onClick={handleShowHelp} />
+											><img id='help-document' src={helpIcon} onClick={handleShowHelp} />
 											</Help>
 										</h4>
 
-										<Accordion className='collection-published' header={`Published`} active>
-											{sideLists.published.map(({ id, name }, index) => <div key={index}><Link className={`${id === activeId ? `active-collection link` : `link`}`} onClick={handleToggleSideBar} to={`/${path}/${id}`} >{name}</Link></div>)}
+										<Accordion id='collection-published' className='std-outline-color' header={`Published`} active>
+											{sideLists.published.map(({ id, name }, index) => <div key={index}><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`} onClick={handleToggleSideBar} to={`/${path}/${id}`} >{name}</Link></div>)}
 										</Accordion>
 
 										<Accordion header={`Unpublished`} active>
-											{sideLists.unpublished.map(({ id, name }, index) => <div key={index} ><Link className={`${id === activeId ? `active-collection link` : `link`}`} onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
+											{sideLists.unpublished.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`}std-outline-color`} onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
 										</Accordion>
 
 										{
 											admin && <Accordion header={`Archived`}>
-												{sideLists.archived.map(({ id, name }, index) => <div key={index} ><Link className={`${id === activeId ? `active-collection link` : `link`}`} to={`/${path}/${id}`} >{name}</Link></div>)}
+												{sideLists.archived.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`}std-outline-color`} to={`/${path}/${id}`} >{name}</Link></div>)}
 											</Accordion>
 										}
 
@@ -106,7 +106,7 @@ export default class Manager extends PureComponent {
 												:
 												<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 											:
-											<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
+											<NoCollection id='no-collections-body'>Select a Collection to get started.</NoCollection>
 
 									:
 									collection ?
@@ -115,7 +115,7 @@ export default class Manager extends PureComponent {
 											:
 											<LabAssistantManageCollectionContainer collection={collection} published={collection.published} archived={collection.archived} />
 										:
-										<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>
+										<NoCollection id='no-collections-body'>Select a Collection to get started.</NoCollection>
 							}
 						</Body>
 					</>

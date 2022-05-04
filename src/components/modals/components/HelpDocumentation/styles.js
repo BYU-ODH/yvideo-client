@@ -161,6 +161,9 @@ export const CloseHelp = styled.span`
     top: 10px;
     right: 20px;
 	}
+	:hover {
+		cursor: pointer;
+	}
 `
 
 export const Tutorial = styled.div`

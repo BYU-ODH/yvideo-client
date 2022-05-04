@@ -37,13 +37,13 @@ describe(`manage collection test`, () => {
 
 	it(`FileOverviewContainer should render`, ()=> {
 		// make sure there is at least one file
-		expect(wrapper.find({className: `file-column`}).length).not.toBe(0)
+		expect(wrapper.find({id: `file-column`}).length).not.toBe(0)
 
 		// TODO: need to figure out how to check that if the drop down menu is changed. It trigers the function, but not sure where that is stored.
 		wrapper.find({className: `file-change-lang`}).at(1).simulate(`change`, {target: {value: `lang2`}})
 
-		wrapper.find({className: `edit-file-button`}).at(1).simulate(`click`)
+		wrapper.find({id: `edit-file-button`}).at(1).simulate(`click`)
 
-		wrapper.find({className: `remove-file-button`}).at(1).simulate(`click`)
+		wrapper.find({id: `remove-file-button`}).at(1).simulate(`click`)
 	})
 })
