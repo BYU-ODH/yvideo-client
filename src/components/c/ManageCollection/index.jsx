@@ -151,8 +151,8 @@ export default class ManageCollection extends PureComponent {
 							}
 							{isContentTab && (
 								<NewContent
-									id="newcontent-button"
-									className="std-outline-color"
+									id='newcontent-button'
+									className='std-outline-color'
 									onClick={createContent}
 									onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x + 5, y: e.target.getBoundingClientRect().y + 30, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}>
