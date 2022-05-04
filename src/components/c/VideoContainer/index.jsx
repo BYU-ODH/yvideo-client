@@ -380,10 +380,10 @@ const VideoContainer = props => {
 					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
 				})
 			}
-			// // checking video container and setting event listener for hot keys
-			// window.addEventListener(`keyup`, (e) => {   /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */q
-			// 	handleHotKeys(e)													/*The hotkeys don't even work btw. */
-			// })
+			// checking video container and setting event listener for hot keys
+			window.addEventListener(`keyup`, (e) => {
+				handleHotKeys(e)
+			})
 		}
 
 		if(events) {
@@ -398,7 +398,7 @@ const VideoContainer = props => {
 		if(wrap)
 			wraplisten.observe(wrap)
 		return function cleanup(){
-			// window.removeEventListener(`keyup`, (e) => {}, false)
+			window.removeEventListener(`keyup`, (e) => {}, false)
 		}
 	}, [duration])
 
