@@ -1,6 +1,6 @@
 import styled, { keyframes, css} from 'styled-components'
 import { Link } from 'react-router-dom'
-
+import saveIcon from 'assets/save.svg'
 import translation from 'assets/translation.svg'
 import captions from 'assets/captions.svg'
 import annotations from 'assets/annotations.svg'
@@ -145,6 +145,23 @@ export const EditButton = styled.button`
 	${TextButton}
 
 	font-size: 1.5rem;
+	font-weight: bold;
+  display: flex;
+	position: absolute;
+	right: 0;
+	margin-right: 5rem;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center !important;
+  & > span {
+    margin-right: .1rem;
+  }
+`
+export const SaveIcon = styled.span`
+  background: url(${saveIcon}) center no-repeat;
+  height: 1.8rem;
+  width: 1.65rem;
 `
 
 export const Icon = styled.li`
