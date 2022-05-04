@@ -104,7 +104,6 @@ const SkipLayer = props => {
 		}
 		return ticks
 	}
-	console.log(tickArray)
 	return (
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>

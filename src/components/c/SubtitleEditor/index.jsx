@@ -59,7 +59,6 @@ const SubtitleEditor = props => {
 	const scrollRef = useRef()
 
 	useEffect(() => {
-		console.log(`renderingsub`)
 		function handleResize() {
 			setZoomFactor(0)
 			setWidth(0)
@@ -128,13 +127,20 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const openSubEditor = (layerIndex,subIndex) =>{
+		console.log(`sub editor`)
 		const t1 = performance.now()
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
 		const t2 = performance.now()
-		console.log(`side editor`, t2-t1)
+		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
+		const allSubsContainer = document.getElementById(`allSubs`)
+		if(active){
+			console.log(`top-`,active.offsetTop,`-`,active)
+			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight*0.5
+		}else console.log(`u suk`)
+		// console.log(`side editor`, t2-t1)
 	}
 	const closeSideEditor = () => {
 		setSideEditor(false)
@@ -301,8 +307,6 @@ const SubtitleEditor = props => {
 				}
 			}
 		}
-		const t2_2 = performance.now()
-		console.log(`part 2`, t2_2-t2_1)
 		const t3_1 = performance.now()
 
 		if(needCheck){
@@ -324,8 +328,8 @@ const SubtitleEditor = props => {
 		activeUpdate(subLayerIndex)
 		setBlock(true)
 		const t4=performance.now()
-		console.log(`updating time`,t4-t3)
-		console.log(t2-t1)
+		// console.log(`updating time`,t4-t3)
+		// console.log(t2-t1)
 	}
 
 	const addSubToLayer = (index, subIndex, position) => {
@@ -646,7 +650,6 @@ const SubtitleEditor = props => {
 	const handleAllowEvents = () => {
 		setAllowEvents(!allowEvents)
 	}
-	console.log(`rendering1`)
 	return (
 		<Style>
 			<span style={{ zIndex: 0 }}>
@@ -783,7 +786,7 @@ const SubtitleEditor = props => {
 										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 										bounds = {`parent`}
-										onDragStop = {(e,d)=>{
+										onDrag = {(e,d)=>{
 											handleScrollFactor(d.x)
 										}}
 									>
