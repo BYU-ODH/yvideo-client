@@ -380,10 +380,10 @@ const VideoContainer = props => {
 					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
 				})
 			}
-			// checking video container and setting event listener for hot keys
-			window.addEventListener(`keyup`, (e) => {
-				handleHotKeys(e)
-			})
+			// // checking video container and setting event listener for hot keys
+			// window.addEventListener(`keyup`, (e) => {   /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */q
+			// 	handleHotKeys(e)													/*The hotkeys don't even work btw. */
+			// })
 		}
 
 		if(events) {
@@ -398,7 +398,7 @@ const VideoContainer = props => {
 		if(wrap)
 			wraplisten.observe(wrap)
 		return function cleanup(){
-			window.removeEventListener(`keyup`, (e) => {}, false)
+			// window.removeEventListener(`keyup`, (e) => {}, false)
 		}
 	}, [duration])
 
@@ -406,7 +406,6 @@ const VideoContainer = props => {
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
 				<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):``} ref={videoRef}>
-					{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
 							censorValues = {censorPosition}
@@ -428,7 +427,6 @@ const VideoContainer = props => {
 					</div>
 				</Blank>
 			</div>
-			{/* console.log(editorType) */}
 
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 
