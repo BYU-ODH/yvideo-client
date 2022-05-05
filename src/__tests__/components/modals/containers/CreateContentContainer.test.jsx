@@ -66,11 +66,11 @@ describe(`CreateContentContainer test`, () => {
 
 		// changes button changes
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.contentType).toBe(`video`)
-		wrapper.find({className: `url-type-audio`}).at(0).simulate(`click`)
+		wrapper.find({id: `url-type-audio`}).at(0).simulate(`click`)
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.contentType).toBe(`audio`)
-		wrapper.find({className: `url-type-image`}).at(0).simulate(`click`)
+		wrapper.find({id: `url-type-image`}).at(0).simulate(`click`)
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.contentType).toBe(`image`)
-		wrapper.find({className: `url-type-text`}).at(0).simulate(`click`)
+		wrapper.find({id: `url-type-text`}).at(0).simulate(`click`)
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.contentType).toBe(`text`)
 
 		// changes url
@@ -80,7 +80,7 @@ describe(`CreateContentContainer test`, () => {
 
 		// changes description
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.description).toBe(``)
-		wrapper.find({className: `url-content-description`}).at(0).simulate(`change`, {target: { name: `description`, value: `description changed`}})
+		wrapper.find({id: `create-content-description`}).at(0).simulate(`change`, {target: { name: `description`, value: `description changed`}})
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.description).toBe(`description changed`)
 
 		// TODO: this need to be checked again later
@@ -106,9 +106,9 @@ describe(`CreateContentContainer test`, () => {
 		// TODO: create new content target language need to be updated
 		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
 
-		wrapper.find({className: `url-content-create`}).at(0).simulate(`click`)
+		wrapper.find({id: `url-content-create`}).at(0).simulate(`click`)
 
-		wrapper.find({className: `url-content-cancel`}).at(0).simulate(`click`)
+		wrapper.find({id: `url-content-cancel`}).at(0).simulate(`click`)
 	})
 
 	it(`should rerender when new content is added`, ()=> {

@@ -29,7 +29,7 @@ describe(`ManageFilesContainer test`, () => {
 			</Provider>,
 		)
 
-		expect(wrapper.find({className: `file-column`}).length).toBeGreaterThanOrEqual(2)
-		wrapper.find({className: `manage-files-cancel`}).at(0).simulate(`click`)
+		expect(wrapper.find({id: `file-column`}).length).toBeGreaterThanOrEqual(2)
+		wrapper.find({id: `manage-files-cancel`}).at(0).simulate(`click`)
 	})
 })

@@ -33,7 +33,7 @@ describe(`FileUploadContainer test`, () => {
 
 		// upload file
 		expect(wrapper.find(`FileUpload`).props().viewstate.selectedFile).toBe(undefined)
-		wrapper.find({className : `files-input`}).simulate(`change`, {target: { name: `file`, files: [`first file added`]}})
+		wrapper.find({id : `files-input`}).simulate(`change`, {target: { name: `file`, files: [`first file added`]}})
 		expect(wrapper.find(`FileUpload`).props().viewstate.selectedFile).toBe(`first file added`)
 
 		// select file version

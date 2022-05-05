@@ -4,9 +4,8 @@ import {
 	Form,
 	Button,
 	TypeButton,
-	WarningLable,
+	WarningLabel,
 } from './styles'
-
 export default class CreateResource extends PureComponent {
 
 	render() {
@@ -29,6 +28,10 @@ export default class CreateResource extends PureComponent {
 			toggleModal,
 		} = this.props.handlers
 
+		let isSelected = false
+		const select = () => {
+			isSelected = !isSelected
+		}
 		// TODO: search list all the resources related to the email
 		return (
 			<>
@@ -48,10 +51,11 @@ export default class CreateResource extends PureComponent {
 					<label htmlFor='create-resource-type'>
 						<span>Type</span>
 						<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-							<TypeButton id='create-resource-type-video' type='button' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
-							<TypeButton id='create-resource-type-audio' type='button' selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
-							<TypeButton id='create-resource-type-image' type='button' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
-							<TypeButton id='create-resource-type-text' type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
+							<TypeButton className="std-outline-color" id='create-resource-type-video' type='button' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" data-type='video' />Video</TypeButton>
+							<TypeButton className="std-outline-color" id='create-resource-type-audio' type='button' selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" data-type='audio' />Audio</TypeButton>
+							<TypeButton className="std-outline-color" id='create-resource-type-image' type='button' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" data-type='image' />Image</TypeButton>
+							<TypeButton className="std-outline-color" id='create-resource-type-text' type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" data-type='text' />Text</TypeButton>
+							{/* {console.log(TypeButton.data.type)} */}
 						</div>
 					</label>
 
@@ -62,15 +66,15 @@ export default class CreateResource extends PureComponent {
 					<textarea id='create-resource-metadata' name='metadata' value={metadata} onChange={handleTextChange} rows={4} required /> */}
 
 					<div>
-						<Button id='create-resource-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+						<Button className="std-outline-color" id='create-resource-cancel' type='button' onClick={toggleModal}>Cancel</Button>
 						{resourceName ?
-							<Button id='create-resource-create' type='submit' color={`#0582CA`}>Create</Button>
+							<Button className="std-outline-color" id='create-resource-create' type='submit' color={`#0582CA`}>Create</Button>
 							:
-							<Button id='create-resource-create' disabled={resourceName === undefined} type='submit' color={`#A0A0A0`}>Create</Button>
+							<Button className="std-outline-color" id='create-resource-create disabled' disabled={resourceName === undefined} type='submit' color={`#A0A0A0`}>Create</Button>
 						}
 					</div>
 				</Form>
-				{!isCorrectUsername && <WarningLable>'{requesterEmail}' does not exist. Please try again.</WarningLable> }
+				{!isCorrectUsername && <WarningLabel>'{requesterEmail}' does not exist. Please try again.</WarningLabel> }
 			</>
 		)
 	}

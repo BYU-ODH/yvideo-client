@@ -49,6 +49,9 @@ export default class ManageCollection extends PureComponent {
 			toggleTip,
 		} = this.props.handlers
 
+		content.sort((a, b) => {
+			return a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ? 1 : -1
+		})
 		return (
 			<Style>
 				<header>
@@ -57,10 +60,10 @@ export default class ManageCollection extends PureComponent {
 							// TODO When switching between collections, it uses the same value
 							<TitleEdit
 								type='text'
+								id={`title-edit`}
 								value={collectionName}
 								contenteditable='true'
 								onChange={handleNameChange}
-								className={`title-edit`}
 								onKeyPress={event => {
 									if (event.key === `Enter`) toggleEdit()
 								}}
@@ -71,9 +74,9 @@ export default class ManageCollection extends PureComponent {
 							<h6 onClick={e => toggleEdit(e)}>{collectionName}</h6>
 						)}
 						<TitleEditButton
+							id={`title-edit-button`}
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
-							className={`title-edit-button`}
 							onMouseEnter={e => handleShowTip(`collection-edit-name`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 							onMouseLeave={e => toggleTip()}
 						>
@@ -85,7 +88,7 @@ export default class ManageCollection extends PureComponent {
 							<>
 								{ user.roles !== undefined ? (
 									<>{user.roles === 0 || user.roles === 1 ? (
-										<ArchiveButton className={`archive-button`} onClick={unarchive}>Unarchive</ArchiveButton>
+										<ArchiveButton id={`archive-button`} className={`std-outline-color`} onClick={unarchive}>Unarchive</ArchiveButton>
 									) : ( <p>Cannot unarchive</p> )}
 									</>
 								) : null }
@@ -96,21 +99,22 @@ export default class ManageCollection extends PureComponent {
 									<PublishButton
 										published={collection.published}
 										onClick={togglePublish}
-										className={`publish-button`}
+										id={`publish-button`}
+										className={`std-outline-color`}
 										onMouseEnter={e => handleShowTip(`collection-publish`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth})}
 										onMouseLeave={e => toggleTip()}
 									>
 										{collection.published ? `Unpublish` : `Publish`}
 									</PublishButton>
 								): (<></>)}
-								<ArchiveButton className={`archive-button`} onClick={archive}>Archive</ArchiveButton>
+								<ArchiveButton id={`archive-button`} className={`std-outline-color`} onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
 					</Publish>
 				</header>
 				<TabHeader>
-					<button className={`content-button`} onClick={setTab(true)}>Content</button>
-					<button className={`permissions-button`} onClick={setTab(false)}
+					<button id={`content-button`} className={`std-outline-color`} onClick={setTab(true)}>Content</button>
+					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}
 						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					>Permissions</button>
@@ -149,13 +153,13 @@ export default class ManageCollection extends PureComponent {
 								null
 							}
 							{isContentTab && (
-								<NewContent className={`newcontent-button`}
+								<NewContent
+									id="newcontent-button"
+									className="std-outline-color"
 									onClick={createContent}
-									onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x + 5, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x + 5, y: e.target.getBoundingClientRect().y + 30, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}>
-									<Icon src={plus}
-
-									/>
+									<Icon />
 								</NewContent>
 							)}
 						</Tab>

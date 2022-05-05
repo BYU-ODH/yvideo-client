@@ -62,16 +62,16 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 
 		// switching back and forth Content and Permissions componenets
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
-		const permissionsButton = wrapper.find({"className" : `permissions-button`})
+		const permissionsButton = wrapper.find({"id" : `permissions-button`})
 		permissionsButton.simulate(`click`)
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(false)
 
-		const contentButton = wrapper.find({"className" : `content-button`})
+		const contentButton = wrapper.find({"id" : `content-button`})
 		contentButton.simulate(`click`)
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 
 		// test craete content button for initigating togglemodal
-		// wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
+		// wrapper.find({"id" : `newcontent-button`}).at(0).simulate(`click`)
 		// setTimeout(() => {
 		// 	expect(wrapper.props().children.props.toggleModal).toHaveBeenCalled()
 		// }, 500)
@@ -87,18 +87,18 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 		)
 
 		// TODO: this need to be fixed. This is not checking the change that triggered.
-		wrapper.find({"className" : `archive-button`}).at(0).simulate(`click`)
-		wrapper.find({"className" : `publish-button`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `archive-button`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `publish-button`}).at(0).simulate(`click`)
 
 		// click edit button, so you can edit the title
-		expect(wrapper.find({"className" : `title-edit`}).length).toBe(0)
-		wrapper.find({"className" : `title-edit-button`}).at(0).simulate(`click`)
-		expect(wrapper.find({"className" : `title-edit`}).length).not.toBe(0)
+		expect(wrapper.find({"id" : `title-edit`}).length).toBe(0)
+		wrapper.find({"id" : `title-edit-button`}).at(0).simulate(`click`)
+		expect(wrapper.find({"id" : `title-edit`}).length).not.toBe(0)
 
 		// edit title
-		expect(wrapper.find({"className" : `title-edit`}).at(0).props().value).toBe(`Collection 1`)
-		wrapper.find({"className" : `title-edit`}).at(0).simulate(`change`, {target: {value: `collection title is changed`}})
-		expect(wrapper.find({"className" : `title-edit`}).at(0).props().value).toBe(`collection title is changed`)
+		expect(wrapper.find({"id" : `title-edit`}).at(0).props().value).toBe(`Collection 1`)
+		wrapper.find({"id" : `title-edit`}).at(0).simulate(`change`, {target: {value: `collection title is changed`}})
+		expect(wrapper.find({"id" : `title-edit`}).at(0).props().value).toBe(`collection title is changed`)
 	})
 })
 

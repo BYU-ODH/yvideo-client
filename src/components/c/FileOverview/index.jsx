@@ -31,7 +31,7 @@ export class FileOverview extends PureComponent {
 			<BoxRow>
 				<InnerContainer>
 
-					<Column className='file-column'>
+					<Column id='file-column'>
 
 						<div>
 							<h4>Name:</h4> {file[`metadata`]}
@@ -54,8 +54,8 @@ export class FileOverview extends PureComponent {
 					</Column>
 				</InnerContainer>
 				<div>
-					<EditButton className='edit-file-button' onClick={handleUpdateFile}>Update<SaveIcon/></EditButton>
-					<RemoveButton className='remove-file-button' onClick={handleRemoveFile}>Delete<RemoveIcon/></RemoveButton>
+					<EditButton id='edit-file-button' onClick={handleUpdateFile}><SaveIcon/>Update</EditButton>
+					<RemoveButton id='remove-file-button' onClick={handleRemoveFile}><RemoveIcon/>Delete</RemoveButton>
 				</div>
 			</BoxRow>
 		)
