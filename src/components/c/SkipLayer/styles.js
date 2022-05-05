@@ -12,7 +12,7 @@ export const Style = styled.div`
 	height: auto;
 	z-index: 0;
 	overflow-x: scroll;
-	scroll-behavior: smooth;
+	/* scroll-behavior: smooth; */
 	border-bottom: 1px dashed var(--light-blue);
 
 	& .eventsbox {

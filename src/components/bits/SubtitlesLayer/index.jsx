@@ -40,6 +40,7 @@ const SubtitlesLayer = props => {
 
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
+		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
 		const beginTimePercentage = d.x /layerWidth*100*videoLength/100
@@ -78,6 +79,7 @@ const SubtitlesLayer = props => {
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
+		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
 		const difference = delta.width/layerWidth*100*videoLength/100

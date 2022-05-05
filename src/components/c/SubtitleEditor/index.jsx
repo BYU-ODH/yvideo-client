@@ -25,6 +25,7 @@ const SubtitleEditor = props => {
 		eventsArray,
 		currentContent,
 		subs,
+		aspectRatio,
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
@@ -54,7 +55,7 @@ const SubtitleEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 	const [deleteTitle, setDeleteTitle] = useState(``)
 	const [allowEvents, setAllowEvents] = useState(true)
-
+	const [scrollSub,setScrollSub] = useState(null)
 	// refs
 	const scrollRef = useRef()
 
@@ -83,7 +84,12 @@ const SubtitleEditor = props => {
 			initialLayers.push([i])
 
 		setEvents(allEvents)
-
+		if(subtitles[0]){
+			if (subtitles[0][`content`][0])
+				openSubEditor(0,0)
+		}
+		if(document.getElementById(`blankContainer`))
+			document.getElementById(`blankContainer`).style.width = `100%`
 		if(blockLeave)
 			window.onbeforeunload = () => true
 		else
@@ -93,7 +99,7 @@ const SubtitleEditor = props => {
 			window.onbeforeunload = undefined
 		}
 
-	}, [eventsArray, blockLeave, isEdit])
+	}, [eventsArray, blockLeave, isEdit,subtitles])
 	// end of useEffect
 
 	const getVideoDuration = (duration) => {
@@ -187,6 +193,7 @@ const SubtitleEditor = props => {
 			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
+			const skipLayer = document.getElementById(`layer-skip`)
 			let currentLayerWidth
 
 			if(document.getElementsByClassName(`events`).length > 1)
@@ -220,6 +227,7 @@ const SubtitleEditor = props => {
 			allLayers.forEach((element, i) => {
 				allLayers[i].scrollLeft = currentLayerWidth * dis
 			})
+			skipLayer.scrollLeft = currentLayerWidth * dis
 		}
 	}
 
@@ -650,10 +658,29 @@ const SubtitleEditor = props => {
 	const handleAllowEvents = () => {
 		setAllowEvents(!allowEvents)
 	}
+	const handleSubProgress = (currentTime) => {
+		let sub
+		if (subtitles){
+			sub = subtitles[subLayerToEdit].content.findIndex((event)=> currentTime > event.start && currentTime <event.end)
+			if (sub !== -1){
+				if (scrollSub !== sub){
+					setScrollSub(sub)
+					setSubToEdit(sub)
+					const subcontainer = document.getElementById(`allSubs`)
+					if(subcontainer)
+						subcontainer.scrollTop = document.getElementById(`sub-${subLayerToEdit}-${sub}`).offsetTop - subcontainer.offsetHeight * 0.5
+				}
+			}
+		}
+	}
+	console.log(aspectRatio)
 	return (
 		<Style>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
+					ref={el=>{
+						console.log(el)
+					}}
 					className='video'
 					url={props.viewstate.url}
 					getDuration={getVideoDuration}
@@ -666,6 +693,8 @@ const SubtitleEditor = props => {
 					eventToEdit={null}
 					activeCensorPosition = {activeCensorPosition}
 					editorType={`subtitle`}
+					handleSubProgress = {handleSubProgress}
+					aspectRatio={aspectRatio}
 				>
 				</VideoContainer>
 				<SubtitlesModal

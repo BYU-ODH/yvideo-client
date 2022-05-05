@@ -29,6 +29,7 @@ const VideoContainer = props => {
 		handleScroll,
 		editorType,
 		aspectRatio,
+		handleSubProgress,
 	} = props
 
 	const ref = useRef(null)
@@ -153,6 +154,9 @@ const VideoContainer = props => {
 					event.active = true
 				})
 			}
+			if(typeof handleSubProgress === `function`)
+				handleSubProgress(playedSeconds)
+
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
@@ -265,6 +269,7 @@ const VideoContainer = props => {
 
 		},
 		handleAspectRatio: ()=>{
+			console.log(`aspect ratio working`,aspectRatio)
 			const cont = document.getElementById(`blankContainer`)
 			if (!cont || !aspectRatio)
 				return
