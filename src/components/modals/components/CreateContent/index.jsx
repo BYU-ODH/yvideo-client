@@ -75,10 +75,10 @@ export default class CreateContent extends PureComponent {
 						<label htmlFor='create-content-type'>
 							<span><b>Type:</b></span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton id='url-type-video' className='std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" data-type='video' />Video</TypeButton>
-								<TypeButton id='url-type-audio' className='std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" data-type='audio' />Audio</TypeButton>
-								<TypeButton id='url-type-image' className='std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" data-type='image' />Image</TypeButton>
-								<TypeButton id='url-type-text' className='std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" data-type='text' />Text</TypeButton>
+								<TypeButton id='url-type-video' className='std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className='fa fa-video' data-type='video' />Video</TypeButton>
+								<TypeButton id='url-type-audio' className='std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className='fa fa-headphones' data-type='audio' />Audio</TypeButton>
+								<TypeButton id='url-type-image' className='std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className='fa fa-image' data-type='image' />Image</TypeButton>
+								<TypeButton id='url-type-text' className='std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className='fa fa-text-width' data-type='text' />Text</TypeButton>
 							</div>
 						</label>
 
@@ -118,8 +118,8 @@ export default class CreateContent extends PureComponent {
 						</label><br/>
 
 						<div>
-							<Button type='button' className="std-outline-color" onClick={toggleModal}>Cancel</Button>
-							<Button type='submit' className="std-outline-color" color={`#0582CA`}>Create</Button>
+							<Button type='button' className='std-outline-color' onClick={toggleModal}>Cancel</Button>
+							<Button type='submit' className='std-outline-color' color={`#0582CA`}>Create</Button>
 						</div>
 					</Form>
 				}
@@ -182,7 +182,7 @@ export default class CreateContent extends PureComponent {
 											{
 												resourceFiles.map(
 													(element, index) =>
-														<option value={element[`id`]} key={index}>{`${element[`file-version`]}: ${element[`metadata`]}`}</option>,
+														<option value={element[`id`]} key={index}>{`${element[`file-version`]}${element[`metadata`] ? `: ` : ``} ${element[`metadata`]}`}</option>,
 												)
 											}
 										</select>
