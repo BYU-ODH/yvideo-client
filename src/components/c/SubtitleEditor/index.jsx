@@ -184,7 +184,8 @@ const SubtitleEditor = props => {
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
@@ -217,7 +218,7 @@ const SubtitleEditor = props => {
 			// 	})
 			// }
 
-			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
+			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
 			const dis = direction/scrollBarContainer
 			console.log(direction, dis,currentLayerWidth)
@@ -257,7 +258,6 @@ const SubtitleEditor = props => {
 			console.error(`updateSubs error`,e)
 		}
 		const t1_2 = performance.now()
-		console.log(`part 1`, t1_2-t1_1)
 		const t2_1 = performance.now()
 		if(side===`beg` && needCheck === true) {
 			if(sub.start===``){
@@ -323,7 +323,6 @@ const SubtitleEditor = props => {
 		} else
 			setDisableSave(true)
 		const t3_2 = performance.now()
-		console.log(`part 3`, t3_2-t3_1)
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 		const t2=performance.now()
@@ -673,7 +672,6 @@ const SubtitleEditor = props => {
 			}
 		}
 	}
-	console.log(aspectRatio)
 	return (
 		<Style>
 			<span style={{ zIndex: 0 }}>
@@ -809,7 +807,7 @@ const SubtitleEditor = props => {
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div className={`zoom-scroll-container`}>
+								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
 										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
