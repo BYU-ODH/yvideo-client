@@ -155,7 +155,7 @@ export const EditButton = styled.button`
 
   text-align: center !important;
   & > span {
-    margin-right: .1rem;
+    margin-right: .4rem;
   }
 `
 export const SaveIcon = styled.span`

@@ -111,7 +111,7 @@ export default class ContentOverview extends PureComponent {
 						</LinksWrapper>
 					}
 					{!editing && <SettingsIcon onClick={handleToggleEdit} />}
-					<EditButton id='edit-button' onClick={handleToggleEdit}>{editing ? <SaveIcon/> : <></>}{editing ? `Save` : ``}</EditButton>
+					<EditButton id='edit-button' onClick={handleToggleEdit}>{editing ? <><SaveIcon/>Save</> : <></>}</EditButton>
 				</Preview>
 				{editing &&
 					<InnerContainer>

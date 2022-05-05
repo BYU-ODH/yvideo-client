@@ -78,7 +78,7 @@ export default class ManageCollection extends PureComponent {
 							onMouseEnter={e => handleShowTip(`collection-edit-name`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 							onMouseLeave={e => toggleTip()}
 						>
-							{isEditingCollectionName ? <SaveIcon/> : <></>}{isEditingCollectionName ? `Save` : `Edit`}
+							{isEditingCollectionName ? <><SaveIcon/>Save</> : `Edit`}
 						</TitleEditButton>
 					</Title>
 					<Publish>

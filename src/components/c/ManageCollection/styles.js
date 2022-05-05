@@ -63,7 +63,7 @@ export const TitleEditButton = styled.div`
 
   text-align: center !important;
   & > span {
-    margin-right: .1rem;
+    margin-right: .2rem;
   }
 `
 
