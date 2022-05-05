@@ -41,6 +41,7 @@ const PlayerControls = props => {
 		isMobile,
 		clipTime,
 		duration,
+		events,
 	} = props.viewstate
 
 	const {
@@ -141,8 +142,7 @@ const PlayerControls = props => {
 	return (
 		<Style playing={playing} >
 
-			<Scrubber clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} />
-
+			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} />
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
 				<p className='play-time'>{playTime}</p>

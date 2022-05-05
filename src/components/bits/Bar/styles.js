@@ -59,3 +59,14 @@ export const BarClip = styled.div.attrs(props => ({
 	transition: all ${transSpeed} linear;
 	height: ${barActive};
 `
+
+export const BarSkippedGrey = styled.div.attrs(props => ({
+	style: {
+		width: `${(props.end - props.start) / props.duration * 100}%`,
+		left: `${(props.start) / props.duration * 100}%`,
+	},
+}))`
+	position: absolute;
+	background-color:grey;
+	height: ${barActive};
+	`
