@@ -32,7 +32,7 @@ export class Feedback extends PureComponent {
 					<h1>Submit Feedback</h1>
 						<input className='user-info' type='text' placeholder='Name' required onChange={ e => setName(e.target.value)}/><br/>
 						<input className='user-info' type='email' placeholder='Your Email' required onChange={ e => setEmail(e.target.value)}/><br/>
-						<input className='user-info' type='text' placeholder='Subject' required onChange={ e => setTitle(`[Y-video ]` + e.target.value)}/>
+						<input className='user-info' type='text' placeholder='Subject' required onChange={ e => setTitle(`[Y-video] ` + e.target.value)}/>
 					<div>
 						<textarea
 							id='feedback-body'
