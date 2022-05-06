@@ -29,6 +29,7 @@ const SubtitlesEditorContainer = props => {
 		contentError,
 		subtitleError,
 		setBreadcrumbs,
+		getFiles,
 	} = props
 
 	const {id} = useParams() // content id
@@ -40,6 +41,7 @@ const SubtitlesEditorContainer = props => {
 	const [subs,setSubs] = useState([])
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
+	const [aspectRatio,setAspectRatio] = useState([16,9])
 
 	const getAllSubtitles = async() => {
 		const testsubs = await getSubtitles(id)
@@ -59,7 +61,17 @@ const SubtitlesEditorContainer = props => {
 
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
-			else {
+			if(content[id].url.includes(`youtube`)){
+				const fetchData = async() => {
+					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`,{method:`GET`})
+					const data = await rawData.json()
+					if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
+						setAspectRatio([data.width,data.height])
+
+					return data
+				}
+				const d =fetchData()
+			} else {
 				setKey(``)
 				setUrl(``)
 				// CHECK RESOURCE ID
@@ -74,6 +86,13 @@ const SubtitlesEditorContainer = props => {
 				}
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+				const files = Promise.resolve(getFiles(sKey)).then((value)=>{
+					if (value){
+						const file = value.find(element => element[`file-version`].includes(content[id].settings.targetLanguage) !== false)
+						if (file[`aspect-ratio`])
+							setAspectRatio(file[`aspect-ratio`].split(`,`))
+					}
+				})
 			}
 		}
 		// once the url is set we can get subtitles
@@ -82,7 +101,6 @@ const SubtitlesEditorContainer = props => {
 			setCalledGetSubtitles(true)
 		} else
 			setSubs(allSubs)
-
 
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 
@@ -138,6 +156,7 @@ const SubtitlesEditorContainer = props => {
 		allSubs,
 		contentError,
 		subtitleError,
+		aspectRatio,
 	}
 
 	const handlers = {
@@ -185,6 +204,7 @@ const mapThunksToProps = {
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
+	getFiles: resourceService.getFiles,
 }
 
 export default connect(mapStoreToProps, mapThunksToProps)(SubtitlesEditorContainer)

@@ -369,8 +369,8 @@ const TrackEditor = props => {
 		const layer = cEvent.layer
 		const posprev = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(b)<parseFloat(a))[-1]
 		const posnex = Object.keys(cEvent[`position`]).filter(val => parseFloat(val) > parseFloat(item)).sort((a,b)=>parseFloat(b)>parseFloat(a))[0]
-		console.log(Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(a)>parseFloat(b)))
-		console.log(posprev, posnex, Object.keys(cEvent), item)
+		// console.log(Object.keys(cEvent[`position`]).filter(val => parseFloat(val) < parseFloat(item)).sort((a,b)=>parseFloat(a)>parseFloat(b)))
+		// console.log(posprev, posnex, Object.keys(cEvent), item)
 		setActiveCensorPosition(posprev ? posprev:posnex)
 		delete cEvent.position[item]
 
