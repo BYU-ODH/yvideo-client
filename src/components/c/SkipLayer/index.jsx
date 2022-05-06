@@ -38,7 +38,6 @@ const SkipLayer = props => {
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
-		console.log(width)
 	}, [width, events, layerOverlap])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){

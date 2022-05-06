@@ -155,13 +155,6 @@ const SubtitlesLayer = props => {
 		)
 	}
 
-	const testPrint = (event, index) => {
-		return(
-			<div className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`} key={index} style={{width: `${(event.end - event.start)/videoLength * layerWidth}px`, height: `46px`,left:`${event.start}% !important`,top: `-${layerHeight}px !important`}} onClick={() => toggleEditor(layerIndex, index)} >
-			</div>
-		)
-	}
-
 	return (
 		<>
 			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
@@ -175,7 +168,6 @@ const SubtitlesLayer = props => {
 										<div key={index}
 										>
 											{printEvents(event, index)}
-											{/* {testPrint(event, index)} */}
 										</div>
 									))}
 								</>

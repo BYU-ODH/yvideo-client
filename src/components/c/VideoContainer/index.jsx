@@ -269,7 +269,6 @@ const VideoContainer = props => {
 
 		},
 		handleAspectRatio: ()=>{
-			console.log(`aspect ratio working`,aspectRatio)
 			const cont = document.getElementById(`blankContainer`)
 			if (!cont || !aspectRatio)
 				return

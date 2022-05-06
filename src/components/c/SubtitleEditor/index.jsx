@@ -145,7 +145,7 @@ const SubtitleEditor = props => {
 		if(active){
 			console.log(`top-`,active.offsetTop,`-`,active)
 			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight*0.5
-		}else console.log(`u suk`)
+		}
 		// console.log(`side editor`, t2-t1)
 	}
 	const closeSideEditor = () => {
@@ -676,9 +676,6 @@ const SubtitleEditor = props => {
 		<Style>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
-					ref={el=>{
-						console.log(el)
-					}}
 					className='video'
 					url={props.viewstate.url}
 					getDuration={getVideoDuration}
