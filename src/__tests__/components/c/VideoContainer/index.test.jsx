@@ -123,8 +123,8 @@ describe(`VideoContainer test`, () => {
 	window.addEventListener = jest.fn((event, cb) => {
 		map1[event] = cb
 	})
-
-	// it(`keyup`, () => {
+// // This still needs fixin'
+	// 	it(`keyup`, () => {
 	// 	setup()
 	// 	act(() => {
 	// 		map1.keyup({ code: `ArrowRight` })

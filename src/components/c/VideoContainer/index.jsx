@@ -325,6 +325,7 @@ const VideoContainer = props => {
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
+	let diffPlaying = false
 
 	const handleHotKeys = (e) => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
@@ -344,6 +345,16 @@ const VideoContainer = props => {
 		case `Period`:
 			// console.log(`new time`, playedTime + .1)
 			video.handleSeek(null, playedTime + .1)
+			break
+		case `Space`:
+			if(diffPlaying === true) {
+				video.handlePause()
+				diffPlaying = false
+			}
+			if(diffPlaying === false) {
+				video.handlePlay()
+				diffPlaying = true
+			}
 			break
 
 		default:
@@ -381,9 +392,10 @@ const VideoContainer = props => {
 				})
 			}
 			// checking video container and setting event listener for hot keys
-			window.addEventListener(`keyup`, (e) => {
+			window.onkeyup = (e) => {
 				handleHotKeys(e)
-			})
+			}
+			// window.addEventListener(`keyup`, (e) => {handleHotKeys(e)})
 		}
 
 		if(events) {
@@ -395,17 +407,26 @@ const VideoContainer = props => {
 		const wraplisten = new ResizeObserver((entry)=>{
 			video.handleAspectRatio()
 		})
-		if(wrap)
+		if(wrap) {
 			wraplisten.observe(wrap)
+		}
 		return function cleanup(){
-			window.removeEventListener(`keyup`, (e) => {}, false)
+			// window.removeEventListener(`keyup`, (e) => {handleHotKeys(e)})
+				window.onkeyup = null
 		}
 	}, [duration])
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
-				<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):``} ref={videoRef}>
+				<Blank
+				className='blank'
+				id='blank'
+				blank={blank}
+				onContextMenu={e => e.preventDefault()}
+				onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
+				ref={videoRef}
+				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
 							censorValues = {censorPosition}

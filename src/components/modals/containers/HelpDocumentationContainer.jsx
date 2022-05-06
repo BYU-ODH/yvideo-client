@@ -157,23 +157,43 @@ const HelpDocumentationContainer = props => {
 						<br/> -&nbsp; <b>Hot Key:</b> there are four hot keys for this video player and they are all to move back and form in the video.
 						</p>
 					<ol>
-						<li>Comma: rewind .1 second</li>
-						<li>Period: forward .1 second</li>
-						<li>Left Arrow: rewind 1 second</li>
-						<li>Right Arroe: forward 1 second</li>
+						<li>
+							<b>Comma:</b> rewind .1 second
+							<code style="background-color: #dddddd; margin-left: .5rem; padding-left: 8px; padding-right: 8px; border-radius: 5px;">
+								,
+							</code>
+						</li>
+						<li>
+							<b>Period:</b> forward .1 second
+							<code style="background-color: #dddddd; margin-left: .5rem; padding-left: 8px; padding-right: 8px; border-radius: 5px;">
+								.
+							</code>
+						</li>
+						<li>
+							<b>Left Arrow:</b> rewind 1 second
+							<code style="background-color: #dddddd; margin-left: .5rem; padding-left: 8px; padding-right: 8px; border-radius: 5px;">
+								<
+							</code>
+						</li>
+						<li>
+							<b>Right Arrow:</b> forward 1 second
+							<code style="background-color: #dddddd; margin-left: .5rem; padding-left: 8px; padding-right: 8px; border-radius: 5px;">
+								>
+							</code>
+						</li>
 					</ol>
 					<p style="margin: 0px">
 						<br/> -&nbsp; <b>Visual Help:</b> to let you know where you are in the video you have two main sources.
 					</p>
 					<ol>
 						<li>The time indicator at the bottom of the video</li>
-						<li>The red bar over the layers indicating how far along you are on the video with respect of the layers</li>
+						<li><p>The red bar over the layers indicating how far along you are on the video with respect of the layers</p></li>
 					</ol>
 				</div>
 				<div class="section flex-column">
 					<h3>Side Menu</h3>
 					<p>
-						<img src="${eventHelp}" width="400px"/>
+						<img style="border: 1px solid #bbbbbb" src="${eventHelp}" width="400px"/>
 						<br/> -&nbsp; <b>Editor:</b> the editor makes it easy to edit events. If you click on an event, the side menu will change and allow you to edit the event options based on the event type. You are also able
 						to delete events using this menu
 						<br/> -&nbsp; <b>Save:</b> after you made your changes to the video the last step is to save the video by clicking the save button on the top right of the screen. <b><i>If you do not save it you will lose
