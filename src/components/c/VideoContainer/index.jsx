@@ -325,7 +325,6 @@ const VideoContainer = props => {
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
-	let diffPlaying = false
 
 	const handleHotKeys = (e) => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
@@ -347,13 +346,12 @@ const VideoContainer = props => {
 			video.handleSeek(null, playedTime + .1)
 			break
 		case `Space`:
-			if(diffPlaying === true) {
+			setPlaying(playing)
+			if (playing === true) {
 				video.handlePause()
-				diffPlaying = false
 			}
-			if(diffPlaying === false) {
+			if (playing === false) {
 				video.handlePlay()
-				diffPlaying = true
 			}
 			break
 
@@ -395,7 +393,6 @@ const VideoContainer = props => {
 			window.onkeyup = (e) => {
 				handleHotKeys(e)
 			}
-			// window.addEventListener(`keyup`, (e) => {handleHotKeys(e)})
 		}
 
 		if(events) {
@@ -411,7 +408,6 @@ const VideoContainer = props => {
 			wraplisten.observe(wrap)
 		}
 		return function cleanup(){
-			// window.removeEventListener(`keyup`, (e) => {handleHotKeys(e)})
 				window.onkeyup = null
 		}
 	}, [duration])
