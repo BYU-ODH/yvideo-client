@@ -118,7 +118,7 @@ export default class ManageCollection extends PureComponent {
 					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}
 						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
-					>Permissions</button>
+					>Edit User Access</button>
 					<Selector isContentTab={isContentTab} />
 				</TabHeader>
 
