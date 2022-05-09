@@ -1,5 +1,6 @@
 import styled, { keyframes, css } from 'styled-components'
 import logo from 'assets/hexborder.svg'
+import saveIcon from 'assets/save.svg'
 import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
@@ -43,6 +44,11 @@ export const TitleEdit = styled.input`
   font-size: 1.8rem;
   font-weight: bold;
 `
+export const SaveIcon = styled.span`
+  background: url(${saveIcon}) center no-repeat;
+  height: 2.5rem;
+  width: 2rem;
+`
 
 export const TitleEditButton = styled.div`
   color: ${props => props.editing ? `#0582CA` : `#a4a4a4;`};
@@ -50,6 +56,15 @@ export const TitleEditButton = styled.div`
   cursor: pointer;
   margin-top: 0;
   margin-left: 1rem;
+
+	display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center !important;
+  & > span {
+    margin-right: .2rem;
+  }
 `
 
 export const Publish = styled.div`

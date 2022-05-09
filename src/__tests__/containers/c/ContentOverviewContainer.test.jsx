@@ -48,7 +48,7 @@ describe(`manage collection test`, () => {
 
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 		expect(wrapper.find(`button`).at(1).props().children).toBe(`Delete`)
-		expect(wrapper.find(`button`).at(2).props().children).toBe(`Save`)
+		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 	})
 
 	it(`Unpublish event handler test`, ()=> {
@@ -82,7 +82,8 @@ describe(`manage collection test`, () => {
 
 		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
 		wrapper.find(`button`).at(0).simulate(`click`)
-		expect(wrapper.find(`button`).at(2).props().children).toBe(`Save`)
+		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
+
 
 		// edit event handler
 		expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(true)

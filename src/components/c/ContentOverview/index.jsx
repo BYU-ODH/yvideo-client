@@ -9,6 +9,7 @@ import helpIcon from 'assets/help/help-icon-black.svg'
 import Style, {
 	EditButton,
 	Icon,
+	SaveIcon,
 	Preview,
 	PublishButton,
 	RemoveButton,
@@ -110,7 +111,7 @@ export default class ContentOverview extends PureComponent {
 						</LinksWrapper>
 					}
 					{!editing && <SettingsIcon onClick={handleToggleEdit} />}
-					<EditButton id='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : ``}</EditButton>
+					<EditButton id='edit-button' onClick={handleToggleEdit}>{editing ? <><SaveIcon/>Save</> : <></>}</EditButton>
 				</Preview>
 				{editing &&
 					<InnerContainer>
