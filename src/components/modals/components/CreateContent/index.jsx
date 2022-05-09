@@ -90,7 +90,7 @@ export default class CreateContent extends PureComponent {
 						<label htmlFor='create-content-description'>
 							<span><b>Description:</b></span>
 						</label>
-						<textarea id='create-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={8} />
+						<textarea id='create-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} />
 
 						<label htmlFor='create-content-keywords'>
 							<span><b>Tags</b></span>
@@ -168,8 +168,8 @@ export default class CreateContent extends PureComponent {
 						<br/>
 						<label>
 							<span><b>Description</b></span><br/>
-							<textarea id='resource-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
-						</label><br/>
+						</label>
+						<textarea id='resource-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} cols={35} /><br/>
 						<label>
 
 							<span>Target Language</span>
