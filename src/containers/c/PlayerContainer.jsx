@@ -48,6 +48,7 @@ const PlayerContainer = props => {
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
+	// eslint-disable-next-line no-unused-vars
 	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [player, setPlayer] = useState(null)
@@ -55,6 +56,7 @@ const PlayerContainer = props => {
 	const [progress, setProgress] = useState(0)
 	const [playTime, setPlaytime] = useState(0)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
+	// eslint-disable-next-line no-unused-vars
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
@@ -75,6 +77,7 @@ const PlayerContainer = props => {
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
+	// eslint-disable-line no-unused-vars
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 
 	// aspect ratio
@@ -115,7 +118,7 @@ const PlayerContainer = props => {
 
 						return data
 					}
-					const d =fetchData()
+					const d =fetchData() // eslint-disable-line no-unused-vars
 				}
 			} else {
 				setKey(``)
@@ -138,6 +141,7 @@ const PlayerContainer = props => {
 					}
 				}
 				if (resourceIdStream !== ``){
+					// eslint-disable-next-line no-unused-vars
 					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
@@ -149,6 +153,7 @@ const PlayerContainer = props => {
 				}
 				if(resource[resourceIdStream]){
 					if(resource[resourceIdStream][`files`]){
+						// eslint-disable-next-line no-unused-vars
 						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
 					}
 				}
@@ -180,7 +185,7 @@ const PlayerContainer = props => {
 		}
 		if (errorMessage !== errorPrev)
 			handleError()
-
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage,errorPrev])
 
 	const handleShowTip = (tipName, position) => {
@@ -410,7 +415,7 @@ const PlayerContainer = props => {
 		}
 	}
 
-	if(displaySubtitles == null && content != undefined){
+	if(displaySubtitles === null && content !== undefined){
 
 		// This statement prevents displaySubtitles from being null.
 		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer

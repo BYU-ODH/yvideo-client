@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react' // eslint-disable-line no-unused-vars
 import { connect } from 'react-redux'
 
 import HelpDocumentation from '../components/HelpDocumentation'
@@ -11,7 +11,7 @@ import startOverIcon from 'assets/start_over_icon_black.svg'
 
 import manager from 'assets/help/help-manager.png'
 
-import collection from 'assets/help/help-collection.png'
+// import collection from 'assets/help/help-collection.png'
 
 import content from 'assets/help/help-content.png'
 import contentEdit from 'assets/help/help-content-edit.png'
@@ -19,8 +19,8 @@ import eventHelp from 'assets/help/help-te-event.png'
 import subtitleHelp from 'assets/help/help-te-subtitle.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomHelp from 'assets/help/help-te-zoom.png'
-import playercontrolHelp from 'assets/help/help-playercontrols.png'
-import transcriptHelp from 'assets/help/help-transcriptview.png'
+// import playercontrolHelp from 'assets/help/help-playercontrols.png'
+// import transcriptHelp from 'assets/help/help-transcriptview.png'
 import subHelp from 'assets/help/help-te-subtitle.png'
 import translationHelp from 'assets/help/help-translation.png'
 import importantWordHelp from 'assets/help/help-important-word.png'
@@ -28,7 +28,7 @@ import importantWordHelp from 'assets/help/help-important-word.png'
 //player
 import clockIcon from 'assets/clock-black.svg'
 import bookIcon from 'assets/sidebar-black.svg'
-import closedCaption from 'assets/controls_closed_captions.svg'
+// import closedCaption from 'assets/controls_closed_captions.svg'
 import chevron from 'assets/player-chevron-left-black.svg'
 
 import {
@@ -343,7 +343,7 @@ const HelpDocumentationContainer = props => {
 					</ul>
 				</div>`,
 		},
-		'Subtitle Editor': {
+		'Subtitle Editor': { //eslint-disable-line no-dupe-keys
 			htmlInstruction: `
 			<div class="section flex-column">
 				<h3>Creating Subtitles/Captions</h3>

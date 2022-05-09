@@ -12,7 +12,6 @@ import {
 	NoCollection,
 	SideMenu,
 	Help,
-	Button,
 	PlusIcon,
 	FeedbackMessage,
 } from './styles'
@@ -65,7 +64,7 @@ export default class PublicManager extends PureComponent {
 									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
 								>
-									<img id='help-document' src={helpIcon} onClick={handleShowHelp}/>
+									<img id='help-document' alt='' src={helpIcon} onClick={handleShowHelp}/>
 								</Help>
 							</h4>
 

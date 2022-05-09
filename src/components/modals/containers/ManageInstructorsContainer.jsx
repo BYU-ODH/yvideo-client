@@ -14,7 +14,7 @@ const ManageInstructorsContainer = props => {
 	const {
 		toggleModal,
 		data,
-		search,
+		// search,
 		resource,
 		addAccess,
 		resourceAccess,
@@ -43,7 +43,7 @@ const ManageInstructorsContainer = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resourceAccess, blockLeave])
 
 	const handleRegister = async (e) =>{

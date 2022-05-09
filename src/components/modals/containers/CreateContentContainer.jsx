@@ -100,7 +100,7 @@ const CreateContentContainer = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resourceContent, selectedResourceId, searchQuery, isTyping, blockLeave, isResourceSelected])
 
 	const changeTab = e => {

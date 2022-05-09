@@ -287,6 +287,7 @@ export default class CollectionService {
 		currentState.content.splice(contentIndex, 1)
 
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.remove(contentId)
 
 			// You also have to be an admin to do this, I'm pretty sure
@@ -499,8 +500,10 @@ export default class CollectionService {
 			}
 
 			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
 
+			// eslint-disable-next-line no-unused-vars
 			let currentState = {}
 			currentState = getState().collectionStore.cache[collectionId]
 			const currentUsers = getState().collectionStore.users
@@ -536,6 +539,7 @@ export default class CollectionService {
 	updateMany = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.collectionsStart())
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.permissions.postMany(collectionId, body)
 			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {

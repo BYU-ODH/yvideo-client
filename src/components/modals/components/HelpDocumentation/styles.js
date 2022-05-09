@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import HexLogo from 'assets/hexborder.svg'
 
 export const Back = styled.div`
 	position: fixed;

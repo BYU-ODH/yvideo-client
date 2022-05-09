@@ -12,7 +12,7 @@ export default class ResourceService {
 		RESOURCE_GET: `RESOURCE_GET`,
 		RESOURCE_ADD: `RESOURCE_ADD`,
 		RESOURCE_FILES: `RESOURCE_FILES`,
-		RESOURCE_FILE_DELETE: `RESOURCE_FILE_DELETE`,
+		RESOURCE_FILE_DELETE: `RESOURCE_FILE_DELETE`, // eslint-disable-line no-unused-vars
 		RESOURCE_SEARCH:`RESOURCE_SEARCH`,
 		RESOURCE_EDIT: `RESOURCE_EDIT`,
 		RESOURCE_DELETE: `RESOURCE_DELETE`,
@@ -75,7 +75,7 @@ export default class ResourceService {
 			RESOURCE_FILES,
 			RESOURCE_STREAM,
 			RESOURCE_FILES_EDIT,
-			RESOURCE_FILE_DELETE,
+			RESOURCE_FILE_DELETE, // eslint-disable-line no-unused-vars
 			RESOURCE_ADD_ACCESS,
 			RESOURCE_READ_ACCESS,
 			RESOURCE_REMOVE_ACCESS,
@@ -232,7 +232,7 @@ export default class ResourceService {
 		try {
 
 			// add access to resource
-			const result = await apiProxy.resources.access.add(resourceId, username)
+			const result = await apiProxy.resources.access.add(resourceId, username) // eslint-disable-line no-unused-vars
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))

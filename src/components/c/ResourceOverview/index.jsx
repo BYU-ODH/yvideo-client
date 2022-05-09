@@ -10,7 +10,7 @@ import Style, {
 	TitleEdit,
 	RemoveIcon,
 	UploadIcon,
-	PersonAddIcon,
+	// PersonAddIcon,
 	SaveIcon,
 	TypeButton,
 	Type,

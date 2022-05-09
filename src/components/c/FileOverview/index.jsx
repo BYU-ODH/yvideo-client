@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Style, {
+import {
 	InnerContainer,
 	Column,
 	BoxRow,
@@ -8,7 +8,7 @@ import Style, {
 	EditButton,
 	SaveIcon,
 	CategorySelect,
-	FileTitle,
+	// FileTitle,
 } from './styles'
 
 export class FileOverview extends PureComponent {
@@ -17,7 +17,7 @@ export class FileOverview extends PureComponent {
 
 		const {
 			handleUpdateFile,
-			handleFileMetadata,
+			// handleFileMetadata,
 			handleRemoveFile,
 			handleFileVersion,
 		} = this.props.handlers

@@ -1,29 +1,26 @@
 import React, { PureComponent } from 'react'
 
-import { Container, Back, CloseHelp, Tutorial } from './styles'
-
-import ReactPlayer from 'react-player'
+import { Container, Back, CloseHelp, /*Tutorial*/ } from './styles'
 
 import closeIcon from 'assets/x.svg'
 
 export default class HelpDocumentation extends PureComponent {
-	constructor(props){
-		super(props)
-	}
-
+	// constructor(props){
+	// 	super(props)
+	// }
 	componentDidMount(){
 		document.getElementById(`content`).innerHTML += this.props.viewstate.help.htmlInstruction
 	}
 
 	render() {
-
+		// eslint-disable-next-line no-unused-vars
 		const { name, help } = this.props.viewstate
 
 		return (
 			<>
 				<Back onClick={this.props.toggleModal}>
 					<Container id='help-documentation-container' onClick={e => {e.stopPropagation()}} onScroll={this.handleScroll}>
-						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
+						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img alt='' src={closeIcon} /></CloseHelp></h1>
 						<div id='content'>
 						</div>
 						{

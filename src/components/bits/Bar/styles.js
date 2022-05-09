@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const barInactive = `.4rem`
+// const barInactive = `.4rem`
 const barActive = `.6rem`
 const transSpeed = `.1s`
 

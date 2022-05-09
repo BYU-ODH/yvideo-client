@@ -48,7 +48,7 @@ export default class CreateContent extends PureComponent {
 			handleSelectResourceChange,
 			handleSubmit,
 			handleTextChange,
-			handleSelectLanguage,
+			// handleSelectLanguage,
 			handleTypeChange,
 			onKeyPress,
 			remove,

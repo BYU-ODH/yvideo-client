@@ -10,7 +10,7 @@ import Style, {
 	TableContainer,
 	AddManyButton,
 	Sort,
-	Spinner,
+	// Spinner,
 	UserListTable,
 	UserList,
 	TableHeader,
@@ -46,7 +46,7 @@ export class CollectionPermissions extends PureComponent {
 			disabled,
 			disabledUser,
 			disabledTA,
-			isLoading,
+			// isLoading,
 			loggedinUser,
 		} = viewstate
 
@@ -67,12 +67,15 @@ export class CollectionPermissions extends PureComponent {
 						reverse: true,
 					},
 				})
-				data.sort((a, b) => {
+				data.sort((a, b) => { // eslint-disable-line array-callback-return
 					switch (sortType) {
 					case `Username`:
 						return b.username.localeCompare(a.username,{sensitivity:`base`})
 					case `Name`:
 						return b[`account-name`].localeCompare(a[`account-name`],{sensitivity:`base`})
+
+					default:
+						return
 					}
 				})
 			}else{
@@ -81,12 +84,14 @@ export class CollectionPermissions extends PureComponent {
 						reverse: false,
 					},
 				})
-				data.sort((a, b) => {
+				data.sort((a, b) => { // eslint-disable-line array-callback-return
 					switch (sortType) {
 					case `Username`:
 						return a.username.localeCompare(b.username,{sensitivity:`base`})
 					case `Name`:
 						return a[`account-name`].localeCompare(b[`account-name`],{sensitivity:`base`})
+					default:
+						return
 					}
 				})
 			}
@@ -137,7 +142,7 @@ export class CollectionPermissions extends PureComponent {
 											<td>{element[`department`]}</td>
 											<td>{element[`catalog-number`]}</td>
 											<td>{element[`section-number`]}</td>
-											<td onClick={e => handlers.removeCourse(element[`id`])}><img src={removeIcon} width='20px'/></td>
+											<td onClick={e => handlers.removeCourse(element[`id`])}><img src={removeIcon} alt='' width='20px'/></td>
 										</tr>,
 									)
 									:
@@ -180,7 +185,7 @@ export class CollectionPermissions extends PureComponent {
 													`NA`
 												}
 												</td>
-												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
+												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} alt='' width='20px'/></td>
 											</tr>,
 										)
 										: <></>
@@ -226,7 +231,7 @@ export class CollectionPermissions extends PureComponent {
 													`NA`
 												}
 												</td>
-												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} width='20px'/></td>
+												<td onClick={e => handlers.removeUser(element[`username`])}><img src={removeIcon} alt='' width='20px'/></td>
 											</tr>,
 										)
 										: <></>

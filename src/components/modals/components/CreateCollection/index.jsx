@@ -27,7 +27,7 @@ export default class CreateCollection extends PureComponent {
 			<Wrapper onSubmit={handleSubmit}>
 				<h2>{isPublicCollection ? `Create New Public Collection` : `Create New Collection`}</h2>
 				{
-					isSelected == false ?
+					isSelected === false ?
 					<input id='create-collection-input' type={`text`} name={`name`} value={name} onChange={handleNameChange} onFocus={handleInput} placeholder={`Collection name...`} />
 						:
 					<input id='create-collection-input' type={`text`} name={`name`} value={name} style={secondInput} onChange={handleNameChange} onBlur={handleInput} placeholder={`Collection name...`} />

@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, /*useEffect*/ } from 'react'
 import { connect } from 'react-redux'
-
-import Content from 'models/Content'
-
 import {
-	contentService,
 	collectionService,
 	interfaceService,
-	adminService,
-	resourceService,
 } from 'services'
 
 import AddBatchNetids from 'components/modals/components/AddBatchNetids'
 
 const AddBatchNetidsContainer = props => {
 	const { updateMany, toggleModal } = props
-	const [list, setList] = useState([])
+	const [list, setList] = useState([]) // eslint-disable-line no-unused-vars
 	const [id, setId] = useState(``)
 	const [disabledUser, setDisableUser] = useState(true)
 	const viewState = { list, id, disabledUser }

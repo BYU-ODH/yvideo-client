@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useEffect, /*useCallback*/ } from 'react'
 
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
+import Style, {TimeBar, /*ToggleCarat,*/ Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
 
@@ -42,7 +42,7 @@ const Controller = props => {
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
-	const [played, setPlayed] = useState(0)
+	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
@@ -51,9 +51,10 @@ const Controller = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
-	const [currentZone, setCurrentZone] = useState([0, duration])
+	const [currentZone, setCurrentZone] = useState([0, duration]) // eslint-disable-line no-unused-vars
 
 	useEffect(() => {
+		// eslint-disable-next-line no-unused-vars
 		const indicator = document.getElementById(`time-indicator`)
 	})
 

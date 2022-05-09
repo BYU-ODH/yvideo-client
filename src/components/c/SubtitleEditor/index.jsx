@@ -37,7 +37,9 @@ const SubtitleEditor = props => {
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
+	// eslint-disable-next-line no-unused-vars
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
@@ -134,12 +136,12 @@ const SubtitleEditor = props => {
 	}
 	const openSubEditor = (layerIndex,subIndex) =>{
 		console.log(`sub editor`)
-		const t1 = performance.now()
+		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
-		const t2 = performance.now()
+		const t2 = performance.now() // eslint-disable-line no-unused-vars
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active){
@@ -233,11 +235,11 @@ const SubtitleEditor = props => {
 	}
 
 	const updateSubs = (index, sub, subLayerIndex, side, type) => {
-		const t1=performance.now()
+		const t1=performance.now() // eslint-disable-line no-unused-vars
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-		const t1_1 = performance.now()
+		const t1_1 = performance.now() // eslint-disable-line no-unused-vars
 		try {
 			if(side === `beg`) {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
@@ -257,8 +259,8 @@ const SubtitleEditor = props => {
 		} catch (e) {
 			console.error(`updateSubs error`,e)
 		}
-		const t1_2 = performance.now()
-		const t2_1 = performance.now()
+		const t1_2 = performance.now() // eslint-disable-line no-unused-vars
+		const t2_1 = performance.now() // eslint-disable-line no-unused-vars
 		if(side===`beg` && needCheck === true) {
 			if(sub.start===``){
 				document.getElementById(`subStart${index}`).style.border=`2px solid red`
@@ -315,28 +317,24 @@ const SubtitleEditor = props => {
 				}
 			}
 		}
-		const t3_1 = performance.now()
+		const t3_1 = performance.now() // eslint-disable-line no-unused-vars
 
 		if(needCheck){
-			const updateSub = {sub, side}
+			const updateSub = {sub, side} // eslint-disable-line no-unused-vars
 			// checkSubError(tempSubs, `update`, index, updateSub)
 		} else
 			setDisableSave(true)
-		const t3_2 = performance.now()
+		const t3_2 = performance.now() // eslint-disable-line no-unused-vars
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
-		const t2=performance.now()
-		const t3=performance.now()
-		// setSubs(tempSubs)
-		// setAllSubs(tempSubs)
+		const t2=performance.now() // eslint-disable-line no-unused-vars
+		const t3=performance.now() // eslint-disable-line no-unused-vars
 		setSubChanges(subChanges+1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setBlock(true)
-		const t4=performance.now()
-		// console.log(`updating time`,t4-t3)
-		// console.log(t2-t1)
+		const t4=performance.now() // eslint-disable-line no-unused-vars
 	}
 
 	const addSubToLayer = (index, subIndex, position) => {
@@ -790,7 +788,7 @@ const SubtitleEditor = props => {
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' id='zoom-factor'>
-							<img src={zoomOut} style={{ width: `20px` }}/>
+							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
@@ -804,7 +802,7 @@ const SubtitleEditor = props => {
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+								<div id={`zoom-scroll-container`} alt='' className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
 										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}

@@ -158,6 +158,7 @@ export const CommentChange = (ind,commentData, playedSeconds) =>{
 }
 export const subtitleChange = (subtitles) => {
 	if(document.getElementById(`subtitleContainer`)){
+		// eslint-disable-next-line no-unused-vars
 		const container = document.getElementById(`subtitleContainer`)
 	}
 }

@@ -25,24 +25,24 @@ export default class Player extends PureComponent {
 			playing,
 			playbackRate,
 			progress,
-			playTime,
+			// playTime,
 			volume,
 			muted,
 			blank,
-			videoComment,
-			commentPosition,
+			// videoComment,
+			// commentPosition,
 			duration,
 			showTranscript,
-			toggleTranscript,
-			content,
+			// toggleTranscript,
+			// content,
 			subtitleText,
-			subtitleTextIndex,
+			// subtitleTextIndex,
 			displaySubtitles,
-			isCaption,
+			// isCaption,
 			indexToDisplay,
 			isMobile,
-			censorPosition,
-			censorActive,
+			// censorPosition,
+			// censorActive,
 			clipTime,
 			isLandscape,
 			hasPausedClip,
@@ -58,24 +58,25 @@ export default class Player extends PureComponent {
 			handleStart,
 			handleProgress,
 			handleSeekChange,
-			handlePlaybackRateChange,
-			handleBlank,
+			// handlePlaybackRateChange,
+			// handleBlank,
 			handleMuted,
 			handleUnmuted,
-			handleShowComment,
-			handleToggleTranscript,
+			// handleShowComment,
+			// handleToggleTranscript,
 			handleShowSubtitle,
-			handleShowHelp,
-			handleShowTip,
-			toggleTip,
-			setCensorActive,
-			setCensorPosition,
+			// handleShowHelp,
+			// handleShowTip,
+			// toggleTip,
+			// setCensorActive,
+			// setCensorPosition,
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
+			// eslint-disable-next-line no-unused-vars
 			const t0 = performance.now()
 			handleProgress(playedSeconds)
 			const subtitles = displaySubtitles
@@ -148,9 +149,8 @@ export default class Player extends PureComponent {
 					break
 				}
 			}
-
+			// eslint-disable-next-line no-unused-vars
 			const t1 = performance.now()
-
 		}
 
 		return (

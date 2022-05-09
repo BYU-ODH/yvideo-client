@@ -11,7 +11,7 @@ import Style, {
 	TitleEditButton,
 	PublishButton,
 	ArchiveButton,
-	CopyrightedButton,
+	// CopyrightedButton,
 	TabHeader,
 	Selector,
 	Tab,
@@ -21,8 +21,8 @@ import Style, {
 	Spinner,
 } from './styles'
 
-import logo from 'assets/hexborder.svg'
-import plus from 'assets/plus_gray.svg'
+// import logo from 'assets/hexborder.svg'
+// import plus from 'assets/plus_gray.svg'
 
 export default class ManageCollection extends PureComponent {
 	render() {
@@ -34,7 +34,7 @@ export default class ManageCollection extends PureComponent {
 			isContentTab,
 			content,
 			isLabAssistant,
-			isLoading,
+			// isLoading,
 		} = this.props.viewstate
 
 		const {

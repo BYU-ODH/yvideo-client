@@ -4,9 +4,9 @@ import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-import Position from 'components/vanilla_scripts/censorPosition'
+// import Position from 'components/vanilla_scripts/censorPosition'
 
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
+import {CurrentEvents, CensorChange, /*CommentChange,*/ HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -38,23 +38,23 @@ const VideoContainer = props => {
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
-	const [played, setPlayed] = useState(0)
+	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
 	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
-	const [videoComment, setVideoComment] = useState(``)
-	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
+	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
-	const [censorActive, SetCensorActive] = useState(false)
-	const [currentZone, setCurrentZone] = useState([0, duration])
-	const [pausedTimes,setPausedTimes] = useState([])
+	const [censorActive, SetCensorActive] = useState(false) // eslint-disable-line no-unused-vars
+	const [currentZone, setCurrentZone] = useState([0, duration]) // eslint-disable-line no-unused-vars
+	const [pausedTimes,setPausedTimes] = useState([]) // eslint-disable-line no-unused-vars
 	// const [aspectRatio, setAspectRatio] = useState([16,9])
 	const [playerPadding,setPlayerPadding] = useState([0,0])
 	// I hate using a global variable here, we'll just have to see if it works
-	let censorData = {}
+	let censorData = {} // eslint-disable-line no-unused-vars
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -404,6 +404,7 @@ const VideoContainer = props => {
 		return function cleanup(){
 			// window.removeEventListener(`keyup`, (e) => {}, false)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration])
 
 	return (

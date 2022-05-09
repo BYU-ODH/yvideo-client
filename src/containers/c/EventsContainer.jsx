@@ -66,6 +66,7 @@ const EventsContainer = props => {
 			})
 		}
 		setEventArray([...tempArray])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, events])
 
 	eventArray.forEach(element => {

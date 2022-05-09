@@ -10,7 +10,7 @@ export class ManageResource extends PureComponent {
 
 	render() {
 		const {
-			user,
+			// user,
 			searchQuery,
 			resources,
 			isMobile,

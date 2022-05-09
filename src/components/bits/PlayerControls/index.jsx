@@ -26,8 +26,8 @@ const PlayerControls = props => {
 		hovering,
 		progress,
 		playTime,
-		volume,
-		muted,
+		// volume,
+		// muted,
 		playing,
 		isCaption,
 		isAdmin,
@@ -52,9 +52,9 @@ const PlayerControls = props => {
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
 		handleToggleFullscreen,
-		handleMuted,
-		handleUnmuted,
-		handleVolumeChange,
+		// handleMuted,
+		// handleUnmuted,
+		// handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
 		handleShowSubtitle,
@@ -147,7 +147,7 @@ const PlayerControls = props => {
 					onMouseLeave={e => toggleTip()}
 				/>
 				<p className='play-time'>{playTime}</p>
-				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
+				<img id='start-over' alt='' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
 					onMouseEnter={e => handleShowTip(`restart`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
@@ -223,7 +223,7 @@ const PlayerControls = props => {
 					<h3>Select Caption</h3>
 					<div className='caption-list'>
 						{subtitles.map((element, index) =>
-							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? `active-value` : ``}/>,
+							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay === index ? `active-value` : ``}/>,
 						)
 						}
 					</div>
