@@ -23,6 +23,7 @@ const ManageResourceContainer = props => {
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [isDefaultSearched, setIsDefaultSearched] = useState(false)
 	const [resourceCount, setResourceCount] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [selectedResource, setSelectedResource] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
 	const [isSearched, setIsSearched] = useState(false)

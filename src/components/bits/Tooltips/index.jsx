@@ -61,7 +61,7 @@ export const ToolTip = (props) => {
 			document.getElementById(`tip-box`).style.opacity = 0
 		}
 
-		if(tip.props !== undefined && tip.props.name){
+		if(tip.props != undefined && tip.props.name){
 			setName(tip.props.name)
 			if(tip.props.position)
 				setPosition(tip.props.position)

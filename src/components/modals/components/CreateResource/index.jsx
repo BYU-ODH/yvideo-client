@@ -29,6 +29,7 @@ export default class CreateResource extends PureComponent {
 		} = this.props.handlers
 
 		let isSelected = false
+		// eslint-disable-next-line no-unused-vars
 		const select = () => {
 			isSelected = !isSelected
 		}
