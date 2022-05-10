@@ -253,10 +253,12 @@ const PlayerContainer = props => {
 		let newPlayed = 0
 		if (e) {
 			const scrubber = e.currentTarget.getBoundingClientRect()
-			newPlayed = (e.pageX - scrubber.left) / scrubber.width
+			if (scrubber.width !== 0){
+				newPlayed = (e.pageX - scrubber.left) / scrubber.width
+			}
 		} else
 			newPlayed = time / duration
-		if (newPlayed !== Infinity && newPlayed !== -Infinity){
+		if (duration > 0){
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
 		if (events) {

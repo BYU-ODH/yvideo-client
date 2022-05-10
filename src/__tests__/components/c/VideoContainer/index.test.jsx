@@ -6,9 +6,6 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 import { act } from 'react-dom/test-utils'
 
-// const var1 = 1
-// const var2 = 1
-// expect(var1).toEqual(var2)
 const props = {
 	url: `url`,
 	getDuration: jest.fn(),
@@ -123,7 +120,7 @@ describe(`VideoContainer test`, () => {
 	window.addEventListener = jest.fn((event, cb) => {
 		map1[event] = cb
 	})
-// // This still needs fixin'
+	// TODO: This still needs fixin'
 	// 	it(`keyup`, () => {
 	// 	setup()
 	// 	act(() => {
