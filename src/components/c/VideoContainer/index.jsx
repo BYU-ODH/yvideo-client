@@ -302,6 +302,10 @@ const VideoContainer = props => {
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
 			}
+			const EventEditor = document.getElementById(`EventEditor`)
+			if(EventEditor)
+				EventEditor.style.height = `${blank.offsetHeight}px - 1px`
+
 		},
 	}
 
