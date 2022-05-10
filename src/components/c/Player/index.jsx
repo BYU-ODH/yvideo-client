@@ -8,14 +8,54 @@ import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'compon
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton } from './styles'
 export default class Player extends PureComponent {
-
+	constructor(props) {
+		super(props)
+		this.handlePlayPause = this.props.handlers.handlePlayPause
+	}
 	componentDidMount(){
 		// setTimeout(() => {
 		// 	const {url} = this.props.viewstate
 		// 	if (!url) alert(`No media found, please check to see if you have the correct URL`)
 		// }, 4000)
 		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
+
+		window.onkeyup = (e) => {
+			this.handleHotKeys(e)
+		}
 	}
+
+	componentWillUnmount(){
+		window.onkeyup = null
+	}
+
+	handleSeek(e, time){
+		this.props.handlers.handleSeekChange(e, time)
+	}
+
+	handleHotKeys = (e) => {
+		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
+		switch (e.code) {
+		case `ArrowRight`:
+			this.handleSeek(null, playedTime + 10)
+			break
+		case `ArrowLeft`:
+			this.handleSeek(null, playedTime - 10)
+			break
+		case `Period`:
+			this.handleSeek(null, playedTime + 1)
+			break
+		case `Comma`:
+			this.handleSeek(null, playedTime - 1)
+			break
+		case `Space`:
+			this.handlePlayPause()
+			break
+
+		default:
+			break
+		}
+	}
+
 	censorRef = createRef(null)
 
 	render() {
@@ -78,6 +118,7 @@ export default class Player extends PureComponent {
 		const handleOnProgress = ({ played, playedSeconds }) => {
 			const t0 = performance.now()
 			handleProgress(playedSeconds)
+			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
 			const subtitles = displaySubtitles
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
@@ -214,7 +255,7 @@ export default class Player extends PureComponent {
 						/>
 					) : null
 				}
-
+			<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
 			</Style>
 		)
 	}

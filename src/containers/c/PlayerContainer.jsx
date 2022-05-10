@@ -207,6 +207,7 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlayPause = () => {
+		setPlaying(playing)
 		if (playing)
 			setPlaying(false)
 		else
@@ -249,17 +250,15 @@ const PlayerContainer = props => {
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-
 		let newPlayed = 0
-		if (e !== null) {
+		if (e) {
 			const scrubber = e.currentTarget.getBoundingClientRect()
 			newPlayed = (e.pageX - scrubber.left) / scrubber.width
 		} else
 			newPlayed = time / duration
-
-		if (newPlayed !== Infinity && newPlayed !== -Infinity)
+		if (newPlayed !== Infinity && newPlayed !== -Infinity){
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
-
+		}
 		if (events) {
 			//for all of the events. If the new seek time goes before events that were already executed activate the events again
 			events.forEach(event => {
@@ -473,7 +472,7 @@ const PlayerContainer = props => {
 		hasPausedClip,
 		events,
 	}
-
+	// console.log("duratioooooon: " + duration)
 	const handlers = {
 		handleDuration,
 		handleMouseOut,

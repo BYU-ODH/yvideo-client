@@ -330,20 +330,16 @@ const VideoContainer = props => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
-			// console.log(`new time`, playedTime + 1)
 			video.handleSeek(null, playedTime + 1)
 			break
 		case `ArrowLeft`:
-			// console.log(`new time`, playedTime - 1)
 			video.handleSeek(null, playedTime - 1)
 			break
-		case `Comma`:
-			// console.log(`new time`, playedTime - .1)
-			video.handleSeek(null, playedTime - .1)
-			break
 		case `Period`:
-			// console.log(`new time`, playedTime + .1)
 			video.handleSeek(null, playedTime + .1)
+			break
+		case `Comma`:
+			video.handleSeek(null, playedTime - .1)
 			break
 		case `Space`:
 			setPlaying(playing)
