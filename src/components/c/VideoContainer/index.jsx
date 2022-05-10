@@ -119,7 +119,12 @@ const VideoContainer = props => {
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()
-
+			if(values.allEvents){
+				if(values.allEvents.filter(e => e.type === `Mute`).length === 0){
+					if (muted)
+						video.handleUnmute()
+				}
+			}
 			for (let y = 0; y < values.allEvents.length; y++){
 				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
@@ -128,12 +133,10 @@ const VideoContainer = props => {
 
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+					if(values.allEvents[y].end >= playedSeconds){
 						events[index].active = false
 						video.handleMute()
-					} else if(!values.allEvents[y].active && values.allEvents[y].end - .1 <= playedSeconds)
-						video.handleUnmute()
-
+					}
 					break
 				case `Pause`:
 					events[index].active = false
@@ -156,7 +159,6 @@ const VideoContainer = props => {
 			}
 			if(typeof handleSubProgress === `function`)
 				handleSubProgress(playedSeconds)
-
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
