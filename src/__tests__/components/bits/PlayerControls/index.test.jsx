@@ -112,6 +112,7 @@ describe(`Style onclick`, () => {
 		expect(button).toBeDefined()
 	})
 })
+//TODO: test fix
 
 it(`simulate input`, ()=> {
 	props.viewstate.isCaption = false

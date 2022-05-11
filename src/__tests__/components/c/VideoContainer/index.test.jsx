@@ -115,7 +115,7 @@ describe(`VideoContainer test`, () => {
 	}
 
 	document.getElementById = jest.fn(() => scrubberMock)
-
+	//TODO: test fix
 	const map1 = {}
 	window.addEventListener = jest.fn((event, cb) => {
 		map1[event] = cb
