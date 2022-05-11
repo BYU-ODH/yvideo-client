@@ -85,8 +85,8 @@ export default class HighlightWords extends PureComponent {
 							<h4>See available translation</h4>
 							<p><i>Enter a word; then, enter the language. If translation is available it will be displayed</i></p><br/>
 							<div>
-								<input type='text' placeholder='Check word' onChange={changeCheckWord} value={checkWord} className='tag-input' /><br/>
-								<input type='text' placeholder='Language. Ex: spanish' onChange={changeLanguage} value={language} className='tag-input'/><br/>
+								<input type='text' placeholder='Check word' onChange={changeCheckWord} value={checkWord} id='tag-input' /><br/>
+								<input type='text' placeholder='Language. Ex: spanish' onChange={changeLanguage} value={language} id='tag-input'/><br/>
 								<img src={ checkResponse === false ? (xMark) : (checkMark)} width="25" height="25" style={{ border: 'none', position: 'relative', left: '3px' }}/>
 								<Button className={`check-tag`} onClick={handleCheckWord}>Check</Button>
 							</div>
@@ -107,7 +107,7 @@ export default class HighlightWords extends PureComponent {
 									<h4>Add important words</h4>
 									<p><i>Add a single word. Or, add words separated by ", ". Ex: do, be</i></p><br/>
 									<div style={{ display: 'flex' }}>
-										<input type='text' placeholder='Add word/s' onChange={changeWord} value={word} className='tag-input' />
+										<input id='tag-input' type='text' placeholder='Add word/s' onChange={changeWord} value={word}  />
 										<Button className={`add-tag`} onClick={addWord}>Add</Button>
 									</div>
 								</div>

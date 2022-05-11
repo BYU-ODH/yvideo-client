@@ -7,7 +7,8 @@ const Style = styled.div`
 
 	& #close-modal {
 		position: absolute;
-		right: 0px;
+		right: -37px;
+		top: -28px;
 		cursor: pointer;
 	}
 
@@ -78,11 +79,12 @@ export const TranslationCheck = styled.div`
 			border-top: none;
 			border-right: none;
 			border-left: none;
-			border-bottom: 1.2px solid rgba(0, 0, 0, 0.5);
+			border-bottom: 1px solid rgba(0,0,0,0.3);
 			margin-right: 5px;
 
 			:focus {
 				outline: none;
+				border-bottom: 1px solid #242F36;
 			}
 		}
 	}
@@ -99,11 +101,12 @@ export const ImportantWords = styled.div`
 		border-top: none;
 		border-right: none;
 		border-left: none;
-		border-bottom: 1.2px solid rgba(0, 0, 0, 0.5);
+		border-bottom: 1px solid rgba(0,0,0,0.3);
 		margin-right: 5px;
 
 		:focus {
 			outline: none;
+			border-bottom: 1px solid #242F36;
 		}
 	}
 
@@ -124,6 +127,7 @@ export const Button = styled.button`
 	text-align: center;
 	margin: 0px 0px 0px 10px;
 	font-weight: bold;
+	outline: 2px solid var(--navy-blue)
 
 	:hover {
 		border: 2px solid var(--navy-blue)

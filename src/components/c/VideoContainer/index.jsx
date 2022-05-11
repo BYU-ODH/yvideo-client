@@ -29,6 +29,7 @@ const VideoContainer = props => {
 		handleScroll,
 		editorType,
 		aspectRatio,
+		handleSubProgress,
 	} = props
 
 	const ref = useRef(null)
@@ -118,7 +119,12 @@ const VideoContainer = props => {
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()
-
+			if(values.allEvents){
+				if(values.allEvents.filter(e => e.type === `Mute`).length === 0){
+					if (muted)
+						video.handleUnmute()
+				}
+			}
 			for (let y = 0; y < values.allEvents.length; y++){
 				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
@@ -127,12 +133,10 @@ const VideoContainer = props => {
 
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+					if(values.allEvents[y].end >= playedSeconds){
 						events[index].active = false
 						video.handleMute()
-					} else if(!values.allEvents[y].active && values.allEvents[y].end - .1 <= playedSeconds)
-						video.handleUnmute()
-
+					}
 					break
 				case `Pause`:
 					events[index].active = false
@@ -153,6 +157,8 @@ const VideoContainer = props => {
 					event.active = true
 				})
 			}
+			if(typeof handleSubProgress === `function`)
+				handleSubProgress(playedSeconds)
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
@@ -298,6 +304,10 @@ const VideoContainer = props => {
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
 			}
+			const EventEditor = document.getElementById(`EventEditor`)
+			if(EventEditor)
+				EventEditor.style.height = `${blank.offsetHeight}px - 1px`
+
 		},
 	}
 
@@ -380,10 +390,10 @@ const VideoContainer = props => {
 					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
 				})
 			}
-			// checking video container and setting event listener for hot keys
-			window.addEventListener(`keyup`, (e) => {
-				handleHotKeys(e)
-			})
+			// // checking video container and setting event listener for hot keys
+			// window.addEventListener(`keyup`, (e) => {   /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */q
+			// 	handleHotKeys(e)													/*The hotkeys don't even work btw. */
+			// })
 		}
 
 		if(events) {
@@ -398,7 +408,7 @@ const VideoContainer = props => {
 		if(wrap)
 			wraplisten.observe(wrap)
 		return function cleanup(){
-			window.removeEventListener(`keyup`, (e) => {}, false)
+			// window.removeEventListener(`keyup`, (e) => {}, false)
 		}
 	}, [duration])
 
@@ -406,7 +416,6 @@ const VideoContainer = props => {
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
 				<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):``} ref={videoRef}>
-					{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
 							censorValues = {censorPosition}
@@ -428,7 +437,6 @@ const VideoContainer = props => {
 					</div>
 				</Blank>
 			</div>
-			{/* console.log(editorType) */}
 
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 

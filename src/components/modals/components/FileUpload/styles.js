@@ -23,7 +23,7 @@ export const Form = styled.form`
 		}
 
 		& > input {
-			width: 18rem;
+			width: 23rem;
 		}
 
 		& > h4 {
@@ -47,13 +47,14 @@ export const Button = styled.button`
 	color: ${props => props.color || `black`};
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 `
 
 export const Upload = styled.div`
 
-	& .files-input {
+	& .files{ position:relative }
+
+	& #files-input {
 		/* outline: 2px dashed #92b0b3; */
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
@@ -63,8 +64,6 @@ export const Upload = styled.div`
 		margin-left: 10px;
     width: 70% !important;
 	}
-
-	& .files{ position:relative }
 `
 
 export const CategorySelect = styled.select`
