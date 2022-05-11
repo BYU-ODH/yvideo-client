@@ -50,6 +50,7 @@ const PlayerContainer = props => {
 	const [fullscreen, setFullscreen] = useState(false)
 	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
+	const [playbackOptions, setplaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
 	const [progress, setProgress] = useState(0)
@@ -84,8 +85,6 @@ const PlayerContainer = props => {
 	}
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
-
-		setPlaybackRate(1)
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
@@ -231,9 +230,10 @@ const PlayerContainer = props => {
 		setBlank(bool)
 	}
 
-	const handlePlaybackRateChange = rate => {
-
-		setPlaybackRate(parseFloat(rate))
+	const handlePlaybackRateChange = (rate) => {
+		console.log("rate: " + rate)
+		console.log("playbackRate: " + playbackRate)
+		setPlaybackRate(rate)
 	}
 
 	const handleProgress = progression => {
@@ -275,13 +275,11 @@ const PlayerContainer = props => {
 
 		// find the element which contains subtitles and events placeholders
 		const elem = document.getElementById(`player-container`)
-
 		// if fullscreen is false we want to turn to full screen. Else, request cancelFullScreen.
 		// For more info read full screen api https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
 		// This is a functionality that behaves like F11. This is not video full screen mode.
 		// Video full screen mode would break the subtitles and events.
 		if (!fullscreen) {
-
 			if (elem.requestFullscreen)
 				elem.requestFullscreen()
 			else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -447,6 +445,7 @@ const PlayerContainer = props => {
 		hovering,
 		muted,
 		playbackRate,
+		playbackOptions,
 		playing,
 		progress,
 		playTime,
@@ -474,7 +473,7 @@ const PlayerContainer = props => {
 		hasPausedClip,
 		events,
 	}
-	// console.log("duratioooooon: " + duration)
+
 	const handlers = {
 		handleDuration,
 		handleMouseOut,

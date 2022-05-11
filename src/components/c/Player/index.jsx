@@ -1,4 +1,4 @@
-import React, { PureComponent, createRef } from 'react'
+import React, { Component, createRef } from 'react'
 import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
@@ -7,16 +7,18 @@ import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'compon
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton } from './styles'
-export default class Player extends PureComponent {
+export default class Player extends Component {
 	constructor(props) {
 		super(props)
+		this.handleSeek = (e, time) => this.props.handlers.handleSeekChange(e, time)
 		this.handlePlayPause = this.props.handlers.handlePlayPause
+		this.handlePlaybackRateChange = this.props.handlers.handlePlaybackRateChange
+		this.handleToggleFullscreen = this.props.handlers.handleToggleFullscreen
+
+		this.playbackRate = this.props.viewstate.playbackRate
+		this.playbackOptions = this.props.viewstate.playbackOptions
 	}
 	componentDidMount(){
-		// setTimeout(() => {
-		// 	const {url} = this.props.viewstate
-		// 	if (!url) alert(`No media found, please check to see if you have the correct URL`)
-		// }, 4000)
 		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
 
 		window.onkeyup = (e) => {
@@ -28,11 +30,9 @@ export default class Player extends PureComponent {
 		window.onkeyup = null
 	}
 
-	handleSeek(e, time){
-		this.props.handlers.handleSeekChange(e, time)
-	}
-
 	handleHotKeys = (e) => {
+		console.log(this.playbackOptions)
+		console.log(e.code)
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
@@ -42,13 +42,47 @@ export default class Player extends PureComponent {
 			this.handleSeek(null, playedTime - 10)
 			break
 		case `Period`:
-			this.handleSeek(null, playedTime + 1)
-			break
+			// If they press the periodKey and the shiftKey isn't pressed down, do the seeking, but if the shift key IS pressed down, do the else block
+			if(!e.shiftKey) {
+				this.handleSeek(null, playedTime + 1)
+				break
+			}
+			else {
+				// Checking to make sure that the value of the playback rate is within the possible options
+				if (this.playbackRate >= this.playbackOptions[0] && this.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
+					this.handlePlaybackRateChange(this.playbackRate = this.playbackOptions[this.playbackOptions.findIndex(element => element == this.playbackRate) + 1])
+				}
+				break
+			}
 		case `Comma`:
-			this.handleSeek(null, playedTime - 1)
-			break
+			// If they press the commaKey and the shiftKey isn't pressed down, do the seeking, but if the shift key IS pressed down, do the else block
+			if(!e.shiftKey) {
+				this.handleSeek(null, playedTime - 1)
+				break
+			}
+			else {
+				// Checking to make sure that the value of the playback rate is within the possible options
+				if (this.playbackRate > this.playbackOptions[0] && this.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
+					this.handlePlaybackRateChange(this.playbackRate = this.playbackOptions[this.playbackOptions.findIndex(element => element == this.playbackRate) - 1])
+				}
+				break
+			}
 		case `Space`:
 			this.handlePlayPause()
+			break
+
+		case `KeyF`:
+			this.handleToggleFullscreen()
+
+			if (document.cancelFullScreen) {
+				document.cancelFullScreen()
+			}	else if (document.mozCancelFullScreen) { /* Firefox */
+				document.mozCancelFullScreen()
+			} else if (document.webkitCancelFullScreen) { /* Chrome, Safari & Opera */
+				document.webkitCancelFullScreen()
+			} else if (document.msExitFullscreen) { /* IE/Edge */
+				document.msExitFullscreen()
+			}
 			break
 
 		default:
@@ -64,6 +98,7 @@ export default class Player extends PureComponent {
 			url,
 			playing,
 			playbackRate,
+			playbackOptions,
 			progress,
 			playTime,
 			volume,
@@ -234,9 +269,9 @@ export default class Player extends PureComponent {
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>
-							<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
+							<div id='censorContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
-							<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
+							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
 
 						</Blank>
