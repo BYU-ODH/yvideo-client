@@ -11,9 +11,9 @@ export default class Player extends Component {
 	constructor(props) {
 		super(props)
 		this.handleSeek = (e, time) => this.props.handlers.handleSeekChange(e, time)
-		this.handlePlayPause = this.props.handlers.handlePlayPause
-		this.handlePlaybackRateChange = this.props.handlers.handlePlaybackRateChange
-		this.handleToggleFullscreen = this.props.handlers.handleToggleFullscreen
+		this.handlePlayPause = (boolean) => this.props.handlers.handlePlayPause(boolean)
+		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
+		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
 
 		this.playbackRate = this.props.viewstate.playbackRate
 		this.playbackOptions = this.props.viewstate.playbackOptions
@@ -31,8 +31,6 @@ export default class Player extends Component {
 	}
 
 	handleHotKeys = (e) => {
-		console.log(this.playbackOptions)
-		console.log(e.code)
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
@@ -50,7 +48,7 @@ export default class Player extends Component {
 			else {
 				// Checking to make sure that the value of the playback rate is within the possible options
 				if (this.playbackRate >= this.playbackOptions[0] && this.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
-					this.handlePlaybackRateChange(this.playbackRate = this.playbackOptions[this.playbackOptions.findIndex(element => element == this.playbackRate) + 1])
+					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) + 1])
 				}
 				break
 			}
@@ -63,7 +61,7 @@ export default class Player extends Component {
 			else {
 				// Checking to make sure that the value of the playback rate is within the possible options
 				if (this.playbackRate > this.playbackOptions[0] && this.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
-					this.handlePlaybackRateChange(this.playbackRate = this.playbackOptions[this.playbackOptions.findIndex(element => element == this.playbackRate) - 1])
+					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) - 1])
 				}
 				break
 			}
@@ -73,16 +71,6 @@ export default class Player extends Component {
 
 		case `KeyF`:
 			this.handleToggleFullscreen()
-
-			if (document.cancelFullScreen) {
-				document.cancelFullScreen()
-			}	else if (document.mozCancelFullScreen) { /* Firefox */
-				document.mozCancelFullScreen()
-			} else if (document.webkitCancelFullScreen) { /* Chrome, Safari & Opera */
-				document.webkitCancelFullScreen()
-			} else if (document.msExitFullscreen) { /* IE/Edge */
-				document.msExitFullscreen()
-			}
 			break
 
 		default:

@@ -206,7 +206,7 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlayPause = () => {
-		setPlaying(playing)
+
 		if (playing)
 			setPlaying(false)
 		else
@@ -231,8 +231,6 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlaybackRateChange = (rate) => {
-		console.log("rate: " + rate)
-		console.log("playbackRate: " + playbackRate)
 		setPlaybackRate(rate)
 	}
 
