@@ -211,6 +211,20 @@ export const Comment = styled.div`
 	color: white;
 	z-index: 15;
 `
+
+export const PauseMessage = styled.div`
+	width:100px;
+	height:50px;
+	position:absolute;
+	right: 0px;
+	border:3px;
+	border-color: var(--navy-blue);
+	cursor: pointer;
+	justify-content: center;
+	background-color: white;
+	z-index:25;
+`
+
 export const ToggleCarat = styled.div`
 	width: 40px !important;
 	height: 48px !important;

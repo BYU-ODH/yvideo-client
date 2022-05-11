@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import ReactPlayer from 'react-player'
 // import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
+import Style, {TimeBar, ToggleCarat, Blank, Censor, Comment, Subtitles, Spinner, PauseMessage } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
 
@@ -52,6 +52,8 @@ const Controller = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, SetCensorActive] = useState(false)
 	const [currentZone, setCurrentZone] = useState([0, duration])
+	const [pauseMessage, setPauseMessage] = useState('')
+	const [pauseMessageActive, setPauseMessageActive] = useState(false)
 
 	useEffect(() => {
 		const indicator = document.getElementById(`time-indicator`)
@@ -191,6 +193,13 @@ const Controller = props => {
 			}
 			updateEvents(eventToEdit,event,event[`layer`])
 		},
+
+	}
+
+	const handlePauseMessage = () => {
+		if(events.type == `Pause`){
+			
+		}
 	}
 
 	const config = {
@@ -236,7 +245,7 @@ const Controller = props => {
 					<Subtitles type={editorType}>{subtitleText}</Subtitles>
 				) :``}
 				<Censor ref={censorRef} style={{visibility: activeCensorPosition === -1? `visible`:`hidden` }} active={censorActive}><canvas></canvas></Censor>
-
+				<PauseMessage style={{visibility: activeCensorPosition == -1? `visible`:`hidden`}} active={pauseMessageActive}>{pauseMessage}</PauseMessage>
 			</Blank>
 
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}

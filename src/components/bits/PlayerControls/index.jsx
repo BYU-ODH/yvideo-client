@@ -66,6 +66,10 @@ const PlayerControls = props => {
 		handleAspectRatio,
 	} = props.handlers
 
+	const {
+		skipArray,
+	} = props
+
 	useEffect(() => {
 		// Some browsers do not trigger an event when you exit full screen mode. So, you have to look for it manually adding an event listener
 		// after the event listener, there is a callback function which only has to set the fullscreen prop to false again.
@@ -142,7 +146,7 @@ const PlayerControls = props => {
 	return (
 		<Style playing={playing} >
 
-			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} />
+			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray}/>
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay} />
 				<p className='play-time'>{playTime}</p>

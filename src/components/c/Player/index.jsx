@@ -9,6 +9,13 @@ import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton } from './styles'
 export default class Player extends PureComponent {
 
+	constructor(props){
+		super(props)
+		this.state = {
+			skipArray: []
+		}
+	}
+
 	componentDidMount(){
 		// setTimeout(() => {
 		// 	const {url} = this.props.viewstate
@@ -73,6 +80,7 @@ export default class Player extends PureComponent {
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
+			// handleOnReady
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -153,6 +161,16 @@ export default class Player extends PureComponent {
 
 		}
 
+		const handleOnReady = () => {
+			handleAspectRatio()
+			if(events){
+				const eventFilterSkip = events.filter((values) => {
+					return values.type == `Skip`
+				})
+				this.setState({skipArray: eventFilterSkip})
+			}
+		}
+
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: "hidden"}}>
@@ -170,10 +188,11 @@ export default class Player extends PureComponent {
 							onPlay={handlePlay}
 							onPause={handlePause}
 							onStart = {handleStart}
-							onReady = {handleAspectRatio}
+							onReady = {handleOnReady}
 							onSeek={e => e}
 							progressInterval={30}
 							onProgress={handleOnProgress}
+							// onProgressBar={handleOnReady}
 							onDuration={handleDuration}
 
 							config={{
@@ -189,7 +208,7 @@ export default class Player extends PureComponent {
 								},
 							}}
 						/>
-						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
+						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>
