@@ -16,7 +16,7 @@ const Bar = props => {
 	// 		// }
 	// 		handleOnReady();
 	// }, [skipArray, events]);
-console.log(skipArray)
+// console.log(skipArray)
 	return (
 		<Style position={props.position} active={props.active} onClick={props.handleClick}>
 			<BarBackground position={props.position} active={props.active} />
