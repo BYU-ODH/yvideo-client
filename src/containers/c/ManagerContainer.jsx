@@ -69,7 +69,7 @@ const ManagerContainer = props => {
 			setIsMobile(true)
 		else
 			setIsMobile(false)
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
 	const createNew = () => {

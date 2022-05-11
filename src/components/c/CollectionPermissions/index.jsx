@@ -67,7 +67,7 @@ export class CollectionPermissions extends PureComponent {
 						reverse: true,
 					},
 				})
-				data.sort((a, b) => { // eslint-disable-line array-callback-return
+				data.sort((a, b) => {
 					switch (sortType) {
 					case `Username`:
 						return b.username.localeCompare(a.username,{sensitivity:`base`})
@@ -75,7 +75,7 @@ export class CollectionPermissions extends PureComponent {
 						return b[`account-name`].localeCompare(a[`account-name`],{sensitivity:`base`})
 
 					default:
-						return
+						return ``
 					}
 				})
 			}else{
@@ -84,14 +84,14 @@ export class CollectionPermissions extends PureComponent {
 						reverse: false,
 					},
 				})
-				data.sort((a, b) => { // eslint-disable-line array-callback-return
+				data.sort((a, b) => {
 					switch (sortType) {
 					case `Username`:
 						return a.username.localeCompare(b.username,{sensitivity:`base`})
 					case `Name`:
 						return a[`account-name`].localeCompare(b[`account-name`],{sensitivity:`base`})
 					default:
-						return
+						return ``
 					}
 				})
 			}

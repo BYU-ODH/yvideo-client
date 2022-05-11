@@ -56,6 +56,7 @@ const PublicManagerContainer = props => {
 				route: `public-manager`,
 			})
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collections, getCollections, setHeaderBorder, location.createCollection, toggleModal, newCollectionInfo])
 
 	const createNew = () => {

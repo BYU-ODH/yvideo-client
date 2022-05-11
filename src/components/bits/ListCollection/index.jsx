@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem, ListItemDropDown } from 'components/bits'
 
-import Style, { Header, Body, PublicButton } from './styles'
+import Style, { Header, Body, /*PublicButton*/ } from './styles'
 
 class ListCollection extends PureComponent {
 	state = {
@@ -23,6 +23,7 @@ class ListCollection extends PureComponent {
 			content,
 		} = this.props.collection
 
+		// eslint-disable-next-line no-unused-vars
 		const contentIds = this.props.contentIds
 
 		const publishContent = content ? content.filter(item => item.published) : []

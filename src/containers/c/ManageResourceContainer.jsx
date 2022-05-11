@@ -46,7 +46,7 @@ const ManageResourceContainer = props => {
 			setIsMobile(true)
 		else
 			setIsMobile(false)
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	const addResource = () => {

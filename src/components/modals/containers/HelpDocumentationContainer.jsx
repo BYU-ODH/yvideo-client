@@ -68,7 +68,7 @@ const HelpDocumentationContainer = props => {
 	const {
 		name,
 		toggleModal,
-		toggleTip,
+		// toggleTip,
 	} = props
 
 	const index = {

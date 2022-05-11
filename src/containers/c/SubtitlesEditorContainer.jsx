@@ -70,7 +70,7 @@ const SubtitlesEditorContainer = props => {
 
 					return data
 				}
-				const d =fetchData()
+				const d =fetchData() // eslint-disable-line no-unused-vars
 			} else {
 				setKey(``)
 				setUrl(``)
@@ -86,6 +86,7 @@ const SubtitlesEditorContainer = props => {
 				}
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+				// eslint-disable-next-line no-unused-vars
 				const files = Promise.resolve(getFiles(sKey)).then((value)=>{
 					if (value){
 						const file = value.find(element => element[`file-version`].includes(content[id].settings.targetLanguage) !== false)
@@ -101,7 +102,7 @@ const SubtitlesEditorContainer = props => {
 			setCalledGetSubtitles(true)
 		} else
 			setSubs(allSubs)
-
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
 
 	const createAndAddSub = async () =>{

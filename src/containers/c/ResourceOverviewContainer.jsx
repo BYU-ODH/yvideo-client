@@ -75,7 +75,7 @@ const ResourceOverviewContainer = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editing, files, numFileVersions, resource.allFileVersions, resource.id, resourceCache, resourceState, updateAllFileVersions, resourceAccess, blockLeave])
 
 	if (objectIsEmpty(resource)) return null

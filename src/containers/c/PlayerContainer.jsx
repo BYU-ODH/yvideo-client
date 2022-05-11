@@ -77,7 +77,7 @@ const PlayerContainer = props => {
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	// eslint-disable-line no-unused-vars
+	// eslint-disable-next-line no-unused-vars
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 
 	// aspect ratio
@@ -419,8 +419,8 @@ const PlayerContainer = props => {
 
 		// This statement prevents displaySubtitles from being null.
 		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
+		if (subtitles.length == 1) { //eslint-disable-line eqeqeq
 
-		if (subtitles.length == 1) {
 			// some logic to pick the subtitle
 			handleChangeSubtitle(0)
 		} else if (subtitles.length > 1) {

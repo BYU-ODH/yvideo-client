@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 
 import {
 	interfaceService,
-	resourceService,
+	// resourceService,
 	subtitlesService,
-	fileService,
+	// fileService,
 } from 'services'
 
 import HighlightWords from 'components/modals/components/HighlightWords'
@@ -38,7 +38,7 @@ const HighlightWordsContainer = props => {
 	const [translationMeanings, setTranslationMeanings] = useState('')
 
 	useEffect(() => {
-		// console.log('use Effect', subtitles)
+		// eslint-disable-next-line eqeqeq
 		if(subtitlesContentId == ''){
 			getSubtitles(contentId)
 		}
@@ -50,6 +50,7 @@ const HighlightWordsContainer = props => {
 			tempSubtitles.sort((a, b) => (a.language > b.language) ? 1 : -1)
 			setSubtitlesObject(tempSubtitles)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contentId, getSubtitles, subtitlesContentId, subtitlesObjects.length])
 
 
@@ -109,7 +110,7 @@ const HighlightWordsContainer = props => {
 
 			let allWords = ''
 			let allMeanings = ''
-
+			// eslint-disable-next-line eqeqeq
 			if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined){
 				setTranslationWords('Unsupported language. Please, check the list of available languages')
 				setTranslationMeanings('')

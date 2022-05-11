@@ -83,7 +83,7 @@ const ClipLayer = props => {
 		setStart(s,null,clipName)
 		setEnd(en,null,clipName)
 	}
-
+	// eslint-disable-next-line no-unused-vars
 	const curr = {...dragRef.current}
 	return (
 		<>
