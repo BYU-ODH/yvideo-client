@@ -331,7 +331,7 @@ const HelpDocumentationContainer = props => {
 				<div class="section flex-column">
 					<h3>Resources</h3>
 					<p style="text-align: left; width: 100%;">
-						Yvideo stores files in a server, and the same file can be used to create more than one content. <b>Resources let you upload files to create content</b>. You can learn to create a resource following
+						Y-video stores files in a server, and the same file can be used to create more than one content. <b>Resources let you upload files to create content</b>. You can learn to create a resource following
 						the video tutorial below
 					</p>
 					<br/>

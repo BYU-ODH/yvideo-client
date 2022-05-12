@@ -27,7 +27,7 @@ describe(`LandingContainer test`, () => {
 			</Provider>,
 		)
 
-		expect(wrapper.text().includes(`YVIDEO`)).toBe(true)
+		expect(wrapper.text().includes(`Y-VIDEO`)).toBe(true)
 
 		wrapper.find({id: `primary`}).at(0).simulate(`click`)
 
