@@ -33,7 +33,7 @@ const AddUsersContainer = props => {
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		const usernamesArray = usernames.split(`\n`)
-
+		// eslint-disable-next-line no-unused-vars
 		const result = await addUsers(usernamesArray)
 		setIsSubmitted(true)
 	}

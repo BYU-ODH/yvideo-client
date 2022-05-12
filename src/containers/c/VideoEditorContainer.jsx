@@ -29,7 +29,7 @@ const VideoEditorContainer = props => {
 		setBreadcrumbs,
 		getFiles,
 		resource,
-		resourcetest,
+		// resourcetest,
 	} = props
 
 	const {id} = useParams()
@@ -38,8 +38,9 @@ const VideoEditorContainer = props => {
 
 	const [eventsArray, setEventsArray] = useState([])
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
-
+	// eslint-disable-next-line no-unused-vars
 	const [videoLength, setVideoLength] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 
 	const [content, setContent] = useState({})
@@ -67,7 +68,7 @@ const VideoEditorContainer = props => {
 
 						return data
 					}
-					const d =fetchData()
+					const d =fetchData() // eslint-disable-line no-unused-vars
 				}
 			} else {
 				setKey(``)
@@ -83,6 +84,7 @@ const VideoEditorContainer = props => {
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				if (resourceIdStream !== ``){
+					// eslint-disable-next-line no-unused-vars
 					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
@@ -93,11 +95,13 @@ const VideoEditorContainer = props => {
 				}
 				if(resource[resourceIdStream]){
 					if(resource[resourceIdStream][`files`]){
+						// eslint-disable-next-line no-unused-vars
 						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
 					}
 				}
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contentCache, getContent, streamKey, content, sKey, eventsArray])
 	const handleShowHelp = () => {
 		toggleModal({

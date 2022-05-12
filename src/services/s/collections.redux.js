@@ -254,7 +254,7 @@ export default class CollectionService {
 					while(i < courses.length){
 						const response = await apiProxy.courses.getCollections(courses[i])
 						courseCollections.concat(response)
-						setTimeout(() => {
+						setTimeout(() => { // eslint-disable-line no-loop-func
 							i++
 						}, 50)
 					}

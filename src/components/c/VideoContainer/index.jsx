@@ -329,7 +329,8 @@ const VideoContainer = props => {
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
-
+	
+	// eslint-disable-next-line no-unused-vars
 	const handleHotKeys = (e) => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {

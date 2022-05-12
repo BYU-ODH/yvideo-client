@@ -22,6 +22,7 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [layerHeight, setLayerHeight] = useState(0)
 
 	if(shouldUpdate)
@@ -49,7 +50,7 @@ const TrackLayer = props => {
 
 			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? 46 : 26 * (overlapCount.length + 1)}px`
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
@@ -83,7 +84,8 @@ const TrackLayer = props => {
 				} else {
 					// compare previous and current
 					// if current overlaps with previous
-					if(currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end || currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end){
+					//MIGHT BREAK TODO: I added parentheses to wrap around the 2 and statements because it was throwing a warning and this LOOKS like the correct way to fix it, but I'm not sure
+					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){
 						// find index in the main events object
 						// we find the first overlap so pass anything from beginning to now
 						// console.log('comparing')

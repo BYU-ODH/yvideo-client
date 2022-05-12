@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-
-import menuIcon from 'assets/menu-black.svg'
 import plusIcon from 'assets/plus-white.svg'
 
 export const Container = styled.div`

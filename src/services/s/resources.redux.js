@@ -261,6 +261,7 @@ export default class ResourceService {
 
 		try {
 			// remove access from resource
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.resources.access.remove(resourceId, username)
 
 			// get access and filter out the name that just got deleted
@@ -317,6 +318,7 @@ export default class ResourceService {
 				"date-validated": resource.dateValidated,
 			}
 
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.resources.edit(backendForm, resourceId)
 
 			if(selectedFile !== undefined){
@@ -490,7 +492,8 @@ export default class ResourceService {
 				if(key !== resourceId)
 					filteredResources[key] = currentResources[key]
 			})
-
+			
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.resources.delete(resourceId)
 			dispatch(this.actions.resourceDelete(filteredResources))
 

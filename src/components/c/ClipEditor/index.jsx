@@ -22,10 +22,10 @@ import Style, { Timeline, AnnotationMessage, SideEditor, Icon} from './styles'
 const ClipEditor = props => {
 	const {
 		currentContent,
-		url,
 		eventsArray,
-		subs,
-		allSubs,
+		// url,
+		// subs,
+		// allSubs,
 	} = props.viewstate
 
 	const {
@@ -45,20 +45,20 @@ const ClipEditor = props => {
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 
-	const [videoCurrentTime, setCurrentTime] = useState(0)
+	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
-	const [scrollFactor, setScrollFactor] = useState(0)
-	const [scrollWidth, setScrollWidth] = useState(0)
+	// const [scrollFactor, setScrollFactor] = useState(0) // eslint-disable-line no-unused-vars
+	// const [scrollWidth, setScrollWidth] = useState(0) // eslint-disable-line no-unused-vars
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
-	const [start, setStart] = useState(0)
-	const [end,setEnd] = useState(60)
-	const [title,setTitle] = useState(``)
+	// const [start, setStart] = useState(0) // eslint-disable-line no-unused-vars
+	// const [end,setEnd] = useState(60) // eslint-disable-line no-unused-vars
+	// const [title,setTitle] = useState(``) // eslint-disable-line no-unused-vars
 	const [clipList,setClipList] = useState({})
 	const [active, setActive] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
-	const [clipsToDelete,setClipsToDelete] = useState({})
+	const [clipsToDelete,setClipsToDelete] = useState({}) // eslint-disable-line no-unused-vars
 	const [blockLeave, setBlock] = useState(false)
 	const [isLoading,setIsLoading] = useState(false)
 	const [clipIndex,setClipIndex] = useState(0)
@@ -110,6 +110,7 @@ const ClipEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave])
 
 	const getVideoDuration = (duration) => {
@@ -402,7 +403,7 @@ const ClipEditor = props => {
 						</section>
 						<div className='zoom-controls'>
 							<div className='zoom-factor'>
-								<img src={zoomOut} style={{ width: `20px` }}/>
+								<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 								<Rnd
 									className={`zoom-indicator`}
 									bounds={`parent`}
@@ -412,7 +413,7 @@ const ClipEditor = props => {
 									onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
 								></Rnd>
-								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 							</div>
 							<div className='zoom-scroll'>
 								<div style={{ width: `100%`, height: `100%`, display: `flex` }}>

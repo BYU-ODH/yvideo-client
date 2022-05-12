@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, /*useRef*/ } from 'react'
 import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
@@ -10,17 +10,13 @@ import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './sty
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
 import pauseIcon from 'assets/event_pause.svg'
-import commentIcon from 'assets/event_comment.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
 import closeIcon from 'assets/close_icon.svg'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-import llIcon from 'assets/te-chevrons-left.svg'
-import rrIcon from 'assets/te-chevrons-right.svg'
-import lIcon from 'assets/te-chevron-left.svg'
-import rIcon from 'assets/te-chevron-right.svg'
+
 import helpIcon from 'assets/te-help-circle-white.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
@@ -103,11 +99,11 @@ const VideoEditor = props => {
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	const [eventListMinimized, setEventListMinimized] = useState(false)
+	const [eventListMinimized, setEventListMinimized] = useState(false) //eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
 	const [annotationsSaved, setSaved] = useState(false)
-	const [scrollBarWidth, setScrollBar] = useState(0)
+	const [scrollBarWidth, setScrollBar] = useState(0) //eslint-disable-line no-unused-vars
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
@@ -134,6 +130,7 @@ const VideoEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave])
 
 	// end of useEffect
@@ -452,7 +449,7 @@ const VideoEditor = props => {
 	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
-			const scrubberShadow = document.getElementById(`time-bar-shadow`)
+			const scrubberShadow = document.getElementById(`time-bar-shadow`) //eslint-disable-line no-unused-vars
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
@@ -547,7 +544,7 @@ const VideoEditor = props => {
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' id = 'zoom-factor'>
-							<img src={zoomOut} style={{ width: `20px` }}/>
+							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
@@ -557,7 +554,7 @@ const VideoEditor = props => {
 								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 								onMouseLeave={e => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 						</div>
 
 						<div className='zoom-scroll'>
@@ -653,7 +650,7 @@ const VideoEditor = props => {
 
 			<>
 				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
-					<img src={closeIcon} width='20' height='20' onClick={ e => setSaved(false)}/>
+					<img src={closeIcon} alt='' width='20' height='20' onClick={ e => setSaved(false)}/>
 					{
 						contentError !== `` ? (
 							<h2 id='error'>

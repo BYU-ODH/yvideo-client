@@ -281,7 +281,8 @@ export default class ContentService {
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().contentStore.lastFetched
-
+		
+		// eslint-disable-next-line no-unused-vars
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 		dispatch(this.actions.contentStart())
 

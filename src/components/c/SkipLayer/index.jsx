@@ -19,10 +19,10 @@ const SkipLayer = props => {
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
-	const [layerOverlap, setLayerOverlap] = useState([])
+	const [layerOverlap, setLayerOverlap] = useState([]) // eslint-disable-line no-unused-vars
 	const [layerWidth, setLayerWidth] = useState(0)
-	const [layerHeight, setLayerHeight] = useState(0)
-	const [tickArray,setTickArray] = useState(Array.from(Array(5).keys()))
+	const [layerHeight, setLayerHeight] = useState(0) // eslint-disable-line no-unused-vars
+	const [tickArray,setTickArray] = useState(Array.from(Array(5).keys())) // eslint-disable-line no-unused-vars
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -38,6 +38,7 @@ const SkipLayer = props => {
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){

@@ -34,7 +34,7 @@ const SubtitleEditorSideMenu = props => {
 
 		if(focus)
 			document.getElementById(`focus`).focus()
-
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [index, event])
 	const editSub = (side, time, value, layer, ind, type) => {
 		const sub = {...event}
