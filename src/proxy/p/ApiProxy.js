@@ -519,7 +519,7 @@ const apiProxy = {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
 					// console.log(`step 1`)
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/` + userName + `/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${userName}/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
@@ -818,6 +818,7 @@ const apiProxy = {
 				url: `/${language}/${word}`,
 				baseURL: process.env.REACT_APP_YVIDEO_SERVER_DICT,
 			})
+			console.log(process.env.REACT_APP_YVIDEO_SERVER_DICT)
 			// const result = axios({
 			// 		method: 'GET',
 			// 		baseURL: 'http://yvideodev.byu.edu:5001',
