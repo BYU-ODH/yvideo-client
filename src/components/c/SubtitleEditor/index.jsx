@@ -100,7 +100,7 @@ const SubtitleEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave, isEdit,subtitles])
 	// end of useEffect
 
@@ -193,6 +193,7 @@ const SubtitleEditor = props => {
 	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
+			// eslint-disable-next-line no-unused-vars
 			const scrubberShadow = document.getElementById(`time-bar-shadow`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
@@ -798,7 +799,7 @@ const SubtitleEditor = props => {
 								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 								onMouseLeave={e => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>

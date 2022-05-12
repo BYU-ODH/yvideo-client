@@ -9,11 +9,11 @@ export class Feedback extends PureComponent {
 	render(){
 
 		const {
-			email,
-			name,
-			title,
 			body,
-			file,
+			// email,
+			// name,
+			// title,
+			// file,
 		} = this.props.viewstate
 
 		const {

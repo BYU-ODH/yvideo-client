@@ -154,7 +154,7 @@ const TrackLayer = props => {
 	}
 
 	// This opens the side tab editor
-	const toggleEditor = (layerIndex, eventIndex) => {
+	const toggleEditor = (layerIndex, eventIndex) => { //eslint-disable-line no-unused-vars
 		// setEditorOpen(true)
 		sideEditor(layerIndex, eventIndex)
 	}
