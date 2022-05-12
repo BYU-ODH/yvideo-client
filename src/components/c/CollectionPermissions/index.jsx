@@ -10,7 +10,6 @@ import Style, {
 	TableContainer,
 	AddManyButton,
 	Sort,
-	// Spinner,
 	UserListTable,
 	UserList,
 	TableHeader,
@@ -46,7 +45,6 @@ export class CollectionPermissions extends PureComponent {
 			disabled,
 			disabledUser,
 			disabledTA,
-			// isLoading,
 			loggedinUser,
 		} = viewstate
 
@@ -73,7 +71,6 @@ export class CollectionPermissions extends PureComponent {
 						return b.username.localeCompare(a.username,{sensitivity:`base`})
 					case `Name`:
 						return b[`account-name`].localeCompare(a[`account-name`],{sensitivity:`base`})
-
 					default:
 						return ``
 					}

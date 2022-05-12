@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react'
 
-import { Container, Back, CloseHelp, /*Tutorial*/ } from './styles'
+import { Container, Back, CloseHelp } from './styles'
 
 import closeIcon from 'assets/x.svg'
 
 export default class HelpDocumentation extends PureComponent {
-	// constructor(props){
-	// 	super(props)
-	// }
+
 	componentDidMount(){
 		document.getElementById(`content`).innerHTML += this.props.viewstate.help.htmlInstruction
 	}

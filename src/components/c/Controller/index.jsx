@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect, /*useCallback*/ } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 import ReactPlayer from 'react-player'
-// import { Rnd } from "react-rnd";
 
-import Style, {TimeBar, /*ToggleCarat,*/ Blank, Censor, Comment, Subtitles, Spinner } from './styles'
+import Style, {TimeBar, Blank, Censor, Comment, Subtitles, Spinner } from './styles'
 
 import { EventsContainer, SubtitlesContainer } from 'containers'
 

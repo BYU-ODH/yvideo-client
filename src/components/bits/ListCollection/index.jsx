@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem, ListItemDropDown } from 'components/bits'
 
-import Style, { Header, Body, /*PublicButton*/ } from './styles'
+import Style, { Header, Body } from './styles'
 
 class ListCollection extends PureComponent {
 	state = {

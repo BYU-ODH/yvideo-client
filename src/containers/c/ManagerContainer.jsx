@@ -28,7 +28,6 @@ const ManagerContainer = props => {
 		collectionError,
 		collectionErrorPrev,
 		collectionSyncError,
-		// isLabAssistant
 	} = props
 
 	const params = useParams()

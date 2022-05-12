@@ -6,7 +6,7 @@ import {
 	Style,
 } from './styles'
 
-import { convertSecondsToMinute, /*convertToSeconds*/ } from '../../common/timeConversion'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 const ClipLayer = props => {
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react' // eslint-disable-line no-unused-vars
+import React from 'react'
 import Recaptcha from 'react-recaptcha'
 
 const Captcha = props => {

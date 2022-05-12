@@ -6,7 +6,7 @@ import { CensorDnD } from 'components/bits'
 
 // import Position from 'components/vanilla_scripts/censorPosition'
 
-import {CurrentEvents, CensorChange, /*CommentChange,*/ HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
+import {CurrentEvents, CensorChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -329,7 +329,7 @@ const VideoContainer = props => {
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
-	
+
 	// eslint-disable-next-line no-unused-vars
 	const handleHotKeys = (e) => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)

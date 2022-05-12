@@ -21,7 +21,6 @@ const CollectionPermissionsContainer = props => {
 		getCollectionInfo,
 		toggleModal,
 		updateCollectionStatus,
-		// getCollections,
 		loggedinUser,
 	} = props
 
@@ -151,12 +150,6 @@ const CollectionPermissionsContainer = props => {
 		},
 		addCourse: e => {
 			e.preventDefault()
-
-			// let {
-			// 	department,
-			// 	catalog,
-			// 	section,
-			// } = course
 
 			updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
 			setDisable(true)

@@ -48,13 +48,8 @@ const ClipEditor = props => {
 	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
-	// const [scrollFactor, setScrollFactor] = useState(0) // eslint-disable-line no-unused-vars
-	// const [scrollWidth, setScrollWidth] = useState(0) // eslint-disable-line no-unused-vars
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
-	// const [start, setStart] = useState(0) // eslint-disable-line no-unused-vars
-	// const [end,setEnd] = useState(60) // eslint-disable-line no-unused-vars
-	// const [title,setTitle] = useState(``) // eslint-disable-line no-unused-vars
 	const [clipList,setClipList] = useState({})
 	const [active, setActive] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
@@ -65,8 +60,6 @@ const ClipEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
 
-	// const [usingSubtitles, setSubtitles] = useState(false)
-	// const [subtitles, setSubs] = useState(subs)
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	useEffect(() => {
 		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)

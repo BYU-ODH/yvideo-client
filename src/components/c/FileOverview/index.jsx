@@ -8,7 +8,6 @@ import {
 	EditButton,
 	SaveIcon,
 	CategorySelect,
-	// FileTitle,
 } from './styles'
 
 export class FileOverview extends PureComponent {
@@ -17,7 +16,6 @@ export class FileOverview extends PureComponent {
 
 		const {
 			handleUpdateFile,
-			// handleFileMetadata,
 			handleRemoveFile,
 			handleFileVersion,
 		} = this.props.handlers

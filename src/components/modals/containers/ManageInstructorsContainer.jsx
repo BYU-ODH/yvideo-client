@@ -14,7 +14,6 @@ const ManageInstructorsContainer = props => {
 	const {
 		toggleModal,
 		data,
-		// search,
 		resource,
 		addAccess,
 		resourceAccess,

@@ -24,13 +24,10 @@ const PublicListCollectionContainer = props => {
 		// getUserById,
 		// searchedUser,
 		// emptySearchedUser,
-		// defaultCopyright,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
-	// const [ownerName, setOwnerName] = useState(``)
 	const [isSubscribed, setIsSubscribed] = useState(defaultSubscription)
-	// const [isCopyrighted, setIsCopyrighted] = useState(defaultCopyright)
 	const isOwner = user ? user.id === collection.owner : false
 
 	useEffect(() => {

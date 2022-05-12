@@ -13,14 +13,11 @@ class PublicMoreListCollection extends PureComponent {
 			isOwner,
 			isOpen,
 			contentsCount,
-			// isLoading,
-			// isAdmin,
 		} = this.props.viewstate
 
 		const {
 			isOpenEventHandler,
 			handlePublicCollection,
-			// getContents,
 		} = this.props.handlers
 
 		if (!collection) return null

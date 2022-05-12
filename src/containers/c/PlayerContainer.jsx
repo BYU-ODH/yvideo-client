@@ -414,12 +414,13 @@ const PlayerContainer = props => {
 			censor.style.width = `${width}px`
 		}
 	}
-
-	if(displaySubtitles === null && content !== undefined){
+		//TODO: This might break, what it was before was
+		//(displaySubtitles == null && content != undefined)
+	if(displaySubtitles === null && content){
 
 		// This statement prevents displaySubtitles from being null.
 		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
-		if (subtitles.length == 1) { //eslint-disable-line eqeqeq
+		if (subtitles.length === 1) {
 
 			// some logic to pick the subtitle
 			handleChangeSubtitle(0)

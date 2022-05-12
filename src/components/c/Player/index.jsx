@@ -58,21 +58,21 @@ export default class Player extends PureComponent {
 			handleStart,
 			handleProgress,
 			handleSeekChange,
-			// handlePlaybackRateChange,
-			// handleBlank,
+			handlePlaybackRateChange, //eslint-disable-line no-unused-vars
 			handleMuted,
 			handleUnmuted,
-			// handleShowComment,
-			// handleToggleTranscript,
 			handleShowSubtitle,
-			// handleShowHelp,
-			// handleShowTip,
-			// toggleTip,
-			// setCensorActive,
-			// setCensorPosition,
+			toggleTip, //eslint-disable-line no-unused-vars
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
+			// handleBlank,
+			// handleShowComment,
+			// handleToggleTranscript,
+			// handleShowHelp,
+			// handleShowTip,
+			// setCensorActive,
+			// setCensorPosition,
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {

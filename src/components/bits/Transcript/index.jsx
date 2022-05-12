@@ -29,14 +29,12 @@ const Transcript = props => {
 		displaySubtitles,
 		subtitleText,
 		subtitleTextIndex,
-		// duration,
 		toggleTranscript,
 		showTranscript,
 		isMobile,
 	} = props.viewstate
 
 	const {
-		// setToggleTranscript,
 		handleShowHelp,
 		handleSeekChange,
 		handleToggleTranscript,
