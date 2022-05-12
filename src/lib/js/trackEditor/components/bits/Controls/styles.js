@@ -2,17 +2,11 @@ import styled from 'styled-components'
 
 // Copied from components/bits/PlayerControls
 
-import closedCaption from 'assets/controls_closed_captions.svg'
-import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
-import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
 import volumeUpIcon from 'assets/controls_volume_up-rounded.svg'
 import volumeMutedIcon from 'assets/controls_volume_mute-rounded.svg'
 import visibiltyOnIcon from 'assets/visibility_on-outlined.svg'
-import visibiltyOffIcon from 'assets/visibility_off-outlined.svg'
-
-// import { Icon } from 'src/components/bits/ListItem/styles'
 
 const Style = styled.div`
 	position: inline-block;

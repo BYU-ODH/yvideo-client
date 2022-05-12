@@ -14,6 +14,6 @@ export const Thumbnail = styled.div`
 
 	margin-bottom: 1rem;
 
-	background-image: url(${props => props.src !== "empty" ? (props.src) : (defaultThumbnail)});
+	background-image: url(${props => props.src !== `empty` ? props.src : defaultThumbnail});
 	background-size: cover;
 `

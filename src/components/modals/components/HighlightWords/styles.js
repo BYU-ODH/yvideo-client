@@ -134,4 +134,4 @@ export const Button = styled.button`
 	}
 `
 
-export default Style;
+export default Style

@@ -1,16 +1,22 @@
 import styled from 'styled-components'
 
 export const Style = styled.div`
-	position: ${props => props.isMobile ? (`fixed`) : (`relative`)};
+	position: ${props => props.isMobile ? `fixed` : `relative`};
 	/* position: relative; */
-	width: ${props => props.displayTranscript ? ( props.isMobile ? ('calc(100vw)') : ('40rem') ) : ( props.isMobile ? ('0rem') : ('2rem'))};
+	width: ${props => props.displayTranscript
+		? props.isMobile
+			? `calc(100vw)`
+			: `40rem`
+		: props.isMobile
+			? `0rem`
+			: `2rem`};
 	height: 100%;
-	padding: ${props => props.isMobile ? (`0px`) : (`0px 10px 0px 10px`)};
+	padding: ${props => props.isMobile ? `0px` : `0px 10px 0px 10px`};
 	border-top: 1px solid #c4c4c4;
 	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
 	z-index: 20;
-	/* background-color: ${props => props.displayTranscript ? ('white') : ('var(--light-blue)')}; */
+	/* background-color: ${props => props.displayTranscript ? `white` : `var(--light-blue)`}; */
 
 	& .side-bar {
 		position: absolute;
@@ -35,12 +41,12 @@ export const Style = styled.div`
 		width: 30px;
 		height: 30px;
 		transition: .5s ease;
-		transform: ${props => props.displayTranscript ? ('rotate(-180deg)') : ('rotate(0deg)')};
+		transform: ${props => props.displayTranscript ? `rotate(-180deg)` : `rotate(0deg)`};
 	}
 
 	& .main-bar {
-		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
-		opacity: ${props => props.displayTranscript ? (1) : (0)};
+		visibility: ${props => props.displayTranscript ? `visible` : `hidden`};
+		opacity: ${props => props.displayTranscript ? 1 : 0};
 		transition: opacity .5s ease;
 		margin-left: 45px;
 		/* height: calc(100vh - 84px); */
@@ -161,8 +167,8 @@ export const Style = styled.div`
 
 	& .transcript-translation {
 		border-top: 1px solid rgba(0, 0, 0, 0.3);
-		visibility: ${props => props.displayTranscript ? ('visible') : ('hidden')};
-		opacity: ${props => props.displayTranscript ? (1) : (0)};
+		visibility: ${props => props.displayTranscript ? `visible` : `hidden`};
+		opacity: ${props => props.displayTranscript ? 1 : 0};
 		transition: opacity .5s ease;
 		position: relative;
 		background-color: white !important;

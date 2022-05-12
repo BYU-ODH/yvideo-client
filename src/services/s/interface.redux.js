@@ -101,7 +101,7 @@ export default class InterfaceService {
 			}
 
 		case this.types.TIP_TOGGLE:
-			if(action.payload == null){
+			if(action.payload === null){
 				// console.log("IT IS NULL")
 				// we need to set modal to false and then pass a null component
 				return {

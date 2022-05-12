@@ -492,7 +492,7 @@ export default class ResourceService {
 				if(key !== resourceId)
 					filteredResources[key] = currentResources[key]
 			})
-			
+
 			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.resources.delete(resourceId)
 			dispatch(this.actions.resourceDelete(filteredResources))

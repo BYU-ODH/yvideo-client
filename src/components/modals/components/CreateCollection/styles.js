@@ -27,5 +27,5 @@ export const Button = styled.button`
 	cursor: pointer;
 `
 export const secondInput = {
-	borderBottom: "1px solid #242F36",
+	borderBottom: `1px solid #242F36`,
 }

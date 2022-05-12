@@ -29,11 +29,11 @@ export const h1Style = {
 	justifySelf:`center`,
 	margin:`auto`,
 	width: `50%`,
-	padding: `20px`
+	padding: `20px`,
 }
 
 export const h2Style = {
 	padding: `20px`,
 	textAlign:`left`,
-	lineHeight: 1.5
+	lineHeight: 1.5,
 }

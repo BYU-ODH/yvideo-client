@@ -109,7 +109,7 @@ export default class CollectionService {
 			console.error(action.payload.error)
 			return {
 				...store,
-				errorMessage: `${action.payload.error.response.data ? (action.payload.error.response.data) : (null) }. Status: ${action.payload.error.response.status}`,
+				errorMessage: `${action.payload.error.response.data ? action.payload.error.response.data : null}. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
 		case COLLECTIONS_ERROR_SYNC:
@@ -254,7 +254,7 @@ export default class CollectionService {
 					while(i < courses.length){
 						const response = await apiProxy.courses.getCollections(courses[i])
 						courseCollections.concat(response)
-						//TODO: See if this is actually fine to just disable for the linter...
+						// TODO: See if this is actually fine to just disable for the linter...
 						setTimeout(() => { // eslint-disable-line no-loop-func
 							i++
 						}, 50)

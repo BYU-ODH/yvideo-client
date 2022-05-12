@@ -35,8 +35,8 @@ const contentBeforeModel2 = testutil.contentBeforeModel[1]
 
 const error = {
 	response: {
-		data: `SUBTITLES_ERROR test error message`
-	}
+		data: `SUBTITLES_ERROR test error message`,
+	},
 }
 
 proxies.apiProxy.content.post = jest.fn()
@@ -275,7 +275,5 @@ describe(`content service test`, () => {
 		await contentServiceConstructor.addSubtitles(`sub`)(dispatch, getState, { apiProxy })
 		expect(store.getState().loading).toEqual(false)
 	})
-
-
 
 })

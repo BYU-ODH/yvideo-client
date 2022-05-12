@@ -90,8 +90,8 @@ export const CurrentEvents = (time,events,duration) => {
 		}
 		// destroy any that shouldn't be there
 		if (commentChildren.length > comments.length){
-			for (let x = 0; x < commentChildren.length, x++;){
-				let del = true
+			for (let x = 0; x < commentChildren.length; x++){ // TODO I'm changing this because I don't think it should have a comma
+				let del = true																	 // It used to be x < commentChildren.length, x++;)
 				for (let i; i < comments.length;i++)
 					if (commentChildren[i].className.search(i.toString()) < -1) del = false
 
@@ -128,6 +128,6 @@ export const CommentChange = (ind,commentData, playedSeconds) =>{
 }
 export const subtitleChange = (subtitles) => {
 	if(document.getElementById(`subtitleContainer`)){
-		const container = document.getElementById(`subtitleContainer`)
+		const container = document.getElementById(`subtitleContainer`) // eslint-disable-line no-unused-vars
 	}
 }
