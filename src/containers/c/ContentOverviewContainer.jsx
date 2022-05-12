@@ -208,7 +208,6 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleShowTip = (tipName, position) => {
-		console.log(`working`)
 		toggleTip({
 			component: Tooltip,
 			props: {

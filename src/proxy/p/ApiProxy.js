@@ -818,7 +818,6 @@ const apiProxy = {
 				url: `/${language}/${word}`,
 				baseURL: process.env.REACT_APP_YVIDEO_SERVER_DICT,
 			})
-			console.log(process.env.REACT_APP_YVIDEO_SERVER_DICT)
 			// const result = axios({
 			// 		method: 'GET',
 			// 		baseURL: 'http://yvideodev.byu.edu:5001',

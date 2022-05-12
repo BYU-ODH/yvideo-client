@@ -226,7 +226,6 @@ const CreateContentContainer = props => {
 			`Spanish`,
 			`Russian`,
 		]
-		console.log(SUPPORTED_LANGUAGES.join(``).includes(data.targetLanguage))
 		const backEndData = {
 			"allow-definitions": false,
 			"url": data.url,
@@ -282,7 +281,6 @@ const CreateContentContainer = props => {
 			`Spanish`,
 			`Russian`,
 		]
-		console.log(SUPPORTED_LANGUAGES.join(``).includes(data.targetLanguage))
 		const backEndData = {
 			"allow-definitions": false,
 			"url": ``,
