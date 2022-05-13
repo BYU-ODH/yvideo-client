@@ -19,6 +19,7 @@ export class FileOverview extends PureComponent {
 		const {
 			toggleEdit,
 			handleUpdateFile,
+			handleFileMetadata,
 			handleRemoveFile,
 			handleFileVersion,
 		} = this.props.handlers
