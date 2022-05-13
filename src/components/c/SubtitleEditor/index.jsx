@@ -166,7 +166,6 @@ const SubtitleEditor = props => {
 	}
 
 	const handleZoomChange = (e, d) => {
-		// console.log("object")
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
@@ -254,8 +253,6 @@ const SubtitleEditor = props => {
 		} catch (e) {
 			console.error(`updateSubs error`,e)
 		}
-		const t1_2 = performance.now()
-		const t2_1 = performance.now()
 		if(side===`beg` && needCheck === true) {
 			if(sub.start===``){
 				document.getElementById(`subStart${index}`).style.border=`2px solid red`
@@ -272,8 +269,6 @@ const SubtitleEditor = props => {
 					needCheck=false
 				} else {
 					if(index !==0) {
-						// console.log(sub.start)
-						// console.log(tempSubs[subLayerIndex][`content`][index-1].end)
 						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
 							document.getElementById(`subStart${index}`).style.border=`2px solid red`
 							needCheck=false
@@ -319,21 +314,14 @@ const SubtitleEditor = props => {
 			// checkSubError(tempSubs, `update`, index, updateSub)
 		} else
 			setDisableSave(true)
-		const t3_2 = performance.now()
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
-		const t2=performance.now()
-		const t3=performance.now()
-		// setSubs(tempSubs)
-		// setAllSubs(tempSubs)
 		setSubChanges(subChanges+1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setBlock(true)
-		const t4=performance.now()
-		// console.log(`updating time`,t4-t3)
-		// console.log(t2-t1)
+
 	}
 
 	const addSubToLayer = (index, subIndex, position) => {
@@ -356,16 +344,13 @@ const SubtitleEditor = props => {
 				setSubToEdit(0)
 			} else {
 				if(position === `top`) {
-					if(currentSubs[index][`content`][subIndex].start <= 0)
-						isError = true
-					else {
-						if(currentSubs[index][`content`][subIndex].start <= 2) {
-							subStart = 0
-							subEnd = currentSubs[index][`content`][subIndex].start
-						} else {
-							subStart = currentSubs[index][`content`][subIndex].start - addingTime
-							subEnd = currentSubs[index][`content`][subIndex].start
-						}
+
+					if(currentSubs[index][`content`][subIndex].start <= 2) {
+						subStart = 0
+						subEnd = currentSubs[index][`content`][subIndex].start
+					} else {
+						subStart = currentSubs[index][`content`][subIndex].start - addingTime
+						subEnd = currentSubs[index][`content`][subIndex].start
 					}
 
 					newSub = {
@@ -403,9 +388,7 @@ const SubtitleEditor = props => {
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
 
-						if(curEndTime >= videoLength)
-							isError = true
-						else if(curEndTime+addingTime >= videoLength){
+						if(curEndTime + addingTime >= videoLength){
 							subStart = currentSubs[index][`content`][subIndex].end
 							subEnd = videoLength
 						} else {

@@ -5,7 +5,7 @@ import { Rnd } from 'react-rnd'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './styles'
+import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -106,7 +106,6 @@ const VideoEditor = props => {
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
-	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
@@ -141,10 +140,6 @@ const VideoEditor = props => {
 	if(shouldUpdate === true)
 		setShouldUpdate(false)
 
-	const togglendTimeline = () => {
-		setTimelineMinimized(!timelineMinimized)
-	}
-
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
 	}
@@ -155,7 +150,6 @@ const VideoEditor = props => {
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
-		// console.log("Start Percentage", startPercentage)
 
 		let currentEvents = []
 		if(allEvents !== undefined)
@@ -170,9 +164,6 @@ const VideoEditor = props => {
 		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
 		eventObj.end = Number(startPercentage) + eventObj.end
-
-		// console.log("Last final time for event start", eventObj.start)
-		// setCurrentTime(Number(startPercentage) + eventObj.end)
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 
@@ -189,10 +180,8 @@ const VideoEditor = props => {
 		}
 
 		const currentEvents = [...allEvents]
-		let input = ``
 		try {
 			if(side === `beg`) {
-				input = event.start
 				if(event.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
@@ -201,7 +190,6 @@ const VideoEditor = props => {
 				}
 
 			} else if(side === `end`) {
-				input = event.end
 				if(event.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
@@ -251,15 +239,6 @@ const VideoEditor = props => {
 			}
 		} else
 			setDisableSave(true)
-
-		if(side === `beg`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				event.start = input
-
-		} else if(side === `end`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				event.end = input
-		}
 
 		currentEvents[index] = event
 
@@ -346,17 +325,8 @@ const VideoEditor = props => {
 		setEditCensor(object)
 	}
 
-	const handleSaveCensor = () => {
-		const index = eventToEdit
-		const cEvent = allEvents[index]
-		const layer = cEvent.layer
-
-		cEvent.position = editCensor
-		updateEvents(index, cEvent, layer)
-	}
 	// THIS IS PART OF CENSOR
 	const handleLastClick = (height, width, x, y, time) => {
-
 		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
 
 			const index = eventToEdit
@@ -377,15 +347,6 @@ const VideoEditor = props => {
 
 			updateEvents(index, cEvent, layer)
 		}
-	}
-
-	const openSideEditor = (layerIndex, eventIndex) => {
-		if(eventIndex !== eventToEdit)
-			setActiveCensorPosition(-1)
-
-		setEventToEdit(eventIndex)
-		setDisplayLayer(layerIndex)
-		setSideEditor(true)
 	}
 
 	const closeSideEditor = () => {
@@ -412,7 +373,7 @@ const VideoEditor = props => {
 		setIsLoading(false)
 	}
 
-	const handleExportAnnotation = async () => {
+	const handleExportAnnotation = () => {
 		// Convert JSON Array to string.
 		// Convert JSON string to BLOB.
 		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
@@ -456,6 +417,10 @@ const VideoEditor = props => {
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			// if(document.getElementsByClassName(`events`).length > 1)
+			// 	currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			// else
+			// 	currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
 
 			if(!zoom){
 				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
@@ -484,9 +449,7 @@ const VideoEditor = props => {
 		}
 	}
 	const setCurrentTimePercentage = (time) => {
-		// console.log("Time", time)
 		const seconds = time * videoLength
-		// console.log("Seconds", seconds)
 		setCurrentTime(seconds)
 	}
 
@@ -500,7 +463,6 @@ const VideoEditor = props => {
 				<VideoContainer
 					className='video'
 					url={url}
-					handlers={togglendTimeline}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTimePercentage} // set current time
 					handleLastClick = {handleLastClick}
@@ -534,9 +496,7 @@ const VideoEditor = props => {
 										activeEvent={eventToEdit}
 										index={index}
 										// onDrop={(item) => eventDropHandler(item,index)}
-										sideEditor={openSideEditor}
 										updateEvents={updateEvents}
-										closeEditor={closeSideEditor}
 										displayLayer={displayLayer}
 									/>
 								</div>
@@ -592,7 +552,7 @@ const VideoEditor = props => {
 								<span>Save</span>
 							</button>
 							:
-							<button onClick={handleSaveAnnotation}>
+							<button className={`handleSaveAnnotation`} onClick={handleSaveAnnotation}>
 								{blockLeave ?
 									null
 									:
@@ -607,7 +567,7 @@ const VideoEditor = props => {
 					</div>
 					<div className={`save`}>
 						{!disableSave && !blockLeave && !isLoading ?
-							<button onClick={handleExportAnnotation}>
+							<button className={`handleExportAnnotation`} onClick={handleExportAnnotation}>
 								<span>Export</span>
 							</button>
 							:
@@ -639,7 +599,6 @@ const VideoEditor = props => {
 							handleEditCensor = {handleEditCensor}
 							handleCensorRemove = {handleCensorRemove}
 							handleAddCensor = {handleAddCensor}
-							handleSaveCensor = {handleSaveCensor}
 							activeCensorPosition = {activeCensorPosition}
 							setActiveCensorPosition = {setActiveCensorPosition}
 							toggleTip={toggleTip}
@@ -652,18 +611,6 @@ const VideoEditor = props => {
 			</EventEditor>
 
 			<>
-				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
-					<img src={closeIcon} width='20' height='20' onClick={ e => setSaved(false)}/>
-					{
-						contentError !== `` ? (
-							<h2 id='error'>
-								<span>Content failed with: {contentError}</span><br/><br/>
-							</h2>
-						) : (
-							<h2 id='success'>Annotations saved successfully</h2>
-						)
-					}
-				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'

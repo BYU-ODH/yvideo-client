@@ -48,13 +48,7 @@ const VideoContainer = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
-	const [censorActive, SetCensorActive] = useState(false)
-	const [currentZone, setCurrentZone] = useState([0, duration])
-	const [pausedTimes,setPausedTimes] = useState([])
-	// const [aspectRatio, setAspectRatio] = useState([16,9])
 	const [playerPadding,setPlayerPadding] = useState([0,0])
-	// I hate using a global variable here, we'll just have to see if it works
-	let censorData = {}
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -165,7 +159,6 @@ const VideoContainer = props => {
 				getDuration(duration)
 
 			setDuration(duration)
-			setCurrentZone([0, duration])
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
@@ -223,14 +216,10 @@ const VideoContainer = props => {
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
-				censorData = position
 				setCensorPosition(
 					position,
 				)
 			}
-		},
-		handleCensorActive: (bool) => {
-			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
