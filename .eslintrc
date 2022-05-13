@@ -46,7 +46,7 @@
 			"property"
 		],
 		"eqeqeq": [
-			"warn",
+			"error",
 			"always"
 		],
 		"func-call-spacing": "warn",
@@ -62,7 +62,7 @@
 			"warn",
 			"prefer-single"
 		],
-		"no-console": "off",
+		"no-console": "warn",
 		"no-extra-bind": "warn",
 		"no-extra-parens": [
 			"warn",
@@ -81,6 +81,7 @@
 		],
 		"no-trailing-spaces": "warn",
 		"no-unneeded-ternary": "warn",
+		"no-unused-vars": "warn",
 		"no-var": "warn",
 		"object-shorthand": "warn",
 		"prefer-arrow-callback": "warn",
