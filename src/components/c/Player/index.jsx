@@ -102,6 +102,12 @@ export default class Player extends PureComponent {
 			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
+			if(values.allEvents){
+				if(values.allEvents.filter(e => e.type === `Mute`).length === 0){
+					if (muted)
+						handleUnmuted()
+				}
+			}
 			for (let y = 0; y < values.allEvents.length; y++){
 				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 

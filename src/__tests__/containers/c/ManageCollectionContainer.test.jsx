@@ -250,7 +250,7 @@ describe(`manage collection container test`, () => {
 			</Provider>,
 		)
 
-		// make sure it is not editing mode before initinating `Edit`
+		// make sure it is not editing mode before initiating `Edit`
 		expect(wrapper.find({"id" : `title-edit`}).length).toBe(0)
 		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().editing).toBe(false)
 		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().children).toBe(`Edit`)
@@ -260,7 +260,7 @@ describe(`manage collection container test`, () => {
 
 		// check if it is edting mode and check if it is changed into `Save` button
 		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().editing).toBe(true)
-		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().children).toBe(`Save`)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).text()).toContain(`Save`)
 		expect(wrapper.find({"id" : `title-edit`}).length).not.toBe(0)
 
 		// test title changes

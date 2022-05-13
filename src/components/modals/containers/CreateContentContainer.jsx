@@ -221,9 +221,13 @@ const CreateContentContainer = props => {
 			alert(`Please, select a valid language`)
 			return
 		}
-
+		const SUPPORTED_LANGUAGES = [
+			`German`,
+			`Spanish`,
+			`Russian`,
+		]
 		const backEndData = {
-			"allow-definitions": true,
+			"allow-definitions": false,
 			"url": data.url,
 			"allow-captions": true,
 			"content-type": data.contentType,
@@ -272,9 +276,13 @@ const CreateContentContainer = props => {
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
 		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
 		// THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
-
+		const SUPPORTED_LANGUAGES = [
+			`German`,
+			`Spanish`,
+			`Russian`,
+		]
 		const backEndData = {
-			"allow-definitions": true,
+			"allow-definitions": false,
 			"url": ``,
 			"allow-captions": true,
 			"content-type": data.contentType,

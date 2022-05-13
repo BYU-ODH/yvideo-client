@@ -573,7 +573,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor minimized={eventListMinimized}>
+			<EventEditor id='EventEditor' minimized={eventListMinimized}>
 				<header>
 					<img
 						src={helpIcon}

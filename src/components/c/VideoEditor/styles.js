@@ -207,12 +207,12 @@ export const EventEditor = styled.div`
 
 	width: 30%;
 	/* width: 4rem; */
-	height: calc(72.4vh - var(--navbar-height)); // 100vh
+	height: calc(60% - 12px);
 	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
-	transition: .5s;
-	z-index: 20;
+	z-index: 0;
 	overflow: hidden;
 	border-left: 1px solid black;
+	border-bottom: 1px solid black;
 	position: absolute;
 	right: 0%;
 
@@ -261,6 +261,7 @@ export const EventEditor = styled.div`
 
 				& span, img {
 					margin: auto;
+
 				}
 			}
 			& > .disable {

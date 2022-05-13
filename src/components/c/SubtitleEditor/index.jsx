@@ -135,7 +135,6 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const openSubEditor = (layerIndex,subIndex) =>{
-		console.log(`sub editor`)
 		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
@@ -144,10 +143,8 @@ const SubtitleEditor = props => {
 		const t2 = performance.now() // eslint-disable-line no-unused-vars
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
-		if(active){
-			console.log(`top-`,active.offsetTop,`-`,active)
+		if(active)
 			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight*0.5
-		}
 		// console.log(`side editor`, t2-t1)
 	}
 	const closeSideEditor = () => {
@@ -224,7 +221,6 @@ const SubtitleEditor = props => {
 			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
 			const dis = direction/scrollBarContainer
-			console.log(direction, dis,currentLayerWidth)
 			scrubber.scrollLeft = currentLayerWidth * dis
 			timeIndicator.scrollLeft = currentLayerWidth * dis
 

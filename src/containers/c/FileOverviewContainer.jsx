@@ -59,6 +59,7 @@ const FileOverviewContainer = props => {
 	const viewstate = {
 		file,
 		langs,
+		fileState,
 	}
 
 	const handlers = {
