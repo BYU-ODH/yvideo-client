@@ -37,6 +37,11 @@ export default class ContentOverview extends PureComponent {
 				</Style>
 			)
 		}
+		const SUPPORTED_LANGUAGES = [
+			`German`,
+			`Spanish`,
+			`Russian`,
+		]
 
 		const {
 			editing,
@@ -124,7 +129,18 @@ export default class ContentOverview extends PureComponent {
 							</div>
 							<h4>
 								Allow automatic definitions
-								<SwitchToggle id='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
+								<div
+									onMouseEnter={(e) =>{
+										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) && handleShowTip(`definitions-disabled`, {x: e.target.getBoundingClientRect().x + 45, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})
+									}}
+									onMouseOut={(e) => {
+										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) && toggleTip()
+									}}
+									style={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) ? {cursor:`not-allowed`}:{cursor:`auto`}}
+								>
+									<SwitchToggle
+										disabled={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)} id='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
+								</div>
 							</h4>
 							<h4>
 								Captions

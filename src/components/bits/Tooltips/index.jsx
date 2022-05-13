@@ -91,6 +91,7 @@ export const ToolTip = (props) => {
 		"te-zoom": `Drag to zoom in/out`,
 		"transcript-hide": `Show/Hide`,
 		"transcript-seek": `Click to seek`,
+		"definitions-disabled": `Definitions are not supported for this language`,
 	}
 
 	// console.log("POSITION", position)
