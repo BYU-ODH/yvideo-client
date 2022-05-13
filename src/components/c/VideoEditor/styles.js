@@ -367,45 +367,6 @@ export const EventListCarat = styled.button`
 		transform: rotate(90deg);
 	}
 `
-export const AnnotationMessage = styled.div`
-	position: fixed;
-	margin-top: calc(40vh - 150px);
-	margin-left: calc(60vw - 400px);
-	width: 400px;
-	min-height: 150px;
-	height: auto;
-	z-index: 30;
-	background-color: white;
-	display: flex;
-	flex-direction: column;
-	border-radius: 25px;
-
-	transition: 1s ease;
-
-	& img {
-		position: absolute;
-    right: 20px;
-    top: 10px;
-    cursor: pointer;
-	}
-
-	& h2 {
-		position: relative;
-		margin: auto;
-		font-size: 2.5rem;
-		font-weight: 500 !important;
-		padding: 5px;
-	}
-
-	& #error {
-		color: red;
-		font-size: 1.7rem;
-	}
-
-	& #success {
-		color: green;
-	}
-`
 
 export const Help = styled.img`
 	width: 30px;
