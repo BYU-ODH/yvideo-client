@@ -33,12 +33,11 @@ const ManageInstructorsContainer = props => {
 			setCountAccess(resourceAccess.length)
 		}
 
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}
@@ -68,9 +67,9 @@ const ManageInstructorsContainer = props => {
 	}
 
 	const removeInstructor = async(item) => {
-		if(item) {
+		if(item)
 			await removeAccess(resource.id, item)
-		}
+
 		setBlock(true)
 	}
 

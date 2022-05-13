@@ -99,11 +99,11 @@ const VideoEditor = props => {
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	const [eventListMinimized, setEventListMinimized] = useState(false) //eslint-disable-line no-unused-vars
+	const [eventListMinimized, setEventListMinimized] = useState(false) // eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
 	const [annotationsSaved, setSaved] = useState(false)
-	const [scrollBarWidth, setScrollBar] = useState(0) //eslint-disable-line no-unused-vars
+	const [scrollBarWidth, setScrollBar] = useState(0) // eslint-disable-line no-unused-vars
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [isLoading,setIsLoading] = useState(false)
@@ -130,7 +130,7 @@ const VideoEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave])
 
 	// end of useEffect
@@ -449,7 +449,7 @@ const VideoEditor = props => {
 	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
-			const scrubberShadow = document.getElementById(`time-bar-shadow`) //eslint-disable-line no-unused-vars
+			const scrubberShadow = document.getElementById(`time-bar-shadow`) // eslint-disable-line no-unused-vars
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth

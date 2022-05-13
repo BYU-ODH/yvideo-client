@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import ManageCollection from '../../../../components/c/ManageCollection/index'
-import  { Icon, TitleEditButton, PublishButton } from '../../../../components/c/ManageCollection/styles'
+import { Icon, TitleEditButton, PublishButton } from '../../../../components/c/ManageCollection/styles'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
@@ -148,12 +148,12 @@ describe(`manage collection test`, () => {
 			</Provider>,
 		)
 
-		wrapper.find(`#content-button`).simulate('click')
-		wrapper.find(`#permissions-button`).simulate('mouseEnter')
-		wrapper.find(`#permissions-button`).simulate('mouseLeave')
-		wrapper.find(Icon).simulate('mouseEnter')
-		wrapper.find(Icon).simulate('mouseLeave')
-		wrapper.find('h6').simulate('click')
+		wrapper.find(`#content-button`).simulate(`click`)
+		wrapper.find(`#permissions-button`).simulate(`mouseEnter`)
+		wrapper.find(`#permissions-button`).simulate(`mouseLeave`)
+		wrapper.find(Icon).simulate(`mouseEnter`)
+		wrapper.find(Icon).simulate(`mouseLeave`)
+		wrapper.find(`h6`).simulate(`click`)
 	})
 
 	it(`simulate click action`, ()=> {
@@ -167,9 +167,9 @@ describe(`manage collection test`, () => {
 			</Provider>,
 		)
 
-		wrapper.find(TitleEditButton).simulate('mouseEnter')
-		wrapper.find(TitleEditButton).simulate('mouseLeave')
-		wrapper.find(PublishButton).simulate('mouseEnter')
-		wrapper.find(PublishButton).simulate('mouseLeave')
+		wrapper.find(TitleEditButton).simulate(`mouseEnter`)
+		wrapper.find(TitleEditButton).simulate(`mouseLeave`)
+		wrapper.find(PublishButton).simulate(`mouseEnter`)
+		wrapper.find(PublishButton).simulate(`mouseLeave`)
 	})
 })

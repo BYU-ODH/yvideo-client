@@ -59,9 +59,9 @@ describe(`List collection test`, () => {
 
 		const togglePanel = jest.spyOn(wrapper.instance(), `togglePanel`)
 		wrapper.instance().forceUpdate()
-		wrapper.find(`.list-header`).simulate('click');
+		wrapper.find(`.list-header`).simulate(`click`)
 
-		expect(togglePanel).toBeCalled();
+		expect(togglePanel).toBeCalled()
 	})
 
 })

@@ -6,14 +6,14 @@ import { Provider } from 'react-redux'
 
 describe(`Load test`, () => {
 	it(`wrapper`, ()=> {
-		let parent = mount(
-			<div id='load'></div>
+		const parent = mount(
+			<div id='load'></div>,
 		)
 		document.getElementById = jest.fn((tag) => parent.instance())
-		let wrapper = mount(
-				<BrowserRouter>
-					<Load />
-				</BrowserRouter>
+		const wrapper = mount(
+			<BrowserRouter>
+				<Load />
+			</BrowserRouter>,
 		)
 	})
 })

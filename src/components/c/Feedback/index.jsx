@@ -19,7 +19,7 @@ export class Feedback extends PureComponent {
 			setEmail,
 			setName,
 			handleSubmit,
-			handleCaptchaChange
+			handleCaptchaChange,
 		} = this.props.handlers
 
 		return (

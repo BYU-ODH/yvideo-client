@@ -92,6 +92,6 @@ describe(`collections test`, () => {
 
 	it(`simulate onClick`, ()=> {
 		const wrapper = shallow(<BlockCollection {...props}/>)
-		wrapper.find(".slide-wrapper").simulate('scroll', { target: { scrollLeft: 0 } })
+		wrapper.find(`.slide-wrapper`).simulate(`scroll`, { target: { scrollLeft: 0 } })
 	})
 })

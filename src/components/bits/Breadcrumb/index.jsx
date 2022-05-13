@@ -21,20 +21,20 @@ const Breadcrumb = props => {
 								{
 									isManager(crumb) ?
 										disabled ?
-											<button><Link className="std-outline-color" to={`/${link}/${crumbs.collectionId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+											<button><Link className='std-outline-color' to={`/${link}/${crumbs.collectionId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
 											:
-											<button><Link className="std-outline-color" to={`/${link}/${crumbs.collectionId}`}>{ crumb }</Link></button>
+											<button><Link className='std-outline-color' to={`/${link}/${crumbs.collectionId}`}>{ crumb }</Link></button>
 										:
 										isPlayer(crumb) ?
 											disabled ?
-												<button><Link className="std-outline-color" to={`/${link}/${crumbs.contentId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+												<button><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
 												:
-												<button><Link className="std-outline-color" to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></button>
+												<button><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></button>
 											:
 											disabled ?
-												<button><Link className="std-outline-color" to={`/${link}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+												<button><Link className='std-outline-color' to={`/${link}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
 												:
-												<button><Link className="std-outline-color" to={`/${link}`}>{ crumb }</Link></button>
+												<button><Link className='std-outline-color' to={`/${link}`}>{ crumb }</Link></button>
 
 								}
 								<Slash disabled={disabled}> / </Slash>

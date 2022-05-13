@@ -62,7 +62,7 @@
 			"warn",
 			"prefer-single"
 		],
-		"no-console": "warn",
+		"no-console": "off",
 		"no-extra-bind": "warn",
 		"no-extra-parens": [
 			"warn",

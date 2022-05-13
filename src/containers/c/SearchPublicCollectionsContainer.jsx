@@ -50,7 +50,7 @@ const SearchPublicCollectionsContainer = props => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setHeaderBorder, searchedPublicCollections.length])
 
 	const defaultSearch = async() => {

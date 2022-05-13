@@ -5,8 +5,6 @@ import { BrowserRouter} from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
-
-
 describe(`Error test`, () => {
 	it(`wrapper`, ()=> {
 		const wrapper = mount(

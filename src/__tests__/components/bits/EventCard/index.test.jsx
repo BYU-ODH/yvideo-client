@@ -20,12 +20,12 @@ describe(`event card`, () => {
 			},
 		]
 		const	wrapper = mount(
-				<BrowserRouter>
-					<DndProvider backend={Backend}>
-						<EventCard  event={event}/>
-					</DndProvider>
-				</BrowserRouter>,
-			)
+			<BrowserRouter>
+				<DndProvider backend={Backend}>
+					<EventCard event={event}/>
+				</DndProvider>
+			</BrowserRouter>,
+		)
 		// render(<EventCard event={event} />)
 
 		// fireEvent.dragStart(screen)

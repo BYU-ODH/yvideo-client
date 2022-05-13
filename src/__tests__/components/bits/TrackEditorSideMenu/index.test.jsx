@@ -78,7 +78,9 @@ describe(`TrackEditorSideMenu test`, () => {
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `` } })
 		wrapper.find(`.sideTabInput`).at(0).prop(`onBlur`)( { target: { value: `` } })
 		wrapper.find(`.center`).at(0).simulate(`click`)
-		wrapper.find(`.sideTabInput`).at(0).prop(`onKeyUp`)({stopPropagation: () => { return 1 } })
+		wrapper.find(`.sideTabInput`).at(0).prop(`onKeyUp`)({stopPropagation: () => {
+			return 1
+		} })
 
 		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseEnter`)(
 			{ target:
@@ -93,7 +95,9 @@ describe(`TrackEditorSideMenu test`, () => {
 		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `` } })
 		wrapper.find(`.sideTabInput`).at(1).prop(`onBlur`)( { target: { value: `` } })
 		wrapper.find(`.center`).at(0).simulate(`click`)
-		wrapper.find(`.sideTabInput`).at(1).prop(`onKeyUp`)({stopPropagation: () => { return 1 } })
+		wrapper.find(`.sideTabInput`).at(1).prop(`onKeyUp`)({stopPropagation: () => {
+			return 1
+		} })
 
 		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseEnter`)(
 			{ target:

@@ -58,11 +58,11 @@ export default class Player extends PureComponent {
 			handleStart,
 			handleProgress,
 			handleSeekChange,
-			handlePlaybackRateChange, //eslint-disable-line no-unused-vars
+			handlePlaybackRateChange, // eslint-disable-line no-unused-vars
 			handleMuted,
 			handleUnmuted,
 			handleShowSubtitle,
-			toggleTip, //eslint-disable-line no-unused-vars
+			toggleTip, // eslint-disable-line no-unused-vars
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
@@ -155,7 +155,7 @@ export default class Player extends PureComponent {
 
 		return (
 			<Style>
-				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: "hidden"}}>
+				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: `hidden`}}>
 					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}

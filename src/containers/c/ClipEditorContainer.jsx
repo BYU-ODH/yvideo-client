@@ -69,7 +69,7 @@ const ClipEditorContainer = props => {
 
 			}
 		}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [content, resource, eventsArray, currentContent, streamKey, url, sKey])
 
 	const handleShowHelp = () => {

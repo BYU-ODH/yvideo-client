@@ -21,7 +21,7 @@ import subHelp from 'assets/help/help-te-subtitle.png'
 import translationHelp from 'assets/help/help-translation.png'
 import importantWordHelp from 'assets/help/help-important-word.png'
 
-//player
+// player
 import clockIcon from 'assets/clock-black.svg'
 import bookIcon from 'assets/sidebar-black.svg'
 import chevron from 'assets/player-chevron-left-black.svg'
@@ -338,7 +338,7 @@ const HelpDocumentationContainer = props => {
 					</ul>
 				</div>`,
 		},
-		'Subtitle Editor': { //eslint-disable-line no-dupe-keys
+		'Subtitle Editor': { // eslint-disable-line no-dupe-keys
 			htmlInstruction: `
 			<div class="section flex-column">
 				<h3>Creating Subtitles/Captions</h3>
@@ -355,8 +355,8 @@ const HelpDocumentationContainer = props => {
 					<li>To <b>add</b> a new text slot you can click on the plus icon at the bottom of the last text slot. And, to <b>delete</b> a text slot click on the red trash can on the right</li>
 				</ul>
 			</div>
-			`
-		}
+			`,
+		},
 	}
 
 	const viewstate = {

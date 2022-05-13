@@ -22,16 +22,14 @@ const PlayerSubtitlesContainer = props => {
 
 	useEffect(() => {
 		if(subtitles.length !== 0){
-			let temp = subtitles[indexToDisplay]
-			let currentContent = temp.content
+			const temp = subtitles[indexToDisplay]
+			const currentContent = temp.content
 
 			try {
-				if(typeof currentContent === "string"){
+				if(typeof currentContent === `string`)
 					temp.content = JSON.parse(subtitles[indexToDisplay].content)
-				}
 
-			}
-			catch (e){
+			} catch (e){
 				console.log(e)
 			}
 			setSubtitlesArray(subtitles[indexToDisplay].content)
@@ -46,8 +44,7 @@ const PlayerSubtitlesContainer = props => {
 		if(currentTime >= start && currentTime <= end){
 			props.handleShowSubtitle(element.text, i)
 			break
-		}
-		else if (currentTime > end || currentTime < start)
+		} else if (currentTime > end || currentTime < start)
 			// console.log("overwriting ")
 			props.handleShowSubtitle(``)
 	}

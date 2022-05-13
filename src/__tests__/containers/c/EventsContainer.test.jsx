@@ -36,7 +36,7 @@ describe(`EventsContainer test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-			expect(wrapper).toBeDefined()
+		expect(wrapper).toBeDefined()
 	})
 	it(`check correct form of landing`, () => {
 		props = {

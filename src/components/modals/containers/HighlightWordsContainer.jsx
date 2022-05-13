@@ -24,61 +24,60 @@ const HighlightWordsContainer = props => {
 		supportedLanguages,
 	} = props
 
-	//get all subtitles for this content.
-	//allow a user to select what subtitle the words will be added to
+	// get all subtitles for this content.
+	// allow a user to select what subtitle the words will be added to
 
 	const [subtitlesObjects, setSubtitlesObject] = useState([])
 	const [activeSubtitle, setActiveSubtitle] = useState(0)
-	const [newList, setNewList] = useState(false) //set wordlist from the list of the words for a specific subtitle
+	const [newList, setNewList] = useState(false) // set wordlist from the list of the words for a specific subtitle
 	const [word, setWord] = useState(``)
-	const [checkWord, setCheckWord] = useState('')
-	const [language, setLanguage] = useState('')
+	const [checkWord, setCheckWord] = useState(``)
+	const [language, setLanguage] = useState(``)
 	const [checkResponse, setCheckResponse] = useState(false)
-	const [translationWords, setTranslationWords] = useState('')
-	const [translationMeanings, setTranslationMeanings] = useState('')
+	const [translationWords, setTranslationWords] = useState(``)
+	const [translationMeanings, setTranslationMeanings] = useState(``)
 
 	useEffect(() => {
 		// eslint-disable-next-line eqeqeq
-		if(subtitlesContentId == ''){
+		if(subtitlesContentId == ``)
 			getSubtitles(contentId)
-		}
+
 		else {
-			let tempSubtitles = []
+			const tempSubtitles = []
 			Object.keys(subtitles).forEach((item) => {
 				tempSubtitles.push(subtitles[item])
 			})
-			tempSubtitles.sort((a, b) => (a.language > b.language) ? 1 : -1)
+			tempSubtitles.sort((a, b) => a.language > b.language ? 1 : -1)
 			setSubtitlesObject(tempSubtitles)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contentId, getSubtitles, subtitlesContentId, subtitlesObjects.length])
 
-
 	const addWord = (e) => {
 		e.preventDefault()
-		let currentSubtitle = subtitlesObjects[activeSubtitle]
-		let currentWords = currentSubtitle.words.concat(`, ${word}`)
+		const currentSubtitle = subtitlesObjects[activeSubtitle]
+		const currentWords = currentSubtitle.words.concat(`, ${word}`)
 		currentSubtitle.words = currentWords
 
-		let allSub = subtitlesObjects
+		const allSub = subtitlesObjects
 		allSub[activeSubtitle] = currentSubtitle
 		setSubtitlesObject(allSub)
 		setWord(``)
-		//save changes to the back end
+		// save changes to the back end
 		updateSubtitle(currentSubtitle)
 	}
 
 	const removeWord = e => {
-		let arrayWord = subtitlesObjects[activeSubtitle].words.split(',')
-		let filtedArray = arrayWord.filter(item => item !== e.target.dataset.value)
-		let currentSubtitle = subtitlesObjects[activeSubtitle]
-		currentSubtitle.words = filtedArray.join(',')
+		const arrayWord = subtitlesObjects[activeSubtitle].words.split(`,`)
+		const filtedArray = arrayWord.filter(item => item !== e.target.dataset.value)
+		const currentSubtitle = subtitlesObjects[activeSubtitle]
+		currentSubtitle.words = filtedArray.join(`,`)
 
-		let allSub = subtitlesObjects
+		const allSub = subtitlesObjects
 		allSub[activeSubtitle] = currentSubtitle
 		setSubtitlesObject(allSub)
 		setNewList(!newList)
-		//save changes to the back end
+		// save changes to the back end
 		updateSubtitle(currentSubtitle)
 	}
 
@@ -89,9 +88,9 @@ const HighlightWordsContainer = props => {
 	const changeCheckWord = e => {
 		setCheckWord(e.target.value)
 		// console.log(checkResponse)
-		if(checkResponse){
+		if(checkResponse)
 			setCheckResponse(false)
-		}
+
 	}
 
 	const changeLanguage = e => {
@@ -108,28 +107,28 @@ const HighlightWordsContainer = props => {
 
 	const writeTranslation = (jsonResponse) => {
 
-			let allWords = ''
-			let allMeanings = ''
-			// eslint-disable-next-line eqeqeq
-			if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined){
-				setTranslationWords('Unsupported language. Please, check the list of available languages')
-				setTranslationMeanings('')
-				return;
-			}
+		let allWords = ``
+		let allMeanings = ``
+		// eslint-disable-next-line eqeqeq
+		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined){
+			setTranslationWords(`Unsupported language. Please, check the list of available languages`)
+			setTranslationMeanings(``)
+			return
+		}
 
-			if(jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].length < 1){
-				setTranslationWords('No matches found')
-				setTranslationMeanings('')
-				return;
-			}
+		if(jsonResponse[Object.keys(jsonResponse)[0]][0][`meanings`].length < 1){
+			setTranslationWords(`No matches found`)
+			setTranslationMeanings(``)
+			return
+		}
 
-			jsonResponse[Object.keys(jsonResponse)[0]][0]['meanings'].forEach((item, index) => {
-				allWords += `${item.lemma}; `
-				allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
-			});
+		jsonResponse[Object.keys(jsonResponse)[0]][0][`meanings`].forEach((item, index) => {
+			allWords += `${item.lemma}; `
+			allMeanings += `<b>${index}.</b>${item.meaning.substring(1, item.meaning.length - 1)} `
+		})
 
-			setTranslationWords(allWords)
-			setTranslationMeanings(allMeanings)
+		setTranslationWords(allWords)
+		setTranslationMeanings(allMeanings)
 	}
 
 	const handleChangeActive = (e) => {

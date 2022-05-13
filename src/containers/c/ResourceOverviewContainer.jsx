@@ -66,12 +66,11 @@ const ResourceOverviewContainer = props => {
 			}
 		}
 
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}

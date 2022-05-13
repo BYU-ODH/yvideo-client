@@ -414,8 +414,8 @@ const PlayerContainer = props => {
 			censor.style.width = `${width}px`
 		}
 	}
-		//TODO: This might break, what it was before was
-		//(displaySubtitles == null && content != undefined)
+	// TODO: This might break, what it was before was
+	// (displaySubtitles == null && content != undefined)
 	if(displaySubtitles === null && content){
 
 		// This statement prevents displaySubtitles from being null.

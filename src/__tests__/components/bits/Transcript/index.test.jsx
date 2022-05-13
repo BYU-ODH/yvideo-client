@@ -14,32 +14,31 @@ const handlers = {
 	handleShowTip: jest.fn,
 }
 
-
 const viewstate = {
 	displaySubtitles: {
-		language: 'english',
-		words: '',
+		language: `english`,
+		words: ``,
 		content: [
 			{
 				end: 20.227533345404066,
 				start: 0,
-				text: "First Line",
-			}
-		]
+				text: `First Line`,
+			},
+		],
 	},
 	content: {
 		settings: {
-			targetLanguage: 'english'
-		}
+			targetLanguage: `english`,
+		},
 	},
-	subtitleText: 'a'
+	subtitleText: `a`,
 }
 
 const props = {
 	handlers,
 	viewstate,
 	jsonResponse: {} ,
-	translate: '',
+	translate: ``,
 	languageCodes:{},
 }
 
@@ -55,36 +54,36 @@ describe(`Transcript test`, () => {
 		)
 	})
 	it(`toggle-transcript simulate action`, () => {
-		let item = wrapper.find('.toggle-transcript').at(0).simulate('click');
-		expect(item).toBeDefined();
-		item = wrapper.find('.toggle-transcript').at(0).simulate('mouseEnter');
-		expect(item).toBeDefined();
-		item = wrapper.find('.toggle-transcript').at(0).simulate('mouseLeave');
-		expect(item).toBeDefined();
+		let item = wrapper.find(`.toggle-transcript`).at(0).simulate(`click`)
+		expect(item).toBeDefined()
+		item = wrapper.find(`.toggle-transcript`).at(0).simulate(`mouseEnter`)
+		expect(item).toBeDefined()
+		item = wrapper.find(`.toggle-transcript`).at(0).simulate(`mouseLeave`)
+		expect(item).toBeDefined()
 	})
 	it(`Help simulate action`, () => {
-		let item = wrapper.find(Help).simulate('click');
-		expect(item).toBeDefined();
-		item = wrapper.find(Help).simulate('mouseEnter');
-		expect(item).toBeDefined();
-		item = wrapper.find(Help).simulate('mouseLeave');
-		expect(item).toBeDefined();
+		let item = wrapper.find(Help).simulate(`click`)
+		expect(item).toBeDefined()
+		item = wrapper.find(Help).simulate(`mouseEnter`)
+		expect(item).toBeDefined()
+		item = wrapper.find(Help).simulate(`mouseLeave`)
+		expect(item).toBeDefined()
 	})
 	it(`toggle-transcript simulate action 2`, () => {
-		let item = wrapper.find('.toggle-transcript').at(1).simulate('click');
-		expect(item).toBeDefined();
-		item = wrapper.find('.toggle-transcript').at(1).simulate('mouseEnter');
-		expect(item).toBeDefined();
-		item = wrapper.find('.toggle-transcript').at(1).simulate('mouseLeave');
-		expect(item).toBeDefined();
+		let item = wrapper.find(`.toggle-transcript`).at(1).simulate(`click`)
+		expect(item).toBeDefined()
+		item = wrapper.find(`.toggle-transcript`).at(1).simulate(`mouseEnter`)
+		expect(item).toBeDefined()
+		item = wrapper.find(`.toggle-transcript`).at(1).simulate(`mouseLeave`)
+		expect(item).toBeDefined()
 	})
 	it(`displaySubtitles simulate action`, () => {
-		let item = wrapper.find('.transcript-row').at(0).simulate('click');
-		expect(item).toBeDefined();
-		item = wrapper.find('.transcript-row').at(0).simulate('mouseEnter');
-		expect(item).toBeDefined();
-		item = wrapper.find('.transcript-row').at(0).simulate('mouseLeave');
-		expect(item).toBeDefined();
+		let item = wrapper.find(`.transcript-row`).at(0).simulate(`click`)
+		expect(item).toBeDefined()
+		item = wrapper.find(`.transcript-row`).at(0).simulate(`mouseEnter`)
+		expect(item).toBeDefined()
+		item = wrapper.find(`.transcript-row`).at(0).simulate(`mouseLeave`)
+		expect(item).toBeDefined()
 	})
 	it(`words display`, () => {
 		expect(wrapper.contains(<h1>Transcript</h1>)).toEqual(true)
@@ -95,13 +94,13 @@ describe(`Transcript test`, () => {
 		expect(wrapper.contains(<label>Meaning: <b>0.</b>meaning </label>)).toEqual(true)
 	})
 	it(`transcript-row simulate action`, () => {
-		let item = wrapper.find('p').at(0).simulate('click');
+		let item = wrapper.find(`p`).at(0).simulate(`click`)
 		expect(item).toBeDefined()
-		item = wrapper.find('.arrow').at(0).simulate('click');
+		item = wrapper.find(`.arrow`).at(0).simulate(`click`)
 		expect(item).toBeDefined()
-		item = wrapper.find('.arrow').at(0).simulate('mouseEnter');
+		item = wrapper.find(`.arrow`).at(0).simulate(`mouseEnter`)
 		expect(item).toBeDefined()
-		item = wrapper.find('.arrow').at(0).simulate('mouseLeave');
+		item = wrapper.find(`.arrow`).at(0).simulate(`mouseLeave`)
 		expect(item).toBeDefined()
 	})
 

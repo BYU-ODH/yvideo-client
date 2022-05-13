@@ -30,7 +30,7 @@ class Menu extends PureComponent {
 					onMouseLeave={e => toggleTip()}>
 
 					{/* <UserPic>{initials}</UserPic> */}
-					<MenuIcon className="std-outline-color" />
+					<MenuIcon className='std-outline-color' />
 
 					{user.name.includes(`no_name`) ? <h4>{user.username}</h4> : <h4>{user.name}</h4>}
 					<hr />
@@ -40,21 +40,21 @@ class Menu extends PureComponent {
 					{
 						isAdmin &&
 					<>
-						<LinkStyled className="std-outline-color" to='/admin'>Admin Dashboard</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/admin'>Admin Dashboard</LinkStyled>
 					</>
 					}
 
 					{ (isLab || isAdmin) &&
 					<>
-						<LinkStyled className="std-outline-color" to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
-						<LinkStyled className="std-outline-color" to='/manage-resource'>Manage Resource</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/manage-resource'>Manage Resource</LinkStyled>
 					</>
 					}
 
 					{
 						!(isLab || isAdmin || isProf) &&
 					<>
-						<LinkStyled className="std-outline-color" to='/'>Collections</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/'>Collections</LinkStyled>
 					</>
 					}
 
@@ -65,12 +65,12 @@ class Menu extends PureComponent {
 					<>
 						<Header>Collections</Header>
 						<hr />
-						<LinkStyled className="std-outline-color" to='/'>Collections</LinkStyled>
-						<LinkStyled className="std-outline-color" to='/manager'>Manage Collections</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/'>Collections</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/manager'>Manage Collections</LinkStyled>
 						{
 							isAdmin &&
 							<>
-								<LinkStyled className="std-outline-color" to='/public-manager'>Manage Public Collections</LinkStyled>
+								<LinkStyled className='std-outline-color' to='/public-manager'>Manage Public Collections</LinkStyled>
 							</>
 						}
 						{/* <LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled> */}
@@ -80,7 +80,7 @@ class Menu extends PureComponent {
 					<Footer>
 						<Header>Connect With Us</Header>
 						<hr />
-						<LinkStyled to='/feedback' className="std-outline-color">Contact Us</LinkStyled>
+						<LinkStyled to='/feedback' className='std-outline-color'>Contact Us</LinkStyled>
 					</Footer>
 
 				</Style>

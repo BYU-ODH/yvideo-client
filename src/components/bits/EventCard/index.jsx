@@ -6,7 +6,7 @@ const EventCard = ({ event }) => {
 	return (
 		<Style >
 			<I src={event.icon}/>
-			{event.type === "Censor" ? ('Blur') : (event.type)}
+			{event.type === `Censor` ? `Blur` : event.type}
 		</Style>
 	)
 }

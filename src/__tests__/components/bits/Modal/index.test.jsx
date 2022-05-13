@@ -7,17 +7,17 @@ import * as testutil from '../../../testutil/testutil'
 // jest.mock('react-dom')
 
 describe(`Modal test`, () => {
-	it('componentDidUpdate: classList: active', () => {
-		let parent = mount(
-			<div id='modal'></div>
+	it(`componentDidUpdate: classList: active`, () => {
+		const parent = mount(
+			<div id='modal'></div>,
 		)
 		document.getElementById = jest.fn((tag) => parent.instance())
-		let wrapper = mount(
+		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Modal />
 				</BrowserRouter>
-			</Provider>
+			</Provider>,
 		)
 		expect(wrapper).toBeDefined()
 	})

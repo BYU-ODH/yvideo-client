@@ -7,7 +7,6 @@ import { BrowserRouter } from 'react-router-dom'
 
 const file = testutil.file1
 
-
 describe(`manage collection test`, () => {
 
 	let wrapper
@@ -22,17 +21,17 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`FeedbackContainer`, ()=> {
-		let button = wrapper.find('input').at(0).simulate('change', { target: { value: 'name' } });
-		expect(button).toBeDefined();
-		button = wrapper.find('input').at(1).simulate('change', { target: { value: 'email' } });
-		expect(button).toBeDefined();
-		button = wrapper.find('input').at(2).simulate('change', { target: { value: 'subject' } });
-		expect(button).toBeDefined();
-		button = wrapper.find('textarea').at(0).simulate('change', { target: { value: 'text' } });
-		expect(button).toBeDefined();
-		button = wrapper.find('input').at(3).simulate('change', { target: { files: [{attachment: 'path'}] } });
-		expect(button).toBeDefined();
-		wrapper.find('.test-mailing').simulate('submit')
+		let button = wrapper.find(`input`).at(0).simulate(`change`, { target: { value: `name` } })
+		expect(button).toBeDefined()
+		button = wrapper.find(`input`).at(1).simulate(`change`, { target: { value: `email` } })
+		expect(button).toBeDefined()
+		button = wrapper.find(`input`).at(2).simulate(`change`, { target: { value: `subject` } })
+		expect(button).toBeDefined()
+		button = wrapper.find(`textarea`).at(0).simulate(`change`, { target: { value: `text` } })
+		expect(button).toBeDefined()
+		button = wrapper.find(`input`).at(3).simulate(`change`, { target: { files: [{attachment: `path`}] } })
+		expect(button).toBeDefined()
+		wrapper.find(`.test-mailing`).simulate(`submit`)
 	})
 
 })

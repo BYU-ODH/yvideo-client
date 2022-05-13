@@ -635,7 +635,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.file.post(`file`)).resolves.toEqual(`filePost`)
-		expect(axios.post).toBeCalledWith(`//api.yvideobeta.byu.edu/api/file`, `file`, {"headers": {"Content-Type": "multipart/form-data", "session-id": `id`}, "onUploadProgress": undefined, "withCredentials": true})
+		expect(axios.post).toBeCalledWith(`//api.yvideobeta.byu.edu/api/file`, `file`, {"headers": {"Content-Type": `multipart/form-data`, "session-id": `id`}, "onUploadProgress": undefined, "withCredentials": true})
 	})
 
 	it(`file patch`, async () => {

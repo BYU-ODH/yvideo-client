@@ -32,7 +32,7 @@ export default class ManageInstructors extends PureComponent {
 		return (
 			<Div>
 				<Form onSubmit={handleRegister} id='upload-file-form'>
-					<Button className='std-outline-color' type='button' onClick={toggleModal}><p className="fa fa-times" aria-hidden="true"></p></Button>
+					<Button className='std-outline-color' type='button' onClick={toggleModal}><p className='fa fa-times' aria-hidden='true'></p></Button>
 					<h2>Instructors</h2>
 
 					<InputForm className='faculty-submit'>
@@ -42,7 +42,7 @@ export default class ManageInstructors extends PureComponent {
 					<Hr />
 					{
 						resourceAccess.length > 0 ?
-						<RegisteredListTable>
+							<RegisteredListTable>
 								<thead>
 								</thead>
 								<tbody>
@@ -55,10 +55,10 @@ export default class ManageInstructors extends PureComponent {
 												<td></td>
 												<td></td>
 												<td><RemoveButton onClick={e => removeInstructor(item.username)}><RemoveIcon/></RemoveButton></td>
-											</tr>
+											</tr>,
 									)}
 								</tbody>
-						</RegisteredListTable>
+							</RegisteredListTable>
 							:
 							<>There is no registered user</>
 					}

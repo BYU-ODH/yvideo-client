@@ -33,7 +33,7 @@ const PublicListCollectionContainer = props => {
 	useEffect(() => {
 		toggleTip()
 		setHeaderBorder(false)
-		//eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen, collections, isSubscribed])
 
 	const handlePublicCollection = async() => {
@@ -45,7 +45,7 @@ const PublicListCollectionContainer = props => {
 			setIsSubscribed(true)
 		}
 	}
-	//eslint-disable-next-line no-unused-vars
+	// eslint-disable-next-line no-unused-vars
 	const readSubscription = () => {
 
 		if(collection.subscribers) {
@@ -56,7 +56,7 @@ const PublicListCollectionContainer = props => {
 				}
 			})
 		} else {
-			Object.keys(collections).map(key => { //eslint-disable-line array-callback-return
+			Object.keys(collections).map(key => { // eslint-disable-line array-callback-return
 				if(key === collection.id) {
 					if(collections[key].subscribers) {
 						collections[key].subscribers.forEach(subscriber => {
@@ -73,7 +73,7 @@ const PublicListCollectionContainer = props => {
 	}
 
 	// TODO: we can modify this idea later
-		// eslint-disable-next-line no-unused-vars
+	// eslint-disable-next-line no-unused-vars
 	const handleMorePublicCollection = async() =>{
 		const result = await searchCollectionsByUserId(collection.owner,true, true)
 		let morePublicCollections

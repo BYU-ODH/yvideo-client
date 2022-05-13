@@ -17,15 +17,15 @@ const props = {
 	setHeaderBorder: jest.fn(),
 }
 
-	// TODO: submit does not change the searchQuery state, need to figure out how to check
-	it(`mount admin container`, async() => {
-		const wrapper = mount(
-			<Provider store={store}>
-				<BrowserRouter>
-					<Container/>
-				</BrowserRouter>
-			</Provider>,
-		)
+// TODO: submit does not change the searchQuery state, need to figure out how to check
+it(`mount admin container`, async() => {
+	const wrapper = mount(
+		<Provider store={store}>
+			<BrowserRouter>
+				<Container/>
+			</BrowserRouter>
+		</Provider>,
+	)
 
-		expect(wrapper).toBeDefined()
-	})
+	expect(wrapper).toBeDefined()
+})

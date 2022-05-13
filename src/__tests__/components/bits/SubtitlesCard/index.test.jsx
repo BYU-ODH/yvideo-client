@@ -9,12 +9,12 @@ import Backend from 'react-dnd-html5-backend'
 describe(`event card`, () => {
 	it(`mock useDrag`, ()=> {
 		const	wrapper = mount(
-				<BrowserRouter>
-					<DndProvider backend={Backend}>
-						<SubtitlesCard />
-					</DndProvider>
-				</BrowserRouter>,
-			)
+			<BrowserRouter>
+				<DndProvider backend={Backend}>
+					<SubtitlesCard />
+				</DndProvider>
+			</BrowserRouter>,
+		)
 		expect(wrapper).toBeDefined()
 	})
 })

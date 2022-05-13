@@ -11,9 +11,9 @@ const props = {
 describe(`AccordionMenu test`, () => {
 	it(`simulate onClick`, ()=> {
 		const wrapper = shallow(<AccordionMenu {...props}/>)
-		wrapper.find(".accordion").simulate('click', {
+		wrapper.find(`.accordion`).simulate(`click`, {
 			preventDefault: () => {
-			}
+			},
 		 })
 	})
 })

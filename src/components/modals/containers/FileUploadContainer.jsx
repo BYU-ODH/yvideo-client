@@ -117,8 +117,8 @@ const FileUploadContainer = props => {
 		formData.append(`file-version`, fileVersion)
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, metadata)
-		formData.append(`aspect-ratio`, '')
-		
+		formData.append(`aspect-ratio`, ``)
+
 		// eslint-disable-next-line no-unused-vars
 		const result = await uploadFile(formData, (event) => {
 			const percent = Math.round(100 * event.loaded / event.total)
