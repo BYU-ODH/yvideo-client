@@ -72,7 +72,7 @@ const ContentOverviewContainer = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [blockLeave])
 
 	if (objectIsEmpty(content)) return null

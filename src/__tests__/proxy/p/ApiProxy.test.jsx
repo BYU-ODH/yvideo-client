@@ -1,13 +1,7 @@
-import React from 'react'
-import { shallow, mount } from 'enzyme'
-import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
 import * as testutil from '../../testutil/testutil'
-import ApiProxy from '../../../proxy/p/ApiProxy'
 import proxies from 'proxy'
 import axios from 'axios'
 import Content from 'models/Content'
-import uuid from 'react-uuid'
 
 const collection4 = testutil.collection4
 

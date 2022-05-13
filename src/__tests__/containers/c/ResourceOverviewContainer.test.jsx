@@ -1,6 +1,5 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import { waitFor } from '@testing-library/dom'
 import MutationObserver from 'mutation-observer'
 import Container from '../../../containers/c/ResourceOverviewContainer'
 import { Provider } from 'react-redux'

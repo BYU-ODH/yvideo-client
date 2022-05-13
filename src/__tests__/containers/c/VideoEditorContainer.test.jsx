@@ -41,8 +41,7 @@ document.getElementById = jest.fn((tag) => {
 
 describe(`VideoEditorContainer testing`, () => {
 	it(`simulate event`, () => {
-		let wrapper
-		wrapper = mount(
+		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
@@ -63,8 +62,7 @@ describe(`VideoEditorContainer testing`, () => {
 
 	})
 	it(`contentCache[id].url === empty`, () => {
-		let wrapper
-		wrapper = mount(
+		const wrapper = mount(
 			<Provider store={testutil.store2}>
 				<BrowserRouter>
 					<Container {...props}/>

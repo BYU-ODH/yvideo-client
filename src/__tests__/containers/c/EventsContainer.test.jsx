@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import Container from '../../../containers/c/EventsContainer'
 import * as testutil from '../../testutil/testutil'
@@ -25,7 +25,7 @@ describe(`EventsContainer test`, () => {
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
 
-		const viewstate = wrapper.props().viewstate
+		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
 	it(`check correct form of landing`, () => {

@@ -34,8 +34,8 @@ class Menu extends PureComponent {
 
 		const {
 			toggleMenu,
-			menuOpen,
-			menuClose,
+			// menuOpen,
+			// menuClose,
 			handleShowTip,
 			handleLogout,
 			toggleTip,

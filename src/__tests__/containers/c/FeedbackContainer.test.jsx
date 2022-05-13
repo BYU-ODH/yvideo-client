@@ -1,11 +1,9 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Container from '../../../containers/c/FeedbackContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
-
-const file = testutil.file1
 
 describe(`manage collection test`, () => {
 

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Title, TitleEdit } from '../ResourceOverview/styles'
-import Style, {
+import { TitleEdit } from '../ResourceOverview/styles'
+import {
 	InnerContainer,
 	Column,
 	BoxRow,
@@ -17,11 +17,11 @@ export class FileOverview extends PureComponent {
 	render() {
 
 		const {
-			toggleEdit,
 			handleUpdateFile,
 			handleFileMetadata,
 			handleRemoveFile,
 			handleFileVersion,
+			// toggleEdit,
 		} = this.props.handlers
 
 		const {

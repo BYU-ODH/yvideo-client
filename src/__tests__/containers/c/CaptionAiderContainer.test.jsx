@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Container from '../../../containers/c/CaptionAiderContainer'
 import * as testutil from '../../testutil/testutil'
 import { Provider } from 'react-redux'
@@ -10,7 +10,7 @@ const user = testutil.user
 
 const data = [user]
 
-const props = {
+const props = { // eslint-disable-line no-unused-vars
 	data,
 	clean: jest.fn(),
 	search: jest.fn(),
