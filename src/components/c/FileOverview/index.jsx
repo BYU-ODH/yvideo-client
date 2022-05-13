@@ -9,7 +9,7 @@ import Style, {
 	EditButton,
 	SaveIcon,
 	CategorySelect,
-  FileTitle,
+	FileTitle,
 } from './styles'
 
 export class FileOverview extends PureComponent {

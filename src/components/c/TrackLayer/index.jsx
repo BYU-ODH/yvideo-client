@@ -84,7 +84,7 @@ const TrackLayer = props => {
 				} else {
 					// compare previous and current
 					// if current overlaps with previous
-					//MIGHT BREAK TODO: I added parentheses to wrap around the 2 and statements because it was throwing a warning and this LOOKS like the correct way to fix it, but I'm not sure
+					// MIGHT BREAK TODO: I added parentheses to wrap around the 2 and statements because it was throwing a warning and this LOOKS like the correct way to fix it, but I'm not sure
 					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){
 						// find index in the main events object
 						// we find the first overlap so pass anything from beginning to now
@@ -154,7 +154,7 @@ const TrackLayer = props => {
 	}
 
 	// This opens the side tab editor
-	const toggleEditor = (layerIndex, eventIndex) => { //eslint-disable-line no-unused-vars
+	const toggleEditor = (layerIndex, eventIndex) => { // eslint-disable-line no-unused-vars
 		// setEditorOpen(true)
 		sideEditor(layerIndex, eventIndex)
 	}
