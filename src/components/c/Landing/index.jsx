@@ -25,8 +25,8 @@ class Landing extends PureComponent {
 
 				<Welcome>
 					<div>
-						<h1>YVIDEO&nbsp;</h1>
 						<Logo />
+						<h1>Y-VIDEO</h1>
 					</div>
 
 					<div className='button-wrapper'>

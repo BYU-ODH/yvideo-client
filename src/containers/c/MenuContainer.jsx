@@ -15,6 +15,8 @@ const MenuContainer = props => {
 		menuActive,
 		logout,
 		toggleMenu,
+		menuOpen,
+		menuClose,
 		toggleTip,
 		editorStyle,
 	} = props
@@ -65,6 +67,8 @@ const MenuContainer = props => {
 
 	const handlers = {
 		toggleMenu,
+		menuOpen,
+		menuClose,
 		handleLogout,
 		handleShowTip,
 		toggleTip,
@@ -82,6 +86,8 @@ const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 const mapDispatchToProps = {
 	logout: services.authService.logout,
 	toggleMenu: services.interfaceService.toggleMenu,
+	menuOpen: services.interfaceService.menuOpen,
+	menuClose: services.interfaceService.menuClose,
 	toggleTip: services.interfaceService.toggleTip,
 }
 

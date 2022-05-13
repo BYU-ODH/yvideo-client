@@ -6,6 +6,8 @@ export default class InterfaceService {
 
 	types = {
 		MENU_TOGGLE: `MENU_TOGGLE`,
+		MENU_OPEN: `MENU_OPEN`,
+		MENU_CLOSE: `MENU_CLOSE`,
 		MODAL_TOGGLE: `MODAL_TOGGLE`,
 		TIP_TOGGLE: `TIP_TOGGLE`,
 		COLLECTIONS_DISPLAY_TOGGLE: `COLLECTIONS_DISPLAY_TOGGLE`,
@@ -26,6 +28,8 @@ export default class InterfaceService {
 
 	actions = {
 		menuToggle: () => ({ type: this.types.MENU_TOGGLE }),
+		menuOpen: () => ({type: this.types.MENU_OPEN}),
+		menuClose: () => ({type: this.types.MENU_CLOSE}),
 		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute:false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
 		tipToggle: (payload) => ({ type: this.types.TIP_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
@@ -85,6 +89,18 @@ export default class InterfaceService {
 			return {
 				...store,
 				menuActive: !store.menuActive,
+			}
+
+		case this.types.MENU_OPEN:
+			return {
+				...store,
+				menuActive: true,
+			}
+
+		case this.types.MENU_CLOSE:
+			return {
+				...store,
+				menuActive: false,
 			}
 
 		case this.types.MODAL_TOGGLE:
@@ -199,6 +215,20 @@ export default class InterfaceService {
 	 */
 	toggleMenu = () => async dispatch => {
 		dispatch(this.actions.menuToggle())
+	}
+
+	/**
+	 * Opens the side menu
+	 */
+	menuOpen = () => async dispatch => {
+		dispatch(this.actions.menuOpen())
+	}
+
+	/**
+	 * Closes the side menu
+	 */
+	menuClose = () => async dispatch => {
+		dispatch(this.actions.menuClose())
 	}
 
 	/**
