@@ -18,6 +18,12 @@
 		"react-hooks",
 		"import-quotes"
 	],
+	"ignorePatterns": [
+		"src/assets/",
+		"/src/lib/",
+		"README.md",
+		"/src/__tests__/lib"
+	],
 	"rules": {
 		"array-bracket-newline": [
 			"warn",

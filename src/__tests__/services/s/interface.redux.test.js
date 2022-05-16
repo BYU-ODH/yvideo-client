@@ -3,8 +3,7 @@ import InterfaceService from '../../../services/s/interface.redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import proxies from 'proxy'
-import { browserStorage } from 'proxy'
+import proxies, { browserStorage } from 'proxy'
 import CreateContentContainer from '../../../components/modals/containers/CreateContentContainer'
 
 const modal = { component: CreateContentContainer, collectionId: 0, isLabAssistantRoute:false }

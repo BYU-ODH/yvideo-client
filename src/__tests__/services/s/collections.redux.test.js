@@ -249,14 +249,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`getCollections: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.user.collections.get = jest.fn()
 		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.getCollections(true)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`removeCollectionContent`, async() => {
@@ -280,14 +280,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`removeCollectionContent: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.remove = jest.fn()
 		proxies.apiProxy.collection.remove.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.removeCollectionContent(0, 0)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`createCollection`, async() => {
@@ -311,14 +311,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`createCollection: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.create = jest.fn()
 		proxies.apiProxy.collection.create.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.createCollection(`Collection 3`)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`updateCollectionStatus`, async() => {
@@ -364,7 +364,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateCollectionStatus: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.user.collections.get = jest.fn()
 		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
 			return Promise.resolve({
@@ -379,7 +379,7 @@ describe(`content service test`, () => {
 		})
 
 		await collectionServiceConstructor.updateCollectionStatus(0, `unarchive`)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`getCollectionInfo`, async() => {
@@ -418,14 +418,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`getCollectionInfo: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.permissions.getUsers = jest.fn()
 		proxies.apiProxy.collection.permissions.getUsers.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.getCollectionInfo(22, true)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`updateCollectionName`, async() => {
@@ -454,7 +454,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateCollectionName: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.post = jest.fn()
 		proxies.apiProxy.collection.post.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
@@ -462,7 +462,7 @@ describe(`content service test`, () => {
 		})
 
 		await collectionServiceConstructor.updateCollectionName(0, `Name Updated`, true)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	// TODO: fix it later when update collectio roles is updated

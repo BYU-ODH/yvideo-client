@@ -123,7 +123,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`content error`, () => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		const result = store.dispatch(contentServiceConstructor.actions.contentError(error))
 		expect(result.type).toBe(`CONTENT_ERROR`)
 		expect(result.payload.error).toEqual(error)
