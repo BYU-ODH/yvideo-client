@@ -1,6 +1,3 @@
-import React from 'react'
-import { shallow, mount } from 'enzyme'
-// import ContentSettings from '../../../../components/c/ContentSettings/index'
 import * as testutil from '../../../testutil/testutil'
 
 const content = testutil.content[0]
@@ -20,7 +17,7 @@ const handlers = {
 	changeTag: jest.fn(),
 }
 
-const props = {
+const props = { // eslint-disable-line no-unused-vars
 	getResources: jest.fn(),
 	viewstate,
 	handlers,

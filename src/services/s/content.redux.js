@@ -207,7 +207,6 @@ export default class ContentService {
 
 			dispatch(this.actions.contentGet(newContent))
 		} catch (error) {
-			console.log(`this is an error`, error.response.status)
 			dispatch(this.actions.contentError(error))
 		}
 	}
@@ -230,7 +229,6 @@ export default class ContentService {
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {
-			console.log(error)
 			dispatch(this.actions.contentError(error))
 		}
 	}
@@ -271,7 +269,6 @@ export default class ContentService {
 				dispatch(this.actions.contentAddView(id))
 
 			} catch (error) {
-				console.error(error.message)
 				dispatch(this.actions.contentError(error))
 			}
 
@@ -290,7 +287,6 @@ export default class ContentService {
 			const result = await apiProxy.content.getSubtitles(id)
 			return result
 		} catch (error) {
-			console.error(error.message)
 			dispatch(this.actions.contentError(error))
 		}
 	}

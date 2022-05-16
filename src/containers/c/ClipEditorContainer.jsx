@@ -41,7 +41,7 @@ const ClipEditorContainer = props => {
 
 	useEffect(() => {
 
-		if (!content.hasOwnProperty(id))
+		if (!content.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
 			getContent(id)
 
 		if(content[id]) {

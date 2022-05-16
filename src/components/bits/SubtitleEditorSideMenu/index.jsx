@@ -64,7 +64,7 @@ const SubtitleEditorSideMenu = props => {
 				sub.end = subs[layer][`content`][ind].end
 			}
 		}catch(error){
-			console.log(error)
+			console.log(error) // eslint-disable-line no-console
 		}
 
 		setEvent(sub)

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
-import services from 'services'
-
-import { interfaceService } from 'services'
+import services, { interfaceService } from 'services'
 
 import { CollectionPermissions } from 'components'
 

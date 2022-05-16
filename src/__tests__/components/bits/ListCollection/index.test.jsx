@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import ListCollection from '../../../../components/bits/ListCollection'
-import { Link, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const collection = {
 	archived: false,

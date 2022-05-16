@@ -50,7 +50,7 @@ const SubtitlesEditorContainer = props => {
 	}
 
 	useEffect(() => {
-		if(!content.hasOwnProperty(id))
+		if(!content.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
 			getContent(id)
 
 		if(content[id] !== undefined){
@@ -65,7 +65,7 @@ const SubtitlesEditorContainer = props => {
 				const fetchData = async() => {
 					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`,{method:`GET`})
 					const data = await rawData.json()
-					if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
+					if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
 						setAspectRatio([data.width,data.height])
 
 					return data
@@ -118,7 +118,7 @@ const SubtitlesEditorContainer = props => {
 					updateSubtitle(subtitles[i])
 			}
 		}catch(error){
-			console.error(error)
+			console.error(error) // eslint-disable-line no-console
 		}
 
 	}

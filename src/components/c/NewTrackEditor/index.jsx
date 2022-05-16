@@ -11,10 +11,9 @@ import Backend from 'react-dnd-html5-backend'
 
 import * as Subtitle from 'subtitle'
 
-import { EventCard, TrackEditorSideMenu, SubtitlesCard, SubtitlesLayer } from 'components/bits'
+import { EventCard, TrackEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal } from 'components/bits'
 
 import { Controller, TrackLayer } from 'components'
-import { SubtitlesModal } from 'components/bits'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -380,7 +379,7 @@ const TrackEditor = props => {
 
 	const handleAddCensor = () => {
 		const time = videoCurrentTime
-
+		const id = 4
 		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
 
 			const index = eventToEdit
@@ -626,7 +625,7 @@ const TrackEditor = props => {
 			sortSubtitles()
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
-			console.error(error)
+			return
 		}
 
 	}
@@ -726,7 +725,6 @@ const TrackEditor = props => {
 			}
 			reader.readAsText(url)
 		}catch(error){
-			console.log(error)
 			alert(`There was an error importing subtitles`)
 		}
 		setSubModalVisible(false)

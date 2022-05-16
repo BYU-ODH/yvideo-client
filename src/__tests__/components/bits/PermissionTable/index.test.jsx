@@ -4,7 +4,7 @@ import PermissionTable from '../../../../components/bits/PermissionTable'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
-import { Table, RemoveButton } from '../../../../components/bits/PermissionTable/styles'
+import { RemoveButton } from '../../../../components/bits/PermissionTable/styles'
 
 const data =
 [

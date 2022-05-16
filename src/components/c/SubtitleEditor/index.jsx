@@ -254,7 +254,7 @@ const SubtitleEditor = props => {
 				}
 			}
 		} catch (e) {
-			console.error(`updateSubs error`,e)
+			console.error(`updateSubs error`, e) // eslint-disable-line no-console
 		}
 		const t1_2 = performance.now() // eslint-disable-line no-unused-vars
 		const t2_1 = performance.now() // eslint-disable-line no-unused-vars
@@ -433,7 +433,7 @@ const SubtitleEditor = props => {
 			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
-			console.error(error)
+			console.error(error) // eslint-disable-line no-console
 		}
 
 	}
@@ -472,22 +472,19 @@ const SubtitleEditor = props => {
 			const reader = new FileReader()
 			reader.onload = (e) =>{
 				const temp = Subtitle.parse(e.target.result)
-				// console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000
 					temp[i].end = temp[i].end /1000
 				}
 				let removeArray = 0
 				const filtered = temp.filter(item => {
-					if(item.start > videoLength){
+					if(item.start > videoLength)
 						removeArray++
-					}
 					return item.start < videoLength
 				})
 				const filtered1 = filtered.filter(item => {
-					if(item.end > videoLength){
+					if(item.end > videoLength)
 						removeArray++
-					}
 					return item.end < videoLength
 				})
 				if (removeArray > 0)
@@ -526,8 +523,8 @@ const SubtitleEditor = props => {
 			}
 			reader.readAsText(url)
 		}catch(error){
-			console.log(error)
-			alert(`There was an error importing subtitles`)
+			console.log(error) // eslint-disable-line no-console
+			alert(`There was an error importing subtitles`) // eslint-disable-line no-console
 		}
 		setSubModalVisible(false)
 		setSubModalMode(``)

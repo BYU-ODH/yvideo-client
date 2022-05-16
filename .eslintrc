@@ -36,7 +36,7 @@
 			"warn",
 			"always-multiline"
 		],
-		"constructor-super": "warn",
+		"constructor-super": "error",
 		"curly": [
 			"warn",
 			"multi-or-nest"
@@ -49,7 +49,10 @@
 			"error",
 			"always"
 		],
+		"for-direction": "error",
 		"func-call-spacing": "warn",
+		"getter-return": "error",
+
 		"import-quotes/import-quotes": [
 			"warn",
 			"single"
@@ -62,8 +65,23 @@
 			"warn",
 			"prefer-single"
 		],
-		"no-console": "off",
-		"no-extra-bind": "warn",
+
+		"no-async-promise-executor": "error",
+		"no-class-assign": "error",
+		"no-compare-neg-zero": "error",
+		"no-cond-assign": "error",
+		"no-const-assign": "error",
+		"no-console": "error",
+		"no-debugger": "error",
+		"no-dupe-args": "error",
+		"no-dupe-class-members": "error",
+		"no-dupe-else-if": "error",
+		"no-dupe-keys": "error",
+		"no-duplicate-case": "error",
+		"no-duplicate-imports": "error",
+		"no-empty-character-class": "error",
+		"no-empty-pattern": "error",
+		"no-ex-assign": "error",
 		"no-extra-parens": [
 			"warn",
 			"all",
@@ -71,6 +89,15 @@
 				"ignoreJSX": "all"
 			}
 		],
+		"no-extra-bind": "warn",
+		"no-fallthrough": "error",
+		"no-func-assign": "error",
+		"no-import-assign": "error",
+		"no-inner-declarations": "error",
+		"no-invalid-regexp": "error",
+		"no-irregular-whitespace": "error",
+		"no-misleading-character-class": "error",
+
 		"no-multi-spaces": "warn",
 		"no-multiple-empty-lines": [
 			"warn",
@@ -79,10 +106,25 @@
 				"maxEOF": 1
 			}
 		],
+
+		"no-new-symbol": "error",
+		"no-obj-calls": "error",
+		"no-self-assign": "error",
+		"no-setter-return": "error",
+		"no-sparse-arrays": "error",
+		"no-this-before-super": "error",
 		"no-trailing-spaces": "warn",
+		"no-undef": "error",
+		"no-unexpected-multiline": "error",
 		"no-unneeded-ternary": "warn",
+		"no-unreachable": "error",
+		"no-unsafe-finally": "error",
+		"no-unsafe-negation": "error",
+
 		"no-unused-vars": "warn",
+
 		"no-var": "warn",
+
 		"object-shorthand": "warn",
 		"prefer-arrow-callback": "warn",
 		"prefer-const": "warn",
@@ -105,6 +147,8 @@
 			"warn",
 			"never"
 		],
+		"use-isnan": "error",
+		"valid-typeof": "error",
 		"yoda": [
 			"warn",
 			"never"

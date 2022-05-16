@@ -126,7 +126,7 @@ const PlayerControls = props => {
 			} else {
 				if(subtitleTextIndex < displaySubtitles.content.length - 1)
 					seekToIndex = subtitleTextIndex + 1
-				 else
+				else
 					seekToIndex = displaySubtitles.content.length - 1
 
 			}

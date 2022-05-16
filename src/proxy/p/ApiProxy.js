@@ -540,7 +540,7 @@ const apiProxy = {
 					return new User(result.data)
 				}
 			} catch (error) {
-				console.error(error)
+				console.error(error) // eslint-disable-line no-console
 			}
 		},
 		post: async (body) => {
@@ -557,7 +557,6 @@ const apiProxy = {
 					return res
 				})
 
-				console.log(result)
 				return result
 
 			} catch (error) {

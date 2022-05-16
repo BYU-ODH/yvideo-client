@@ -1,8 +1,8 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import CollectionPermissions from '../../../../components/c/CollectionPermissions'
 import { BrowserRouter } from 'react-router-dom'
-import Style, { Search, DepartmentSelect, CatalogInput, SectionInput, AddButton, Table, TableContainer, AddManyButton, Sort, Loading } from '../../../../components/c/CollectionPermissions/styles'
+import { Sort } from '../../../../components/c/CollectionPermissions/styles'
 import * as testutil from '../../../testutil/testutil'
 
 const collection = testutil.collection
@@ -13,8 +13,8 @@ const viewstate = {
 		{
 			username: `test`,
 		},
- 	],
-	 course:[
+	],
+	course:[
 		{
 			catalog: `100`,
 			department: `ENG`,
@@ -32,7 +32,7 @@ const viewstate = {
 			[`account-name`]: `testUser1`,
 			[`last-login`]: `2020-05-29`,
 		},
- 	],
+	],
 	userTA: [
 		{
 			[`account-name`]: `test1`,

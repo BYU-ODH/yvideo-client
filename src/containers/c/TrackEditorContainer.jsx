@@ -62,7 +62,7 @@ const TrackEditorContainer = props => {
 
 	useEffect(() => {
 		// console.log('use effecct')
-		if(!content.hasOwnProperty(id)){
+		if(!content.hasOwnProperty(id)){ // eslint-disable-line no-prototype-builtins
 			// console.log(`getContent`)
 			getContent(id)
 		}
@@ -112,7 +112,7 @@ const TrackEditorContainer = props => {
 					updateSubtitle(subtitles[i])
 			}
 		}catch(error){
-			console.error(error)
+			return
 		}
 
 	}

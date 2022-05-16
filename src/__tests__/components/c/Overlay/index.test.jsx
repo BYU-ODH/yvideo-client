@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Overlay from '../../../../components/c/Overlay/index'
 import { BrowserRouter} from 'react-router-dom'
 
@@ -13,6 +13,6 @@ describe(`Overlay test`, () => {
 		wrapper.find(`button`).simulate(`click`, {
 			preventDefault: () => {
 			},
-		 })
+		})
 	})
 })

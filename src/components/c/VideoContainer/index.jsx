@@ -384,7 +384,7 @@ const VideoContainer = props => {
 					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
 					if(e.offsetX > window.innerWidth / 2)
 						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
-					 else
+					else
 						document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
 					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`

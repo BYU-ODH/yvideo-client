@@ -51,8 +51,6 @@ const Transcript = props => {
 		let allWords = ``
 		let allMeanings = ``
 
-		console.log(jsonResponse)
-
 		if(jsonResponse[Object.keys(jsonResponse)[0]] === undefined){
 			setWords(`No matches found`)
 			setMeanings(``)

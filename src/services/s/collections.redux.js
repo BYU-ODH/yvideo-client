@@ -106,7 +106,7 @@ export default class CollectionService {
 			}
 
 		case COLLECTIONS_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
 				errorMessage: `${action.payload.error.response.data ? action.payload.error.response.data : null}. Status: ${action.payload.error.response.status}`,
@@ -313,7 +313,6 @@ export default class CollectionService {
 			dispatch(this.actions.createdCollectionUpdate(data.id))
 
 		} catch (error) {
-			// console.log(error.message)
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
@@ -327,7 +326,7 @@ export default class CollectionService {
 			dispatch(this.actions.createdCollectionUpdate(``))
 
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.message) // eslint-disable-line no-console
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
@@ -445,7 +444,7 @@ export default class CollectionService {
 			return result
 
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.message) // eslint-disable-line no-console
 			dispatch(this.actions.collectionsError(error))
 		}
 	}

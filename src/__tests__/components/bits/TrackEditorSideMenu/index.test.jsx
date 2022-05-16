@@ -1,8 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import TrackEditorSideMenu from '../../../../components/bits/TrackEditorSideMenu'
-import Style, { Icon } from '../../../../components/bits/TrackEditorSideMenu/styles'
-import sinon from 'sinon'
 import { BrowserRouter } from 'react-router-dom'
 
 const singleEvent = {
@@ -63,12 +61,11 @@ describe(`TrackEditorSideMenu test`, () => {
 
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: 10 } })
 		const checked = wrapper.find(`[value=10]`).first()
-  	expect(checked).toBeDefined()
+		expect(checked).toBeDefined()
 	})
 
 	it(`TrackEditorSideMenu onChange`, ()=> {
-		let wrapper
-		wrapper = mount(
+		const wrapper = mount(
 			<BrowserRouter>
 				<TrackEditorSideMenu {...props}/>
 			</BrowserRouter>,
@@ -113,8 +110,7 @@ describe(`TrackEditorSideMenu test`, () => {
 	it(`TrackEditorSideMenu censor`, ()=> {
 		props.singleEvent.type = `Censor`
 
-		let wrapper
-		wrapper = mount(
+		const wrapper = mount(
 			<BrowserRouter>
 				<TrackEditorSideMenu {...props}/>
 			</BrowserRouter>,

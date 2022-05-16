@@ -2,7 +2,6 @@ import React from 'react'
 import { mount } from 'enzyme'
 import CensorDnD from '../../../../components/bits/CensorDnD/index'
 import { BrowserRouter} from 'react-router-dom'
-import {CloseBox, BeforeButton, AfterButton} from '../../../../components/bits/CensorDnD/styles'
 
 const props = {
 	handleUpdateCensorPosition: jest.fn(),

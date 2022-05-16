@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import CaptionAider from '../../../../components/c/CaptionAider'
 import { BrowserRouter } from 'react-router-dom'
 

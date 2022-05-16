@@ -1,12 +1,9 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import EventCard from '../../../../components/bits/EventCard/index'
 import { BrowserRouter} from 'react-router-dom'
-import Style, { I } from '../../../../components/bits/EventCard/styles'
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
-import * as dnd from 'react-dnd'
-// import { screen, render, fireEvent } from 'testing-library/react'
 
 describe(`event card`, () => {
 	it(`mock useDrag`, ()=> {
@@ -19,7 +16,7 @@ describe(`event card`, () => {
 				layer: 0,
 			},
 		]
-		const	wrapper = mount(
+		const	wrapper = mount( // eslint-disable-line no-unused-vars
 			<BrowserRouter>
 				<DndProvider backend={Backend}>
 					<EventCard event={event}/>

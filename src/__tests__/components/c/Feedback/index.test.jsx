@@ -1,9 +1,7 @@
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
+import { mount } from 'enzyme'
 import Feedback from '../../../../components/c/Feedback/index'
 import { BrowserRouter} from 'react-router-dom'
-import ReactTestUtils from 'react-dom/test-utils'
-import { expectation } from 'sinon'
 
 const props = {
 	viewstate: {

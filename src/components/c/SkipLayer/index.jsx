@@ -89,7 +89,7 @@ const SkipLayer = props => {
 			tickInt = 1800
 			break
 		default:
-			console.log(`This video is too long!`)
+			console.log(`This video is too long!`) // eslint-disable-line no-console
 			return
 		}
 		const tickNum = (videoLength-videoLength % tickInt)/tickInt

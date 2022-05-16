@@ -1,8 +1,8 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Transcript from '../../../../components/bits/Transcript/index'
 import { BrowserRouter } from 'react-router-dom'
-import { Style, Help } from '../../../../components/bits/Transcript/styles'
+import { Help } from '../../../../components/bits/Transcript/styles'
 import * as testutil from '../../../testutil/testutil'
 import { Provider } from 'react-redux'
 

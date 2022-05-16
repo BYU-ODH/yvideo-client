@@ -64,7 +64,7 @@ export default class LanguageService {
 			}
 
 		case LANGUAGE_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
 				loading: false,

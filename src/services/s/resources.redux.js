@@ -103,7 +103,7 @@ export default class ResourceService {
 			}
 
 		case RESOURCE_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
 				loading: false,

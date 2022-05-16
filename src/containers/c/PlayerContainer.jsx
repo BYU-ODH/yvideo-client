@@ -93,7 +93,7 @@ const PlayerContainer = props => {
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
 
-		if (!contentCache.hasOwnProperty(params.id))
+		if (!contentCache.hasOwnProperty(params.id)) // eslint-disable-line no-prototype-builtins
 			getContent(params.id)
 
 		if (contentCache[params.id]) {
@@ -113,7 +113,7 @@ const PlayerContainer = props => {
 					const fetchData = async() => {
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`,{method:`GET`})
 						const data = await rawData.json()
-						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
+						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
 							setAspectRatio([data.width,data.height])
 
 						return data
@@ -356,7 +356,7 @@ const PlayerContainer = props => {
 			try {
 				temp.content = JSON.parse(subtitles[index].content)
 			} catch (e) {
-				console.log(e)
+				console.log(e) // eslint-disable-line no-console
 			}
 		}
 		setIndexToDisplay(index)

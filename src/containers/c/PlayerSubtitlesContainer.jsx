@@ -30,7 +30,7 @@ const PlayerSubtitlesContainer = props => {
 					temp.content = JSON.parse(subtitles[indexToDisplay].content)
 
 			} catch (e){
-				console.log(e)
+				return
 			}
 			setSubtitlesArray(subtitles[indexToDisplay].content)
 		}

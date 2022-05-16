@@ -71,7 +71,7 @@ export default class HighlightWords extends PureComponent {
 										{sub.title}
 									</option>,
 								)
-							 : null
+								: null
 						}
 					</Select>
 				</div>

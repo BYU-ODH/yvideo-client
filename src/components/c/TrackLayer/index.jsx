@@ -85,7 +85,7 @@ const TrackLayer = props => {
 					// compare previous and current
 					// if current overlaps with previous
 					// MIGHT BREAK TODO: I added parentheses to wrap around the 2 and statements because it was throwing a warning and this LOOKS like the correct way to fix it, but I'm not sure
-					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){
+					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){ // eslint-disable-line no-extra-parens
 						// find index in the main events object
 						// we find the first overlap so pass anything from beginning to now
 						// console.log('comparing')

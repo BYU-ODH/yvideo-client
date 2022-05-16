@@ -17,7 +17,6 @@ import eventHelp from 'assets/help/help-te-event.png'
 import subtitleHelp from 'assets/help/help-te-subtitle.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomHelp from 'assets/help/help-te-zoom.png'
-import subHelp from 'assets/help/help-te-subtitle.png'
 import translationHelp from 'assets/help/help-translation.png'
 import importantWordHelp from 'assets/help/help-important-word.png'
 
@@ -235,7 +234,7 @@ const HelpDocumentationContainer = props => {
 							<br/> -&nbsp; <b>Delete Subtitle:</b> click on the trash can icon next to the track Title. <u>This will delete the subtitle track.</u>
 							<br/> -&nbsp; <b>Side Editor</b> Clicking on a subtitle will open the side editor where you can edit the Title and the Language. There is also a table where you can edit start/end times and the text of all subtitles, as shown to the right.
 					</p><br/>
-					<img src="${subHelp}" width="250px"/>
+					<img src="${subtitleHelp}" width="250px"/>
 				</div>
 				<hr/>
 				<div class="section large-img">
