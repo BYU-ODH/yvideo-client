@@ -1,7 +1,11 @@
 import styled, { keyframes, css } from 'styled-components'
 import logo from 'assets/hexborder.svg'
+import saveIcon from 'assets/save.svg'
+import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
+	overflow: auto;
+
   & > header {
 		height: 12rem;
 		padding: 0 3.8rem;
@@ -40,6 +44,11 @@ export const TitleEdit = styled.input`
   font-size: 1.8rem;
   font-weight: bold;
 `
+export const SaveIcon = styled.span`
+  background: url(${saveIcon}) center no-repeat;
+  height: 2.5rem;
+  width: 2rem;
+`
 
 export const TitleEditButton = styled.div`
   color: ${props => props.editing ? `#0582CA` : `#a4a4a4;`};
@@ -47,6 +56,15 @@ export const TitleEditButton = styled.div`
   cursor: pointer;
   margin-top: 0;
   margin-left: 1rem;
+
+	display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center !important;
+  & > span {
+    margin-right: .2rem;
+  }
 `
 
 export const Publish = styled.div`
@@ -69,7 +87,6 @@ export const PublishButton = styled.button`
   border-radius: 0.3rem;
 
   cursor: pointer;
-  outline: none;
 `
 
 export const ArchiveButton = styled.button`
@@ -83,7 +100,6 @@ export const ArchiveButton = styled.button`
 
   border: none;
   cursor: pointer;
-  outline: none;
 `
 export const CopyrightedButton = styled.button`
   color: #efcc00;
@@ -126,7 +142,6 @@ export const TabHeader = styled.div`
     height: 2.5rem;
 
     border: none;
-    outline: none;
     cursor: pointer;
   }
 
@@ -151,22 +166,31 @@ export const Selector = styled.div`
 `
 
 export const NewContent = styled.button`
-  width: calc(100% - 4rem);
-  height: 6.1rem;
+  height: 12rem;
+  width: 21rem;
+	object-fit: cover;
+  object-position: center;
 
   margin: 2rem;
 
-  border: none;
-  border-radius: 0.3rem;
+	@media screen and (max-width: 1000px) {
+		margin: 1rem;
+	}
 
-  background-color: #eee;
+  border: none;
+
+  background-color: #aaa;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  outline: none;
   cursor: pointer;
+
+	:hover {
+		transition: 0.5s;
+		background-color: #999;
+	}
 
 	& > p{
 		font-size: 1.5rem;
@@ -176,8 +200,8 @@ export const NewContent = styled.button`
 `
 
 export const Icon = styled.div`
-  background: url(${props => props.src}) center no-repeat;
-  background-size: contain;
+  background: url(${plusIcon}) center;
+  background-size: 50px;
 
   height: 2rem;
   width: 2rem;

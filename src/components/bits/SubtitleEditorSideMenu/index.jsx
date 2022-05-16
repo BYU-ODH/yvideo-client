@@ -36,7 +36,6 @@ const SubtitleEditorSideMenu = props => {
 			document.getElementById(`focus`).focus()
 
 	}, [index, event])
-
 	const editSub = (side, time, value, layer, ind, type) => {
 		const sub = {...event}
 		if (side === `beg`) {
@@ -78,12 +77,12 @@ const SubtitleEditorSideMenu = props => {
 				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
 
-			<div className={`allSubs`} ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
+			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={()=>addSub(subLayer,0,`top`)}
 					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length ===0 && disableSave===false ? `visible`: `hidden`}
 				/>
 				{subs[subLayer][`content`].map((sub,ind)=>(
-					<div key={ind}>
+					<div id={`sub-${subLayer}-${ind}`} key={ind}>
 						<div className={`container`}>
 							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
 								position={`top`}
