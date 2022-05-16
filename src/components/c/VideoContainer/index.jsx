@@ -329,20 +329,25 @@ const VideoContainer = props => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
-			// console.log(`new time`, playedTime + 1)
 			video.handleSeek(null, playedTime + 1)
 			break
 		case `ArrowLeft`:
-			// console.log(`new time`, playedTime - 1)
 			video.handleSeek(null, playedTime - 1)
 			break
+		case `Period`:
+			video.handleSeek(null, playedTime + .1)
+			break
 		case `Comma`:
-			// console.log(`new time`, playedTime - .1)
 			video.handleSeek(null, playedTime - .1)
 			break
-		case `Period`:
-			// console.log(`new time`, playedTime + .1)
-			video.handleSeek(null, playedTime + .1)
+		case `Space`:
+			setPlaying(playing)
+			if (playing === true) {
+				video.handlePause()
+			}
+			if (playing === false) {
+				video.handlePlay()
+			}
 			break
 
 		default:
@@ -379,10 +384,10 @@ const VideoContainer = props => {
 					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
 				})
 			}
-			// // checking video container and setting event listener for hot keys
-			// window.addEventListener(`keyup`, (e) => {   /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */q
-			// 	handleHotKeys(e)													/*The hotkeys don't even work btw. */
-			// })
+			// checking video container and setting event listener for hot keys
+			window.onkeyup = (e) => {
+				handleHotKeys(e)
+			}
 		}
 
 		if(events) {
@@ -394,17 +399,25 @@ const VideoContainer = props => {
 		const wraplisten = new ResizeObserver((entry)=>{
 			video.handleAspectRatio()
 		})
-		if(wrap)
+		if(wrap) {
 			wraplisten.observe(wrap)
+		}
 		return function cleanup(){
-			// window.removeEventListener(`keyup`, (e) => {}, false)
+				window.onkeyup = null
 		}
 	}, [duration])
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
-				<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):``} ref={videoRef}>
+				<Blank
+				className='blank'
+				id='blank'
+				blank={blank}
+				onContextMenu={e => e.preventDefault()}
+				onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
+				ref={videoRef}
+				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
 							censorValues = {censorPosition}
