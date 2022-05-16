@@ -328,7 +328,7 @@ const PlayerContainer = props => {
 		// }
 		if (subtitleTextIndex !== index) {
 			if (document.getElementsByClassName('transcript-row')[index]) {
-				console.log("scrolling")
+				// console.log("scrolling")
 				//grab the elements height and scroll that in pixels for the entire parent element
 				let parentElement = document.getElementsByClassName('main-bar')[0]
 				let currentSubtitleElement = document.getElementsByClassName('transcript-row')[index]

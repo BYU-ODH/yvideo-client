@@ -15,7 +15,7 @@ export default class Player extends Component {
 		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
 		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
 
-		this.playbackRate = this.props.viewstate.playbackRate
+		this.props.viewstate.playbackRate = this.props.viewstate.playbackRate
 		this.playbackOptions = this.props.viewstate.playbackOptions
 	}
 	componentDidMount(){
@@ -47,7 +47,7 @@ export default class Player extends Component {
 			}
 			else {
 				// Checking to make sure that the value of the playback rate is within the possible options
-				if (this.playbackRate >= this.playbackOptions[0] && this.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
+				if (this.props.viewstate.playbackRate >= this.playbackOptions[0] && this.props.viewstate.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
 					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) + 1])
 				}
 				break
@@ -60,7 +60,7 @@ export default class Player extends Component {
 			}
 			else {
 				// Checking to make sure that the value of the playback rate is within the possible options
-				if (this.playbackRate > this.playbackOptions[0] && this.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
+				if (this.props.viewstate.playbackRate > this.playbackOptions[0] && this.props.viewstate.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
 					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) - 1])
 				}
 				break
