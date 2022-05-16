@@ -50,7 +50,7 @@ const PlayerContainer = props => {
 	const [fullscreen, setFullscreen] = useState(false)
 	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
-	const [playbackOptions, setplaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
+	const [playbackOptions, setPlaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
 	const [progress, setProgress] = useState(0)
@@ -491,6 +491,7 @@ const PlayerContainer = props => {
 		handleShowSubtitle,
 		handleToggleTranscript,
 		setIsCaption,
+		setPlaybackOptions,
 		handleChangeSubtitle,
 		setFullscreen,
 		setShowTranscript,
