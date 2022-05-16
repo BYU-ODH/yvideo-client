@@ -52,7 +52,7 @@
 			"property"
 		],
 		"eqeqeq": [
-			"error",
+			"warn",
 			"always"
 		],
 		"for-direction": "error",
