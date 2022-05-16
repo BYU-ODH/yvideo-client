@@ -36,7 +36,6 @@ const VideoEditorContainer = props => {
 
 	const [eventsArray, setEventsArray] = useState([])
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1) // eslint-disable-line no-unused-vars
-
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
