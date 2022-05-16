@@ -54,6 +54,8 @@ const props = {
 			},
 		],
 	},
+
+	skipArray: []
 }
 
 describe(`Style onclick`, () => {
