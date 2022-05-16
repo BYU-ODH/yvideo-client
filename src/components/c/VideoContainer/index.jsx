@@ -29,6 +29,7 @@ const VideoContainer = props => {
 		handleScroll,
 		editorType,
 		aspectRatio,
+		handleSubProgress,
 	} = props
 
 	const ref = useRef(null)
@@ -47,13 +48,7 @@ const VideoContainer = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
-	const [censorActive, SetCensorActive] = useState(false)
-	const [currentZone, setCurrentZone] = useState([0, duration])
-	const [pausedTimes,setPausedTimes] = useState([])
-	// const [aspectRatio, setAspectRatio] = useState([16,9])
 	const [playerPadding,setPlayerPadding] = useState([0,0])
-	// I hate using a global variable here, we'll just have to see if it works
-	let censorData = {}
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -118,7 +113,12 @@ const VideoContainer = props => {
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()
-
+			if(values.allEvents){
+				if(values.allEvents.filter(e => e.type === `Mute`).length === 0){
+					if (muted)
+						video.handleUnmute()
+				}
+			}
 			for (let y = 0; y < values.allEvents.length; y++){
 				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
@@ -127,12 +127,10 @@ const VideoContainer = props => {
 
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+					if(values.allEvents[y].end >= playedSeconds){
 						events[index].active = false
 						video.handleMute()
-					} else if(!values.allEvents[y].active && values.allEvents[y].end - .1 <= playedSeconds)
-						video.handleUnmute()
-
+					}
 					break
 				case `Pause`:
 					events[index].active = false
@@ -153,13 +151,14 @@ const VideoContainer = props => {
 					event.active = true
 				})
 			}
+			if(typeof handleSubProgress === `function`)
+				handleSubProgress(playedSeconds)
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
 				getDuration(duration)
 
 			setDuration(duration)
-			setCurrentZone([0, duration])
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
@@ -217,14 +216,10 @@ const VideoContainer = props => {
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
-				censorData = position
 				setCensorPosition(
 					position,
 				)
 			}
-		},
-		handleCensorActive: (bool) => {
-			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
@@ -298,6 +293,10 @@ const VideoContainer = props => {
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
 			}
+			const EventEditor = document.getElementById(`EventEditor`)
+			if(EventEditor)
+				EventEditor.style.height = `${blank.offsetHeight}px - 1px`
+
 		},
 	}
 

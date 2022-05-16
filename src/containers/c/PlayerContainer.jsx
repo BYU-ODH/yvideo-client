@@ -172,7 +172,6 @@ const PlayerContainer = props => {
 				setIsLandscape(false)
 		}
 
-
 		if(events) {
 			events.forEach(event => {
 				event.active = true
@@ -260,11 +259,11 @@ const PlayerContainer = props => {
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 		}
 		if (events) {
-			//for all of the events. If the new seek time goes before events that were already executed activate the events again
+			// for all of the events. If the new seek time goes before events that were already executed activate the events again
 			events.forEach(event => {
-				if (event.end >= newPlayed && event.active === false) {
+				if (event.end >= newPlayed && event.active === false)
 					event.active = true
-				}
+
 			})
 		}
 	}
@@ -328,10 +327,9 @@ const PlayerContainer = props => {
 		// }
 		if (subtitleTextIndex !== index) {
 			if (document.getElementsByClassName('transcript-row')[index]) {
-				// console.log("scrolling")
 				//grab the elements height and scroll that in pixels for the entire parent element
-				let parentElement = document.getElementsByClassName('main-bar')[0]
-				let currentSubtitleElement = document.getElementsByClassName('transcript-row')[index]
+				const parentElement = document.getElementsByClassName('main-bar')[0]
+				const currentSubtitleElement = document.getElementsByClassName('transcript-row')[index]
 
 				if (subtitleTextIndex < index || subtitleTextIndex === undefined) {
 					parentElement.scrollTop += currentSubtitleElement.offsetHeight;

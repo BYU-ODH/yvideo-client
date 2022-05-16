@@ -29,7 +29,7 @@ export default class Error extends PureComponent {
 
 		if(errorMessage.includes(`403`)){
 			title = `403 Forbidden`
-			message = `You don't have access to this content. If you believe this to be a mistake, please contact your professor, lab assistant/TA, or Yvideo Support`
+			message = `You don't have access to this content. If you believe this to be a mistake, please contact your professor, lab assistant/TA, or Y-video Support`
 		}
 		// case errorMessage.includes(`401`):
 		// 	title = `401 Unauthenticated`

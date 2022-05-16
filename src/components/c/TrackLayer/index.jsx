@@ -13,7 +13,7 @@ import {
 
 const TrackLayer = props => {
 
-	const { events, sideEditor, updateEvents, activeEvent, width, videoLength, displayLayer} = props
+	const { events, updateEvents, activeEvent, width, videoLength, displayLayer} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
@@ -43,7 +43,6 @@ const TrackLayer = props => {
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
-			// console.log(overlapCount.length)
 
 			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
 
@@ -74,7 +73,6 @@ const TrackLayer = props => {
 
 			if(currentEvent.type === `Censor`){
 				const eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
-				// console.log('found', eventIndex)
 				if(lastCensorEvent === null){
 
 					events[eventIndex].halfLayer = halfLayer
@@ -86,9 +84,6 @@ const TrackLayer = props => {
 					if(currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end || currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end){
 						// find index in the main events object
 						// we find the first overlap so pass anything from beginning to now
-						// console.log('comparing')
-						// console.log(`start ${currentEvent.start} end ${currentEvent.end}`)
-						// console.log(`start ${lastCensorEvent.start} end ${lastCensorEvent.end}`)
 						halfLayer++
 						overlapCount.push(halfLayer)
 					}
@@ -126,7 +121,6 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-		// console.log('po', position)
 
 		const cEvents = events
 		const difference = delta.width / layerWidth * 100*videoLength/100
@@ -139,7 +133,6 @@ const TrackLayer = props => {
 		} else {
 			cEvents[index].start -= difference
 
-			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > videoLength){
@@ -149,12 +142,6 @@ const TrackLayer = props => {
 		}
 
 		updateEvents(index, cEvents[index], layerIndex)
-	}
-
-	// This opens the side tab editor
-	const toggleEditor = (layerIndex, eventIndex) => {
-		// setEditorOpen(true)
-		sideEditor(layerIndex, eventIndex)
 	}
 
 	const printEvents = (event, index, isMultiEvent) => {

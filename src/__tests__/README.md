@@ -1,4 +1,4 @@
-# YVideo Unit Test
+# Y-video Unit Test
 
 > Note: This is unit test for the y-video client
 

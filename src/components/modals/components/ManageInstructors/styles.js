@@ -103,7 +103,6 @@ export const RemoveIcon = styled.span`
 	background: url(${removeIcon}) center no-repeat;
 	height: 2.5rem;
 	width: 2rem;
-	outline: 1px black;
 `
 
 const TextButton = css`
@@ -153,7 +152,7 @@ export const Button = styled.button`
 	color: ${props => props.color || `black`};
 	background: transparent;
 	border: none;
-	outline: none;
+	outline-color: var(--light-blue);
 	cursor: pointer;
 	position: absolute;
 	top: 16px;
@@ -170,6 +169,10 @@ export const FeedbackMessage = styled.div`
 		font-size: 20px;
 		margin: auto;
 	}
+`
+
+export const Div = styled.div`
+	padding-top: 88px;
 `
 
 export const Form = styled.form`

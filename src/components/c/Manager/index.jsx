@@ -81,13 +81,13 @@ export default class Manager extends PureComponent {
 											{sideLists.published.map(({ id, name }, index) => <div key={index}><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`} onClick={handleToggleSideBar} to={`/${path}/${id}`} >{name}</Link></div>)}
 										</Accordion>
 
-										<Accordion header={`Unpublished`} active>
-											{sideLists.unpublished.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`}std-outline-color`} onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
+										<Accordion header={`Unpublished`} className='std-outline-color' active>
+											{sideLists.unpublished.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`} onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
 										</Accordion>
 
 										{
-											admin && <Accordion header={`Archived`}>
-												{sideLists.archived.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`}std-outline-color`} to={`/${path}/${id}`} >{name}</Link></div>)}
+											admin && <Accordion header={`Archived`} className='std-outline-color'>
+												{sideLists.archived.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`} to={`/${path}/${id}`} >{name}</Link></div>)}
 											</Accordion>
 										}
 

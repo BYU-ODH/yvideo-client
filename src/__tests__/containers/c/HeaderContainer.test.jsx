@@ -33,6 +33,6 @@ describe(`HeaderContainer test`, () => {
 			</Provider>,
 		)
 
-		expect(wrapper.text().includes(`YVIDEO`)).toBe(true)
+		expect(wrapper.text().includes(`Y-VIDEO`)).toBe(true)
 	})
 })
