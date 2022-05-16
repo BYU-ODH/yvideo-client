@@ -119,7 +119,13 @@ const TrackEditorSideMenu = props => {
 			break
 		}
 	}
-
+	const editPauseMessage = (e) => {
+		const cEvent = event
+		const layer = cEvent.layer
+		cEvent.message = e.target.value
+		setEvent(cEvent)
+		updateEvents(index, cEvent, layer)
+	}
 	const start = event.start
 	const end = event.end
 
@@ -135,7 +141,10 @@ const TrackEditorSideMenu = props => {
 							<>
 								<div className='center'>
 									<label>Start</label>
-									<label>End</label>
+									{event.type === `Pause` ? (
+										<label>Message: </label>
+									):<label>End</label>
+								}
 								</div>
 								<div className='center'>
 									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`} onKeyUp={e => {e.stopPropagation()}}
@@ -145,12 +154,18 @@ const TrackEditorSideMenu = props => {
 										onMouseLeave={e => toggleTip()}
 									/>
 									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`} onKeyUp={e => {e.stopPropagation()}}
-										style={{ visibility: `${event.type === "Pause" ? (`hidden`) : (`visible`)}` }}
+										style={{ display: `${event.type === "Pause" ? (`none`) : (`inline-block`)}` }}
 										onChange={e => handleEditEventETimeChange(e)}
 										onBlur={e => handleEditEventETimeFinalChange(e)}
 										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 									/>
+									{event.type === `Pause` ? (
+										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='sideTabInput' value={event.message}
+										placeholder = 'Enter message'
+										onChange={e => editPauseMessage(e)
+										}/>
+									):<></>}
 								</div>
 								<br/>
 							</>

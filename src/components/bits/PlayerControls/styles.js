@@ -40,6 +40,16 @@ const Style = styled.div`
 		}
 	}
 
+	& .subtitlesOffButton {
+		magin-left: 10px;
+		border: none;
+		margin-bottom: 5px;
+		background-color: transparent;
+		margin-top: 10px;
+		color: white;
+		font-weight:bold;
+	}
+
 	& .left {
 		grid-area: left;
 		display: flex;

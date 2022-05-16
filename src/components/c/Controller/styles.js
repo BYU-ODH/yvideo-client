@@ -263,6 +263,7 @@ export const Subtitles = styled.div`
 	width: ${props => props.type === `video` ? `70%` : `100%`};
 	text-align: center;
 	white-space: pre-line;
+	visibility: hidden;
 `
 const rotate = keyframes`
 	from {

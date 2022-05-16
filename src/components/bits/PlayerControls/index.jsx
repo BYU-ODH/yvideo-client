@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 
 import { Scrubber } from 'components/bits'
 
+import Styles, {Subtitles} from 'components/c/Player/styles'
+
 import Style, {
 	PlayPause,
 	ClosedCaptions,
@@ -120,6 +122,10 @@ const PlayerControls = props => {
 		handleAspectRatio()
 	}
 
+	const handleOffSubtitles = () => {
+		// handleToggleSubtitles: false
+	}
+
 	const handleSeekToSubtitle= (e) => {
 		let seekToIndex = 0
 
@@ -141,6 +147,10 @@ const PlayerControls = props => {
 
 		let start = displaySubtitles.content[seekToIndex].start;
 		handleSeekChange(null, start + start * .001)
+	}
+
+	const handleHideSubtitle = () => {
+		Subtitles.style.visbility = 'hidden'
 	}
 
 	return (
@@ -210,6 +220,7 @@ const PlayerControls = props => {
 							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? `active-value` : ``}/>,
 						)
 						}
+						<button type='button' className={`${showTranscript == 'false' ? 'active-value' : ''} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}

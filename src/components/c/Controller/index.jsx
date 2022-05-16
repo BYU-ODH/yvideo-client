@@ -156,7 +156,14 @@ const Controller = props => {
 		},
 		handleShowSubtitle: (value) => {
 			setSubtitleText(value)
+
 		},
+
+		// handleHideSubtitle:(value) => {
+		// 	setSubtitleText(value)
+
+		// },
+
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
@@ -198,7 +205,7 @@ const Controller = props => {
 
 	const handlePauseMessage = () => {
 		if(events.type == `Pause`){
-			
+
 		}
 	}
 
