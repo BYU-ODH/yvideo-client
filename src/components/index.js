@@ -16,7 +16,6 @@ import Overlay from './c/Overlay'
 import Player from './c/Player'
 import Root from './c/Root'
 import TrackLayer from './c/TrackLayer'
-import VideoControls from './c/VideoControls'
 import ManageResource from './c/ManageResource'
 import ResourceOverview from './c/ResourceOverview'
 import FileOverview from './c/FileOverview'
@@ -50,7 +49,6 @@ export {
 	Player,
 	Root,
 	TrackLayer,
-	VideoControls,
 	ManageResource,
 	ResourceOverview,
 	FileOverview,
