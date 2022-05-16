@@ -4,9 +4,7 @@ import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-// import Position from 'components/vanilla_scripts/censorPosition'
-
-import {CurrentEvents, CensorChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -48,13 +46,7 @@ const VideoContainer = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
-	const [censorActive, SetCensorActive] = useState(false) // eslint-disable-line no-unused-vars
-	const [currentZone, setCurrentZone] = useState([0, duration]) // eslint-disable-line no-unused-vars
-	const [pausedTimes,setPausedTimes] = useState([]) // eslint-disable-line no-unused-vars
-	// const [aspectRatio, setAspectRatio] = useState([16,9])
 	const [playerPadding,setPlayerPadding] = useState([0,0])
-	// I hate using a global variable here, we'll just have to see if it works
-	let censorData = {} // eslint-disable-line no-unused-vars
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -165,7 +157,6 @@ const VideoContainer = props => {
 				getDuration(duration)
 
 			setDuration(duration)
-			setCurrentZone([0, duration])
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
@@ -223,14 +214,10 @@ const VideoContainer = props => {
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
-				censorData = position
 				setCensorPosition(
 					position,
 				)
 			}
-		},
-		handleCensorActive: (bool) => {
-			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
@@ -336,8 +323,7 @@ const VideoContainer = props => {
 
 	let count = 0 // this is to make sure that event listeners are applied only once
 
-	// eslint-disable-next-line no-unused-vars
-	const handleHotKeys = (e) => {
+	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
@@ -384,7 +370,7 @@ const VideoContainer = props => {
 					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
 					if(e.offsetX > window.innerWidth / 2)
 						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
-					else
+					 else
 						document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
 					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`

@@ -10,7 +10,6 @@ import { VideoEditor } from 'components'
 import { Tooltip } from 'components/bits'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
-// import { resource } from 'src/__tests__/testutil/testutil'
 
 const VideoEditorContainer = props => {
 
@@ -29,7 +28,6 @@ const VideoEditorContainer = props => {
 		setBreadcrumbs,
 		getFiles,
 		resource,
-		// resourcetest,
 	} = props
 
 	const {id} = useParams()
@@ -37,18 +35,14 @@ const VideoEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 
 	const [eventsArray, setEventsArray] = useState([])
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [videoLength, setVideoLength] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1) // eslint-disable-line no-unused-vars
 
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	const [aspectRatio,setAspectRatio] = useState([16,9])
 	useEffect(() => {
-		if (!contentCache.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
+		if (!contentCache.hasOwnProperty(id))
 			getContent(id)
 
 		if(contentCache[id]) {
@@ -63,12 +57,12 @@ const VideoEditorContainer = props => {
 					const fetchData = async() => {
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`,{method:`GET`})
 						const data = await rawData.json()
-						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
+						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
 							setAspectRatio([data.width,data.height])
 
 						return data
 					}
-					const d =fetchData() // eslint-disable-line no-unused-vars
+					const d = fetchData() // eslint-disable-line no-unused-vars
 				}
 			} else {
 				setKey(``)
@@ -84,8 +78,7 @@ const VideoEditorContainer = props => {
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				if (resourceIdStream !== ``){
-					// eslint-disable-next-line no-unused-vars
-					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
+					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{ // eslint-disable-line no-unused-vars
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
 							if (file[`aspect-ratio`])
@@ -95,8 +88,7 @@ const VideoEditorContainer = props => {
 				}
 				if(resource[resourceIdStream]){
 					if(resource[resourceIdStream][`files`]){
-						// eslint-disable-next-line no-unused-vars
-						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
+						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false) // eslint-disable-line no-unused-vars
 					}
 				}
 			}
@@ -120,14 +112,6 @@ const VideoEditorContainer = props => {
 		})
 	}
 
-	const togglendTimeline = () => {
-		setTimelineMinimized(!timelineMinimized)
-	}
-
-	const getVideoDuration = (duration) => {
-		setVideoLength(duration)
-	}
-
 	const viewstate = {
 		eventsArray,
 		content,
@@ -140,8 +124,6 @@ const VideoEditorContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleShowHelp,
-		togglendTimeline,
-		getVideoDuration,
 		setActiveCensorPosition,
 	}
 
