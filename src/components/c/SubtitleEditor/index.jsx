@@ -253,7 +253,7 @@ const SubtitleEditor = props => {
 				}
 			}
 		} catch (e) {
-			console.error(`updateSubs error`,e)
+			console.error(`updateSubs error`, e) // eslint-disable-line no-console
 		}
 		if(side===`beg` && needCheck === true) {
 			if(sub.start===``){
@@ -420,7 +420,7 @@ const SubtitleEditor = props => {
 			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
-			console.error(error)
+			console.error(error) // eslint-disable-line no-console
 		}
 
 	}
@@ -466,15 +466,13 @@ const SubtitleEditor = props => {
 				}
 				let removeArray = 0
 				const filtered = temp.filter(item => {
-					if(item.start > videoLength){
+					if(item.start > videoLength)
 						removeArray++
-					}
 					return item.start < videoLength
 				})
 				const filtered1 = filtered.filter(item => {
-					if(item.end > videoLength){
+					if(item.end > videoLength)
 						removeArray++
-					}
 					return item.end < videoLength
 				})
 				if (removeArray > 0)
@@ -513,7 +511,7 @@ const SubtitleEditor = props => {
 			}
 			reader.readAsText(url)
 		}catch(error){
-			console.log(error)
+			console.log(error) // eslint-disable-line no-console
 			alert(`There was an error importing subtitles`)
 		}
 		setSubModalVisible(false)

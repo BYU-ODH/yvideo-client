@@ -195,7 +195,7 @@ const VideoEditor = props => {
 				}
 			}
 		} catch (e) {
-			console.log(`catch`)
+			console.log(`catch`) // eslint-disable-line no-console
 		}
 
 		// check start event times
