@@ -84,7 +84,7 @@ const SubtitleEditor = props => {
 			initialLayers.push([i])
 
 		setEvents(allEvents)
-		if(subtitles[0]){
+		if(subtitles[0] && !showSideEditor){
 			if (subtitles[0][`content`][0])
 				openSubEditor(0,0)
 		}
@@ -166,6 +166,7 @@ const SubtitleEditor = props => {
 	}
 
 	const handleZoomChange = (e, d) => {
+		console.log(document.getElementsByClassName(`events`)[0].clientWidth)
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
@@ -181,8 +182,11 @@ const SubtitleEditor = props => {
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0]){
+			console.log(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100)
+			console.log(document.getElementsByClassName(`events`)[0].clientWidth)
 			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		}
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
@@ -410,7 +414,6 @@ const SubtitleEditor = props => {
 					}
 				}
 			}
-
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)

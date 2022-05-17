@@ -17,7 +17,6 @@ export const Style = styled.div`
 	height: auto;
 	z-index: 0;
 	overflow-x: scroll;
-	scroll-behavior: smooth;
 
 	& .eventsbox {
     position: relative;
