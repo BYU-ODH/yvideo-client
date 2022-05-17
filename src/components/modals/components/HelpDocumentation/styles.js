@@ -44,14 +44,18 @@ export const Container = styled.div`
 	}
 
 	& h1 {
+		position: fixed;
 		border-bottom: 2px solid #0582ca;
 		padding-top: 5px;
 		height: 30px;
+		width: calc(80vw - 10px);
+		z-index: 3;
+		background-color: white;
 	}
 
 	& #content {
 		width: 80%;
-		margin: auto auto auto auto;
+		margin: 75px auto auto auto;
 		text-align: left;
 		position: relative;
 
@@ -165,8 +169,8 @@ export const CloseHelp = styled.span`
 		width: 30px;
 		height: 30px;
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: -4px;
+    right: 28px;
 	}
 	:hover {
 		cursor: pointer;
