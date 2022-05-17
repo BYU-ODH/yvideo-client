@@ -96,6 +96,14 @@ export const Container = styled.div`
 					border-radius: 10px;
 				}
 			}
+			& kbd {
+				background-color: #dddddd;
+				margin-left: .5rem;
+				padding-left: 8px;
+				padding-right: 8px;
+				border-radius: 5px;
+				box-shadow: 2px 2px 3px rgba(0,0,0, 0.2);
+			}
 
 			& li {
 				padding: 3px 0px 3px 0px;

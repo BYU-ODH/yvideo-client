@@ -148,26 +148,38 @@ const HelpDocumentationContainer = props => {
 					<h3>General</h3>
 					<p style="margin: 0px">
 						<br/> -&nbsp; <b>Video Controls:</b> Like any other video you can <b>play/pause</b>, <b>mute/unmute</b>, and <b>seek</b> to a desired time in the video using the time bar.
-						<br/> -&nbsp; <b>Hot Key:</b> there are four hot keys for this video player and they are all to move back and form in the video.
+						<br/> -&nbsp; <b>Hotkeys:</b> there are four hotkeys for this video player and they are all to seek backward and forward in the video.
 						</p>
 					<ol>
-						<li>Comma: rewind .1 second</li>
-						<li>Period: forward .1 second</li>
-						<li>Left Arrow: rewind 1 second</li>
-						<li>Right Arroe: forward 1 second</li>
+						<li>
+							<b>Right Arrow:</b> forward 1 second
+							<kbd style="font-size: 20px;">→</kbd>
+						</li>
+						<li>
+							<b>Left Arrow:</b> rewind 1 second
+							<kbd style="font-size: 20px;">←</kbd>
+						</li>
+						<li>
+							<b>Period:</b> forward 0.1 second
+							<kbd>.</kbd>
+						</li>
+						<li>
+							<b>Comma:</b> rewind 0.1 second
+							<kbd>,</kbd>
+						</li>
 					</ol>
 					<p style="margin: 0px">
 						<br/> -&nbsp; <b>Visual Help:</b> to let you know where you are in the video you have two main sources.
 					</p>
 					<ol>
 						<li>The time indicator at the bottom of the video</li>
-						<li>The red bar over the layers indicating how far along you are on the video with respect of the layers</li>
+						<li><p>The red bar over the layers indicating how far along you are on the video with respect of the layers</p></li>
 					</ol>
 				</div>
 				<div class="section flex-column">
 					<h3>Side Menu</h3>
 					<p>
-						<img src="${eventHelp}" width="400px"/>
+						<img style="border: 1px solid #bbbbbb" src="${eventHelp}" width="400px"/>
 						<br/> -&nbsp; <b>Editor:</b> the editor makes it easy to edit events. If you click on an event, the side menu will change and allow you to edit the event options based on the event type. You are also able
 						to delete events using this menu
 						<br/> -&nbsp; <b>Save:</b> after you made your changes to the video the last step is to save the video by clicking the save button on the top right of the screen. <b><i>If you do not save it you will lose
@@ -276,8 +288,41 @@ const HelpDocumentationContainer = props => {
 					<ul>
 						<li><img class="icon" src="${clockIcon}"/>: This icon allows you to change the speed of the video. Faster is any number above normal speed or 1</li>
 						<li><img class="icon" src="${startOverIcon}"/>: This icon allows you to start the video over from the beginning</li>
-						<li>&nbsp;<b>CC</b>&nbsp;&nbsp;: This icon allows you to turn on or off the captions</li>
+						<li><b>CC</b>: This icon allows you to turn on or off the captions</li>
 						<li>Play/Pause and Full screen icons: These support common video functionality</li>
+					</ul>
+				</div>
+				<div class="section flex-column">
+					<h3>Hotkeys</h3>
+					<ul>
+						<li>
+							<b>F-key:</b> toggle fullscreen
+							<kbd>F</kbd>
+						</li>
+						<li>
+							<b>Right Arrow:</b> forward 10 second
+							<kbd style="font-size: 20px;">→</kbd>
+						</li>
+						<li>
+							<b>Left Arrow:</b> rewind 10 second
+							<kbd style="font-size: 20px;">←</kbd>
+						</li>
+						<li>
+							<b>Period:</b> forward 1 second
+							<kbd>.</kbd>
+						</li>
+						<li>
+							<b>Comma:</b> rewind 1 second
+							<kbd>,</kbd>
+						</li>
+						<li>
+							<b>Right Bracket:</b> increase playback speed
+							<kbd>></kbd>&nbsp;&nbsp; OR <kbd>SHIFT</kbd>&nbsp;&nbsp; + <kbd>.</kbd>
+						</li>
+						<li>
+							<b>Left Bracket:</b> decrease playback speed
+							<kbd><</kbd>&nbsp;&nbsp; OR <kbd>SHIFT</kbd>&nbsp;&nbsp; + <kbd>,</kbd>
+						</li>
 					</ul>
 				</div>
 				<div class="section flex-column">

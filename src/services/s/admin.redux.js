@@ -625,6 +625,7 @@ export default class AdminService {
 			const result = await apiProxy.content.post(content)
 
 		} catch (error) {
+
 			dispatch(this.actions.adminError(error))
 		}
 	}

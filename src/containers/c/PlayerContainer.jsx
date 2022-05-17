@@ -51,6 +51,7 @@ const PlayerContainer = props => {
 	// eslint-disable-next-line no-unused-vars
 	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
+	const [playbackOptions, setPlaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
 	const [progress, setProgress] = useState(0)
@@ -87,8 +88,6 @@ const PlayerContainer = props => {
 	}
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
-
-		setPlaybackRate(1)
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
@@ -211,6 +210,7 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlayPause = () => {
+
 		if (playing)
 			setPlaying(false)
 		else
@@ -234,9 +234,8 @@ const PlayerContainer = props => {
 		setBlank(bool)
 	}
 
-	const handlePlaybackRateChange = rate => {
-
-		setPlaybackRate(parseFloat(rate))
+	const handlePlaybackRateChange = (rate) => {
+		setPlaybackRate(rate)
 	}
 
 	const handleProgress = progression => {
@@ -253,17 +252,17 @@ const PlayerContainer = props => {
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
 		// const played = (e.clientX + document.body.scrollLeft) / window.innerWidth
 		// player.seekTo(played)
-
 		let newPlayed = 0
-		if (e !== null) {
+		if (e) {
 			const scrubber = e.currentTarget.getBoundingClientRect()
-			newPlayed = (e.pageX - scrubber.left) / scrubber.width
+			if (scrubber.width !== 0){
+				newPlayed = (e.pageX - scrubber.left) / scrubber.width
+			}
 		} else
 			newPlayed = time / duration
-
-		if (newPlayed !== Infinity && newPlayed !== -Infinity)
+		if (duration > 0){
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
-
+		}
 		if (events) {
 			// for all of the events. If the new seek time goes before events that were already executed activate the events again
 			events.forEach(event => {
@@ -278,13 +277,11 @@ const PlayerContainer = props => {
 
 		// find the element which contains subtitles and events placeholders
 		const elem = document.getElementById(`player-container`)
-
 		// if fullscreen is false we want to turn to full screen. Else, request cancelFullScreen.
 		// For more info read full screen api https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
 		// This is a functionality that behaves like F11. This is not video full screen mode.
 		// Video full screen mode would break the subtitles and events.
 		if (!fullscreen) {
-
 			if (elem.requestFullscreen)
 				elem.requestFullscreen()
 			else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -334,13 +331,14 @@ const PlayerContainer = props => {
 		// 	document.getElementById('subtitle-box').innerText = value
 		// }
 		if (subtitleTextIndex !== index) {
-			if (document.getElementsByClassName(`transcript-row`)[index]) {
-				// grab the elements height and scroll that in pixels for the entire parent element
-				const parentElement = document.getElementsByClassName(`main-bar`)[0]
-				const currentSubtitleElement = document.getElementsByClassName(`transcript-row`)[index]
+			if (document.getElementsByClassName('transcript-row')[index]) {
+				//grab the elements height and scroll that in pixels for the entire parent element
+				const parentElement = document.getElementsByClassName('main-bar')[0]
+				const currentSubtitleElement = document.getElementsByClassName('transcript-row')[index]
 
-				if (subtitleTextIndex < index || subtitleTextIndex === undefined)
-					parentElement.scrollTop += currentSubtitleElement.offsetHeight
+				if (subtitleTextIndex < index || subtitleTextIndex === undefined) {
+					parentElement.scrollTop += currentSubtitleElement.offsetHeight;
+				}
 
 			}
 		}
@@ -449,6 +447,7 @@ const PlayerContainer = props => {
 		hovering,
 		muted,
 		playbackRate,
+		playbackOptions,
 		playing,
 		progress,
 		playTime,
@@ -496,6 +495,7 @@ const PlayerContainer = props => {
 		handleShowSubtitle,
 		handleToggleTranscript,
 		setIsCaption,
+		setPlaybackOptions,
 		handleChangeSubtitle,
 		setFullscreen,
 		setShowTranscript,
