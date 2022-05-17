@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
@@ -51,7 +51,7 @@ const TrackLayer = props => {
 			setLayerWidth(initialWidth)
 		else
 			setLayerWidth(layerWidth + width)
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[width])
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
