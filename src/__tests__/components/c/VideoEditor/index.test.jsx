@@ -210,10 +210,10 @@ describe(`VideoEditor testing`, () => {
 	it(`zoom-indicator`, ()=> {
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
-			wrapper.find(`Rnd`).prop(`onDragStop`)(``, {x: 0})
-			wrapper.find(`Rnd`).prop(`onDragStop`)(``, {x: 10})
-			wrapper.find(`Rnd`).prop(`onDragStop`)(``, {x: -10})
-			wrapper.find(`Rnd`).prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
+			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: 0}))
+			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: 10}))
+			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: -10}))
+			wrapper.find(`Rnd`).forEach(e =>e.prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` ))
 
 			wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
 				{ target:
@@ -223,7 +223,7 @@ describe(`VideoEditor testing`, () => {
 				, currentTarget: {offsetWidth: 10},
 				},
 			)
-			wrapper.find(`Rnd`).prop(`onMouseLeave`)()
+			wrapper.find(`Rnd`).at(0).prop(`onMouseLeave`)()
 		})
 	})
 
@@ -242,7 +242,7 @@ describe(`VideoEditor testing`, () => {
 		wrapper.find(`.plusIcon`).at(0).simulate(`click`)
 
 		act(() => {
-			wrapper.find(`Rnd`).prop(`onDragStop`)(``, {x: 10})
+			wrapper.find(`Rnd`).forEach(e=>e.prop(`onDragStop`)(``, {x: 10}))
 			jest.advanceTimersByTime(100)
 		})
 		// await wrapper.find(`.handleSaveAnnotation`).simulate(`click`)
