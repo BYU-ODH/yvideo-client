@@ -4,9 +4,7 @@ import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-import Position from 'components/vanilla_scripts/censorPosition'
-
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -38,14 +36,14 @@ const VideoContainer = props => {
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
-	const [played, setPlayed] = useState(0)
+	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
 	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
-	const [videoComment, setVideoComment] = useState(``)
-	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
+	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [playerPadding,setPlayerPadding] = useState([0,0])
@@ -325,7 +323,7 @@ const VideoContainer = props => {
 
 	let count = 0 // this is to make sure that event listeners are applied only once
 
-	const handleHotKeys = (e) => {
+	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
@@ -377,7 +375,7 @@ const VideoContainer = props => {
 					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
 					if(e.offsetX > window.innerWidth / 2)
 						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
-					 else
+					else
 						document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
 					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
@@ -405,6 +403,7 @@ const VideoContainer = props => {
 		return function cleanup(){
 				window.onkeyup = null
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration])
 
 	return (

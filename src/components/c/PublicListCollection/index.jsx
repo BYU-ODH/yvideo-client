@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsLable, NoContentFiller } from './styles'
+import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsLable } from './styles'
 
 class PublicListCollection extends PureComponent {
 

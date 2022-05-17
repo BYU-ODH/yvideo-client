@@ -30,7 +30,7 @@ export class LabAssistant extends PureComponent {
 
 		return (
 			<Style>
-				<h1></h1>
+				<span></span>
 				<Search onSubmit={handleSubmit}>
 					<SearchIcon />
 					<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery} />

@@ -10,7 +10,7 @@ import Style, {
 	TitleEdit,
 	RemoveIcon,
 	UploadIcon,
-	PersonAddIcon,
+	// PersonAddIcon,
 	SaveIcon,
 	TypeButton,
 	Type,
@@ -62,13 +62,13 @@ export class ResourceOverview extends PureComponent {
 						<Preview editing={editing}>
 							<div>
 								{editing ?
-									<ResourceTitle><h4>Title:</h4><TitleEdit className="std-outline-color"type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
+									<ResourceTitle><h4>Title:</h4><TitleEdit className='std-outline-color'type='text' value={resourceName} onChange={handleResourceName}/></ResourceTitle>
 									:
 									<h4 id='resource-name'>{resourceName}</h4>
 								}
 							</div>
 							<Buttons>
-								<EditButton id='resource-edit' className="std-outline-color" onClick={handleToggleEdit}>{editing ? <SaveIcon/> : <></>}{editing ? `Save` : `Edit`}</EditButton>
+								<EditButton id='resource-edit' className='std-outline-color' onClick={handleToggleEdit}>{editing ? <SaveIcon/> : <></>}{editing ? `Save` : `Edit`}</EditButton>
 								{editing &&
 									<>
 										{/* TODO: need to figure out how it work on attaching files on resource */}
@@ -106,7 +106,7 @@ export class ResourceOverview extends PureComponent {
 								{user.roles === 0 || user.roles === 1 ?
 									(
 										<div>
-											<h4>Instructors: </h4>{ <> <EditButton className="std-outline-color" onClick={handleInstructors}> {accessCount} registered</EditButton></>}
+											<h4>Instructors: </h4>{ <> <EditButton className='std-outline-color' onClick={handleInstructors}> {accessCount} registered</EditButton></>}
 										</div>
 									) :
 									null
@@ -117,10 +117,10 @@ export class ResourceOverview extends PureComponent {
 								{/* <div><h4>Email:</h4><TitleEdit type='text' value={requesterEmail} onChange={handleResourceEmail}/></div> */}
 								<Type>
 									<h4>Type:</h4>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" data-type='video' /><>Video</></TypeButton>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" data-type='audio' />Audio</TypeButton>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" data-type='image' />Image</TypeButton>
-									<TypeButton type='button' className="std-outline-color" selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" data-type='text' />Text</TypeButton>
+									<TypeButton type='button' className='std-outline-color' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className='fa fa-video' data-type='video' /><>Video</></TypeButton>
+									<TypeButton type='button' className='std-outline-color' selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className='fa fa-headphones' data-type='audio' />Audio</TypeButton>
+									<TypeButton type='button' className='std-outline-color' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className='fa fa-image' data-type='image' />Image</TypeButton>
+									<TypeButton type='button' className='std-outline-color' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className='fa fa-text-width' data-type='text' />Text</TypeButton>
 								</Type>
 
 								<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
@@ -130,7 +130,7 @@ export class ResourceOverview extends PureComponent {
 				</BoxRow>
 				<Prompt
 					when={blockLeave}
-					message="Have you saved your changes already?"
+					message='Have you saved your changes already?'
 				/>
 			</>
 		)

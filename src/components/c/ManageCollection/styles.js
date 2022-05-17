@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import logo from 'assets/hexborder.svg'
 import saveIcon from 'assets/save.svg'
 import plusIcon from 'assets/plus-white.svg'
@@ -214,24 +214,6 @@ const rotate = keyframes`
 	to {
 		transform: rotate(720deg);
 	}
-`
-
-const fadein = keyframes`
-from {
-	opacity: 0;
-}
-to {
-	opacity: 1;
-}
-`
-
-const fadeout = keyframes`
-from {
-	opacity: 1;
-}
-to {
-	opacity: 0;
-}
 `
 
 export const Spinner = styled.div`

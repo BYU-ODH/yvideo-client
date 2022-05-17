@@ -3,7 +3,6 @@ import { shallow, mount } from 'enzyme'
 import Container from '../../../../components/modals/containers/CreateContentContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
-import { waitFor } from '@testing-library/dom'
 import MutationObserver from 'mutation-observer'
 import proxies from 'proxy'
 

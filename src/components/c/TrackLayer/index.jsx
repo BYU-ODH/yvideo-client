@@ -22,6 +22,7 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [layerHeight, setLayerHeight] = useState(0)
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -39,7 +40,7 @@ const TrackLayer = props => {
 
 			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? 46 : 26 * (overlapCount.length + 1)}px`
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
 	useLayoutEffect(()=>{
 
@@ -82,7 +83,7 @@ const TrackLayer = props => {
 				} else {
 					// compare previous and current
 					// if current overlaps with previous
-					if(currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end || currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end){
+					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){ // eslint-disable-line no-extra-parens
 						// find index in the main events object
 						// we find the first overlap so pass anything from beginning to now
 						halfLayer++
@@ -227,4 +228,3 @@ const TrackLayer = props => {
 }
 
 export default TrackLayer
-

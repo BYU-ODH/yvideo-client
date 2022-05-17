@@ -73,7 +73,7 @@ export default class Manager extends PureComponent {
 											<Help
 												onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth })}
 												onMouseLeave={e => toggleTip()}
-											><img id='help-document' src={helpIcon} onClick={handleShowHelp} />
+											><img id='help-document' src={helpIcon} alt='' onClick={handleShowHelp} />
 											</Help>
 										</h4>
 

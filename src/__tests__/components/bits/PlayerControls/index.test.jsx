@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { shallow, mount } from 'enzyme'
 import PlayerControls from '../../../../components/bits/PlayerControls'
-import Style, { PlayPause, ClosedCaptions, Fullscreen, Volume, 	Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
-import clockIcon from '../../../../components/bits/PlayerControls/styles'
+import { PlayPause, ClosedCaptions, Fullscreen, Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
 import { BrowserRouter} from 'react-router-dom'
 
 const props = {

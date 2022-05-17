@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
-import services from 'services'
-
-import { interfaceService } from 'services'
+import services, { interfaceService } from 'services'
 
 import { CollectionPermissions } from 'components'
 
@@ -21,7 +19,6 @@ const CollectionPermissionsContainer = props => {
 		getCollectionInfo,
 		toggleModal,
 		updateCollectionStatus,
-		getCollections,
 		loggedinUser,
 	} = props
 
@@ -73,23 +70,22 @@ const CollectionPermissionsContainer = props => {
 		handleDepartmentChange: e => {
 			setCourse({
 				...course,
-				department: (e.target.value).toUpperCase(),
+				department: e.target.value.toUpperCase(),
 			})
 			setIsEdited(true)
 		},
 		handleCatalogChange: e => {
 			setCourse({
 				...course,
-				catalog: (e.target.value).toUpperCase(),
+				catalog: e.target.value.toUpperCase(),
 			})
 			setIsEdited(true)
 		},
 		handleCatalogBlur: e => {
 			let catalog = e.target.value
 			let courseLength = 3
-			if (catalog.includes("r") || catalog.includes("R")) {
+			if (catalog.includes(`r`) || catalog.includes(`R`))
 				courseLength = 4
-			}
 
 			if(catalog.length < courseLength && catalog.length !== 0) {
 				for(let i = catalog.length; i < courseLength; i++)
@@ -120,8 +116,8 @@ const CollectionPermissionsContainer = props => {
 					section = `0${section}`
 
 				setCourse({
-				...course,
-				section,
+					...course,
+					section,
 				})
 			}
 		},
@@ -151,12 +147,6 @@ const CollectionPermissionsContainer = props => {
 		},
 		addCourse: e => {
 			e.preventDefault()
-
-			let {
-				department,
-				catalog,
-				section,
-			} = course
 
 			updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
 			setDisable(true)

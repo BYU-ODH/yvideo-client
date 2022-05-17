@@ -6,7 +6,7 @@ import {
 	Banner,
 	Style,
 	h1Style,
-	h2Style
+	h2Style,
 } from './styles'
 
 export default class Error extends PureComponent {
@@ -45,7 +45,7 @@ export default class Error extends PureComponent {
 			<>
 				<Style>
 					<Banner>
-						<Button className="std-outline-color" type='button' onClick={exit}>Go Back</Button>
+						<Button className='std-outline-color' type='button' onClick={exit}>Go Back</Button>
 						<h1 style={h1Style}>{title}</h1>
 					</Banner>
 					<h2 style ={h2Style}>{message}</h2>

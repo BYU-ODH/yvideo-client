@@ -63,7 +63,7 @@ export const ItemMenu = styled.div`
 	position: fixed;
 	float: right;
 	top: ${props => props.mousePos.y}px;
-	left: ${props => props.mousePos.x  - 170}px;
+	left: ${props => props.mousePos.x - 170}px;
 
 	background: white;
 	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.3);

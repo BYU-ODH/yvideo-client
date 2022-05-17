@@ -48,6 +48,7 @@ const PlayerContainer = props => {
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
+	// eslint-disable-next-line no-unused-vars
 	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [playbackOptions, setPlaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
@@ -56,6 +57,7 @@ const PlayerContainer = props => {
 	const [progress, setProgress] = useState(0)
 	const [playTime, setPlaytime] = useState(0)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
+	// eslint-disable-next-line no-unused-vars
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
@@ -76,6 +78,7 @@ const PlayerContainer = props => {
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
+	// eslint-disable-next-line no-unused-vars
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 
 	// aspect ratio
@@ -89,7 +92,7 @@ const PlayerContainer = props => {
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
 
-		if (!contentCache.hasOwnProperty(params.id))
+		if (!contentCache.hasOwnProperty(params.id)) // eslint-disable-line no-prototype-builtins
 			getContent(params.id)
 
 		if (contentCache[params.id]) {
@@ -109,12 +112,12 @@ const PlayerContainer = props => {
 					const fetchData = async() => {
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`,{method:`GET`})
 						const data = await rawData.json()
-						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`))
+						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
 							setAspectRatio([data.width,data.height])
 
 						return data
 					}
-					const d =fetchData()
+					const d =fetchData() // eslint-disable-line no-unused-vars
 				}
 			} else {
 				setKey(``)
@@ -137,6 +140,7 @@ const PlayerContainer = props => {
 					}
 				}
 				if (resourceIdStream !== ``){
+					// eslint-disable-next-line no-unused-vars
 					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
@@ -148,6 +152,7 @@ const PlayerContainer = props => {
 				}
 				if(resource[resourceIdStream]){
 					if(resource[resourceIdStream][`files`]){
+						// eslint-disable-next-line no-unused-vars
 						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
 					}
 				}
@@ -179,7 +184,7 @@ const PlayerContainer = props => {
 		}
 		if (errorMessage !== errorPrev)
 			handleError()
-
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage,errorPrev])
 
 	const handleShowTip = (tipName, position) => {
@@ -349,7 +354,7 @@ const PlayerContainer = props => {
 			try {
 				temp.content = JSON.parse(subtitles[index].content)
 			} catch (e) {
-				console.log(e)
+				console.log(e) // eslint-disable-line no-console
 			}
 		}
 		setIndexToDisplay(index)
@@ -407,13 +412,14 @@ const PlayerContainer = props => {
 			censor.style.width = `${width}px`
 		}
 	}
-
-	if(displaySubtitles == null && content != undefined){
+	// TODO: This might break, what it was before was
+	// (displaySubtitles == null && content != undefined)
+	if(displaySubtitles === null && content){
 
 		// This statement prevents displaySubtitles from being null.
 		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
+		if (subtitles.length === 1) {
 
-		if (subtitles.length == 1) {
 			// some logic to pick the subtitle
 			handleChangeSubtitle(0)
 		} else if (subtitles.length > 1) {

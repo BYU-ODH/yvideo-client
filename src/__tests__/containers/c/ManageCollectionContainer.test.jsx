@@ -9,8 +9,6 @@ import proxies from 'proxy'
 import { BrowserRouter } from 'react-router-dom'
 import store from 'services/store'
 
-import { collectionService, contentService, interfaceService, adminService } from 'services'
-
 const resource = testutil.resource
 
 const settings = {
@@ -117,7 +115,7 @@ const updatedContents = [
 	content3,
 ]
 
-const collection = {
+const collection = { // eslint-disable-line no-unused-vars
 	archived: false,
 	content,
 	id: 0,
@@ -156,7 +154,7 @@ const updatedCollection = {
 	thumbnail: `test@thumbnail`,
 }
 
-const updatedProps = {
+const updatedProps = { // eslint-disable-line no-unused-vars
 	collection: updatedCollection,
 	content: updatedContents,
 	getContent: jest.fn(),
@@ -318,8 +316,9 @@ describe(`manage collection container test`, () => {
 		)
 
 		// test if two contents are inserted
-		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content
-		const contents = wrapper.find(`ManageCollectionContainer`).props().content
+		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content // eslint-disable-line no-unused-vars
+		const contents = wrapper.find(`ManageCollectionContainer`).props().content // eslint-disable-line no-unused-vars
+
 		// expect(collectionContents.length).toBe(2)
 		// expect(Object.keys(contents).length).toBe(2)
 

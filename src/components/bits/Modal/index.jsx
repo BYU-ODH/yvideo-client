@@ -18,10 +18,12 @@ class Modal extends Component {
 
 		return ReactDOM.createPortal(
 			(
-				//so that when one clicks in the grey space around a modal it closes the modal
+				// so that when one clicks in the grey space around a modal it closes the modal
 				<Wrapper onClick={this.toggleModal} ref={this.wrapper} className=''>
 					{/* e.stopPropagation() makes it so that when one is hovering over the actual modal, the onClick from the Wrapper doesn't take effect */}
-					<div onClick={e => {e.stopPropagation()}}>
+					<div onClick={e => {
+						e.stopPropagation()
+					}}>
 						<Comp {...this.props.modal.props} />
 					</div>
 				</Wrapper>
@@ -57,7 +59,7 @@ const mapStoreToProps = store => ({
 })
 
 const mapDispatchToProps = {
-	toggleModal: interfaceService.toggleModal
+	toggleModal: interfaceService.toggleModal,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(Modal)

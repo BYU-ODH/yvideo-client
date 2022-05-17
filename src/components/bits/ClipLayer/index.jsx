@@ -6,7 +6,7 @@ import {
 	Style,
 } from './styles'
 
-import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 const ClipLayer = props => {
 
@@ -17,7 +17,8 @@ const ClipLayer = props => {
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
-	const style = active !== clipName ? {top: `0px`, backgroundColor:`#fff`,border:`1px solid #0582ca`,color:`#000`,fontSize:`1.3rem`,justifyContent:`center`,alignItems:`center`} :{ left: `${start}% !important`, top: `0px`, backgroundColor:`#002e5d`,border:`1px solid #0582ca`,color:`#fff`,fontSize:`1.3rem`,justifyContent:`center`,alignItems:`center`}
+	const style = active !== clipName ? {top: `0px`, backgroundColor:`#fff`, border:`1px solid #0582ca`, color:`#000`,fontSize:`1.3rem`, justifyContent:`center`, alignItems:`center`}
+		: { left: `${start}% !important`, top: `0px`, backgroundColor:`#002e5d`, border:`1px solid #0582ca`, color:`#fff`, fontSize:`1.3rem`, justifyContent:`center`, alignItems:`center`}
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -30,6 +31,7 @@ const ClipLayer = props => {
 			setLayerWidth(initialWidth)
 		else
 			setLayerWidth(layerWidth + width)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
@@ -81,7 +83,7 @@ const ClipLayer = props => {
 		setStart(s,null,clipName)
 		setEnd(en,null,clipName)
 	}
-
+	// eslint-disable-next-line no-unused-vars
 	const curr = {...dragRef.current}
 	return (
 		<>

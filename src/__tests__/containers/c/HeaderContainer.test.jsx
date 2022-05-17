@@ -5,10 +5,6 @@ import Container from '../../../containers/c/HeaderContainer'
 import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
 
-const collection = testutil.collection
-
-const content = testutil.content
-
 const props = {
 	lost: false,
 	border: false,
@@ -21,7 +17,7 @@ describe(`HeaderContainer test`, () => {
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
 
-		const viewstate = wrapper.props().viewstate
+		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
 	it(`check correct form of the header`, () => {

@@ -14,7 +14,7 @@ const Style = styled.div`
 		display: flex;
 	}
 
-	& > h1 {
+	& > span {
 		margin: 5rem 0 4rem 0;
 		font-weight: normal;
 	}

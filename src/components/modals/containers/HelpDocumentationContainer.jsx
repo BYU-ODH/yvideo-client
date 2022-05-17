@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import HelpDocumentation from '../components/HelpDocumentation'
@@ -11,24 +11,18 @@ import startOverIcon from 'assets/start_over_icon_black.svg'
 
 import manager from 'assets/help/help-manager.png'
 
-import collection from 'assets/help/help-collection.png'
-
 import content from 'assets/help/help-content.png'
 import contentEdit from 'assets/help/help-content-edit.png'
 import eventHelp from 'assets/help/help-te-event.png'
 import subtitleHelp from 'assets/help/help-te-subtitle.png'
 import layerHelp from 'assets/help/help-te-layers.png'
 import zoomHelp from 'assets/help/help-te-zoom.png'
-import playercontrolHelp from 'assets/help/help-playercontrols.png'
-import transcriptHelp from 'assets/help/help-transcriptview.png'
-import subHelp from 'assets/help/help-te-subtitle.png'
 import translationHelp from 'assets/help/help-translation.png'
 import importantWordHelp from 'assets/help/help-important-word.png'
 
-//player
+// player
 import clockIcon from 'assets/clock-black.svg'
 import bookIcon from 'assets/sidebar-black.svg'
-import closedCaption from 'assets/controls_closed_captions.svg'
 import chevron from 'assets/player-chevron-left-black.svg'
 
 import {
@@ -68,7 +62,7 @@ const HelpDocumentationContainer = props => {
 	const {
 		name,
 		toggleModal,
-		toggleTip,
+		// toggleTip,
 	} = props
 
 	const index = {
@@ -252,7 +246,7 @@ const HelpDocumentationContainer = props => {
 							<br/> -&nbsp; <b>Delete Subtitle:</b> click on the trash can icon next to the track Title. <u>This will delete the subtitle track.</u>
 							<br/> -&nbsp; <b>Side Editor</b> Clicking on a subtitle will open the side editor where you can edit the Title and the Language. There is also a table where you can edit start/end times and the text of all subtitles, as shown to the right.
 					</p><br/>
-					<img src="${subHelp}" width="250px"/>
+					<img src="${subtitleHelp}" width="250px"/>
 				</div>
 				<hr/>
 				<div class="section large-img">
@@ -388,7 +382,7 @@ const HelpDocumentationContainer = props => {
 					</ul>
 				</div>`,
 		},
-		'Subtitle Editor': {
+		'Subtitle Editor': { // eslint-disable-line no-dupe-keys
 			htmlInstruction: `
 			<div class="section flex-column">
 				<h3>Creating Subtitles/Captions</h3>
@@ -405,8 +399,8 @@ const HelpDocumentationContainer = props => {
 					<li>To <b>add</b> a new text slot you can click on the plus icon at the bottom of the last text slot. And, to <b>delete</b> a text slot click on the red trash can on the right</li>
 				</ul>
 			</div>
-			`
-		}
+			`,
+		},
 	}
 
 	const viewstate = {

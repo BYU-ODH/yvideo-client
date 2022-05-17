@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import parse from 'html-react-parser'
 
@@ -28,14 +29,12 @@ const Transcript = props => {
 		displaySubtitles,
 		subtitleText,
 		subtitleTextIndex,
-		duration,
 		toggleTranscript,
 		showTranscript,
 		isMobile,
 	} = props.viewstate
 
 	const {
-		setToggleTranscript,
 		handleShowHelp,
 		handleSeekChange,
 		handleToggleTranscript,
@@ -52,7 +51,7 @@ const Transcript = props => {
 		let allWords = ``
 		let allMeanings = ``
 
-		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined){
+		if(jsonResponse[Object.keys(jsonResponse)[0]] === undefined){
 			setWords(`No matches found`)
 			setMeanings(``)
 			return
@@ -176,7 +175,8 @@ const Transcript = props => {
 				<br/>
 				<h2>Quick Translation</h2><br/>
 				<div id='translation-box'>
-					<h3 id='translation-word'></h3>
+					{/* I commented out this h3 because it has no content. If it's needed then uncomment it */}
+					{/* <h3 id='translation-word'></h3> */}
 					<ul id='translation-list'>
 						<li>
 							<label>Translation: {parse(words)}</label>

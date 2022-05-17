@@ -23,6 +23,7 @@ const ManageResourceContainer = props => {
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [isDefaultSearched, setIsDefaultSearched] = useState(false)
 	const [resourceCount, setResourceCount] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [selectedResource, setSelectedResource] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
 	const [isSearched, setIsSearched] = useState(false)
@@ -45,7 +46,7 @@ const ManageResourceContainer = props => {
 			setIsMobile(true)
 		else
 			setIsMobile(false)
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	const addResource = () => {
@@ -75,7 +76,7 @@ const ManageResourceContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: 'Manage Resource'},
+			props: { name: `Manage Resource`},
 		})
 	}
 

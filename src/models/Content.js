@@ -20,7 +20,7 @@ export default class Content {
 	resource = {
 		keywords: [],
 	}
-	fileId = ''
+	fileId = ``
 
 	settings = {
 		aspectRatio:`1.77`,
@@ -48,13 +48,13 @@ export default class Content {
 			this.name = obj[`title`]
 			this.published = obj[`published`]
 			this.clips = obj[`clips`] ? obj[`clips`] : ``
-			this.fileId = obj['file-id']
+			this.fileId = obj[`file-id`]
 
 			this.settings = {
 				allowDefinitions: obj[`allow-definitions`],
 				annotationDocument: obj[`annotations`] ? this.stringToArray(obj[`annotations`]) : ``,
 				showCaptions: obj[`allow-captions`],
-				targetLanguage: obj[`file-version`] !== `` ?  (obj[`file-version`]) : ('English'),
+				targetLanguage: obj[`file-version`] !== `` ? obj[`file-version`] : `English`,
 				allowNote: obj[`allow-notes`],
 			}
 

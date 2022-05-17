@@ -29,6 +29,7 @@ export default class CreateResource extends PureComponent {
 		} = this.props.handlers
 
 		let isSelected = false
+		// eslint-disable-next-line no-unused-vars
 		const select = () => {
 			isSelected = !isSelected
 		}
@@ -51,10 +52,10 @@ export default class CreateResource extends PureComponent {
 					<label htmlFor='create-resource-type'>
 						<span>Type</span>
 						<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-							<TypeButton className="std-outline-color" id='create-resource-type-video' type='button' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className="fa fa-video" data-type='video' />Video</TypeButton>
-							<TypeButton className="std-outline-color" id='create-resource-type-audio' type='button' selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className="fa fa-headphones" data-type='audio' />Audio</TypeButton>
-							<TypeButton className="std-outline-color" id='create-resource-type-image' type='button' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className="fa fa-image" data-type='image' />Image</TypeButton>
-							<TypeButton className="std-outline-color" id='create-resource-type-text' type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className="fa fa-text-width" data-type='text' />Text</TypeButton>
+							<TypeButton className='std-outline-color' id='create-resource-type-video' type='button' selected={resourceType === `video`} onClick={handleTypeChange} data-type='video'><i className='fa fa-video' data-type='video' />Video</TypeButton>
+							<TypeButton className='std-outline-color' id='create-resource-type-audio' type='button' selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className='fa fa-headphones' data-type='audio' />Audio</TypeButton>
+							<TypeButton className='std-outline-color' id='create-resource-type-image' type='button' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className='fa fa-image' data-type='image' />Image</TypeButton>
+							<TypeButton className='std-outline-color' id='create-resource-type-text' type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className='fa fa-text-width' data-type='text' />Text</TypeButton>
 							{/* {console.log(TypeButton.data.type)} */}
 						</div>
 					</label>
@@ -66,11 +67,11 @@ export default class CreateResource extends PureComponent {
 					<textarea id='create-resource-metadata' name='metadata' value={metadata} onChange={handleTextChange} rows={4} required /> */}
 
 					<div>
-						<Button className="std-outline-color" id='create-resource-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+						<Button className='std-outline-color' id='create-resource-cancel' type='button' onClick={toggleModal}>Cancel</Button>
 						{resourceName ?
-							<Button className="std-outline-color" id='create-resource-create' type='submit' color={`#0582CA`}>Create</Button>
+							<Button className='std-outline-color' id='create-resource-create' type='submit' color={`#0582CA`}>Create</Button>
 							:
-							<Button className="std-outline-color" id='create-resource-create disabled' disabled={resourceName === undefined} type='submit' color={`#A0A0A0`}>Create</Button>
+							<Button className='std-outline-color' id='create-resource-create disabled' disabled={resourceName === undefined} type='submit' color={`#A0A0A0`}>Create</Button>
 						}
 					</div>
 				</Form>

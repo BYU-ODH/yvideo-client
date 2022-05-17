@@ -12,9 +12,8 @@ const cookies = {
 
 		for(let c of ca) {
 			c = c.trimStart()
-			if (c.indexOf(name) === 0) {
+			if (c.indexOf(name) === 0)
 				return c.substring(name.length, c.length)
-			}
 		}
 		return ``
 	},
@@ -33,9 +32,8 @@ const cookies = {
 	},
 
 	delete: (cookieName, path, domain) => {
-		if (cookies.get(cookieName)) {
+		if (cookies.get(cookieName))
 			document.cookie = `${cookieName}=${path && `;path=${path}`}${domain && `;domain=${domain}`};expires=Thu, 01 Jan 1970 00:00:01 GMT`
-		}
 	},
 }
 

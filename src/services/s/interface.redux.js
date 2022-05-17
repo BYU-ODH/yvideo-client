@@ -117,7 +117,7 @@ export default class InterfaceService {
 			}
 
 		case this.types.TIP_TOGGLE:
-			if(action.payload == null){
+			if(action.payload == null){ // eslint-disable-line eqeqeq
 				// console.log("IT IS NULL")
 				// we need to set modal to false and then pass a null component
 				return {
@@ -197,7 +197,7 @@ export default class InterfaceService {
 			}
 
 		case this.types.INTERFACE_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
 				loading: false,
@@ -317,7 +317,7 @@ export default class InterfaceService {
 
 			try {
 				const results = await apiProxy.email.postNoAttachment(emailObject)
-				if(results.status == 200) {
+				if(results.status === 200) {
 					Swal.fire({
 						icon: `success`,
 						title: `You have successfully submitted the form`,
@@ -342,7 +342,7 @@ export default class InterfaceService {
 
 			try {
 				const results = await apiProxy.email.postWithAttachment(emailObject)
-				if(results.status == 200) {
+				if(results.status === 200) {
 					Swal.fire({
 						icon: `success`,
 						title: `You have successfully submitted the form`,

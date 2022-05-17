@@ -46,7 +46,7 @@ export default class AuthService {
 			}
 
 		case this.types.AUTH_ERROR:
-			console.error(payload.message)
+			console.error(payload.message) // eslint-disable-line no-console
 			return {
 				...store,
 				user: null,

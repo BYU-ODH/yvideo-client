@@ -15,7 +15,6 @@ export default class Player extends Component {
 		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
 		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
 
-		this.props.viewstate.playbackRate = this.props.viewstate.playbackRate
 		this.playbackOptions = this.props.viewstate.playbackOptions
 	}
 	componentDidMount(){
@@ -48,7 +47,7 @@ export default class Player extends Component {
 			else {
 				// Checking to make sure that the value of the playback rate is within the possible options
 				if (this.props.viewstate.playbackRate >= this.playbackOptions[0] && this.props.viewstate.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
-					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) + 1])
+					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element === this.props.viewstate.playbackRate) + 1])
 				}
 				break
 			}
@@ -61,7 +60,7 @@ export default class Player extends Component {
 			else {
 				// Checking to make sure that the value of the playback rate is within the possible options
 				if (this.props.viewstate.playbackRate > this.playbackOptions[0] && this.props.viewstate.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
-					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) - 1])
+					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element === this.props.viewstate.playbackRate) - 1])
 				}
 				break
 			}
@@ -86,26 +85,26 @@ export default class Player extends Component {
 			url,
 			playing,
 			playbackRate,
-			playbackOptions,
+			// playbackOptions,
 			progress,
-			playTime,
+			// playTime,
 			volume,
 			muted,
 			blank,
-			videoComment,
-			commentPosition,
+			// videoComment,
+			// commentPosition,
 			duration,
 			showTranscript,
-			toggleTranscript,
-			content,
+			// toggleTranscript,
+			// content,
 			subtitleText,
-			subtitleTextIndex,
+			// subtitleTextIndex,
 			displaySubtitles,
-			isCaption,
+			// isCaption,
 			indexToDisplay,
 			isMobile,
-			censorPosition,
-			censorActive,
+			// censorPosition,
+			// censorActive,
 			clipTime,
 			isLandscape,
 			hasPausedClip,
@@ -121,24 +120,25 @@ export default class Player extends Component {
 			handleStart,
 			handleProgress,
 			handleSeekChange,
-			handlePlaybackRateChange,
-			handleBlank,
+			handlePlaybackRateChange, // eslint-disable-line no-unused-vars
 			handleMuted,
 			handleUnmuted,
-			handleShowComment,
-			handleToggleTranscript,
 			handleShowSubtitle,
-			handleShowHelp,
-			handleShowTip,
-			toggleTip,
-			setCensorActive,
-			setCensorPosition,
+			toggleTip, // eslint-disable-line no-unused-vars
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
+			// handleBlank,
+			// handleShowComment,
+			// handleToggleTranscript,
+			// handleShowHelp,
+			// handleShowTip,
+			// setCensorActive,
+			// setCensorPosition,
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
+			// eslint-disable-next-line no-unused-vars
 			const t0 = performance.now()
 			handleProgress(playedSeconds)
 			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
@@ -218,9 +218,8 @@ export default class Player extends Component {
 					break
 				}
 			}
-
+			// eslint-disable-next-line no-unused-vars
 			const t1 = performance.now()
-
 		}
 
 		return (
@@ -262,6 +261,7 @@ export default class Player extends Component {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
+							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>
 							<div id='censorContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>

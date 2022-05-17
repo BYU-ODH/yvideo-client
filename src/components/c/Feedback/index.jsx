@@ -9,11 +9,7 @@ export class Feedback extends PureComponent {
 	render(){
 
 		const {
-			email,
-			name,
-			title,
 			body,
-			file,
 		} = this.props.viewstate
 
 		const {
@@ -23,16 +19,16 @@ export class Feedback extends PureComponent {
 			setEmail,
 			setName,
 			handleSubmit,
-			handleCaptchaChange
+			handleCaptchaChange,
 		} = this.props.handlers
 
 		return (
 			<Style>
 				<form className='test-mailing' onSubmit={handleSubmit} >
 					<h1>Submit Feedback</h1>
-						<input className='user-info' type='text' placeholder='Name' required onChange={ e => setName(e.target.value)}/><br/>
-						<input className='user-info' type='email' placeholder='Your Email' required onChange={ e => setEmail(e.target.value)}/><br/>
-						<input className='user-info' type='text' placeholder='Subject' required onChange={ e => setTitle(`[Y-video] ` + e.target.value)}/>
+					<input className='user-info' type='text' placeholder='Name' required onChange={ e => setName(e.target.value)}/><br/>
+					<input className='user-info' type='email' placeholder='Your Email' required onChange={ e => setEmail(e.target.value)}/><br/>
+					<input className='user-info' type='text' placeholder='Subject' required onChange={ e => setTitle(`[Y-video] ${e.target.value}`)}/>
 					<div>
 						<textarea
 							id='feedback-body'

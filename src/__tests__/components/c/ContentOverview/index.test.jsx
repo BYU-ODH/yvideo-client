@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import ContentOverview from '../../../../components/c/ContentOverview/index'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
@@ -60,7 +60,7 @@ describe(`content overview test`, () => {
 		expect(wrapper.find(`#edit-button`).length).toBe(3)
 		viewstate.editing = true
 
-		const wrapperRerendered = mount(
+		const wrapperRerendered = mount( // eslint-disable-line no-unused-vars
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<ContentOverview {...props} />

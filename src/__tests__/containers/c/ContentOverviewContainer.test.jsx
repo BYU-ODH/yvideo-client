@@ -1,7 +1,6 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Container from '../../../containers/c/ContentOverviewContainer'
-import { EditButton } from '../../../components/c/ContentOverview/styles'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'

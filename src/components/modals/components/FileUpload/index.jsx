@@ -95,7 +95,7 @@ export default class FileUpload extends PureComponent {
 				}
 
 				<div>
-					<Button className="std-outline-color"type='button' onClick={toggleModal}>Cancel</Button>
+					<Button className='std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
 					{selectedFile !== undefined ?
 						<>
 							{progress === 0 ? (

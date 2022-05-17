@@ -26,8 +26,8 @@ const PlayerControls = props => {
 		hovering,
 		progress,
 		playTime,
-		volume,
-		muted,
+		// volume,
+		// muted,
 		playing,
 		isCaption,
 		isAdmin,
@@ -53,9 +53,9 @@ const PlayerControls = props => {
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
 		handleToggleFullscreen,
-		handleMuted,
-		handleUnmuted,
-		handleVolumeChange,
+		// handleMuted,
+		// handleUnmuted,
+		// handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
 		handleShowSubtitle,
@@ -127,7 +127,7 @@ const PlayerControls = props => {
 			} else {
 				if(subtitleTextIndex < displaySubtitles.content.length - 1)
 					seekToIndex = subtitleTextIndex + 1
-				 else
+				else
 					seekToIndex = displaySubtitles.content.length - 1
 
 			}
@@ -148,7 +148,7 @@ const PlayerControls = props => {
 					onMouseLeave={e => toggleTip()}
 				/>
 				<p className='play-time'>{playTime}</p>
-				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
+				<img id='start-over' alt='' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
 					onMouseEnter={e => handleShowTip(`restart`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
@@ -196,8 +196,8 @@ const PlayerControls = props => {
 					<h3>Playback Rate</h3>
 					<div>
 						{ playbackOptions.map((playbackAtIndex) => (
-							playbackAtIndex != 1 ?
-							<><input type='button' value={playbackAtIndex} key={playbackAtIndex} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate == playbackAtIndex ? `active-value` : ``}/><br/></>
+							playbackAtIndex !== 1 ?
+							<><input type='button' value={playbackAtIndex} key={playbackAtIndex} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
 							:
 							<><input type='button' value='Normal' key={1} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
 							))
@@ -221,7 +221,7 @@ const PlayerControls = props => {
 					<h3>Select Caption</h3>
 					<div className='caption-list'>
 						{subtitles.map((element, index) =>
-							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? `active-value` : ``}/>,
+							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay === index ? `active-value` : ``}/>,
 						)
 						}
 					</div>

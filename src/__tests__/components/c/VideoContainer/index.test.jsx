@@ -66,12 +66,12 @@ const props = {
 	aspectRatio: [16,9],
 }
 
-const reactPlayerProps = {
-	playing: false,
-	volume: 1,
-	muted: true,
-	playbackRate: 1,
-}
+// const reactPlayerProps = {
+// 	playing: false,
+// 	volume: 1,
+// 	muted: true,
+// 	playbackRate: 1,
+// }
 
 window.ResizeObserver =
 	window.ResizeObserver ||

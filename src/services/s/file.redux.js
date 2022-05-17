@@ -64,7 +64,7 @@ export default class FileService {
 			}
 
 		case FILE_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
 				loading: false,
@@ -119,7 +119,7 @@ export default class FileService {
 		dispatch(this.actions.fileStart())
 
 		try {
-
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.file.delete(id)
 
 		} catch (error) {
@@ -132,6 +132,7 @@ export default class FileService {
 		dispatch(this.actions.fileStart())
 
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.file.patch(id, file)
 
 			dispatch(this.actions.fileUpdate(file))

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { subtitlesService } from 'services'
 import { Events } from 'components'
 
 const SubtitlesContainer = props => {
@@ -17,6 +16,7 @@ const SubtitlesContainer = props => {
 
 		}else
 			setSubtitlesArray([])
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, subtitles])
 
 	for(let i = 0; i<subtitlesArray.length; i++){
