@@ -1,4 +1,4 @@
-import React, { PureComponent, createRef } from 'react'
+import React, { Component, createRef } from 'react'
 import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
@@ -7,15 +7,77 @@ import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'compon
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton } from './styles'
-export default class Player extends PureComponent {
+export default class Player extends Component {
+	constructor(props) {
+		super(props)
+		this.handleSeek = (e, time) => this.props.handlers.handleSeekChange(e, time)
+		this.handlePlayPause = (boolean) => this.props.handlers.handlePlayPause(boolean)
+		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
+		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
 
-	componentDidMount(){
-		// setTimeout(() => {
-		// 	const {url} = this.props.viewstate
-		// 	if (!url) alert(`No media found, please check to see if you have the correct URL`)
-		// }, 4000)
-		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
+		this.props.viewstate.playbackRate = this.props.viewstate.playbackRate
+		this.playbackOptions = this.props.viewstate.playbackOptions
 	}
+	componentDidMount(){
+		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
+
+		window.onkeyup = (e) => {
+			this.handleHotKeys(e)
+		}
+	}
+
+	componentWillUnmount(){
+		window.onkeyup = null
+	}
+
+	handleHotKeys = (e) => {
+		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
+		switch (e.code) {
+		case `ArrowRight`:
+			this.handleSeek(null, playedTime + 10)
+			break
+		case `ArrowLeft`:
+			this.handleSeek(null, playedTime - 10)
+			break
+		case `Period`:
+			// If they press the periodKey and the shiftKey isn't pressed down, do the seeking, but if the shift key IS pressed down, do the else block
+			if(!e.shiftKey) {
+				this.handleSeek(null, playedTime + 1)
+				break
+			}
+			else {
+				// Checking to make sure that the value of the playback rate is within the possible options
+				if (this.props.viewstate.playbackRate >= this.playbackOptions[0] && this.props.viewstate.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
+					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) + 1])
+				}
+				break
+			}
+		case `Comma`:
+			// If they press the commaKey and the shiftKey isn't pressed down, do the seeking, but if the shift key IS pressed down, do the else block
+			if(!e.shiftKey) {
+				this.handleSeek(null, playedTime - 1)
+				break
+			}
+			else {
+				// Checking to make sure that the value of the playback rate is within the possible options
+				if (this.props.viewstate.playbackRate > this.playbackOptions[0] && this.props.viewstate.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
+					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element == this.props.viewstate.playbackRate) - 1])
+				}
+				break
+			}
+		case `Space`:
+			this.handlePlayPause()
+			break
+
+		case `KeyF`:
+			this.handleToggleFullscreen()
+			break
+
+		default:
+			break
+		}
+	}
+
 	censorRef = createRef(null)
 
 	render() {
@@ -24,6 +86,7 @@ export default class Player extends PureComponent {
 			url,
 			playing,
 			playbackRate,
+			playbackOptions,
 			progress,
 			// playTime,
 			volume,
@@ -79,6 +142,7 @@ export default class Player extends PureComponent {
 			// eslint-disable-next-line no-unused-vars
 			const t0 = performance.now()
 			handleProgress(playedSeconds)
+			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
 			const subtitles = displaySubtitles
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
@@ -200,9 +264,9 @@ export default class Player extends PureComponent {
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>
-							<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
+							<div id='censorContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
-							<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`,top:`0px`}}>
+							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
 
 						</Blank>
@@ -221,7 +285,7 @@ export default class Player extends PureComponent {
 						/>
 					) : null
 				}
-
+			<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
 			</Style>
 		)
 	}

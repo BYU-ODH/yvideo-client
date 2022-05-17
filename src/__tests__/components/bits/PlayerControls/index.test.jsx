@@ -15,6 +15,7 @@ const props = {
 		handleUnmuted: jest.fn(),
 		handleVolumeChange: jest.fn(),
 		setIsCaption: jest.fn(),
+		setPlaybackOptions: jest.fn(),
 		handleChangeSubtitle: jest.fn(),
 		setShowTranscript: jest.fn(),
 		handleShowSubtitle: jest.fn(),
@@ -36,6 +37,7 @@ const props = {
 		isAdmin: true,
 		isProf: true,
 		isMobile: true,
+		playbackOptions: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort(),
 		clipTime: [1,2,3],
 		duration: 120,
 		subtitles: [
