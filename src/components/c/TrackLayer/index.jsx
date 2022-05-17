@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
@@ -24,19 +24,10 @@ const TrackLayer = props => {
 	const [layerWidth, setLayerWidth] = useState(0)
 	// eslint-disable-next-line no-unused-vars
 	const [layerHeight, setLayerHeight] = useState(0)
-
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
-
-		setInitialWidth(layerRef.current.offsetWidth)
-		if(layerWidth === 0)
-			setLayerWidth(layerRef.current.offsetWidth + width)
-		else if (width === 0)
-			setLayerWidth(initialWidth)
-		else
-			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
 
@@ -51,7 +42,17 @@ const TrackLayer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
+	useLayoutEffect(()=>{
 
+		setInitialWidth(layerRef.current.offsetWidth)
+		if(layerWidth === 0)
+			setLayerWidth(layerRef.current.offsetWidth + width)
+		else if (width === 0)
+			setLayerWidth(initialWidth)
+		else
+			setLayerWidth(layerWidth + width)
+
+	},[width])
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
@@ -114,7 +115,6 @@ const TrackLayer = props => {
 
 		if(cEvents[index].start < 0)
 			cEvents[index].start = 0
-
 		// call handler from parent
 		updateEvents(index, cEvents[index], layerIndex)
 		// calculateOverlaps(events)

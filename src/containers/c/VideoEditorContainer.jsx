@@ -123,7 +123,6 @@ const VideoEditorContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleShowHelp,
-		setActiveCensorPosition,
 	}
 
 	return <VideoEditor
