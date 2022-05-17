@@ -84,7 +84,7 @@ const SubtitleEditor = props => {
 			initialLayers.push([i])
 
 		setEvents(allEvents)
-		if(subtitles[0]){
+		if(subtitles[0] && !showSideEditor){
 			if (subtitles[0][`content`][0])
 				openSubEditor(0,0)
 		}
@@ -183,6 +183,7 @@ const SubtitleEditor = props => {
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
 			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
@@ -410,7 +411,6 @@ const SubtitleEditor = props => {
 					}
 				}
 			}
-
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)

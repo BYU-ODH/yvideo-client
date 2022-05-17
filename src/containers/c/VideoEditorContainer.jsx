@@ -37,7 +37,6 @@ const VideoEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 
 	const [eventsArray, setEventsArray] = useState([])
-	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
@@ -125,7 +124,6 @@ const VideoEditorContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleShowHelp,
-		setActiveCensorPosition,
 	}
 
 	return <VideoEditor

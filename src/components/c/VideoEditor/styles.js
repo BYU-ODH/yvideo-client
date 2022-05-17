@@ -86,6 +86,25 @@ export const Timeline = styled.div`
 			flex-direction: column;
 			overflow-x: scroll;
 
+			& .zoom-scroll-container {
+				margin: auto;
+				width: 90%;
+				height: 50%;
+				border-radius: 10px;
+				background-color: rgba(220, 220, 220, 0.5);
+				position: relative;
+				overflow: hidden;
+
+				& .zoom-scroll-indicator {
+					position: absolute;
+					min-width: 5%;
+					width: ${props => props.zoom !== 0 ? `${props.zoom}%` : `100%`} !important;
+					height: 100% !important;
+					background-color: var(--light-blue);
+					border-radius: 20px;
+				}
+			}
+
 			& #time-indicator-container {
 				height: 27vh;
 				width: calc(100% - 162px);
