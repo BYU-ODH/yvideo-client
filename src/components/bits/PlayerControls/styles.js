@@ -37,6 +37,15 @@ const Style = styled.div`
 
 		& img {
 			margin-right: 10px;
+			@media screen and (max-width: 425px){
+				margin-right: .75 rem;
+			}
+			@media screen and (max-width: 375px){
+				margin-right: .5rem;
+			}
+			@media screen and (max-width: 320px){
+				margin-right: .25rem;
+			}
 		}
 	}
 
@@ -48,11 +57,33 @@ const Style = styled.div`
 		& img {
 			cursor: pointer;
 			margin: 1rem;
+			@media screen and (max-width: 425px){
+				height: 17px;
+				width: 17px;
+				margin: .6rem;
+			}
+			@media screen and (max-width: 375px){
+				height: 15px;
+				width: 15px;
+				margin: .65rem;
+			}
+			@media screen and (max-width: 320px){
+				margin: .40rem;
+			}
 		}
 
 		& .play-time {
 			color: white;
 			margin: 1rem;
+			@media screen and (max-width: 425px){
+				margin: .65 rem;
+			}
+			@media screen and (max-width: 375px){
+				margin: .5rem;
+			}
+			@media screen and (max-width: 320px){
+				margin: .25rem;
+			}
 		}
 	}
 
@@ -63,6 +94,20 @@ const Style = styled.div`
 		border: none;
 		margin: 1rem;
 		outline: none;
+
+		@media screen and (max-width: 425px){
+			height: 1.75rem;
+			width: 1.75 rem;
+			margin: .90rem;
+		}
+		@media screen and (max-width: 375px){
+			height: 1.5rem;
+			width: 1.5 rem;
+			margin: .75rem;
+		}
+		@media screen and (max-width: 320px){
+			margin: .5rem;
+		}
 	}
 
 	& button {
@@ -129,7 +174,7 @@ export const PlayPause = styled.button`
 	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
 `
 export const ClosedCaptions = styled.button`
-	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
+	/* background: ${props => props.isCaptions !== false ? `url(${closedCaption}) center no-repeat` : `url(${closedCaptionOff}) center no-repeat`}; */
 	background: url(${closedCaption}) center no-repeat;
 `
 export const Fullscreen = styled.button`
@@ -151,4 +196,8 @@ export const Help = styled.img`
 	margin: 0px;
 	width: 22px;
 	height: 22px;
+	@media screen and (max-width: 375px){
+		height: 15px;
+		width: 15px;
+	}
 `
