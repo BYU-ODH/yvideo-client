@@ -14,8 +14,10 @@ export default class Player extends Component {
 		this.handlePlayPause = (boolean) => this.props.handlers.handlePlayPause(boolean)
 		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
 		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
-
 		this.playbackOptions = this.props.viewstate.playbackOptions
+		this.state = {
+			skipArray: []
+		}
 	}
 	componentDidMount(){
 		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
@@ -128,13 +130,7 @@ export default class Player extends Component {
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
-			// handleBlank,
-			// handleShowComment,
-			// handleToggleTranscript,
-			// handleShowHelp,
-			// handleShowTip,
-			// setCensorActive,
-			// setCensorPosition,
+			// handleOnReady
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -222,6 +218,16 @@ export default class Player extends Component {
 			const t1 = performance.now()
 		}
 
+		const handleOnReady = () => {
+			handleAspectRatio()
+			if(events){
+				const eventFilterSkip = events.filter((values) => {
+					return values.type == `Skip`
+				})
+				this.setState({skipArray: eventFilterSkip})
+			}
+		}
+
 		return (
 			<Style>
 				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: `hidden`}}>
@@ -239,10 +245,11 @@ export default class Player extends Component {
 							onPlay={handlePlay}
 							onPause={handlePause}
 							onStart = {handleStart}
-							onReady = {handleAspectRatio}
+							onReady = {handleOnReady}
 							onSeek={e => e}
 							progressInterval={30}
 							onProgress={handleOnProgress}
+							// onProgressBar={handleOnReady}
 							onDuration={handleDuration}
 
 							config={{
@@ -258,7 +265,7 @@ export default class Player extends Component {
 								},
 							}}
 						/>
-						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} />
+						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}

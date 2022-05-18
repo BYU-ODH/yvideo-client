@@ -42,6 +42,7 @@ const PlayerControls = props => {
 		isMobile,
 		clipTime,
 		duration,
+		events,
 	} = props.viewstate
 
 	const {
@@ -65,6 +66,10 @@ const PlayerControls = props => {
 		toggleTip,
 		handleAspectRatio,
 	} = props.handlers
+
+	const {
+		skipArray,
+	} = props
 
 	useEffect(() => {
 		// Some browsers do not trigger an event when you exit full screen mode. So, you have to look for it manually adding an event listener
@@ -140,8 +145,7 @@ const PlayerControls = props => {
 	return (
 		<Style playing={playing} >
 
-			<Scrubber clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} />
-
+			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray}/>
 			<div className='left'>
 				<PlayPause playing={playing} onClick={playing ? handlePause : handlePlay}
 					onMouseEnter={e => handleShowTip(`play`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
