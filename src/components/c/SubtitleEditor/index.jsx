@@ -639,7 +639,7 @@ const SubtitleEditor = props => {
 	}
 	const handleSubProgress = (currentTime) => {
 		let sub
-		if (subtitles){
+		if (subtitles.length !== 0){ // TODO: Come back to this if the subtitle editor starts having issues...
 			sub = subtitles[subLayerToEdit].content.findIndex((event)=> currentTime > event.start && currentTime <event.end)
 			if (sub !== -1){
 				if (scrollSub !== sub){
