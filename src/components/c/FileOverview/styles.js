@@ -1,7 +1,6 @@
 import styled, {css} from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
-import uploadIcon from 'assets/upload.svg'
 
 const Style = styled.div`
 	padding: 2rem;

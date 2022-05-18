@@ -39,7 +39,7 @@ describe(`MenuContainer test`, () => {
 	})
 
 	it(`mount`, () => {
-		const wrapper = mount(
+		const wrapper = mount( // eslint-disable-line no-unused-vars
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>

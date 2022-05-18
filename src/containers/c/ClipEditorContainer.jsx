@@ -33,6 +33,7 @@ const ClipEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
+	// eslint-disable-next-line no-unused-vars
 	const [subs,setSubs] = useState([])
 
 	const [sKey, setKey] = useState(``)
@@ -40,7 +41,7 @@ const ClipEditorContainer = props => {
 
 	useEffect(() => {
 
-		if (!content.hasOwnProperty(id))
+		if (!content.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
 			getContent(id)
 
 		if(content[id]) {
@@ -68,6 +69,7 @@ const ClipEditorContainer = props => {
 
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [content, resource, eventsArray, currentContent, streamKey, url, sKey])
 
 	const handleShowHelp = () => {

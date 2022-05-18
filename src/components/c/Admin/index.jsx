@@ -26,23 +26,23 @@ export class Admin extends PureComponent {
 		return (
 			<Style>
 				<div className='add-users-button'>
-					<Button className="std-outline-color" onClick={addUsers}><PlusIcon/>Users</Button>
+					<Button className='std-outline-color' onClick={addUsers}><PlusIcon/>Users</Button>
 				</div>
 
 				<div className='admin-dashboard'>
 					<Mobile isMobile={isMobile}>
 						{/* WE ARE ONLY SEARCHING FOR USERS NOW SO WE DO NOT NEED THE SELECT DROP DOWN */}
-						<CategorySelect className="std-outline-color"id='categorySelect' onChange={updateCategory} isMobile={isMobile}>
+						<CategorySelect className='std-outline-color' id='categorySelect' onChange={updateCategory} isMobile={isMobile}>
 							{Object.keys(category).map((c, index) => (
 								<option value={category[c].name} key={index}>
 									{category[c].name}
 								</option>
 							))}
 						</CategorySelect>
-						<Search className="std-outline-color" id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
+						<Search className='std-outline-color' id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
 							<SearchIcon isMobile={isMobile} />
 							<input type='search' placeholder={placeholder} onChange={updateSearchBar} value={searchQuery}/>
-							<button className="std-outline-color" type='submit'>Search</button>
+							<button className='std-outline-color' type='submit'>Search</button>
 						</Search>
 					</Mobile>
 

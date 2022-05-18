@@ -1,7 +1,6 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Container from '../../../containers/c/ContentOverviewContainer'
-import { EditButton } from '../../../components/c/ContentOverview/styles'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
@@ -15,7 +14,11 @@ const props = {
 	adminRemoveCollectionContent: jest.fn(),
 	isLabAssistant: false,
 }
-
+const SUPPORTED_LANGUAGES = [
+	`German`,
+	`Spanish`,
+	`Russian`,
+]
 // TODO: need to fix `UnhandledPromiseRejectionWarning`. This is from the not mocked functions from the child componenet
 describe(`manage collection test`, () => {
 	let wrapper
@@ -84,7 +87,6 @@ describe(`manage collection test`, () => {
 		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 
-
 		// edit event handler
 		expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(true)
 		wrapper.find(`button`).at(2).simulate(`click`)
@@ -115,7 +117,10 @@ describe(`manage collection test`, () => {
 		// definition toggle
 		expect(wrapper.find({"id" : `definitions-toggle`}).props().on).toBe(false)
 		wrapper.find({"id" : `definitions-toggle`}).simulate(`click`)
-		expect(wrapper.find({"id" : `definitions-toggle`}).props().on).toBe(true)
+		if(SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage))
+			expect(wrapper.find({"id" : `definitions-toggle`}).props().on).toBe(true)
+		else
+			expect(wrapper.find({"id" : `definitions-toggle`}).props().on).toBe(false)
 
 		// captions toggle
 		expect(wrapper.find({"id" : `captions-toggle`}).props().on).toBe(false)

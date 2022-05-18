@@ -1,7 +1,5 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import { render, ReactDOM } from 'react-dom';
-import { Router, Route, browserHistory, IndexRoute  } from 'react-router'
 import Container from '../../../../components/modals/containers/HelpDocumentationContainer'
 import { CloseHelp } from '../../../../components/modals/components/HelpDocumentation/styles'
 import { Provider } from 'react-redux'
@@ -12,9 +10,9 @@ const props = {
 	toggleModal: jest.fn(),
 	viewstate: {
 		help: {
-			htmlInstruction: 'instruction'
-		}
-	}
+			htmlInstruction: `instruction`,
+		},
+	},
 }
 
 describe(`HelpDocumentationContainer test`, () => {
@@ -47,17 +45,17 @@ describe(`HelpDocumentationContainer test`, () => {
 		expect(viewstate.name).toBe(`Home Page`)
 	})
 	it(`test props should be true: mock document.getElementById (content)`, () => {
-		let parent = mount(
-			<div id='content'></div>
+		const parent = mount(
+			<div id='content'></div>,
 		)
 		document.getElementById = jest.fn((tag) => parent.instance())
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>
-			</Provider>
+			</Provider>,
 		)
-		const button = wrapper.find(CloseHelp).simulate('click')
+		const button = wrapper.find(CloseHelp).simulate(`click`)
 		expect(button).toBeDefined()
 	})
 })

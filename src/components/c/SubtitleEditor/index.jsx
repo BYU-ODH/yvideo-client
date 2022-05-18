@@ -37,7 +37,9 @@ const SubtitleEditor = props => {
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
+	// eslint-disable-next-line no-unused-vars
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
@@ -84,7 +86,7 @@ const SubtitleEditor = props => {
 			initialLayers.push([i])
 
 		setEvents(allEvents)
-		if(subtitles[0]){
+		if(subtitles[0] && !showSideEditor){
 			if (subtitles[0][`content`][0])
 				openSubEditor(0,0)
 		}
@@ -98,7 +100,7 @@ const SubtitleEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave, isEdit,subtitles])
 	// end of useEffect
 
@@ -133,12 +135,12 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const openSubEditor = (layerIndex,subIndex) =>{
-		const t1 = performance.now()
+		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
-		const t2 = performance.now()
+		const t2 = performance.now() // eslint-disable-line no-unused-vars
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active)
@@ -166,7 +168,6 @@ const SubtitleEditor = props => {
 	}
 
 	const handleZoomChange = (e, d) => {
-		// console.log("object")
 		toggleTip()
 		if(d.x < zoomFactor){
 			if(d.x === 0){
@@ -184,12 +185,13 @@ const SubtitleEditor = props => {
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
 			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
-			const scrubberShadow = document.getElementById(`time-bar-shadow`)
+			const scrubberShadow = document.getElementById(`time-bar-shadow`) // eslint-disable-line no-unused-vars
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const skipLayer = document.getElementById(`layer-skip`)
@@ -230,11 +232,11 @@ const SubtitleEditor = props => {
 	}
 
 	const updateSubs = (index, sub, subLayerIndex, side, type) => {
-		const t1=performance.now()
+		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-		const t1_1 = performance.now()
+		const t1_1 = performance.now() // eslint-disable-line no-unused-vars
 		try {
 			if(side === `beg`) {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
@@ -252,10 +254,8 @@ const SubtitleEditor = props => {
 				}
 			}
 		} catch (e) {
-			console.error(`updateSubs error`,e)
+			console.error(`updateSubs error`, e) // eslint-disable-line no-console
 		}
-		const t1_2 = performance.now()
-		const t2_1 = performance.now()
 		if(side===`beg` && needCheck === true) {
 			if(sub.start===``){
 				document.getElementById(`subStart${index}`).style.border=`2px solid red`
@@ -272,8 +272,6 @@ const SubtitleEditor = props => {
 					needCheck=false
 				} else {
 					if(index !==0) {
-						// console.log(sub.start)
-						// console.log(tempSubs[subLayerIndex][`content`][index-1].end)
 						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
 							document.getElementById(`subStart${index}`).style.border=`2px solid red`
 							needCheck=false
@@ -312,28 +310,21 @@ const SubtitleEditor = props => {
 				}
 			}
 		}
-		const t3_1 = performance.now()
+		const t3_1 = performance.now() // eslint-disable-line no-unused-vars
 
 		if(needCheck){
-			const updateSub = {sub, side}
+			const updateSub = {sub, side} // eslint-disable-line no-unused-vars
 			// checkSubError(tempSubs, `update`, index, updateSub)
 		} else
 			setDisableSave(true)
-		const t3_2 = performance.now()
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
-		const t2=performance.now()
-		const t3=performance.now()
-		// setSubs(tempSubs)
-		// setAllSubs(tempSubs)
 		setSubChanges(subChanges+1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
 		setBlock(true)
-		const t4=performance.now()
-		// console.log(`updating time`,t4-t3)
-		// console.log(t2-t1)
+
 	}
 
 	const addSubToLayer = (index, subIndex, position) => {
@@ -356,16 +347,13 @@ const SubtitleEditor = props => {
 				setSubToEdit(0)
 			} else {
 				if(position === `top`) {
-					if(currentSubs[index][`content`][subIndex].start <= 0)
-						isError = true
-					else {
-						if(currentSubs[index][`content`][subIndex].start <= 2) {
-							subStart = 0
-							subEnd = currentSubs[index][`content`][subIndex].start
-						} else {
-							subStart = currentSubs[index][`content`][subIndex].start - addingTime
-							subEnd = currentSubs[index][`content`][subIndex].start
-						}
+
+					if(currentSubs[index][`content`][subIndex].start <= 2) {
+						subStart = 0
+						subEnd = currentSubs[index][`content`][subIndex].start
+					} else {
+						subStart = currentSubs[index][`content`][subIndex].start - addingTime
+						subEnd = currentSubs[index][`content`][subIndex].start
 					}
 
 					newSub = {
@@ -403,9 +391,7 @@ const SubtitleEditor = props => {
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
 
-						if(curEndTime >= videoLength)
-							isError = true
-						else if(curEndTime+addingTime >= videoLength){
+						if(curEndTime + addingTime >= videoLength){
 							subStart = currentSubs[index][`content`][subIndex].end
 							subEnd = videoLength
 						} else {
@@ -427,7 +413,6 @@ const SubtitleEditor = props => {
 					}
 				}
 			}
-
 			setSubLayerToEdit(index)
 			activeUpdate(index)
 			setSubs(currentSubs)
@@ -435,7 +420,7 @@ const SubtitleEditor = props => {
 			setBlock(true)
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
-			console.error(error)
+			console.error(error) // eslint-disable-line no-console
 		}
 
 	}
@@ -481,15 +466,13 @@ const SubtitleEditor = props => {
 				}
 				let removeArray = 0
 				const filtered = temp.filter(item => {
-					if(item.start > videoLength){
+					if(item.start > videoLength)
 						removeArray++
-					}
 					return item.start < videoLength
 				})
 				const filtered1 = filtered.filter(item => {
-					if(item.end > videoLength){
+					if(item.end > videoLength)
 						removeArray++
-					}
 					return item.end < videoLength
 				})
 				if (removeArray > 0)
@@ -528,7 +511,7 @@ const SubtitleEditor = props => {
 			}
 			reader.readAsText(url)
 		}catch(error){
-			console.log(error)
+			console.log(error) // eslint-disable-line no-console
 			alert(`There was an error importing subtitles`)
 		}
 		setSubModalVisible(false)
@@ -787,7 +770,7 @@ const SubtitleEditor = props => {
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' id='zoom-factor'>
-							<img src={zoomOut} style={{ width: `20px` }}/>
+							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
@@ -797,7 +780,7 @@ const SubtitleEditor = props => {
 								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 								onMouseLeave={e => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>

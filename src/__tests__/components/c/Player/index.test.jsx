@@ -1,7 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Player from '../../../../components/c/Player/index'
-import { Blank } from '../../../../components/c/Player/styles'
 import { BrowserRouter} from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
@@ -71,7 +70,7 @@ const props = {
 
 describe(`Overlay test`, () => {
 	it(`wrapper simulate click`, ()=> {
-		const wrapper = mount(
+		mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Player {...props} />

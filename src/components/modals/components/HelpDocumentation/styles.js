@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import HexLogo from 'assets/hexborder.svg'
 
 export const Back = styled.div`
 	position: fixed;
@@ -45,14 +44,18 @@ export const Container = styled.div`
 	}
 
 	& h1 {
+		position: fixed;
 		border-bottom: 2px solid #0582ca;
 		padding-top: 5px;
 		height: 30px;
+		width: calc(80vw - 10px);
+		z-index: 3;
+		background-color: white;
 	}
 
 	& #content {
 		width: 80%;
-		margin: auto auto auto auto;
+		margin: 75px auto auto auto;
 		text-align: left;
 		position: relative;
 
@@ -96,6 +99,14 @@ export const Container = styled.div`
 					border: .1px solid transparent;
 					border-radius: 10px;
 				}
+			}
+			& kbd {
+				background-color: #dddddd;
+				margin-left: .5rem;
+				padding-left: 8px;
+				padding-right: 8px;
+				border-radius: 5px;
+				box-shadow: 2px 2px 3px rgba(0,0,0, 0.2);
 			}
 
 			& li {
@@ -158,13 +169,18 @@ export const CloseHelp = styled.span`
 		width: 30px;
 		height: 30px;
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: -4px;
+    right: 28px;
 	}
 	:hover {
 		cursor: pointer;
 	}
 `
 
-export const Tutorial = styled.div`
+export const Header = styled.div`
+	position: fixed;
+	height: 50px;
+	width: calc(80vw - 10px);
+	background-color: white;
+	z-index: 5;
 `

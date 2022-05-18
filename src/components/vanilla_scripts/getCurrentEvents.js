@@ -33,12 +33,10 @@ export const CurrentEvents = (time,events,duration) => {
 		newVal.start = start
 		newVal.end = end
 
-		if (time >= start && time <= end){
-			 activeEvents.push(newVal)
-		}
-		else if (time > end){
+		if (time >= start && time <= end)
+			activeEvents.push(newVal)
+		else if (time > end)
 			doneEvents.push(newVal)
-		}
 	})
 	const censors = activeEvents.filter(val => val.type === `Censor`)
 	const comments = activeEvents.filter(val => val.type === `Comment`)
@@ -54,12 +52,11 @@ export const CurrentEvents = (time,events,duration) => {
 	if (censorContainer){
 		const censorChildren = censorContainer.children
 		for (let i = 0; i<censorValues.length; i++){
-			//MATCH CENSOR VALUES BY UNIQUE IDENTIFIER NOT INDEX
-			//IF WE TAKE THE NEXT VALUE INTO ACCOUNT EACH CENSOR VALUE HAS A UNIQUE NEXT
-			// console.log('censor value', censorValues[i])
-			let left1Value = censorValues[i].left1 !== undefined ? censorValues[i].left1.toFixed(2) : undefined
+			// MATCH CENSOR VALUES BY UNIQUE IDENTIFIER NOT INDEX
+			// IF WE TAKE THE NEXT VALUE INTO ACCOUNT EACH CENSOR VALUE HAS A UNIQUE NEXT
+			const left1Value = censorValues[i].left1 !== undefined ? censorValues[i].left1.toFixed(2) : undefined
 			if(document.getElementById(`censorBox-${censorValues[i].next}-${left1Value}`) === null){
-				//if the censor does not exist we create a new one
+				// if the censor does not exist we create a new one
 				const cen = document.createElement(`div`)
 				cen.setAttribute(`class`,`censorBox`)
 				cen.setAttribute(`id`,`censorBox-${censorValues[i].next}-${left1Value}`)
@@ -72,17 +69,16 @@ export const CurrentEvents = (time,events,duration) => {
 		if (censorChildren.length > censorValues.length){
 			// console.log('Destroying censor box')
 			for (let x = 0; x < censorChildren.length; x++){
-				//loop through all the childs and try to match then to the censor values
-				//if it matches then good. if it doesn't remove such child
-				let childUniqueId = censorChildren[x].id !== undefined ? censorChildren[x].id.replace(/[^0-9.]/g, '') : undefined
+				// loop through all the childs and try to match then to the censor values
+				// if it matches then good. if it doesn't remove such child
+				const childUniqueId = censorChildren[x].id !== undefined ? censorChildren[x].id.replace(/[^0-9.]/g, ``) : undefined
 				let del = true
 				for (let i = 0; i < censorValues.length; i++){
-					let left1Value = censorValues[i].left1 !== undefined ? censorValues[i].left1.toFixed(2) : undefined
-					let uniqueId = `${censorValues[i].next}${left1Value}`
+					const left1Value = censorValues[i].left1 !== undefined ? censorValues[i].left1.toFixed(2) : undefined
+					const uniqueId = `${censorValues[i].next}${left1Value}`
 
-					if(uniqueId === childUniqueId){
+					if(uniqueId === childUniqueId)
 						del = false
-					}
 				}
 
 				if(del){
@@ -93,9 +89,8 @@ export const CurrentEvents = (time,events,duration) => {
 		}
 
 		if(time === duration){
-			while (censorContainer.firstChild) {
-        censorContainer.removeChild(censorContainer.firstChild);
-    	}
+			while (censorContainer.firstChild)
+				censorContainer.removeChild(censorContainer.firstChild)
 		}
 	}
 
@@ -136,17 +131,17 @@ export const CurrentEvents = (time,events,duration) => {
 	return eventValues
 }
 export const CensorChange = async (ind,censorData, playedSeconds) =>{
-	let dataLeft1Value = censorData.left1 !== undefined ? censorData.left1.toFixed(2) : undefined
+	const dataLeft1Value = censorData.left1 !== undefined ? censorData.left1.toFixed(2) : undefined
 	if(document.getElementById(`censorBox-${censorData.next}-${dataLeft1Value}`)){
 		const censorBox = document.getElementById(`censorBox-${censorData.next}-${dataLeft1Value}`)
 		const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
 		censorBox.style.width = `${width}%`
 		const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
 		censorBox.style.height = `${height}%`
-		let top = censorData.top1 + censorData.top2 !== 0 ? censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1) : 0
-		let left = censorData.left1 + censorData.left2 !== 0 ? censorData.left1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1) : 0
-		censorBox.style.top = `${top < 0 ? ('0%') : (`${top}%`)}`
-		censorBox.style.left = `${left < 0 ? ('0%') : (`${left + left * .2}%`)}`
+		const top = censorData.top1 + censorData.top2 !== 0 ? censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1) : 0
+		const left = censorData.left1 + censorData.left2 !== 0 ? censorData.left1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1) : 0
+		censorBox.style.top = `${top < 0 ? `0%` : `${top}%`}`
+		censorBox.style.left = `${left < 0 ? `0%` : `${left + left * .2}%`}`
 	}
 }
 export const CommentChange = (ind,commentData, playedSeconds) =>{
@@ -158,6 +153,7 @@ export const CommentChange = (ind,commentData, playedSeconds) =>{
 }
 export const subtitleChange = (subtitles) => {
 	if(document.getElementById(`subtitleContainer`)){
+		// eslint-disable-next-line no-unused-vars
 		const container = document.getElementById(`subtitleContainer`)
 	}
 }

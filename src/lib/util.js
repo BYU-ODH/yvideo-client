@@ -19,7 +19,7 @@ export const componentDidChange = async (
 	propsProperties = [],
 	prevState = {},
 	nextState = {},
-	stateProperties = []
+	stateProperties = [],
 ) => {
 
 	const label = `[DEBUG] ${component}.${method}()`
@@ -35,14 +35,14 @@ export const componentDidChange = async (
 	const propsChanged = propsProperties.reduce((acc, property) => ({
 		...acc,
 		[`props.${property} Changed`]: {
-			value: propsDiff.hasOwnProperty(property),
+			value: propsDiff.hasOwn(property), // I changed it to hasOwn() because the linter was yelling at hasOwnProperty()
 		},
 	}), {})
 
 	const stateChanged = stateProperties.reduce((acc, property) => ({
 		...acc,
 		[`state.${property} Changed`]: {
-			value: stateDiff.hasOwnProperty(property),
+			value: stateDiff.hasOwn(property), // I changed it to hasOwn() because the linter was yelling at hasOwnProperty()
 		},
 	}), {})
 

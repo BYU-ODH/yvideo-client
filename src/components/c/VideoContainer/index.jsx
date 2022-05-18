@@ -4,9 +4,7 @@ import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-import Position from 'components/vanilla_scripts/censorPosition'
-
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -38,23 +36,17 @@ const VideoContainer = props => {
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
-	const [played, setPlayed] = useState(0)
+	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
 	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
-	const [videoComment, setVideoComment] = useState(``)
-	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
+	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
-	const [censorActive, SetCensorActive] = useState(false)
-	const [currentZone, setCurrentZone] = useState([0, duration])
-	const [pausedTimes,setPausedTimes] = useState([])
-	// const [aspectRatio, setAspectRatio] = useState([16,9])
 	const [playerPadding,setPlayerPadding] = useState([0,0])
-	// I hate using a global variable here, we'll just have to see if it works
-	let censorData = {}
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -165,7 +157,6 @@ const VideoContainer = props => {
 				getDuration(duration)
 
 			setDuration(duration)
-			setCurrentZone([0, duration])
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
@@ -223,14 +214,10 @@ const VideoContainer = props => {
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
-				censorData = position
 				setCensorPosition(
 					position,
 				)
 			}
-		},
-		handleCensorActive: (bool) => {
-			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
@@ -336,24 +323,29 @@ const VideoContainer = props => {
 
 	let count = 0 // this is to make sure that event listeners are applied only once
 
-	const handleHotKeys = (e) => {
+	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
-			// console.log(`new time`, playedTime + 1)
 			video.handleSeek(null, playedTime + 1)
 			break
 		case `ArrowLeft`:
-			// console.log(`new time`, playedTime - 1)
 			video.handleSeek(null, playedTime - 1)
 			break
+		case `Period`:
+			video.handleSeek(null, playedTime + .1)
+			break
 		case `Comma`:
-			// console.log(`new time`, playedTime - .1)
 			video.handleSeek(null, playedTime - .1)
 			break
-		case `Period`:
-			// console.log(`new time`, playedTime + .1)
-			video.handleSeek(null, playedTime + .1)
+		case `Space`:
+			setPlaying(playing)
+			if (playing === true) {
+				video.handlePause()
+			}
+			if (playing === false) {
+				video.handlePlay()
+			}
 			break
 
 		default:
@@ -383,17 +375,17 @@ const VideoContainer = props => {
 					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
 					if(e.offsetX > window.innerWidth / 2)
 						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
-					 else
+					else
 						document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
 					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
 					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
 				})
 			}
-			// // checking video container and setting event listener for hot keys
-			// window.addEventListener(`keyup`, (e) => {   /* This is where the code was causing the bug and what needs to be looked at for how it can be remedied. */q
-			// 	handleHotKeys(e)													/*The hotkeys don't even work btw. */
-			// })
+			// checking video container and setting event listener for hot keys
+			window.onkeyup = (e) => {
+				handleHotKeys(e)
+			}
 		}
 
 		if(events) {
@@ -405,17 +397,26 @@ const VideoContainer = props => {
 		const wraplisten = new ResizeObserver((entry)=>{
 			video.handleAspectRatio()
 		})
-		if(wrap)
+		if(wrap) {
 			wraplisten.observe(wrap)
-		return function cleanup(){
-			// window.removeEventListener(`keyup`, (e) => {}, false)
 		}
+		return function cleanup(){
+				window.onkeyup = null
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration])
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
-				<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):``} ref={videoRef}>
+				<Blank
+				className='blank'
+				id='blank'
+				blank={blank}
+				onContextMenu={e => e.preventDefault()}
+				onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
+				ref={videoRef}
+				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
 							censorValues = {censorPosition}

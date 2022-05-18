@@ -60,7 +60,9 @@ export default class BlockCollection extends Component {
 
 		const publishContent = content ? content.filter(item => item.published) : []
 
-		publishContent.sort((a, b) => {return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1})
+		publishContent.sort((a, b) => {
+			return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+		})
 
 		if(this.props.collection.published){
 			return (

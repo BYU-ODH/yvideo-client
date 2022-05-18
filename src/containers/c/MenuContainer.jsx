@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import services from 'services'
@@ -7,7 +7,6 @@ import { Menu } from 'components'
 import { Tooltip } from 'components/bits'
 
 import { getInitials } from 'lib/util'
-import User from 'models/User'
 
 const MenuContainer = props => {
 

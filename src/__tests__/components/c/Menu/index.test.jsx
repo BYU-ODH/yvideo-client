@@ -1,6 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
-import { Provider } from 'react-redux'
+import { mount } from 'enzyme'
 import { BrowserRouter } from 'react-router-dom'
 import Menu from '../../../../components/c/Menu/index'
 import * as testutil from '../../../testutil/testutil'

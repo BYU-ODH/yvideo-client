@@ -6,7 +6,7 @@ import {
 	Banner,
 	Style,
 	h1Style,
-	h2Style
+	h2Style,
 } from './styles'
 
 export default class Error extends PureComponent {
@@ -29,7 +29,7 @@ export default class Error extends PureComponent {
 
 		if(errorMessage.includes(`403`)){
 			title = `403 Forbidden`
-			message = `You don't have access to this content. If you believe this to be a mistake, please contact your professor, lab assistant/TA, or Yvideo Support`
+			message = `You don't have access to this content. If you believe this to be a mistake, please contact your professor, lab assistant/TA, or Y-video Support`
 		}
 		// case errorMessage.includes(`401`):
 		// 	title = `401 Unauthenticated`
@@ -45,7 +45,7 @@ export default class Error extends PureComponent {
 			<>
 				<Style>
 					<Banner>
-						<Button className="std-outline-color" type='button' onClick={exit}>Go Back</Button>
+						<Button className='std-outline-color' type='button' onClick={exit}>Go Back</Button>
 						<h1 style={h1Style}>{title}</h1>
 					</Banner>
 					<h2 style ={h2Style}>{message}</h2>

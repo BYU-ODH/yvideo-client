@@ -19,7 +19,7 @@ export default class SearchPublicCollections extends PureComponent {
 		const {
 			handleSubmit,
 			handleSearchTextChange,
-			setNoCollections,
+			// setNoCollections,
 		} = this.props.handlers
 
 		return (

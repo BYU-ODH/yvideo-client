@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import BlockCollection from '../../../../components/bits/BlockCollection'
-import { Link, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const collection = {
 	archived: false,
@@ -81,7 +81,7 @@ describe(`collections test`, () => {
 		)
 
 		const spyScrollListener = jest.spyOn(wrapper.instance(), `scrollListener`)
-		const spyScrollLeft = jest.spyOn(wrapper.instance(), `scrollRight`)
+		const spyScrollLeft = jest.spyOn(wrapper.instance(), `scrollRight`) // eslint-disable-line no-unused-vars
 		wrapper.instance().forceUpdate()
 
 		wrapper.find(`.slide-wrapper`).forEach((node, index) => {
@@ -92,6 +92,6 @@ describe(`collections test`, () => {
 
 	it(`simulate onClick`, ()=> {
 		const wrapper = shallow(<BlockCollection {...props}/>)
-		wrapper.find(".slide-wrapper").simulate('scroll', { target: { scrollLeft: 0 } })
+		wrapper.find(`.slide-wrapper`).simulate(`scroll`, { target: { scrollLeft: 0 } })
 	})
 })

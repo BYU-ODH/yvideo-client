@@ -61,7 +61,7 @@ export const ToolTip = (props) => {
 			document.getElementById(`tip-box`).style.opacity = 0
 		}
 
-		if(tip.props != undefined && tip.props.name){
+		if(tip.props && tip.props.name){
 			setName(tip.props.name)
 			if(tip.props.position)
 				setPosition(tip.props.position)
@@ -91,6 +91,7 @@ export const ToolTip = (props) => {
 		"te-zoom": `Drag to zoom in/out`,
 		"transcript-hide": `Show/Hide`,
 		"transcript-seek": `Click to seek`,
+		"definitions-disabled": `Definitions are not supported for this language`,
 	}
 
 	// console.log("POSITION", position)

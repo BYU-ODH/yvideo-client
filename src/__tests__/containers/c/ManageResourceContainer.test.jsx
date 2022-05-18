@@ -5,12 +5,9 @@ import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/ManageResourceContainer'
 import * as testutil from '../../testutil/testutil'
 import store from 'services/store'
-import ContentService from '../../../services/s/content.redux'
 import AuthService from '../../../services/s/auth.redux'
 import ResourceService from '../../../services/s/resources.redux'
 import proxies from 'proxy'
-
-const content = testutil.content
 
 const resources = testutil.resourcesNew
 
@@ -49,7 +46,7 @@ proxies.apiProxy.resources.search.mockImplementation(()=>{
 
 describe(`collection container test`, () => {
 	let authServiceConstructor
-	let resourceServiceConstructor
+	let resourceServiceConstructor // eslint-disable-line no-unused-vars
 	let dispatch
 	let getState
 	let apiProxy

@@ -6,9 +6,6 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 import { act } from 'react-dom/test-utils'
 
-// const var1 = 1
-// const var2 = 1
-// expect(var1).toEqual(var2)
 const props = {
 	url: `url`,
 	getDuration: jest.fn(),
@@ -69,12 +66,12 @@ const props = {
 	aspectRatio: [16,9],
 }
 
-const reactPlayerProps = {
-	playing: false,
-	volume: 1,
-	muted: true,
-	playbackRate: 1,
-}
+// const reactPlayerProps = {
+// 	playing: false,
+// 	volume: 1,
+// 	muted: true,
+// 	playbackRate: 1,
+// }
 
 window.ResizeObserver =
 	window.ResizeObserver ||
@@ -118,21 +115,21 @@ describe(`VideoContainer test`, () => {
 	}
 
 	document.getElementById = jest.fn(() => scrubberMock)
-
+	//TODO: test fix
 	const map1 = {}
 	window.addEventListener = jest.fn((event, cb) => {
 		map1[event] = cb
 	})
-
-	// it(`keyup`, () => {
-	// 	setup()
-	// 	act(() => {
-	// 		map1.keyup({ code: `ArrowRight` })
-	// 		map1.keyup({ code: `ArrowLeft` })
-	// 		map1.keyup({ code: `Comma` })
-	// 		map1.keyup({ code: `Period` })
-	// 		map1.keyup({ code: `default` })
-	// 	})
+	// TODO: This still needs fixin'
+		// it(`keyup`, () => {
+		// setup()
+		// act(() => {
+		// 	map1.keyup({ code: `ArrowRight` })
+		// 	map1.keyup({ code: `ArrowLeft` })
+		// 	map1.keyup({ code: `Comma` })
+		// 	map1.keyup({ code: `Period` })
+		// 	map1.keyup({ code: `default` })
+		// })
 	// })
 
 	it(`wrapper simulate click`, ()=> {

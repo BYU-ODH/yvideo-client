@@ -26,8 +26,8 @@ const PlayerControls = props => {
 		hovering,
 		progress,
 		playTime,
-		volume,
-		muted,
+		// volume,
+		// muted,
 		playing,
 		isCaption,
 		isAdmin,
@@ -35,6 +35,7 @@ const PlayerControls = props => {
 		showTranscript,
 		subtitles,
 		playbackRate,
+		playbackOptions,
 		indexToDisplay,
 		displaySubtitles,
 		subtitleTextIndex,
@@ -53,9 +54,9 @@ const PlayerControls = props => {
 		// handleSeekMouseDown,
 		// handleSeekMouseUp,
 		handleToggleFullscreen,
-		handleMuted,
-		handleUnmuted,
-		handleVolumeChange,
+		// handleMuted,
+		// handleUnmuted,
+		// handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
 		handleShowSubtitle,
@@ -131,7 +132,7 @@ const PlayerControls = props => {
 			} else {
 				if(subtitleTextIndex < displaySubtitles.content.length - 1)
 					seekToIndex = subtitleTextIndex + 1
-				 else
+				else
 					seekToIndex = displaySubtitles.content.length - 1
 
 			}
@@ -151,7 +152,7 @@ const PlayerControls = props => {
 					onMouseLeave={e => toggleTip()}
 				/>
 				<p className='play-time'>{playTime}</p>
-				<img id='start-over' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
+				<img id='start-over' alt='' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
 					onMouseEnter={e => handleShowTip(`restart`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 					onMouseLeave={e => toggleTip()}
 				/>
@@ -198,16 +199,13 @@ const PlayerControls = props => {
 				<div className='menu-modal' onMouseLeave={e => setShowSpeed(false)}>
 					<h3>Playback Rate</h3>
 					<div>
-						<input type='button' value={0.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.5 ? `active-value` : ``}/><br/>
-						<input type='button' value={0.6} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.6 ? `active-value` : ``}/><br/>
-						<input type='button' value={0.7} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.7 ? `active-value` : ``}/><br/>
-						<input type='button' value={0.8} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.8 ? `active-value` : ``}/><br/>
-						<input type='button' value={0.9} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 0.9 ? `active-value` : ``}/><br/>
-						<input type='button' value='Normal' onClick={e => handlePlaybackRateChange(1)} className={playbackRate === 1 ? `active-value` : ``}/><br/>
-						<input type='button' value={1.25} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.25 ? `active-value` : ``}/><br/>
-						<input type='button' value={1.5} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.5 ? `active-value` : ``}/><br/>
-						<input type='button' value={1.75} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 1.75 ? `active-value` : ``}/><br/>
-						<input type='button' value={2.0} onClick={e => handlePlaybackRateChange(e.target.value)} className={playbackRate === 2 ? `active-value` : ``}/><br/>
+						{ playbackOptions.map((playbackAtIndex) => (
+							playbackAtIndex !== 1 ?
+							<><input type='button' value={playbackAtIndex} key={playbackAtIndex} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
+							:
+							<><input type='button' value='Normal' key={1} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
+							))
+						}
 					</div>
 				</div>
 			}
@@ -227,7 +225,7 @@ const PlayerControls = props => {
 					<h3>Select Caption</h3>
 					<div className='caption-list'>
 						{subtitles.map((element, index) =>
-							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? `active-value` : ``}/>,
+							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay === index ? `active-value` : ``}/>,
 						)
 						}
 					</div>

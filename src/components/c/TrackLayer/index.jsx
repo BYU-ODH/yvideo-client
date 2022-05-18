@@ -13,7 +13,7 @@ import {
 
 const TrackLayer = props => {
 
-	const { events, sideEditor, updateEvents, activeEvent, width, videoLength, displayLayer} = props
+	const { events, updateEvents, activeEvent, width, videoLength, displayLayer} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
@@ -22,12 +22,27 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [layerHeight, setLayerHeight] = useState(0)
-
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
+
+		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+
+		if(events && layerIndex === 3){
+			// we are in censor, calculate overlapping
+			// overlap count tells us how many half layers we need
+			const overlapCount = calculateOverlaps()
+
+			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
+
+			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? 46 : 26 * (overlapCount.length + 1)}px`
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [width, events, layerOverlap])
+	useLayoutEffect(()=>{
 
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
@@ -36,22 +51,8 @@ const TrackLayer = props => {
 			setLayerWidth(initialWidth)
 		else
 			setLayerWidth(layerWidth + width)
-
-		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
-
-		if(events && layerIndex === 3){
-			// we are in censor, calculate overlapping
-			// overlap count tells us how many half layers we need
-			const overlapCount = calculateOverlaps()
-			// console.log(overlapCount.length)
-
-			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
-
-			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? 46 : 26 * (overlapCount.length + 1)}px`
-		}
-
-	}, [width, events, layerOverlap])
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[width])
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
@@ -74,7 +75,6 @@ const TrackLayer = props => {
 
 			if(currentEvent.type === `Censor`){
 				const eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
-				// console.log('found', eventIndex)
 				if(lastCensorEvent === null){
 
 					events[eventIndex].halfLayer = halfLayer
@@ -83,12 +83,9 @@ const TrackLayer = props => {
 				} else {
 					// compare previous and current
 					// if current overlaps with previous
-					if(currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end || currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end){
+					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){ // eslint-disable-line no-extra-parens
 						// find index in the main events object
 						// we find the first overlap so pass anything from beginning to now
-						// console.log('comparing')
-						// console.log(`start ${currentEvent.start} end ${currentEvent.end}`)
-						// console.log(`start ${lastCensorEvent.start} end ${lastCensorEvent.end}`)
 						halfLayer++
 						overlapCount.push(halfLayer)
 					}
@@ -118,7 +115,6 @@ const TrackLayer = props => {
 
 		if(cEvents[index].start < 0)
 			cEvents[index].start = 0
-
 		// call handler from parent
 		updateEvents(index, cEvents[index], layerIndex)
 		// calculateOverlaps(events)
@@ -126,7 +122,6 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-		// console.log('po', position)
 
 		const cEvents = events
 		const difference = delta.width / layerWidth * 100*videoLength/100
@@ -139,7 +134,6 @@ const TrackLayer = props => {
 		} else {
 			cEvents[index].start -= difference
 
-			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > videoLength){
@@ -149,12 +143,6 @@ const TrackLayer = props => {
 		}
 
 		updateEvents(index, cEvents[index], layerIndex)
-	}
-
-	// This opens the side tab editor
-	const toggleEditor = (layerIndex, eventIndex) => {
-		// setEditorOpen(true)
-		sideEditor(layerIndex, eventIndex)
 	}
 
 	const printEvents = (event, index, isMultiEvent) => {
@@ -240,4 +228,3 @@ const TrackLayer = props => {
 }
 
 export default TrackLayer
-

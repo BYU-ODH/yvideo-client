@@ -15,7 +15,7 @@ describe(`LandingContainer test`, () => {
 			<Container store={testutil.store} {...props}/>,
 		).dive()
 
-		const viewstate = wrapper.props().viewstate
+		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
 	it(`check correct form of landing`, () => {
@@ -27,7 +27,7 @@ describe(`LandingContainer test`, () => {
 			</Provider>,
 		)
 
-		expect(wrapper.text().includes(`YVIDEO`)).toBe(true)
+		expect(wrapper.text().includes(`Y-VIDEO`)).toBe(true)
 
 		wrapper.find({id: `primary`}).at(0).simulate(`click`)
 

@@ -17,9 +17,9 @@ const Style = styled.div`
 	height: 100%;
 	width: 100%;
 
-	border-left: 1px solid;
+	/* border-left: 1px solid;
 	border-top: 1px solid;
-	border-bottom: 1px solid;
+	border-bottom: 1px solid; */
 	/* margin-bottom: 1rem; */
 	/* box-shadow: 0px 2px 4px -2px rgba(0,0,0,0.75); */
 

@@ -25,7 +25,7 @@ export const Preview = styled.div`
 
 		@media screen and (max-width: 1000px) {
       justify-content: ${props => props.editing ? `space-evenly` : ``};
-			margin-top: ${props =>  props.editing ? `1rem` : ``};
+			margin-top: ${props => props.editing ? `1rem` : ``};
     }
 
 	}
@@ -190,7 +190,6 @@ export const ResourceTitle = styled.form`
 		align-items: center;
 	}
 `
-
 
 export const TypeButton = styled.button`
 	background: transparent;
