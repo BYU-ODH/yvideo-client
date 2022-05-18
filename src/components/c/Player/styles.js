@@ -109,10 +109,20 @@ export const PlayButton = styled.img`
 	margin: auto;
 	top: ${props => props.isLandscape ? `20%` : `40%`};
 	cursor: pointer;
-	transition: 3s ease;
+	transition: .5s ease;
 	border-radius: 50%;
 	z-index: 100;
 
+	@media screen and (max-width: 425px){
+		width: 12rem;
+		height: 12rem;
+		top: 30%;
+	}
+	@media screen and (max-width: 320px){
+		width: 10rem;
+		height: 10rem;
+		top: 25%;
+	}
 	& :hover {
   	/* transform: rotate(360deg); */
 	}
