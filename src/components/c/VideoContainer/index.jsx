@@ -92,7 +92,7 @@ const VideoContainer = props => {
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 				const elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
 
-				if(elementRightSide >= window.innerWidth * .6)
+				if(elementRightSide >= window.innerWidth)
 					handleScroll(1 / duration, false)
 
 			}

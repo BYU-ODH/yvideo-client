@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton } from './styles'
@@ -222,7 +222,7 @@ export default class Player extends Component {
 			handleAspectRatio()
 			if(events){
 				const eventFilterSkip = events.filter((values) => {
-					return values.type == `Skip`
+				return values.type === `Skip` // TODO: Make sure this is fine
 				})
 				this.setState({skipArray: eventFilterSkip})
 			}
@@ -230,7 +230,7 @@ export default class Player extends Component {
 
 		return (
 			<Style>
-				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: `hidden`}}>
+				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: `hidden` }}>
 					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}
