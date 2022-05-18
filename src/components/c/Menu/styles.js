@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
+import menuIcon from 'assets/menu-black.svg'
+
 const Style = styled.div`
 	position: fixed;
 	top: 0;
@@ -23,7 +25,7 @@ const Style = styled.div`
 
 	& > button:first-of-type {
 		position: relative;
-		left: -8.4rem;
+		left: -10rem;
 		transition: left .4s ease-in-out;
 	}
 
@@ -37,16 +39,27 @@ const Style = styled.div`
 		}
 	}
 
-	& > h4 {
+	& h4 {
 		margin-top: 2.4rem;
 		font-weight: 500;
 	}
 
-	& > hr {
+	& hr {
 		margin: 1rem 0;
 		border: none;
 		border-top: 1px solid #c4c4c4;
 		max-width: 27rem;
+	}
+
+	& .logout {
+		width: 10rem;
+		border: none;
+		color: red;
+		background-color: transparent;
+		text-align: left;
+		cursor: pointer;
+		padding: 0px;
+		margin: 0px;
 	}
 `
 
@@ -54,6 +67,7 @@ export default Style
 
 export const LinkStyled = styled(Link)`
 	margin-bottom: 1rem;
+	width: fit-content;
 
 	text-decoration: none;
 	font-weight: 300;
@@ -65,6 +79,19 @@ export const LinkStyled = styled(Link)`
 export const Header = styled.h4`
 	text-transform: uppercase;
 	font-weight: 500;
+`
+
+export const LogoutButton = styled.button`
+	margin-bottom: 1rem;
+	padding: 0;
+	width: fit-content;
+	text-decoration: none;
+	font-weight: 300;
+	color: #FF6161;
+	outline-color: #FF6161;
+	background: transparent;
+	border: none;
+	cursor: pointer;
 `
 
 export const UserPic = styled.button`
@@ -94,21 +121,27 @@ export const UserPic = styled.button`
 		cursor: pointer;
 	}
 `
+export const Footer = styled.div`
+	position: absolute;
+	bottom: 7vh;
+	width: 100%;
+	height: auto;
+	max-height: 300px;
+	display: flex;
+	flex-direction: column;
+`
 
-export const LogoutButton = styled.button`
-	margin-bottom: 1rem;
-	padding: 0;
+export const MenuIcon = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 4rem;
+	width: 4rem;
+	border: .125rem solid white;
+	margin-right: 4rem;
+	background: url(${menuIcon}) center no-repeat;
 
-	width: fit-content;
-
-	text-decoration: none;
-	outline: none;
-	font-weight: 300;
-
-	color: #FF6161;
-
-	background: transparent;
-	border: none;
-
-	cursor: pointer;
+	:hover {
+		cursor: pointer;
+	}
 `

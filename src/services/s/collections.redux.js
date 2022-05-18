@@ -1,3 +1,5 @@
+import Content from 'models/Content'
+
 export default class CollectionService {
 	// types
 
@@ -10,14 +12,16 @@ export default class CollectionService {
 		COLLECTIONS_REMOVE_CONTENT: `COLLECTION_REMOVE_CONTENT`,
 		COLLECTION_CREATE: `COLLECTION_CREATE`,
 		COLLECTION_EDIT: `COLLECTION_EDIT`,
-		COLLECTION_ROLES_GET: `COLLECTION_ROLES_GET`,
+		COLLECTION_INFO_GET: `COLLECTION_INFO_GET`,
 		COLLECTION_ROLES_UPDATE: `COLLECTION_ROLES_UPDATE`,
+		COLLECTION_UPDATE_CONTENTS: `COLLECTION_UPDATE_CONTENTS`,
+		PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS: `PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS`,
+		CREATED_COLLECTION_UPDATE: `CREATED_COLLECTION_UPDATE`,
 	}
 
 	roleEndpoints = {
 		addCourse: `add-course`,
-		addTA: `add-user`,
-		addException: `add-user`,
+		addUser: `add-user`,
 		removeCourse: `remove-course`,
 		removeUser: `remove-user`,
 	}
@@ -29,21 +33,29 @@ export default class CollectionService {
 		collectionsAbort: () => ({ type: this.types.COLLECTIONS_ABORT }),
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
+		collectionsErrorSync: error => ({type: this.types.COLLECTIONS_ERROR_SYNC, payload:{ error }}),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
 		collectionsRemoveContent: (id, collection) => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT, payload: {id, collection} }),
 		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
 		collectionEdit: collection => ({ type: this.types.COLLECTION_EDIT, payload: { collection }}),
-		collectionRolesGet: data => ({ type: this.types.COLLECTION_ROLES_GET, payload: { ...data }}),
-		collectionRolesUpdate: data => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { ...data }}),
+		collectionGetInfo: data => ({ type: this.types.COLLECTION_INFO_GET, payload: { data }}),
+		collectionPermissionUpdate: object => ({ type: this.types.COLLECTION_ROLES_UPDATE, payload: { object }}),
+		collectionUpdateContents: (result, collectionId) => ({ type: this.types.COLLECTION_UPDATE_CONTENTS, payload: { result, collectionId }}),
+		publicCollectionUpdateSubscribers: (users, collectionId) => ({type: this.types.PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS, payload: {users, collectionId}}),
+		createdCollectionUpdate: collectionId => ({ type: this.types.CREATED_COLLECTION_UPDATE, payload: { collectionId }}),
 	}
 
 	// default store
 
 	store = {
-		roles: {},
+		errorMessage: ``,
+		errorMessagePrev: ``,
 		cache: {},
 		loading: false,
 		lastFetched: 0,
+		users: [],
+		courses: [],
+		newCollectionId: ``,
 	}
 
 	// reducer
@@ -55,12 +67,16 @@ export default class CollectionService {
 			COLLECTIONS_ABORT,
 			COLLECTIONS_CLEAN,
 			COLLECTIONS_ERROR,
+			COLLECTIONS_ERROR_SYNC,
 			COLLECTIONS_GET,
 			COLLECTIONS_REMOVE_CONTENT,
 			COLLECTION_CREATE,
 			COLLECTION_EDIT,
-			COLLECTION_ROLES_GET,
+			COLLECTION_INFO_GET,
 			COLLECTION_ROLES_UPDATE,
+			COLLECTION_UPDATE_CONTENTS,
+			PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS,
+			CREATED_COLLECTION_UPDATE,
 		} = this.types
 
 		switch (action.type) {
@@ -90,12 +106,17 @@ export default class CollectionService {
 			}
 
 		case COLLECTIONS_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
+				errorMessage: `${action.payload.error.response.data ? action.payload.error.response.data : null}. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
-
+		case COLLECTIONS_ERROR_SYNC:
+			return{
+				...store,
+				errorMessagePrev: action.payload.error,
+			}
 		case COLLECTIONS_GET:
 			return {
 				...store,
@@ -127,22 +148,49 @@ export default class CollectionService {
 				loading: false,
 			}
 
-		case COLLECTION_ROLES_GET:
+		case COLLECTION_INFO_GET:
 			return {
 				...store,
-				roles: {
-					...store.roles,
-					...action.payload,
-				},
+				users: action.payload.data.users,
+				courses: action.payload.data.courses,
+				loading: false,
 			}
 
 		case COLLECTION_ROLES_UPDATE:
 			return {
 				...store,
-				roles: {
-					...store.roles,
-					...action.payload,
+				users: action.payload.object.currentUsers,
+				courses: action.payload.object.currentCourses,
+			}
+
+		case COLLECTION_UPDATE_CONTENTS:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collectionId]: {
+						...store.cache[action.payload.collectionId],
+						...action.payload.result.content,
+					},
 				},
+			}
+
+		case PUBLIC_COLLECTION_UPDATE_SUBSCRIBERS:
+			return {
+				...store,
+				cache: {
+					...store.cache,
+					[action.payload.collectionId]: {
+						...store.cache[action.payload.collectionId],
+						subscribers: action.payload.users,
+					},
+				},
+			}
+
+		case CREATED_COLLECTION_UPDATE:
+			return{
+				...store,
+				newCollectionId: action.payload.collectionId,
 			}
 
 		default:
@@ -150,9 +198,7 @@ export default class CollectionService {
 		}
 	}
 
-	// thunks
-
-	getCollections = (force = false) => async (dispatch, getState, { apiProxy }) => {
+	searchCollections = (force = false, doesIncludePublic = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().collectionStore.lastFetched
 
@@ -163,63 +209,126 @@ export default class CollectionService {
 			dispatch(this.actions.collectionsStart())
 
 			try {
-
+				// this gets the collections directly connected to the user.
 				const result = await apiProxy.user.collections.get()
 
 				dispatch(this.actions.collectionsGet(result))
 
 			} catch (error) {
-				console.error(error.message)
 				dispatch(this.actions.collectionsError(error))
 			}
 
 		} else dispatch(this.actions.collectionsAbort())
 	}
 
-	removeCollectionContent = (id, contentId) => async (dispatch, getState, { apiProxy }) => {
+	// thunks
+	getCollections = (force = false, doesIncludePublic = false) => async (dispatch, getState, { apiProxy }) => {
+
+		const time = Date.now() - getState().collectionStore.lastFetched
+
+		const stale = time >= process.env.REACT_APP_STALE_TIME
+
+		const userId = getState().authStore.user.id
+		const student = getState().authStore.user.roles === 3
+		const admin = getState().authStore.user.roles === 0
+		// console.log(`%c Current USER ID => ${userId}`, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;')
+
+		if (stale || force) {
+
+			dispatch(this.actions.collectionsStart())
+
+			try {
+				// this gets the collections directly linked to the user.
+				const result = await apiProxy.user.collections.get()
+
+				if(student || admin){
+					// we also need to display the collections link to the user, but through courses.
+					// first we get the courses that a user is registered to
+					const courses = await apiProxy.user.courses.get(userId)
+					// console.log(`%c Current COURSES => `, 'background-color: black; color: yellow; heigh: 20px; font-weight: bold; font-size: 14px;', courses)
+					// once we have the courses, we can get the collections for those courses and display them
+					// by adding those collections to the result object.
+					// get all the collections from the courses that the user is registered to.
+					const courseCollections = []
+					let i = 0
+					while(i < courses.length){
+						const response = await apiProxy.courses.getCollections(courses[i])
+						courseCollections.concat(response)
+						// TODO: See if this is actually fine to just disable for the linter...
+						setTimeout(() => { // eslint-disable-line no-loop-func
+							i++
+						}, 50)
+					}
+
+					courseCollections.forEach(element => {
+						result[element.id] = element
+					})
+				}
+
+				dispatch(this.actions.collectionsGet(result))
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+
+		} else dispatch(this.actions.collectionsAbort())
+	}
+
+	removeCollectionContent = (id, contentId, isLabAssistant) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.collectionsStart())
 
 		const currentState = { ...getState().collectionStore.cache[id] }
 		let contentIndex = 0
 
 		currentState.content.forEach((element, index) => {
-			if(element.id === contentId){
-				// console.log(true)
+			if(element.id === contentId)
 				contentIndex = index
-			}
+
 		})
 		currentState.content.splice(contentIndex, 1)
 
 		try {
-			const result = await apiProxy.collection.remove(currentState)
-			// console.log(result)
+			// eslint-disable-next-line no-unused-vars
+			const result = await apiProxy.collection.remove(contentId)
 
 			// You also have to be an admin to do this, I'm pretty sure
 			dispatch(this.actions.collectionsRemoveContent(id, currentState))
 		} catch (error) {
-			console.log(error)
+			// console.log(error)
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
 
-	createCollection = (name) => async (dispatch, getState, { apiProxy }) => {
+	createCollection = (item) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.collectionsStart())
 
 		try {
-
-			await apiProxy.collection.create(name)
+			const data = await apiProxy.collection.create(item)
 
 			const results = await apiProxy.user.collections.get()
 
 			// TODO: We need to update state
 			dispatch(this.actions.collectionsGet(results))
+			dispatch(this.actions.createdCollectionUpdate(data.id))
 
 		} catch (error) {
-			console.log(error.message)
 			dispatch(this.actions.collectionsError(error))
 		}
+	}
 
+	removeCreatedCollectionIdFromStore = () => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+
+			dispatch(this.actions.createdCollectionUpdate(``))
+
+		} catch (error) {
+			console.log(error.message) // eslint-disable-line no-console
+			dispatch(this.actions.collectionsError(error))
+		}
 	}
 
 	updateCollectionStatus = (id, action) => async (dispatch, getState, { apiProxy }) => {
@@ -248,7 +357,9 @@ export default class CollectionService {
 			currentState.published = false
 			currentState.archived = false
 			break
-
+		case `public`:
+			currentState.public = !currentState.public
+			break
 		default:
 			abort = true
 			break
@@ -257,9 +368,8 @@ export default class CollectionService {
 		const finalState = {
 			published: currentState.published,
 			archived: currentState.archived,
+			public: currentState.public,
 		}
-
-		// console.log(`finalState: `, finalState)
 
 		if (abort) dispatch(this.actions.collectionsAbort())
 		else {
@@ -272,32 +382,70 @@ export default class CollectionService {
 		}
 	}
 
-	getCollectionRoles = (collectionId, force = false) => {
+	getCollectionInfo = (collectionId, force = false) => {
+		// GET USERS AND COURSES FOR A SPECIFIED COLLECTION
 		return async (dispatch, getState, { apiProxy }) => {
 
-			const store = getState().collectionStore
+			dispatch(this.actions.collectionsStart())
 
-			const time = Date.now() - store.lastFetched
+			const currentUsers = getState().collectionStore.users
+			const currentCourses = getState().collectionStore.courses
 
-			const stale = time >= process.env.REACT_APP_STALE_TIME
+			try {
 
-			const { roles } = store
-			const cached = Object.keys(roles).includes(collectionId)
+				const users = await apiProxy.collection.permissions.getUsers(collectionId)
 
-			if (stale || !cached || force) {
+				const courses = await apiProxy.collection.permissions.getCourses(collectionId)
 
-				dispatch(this.actions.collectionsStart())
+				const strUsers = JSON.stringify(users)
+				const strCourses = JSON.stringify(courses)
 
-				try {
+				if(strUsers !== JSON.stringify(currentUsers) || strCourses !== JSON.stringify(currentCourses))
+					dispatch(this.actions.collectionGetInfo( { users, courses } ))
 
-					const { data = {} } = await apiProxy.collection.permissions.get(collectionId)
-					dispatch(this.actions.collectionRolesGet({ [collectionId]: data }))
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+	}
 
-				} catch (error) {
-					dispatch(this.actions.collectionsError(error))
-				}
+	getSubscribers = (userId, force = false) => {
 
-			} else dispatch(this.actions.collectionsAbort())
+		return async (dispatch, getState, { apiProxy }) => {
+
+			dispatch(this.actions.collectionsStart())
+
+			try {
+
+				const collections = await apiProxy.user.collections.get(userId)
+
+				return collections
+
+			} catch (error) {
+				dispatch(this.actions.collectionsError(error))
+			}
+		}
+	}
+
+	updateCollectionContents = (collectionId, contentId) => async (dispatch, getState, { apiProxy }) => {
+
+		dispatch(this.actions.collectionsStart())
+
+		try {
+			const res = await apiProxy.collection.permissions.getContents(collectionId)
+
+			const result = []
+			res.content.forEach(item => {
+				result.push(new Content(item))
+			})
+
+			dispatch(this.actions.collectionUpdateContents(res, collectionId))
+
+			return result
+
+		} catch (error) {
+			console.log(error.message) // eslint-disable-line no-console
+			dispatch(this.actions.collectionsError(error))
 		}
 	}
 
@@ -312,7 +460,7 @@ export default class CollectionService {
 				let currentState = {}
 
 				currentState = getState().collectionStore.cache[collectionId]
-				console.log(`not admin`, currentState)
+
 				currentState.name = collectionName
 				dispatch(this.actions.collectionEdit(currentState))
 
@@ -322,42 +470,86 @@ export default class CollectionService {
 		}
 	}
 
-	updateCollectionRoles = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
+	updateCollectionPermissions = (collectionId, endpoint, body) => async (dispatch, getState, { apiProxy }) => {
 
 		dispatch(this.actions.collectionsStart())
 
+		let backEndBody = {}
+
 		try {
-			const { data = {} } = await apiProxy.collection.permissions.post(collectionId, endpoint, body)
 
-			const newRoles = getState().collectionStore.roles[collectionId]
-
-			switch (endpoint) {
-			case this.roleEndpoints.addCourse:
-				newRoles.courses = [...newRoles.courses, data[0]]
-				break
-			case this.roleEndpoints.removeCourse:
-				newRoles.courses = newRoles.courses.filter(item => item.id !== body[0].id)
-				break
-			case this.roleEndpoints.addTA:
-				newRoles.admins = [...newRoles.admins, data]
-				newRoles.exceptions = [...newRoles.exceptions, data]
-				break
-
-			case this.roleEndpoints.addException:
-				newRoles.exceptions = [...newRoles.exceptions, data]
-				break
-			case this.roleEndpoints.removeUser:
-				newRoles.admins = newRoles.admins.filter(item => item.username !== body)
-				newRoles.exceptions = newRoles.exceptions.filter(item => item.username !== body)
-				break
-			default:
-				break
+			if(endpoint === `add-user`){
+				backEndBody = {
+					'username': body.username,
+					'account-role': body.roles,
+				}
+			} else if(endpoint === `add-course`){
+				backEndBody = {
+					'department': body.department,
+					'catalog-number': body.catalog,
+					'section-number': body.section,
+				}
+			} else if(endpoint === `remove-course`){
+				backEndBody = {
+					'course-id': body,
+				}
+			} else if(endpoint === `remove-user`){
+				backEndBody = {
+					'username': body.username,
+				}
 			}
 
-			dispatch(this.actions.collectionRolesUpdate({ [collectionId]: newRoles }))
+			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
+			// eslint-disable-next-line no-unused-vars
+			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
+
+			// eslint-disable-next-line no-unused-vars
+			let currentState = {}
+			currentState = getState().collectionStore.cache[collectionId]
+			const currentUsers = getState().collectionStore.users
+			const currentCourses = getState().collectionStore.courses
+
+			// based on the endpoint edit the current store
+			if(endpoint === `add-user`){
+				const temp = []
+				if(currentUsers.length < 1)
+					temp.push(backEndBody)
+
+				dispatch(this.actions.collectionGetInfo( { users: temp, courses: currentCourses } ))
+			} else if(endpoint === `add-course`){
+				const temp = []
+				if(currentCourses.length < 1)
+					temp.push(backEndBody)
+
+				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: temp } ))
+			} else if(endpoint === `remove-course`)
+				dispatch(this.actions.collectionGetInfo( { users: currentUsers, courses: [] } ))
+			else if(endpoint === `remove-user`)
+				dispatch(this.actions.collectionGetInfo( { users: [], courses: currentCourses } ))
+			// const updatedSubscribers = currentState.subscribers.filter(person => person.username !== body.username)
+			// dispatch(this.actions.publicCollectionUpdateSubscribers( updatedSubscribers, collectionId ))
+
 		} catch (error) {
+			// console.log(error)
+			alert(`The data could not be saved. Please, try again`)
 			dispatch(this.actions.collectionsError(error))
 		}
+	}
 
+	updateMany = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
+		dispatch(this.actions.collectionsStart())
+		try {
+			// eslint-disable-next-line no-unused-vars
+			const result = await apiProxy.collection.permissions.postMany(collectionId, body)
+			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
+		} catch (error) {
+			alert(`The data could not be saved. Please, try again`)
+			dispatch(this.actions.collectionsError(error))
+		}
+	}
+
+	syncError = () => async (dispatch, getState) => {
+		const err = getState().collectionStore.errorMessage
+		dispatch(this.actions.collectionsErrorSync(err))
 	}
 }

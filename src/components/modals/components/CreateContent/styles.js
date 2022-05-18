@@ -2,6 +2,54 @@ import styled from 'styled-components'
 
 import searchIcon from 'assets/search.svg'
 
+export const FormResource = styled.form`
+	display: grid;
+	/* grid: repeat(3, 1fr) / 1fr; */
+
+	min-width: 30rem;
+	min-height: 35rem;
+
+	& > label {
+		font-size: 1.4rem;
+		height: 25px;
+
+
+		& input {
+			width: 100%;
+			border: none;
+			border-bottom: 1px solid rgba(0,0,0,0.3);
+			/* background-color: rgba(0,0,0,0.03); */
+			outline: none;
+			margin: 10px 0px 2px 0px;
+		}
+
+			input:focus {
+				border-bottom: 1px solid #242F36;
+			}
+
+		& select {
+			margin-left: 20px;
+			width: 150px;
+		}
+
+		& > .resource-content-remove {
+			display: flex;
+			align-items: baseline;
+		}
+
+		& > .unauthorized-message {
+			color: red;
+			font-size: 1.2rem;
+			width: 300px;
+		}
+	}
+
+	& > div {
+		display: flex;
+		justify-content: space-between;
+	}
+`
+
 export const Form = styled.form`
 	display: grid;
 	/* grid: repeat(3, 1fr) / 1fr; */
@@ -18,15 +66,25 @@ export const Form = styled.form`
 		outline: none;
 	}
 
+		input:focus {
+			border-bottom: 1px solid #242F36;
+		}
+
+	& select {
+		margin-left: 20px;
+		width: 150px !important;
+		background-color: transparent;
+	}
+
 	& > label{
 
 		display: flex;
 		justify-content: space-between;
+		margin-top: 1rem;
 
 		& > span {
 			flex: 1;
 		}
-
 	}
 
 	& > div {
@@ -50,22 +108,33 @@ export const Form = styled.form`
 			align-items: center;
 		}
 	}
+
+	& #create-content-keywords {
+
+		& option {
+			font-size: 12px;
+		}
+	}
 `
 
 export const Button = styled.button`
 	font-size: 1.5rem;
 	color: ${props => props.color || `black`};
-	background: transparent;
-	border: none;
-	outline: none;
 	cursor: pointer;
+	place-self: start;
+	background: transparent;
+	border-radius: 3px;
+	border: none
+	:hover {
+		border: 1px solid grey;
+	}
 `
 
 export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 10;
 	top: 1rem;
-	left: 2rem;
+	left: 1rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
 	height: 2rem;
@@ -83,17 +152,52 @@ export const RemoveKeyword = styled.button`
 	cursor: pointer;
 	padding: 0;
 	margin: 0 -.25rem 0 .25rem;
+
+	$ > .resource-content-remove-button {
+		height: 2.5rem;
+		width: 2.5rem;
+	}
 `
 
 export const TableContainer = styled.div`
-	height: 25rem;
+	position: absolute;
+	height: 250px;
+	width: 75%;
+	margin-top: 10%;
+	background-color: white;
 	overflow-y: scroll;
+	z-index: 1;
+
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3), 0px 0px 5px rgba(0, 0, 0, 0.3);
+
+	& li {
+		height: 25px;
+		list-style-type: none;
+		font-size: 1.4rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+		padding: 5px;
+		display: flex;
+
+		:hover {
+			background-color: #0582ca;
+			cursor: pointer;
+		}
+
+		& input, label {
+			margin: auto 0px auto 5%;
+		}
+	}
 `
 
 export const Table = styled.table`
 	/*background: white;*/
 	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
-	width: 100%;
+
+	height: ${props => props.height ? `${props.height * 15}px`: `0px`};
+	width: 80%;
+	position: absolute;
+	z-index: 10;
+	background-color: white;
 
 	& th {
 		padding: 1rem;
@@ -135,9 +239,62 @@ export const Tab = styled.button`
 export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
+	box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+	border-radius: 3px;
+
+	& > i {
+		margin-right: 3px;
+	}
+	& > i:firstchild {
+		margin-right: none;
+	}
+
+
+	:hover{
+		transition: .2s;
+		background-color: #f3f3f3;
+	}
+`
+export const Search = styled.div`
+	position: relative;
+	margin-bottom: -2rem;
+
+	& > input {
+		z-index: 1;
+		background: white;
+
+		height: 4rem;
+		width: 100%;
+		font-size: 1.5rem;
+		border: none;
+		border-radius: 1.5rem;
+		outline: none;
+		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		padding: 0 1.25rem 0 3.25rem;
+	}
+
+	& > button {
+		width: 8rem;
+    height: 4rem;
+    color: white;
+    background-color: var(--light-blue);
+    margin-left: 1rem;
+    outline: none;
+    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 2rem;
+    text-align: center;
+		cursor: pointer;
+		transition: .5s ease;
+		font-weight: 500;
+
+		:hover {
+			background-color: var(--navy-blue);
+		}
+	}
 `

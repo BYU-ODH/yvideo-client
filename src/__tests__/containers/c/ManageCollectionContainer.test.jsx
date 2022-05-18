@@ -9,8 +9,6 @@ import proxies from 'proxy'
 import { BrowserRouter } from 'react-router-dom'
 import store from 'services/store'
 
-import { collectionService, contentService, interfaceService, adminService } from 'services'
-
 const resource = testutil.resource
 
 const settings = {
@@ -21,7 +19,7 @@ const settings = {
 	showWordList:false,
 	aspectRatio:`1.77`,
 	description:``,
-	targetLanguages: [],
+	targetLanguage: ``,
 	annotationDocument: [],
 	captionTrack: [],
 }
@@ -117,7 +115,7 @@ const updatedContents = [
 	content3,
 ]
 
-const collection = {
+const collection = { // eslint-disable-line no-unused-vars
 	archived: false,
 	content,
 	id: 0,
@@ -136,6 +134,7 @@ const props = {
 		owner: 22,
 		published: true,
 		thumbnail: `test@thumbnail`,
+		'expired-content': content,
 	},
 	content,
 	getContent: jest.fn(),
@@ -155,7 +154,7 @@ const updatedCollection = {
 	thumbnail: `test@thumbnail`,
 }
 
-const updatedProps = {
+const updatedProps = { // eslint-disable-line no-unused-vars
 	collection: updatedCollection,
 	content: updatedContents,
 	getContent: jest.fn(),
@@ -209,11 +208,11 @@ describe(`manage collection container test`, () => {
 		// viewstate content
 		expect(viewstate.content[0].name).toBe(`testname`)
 		expect(viewstate.content[0].contentType).toBe(`video`)
-		expect(viewstate.content[0].thumbnail).toBe(`test@thumbnail.com`)
+		expect(viewstate.content[0].thumbnail).toBe(`https://i.ytimg.com/vi/HK7SPnGSxLM/default.jpg`)
 		expect(viewstate.content[0].physicalCopyExists).toBe(false)
 		expect(viewstate.content[0].isCopyrighted).toBe(false)
-		expect(viewstate.content[0].expired).toBe(true)
-		expect(viewstate.content[0].resourceId).toBe(`5ebdaef833e57cec218b457c`)
+		expect(viewstate.content[0].expired).toBe(false)
+		expect(viewstate.content[0].resourceId).toBe(`00000000-0000-0000-0000-000000000000`)
 	})
 
 	it(`testing buttons`, () => {
@@ -227,17 +226,17 @@ describe(`manage collection container test`, () => {
 
 		// TODO: should pass a Mock function toggleModal to component, otherwise jest won't be able to check whether it was called or not.
 
-		wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `newcontent-button`}).at(0).simulate(`click`)
 
 		// switching back and forth Content and Permissions componenets
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
-		const permissionsButton = wrapper.find({"className" : `permissions-button`})
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
+		const permissionsButton = wrapper.find({"id" : `permissions-button`})
 		permissionsButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(false)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(false)
 
-		const contentButton = wrapper.find({"className" : `content-button`})
+		const contentButton = wrapper.find({"id" : `content-button`})
 		contentButton.simulate(`click`)
-		expect(wrapper.find(`ManageCollection`).props().viewstate.isContent).toBe(true)
+		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 	})
 
 	it(`test rest of event handlers`, ()=> {
@@ -249,18 +248,18 @@ describe(`manage collection container test`, () => {
 			</Provider>,
 		)
 
-		// make sure it is not editing mode before initinating `Edit`
-		expect(wrapper.find({"className" : `title-edit`}).length).toBe(0)
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().editing).toBe(false)
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().children).toBe(`Edit`)
+		// make sure it is not editing mode before initiating `Edit`
+		expect(wrapper.find({"id" : `title-edit`}).length).toBe(0)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().editing).toBe(false)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().children).toBe(`Edit`)
 
 		// simulates clicking edit title button
-		wrapper.find({"className" : `title-edit-button`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `title-edit-button`}).at(0).simulate(`click`)
 
 		// check if it is edting mode and check if it is changed into `Save` button
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().editing).toBe(true)
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().children).toBe(`Save`)
-		expect(wrapper.find({"className" : `title-edit`}).length).not.toBe(0)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().editing).toBe(true)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).text()).toContain(`Save`)
+		expect(wrapper.find({"id" : `title-edit`}).length).not.toBe(0)
 
 		// test title changes
 		expect(wrapper.find(`input`).props().value).toBe(`Collection 1`)
@@ -317,8 +316,9 @@ describe(`manage collection container test`, () => {
 		)
 
 		// test if two contents are inserted
-		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content
-		const contents = wrapper.find(`ManageCollectionContainer`).props().content
+		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content // eslint-disable-line no-unused-vars
+		const contents = wrapper.find(`ManageCollectionContainer`).props().content // eslint-disable-line no-unused-vars
+
 		// expect(collectionContents.length).toBe(2)
 		// expect(Object.keys(contents).length).toBe(2)
 
@@ -327,46 +327,8 @@ describe(`manage collection container test`, () => {
 		// expect(collectionContents[1]).toEqual(contents[1])
 
 		// console.log(wrapper.find(`ManageCollectionContainer`).props())
-		// console.log(wrapper.find({className: `newcontent-button`}).debug())
-		// wrapper.find({className: `newcontent-button`}).at(0).simulate(`click`)
+		// console.log(wrapper.find({id: `newcontent-button`}).debug())
+		// wrapper.find({id: `newcontent-button`}).at(0).simulate(`click`)
 		// console.log(wrapper.find(`ManageCollectionContainer`).props())
 	})
-
-	it(`test`, async()=> {
-
-		const props = {
-			collection: {
-				archived: false,
-				content,
-				id: 0,
-				name: `Collection 1`,
-				owner: 22,
-				published: true,
-				thumbnail: `test@thumbnail`,
-			},
-			content,
-			getContent: contentService.getContent,
-			updateCollectionName: collectionService.updateCollectionName,
-			updateCollectionStatus: collectionService.updateCollectionStatus,
-			getCollectionContent: adminService.getCollectionContent,
-			getCollections: collectionService.getCollections,
-		}
-
-		const wrapper = mount(
-			<Provider store={store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
-
-		// wrapper.find({className: `newcontent-button`}).at(0).simulate(`click`)
-		// console.log(wrapper.find(`button`).at(6).debug())
-		// await wrapper.find(`button`).at(6).simulate(`click`)
-		// wrapper.update()
-		// console.log(wrapper.find(`CreateContent`).debug())
-		// console.log(wrapper.debug())
-
-	})
-
 })

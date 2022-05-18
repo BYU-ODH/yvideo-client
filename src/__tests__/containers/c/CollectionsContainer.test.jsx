@@ -4,11 +4,6 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/CollectionsContainer'
 import * as testutil from '../../testutil/testutil'
-import store from 'services/store'
-import ContentService from '../../../services/s/content.redux'
-import AuthService from '../../../services/s/auth.redux'
-import CollectionsService from '../../../services/s/collections.redux'
-import proxies from 'proxy'
 
 const content = testutil.content
 
@@ -20,40 +15,24 @@ const props = {
 	displayBlocks: false,
 	getCollections: jest.fn(),
 	getContent: jest.fn(),
-	isAdmin: true,
-	isProf: false,
 	setHeaderBorder: jest.fn(),
 	toggleCollectionsDisplay: jest.fn(),
 }
 
+jest.mock(`react-router-dom`, () => ({
+	...jest.requireActual(`react-router-dom`),
+	useHistory: () => ({
+		location: {
+			hash: ``,
+			key: `efe1jw`,
+			pathname: `/`,
+			search: ``,
+			state: undefined,
+		},
+	}),
+}))
+
 describe(`collection container test`, () => {
-	let contentServiceConstructor
-	let authServiceConstructor
-	let collectionsServiceCostructor
-	let dispatch
-	let getState
-	let apiProxy
-
-	beforeEach(async() => {
-		authServiceConstructor = new AuthService()
-		contentServiceConstructor = new ContentService()
-
-		dispatch = store.dispatch
-		getState = store.getState
-		apiProxy = proxies.apiProxy
-
-		proxies.apiProxy.user.get = jest.fn()
-		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
-			return Promise.resolve(testutil.user)
-		})
-		await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
-
-		proxies.apiProxy.content.get = jest.fn()
-		proxies.apiProxy.content.get.mockImplementationOnce(()=>{
-			return Promise.resolve({0: content[0]})
-		})
-		await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
-	})
 
 	it(`collections container check viewstate`, () => {
 		const wrapper = shallow(
@@ -61,10 +40,6 @@ describe(`collection container test`, () => {
 		).childAt(0).dive()
 
 		const viewstate = wrapper.find(`Collections`).props().viewstate
-
-		expect(viewstate.isProf).toBe(false)
-		expect(viewstate.isAdmin).toBe(true)
-		expect(viewstate.displayBlocks).toBe(true)
 
 		expect(viewstate.collections[0].archived).toBe(false)
 		expect(viewstate.collections[0].id).toBe(0)
@@ -76,23 +51,27 @@ describe(`collection container test`, () => {
 
 	it(`mount`, async() => {
 		const wrapper = mount(
-			<Provider store={store}>
+			<Provider store={testutil.store}>
 				<BrowserRouter>
-					<Container props={props}/>
+					<Container {...props}/>
 				</BrowserRouter>
 			</Provider>,
 		)
-
-		expect(wrapper.find({className: `list`}).props().children.props.children).toBe(`There are no collections to display`)
-
 		// getcollection
-		collectionsServiceCostructor = new CollectionsService()
-		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
-			return Promise.resolve(collections)
-		})
-		await collectionsServiceCostructor.getCollections(true)(dispatch, getState, { apiProxy })
 
-		wrapper.update()
+		expect(wrapper.text().includes(`Collections`)).toBe(true)
+		expect(wrapper.text().includes(`Manage Collections`)).toBe(true)
+		expect(wrapper.find(`Link`).at(0).props().to).toEqual(`/manager`)
+
+		expect(wrapper.text().includes(`Collection 1`)).toBe(true)
+		expect(wrapper.text().includes(`testname`)).toBe(true)
+		expect(wrapper.find(`Link`).at(1).props().to).toEqual(`/player/0`)
+
+		expect(wrapper.text().includes(`Collection 2`)).toBe(true)
+		expect(wrapper.text().includes(`testname2`)).toBe(true)
+		expect(wrapper.find(`Link`).at(2).props().to).toEqual(`/player/1`)
+
+		// TODO: toggle modal test need to be updated
+		wrapper.find(`#collections-help-documentation`).at(0).simulate(`click`, { preventDefault () {} })
 	})
 })

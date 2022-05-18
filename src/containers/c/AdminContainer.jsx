@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import ConfirmDeleteContainer from 'components/modals/containers/ConfirmDeleteContainer'
+import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
+import AddUsersContainer from 'components/modals/containers/AddUsersContainer'
 
 import { Admin } from 'components'
 
 import { adminService, interfaceService } from 'services'
+
+import { Tooltip } from 'components/bits'
 
 const AdminContainer = props => {
 
@@ -15,6 +18,9 @@ const AdminContainer = props => {
 		clean,
 		setHeaderBorder,
 		toggleModal,
+		toggleTip,
+		adminUpdateUserRole,
+		setBreadcrumbs,
 	} = props
 
 	const category = {
@@ -42,13 +48,23 @@ const AdminContainer = props => {
 	const [menuItemInfo, setMenuItemInfo] = useState({})
 	const [menuActive, setMenuActive] = useState(false)
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+	const [isMobile, setIsMobile] = useState(false)
+	const [isEdit, setIsEdit] = useState(false)
+	const [role, setRole] = useState(null)
 
 	useEffect(() => {
+		setBreadcrumbs({path: [`Home`, `Admin Dashboard`], collectionId: ``, contentId: ``})
+		if(window.innerWidth < 1000)
+			setIsMobile(true)
+		else
+			setIsMobile(false)
+
 		clean()
 		setHeaderBorder(true)
 		return () => {
 			setHeaderBorder(false)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setHeaderBorder])
 
 	const viewstate = {
@@ -60,6 +76,8 @@ const AdminContainer = props => {
 		menuActive,
 		menuItemInfo,
 		mousePos,
+		isMobile,
+		isEdit,
 	}
 
 	const handlers = {
@@ -73,12 +91,13 @@ const AdminContainer = props => {
 		updateSearchBar: e => {
 			const { value } = e.target
 			setSearchQuery(value)
-			if (value.length > 1) search(category[searchCategory].url, value, true)
 		},
 		handleSubmit: e => {
 			e.preventDefault()
+			search(category[searchCategory].url, searchQuery, true)
 		},
 		toggleMenu: id => e => {
+			toggleTip()
 			data.forEach(item => {
 				if (item.id === id)
 					setMenuItemInfo(item)
@@ -89,18 +108,52 @@ const AdminContainer = props => {
 				x: e.pageX,
 				y: e.pageY,
 			})
-
 		},
 		handleConfirmDelete: e => {
 			e.preventDefault()
 			toggleModal({
-				component: ConfirmDeleteContainer,
-				props: { menuItemInfo, searchCategory},
+				component: DeleteConfirmContainer,
+				props: {
+					type: searchCategory,
+					menuItemInfo,
+				},
+			})
+		},
+		handleEdit: e => {
+			setIsEdit(true)
+		},
+		roleChange: e => {
+			setRole(parseInt(e.target.value))
+		},
+
+		userRoleSave: e => {
+			adminUpdateUserRole(role, menuItemInfo.id)
+			setIsEdit(false)
+		},
+
+		addUsers: e => {
+			toggleModal({
+				component: AddUsersContainer,
 			})
 		},
 	}
 
-	return <Admin viewstate={viewstate} handlers={handlers} />
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position,
+			},
+		})
+	}
+
+	const tipHandlers = {
+		handleShowTip,
+		toggleTip,
+	}
+
+	return <Admin viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers} />
 }
 
 const mapStateToProps = store => ({
@@ -112,6 +165,9 @@ const mapDispatchToProps = {
 	clean: adminService.clean,
 	setHeaderBorder: interfaceService.setHeaderBorder,
 	toggleModal: interfaceService.toggleModal,
+	toggleTip: interfaceService.toggleTip,
+	adminUpdateUserRole: adminService.updateUserRole,
+	setBreadcrumbs: interfaceService.setBreadcrumbs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

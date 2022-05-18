@@ -58,20 +58,39 @@ export default class BlockCollection extends Component {
 		// This way, the number of videos (<p>{content.length} Videos</p>) includes the unpublished ones
 		// const contentIds = this.props.contentIds
 
+		const publishContent = content ? content.filter(item => item.published) : []
+
+		publishContent.sort((a, b) => {
+			return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+		})
+
 		if(this.props.collection.published){
 			return (
 				<Container>
 					<Header>
 						<Link to={`/`}>{name}</Link>
-						<p>{content.length} Videos</p>
+						{
+							publishContent.length === 0 ? (
+								<p>This collection is empty</p>
+							)
+								:
+								publishContent.length === 1 ? (
+									<p>1 item</p>
+								)
+									:
+									<p>{publishContent.length} items</p>
+						}
+						{ this.props.collection.id === `public` ? (
+							<Link to={`/search-public-collections`}>Search Public Collections</Link>
+						) : ``}
 					</Header>
 					<div>
 						<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 							<div />
 						</Arrow>
-						<SlideWrapper className='slide-wrapper' count={content.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
+						<SlideWrapper className='slide-wrapper' count={publishContent.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 							{
-								content.map(item => {
+								publishContent.map(item => {
 									return <BlockItem key={item.id} data={item}/>
 								})
 							}
@@ -83,9 +102,8 @@ export default class BlockCollection extends Component {
 					</div>
 				</Container>
 			)
-		}
-		else {
+		} else
 			return null
-		}
+
 	}
 }

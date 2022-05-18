@@ -20,7 +20,7 @@ const PermissionTable = props => {
 						<tr>
 							{Object.keys(data[0])
 								.filter(key => key !== `id`)
-								.map((column, index) => <th key={index}>{column}</th>)
+								.map((column, index) => <th className='column' key={index}>{column}</th>)
 							}
 							<th className='small'></th>
 						</tr>
@@ -31,7 +31,7 @@ const PermissionTable = props => {
 						<tr key={index}>
 							{Object.keys(item)
 								.filter(key => key !== `id`)
-								.map((key, index2) => <td key={index2}>{item[key]}</td>)
+								.map((key, index2) => <td className='item' key={index2}>{item[key]}</td>)
 							}
 							<td>
 								{item.NetID === user.username ||

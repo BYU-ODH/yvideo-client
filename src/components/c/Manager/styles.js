@@ -1,10 +1,12 @@
 import styled from 'styled-components'
+import plusIcon from 'assets/plus-white.svg'
 
 export const Container = styled.div`
+
 	padding-top: 8.4rem;
 	display: flex;
 
-	& .no-collections {
+	& #no-collections {
 		text-align: center;
 		width: 80%;
 		margin: 5% 10% 2% 10%;
@@ -28,9 +30,13 @@ export const Container = styled.div`
 			cursor: pointer;
 
 			:hover {
-				border: 2px solid var(--navy-blue);
+				box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.5);
 			}
 		}
+	}
+
+	@media screen and (max-width: 1000px) {
+		flex-direction: column;
 	}
 `
 
@@ -50,9 +56,20 @@ export const SideMenu = styled.div`
 
 	overflow-y: scroll;
 
+
+	@media screen and (max-width: 1000px) {
+		width: -webkit-fill-available;
+		display: ${props => props.isOpen === false ? `none` : ``};
+	}
+
 	& > h4 {
 		padding: .8rem 0;
 		margin-bottom: 1rem;
+		position: relative;
+	}
+
+	& > div {
+		cursor: pointer;
 	}
 
 	& .link {
@@ -75,25 +92,6 @@ export const Body = styled.div`
 	height: calc(100vh - 16rem);
 `
 
-export const CreateButton = styled.button`
-	padding: 0;
-
-	border: none;
-	background: transparent;
-
-	font-weight: normal;
-	line-height: 3.7rem;
-
-	height: 3.5rem;
-
-	display: flex;
-	align-items: center;
-
-	outline: none;
-
-	cursor: pointer;
-`
-
 export const Plus = styled.div`
 	height: 1.7rem;
 	width: 1.7rem;
@@ -112,4 +110,123 @@ export const NoCollection = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+`
+
+export const Help = styled.span`
+	width: 20px;
+	height: 20px;
+
+	& img {
+		width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -3px;
+    bottom: 5px;
+	}
+
+	:hover {
+		cursor: pointer;
+	}
+`
+
+export const MenuIcon = styled.div`
+	height: 2.5rem;
+	width: 5rem;
+	border: .125rem solid gray;
+	border-radius: 3px;
+	margin-top: 1.5rem;
+	margin-left: 2.5rem;
+	text-align:center;
+	line-height: 2.5rem;
+	background-color: gray;
+	color: white;
+
+	:hover {
+		cursor: pointer;
+	}
+`
+
+export const CreateButton = styled.button`
+	padding: 0;
+
+	border: none;
+	background: transparent;
+
+	font-weight: normal;
+	line-height: 3.7rem;
+	height: 3.5rem;
+
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+
+	background-color: var(--light-blue);
+	color: white;
+	font-size: 1.5rem;
+  border: none;
+  border-radius: 6rem;
+	width: 14rem;
+  height: 5rem;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 2rem;
+	:hover {
+			background-color: var(--navy-blue);
+		}
+
+		& > span {
+		margin-right: 1rem;
+	}
+`
+
+export const Button = styled.button`
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 12rem;
+    height: 5rem;
+    color: white;
+    background-color: var(--light-blue);
+    margin-left: 1rem;
+		margin-bottom: 2rem;
+		margin-top: 2rem;
+		padding-right: 1rem;
+    outline: none;
+    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 6rem;
+    text-align: center;
+		cursor: pointer;
+		transition: .5s ease;
+		font-weight: 500;
+
+		:hover {
+			background-color: var(--navy-blue);
+		}
+
+		& > span {
+		margin-right: 1rem;
+	}
+`
+
+export const FeedbackMessage = styled.div`
+	position: absolute;
+	left: 50%;
+	top: 50%;
+  transform: translate(-50%, -50%);
+
+	& > p {
+		font-weight: 200;
+		font-size: 20px;
+		margin: auto;
+	}
+`
+
+export const PlusIcon = styled.span`
+	background: url(${plusIcon}) center no-repeat;
+	color: white;
+	height: 1.5rem;
+	width: 1.5rem;
 `

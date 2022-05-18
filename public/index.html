@@ -6,10 +6,18 @@
 	<link rel='shortcut icon' href='%PUBLIC_URL%/favicon.ico'>
 	<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 	<meta name='theme-color' content='#FFFFFF'>
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
 	<style>
 		@import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:300,400,500');
+
+		::-webkit-scrollbar {
+			display: none;
+		}
 
 		:root {
 			font-family: 'Roboto';
@@ -23,6 +31,7 @@
 			--navy-blue: #002e5d;
 			--royal-blue: #0057b8;
 			--light-blue: #0582ca;
+
 		}
 
 		* {
@@ -31,13 +40,14 @@
 			scrollbar-width: none;
 		}
 
-		::-webkit-scrollbar {
+		/* ::-webkit-scrollbar {
 			display: none;
-		}
+		} */
 
 		body {
 			font-size: 1.2rem;
 			line-height: 1.4rem;
+			overflow-y: scroll;
 		}
 
 		a {
@@ -47,6 +57,10 @@
 
 		#load {
 			transition: opacity .25s ease-in-out;
+		}
+
+		.std-outline-color {
+			outline-color: var(--light-blue);
 		}
 	</style>
 
@@ -62,9 +76,11 @@
 	<div id='root'></div>
 	<div id='load'></div>
 	<div id='modal'></div>
-	<script> 
-		var clj_session_id = '{{ session-id }}' 
+	<script>
+		var clj_session_id = '{{ session-id }}'
 	</script>
+	<script src="https://www.google.com/recaptcha/api.js?&render=explicit" async defer></script>
+
 	<!--
 __     ___      ___     _
 \ \   / \ \    / (_)   | |

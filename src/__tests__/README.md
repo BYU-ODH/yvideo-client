@@ -1,4 +1,4 @@
-# YVideo Unit Test
+# Y-video Unit Test
 
 > Note: This is unit test for the y-video client
 
@@ -43,6 +43,12 @@
  - Write unit test for only what we wrote. (test only based on the input and expected output).
 
  - Do not use real data as a mock data, always make fake data if you need an input.
+
+## Debug
+
+	- Debugging component can be done with mocked data (check out `testutil`).
+
+	- You can debug component by calling debug(). ex. console.log(wrapper.find(`button`).debug())
 
 ## tips to write unit test
 

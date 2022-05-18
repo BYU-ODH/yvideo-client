@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-	display: ${ props => props.minimized !== false ? ('initial') : ('none')};
+	display: ${props => props.minimized !== false ? `initial` : `none`};
 	padding: 20px;
+
+	& .event-content {
+    height: 80%;
+	}
 
 	& .closeEditor {
 		width: 2rem;
@@ -30,6 +34,11 @@ const Style = styled.div`
 			margin: 15px auto 15px auto;
 			width: 150px;
 			text-align: left;
+		}
+
+		& p {
+			font-size: 12px;
+			margin: 15px auto 15px auto;
 		}
 	}
 
@@ -63,6 +72,9 @@ const Style = styled.div`
 
 	& .censorMenu {
 		font-size: 1.5rem;
+		height: 65%;
+		overflow-y: scroll;
+
 		& label {
 			margin: 15px 5px 15px 15px;
 			width: 150px;
@@ -70,24 +82,21 @@ const Style = styled.div`
 		}
 
 		& .tableHeader {
-			width: 90%;
 			margin-left: 10px;
-			& th {
-				width: 50px;
-			}
 		}
 	}
 
 	& .censorList {
 		width: 100%;
-		height: 30vh;
+		height: 85%;
 		margin-left: 10px;
 		overflow-y: scroll;
 		position: relative;
+		top: 20px;
 
 		& td {
-			display: inline-flex;
-			width: 50px !important;
+			width: 15%;
+			padding: 2px;
 			margin: auto;
 			& input {
 				margin: auto;
@@ -119,9 +128,12 @@ const Style = styled.div`
 	}
 
 	& .addCensor {
-		position: absolute;
 		float: left;
-		margin-left: 20px;
+		margin-left: 5px;
+		background: none;
+		border: none;
+		position: absolute;
+		bottom: 0px;
 	}
 
 	& .arrowDown {
@@ -129,10 +141,46 @@ const Style = styled.div`
 		text-align: center;
 	}
 
+	& .subCard {
+		border-bottom: 1px solid var(--light-blue);
+		padding: 1rem;
+	}
+	& .subTitleCard {
+		font-size: 2rem;
+		border-bottom: 1px solid var(--light-blue);
+		padding: 1rem;
+		color: black;
+	}
+	& .subActive {
+		background-color: var(--navy-blue);
+		color: white;
+	}
+	& .censorActive {
+		background-color: var(--navy-blue);
+		color: white;
+	}
 	@keyframes spin {
 		0% { transform: rotate(0deg); }
 		100% { transform: rotate(360deg); }
 	}
 
+`
+export const Icon = styled.div`
+	/* transform: rotate(45deg); */
+  background: url(${props => props.src}) center no-repeat;
+  width: 20px;
+  height: 15px;
+`
+export const Help = styled.span`
+	width: 20px;
+	height: 20px;
+
+	& img {
+		width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -3px;
+    bottom: 5px;
+	}
 `
 export default Style

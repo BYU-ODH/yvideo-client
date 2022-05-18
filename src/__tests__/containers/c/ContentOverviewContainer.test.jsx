@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Container from '../../../containers/c/ContentOverviewContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
@@ -11,20 +11,28 @@ const props = {
 	content,
 	removeCollectionContent: jest.fn(),
 	updateContent: jest.fn(),
+	adminRemoveCollectionContent: jest.fn(),
+	isLabAssistant: false,
 }
-
+const SUPPORTED_LANGUAGES = [
+	`German`,
+	`Spanish`,
+	`Russian`,
+]
 // TODO: need to fix `UnhandledPromiseRejectionWarning`. This is from the not mocked functions from the child componenet
 describe(`manage collection test`, () => {
-	it(`ContentOverviewContainer should render`, ()=> {
-
-		const wrapper = mount(
+	let wrapper
+	beforeEach(() => {
+		wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
 				</BrowserRouter>
 			</Provider>,
 		)
+	})
 
+	it(`ContentOverviewContainer should render`, ()=> {
 		// test viewstate made correctly
 		const viewstate = wrapper.find(`ContentOverview`).props().viewstate
 		expect(viewstate.content.name).toBe(`testname`)
@@ -38,24 +46,18 @@ describe(`manage collection test`, () => {
 		// console.log(wrapper.find(`ContentOverview`).instance().props.handlers)
 
 		// simulate edit button clicks, it should show 3 other buttons when it is clicked
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
 
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 		expect(wrapper.find(`button`).at(1).props().children).toBe(`Delete`)
-		expect(wrapper.find(`button`).at(2).props().children).toBe(`Save`)
+		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 	})
 
 	it(`Unpublish event handler test`, ()=> {
-		const wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 
 		expect(wrapper.find(`ContentOverview`).props().viewstate.content.published).toBe(true)
@@ -64,15 +66,9 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`delete event handler test`, ()=> {
-		const wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
+
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
 
 		// method should not be called before click
@@ -86,16 +82,10 @@ describe(`manage collection test`, () => {
 	})
 
 	it(`save event handler test`, ()=> {
-		const wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props}/>
-				</BrowserRouter>
-			</Provider>,
-		)
-		expect(wrapper.find(`button`).props().children).toBe(`Edit`)
-		wrapper.find(`button`).simulate(`click`)
-		expect(wrapper.find(`button`).at(2).props().children).toBe(`Save`)
+
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		wrapper.find(`button`).at(0).simulate(`click`)
+		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 
 		// edit event handler
 		expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(true)
@@ -103,5 +93,50 @@ describe(`manage collection test`, () => {
 		setTimeout(() => {
 			expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(false)
 		}, 500)
+	})
+
+	// TODO: need to figure out which store it updates.
+	it(`toggle, tags and description test`, ()=> {
+
+		// click edit-button. It updates display without wrapper.update().
+		// click edit button trigger drop down menu.
+		expect(wrapper.find({"id" : `tag-input`}).length).toBe(0)
+		wrapper.find({"id" : `edit-button`}).at(0).simulate(`click`)
+		expect(wrapper.find({"id" : `tag-input`}).length).toBe(1)
+
+		// add input and add tags
+		wrapper.find({"id" : `tag-input`}).at(0).simulate(`change`, {target: {value: `testaddedtag`}})
+		expect(wrapper.find(`Tag`).length).toBe(0)
+		wrapper.find({"id" : `add-tag`}).at(0).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(1)
+
+		// remove tag
+		wrapper.find(`Tag`).find(`button`).at(0).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(0)
+
+		// definition toggle
+		expect(wrapper.find({"id" : `definitions-toggle`}).props().on).toBe(false)
+		wrapper.find({"id" : `definitions-toggle`}).simulate(`click`)
+		if(SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage))
+			expect(wrapper.find({"id" : `definitions-toggle`}).props().on).toBe(true)
+		else
+			expect(wrapper.find({"id" : `definitions-toggle`}).props().on).toBe(false)
+
+		// captions toggle
+		expect(wrapper.find({"id" : `captions-toggle`}).props().on).toBe(false)
+		wrapper.find({"id" : `captions-toggle`}).simulate(`click`)
+		expect(wrapper.find({"id" : `captions-toggle`}).props().on).toBe(true)
+
+		// add input and add words
+		wrapper.find({"id" : `tag-input`}).at(0).simulate(`change`, {target: {value: `testaddedword`}})
+		expect(wrapper.find(`Tag`).length).toBe(0)
+		wrapper.find({"id" : `add-tag`}).at(0).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(1)
+
+		// add word
+		wrapper.find(`Tag`).find(`button`).at(0).simulate(`click`)
+		expect(wrapper.find(`Tag`).length).toBe(0)
+
+		// edit button
 	})
 })

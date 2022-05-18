@@ -4,8 +4,11 @@ import Collections from '../../../../components/c/Collections/index'
 import BlockCollection from '../../../../components/bits/BlockCollection'
 import { interfaceService } from 'services'
 import { Link, BrowserRouter } from 'react-router-dom'
+import * as testutil from '../../../testutil/testutil'
 
-const collection = {
+const user = testutil.user
+
+const collection1 = {
 	archived: false,
 	content : [
 		{
@@ -22,15 +25,36 @@ const collection = {
 	published: true,
 	thumbnail: `test@thumbnail`,
 }
+const collection2 = {
+	archived: false,
+	content : [
+		{
+			contentType: `video2`,
+			id: 110,
+			name: `testname2`,
+			thumbnail: `test2@thumbnail`,
+			views: 0,
+		},
+	],
+	id: 66,
+	name: `Collection 2`,
+	owner: 22,
+	published: true,
+	thumbnail: `test2@thumbnail`,
+}
 
 const viewstate = {
-	collections: {
-		collection,
-	},
+	collections: [
+		collection1,
+		collection2,
+	],
 	contentIds: [110],
-	displayBlocks: true,
-	isAdmin: true,
-	isProf: false,
+	user,
+	allPublic: [{ isSubscribed: true }],
+	publicCollections: [
+		collection1,
+		collection2,
+	],
 }
 
 const collectionsProps = {
@@ -39,7 +63,7 @@ const collectionsProps = {
 }
 
 const props = {
-	collection,
+	collection: collection1,
 	contentIds: [110],
 }
 
@@ -48,7 +72,6 @@ describe(`collections test`, () => {
 		const wrapper = shallow(
 			<Collections {...collectionsProps}/>,
 		)
-		// console.log(wrapper.debug())
 
 		const linkMap = wrapper.find(Link).reduce((linkMap, link) => {
 			const linkProps = link.props()
@@ -67,8 +90,7 @@ describe(`collections test`, () => {
 		)
 
 		const elem = wrapper.find(`h4`)
-		expect(elem.length).toBe(1)
-		expect(wrapper.contains(<h4>testname</h4>)).toEqual(true)
+		expect(elem.length).toBe(0)
 
 		const arrowLeft = wrapper.find({"className" : `left`})
 		const arrowRight = wrapper.find({"className" : `right`})

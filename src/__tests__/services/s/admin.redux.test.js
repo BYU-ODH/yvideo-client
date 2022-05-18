@@ -5,8 +5,10 @@ import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import proxies from 'proxy'
 import User from '../../../models/User'
+import Content from 'models/Content'
 
 const content = testutil.content
+const collection = testutil.collection
 
 const searchResults = [
 	{
@@ -51,7 +53,7 @@ describe(`content service test`, () => {
 				lastFetchedProfessors: 0,
 				lastFetchedCollections: 0,
 				adminStore:{
-					data: null,
+					data: [searchResults[0]],
 					cache: {},
 					professors: [],
 					professor: {},
@@ -130,7 +132,7 @@ describe(`content service test`, () => {
 		const result = store.dispatch(adminServiceConstructor.actions.adminCreateContent(content))
 		expect(store.getState().loading).toBe(false)
 		expect(result.type).toBe(`ADMIN_CREATE_CONTENT`)
-		expect(Object.keys(store.getState().profCollectionContent).length).toBe(2)
+		expect(Object.keys(store.getState().profCollectionContent).length).toBe(1)
 	})
 
 	it(`adminError`, () => {
@@ -208,7 +210,6 @@ describe(`content service test`, () => {
 	// thunk
 	// TODO: need to figure out how to check actions to be called
 	it(`search`, async() => {
-
 		proxies.apiProxy.admin.search.get = jest.fn()
 		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
 			return Promise.resolve(searchResults)
@@ -217,11 +218,59 @@ describe(`content service test`, () => {
 		expect(store.getState().data).toEqual(null)
 		expect(store.getState().cache).toEqual({})
 		// TODO: need to write other cases for collection and content
+		// user
 		await adminServiceConstructor.search(`user`, `testusername`, true)(dispatch, getState, { apiProxy })
-
 		const expected = new User(searchResults[0])
 		expect(store.getState().data).toEqual([expected])
 		expect(store.getState().cache).toEqual({0: expected})
+		// collection
+		// content
+
+		// default
+		await adminServiceConstructor.search(`error`, `testusername`, true)(dispatch, getState, { apiProxy })
+		await adminServiceConstructor.search(`user`, `testusername`, false)(dispatch, getState, { apiProxy })
+	})
+
+	it(`search: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.search.get = jest.fn()
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+		await adminServiceConstructor.search(`user`, `testusername`, true)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
+	})
+
+	it(`searchPublicCollection`, async() => {
+		proxies.apiProxy.admin.search.public.collection.get = jest.fn()
+		proxies.apiProxy.admin.search.public.collection.get.mockImplementationOnce(()=>{
+			return Promise.resolve([collection])
+		})
+		const result = {}
+		const contentResult = []
+		if(collection.content){
+			collection.content.forEach((item) => {
+				contentResult.push(new Content(item))
+			})
+		}
+		collection.content = contentResult
+		result[collection.id]= collection
+
+		expect(store.getState().professors).toEqual([])
+		await adminServiceConstructor.searchPublicCollection(`testusername`, true)(dispatch, getState, { apiProxy })
+		expect(store.getState().publicCollections).toEqual(result)
+		await adminServiceConstructor.searchProfessors(`testusername`, false)(dispatch, getState, { apiProxy })
+	})
+
+	it(`searchPublicCollection: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.search.public.collection.get = jest.fn()
+		proxies.apiProxy.admin.search.public.collection.get.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+		await adminServiceConstructor.searchPublicCollection(`testusername`, true)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
+		await adminServiceConstructor.searchPublicCollection(`testusername`, false)(dispatch, getState, { apiProxy })
 	})
 
 	it(`searchProfessors`, async() => {
@@ -234,8 +283,18 @@ describe(`content service test`, () => {
 		expect(store.getState().professors).toEqual([])
 		expect(store.getState().professor).toEqual({})
 		await adminServiceConstructor.searchProfessors(`testusername`, true)(dispatch, getState, { apiProxy })
-
 		expect(store.getState().professors).toEqual([new User(searchResults[0])])
+		await adminServiceConstructor.searchProfessors(`testusername`, false)(dispatch, getState, { apiProxy })
+	})
+
+	it(`searchProfessors: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.search.get = jest.fn()
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+		await adminServiceConstructor.searchProfessors(`testusername`, true)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
 	})
 
 	it(`setProfessor`, async() => {
@@ -250,6 +309,16 @@ describe(`content service test`, () => {
 		expect(store.getState().professor).toEqual(new User(searchResults[0]))
 	})
 
+	it(`setProfessor: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.user.get = jest.fn()
+		proxies.apiProxy.admin.user.get.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+		await adminServiceConstructor.setProfessor(22, true)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
+	})
+
 	it(`getCollectionContent`, async() => {
 
 		proxies.apiProxy.admin.collection.content.get = jest.fn()
@@ -260,34 +329,40 @@ describe(`content service test`, () => {
 		expect(store.getState().profCollectionContent).toEqual(null)
 		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
 		expect(store.getState().profCollectionContent).toEqual({content})
+		await adminServiceConstructor.getCollectionContent(0, false)(dispatch, getState, { apiProxy })
+
 	})
 
-	// TODO: I do not think I understand this correctly, need further explanation where this is being used
-	// it(`createCollection`, async() => {
+	it(`getCollectionContent: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.collection.content.get = jest.fn()
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
+	})
 
-	// 	proxies.apiProxy.admin.collection.create = jest.fn()
-	// 	proxies.apiProxy.admin.collection.create.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({status: 200})
-	// 	})
+	it(`createContent`, async() => {
+		proxies.apiProxy.content.post = jest.fn()
+		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
+			return Promise.resolve({
+				status: 200,
+			})
+		})
+		await adminServiceConstructor.createContent(`content`)(dispatch, getState, { apiProxy })
+	})
 
-	// 	await adminServiceConstructor.createCollection(`create collection test`, true)(dispatch, getState, { apiProxy })
-	// })
+	it(`createContent: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.content.post = jest.fn()
+		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+		await adminServiceConstructor.createContent(`content`)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
+	})
 
-	// it(`createContent`, async() => {
-
-	// 	proxies.apiProxy.admin.collection.content.post = jest.fn()
-	// 	proxies.apiProxy.admin.collection.content.post.mockImplementationOnce(()=>{
-	// 		return Promise.resolve({
-	// 			data: testutil.content[0],
-	// 		})
-	// 	})
-
-	// 	expect(store.getState().profCollectionContent).toEqual(null)
-	// 	await adminServiceConstructor.createContent(0, 0)(dispatch, { apiProxy })
-	// 	expect(store.getState().profCollectionContent).toEqual({0: content[0]})
-	// })
-
-	// TODO: I do not think this thunk is completed
 	it(`createContentFromResource`, async() => {
 
 		proxies.apiProxy.admin.collection.content.createFromResource = jest.fn()
@@ -300,16 +375,41 @@ describe(`content service test`, () => {
 		await adminServiceConstructor.createContentFromResource(0, 0)(dispatch, getState, { apiProxy })
 	})
 
-	it(`searchCollections`, async() => {
+	it(`createContentFromResource: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.collection.content.createFromResource = jest.fn()
+		proxies.apiProxy.admin.collection.content.createFromResource.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
 
+		await adminServiceConstructor.createContentFromResource(0, 0)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
+	})
+
+	it(`searchCollections`, async() => {
 		proxies.apiProxy.admin.collection.get = jest.fn()
 		proxies.apiProxy.admin.collection.get.mockImplementationOnce(()=>{
-			return Promise.resolve(searchResults)
+			return Promise.resolve({data: searchResults})
 		})
 
 		expect(store.getState().professorCollections).toEqual(null)
 		await adminServiceConstructor.searchCollections(`testusername`, true)(dispatch, getState, { apiProxy })
+		// console.log(store.getState())
 		expect(store.getState().professorCollections).toEqual({22: searchResults[0]})
+
+		// when force = false
+		await adminServiceConstructor.searchCollections(`testusername`, false)(dispatch, getState, { apiProxy })
+	})
+
+	it(`searchCollections: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.collection.get = jest.fn()
+		proxies.apiProxy.admin.collection.get.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+
+		await adminServiceConstructor.searchCollections(`testusername`, true)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
 	})
 
 	it(`updateCollectionStatus`, async() => {
@@ -336,6 +436,20 @@ describe(`content service test`, () => {
 		// unarchive
 		await adminServiceConstructor.updateCollectionStatus(22, `unarchive`)(dispatch, getState, { apiProxy })
 		expect(store.getState().adminStore.professorCollections[22].archived).toBe(false)
+
+		// default
+		await adminServiceConstructor.updateCollectionStatus(22, `error`)(dispatch, getState, { apiProxy })
+	})
+
+	it(`updateCollectionStatus: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.collection.edit = jest.fn()
+		proxies.apiProxy.collection.edit.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+
+		await adminServiceConstructor.updateCollectionStatus(22, `publish`)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
 	})
 
 	// TODO: need to update when it's updated
@@ -349,29 +463,101 @@ describe(`content service test`, () => {
 		await adminServiceConstructor.deleteCollection(22)(dispatch, getState, { apiProxy })
 	})
 
-	// TODO: need to update when it's updated
+	it(`deleteCollection: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		proxies.apiProxy.admin.collection.delete = jest.fn()
+		proxies.apiProxy.admin.collection.delete.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+
+		await adminServiceConstructor.deleteCollection(22)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
+	})
+
 	it(`deleteContent`, async() => {
 
+		// get content
+		proxies.apiProxy.admin.collection.content.get = jest.fn()
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+			return Promise.resolve({content})
+		})
+
+		expect(store.getState().profCollectionContent).toEqual(null)
+		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
+		expect(store.getState().profCollectionContent).toEqual({content})
+		// delete content not as an admin
 		proxies.apiProxy.admin.content.delete = jest.fn()
 		proxies.apiProxy.admin.content.delete.mockImplementationOnce(()=>{
 			return Promise.resolve(searchResults[0])
 		})
 
+		expect(store.getState().profCollectionContent).toEqual({content})
 		await adminServiceConstructor.deleteContent(22)(dispatch, getState, { apiProxy })
+		expect(store.getState().profCollectionContent).toEqual({})
+
+		// delete content as an admin
+		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
+		await adminServiceConstructor.deleteContent(22, true)(dispatch, getState, { apiProxy })
 	})
 
-	// TODO: need to update when it's updated
-	it(`deleteUser`, async() => {
-
-		proxies.apiProxy.admin.user.delete = jest.fn()
-		proxies.apiProxy.admin.user.delete.mockImplementationOnce(()=>{
-			return Promise.resolve(searchResults[0])
+	it(`deleteContent: catch error`, async() => {
+		console.error = jest.fn() // eslint-disable-line no-console
+		// get content
+		proxies.apiProxy.admin.collection.content.get = jest.fn()
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+			return Promise.resolve({content})
 		})
 
-		await adminServiceConstructor.deleteUser(22)(dispatch, getState, { apiProxy })
+		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
+		proxies.apiProxy.admin.content.delete = jest.fn()
+		proxies.apiProxy.admin.content.delete.mockImplementationOnce(()=>{
+			return Promise.reject(`error`)
+		})
+
+		await adminServiceConstructor.deleteContent(22)(dispatch, getState, { apiProxy })
+		expect(console.error).toHaveBeenCalledWith(`error`) // eslint-disable-line no-console
 	})
 
-	// TODO: need to update when it's updated
+	it(`deleteUser`, async() => {
+		proxies.apiProxy.admin.search.get = jest.fn()
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+			return Promise.resolve(searchResults)
+		})
+
+		expect(store.getState().data).toEqual(null)
+		expect(store.getState().cache).toEqual({})
+		await adminServiceConstructor.search(`user`, `testusername`, true)(dispatch, getState, { apiProxy })
+
+		const expected = new User(searchResults[0])
+		expect(store.getState().data).toEqual([expected])
+		expect(store.getState().cache).toEqual({0: expected})
+
+		// proxies.apiProxy.admin.user.delete = jest.fn()
+		// proxies.apiProxy.admin.user.delete.mockImplementationOnce(()=>{
+		// 	return Promise.resolve(searchResults[0])
+		// })
+		// expect(store.getState().data).not.toEqual([])
+		// await adminServiceConstructor.deleteUser(22)(dispatch, getState, { apiProxy })
+		// expect(store.getState().data).toEqual([])
+	})
+
+	// it(`deleteUser: catch error`, async() => {
+	// 	console.error = jest.fn()
+	// 	proxies.apiProxy.admin.search.get = jest.fn()
+	// 	proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+	// 		return Promise.resolve(searchResults)
+	// 	})
+
+	// 	await adminServiceConstructor.search(`user`, `testusername`, true)(dispatch, getState, { apiProxy })
+
+	// 	proxies.apiProxy.admin.user.delete = jest.fn()
+	// 	proxies.apiProxy.admin.user.delete.mockImplementationOnce(()=>{
+	// 		return Promise.reject('error')
+	// 	})
+	// 	await adminServiceConstructor.deleteUser(22)(dispatch, getState, { apiProxy })
+	// 	expect(console.error).toHaveBeenCalledWith('error')
+	// })
+
 	it(`clean`, async() => {
 		await adminServiceConstructor.clean()(dispatch, getState, { apiProxy })
 	})

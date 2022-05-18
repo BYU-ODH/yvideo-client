@@ -1,211 +1,247 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
-import services from 'services'
+import services, { interfaceService } from 'services'
 
 import { CollectionPermissions } from 'components'
+
+import AddBatchNetidsContainer from 'components/modals/containers/AddBatchNetidsContainer'
 
 const CollectionPermissionsContainer = props => {
 
 	const { roleEndpoints } = services.collectionService
 
 	const {
-		collection, // from ManageCollection
-		roles, // from collectionService
-		getCollectionRoles, // from collectionService
-		updateCollectionRoles, // from collectionService
+		collection,
+		users,
+		courses,
+		updateCollectionPermissions,
+		getCollectionInfo,
+		toggleModal,
+		updateCollectionStatus,
+		loggedinUser,
 	} = props
 
-	const collectionRoles = roles[collection.id]
-
-	const [state, setState] = useState({
-		department: `*`,
+	const [course, setCourse] = useState({
+		department: ``,
 		catalog: ``,
 		section: ``,
-		taFaculty: ``,
-		exception: ``,
-		disabled: {
-			catalog: true,
-			section: true,
-			submit: true,
-			taFaculty: true,
-			exception: true,
-		},
 	})
 
-	useEffect(
-		() => {
-			if (!collectionRoles) getCollectionRoles(collection.id)
-		},
-		[collection.id, collectionRoles, getCollectionRoles],
-	)
+	const [user, setUser] = useState({
+		username: ``,
+		roles: 2,
+	})
 
-	if (!collectionRoles) return null
+	const [userTA, setUserTA] = useState({
+		username: ``,
+		roles: 1,
+	})
+
+	const [disabled, setDisable] = useState(true)
+	const [disabledUser, setDisableUser] = useState(true)
+	const [disabledTA, setDisableTA] = useState(true)
+	const [isLoading, setIsLoading] = useState(false)
+	const [isEdited, setIsEdited] = useState(true)
+	const [numUsers, setNumUsers] = useState(0)
+
+	useEffect(() => {
+
+		if(isEdited){
+			getCollectionInfo(collection.id)
+			setIsEdited(false)
+		}
+
+		if(isLoading === true) {
+			setTimeout(() => {
+				setIsLoading(false)
+			}, 100)
+		} else
+			getCollectionInfo(collection.id)
+
+	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
 
 	const handlers = {
+		makePublic: e => {
+			e.preventDefault()
+			if(collection.public !== undefined) updateCollectionStatus(collection.id, `public`)
+			setIsEdited(true)
+		},
 		handleDepartmentChange: e => {
-			setState({
-				...state,
-				department: e.target.value,
-				catalog: ``,
-				section: ``,
-				disabled: {
-					...state.disabled,
-					catalog: e.target.value === `*`,
-					section: true,
-					submit: e.target.value === `*`,
-				},
+			setCourse({
+				...course,
+				department: e.target.value.toUpperCase(),
 			})
+			setIsEdited(true)
 		},
 		handleCatalogChange: e => {
-			setState({
-				...state,
-				catalog: e.target.value,
-				section: ``,
-				disabled: {
-					...state.disabled,
-					catalog: false,
-					section: e.target.value === ``,
-					submit: false,
-				},
+			setCourse({
+				...course,
+				catalog: e.target.value.toUpperCase(),
 			})
+			setIsEdited(true)
+		},
+		handleCatalogBlur: e => {
+			let catalog = e.target.value
+			let courseLength = 3
+			if (catalog.includes(`r`) || catalog.includes(`R`))
+				courseLength = 4
+
+			if(catalog.length < courseLength && catalog.length !== 0) {
+				for(let i = catalog.length; i < courseLength; i++)
+					catalog = `0${catalog}`
+
+				setCourse({
+					...course,
+					catalog,
+				})
+			}
 		},
 		handleSectionChange: e => {
-			setState({
-				...state,
+			if(e.target.value.length > 0)
+				setDisable(false)
+			else
+				setDisable(true)
+
+			setCourse({
+				...course,
 				section: e.target.value,
-				disabled: {
-					...state.disabled,
-					catalog: false,
-					section: false,
-					submit: false,
-				},
 			})
+			setIsEdited(true)
 		},
-		handleTaFacultyChange: e => {
-			setState({
-				...state,
-				taFaculty: e.target.value,
-				disabled: {
-					...state.disabled,
-					taFaculty: e.target.value === ``,
-				},
-			})
+		handleSectionBlur: e => {
+			let section = e.target.value
+			if(section.length < 3 && section.length !== 0) {
+				for(let i = section.length; i < 3; i++)
+					section = `0${section}`
+
+				setCourse({
+					...course,
+					section,
+				})
+			}
 		},
-		handleExceptionChange: e => {
-			setState({
-				...state,
-				exception: e.target.value,
-				disabled: {
-					...state.disabled,
-					exception: e.target.value === ``,
-				},
+		handleUserTAChange: e => {
+			if(e.target.value.length > 1)
+				setDisableTA(false)
+			else
+				setDisableTA(true)
+
+			setUserTA({
+				...userTA,
+				username: e.target.value,
 			})
+			setIsEdited(true)
+		},
+		handleUserChange: e => {
+			if(e.target.value.length > 1)
+				setDisableUser(false)
+			else
+				setDisableUser(true)
+
+			setUser({
+				...user,
+				username: e.target.value,
+			})
+			setIsEdited(true)
 		},
 		addCourse: e => {
 			e.preventDefault()
 
-			const {
-				department,
-				catalog,
-				section,
-			} = state
-
-			const body = {
-				department,
-			}
-
-			if (catalog) body.catalogNumber = catalog
-			if (section) body.sectionNumber = section
-
-			updateCollectionRoles(collection.id, roleEndpoints.addCourse, [body])
-
-			setState({
-				...state,
-				department: `*`,
+			updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
+			setDisable(true)
+			setCourse({
+				...course,
+				department: ``,
 				catalog: ``,
 				section: ``,
-				disabled: {
-					...state.disabled,
-					catalog: true,
-					section: true,
-				},
 			})
+			setIsEdited(true)
 		},
-		removeCourse: e => {
-			e.preventDefault()
-
-			const data = JSON.parse(e.target.dataset.item)
-
-			const body = {
-				id: data.id || null,
-				department: data.Department || null,
-			}
-
-			if (data.Catalog) body.catalogNumber = data.Catalog
-			if (data.Section) body.sectionNumber = data.Section
-
-			if (body.department !== null && body.id !== null)
-				updateCollectionRoles(collection.id, roleEndpoints.removeCourse, [body])
-			else alert(`Error, department not found`)
+		removeCourse: id => {
+			updateCollectionPermissions(collection.id, roleEndpoints.removeCourse, id)
+			setIsEdited(true)
 		},
-		addTaFaculty: e => {
-			// console.log(state.taFaculty)
+		addUser: e => {
 			e.preventDefault()
-			const body = {
-				'username': state.taFaculty,
-				'account-role': 1,
-			}
-			updateCollectionRoles(collection.id, roleEndpoints.addTA, body)
-			setState({
-				...state,
-				taFaculty: ``,
+			updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
+			setDisableUser(true)
+			setUser({
+				...user,
+				username: ``,
 			})
+			setIsEdited(true)
 		},
-		removeFaculty: e => {
+		addTA: e => {
+
+			/*
+				account-type
+				0 = admin
+				1 = lab assistant
+				2 = faculty / instructor
+				3 = student
+		  */
+
+			/*
+				account-role
+				0 "instructor"
+				1 "ta"
+				2 "student"
+				3 "auditing"
+			*/
+
 			e.preventDefault()
-
-			const data = JSON.parse(e.target.dataset.item)
-			const body = data.NetID || null
-
-			if (body !== null) updateCollectionRoles(collection.id, roleEndpoints.removeUser, body)
-
-			else alert(`Error, netId not found`)
-		},
-		addException: e => {
-			e.preventDefault()
-			updateCollectionRoles(collection.id, roleEndpoints.addException, state.exception)
-			setState({
-				...state,
-				exception: ``,
+			updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
+			setDisableTA(true)
+			setUserTA({
+				...userTA,
+				username: ``,
 			})
+			setIsEdited(true)
 		},
-		removeException: e => {
-			e.preventDefault()
-			const data = JSON.parse(e.target.dataset.item)
-			const body = data.NetID || null
-			if (body !== null)
-				updateCollectionRoles(collection.id, roleEndpoints.removeUser, body)
-			else alert(`Error, netId not found`)
+		removeUser: value => {
+			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
+			setIsEdited(true)
+			setNumUsers(numUsers-1)
+		},
+		AddBatchNetids: () => {
+			toggleModal({
+				component: AddBatchNetidsContainer,
+				props: { collectionId: collection.id, isLoading },
+			})
+			setIsEdited(true)
 		},
 	}
 
 	const viewstate = {
 		collection,
-		roles: collectionRoles,
-		state,
+		user,
+		course,
+		userTA: users.filter(user => user[`account-role`] === 1),
+		users: users.filter(user => user[`account-role`] === 2),
+		courses,
+		disabled,
+		disabledUser,
+		disabledTA,
+		isLoading,
+		loggedinUser,
 	}
 
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStoreToProps = store => ({
-	roles: store.collectionStore.roles,
+	loggedinUser: store.authStore.user,
+	users: store.collectionStore.users,
+	courses: store.collectionStore.courses,
 })
 
 const mapDispatchToProps = {
-	getCollectionRoles: services.collectionService.getCollectionRoles,
-	updateCollectionRoles: services.collectionService.updateCollectionRoles,
+	getCollectionInfo: services.collectionService.getCollectionInfo,
+	getCollections: services.collectionService.getCollections,
+	updateCollectionPermissions: services.collectionService.updateCollectionPermissions,
+	toggleModal: interfaceService.toggleModal,
+	updateCollectionStatus: services.collectionService.updateCollectionStatus,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(CollectionPermissionsContainer)

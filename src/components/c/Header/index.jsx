@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 
 import Style, { LogoWrapper, Name, Shadow, Logo} from './styles'
 
+import BreadcrumbContainer from '../../../containers/c/BreadcrumbContainer'
+
 export default class Header extends PureComponent {
 	render() {
 
@@ -18,11 +20,12 @@ export default class Header extends PureComponent {
 
 		return (
 			<Style backgroundColor={backgroundColor} border={border}>
-				<LogoWrapper to='/'>
+				<LogoWrapper className='std-outline-color' to='/'>
 					<Logo />
-					<Name>YVIDEO</Name>
-					<Shadow>YVIDEO</Shadow>
+					<Name>Y-VIDEO</Name>
+					<Shadow>Y-VIDEO</Shadow>
 				</LogoWrapper>
+				<BreadcrumbContainer />
 			</Style>
 		)
 	}

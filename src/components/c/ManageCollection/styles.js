@@ -1,13 +1,17 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import logo from 'assets/hexborder.svg'
+import saveIcon from 'assets/save.svg'
+import plusIcon from 'assets/plus-white.svg'
 
 const Style = styled.div`
-  & > header {
-    height: 12rem;
-    padding: 0 3.8rem;
+	overflow: auto;
 
+  & > header {
+		height: 12rem;
+		padding: 0 3.8rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+		align-items: center;
+    justify-content: space-between
 
     & h6 {
       font-size: 1.8rem;
@@ -18,9 +22,16 @@ const Style = styled.div`
       color: #a4a4a4;
       margin-top: 1.7rem;
     }
+
+		@media screen and (max-width: 1000px) {
+			height: 7rem;
+			padding: 2rem 2.5rem;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-start
+		}
   }
 `
-
 export default Style
 
 export const Title = styled.div`
@@ -33,6 +44,11 @@ export const TitleEdit = styled.input`
   font-size: 1.8rem;
   font-weight: bold;
 `
+export const SaveIcon = styled.span`
+  background: url(${saveIcon}) center no-repeat;
+  height: 2.5rem;
+  width: 2rem;
+`
 
 export const TitleEditButton = styled.div`
   color: ${props => props.editing ? `#0582CA` : `#a4a4a4;`};
@@ -40,6 +56,21 @@ export const TitleEditButton = styled.div`
   cursor: pointer;
   margin-top: 0;
   margin-left: 1rem;
+
+	display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center !important;
+  & > span {
+    margin-right: .2rem;
+  }
+`
+
+export const Publish = styled.div`
+	@media screen and (max-width: 1000px) {
+		margin-top: 2rem;
+	}
 `
 
 export const PublishButton = styled.button`
@@ -56,7 +87,6 @@ export const PublishButton = styled.button`
   border-radius: 0.3rem;
 
   cursor: pointer;
-  outline: none;
 `
 
 export const ArchiveButton = styled.button`
@@ -66,6 +96,19 @@ export const ArchiveButton = styled.button`
   letter-spacing: 0.05rem;
 
   padding: 0;
+  background: transparent;
+
+  border: none;
+  cursor: pointer;
+`
+export const CopyrightedButton = styled.button`
+  color: #efcc00;
+  font-weight: bold;
+
+  letter-spacing: 0.05rem;
+
+  padding: 0;
+	margin-left: 3rem;
   background: transparent;
 
   border: none;
@@ -85,8 +128,8 @@ export const Tab = styled.div`
 `
 
 export const TabHeader = styled.div`
-  position: absolute;
-  top: 18rem;
+	position: absolute;
+	top: 18rem;
 
   padding-left: 2rem;
 
@@ -99,16 +142,20 @@ export const TabHeader = styled.div`
     height: 2.5rem;
 
     border: none;
-    outline: none;
     cursor: pointer;
   }
+
+	@media screen and (max-width: 1000px) {
+		position: relative;
+		top: 0
+	}
 `
 
 export const Selector = styled.div`
   position: absolute;
 
   bottom: 0;
-  left: ${props => props.isContent ? `2rem` : `12rem`};
+  left: ${props => props.isContentTab ? `2rem` : `12rem`};
 
   transition: left 0.3s ease-in-out;
 
@@ -119,28 +166,68 @@ export const Selector = styled.div`
 `
 
 export const NewContent = styled.button`
-  width: calc(100% - 4rem);
-  height: 6.1rem;
+  height: 12rem;
+  width: 21rem;
+	object-fit: cover;
+  object-position: center;
 
   margin: 2rem;
 
-  border: none;
-  border-radius: 0.3rem;
+	@media screen and (max-width: 1000px) {
+		margin: 1rem;
+	}
 
-  background-color: #eee;
+  border: none;
+
+  background-color: #aaa;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  outline: none;
   cursor: pointer;
+
+	:hover {
+		transition: 0.5s;
+		background-color: #999;
+	}
+
+	& > p{
+		font-size: 1.5rem;
+		font-weight: lighter;
+		text-align: center;
+	}
 `
 
 export const Icon = styled.div`
-  background: url(${props => props.src}) center no-repeat;
-  background-size: contain;
+  background: url(${plusIcon}) center;
+  background-size: 50px;
 
   height: 2rem;
   width: 2rem;
+`
+
+const rotate = keyframes`
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(720deg);
+	}
+`
+
+export const Spinner = styled.div`
+	background: url(${logo}) center no-repeat;
+	background-size: cover;
+	width: 15rem;
+	height: 15rem;
+
+	position: fixed;
+	top: 30%;
+	left: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	animation: ${rotate} 2.5s ease-in-out infinite;
 `

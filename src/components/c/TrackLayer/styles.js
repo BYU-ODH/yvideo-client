@@ -21,24 +21,33 @@ export const Style = styled.div`
 	& .eventsbox {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 98%;
+
+
+		& .half-layer {
+			height: 24px;
+		}
 	}
 
 	& .events {
-		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : (`calc(100%)`)};
-		border-bottom: 1px dashed var(--light-blue);
+		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : `calc(100%)`};
 		display: flex;
 		height: 45px;
 		position: absolute;
 		border-right: 2px solid var(--light-blue);
 		/* background: url(${timeBarIcon}) center repeat;
 		background-size: 200px 100%; */
+		border-bottom: 1px dashed var(--light-blue);
+	}
+
+	& .half-event {
+		height: 24px;
 	}
 
 	& .layer-event {
 		border: 1px solid var(--light-blue) !important;
 		border-radius: 3px;
-		height: 46px !important;
+		height: 46px;
 		padding: 1px;
 		min-width: .01%;
 		overflow: hidden !important;
@@ -73,5 +82,10 @@ export const Style = styled.div`
 			color: black;
 			font-size: 1.3rem;
 		}
+	}
+
+	& .half-icon {
+		width: 2rem;
+		height: 2rem;
 	}
 `

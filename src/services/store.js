@@ -13,15 +13,14 @@ import {
 	interfaceService,
 	contentService,
 	resourceService,
+	fileService,
+	subtitlesService,
+	languageService,
 } from 'services'
 
 // Use this const to change the settings in Redux Dev Tools. Set
 // the options here, and then replace `composeWithDevTools` with
 // `composeEnhancers` down below.
-
-// const composeEnhancers = composeWithDevTools({
-// 	trace: true,
-// })
 
 const store = createStore(
 
@@ -33,6 +32,9 @@ const store = createStore(
 		contentStore: contentService.reducer,
 		interfaceStore: interfaceService.reducer,
 		resourceStore: resourceService.reducer,
+		fileStore: fileService.reducer,
+		subtitlesStore: subtitlesService.reducer,
+		languageStore: languageService.reducer,
 	}),
 
 	// This is the initial state of the store
@@ -43,6 +45,9 @@ const store = createStore(
 		contentStore: contentService.store,
 		interfaceStore: interfaceService.store,
 		resourceStore: resourceService.store,
+		fileStore: fileService.store,
+		subtitlesStore: subtitlesService.store,
+		languageStore: languageService.store,
 	},
 
 	composeWithDevTools(

@@ -4,11 +4,13 @@ import {
 	Form,
 	Button,
 	RemoveKeyword,
-	Table,
 	TableContainer,
 	Tabs,
 	Tab,
 	TypeButton,
+	FormResource,
+	Search,
+	SearchIcon,
 } from './styles'
 
 import plus from 'assets/plus_blue.svg'
@@ -18,9 +20,16 @@ export default class CreateContent extends PureComponent {
 	render() {
 
 		const {
-			adminContent,
 			searchQuery,
 			tab,
+			resourceContent,
+			hideResources,
+			languages,
+			allLanguages,
+			isResourceSelected,
+			selectedResourceName,
+			isAccess,
+			resourceFiles,
 		} = this.props.viewstate
 
 		const {
@@ -29,6 +38,7 @@ export default class CreateContent extends PureComponent {
 			url,
 			description,
 			resource,
+			targetLanguage,
 		} = this.props.viewstate.data
 
 		const {
@@ -41,95 +51,166 @@ export default class CreateContent extends PureComponent {
 			handleTypeChange,
 			onKeyPress,
 			remove,
+			removeResource,
 			toggleModal,
 		} = this.props.handlers
 
 		return (
 			<>
-				<h2>Create New Content</h2>
+				<h2 className='create-content-title'>Create New Content</h2>
 
 				<Tabs>
-					<Tab selected={tab === `url`} onClick={changeTab} name={`url`}>From URL</Tab>
-					<Tab selected={tab === `resource`} onClick={changeTab} name={`resource`}>Search Resources</Tab>
+					<Tab className='tab-url' selected={tab === `url`} onClick={changeTab} name={`url`}>From URL</Tab>
+					<Tab className='tab-search-resources' selected={tab === `resource`} onClick={changeTab} name={`resource`}>Search Resources</Tab>
 				</Tabs>
 
 				{tab === `url` &&
-					<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} id='create-content-form' >
+					<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} className='create-content-form' id='create-content-form' >
 						<label htmlFor='create-content-title'>
-							<span>Title</span>
-							<input id='create-content-title' type='text' name='title' value={title} onChange={handleTextChange} required />
+							<span><b>Title:</b></span>
+							<input className='url-title-input' id='create-content-title' type='text' name='title' value={title} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-type'>
-							<span>Type</span>
+							<span><b>Type:</b></span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
-								<TypeButton type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
-								<TypeButton type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
-								<TypeButton type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
+								<TypeButton id='url-type-video' className='std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className='fa fa-video' data-type='video' />Video</TypeButton>
+								<TypeButton id='url-type-audio' className='std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className='fa fa-headphones' data-type='audio' />Audio</TypeButton>
+								<TypeButton id='url-type-image' className='std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className='fa fa-image' data-type='image' />Image</TypeButton>
+								<TypeButton id='url-type-text' className='std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className='fa fa-text-width' data-type='text' />Text</TypeButton>
 							</div>
 						</label>
 
 						<label htmlFor='create-content-url'>
-							<span>URL</span>
-							<input id='create-content-url' type='text' name='url' value={url} onChange={handleTextChange} required />
+							<span><b>URL:</b></span>
+							<input className='url-content-url' id='create-content-url' type='text' name='url' value={url} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-description'>
-							<span>Description</span>
+							<span><b>Description:</b></span>
 						</label>
-						<textarea id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} required />
+						<textarea id='create-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} />
 
 						<label htmlFor='create-content-keywords'>
-							<span>Tags</span>
+							<span><b>Tags</b></span>
 						</label>
-
+						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add tag...'/>
 						<div className='keywords-list'>
-							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
+							{resource.keywords.length < 1 ? (<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>) : null}
+							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword className='url-content-remove' src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
 						</div>
 						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
-						<input id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add a tag...'/>
-						<datalist id='create-content-keywords'>
-							{resource.keywords.map((keyword, index) => <option key={index} value={keyword} />)}
-						</datalist>
+
+						<label>
+							<span><b>Target Language:</b></span>
+							{
+								allLanguages &&
+									<select name='targetLanguage' onChange={handleTextChange} required>
+										<option value=''>Select</option>
+										{
+											allLanguages.map(
+												(element, index) =>
+													<option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>)
+										}
+									</select>
+							}
+						</label><br/>
 
 						<div>
-							<Button type='button' onClick={toggleModal}>Cancel</Button>
-							<Button type='submit' color={`#0582CA`}>Create</Button>
+							<Button type='button' className='std-outline-color' onClick={toggleModal}>Cancel</Button>
+							<Button type='submit' className='std-outline-color' color={`#0582CA`}>Create</Button>
 						</div>
 					</Form>
 				}
 
 				{tab === `resource` &&
-					<Form onSubmit={handleAddResourceSubmit}>
-						{console.log(adminContent)}
-						<label htmlFor='create-content-resource-search'>
-							<span>Title</span>
-							<input type='text' name='searchInput' value={searchQuery} onChange={handleSearchTextChange} />
-						</label>
-						<TableContainer>
-							<Table>
-								<tbody>
-									{
-										adminContent &&
-										adminContent.map(content =>
-											<tr key={content.id}>
-												<td>
-													<input type='radio' value={content.resourceId} name='resource' onChange={handleSelectResourceChange}/>
-													<label>{content.name}</label>
-												</td>
-											</tr>,
-										)
-									}
-								</tbody>
-							</Table>
+					<FormResource onSubmit={handleAddResourceSubmit}>
+						<Search>
+							<SearchIcon />
+							<input className='resource-search-title' type='search' name='searchInput' placeholder={`Search Resource`} autoComplete='off' value={searchQuery} onChange={handleSearchTextChange} />
+						</Search>
+						<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
+							{
+								resourceContent && hideResources !== true &&
+							Object.keys(resourceContent).map(index =>
+
+								<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
+									<label>{resourceContent[index].resourceName}</label>
+								</li>
+
+								,
+							)
+							}
 						</TableContainer>
+						<br/>
+						<label>
+							<span><b>Resource</b></span><br/>
+							<div className='resource-content-remove'>
+								<input value={selectedResourceName} disabled required></input>
+								{
+									selectedResourceName &&
+										<RemoveKeyword className='resource-content-remove-button' src={plus} onClick={removeResource} type='button'/>
+								}
+							</div>
+						</label>
+						<br/>
+						{
+							!isAccess &&
+								<label>
+									<p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact Y-video admin for more information.</p>
+								</label>
+						}
+						<label>
+							<span><b>Display Title</b></span><br/>
+							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange}/>
+						</label>
+						<br/>
+						<label>
+							<span><b>Description</b></span><br/>
+						</label>
+						<textarea id='resource-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} cols={35} /><br/>
+						<label>
+
+							<span>Target Language</span>
+							{
+								isResourceSelected && resourceFiles &&(
+									languages.length > 0 ?
+										<select name='fileId' onChange={handleTextChange} required>
+											<option value=''>Select</option>
+
+											{
+												resourceFiles.map(
+													(element, index) =>
+														<option value={element[`id`]} key={index}>{`${element[`file-version`]}: ${element[`metadata`]}`}</option>,
+												)
+											}
+										</select>
+
+										:
+										(
+											<div>
+												<br/>
+												<p>No file associate to this resource</p>
+											</div>
+										)
+								)
+							}
+						</label>
 
 						<div>
-							<Button type='button' onClick={toggleModal}>Cancel</Button>
-							<Button type='submit' color={`#0582CA`}>Create</Button>
+
+							<Button id='url-content-cancel' className='std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
+							{targetLanguage.length > 0 ?
+								(
+									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#0582CA`}>Create</Button>
+								)
+								:
+								(
+									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#A0A0A0`} disabled>Create</Button>
+								)
+							}
 						</div>
-					</Form>
+					</FormResource>
 				}
 			</>
 		)

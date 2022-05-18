@@ -87,7 +87,9 @@ describe(`content service test`, () => {
 
 	// thunk
 	// TODO: need to figure out how to check actions to be called
-	it(`checkAuth`, async() => {
+	it(`checkAuth: window.clj_session_id = {{ session-id }}`, async() => {
+		delete window.clj_session_id
+		window.clj_session_id = `{{ session-id }}`
 
 		proxies.apiProxy.user.get = jest.fn()
 		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
@@ -97,6 +99,24 @@ describe(`content service test`, () => {
 		expect(store.getState().user).toEqual(null)
 		await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
 		expect(store.getState().user).toEqual(testutil.user)
+		window.clj_session_id = ``
+	})
+
+	it(`checkAuth: window.location.href not includes localhost`, async() => {
+		const mockLocation = new URL(`https://example.com`)
+		mockLocation.replace = jest.fn()
+		delete window.location
+		window.location = mockLocation
+
+		proxies.apiProxy.user.get = jest.fn()
+		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
+			return Promise.resolve(testutil.user)
+		})
+
+		expect(store.getState().user).toEqual(null)
+		await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
+		expect(store.getState().user).toEqual(testutil.user)
+		window.location = `localhost`
 	})
 
 	it(`login`, async() => {

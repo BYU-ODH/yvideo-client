@@ -46,7 +46,7 @@ export default class AuthService {
 			}
 
 		case this.types.AUTH_ERROR:
-			console.error(payload.message)
+			console.error(payload.message) // eslint-disable-line no-console
 			return {
 				...store,
 				user: null,
@@ -71,6 +71,12 @@ export default class AuthService {
 				tried: true,
 			}
 
+		case this.types.AUTH_UPDATE_LANDING_STATUS:
+			return{
+				...store,
+				loading: payload,
+			}
+
 		default:
 			return store
 		}
@@ -81,10 +87,18 @@ export default class AuthService {
 	/**
 	 * Tries to get the current user from the API. If unsuccessful, we know the user isn't logged in.
 	 */
-	checkAuth = () => async (dispatch, _getState, { apiProxy }) => {
+	checkAuth = () => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.authStart())
 		try {
-			const user = await apiProxy.user.get()
+			let user
+			if(window.location.href.includes(`localhost`))
+				user = await apiProxy.user.get()
+
+			if(window.clj_session_id !== `{{ session-id }}`){
+				// we got a valid session id so user should login automatically
+				user = await apiProxy.user.get()
+			}
+
 			dispatch(this.actions.authGet(user))
 		} catch (error) {
 			dispatch(this.actions.authError(error))

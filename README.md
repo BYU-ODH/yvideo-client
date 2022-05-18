@@ -77,11 +77,7 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-<<<<<<< HEAD
-### `npm build`
-=======
 ### `npm run build`
->>>>>>> 520b9a7084010dcc7cbb4cfc70acec6f77f1fbff
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -101,6 +97,13 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## Environment Variables and .env Files
+- `REACT_APP_YVIDEO_SERVER` - Set to needed server domain
+- `REACT_APP_STALE_TIME` - Timeout in milliseconds for network requests
+- `REACT_APP_RECAPTCHA_SITEKEY` - reCAPTCHA secret key for site
+
+If needed, set these variables as outlined in the .env.example file
+For development, a .env.development file is needed.
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

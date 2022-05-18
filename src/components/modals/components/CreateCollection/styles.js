@@ -5,7 +5,7 @@ export const Wrapper = styled.form`
 	grid: repeat(3, 1fr) / 1fr;
 	grid-gap: 2rem;
 
-	min-width: 30rem;
+	min-width: 40rem;
 
 	& > input {
 		border: none;
@@ -24,6 +24,8 @@ export const Button = styled.button`
 	color: ${props => props.color || `black`};
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
 `
+export const secondInput = {
+	borderBottom: `1px solid #242F36`,
+}

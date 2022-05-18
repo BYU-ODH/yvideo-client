@@ -1,11 +1,11 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Admin from '../../../../components/c/Admin/index'
 import { BrowserRouter} from 'react-router-dom'
 
 const viewstate = {
 	category:{
-		Collectios:{
+		Collections:{
 			name: `Collections`,
 			placeholder: `Search for a collection`,
 			url: `collection`,
@@ -45,16 +45,19 @@ const handlers = {
 	handleConfirmDelete: jest.fn(),
 }
 
+const tipHandlers = {
+	tipHandlers: jest.fn(),
+}
+
 // TODO: need to check again for the updated admin dashboard
 describe(`admin dashboard test`, () => {
 	it(`should be true`, ()=> {
 		const wrapper = mount(
 			<BrowserRouter>
-				<Admin viewstate={viewstate} handlers={handlers}/>
+				<Admin viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
 			</BrowserRouter>,
 		)
 
-		// console.log(wrapper.debug())
 		expect(wrapper.contains(<td>testusername</td>)).toEqual(true)
 		expect(wrapper.contains(<td>testname</td>)).toEqual(true)
 		expect(wrapper.contains(<td>admin</td>)).toEqual(true)
@@ -65,5 +68,23 @@ describe(`admin dashboard test`, () => {
 		expect(category.props().children[0].props.value).toBe(`Collections`)
 		expect(category.props().children[1].props.value).toBe(`Content`)
 		expect(category.props().children[2].props.value).toBe(`Users`)
+	})
+	it(`data is empty `, ()=> {
+		viewstate.data = []
+		const wrapper = mount(
+			<BrowserRouter>
+				<Admin viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
+			</BrowserRouter>,
+		)
+		expect(wrapper.contains(<p>No users matched your search</p>)).toEqual(true)
+	})
+	it(`data is null `, ()=> {
+		viewstate.data = null
+		const wrapper = mount(
+			<BrowserRouter>
+				<Admin viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
+			</BrowserRouter>,
+		)
+		expect(wrapper.contains(<p></p>)).toEqual(true)
 	})
 })
