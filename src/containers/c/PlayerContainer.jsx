@@ -255,14 +255,14 @@ const PlayerContainer = props => {
 		let newPlayed = 0
 		if (e) {
 			const scrubber = e.currentTarget.getBoundingClientRect()
-			if (scrubber.width !== 0){
+			if (scrubber.width !== 0)
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
-			}
+
 		} else
 			newPlayed = time / duration
-		if (duration > 0){
+		if (duration > 0)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
-		}
+
 		if (events) {
 			// for all of the events. If the new seek time goes before events that were already executed activate the events again
 			events.forEach(event => {
@@ -331,14 +331,13 @@ const PlayerContainer = props => {
 		// 	document.getElementById('subtitle-box').innerText = value
 		// }
 		if (subtitleTextIndex !== index) {
-			if (document.getElementsByClassName('transcript-row')[index]) {
-				//grab the elements height and scroll that in pixels for the entire parent element
-				const parentElement = document.getElementsByClassName('main-bar')[0]
-				const currentSubtitleElement = document.getElementsByClassName('transcript-row')[index]
+			if (document.getElementsByClassName(`transcript-row`)[index]) {
+				// grab the elements height and scroll that in pixels for the entire parent element
+				const parentElement = document.getElementsByClassName(`main-bar`)[0]
+				const currentSubtitleElement = document.getElementsByClassName(`transcript-row`)[index]
 
-				if (subtitleTextIndex < index || subtitleTextIndex === undefined) {
-					parentElement.scrollTop += currentSubtitleElement.offsetHeight;
-				}
+				if (subtitleTextIndex < index || subtitleTextIndex === undefined)
+					parentElement.scrollTop += currentSubtitleElement.offsetHeight
 
 			}
 		}

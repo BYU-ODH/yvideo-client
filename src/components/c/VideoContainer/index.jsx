@@ -340,12 +340,12 @@ const VideoContainer = props => {
 			break
 		case `Space`:
 			setPlaying(playing)
-			if (playing === true) {
+			if (playing === true)
 				video.handlePause()
-			}
-			if (playing === false) {
+
+			if (playing === false)
 				video.handlePlay()
-			}
+
 			break
 
 		default:
@@ -397,11 +397,11 @@ const VideoContainer = props => {
 		const wraplisten = new ResizeObserver((entry)=>{
 			video.handleAspectRatio()
 		})
-		if(wrap) {
+		if(wrap)
 			wraplisten.observe(wrap)
-		}
+
 		return function cleanup(){
-				window.onkeyup = null
+			window.onkeyup = null
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration])
@@ -410,12 +410,12 @@ const VideoContainer = props => {
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
 				<Blank
-				className='blank'
-				id='blank'
-				blank={blank}
-				onContextMenu={e => e.preventDefault()}
-				onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
-				ref={videoRef}
+					className='blank'
+					id='blank'
+					blank={blank}
+					onContextMenu={e => e.preventDefault()}
+					onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
+					ref={videoRef}
 				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
