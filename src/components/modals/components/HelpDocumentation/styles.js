@@ -177,5 +177,10 @@ export const CloseHelp = styled.span`
 	}
 `
 
-export const Tutorial = styled.div`
+export const Header = styled.div`
+	position: fixed;
+	height: 50px;
+	width: calc(80vw - 10px);
+	background-color: white;
+	z-index: 5;
 `

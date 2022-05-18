@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { Container, Back, CloseHelp } from './styles'
+import { Container, Back, CloseHelp, Header } from './styles'
 
 import closeIcon from 'assets/x.svg'
 
@@ -20,7 +20,7 @@ export default class HelpDocumentation extends PureComponent {
 					<Container id='help-documentation-container' onClick={e => {
 						e.stopPropagation()
 					}} onScroll={this.handleScroll}>
-						<div style={{height: `50px`, width: `calc(80vw - 10px)`, backgroundColor: `white`, zIndex: `5`, position: `fixed`}}><h1>{name} <CloseHelp onClick={this.props.toggleModal}><img alt='' src={closeIcon} /></CloseHelp></h1></div>
+						<Header><h1>{name} <CloseHelp onClick={this.props.toggleModal}><img alt='' src={closeIcon} /></CloseHelp></h1></Header>
 						<div id='content'>
 						</div>
 						{
