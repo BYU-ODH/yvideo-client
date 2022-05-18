@@ -1,10 +1,9 @@
-import * as testutil from '../../testutil/testutil'
+// import * as testutil from '../../testutil/testutil'
 import InterfaceService from '../../../services/s/interface.redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import proxies from 'proxy'
-import { browserStorage } from 'proxy'
+import proxies, { browserStorage } from 'proxy'
 import CreateContentContainer from '../../../components/modals/containers/CreateContentContainer'
 
 const modal = { component: CreateContentContainer, collectionId: 0, isLabAssistantRoute:false }
@@ -39,7 +38,7 @@ describe(`content service test`, () => {
 				editorStyle: false,
 				lost: false,
 				events: [],
-				error: '',
+				error: ``,
 				jsonResponse: undefined,
 				interfaceStore:{
 					menuActive: false,
@@ -56,8 +55,8 @@ describe(`content service test`, () => {
 					editorStyle: false,
 					events: [],
 					languageCodes : {
-						spanish: "es"
-					}
+						spanish: `es`,
+					},
 				},
 			},
 			composeWithDevTools(
@@ -72,7 +71,6 @@ describe(`content service test`, () => {
 	proxies.apiProxy.translation.getTranslation = jest.fn()
 	proxies.apiProxy.email.postNoAttachment = jest.fn()
 	proxies.apiProxy.email.postWithAttachment = jest.fn()
-
 
 	// types
 	it(`should return correct types`, ()=> {
@@ -131,28 +129,28 @@ describe(`content service test`, () => {
 
 	it(`setEvents`, () => {
 		expect(store.getState().events).toEqual([])
-		const result = store.dispatch(interfaceServiceConstructor.actions.setEvents(['event']))
-		expect(store.getState().events).toEqual(['event'])
+		const result = store.dispatch(interfaceServiceConstructor.actions.setEvents([`event`]))
+		expect(store.getState().events).toEqual([`event`])
 		expect(result.type).toBe(`SET_EVENTS`)
 	})
 
 	it(`getEvents`, () => {
 		expect(store.getState().events).toEqual([])
-		const result = store.dispatch(interfaceServiceConstructor.actions.getEvents(['event']))
-		expect(store.getState().events).toEqual(['event'])
+		const result = store.dispatch(interfaceServiceConstructor.actions.getEvents([`event`]))
+		expect(store.getState().events).toEqual([`event`])
 		expect(result.type).toBe(`GET_EVENTS`)
 	})
 
 	it(`getTranslation`, () => {
 		expect(store.getState().jsonResponse).toEqual(undefined)
-		const result = store.dispatch(interfaceServiceConstructor.actions.getTranslation('text'))
-		expect(store.getState().jsonResponse).toEqual('text')
+		const result = store.dispatch(interfaceServiceConstructor.actions.getTranslation(`text`))
+		expect(store.getState().jsonResponse).toEqual(`text`)
 		expect(result.type).toBe(`GET_TRANSLATION`)
 	})
 
 	it(`interfaceError`, () => {
-		expect(store.getState().error).toEqual('')
-		const result = store.dispatch(interfaceServiceConstructor.actions.interfaceError('error!'))
+		expect(store.getState().error).toEqual(``)
+		const result = store.dispatch(interfaceServiceConstructor.actions.interfaceError(`error!`))
 		expect(result.payload.error).toBe(`error!`)
 		expect(result.type).toBe(`INTERFACE_ERROR`)
 	})
@@ -203,14 +201,14 @@ describe(`content service test`, () => {
 	it(`getTranslation`, async() => {
 		const unTranslate = `manzana`
 		const translate = `apple`
-		const language = 'spanish'
+		const language = `spanish`
 
 		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(()=>{
 			return Promise.resolve(translate)
 		})
 		expect(store.getState().jsonResponse).toEqual(undefined)
 		await interfaceServiceConstructor.getTranslation(unTranslate, language)(dispatch, getState, { apiProxy })
-		expect(store.getState().jsonResponse).toEqual('apple')
+		expect(store.getState().jsonResponse).toEqual(`apple`)
 	})
 
 	it(`checkTranslation: find match language`, async() => {
@@ -221,7 +219,7 @@ describe(`content service test`, () => {
 			return Promise.resolve(translate, language)
 		})
 		const json = await interfaceServiceConstructor.checkTranslation(translate, language)(dispatch, getState, { apiProxy })
-		expect(json).toEqual({ "json": 'apple', "success": true})
+		expect(json).toEqual({ "json": `apple`, "success": true})
 	})
 
 	it(`checkTranslation: can't find match language`, async() => {
@@ -237,10 +235,10 @@ describe(`content service test`, () => {
 
 	it(`sendNoAttachment`, async() => {
 		const success = 200
-		var emailObject = {
-			"sender-email": "email",
-			"subject": "title",
-			"message": "body",
+		const emailObject = {
+			"sender-email": `email`,
+			"subject": `title`,
+			"message": `body`,
 		}
 
 		proxies.apiProxy.email.postNoAttachment.mockImplementationOnce(()=>{
@@ -252,16 +250,16 @@ describe(`content service test`, () => {
 
 	it(`sendNoAttachment`, async() => {
 		const attachment = {
-			name: "test.jpg",
+			name: `test.jpg`,
 			size: 4377,
-			type: "image/jpeg",
-			webkitRelativePath: "",
+			type: `image/jpeg`,
+			webkitRelativePath: ``,
 		}
 		const formData = new FormData()
 		formData.append(`attachment`, attachment)
-		formData.append(`sender-email`, "test#byu.edu")
-		formData.append(`subject`, "title")
-		formData.append(`message`, "body")
+		formData.append(`sender-email`, `test#byu.edu`)
+		formData.append(`subject`, `title`)
+		formData.append(`message`, `body`)
 
 		proxies.apiProxy.email.postWithAttachment.mockImplementationOnce(()=>{
 			return Promise.resolve(200)

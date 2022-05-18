@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import Style, {
+import { TitleEdit } from '../ResourceOverview/styles'
+import {
 	InnerContainer,
 	Column,
 	BoxRow,
@@ -20,21 +21,32 @@ export class FileOverview extends PureComponent {
 			handleFileMetadata,
 			handleRemoveFile,
 			handleFileVersion,
+			// toggleEdit,
 		} = this.props.handlers
 
 		const {
 			file,
 			langs,
+			fileState,
 		} = this.props.viewstate
 
 		return (
 			<BoxRow>
 				<InnerContainer>
 
-					<Column className='file-column'>
-
+					<Column id='file-column'>
 						<div>
-							<h4>Name:</h4> {file[`metadata`]}
+							<h4>Name:</h4>
+							<FileTitle>
+								<TitleEdit
+									type='text'
+									id={`title-edit`}
+									value={fileState[`metadata`]}
+									contenteditable='true'
+									onChange={handleFileMetadata}
+								>
+								</TitleEdit>
+							</FileTitle>
 						</div>
 
 						<div>
@@ -54,8 +66,8 @@ export class FileOverview extends PureComponent {
 					</Column>
 				</InnerContainer>
 				<div>
-					<EditButton className='edit-file-button' onClick={handleUpdateFile}>Update<SaveIcon/></EditButton>
-					<RemoveButton className='remove-file-button' onClick={handleRemoveFile}>Delete<RemoveIcon/></RemoveButton>
+					<EditButton id='edit-file-button' onClick={handleUpdateFile}><SaveIcon/>Update</EditButton>
+					<RemoveButton id='remove-file-button' onClick={handleRemoveFile}><RemoveIcon/>Delete</RemoveButton>
 				</div>
 			</BoxRow>
 		)

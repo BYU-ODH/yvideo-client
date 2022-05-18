@@ -6,8 +6,8 @@ import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
 import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
-import volumeIcon from 'assets/controls_volume.svg'
-import volumeIconMute from 'assets/controls_muted.svg'
+// import volumeIcon from 'assets/controls_volume.svg'
+// import volumeIconMute from 'assets/controls_muted.svg'
 import clockIcon from 'assets/te-clock.svg'
 import playerCheck from 'assets/player-check.svg'
 import bookIcon from 'assets/sidebar-white.svg'
@@ -111,7 +111,6 @@ const Style = styled.div`
 		font-size: 1.4rem;
 		font-weight: 500;
 		margin: 2px 0px 2px 0px;
-		transition: .5s ease;
 		text-align: left;
 		border: none;
 		background: transparent;
@@ -129,7 +128,7 @@ export const PlayPause = styled.button`
 	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
 `
 export const ClosedCaptions = styled.button`
-	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
+	/* background: ${props => props.isCaptions !== false ? `url(${closedCaption}) center no-repeat` : `url(${closedCaptionOff}) center no-repeat`}; */
 	background: url(${closedCaption}) center no-repeat;
 `
 export const Fullscreen = styled.button`

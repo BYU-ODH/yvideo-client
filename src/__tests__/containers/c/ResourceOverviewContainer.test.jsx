@@ -1,6 +1,5 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import { waitFor } from '@testing-library/dom'
 import MutationObserver from 'mutation-observer'
 import Container from '../../../containers/c/ResourceOverviewContainer'
 import { Provider } from 'react-redux'
@@ -52,7 +51,7 @@ describe(`manage collection test`, () => {
 		)
 
 		// // make sure there is at least one file
-		expect(wrapper.find({className: `resource-name`}).props().children).toBe(`test resource name`)
-		wrapper.find({className: `resource-edit`}).at(0).simulate(`click`)
+		expect(wrapper.find({id: `resource-name`}).props().children).toBe(`test resource name`)
+		wrapper.find({id: `resource-edit`}).at(0).simulate(`click`)
 	})
 })

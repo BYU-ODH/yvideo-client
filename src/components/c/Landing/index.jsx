@@ -15,7 +15,7 @@ class Landing extends PureComponent {
 		const {
 			toggleOverlay,
 			handleLogin,
-			handlePublicCollections,
+			// handlePublicCollections,
 		} = this.props.handlers
 
 		return (
@@ -25,12 +25,12 @@ class Landing extends PureComponent {
 
 				<Welcome>
 					<div>
-						<h1>YVIDEO&nbsp;</h1>
 						<Logo />
+						<h1>Y-VIDEO</h1>
 					</div>
 
 					<div className='button-wrapper'>
-						<Button className='primary' onClick={handleLogin}>Sign In</Button>
+						<Button id='primary' className='primary' onClick={handleLogin}>Sign In</Button>
 						<Button className='secondary' onClick={toggleOverlay}>About</Button>
 						<Button className='secondary'><Link to={`/search-public-collections`}>Public Videos</Link></Button>
 						{/* <Button className='secondary' onClick={toggleOverlay}>Public</Button> */}

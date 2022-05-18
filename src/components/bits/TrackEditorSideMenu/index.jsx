@@ -138,18 +138,22 @@ const TrackEditorSideMenu = props => {
 									<label>End</label>
 								</div>
 								<div className='center'>
-									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`} onKeyUp={e => {e.stopPropagation()}}
-										onChange={e => handleEditEventBTimeChange(e)}
-										onBlur={e => handleEditEventBTimeFinalChange(e)}
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
-										onMouseLeave={e => toggleTip()}
+									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`} onKeyUp={e => {
+										e.stopPropagation()
+									}}
+									onChange={e => handleEditEventBTimeChange(e)}
+									onBlur={e => handleEditEventBTimeFinalChange(e)}
+									onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
+									onMouseLeave={e => toggleTip()}
 									/>
-									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`} onKeyUp={e => {e.stopPropagation()}}
-										style={{ visibility: `${event.type === "Pause" ? (`hidden`) : (`visible`)}` }}
-										onChange={e => handleEditEventETimeChange(e)}
-										onBlur={e => handleEditEventETimeFinalChange(e)}
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
-										onMouseLeave={e => toggleTip()}
+									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`} onKeyUp={e => {
+										e.stopPropagation()
+									}}
+									style={{ visibility: `${event.type === `Pause` ? `hidden` : `visible`}` }}
+									onChange={e => handleEditEventETimeChange(e)}
+									onBlur={e => handleEditEventETimeFinalChange(e)}
+									onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
+									onMouseLeave={e => toggleTip()}
 									/>
 								</div>
 								<br/>
@@ -185,7 +189,7 @@ const TrackEditorSideMenu = props => {
 						<div className='censorMenu'>
 							<label>Blur Times</label><br/><br/>
 							<table>
-								<thead className={'tableHeader'}>
+								<thead className={`tableHeader`}>
 									<tr>
 										<th align='center'>Time</th>
 										<th align='center'>X</th>
@@ -195,7 +199,7 @@ const TrackEditorSideMenu = props => {
 										<th align='center'>&nbsp;</th>
 									</tr>
 								</thead>
-								<tbody className={"censorList"}>
+								<tbody className={`censorList`}>
 									{event.type === `Censor`?
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
@@ -204,7 +208,7 @@ const TrackEditorSideMenu = props => {
 												<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
 												<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
 												<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][4]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
-												<td><img className={`trashIcon`} src={`${trashIcon}`} onClick={() => handleCensorRemove(item)}/></td>
+												<td><img className={`trashIcon`} src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
 											</tr>
 										))
 										:``}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Container from '../../../../components/modals/containers/RegistorInstructorsContainer'
 import { Form, Button } from '../../../../components/modals/components/RegisterInstructors/styles'
 import { Provider } from 'react-redux'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import services from 'services'
@@ -7,7 +7,6 @@ import { Menu } from 'components'
 import { Tooltip } from 'components/bits'
 
 import { getInitials } from 'lib/util'
-import User from 'models/User'
 
 const MenuContainer = props => {
 
@@ -16,6 +15,8 @@ const MenuContainer = props => {
 		menuActive,
 		logout,
 		toggleMenu,
+		menuOpen,
+		menuClose,
 		toggleTip,
 		editorStyle,
 	} = props
@@ -66,6 +67,8 @@ const MenuContainer = props => {
 
 	const handlers = {
 		toggleMenu,
+		menuOpen,
+		menuClose,
 		handleLogout,
 		handleShowTip,
 		toggleTip,
@@ -83,6 +86,8 @@ const mapStoreToProps = ({ authStore, interfaceStore }) => ({
 const mapDispatchToProps = {
 	logout: services.authService.logout,
 	toggleMenu: services.interfaceService.toggleMenu,
+	menuOpen: services.interfaceService.menuOpen,
+	menuClose: services.interfaceService.menuClose,
 	toggleTip: services.interfaceService.toggleTip,
 }
 

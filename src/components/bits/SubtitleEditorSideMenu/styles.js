@@ -7,6 +7,7 @@ const Style = styled.div`
 	& .allSubs {
 		margin-top: 1rem;
 		padding-top: 2rem;
+		scroll-behavior:smooth;
 	}
 
 	& .closeEditor {
@@ -52,7 +53,7 @@ const Style = styled.div`
 	}
 
 	& .subActive {
-    background-color: #eee;
+    background-color: rgba(5, 130, 202, 0.3);
 	}
 
 	& .container {
@@ -65,7 +66,7 @@ const Style = styled.div`
 			padding: 1rem 0;
 
 			:hover {
-				background-color: #eee;
+				background-color: rgba(5, 130, 202, 0.3);
 			}
 
 			& .subText {

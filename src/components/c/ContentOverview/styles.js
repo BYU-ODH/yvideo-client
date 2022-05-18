@@ -1,6 +1,6 @@
 import styled, { keyframes, css} from 'styled-components'
 import { Link } from 'react-router-dom'
-
+import saveIcon from 'assets/save.svg'
 import translation from 'assets/translation.svg'
 import captions from 'assets/captions.svg'
 import annotations from 'assets/annotations.svg'
@@ -109,6 +109,28 @@ export const Preview = styled.div`
 	@media screen and (max-width: 1000px) {
 		align-items: center;
 	}
+
+	:hover{
+		& .LinksWrapper{
+			& .video-editor-wrapper{
+				& .video-editor{
+					background: url(${videoeditorIcon}) center no-repeat;
+				}
+			}
+
+			& .subtitle-editor-wrapper{
+				& .subtitle-editor {
+					background: url(${subtitlesIcon}) center no-repeat;
+				}
+			}
+
+			& .clip-manager-wrapper{
+				& .clip-manager {
+					background: url(${clipIcon}) center no-repeat;
+				}
+			}
+		}
+	}
 `
 
 const TextButton = css`
@@ -123,6 +145,23 @@ export const EditButton = styled.button`
 	${TextButton}
 
 	font-size: 1.5rem;
+	font-weight: bold;
+  display: flex;
+	position: absolute;
+	right: 0;
+	margin-right: 5rem;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center !important;
+  & > span {
+    margin-right: .4rem;
+  }
+`
+export const SaveIcon = styled.span`
+  background: url(${saveIcon}) center no-repeat;
+  height: 1.8rem;
+  width: 1.65rem;
 `
 
 export const Icon = styled.li`
@@ -246,26 +285,6 @@ export const StyledLink = styled(Link)`
 
 export const LinksWrapper = styled.div`
 	align-items: center;
-
-	:hover{
-		& .video-editor-wrapper{
-			& .video-editor{
-				background: url(${videoeditorIcon}) center no-repeat;
-			}
-		}
-
-		& .subtitle-editor-wrapper{
-			& .subtitle-editor {
-				background: url(${subtitlesIcon}) center no-repeat;
-			}
-		}
-
-		& .clip-manager-wrapper{
-			& .clip-manager {
-				background: url(${clipIcon}) center no-repeat;
-			}
-		}
-	}
 `
 
 export const IconWrapper = styled.div`
@@ -292,9 +311,6 @@ export const InnerContainer = styled.div`
 	& .tags {
 		display: flex;
 		flex-wrap: wrap;
-	}
-
-	& .tag-input {
 	}
 
 	@media screen and (max-width: 1000px) {
@@ -336,7 +352,7 @@ export const Column = styled.div`
 		border-bottom: 1px solid #c4c4c4;
 	}
 
-	& .add-tag {
+	& #add-tag {
 		border-radius: 10px;
     font-size: 1.3rem;
     color: white;

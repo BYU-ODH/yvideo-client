@@ -1,7 +1,7 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
-import { Router, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import Container from '../../../containers/c/ManagerContainer'
 import { interfaceService } from 'services'
@@ -52,9 +52,9 @@ describe(`manager container test`, () => {
 		// })
 
 		// TODO: how to properly test toggleModal is initiated. I cannot find the way to see the interfaceStore is updated
-		wrapper.find({"className" : `collection-create`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `collection-create`}).at(0).simulate(`click`)
 
-		wrapper.find({"className" : `help-document`}).simulate(`click`)
+		wrapper.find({"id" : `help-document`}).simulate(`click`)
 	})
 
 	it(`mount container with empty store`, () => {
@@ -65,6 +65,6 @@ describe(`manager container test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		expect(wrapper.find({"className" : `no-collections-body`}).at(0).props().children).toBe(`Select a Collection to get started.`)
+		expect(wrapper.find({"id" : `no-collections-body`}).at(0).props().children).toBe(`Select a Collection to get started.`)
 	})
 })

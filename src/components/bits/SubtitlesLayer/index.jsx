@@ -28,6 +28,7 @@ const SubtitlesLayer = props => {
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
@@ -40,6 +41,7 @@ const SubtitlesLayer = props => {
 
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
+		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
 		const beginTimePercentage = d.x /layerWidth*100*videoLength/100
@@ -78,6 +80,7 @@ const SubtitlesLayer = props => {
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
+		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
 		const difference = delta.width/layerWidth*100*videoLength/100
@@ -137,7 +140,7 @@ const SubtitlesLayer = props => {
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
-				onDrag={(e, d) => handleDrag(d, event, index)}
+				onDragStop={(e, d) => handleDrag(d, event, index)}
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}

@@ -50,9 +50,7 @@ const viewstate = {
 	],
 	contentIds: [110],
 	user,
-	allPublic: [
-		{ isSubscribed: true },
-	],
+	allPublic: [{ isSubscribed: true }],
 	publicCollections: [
 		collection1,
 		collection2,

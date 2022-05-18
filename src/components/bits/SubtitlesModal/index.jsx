@@ -42,7 +42,7 @@ const SubtitlesModal = props => {
 									<td className={`modalSectionRight`}>
 										<h4 style={{margin:`10px`}}>Import Srt or Vtt File</h4>
 										<input style={{margin:`10px`,width: `100%`}} type={`file`} accept={`.srt,.vtt`} id={`subFileInput`}/>
-										<button className={`create-button`} style={{margin:`10px`}} className={`modalButton`} onClick={()=>createLayer.fromFile()}>Submit</button>
+										<button className={`create-button modalButton`} style={{margin:`10px`}} onClick={()=>createLayer.fromFile()}>Submit</button>
 									</td>
 								</tr>
 							</table>

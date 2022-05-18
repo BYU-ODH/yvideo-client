@@ -15,8 +15,8 @@ const SearchPublicCollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		content,
-		setContent,
-		collections,
+		// setContent,
+		// collections,
 		searchedPublicCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,
@@ -50,6 +50,7 @@ const SearchPublicCollectionsContainer = props => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setHeaderBorder, searchedPublicCollections.length])
 
 	const defaultSearch = async() => {

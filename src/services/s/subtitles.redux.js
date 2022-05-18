@@ -28,7 +28,7 @@ export default class SubtitlesService {
 	}
 
 	store = {
-		errorMessage: '',
+		errorMessage: ``,
 		cache: [],
 		loading: false,
 		lastFetched: 0,
@@ -63,14 +63,14 @@ export default class SubtitlesService {
 		case SUBTITLES_ABORT:
 			return {
 				...store,
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 			}
 
 		case SUBTITLES_CLEAN:
 			return {
 				...store,
-				errorMessage: '',
+				errorMessage: ``,
 				cache: [],
 				contentId: ``,
 			}
@@ -82,12 +82,12 @@ export default class SubtitlesService {
 					...store.cache,
 					...action.payload.subtitles,
 				},
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 			}
 
 		case SUBTITLES_ERROR:
-			//alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
+			// alert(`${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`)
 			return {
 				...store,
 				errorMessage: `${action.payload.error.response.data}. Status: ${action.payload.error.response.status}`,
@@ -100,7 +100,7 @@ export default class SubtitlesService {
 				...store,
 				cache: action.payload.subtitles,
 				contentId: action.payload.id,
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 				lastFetched: Date.now(),
 			}
@@ -109,20 +109,20 @@ export default class SubtitlesService {
 			return {
 				...store,
 				cache:action.payload.subtitles,
-				errorMessage: '',
+				errorMessage: ``,
 				loading: false,
 			}
 		case ACTIVE_UPDATE:
 			return {
 				...store,
 				active: action.payload.active,
-				errorMessage: '',
+				errorMessage: ``,
 			}
 		case SET_CONTENT_ID:
 			return{
 				...store,
 				contentId: action.payload.id,
-				errorMessage: '',
+				errorMessage: ``,
 			}
 		default:
 			return store
@@ -158,7 +158,7 @@ export default class SubtitlesService {
 			dispatch(this.actions.subtitlesGet(result, id))
 			return result
 		} catch (error) {
-			console.error(error.message)
+			console.error(error.message) // eslint-disable-line no-console
 			dispatch(this.actions.subtitlesError(error))
 			return[]
 		}
@@ -176,7 +176,7 @@ export default class SubtitlesService {
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
 			tempSub[`content`] = JSON.stringify(subtitle[`content`])
-			tempSub['words'] = ''
+			tempSub[`words`] = ``
 			const result = await apiProxy.subtitles.post(tempSub)
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))
@@ -193,17 +193,15 @@ export default class SubtitlesService {
 
 		try {
 			const tempSub = {}
-			if(typeof subtitle['content'] !== 'string'){
+			if(typeof subtitle[`content`] !== `string`)
 				tempSub[`content`] = JSON.stringify(subtitle[`content`])
-			}
-			else {
-				tempSub['content'] = subtitle['content']
-			}
+			else
+				tempSub[`content`] = subtitle[`content`]
+
 			tempSub[`language`] = subtitle[`language`]
 			tempSub[`title`] = subtitle[`title`]
 			tempSub[`content-id`] = subtitle[`content-id`]
-			tempSub['words'] = subtitle['words']
-			// console.log(tempSub)
+			tempSub[`words`] = subtitle[`words`]
 
 			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
 		} catch (error) {

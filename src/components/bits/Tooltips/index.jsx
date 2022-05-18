@@ -61,7 +61,7 @@ export const ToolTip = (props) => {
 			document.getElementById(`tip-box`).style.opacity = 0
 		}
 
-		if(tip.props != undefined && tip.props.name){
+		if(tip.props && tip.props.name){
 			setName(tip.props.name)
 			if(tip.props.position)
 				setPosition(tip.props.position)
@@ -70,22 +70,28 @@ export const ToolTip = (props) => {
 	}, [tip, name, position])
 
 	const tips = {
+		"actions": `Actions`,
+		"closed-captions": `On/Off Captions`,
+		"collection-add-content": `Add content to collection`,
+		"collection-edit-name": `Edit collection name`,
+		"collection-permissions": `Edit collection users`,
+		"collection-publish": `Show/Hide collection`,
+		"fullscr": `Full-screen`,
 		"help": `Help`,
 		"list-block": `Change view`,
 		"manage-collections": `Edit collections`,
 		"menu": `Menu`,
-		"collection-publish": `Show/Hide collection`,
-		"collection-permissions": `Edit collection users`,
-		"collection-edit-name": `Edit collection name`,
-		"collection-add-content": `Add content to collection`,
-		"playback-rate": `Change video speed`,
-		"closed-captions": `On/Off Captions`,
-		"transcript-hide": `Show/Hide`,
-		"transcript-seek": `Click to seek`,
-		"te-zoom": `Drag to zoom in/out`,
-		"actions": `Actions`,
+		"next-sub": `Next Subtitle`,
 		"MMSSMS": `MM:SS`,
 		"HMMSSMS": `H:MM:SS`,
+		"play": `Play`,
+		"playback-rate": `Change video speed`,
+		"prev-sub": `Previous Subtitle`,
+		"restart": `Start Over`,
+		"te-zoom": `Drag to zoom in/out`,
+		"transcript-hide": `Show/Hide`,
+		"transcript-seek": `Click to seek`,
+		"definitions-disabled": `Definitions are not supported for this language`,
 	}
 
 	// console.log("POSITION", position)

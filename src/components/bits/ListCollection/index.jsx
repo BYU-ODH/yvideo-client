@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem, ListItemDropDown } from 'components/bits'
 
-import Style, { Header, Body, PublicButton } from './styles'
+import Style, { Header, Body } from './styles'
 
 class ListCollection extends PureComponent {
 	state = {
@@ -23,12 +23,14 @@ class ListCollection extends PureComponent {
 			content,
 		} = this.props.collection
 
+		// eslint-disable-next-line no-unused-vars
 		const contentIds = this.props.contentIds
 
 		const publishContent = content ? content.filter(item => item.published) : []
 
-
-		publishContent.sort((a, b) => {return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1})
+		publishContent.sort((a, b) => {
+			return a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ? 1 : -1
+		})
 
 		if (!content || this.props.collection.published !== true ) return null
 

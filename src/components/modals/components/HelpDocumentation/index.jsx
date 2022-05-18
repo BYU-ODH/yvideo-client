@@ -1,84 +1,81 @@
 import React, { PureComponent } from 'react'
 
-import { Container, Back, CloseHelp, Tutorial } from './styles'
-
-import ReactPlayer from 'react-player'
+import { Container, Back, CloseHelp } from './styles'
 
 import closeIcon from 'assets/x.svg'
 
 export default class HelpDocumentation extends PureComponent {
-	constructor(props){
-		super(props)
-	}
 
 	componentDidMount(){
 		document.getElementById(`content`).innerHTML += this.props.viewstate.help.htmlInstruction
 	}
 
 	render() {
-
+		// eslint-disable-next-line no-unused-vars
 		const { name, help } = this.props.viewstate
 
 		return (
 			<>
-				<Back>
-					<Container id='help-documentation-container' onScroll={this.handleScroll}>
-						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img src={closeIcon} /></CloseHelp></h1>
+				<Back onClick={this.props.toggleModal}>
+					<Container id='help-documentation-container' onClick={e => {
+						e.stopPropagation()
+					}} onScroll={this.handleScroll}>
+						<h1>{name} <CloseHelp onClick={this.props.toggleModal}><img alt='' src={closeIcon} /></CloseHelp></h1>
 						<div id='content'>
 						</div>
 						{
-							name === "Manage Resource" ? (
-							<>
-								<div className="video-section">
-									<h2>Create Resource Video Tutorial</h2>
-									<div>
-										<video controls>
-											<source src={`/videos/create-resource.webm`} type="video/webm"/>
-										</video>
+							name === `Manage Resource` ? (
+								<>
+									<div className='video-section'>
+										<h2>Create Resource Video Tutorial</h2>
+										<div>
+											<video controls>
+												<source src={`/videos/create-resource.webm`} type='video/webm'/>
+											</video>
+										</div>
 									</div>
-								</div>
-								<br/>
-							</>
-							) : (null)
+									<br/>
+								</>
+							) : null
 						}
-						<div className="video-section">
+						<div className='video-section'>
 							<h2>{name} Video Tutorial</h2>
 							<div>
 								<video controls>
-									<source src={`/videos/${name.toLowerCase().replace(" ", "-")}.webm`} type="video/webm"/>
+									<source src={`/videos/${name.toLowerCase().replace(` `, `-`)}.webm`} type='video/webm'/>
 								</video>
 							</div>
 						</div>
 						<br/>
 						{
-							name === "Manage Collections" ? (
-							<>
-								<div className="video-section">
-									<h2>Manage Content Video Tutorial</h2>
-									<div>
-										<video controls>
-											<source src={`/videos/manage-content.webm`} type="video/webm"/>
-										</video>
+							name === `Manage Collections` ? (
+								<>
+									<div className='video-section'>
+										<h2>Manage Content Video Tutorial</h2>
+										<div>
+											<video controls>
+												<source src={`/videos/manage-content.webm`} type='video/webm'/>
+											</video>
+										</div>
 									</div>
-								</div>
-								<div className="video-section">
-									<h2>Create Content From Online Video Tutorial</h2>
-									<div>
-										<video controls>
-											<source src={`/videos/content-from-online.webm`} type="video/webm"/>
-										</video>
+									<div className='video-section'>
+										<h2>Create Content From Online Video Tutorial</h2>
+										<div>
+											<video controls>
+												<source src={`/videos/content-from-online.webm`} type='video/webm'/>
+											</video>
+										</div>
 									</div>
-								</div>
-								<div className="video-section">
-									<h2>Create Content From Resource Video Tutorial</h2>
-									<div>
-										<video controls>
-											<source src={`/videos/content-from-resource.webm`} type="video/webm"/>
-										</video>
+									<div className='video-section'>
+										<h2>Create Content From Resource Video Tutorial</h2>
+										<div>
+											<video controls>
+												<source src={`/videos/content-from-resource.webm`} type='video/webm'/>
+											</video>
+										</div>
 									</div>
-								</div>
-							</>
-							) : (null)
+								</>
+							) : null
 						}
 						<br/>
 					</Container>

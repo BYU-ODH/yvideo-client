@@ -159,7 +159,7 @@ export default class AdminService {
 			}
 
 		case ADMIN_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
 				data: null,
@@ -363,7 +363,7 @@ export default class AdminService {
 
 				dispatch(this.actions.adminSearch(finalData))
 			} catch (error) {
-				console.error(error.message)
+				console.error(error.message) // eslint-disable-line no-console
 				dispatch(this.actions.adminError(error))
 			}
 
@@ -442,7 +442,7 @@ export default class AdminService {
 			}
 
 		} catch (error) {
-			console.error(error.message)
+			console.error(error.message) // eslint-disable-line no-console
 			dispatch(this.actions.adminError(error))
 		}
 	}
@@ -481,7 +481,7 @@ export default class AdminService {
 				dispatch(this.actions.adminSearchPublicCollections(result))
 
 			} catch (error) {
-				console.error(error.message)
+				console.error(error.message) // eslint-disable-line no-console
 				dispatch(this.actions.adminError(error))
 			}
 
@@ -511,7 +511,7 @@ export default class AdminService {
 				dispatch(this.actions.adminSearchProfessors(profArray))
 
 			} catch (error) {
-				console.error(error.message)
+				console.error(error.message) // eslint-disable-line no-console
 				dispatch(this.actions.adminError(error))
 			}
 
@@ -529,7 +529,7 @@ export default class AdminService {
 			dispatch(this.actions.adminSetProfessor(new User(results)))
 
 		} catch (error) {
-			console.error(`ERRROR`, error.message)
+			console.error(`ERROR: `, error.message) // eslint-disable-line no-console
 			dispatch(this.actions.adminError(error))
 		}
 	}
@@ -555,7 +555,7 @@ export default class AdminService {
 				return finalData
 
 			} catch (error) {
-				console.error(error.message)
+				console.error(error.message) // eslint-disable-line no-console
 				dispatch(this.actions.adminError(error))
 			}
 
@@ -573,7 +573,7 @@ export default class AdminService {
 			dispatch(this.actions.adminGetUserById(new User(results)))
 
 		} catch (error) {
-			console.error(`ERRROR`, error.message)
+			console.error(`ERROR: `, error.message) // eslint-disable-line no-console
 			dispatch(this.actions.adminError(error))
 		}
 	}
@@ -587,7 +587,7 @@ export default class AdminService {
 			dispatch(this.actions.adminEmptySearchedUser())
 
 		} catch (error) {
-			console.error(`ERRROR`, error.message)
+			console.error(`ERROR: `, error.message) // eslint-disable-line no-console
 			dispatch(this.actions.adminError(error))
 		}
 	}
@@ -609,7 +609,7 @@ export default class AdminService {
 				dispatch(this.actions.adminGetCollectionContent(results))
 
 			} catch (error) {
-				console.error(error.message)
+				console.error(error.message) // eslint-disable-line no-console
 				dispatch(this.actions.adminError(error))
 			}
 
@@ -621,10 +621,11 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.content.post(content)
 
 		} catch (error) {
-			console.log(`errorr api proxy ?`)
+
 			dispatch(this.actions.adminError(error))
 		}
 	}
@@ -634,7 +635,7 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		try {
-
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
 
 		} catch (error) {
@@ -700,7 +701,6 @@ export default class AdminService {
 		// Grab the current collection from the admin store
 		const professorId = { ...getState().adminStore.professor.id }
 		let currentCollection
-		console.log(collections)
 		Object.keys(collections).forEach(item => {
 			const {id} = collections[item]
 			if (id === colId){
@@ -708,8 +708,6 @@ export default class AdminService {
 				return
 			}
 		})
-
-		// console.log(collections)
 
 		let abort = false
 
@@ -769,7 +767,7 @@ export default class AdminService {
 			const currentResults = [...getState().adminStore.data]
 
 			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId) ,1)
-
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.admin.collection.delete(collectionId)
 
 			dispatch(this.actions.adminCollectionDelete(currentResults))
@@ -795,6 +793,7 @@ export default class AdminService {
 		}
 
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.admin.content.delete(contentId)
 
 			if(fromAdmin)
@@ -816,7 +815,7 @@ export default class AdminService {
 		currentResults.splice(currentResults.findIndex((element) => element.id === userId) ,1)
 
 		try {
-
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.admin.user.deleteWithCollections(userId)
 
 			dispatch(this.actions.adminUserDelete(currentResults))
@@ -829,6 +828,7 @@ export default class AdminService {
 	updateUserRole = (role, userId) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.admin.user.edit(role, userId)
 			const currentResults = [...getState().adminStore.data]
 

@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import HexLogo from 'assets/hexborder.svg'
 
 export const Back = styled.div`
 	position: fixed;
@@ -97,6 +96,14 @@ export const Container = styled.div`
 					border-radius: 10px;
 				}
 			}
+			& kbd {
+				background-color: #dddddd;
+				margin-left: .5rem;
+				padding-left: 8px;
+				padding-right: 8px;
+				border-radius: 5px;
+				box-shadow: 2px 2px 3px rgba(0,0,0, 0.2);
+			}
 
 			& li {
 				padding: 3px 0px 3px 0px;
@@ -160,6 +167,9 @@ export const CloseHelp = styled.span`
     position: absolute;
     top: 10px;
     right: 20px;
+	}
+	:hover {
+		cursor: pointer;
 	}
 `
 

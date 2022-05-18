@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-
+import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
 import { Prompt } from 'react-router'
 
@@ -9,6 +9,7 @@ import helpIcon from 'assets/help/help-icon-black.svg'
 import Style, {
 	EditButton,
 	Icon,
+	SaveIcon,
 	Preview,
 	PublishButton,
 	RemoveButton,
@@ -36,6 +37,11 @@ export default class ContentOverview extends PureComponent {
 				</Style>
 			)
 		}
+		const SUPPORTED_LANGUAGES = [
+			`German`,
+			`Spanish`,
+			`Russian`,
+		]
 
 		const {
 			editing,
@@ -77,9 +83,11 @@ export default class ContentOverview extends PureComponent {
 
 		return (
 			<Style>
-				<Preview>
+				<Preview onClick={handleToggleEdit}>
 					<div>
-						<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='8rem' width='14rem' heightSm='4.5rem' widthSm='6.5rem' />
+						<Link to={`/player/${content.id}`}>
+							<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='12rem' width='21rem' heightSm='4.5rem' widthSm='6.5rem' />
+						</Link>
 					</div>
 					<div>
 						{editing ?
@@ -101,14 +109,14 @@ export default class ContentOverview extends PureComponent {
 						}
 					</div>
 					{editing ||
-						<LinksWrapper>
+						<LinksWrapper className='LinksWrapper'>
 							<IconWrapper onClick={handleLinks} className='video-editor-wrapper'><ContentIcons className='video-editor'/><StyledLink to={`/videoeditor/${content.id}`}>Video Editor</StyledLink></IconWrapper>
 							<IconWrapper onClick={handleLinks} className='subtitle-editor-wrapper'><ContentIcons className='subtitle-editor'/><StyledLink to={`/subtileeditor/${content.id}`}>Subtitle Editor</StyledLink></IconWrapper>
 							<IconWrapper onClick={handleLinks} className='clip-manager-wrapper'><ContentIcons className='clip-manager'/><StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink></IconWrapper>
 						</LinksWrapper>
 					}
 					{!editing && <SettingsIcon onClick={handleToggleEdit} />}
-					<EditButton className='edit-button' onClick={handleToggleEdit}>{editing ? `Save` : ``}</EditButton>
+					<EditButton id='edit-button' onClick={handleToggleEdit}>{editing ? <><SaveIcon/>Save</> : <></>}</EditButton>
 				</Preview>
 				{editing &&
 					<InnerContainer>
@@ -121,18 +129,29 @@ export default class ContentOverview extends PureComponent {
 							</div>
 							<h4>
 								Allow automatic definitions
-								<SwitchToggle className='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
+								<div
+									onMouseEnter={(e) =>{
+										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) && handleShowTip(`definitions-disabled`, {x: e.target.getBoundingClientRect().x + 45, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})
+									}}
+									onMouseOut={(e) => {
+										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) && toggleTip()
+									}}
+									style={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) ? {cursor:`not-allowed`}:{cursor:`auto`}}
+								>
+									<SwitchToggle
+										disabled={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)} id='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
+								</div>
 							</h4>
 							<h4>
 								Captions
-								<SwitchToggle className='captions-toggle'on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
+								<SwitchToggle id='captions-toggle'on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
 							</h4>
 						</Column>
 						<Column>
 							<h4>Tags</h4>
 							<div style={{ display: `flex` }}>
-								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} className='tag-input' />
-								<button className={`add-tag`} onClick={addTag}>Add</button>
+								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} id='tag-input' />
+								<button id={`add-tag`} onClick={addTag}>Add</button>
 							</div>
 							<br/>
 							<div className='tags'>
