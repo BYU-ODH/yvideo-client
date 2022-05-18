@@ -50,6 +50,10 @@ export const Header = styled.div`
 			flex: 2;
 			color: #a4a4a4;
 		}
+		@media screen and (max-width: 425px){
+			margin: 0 1rem;
+			grid-template-columns: 8rem auto 1.5rem;
+		}
 	}
 `
 
@@ -87,6 +91,10 @@ export const Clip = styled.div`
 			font-weight:300;
 		}
 
+		@media screen and (max-width: 425px){
+			margin: 0 1rem;
+			grid-template-columns: 8rem auto;
+		}
 `
 export const Icon = styled.li`
 	width: 2rem;

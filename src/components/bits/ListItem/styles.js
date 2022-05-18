@@ -21,11 +21,14 @@ export const Style = styled.div`
 		color: black;
 		text-decoration: none;
 		margin: 0 9rem;
-		
+
 		& .name h4 {
 			font-weight: 500;
 		}
-
+		@media screen and (max-width: 425px){
+			margin: 0 1rem;
+			grid-template-columns: 8rem auto;
+		}
 		& ul {
 			margin: 0;
 			padding: 0;
