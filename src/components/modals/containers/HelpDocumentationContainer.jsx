@@ -371,10 +371,10 @@ const HelpDocumentationContainer = props => {
 					<h3>Resources</h3>
 					<p style="text-align: left; width: 100%;">
 						Y-video stores files in a server, and the same file can be used to create more than one content. <b>Resources let you upload files to create content</b>. You can learn to create a resource following
-						the video tutorial below
+						the video tutorial below.
 					</p>
 					<br/>
-					<label><b>Resource tips</b></label><br/>
+					<label><b>Resource tips:</b></label><br/>
 					<ul>
 						<li>The resource is a general placeholder for your files</li>
 						<li>A single resouce lets you upload files to work with different languages</li>
