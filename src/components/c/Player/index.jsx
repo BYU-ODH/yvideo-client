@@ -130,17 +130,7 @@ export default class Player extends Component {
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
-<<<<<<< HEAD
 			// handleOnReady
-=======
-			// handleBlank,
-			// handleShowComment,
-			// handleToggleTranscript,
-			// handleShowHelp,
-			// handleShowTip,
-			// setCensorActive,
-			// setCensorPosition,
->>>>>>> bcc80a3157dfa574c86eaec593c3cdf177cc2135
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
