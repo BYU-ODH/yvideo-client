@@ -126,9 +126,9 @@ const ClipEditor = props => {
 		}
 		const layerContainer = document.getElementByClassName(`layer-container`)
 		const events = document.getElementsByClassName(`events`)
-		if(layerContainer && events[0].clientWidth > 0) {
+		if(layerContainer && events[0].clientWidth !== 0) {
 			setScrollBar(
-				layerContainer[0].clientWidth * 100 / events[0].clientWidth
+				layerContainer[0].clientWidth * 100 / events[0].clientWidth,
 			)
 		}
 	}
@@ -284,7 +284,10 @@ const ClipEditor = props => {
 	}
 
 	const createClip = () =>{
-		const id = Object.keys(clipList).length === 0 ? `0` : `${parseInt(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+		const id = Object.keys(clipList).length === 0 ?
+			`0`
+			:
+			`${parseInt(Object.keys(clipList).sort((a, b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
 		const clip = {
 			start: 0,
 			end: 60,
@@ -313,7 +316,7 @@ const ClipEditor = props => {
 	}
 	const saveClips = () => {
 		setIsLoading(true)
-		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length ===0)
+		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length === 0)
 			return
 		const clips = {...clipList}
 		const content = {...currentContent}
@@ -374,7 +377,7 @@ const ClipEditor = props => {
 								))}
 								{Object.keys(clipList).map((clip,index)=>(
 									<div className={`flex`}>
-										<div className={`handle`} style={active===clip?{backgroundColor:`#002e5d`,color:`#fff`}:{backgroundColor:`#fff`,color:`#000`}}>
+										<div className={`handle`} style={active===clip ? {backgroundColor:`#002e5d`,color:`#fff`} : {backgroundColor:`#fff`,color:`#000`}}>
 											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
 										<ClipLayer
@@ -467,21 +470,37 @@ const ClipEditor = props => {
 								<tbody>
 									{
 										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-											<div className={`singleClip ${i === clipIndex ? `clipActive`:``}`}>
+											<div className={`singleClip ${i === clipIndex ? `clipActive` : ``}`}>
 												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
 													<td>
 														<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
 															onChange={(e) => setStartTime(e.target.value, `input`,item)}
 															onBlur={(e) => setStartTime(e.target.value, `onBlur`,item)}
-															onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-5, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+															onMouseEnter={e => handleShowTip(
+																`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+																{
+																	x: e.target.getBoundingClientRect().x - 5,
+																	y: e.target.getBoundingClientRect().y + 5,
+																	width: e.currentTarget.offsetWidth + 20,
+																},
+															)
+															}
 															onMouseLeave={e => toggleTip()}
 														/>
 													</td>
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
 														onChange={(e) => setEndTime(e.target.value, `input`,item)}
 														onBlur={(e) => setEndTime(e.target.value, `onBlur`,item)}
-														onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+35, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+														onMouseEnter={e => handleShowTip(
+															`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+															{
+																x: e.target.getBoundingClientRect().x + 35,
+																y: e.target.getBoundingClientRect().y + 5,
+																width: e.currentTarget.offsetWidth + 20,
+															},
+														)
+														}
 														onMouseLeave={e => toggleTip()}
 													/>
 													</td>
