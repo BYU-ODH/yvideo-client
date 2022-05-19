@@ -705,7 +705,12 @@ const SubtitleEditor = props => {
 									<div className={`handle`} >
 										<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
 											<SubtitlesCard
-												title={sub.title !== `` ? sub.title : isEdit ? `` : `No Language`}
+												title={sub.title !== `` ?
+													sub.title
+													:
+													isEdit ?
+														`` : `No Language`
+												}
 												updateTitle={updateSubLayerTitle}
 												isEdit={isEdit}
 												subLayer={subLayerToEdit}

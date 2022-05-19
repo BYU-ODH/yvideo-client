@@ -38,7 +38,10 @@ const TrackLayer = props => {
 
 			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
 
-			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? 46 : 26 * (overlapCount.length + 1)}px`
+			document.getElementById(`layer-${layerIndex}`).style.height =
+			`${overlapCount.length !== 0 ?
+				26 * (overlapCount.length + 1)
+				: 46 }px`
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
