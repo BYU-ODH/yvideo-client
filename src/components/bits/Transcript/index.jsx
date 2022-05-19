@@ -121,26 +121,60 @@ const Transcript = props => {
 		<Style style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
-					<><img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip(`transcript-hide`, { x: e.target.getBoundingClientRect().x - 65, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
-						onMouseLeave={e => toggleTip()} />
-					<Help src={helpIcon} onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x - 65, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth })}
-						onMouseLeave={e => toggleTip()} /></>
+					<>
+						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+							onMouseEnter={e => handleShowTip(`transcript-hide`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+						<Help src={helpIcon} onClick={handleShowHelp}
+							onMouseEnter={e => handleShowTip(`help`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+					</>
 					:
-					<><img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip(`transcript-hide`, { x: e.target.getBoundingClientRect().x - 20, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth })}
-						onMouseLeave={e => toggleTip()} />
-					<Help src={helpIcon} onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x - 20, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth })}
-						onMouseLeave={e => toggleTip()} /></>
+					<>
+						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+							onMouseEnter={e => handleShowTip(`transcript-hide`,
+								{
+									x: e.target.getBoundingClientRect().x - 20,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+						<Help src={helpIcon} onClick={handleShowHelp}
+							onMouseEnter={e => handleShowTip(`help`,
+								{
+									x: e.target.getBoundingClientRect().x - 20,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+					</>
 				}
 
 			</div>
 			<div className={isMobile ? `main-bar main-mobile` : `main-bar`} >
 				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
 					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip(`transcript-hide`, {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`transcript-hide`,
+							{
+								x: e.target.getBoundingClientRect().x - 80,
+								y: e.target.getBoundingClientRect().y - 25,
+								width: e.currentTarget.offsetWidth
+							})
+						}
 						onMouseLeave={e => toggleTip()}
 					/>
 				</div>

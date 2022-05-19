@@ -17,8 +17,26 @@ const ClipLayer = props => {
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
-	const style = active !== clipName ? {top: `0px`, backgroundColor:`#fff`, border:`1px solid #0582ca`, color:`#000`,fontSize:`1.3rem`, justifyContent:`center`, alignItems:`center`}
-		: { left: `${start}% !important`, top: `0px`, backgroundColor:`#002e5d`, border:`1px solid #0582ca`, color:`#fff`, fontSize:`1.3rem`, justifyContent:`center`, alignItems:`center`}
+	const style = active !== clipName ?
+		{
+			top: `0px`,
+			backgroundColor:`#fff`,
+			border:`1px solid #0582ca`,
+			color:`#000`,fontSize:`1.3rem`,
+			justifyContent:`center`,
+			alignItems:`center`,
+		}
+		:
+		{
+			left: `${start}% !important`,
+			top: `0px`,
+			backgroundColor:`#002e5d`,
+			border:`1px solid #0582ca`,
+			color:`#fff`,
+			fontSize:`1.3rem`,
+			justifyContent:`center`,
+			alignItems:`center`,
+		}
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -94,7 +112,11 @@ const ClipLayer = props => {
 						<Rnd
 							ref={dragRef}
 							size={{width: `${(end - start)/videoLength * layerWidth}px`, height: `46px`}}
-							position={{ x: start/videoLength * layerWidth === Infinity || isNaN(start/videoLength * layerWidth) ? 0: start/videoLength * layerWidth , y: 0}}
+							position={
+								{
+									x: start/videoLength * layerWidth === Infinity || isNaN(start/videoLength * layerWidth) ? 0 : start/videoLength * layerWidth ,
+									y: 0,
+								}}
 							enableResizing={Enable}
 							dragAxis='x'
 							bounds={`.clip-layer-${clipName}`}
@@ -108,7 +130,6 @@ const ClipLayer = props => {
 							// onClick={() => toggleEditor(layerIndex, index)}
 							style={style}
 						>
-							{/* {!active?<p style={{margin:`auto`}}>Clip: {convertSecondsToMinute(start, videoLength)} - {convertSecondsToMinute(end, videoLength)}</p>:``} */}
 							<p style={{margin: `auto 0px auto 2px`}}>Clip: {convertSecondsToMinute(start, videoLength)} - {convertSecondsToMinute(end, videoLength)}</p>
 						</Rnd>
 					</div>

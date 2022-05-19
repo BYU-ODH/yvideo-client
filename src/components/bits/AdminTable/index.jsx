@@ -252,13 +252,33 @@ export default class AdminTable extends PureComponent {
 			data.sort((a, b) => {
 				switch (sortType) {
 				case `Name`:
-					return isReverse(sortType) ? a.name.localeCompare(b.name,{sensitivity:`base`}) : b.name.localeCompare(a.name,{sensitivity:`base`})
+					return (
+						isReverse(sortType) ?
+							a.name.localeCompare(b.name, {sensitivity:`base`})
+							:
+							b.name.localeCompare(a.name,{sensitivity:`base`})
+					)
 				case `NetID`:
-					return isReverse(sortType) ? a.username.localeCompare(b.username,{sensitivity:`base`}) : b.username.localeCompare(a.username,{sensitivity:`base`})
+					return (
+						isReverse(sortType) ?
+							a.username.localeCompare(b.username,{sensitivity:`base`})
+							:
+							b.username.localeCompare(a.username,{sensitivity:`base`})
+					)
 				case `Email`:
-					return isReverse(sortType) ? a.email.localeCompare(b.email,{sensitivity:`base`}) : b.email.localeCompare(a.email,{sensitivity:`base`})
+					return (
+						isReverse(sortType) ?
+							a.email.localeCompare(b.email,{sensitivity:`base`})
+							:
+							b.email.localeCompare(a.email,{sensitivity:`base`})
+					)
 				case `Owner`:
-					return isReverse(sortType) ? a.owner.localeCompare(b.owner,{sensitivity:`base`}) : b.owner.localeCompare(a.owner,{sensitivity:`base`})
+					return (
+						isReverse(sortType) ?
+							a.owner.localeCompare(b.owner,{sensitivity:`base`})
+							:
+							b.owner.localeCompare(a.owner,{sensitivity:`base`})
+					)
 				case `Roles`:
 					return isReverse(sortType) ? a.roles - b.roles : b.roles - a.roles
 				case `Last Login`:
@@ -268,8 +288,12 @@ export default class AdminTable extends PureComponent {
 						return isReverse(sortType) ? -1 : -1
 					else if(b.lastLogin === `na` && a.lastLogin === `na`)
 						return isReverse(sortType) ? 0 : 0
-					else
-						return isReverse(sortType) ? new Date(a.lastLogin) - new Date(b.lastLogin) : new Date(b.lastLogin) - new Date(a.lastLogin)
+					else {
+						return isReverse(sortType) ?
+							new Date(a.lastLogin) - new Date(b.lastLogin)
+							:
+							new Date(b.lastLogin) - new Date(a.lastLogin)
+					}
 
 				default: return null
 				}
