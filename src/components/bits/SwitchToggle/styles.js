@@ -23,7 +23,13 @@ export const Circle = styled.div`
 
 	position: absolute;
 
-	left: ${props => props.on ? `calc(.8rem * ${props.size ? props.size : `1`})` : `0`};
+	left: ${props => props.on ?
+		`calc(.8rem * ${props.size ?
+			props.size
+			:
+			`1`})`
+		:
+		`0`};
 
 	transition: left .3s ease-out;
 

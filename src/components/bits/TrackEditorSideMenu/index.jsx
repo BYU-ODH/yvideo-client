@@ -84,8 +84,14 @@ const TrackEditorSideMenu = props => {
 		const ind = index
 		const cEvent = event
 		const layer = cEvent.layer
-		cEvent.position = editComment.position === undefined ? cEvent.position : editComment.position
-		cEvent.comment = editComment.comment === undefined ? cEvent.comment : editComment.comment
+		cEvent.position = editComment.position === undefined ?
+			cEvent.position
+			:
+			editComment.position
+		cEvent.comment = editComment.comment === undefined ?
+			cEvent.comment
+			:
+			editComment.comment
 
 		updateEvents(ind, cEvent, layer, `null`)
 	}

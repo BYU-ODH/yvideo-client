@@ -180,7 +180,17 @@ const Transcript = props => {
 				</div>
 				<div className={`transcript-title`}>
 					<h1>Transcript</h1>
-					<h2>{content !== undefined ? content.settings.targetLanguage !== `` ? `Video - ${content.settings.targetLanguage} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}</h2>
+					<h2>
+						{ content !== undefined ?
+								content.settings.targetLanguage !== `` ?
+									`Video - ${content.settings.targetLanguage} |`
+									:
+									null
+								:
+								null
+						}
+						Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}
+					</h2>
 				</div>
 				<br/><br/><br/>
 				<div className={`transcript-content`}>
@@ -193,7 +203,13 @@ const Transcript = props => {
 								<div onClick={e => handleSeekChange(null, element.start + element.start * .001)}
 									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
-									onMouseEnter={e => handleShowTip(`transcript-seek`, {x: e.target.getBoundingClientRect().x - 20, y: e.target.getBoundingClientRect().y - 30, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`transcript-seek`,
+										{
+											x: e.target.getBoundingClientRect().x - 20,
+											y: e.target.getBoundingClientRect().y - 30,
+											width: e.currentTarget.offsetWidth
+										})
+									}
 									onMouseLeave={e => toggleTip()}
 								>
 									<span><img src={seek} alt={`seek`} width='20' height='20'/></span>

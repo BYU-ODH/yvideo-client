@@ -127,7 +127,6 @@ const ClipLayer = props => {
 							onClick = {()=>handleEditClip(clipName,index)}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
 							key={`clip-${clipName}`}
-							// onClick={() => toggleEditor(layerIndex, index)}
 							style={style}
 						>
 							<p style={{margin: `auto 0px auto 2px`}}>Clip: {convertSecondsToMinute(start, videoLength)} - {convertSecondsToMinute(end, videoLength)}</p>

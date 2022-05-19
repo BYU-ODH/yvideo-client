@@ -61,7 +61,13 @@ export default class PublicManager extends PureComponent {
 							<CreateButton id='collection-create' className='std-outline-color' onClick={createNew}><PlusIcon />Public Collection</CreateButton>
 							<h4 id='collection-username'>{user ? `${user.name}'s Public Collections` : `Public Collections`}
 								<Help
-									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`help`,
+										{
+											x: e.target.getBoundingClientRect().x + 10,
+											y: e.target.getBoundingClientRect().y + 5,
+											width: e.currentTarget.offsetWidth
+										})
+									}
 									onMouseLeave={e => toggleTip()}
 								>
 									<img id='help-document' alt='' src={helpIcon} onClick={handleShowHelp}/>
@@ -72,11 +78,27 @@ export default class PublicManager extends PureComponent {
 								admin &&
 								<>
 									<Accordion header={`Public Collections`} active>
-										{sideLists.publicCollections.map(({ id, name }, index) => <div key={index} id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
+										{sideLists.publicCollections.map(({ id, name }, index) =>
+											<div
+												key={index}
+												id={`link`}
+												className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
+													<Link to={`/${path}/${id}`} >
+														{name}
+													</Link>
+											</div>)}
 									</Accordion>
 
 									<Accordion header={`Archived`} active>
-										{sideLists.publicArchived.map(({ id, name }, index) => <div key={index} id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
+										{sideLists.publicArchived.map(({ id, name }, index) =>
+											<div
+												key={index}
+												id={`link`}
+												className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
+													<Link to={`/${path}/${id}`} >
+														{name}
+													</Link>
+											</div>)}
 									</Accordion>
 								</>
 							}

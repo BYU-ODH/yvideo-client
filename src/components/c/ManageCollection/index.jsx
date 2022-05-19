@@ -73,7 +73,13 @@ export default class ManageCollection extends PureComponent {
 							id={`title-edit-button`}
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
-							onMouseEnter={e => handleShowTip(`collection-edit-name`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+							onMouseEnter={e => handleShowTip(`collection-edit-name`,
+								{
+									x: e.target.getBoundingClientRect().x,
+									y: e.target.getBoundingClientRect().y,
+									width: e.currentTarget.offsetWidth
+								})
+							}
 							onMouseLeave={e => toggleTip()}
 						>
 							{isEditingCollectionName ? <><SaveIcon/>Save</> : `Edit`}
@@ -97,7 +103,13 @@ export default class ManageCollection extends PureComponent {
 										onClick={togglePublish}
 										id={`publish-button`}
 										className={`std-outline-color`}
-										onMouseEnter={e => handleShowTip(`collection-publish`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth})}
+										onMouseEnter={e => handleShowTip(`collection-publish`,
+											{
+												x: e.target.getBoundingClientRect().x,
+												y: e.target.getBoundingClientRect().y + 15,
+												width: e.currentTarget.offsetWidth
+											})
+										}
 										onMouseLeave={e => toggleTip()}
 									>
 										{collection.published ? `Unpublish` : `Publish`}
@@ -111,7 +123,13 @@ export default class ManageCollection extends PureComponent {
 				<TabHeader>
 					<button id={`content-button`} className={`std-outline-color`} onClick={setTab(true)}>Content</button>
 					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}
-						onMouseEnter={e => handleShowTip(`collection-permissions`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`collection-permissions`,
+							{
+								x: e.target.getBoundingClientRect().x,
+								y: e.target.getBoundingClientRect().y + 5,
+								width: e.currentTarget.offsetWidth
+							})
+						}
 						onMouseLeave={e => toggleTip()}
 					>Edit User Access</button>
 					<Selector isContentTab={isContentTab} />
@@ -153,7 +171,13 @@ export default class ManageCollection extends PureComponent {
 									id='newcontent-button'
 									className='std-outline-color'
 									onClick={createContent}
-									onMouseEnter={e => handleShowTip(`collection-add-content`, {x: e.target.getBoundingClientRect().x + 5, y: e.target.getBoundingClientRect().y + 55, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`collection-add-content`,
+										{
+											x: e.target.getBoundingClientRect().x + 5,
+											y: e.target.getBoundingClientRect().y + 55,
+											width: e.currentTarget.offsetWidth
+										})
+									}
 									onMouseLeave={e => toggleTip()}>
 									<Icon />
 								</NewContent>

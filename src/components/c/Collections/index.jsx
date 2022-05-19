@@ -55,18 +55,45 @@ export default class Collections extends PureComponent {
 							<Help id='collections-help-documentation'
 								src={helpIcon}
 								onClick={handleShowHelp}
-								onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+								onMouseEnter={e => handleShowTip(`help`,
+									{
+										x: e.target.getBoundingClientRect().x,
+										y: e.target.getBoundingClientRect().y + 10,
+										width: e.currentTarget.offsetWidth
+									})
+								}
 								onMouseLeave={e => toggleTip()}
 							/></h3>
 					</div>
 					<div>
 						{
-							!isMobile && <ViewToggle displayBlocks={displayBlocks} onClick={toggleCollectionsDisplay} onMouseEnter={e => handleShowTip(`list-block`, {x: e.target.offsetLeft, y: e.target.offsetTop + 12, width: e.currentTarget.offsetWidth})} onMouseLeave={toggleTip}/>
+							!isMobile && <ViewToggle
+								displayBlocks={displayBlocks}
+								onClick={toggleCollectionsDisplay}
+								onMouseEnter={e => handleShowTip(`list-block`,
+									{
+										x: e.target.offsetLeft,
+										y: e.target.offsetTop + 12,
+										width: e.currentTarget.offsetWidth
+									})
+								}
+								onMouseLeave={toggleTip} />
 						}
 						{
 							user !== null && user.roles < 3 &&
 								<h3>
-									<Link to={`/manager`} onClick={toggleTip} onMouseEnter={e => handleShowTip(`manage-collections`, {x: e.target.offsetLeft, y: e.target.offsetTop+20, width: e.currentTarget.offsetWidth})} onMouseLeave={e => toggleTip()}>Manage Collections</Link>
+									<Link
+									to={`/manager`}
+									onClick={toggleTip}
+									onMouseEnter={e => handleShowTip(`manage-collections`,
+										{
+											x: e.target.offsetLeft,
+											y: e.target.offsetTop+20,
+											width: e.currentTarget.offsetWidth
+										})
+									}
+										onMouseLeave={e => toggleTip()}>Manage Collections
+									</Link>
 								</h3>
 						}
 					</div>
@@ -76,7 +103,9 @@ export default class Collections extends PureComponent {
 					{ Object.keys(collections).length > 0 ? (
 						<>
 							{
-								isMobile ? Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>) :
+								isMobile ?
+									Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
+									:
 									displayBlocks ?
 										Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
 										:

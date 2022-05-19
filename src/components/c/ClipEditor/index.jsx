@@ -363,7 +363,13 @@ const ClipEditor = props => {
 										<div className={`skip-handle`}>
 											<p>Allow Skip</p>
 											<div className={`allow-event`}
-												onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+												onMouseEnter={e => handleShowTip(`allow-events`,
+													{
+														x: e.target.getBoundingClientRect().x,
+														y: e.target.getBoundingClientRect().y,
+														width: e.currentTarget.offsetWidth
+													})
+												}
 												onMouseLeave={e => toggleTip()}>
 												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 											</div>
@@ -377,7 +383,13 @@ const ClipEditor = props => {
 								))}
 								{Object.keys(clipList).map((clip,index)=>(
 									<div className={`flex`}>
-										<div className={`handle`} style={active===clip ? {backgroundColor:`#002e5d`,color:`#fff`} : {backgroundColor:`#fff`,color:`#000`}}>
+										<div
+											className={`handle`}
+											style={active === clip ?
+											{backgroundColor:`#002e5d`, color:`#fff`}
+											:
+											{backgroundColor:`#fff`, color:`#000`}}
+										>
 											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
 										<ClipLayer
@@ -412,7 +424,13 @@ const ClipEditor = props => {
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
-									onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`te-zoom`,
+										{
+											x: e.target.getBoundingClientRect().x,
+											y: e.target.getBoundingClientRect().y,
+											width: e.currentTarget.offsetWidth
+										})
+									}
 									onMouseLeave={e => toggleTip()}
 								></Rnd>
 								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
@@ -477,14 +495,12 @@ const ClipEditor = props => {
 														<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
 															onChange={(e) => setStartTime(e.target.value, `input`,item)}
 															onBlur={(e) => setStartTime(e.target.value, `onBlur`,item)}
-															onMouseEnter={e => handleShowTip(
-																`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+															onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 																{
 																	x: e.target.getBoundingClientRect().x - 5,
 																	y: e.target.getBoundingClientRect().y + 5,
 																	width: e.currentTarget.offsetWidth + 20,
-																},
-															)
+																})
 															}
 															onMouseLeave={e => toggleTip()}
 														/>
@@ -492,14 +508,12 @@ const ClipEditor = props => {
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
 														onChange={(e) => setEndTime(e.target.value, `input`,item)}
 														onBlur={(e) => setEndTime(e.target.value, `onBlur`,item)}
-														onMouseEnter={e => handleShowTip(
-															`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 															{
 																x: e.target.getBoundingClientRect().x + 35,
 																y: e.target.getBoundingClientRect().y + 5,
 																width: e.currentTarget.offsetWidth + 20,
-															},
-														)
+															})
 														}
 														onMouseLeave={e => toggleTip()}
 													/>
@@ -519,7 +533,12 @@ const ClipEditor = props => {
 				</SideEditor>
 			</DndProvider>
 			<>
-				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
+				<AnnotationMessage style={
+					{
+						visibility: `${annotationsSaved ? `visible` : `hidden`}`,
+						opacity: `${annotationsSaved ? `1` : `0`}`
+					}
+				}>
 					<h2>Clip saved successfully</h2>
 				</AnnotationMessage>
 				<Prompt

@@ -36,7 +36,13 @@ export class ManageResource extends PureComponent {
 						<img src={helpIcon}
 							alt={`help`}
 							onClick={handleShowHelp}
-							onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+							onMouseEnter={e => handleShowTip(`help`,
+								{
+									x: e.target.getBoundingClientRect().x,
+									y: e.target.getBoundingClientRect().y,
+									width: e.currentTarget.offsetWidth
+								})
+							}
 							onMouseLeave={e => toggleTip()}
 						/>
 					</Help>

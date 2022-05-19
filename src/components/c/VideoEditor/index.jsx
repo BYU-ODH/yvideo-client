@@ -522,7 +522,13 @@ const VideoEditor = props => {
 								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
-								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseEnter={e => handleShowTip(`te-zoom`,
+									{
+										x: e.target.getBoundingClientRect().x,
+										y: e.target.getBoundingClientRect().y,
+										width: e.currentTarget.offsetWidth
+									})
+								}
 								onMouseLeave={e => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
@@ -561,7 +567,13 @@ const VideoEditor = props => {
 						src={helpIcon}
 						alt={`helpIcon`}
 						onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`help`,
+							{
+								x: e.target.getBoundingClientRect().x,
+								y: e.target.getBoundingClientRect().y + 10,
+								width: e.currentTarget.offsetWidth
+							})
+						}
 						onMouseLeave={e => toggleTip()}
 						style={{marginLeft:10,marginTop:15}}
 					/>
