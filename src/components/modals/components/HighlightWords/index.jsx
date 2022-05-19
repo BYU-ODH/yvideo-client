@@ -83,7 +83,17 @@ export default class HighlightWords extends PureComponent {
 							<div>
 								<input type='text' placeholder='Check word' onChange={changeCheckWord} value={checkWord} id='tag-input' /><br/>
 								<input type='text' placeholder='Language. Ex: spanish' onChange={changeLanguage} value={language} id='tag-input'/><br/>
-								<img src={ checkResponse === false ? xMark : checkMark} alt='' width='25' height='25' style={{ border: `none`, position: `relative`, left: `3px` }}/>
+								<img
+									src={ checkResponse === false ?
+										xMark
+										:
+										checkMark
+									}
+									alt=''
+									width='25'
+									height='25'
+									style={{ border: `none`, position: `relative`, left: `3px` }}
+								/>
 								<Button className={`check-tag`} onClick={handleCheckWord}>Check</Button>
 							</div>
 							<br/>
@@ -110,7 +120,13 @@ export default class HighlightWords extends PureComponent {
 							<br/>
 							<div className='tags'>
 								{
-									wordList.sort((a, b) => a > b ? 1 : -1).map((item, index) => item === `` ? null : <Tag key={index} onClick={removeWord}>{item}</Tag>)
+									wordList.sort((a, b) =>
+										a > b ? 1 : -1).map((item, index) =>
+											item !== `` ?
+												<Tag key={index} onClick={removeWord}>{item}</Tag>
+												:
+												null
+									)
 								}
 							</div>
 						</ImportantWords>

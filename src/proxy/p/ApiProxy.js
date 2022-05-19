@@ -583,7 +583,12 @@ const apiProxy = {
 						return res.data.sort((a, b) => {
 							a = a[`collection-name`].toLowerCase().replace(regex, replacor)
 							b = b[`collection-name`].toLowerCase().replace(regex, replacor)
-							return a === b ? 0 : a < b ? -1 : 1
+							return (
+								a !== b ?
+									a < b ?
+										-1 : 1
+									: 0
+							)
 						})
 					})
 

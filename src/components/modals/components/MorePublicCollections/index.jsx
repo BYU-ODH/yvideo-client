@@ -26,7 +26,10 @@ export default class MorePublicCollections extends PureComponent {
 
 		return (
 			<Wrapper onSubmit={handleSubmit}>
-				{ownerName ? <Title><h4>More Public Collections from:</h4> {ownerName}</Title> : ``}
+				{ownerName ?
+					<Title><h4>More Public Collections from:</h4> {ownerName}</Title>
+					: ``
+				}
 				<>
 					{
 						Object.keys(publicCollections).map(key =>
