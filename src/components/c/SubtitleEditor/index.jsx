@@ -859,6 +859,7 @@ const SubtitleEditor = props => {
 				<>
 					{ showSideEditor !== false && (
 						<SubtitleEditorSideMenu
+							subModalVisible={subModalVisible}
 							singleEvent={checkSub}
 							index={subToEdit}
 							videoLength={videoLength}
