@@ -123,7 +123,9 @@ const PlayerControls = props => {
 	}
 
 	const handleOffSubtitles = () => {
-		// handleToggleSubtitles: false
+		setShowTranscript(false)
+		handleShowSubtitle(``)
+		handleAspectRatio()
 	}
 
 	const handleSeekToSubtitle= (e) => {
@@ -149,9 +151,6 @@ const PlayerControls = props => {
 		handleSeekChange(null, start + start * .001)
 	}
 
-	const handleHideSubtitle = () => {
-		Subtitles.style.visbility = 'hidden'
-	}
 
 	return (
 		<Style playing={playing} >
@@ -217,10 +216,10 @@ const PlayerControls = props => {
 					<h3>Select Caption</h3>
 					<div className='caption-list'>
 						{subtitles.map((element, index) =>
-							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? `active-value` : ``}/>,
+							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index && showTranscript==true ? `active-value` : ``}/>,
 						)
 						}
-						<button type='button' className={`${showTranscript == 'false' ? 'active-value' : ''} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
+						<button type='button' className={`${showTranscript==false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}

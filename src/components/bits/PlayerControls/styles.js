@@ -41,13 +41,23 @@ const Style = styled.div`
 	}
 
 	& .subtitlesOffButton {
-		magin-left: 10px;
-		border: none;
-		margin-bottom: 5px;
-		background-color: transparent;
-		margin-top: 10px;
-		color: white;
-		font-weight:bold;
+			position: relative;
+			width: 100%;
+			height: 30px;
+			font-size: 1.4rem;
+			font-weight: 500;
+			margin: 2px 0px 2px 0px;
+			transition: .5s ease;
+			text-align: left;
+			border: none;
+			background: transparent;
+			color: white;
+
+			:hover {
+				background-color: rgba(5,130,202,1);
+				color: white;
+			}
+		}
 	}
 
 	& .left {
