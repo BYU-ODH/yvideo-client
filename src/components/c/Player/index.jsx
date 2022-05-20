@@ -173,7 +173,8 @@ export default class Player extends Component {
 
 				if(!events[index].active)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					if(!muted)
@@ -184,8 +185,6 @@ export default class Player extends Component {
 				case `Pause`:
 					events[index].active = false
 					handlePause()
-					const pauseMessage = document.getElementById(`pauseMessage`)
-					const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 
 					if(events[index].message){
 						pauseMessage.style.visibility = `visible`
