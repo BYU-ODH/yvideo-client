@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 import { Scrubber } from 'components/bits'
 
-import Styles, {Subtitles} from 'components/c/Player/styles'
-
 import Style, {
 	PlayPause,
 	ClosedCaptions,
