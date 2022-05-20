@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Prompt } from 'react-router'
 import { VideoContainer, SkipLayer } from 'components'
-import {ClipLayer, SwitchToggle} from 'components/bits'
+import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
@@ -50,13 +50,13 @@ const ClipEditor = props => {
 	const [zoomFactor, setZoomFactor] = useState(0)
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
-	const [clipList,setClipList] = useState({})
+	const [clipList, setClipList] = useState({})
 	const [active, setActive] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
-	const [clipsToDelete,setClipsToDelete] = useState({}) // eslint-disable-line no-unused-vars
+	const [clipsToDelete, setClipsToDelete] = useState({}) // eslint-disable-line no-unused-vars
 	const [blockLeave, setBlock] = useState(false)
-	const [isLoading,setIsLoading] = useState(false)
-	const [clipIndex,setClipIndex] = useState(0)
+	const [isLoading, setIsLoading] = useState(false)
+	const [clipIndex, setClipIndex] = useState(0)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
 
@@ -77,7 +77,7 @@ const ClipEditor = props => {
 		// Find the largets layer number
 		const initialLayers = []
 
-		if(Object.keys(clipList).length ===0) {
+		if(Object.keys(clipList).length === 0) {
 			if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
 				const clips = JSON.parse(currentContent[`clips`])
 				setClipList(clips)
@@ -124,7 +124,13 @@ const ClipEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		if(document.getElementsByClassName(`layer-container`)[0]) setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		const layerContainer = document.getElementByClassName(`layer-container`)
+		const events = document.getElementsByClassName(`events`)
+		if(layerContainer && events[0].clientWidth > 0) {
+			setScrollBar(
+				layerContainer[0].clientWidth * 100 / events[0].clientWidth
+			)
+		}
 	}
 
 	const handleScrollFactor = (direction) => {
