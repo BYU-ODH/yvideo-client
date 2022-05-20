@@ -7,7 +7,7 @@ const Style = styled.div`
 	width: 100%;
 	/* max-height: 65vh; */
 	z-index: 100;
-	display: ${props => props.visible ? `block`:`none`}
+	display: ${props => props.visible ? `block` : `none`}
 	background-color: rgba(0,0,0,0.9);
 
 	& .inner {
@@ -33,7 +33,7 @@ const Style = styled.div`
 				border: 3px solid #0582ca;
 				background-color: #ffffff;
 				font-weight: 500;
-				font-size:1.5rem;
+				font-size: 1.5rem;
 				cursor: pointer;
 				:hover{
 					background-color: #0582ca;
@@ -56,12 +56,12 @@ const Style = styled.div`
 			}
 		}
 		& .closeModal{
-			padding:5px;
+			padding: 5px;
 			cursor: pointer;
-			opacity:1;
+			opacity: 1;
 			float: right;
 			:hover {
-				opacity:0.7:
+				opacity: 0.7:
 			}
 		}
 	& .create-button {

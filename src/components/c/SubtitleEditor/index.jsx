@@ -661,23 +661,23 @@ const SubtitleEditor = props => {
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTime} // set current time
 					setActiveCensorPosition = {setActiveCensorPosition}
-					handleLastClick = {null}
-					handleScroll = {handleScrollFactor}
-					events = {allowEvents ? allEvents : null}
+					handleLastClick={null}
+					handleScroll={handleScrollFactor}
+					events={allowEvents ? allEvents : null}
 					updateEvents={null}
 					eventToEdit={null}
-					activeCensorPosition = {activeCensorPosition}
+					activeCensorPosition={activeCensorPosition}
 					editorType={`subtitle`}
-					handleSubProgress = {handleSubProgress}
+					handleSubProgress={handleSubProgress}
 					aspectRatio={aspectRatio}
 				>
 				</VideoContainer>
 				<SubtitlesModal
-					mode = {subModalMode}
-					handleAddSubLayer = {handleAddSubLayer}
-					handleAddSubLayerFromFile = {handleAddSubLayerFromFile}
-					visible = {subModalVisible}
-					setModalVisible = {setSubModalVisible}
+					mode={subModalMode}
+					handleAddSubLayer={handleAddSubLayer}
+					handleAddSubLayerFromFile={handleAddSubLayerFromFile}
+					visible={subModalVisible}
+					setModalVisible={setSubModalVisible}
 					handleDeleteSubLayer={handleDeleteSubLayer}
 					deleteTitle={deleteTitle}
 				/>
