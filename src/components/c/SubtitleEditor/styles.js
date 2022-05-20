@@ -261,7 +261,6 @@ export const EventList = styled.div`
 		border-bottom: 5px solid var(--light-blue);
 
 		& > .save {
-			position: relative;
 			float: right;
 			width: 8rem;
 			height: 100%;

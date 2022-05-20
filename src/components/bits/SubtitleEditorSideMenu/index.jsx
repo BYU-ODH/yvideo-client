@@ -10,6 +10,7 @@ import { convertSecondsToMinute } from '../../common/timeConversion'
 const SubtitleEditorSideMenu = props => {
 
 	const {
+		subModalVisible,
 		singleEvent,
 		index,
 		videoLength,
@@ -84,9 +85,10 @@ const SubtitleEditorSideMenu = props => {
 				{subs[subLayer][`content`].map((sub,ind) => (
 					<div id={`sub-${subLayer}-${ind}`} key={ind}>
 						<div className={`container`}>
-							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
+							{/* This toggles the z-index of the icons as the state for the submodal changes */}
+							<Icon className={`IconMiddle`} style={{zIndex: subModalVisible ? -1 : 10}} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
 								position={`top`}
-								visibility={subs[subLayer][`content`][0].start > 0.11 && ind === 0 && disableSave === false ? `visible`: `hidden`}
+								visibility={subs[subLayer][`content`][0].start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
 							/>
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive` : ``}`}>
 								<textarea
@@ -129,7 +131,7 @@ const SubtitleEditorSideMenu = props => {
 						</div>
 						{
 							ind === subs[subLayer][`content`].length-1 ?
-								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
+								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer, ind, `button`)}
 									visibility={subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave === false ?
 										`visible`
 										:
@@ -138,7 +140,7 @@ const SubtitleEditorSideMenu = props => {
 									active={ind === index ? `subActive`:`nonActive`}
 								/>
 								:
-								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
+								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer, ind, `button`)}
 									visibility={subs[subLayer][`content`][ind+1].start - subs[subLayer][`content`][ind].end !== 0 && disableSave === false ?
 										`visible`
 										:
