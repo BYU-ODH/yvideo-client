@@ -56,7 +56,6 @@ const Style = styled.div`
 			font-size: 1.4rem;
 			font-weight: 500;
 			margin: 2px 0px 2px 0px;
-			transition: .5s ease;
 			text-align: left;
 			border: none;
 			background: transparent;
