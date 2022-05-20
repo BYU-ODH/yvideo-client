@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 
 import {
 	interfaceService,
-	resourceService,
-	fileService,
 } from 'services'
 
 import Error from 'components/modals/components/Error'

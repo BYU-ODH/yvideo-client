@@ -46,6 +46,7 @@ const CollectionsContainer = props => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setContent, setHeaderBorder])
 
 	const handleShowHelp = () => {

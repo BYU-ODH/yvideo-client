@@ -80,8 +80,6 @@ export const AddButton = styled.button`
 	border: none;
 	border-radius: 1.3rem;
 
-	outline: none;
-
 	${props => props.disabled ? `` : `cursor: pointer;`}
 
 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
@@ -154,7 +152,7 @@ export const Button = styled.button`
 	color: ${props => props.color || `black`};
 	background: transparent;
 	border: none;
-	outline: none;
+	outline-color: var(--light-blue);
 	cursor: pointer;
 	position: absolute;
 	top: 16px;

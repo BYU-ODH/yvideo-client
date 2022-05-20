@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Recaptcha from 'react-recaptcha'
 
 const Captcha = props => {
 	const {
-		handleCaptchaChange
+		handleCaptchaChange,
 	} = props
 	const _reCaptchaRef = React.createRef()
 

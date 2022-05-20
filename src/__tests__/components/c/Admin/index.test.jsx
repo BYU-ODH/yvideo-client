@@ -1,11 +1,11 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Admin from '../../../../components/c/Admin/index'
 import { BrowserRouter} from 'react-router-dom'
 
-let viewstate = {
+const viewstate = {
 	category:{
-		Collectios:{
+		Collections:{
 			name: `Collections`,
 			placeholder: `Search for a collection`,
 			url: `collection`,

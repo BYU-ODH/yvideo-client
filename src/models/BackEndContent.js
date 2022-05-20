@@ -9,7 +9,7 @@ export default class BackEndContent {
 		"tags": `string`,
 		"thumbnail": `string`,
 		"file-version": `string`,
-		"file-id": 'string',
+		"file-id": `string`,
 		"collection-id": `string`,
 		"views": 0,
 		"annotations": `string`,
@@ -17,7 +17,7 @@ export default class BackEndContent {
 		"allow-notes": true,
 		"description": `string`,
 		"published": true,
-		"clips": ''
+		"clips": ``,
 	}
 
 	constructor(obj){
@@ -33,7 +33,7 @@ export default class BackEndContent {
 			this.backEndData[`resource-id`] = obj.resourceId
 			this.backEndData[`title`] = obj.name
 			this.backEndData[`published`] = obj.published
-			this.backEndData['clips'] = obj.clips
+			this.backEndData[`clips`] = obj.clips
 
 			this.backEndData[`allow-definitions`] = obj.settings.allowDefinitions
 			this.backEndData[`allow-captions`] = obj.settings.showCaptions

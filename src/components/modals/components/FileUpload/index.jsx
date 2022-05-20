@@ -65,7 +65,7 @@ export default class FileUpload extends PureComponent {
 					<h4>Select File</h4>
 					<Upload>
 						<div className='files'>
-							<input type='file' className='files-input' onChange={handleFileChange}/>
+							<input type='file' id='files-input' onChange={handleFileChange}/>
 						</div>
 					</Upload>
 				</label>
@@ -95,7 +95,7 @@ export default class FileUpload extends PureComponent {
 				}
 
 				<div>
-					<Button type='button' onClick={toggleModal}>Cancel</Button>
+					<Button className='std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
 					{selectedFile !== undefined ?
 						<>
 							{progress === 0 ? (

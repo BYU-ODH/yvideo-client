@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { shallow, mount } from 'enzyme'
 import PlayerControls from '../../../../components/bits/PlayerControls'
-import Style, { PlayPause, ClosedCaptions, Fullscreen, Volume, 	Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
-import clockIcon from '../../../../components/bits/PlayerControls/styles'
+import { PlayPause, ClosedCaptions, Fullscreen, Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
 import { BrowserRouter} from 'react-router-dom'
 
 const props = {
@@ -16,6 +15,7 @@ const props = {
 		handleUnmuted: jest.fn(),
 		handleVolumeChange: jest.fn(),
 		setIsCaption: jest.fn(),
+		setPlaybackOptions: jest.fn(),
 		handleChangeSubtitle: jest.fn(),
 		setShowTranscript: jest.fn(),
 		handleShowSubtitle: jest.fn(),
@@ -37,6 +37,7 @@ const props = {
 		isAdmin: true,
 		isProf: true,
 		isMobile: true,
+		playbackOptions: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort(),
 		clipTime: [1,2,3],
 		duration: 120,
 		subtitles: [
@@ -54,6 +55,8 @@ const props = {
 			},
 		],
 	},
+
+	skipArray: []
 }
 
 describe(`Style onclick`, () => {

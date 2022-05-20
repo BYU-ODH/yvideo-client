@@ -207,7 +207,6 @@ export default class ContentService {
 
 			dispatch(this.actions.contentGet(newContent))
 		} catch (error) {
-			console.log(`this is an error`, error.response.status)
 			dispatch(this.actions.contentError(error))
 		}
 	}
@@ -230,7 +229,6 @@ export default class ContentService {
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {
-			console.log(error)
 			dispatch(this.actions.contentError(error))
 		}
 	}
@@ -243,6 +241,7 @@ export default class ContentService {
 			// let finalData = 'asd'
 			const finalData = new BackEndContent(content).backEndData
 
+			// eslint-disable-next-line no-unused-vars
 			const results = await apiProxy.content.update(finalData)
 
 			// console.log(content)
@@ -256,7 +255,7 @@ export default class ContentService {
 	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().contentStore.lastFetched
-
+		// eslint-disable-next-line no-unused-vars
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
 		if (stale || force) {
@@ -270,7 +269,6 @@ export default class ContentService {
 				dispatch(this.actions.contentAddView(id))
 
 			} catch (error) {
-				console.error(error.message)
 				dispatch(this.actions.contentError(error))
 			}
 
@@ -281,6 +279,7 @@ export default class ContentService {
 
 		const time = Date.now() - getState().contentStore.lastFetched
 
+		// eslint-disable-next-line no-unused-vars
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 		dispatch(this.actions.contentStart())
 
@@ -288,7 +287,6 @@ export default class ContentService {
 			const result = await apiProxy.content.getSubtitles(id)
 			return result
 		} catch (error) {
-			console.error(error.message)
 			dispatch(this.actions.contentError(error))
 		}
 	}
@@ -297,7 +295,7 @@ export default class ContentService {
 		dispatch(this.actions.contentStart())
 
 		try {
-
+			// eslint-disable-next-line no-unused-vars
 			const results = await apiProxy.content.addSubtitles(subs)
 
 			// const metaResult =

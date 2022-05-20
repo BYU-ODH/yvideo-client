@@ -9,8 +9,6 @@ import proxies from 'proxy'
 import { BrowserRouter } from 'react-router-dom'
 import store from 'services/store'
 
-import { collectionService, contentService, interfaceService, adminService } from 'services'
-
 const resource = testutil.resource
 
 const settings = {
@@ -117,7 +115,7 @@ const updatedContents = [
 	content3,
 ]
 
-const collection = {
+const collection = { // eslint-disable-line no-unused-vars
 	archived: false,
 	content,
 	id: 0,
@@ -156,7 +154,7 @@ const updatedCollection = {
 	thumbnail: `test@thumbnail`,
 }
 
-const updatedProps = {
+const updatedProps = { // eslint-disable-line no-unused-vars
 	collection: updatedCollection,
 	content: updatedContents,
 	getContent: jest.fn(),
@@ -228,15 +226,15 @@ describe(`manage collection container test`, () => {
 
 		// TODO: should pass a Mock function toggleModal to component, otherwise jest won't be able to check whether it was called or not.
 
-		wrapper.find({"className" : `newcontent-button`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `newcontent-button`}).at(0).simulate(`click`)
 
 		// switching back and forth Content and Permissions componenets
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
-		const permissionsButton = wrapper.find({"className" : `permissions-button`})
+		const permissionsButton = wrapper.find({"id" : `permissions-button`})
 		permissionsButton.simulate(`click`)
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(false)
 
-		const contentButton = wrapper.find({"className" : `content-button`})
+		const contentButton = wrapper.find({"id" : `content-button`})
 		contentButton.simulate(`click`)
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 	})
@@ -250,18 +248,18 @@ describe(`manage collection container test`, () => {
 			</Provider>,
 		)
 
-		// make sure it is not editing mode before initinating `Edit`
-		expect(wrapper.find({"className" : `title-edit`}).length).toBe(0)
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().editing).toBe(false)
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().children).toBe(`Edit`)
+		// make sure it is not editing mode before initiating `Edit`
+		expect(wrapper.find({"id" : `title-edit`}).length).toBe(0)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().editing).toBe(false)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().children).toBe(`Edit`)
 
 		// simulates clicking edit title button
-		wrapper.find({"className" : `title-edit-button`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `title-edit-button`}).at(0).simulate(`click`)
 
 		// check if it is edting mode and check if it is changed into `Save` button
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().editing).toBe(true)
-		expect(wrapper.find({"className" : `title-edit-button`}).at(0).props().children).toBe(`Save`)
-		expect(wrapper.find({"className" : `title-edit`}).length).not.toBe(0)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).props().editing).toBe(true)
+		expect(wrapper.find({"id" : `title-edit-button`}).at(0).text()).toContain(`Save`)
+		expect(wrapper.find({"id" : `title-edit`}).length).not.toBe(0)
 
 		// test title changes
 		expect(wrapper.find(`input`).props().value).toBe(`Collection 1`)
@@ -318,8 +316,9 @@ describe(`manage collection container test`, () => {
 		)
 
 		// test if two contents are inserted
-		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content
-		const contents = wrapper.find(`ManageCollectionContainer`).props().content
+		const collectionContents = wrapper.find(`ManageCollectionContainer`).props().collection.content // eslint-disable-line no-unused-vars
+		const contents = wrapper.find(`ManageCollectionContainer`).props().content // eslint-disable-line no-unused-vars
+
 		// expect(collectionContents.length).toBe(2)
 		// expect(Object.keys(contents).length).toBe(2)
 
@@ -328,8 +327,8 @@ describe(`manage collection container test`, () => {
 		// expect(collectionContents[1]).toEqual(contents[1])
 
 		// console.log(wrapper.find(`ManageCollectionContainer`).props())
-		// console.log(wrapper.find({className: `newcontent-button`}).debug())
-		// wrapper.find({className: `newcontent-button`}).at(0).simulate(`click`)
+		// console.log(wrapper.find({id: `newcontent-button`}).debug())
+		// wrapper.find({id: `newcontent-button`}).at(0).simulate(`click`)
 		// console.log(wrapper.find(`ManageCollectionContainer`).props())
 	})
 })

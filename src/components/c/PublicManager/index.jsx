@@ -12,7 +12,6 @@ import {
 	NoCollection,
 	SideMenu,
 	Help,
-	Button,
 	PlusIcon,
 	FeedbackMessage,
 } from './styles'
@@ -44,7 +43,7 @@ export default class PublicManager extends PureComponent {
 					<>
 						{ user ? (
 							<>
-								<h1 className='no-collections'>{ user.name } does not have any collections</h1>
+								<h1 id='no-collections'>{ user.name } does not have any collections</h1>
 								<div id={`create-button`}>
 									<button onClick={createNew}>Create New Public Collection</button>
 								</div>
@@ -59,13 +58,13 @@ export default class PublicManager extends PureComponent {
 				) : (
 					<>
 						<SideMenu>
-							<CreateButton className='collection-create' onClick={createNew}><PlusIcon />Public Collection</CreateButton>
-							<h4 className='collection-username'>{user ? `${user.name}'s Public Collections` : `Public Collections`}
+							<CreateButton id='collection-create' className='std-outline-color' onClick={createNew}><PlusIcon />Public Collection</CreateButton>
+							<h4 id='collection-username'>{user ? `${user.name}'s Public Collections` : `Public Collections`}
 								<Help
 									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
 									onMouseLeave={e => toggleTip()}
 								>
-									<img className='help-document' src={helpIcon} onClick={handleShowHelp}/>
+									<img id='help-document' alt='' src={helpIcon} onClick={handleShowHelp}/>
 								</Help>
 							</h4>
 
@@ -73,11 +72,11 @@ export default class PublicManager extends PureComponent {
 								admin &&
 								<>
 									<Accordion header={`Public Collections`} active>
-										{sideLists.publicCollections.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
+										{sideLists.publicCollections.map(({ id, name }, index) => <div key={index} id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
 									</Accordion>
 
 									<Accordion header={`Archived`} active>
-										{sideLists.publicArchived.map(({ id, name }, index) => <div key={index} className={`${id === activeId ? `active-collection link` : `link`}`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
+										{sideLists.publicArchived.map(({ id, name }, index) => <div key={index} id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}><Link to={`/${path}/${id}`} >{name}</Link></div>)}
 									</Accordion>
 								</>
 							}
@@ -91,7 +90,7 @@ export default class PublicManager extends PureComponent {
 									:
 									<NoCollection className='only-admin-body'>Permission Denied.</NoCollection>
 								:
-								<NoCollection className='no-collections-body'>Select a Collection to get started.</NoCollection>}
+								<NoCollection id='no-collections-body'>Select a Collection to get started.</NoCollection>}
 						</Body>
 					</>
 				)}

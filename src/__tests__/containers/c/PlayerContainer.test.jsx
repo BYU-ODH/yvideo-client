@@ -1,10 +1,4 @@
-import React from 'react'
-import { shallow, mount } from 'enzyme'
-import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import Container from '../../../containers/c/PlayerContainer'
 import * as testutil from '../../testutil/testutil'
-import store from 'services/store'
 import ContentService from '../../../services/s/content.redux'
 import AuthService from '../../../services/s/auth.redux'
 import proxies from 'proxy'
@@ -53,7 +47,7 @@ const content = [
 	},
 ]
 
-const props = {
+const props = { // eslint-disable-line no-unused-vars
 	contentCache: content,
 	getContent: jest.fn(),
 	setEvents: jest.fn(),
@@ -86,11 +80,11 @@ proxies.apiProxy.content.get.mockImplementation(()=>{
 
 // TODO: need to re-write player container test
 describe(`PlayerContainer test`, () => {
-	let contentServiceConstructor
-	let authServiceConstructor
-	let dispatch
-	let getState
-	let apiProxy
+	let contentServiceConstructor // eslint-disable-line no-unused-vars
+	let authServiceConstructor // eslint-disable-line no-unused-vars
+	let dispatch // eslint-disable-line no-unused-vars
+	let getState // eslint-disable-line no-unused-vars
+	let apiProxy // eslint-disable-line no-unused-vars
 
 	beforeEach(async() => {
 		authServiceConstructor = new AuthService()

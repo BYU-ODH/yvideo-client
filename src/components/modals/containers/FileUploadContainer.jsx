@@ -22,7 +22,7 @@ const FileUploadContainer = props => {
 		langs,
 		didUpdate,
 		updateStatus,
-		filesCache,
+		// filesCache,
 	} = props
 
 	const [selectedFile, setSelectedFile] = useState()
@@ -43,7 +43,7 @@ const FileUploadContainer = props => {
 
 	// const [didUpload, setDidUpload] = useState(0)
 
-	const [fileCount, setFileCount] = useState(0)
+	// const [fileCount, setFileCount] = useState(0)
 
 	useEffect(() => {
 		if(isUploadComplete){
@@ -54,7 +54,7 @@ const FileUploadContainer = props => {
 
 		if(doesGetFiles)
 			exitout()
-
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resources, resourceId, doesGetFiles, didUpdate])
 
 	// this needs to save resource at the end of it
@@ -117,8 +117,9 @@ const FileUploadContainer = props => {
 		formData.append(`file-version`, fileVersion)
 		formData.append(`mime`, ``)
 		formData.append(`metadata`, metadata)
-		formData.append(`aspect-ratio`, '')
+		formData.append(`aspect-ratio`, ``)
 
+		// eslint-disable-next-line no-unused-vars
 		const result = await uploadFile(formData, (event) => {
 			const percent = Math.round(100 * event.loaded / event.total)
 			setProgress(percent)

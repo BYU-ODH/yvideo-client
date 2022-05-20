@@ -18,8 +18,8 @@ export default class AddBatchNetids extends PureComponent {
 				</AddManyForm>
 				<br/>
 				<div>
-					<CancelButton type='button' onClick={e => toggleModal()}>Cancel</CancelButton>
-					<AddManyButton type='submit' color={`#0582CA`} disabled={disabledUser} >Add Many</AddManyButton>
+					<CancelButton className='std-outline-color' type='button' onClick={e => toggleModal()}>Cancel</CancelButton>
+					<AddManyButton className='std-outline-color' type='submit' color={`#0582CA`} disabled={disabledUser} >Add Many</AddManyButton>
 				</div>
 			</Form>
 		)

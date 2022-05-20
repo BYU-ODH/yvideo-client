@@ -10,7 +10,6 @@ export class ManageResource extends PureComponent {
 
 	render() {
 		const {
-			user,
 			searchQuery,
 			resources,
 			isMobile,
@@ -29,7 +28,7 @@ export class ManageResource extends PureComponent {
 		return (
 			<Style>
 				<div className='add-resource-button'>
-					<Button onClick={addResource}><PlusIcon/>Resource</Button>
+					<Button className='std-outline-color' onClick={addResource}><PlusIcon/>Resource</Button>
 				</div>
 
 				<div className='resource-search'>
@@ -42,10 +41,10 @@ export class ManageResource extends PureComponent {
 						/>
 					</Help>
 
-					<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSubmit} isMobile={isMobile}>
+					<Search id='searchSubmit' className='std-outline-color' onSubmit={handleSubmit} isMobile={isMobile}>
 						<SearchIcon />
-						<input className='resource-search-input' type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
-						<button type='submit'>Search</button>
+						<input id='resource-search-input' className='std-outline-color' type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
+						<button className='std-outline-color' type='submit'>Search</button>
 					</Search>
 
 					<div>

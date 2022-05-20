@@ -8,7 +8,6 @@
 
 // // Dependency injection (might need to ask Grant)
 
-
 // newArray.forEach(element => {
 // 	if((currentTime >= element.start && currentTime <= element.end) && element.active === false){
 // 		// execute event
@@ -21,20 +20,19 @@
 // // if (currentTime >= newArray[i].start && currentTime <= newArray[i].end) && newArray[i].active === false ---> execute ... this.active = true
 // // else if currentTime > newArray[i].end && newArray[i].active === true ---> stop ... this.active = false
 
-//blank and censor and comment
+// blank and censor and comment
 
 export default class Event {
 
-	constructor(type, start, end)
-	{
+	constructor(type, start, end) {
 		this.type = type
-		this.start = start;
-		this.end = end;
-		this.active = false;
+		this.start = start
+		this.end = end
+		this.active = false
 	}
 
 	print(){
-		console.log('%c Executing event is: ', 'color: blue; font-weight: bold; text-decoration: underline;', this.type)
+		console.log(`%c Executing event is: `, `color: blue; font-weight: bold; text-decoration: underline;`, this.type) // eslint-disable-line no-console
 	}
 }
 
@@ -79,7 +77,6 @@ export class BlankEvent extends Event {
 // 		obj = new CommentEvent(obj.start, obj.end, obj.comment);
 // 	}
 // )
-
 
 // // let commentEvent1 = new CommentEvent(s,c,comment);
 // // commentEvent1.start

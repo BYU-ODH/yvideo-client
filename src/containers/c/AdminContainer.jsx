@@ -64,6 +64,7 @@ const AdminContainer = props => {
 		return () => {
 			setHeaderBorder(false)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setHeaderBorder])
 
 	const viewstate = {

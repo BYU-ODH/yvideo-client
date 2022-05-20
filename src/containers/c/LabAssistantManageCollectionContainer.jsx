@@ -37,7 +37,8 @@ const LabAssistantManageCollectionContainer = props => {
 		setBreadcrumbs({path:[`Home`, `Lab Assistant Manager`], collectionId: collection.id, contentId: ``})
 
 		getCollectionContent(collection.id, true)
-		}, [collection])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [collection])
 
 	const togglePublish = e => {
 		e.preventDefault()

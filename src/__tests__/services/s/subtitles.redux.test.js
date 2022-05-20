@@ -26,8 +26,8 @@ describe(`content service test`, () => {
 	let apiProxy
 	const error = {
 		response: {
-			data: `SUBTITLES_ERROR test error message`
-		}
+			data: `SUBTITLES_ERROR test error message`,
+		},
 	}
 
 	// reset store
@@ -46,7 +46,7 @@ describe(`content service test`, () => {
 				contentId : ``,
 				subtitlesStore:{
 					cache: {
-						'subtitle1': subtitle1,
+						'subtitle1': subtitle1, // eslint-disable-line object-shorthand
 						loading: false,
 						lastFetched: 0,
 						active: 0,
@@ -166,7 +166,7 @@ describe(`content service test`, () => {
 	it(`getSubtitles: catch error`, async() => {
 		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
 			return Promise.reject(error)
-		});
+		})
 		expect(store.getState().cache).toEqual([{sub1}])
 		await subtitleServiceConstructor.getSubtitles(`subtitle1`, true)(dispatch, getState, { apiProxy })
 		expect(store.getState().cache).toEqual([])
@@ -200,7 +200,7 @@ describe(`content service test`, () => {
 	it(`updateSubtitle: catch error`, async() => {
 		proxies.apiProxy.subtitles.edit.mockImplementationOnce(()=>{
 			return Promise.reject(error)
-		});
+		})
 		expect(store.getState().loading).toEqual(false)
 		await subtitleServiceConstructor.updateSubtitle(updateSubtitle1)(dispatch, getState, { apiProxy })
 		expect(store.getState().loading).toEqual(false)

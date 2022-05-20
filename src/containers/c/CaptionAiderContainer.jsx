@@ -21,7 +21,7 @@ const CaptionAiderContainer = props => {
 
 	const content = contentCache[id]
 
-	const [trackEditor, setTrackEditor] = useState()
+	const [trackEditor, setTrackEditor] = useState() // eslint-disable-line no-unused-vars
 
 	useEffect(
 		() => {

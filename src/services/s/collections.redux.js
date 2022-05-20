@@ -106,10 +106,10 @@ export default class CollectionService {
 			}
 
 		case COLLECTIONS_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
-				errorMessage: `${action.payload.error.response.data ? (action.payload.error.response.data) : (null) }. Status: ${action.payload.error.response.status}`,
+				errorMessage: `${action.payload.error.response.data ? action.payload.error.response.data : null}. Status: ${action.payload.error.response.status}`,
 				loading: false,
 			}
 		case COLLECTIONS_ERROR_SYNC:
@@ -254,7 +254,8 @@ export default class CollectionService {
 					while(i < courses.length){
 						const response = await apiProxy.courses.getCollections(courses[i])
 						courseCollections.concat(response)
-						setTimeout(() => {
+						// TODO: See if this is actually fine to just disable for the linter...
+						setTimeout(() => { // eslint-disable-line no-loop-func
 							i++
 						}, 50)
 					}
@@ -287,6 +288,7 @@ export default class CollectionService {
 		currentState.content.splice(contentIndex, 1)
 
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.remove(contentId)
 
 			// You also have to be an admin to do this, I'm pretty sure
@@ -311,7 +313,6 @@ export default class CollectionService {
 			dispatch(this.actions.createdCollectionUpdate(data.id))
 
 		} catch (error) {
-			// console.log(error.message)
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
@@ -325,7 +326,7 @@ export default class CollectionService {
 			dispatch(this.actions.createdCollectionUpdate(``))
 
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.message) // eslint-disable-line no-console
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
@@ -443,7 +444,7 @@ export default class CollectionService {
 			return result
 
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.message) // eslint-disable-line no-console
 			dispatch(this.actions.collectionsError(error))
 		}
 	}
@@ -499,8 +500,10 @@ export default class CollectionService {
 			}
 
 			// TODO: RENDER THE COMPONENT BY EDITTING USERS AND COURSES IN THE STORE AND PASSING NEW COURSES AND USERS
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
 
+			// eslint-disable-next-line no-unused-vars
 			let currentState = {}
 			currentState = getState().collectionStore.cache[collectionId]
 			const currentUsers = getState().collectionStore.users
@@ -536,6 +539,7 @@ export default class CollectionService {
 	updateMany = (collectionId, body) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.collectionsStart())
 		try {
+			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.permissions.postMany(collectionId, body)
 			dispatch(this.actions.collectionGetInfo( { users: [], courses: [] } ))
 		} catch (error) {

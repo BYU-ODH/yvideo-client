@@ -6,6 +6,8 @@ export default class InterfaceService {
 
 	types = {
 		MENU_TOGGLE: `MENU_TOGGLE`,
+		MENU_OPEN: `MENU_OPEN`,
+		MENU_CLOSE: `MENU_CLOSE`,
 		MODAL_TOGGLE: `MODAL_TOGGLE`,
 		TIP_TOGGLE: `TIP_TOGGLE`,
 		COLLECTIONS_DISPLAY_TOGGLE: `COLLECTIONS_DISPLAY_TOGGLE`,
@@ -26,6 +28,8 @@ export default class InterfaceService {
 
 	actions = {
 		menuToggle: () => ({ type: this.types.MENU_TOGGLE }),
+		menuOpen: () => ({type: this.types.MENU_OPEN}),
+		menuClose: () => ({type: this.types.MENU_CLOSE}),
 		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute:false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
 		tipToggle: (payload) => ({ type: this.types.TIP_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
@@ -87,6 +91,18 @@ export default class InterfaceService {
 				menuActive: !store.menuActive,
 			}
 
+		case this.types.MENU_OPEN:
+			return {
+				...store,
+				menuActive: true,
+			}
+
+		case this.types.MENU_CLOSE:
+			return {
+				...store,
+				menuActive: false,
+			}
+
 		case this.types.MODAL_TOGGLE:
 			return {
 				...store,
@@ -101,7 +117,7 @@ export default class InterfaceService {
 			}
 
 		case this.types.TIP_TOGGLE:
-			if(action.payload == null){
+			if(action.payload == null){ // eslint-disable-line eqeqeq
 				// console.log("IT IS NULL")
 				// we need to set modal to false and then pass a null component
 				return {
@@ -181,7 +197,7 @@ export default class InterfaceService {
 			}
 
 		case this.types.INTERFACE_ERROR:
-			console.error(action.payload.error)
+			console.error(action.payload.error) // eslint-disable-line no-console
 			return {
 				...store,
 				loading: false,
@@ -199,6 +215,20 @@ export default class InterfaceService {
 	 */
 	toggleMenu = () => async dispatch => {
 		dispatch(this.actions.menuToggle())
+	}
+
+	/**
+	 * Opens the side menu
+	 */
+	menuOpen = () => async dispatch => {
+		dispatch(this.actions.menuOpen())
+	}
+
+	/**
+	 * Closes the side menu
+	 */
+	menuClose = () => async dispatch => {
+		dispatch(this.actions.menuClose())
 	}
 
 	/**
@@ -287,7 +317,7 @@ export default class InterfaceService {
 
 			try {
 				const results = await apiProxy.email.postNoAttachment(emailObject)
-				if(results.status == 200) {
+				if(results.status === 200) {
 					Swal.fire({
 						icon: `success`,
 						title: `You have successfully submitted the form`,
@@ -312,7 +342,7 @@ export default class InterfaceService {
 
 			try {
 				const results = await apiProxy.email.postWithAttachment(emailObject)
-				if(results.status == 200) {
+				if(results.status === 200) {
 					Swal.fire({
 						icon: `success`,
 						title: `You have successfully submitted the form`,

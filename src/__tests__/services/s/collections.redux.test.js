@@ -46,7 +46,7 @@ const newCollection = {
 	},
 }
 
-const courses = [
+const courses = [ // eslint-disable-line no-unused-vars
 	{
 		catalogNumber: 122,
 		department: `ACC`,
@@ -55,7 +55,7 @@ const courses = [
 	},
 ]
 
-const newCourses = [
+const newCourses = [ // eslint-disable-line no-unused-vars
 	{
 		catalogNumber: 123,
 		department: `ENG`,
@@ -64,7 +64,7 @@ const newCourses = [
 	},
 ]
 
-const admins = [
+const admins = [ // eslint-disable-line no-unused-vars
 	{
 		id:22,
 		username: `testusername`,
@@ -87,7 +87,7 @@ const admins = [
 	},
 ]
 
-const exceptions = [
+const exceptions = [ // eslint-disable-line no-unused-vars
 	{
 		email:`test@test.com`,
 		id:22,
@@ -132,9 +132,9 @@ describe(`content service test`, () => {
 				authStore: {
 					user: {
 						id: testutil.id,
-						roles: testutil.roles
-					}
-				}
+						roles: testutil.roles,
+					},
+				},
 			},
 			composeWithDevTools(
 				applyMiddleware(thunk.withExtraArgument(proxies)),
@@ -249,14 +249,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`getCollections: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.user.collections.get = jest.fn()
 		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.getCollections(true)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`removeCollectionContent`, async() => {
@@ -280,14 +280,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`removeCollectionContent: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.remove = jest.fn()
 		proxies.apiProxy.collection.remove.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.removeCollectionContent(0, 0)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`createCollection`, async() => {
@@ -311,14 +311,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`createCollection: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.create = jest.fn()
 		proxies.apiProxy.collection.create.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.createCollection(`Collection 3`)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`updateCollectionStatus`, async() => {
@@ -364,7 +364,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateCollectionStatus: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.user.collections.get = jest.fn()
 		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
 			return Promise.resolve({
@@ -379,7 +379,7 @@ describe(`content service test`, () => {
 		})
 
 		await collectionServiceConstructor.updateCollectionStatus(0, `unarchive`)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`getCollectionInfo`, async() => {
@@ -418,14 +418,14 @@ describe(`content service test`, () => {
 	})
 
 	it(`getCollectionInfo: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.permissions.getUsers = jest.fn()
 		proxies.apiProxy.collection.permissions.getUsers.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
 		await collectionServiceConstructor.getCollectionInfo(22, true)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	it(`updateCollectionName`, async() => {
@@ -454,7 +454,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateCollectionName: catch error`, async() => {
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.post = jest.fn()
 		proxies.apiProxy.collection.post.mockImplementationOnce(()=>{
 			return Promise.reject({response: {data: `error`, status: 404}})
@@ -462,14 +462,14 @@ describe(`content service test`, () => {
 		})
 
 		await collectionServiceConstructor.updateCollectionName(0, `Name Updated`, true)(dispatch, getState, { apiProxy })
-		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}})
+		expect(console.error).toHaveBeenCalledWith({response: {data: `error`, status: 404}}) // eslint-disable-line no-console
 	})
 
 	// TODO: fix it later when update collectio roles is updated
 	it(`updateCollectionPermissions: add-course, remove-course`, async() => {
 		const body = {
-			username: 'test',
-			role: 'test role'
+			username: `test`,
+			role: `test role`,
 		}
 		collectionServiceConstructor = new CollectionService()
 
@@ -484,7 +484,7 @@ describe(`content service test`, () => {
 					},
 					loading: false,
 					lastFetched: 0,
-					courses: [ `course1` ],
+					courses: [`course1`],
 					users: [],
 				},
 			},
@@ -499,20 +499,20 @@ describe(`content service test`, () => {
 		proxies.apiProxy.collection.permissions.post = jest.fn()
 		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
 			return Promise.resolve({
-				status: 200
+				status: 200,
 			})
 		})
 		expect(store.getState().courses).toEqual(undefined)
-		await collectionServiceConstructor.updateCollectionPermissions(0, 'add-user', body)(dispatch, getState, { apiProxy })
-		expect(store.getState().courses).toEqual([ `course1` ])
-		await collectionServiceConstructor.updateCollectionPermissions(0, 'remove-course', body)(dispatch, getState, { apiProxy })
+		await collectionServiceConstructor.updateCollectionPermissions(0, `add-user`, body)(dispatch, getState, { apiProxy })
+		expect(store.getState().courses).toEqual([`course1`])
+		await collectionServiceConstructor.updateCollectionPermissions(0, `remove-course`, body)(dispatch, getState, { apiProxy })
 		expect(store.getState().courses).toEqual([])
 	})
 
 	it(`updateCollectionPermissions: add-user, remove-user`, async() => {
 		const body = {
-			username: 'test',
-			role: 'test role'
+			username: `test`,
+			role: `test role`,
 		}
 		collectionServiceConstructor = new CollectionService()
 
@@ -528,7 +528,7 @@ describe(`content service test`, () => {
 					loading: false,
 					lastFetched: 0,
 					courses: [],
-					users: [ `user1` ],
+					users: [`user1`],
 				},
 			},
 			composeWithDevTools(
@@ -542,21 +542,21 @@ describe(`content service test`, () => {
 		proxies.apiProxy.collection.permissions.post = jest.fn()
 		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
 			return Promise.resolve({
-				status: 200
+				status: 200,
 			})
 		})
 		expect(store.getState().users).toEqual(undefined)
-		await collectionServiceConstructor.updateCollectionPermissions(0, 'add-course', body)(dispatch, getState, { apiProxy })
-		expect(store.getState().users).toEqual([ `user1` ])
-		await collectionServiceConstructor.updateCollectionPermissions(0, 'remove-user', body)(dispatch, getState, { apiProxy })
+		await collectionServiceConstructor.updateCollectionPermissions(0, `add-course`, body)(dispatch, getState, { apiProxy })
+		expect(store.getState().users).toEqual([`user1`])
+		await collectionServiceConstructor.updateCollectionPermissions(0, `remove-user`, body)(dispatch, getState, { apiProxy })
 		expect(store.getState().users).toEqual([])
 	})
 
 	it(`updateCollectionPermissions: catch error`, async() => {
 		window.alert = jest.fn()
 		const body = {
-			username: 'test',
-			role: 'test role'
+			username: `test`,
+			role: `test role`,
 		}
 
 		proxies.apiProxy.collection.permissions.post = jest.fn()
@@ -564,7 +564,7 @@ describe(`content service test`, () => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 
 		})
-		await collectionServiceConstructor.updateCollectionPermissions(0, 'add-course', body)(dispatch, getState, { apiProxy })
+		await collectionServiceConstructor.updateCollectionPermissions(0, `add-course`, body)(dispatch, getState, { apiProxy })
 		expect(window.alert).toHaveBeenCalledWith(`The data could not be saved. Please, try again`)
 	})
 
@@ -576,7 +576,7 @@ describe(`content service test`, () => {
 			})
 		})
 		expect(store.getState().courses.length).toBe(0)
-		await collectionServiceConstructor.updateMany(1, 'test')(dispatch, getState, { apiProxy })
+		await collectionServiceConstructor.updateMany(1, `test`)(dispatch, getState, { apiProxy })
 		expect(store.getState().courses.length).toBe(0)
 	})
 
@@ -588,7 +588,7 @@ describe(`content service test`, () => {
 		})
 
 		expect(store.getState().loading).toBe(false)
-		await collectionServiceConstructor.updateMany(1, 'test')(dispatch, getState, { apiProxy })
+		await collectionServiceConstructor.updateMany(1, `test`)(dispatch, getState, { apiProxy })
 		expect(window.alert).toHaveBeenCalledWith(`The data could not be saved. Please, try again`)
 	})
 })

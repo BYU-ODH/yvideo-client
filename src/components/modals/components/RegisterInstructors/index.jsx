@@ -23,7 +23,6 @@ export default class FileUpload extends PureComponent {
 			placeholder,
 			updateSearchBar,
 			toggleModal,
-			handleConfirmDelete,
 		} = this.props.handlers
 
 		return (

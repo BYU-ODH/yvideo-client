@@ -10,6 +10,7 @@ import { convertSecondsToMinute } from '../../common/timeConversion'
 const SubtitleEditorSideMenu = props => {
 
 	const {
+		subModalVisible,
 		singleEvent,
 		index,
 		videoLength,
@@ -34,9 +35,8 @@ const SubtitleEditorSideMenu = props => {
 
 		if(focus)
 			document.getElementById(`focus`).focus()
-
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [index, event])
-
 	const editSub = (side, time, value, layer, ind, type) => {
 		const sub = {...event}
 		if (side === `beg`) {
@@ -65,7 +65,7 @@ const SubtitleEditorSideMenu = props => {
 				sub.end = subs[layer][`content`][ind].end
 			}
 		}catch(error){
-			console.log(error)
+			console.log(error) // eslint-disable-line no-console
 		}
 
 		setEvent(sub)
@@ -78,16 +78,17 @@ const SubtitleEditorSideMenu = props => {
 				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
 
-			<div className={`allSubs`} ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
+			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={()=>addSub(subLayer,0,`top`)}
 					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length ===0 && disableSave===false ? `visible`: `hidden`}
 				/>
 				{subs[subLayer][`content`].map((sub,ind)=>(
-					<div key={ind}>
+					<div id={`sub-${subLayer}-${ind}`} key={ind}>
 						<div className={`container`}>
-							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
+							{/* This toggles the z-index of the icons as the state for the submodal changes */}
+							<Icon className={`IconMiddle`} style={{zIndex: subModalVisible ? -1 : 10}} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
 								position={`top`}
-								visibility={subs[subLayer][`content`][0].start > 0.11 && ind===0 && disableSave===false ? `visible`: `hidden`}
+								visibility={subs[subLayer][`content`][0].start > 0.01 && ind===0 && disableSave===false ? `visible`: `hidden`}
 							/>
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive`:``}`}>
 								<textarea className={`subText`} type='text' onClick={()=>changeSubIndex(ind)} value={sub.text} onChange={(value)=>editSub(null,null,value,subLayer,ind)}></textarea>
@@ -113,7 +114,7 @@ const SubtitleEditorSideMenu = props => {
 						</div>
 						{
 							ind === subs[subLayer][`content`].length-1 ?
-								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
+								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
 									visibility={
 										subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave===false
 											? `visible`: `hidden`
@@ -121,7 +122,7 @@ const SubtitleEditorSideMenu = props => {
 									active={ind === index ? `subActive`:`nonActive`}
 								/>
 								:
-								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
+								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
 									visibility={
 										subs[subLayer][`content`][ind+1].start-subs[subLayer][`content`][ind].end !== 0 && disableSave===false
 											? `visible`: `hidden`

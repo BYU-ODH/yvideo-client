@@ -1,26 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import Style, { Timeline, EventEditor, AnnotationMessage, PlusIcon } from './styles'
+import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
 import pauseIcon from 'assets/event_pause.svg'
-import commentIcon from 'assets/event_comment.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
-import closeIcon from 'assets/close_icon.svg'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
-import llIcon from 'assets/te-chevrons-left.svg'
-import rrIcon from 'assets/te-chevrons-right.svg'
-import lIcon from 'assets/te-chevron-left.svg'
-import rIcon from 'assets/te-chevron-right.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
@@ -31,7 +25,6 @@ const VideoEditor = props => {
 	const {
 		eventsArray,
 		content,
-		contentError,
 		url,
 		aspectRatio,
 	} = props.viewstate
@@ -102,11 +95,13 @@ const VideoEditor = props => {
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 
+	// eslint-disable-next-line no-unused-vars
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
+	// eslint-disable-next-line no-unused-vars
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
-	const [annotationsSaved, setSaved] = useState(false)
+	// eslint-disable-next-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
@@ -134,16 +129,13 @@ const VideoEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave])
 
 	// end of useEffect
 
 	if(shouldUpdate === true)
 		setShouldUpdate(false)
-
-	const togglendTimeline = () => {
-		setTimelineMinimized(!timelineMinimized)
-	}
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
@@ -155,7 +147,6 @@ const VideoEditor = props => {
 	}
 
 	const addEventToLayer = (item, index, startPercentage) => {
-		// console.log("Start Percentage", startPercentage)
 
 		let currentEvents = []
 		if(allEvents !== undefined)
@@ -170,9 +161,6 @@ const VideoEditor = props => {
 		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
 		eventObj.end = Number(startPercentage) + eventObj.end
-
-		// console.log("Last final time for event start", eventObj.start)
-		// setCurrentTime(Number(startPercentage) + eventObj.end)
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 
@@ -189,10 +177,8 @@ const VideoEditor = props => {
 		}
 
 		const currentEvents = [...allEvents]
-		let input = ``
 		try {
 			if(side === `beg`) {
-				input = event.start
 				if(event.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
@@ -201,7 +187,6 @@ const VideoEditor = props => {
 				}
 
 			} else if(side === `end`) {
-				input = event.end
 				if(event.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
@@ -210,7 +195,7 @@ const VideoEditor = props => {
 				}
 			}
 		} catch (e) {
-			console.log(`catch`)
+			console.log(`catch`) // eslint-disable-line no-console
 		}
 
 		// check start event times
@@ -251,15 +236,6 @@ const VideoEditor = props => {
 			}
 		} else
 			setDisableSave(true)
-
-		if(side === `beg`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				event.start = input
-
-		} else if(side === `end`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				event.end = input
-		}
 
 		currentEvents[index] = event
 
@@ -346,17 +322,8 @@ const VideoEditor = props => {
 		setEditCensor(object)
 	}
 
-	const handleSaveCensor = () => {
-		const index = eventToEdit
-		const cEvent = allEvents[index]
-		const layer = cEvent.layer
-
-		cEvent.position = editCensor
-		updateEvents(index, cEvent, layer)
-	}
 	// THIS IS PART OF CENSOR
 	const handleLastClick = (height, width, x, y, time) => {
-
 		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
 
 			const index = eventToEdit
@@ -377,15 +344,6 @@ const VideoEditor = props => {
 
 			updateEvents(index, cEvent, layer)
 		}
-	}
-
-	const openSideEditor = (layerIndex, eventIndex) => {
-		if(eventIndex !== eventToEdit)
-			setActiveCensorPosition(-1)
-
-		setEventToEdit(eventIndex)
-		setDisplayLayer(layerIndex)
-		setSideEditor(true)
 	}
 
 	const closeSideEditor = () => {
@@ -412,7 +370,7 @@ const VideoEditor = props => {
 		setIsLoading(false)
 	}
 
-	const handleExportAnnotation = async () => {
+	const handleExportAnnotation = () => {
 		// Convert JSON Array to string.
 		// Convert JSON string to BLOB.
 		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
@@ -447,31 +405,46 @@ const VideoEditor = props => {
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-	}
+		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 
+	}
 	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
-			const scrubberShadow = document.getElementById(`time-bar-shadow`)
+			const scrubberShadow = document.getElementById(`time-bar-shadow`) // eslint-disable-line no-unused-vars
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			// if(document.getElementsByClassName(`events`).length > 1)
+			// 	currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
+			// else
+			// 	currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
 
-			if(!zoom){
-				scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-				timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
+			// if(!zoom){
+			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
+			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
 
-				allLayers.forEach((element, i) => {
-					allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-				})
-			} else {
-				scrubber.scrollLeft = currentLayerWidth * direction
-				timeIndicator.scrollLeft = currentLayerWidth * direction
+			// 	allLayers.forEach((element, i) => {
+			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
+			// 	})
+			// } else {
+			// 	scrubber.scrollLeft = currentLayerWidth * direction
+			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
 
-				allLayers.forEach((element, i) => {
-					allLayers[i].scrollLeft = currentLayerWidth * direction
-				})
-			}
+			// 	allLayers.forEach((element, i) => {
+			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
+			// 	})
+			// }
+			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
+
+			const dis = direction/scrollBarContainer
+			scrubber.scrollLeft = currentLayerWidth * dis
+			timeIndicator.scrollLeft = currentLayerWidth * dis
+
+			allLayers.forEach((element, i) => {
+				allLayers[i].scrollLeft = currentLayerWidth * dis
+			})
 		}
 	}
 
@@ -484,9 +457,7 @@ const VideoEditor = props => {
 		}
 	}
 	const setCurrentTimePercentage = (time) => {
-		// console.log("Time", time)
 		const seconds = time * videoLength
-		// console.log("Seconds", seconds)
 		setCurrentTime(seconds)
 	}
 
@@ -500,7 +471,6 @@ const VideoEditor = props => {
 				<VideoContainer
 					className='video'
 					url={url}
-					handlers={togglendTimeline}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTimePercentage} // set current time
 					handleLastClick = {handleLastClick}
@@ -534,9 +504,7 @@ const VideoEditor = props => {
 										activeEvent={eventToEdit}
 										index={index}
 										// onDrop={(item) => eventDropHandler(item,index)}
-										sideEditor={openSideEditor}
 										updateEvents={updateEvents}
-										closeEditor={closeSideEditor}
 										displayLayer={displayLayer}
 									/>
 								</div>
@@ -547,7 +515,7 @@ const VideoEditor = props => {
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' id = 'zoom-factor'>
-							<img src={zoomOut} style={{ width: `20px` }}/>
+							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
@@ -557,12 +525,23 @@ const VideoEditor = props => {
 								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
 								onMouseLeave={e => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 						</div>
 
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-
+								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+									<Rnd
+										className= 'zoom-scroll-indicator'
+										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+										bounds = {`parent`}
+										onDrag = {(e,d)=>{
+											handleScrollFactor(d.x)
+										}}
+									>
+									</Rnd>
+								</div>
 							</div>
 
 							<div id={`time-indicator-container`}>
@@ -576,7 +555,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor minimized={eventListMinimized}>
+			<EventEditor id='EventEditor' minimized={eventListMinimized}>
 				<header>
 					<img
 						src={helpIcon}
@@ -592,7 +571,7 @@ const VideoEditor = props => {
 								<span>Save</span>
 							</button>
 							:
-							<button onClick={handleSaveAnnotation}>
+							<button className={`handleSaveAnnotation`} onClick={handleSaveAnnotation}>
 								{blockLeave ?
 									null
 									:
@@ -607,7 +586,7 @@ const VideoEditor = props => {
 					</div>
 					<div className={`save`}>
 						{!disableSave && !blockLeave && !isLoading ?
-							<button onClick={handleExportAnnotation}>
+							<button className={`handleExportAnnotation`} onClick={handleExportAnnotation}>
 								<span>Export</span>
 							</button>
 							:
@@ -639,7 +618,6 @@ const VideoEditor = props => {
 							handleEditCensor = {handleEditCensor}
 							handleCensorRemove = {handleCensorRemove}
 							handleAddCensor = {handleAddCensor}
-							handleSaveCensor = {handleSaveCensor}
 							activeCensorPosition = {activeCensorPosition}
 							setActiveCensorPosition = {setActiveCensorPosition}
 							toggleTip={toggleTip}
@@ -652,18 +630,6 @@ const VideoEditor = props => {
 			</EventEditor>
 
 			<>
-				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
-					<img src={closeIcon} width='20' height='20' onClick={ e => setSaved(false)}/>
-					{
-						contentError !== `` ? (
-							<h2 id='error'>
-								<span>Content failed with: {contentError}</span><br/><br/>
-							</h2>
-						) : (
-							<h2 id='success'>Annotations saved successfully</h2>
-						)
-					}
-				</AnnotationMessage>
 				<Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'

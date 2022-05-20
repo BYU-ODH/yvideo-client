@@ -16,7 +16,7 @@ const FileOverviewContainer = props => {
 		fileCache,
 		toggleModal,
 		editFileResource,
-		resources,
+		// resources,
 	} = props
 
 	const [fileState, setFileState] = useState(file)
@@ -59,6 +59,7 @@ const FileOverviewContainer = props => {
 	const viewstate = {
 		file,
 		langs,
+		fileState,
 	}
 
 	const handlers = {

@@ -23,6 +23,7 @@ const props = {
 	toggleModal: jest.fn(),
 	toggleTip: jest.fn(),
 	setBreadcrumbs: jest.fn(),
+	allSubs:[{content:[{start:10,end:20,text:`test`}]}],
 }
 const mock = {x: 100, y: 50}
 window.ResizeObserver =
@@ -240,9 +241,15 @@ describe(`SubtitlesEditorContainer testing`, () => {
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
-		wrapper.find(`Rnd`).simulate(`click`)
-		wrapper.find(`Rnd`).prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
-		wrapper.find(`Rnd`).prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
+		wrapper.find(`Rnd`).forEach((comp)=>{
+			comp.simulate(`click`)
+		})
+		wrapper.find(`Rnd`).forEach((comp)=>{
+			comp.prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
+		})
+		wrapper.find(`Rnd`).forEach((comp)=>{
+			comp.prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
+		})
 		wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
 			{ target:
 				{ getBoundingClientRect: () => {
@@ -272,9 +279,11 @@ describe(`SubtitlesEditorContainer testing`, () => {
 				return 0
 			})
 		}
-		wrapper.find(`Rnd`).prop(`onDragStop`)( ``, {d: {x: 10}})
-		// wrapper.find(`Rnd`).prop(`onMouseEnter`)()
-		wrapper.find(`Rnd`).prop(`onMouseLeave`)()
+		wrapper.find(`Rnd`).forEach(comp=>{
+			comp.prop(`onDragStop`)( ``, {d: {x: 10}})
+		})
+		// wrapper.find(`Rnd`).prop(`onMouseLeave`)()
+
 	})
 })
 
