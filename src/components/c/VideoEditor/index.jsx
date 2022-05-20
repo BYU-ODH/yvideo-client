@@ -51,7 +51,7 @@ const VideoEditor = props => {
 			type: `Pause`,
 			icon: pauseIcon,
 			start: 0,
-			end: 1,
+			message: "",
 			layer: 0,
 		},
 		// {

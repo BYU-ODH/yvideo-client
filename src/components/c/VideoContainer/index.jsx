@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
-import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
+import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
@@ -133,6 +133,13 @@ const VideoContainer = props => {
 				case `Pause`:
 					events[index].active = false
 					video.handlePause()
+					let pauseMessage = document.getElementById("pauseMessage")
+					let pauseMessageButton = "<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>"
+
+					if(events[index].message){
+						pauseMessage.style.visibility = 'visible'
+						pauseMessage.innerHTML = events[index].message + pauseMessageButton
+					}
 					break
 				case `Skip`:
 					events[index].active = false
@@ -211,6 +218,7 @@ const VideoContainer = props => {
 		handleShowSubtitle: (value) => {
 			setSubtitleText(value)
 		},
+
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
@@ -436,6 +444,9 @@ const VideoContainer = props => {
 					</div>
 					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 					</div>
+					<PauseMessage id="pauseMessage">
+						<button type="button" style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
+					</PauseMessage>
 				</Blank>
 			</div>
 

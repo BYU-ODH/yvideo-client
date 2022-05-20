@@ -49,6 +49,25 @@ const Style = styled.div`
 		}
 	}
 
+	& .subtitlesOffButton {
+			position: relative;
+			width: 100%;
+			height: 30px;
+			font-size: 1.4rem;
+			font-weight: 500;
+			margin: 2px 0px 2px 0px;
+			text-align: left;
+			border: none;
+			background: transparent;
+			color: white;
+
+			:hover {
+				background-color: rgba(5,130,202,1);
+				color: white;
+			}
+		}
+	}
+
 	& .left {
 		grid-area: left;
 		display: flex;
