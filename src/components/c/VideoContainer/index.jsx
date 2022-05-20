@@ -133,11 +133,11 @@ const VideoContainer = props => {
 				case `Pause`:
 					events[index].active = false
 					video.handlePause()
-					let pauseMessage = document.getElementById("pauseMessage")
-					let pauseMessageButton = "<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>"
+					const pauseMessage = document.getElementById(`pauseMessage`)
+					const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 
 					if(events[index].message){
-						pauseMessage.style.visibility = 'visible'
+						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
 					break
@@ -348,12 +348,12 @@ const VideoContainer = props => {
 			break
 		case `Space`:
 			setPlaying(playing)
-			if (playing === true) {
+			if (playing === true)
 				video.handlePause()
-			}
-			if (playing === false) {
+
+			if (playing === false)
 				video.handlePlay()
-			}
+
 			break
 
 		default:
@@ -405,11 +405,11 @@ const VideoContainer = props => {
 		const wraplisten = new ResizeObserver((entry)=>{
 			video.handleAspectRatio()
 		})
-		if(wrap) {
+		if(wrap)
 			wraplisten.observe(wrap)
-		}
+
 		return function cleanup(){
-				window.onkeyup = null
+			window.onkeyup = null
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration])
@@ -418,12 +418,12 @@ const VideoContainer = props => {
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
 				<Blank
-				className='blank'
-				id='blank'
-				blank={blank}
-				onContextMenu={e => e.preventDefault()}
-				onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
-				ref={videoRef}
+					className='blank'
+					id='blank'
+					blank={blank}
+					onContextMenu={e => e.preventDefault()}
+					onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
+					ref={videoRef}
 				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
@@ -444,8 +444,8 @@ const VideoContainer = props => {
 					</div>
 					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 					</div>
-					<PauseMessage id="pauseMessage">
-						<button type="button" style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
+					<PauseMessage id='pauseMessage'>
+						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
 					</PauseMessage>
 				</Blank>
 			</div>
