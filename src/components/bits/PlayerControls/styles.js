@@ -125,7 +125,8 @@ const Style = styled.div`
 		display: flex;
 		flex-direction: column;
 		border: 2px solid (71, 71, 71, 1);
-		border-radius: 5px;
+		padding-bottom: 2px;
+		border-radius: 8px;
 
 		& div {
 			position: relative;
