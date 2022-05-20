@@ -121,6 +121,12 @@ const PlayerControls = props => {
 		handleAspectRatio()
 	}
 
+	const handleOffSubtitles = () => {
+		setShowTranscript(false)
+		handleShowSubtitle(``)
+		handleAspectRatio()
+	}
+
 	const handleSeekToSubtitle= (e) => {
 		let seekToIndex = 0
 
@@ -141,6 +147,7 @@ const PlayerControls = props => {
 		const start = displaySubtitles.content[seekToIndex].start
 		handleSeekChange(null, start + start * .001)
 	}
+
 
 	return (
 		<Style playing={playing} >
@@ -292,10 +299,11 @@ const PlayerControls = props => {
 								type='button'
 								value={element.title}
 								onClick={e => handleChangeSubtitle(index)}
-								className={ indexToDisplay === index ? `active-value` : ``}
+								className={ indexToDisplay === index && showTranscript === true ? `active-value` : ``}
 							/>,
 						)
 						}
+						<button type='button' className={`${showTranscript==false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}

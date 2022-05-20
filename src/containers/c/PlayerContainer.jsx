@@ -362,6 +362,7 @@ const PlayerContainer = props => {
 		}
 		setIndexToDisplay(index)
 		setDisplaySubtitles(temp)
+		setShowTranscript(true)
 	}
 
 	const handleShowHelp = () => {
