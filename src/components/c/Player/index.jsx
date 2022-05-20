@@ -6,7 +6,7 @@ import { PlayerSubtitlesContainer } from 'containers'
 import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
-import Style, { Blank, Subtitles, PlayButton } from './styles'
+import Style, { Blank, Subtitles, PlayButton, PauseMessage } from './styles'
 export default class Player extends Component {
 	constructor(props) {
 		super(props)
@@ -183,6 +183,13 @@ export default class Player extends Component {
 				case `Pause`:
 					events[index].active = false
 					handlePause()
+					let pauseMessage = document.getElementById("pauseMessage")
+					let pauseMessageButton = "<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>"
+
+					if(events[index].message){
+						pauseMessage.style.visibility = 'visible'
+						pauseMessage.innerHTML = events[index].message + pauseMessageButton
+					}
 					// console.log("pausing")
 					break
 				case `Skip`:
@@ -274,7 +281,8 @@ export default class Player extends Component {
 							</div>
 							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
-
+							<PauseMessage id="pauseMessage">
+							</PauseMessage>
 						</Blank>
 					</div>
 					<Transcript viewstate={this.props.viewstate} handlers={this.props.handlers}>
