@@ -197,6 +197,18 @@ const PlayerContainer = props => {
 		})
 	}
 
+	const handleToggleSubtitles = () => {
+		setShowTranscript(!showTranscript)
+		handleShowSubtitle(``)
+		handleAspectRatio()
+	}
+
+	const handleOffSubtitles = () => {
+		setShowTranscript(false)
+		handleShowSubtitle(``)
+		handleAspectRatio()
+	}
+
 	const handleDuration = duration => {
 		setDuration(duration)
 	}
@@ -508,6 +520,8 @@ const PlayerContainer = props => {
 		handlePlayPause,
 		setHasPausedClip,
 		handleAspectRatio,
+		handleToggleSubtitles,
+		handleOffSubtitles,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

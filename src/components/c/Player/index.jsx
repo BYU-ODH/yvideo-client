@@ -11,9 +11,10 @@ export default class Player extends Component {
 	constructor(props) {
 		super(props)
 		this.handleSeek = (e, time) => this.props.handlers.handleSeekChange(e, time)
-		this.handlePlayPause = (boolean) => this.props.handlers.handlePlayPause(boolean)
+		this.handlePlayPause = (bool) => this.props.handlers.handlePlayPause(bool)
 		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
-		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
+		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
+		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.state = {
 			skipArray: []
@@ -69,9 +70,11 @@ export default class Player extends Component {
 		case `Space`:
 			this.handlePlayPause()
 			break
-
 		case `KeyF`:
 			this.handleToggleFullscreen()
+			break
+		case `KeyC`:
+			this.handleToggleSubtitles()
 			break
 
 		default:
