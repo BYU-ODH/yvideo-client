@@ -59,12 +59,11 @@ const PlayerControls = props => {
 		// handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
-		handleShowSubtitle,
-		setShowTranscript,
 		handleShowTip,
 		handleShowHelp,
 		toggleTip,
-		handleAspectRatio,
+		handleToggleSubtitles,
+		handleOffSubtitles,
 	} = props.handlers
 
 	const {
@@ -115,18 +114,6 @@ const PlayerControls = props => {
 
 	}
 
-	const handleToggleSubtitles = () => {
-		setShowTranscript(!showTranscript)
-		handleShowSubtitle(``)
-		handleAspectRatio()
-	}
-
-	const handleOffSubtitles = () => {
-		setShowTranscript(false)
-		handleShowSubtitle(``)
-		handleAspectRatio()
-	}
-
 	const handleSeekToSubtitle= (e) => {
 		let seekToIndex = 0
 
@@ -147,7 +134,6 @@ const PlayerControls = props => {
 		const start = displaySubtitles.content[seekToIndex].start
 		handleSeekChange(null, start + start * .001)
 	}
-
 
 	return (
 		<Style playing={playing} >
@@ -196,7 +182,7 @@ const PlayerControls = props => {
 				}
 				{ isMobile &&
 				<Book onClick={handleToggleTranscript}/>}
-				{ isMobile &&
+				{ (isMobile || !showTranscript) &&
 					<Help src={helpIcon} onClick={handleShowHelp}
 						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
@@ -206,12 +192,12 @@ const PlayerControls = props => {
 				<div className='menu-modal' onMouseLeave={e => setShowSpeed(false)}>
 					<h3>Playback Rate</h3>
 					<div>
-						{ playbackOptions.map((playbackAtIndex) => (
+						{ playbackOptions.map((playbackAtIndex) =>
 							playbackAtIndex !== 1 ?
-							<><input type='button' value={playbackAtIndex} key={playbackAtIndex} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
-							:
-							<><input type='button' value='Normal' key={1} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
-							))
+								<><input type='button' value={playbackAtIndex} key={playbackAtIndex} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
+								:
+								<><input type='button' value='Normal' key={1} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>,
+						)
 						}
 					</div>
 				</div>
@@ -235,7 +221,7 @@ const PlayerControls = props => {
 							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={indexToDisplay === index && showTranscript === true ? `active-value` : ``}/>,
 						)
 						}
-						<button type='button' className={`${showTranscript==false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
+						<button type='button' className={`${showTranscript === false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}

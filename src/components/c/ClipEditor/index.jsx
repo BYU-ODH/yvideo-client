@@ -128,7 +128,7 @@ const ClipEditor = props => {
 		const events = document.getElementsByClassName(`events`)
 		if(layerContainer && events[0].clientWidth > 0) {
 			setScrollBar(
-				layerContainer[0].clientWidth * 100 / events[0].clientWidth
+				layerContainer[0].clientWidth * 100 / events[0].clientWidth,
 			)
 		}
 	}

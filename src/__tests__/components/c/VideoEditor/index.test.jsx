@@ -123,7 +123,6 @@ describe(`VideoEditor testing`, () => {
 		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `00:01.30` } })
 		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `03:01.30` } })
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `03:10.30` } })
-		
 
 		wrapper.find(`.video`).at(0).prop(`handleScroll`)(0, true)
 

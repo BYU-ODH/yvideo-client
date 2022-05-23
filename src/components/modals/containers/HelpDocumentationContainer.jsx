@@ -296,6 +296,10 @@ const HelpDocumentationContainer = props => {
 					<h3>Hotkeys</h3>
 					<ul>
 						<li>
+								<b>C-key:</b> toggle captions
+								<kbd>C</kbd>
+						</li>
+						<li>
 							<b>F-key:</b> toggle fullscreen
 							<kbd>F</kbd>
 						</li>
@@ -316,11 +320,11 @@ const HelpDocumentationContainer = props => {
 							<kbd>,</kbd>
 						</li>
 						<li>
-							<b>Right Bracket:</b> increase playback speed
+							<b>Right angle bracket:</b> increase playback speed
 							<kbd>></kbd>&nbsp;&nbsp; OR <kbd>SHIFT</kbd>&nbsp;&nbsp; + <kbd>.</kbd>
 						</li>
 						<li>
-							<b>Left Bracket:</b> decrease playback speed
+							<b>Left angle bracket:</b> decrease playback speed
 							<kbd><</kbd>&nbsp;&nbsp; OR <kbd>SHIFT</kbd>&nbsp;&nbsp; + <kbd>,</kbd>
 						</li>
 					</ul>
