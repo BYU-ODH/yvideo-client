@@ -235,7 +235,7 @@ const PlayerControls = props => {
 							<input key={element.id} type='button' value={element.title} onClick={e => handleChangeSubtitle(index)} className={indexToDisplay === index && showTranscript === true ? `active-value` : ``}/>,
 						)
 						}
-						<button type='button' className={`${showTranscript==false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
+						<button type='button' className={`${showTranscript === false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}

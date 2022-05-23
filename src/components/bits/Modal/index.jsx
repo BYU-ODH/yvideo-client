@@ -11,6 +11,9 @@ class Modal extends Component {
 	toggleModal = this.props.toggleModal
 	wrapper = createRef()
 
+	handleToggleModal = (e) => {
+		this.toggleModal(e)
+	}
 	render() {
 		const Comp = this.props.modal.component
 
@@ -19,11 +22,9 @@ class Modal extends Component {
 		return ReactDOM.createPortal(
 			(
 				// so that when one clicks in the grey space around a modal it closes the modal
-				<Wrapper onClick={this.toggleModal} ref={this.wrapper} className=''>
+				<Wrapper id='wrapper' onClick={this.toggleModal} ref={this.wrapper} className=''>
 					{/* e.stopPropagation() makes it so that when one is hovering over the actual modal, the onClick from the Wrapper doesn't take effect */}
-					<div onClick={e => {
-						e.stopPropagation()
-					}}>
+					<div onClick={e => e.stopPropagation()}>
 						<Comp {...this.props.modal.props} />
 					</div>
 				</Wrapper>
@@ -33,6 +34,15 @@ class Modal extends Component {
 	}
 
 	componentDidUpdate = prevProps => {
+		const onKeyupTemp = document.onkeyup
+		document.onkeyup = (e) => {
+			if(e) {
+				if(e.code === `Escape`) {
+					this.toggleModal()
+					document.onkeyup = onKeyupTemp
+				}
+			}
+		}
 
 		if (!this.wrapper.current) return
 
@@ -42,14 +52,18 @@ class Modal extends Component {
 		}
 
 		if (prevProps.active && !this.props.active) {
-			setTimeout(() => {
+			// setTimeout(() => {
 				this.wrapper.current.classList.remove(`active`)
-				setTimeout(() => {
+				// setTimeout(() => {
 					this.wrapper.current.classList.add(`hidden`)
-				}, 250)
-			}, 1000)
+				// }, 250)
+			// }, 1000)
 		}
 
+	}
+
+	componentWillUnmount() {
+		document.onkeyup = null
 	}
 
 }

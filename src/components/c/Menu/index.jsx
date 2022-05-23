@@ -10,9 +10,13 @@ class Menu extends PureComponent {
 
 	}
 
-	componentDidMount() {
+	componentDidUpdate() {
+		const onclickTemp = window.onclick
 		window.onclick = (e) => {
-			this.menuClose(e)
+			if(e) {
+				this.menuClose(e)
+				window.onclick = onclickTemp
+			}
 		}
 	}
 
