@@ -44,16 +44,16 @@ export default class Content {
 			this.thumbnail = obj[`thumbnail`]
 			this.description = obj[`description`]
 			this.resourceId = obj[`resource-id`]
-			this.resource.keywords = (obj[`tags`] ?
+			this.resource.keywords = obj[`tags`] ?
 				obj[`tags`].split(`; `)
 				: ``
-			)
+
 			this.name = obj[`title`]
 			this.published = obj[`published`]
-			this.clips = (obj[`clips`] ?
+			this.clips = obj[`clips`] ?
 				obj[`clips`]
 				: ``
-			)
+
 			this.fileId = obj[`file-id`]
 
 			this.settings = {
@@ -72,17 +72,20 @@ export default class Content {
 
 	}
 
-	stringToArray(string){
-		const array = []
+	stringToArray(inputString){
+		// TODO: Once everything goes through this, then we can get rid of this code. Mainly the if block.
+		if (inputString.contains(/};\s+{/)){
+			const array = []
+			const temp = inputString.split(`; `)
 
-		const temp = string.split(`; `)
-
-		temp.forEach(element => {
-			if(element !== ``)
-				array.push(JSON.parse(element))
-
-		})
-
-		return array
+			temp.forEach(element => {
+				if(element !== ``)
+					array.push(JSON.parse(element))
+			})
+			return array
+		} else {
+			const array = JSON.parse(inputString)
+			return array
+		}
 	}
 }
