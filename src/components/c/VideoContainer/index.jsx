@@ -122,7 +122,8 @@ const VideoContainer = props => {
 
 				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					if(values.allEvents[y].end >= playedSeconds){
@@ -133,11 +134,9 @@ const VideoContainer = props => {
 				case `Pause`:
 					events[index].active = false
 					video.handlePause()
-					let pauseMessage = document.getElementById("pauseMessage")
-					let pauseMessageButton = "<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>"
 
 					if(events[index].message){
-						pauseMessage.style.visibility = 'visible'
+						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
 					break
@@ -447,8 +446,8 @@ const VideoContainer = props => {
 					</div>
 					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 					</div>
-					<PauseMessage id="pauseMessage">
-						<button type="button" style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
+					<PauseMessage id='pauseMessage'>
+						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
 					</PauseMessage>
 				</Blank>
 			</div>

@@ -11,9 +11,10 @@ export default class Player extends Component {
 	constructor(props) {
 		super(props)
 		this.handleSeek = (e, time) => this.props.handlers.handleSeekChange(e, time)
-		this.handlePlayPause = (boolean) => this.props.handlers.handlePlayPause(boolean)
+		this.handlePlayPause = (bool) => this.props.handlers.handlePlayPause(bool)
 		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
-		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
+		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
+		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.state = {
 			skipArray: [],
@@ -67,9 +68,11 @@ export default class Player extends Component {
 		case `Space`:
 			this.handlePlayPause()
 			break
-
 		case `KeyF`:
 			this.handleToggleFullscreen()
+			break
+		case `KeyC`:
+			this.handleToggleSubtitles()
 			break
 
 		default:
@@ -173,7 +176,8 @@ export default class Player extends Component {
 
 				if(!events[index].active)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					if(!muted)
@@ -184,11 +188,9 @@ export default class Player extends Component {
 				case `Pause`:
 					events[index].active = false
 					handlePause()
-					let pauseMessage = document.getElementById("pauseMessage")
-					let pauseMessageButton = "<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>"
 
 					if(events[index].message){
-						pauseMessage.style.visibility = 'visible'
+						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
 					// console.log("pausing")
@@ -288,7 +290,7 @@ export default class Player extends Component {
 							</div>
 							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
-							<PauseMessage id="pauseMessage">
+							<PauseMessage id='pauseMessage'>
 							</PauseMessage>
 						</Blank>
 					</div>

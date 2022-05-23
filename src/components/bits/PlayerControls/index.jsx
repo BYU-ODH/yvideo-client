@@ -59,12 +59,11 @@ const PlayerControls = props => {
 		// handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
-		handleShowSubtitle,
-		setShowTranscript,
 		handleShowTip,
 		handleShowHelp,
 		toggleTip,
-		handleAspectRatio,
+		handleToggleSubtitles,
+		handleOffSubtitles,
 	} = props.handlers
 
 	const {
@@ -115,18 +114,6 @@ const PlayerControls = props => {
 
 	}
 
-	const handleToggleSubtitles = () => {
-		setShowTranscript(!showTranscript)
-		handleShowSubtitle(``)
-		handleAspectRatio()
-	}
-
-	const handleOffSubtitles = () => {
-		setShowTranscript(false)
-		handleShowSubtitle(``)
-		handleAspectRatio()
-	}
-
 	const handleSeekToSubtitle= (e) => {
 		let seekToIndex = 0
 
@@ -147,7 +134,6 @@ const PlayerControls = props => {
 		const start = displaySubtitles.content[seekToIndex].start
 		handleSeekChange(null, start + start * .001)
 	}
-
 
 	return (
 		<Style playing={playing} >
@@ -238,7 +224,7 @@ const PlayerControls = props => {
 				}
 				{ isMobile &&
 				<Book onClick={handleToggleTranscript}/>}
-				{ isMobile &&
+				{ (isMobile || !showTranscript) &&
 					<Help src={helpIcon} onClick={handleShowHelp}
 						onMouseEnter={e => handleShowTip(`help`,
 							{
@@ -303,7 +289,7 @@ const PlayerControls = props => {
 							/>,
 						)
 						}
-						<button type='button' className={`${showTranscript==false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
+						<button type='button' className={`${showTranscript === false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}
