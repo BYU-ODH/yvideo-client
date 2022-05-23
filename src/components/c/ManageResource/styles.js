@@ -111,7 +111,6 @@ export const TableContainer = styled.div`
 	height: 25rem;
 	overflow-y: scroll;
 `
-
 export const Search = styled.form`
 	position: relative;
 	text-align: ${props => props.isMobile ? `center` : ``};

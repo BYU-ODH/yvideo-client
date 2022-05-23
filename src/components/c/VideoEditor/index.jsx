@@ -266,9 +266,20 @@ const VideoEditor = props => {
 		const index = eventToEdit
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
-		const posprev = Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b)=>parseFloat(cEvent.position[b])-parseFloat(cEvent.position[a]))[0]
-		const posnex = Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
-		setActiveCensorPosition(posprev && posnex ? posprev? posprev:posnex:-1)
+		const posPrev = (
+			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b) =>
+				parseFloat(cEvent.position[b]) - parseFloat(cEvent.position[a]))[0]
+		)
+		const posNext = (
+			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>
+				parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
+		)
+		setActiveCensorPosition(posPrev && posNext ?
+			posPrev ?
+				posPrev
+				: posNext
+			: -1
+		)
 		delete cEvent.position[item]
 		updateEvents(index, cEvent, layer)
 	}
@@ -280,7 +291,9 @@ const VideoEditor = props => {
 			const cEvent = allEvents[index]
 			const layer = cEvent.layer
 			const pos = cEvent.position
-			const id = Object.keys(pos).length === 0 ? `0` : `${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+			const id = Object.keys(pos).length !== 0 ?
+				`${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				: `0`
 			let exists = false
 			Object.keys(pos).forEach((val)=>{
 				if (pos[val][0].toString() === parseFloat(time).toFixed(1).toString()) exists = true
@@ -330,7 +343,9 @@ const VideoEditor = props => {
 			const cEvent = allEvents[index]
 			const layer = cEvent.layer
 			const pos = cEvent.position
-			const id = Object.keys(pos).length === 0 ? `0` : `${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+			const id = Object.keys(pos).length !== 0 ?
+				`${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				: `0`
 
 			let exists = false
 			Object.keys(pos).forEach((val)=>{
@@ -522,7 +537,13 @@ const VideoEditor = props => {
 								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
-								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseEnter={e => handleShowTip(`te-zoom`,
+									{
+										x: e.target.getBoundingClientRect().x,
+										y: e.target.getBoundingClientRect().y,
+										width: e.currentTarget.offsetWidth
+									})
+								}
 								onMouseLeave={e => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
@@ -561,7 +582,13 @@ const VideoEditor = props => {
 						src={helpIcon}
 						alt={`helpIcon`}
 						onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`help`,
+							{
+								x: e.target.getBoundingClientRect().x,
+								y: e.target.getBoundingClientRect().y + 10,
+								width: e.currentTarget.offsetWidth
+							})
+						}
 						onMouseLeave={e => toggleTip()}
 						style={{marginLeft:10,marginTop:15}}
 					/>
@@ -600,7 +627,7 @@ const VideoEditor = props => {
 						{ showSideEditor &&
 								<>
 									<>
-										<span className='current'>{allEvents !== []? `${checkSideBarTitle()}` : ``}</span>
+										<span className='current'>{allEvents !== [] ? `${checkSideBarTitle()}` : ``}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>

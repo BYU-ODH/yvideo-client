@@ -421,7 +421,10 @@ const VideoContainer = props => {
 					id='blank'
 					blank={blank}
 					onContextMenu={e => e.preventDefault()}
-					onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
+					onClick={ (e) => activeCensorPosition === -1 ?
+						video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
+						: ``
+					}
 					ref={videoRef}
 				>
 					{activeCensorPosition !== -1 ? (
@@ -431,8 +434,8 @@ const VideoContainer = props => {
 							handleUpdateCensorPosition = {video.handleUpdateCensorPosition}
 							handleUpdateCensorResize = {video.handleUpdateCensorResize}
 							setCensorEdit = {setActiveCensorPosition}
-							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth: 0}
-							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight: 0}
+							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth : 0}
+							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
 							seekTo = {video.handleSeek}
 						/>
 					):``}
@@ -488,7 +491,10 @@ const VideoContainer = props => {
 						<span className='time'>{formattedElapsed}</span>
 
 						<button className='mute' onClick={video.toggleMute}>
-							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
+							<img
+								src={muted ? unmute : mute}
+								alt={muted ? `unmute` : `mute`}
+							/>
 						</button>
 
 						<div id='time-bar' onMouseLeave={(e) => {

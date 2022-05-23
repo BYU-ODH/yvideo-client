@@ -705,7 +705,12 @@ const SubtitleEditor = props => {
 									<div className={`handle`} >
 										<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
 											<SubtitlesCard
-												title={sub.title !== `` ? sub.title : isEdit ? `` : `No Language`}
+												title={sub.title !== `` ?
+													sub.title
+													:
+													isEdit ?
+														`` : `No Language`
+												}
 												updateTitle={updateSubLayerTitle}
 												isEdit={isEdit}
 												subLayer={subLayerToEdit}
@@ -758,10 +763,25 @@ const SubtitleEditor = props => {
 								/>
 
 							}
-							<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
+							<div
+								style={
+									{
+										color:`#ffffff`,
+										backgroundColor:`#0582ca`,
+										borderRadius:`0.6rem`,
+										width:`130px`,
+										margin:`10px`,
+										textAlign:`center`,
+										padding:`5px`,
+										cursor:`pointer`
+									}
+								}
+								className={`setSubModalVisible`}
+								onClick={ () => {
 								setSubModalVisible(true)
 								setSubModalMode(`create`)
-							}}>
+								}}
+							>
 								<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
 							</div>
 						</div>
@@ -774,10 +794,27 @@ const SubtitleEditor = props => {
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
-								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								enableResizing={
+									{
+										top: false,
+										right: false,
+										bottom: false,
+										left: false,
+										topRight: false,
+										bottomRight: false,
+										bottomLeft: false,
+										topLeft: false
+									}
+								}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
-								onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+								onMouseEnter={e => handleShowTip(`te-zoom`,
+									{
+										x: e.target.getBoundingClientRect().x,
+										y: e.target.getBoundingClientRect().y,
+										width: e.currentTarget.offsetWidth
+									})
+								}
 								onMouseLeave={e => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
@@ -788,7 +825,18 @@ const SubtitleEditor = props => {
 									<Rnd
 										className= 'zoom-scroll-indicator'
 										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
-										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+										enableResizing={
+											{
+												top: false,
+												right: false,
+												bottom: false,
+												left: false,
+												topRight: false,
+												bottomRight: false,
+												bottomLeft: false,
+												topLeft: false
+											}
+										}
 										bounds = {`parent`}
 										onDrag = {(e,d)=>{
 											handleScrollFactor(d.x)
@@ -815,7 +863,13 @@ const SubtitleEditor = props => {
 						src={helpIcon}
 						onClick={handleShowHelp}
 						style={{marginLeft:10,marginTop:15}}
-						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`help`,
+							{
+								x: e.target.getBoundingClientRect().x,
+								y: e.target.getBoundingClientRect().y + 10,
+								width: e.currentTarget.offsetWidth
+							})
+						}
 						onMouseLeave={e => toggleTip()}
 					/>
 					<div className={`save`}>

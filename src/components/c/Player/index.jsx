@@ -143,7 +143,10 @@ export default class Player extends Component {
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
 			if(document.getElementById(`time-dot`))
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+				document.getElementById(`time-dot`).style.left = played ?
+					`calc(${played * 100}% - 2px)`
+					:
+					`calc(${played * 100}% - 2px)`
 			if(subtitles)
 				HandleSubtitle(playedSeconds,subtitles,0,duration)
 
@@ -237,7 +240,13 @@ export default class Player extends Component {
 
 		return (
 			<Style>
-				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: `hidden` }}>
+				<div style={
+					{
+						display: `${showTranscript !== false ? `flex` : `initial`}`,
+						height: `100%`,
+						overflow: `hidden`
+					}
+				}>
 					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}
