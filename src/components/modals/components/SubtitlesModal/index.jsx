@@ -18,6 +18,7 @@ export default class SubtitlesModal extends Component {
 			toggleModal,
 		} = this.props.handlers
 
+		
 		const createLayer = {
 			fromScratch: () => {
 				handleAddLayer([])
@@ -39,12 +40,12 @@ export default class SubtitlesModal extends Component {
 								<table style={{width: `100%`}}>
 									<tr>
 										<td className={`modalSection`}>
-											<div className={`modalSection modalButton`} onClick={()=>createLayer.fromScratch()}><p>Start from scratch</p></div>
+											<div className={`modalSection modalButton`} onClick={ () => createLayer.fromScratch() }><p>Start from scratch</p></div>
 										</td>
 										<td className={`modalSectionRight`}>
 											<h4 style={{margin: `10px`}}>Import Srt or Vtt File</h4>
 											<input style={{margin: `35px 0px 25px 0px`, width: `100%`, display: `block`}} type={`file`} accept={`.srt,.vtt`} id={`subFileInput`}/>
-											<button className={`create-button modalButton`} style={{margin: `10px`}} onClick={()=>createLayer.fromFile()}>Submit</button>
+											<button className={`create-button modalButton`} style={{margin: `10px`}} onClick={ () => createLayer.fromFile() }>Submit</button>
 										</td>
 									</tr>
 								</table>

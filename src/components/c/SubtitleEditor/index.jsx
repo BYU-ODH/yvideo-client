@@ -131,7 +131,7 @@ const SubtitleEditor = props => {
 		checkSubError(currentSubs, `delete`, index)
 		setBlock(true)
 	}
-	const openSubEditor = (layerIndex,subIndex) =>{
+	const openSubEditor = (layerIndex,subIndex) => {
 		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
@@ -452,7 +452,7 @@ const SubtitleEditor = props => {
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
-			reader.onload = (e) =>{
+			reader.onload = (e) => {
 				const temp = Subtitle.parse(e.target.result)
 				// console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
@@ -523,7 +523,7 @@ const SubtitleEditor = props => {
 		setAllSubs(tempSubs)
 		setBlock(true)
 	}
-	const updateSubLayerTitle = (title, fun) =>{
+	const updateSubLayerTitle = (title, fun) => {
 		if(fun === `onKeyPress`)
 			setIsEdit(false)
 
@@ -539,7 +539,7 @@ const SubtitleEditor = props => {
 		else
 			return subtitles[subLayerToEdit][`content`][subToEdit]
 	}
-	const handleChangeSubIndex = (index,subLayer) =>{
+	const handleChangeSubIndex = (index,subLayer) => {
 		setSubToEdit(index)
 		setFocus(false)
 	}
@@ -648,7 +648,7 @@ const SubtitleEditor = props => {
 					url={props.viewstate.url}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTime} // set current time
-					setActiveCensorPosition = {setActiveCensorPosition}
+					setActiveCensorPosition={setActiveCensorPosition}
 					handleLastClick={null}
 					handleScroll={handleScrollFactor}
 					events={allowEvents ? allEvents : null}
@@ -682,7 +682,7 @@ const SubtitleEditor = props => {
 							{subtitles.map((sub, index) => (
 								<div className={`layer`} key={index}>
 									<div className={`handle`} >
-										<div className={`handleFocus`} onClick={()=>handleFocus(index)}>
+										<div className={`handleFocus`} onClick={() => handleFocus(index)}>
 											<SubtitlesCard
 												title={sub.title !== `` ? sub.title : isEdit ? `` : `No Language`}
 												updateTitle={updateSubLayerTitle}
@@ -777,8 +777,8 @@ const SubtitleEditor = props => {
 										className= 'zoom-scroll-indicator'
 										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-										bounds = {`parent`}
-										onDrag = {(e,d)=>{
+										bounds={`parent`}
+										onDrag={(e,d) => {
 											handleScrollFactor(d.x)
 										}}
 									>
@@ -839,7 +839,7 @@ const SubtitleEditor = props => {
 							changeSubIndex={handleChangeSubIndex}
 							addSub={addSubToLayer}
 							subLayer={subLayerToEdit}
-							deleteSub = {deleteSub}
+							deleteSub={deleteSub}
 							focus={focus}
 							disableSave={disableSave}
 							scrollRef={scrollRef}

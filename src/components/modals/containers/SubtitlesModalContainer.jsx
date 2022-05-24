@@ -21,8 +21,8 @@ const SubtitlesModalContainer = props => {
 		toggleModal()
 	}
 
-	const handleAddLayerFromFile = () => {
-		handleAddSubLayerFromFile()
+	const handleAddLayerFromFile = (filePath) => {
+		handleAddSubLayerFromFile(filePath)
 		toggleModal()
 	}
 
