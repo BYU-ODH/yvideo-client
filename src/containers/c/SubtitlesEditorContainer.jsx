@@ -6,6 +6,8 @@ import { SubtitleEditor } from 'components'
 import { Tooltip } from 'components/bits'
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
+import SubtitlesModal from 'components/modals/containers/SubtitlesModalContainer'
+
 const SubtitlesEditorContainer = props => {
 
 	const {
@@ -149,6 +151,27 @@ const SubtitlesEditorContainer = props => {
 		})
 	}
 
+	const openSubModal = (
+		subModalMode,
+		deleteTitle,
+		handleAddSubLayer,
+		handleAddSubLayerFromFile,
+		handleDeleteSubLayer,
+		index,
+		) => {
+		props.toggleModal({
+			component: SubtitlesModal,
+			props: {
+				mode: subModalMode,
+				deleteTitle: deleteTitle,
+				handleAddSubLayer: handleAddSubLayer,
+				handleAddSubLayerFromFile: handleAddSubLayerFromFile,
+				handleDeleteSubLayer: handleDeleteSubLayer,
+				index: index,
+			}
+		})
+	}
+
 	const viewstate = {
 		currentContent,
 		url,
@@ -164,6 +187,7 @@ const SubtitlesEditorContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleShowHelp,
+		openSubModal,
 	}
 
 	return <SubtitleEditor

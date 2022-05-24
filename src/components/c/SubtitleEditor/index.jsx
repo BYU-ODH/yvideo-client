@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
 import Style, { Timeline, EventList, Icon } from './styles'
 import { Rnd } from 'react-rnd'
-import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SubtitlesModal, SwitchToggle } from 'components/bits'
+import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
 import * as Subtitle from 'subtitle'
 
 import { VideoContainer, SkipLayer } from 'components'
@@ -28,7 +28,7 @@ const SubtitleEditor = props => {
 		aspectRatio,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
+	const { handleShowTip, toggleTip, handleShowHelp, openSubModal } = props.handlers
 	const layers = [{0: `Skip`}]
 
 	const [isLoading,setIsLoading] = useState(false)
@@ -48,14 +48,11 @@ const SubtitleEditor = props => {
 	const [subToEdit, setSubToEdit] = useState(0)
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
-	const [subModalVisible, setSubModalVisible] = useState(false)
-	const [subModalMode, setSubModalMode] = useState(``)
 	const [subChanges, setSubChanges] = useState(0)
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
-	const [deleteTitle, setDeleteTitle] = useState(``)
 	const [allowEvents, setAllowEvents] = useState(true)
 	const [scrollSub,setScrollSub] = useState(null)
 	// refs
@@ -118,7 +115,7 @@ const SubtitleEditor = props => {
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
 	}
-	const deleteSub = (index) =>{
+	const deleteSub = (index) => {
 		const currentSubs = [...subtitles]
 		currentSubs[subLayerToEdit][`content`].splice(index,1)
 		setSubs(currentSubs)
@@ -450,8 +447,6 @@ const SubtitleEditor = props => {
 		}
 		openSubEditor(subtitles.length, 0)
 		setSideEditor(true)
-		setSubModalVisible(false)
-		setSubModalMode(``)
 		setBlock(true)
 	}
 	const handleAddSubLayerFromFile = (url) => {
@@ -504,8 +499,6 @@ const SubtitleEditor = props => {
 
 				}
 				setSideEditor(false)
-				setSubModalVisible(false)
-				setSubModalMode(``)
 				openSubEditor(subtitles.length, 0)
 				setBlock(true)
 			}
@@ -514,14 +507,9 @@ const SubtitleEditor = props => {
 			console.log(error) // eslint-disable-line no-console
 			alert(`There was an error importing subtitles`)
 		}
-		setSubModalVisible(false)
-		setSubModalMode(``)
 
 	}
-	const handleDeleteSubLayer = () =>{
-		setSubModalVisible(false)
-
-		const index = subLayerToEdit
+	const handleDeleteSubLayer = (index) => {
 		closeSideEditor()
 		setSideEditor(false)
 		const tempSubs = [...subtitles]
@@ -672,15 +660,6 @@ const SubtitleEditor = props => {
 					aspectRatio={aspectRatio}
 				>
 				</VideoContainer>
-				<SubtitlesModal
-					mode={subModalMode}
-					handleAddSubLayer={handleAddSubLayer}
-					handleAddSubLayerFromFile={handleAddSubLayerFromFile}
-					visible={subModalVisible}
-					setModalVisible={setSubModalVisible}
-					handleDeleteSubLayer={handleDeleteSubLayer}
-					deleteTitle={deleteTitle}
-				/>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
 					<section>
@@ -718,11 +697,16 @@ const SubtitleEditor = props => {
 													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
 											}
 										</div>
-										<Icon className={`trashIcon`} src={trashIcon} onClick={()=>{
-											setSubModalVisible(true)
-											setSubModalMode(`delete`)
-											setDeleteTitle(sub.title !== `` ? sub.title : `No Language`)
-											setSubLayerToEdit(index)
+										<Icon className={`trashIcon`} src={trashIcon} onClick={ () => {
+											openSubModal(
+												`delete`,
+												sub.title !== `` ? sub.title : `No Language`,
+												handleAddSubLayer,
+												handleAddSubLayerFromFile,
+												handleDeleteSubLayer,
+												index,
+											)
+
 										}}/>
 									</div>
 									<SubtitlesLayer
@@ -758,11 +742,15 @@ const SubtitleEditor = props => {
 								/>
 
 							}
-							<div style={{color:`#ffffff`,backgroundColor:`#0582ca`,borderRadius:`0.6rem`,width:`130px`, margin:`10px`,textAlign:`center`,padding:`5px`,cursor:`pointer`}} className={`setSubModalVisible`} onClick={()=>{
-								setSubModalVisible(true)
-								setSubModalMode(`create`)
+							<div style={{color: `#ffffff`, backgroundColor: `#0582ca`, borderRadius: `0.6rem`, width: `130px`, margin: `10px`, textAlign: `center`, padding: `5px`, cursor: `pointer`}} className={`setSubModalVisible`} onClick={()=> {
+								openSubModal(
+									`create`,
+									``,
+									handleAddSubLayer,
+									handleAddSubLayerFromFile,
+								)
 							}}>
-								<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
+								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 							</div>
 						</div>
 
@@ -814,7 +802,7 @@ const SubtitleEditor = props => {
 						alt={`helpIcon`}
 						src={helpIcon}
 						onClick={handleShowHelp}
-						style={{marginLeft:10,marginTop:15}}
+						style={{ marginLeft: 10, marginTop: 15 }}
 						onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y + 10, width: e.currentTarget.offsetWidth})}
 						onMouseLeave={e => toggleTip()}
 					/>
@@ -842,7 +830,6 @@ const SubtitleEditor = props => {
 				<>
 					{ showSideEditor !== false && (
 						<SubtitleEditorSideMenu
-							subModalVisible={subModalVisible}
 							singleEvent={checkSub}
 							index={subToEdit}
 							videoLength={videoLength}
