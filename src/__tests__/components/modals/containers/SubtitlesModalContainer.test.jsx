@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import SubtitlesModal from '../../../../components/bits/SubtitlesModal'
-import Style from '../../../../components/bits/SubtitlesModal/styles'
+import Container from '../../../../components/modals/containers/SubtitlesModalContainer'
+import Style from '../../../../components/modals/SubtitlesModal/styles.js'
 import { BrowserRouter } from 'react-router-dom'
 import sinon from 'sinon'
 
@@ -16,7 +16,7 @@ describe(`Subtitles Modal test`, () => {
 	it(`mount`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
-				<SubtitlesModal {...props} />
+				<Container {...props} />
 			</BrowserRouter>,
 		)
 		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(true)
@@ -58,7 +58,7 @@ describe(`Subtitles Modal test`, () => {
 		const mElement = { files: `file` }
 		const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
 		const handleClick = sinon.spy()
-		const wrapper = shallow(<SubtitlesModal handleAddSubLayerFromFile={handleClick} {...props}/>,{ attachTo: file })
+		const wrapper = shallow(<Container handleAddSubLayerFromFile={handleClick} {...props}/>,{ attachTo: file })
 		wrapper.find(`.modalButton`).at(1).prop(`onClick`)()
 		expect(handleClick.calledOnce).toBe(true)
 	})
@@ -66,7 +66,7 @@ describe(`Subtitles Modal test`, () => {
 	it(`simulate onChange files`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
-				<SubtitlesModal {...props} />
+				<Container {...props} />
 			</BrowserRouter>,
 		)
 		wrapper.find({"id" : `subFileInput`}).simulate(`change`, { target: { files: `path` } })
@@ -75,7 +75,7 @@ describe(`Subtitles Modal test`, () => {
 	})
 
 	it(`simulate onClick`, ()=> {
-		const wrapper = shallow(<SubtitlesModal {...props}/>)
+		const wrapper = shallow(<Container {...props}/>)
 		wrapper.find(`.setModalVisible`).simulate(`click`)
 		wrapper.find(`.closeModal`).simulate(`click`)
 		wrapper.find(`.modalSection .modalButton`).simulate(`click`)
