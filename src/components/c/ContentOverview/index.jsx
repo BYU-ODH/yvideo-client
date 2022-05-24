@@ -86,7 +86,13 @@ export default class ContentOverview extends PureComponent {
 				<Preview onClick={handleToggleEdit}>
 					<div>
 						<Link to={`/player/${content.id}`}>
-							<LazyImage src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail} height='12rem' width='21rem' heightSm='4.5rem' widthSm='6.5rem' />
+							<LazyImage
+								src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail}
+								height='12rem'
+								width='21rem'
+								heightSm='4.5rem'
+								widthSm='6.5rem'
+							/>
 						</Link>
 					</div>
 					<div>
@@ -130,16 +136,28 @@ export default class ContentOverview extends PureComponent {
 							<h4>
 								Allow automatic definitions
 								<div
-									onMouseEnter={(e) =>{
-										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) && handleShowTip(`definitions-disabled`, {x: e.target.getBoundingClientRect().x + 45, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})
+									onMouseEnter={(e) => {
+										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)
+										&&
+										handleShowTip(`definitions-disabled`,
+											{
+												x: e.target.getBoundingClientRect().x + 45,
+												y: e.target.getBoundingClientRect().y + 5,
+												width: e.currentTarget.offsetWidth
+											})
 									}}
 									onMouseOut={(e) => {
 										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) && toggleTip()
 									}}
-									style={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) ? {cursor:`not-allowed`}:{cursor:`auto`}}
+									style={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) ? {cursor:`not-allowed`} : {cursor:`auto`}}
 								>
 									<SwitchToggle
-										disabled={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)} id='definitions-toggle' on={allowDefinitions} setToggle={handleToggleSettings} size={1.5} data_key='allowDefinitions' />
+										disabled={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)}
+										id='definitions-toggle'
+										on={allowDefinitions}
+										setToggle={handleToggleSettings}
+										size={1.5}
+										data_key='allowDefinitions' />
 								</div>
 							</h4>
 							<h4>
@@ -155,7 +173,14 @@ export default class ContentOverview extends PureComponent {
 							</div>
 							<br/>
 							<div className='tags'>
-								{keywords ? keywords.map((item, index) => item === `` ? null : <Tag key={index} onClick={removeTag}>{item}</Tag>) : <></>}
+								{ keywords ?
+										keywords.map((item, index) => item === `` ?
+											null
+											:
+											<Tag key={index} onClick={removeTag}>{item}</Tag>)
+										:
+										<></>
+								}
 							</div>
 						</Column>
 						<Column>
@@ -166,7 +191,13 @@ export default class ContentOverview extends PureComponent {
 							<h4>Important Words
 								<img src={helpIcon} alt={`help`}
 									onClick={handleShowHelp}
-									onMouseEnter={e => handleShowTip(`help`, {x: e.target.getBoundingClientRect().x + 45, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`help`,
+										{
+											x: e.target.getBoundingClientRect().x + 45,
+											y: e.target.getBoundingClientRect().y + 5,
+											width: e.currentTarget.offsetWidth
+										})
+									}
 									onMouseLeave={e => toggleTip()}
 									width='20' height='20'/>
 							</h4>

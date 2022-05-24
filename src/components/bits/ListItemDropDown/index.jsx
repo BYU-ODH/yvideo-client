@@ -27,7 +27,13 @@ class ListItemDropDown extends PureComponent {
 			<Style>
 				<Header className='list-header' isOpen={isOpen} onClick={this.togglePanel} >
 					<div className='list-header-content'>
-						<LazyImage src={thumbnail !== `empty` ? thumbnail : defaultThumbnail} height='3.5rem' width='5.5rem' heightSm='3.5rem' widthSm='5.5rem' />
+						<LazyImage
+							src={thumbnail !== `empty` ? thumbnail : defaultThumbnail}
+							height='3.5rem'
+							width='5.5rem'
+							heightSm='3.5rem'
+							widthSm='5.5rem'
+						/>
 						<div className='name'>
 							<h4>{name}</h4>
 							<ul>

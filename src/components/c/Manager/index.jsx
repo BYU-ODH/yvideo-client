@@ -71,23 +71,52 @@ export default class Manager extends PureComponent {
 										<CreateButton id='collection-create' className='std-outline-color' onClick={createNew}><PlusIcon />Collection</CreateButton>
 										<h4 id='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 											<Help
-												onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x + 10, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth })}
+												onMouseEnter={e => handleShowTip(`help`,
+													{
+														x: e.target.getBoundingClientRect().x + 10,
+														y: e.target.getBoundingClientRect().y + 5,
+														width: e.currentTarget.offsetWidth
+													})
+												}
 												onMouseLeave={e => toggleTip()}
 											><img id='help-document' src={helpIcon} alt='' onClick={handleShowHelp} />
 											</Help>
 										</h4>
 
 										<Accordion id='collection-published' className='std-outline-color' header={`Published`} active>
-											{sideLists.published.map(({ id, name }, index) => <div key={index}><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`} onClick={handleToggleSideBar} to={`/${path}/${id}`} >{name}</Link></div>)}
+											{sideLists.published.map(({ id, name }, index) =>
+												<div key={index} >
+													<Link
+														id={`link`}
+														className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
+														onClick={handleToggleSideBar}
+														to={`/${path}/${id}`} >{name}
+													</Link>
+												</div>)}
 										</Accordion>
 
 										<Accordion header={`Unpublished`} className='std-outline-color' active>
-											{sideLists.unpublished.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`} onClick={handleToggleSideBar} to={`/${path}/${id}`}>{name}</Link></div>)}
+											{sideLists.unpublished.map(({ id, name }, index) =>
+												<div key={index} >
+													<Link
+														id={`link`}
+														className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
+														onClick={handleToggleSideBar}
+														to={`/${path}/${id}`}>{name}
+													</Link>
+												</div>)}
 										</Accordion>
 
 										{
 											admin && <Accordion header={`Archived`} className='std-outline-color'>
-												{sideLists.archived.map(({ id, name }, index) => <div key={index} ><Link id={`link`} className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`} to={`/${path}/${id}`} >{name}</Link></div>)}
+												{sideLists.archived.map(({ id, name }, index) =>
+													<div key={index} >
+														<Link
+															id={`link`}
+															className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
+															to={`/${path}/${id}`}>{name}
+														</Link>
+													</div>)}
 											</Accordion>
 										}
 

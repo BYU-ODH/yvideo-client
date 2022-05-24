@@ -8,6 +8,7 @@ export default class AuthService {
 		AUTH_CLEAN: `AUTH_CLEAN`,
 		AUTH_ERROR: `AUTH_ERROR`,
 		AUTH_GET: `AUTH_GET`,
+		AUTH_HAS_COLLECTION_PERMISSIONS: `AUTH_HAS_COLLECTION_PERMISSIONS`,
 	}
 
 	// action creators
@@ -23,6 +24,10 @@ export default class AuthService {
 			type: this.types.AUTH_GET,
 			payload: { user },
 		}),
+		authHasCollectionPermissions: permissions => ({
+			type: this.types.AUTH_HAS_COLLECTION_PERMISSIONS,
+			payload: { permissions }
+		})
 	}
 
 	// default store
@@ -32,6 +37,7 @@ export default class AuthService {
 		loading: true,
 		message: ``,
 		tried: false,
+		permissions: false,
 	}
 
 	// reducer
@@ -77,6 +83,12 @@ export default class AuthService {
 				loading: payload,
 			}
 
+		case this.types.AUTH_HAS_COLLECTION_PERMISSIONS:
+			return{
+				...store,
+				permissions: payload.permissions,
+			}
+
 		default:
 			return store
 		}
@@ -103,6 +115,17 @@ export default class AuthService {
 		} catch (error) {
 			dispatch(this.actions.authError(error))
 		}
+	}
+
+	checkHasCollectionPermissions = (username) => (dispatch, { apiProxy }) => {
+			try {
+				const result = apiProxy.user.getHasPermissions(username)
+				// console.log('has collection permissions result: ', result)
+				dispatch(this.actions.authHasCollectionPermissions(result))
+			}
+			catch(error){
+				dispatch(this.actions.authError(error))
+			}
 	}
 
 	/**

@@ -563,6 +563,12 @@ const apiProxy = {
 				return error
 			}
 		},
+		getHasPermissions: async (username) => {
+			const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${username}/ta-permissions`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+				await updateSessionId(res.data[`session-id`])
+			})
+			return res.data
+		},
 		collections: {
 			/**
 			 * Retrieves the collections for the current user
@@ -583,7 +589,12 @@ const apiProxy = {
 						return res.data.sort((a, b) => {
 							a = a[`collection-name`].toLowerCase().replace(regex, replacor)
 							b = b[`collection-name`].toLowerCase().replace(regex, replacor)
-							return a === b ? 0 : a < b ? -1 : 1
+							return (
+								a !== b ?
+									a < b ?
+										-1 : 1
+									: 0
+							)
 						})
 					})
 

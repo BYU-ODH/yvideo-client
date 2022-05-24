@@ -130,15 +130,23 @@ export const CurrentEvents = (time,events,duration) => {
 export const CensorChange = (ind,censorData, playedSeconds) =>{
 	if(document.getElementById(`censorBox-${ind}`)){
 		const censorBox = document.getElementById(`censorBox-${ind}`)
-		const width = censorData.top1 + censorData.top2 !== 0 ? censorData.width1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.width2-censorData.width1) : 0
+		const width = censorData.top1 + censorData.top2 !== 0 ?
+			censorData.width1 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.width2-censorData.width1)
+			: 0
 		censorBox.style.width = `${width}%`
-		const height = censorData.top1 + censorData.top2 !== 0 ? censorData.height1+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.height2-censorData.height1) : 0
+		const height = censorData.top1 + censorData.top2 !== 0 ?
+			censorData.height1 + (playedSeconds - censorData.previous) / (censorData.next-censorData.previous) * (censorData.height2-censorData.height1)
+			: 0
 		censorBox.style.height = `${height}%`
-		censorBox.style.top = censorData.top1 + censorData.top2 !== 0 ? `${censorData.top1-height/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.top2-censorData.top1)}%` : `0%`
-		censorBox.style.left = censorData.left1 + censorData.left2 !== 0 ? `${censorData.left1-width/2+(playedSeconds-censorData.previous)/(censorData.next-censorData.previous)*(censorData.left2-censorData.left1)}%` : `0%`
+		censorBox.style.top = censorData.top1 + censorData.top2 !== 0 ?
+			`${censorData.top1 - height / 2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.top2 - censorData.top1)}%`
+			: `0%`
+		censorBox.style.left = censorData.left1 + censorData.left2 !== 0 ?
+			`${censorData.left1 - width / 2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.left2-censorData.left1)}%`
+			: `0%`
 	}
 }
-export const CommentChange = (ind,commentData, playedSeconds) =>{
+export const CommentChange = (ind, commentData, playedSeconds) => {
 	if(document.getElementById(`comment-${ind}`)){
 		const commentBox = document.getElementById(`comment-${ind}`)
 		commentBox.style.top = `${commentData.y}%`
