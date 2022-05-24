@@ -75,7 +75,11 @@ describe(`Subtitles Modal test`, () => {
 	})
 
 	it(`simulate onClick`, ()=> {
-		const wrapper = shallow(<Container {...props}/>)
+		const wrapper = shallow(
+			<Provider store={testutil.emptyStore}>
+				<Container {...props}/>
+			</Provider>
+		)
 		wrapper.find(`.setModalVisible`).simulate(`click`)
 		wrapper.find(`.closeModal`).simulate(`click`)
 		wrapper.find(`.modalSection .modalButton`).simulate(`click`)
