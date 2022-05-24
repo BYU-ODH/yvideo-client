@@ -19,9 +19,13 @@ const Style = styled.div`
 				top: 16px;
 			}
 		}
-		& .modalSection {
 
-			&.modalButton {
+		& table {
+			width: 100%;
+		}
+
+		& .modalSection {
+			& .modalButton {
 				width: 100%;
 				padding: 10px;
 				border-radius: 2rem;
@@ -46,7 +50,18 @@ const Style = styled.div`
 				font-size: 1.5rem;
 			}
 		}
+	& .modalSectionRightTitle {
+		margin: 10px;
+	}
+
+	& #subFileInput {
+		margin: 35px 0px 25px 0px;
+		width: 100%;
+		display: block;
+	}
+
 	& .create-button {
+		margin: 10px;
 		padding: 5px;
 		border-radius: 1rem;
 		border: 3px solid #0582ca;
