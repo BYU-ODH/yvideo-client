@@ -30,7 +30,7 @@ export default class SubtitlesModal extends Component {
 		}
 		return (
 				<Style>
-					{mode === `create`?
+					{ mode === `create` &&
 						<div className={`inner`}>
 							<div>
 								<div className={`header`}>
@@ -51,9 +51,8 @@ export default class SubtitlesModal extends Component {
 								</table>
 							</div>
 						</div>
-						: ``}
-					{
-						mode === `delete` &&
+					}
+					{ mode === `delete` &&
 						<div className={`delete-div`}>
 							<h2>Are you sure you want to delete the subtitle track: <u>{deleteTitle}</u>?</h2>
 							<div className={`delete-buttons`}>
