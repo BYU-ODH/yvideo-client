@@ -16,8 +16,8 @@ const SubtitlesModalContainer = props => {
 		index,
 	} = props
 
-	const handleAddLayer = () => {
-		handleAddSubLayer()
+	const handleAddLayer = (array) => {
+		handleAddSubLayer(array)
 		toggleModal()
 	}
 
