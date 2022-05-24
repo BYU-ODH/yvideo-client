@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Container from '../../../../components/modals/containers/SubtitlesModalContainer'
-import Style from '../../../../components/modals/SubtitlesModal/styles.js'
+import Style from '../../../../components/modals/components/SubtitlesModal/styles'
 import { BrowserRouter } from 'react-router-dom'
 import sinon from 'sinon'
 
