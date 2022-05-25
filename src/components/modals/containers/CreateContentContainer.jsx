@@ -61,7 +61,10 @@ const CreateContentContainer = props => {
 		getLanguages()
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
-			const langs = resourceContent[selectedResourceId].allFileVersions ? resourceContent[selectedResourceId].allFileVersions.split(`;`) : []
+			const langs = (resourceContent[selectedResourceId].allFileVersions ?
+				resourceContent[selectedResourceId].allFileVersions.split(`;`)
+				: []
+			)
 			const finalLanguages = []
 			langs.forEach((element, i) => {
 				if(element === ``)

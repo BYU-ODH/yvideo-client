@@ -7,7 +7,7 @@ const Style = styled.div`
 	width: 100%;
 	/* max-height: 65vh; */
 	z-index: 100;
-	display: ${props => props.visible ? `block`:`none`}
+	display: ${props => props.visible ? `block` : `none`}
 	background-color: rgba(0,0,0,0.9);
 
 	& .inner {

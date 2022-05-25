@@ -133,7 +133,9 @@ const ManageCollectionContainer = props => {
 		isEditingCollectionName,
 		collection,
 		collectionName,
-		content: collection.content !== undefined ? collection.content.map(item => contentCache[item.id]) : [],
+		content: collection.content !== undefined ?
+			collection.content.map(item => contentCache[item.id])
+			: [],
 		isContentTab,
 		isLoading,
 	}

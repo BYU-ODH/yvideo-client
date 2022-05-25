@@ -99,7 +99,11 @@ const PlayerContainer = props => {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			const clips = contentCache[params.id][`clips`] ? JSON.parse(contentCache[params.id][`clips`])[params.clip] : []
+			const clips = (
+				contentCache[params.id][`clips`] ?
+					JSON.parse(contentCache[params.id][`clips`])[params.clip]
+					: []
+			)
 			if (params.clip) setClipTime([clips[`start`], clips[`end`]])
 
 			if (contentCache[params.id].url !== ``) {
@@ -195,6 +199,18 @@ const PlayerContainer = props => {
 				position,
 			},
 		})
+	}
+
+	const handleToggleSubtitles = () => {
+		setShowTranscript(!showTranscript)
+		handleShowSubtitle(``)
+		handleAspectRatio()
+	}
+
+	const handleOffSubtitles = () => {
+		setShowTranscript(false)
+		handleShowSubtitle(``)
+		handleAspectRatio()
 	}
 
 	const handleDuration = duration => {
@@ -507,6 +523,8 @@ const PlayerContainer = props => {
 		handlePlayPause,
 		setHasPausedClip,
 		handleAspectRatio,
+		handleToggleSubtitles,
+		handleOffSubtitles,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

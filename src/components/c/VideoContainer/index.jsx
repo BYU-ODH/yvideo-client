@@ -122,7 +122,8 @@ const VideoContainer = props => {
 
 				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					if(values.allEvents[y].end >= playedSeconds){
@@ -133,8 +134,6 @@ const VideoContainer = props => {
 				case `Pause`:
 					events[index].active = false
 					video.handlePause()
-					const pauseMessage = document.getElementById(`pauseMessage`) // eslint-disable-line no-case-declarations
-					const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>` // eslint-disable-line no-case-declarations
 
 					if(events[index].message){
 						pauseMessage.style.visibility = `visible`
@@ -422,7 +421,10 @@ const VideoContainer = props => {
 					id='blank'
 					blank={blank}
 					onContextMenu={e => e.preventDefault()}
-					onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
+					onClick={ (e) => activeCensorPosition === -1 ?
+						video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
+						: ``
+					}
 					ref={videoRef}
 				>
 					{activeCensorPosition !== -1 ? (
@@ -432,8 +434,8 @@ const VideoContainer = props => {
 							handleUpdateCensorPosition = {video.handleUpdateCensorPosition}
 							handleUpdateCensorResize = {video.handleUpdateCensorResize}
 							setCensorEdit = {setActiveCensorPosition}
-							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth: 0}
-							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight: 0}
+							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth : 0}
+							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
 							seekTo = {video.handleSeek}
 						/>
 					):``}
@@ -489,7 +491,10 @@ const VideoContainer = props => {
 						<span className='time'>{formattedElapsed}</span>
 
 						<button className='mute' onClick={video.toggleMute}>
-							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
+							<img
+								src={muted ? unmute : mute}
+								alt={muted ? `unmute` : `mute`}
+							/>
 						</button>
 
 						<div id='time-bar' onMouseLeave={(e) => {

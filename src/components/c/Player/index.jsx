@@ -11,9 +11,10 @@ export default class Player extends Component {
 	constructor(props) {
 		super(props)
 		this.handleSeek = (e, time) => this.props.handlers.handleSeekChange(e, time)
-		this.handlePlayPause = (boolean) => this.props.handlers.handlePlayPause(boolean)
+		this.handlePlayPause = (bool) => this.props.handlers.handlePlayPause(bool)
 		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
-		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
+		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
+		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.state = {
 			skipArray: [],
@@ -67,9 +68,11 @@ export default class Player extends Component {
 		case `Space`:
 			this.handlePlayPause()
 			break
-
 		case `KeyF`:
 			this.handleToggleFullscreen()
+			break
+		case `KeyC`:
+			this.handleToggleSubtitles()
 			break
 
 		default:
@@ -140,7 +143,10 @@ export default class Player extends Component {
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
 			if(document.getElementById(`time-dot`))
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+				document.getElementById(`time-dot`).style.left = played ?
+					`calc(${played * 100}% - 2px)`
+					:
+					`calc(${played * 100}% - 2px)`
 			if(subtitles)
 				HandleSubtitle(playedSeconds,subtitles,0,duration)
 
@@ -170,7 +176,8 @@ export default class Player extends Component {
 
 				if(!events[index].active)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					if(!muted)
@@ -181,8 +188,6 @@ export default class Player extends Component {
 				case `Pause`:
 					events[index].active = false
 					handlePause()
-					const pauseMessage = document.getElementById(`pauseMessage`) // eslint-disable-line no-case-declarations
-					const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>` // eslint-disable-line no-case-declarations
 
 					if(events[index].message){
 						pauseMessage.style.visibility = `visible`
@@ -235,7 +240,13 @@ export default class Player extends Component {
 
 		return (
 			<Style>
-				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: `hidden` }}>
+				<div style={
+					{
+						display: `${showTranscript !== false ? `flex` : `initial`}`,
+						height: `100%`,
+						overflow: `hidden`
+					}
+				}>
 					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}
