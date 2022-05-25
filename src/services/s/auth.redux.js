@@ -119,10 +119,8 @@ export default class AuthService {
 
 	checkHasCollectionPermissions = (username) => async (dispatch, getState, { apiProxy }) => {
 		try {
-			console.log("check call.. ", username)
 			const result = await apiProxy.user.getHasPermissions(username)
 			// console.log('has collection permissions result: ', result)
-			console.log("check call.. ", result)
 			dispatch(this.actions.authHasCollectionPermissions(result))
 		}
 		catch(error){
