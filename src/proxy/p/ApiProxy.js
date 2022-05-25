@@ -563,6 +563,19 @@ const apiProxy = {
 				return error
 			}
 		},
+		getHasPermissions: async (username) => {
+			const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${username}/ta-permissions`,{
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(async res => {
+				await updateSessionId(res.headers[`session-id`])
+				return res
+			})
+			return res.data
+		},
 		collections: {
 			/**
 			 * Retrieves the collections for the current user
