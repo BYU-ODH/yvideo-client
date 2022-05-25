@@ -39,7 +39,6 @@ const CollectionsContainer = props => {
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
-		console.log(user.username)
 		checkHasCollectionPermissions(user.username)
 
 		// determine mobiie size for different layout
