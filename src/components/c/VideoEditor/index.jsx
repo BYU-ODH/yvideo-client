@@ -51,7 +51,7 @@ const VideoEditor = props => {
 			type: `Pause`,
 			icon: pauseIcon,
 			start: 0,
-			message: "",
+			message: ``,
 			layer: 0,
 		},
 		// {
@@ -179,7 +179,7 @@ const VideoEditor = props => {
 		const currentEvents = [...allEvents]
 		try {
 			if(side === `beg`) {
-				if(event.start.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.start.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
@@ -187,7 +187,7 @@ const VideoEditor = props => {
 				}
 
 			} else if(side === `end`) {
-				if(event.end.match(/^\d{1,2}:\d{1,2}.?\d{0,2}$/) || event.end.match(/\d{1}:\d{1,2}:\d{1,2}.?\d{0,2}/) || type === `onBlur`)
+				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`

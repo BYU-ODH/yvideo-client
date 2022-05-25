@@ -148,7 +148,6 @@ const PlayerControls = props => {
 		handleSeekChange(null, start + start * .001)
 	}
 
-
 	return (
 		<Style playing={playing} >
 
@@ -206,12 +205,12 @@ const PlayerControls = props => {
 				<div className='menu-modal' onMouseLeave={e => setShowSpeed(false)}>
 					<h3>Playback Rate</h3>
 					<div>
-						{ playbackOptions.map((playbackAtIndex) => (
+						{ playbackOptions.map((playbackAtIndex) =>
 							playbackAtIndex !== 1 ?
-							<><input type='button' value={playbackAtIndex} key={playbackAtIndex} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
-							:
-							<><input type='button' value='Normal' key={1} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
-							))
+								<><input type='button' value={playbackAtIndex} key={playbackAtIndex} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>
+								:
+								<><input type='button' value='Normal' key={1} onClick={e => handlePlaybackRateChange(playbackAtIndex)} className={playbackRate === playbackAtIndex ? `active-value` : ``}/><br/></>,
+						)
 						}
 					</div>
 				</div>

@@ -32,6 +32,38 @@ const TrackEditorSideMenu = props => {
 		setEvent(singleEvent)
 	}, [index, event, singleEvent])
 
+	const editEvent = (side, time, value, layer, ind, type) => {
+		const ev = {...event}
+		if (side === `beg`) {
+			if(time===``)
+				ev.start=``
+			else
+				ev.start = time
+
+			ev.end = singleEvent.end
+			ev.text = singleEvent.text
+
+		} else if(side === `end`) {
+			ev.start = singleEvent.start
+			if(time===``)
+				ev.end=``
+			else
+				ev.end = time
+		}
+
+		try{
+			if(!side) {
+				ev.text = value.target.value
+				ev.start = singleEvent.start
+				ev.end = singleEvent.end
+			}
+		}catch(error){
+			console.log(error) // eslint-disable-line no-console
+		}
+		setEvent(ev)
+		updateEvents(ind,ev,layer,side,type)
+	}
+
 	const handleEditEventBTimeChange = (e) => {
 		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
@@ -40,7 +72,9 @@ const TrackEditorSideMenu = props => {
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
-			updateEvents(index, cEvent, layer, `beg`)
+			// editEvent(index, cEvent, layer, `beg`)
+			editEvent(`beg`,cEvent.start, null, layer, index, null)
+			// (side, time, value, layer, ind, type)
 		}
 	}
 
@@ -52,7 +86,8 @@ const TrackEditorSideMenu = props => {
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
-			updateEvents(index, cEvent, layer, `beg`, `onBlur`)
+			// updateEvents(index, cEvent, layer, `beg`, `onBlur`)
+			editEvent(`beg`,cEvent.start, null, layer, index, `onBlur`)
 		}
 	}
 
@@ -64,7 +99,8 @@ const TrackEditorSideMenu = props => {
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
-			updateEvents(index, cEvent, layer, `end`)
+			// updateEvents(index, cEvent, layer, `end`)
+			editEvent(`end`,cEvent.end, null, layer, index, null)
 		}
 	}
 
@@ -76,7 +112,8 @@ const TrackEditorSideMenu = props => {
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
-			updateEvents(index, cEvent, layer, `end`, `onBlur`)
+			// updateEvents(index, cEvent, layer, `end`, `onBlur`)
+			editEvent(`end`,cEvent.end, null, layer, index, `onBlur`)
 		}
 	}
 
@@ -119,16 +156,9 @@ const TrackEditorSideMenu = props => {
 			break
 		}
 	}
-	const editPauseMessage = (e) => {
-		const cEvent = event
-		const layer = cEvent.layer
-		cEvent.message = e.target.value
-		setEvent(cEvent)
-		updateEvents(index, cEvent, layer)
-	}
+
 	const start = event.start
 	const end = event.end
-
 	return (
 		<Style>
 			<div className='event-content'>
@@ -141,33 +171,30 @@ const TrackEditorSideMenu = props => {
 							<>
 								<div className='center'>
 									<label>Start</label>
-									{event.type === `Pause` ? (
-										<label>Message: </label>
-									):<label>End</label>
-								}
+									<label>End</label>
 								</div>
 								<div className='center'>
-									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(start, videoLength)}`} onKeyUp={e => {
-										e.stopPropagation()
-									}}
-									onChange={e => handleEditEventBTimeChange(e)}
-									onBlur={e => handleEditEventBTimeFinalChange(e)}
-									onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
-									onMouseLeave={e => toggleTip()}
-									/>
-									<input type='text' className='sideTabInput' value={`${convertSecondsToMinute(end, videoLength)}`} onKeyUp={e => {e.stopPropagation()}}
-										style={{ display: `${event.type === "Pause" ? (`none`) : (`inline-block`)}` }}
-										onChange={e => handleEditEventETimeChange(e)}
-										onBlur={e => handleEditEventETimeFinalChange(e)}
-										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x - 15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth + 20})}
+									<input type='text' className='sideTabInput'
+										value={`${convertSecondsToMinute(start, videoLength)}`}
+										onKeyUp={e => {
+											e.stopPropagation()
+										}}
+										onChange={e => handleEditEventBTimeChange(e)}
+										onBlur={e => handleEditEventBTimeFinalChange(e)}
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 									/>
-									{event.type === `Pause` ? (
-										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='sideTabInput' value={event.message}
-										placeholder = 'Enter message'
-										onChange={e => editPauseMessage(e)
-										}/>
-									):<></>}
+									<input type='text' className='sideTabInput'
+										value={`${convertSecondsToMinute(end, videoLength)}`}
+										onKeyUp={e => {
+											e.stopPropagation()
+										}}
+										style={{ visibility: `${event.type === `Pause` ? `hidden` : `visible`}` }}
+										onChange={e => handleEditEventETimeChange(e)}
+										onBlur={e => handleEditEventETimeFinalChange(e)}
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-15, y: e.target.getBoundingClientRect().y + 20, width: e.currentTarget.offsetWidth+20})}
+										onMouseLeave={e => toggleTip()}
+									/>
 								</div>
 								<br/>
 							</>

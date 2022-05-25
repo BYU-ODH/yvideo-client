@@ -16,7 +16,7 @@ export default class Player extends Component {
 		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.state = {
-			skipArray: []
+			skipArray: [],
 		}
 	}
 	componentDidMount(){
@@ -45,12 +45,11 @@ export default class Player extends Component {
 			if(!e.shiftKey) {
 				this.handleSeek(null, playedTime + 1)
 				break
-			}
-			else {
+			} else {
 				// Checking to make sure that the value of the playback rate is within the possible options
-				if (this.props.viewstate.playbackRate >= this.playbackOptions[0] && this.props.viewstate.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
+				if (this.props.viewstate.playbackRate >= this.playbackOptions[0] && this.props.viewstate.playbackRate < this.playbackOptions[this.playbackOptions.length - 1])
 					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element === this.props.viewstate.playbackRate) + 1])
-				}
+
 				break
 			}
 		case `Comma`:
@@ -58,12 +57,11 @@ export default class Player extends Component {
 			if(!e.shiftKey) {
 				this.handleSeek(null, playedTime - 1)
 				break
-			}
-			else {
+			} else {
 				// Checking to make sure that the value of the playback rate is within the possible options
-				if (this.props.viewstate.playbackRate > this.playbackOptions[0] && this.props.viewstate.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
+				if (this.props.viewstate.playbackRate > this.playbackOptions[0] && this.props.viewstate.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1])
 					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element === this.props.viewstate.playbackRate) - 1])
-				}
+
 				break
 			}
 		case `Space`:
@@ -183,11 +181,11 @@ export default class Player extends Component {
 				case `Pause`:
 					events[index].active = false
 					handlePause()
-					let pauseMessage = document.getElementById("pauseMessage")
-					let pauseMessageButton = "<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>"
+					const pauseMessage = document.getElementById(`pauseMessage`) // eslint-disable-line no-case-declarations
+					const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>` // eslint-disable-line no-case-declarations
 
 					if(events[index].message){
-						pauseMessage.style.visibility = 'visible'
+						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
 					// console.log("pausing")
@@ -229,7 +227,7 @@ export default class Player extends Component {
 			handleAspectRatio()
 			if(events){
 				const eventFilterSkip = events.filter((values) => {
-				return values.type === `Skip` // TODO: Make sure this is fine
+					return values.type === `Skip` // TODO: Make sure this is fine
 				})
 				this.setState({skipArray: eventFilterSkip})
 			}
@@ -281,7 +279,7 @@ export default class Player extends Component {
 							</div>
 							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
-							<PauseMessage id="pauseMessage">
+							<PauseMessage id='pauseMessage'>
 							</PauseMessage>
 						</Blank>
 					</div>
@@ -299,7 +297,7 @@ export default class Player extends Component {
 						/>
 					) : null
 				}
-			<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
+				<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
 			</Style>
 		)
 	}
