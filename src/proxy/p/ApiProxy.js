@@ -564,8 +564,16 @@ const apiProxy = {
 			}
 		},
 		getHasPermissions: async (username) => {
-			const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${username}/ta-permissions`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
-				await updateSessionId(res.data[`session-id`])
+			const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${username}/ta-permissions`,{
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(async res => {
+				console.log(res)
+				await updateSessionId(res.headers[`session-id`])
+				return res
 			})
 			return res.data
 		},
