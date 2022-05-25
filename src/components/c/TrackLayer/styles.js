@@ -45,7 +45,8 @@ export const Style = styled.div`
 	}
 
 	& .layer-event {
-		border: 1px solid var(--light-blue) !important;
+		border-top: 1.5px solid var(--light-blue) !important;
+		border-bottom: 1.5px solid var(--light-blue) !important;
 		border-radius: 3px;
 		height: 46px;
 		padding: 1px;

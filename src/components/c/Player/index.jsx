@@ -11,12 +11,13 @@ export default class Player extends Component {
 	constructor(props) {
 		super(props)
 		this.handleSeek = (e, time) => this.props.handlers.handleSeekChange(e, time)
-		this.handlePlayPause = (boolean) => this.props.handlers.handlePlayPause(boolean)
+		this.handlePlayPause = (bool) => this.props.handlers.handlePlayPause(bool)
 		this.handlePlaybackRateChange = (change) => this.props.handlers.handlePlaybackRateChange(change)
-		this.handleToggleFullscreen = (boolean) => this.props.handlers.handleToggleFullscreen(boolean)
+		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
+		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.state = {
-			skipArray: []
+			skipArray: [],
 		}
 	}
 	componentDidMount(){
@@ -45,12 +46,11 @@ export default class Player extends Component {
 			if(!e.shiftKey) {
 				this.handleSeek(null, playedTime + 1)
 				break
-			}
-			else {
+			} else {
 				// Checking to make sure that the value of the playback rate is within the possible options
-				if (this.props.viewstate.playbackRate >= this.playbackOptions[0] && this.props.viewstate.playbackRate < this.playbackOptions[this.playbackOptions.length - 1]) {
+				if (this.props.viewstate.playbackRate >= this.playbackOptions[0] && this.props.viewstate.playbackRate < this.playbackOptions[this.playbackOptions.length - 1])
 					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element === this.props.viewstate.playbackRate) + 1])
-				}
+
 				break
 			}
 		case `Comma`:
@@ -58,20 +58,21 @@ export default class Player extends Component {
 			if(!e.shiftKey) {
 				this.handleSeek(null, playedTime - 1)
 				break
-			}
-			else {
+			} else {
 				// Checking to make sure that the value of the playback rate is within the possible options
-				if (this.props.viewstate.playbackRate > this.playbackOptions[0] && this.props.viewstate.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1]) {
+				if (this.props.viewstate.playbackRate > this.playbackOptions[0] && this.props.viewstate.playbackRate <= this.playbackOptions[this.playbackOptions.length - 1])
 					this.handlePlaybackRateChange(this.playbackOptions[this.playbackOptions.findIndex(element => element === this.props.viewstate.playbackRate) - 1])
-				}
+
 				break
 			}
 		case `Space`:
 			this.handlePlayPause()
 			break
-
 		case `KeyF`:
 			this.handleToggleFullscreen()
+			break
+		case `KeyC`:
+			this.handleToggleSubtitles()
 			break
 
 		default:
@@ -142,7 +143,10 @@ export default class Player extends Component {
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
 			if(document.getElementById(`time-dot`))
-				document.getElementById(`time-dot`).style.left = played ? `calc(${played * 100}% - 2px)` : `calc(${played * 100}% - 2px)`
+				document.getElementById(`time-dot`).style.left = played ?
+					`calc(${played * 100}% - 2px)`
+					:
+					`calc(${played * 100}% - 2px)`
 			if(subtitles)
 				HandleSubtitle(playedSeconds,subtitles,0,duration)
 
@@ -172,7 +176,8 @@ export default class Player extends Component {
 
 				if(!events[index].active)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					if(!muted)
@@ -183,11 +188,9 @@ export default class Player extends Component {
 				case `Pause`:
 					events[index].active = false
 					handlePause()
-					let pauseMessage = document.getElementById("pauseMessage")
-					let pauseMessageButton = "<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>"
 
 					if(events[index].message){
-						pauseMessage.style.visibility = 'visible'
+						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
 					// console.log("pausing")
@@ -229,7 +232,7 @@ export default class Player extends Component {
 			handleAspectRatio()
 			if(events){
 				const eventFilterSkip = events.filter((values) => {
-				return values.type === `Skip` // TODO: Make sure this is fine
+					return values.type === `Skip` // TODO: Make sure this is fine
 				})
 				this.setState({skipArray: eventFilterSkip})
 			}
@@ -237,7 +240,13 @@ export default class Player extends Component {
 
 		return (
 			<Style>
-				<div style={{ display: `${showTranscript !== false ? `flex` : `initial`}`, height: `100%`, overflow: `hidden` }}>
+				<div style={
+					{
+						display: `${showTranscript !== false ? `flex` : `initial`}`,
+						height: `100%`,
+						overflow: `hidden`
+					}
+				}>
 					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
 						<ReactPlayer
 							ref={ref}
@@ -281,7 +290,7 @@ export default class Player extends Component {
 							</div>
 							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
 							</div>
-							<PauseMessage id="pauseMessage">
+							<PauseMessage id='pauseMessage'>
 							</PauseMessage>
 						</Blank>
 					</div>
@@ -299,7 +308,7 @@ export default class Player extends Component {
 						/>
 					) : null
 				}
-			<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
+				<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
 			</Style>
 		)
 	}

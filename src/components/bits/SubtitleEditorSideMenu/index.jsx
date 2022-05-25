@@ -80,32 +80,49 @@ const SubtitleEditorSideMenu = props => {
 
 			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={()=>addSub(subLayer,0,`top`)}
-					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length ===0 && disableSave===false ? `visible`: `hidden`}
+					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length === 0 && disableSave === false ? `visible`: `hidden`}
 				/>
-				{subs[subLayer][`content`].map((sub,ind)=>(
+				{subs[subLayer][`content`].map((sub,ind) => (
 					<div id={`sub-${subLayer}-${ind}`} key={ind}>
 						<div className={`container`}>
 							{/* This toggles the z-index of the icons as the state for the submodal changes */}
 							<Icon className={`IconMiddle`} style={{zIndex: subModalVisible ? -1 : 10}} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
 								position={`top`}
-								visibility={subs[subLayer][`content`][0].start > 0.01 && ind===0 && disableSave===false ? `visible`: `hidden`}
+								visibility={subs[subLayer][`content`][0].start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
 							/>
-							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive`:``}`}>
-								<textarea className={`subText`} type='text' onClick={()=>changeSubIndex(ind)} value={sub.text} onChange={(value)=>editSub(null,null,value,subLayer,ind)}></textarea>
+							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive` : ``}`}>
+								<textarea
+									className={`subText`}
+									type='text'
+									onClick={ () => changeSubIndex(ind)}
+									value={sub.text}
+									onChange={ (value) => editSub(null, null, value, subLayer, ind)} />
 								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
 									<input id={`subStart${ind}`} className={`subStart sideTabInput`} onClick={()=>changeSubIndex(ind)} type='text'
-										value={`${sub.start ===``? ``: convertSecondsToMinute(sub.start, videoLength)}`}
+										value={`${sub.start ===`` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
 										onChange={e => editSub(`beg`,e.target.value,null,subLayer,ind,null)}
 										onBlur={e => editSub(`beg`,e.target.value,null,subLayer,ind, `onBlur`)}
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`,
+											{
+												x: e.target.getBoundingClientRect().x+30,
+												y: e.target.getBoundingClientRect().y + 15,
+												width: e.currentTarget.offsetWidth+20
+											})
+										}
 										onMouseLeave={e => toggleTip()}
 
 									/>
 									<input id={`subEnd${ind}`} className={`subEnd`} onClick={()=>changeSubIndex(ind)} type='text'
-										value={`${sub.end ===``? ``: convertSecondsToMinute(sub.end, videoLength)}`}
+										value={`${sub.end ===`` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
 										onChange={e => editSub(`end`,e.target.value,null,subLayer,ind, null)}
 										onBlur={e => editSub(`end`,e.target.value,null,subLayer,ind,`onBlur`)}
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+30, y: e.target.getBoundingClientRect().y + 15, width: e.currentTarget.offsetWidth+20})}
+										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS` : `HMMSSMS`}`,
+											{
+												x: e.target.getBoundingClientRect().x+30,
+												y: e.target.getBoundingClientRect().y + 15,
+												width: e.currentTarget.offsetWidth+20
+											})
+										}
 										onMouseLeave={e => toggleTip()}
 									/>
 								</div>
@@ -114,18 +131,20 @@ const SubtitleEditorSideMenu = props => {
 						</div>
 						{
 							ind === subs[subLayer][`content`].length-1 ?
-								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
-									visibility={
-										subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave===false
-											? `visible`: `hidden`
+								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer, ind, `button`)}
+									visibility={subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave === false ?
+										`visible`
+										:
+										`hidden`
 									}
 									active={ind === index ? `subActive`:`nonActive`}
 								/>
 								:
-								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`button`)}
-									visibility={
-										subs[subLayer][`content`][ind+1].start-subs[subLayer][`content`][ind].end !== 0 && disableSave===false
-											? `visible`: `hidden`
+								<Icon className={`iconBottom`} style={{zIndex: subModalVisible ? -1 : 10}} id={`icon${ind}`} src={plus} ind={ind} onClick={()=>addSub(subLayer, ind, `button`)}
+									visibility={subs[subLayer][`content`][ind+1].start - subs[subLayer][`content`][ind].end !== 0 && disableSave === false ?
+										`visible`
+										:
+										`hidden`
 									}
 									active={ind === index ? `subActive`:`nonActive`}
 								/>

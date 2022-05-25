@@ -44,7 +44,13 @@ class Menu extends PureComponent {
 			// display only if user is not a guest
 			user.roles < 4 ?
 				<Style editorStyle={editorStyle} className={menuActive && `active`}
-					onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
+					onMouseEnter={e => handleShowTip(`menu`,
+						{
+							x: window.innerWidth - 270,
+							y: 50,
+							width: e.currentTarget.offsetWidth
+						})
+					}
 					onMouseLeave={e => toggleTip()}
 					onClick={e => {
 						e.stopPropagation()
@@ -54,7 +60,11 @@ class Menu extends PureComponent {
 					{/* <UserPic>{initials}</UserPic> */}
 					<MenuIcon className='std-outline-color' onClick={toggleMenu}/>
 
-					{user.name.includes(`no_name`) ? <h4>{user.username}</h4> : <h4>{user.name}</h4>}
+					{user.name.includes(`no_name`) ?
+						<h4>{user.username}</h4>
+						:
+						<h4>{user.name}</h4>
+					}
 					<hr />
 
 					{/* <LinkStyled to='/word-list'>My Word List</LinkStyled> */}
@@ -110,7 +120,13 @@ class Menu extends PureComponent {
 				// menu options for the guest user
 				<Style editorStyle={editorStyle} className={menuActive && `active`}
 					onClick={toggleMenu}
-					onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
+					onMouseEnter={e => handleShowTip(`menu`,
+						{
+							x: window.innerWidth - 270,
+							y: 50,
+							width: e.currentTarget.offsetWidth
+						})
+					}
 					onMouseLeave={e => toggleTip()}>
 
 					<UserPic>{initials}</UserPic>
