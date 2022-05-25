@@ -74,7 +74,7 @@ export default class Content {
 
 	stringToArray(inputString){
 		// TODO: Once everything goes through this, then we can get rid of this code. Mainly the if block.
-		if (inputString.contains(/};\s+{/)){
+		if (inputString.match(/};\s+/)){
 			const array = []
 			const temp = inputString.split(`; `)
 
