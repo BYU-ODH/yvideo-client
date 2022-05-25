@@ -117,15 +117,15 @@ export default class AuthService {
 		}
 	}
 
-	checkHasCollectionPermissions = (username) => (dispatch, { apiProxy }) => {
-			try {
-				const result = apiProxy.user.getHasPermissions(username)
-				// console.log('has collection permissions result: ', result)
-				dispatch(this.actions.authHasCollectionPermissions(result))
-			}
-			catch(error){
-				dispatch(this.actions.authError(error))
-			}
+	checkHasCollectionPermissions = (username) => async (dispatch, getState, { apiProxy }) => {
+		try {
+			const result = await apiProxy.user.getHasPermissions(username)
+			// console.log('has collection permissions result: ', result)
+			dispatch(this.actions.authHasCollectionPermissions(result))
+		}
+		catch(error){
+			dispatch(this.actions.authError(error))
+		}
 	}
 
 	/**
