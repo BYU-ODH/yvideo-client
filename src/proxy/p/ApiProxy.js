@@ -571,7 +571,6 @@ const apiProxy = {
 					'session-id': window.clj_session_id,
 				},
 			}).then(async res => {
-				console.log(res)
 				await updateSessionId(res.headers[`session-id`])
 				return res
 			})
