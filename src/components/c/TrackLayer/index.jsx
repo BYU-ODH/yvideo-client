@@ -41,7 +41,7 @@ const TrackLayer = props => {
 			document.getElementById(`layer-${layerIndex}`).style.height =
 			`${overlapCount.length !== 0 ?
 				26 * (overlapCount.length + 1)
-				: 46 }px`
+				: 46}px`
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
@@ -63,6 +63,8 @@ const TrackLayer = props => {
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
+	// This object is to overwrite the css properties of the right and left side of the Rnd
+	const resizeSpace = {right: {borderRight: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
 
 	const calculateOverlaps = () => {
 		const sortedEvents = JSON.parse(JSON.stringify(events))
@@ -163,10 +165,11 @@ const TrackLayer = props => {
 				size={
 					{
 						width: `${(event.end - event.start) / videoLength * layerWidth}px`,
-						height: `${isMultiEvent ? 23 : 46}px`
+						height: `${isMultiEvent ? 23 : 46}px`,
 					}
 				}
 				position={{ x: event.start / videoLength * layerWidth, y: 0}}
+				resizeHandleStyles={resizeSpace}
 				enableResizing={Enable}
 				dragAxis='x'
 				onDragStop={(e, d) => handleDrag(d, event, index)}
@@ -211,7 +214,7 @@ const TrackLayer = props => {
 									marginTop: layerOverlap.length > 0 ?
 										`${26 * layerOverlap.length}px`
 										: `0px`,
-									backgroundColor: `rgba(5, 130, 202, 0.1)`
+									backgroundColor: `rgba(5, 130, 202, 0.1)`,
 								}
 							}
 						>
@@ -237,7 +240,7 @@ const TrackLayer = props => {
 											: `0px`,
 										backgroundColor: overlapIndex % 2 !== 0 ?
 											`rgba(5, 130, 202, 0.1)`
-											: ``
+											: ``,
 									}}
 							>
 								{
