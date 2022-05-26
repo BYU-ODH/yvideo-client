@@ -26,15 +26,15 @@ const SubtitleEditor = props => {
 		currentContent,
 		subs,
 		aspectRatio,
+		showSideEditor,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp, openSubModal } = props.handlers
+	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor } = props.handlers
 	const layers = [{0: `Skip`}]
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
-	const [showSideEditor, setSideEditor] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 	// eslint-disable-next-line no-unused-vars
@@ -54,7 +54,7 @@ const SubtitleEditor = props => {
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(true)
-	const [scrollSub,setScrollSub] = useState(null)
+	const [scrollSub, setScrollSub] = useState(null)
 	// refs
 	const scrollRef = useRef()
 
@@ -702,7 +702,7 @@ const SubtitleEditor = props => {
 													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
 											}
 										</div>
-										<Icon className={`trashIcon`} src={trashIcon} 
+										<Icon className={`trashIcon`} src={trashIcon}
                       onClick={ () => {
                         openSubModal(
                           `delete`,
@@ -746,7 +746,7 @@ const SubtitleEditor = props => {
 								/>
 
 							}
-							<div 
+							<div
                 style={
                   {
                     color: `#ffffff`,
@@ -759,7 +759,7 @@ const SubtitleEditor = props => {
                     cursor: `pointer`
                    }
                  }
-                 className={`setSubModalVisible`} 
+                 className={`setSubModalVisible`}
                  onClick={ () => {
 								  openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
 							   }}>
