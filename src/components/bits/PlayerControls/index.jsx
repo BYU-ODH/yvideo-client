@@ -145,7 +145,7 @@ const PlayerControls = props => {
 						{
 							x: e.target.getBoundingClientRect().x,
 							y: e.target.getBoundingClientRect().y,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}
@@ -156,7 +156,7 @@ const PlayerControls = props => {
 						{
 							x: e.target.getBoundingClientRect().x,
 							y: e.target.getBoundingClientRect().y,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}
@@ -167,7 +167,7 @@ const PlayerControls = props => {
 						{
 							x: e.target.getBoundingClientRect().x,
 							y: e.target.getBoundingClientRect().y,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}
@@ -179,7 +179,7 @@ const PlayerControls = props => {
 						{
 							x: e.target.getBoundingClientRect().x,
 							y: e.target.getBoundingClientRect().y,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}
@@ -193,7 +193,7 @@ const PlayerControls = props => {
 						{
 							x: e.target.getBoundingClientRect().x,
 							y: e.target.getBoundingClientRect().y,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}
@@ -203,10 +203,10 @@ const PlayerControls = props => {
 						{
 							x: e.target.getBoundingClientRect().x,
 							y: e.target.getBoundingClientRect().y,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
-							onMouseLeave={e => toggleTip()}
+					onMouseLeave={e => toggleTip()}
 				/>
 				{ subtitleTextIndex !== null &&
 				<ClosedCaptions
@@ -216,7 +216,7 @@ const PlayerControls = props => {
 						{
 							x: e.target.getBoundingClientRect().x,
 							y: e.target.getBoundingClientRect().y,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}
@@ -230,7 +230,7 @@ const PlayerControls = props => {
 							{
 								x: e.target.getBoundingClientRect().x - 80,
 								y: e.target.getBoundingClientRect().y - 25,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}
@@ -259,7 +259,7 @@ const PlayerControls = props => {
 										onClick={e => handlePlaybackRateChange(playbackAtIndex)}
 										className={playbackRate === playbackAtIndex ? `active-value` : ``} /><br/>
 								</>,
-							)
+						)
 						}
 					</div>
 				</div>

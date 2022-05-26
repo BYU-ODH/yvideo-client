@@ -604,7 +604,6 @@ const apiProxy = {
 							)
 						})
 					})
-
 				return collections_result.reduce((map, collection) => {
 					collection[`name`] = collection[`collection-name`]
 

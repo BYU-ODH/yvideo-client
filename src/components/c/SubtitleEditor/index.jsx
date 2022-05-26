@@ -239,16 +239,18 @@ const SubtitleEditor = props => {
 		const t1_1 = performance.now() // eslint-disable-line no-unused-vars
 		try {
 			if(side === `beg`) {
-				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.start = convertToSeconds(sub.start, videoLength)
-				else {
+					document.getElementById(`subStart${index}`).style.border=null
+				}else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
 			} else {
-				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.end = convertToSeconds(sub.end, videoLength)
-				else {
+					document.getElementById(`subEnd${index}`).style.border=null
+				} else {
 					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
@@ -312,13 +314,16 @@ const SubtitleEditor = props => {
 		}
 		const t3_1 = performance.now() // eslint-disable-line no-unused-vars
 
-		if(needCheck){
-			const updateSub = {sub, side} // eslint-disable-line no-unused-vars
+		if(needCheck)
+			setDisableSave(false)
 			// checkSubError(tempSubs, `update`, index, updateSub)
-		} else
+		else
 			setDisableSave(true)
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
+
+		setSubs(tempSubs)
+		setAllSubs(tempSubs)
 		setSubChanges(subChanges+1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
