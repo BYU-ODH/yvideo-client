@@ -105,7 +105,7 @@ const SubtitleEditorSideMenu = props => {
 											{
 												x: e.target.getBoundingClientRect().x+30,
 												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth+20
+												width: e.currentTarget.offsetWidth+20,
 											})
 										}
 										onMouseLeave={e => toggleTip()}
@@ -119,7 +119,7 @@ const SubtitleEditorSideMenu = props => {
 											{
 												x: e.target.getBoundingClientRect().x+30,
 												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth+20
+												width: e.currentTarget.offsetWidth+20,
 											})
 										}
 										onMouseLeave={e => toggleTip()}

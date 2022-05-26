@@ -778,13 +778,13 @@ const SubtitleEditor = props => {
 										margin:`10px`,
 										textAlign:`center`,
 										padding:`5px`,
-										cursor:`pointer`
+										cursor:`pointer`,
 									}
 								}
 								className={`setSubModalVisible`}
 								onClick={ () => {
-								setSubModalVisible(true)
-								setSubModalMode(`create`)
+									setSubModalVisible(true)
+									setSubModalMode(`create`)
 								}}
 							>
 								<p id={`editIcon`} style={{fontWeight:700}}>Add Subtitle Track +</p>
@@ -808,7 +808,7 @@ const SubtitleEditor = props => {
 										topRight: false,
 										bottomRight: false,
 										bottomLeft: false,
-										topLeft: false
+										topLeft: false,
 									}
 								}
 								dragAxis='x'
@@ -817,7 +817,7 @@ const SubtitleEditor = props => {
 									{
 										x: e.target.getBoundingClientRect().x,
 										y: e.target.getBoundingClientRect().y,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={e => toggleTip()}
@@ -839,7 +839,7 @@ const SubtitleEditor = props => {
 												topRight: false,
 												bottomRight: false,
 												bottomLeft: false,
-												topLeft: false
+												topLeft: false,
 											}
 										}
 										bounds = {`parent`}
@@ -872,7 +872,7 @@ const SubtitleEditor = props => {
 							{
 								x: e.target.getBoundingClientRect().x,
 								y: e.target.getBoundingClientRect().y + 10,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}

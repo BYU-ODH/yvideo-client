@@ -266,19 +266,19 @@ const VideoEditor = props => {
 		const index = eventToEdit
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
-		const posPrev = (
+		const posPrev =
 			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b) =>
 				parseFloat(cEvent.position[b]) - parseFloat(cEvent.position[a]))[0]
-		)
-		const posNext = (
+
+		const posNext =
 			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>
 				parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
-		)
+
 		setActiveCensorPosition(posPrev && posNext ?
 			posPrev ?
 				posPrev
 				: posNext
-			: -1
+			: -1,
 		)
 		delete cEvent.position[item]
 		updateEvents(index, cEvent, layer)
@@ -541,7 +541,7 @@ const VideoEditor = props => {
 									{
 										x: e.target.getBoundingClientRect().x,
 										y: e.target.getBoundingClientRect().y,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={e => toggleTip()}
@@ -586,7 +586,7 @@ const VideoEditor = props => {
 							{
 								x: e.target.getBoundingClientRect().x,
 								y: e.target.getBoundingClientRect().y + 10,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}
