@@ -63,7 +63,7 @@ const Style = styled.div`
 		& .subContainer {
 			display: flex;
 			justify-content: space-evenly;
-			padding: 1rem 0;
+			padding: 1rem;
 
 			:hover {
 				background-color: rgba(5, 130, 202, 0.3);
@@ -110,7 +110,7 @@ export const Icon = styled.div`
 	margin-top: -1rem;
 	border-radius: 5px;
 	position: relative;
-	z-index: 1000;
+	z-index: 10;
 	margin-bottom: -1rem;
 	visibility: ${props => props.visibility ===`visible` ? `visible` : `hidden`};
 

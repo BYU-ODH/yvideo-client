@@ -212,6 +212,18 @@ export const Blank = styled.div`
 		background-color: black;
 		z-index: 100;
 	}
+	& #pauseMessage{
+		& button{
+			font-size: 1.5rem;
+    	background: transparent;
+    	border: none;
+    	outline: none;
+			position: absolute;
+			display: inline-block;
+    	cursor: pointer;
+			top: 90%;
+			left:90%;
+		}
 `
 export const Censor = styled.div`
 	position: absolute;
@@ -234,6 +246,34 @@ export const Comment = styled.div`
 	color: white;
 	z-index: 15;
 `
+
+export const PauseMessage = styled.div`
+padding: 1%;
+width:90% !important;
+height:50% !important;
+font-size: 1.5rem;
+position:absolute;
+display: block;
+top: 15%;
+left: 5%;
+border-width:1px;
+border-radius: 1px;
+border-style: solid;
+border-color: var(--navy-blue);
+cursor: pointer;
+justify-content: center;
+background-color: rgba(241, 241, 244, 0.79);
+z-index:10000;
+visibility: hidden
+`
+
+export const CloseButton = styled.div`
+	float:right;
+	display:inline-block;
+	padding:2px 5px;
+	background:#ccc;
+`
+
 export const ToggleCarat = styled.div`
 	width: 40px !important;
 	height: 48px !important;

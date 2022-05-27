@@ -68,7 +68,17 @@ export class ResourceOverview extends PureComponent {
 								}
 							</div>
 							<Buttons>
-								<EditButton id='resource-edit' className='std-outline-color' onClick={handleToggleEdit}>{editing ? <SaveIcon/> : <></>}{editing ? `Save` : `Edit`}</EditButton>
+								<EditButton
+									id='resource-edit'
+									className='std-outline-color'
+									onClick={handleToggleEdit}
+								>
+									{editing ?
+										<><SaveIcon/>Save</>
+										:
+										`Edit`
+									}
+								</EditButton>
 								{editing &&
 									<>
 										{/* TODO: need to figure out how it work on attaching files on resource */}
@@ -106,7 +116,7 @@ export class ResourceOverview extends PureComponent {
 								{user.roles === 0 || user.roles === 1 ?
 									(
 										<div>
-											<h4>Instructors: </h4>{ <> <EditButton className='std-outline-color' onClick={handleInstructors}> {accessCount} registered</EditButton></>}
+											<h4>Instructors: </h4> <> <EditButton className='std-outline-color' onClick={handleInstructors}> {accessCount} registered</EditButton></>
 										</div>
 									) :
 									null
@@ -123,7 +133,16 @@ export class ResourceOverview extends PureComponent {
 									<TypeButton type='button' className='std-outline-color' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className='fa fa-text-width' data-type='text' />Text</TypeButton>
 								</Type>
 
-								<div><h4>Files:</h4>{files && files.length !== 0 ? <><Title>{files && files.length} files</Title> <EditButton onClick={handleFiles}>Edit</EditButton></>: <Title>none</Title>}</div>
+								<div>
+									<h4>Files:</h4>
+									{files && files.length !== 0 ?
+										<>
+											<Title>{files && files.length} files</Title>
+											<EditButton onClick={handleFiles}>Edit</EditButton>
+										</>
+										:
+										<Title>none</Title>}
+								</div>
 							</Column>
 						</InnerContainer>
 					}

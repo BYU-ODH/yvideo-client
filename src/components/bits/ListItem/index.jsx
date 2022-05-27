@@ -15,7 +15,13 @@ class ListItem extends PureComponent {
 		return (
 			<Style>
 				<Link to={`/player/${id}`}>
-					<LazyImage src={thumbnail !== `empty` ? thumbnail : defaultThumbnail} height='3.5rem' width='5.5rem' heightSm='3.5rem' widthSm='5.5rem' />
+					<LazyImage
+						src={thumbnail !== `empty` ? thumbnail : defaultThumbnail}
+						height='3.5rem'
+						width='5.5rem'
+						heightSm='3.5rem'
+						widthSm='5.5rem'
+					/>
 					<div className='name'>
 						<h4>{name}</h4>
 						<ul>

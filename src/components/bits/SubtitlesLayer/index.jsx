@@ -48,7 +48,8 @@ const SubtitlesLayer = props => {
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
-
+	// This object is to overwrite the css properties of the right and left side of the Rnd
+	const resizeSpace = {right: {borderRight: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		toggleEditor(layerIndex, index)
@@ -144,6 +145,7 @@ const SubtitlesLayer = props => {
 		return (
 			<Rnd
 				className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`}
+
 				id={`event-${index}`}
 				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `46px`}}
 				position={{ x: event.start / videoLength * layerWidth, y: 0}}
