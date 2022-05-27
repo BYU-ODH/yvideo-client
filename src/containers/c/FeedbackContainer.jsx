@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
-import services from 'services'
-
 import { Feedback } from 'components'
 
 import { interfaceService } from 'services'

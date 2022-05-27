@@ -96,11 +96,11 @@ describe(`LabAssistantManagerContainer container test`, () => {
 			</Provider>,
 		)
 
-		expect(wrapper.find({"className" : `collection-username`}).text()).toBe(`testname professor1's Collections`)
-		expect(wrapper.find({"className" : `link`}).length).toBe(6)
+		expect(wrapper.find({"id" : `collection-username`}).text()).toBe(`testname professor1's Collections`)
+		expect(wrapper.find({"id" : `link`}).length).toBe(6)
 
 		// TODO: need to figure out how to check the toggle
-		wrapper.find({"className" : `collection-create`}).at(0).simulate(`click`)
+		wrapper.find({"id" : `collection-create`}).at(0).simulate(`click`)
 	})
 
 	it(`render without collections`, () => {
@@ -111,6 +111,6 @@ describe(`LabAssistantManagerContainer container test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		expect(wrapper.find({"className" : `no-collections`}).text()).toBe(`testname professor1 does not have any collections`)
+		expect(wrapper.find({"id" : `no-collections`}).text()).toBe(`testname professor1 does not have any collections`)
 	})
 })

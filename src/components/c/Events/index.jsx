@@ -1,7 +1,5 @@
 import React from 'react'
 
-import Style from './styles'
-
 const Events = props => {
 
 	const {currentTime, eventClassArray} = props.viewstate

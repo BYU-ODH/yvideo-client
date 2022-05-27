@@ -1,10 +1,8 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import { waitFor } from '@testing-library/dom'
 import Container from '../../../../components/modals/containers/CreateCollectionContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
-import { interfaceService, collectionService, adminService } from 'services'
 
 const props = {
 	userId: `userId`,
@@ -17,7 +15,7 @@ describe(`CreateCollectionContainer test`, () => {
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
 
-		const viewstate = wrapper.props().viewstate
+		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
 	it(`should pass event handlers test`, async()=> {

@@ -54,14 +54,17 @@ const CreateContentContainer = props => {
 		},
 		thumbnail: ``,
 		targetLanguage: ``,
-		fileId: "00000000-0000-0000-0000-000000000000",
+		fileId: `00000000-0000-0000-0000-000000000000`,
 	})
 
 	useEffect(() => {
 		getLanguages()
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
-			const langs = resourceContent[selectedResourceId].allFileVersions ? (resourceContent[selectedResourceId].allFileVersions.split(`;`)) : ([])
+			const langs = (resourceContent[selectedResourceId].allFileVersions ?
+				resourceContent[selectedResourceId].allFileVersions.split(`;`)
+				: []
+			)
 			const finalLanguages = []
 			langs.forEach((element, i) => {
 				if(element === ``)
@@ -100,7 +103,7 @@ const CreateContentContainer = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resourceContent, selectedResourceId, searchQuery, isTyping, blockLeave, isResourceSelected])
 
 	const changeTab = e => {
@@ -119,10 +122,10 @@ const CreateContentContainer = props => {
 			...data,
 			[e.target.name]: e.target.value,
 		})
-		if(e.target.name === "fileId"){
+		if(e.target.name === `fileId`){
 			setData({
 				...data,
-				targetLanguage: resourceFiles.filter(file => file.id === e.target.value)[0]['file-version']
+				targetLanguage: resourceFiles.filter(file => file.id === e.target.value)[0][`file-version`],
 			})
 		}
 		setBlock(true)
@@ -221,9 +224,13 @@ const CreateContentContainer = props => {
 			alert(`Please, select a valid language`)
 			return
 		}
-
+		const SUPPORTED_LANGUAGES = [ // eslint-disable-line no-unused-vars
+			`German`,
+			`Spanish`,
+			`Russian`,
+		]
 		const backEndData = {
-			"allow-definitions": true,
+			"allow-definitions": false,
 			"url": data.url,
 			"allow-captions": true,
 			"content-type": data.contentType,
@@ -231,7 +238,7 @@ const CreateContentContainer = props => {
 			tags,
 			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
 			"file-version": data.targetLanguage,
-			"file-id": '00000000-0000-0000-0000-000000000000',
+			"file-id": `00000000-0000-0000-0000-000000000000`,
 			"collection-id": modal.collectionId,
 			"published": true,
 			"views": 0,
@@ -262,19 +269,23 @@ const CreateContentContainer = props => {
 			return
 		}
 
-		//FIND IF THE COLLECTION IS PUBLIC
-		//IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
+		// FIND IF THE COLLECTION IS PUBLIC
+		// IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
 		if(modal.props !== undefined && modal.props.isPublic && resourceContent[selectedResourceId].copyrighted){
-			alert('The resource you are trying to add is copyrighted and cannot be added to a public collection')
-			return;
+			alert(`The resource you are trying to add is copyrighted and cannot be added to a public collection`)
+			return
 		}
 
 		// CONTENT FROM RESOURCE WILL HAVE AN EMPTY STRING IN THE URL
 		// EVERY VIDEO HAS A FILE PATH BUT WE NEED TO GET A FILE KEY IN ORDER TO BE ABLE TO STREAM A VIDEO
 		// THE FILE KEY WILL ACT AS PART OF THE URL WHERE WE WILL GET THE VIDEO URL: /api/media/stream-media/{file-key}
-
+		const SUPPORTED_LANGUAGES = [ // eslint-disable-line no-unused-vars
+			`German`,
+			`Spanish`,
+			`Russian`,
+		]
 		const backEndData = {
-			"allow-definitions": true,
+			"allow-definitions": false,
 			"url": ``,
 			"allow-captions": true,
 			"content-type": data.contentType,

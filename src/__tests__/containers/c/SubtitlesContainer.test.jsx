@@ -1,7 +1,7 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
-import { Router, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/SubtitlesContainer'
 import * as testutil from '../../testutil/testutil'
 

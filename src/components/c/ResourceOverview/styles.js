@@ -25,7 +25,7 @@ export const Preview = styled.div`
 
 		@media screen and (max-width: 1000px) {
       justify-content: ${props => props.editing ? `space-evenly` : ``};
-			margin-top: ${props =>  props.editing ? `1rem` : ``};
+			margin-top: ${props => props.editing ? `1rem` : ``};
     }
 
 	}
@@ -50,7 +50,6 @@ const TextButton = css`
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	outline: none;
 `
 
 export const EditButton = styled.button`
@@ -63,7 +62,7 @@ export const EditButton = styled.button`
 
 	text-align: center !important;
 	& > span {
-		margin-left: .5rem;
+		margin-right: .1rem;
 	}
 `
 
@@ -150,7 +149,7 @@ export const RemoveButton = styled.button`
 	text-align: center !important;
 
 	& > span {
-		margin-left: .5rem;
+		margin-right: .1rem;
 	}
 `
 
@@ -163,7 +162,7 @@ export const FileUploadButton = styled.button`
 	text-align: center !important;
 
 	& > span {
-		margin-left: .5rem;
+		margin-right: .1rem;
 	}
 `
 
@@ -192,13 +191,25 @@ export const ResourceTitle = styled.form`
 	}
 `
 
-
 export const TypeButton = styled.button`
 	background: transparent;
 	border: none;
-	outline: none;
 	cursor: pointer;
+	margin: 3px;
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
+	box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+	border-radius: 3px;
+
+	& > i {
+		margin-right: 3px;
+	}
+
+
+	:hover{
+		transition: .2s;
+		background-color: #f3f3f3;
+	}
+
 `

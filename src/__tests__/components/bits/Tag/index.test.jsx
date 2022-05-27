@@ -1,7 +1,7 @@
 import React from 'react'
 import Tag from '../../../../components/bits/Tag'
 import { Remove } from '../../../../components/bits/Tag/styles'
-import { shallow, mount, render } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import { BrowserRouter} from 'react-router-dom'
 
 const props = {
@@ -42,7 +42,7 @@ describe(`tag test`, () => {
 		expect(handlers.removeTag.mock.calls.length).toEqual(1)
 	})
 	it(`mou removeTag`, () => {
-		const wrapper = mount(
+		mount(
 			<BrowserRouter>
 				<Tag {...props} />
 			</BrowserRouter>,

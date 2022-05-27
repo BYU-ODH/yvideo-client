@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-
 const Style = styled.div`
 max-width: 100rem;
 border-top: 0.5px solid rgba(0, 0, 0, 0.5);

@@ -20,9 +20,9 @@ const SubtitlesCard = (props) => {
 						<input type='text' className='sideTabInput' style={{margin: `0px`, width: `100%`}} value={value}
 							onChange={handleChange}
 							onKeyPress={event => {
-								if (event.charCode ===13) {
+								if (event.charCode === 13)
 									updateTitle(event.target.value, `onKeyPress`)
-								}
+
 							}}
 						/>
 						:

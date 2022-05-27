@@ -35,7 +35,7 @@ export const ConfirmBox = styled.div`
 		margin: auto;
 
 		& div {
-			margin: auto auto auto 11rem;
+			margin: auto auto auto 15rem;
 			width: 20rem;
 		}
 
@@ -58,6 +58,7 @@ export const ConfirmBox = styled.div`
 			cursor: pointer;
 			transition: .5s;
 			color: black;
+			box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
 
 			&:focus{
 				outline: 0;

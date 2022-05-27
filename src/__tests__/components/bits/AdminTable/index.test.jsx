@@ -1,9 +1,8 @@
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import AdminTable from '../../../../components/bits/AdminTable/index'
-import Style, { Table, ItemEdit, Filter, Sort, ItemMenu } from '../../../../components/bits/AdminTable/styles'
-import { BrowserRouter} from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { ItemEdit, Sort, ItemMenu } from '../../../../components/bits/AdminTable/styles'
+import { Link, BrowserRouter} from 'react-router-dom'
 
 const viewstate = {
 	data:[
@@ -214,7 +213,6 @@ describe(`admin table test`, () => {
 		const buttons = wrapper.find({"className": `sorting-button`})
 		buttons.forEach(button => {
 			button.simulate(`click`)
-			const firstRow = viewstate.data[0]
 			button.simulate(`click`)
 		})
 	})

@@ -1,11 +1,9 @@
 import React from 'react'
-import {useEffect, useState} from 'react'
 
-import Player from 'components/c/Player/index'
 import Style, { BarBall, BarCurrent, BarBackground, BarClip, BarSkippedGrey } from './styles'
 
 const Bar = props => {
-	const {events, duration, skipArray} = props
+	const { duration, skipArray } = props
 
 	// useEffect(() => {
 	// 		// if(events){
@@ -16,7 +14,7 @@ const Bar = props => {
 	// 		// }
 	// 		handleOnReady();
 	// }, [skipArray, events]);
-// console.log(skipArray)
+	// console.log(skipArray)
 	return (
 		<Style position={props.position} active={props.active} onClick={props.handleClick}>
 			<BarBackground position={props.position} active={props.active} />

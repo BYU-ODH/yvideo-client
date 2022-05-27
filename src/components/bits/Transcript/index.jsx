@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import parse from 'html-react-parser'
 
@@ -28,14 +29,12 @@ const Transcript = props => {
 		displaySubtitles,
 		subtitleText,
 		subtitleTextIndex,
-		duration,
 		toggleTranscript,
 		showTranscript,
 		isMobile,
 	} = props.viewstate
 
 	const {
-		setToggleTranscript,
 		handleShowHelp,
 		handleSeekChange,
 		handleToggleTranscript,
@@ -52,9 +51,7 @@ const Transcript = props => {
 		let allWords = ``
 		let allMeanings = ``
 
-		console.log(jsonResponse)
-
-		if(jsonResponse[Object.keys(jsonResponse)[0]] == undefined){
+		if(jsonResponse[Object.keys(jsonResponse)[0]] === undefined){
 			setWords(`No matches found`)
 			setMeanings(``)
 			return
@@ -124,32 +121,76 @@ const Transcript = props => {
 		<Style style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
-					<><img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip(`transcript-hide`, { x: e.target.getBoundingClientRect().x - 65, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
-						onMouseLeave={e => toggleTip()} />
-					<Help src={helpIcon} onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x - 65, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth })}
-						onMouseLeave={e => toggleTip()} /></>
+					<>
+						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+							onMouseEnter={e => handleShowTip(`transcript-hide`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+						<Help src={helpIcon} onClick={handleShowHelp}
+							onMouseEnter={e => handleShowTip(`help`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+					</>
 					:
-					<><img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip(`transcript-hide`, { x: e.target.getBoundingClientRect().x - 20, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth })}
-						onMouseLeave={e => toggleTip()} />
-					<Help src={helpIcon} onClick={handleShowHelp}
-						onMouseEnter={e => handleShowTip(`help`, { x: e.target.getBoundingClientRect().x - 20, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth })}
-						onMouseLeave={e => toggleTip()} /></>
+					<>
+						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+							onMouseEnter={e => handleShowTip(`transcript-hide`,
+								{
+									x: e.target.getBoundingClientRect().x - 20,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+						<Help src={helpIcon} onClick={handleShowHelp}
+							onMouseEnter={e => handleShowTip(`help`,
+								{
+									x: e.target.getBoundingClientRect().x - 20,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth
+								})
+							}
+							onMouseLeave={e => toggleTip()} />
+					</>
 				}
 
 			</div>
 			<div className={isMobile ? `main-bar main-mobile` : `main-bar`} >
 				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
 					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip(`transcript-hide`, {x: e.target.getBoundingClientRect().x - 80, y: e.target.getBoundingClientRect().y - 25, width: e.currentTarget.offsetWidth})}
+						onMouseEnter={e => handleShowTip(`transcript-hide`,
+							{
+								x: e.target.getBoundingClientRect().x - 80,
+								y: e.target.getBoundingClientRect().y - 25,
+								width: e.currentTarget.offsetWidth
+							})
+						}
 						onMouseLeave={e => toggleTip()}
 					/>
 				</div>
 				<div className={`transcript-title`}>
 					<h1>Transcript</h1>
-					<h2>{content !== undefined ? content.settings.targetLanguage !== `` ? `Video - ${content.settings.targetLanguage} |` : null : null}  Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}</h2>
+					<h2>
+						{ content !== undefined ?
+								content.settings.targetLanguage !== `` ?
+									`Video - ${content.settings.targetLanguage} |`
+									:
+									null
+								:
+								null
+						}
+						Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}
+					</h2>
 				</div>
 				<br/><br/><br/>
 				<div className={`transcript-content`}>
@@ -162,7 +203,13 @@ const Transcript = props => {
 								<div onClick={e => handleSeekChange(null, element.start + element.start * .001)}
 									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
-									onMouseEnter={e => handleShowTip(`transcript-seek`, {x: e.target.getBoundingClientRect().x - 20, y: e.target.getBoundingClientRect().y - 30, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`transcript-seek`,
+										{
+											x: e.target.getBoundingClientRect().x - 20,
+											y: e.target.getBoundingClientRect().y - 30,
+											width: e.currentTarget.offsetWidth
+										})
+									}
 									onMouseLeave={e => toggleTip()}
 								>
 									<span><img src={seek} alt={`seek`} width='20' height='20'/></span>
@@ -178,7 +225,8 @@ const Transcript = props => {
 				<br/>
 				<h2>Quick Translation</h2><br/>
 				<div id='translation-box'>
-					<h3 id='translation-word'></h3>
+					{/* I commented out this h3 because it has no content. If it's needed then uncomment it */}
+					{/* <h3 id='translation-word'></h3> */}
 					<ul id='translation-list'>
 						<li>
 							<label>Translation: {parse(words)}</label>

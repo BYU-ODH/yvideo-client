@@ -4,7 +4,7 @@ import SubtitlesLayer from '../../../../components/bits/SubtitlesLayer'
 import { BrowserRouter } from 'react-router-dom'
 import { act } from 'react-dom/test-utils'
 
-let subs = [
+const subs = [
 	{
 		end: 10,
 		start: 1,
@@ -27,7 +27,7 @@ let subs = [
 	},
 ]
 
-let props = {
+const props = {
 	subs,
 	videoLength: 100,
 	displayLayer: 1,

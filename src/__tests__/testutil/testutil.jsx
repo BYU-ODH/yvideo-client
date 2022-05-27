@@ -1,8 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import React from 'react'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import proxies from 'proxy'
-import { browserStorage } from 'proxy'
+import proxies, { browserStorage } from 'proxy'
 
 const thunk = require(`redux-thunk`).default
 const middlewares = [thunk]

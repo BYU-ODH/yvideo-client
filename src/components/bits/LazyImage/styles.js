@@ -18,8 +18,8 @@ const Style = styled.div`
 		width: ${props => props.widthSm};
 	}
 
-	animation: ${shimmer} 2s linear 1s infinite;
-	animation-fill-mode: forwards;
+	// animation: ${shimmer} 2s linear 1s infinite;
+	// animation-fill-mode: forwards;
 	background-color: #eee;
 	background-image: linear-gradient(to right, #eee 0%, #fff 50%, #eee 100%);
 	background-repeat: no-repeat;

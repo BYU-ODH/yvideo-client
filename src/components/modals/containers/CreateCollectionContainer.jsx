@@ -19,6 +19,7 @@ const CreateCollectionContainer = props => {
 
 	const [name, setName] = useState(``)
 	const [blockLeave, setBlock] = useState(false)
+	const [isSelected, setIsSelected] = useState(false)
 
 	useEffect(() => {
 		if(blockLeave)
@@ -58,15 +59,22 @@ const CreateCollectionContainer = props => {
 		setBlock(false)
 	}
 
+	const handleInput = async e => {
+		e.preventDefault()
+		setIsSelected(!isSelected)
+	}
+
 	const viewstate = {
 		name,
 		isPublicCollection,
+		isSelected,
 		blockLeave,
 	}
 
 	const handlers = {
 		handleNameChange,
 		handleSubmit,
+		handleInput,
 		toggleModal,
 	}
 

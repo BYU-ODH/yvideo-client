@@ -19,7 +19,7 @@ export const componentDidChange = async (
 	propsProperties = [],
 	prevState = {},
 	nextState = {},
-	stateProperties = []
+	stateProperties = [],
 ) => {
 
 	const label = `[DEBUG] ${component}.${method}()`
@@ -35,14 +35,14 @@ export const componentDidChange = async (
 	const propsChanged = propsProperties.reduce((acc, property) => ({
 		...acc,
 		[`props.${property} Changed`]: {
-			value: propsDiff.hasOwnProperty(property),
+			value: propsDiff.hasOwn(property), // I changed it to hasOwn() because the linter was yelling at hasOwnProperty()
 		},
 	}), {})
 
 	const stateChanged = stateProperties.reduce((acc, property) => ({
 		...acc,
 		[`state.${property} Changed`]: {
-			value: stateDiff.hasOwnProperty(property),
+			value: stateDiff.hasOwn(property), // I changed it to hasOwn() because the linter was yelling at hasOwnProperty()
 		},
 	}), {})
 
@@ -65,9 +65,14 @@ export const componentDidChange = async (
 				false
 		)
 
-	if (toConsole) logger.logc(`${changed ? `RENDER` : `NO RENDER`}`, `background: ${changed ? `Maroon` : `Teal`}`)
+	if (toConsole)
+		logger.logc(
+			`${changed ? `RENDER` : `NO RENDER`}`,
+			`background: ${changed ? `Maroon` : `Teal`}`,
+		)
 
-	if (toConsole) logger.groupEnd(label)
+	if (toConsole)
+		logger.groupEnd(label)
 
 	return changed
 }
@@ -78,13 +83,44 @@ const warnStyle = `background: #ffbb17; color: #332b00; font-weight: bold; paddi
 const errorStyle = `background: #dc2727; color: #290000; font-weight: bold; padding: 2px 4px; border-radius: 2px;`
 
 export const logger = {
-	log: (message, variable) => message ? console.log(`%c${message}`, logStyle, variable ? variable : ``) : null,
-	info: (message, variable) => message ? console.log(`%c${message}`, infoStyle, variable ? variable : ``) : null,
-	warn: (message, variable) => message ? console.log(`%c${message}`, warnStyle, variable ? variable : ``) : null,
-	error: (message, variable) => message ? console.log(`%c${message}`, errorStyle, variable ? variable : ``) : null,
-	logc: (message, css, variable) => message ? console.log(`%c${message}`, `${logStyle} ${css}`, variable ? variable : ``) : null,
-	group: (message) => message ? console.groupCollapsed(`%c${message}`, infoStyle) : null,
-	groupEnd: (message) => message ? console.groupEnd(`%c${message}`, infoStyle) : null,
+	log: (message, variable) =>
+	message ?
+		console.log(`%c${message}`, logStyle, (variable ?
+			variable : ``)
+		)
+		: null,
+	info: (message, variable) =>
+	message ?
+		console.log(`%c${message}`, infoStyle, (variable ?
+			variable : ``)
+		)
+		: null,
+	warn: (message, variable) =>
+	message ?
+		console.log(`%c${message}`, warnStyle, (variable ?
+			variable : ``)
+		)
+		: null,
+	error: (message, variable) =>
+	message ?
+		console.log(`%c${message}`, errorStyle, (variable ?
+			variable : ``)
+		)
+		: null,
+	logc: (message, css, variable) =>
+	message ?
+		console.log(`%c${message}`, `${logStyle} ${css}`, (variable ?
+			variable : ``)
+		)
+		: null,
+	group: (message) =>
+	message ?
+		console.groupCollapsed(`%c${message}`, infoStyle)
+		: null,
+	groupEnd: (message) =>
+	message ?
+		console.groupEnd(`%c${message}`, infoStyle)
+		: null,
 }
 
 export const departments = [

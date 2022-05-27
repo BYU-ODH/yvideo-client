@@ -13,7 +13,7 @@ import {
 
 const TrackLayer = props => {
 
-	const { events, sideEditor, updateEvents, activeEvent, width, videoLength, displayLayer} = props
+	const { events, updateEvents, activeEvent, width, videoLength, displayLayer} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
@@ -22,12 +22,30 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
+	// eslint-disable-next-line no-unused-vars
 	const [layerHeight, setLayerHeight] = useState(0)
-
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
+
+		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+
+		if(events && layerIndex === 3){
+			// we are in censor, calculate overlapping
+			// overlap count tells us how many half layers we need
+			const overlapCount = calculateOverlaps()
+
+			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
+
+			document.getElementById(`layer-${layerIndex}`).style.height =
+			`${overlapCount.length !== 0 ?
+				26 * (overlapCount.length + 1)
+				: 46}px`
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [width, events, layerOverlap])
+	useLayoutEffect(()=>{
 
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
@@ -36,22 +54,8 @@ const TrackLayer = props => {
 			setLayerWidth(initialWidth)
 		else
 			setLayerWidth(layerWidth + width)
-
-		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
-
-		if(events && layerIndex === 3){
-			// we are in censor, calculate overlapping
-			// overlap count tells us how many half layers we need
-			const overlapCount = calculateOverlaps()
-			// console.log(overlapCount.length)
-
-			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
-
-			document.getElementById(`layer-${layerIndex}`).style.height = `${overlapCount.length === 0 ? 46 : 26 * (overlapCount.length + 1)}px`
-		}
-
-	}, [width, events, layerOverlap])
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[width])
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
@@ -59,6 +63,8 @@ const TrackLayer = props => {
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
+	// This object is to overwrite the css properties of the right and left side of the Rnd
+	const resizeSpace = {right: {borderRight: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
 
 	const calculateOverlaps = () => {
 		const sortedEvents = JSON.parse(JSON.stringify(events))
@@ -74,7 +80,6 @@ const TrackLayer = props => {
 
 			if(currentEvent.type === `Censor`){
 				const eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
-				// console.log('found', eventIndex)
 				if(lastCensorEvent === null){
 
 					events[eventIndex].halfLayer = halfLayer
@@ -83,12 +88,9 @@ const TrackLayer = props => {
 				} else {
 					// compare previous and current
 					// if current overlaps with previous
-					if(currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end || currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end){
+					if((currentEvent.start >= lastCensorEvent.start && currentEvent.start <= lastCensorEvent.end) || (currentEvent.end >= lastCensorEvent.start && currentEvent.end <= lastCensorEvent.end)){ // eslint-disable-line no-extra-parens
 						// find index in the main events object
 						// we find the first overlap so pass anything from beginning to now
-						// console.log('comparing')
-						// console.log(`start ${currentEvent.start} end ${currentEvent.end}`)
-						// console.log(`start ${lastCensorEvent.start} end ${lastCensorEvent.end}`)
 						halfLayer++
 						overlapCount.push(halfLayer)
 					}
@@ -118,7 +120,6 @@ const TrackLayer = props => {
 
 		if(cEvents[index].start < 0)
 			cEvents[index].start = 0
-
 		// call handler from parent
 		updateEvents(index, cEvents[index], layerIndex)
 		// calculateOverlaps(events)
@@ -126,7 +127,6 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-		// console.log('po', position)
 
 		const cEvents = events
 		const difference = delta.width / layerWidth * 100*videoLength/100
@@ -139,7 +139,6 @@ const TrackLayer = props => {
 		} else {
 			cEvents[index].start -= difference
 
-			// console.log(cEvents[index])
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > videoLength){
@@ -151,23 +150,26 @@ const TrackLayer = props => {
 		updateEvents(index, cEvents[index], layerIndex)
 	}
 
-	// This opens the side tab editor
-	const toggleEditor = (layerIndex, eventIndex) => {
-		// setEditorOpen(true)
-		sideEditor(layerIndex, eventIndex)
-	}
-
 	const printEvents = (event, index, isMultiEvent) => {
 		if(event[`layer`] !== layerIndex)
 			return
 
 		return (
 			<Rnd
-				className={`layer-event ${isMultiEvent ? `half-event` : ``} ${activeEvent === index ? `active-event` : ``}`}
+				className={
+					`layer-event
+					${isMultiEvent ? `half-event`:``}
+					${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
-				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `${isMultiEvent ? 23 : 46}px`}}
-				position={{ x: event.start/videoLength * layerWidth, y: 0}}
+				size={
+					{
+						width: `${(event.end - event.start) / videoLength * layerWidth}px`,
+						height: `${isMultiEvent ? 23 : 46}px`,
+					}
+				}
+				position={{ x: event.start / videoLength * layerWidth, y: 0}}
+				resizeHandleStyles={resizeSpace}
 				enableResizing={Enable}
 				dragAxis='x'
 				onDragStop={(e, d) => handleDrag(d, event, index)}
@@ -205,13 +207,25 @@ const TrackLayer = props => {
 				} {/* new layer function that will provide maximum layer overlap */ }
 				{layerIndex === 3 && layerOverlap !== null &&
 					<div ref={layerRef} className='eventsbox'>
-						<div className={`layer-${layerIndex} ${layerOverlap.length > 0 ? `half-layer` : ``} events ${displayLayer === layerIndex ? `active-layer` : ``}`}
-							style={{ marginTop: layerOverlap.length > 0 ? `${26 * layerOverlap.length}px` : `0px`, backgroundColor: `rgba(5, 130, 202, 0.1)`}}>
+						<div
+							className={`layer-${layerIndex} ${layerOverlap.length > 0 ? `half-layer` : ``} events ${displayLayer === layerIndex ? `active-layer` : ``}`}
+							style={
+								{
+									marginTop: layerOverlap.length > 0 ?
+										`${26 * layerOverlap.length}px`
+										: `0px`,
+									backgroundColor: `rgba(5, 130, 202, 0.1)`,
+								}
+							}
+						>
 							{
 								events !== undefined && events.length > 0 && videoLength !== 0 ? (
 									<>
 										{events.map((event, index) =>
-											event.halfLayer === 0 || event.halfLayer === undefined ? printEvents(event, index, layerOverlap.length > 0) : null,
+											event.halfLayer === 0 || event.halfLayer === undefined ?
+												printEvents(event, index, layerOverlap.length > 0)
+												:
+												null,
 										)}
 									</>
 								) : null
@@ -219,7 +233,16 @@ const TrackLayer = props => {
 						</div>
 						{ layerOverlap.map((halfLayer, overlapIndex) => (
 							<div key={overlapIndex} className={`layer-${layerIndex} half-layer events ${displayLayer === layerIndex ? `active-layer` : ``}`}
-								style={{ marginTop: overlapIndex > 0 ? `${26 * overlapIndex}px` : `0px`, backgroundColor: overlapIndex % 2 !== 0 ? `rgba(5, 130, 202, 0.1)` : ``}}>
+								style={
+									{
+										marginTop: overlapIndex > 0 ?
+											`${26 * overlapIndex}px`
+											: `0px`,
+										backgroundColor: overlapIndex % 2 !== 0 ?
+											`rgba(5, 130, 202, 0.1)`
+											: ``,
+									}}
+							>
 								{
 									events !== undefined && events.length > 0 && videoLength !== 0 && halfLayer !== 0 ? (
 										<>
@@ -240,4 +263,3 @@ const TrackLayer = props => {
 }
 
 export default TrackLayer
-

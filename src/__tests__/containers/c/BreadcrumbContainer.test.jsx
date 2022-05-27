@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Container from '../../../containers/c/BreadcrumbContainer'
 import * as testutil from '../../testutil/testutil'
 import { Provider } from 'react-redux'

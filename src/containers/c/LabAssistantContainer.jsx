@@ -33,6 +33,7 @@ const LabAssistantContainer = props => {
 		return () => {
 			setHeaderBorder(false)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setHeaderBorder])
 
 	const updateSearchBar = e => {
@@ -54,7 +55,9 @@ const LabAssistantContainer = props => {
 	const viewstate = {
 		searchQuery,
 		// TODO: Admins who are also Profs, should have `prof` included in their roles because we will only search for that, not admin
-		data: professors ? professors.filter(item => item.roles === 2 || item.roles === 0) : [],
+		data: professors ?
+			professors.filter(item => item.roles === 2 || item.roles === 0)
+			: [],
 		placeholder: category.Users.placeholder,
 		showResource,
 		isSubmitted,

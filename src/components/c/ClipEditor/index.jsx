@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Prompt } from 'react-router'
 import { VideoContainer, SkipLayer } from 'components'
-import {ClipLayer, SwitchToggle} from 'components/bits'
+import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import Backend from 'react-dnd-html5-backend'
@@ -22,10 +22,10 @@ import Style, { Timeline, AnnotationMessage, SideEditor, Icon} from './styles'
 const ClipEditor = props => {
 	const {
 		currentContent,
-		url,
 		eventsArray,
-		subs,
-		allSubs,
+		// url,
+		// subs,
+		// allSubs,
 	} = props.viewstate
 
 	const {
@@ -45,28 +45,21 @@ const ClipEditor = props => {
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 
-	const [videoCurrentTime, setCurrentTime] = useState(0)
+	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
-	const [scrollFactor, setScrollFactor] = useState(0)
-	const [scrollWidth, setScrollWidth] = useState(0)
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
-	const [start, setStart] = useState(0)
-	const [end,setEnd] = useState(60)
-	const [title,setTitle] = useState(``)
-	const [clipList,setClipList] = useState({})
+	const [clipList, setClipList] = useState({})
 	const [active, setActive] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
-	const [clipsToDelete,setClipsToDelete] = useState({})
+	const [clipsToDelete, setClipsToDelete] = useState({}) // eslint-disable-line no-unused-vars
 	const [blockLeave, setBlock] = useState(false)
-	const [isLoading,setIsLoading] = useState(false)
-	const [clipIndex,setClipIndex] = useState(0)
+	const [isLoading, setIsLoading] = useState(false)
+	const [clipIndex, setClipIndex] = useState(0)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
 
-	// const [usingSubtitles, setSubtitles] = useState(false)
-	// const [subtitles, setSubs] = useState(subs)
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	useEffect(() => {
 		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
@@ -84,7 +77,7 @@ const ClipEditor = props => {
 		// Find the largets layer number
 		const initialLayers = []
 
-		if(Object.keys(clipList).length ===0) {
+		if(Object.keys(clipList).length === 0) {
 			if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
 				const clips = JSON.parse(currentContent[`clips`])
 				setClipList(clips)
@@ -110,6 +103,7 @@ const ClipEditor = props => {
 		return () => {
 			window.onbeforeunload = undefined
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave])
 
 	const getVideoDuration = (duration) => {
@@ -130,7 +124,13 @@ const ClipEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		if(document.getElementsByClassName(`layer-container`)[0]) setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		const layerContainer = document.getElementByClassName(`layer-container`)
+		const events = document.getElementsByClassName(`events`)
+		if(layerContainer && events[0].clientWidth !== 0) {
+			setScrollBar(
+				layerContainer[0].clientWidth * 100 / events[0].clientWidth,
+			)
+		}
 	}
 
 	const handleScrollFactor = (direction) => {
@@ -284,7 +284,10 @@ const ClipEditor = props => {
 	}
 
 	const createClip = () =>{
-		const id = Object.keys(clipList).length === 0 ? `0` : `${parseInt(Object.keys(clipList).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+		const id = Object.keys(clipList).length === 0 ?
+			`0`
+			:
+			`${parseInt(Object.keys(clipList).sort((a, b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
 		const clip = {
 			start: 0,
 			end: 60,
@@ -313,7 +316,7 @@ const ClipEditor = props => {
 	}
 	const saveClips = () => {
 		setIsLoading(true)
-		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length ===0)
+		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length === 0)
 			return
 		const clips = {...clipList}
 		const content = {...currentContent}
@@ -360,7 +363,13 @@ const ClipEditor = props => {
 										<div className={`skip-handle`}>
 											<p>Allow Skip</p>
 											<div className={`allow-event`}
-												onMouseEnter={e => handleShowTip(`allow-events`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+												onMouseEnter={e => handleShowTip(`allow-events`,
+													{
+														x: e.target.getBoundingClientRect().x,
+														y: e.target.getBoundingClientRect().y,
+														width: e.currentTarget.offsetWidth
+													})
+												}
 												onMouseLeave={e => toggleTip()}>
 												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 											</div>
@@ -374,7 +383,13 @@ const ClipEditor = props => {
 								))}
 								{Object.keys(clipList).map((clip,index)=>(
 									<div className={`flex`}>
-										<div className={`handle`} style={active===clip?{backgroundColor:`#002e5d`,color:`#fff`}:{backgroundColor:`#fff`,color:`#000`}}>
+										<div
+											className={`handle`}
+											style={active === clip ?
+											{backgroundColor:`#002e5d`, color:`#fff`}
+											:
+											{backgroundColor:`#fff`, color:`#000`}}
+										>
 											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
 										<ClipLayer
@@ -402,17 +417,23 @@ const ClipEditor = props => {
 						</section>
 						<div className='zoom-controls'>
 							<div className='zoom-factor'>
-								<img src={zoomOut} style={{ width: `20px` }}/>
+								<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 								<Rnd
 									className={`zoom-indicator`}
 									bounds={`parent`}
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
-									onMouseEnter={e => handleShowTip(`te-zoom`, {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
+									onMouseEnter={e => handleShowTip(`te-zoom`,
+										{
+											x: e.target.getBoundingClientRect().x,
+											y: e.target.getBoundingClientRect().y,
+											width: e.currentTarget.offsetWidth
+										})
+									}
 									onMouseLeave={e => toggleTip()}
 								></Rnd>
-								<img src={zoomIn} style={{ float: `right`, width: `20px`}}/>
+								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 							</div>
 							<div className='zoom-scroll'>
 								<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
@@ -467,21 +488,33 @@ const ClipEditor = props => {
 								<tbody>
 									{
 										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-											<div className={`singleClip ${i === clipIndex ? `clipActive`:``}`}>
+											<div className={`singleClip ${i === clipIndex ? `clipActive` : ``}`}>
 												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
 													<td>
 														<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
 															onChange={(e) => setStartTime(e.target.value, `input`,item)}
 															onBlur={(e) => setStartTime(e.target.value, `onBlur`,item)}
-															onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x-5, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+															onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+																{
+																	x: e.target.getBoundingClientRect().x - 5,
+																	y: e.target.getBoundingClientRect().y + 5,
+																	width: e.currentTarget.offsetWidth + 20,
+																})
+															}
 															onMouseLeave={e => toggleTip()}
 														/>
 													</td>
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
 														onChange={(e) => setEndTime(e.target.value, `input`,item)}
 														onBlur={(e) => setEndTime(e.target.value, `onBlur`,item)}
-														onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`, {x: e.target.getBoundingClientRect().x+35, y: e.target.getBoundingClientRect().y + 5, width: e.currentTarget.offsetWidth+20})}
+														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+															{
+																x: e.target.getBoundingClientRect().x + 35,
+																y: e.target.getBoundingClientRect().y + 5,
+																width: e.currentTarget.offsetWidth + 20,
+															})
+														}
 														onMouseLeave={e => toggleTip()}
 													/>
 													</td>
@@ -500,7 +533,12 @@ const ClipEditor = props => {
 				</SideEditor>
 			</DndProvider>
 			<>
-				<AnnotationMessage style={{ visibility: `${annotationsSaved ? `visible` : `hidden`}`, opacity: `${annotationsSaved ? `1` : `0`}` }}>
+				<AnnotationMessage style={
+					{
+						visibility: `${annotationsSaved ? `visible` : `hidden`}`,
+						opacity: `${annotationsSaved ? `1` : `0`}`
+					}
+				}>
 					<h2>Clip saved successfully</h2>
 				</AnnotationMessage>
 				<Prompt

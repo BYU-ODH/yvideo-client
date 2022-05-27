@@ -25,16 +25,16 @@ class Overlay extends PureComponent {
 			<Wrapper visible={this.state.visible} out={!this.state.visible}>
 				<div>
 					<div>
-						<h3>What is YVIDEO?</h3>
-						<p>Y-Video is a web-based system for streaming video and audio content especially as it applies to learning a foreign language. It houses a collection of media all with the express purpose of helping you learn languages.</p>
+						<h3>What is Y-video?</h3>
+						<p>Y-video is a web-app for streaming video and audio content for courses you are enrolled in at BYU. It has several features especially helpful for watching films in a foreign language.</p>
 					</div>
 					<div>
 						<h3>Text Helps</h3>
-						<p>Additional aids are available to be used in conjunction with the media, such as captions and annotations. A key feature of the site enables learners to directly interact with subtitle tracks to quickly access translations for foreign words and phrases and view relevant annotations.</p>
+						<p>When set up by the instructor, additional aids are available, such as captions and annotations. A key feature of the site enables learners to directly interact with subtitle tracks to quickly skip to specific phrases. For some languages, automatic translations are also available.</p>
 					</div>
 					<div>
 						<h3>For School</h3>
-						<p>Teachers or course designers are able to aggregate media into a single location and set up specific conditions in order to optimize the learning experience. Statistics and analytics are available to improve the learning experience.</p>
+						<p>Teachers or course designers are able to aggregate media into a single location and use a variety of tools to optimize the learning experience. We aim to be compliant with the Library of Congress' interpretations of Fair Use, so instructors can share media with their students with confidence.</p>
 					</div>
 					<button onClick={this.closeModal}>close</button>
 				</div>

@@ -27,7 +27,7 @@ export default class DeleteConfirm extends PureComponent {
 					<ConfirmDeleteBox>
 						<ConfirmBox>
 							<div>
-								<Logo></Logo><p>Delete {type}?</p>
+								<Logo /><p>Delete {type}?</p>
 							</div>
 							<p>Are you sure you want to delete '{title}'?<br/>Once deleted it cannot be recovered.</p>
 							<div>

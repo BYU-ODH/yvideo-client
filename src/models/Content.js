@@ -20,7 +20,7 @@ export default class Content {
 	resource = {
 		keywords: [],
 	}
-	fileId = ''
+	fileId = ``
 
 	settings = {
 		aspectRatio:`1.77`,
@@ -44,17 +44,27 @@ export default class Content {
 			this.thumbnail = obj[`thumbnail`]
 			this.description = obj[`description`]
 			this.resourceId = obj[`resource-id`]
-			this.resource.keywords = obj[`tags`] ? obj[`tags`].split(`; `) : ``
+			this.resource.keywords = obj[`tags`] ?
+				obj[`tags`].split(`; `)
+				: ``
+
 			this.name = obj[`title`]
 			this.published = obj[`published`]
-			this.clips = obj[`clips`] ? obj[`clips`] : ``
-			this.fileId = obj['file-id']
+			this.clips = obj[`clips`] ?
+				obj[`clips`]
+				: ``
+
+			this.fileId = obj[`file-id`]
 
 			this.settings = {
 				allowDefinitions: obj[`allow-definitions`],
-				annotationDocument: obj[`annotations`] ? this.stringToArray(obj[`annotations`]) : ``,
+				annotationDocument: obj[`annotations`] ?
+					this.stringToArray(obj[`annotations`])
+					: ``,
 				showCaptions: obj[`allow-captions`],
-				targetLanguage: obj[`file-version`] !== `` ?  (obj[`file-version`]) : ('English'),
+				targetLanguage: obj[`file-version`] !== `` ?
+					obj[`file-version`]
+					: `English`,
 				allowNote: obj[`allow-notes`],
 			}
 
@@ -62,17 +72,20 @@ export default class Content {
 
 	}
 
-	stringToArray(string){
-		const array = []
+	stringToArray(inputString){
+		// TODO: Once everything goes through this, then we can get rid of this code. Mainly the if block.
+		if (inputString.match(/};\s+/)){
+			const array = []
+			const temp = inputString.split(`; `)
 
-		const temp = string.split(`; `)
-
-		temp.forEach(element => {
-			if(element !== ``)
-				array.push(JSON.parse(element))
-
-		})
-
-		return array
+			temp.forEach(element => {
+				if(element !== ``)
+					array.push(JSON.parse(element))
+			})
+			return array
+		} else {
+			const array = JSON.parse(inputString)
+			return array
+		}
 	}
 }

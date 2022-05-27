@@ -1,4 +1,3 @@
+const userName = `hall31`
 
-const userName = "faline"
-
-export default userName;
+export default userName

@@ -28,6 +28,7 @@ const SubtitlesLayer = props => {
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
@@ -37,9 +38,11 @@ const SubtitlesLayer = props => {
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
-
+	// This object is to overwrite the css properties of the right and left side of the Rnd
+	const resizeSpace = {right: {borderRight: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
+		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
 		const beginTimePercentage = d.x /layerWidth*100*videoLength/100
@@ -78,6 +81,7 @@ const SubtitlesLayer = props => {
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
+		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
 		const difference = delta.width/layerWidth*100*videoLength/100
@@ -131,13 +135,15 @@ const SubtitlesLayer = props => {
 		return (
 			<Rnd
 				className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`}
+
 				id={`event-${index}`}
 				size={{width: `${(event.end - event.start)/videoLength * layerWidth}px`, height: `46px`}}
 				position={{ x: event.start/videoLength*layerWidth, y: 0}}
+				resizeHandleStyles={resizeSpace}
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
-				onDrag={(e, d) => handleDrag(d, event, index)}
+				onDragStop={(e, d) => handleDrag(d, event, index)}
 				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}

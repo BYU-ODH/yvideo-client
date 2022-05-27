@@ -68,11 +68,11 @@ describe(`file service test`, () => {
 
 	it(`fileError`, () => {
 
-		console.error = jest.fn()
+		console.error = jest.fn() // eslint-disable-line no-console
 		const result = store.dispatch(fileServiceConstructor.actions.fileError(`test error message`))
 		expect(result.type).toBe(`FILE_ERROR`)
 
-		expect(console.error).toBeCalled()
+		expect(console.error).toBeCalled() // eslint-disable-line no-console
 		expect(result.payload.error).toBe(`test error message`)
 	})
 

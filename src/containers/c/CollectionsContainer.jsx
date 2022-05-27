@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { collectionService, interfaceService, contentService } from 'services'
+import { collectionService, interfaceService, contentService, authService } from 'services'
 
 import { Collections } from 'components'
 
@@ -14,6 +14,8 @@ const CollectionsContainer = props => {
 
 	const {
 		user,
+		hasCollectionPermissions,
+		checkHasCollectionPermissions,
 		displayBlocks,
 		content,
 		setContent,
@@ -37,6 +39,7 @@ const CollectionsContainer = props => {
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
+		checkHasCollectionPermissions(user.username)
 
 		// determine mobiie size for different layout
 		if(window.innerWidth < 1000) setIsMobile(true)
@@ -46,6 +49,7 @@ const CollectionsContainer = props => {
 			setHeaderBorder(true)
 			toggleTip(null)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setContent, setHeaderBorder])
 
 	const handleShowHelp = () => {
@@ -111,6 +115,7 @@ const CollectionsContainer = props => {
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
 		isMobile,
+		hasCollectionPermissions,
 		isContentTab,
 	}
 
@@ -131,12 +136,14 @@ const CollectionsContainer = props => {
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
 	user: authStore.user,
+	hasCollectionPermissions: authStore.hasCollectionPermissions,
 	displayBlocks: interfaceStore.displayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,
 })
 
 const mapDispatchToProps = {
+	checkHasCollectionPermissions: authService.checkHasCollectionPermissions,
 	getCollections: collectionService.getCollections,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,

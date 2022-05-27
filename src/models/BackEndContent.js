@@ -9,7 +9,7 @@ export default class BackEndContent {
 		"tags": `string`,
 		"thumbnail": `string`,
 		"file-version": `string`,
-		"file-id": 'string',
+		"file-id": `string`,
 		"collection-id": `string`,
 		"views": 0,
 		"annotations": `string`,
@@ -17,7 +17,7 @@ export default class BackEndContent {
 		"allow-notes": true,
 		"description": `string`,
 		"published": true,
-		"clips": ''
+		"clips": ``,
 	}
 
 	constructor(obj){
@@ -33,7 +33,7 @@ export default class BackEndContent {
 			this.backEndData[`resource-id`] = obj.resourceId
 			this.backEndData[`title`] = obj.name
 			this.backEndData[`published`] = obj.published
-			this.backEndData['clips'] = obj.clips
+			this.backEndData[`clips`] = obj.clips
 
 			this.backEndData[`allow-definitions`] = obj.settings.allowDefinitions
 			this.backEndData[`allow-captions`] = obj.settings.showCaptions
@@ -43,21 +43,25 @@ export default class BackEndContent {
 			this.backEndData[`file-version`] = obj.settings.targetLanguage
 			this.backEndData[`file-id`] = obj.fileId
 
-			this.backEndData[`tags`] = obj.resource.keywords ? obj.resource.keywords.join(`; `) : ``
-			this.backEndData[`words`] = obj.words ? obj.words.join(`; `) : ``
+			this.backEndData[`tags`] =
+				obj.resource.keywords ?
+					obj.resource.keywords.join(`; `)
+					: ``
+
+			this.backEndData[`words`] =
+				obj.words ?
+					obj.words.join(`; `)
+					: ``
+
 		}
 
 	}
 
 	arrayToString(array){
-		let str = ``
 
 		if(!array) return ``
-		array.forEach(element => {
-			str += `${JSON.stringify(element)}; `
-		})
 
-		return str
+		return JSON.stringify(array)
 	}
 
 }
