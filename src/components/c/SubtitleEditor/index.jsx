@@ -58,6 +58,8 @@ const SubtitleEditor = props => {
 	const [deleteTitle, setDeleteTitle] = useState(``)
 	const [allowEvents, setAllowEvents] = useState(true)
 	const [scrollSub,setScrollSub] = useState(null)
+	const [eventSeek, setEventSeek] = useState(false)
+	const [eventPosition, setEventPosition] = useState(0)
 	// refs
 	const scrollRef = useRef()
 
@@ -245,7 +247,7 @@ const SubtitleEditor = props => {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
-			} else {
+			} else if (side === `end`) {
 				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					sub.end = convertToSeconds(sub.end, videoLength)
 				else {
@@ -640,7 +642,7 @@ const SubtitleEditor = props => {
 	const handleSubProgress = (currentTime) => {
 		let sub
 		if (subtitles){
-			sub = subtitles[subLayerToEdit].content.findIndex((event)=> currentTime > event.start && currentTime <event.end)
+			sub = subtitles[subLayerToEdit].content.findIndex((event) => currentTime > event.start && currentTime < event.end)
 			if (sub !== -1){
 				if (scrollSub !== sub){
 					setScrollSub(sub)
@@ -652,6 +654,11 @@ const SubtitleEditor = props => {
 			}
 		}
 	}
+
+	const handleEventPosition = (position) => {
+		setEventPosition(position)
+	}
+
 	return (
 		<Style>
 			<span style={{ zIndex: 0 }}>
@@ -670,6 +677,9 @@ const SubtitleEditor = props => {
 					editorType={`subtitle`}
 					handleSubProgress = {handleSubProgress}
 					aspectRatio={aspectRatio}
+					eventSeek={eventSeek}
+					setEventSeek={setEventSeek}
+					eventPosition={eventPosition}
 				>
 				</VideoContainer>
 				<SubtitlesModal
@@ -737,6 +747,8 @@ const SubtitleEditor = props => {
 										updateSubs={updateSubs}
 										closeEditor={closeSideEditor}
 										displayLayer={subLayerToEdit}
+										handleEventPosition={handleEventPosition}
+										setEventSeek={setEventSeek}
 									/>
 								</div>
 							))
@@ -755,6 +767,8 @@ const SubtitleEditor = props => {
 									updateSubs={updateSubs}
 									closeEditor={closeSideEditor}
 									displayLayer={subLayerToEdit}
+									handleEventPosition={handleEventPosition}
+									setEventSeek={setEventSeek}
 								/>
 
 							}

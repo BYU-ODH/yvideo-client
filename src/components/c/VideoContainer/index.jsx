@@ -28,6 +28,9 @@ const VideoContainer = props => {
 		editorType,
 		aspectRatio,
 		handleSubProgress,
+		eventSeek,
+		setEventSeek,
+		eventPosition,
 	} = props
 
 	const ref = useRef(null)
@@ -248,7 +251,6 @@ const VideoContainer = props => {
 		},
 		handleBlankClick : (height, width, x, y) => {
 			if(editorType !== `video`) return
-			// console.log(x,y)
 			const newX = x-playerPadding[0]
 			const newY = y-playerPadding[1]
 			let currentTime = ref.current.getCurrentTime()
@@ -387,6 +389,11 @@ const VideoContainer = props => {
 				handleHotKeys(e)
 			}
 		}
+		// Allowing the seeker bar to go straight to the event that is clicked, but only if eventSeek === true
+		if (eventSeek === true) {
+			video.handleSeek(null, eventPosition)
+			setEventSeek(false)
+		}
 
 		if(events) {
 			events.forEach(event => {
@@ -404,7 +411,7 @@ const VideoContainer = props => {
 				window.onkeyup = null
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [duration])
+	}, [duration, eventPosition])
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
