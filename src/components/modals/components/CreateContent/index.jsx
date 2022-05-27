@@ -96,7 +96,11 @@ export default class CreateContent extends PureComponent {
 						</label>
 						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add tag...'/>
 						<div className='keywords-list'>
-							{resource.keywords.length < 1 ? (<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>) : null}
+							{resource.keywords.length < 1 ?
+								(<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>)
+								:
+								null
+							}
 							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword className='url-content-remove' src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
 						</div>
 						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
@@ -129,17 +133,17 @@ export default class CreateContent extends PureComponent {
 							<SearchIcon />
 							<input className='resource-search-title' type='search' name='searchInput' placeholder={`Search Resource`} autoComplete='off' value={searchQuery} onChange={handleSearchTextChange} />
 						</Search>
-						<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
+						<TableContainer
+							className='table-container'
+							height={Object.keys(resourceContent).length}
+							style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
 							{
 								resourceContent && hideResources !== true &&
-							Object.keys(resourceContent).map(index =>
-
-								<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
-									<label>{resourceContent[index].resourceName}</label>
-								</li>
-
-								,
-							)
+									Object.keys(resourceContent).map(index =>
+									<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
+										<label>{resourceContent[index].resourceName}</label>
+									</li>
+									)
 							}
 						</TableContainer>
 						<br/>

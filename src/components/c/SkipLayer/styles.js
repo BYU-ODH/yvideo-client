@@ -22,7 +22,11 @@ export const Style = styled.div`
 	}
 
 	& .events {
-		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : `calc(100%)`};
+		width: ${props => props.layerWidth !== 0 ?
+			`${props.layerWidth}px`
+			:
+			`calc(100%)`
+		};
 		display: flex;
 		height: 30px;
 		position: absolute;

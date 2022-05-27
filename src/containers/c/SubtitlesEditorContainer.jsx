@@ -45,7 +45,7 @@ const SubtitlesEditorContainer = props => {
 
 	const getAllSubtitles = async() => {
 		const testsubs = await getSubtitles(id)
-		const returnThis = testsubs !== undefined?testsubs:[]
+		const returnThis = testsubs !== undefined ? testsubs : []
 		return returnThis
 	}
 

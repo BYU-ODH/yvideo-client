@@ -40,6 +40,7 @@ export const Header = styled.div`
 
 	& > p {
 		flex: 2;
+		text-align: center;
 		color: #a4a4a4;
 	}
 

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
-import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
+import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
@@ -95,7 +95,7 @@ const VideoContainer = props => {
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 				const elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
 
-				if(elementRightSide >= window.innerWidth * .6)
+				if(elementRightSide >= window.innerWidth)
 					handleScroll(1 / duration, false)
 
 			}
@@ -125,7 +125,8 @@ const VideoContainer = props => {
 
 				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
 					if(values.allEvents[y].end >= playedSeconds){
@@ -136,6 +137,11 @@ const VideoContainer = props => {
 				case `Pause`:
 					events[index].active = false
 					video.handlePause()
+
+					if(events[index].message){
+						pauseMessage.style.visibility = `visible`
+						pauseMessage.innerHTML = events[index].message + pauseMessageButton
+					}
 					break
 				case `Skip`:
 					events[index].active = false
@@ -214,6 +220,7 @@ const VideoContainer = props => {
 		handleShowSubtitle: (value) => {
 			setSubtitleText(value)
 		},
+
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
@@ -342,12 +349,12 @@ const VideoContainer = props => {
 			break
 		case `Space`:
 			setPlaying(playing)
-			if (playing === true) {
+			if (playing === true)
 				video.handlePause()
-			}
-			if (playing === false) {
+
+			if (playing === false)
 				video.handlePlay()
-			}
+
 			break
 
 		default:
@@ -404,11 +411,11 @@ const VideoContainer = props => {
 		const wraplisten = new ResizeObserver((entry)=>{
 			video.handleAspectRatio()
 		})
-		if(wrap) {
+		if(wrap)
 			wraplisten.observe(wrap)
-		}
+
 		return function cleanup(){
-				window.onkeyup = null
+			window.onkeyup = null
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, eventPosition])
@@ -417,12 +424,15 @@ const VideoContainer = props => {
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
 				<Blank
-				className='blank'
-				id='blank'
-				blank={blank}
-				onContextMenu={e => e.preventDefault()}
-				onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY): ``}
-				ref={videoRef}
+					className='blank'
+					id='blank'
+					blank={blank}
+					onContextMenu={e => e.preventDefault()}
+					onClick={ (e) => activeCensorPosition === -1 ?
+						video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
+						: ``
+					}
+					ref={videoRef}
 				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
@@ -431,8 +441,8 @@ const VideoContainer = props => {
 							handleUpdateCensorPosition = {video.handleUpdateCensorPosition}
 							handleUpdateCensorResize = {video.handleUpdateCensorResize}
 							setCensorEdit = {setActiveCensorPosition}
-							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth: 0}
-							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight: 0}
+							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth : 0}
+							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
 							seekTo = {video.handleSeek}
 						/>
 					):``}
@@ -443,6 +453,9 @@ const VideoContainer = props => {
 					</div>
 					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 					</div>
+					<PauseMessage id='pauseMessage'>
+						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
+					</PauseMessage>
 				</Blank>
 			</div>
 
@@ -485,7 +498,10 @@ const VideoContainer = props => {
 						<span className='time'>{formattedElapsed}</span>
 
 						<button className='mute' onClick={video.toggleMute}>
-							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
+							<img
+								src={muted ? unmute : mute}
+								alt={muted ? `unmute` : `mute`}
+							/>
 						</button>
 
 						<div id='time-bar' onMouseLeave={(e) => {
