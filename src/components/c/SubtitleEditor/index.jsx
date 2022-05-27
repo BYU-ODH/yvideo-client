@@ -247,7 +247,7 @@ const SubtitleEditor = props => {
 				}
 			}
 			else if (side === `end`) {
-				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					sub.end = convertToSeconds(sub.end, videoLength)
 					document.getElementById(`subEnd${index}`).style.border=null
 				} else {
