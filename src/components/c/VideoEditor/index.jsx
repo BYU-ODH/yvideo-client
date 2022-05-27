@@ -94,6 +94,8 @@ const VideoEditor = props => {
 	const [displayLayer, setDisplayLayer] = useState(0)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
+	const [eventSeek, setEventSeek] = useState(false)
+	const [eventPosition, setEventPosition] = useState(0)
 
 	// eslint-disable-next-line no-unused-vars
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
@@ -480,6 +482,10 @@ const VideoEditor = props => {
 		return allEvents[eventToEdit] !== undefined ? allEvents[eventToEdit] : currentEvent
 	}
 
+	const handleEventPosition = (position) => {
+		setEventPosition(position)
+	}
+
 	return (
 		<Style id='video-editor'>
 			<span style={{ zIndex: 0 }}>
@@ -497,6 +503,9 @@ const VideoEditor = props => {
 					setActiveCensorPosition = {setActiveCensorPosition}
 					editorType={`video`}
 					aspectRatio={aspectRatio}
+					eventSeek={eventSeek}
+					setEventSeek={setEventSeek}
+					eventPosition={eventPosition}
 				></VideoContainer>
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -521,6 +530,8 @@ const VideoEditor = props => {
 										// onDrop={(item) => eventDropHandler(item,index)}
 										updateEvents={updateEvents}
 										displayLayer={displayLayer}
+										handleEventPosition={handleEventPosition}
+										setEventSeek={setEventSeek}
 									/>
 								</div>
 							))}
