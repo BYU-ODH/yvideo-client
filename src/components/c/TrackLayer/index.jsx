@@ -31,7 +31,7 @@ const TrackLayer = props => {
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
 
-		if(events && layerIndex === 3){
+		if(events && layerIndex === 4){
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
@@ -192,7 +192,7 @@ const TrackLayer = props => {
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
-				{layerIndex !== 3 &&
+				{layerIndex !== 4 &&
 					<div ref={layerRef} className='eventsbox'>
 						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
 							{
@@ -205,7 +205,7 @@ const TrackLayer = props => {
 						</div>
 					</div>
 				} {/* new layer function that will provide maximum layer overlap */ }
-				{layerIndex === 3 && layerOverlap !== null &&
+				{layerIndex === 4 && layerOverlap !== null &&
 					<div ref={layerRef} className='eventsbox'>
 						<div
 							className={`layer-${layerIndex} ${layerOverlap.length > 0 ? `half-layer` : ``} events ${displayLayer === layerIndex ? `active-layer` : ``}`}
