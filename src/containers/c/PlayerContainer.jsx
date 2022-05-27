@@ -82,9 +82,9 @@ const PlayerContainer = props => {
 	const ref = player => {
 		setPlayer(player)
 	}
+
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
-
 		setPlaybackRate(1)
 		setShowTranscript(false)
 		setSubtitleText(``)
@@ -231,7 +231,6 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlaybackRateChange = rate => {
-
 		setPlaybackRate(parseFloat(rate))
 	}
 
@@ -440,74 +439,74 @@ const PlayerContainer = props => {
 		}
 	}
 
-	const viewstate = {
-		showTranscript,
-		duration,
-		fullscreen,
-		hovering,
-		muted,
-		playbackRate,
-		playing,
-		progress,
-		playTime,
-		ref,
-		url,
-		volume,
-		blank,
-		videoComment,
-		commentPosition,
-		toggleTranscript,
-		content,
-		isCaption,
-		subtitleText,
-		subtitleTextIndex,
-		displaySubtitles,
-		subtitles,
-		indexToDisplay,
-		isAdmin,
-		isProf,
-		isMobile,
-		censorPosition,
-		censorActive,
-		clipTime,
-		isLandscape,
-		hasPausedClip,
-		events,
-	}
+		const viewstate = {
+			showTranscript,
+			duration,
+			fullscreen,
+			hovering,
+			muted,
+			playbackRate,
+			playing,
+			progress,
+			playTime,
+			ref,
+			url,
+			volume,
+			blank,
+			videoComment,
+			commentPosition,
+			toggleTranscript,
+			content,
+			isCaption,
+			subtitleText,
+			subtitleTextIndex,
+			displaySubtitles,
+			subtitles,
+			indexToDisplay,
+			isAdmin,
+			isProf,
+			isMobile,
+			censorPosition,
+			censorActive,
+			clipTime,
+			isLandscape,
+			hasPausedClip,
+			events,
+		}
 
-	const handlers = {
-		handleDuration,
-		handleMouseOut,
-		handleMouseOver,
-		handlePause,
-		handlePlay,
-		handleStart,
-		handlePlaybackRateChange,
-		handleProgress,
-		handleSeekChange,
-		handleToggleFullscreen,
-		handleMuted,
-		handleUnmuted,
-		handleVolumeChange,
-		handleShowComment,
-		handleBlank,
-		handleShowSubtitle,
-		handleToggleTranscript,
-		setIsCaption,
-		handleChangeSubtitle,
-		setFullscreen,
-		setShowTranscript,
-		handleShowHelp,
-		toggleTip,
-		handleShowTip,
-		setCensorPosition,
-		setCensorActive,
-		handlePlayPause,
-		setHasPausedClip,
-		handleAspectRatio,
-	}
+		const handlers = {
+			handleDuration,
+			handleMouseOut,
+			handleMouseOver,
+			handlePause,
+			handlePlay,
+			handleStart,
+			handlePlaybackRateChange,
+			handleProgress,
+			handleSeekChange,
+			handleToggleFullscreen,
+			handleMuted,
+			handleUnmuted,
+			handleVolumeChange,
+			handleShowComment,
+			handleBlank,
+			handleShowSubtitle,
+			handleToggleTranscript,
+			setIsCaption,
+			handleChangeSubtitle,
+			setFullscreen,
+			setShowTranscript,
+			handleShowHelp,
+			toggleTip,
+			handleShowTip,
+			setCensorPosition,
+			setCensorActive,
+			handlePlayPause,
+			setHasPausedClip,
+			handleAspectRatio,
+		}
 
-	return <Player viewstate={viewstate} handlers={handlers} />
+		return <Player viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStore, interfaceStore }) => ({
