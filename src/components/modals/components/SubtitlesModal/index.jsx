@@ -9,6 +9,7 @@ export default class SubtitlesModal extends Component {
 		const {
 			mode,
 			deleteTitle,
+			isReady,
 		} = this.props.viewstate
 
 		const {
@@ -16,8 +17,8 @@ export default class SubtitlesModal extends Component {
 			handleAddLayerFromFile,
 			handleDeleteLayer,
 			toggleModal,
+			setIsReady,
 		} = this.props.handlers
-
 
 		const createLayer = {
 			fromScratch: () => {
@@ -26,11 +27,12 @@ export default class SubtitlesModal extends Component {
 			fromFile: () => {
 				const filePath = document.getElementById(`subFileInput`).files[0]
 				handleAddLayerFromFile(filePath)
+				setIsReady(false)
 			},
 		}
 		return (
-				<Style>
-					{ mode === `create` &&
+			<Style>
+				{ mode === `create` &&
 						<div className={`inner`}>
 							<div>
 								<div className={`header`}>
@@ -51,8 +53,8 @@ export default class SubtitlesModal extends Component {
 								</table>
 							</div>
 						</div>
-					}
-					{ mode === `delete` &&
+				}
+				{ mode === `delete` &&
 						<div className={`delete-div`}>
 							<h2>Are you sure you want to delete the subtitle track: <u>{deleteTitle}</u>?</h2>
 							<div className={`delete-buttons`}>
@@ -60,8 +62,8 @@ export default class SubtitlesModal extends Component {
 								<Button className='url-content-delete' type='submit' onClick={handleDeleteLayer}>Delete</Button>
 							</div>
 						</div>
-					}
-				</Style>
+				}
+			</Style>
 		)
 	}
 }

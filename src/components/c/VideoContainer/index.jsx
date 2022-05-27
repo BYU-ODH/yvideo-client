@@ -17,6 +17,7 @@ const VideoContainer = props => {
 		url,
 		getDuration,
 		handleLastClick,
+		isReady, setIsReady,
 		getVideoTime,
 		events,
 		updateEvents,
@@ -37,7 +38,6 @@ const VideoContainer = props => {
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
-	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
@@ -47,6 +47,7 @@ const VideoContainer = props => {
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [playerPadding,setPlayerPadding] = useState([0,0])
+	const [isUploading, setIsUploadings] = useState(false)
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -82,6 +83,7 @@ const VideoContainer = props => {
 			setMuted(muted)
 			setPlaybackRate(playbackRate)
 			setIsReady(true)
+			setIsUploadings(true)
 			video.handleAspectRatio()
 		},
 		handleProgress: ({ played, playedSeconds }) => {
@@ -412,7 +414,6 @@ const VideoContainer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration])
-
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
@@ -451,8 +452,11 @@ const VideoContainer = props => {
 					</PauseMessage>
 				</Blank>
 			</div>
-
+			{/* Load the spinner if the paid is loading initially */}
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
+
+			{/* Load the spinner if a file is uploading */}
+			{!isUploading && <div className='loading-spinner'><Spinner/></div> }
 
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}

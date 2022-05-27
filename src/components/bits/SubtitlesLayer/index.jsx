@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -6,7 +6,7 @@ import { Style } from './styles'
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
 const SubtitlesLayer = props => {
-	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer, videoLength} = props
+	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer, videoLength, setIsReady} = props
 	const layerIndex = props.layer
 	const layerRef = useRef(null)
 
@@ -18,6 +18,11 @@ const SubtitlesLayer = props => {
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
+	useEffect(() => {
+		setIsReady(true)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	useLayoutEffect(() => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
@@ -28,6 +33,7 @@ const SubtitlesLayer = props => {
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
