@@ -78,7 +78,6 @@ export class ResourceOverview extends PureComponent {
 										:
 										`Edit`
 									}
-									{editing ? `Save` : `Edit`}
 								</EditButton>
 								{editing &&
 									<>
@@ -117,7 +116,7 @@ export class ResourceOverview extends PureComponent {
 								{user.roles === 0 || user.roles === 1 ?
 									(
 										<div>
-											<h4>Instructors: </h4>{ <> <EditButton className='std-outline-color' onClick={handleInstructors}> {accessCount} registered</EditButton></>}
+											<h4>Instructors: </h4> <> <EditButton className='std-outline-color' onClick={handleInstructors}> {accessCount} registered</EditButton></>
 										</div>
 									) :
 									null
