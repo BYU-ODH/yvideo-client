@@ -50,6 +50,9 @@ const Style = styled.div`
 				font-size: 1.5rem;
 			}
 		}
+		& .closeModal {
+			background-color: #ffffff;
+		}
 	& .modalSectionRightTitle {
 		margin: 10px;
 	}
@@ -60,7 +63,7 @@ const Style = styled.div`
 		display: block;
 	}
 
-	& .create-button {
+	& #create-button {
 		margin: 10px;
 		padding: 5px;
 		border-radius: 1rem;

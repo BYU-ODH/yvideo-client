@@ -26,16 +26,15 @@ const SubtitleEditor = props => {
 		currentContent,
 		subs,
 		aspectRatio,
-
+		showSideEditor,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp, openSubModal } = props.handlers
+	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor } = props.handlers
 	const layers = [{0: `Skip`}]
 
 	const [isLoading,setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
-	const [showSideEditor, setSideEditor] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 	// eslint-disable-next-line no-unused-vars
@@ -56,7 +55,7 @@ const SubtitleEditor = props => {
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(true)
-	const [scrollSub,setScrollSub] = useState(null)
+	const [scrollSub, setScrollSub] = useState(null)
 	// refs
 	const scrollRef = useRef()
 
@@ -238,16 +237,18 @@ const SubtitleEditor = props => {
 		const t1_1 = performance.now() // eslint-disable-line no-unused-vars
 		try {
 			if(side === `beg`) {
-				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.start = convertToSeconds(sub.start, videoLength)
-				else {
+					document.getElementById(`subStart${index}`).style.border=null
+				}else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
 			} else {
-				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.end = convertToSeconds(sub.end, videoLength)
-				else {
+					document.getElementById(`subEnd${index}`).style.border=null
+				} else {
 					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
@@ -311,13 +312,16 @@ const SubtitleEditor = props => {
 		}
 		const t3_1 = performance.now() // eslint-disable-line no-unused-vars
 
-		if(needCheck){
-			const updateSub = {sub, side} // eslint-disable-line no-unused-vars
+		if(needCheck)
+			setDisableSave(false)
 			// checkSubError(tempSubs, `update`, index, updateSub)
-		} else
+		else
 			setDisableSave(true)
 		currentSubs[`content`][index] = sub
 		tempSubs[subLayerIndex] = currentSubs
+
+		setSubs(tempSubs)
+		setAllSubs(tempSubs)
 		setSubChanges(subChanges+1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)

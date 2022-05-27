@@ -1,23 +1,25 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
+import { Provider } from 'react-redux'
 import Container from '../../../../components/modals/containers/SubtitlesModalContainer'
 import Style from '../../../../components/modals/components/SubtitlesModal/styles'
 import { BrowserRouter } from 'react-router-dom'
 import sinon from 'sinon'
+import * as testutil from '../../../testutil/testutil'
 
 const props = {
 	mode: `create`,
-	visible: false,
 	handleAddSubLayer: jest.fn(),
-	setModalVisible: jest.fn(),
 }
 
 describe(`Subtitles Modal test`, () => {
 	it(`mount`, () => {
 		const wrapper = mount(
-			<BrowserRouter>
-				<Container {...props} />
-			</BrowserRouter>,
+			<Provider store={testutil.emptyStore}>
+				<BrowserRouter>
+					<Container {...props} />
+				</BrowserRouter>
+			</Provider>,
 		)
 		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(true)
 		expect(wrapper.contains(<p>Start from scratch</p>)).toEqual(true)
@@ -58,16 +60,22 @@ describe(`Subtitles Modal test`, () => {
 		const mElement = { files: `file` }
 		const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
 		const handleClick = sinon.spy()
-		const wrapper = shallow(<Container handleAddSubLayerFromFile={handleClick} {...props}/>,{ attachTo: file })
+		const wrapper = mount(
+			<Provider store={testutil.emptyStore}>
+				<Container handleAddSubLayerFromFile={handleClick} {...props} />
+			</Provider>
+		)
 		wrapper.find(`.modalButton`).at(1).prop(`onClick`)()
 		expect(handleClick.calledOnce).toBe(true)
 	})
 
 	it(`simulate onChange files`, () => {
 		const wrapper = mount(
-			<BrowserRouter>
-				<Container {...props} />
-			</BrowserRouter>,
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<Container {...props} />
+				</BrowserRouter>
+			</Provider>
 		)
 		wrapper.find({"id" : `subFileInput`}).simulate(`change`, { target: { files: `path` } })
 		const checked = wrapper.find(`[files="path"]`).first()
@@ -75,14 +83,13 @@ describe(`Subtitles Modal test`, () => {
 	})
 
 	it(`simulate onClick`, ()=> {
-		const wrapper = shallow(
+		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container {...props}/>
 			</Provider>
 		)
-		wrapper.find(`.setModalVisible`).simulate(`click`)
 		wrapper.find(`.closeModal`).simulate(`click`)
-		wrapper.find(`.modalSection .modalButton`).simulate(`click`)
+		wrapper.find(`#modalSection`).simulate(`click`)
 	})
 
 })

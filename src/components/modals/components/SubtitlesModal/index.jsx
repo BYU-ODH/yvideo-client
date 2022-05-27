@@ -42,12 +42,12 @@ export default class SubtitlesModal extends Component {
 								<table>
 									<tr>
 										<td className={`modalSection`}>
-											<div className={`modalSection modalButton`} onClick={ () => createLayer.fromScratch() }><p>Start from scratch</p></div>
+											<div id={`modalSection`} className={`modalButton`} onClick={ () => createLayer.fromScratch() }><p>Start from scratch</p></div>
 										</td>
 										<td className={`modalSectionRight`}>
 											<h4 className={`modalSectionRightTitle`} >Import Srt or Vtt File</h4>
 											<input type={`file`} accept={`.srt,.vtt`} id={`subFileInput`}/>
-											<button className={`create-button modalButton`} onClick={ () => createLayer.fromFile() }>Submit</button>
+											<button id ={`create-button`} className={`modalButton`} onClick={ () => createLayer.fromFile() }>Submit</button>
 										</td>
 									</tr>
 								</table>

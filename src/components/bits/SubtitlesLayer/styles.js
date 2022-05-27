@@ -36,7 +36,8 @@ export const Style = styled.div`
 	}
 
 	& .layer-event {
-		border: 1px solid var(--light-blue) !important;
+		border-top: 1px solid var(--light-blue) !important;
+		border-bottom: 1px solid var(--light-blue) !important;
 		border-radius: 3px;
 		height: 46px !important;
 		padding: 1px;
@@ -59,12 +60,12 @@ export const Style = styled.div`
 		&	div{
 			text-align: right;
 			margin: 0px;
-			padding: 0px 3px 0px 3px;
+			padding: 0px 1px 0px 1px;
 		}
 	}
 
 	& .active-event {
-		border: ${props => props.showError ? `2px solid red !important` : `1px solid var(--light-blue) !important`};
+		border: ${props => props.showError ? `2px solid red !important` : ``};
 		background-color: var(--navy-blue);
 		z-index: 100;
 		& p { color: white !important; };

@@ -39,6 +39,7 @@ const SubtitlesEditorContainer = props => {
 	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
 	const [url, setUrl] = useState(``)
 	const [eventsArray, setEventsArray] = useState([])
+	const [showSideEditor, setSideEditor] = useState(false)
 	const [currentContent, setCurrentContent] = useState({})
 	const [subs,setSubs] = useState([])
 	const [sKey, setKey] = useState(``)
@@ -184,6 +185,7 @@ const SubtitlesEditorContainer = props => {
 		contentError,
 		subtitleError,
 		aspectRatio,
+		showSideEditor,
 	}
 
 	const handlers = {
@@ -191,6 +193,7 @@ const SubtitlesEditorContainer = props => {
 		handleShowTip,
 		handleShowHelp,
 		openSubModal,
+		setSideEditor,
 	}
 
 	return <SubtitleEditor

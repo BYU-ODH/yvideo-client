@@ -34,7 +34,7 @@ const SubtitleEditorSideMenu = props => {
 
 		if(focus)
 			document.getElementById(`focus`).focus()
-			// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [index, event])
 	const editSub = (side, time, value, layer, ind, type) => {
 		const sub = {...event}
@@ -66,13 +66,12 @@ const SubtitleEditorSideMenu = props => {
 		}catch(error){
 			console.log(error) // eslint-disable-line no-console
 		}
-
 		setEvent(sub)
 		updateSubs(ind,sub,layer,side,type)
 	}
 
 	return (
-		<Style>
+		<Style id='subtitleEditorSideMenu'>
 			<div>
 				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
@@ -91,13 +90,13 @@ const SubtitleEditorSideMenu = props => {
 							/>
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive` : ``}`}>
 								<textarea
-									className={`subText`}
+									className='subText'
 									type='text'
 									onClick={ () => changeSubIndex(ind)}
 									value={sub.text}
 									onChange={ (value) => editSub(null, null, value, subLayer, ind)} />
 								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
-									<input 
+									<input
                     id={`subStart${ind}`}
                     className={`subStart sideTabInput`}
                     type='text'
@@ -115,9 +114,9 @@ const SubtitleEditorSideMenu = props => {
 										onMouseLeave={e => toggleTip()}
 
 									/>
-									<input 
-                    id={`subEnd${ind}`} 
-                    className={`subEnd`} 
+									<input
+                    id={`subEnd${ind}`}
+                    className={`subEnd`}
                     type='text'
 										value={`${sub.end ===`` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
                     onClick={ () => changeSubIndex(ind) }
@@ -138,16 +137,16 @@ const SubtitleEditorSideMenu = props => {
 						</div>
 						{
 							ind === subs[subLayer][`content`].length-1 ?
-								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
+								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
 									visibility={ subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave === false ?
-                      `visible` 
+                      `visible`
                       :
                       `hidden`
 									}
 									active={ind === index ? `subActive` : `nonActive`}
 								/>
 								:
-								<Icon className={`iconBottom`} id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`)}
+								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`)}
 									visibility={ subs[subLayer][`content`][ind + 1].start - subs[subLayer][`content`][ind].end !== 0 && disableSave === false ?
                       `visible`
                       :
