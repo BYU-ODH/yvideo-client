@@ -83,9 +83,11 @@ export default class Content {
 					array.push(JSON.parse(element))
 			})
 			return array
-		} else {
+		} else if(inputString.match(/\[{/)) {
 			const array = JSON.parse(inputString)
 			return array
-		}
+		}else
+			alert(`Something went wrong, please contact the Y-Video team`)
+
 	}
 }
