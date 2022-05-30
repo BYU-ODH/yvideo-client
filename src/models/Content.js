@@ -83,11 +83,11 @@ export default class Content {
 					array.push(JSON.parse(element))
 			})
 			return array
-		} else if(inputString.match(/\[{/)) {
+		} else if(inputString.match(/^\[.*\]/)) {
 			const array = JSON.parse(inputString)
 			return array
 		}else
-			alert(`Something went wrong, please contact the Y-Video team`)
+			alert(`The following annotations array is invalid. Please send the following string to the Y-Video team: ${inputString}`)
 
 	}
 }
