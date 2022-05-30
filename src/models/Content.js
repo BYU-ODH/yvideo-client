@@ -83,7 +83,7 @@ export default class Content {
 					array.push(JSON.parse(element))
 			})
 			return array
-		} else if(inputString.match(/^\[.*\]/)) {
+		} else if(inputString.match(/^\[.*\]$/)) {
 			const array = JSON.parse(inputString)
 			return array
 		}else
