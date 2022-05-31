@@ -58,6 +58,19 @@ export const Blank = styled.div`
 		z-index: 100;
 		top:0;
 	}
+	& #pauseMessage{
+		& button{
+			font-size: 1.5rem;
+    	background: transparent;
+    	border: none;
+    	outline: none;
+			position: absolute;
+			display: inline-block;
+    	cursor: pointer;
+			top: 90%;
+			left:90%;
+		}
+	}
 `
 export const Comment = styled.div`
 	--x: ${props => props.commentX !== 0 ? `${props.commentX}%` : `0%`};
@@ -100,6 +113,25 @@ export const Subtitles = styled.div`
 		letter-spacing: .7px;
 	}
 `
+export const PauseMessage = styled.div`
+	padding: 1%;
+	width:90% !important;
+	height:50% !important;
+	font-size: 1.5rem;
+	position:absolute;
+	display: block;
+	top: 15%;
+	left: 5%;
+	border-width:1px;
+	border-radius: 1px;
+	border-style: solid;
+	border-color: var(--navy-blue);
+	cursor: pointer;
+	justify-content: center;
+	background-color: rgba(241, 241, 244, 0.79);
+	z-index:10000;
+	visibility: hidden
+`
 
 export const PlayButton = styled.img`
 	display: ${props => props.playing ? `none` : `block`}
@@ -109,10 +141,20 @@ export const PlayButton = styled.img`
 	margin: auto;
 	top: ${props => props.isLandscape ? `20%` : `40%`};
 	cursor: pointer;
-	transition: 3s ease;
+	transition: .5s ease;
 	border-radius: 50%;
 	z-index: 100;
 
+	@media screen and (max-width: 425px){
+		width: 12rem;
+		height: 12rem;
+		top: 30%;
+	}
+	@media screen and (max-width: 320px){
+		width: 10rem;
+		height: 10rem;
+		top: 25%;
+	}
 	& :hover {
   	/* transform: rotate(360deg); */
 	}

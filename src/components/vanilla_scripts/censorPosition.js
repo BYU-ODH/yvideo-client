@@ -39,7 +39,7 @@ const getPos = (events, t) => {
 		return values
 	}
 }
-const Position = (censors, time,duration) => {
+const Position = (censors, time) => {
 	return getPos(censors, time)
 }
 export default Position

@@ -14,7 +14,6 @@ const ManageInstructorsContainer = props => {
 	const {
 		toggleModal,
 		data,
-		search,
 		resource,
 		addAccess,
 		resourceAccess,
@@ -34,16 +33,15 @@ const ManageInstructorsContainer = props => {
 			setCountAccess(resourceAccess.length)
 		}
 
-		if(blockLeave) {
+		if(blockLeave)
 			window.onbeforeunload = () => true
-		}
-		else {
+		else
 			window.onbeforeunload = undefined
-		}
+
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resourceAccess, blockLeave])
 
 	const handleRegister = async (e) =>{
@@ -69,9 +67,9 @@ const ManageInstructorsContainer = props => {
 	}
 
 	const removeInstructor = async(item) => {
-		if(item) {
+		if(item)
 			await removeAccess(resource.id, item)
-		}
+
 		setBlock(true)
 	}
 

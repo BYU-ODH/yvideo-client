@@ -1,12 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
-import Style, {TimeBar, Blank, Subtitles, Spinner } from './styles'
+import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-import Position from 'components/vanilla_scripts/censorPosition'
-
-import {CurrentEvents, CensorChange, CommentChange, HandleSubtitle} from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -29,6 +27,10 @@ const VideoContainer = props => {
 		handleScroll,
 		editorType,
 		aspectRatio,
+		handleSubProgress,
+		eventSeek,
+		setEventSeek,
+		eventPosition,
 	} = props
 
 	const ref = useRef(null)
@@ -37,23 +39,17 @@ const VideoContainer = props => {
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
-	const [played, setPlayed] = useState(0)
+	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
 	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
-	const [videoComment, setVideoComment] = useState(``)
-	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0})
+	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
+	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
-	const [censorActive, SetCensorActive] = useState(false)
-	const [currentZone, setCurrentZone] = useState([0, duration])
-	const [pausedTimes,setPausedTimes] = useState([])
-	// const [aspectRatio, setAspectRatio] = useState([16,9])
 	const [playerPadding,setPlayerPadding] = useState([0,0])
-	// I hate using a global variable here, we'll just have to see if it works
-	let censorData = {}
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -99,7 +95,7 @@ const VideoContainer = props => {
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
 				const elementRightSide = document.getElementById(`layer-time-indicator-line`).getBoundingClientRect().right
 
-				if(elementRightSide >= window.innerWidth * .6)
+				if(elementRightSide >= window.innerWidth)
 					handleScroll(1 / duration, false)
 
 			}
@@ -118,25 +114,34 @@ const VideoContainer = props => {
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()
-
+			if(values.allEvents){
+				if(values.allEvents.filter(e => e.type === `Mute`).length === 0){
+					if (muted)
+						video.handleUnmute()
+				}
+			}
 			for (let y = 0; y < values.allEvents.length; y++){
 				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 
 				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
-
+				const pauseMessage = document.getElementById(`pauseMessage`)
+				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					if(values.allEvents[y].active && values.allEvents[y].end >= playedSeconds){
+					if(values.allEvents[y].end >= playedSeconds){
 						events[index].active = false
 						video.handleMute()
-					} else if(!values.allEvents[y].active && values.allEvents[y].end - .1 <= playedSeconds)
-						video.handleUnmute()
-
+					}
 					break
 				case `Pause`:
 					events[index].active = false
 					video.handlePause()
+
+					if(events[index].message){
+						pauseMessage.style.visibility = `visible`
+						pauseMessage.innerHTML = events[index].message + pauseMessageButton
+					}
 					break
 				case `Skip`:
 					events[index].active = false
@@ -153,13 +158,14 @@ const VideoContainer = props => {
 					event.active = true
 				})
 			}
+			if(typeof handleSubProgress === `function`)
+				handleSubProgress(playedSeconds)
 		},
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
 				getDuration(duration)
 
 			setDuration(duration)
-			setCurrentZone([0, duration])
 		},
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
@@ -214,17 +220,14 @@ const VideoContainer = props => {
 		handleShowSubtitle: (value) => {
 			setSubtitleText(value)
 		},
+
 		// For when returning values of two subtitles
 		handleCensorPosition: (position) => {
 			if(position !== undefined){
-				censorData = position
 				setCensorPosition(
 					position,
 				)
 			}
-		},
-		handleCensorActive: (bool) => {
-			SetCensorActive(bool)
 		},
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
@@ -255,7 +258,6 @@ const VideoContainer = props => {
 		},
 		handleBlankClick : (height, width, x, y) => {
 			if(editorType !== `video`) return
-			// console.log(x,y)
 			const newX = x-playerPadding[0]
 			const newY = y-playerPadding[1]
 			let currentTime = ref.current.getCurrentTime()
@@ -298,6 +300,10 @@ const VideoContainer = props => {
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
 			}
+			const EventEditor = document.getElementById(`EventEditor`)
+			if(EventEditor)
+				EventEditor.style.height = `${blank.offsetHeight}px - 1px`
+
 		},
 	}
 
@@ -326,24 +332,29 @@ const VideoContainer = props => {
 
 	let count = 0 // this is to make sure that event listeners are applied only once
 
-	const handleHotKeys = (e) => {
+	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
-			// console.log(`new time`, playedTime + 1)
 			video.handleSeek(null, playedTime + 1)
 			break
 		case `ArrowLeft`:
-			// console.log(`new time`, playedTime - 1)
 			video.handleSeek(null, playedTime - 1)
 			break
+		case `Period`:
+			video.handleSeek(null, playedTime + .1)
+			break
 		case `Comma`:
-			// console.log(`new time`, playedTime - .1)
 			video.handleSeek(null, playedTime - .1)
 			break
-		case `Period`:
-			// console.log(`new time`, playedTime + .1)
-			video.handleSeek(null, playedTime + .1)
+		case `Space`:
+			setPlaying(playing)
+			if (playing === true)
+				video.handlePause()
+
+			if (playing === false)
+				video.handlePlay()
+
 			break
 
 		default:
@@ -373,7 +384,7 @@ const VideoContainer = props => {
 					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
 					if(e.offsetX > window.innerWidth / 2)
 						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
-					 else
+					else
 						document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
 					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
@@ -381,9 +392,14 @@ const VideoContainer = props => {
 				})
 			}
 			// checking video container and setting event listener for hot keys
-			window.addEventListener(`keyup`, (e) => {
+			window.onkeyup = (e) => {
 				handleHotKeys(e)
-			})
+			}
+		}
+		// Allowing the seeker bar to go straight to the event that is clicked, but only if eventSeek === true
+		if (eventSeek === true) {
+			video.handleSeek(null, eventPosition)
+			setEventSeek(false)
 		}
 
 		if(events) {
@@ -397,16 +413,27 @@ const VideoContainer = props => {
 		})
 		if(wrap)
 			wraplisten.observe(wrap)
+
 		return function cleanup(){
-			window.removeEventListener(`keyup`, (e) => {}, false)
+			window.onkeyup = null
 		}
-	}, [duration])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [duration, eventPosition])
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
-				<Blank className='blank' id='blank' blank={blank} onContextMenu={e => e.preventDefault()} onClick={(e) => activeCensorPosition === -1 ? video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY):``} ref={videoRef}>
-					{/* <Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}> */}
+				<Blank
+					className='blank'
+					id='blank'
+					blank={blank}
+					onContextMenu={e => e.preventDefault()}
+					onClick={ (e) => activeCensorPosition === -1 ?
+						video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
+						: ``
+					}
+					ref={videoRef}
+				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD
 							censorValues = {censorPosition}
@@ -414,8 +441,8 @@ const VideoContainer = props => {
 							handleUpdateCensorPosition = {video.handleUpdateCensorPosition}
 							handleUpdateCensorResize = {video.handleUpdateCensorResize}
 							setCensorEdit = {setActiveCensorPosition}
-							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth: 0}
-							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight: 0}
+							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth : 0}
+							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
 							seekTo = {video.handleSeek}
 						/>
 					):``}
@@ -426,9 +453,11 @@ const VideoContainer = props => {
 					</div>
 					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 					</div>
+					<PauseMessage id='pauseMessage'>
+						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
+					</PauseMessage>
 				</Blank>
 			</div>
-			{/* console.log(editorType) */}
 
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 
@@ -469,7 +498,10 @@ const VideoContainer = props => {
 						<span className='time'>{formattedElapsed}</span>
 
 						<button className='mute' onClick={video.toggleMute}>
-							<img src={muted ? unmute : mute} alt={muted ? `unmute` : `mute`}/>
+							<img
+								src={muted ? unmute : mute}
+								alt={muted ? `unmute` : `mute`}
+							/>
 						</button>
 
 						<div id='time-bar' onMouseLeave={(e) => {

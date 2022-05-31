@@ -65,7 +65,6 @@ export const Button = styled.button`
 		margin-bottom: 2rem;
 		margin-top: 2rem;
 		padding-right: 1rem;
-    outline: none;
     box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
     font-size: 1.5rem;
     border: none;
@@ -112,7 +111,6 @@ export const TableContainer = styled.div`
 	height: 25rem;
 	overflow-y: scroll;
 `
-
 export const Search = styled.form`
 	position: relative;
 	text-align: ${props => props.isMobile ? `center` : ``};
@@ -134,7 +132,6 @@ export const Search = styled.form`
 
 		padding: 0 1.5rem 0 4.5rem;
 
-		outline: none;
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
 	}
 
@@ -144,7 +141,6 @@ export const Search = styled.form`
     color: white;
     background-color: var(--light-blue);
     margin-left: 1rem;
-    outline: none;
     box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
     font-size: 1.5rem;
     border: none;

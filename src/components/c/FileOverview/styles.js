@@ -1,7 +1,6 @@
 import styled, {css} from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
-import uploadIcon from 'assets/upload.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -53,7 +52,7 @@ export const EditButton = styled.button`
   justify-content: center;
 	text-align: center !important;
 	& > span {
-		margin-left: .5rem;
+		margin-right: 0.1rem;
 	}
 `
 
@@ -105,7 +104,7 @@ export const RemoveButton = styled.button`
 	text-align: center !important;
 
 	& > span {
-		margin-left: .5rem;
+		margin-right: .1rem;
 	}
 `
 

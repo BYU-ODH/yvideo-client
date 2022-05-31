@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { Table, StyledLink } from './styles'
+import Style, { Table } from './styles'
 
 import { Link } from 'react-router-dom'
 

@@ -65,7 +65,7 @@ const ManageCollectionContainer = props => {
 				setContent(allContent, true)
 			}
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collection.name, contentCache, collection, professorCollections, isLoading])
 
 	const handleShowTip = (tipName, position) => {
@@ -104,7 +104,7 @@ const ManageCollectionContainer = props => {
 			collectionId: collection.id,
 			props: {
 				isPublic: collection.public,
-			}
+			},
 		})
 
 		setIsEdited(true)
@@ -133,7 +133,9 @@ const ManageCollectionContainer = props => {
 		isEditingCollectionName,
 		collection,
 		collectionName,
-		content: collection.content !== undefined ? collection.content.map(item => contentCache[item.id]) : [],
+		content: collection.content !== undefined ?
+			collection.content.map(item => contentCache[item.id])
+			: [],
 		isContentTab,
 		isLoading,
 	}

@@ -46,7 +46,7 @@ describe(`CollectionPermissionsContainer test`, () => {
 
 	// TODO: need to write this again, since it is changed
 	it(`mount for behavioral test`, () => {
-		const wrapper = mount(
+		const wrapper = mount( // eslint-disable-line no-unused-vars
 			<Provider store={testutil.store} >
 				<BrowserRouter>
 					<Container {...props}/>

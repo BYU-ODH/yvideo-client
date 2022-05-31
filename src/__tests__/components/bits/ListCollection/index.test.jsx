@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import ListCollection from '../../../../components/bits/ListCollection'
-import { Link, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const collection = {
 	archived: false,
@@ -59,9 +59,9 @@ describe(`List collection test`, () => {
 
 		const togglePanel = jest.spyOn(wrapper.instance(), `togglePanel`)
 		wrapper.instance().forceUpdate()
-		wrapper.find(`.list-header`).simulate('click');
+		wrapper.find(`.list-header`).simulate(`click`)
 
-		expect(togglePanel).toBeCalled();
+		expect(togglePanel).toBeCalled()
 	})
 
 })

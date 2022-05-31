@@ -13,7 +13,7 @@ function Values(top1,top2,left1,left2, width1, width2,height1,height2, next, pre
 const getPos = (events, t) => {
 	const time = t !== undefined ? t : 0.0
 	if(Object.keys(events).length < 1 || events === {}){
-		const values = new Values(0,0,0,0,0,0,0,0,0,0)
+		const values = new Values(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 		return values
 	}else{
 		const keys = Object.keys(events).map(val => events[val][0])
@@ -36,7 +36,7 @@ const getPos = (events, t) => {
 		return values
 	}
 }
-const Position = (censors, time,duration) => {
+const Position = (censors, time, duration) => {
 	return getPos(censors, time)
 }
 export default Position

@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
+import styled from 'styled-components'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 
@@ -14,6 +14,6 @@ export const Thumbnail = styled.div`
 
 	margin-bottom: 1rem;
 
-	background-image: url(${props => props.src !== "empty" ? (props.src) : (defaultThumbnail)});
+	background-image: url(${props => props.src !== `empty` ? props.src : defaultThumbnail});
 	background-size: cover;
 `

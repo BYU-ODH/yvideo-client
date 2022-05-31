@@ -6,8 +6,8 @@ import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
 import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
-import volumeIcon from 'assets/controls_volume.svg'
-import volumeIconMute from 'assets/controls_muted.svg'
+// import volumeIcon from 'assets/controls_volume.svg'
+// import volumeIconMute from 'assets/controls_muted.svg'
 import clockIcon from 'assets/te-clock.svg'
 import playerCheck from 'assets/player-check.svg'
 import bookIcon from 'assets/sidebar-white.svg'
@@ -37,6 +37,34 @@ const Style = styled.div`
 
 		& img {
 			margin-right: 10px;
+			@media screen and (max-width: 425px){
+				margin-right: .75 rem;
+			}
+			@media screen and (max-width: 375px){
+				margin-right: .5rem;
+			}
+			@media screen and (max-width: 320px){
+				margin-right: .25rem;
+			}
+		}
+	}
+
+	& .subtitlesOffButton {
+			position: relative;
+			width: 100%;
+			height: 30px;
+			font-size: 1.4rem;
+			font-weight: 500;
+			margin: 2px 0px 2px 0px;
+			text-align: left;
+			border: none;
+			background: transparent;
+			color: white;
+
+			:hover {
+				background-color: rgba(5,130,202,1);
+				color: white;
+			}
 		}
 	}
 
@@ -48,11 +76,33 @@ const Style = styled.div`
 		& img {
 			cursor: pointer;
 			margin: 1rem;
+			@media screen and (max-width: 425px){
+				height: 17px;
+				width: 17px;
+				margin: .6rem;
+			}
+			@media screen and (max-width: 375px){
+				height: 15px;
+				width: 15px;
+				margin: .65rem;
+			}
+			@media screen and (max-width: 320px){
+				margin: .40rem;
+			}
 		}
 
 		& .play-time {
 			color: white;
 			margin: 1rem;
+			@media screen and (max-width: 425px){
+				margin: .65 rem;
+			}
+			@media screen and (max-width: 375px){
+				margin: .5rem;
+			}
+			@media screen and (max-width: 320px){
+				margin: .25rem;
+			}
 		}
 	}
 
@@ -63,6 +113,20 @@ const Style = styled.div`
 		border: none;
 		margin: 1rem;
 		outline: none;
+
+		@media screen and (max-width: 425px){
+			height: 1.75rem;
+			width: 1.75 rem;
+			margin: .90rem;
+		}
+		@media screen and (max-width: 375px){
+			height: 1.5rem;
+			width: 1.5 rem;
+			margin: .75rem;
+		}
+		@media screen and (max-width: 320px){
+			margin: .5rem;
+		}
 	}
 
 	& button {
@@ -80,7 +144,8 @@ const Style = styled.div`
 		display: flex;
 		flex-direction: column;
 		border: 2px solid (71, 71, 71, 1);
-		border-radius: 5px;
+		padding-bottom: 2px;
+		border-radius: 8px;
 
 		& div {
 			position: relative;
@@ -111,7 +176,6 @@ const Style = styled.div`
 		font-size: 1.4rem;
 		font-weight: 500;
 		margin: 2px 0px 2px 0px;
-		transition: .5s ease;
 		text-align: left;
 		border: none;
 		background: transparent;
@@ -129,7 +193,7 @@ export const PlayPause = styled.button`
 	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
 `
 export const ClosedCaptions = styled.button`
-	/* background: ${props => props.isCaptions !== false ? (`url(${closedCaption}) center no-repeat`) : (`url(${closedCaptionOff}) center no-repeat`)}; */
+	/* background: ${props => props.isCaptions !== false ? `url(${closedCaption}) center no-repeat` : `url(${closedCaptionOff}) center no-repeat`}; */
 	background: url(${closedCaption}) center no-repeat;
 `
 export const Fullscreen = styled.button`
@@ -151,4 +215,8 @@ export const Help = styled.img`
 	margin: 0px;
 	width: 22px;
 	height: 22px;
+	@media screen and (max-width: 375px){
+		height: 15px;
+		width: 15px;
+	}
 `

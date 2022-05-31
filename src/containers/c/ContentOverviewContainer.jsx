@@ -42,7 +42,11 @@ const ContentOverviewContainer = props => {
 	const [contentState, setContentState] = useState(content)
 	const [blockLeave, setBlock] = useState(false)
 	const [isMobile, setIsMobile] = useState(false)
-
+	const SUPPORTED_LANGUAGES = [
+		`German`,
+		`Spanish`,
+		`Russian`,
+	]
 	useEffect(() => {
 		if(window.innerWidth < 1000)
 			setIsMobile(true)
@@ -54,10 +58,21 @@ const ContentOverviewContainer = props => {
 		else
 			window.onbeforeunload = undefined
 
+		if(!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)){
+			if (content.settings.allowDefinitions){
+				setContentState({
+					...contentState,
+					settings: {
+						...contentState.settings,
+						allowDefinitions: false,
+					},
+				})
+			}
+		}
 		return () => {
 			window.onbeforeunload = undefined
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [blockLeave])
 
 	if (objectIsEmpty(content)) return null

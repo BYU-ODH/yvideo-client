@@ -48,7 +48,6 @@ export default class CreateContent extends PureComponent {
 			handleSelectResourceChange,
 			handleSubmit,
 			handleTextChange,
-			handleSelectLanguage,
 			handleTypeChange,
 			onKeyPress,
 			remove,
@@ -68,42 +67,46 @@ export default class CreateContent extends PureComponent {
 				{tab === `url` &&
 					<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} className='create-content-form' id='create-content-form' >
 						<label htmlFor='create-content-title'>
-							<span>Title</span>
+							<span><b>Title:</b></span>
 							<input className='url-title-input' id='create-content-title' type='text' name='title' value={title} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-type'>
-							<span>Type</span>
+							<span><b>Type:</b></span>
 							<div style={{ flex: `5`, display: `flex`, justifyContent: `space-between` }}>
-								<TypeButton className='url-type-video' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'>Video</TypeButton>
-								<TypeButton className='url-type-audio' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'>Audio</TypeButton>
-								<TypeButton className='url-type-image' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'>Image</TypeButton>
-								<TypeButton className='url-type-text' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'>Text</TypeButton>
+								<TypeButton id='url-type-video' className='std-outline-color' type='button' selected={contentType === `video`} onClick={handleTypeChange} data-type='video'><i className='fa fa-video' data-type='video' />Video</TypeButton>
+								<TypeButton id='url-type-audio' className='std-outline-color' type='button' selected={contentType === `audio`} onClick={handleTypeChange} data-type='audio'><i className='fa fa-headphones' data-type='audio' />Audio</TypeButton>
+								<TypeButton id='url-type-image' className='std-outline-color' type='button' selected={contentType === `image`} onClick={handleTypeChange} data-type='image'><i className='fa fa-image' data-type='image' />Image</TypeButton>
+								<TypeButton id='url-type-text' className='std-outline-color' type='button' selected={contentType === `text`} onClick={handleTypeChange} data-type='text'><i className='fa fa-text-width' data-type='text' />Text</TypeButton>
 							</div>
 						</label>
 
 						<label htmlFor='create-content-url'>
-							<span>URL</span>
+							<span><b>URL:</b></span>
 							<input className='url-content-url' id='create-content-url' type='text' name='url' value={url} onChange={handleTextChange} required />
 						</label>
 
 						<label htmlFor='create-content-description'>
-							<span>Description</span>
+							<span><b>Description:</b></span>
 						</label>
-						<textarea className='url-content-description' id='create-content-description' name='description' value={description} onChange={handleTextChange} rows={4} />
+						<textarea id='create-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} />
 
 						<label htmlFor='create-content-keywords'>
-							<span>Tags</span>
+							<span><b>Tags</b></span>
 						</label>
 						<input className='url-content-input-tag' id='keyword-datalist-input' type='text' name='keywords' list='create-content-keywords' placeholder='Add tag...'/>
 						<div className='keywords-list'>
-							{resource.keywords.length < 1 ? (<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>) : null}
+							{resource.keywords.length < 1 ?
+								(<p>There are no tags. Add tags like <i>GoCougars, BYU, Tech, Science</i></p>)
+								:
+								null
+							}
 							{resource.keywords.map((keyword, index) => <span key={index}>{keyword}<RemoveKeyword className='url-content-remove' src={plus} onClick={remove} type='button' data-keyword={keyword} /></span>)}
 						</div>
 						{/* TODO: MAKE THE TAGS WORK AND BE PASSED WHEN ON CHANGE EVENT */}
 
 						<label>
-							<span>Target Language</span>
+							<span><b>Target Language:</b></span>
 							{
 								allLanguages &&
 									<select name='targetLanguage' onChange={handleTextChange} required>
@@ -118,8 +121,8 @@ export default class CreateContent extends PureComponent {
 						</label><br/>
 
 						<div>
-							<Button type='button' onClick={toggleModal}>Cancel</Button>
-							<Button type='submit' color={`#0582CA`}>Create</Button>
+							<Button type='button' className='std-outline-color' onClick={toggleModal}>Cancel</Button>
+							<Button type='submit' className='std-outline-color' color={`#0582CA`}>Create</Button>
 						</div>
 					</Form>
 				}
@@ -130,22 +133,22 @@ export default class CreateContent extends PureComponent {
 							<SearchIcon />
 							<input className='resource-search-title' type='search' name='searchInput' placeholder={`Search Resource`} autoComplete='off' value={searchQuery} onChange={handleSearchTextChange} />
 						</Search>
-						<TableContainer className='table-container' height={Object.keys(resourceContent).length} style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
+						<TableContainer
+							className='table-container'
+							height={Object.keys(resourceContent).length}
+							style={{ display: `${hideResources === true ? `none` : `initial`}` }}>
 							{
 								resourceContent && hideResources !== true &&
-							Object.keys(resourceContent).map(index =>
-
-								<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
-									<label>{resourceContent[index].resourceName}</label>
-								</li>
-
-								,
-							)
+									Object.keys(resourceContent).map(index =>
+									<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
+										<label>{resourceContent[index].resourceName}</label>
+									</li>
+									)
 							}
 						</TableContainer>
 						<br/>
 						<label>
-							<span>Resource</span><br/>
+							<span><b>Resource</b></span><br/>
 							<div className='resource-content-remove'>
 								<input value={selectedResourceName} disabled required></input>
 								{
@@ -162,14 +165,14 @@ export default class CreateContent extends PureComponent {
 								</label>
 						}
 						<label>
-							<span>Display Title</span><br/>
+							<span><b>Display Title</b></span><br/>
 							<input className='resource-content-title' type='text' name='title' value={title} onChange={handleTextChange}/>
 						</label>
 						<br/>
 						<label>
-							<span>Description</span><br/>
-							<textarea className='resource-content-description' name='description' value={description} onChange={handleTextChange} rows={2} cols={35} />
-						</label><br/>
+							<span><b>Description</b></span><br/>
+						</label>
+						<textarea id='resource-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} cols={35} /><br/>
 						<label>
 
 							<span>Target Language</span>
@@ -183,7 +186,6 @@ export default class CreateContent extends PureComponent {
 												resourceFiles.map(
 													(element, index) =>
 														<option value={element[`id`]} key={index}>{`${element[`file-version`]}: ${element[`metadata`]}`}</option>,
-													// <option value={element.slice(0, element.length)} key={index}>{element.slice(0, element.length)}</option>,
 												)
 											}
 										</select>
@@ -201,14 +203,14 @@ export default class CreateContent extends PureComponent {
 
 						<div>
 
-							<Button className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+							<Button id='url-content-cancel' className='std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
 							{targetLanguage.length > 0 ?
 								(
-									<Button className='url-content-create' type='submit' color={`#0582CA`}>Create</Button>
+									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#0582CA`}>Create</Button>
 								)
 								:
 								(
-									<Button className='url-content-create' type='submit' color={`#A0A0A0`} disabled>Create</Button>
+									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#A0A0A0`} disabled>Create</Button>
 								)
 							}
 						</div>

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import User from 'models/User'
 import Content from 'models/Content'
+import userName from './DevUser'
 
 const updateSessionId = (id) => {
 	// console.log(`OLD => `, window.clj_session_id)
@@ -517,8 +518,8 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					// console.log(`step 1`)
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/esdras/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					// eslint-disable-next-line no-unused-vars
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${userName}/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
@@ -539,7 +540,7 @@ const apiProxy = {
 					return new User(result.data)
 				}
 			} catch (error) {
-				console.error(error)
+				console.error(error) // eslint-disable-line no-console
 			}
 		},
 		post: async (body) => {
@@ -556,12 +557,24 @@ const apiProxy = {
 					return res
 				})
 
-				console.log(result)
 				return result
 
 			} catch (error) {
 				return error
 			}
+		},
+		getHasPermissions: async (username) => {
+			const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${username}/ta-permissions`,{
+				withCredentials: true,
+				headers: {
+					'Content-Type': `application/json`,
+					'session-id': window.clj_session_id,
+				},
+			}).then(async res => {
+				await updateSessionId(res.headers[`session-id`])
+				return res
+			})
+			return res.data
 		},
 		collections: {
 			/**
@@ -583,10 +596,14 @@ const apiProxy = {
 						return res.data.sort((a, b) => {
 							a = a[`collection-name`].toLowerCase().replace(regex, replacor)
 							b = b[`collection-name`].toLowerCase().replace(regex, replacor)
-							return a === b ? 0 : a < b ? -1 : 1
+							return (
+								a !== b ?
+									a < b ?
+										-1 : 1
+									: 0
+							)
 						})
 					})
-
 				return collections_result.reduce((map, collection) => {
 					collection[`name`] = collection[`collection-name`]
 

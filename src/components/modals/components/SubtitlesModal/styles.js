@@ -1,98 +1,109 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-	position: absolute;
-	height: calc(100vh - 8.4rem);
-	max-height: calc(100vh - 8.4rem);
-	width: 100%;
-	/* max-height: 65vh; */
-	z-index: 100;
-	display: ${props => props.visible ? `block`:`none`}
-	background-color: rgba(0,0,0,0.9);
+	overflow: none
 
 	& .inner {
 		background-color: #ffffff;
-		margin-top: 10%;
-		margin-left: 20%;
-		margin-right: 20%;
-		margin-bottom: 0px;
-		border-radius: 10px;
 		overflow: none;
-		border: 3px solid #0582ca;
 		text-align: center;
+		& .header {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+
+			& img {
+				position: absolute;
+				cursor: pointer;
+				right: 17px;
+				top: 16px;
+			}
+		}
+
+		& table {
+			width: 100%;
+		}
+
 		& .modalSection {
-			width: 50%;
-			margin-top: 2rem;
-			margin-bottom: 2rem;
-			&.modalButton{
-				width: 80%;
-				margin-right: 10%;
-				margin-left: 10%;
+			& .modalButton {
+				width: 100%;
 				padding: 10px;
 				border-radius: 2rem;
 				border: 3px solid #0582ca;
-				background-color: #ffffff;
 				font-weight: 500;
-				font-size:1.5rem;
+				font-size: 1.5rem;
 				cursor: pointer;
-				:hover{
+				:hover {
 					background-color: #0582ca;
 					color: #ffffff;
 				}
 			}
 		}
 			& .modalSectionRight {
-				width: 50%;
+				width: 61%;
 				margin-top: 2rem;
-				margin-bottom: 2rem;
-				margin-right: 25%;
 				margin-left: 25%;
 				border: 3px solid #0582ca;
 				border-radius: 1rem;
 				display: block;
-				float: none;
 				padding: 2rem;
 				font-size: 1.5rem;
 			}
 		}
-		& .closeModal{
-			padding:5px;
-			cursor: pointer;
-			opacity:1;
-			float: right;
-			:hover {
-				opacity:0.7:
-			}
+		& .closeModal {
+			background-color: #ffffff;
 		}
-	& .create-button {
+	& .modalSectionRightTitle {
+		margin: 10px;
+	}
+
+	& #subFileInput {
+		margin: 35px 0px 25px 0px;
+		width: 100%;
+		display: block;
+	}
+
+	& #create-button {
+		margin: 10px;
 		padding: 5px;
 		border-radius: 1rem;
 		border: 3px solid #0582ca;
 		background-color: #ffffff;
 		font-weight: 500;
 		cursor: pointer;
-		:hover{
+		:hover {
 			background-color: #0582ca;
 			color: #ffffff;
 		}
 	}
 
-	& .delete {
-		background-color: #ffffff;
-		margin-top: 15%;
-		margin-left: 32%;
-		margin-right: 32%;
-		margin-bottom: 0px;
+	& .delete-div {
 		border-radius: 10px;
 		overflow: none;
 		border: 3px solid #0582ca;
 		text-align: center;
 		padding: 1.5rem;
 
-		& .delete-button {
+		& .delete-buttons {
 			margin-top: 5rem;
 			display: flex;
 			justify-content: space-evenly;
+		}
+
+		& .url-content-cancel {
+			:hover {
+				background-color: #0582ca;
+				color: #ffffff
+			}
+		}
+
+		& .url-content-delete {
+			color: #ff4c4c;
+			border: 3px solid #ff4c4c;
+			:hover {
+				background-color: #ff4c4c;
+				color: #ffffff;
+			}
 		}
 	}
 `

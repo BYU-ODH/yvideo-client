@@ -2,6 +2,28 @@ import React, { PureComponent } from 'react'
 import Style, { LinkStyled, Header, LogoutButton, Footer, MenuIcon, UserPic } from './styles'
 
 class Menu extends PureComponent {
+	constructor(props){
+		super(props)
+		this.toggleMenu = this.props.handlers.toggleMenu
+		this.menuClose = this.props.handlers.menuClose
+		this.menuActive = this.props.viewstate.menuActive
+
+	}
+
+	componentDidUpdate() {
+		const onclickTemp = window.onclick
+		window.onclick = (e) => {
+			if(e) {
+				this.menuClose(e)
+				window.onclick = onclickTemp
+			}
+		}
+	}
+
+	componentWillUnmount() {
+		window.onclick = null
+	}
+
 	render() {
 
 		const {
@@ -16,23 +38,37 @@ class Menu extends PureComponent {
 
 		const {
 			toggleMenu,
+			// menuOpen,
+			// menuClose,
 			handleShowTip,
 			handleLogout,
 			toggleTip,
 		} = this.props.handlers
-
 		return (
 			// display only if user is not a guest
 			user.roles < 4 ?
 				<Style editorStyle={editorStyle} className={menuActive && `active`}
-					onClick={toggleMenu}
-					onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
-					onMouseLeave={e => toggleTip()}>
+					onMouseEnter={e => handleShowTip(`menu`,
+						{
+							x: window.innerWidth - 270,
+							y: 50,
+							width: e.currentTarget.offsetWidth
+						})
+					}
+					onMouseLeave={e => toggleTip()}
+					onClick={e => {
+						e.stopPropagation()
+					}}
+				>
 
 					{/* <UserPic>{initials}</UserPic> */}
-					<MenuIcon />
+					<MenuIcon className='std-outline-color' onClick={toggleMenu}/>
 
-					{user.name.includes(`no_name`) ? <h4>{user.username}</h4> : <h4>{user.name}</h4>}
+					{user.name.includes(`no_name`) ?
+						<h4>{user.username}</h4>
+						:
+						<h4>{user.name}</h4>
+					}
 					<hr />
 
 					{/* <LinkStyled to='/word-list'>My Word List</LinkStyled> */}
@@ -40,21 +76,21 @@ class Menu extends PureComponent {
 					{
 						isAdmin &&
 					<>
-						<LinkStyled to='/admin'>Admin Dashboard</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/admin' onClick={toggleMenu}>Admin Dashboard</LinkStyled>
 					</>
 					}
 
 					{ (isLab || isAdmin) &&
 					<>
-						<LinkStyled to='/lab-assistant'>Lab Assistant Dashboard</LinkStyled>
-						<LinkStyled to='/manage-resource'>Manage Resource</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/lab-assistant' onClick={toggleMenu}>Lab Assistant Dashboard</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/manage-resource' onClick={toggleMenu}>Manage Resource</LinkStyled>
 					</>
 					}
 
 					{
 						!(isLab || isAdmin || isProf) &&
 					<>
-						<LinkStyled to='/'>Collections</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/' onClick={toggleMenu}>Collections</LinkStyled>
 					</>
 					}
 
@@ -65,12 +101,12 @@ class Menu extends PureComponent {
 					<>
 						<Header>Collections</Header>
 						<hr />
-						<LinkStyled to='/'>Collections</LinkStyled>
-						<LinkStyled to='/manager'>Manage Collections</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/' onClick={toggleMenu}>Collections</LinkStyled>
+						<LinkStyled className='std-outline-color' to='/manager' onClick={toggleMenu}>Manage Collections</LinkStyled>
 						{
 							isAdmin &&
 							<>
-								<LinkStyled to='/public-manager'>Manage Public Collections</LinkStyled>
+								<LinkStyled className='std-outline-color' to='/public-manager' onClick={toggleMenu}>Manage Public Collections</LinkStyled>
 							</>
 						}
 						{/* <LinkStyled to={{ pathname: `/manager`, createCollection: true }}>Create New Collection</LinkStyled> */}
@@ -80,7 +116,7 @@ class Menu extends PureComponent {
 					<Footer>
 						<Header>Connect With Us</Header>
 						<hr />
-						<LinkStyled to='/feedback' >Contact Us</LinkStyled>
+						<LinkStyled to='/feedback' className='std-outline-color' onClick={toggleMenu}>Contact Us</LinkStyled>
 					</Footer>
 
 				</Style>
@@ -88,7 +124,13 @@ class Menu extends PureComponent {
 				// menu options for the guest user
 				<Style editorStyle={editorStyle} className={menuActive && `active`}
 					onClick={toggleMenu}
-					onMouseEnter={e => handleShowTip(`menu`, {x: window.innerWidth - 270, y: 50, width: e.currentTarget.offsetWidth})}
+					onMouseEnter={e => handleShowTip(`menu`,
+						{
+							x: window.innerWidth - 270,
+							y: 50,
+							width: e.currentTarget.offsetWidth
+						})
+					}
 					onMouseLeave={e => toggleTip()}>
 
 					<UserPic>{initials}</UserPic>
