@@ -75,7 +75,7 @@ export default class Manager extends PureComponent {
 													{
 														x: e.target.getBoundingClientRect().x + 10,
 														y: e.target.getBoundingClientRect().y + 5,
-														width: e.currentTarget.offsetWidth
+														width: e.currentTarget.offsetWidth,
 													})
 												}
 												onMouseLeave={e => toggleTip()}

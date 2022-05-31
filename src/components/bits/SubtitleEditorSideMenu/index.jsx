@@ -97,36 +97,36 @@ const SubtitleEditorSideMenu = props => {
 									onChange={ (value) => editSub(null, null, value, subLayer, ind)} />
 								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
 									<input
-                    id={`subStart${ind}`}
-                    className={`subStart sideTabInput`}
-                    type='text'
+										id={`subStart${ind}`}
+										className={`subStart sideTabInput`}
+										type='text'
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
-                    onClick={ () => changeSubIndex(ind)}
+										onClick={ () => changeSubIndex(ind)}
 										onChange={e => editSub(`beg`, e.target.value, null, subLayer, ind, null)}
 										onBlur={e => editSub(`beg`, e.target.value, null, subLayer, ind, `onBlur`)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 											{
 												x: e.target.getBoundingClientRect().x + 30,
 												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth + 20
+												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
 										onMouseLeave={e => toggleTip()}
 
 									/>
 									<input
-                    id={`subEnd${ind}`}
-                    className={`subEnd`}
-                    type='text'
+										id={`subEnd${ind}`}
+										className={`subEnd`}
+										type='text'
 										value={`${sub.end ===`` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
-                    onClick={ () => changeSubIndex(ind) }
+										onClick={ () => changeSubIndex(ind) }
 										onChange={e => editSub(`end`, e.target.value, null, subLayer, ind, null)}
 										onBlur={e => editSub(`end`, e.target.value, null, subLayer, ind, `onBlur`)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 											{
 												x: e.target.getBoundingClientRect().x + 30,
 												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth + 20
+												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
 										onMouseLeave={e => toggleTip()}
@@ -139,18 +139,18 @@ const SubtitleEditorSideMenu = props => {
 							ind === subs[subLayer][`content`].length-1 ?
 								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
 									visibility={ subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave === false ?
-                      `visible`
-                      :
-                      `hidden`
+										`visible`
+										:
+										`hidden`
 									}
 									active={ind === index ? `subActive` : `nonActive`}
 								/>
 								:
 								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`)}
 									visibility={ subs[subLayer][`content`][ind + 1].start - subs[subLayer][`content`][ind].end !== 0 && disableSave === false ?
-                      `visible`
-                      :
-                      `hidden`
+										`visible`
+										:
+										`hidden`
 									}
 									active={ind === index ? `subActive` : `nonActive`}
 								/>

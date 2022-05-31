@@ -58,12 +58,12 @@ describe(`Subtitles Modal test`, () => {
 	})
 	it(`onClick createLayer.fromFile`, () => {
 		const mElement = { files: `file` }
-		const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
+		const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement) // eslint-disable-line no-unused-vars
 		const handleClick = sinon.spy()
 		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container handleAddSubLayerFromFile={handleClick} {...props} />
-			</Provider>
+			</Provider>,
 		)
 		wrapper.find(`.modalButton`).at(1).prop(`onClick`)()
 		expect(handleClick.calledOnce).toBe(true)
@@ -75,7 +75,7 @@ describe(`Subtitles Modal test`, () => {
 				<BrowserRouter>
 					<Container {...props} />
 				</BrowserRouter>
-			</Provider>
+			</Provider>,
 		)
 		wrapper.find({"id" : `subFileInput`}).simulate(`change`, { target: { files: `path` } })
 		const checked = wrapper.find(`[files="path"]`).first()
@@ -86,7 +86,7 @@ describe(`Subtitles Modal test`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container {...props}/>
-			</Provider>
+			</Provider>,
 		)
 		wrapper.find(`.closeModal`).simulate(`click`)
 		wrapper.find(`#modalSection`).simulate(`click`)

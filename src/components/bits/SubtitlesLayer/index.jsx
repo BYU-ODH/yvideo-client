@@ -15,7 +15,7 @@ const SubtitlesLayer = props => {
 		displayLayer,
 		videoLength,
 		handleEventPosition,
-		setEventSeek
+		setEventSeek,
 	} = props
 	const layerIndex = props.layer
 	const layerRef = useRef(null)
@@ -156,13 +156,13 @@ const SubtitlesLayer = props => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
+				}
 				}
 				onResizeStop={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
+				}
 				}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}

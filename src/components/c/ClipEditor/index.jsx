@@ -367,7 +367,7 @@ const ClipEditor = props => {
 													{
 														x: e.target.getBoundingClientRect().x,
 														y: e.target.getBoundingClientRect().y,
-														width: e.currentTarget.offsetWidth
+														width: e.currentTarget.offsetWidth,
 													})
 												}
 												onMouseLeave={e => toggleTip()}>
@@ -386,9 +386,9 @@ const ClipEditor = props => {
 										<div
 											className={`handle`}
 											style={active === clip ?
-											{backgroundColor:`#002e5d`, color:`#fff`}
-											:
-											{backgroundColor:`#fff`, color:`#000`}}
+												{backgroundColor:`#002e5d`, color:`#fff`}
+												:
+												{backgroundColor:`#fff`, color:`#000`}}
 										>
 											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
@@ -428,7 +428,7 @@ const ClipEditor = props => {
 										{
 											x: e.target.getBoundingClientRect().x,
 											y: e.target.getBoundingClientRect().y,
-											width: e.currentTarget.offsetWidth
+											width: e.currentTarget.offsetWidth,
 										})
 									}
 									onMouseLeave={e => toggleTip()}
@@ -536,7 +536,7 @@ const ClipEditor = props => {
 				<AnnotationMessage style={
 					{
 						visibility: `${annotationsSaved ? `visible` : `hidden`}`,
-						opacity: `${annotationsSaved ? `1` : `0`}`
+						opacity: `${annotationsSaved ? `1` : `0`}`,
 					}
 				}>
 					<h2>Clip saved successfully</h2>

@@ -245,8 +245,7 @@ const SubtitleEditor = props => {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
-			}
-			else if (side === `end`) {
+			} else if (side === `end`) {
 				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					sub.end = convertToSeconds(sub.end, videoLength)
 					document.getElementById(`subEnd${index}`).style.border=null
@@ -719,16 +718,16 @@ const SubtitleEditor = props => {
 											}
 										</div>
 										<Icon className={`trashIcon`} src={trashIcon}
-                      onClick={ () => {
-                        openSubModal(
-                          `delete`,
-                          sub.title !== `` ? sub.title : `No Language`,
-                          handleAddSubLayer,
-                          handleAddSubLayerFromFile,
-                          handleDeleteSubLayer,
-                          index,
-                        )
-										}}/>
+											onClick={ () => {
+												openSubModal(
+													`delete`,
+													sub.title !== `` ? sub.title : `No Language`,
+													handleAddSubLayer,
+													handleAddSubLayerFromFile,
+													handleDeleteSubLayer,
+													index,
+												)
+											}}/>
 									</div>
 									<SubtitlesLayer
 										videoLength={videoLength}
@@ -767,22 +766,22 @@ const SubtitleEditor = props => {
 
 							}
 							<div
-                style={
-                  {
-                    color: `#ffffff`,
-                    backgroundColor: `#0582ca`,
-                    borderRadius: `0.6rem`,
-                    width: `130px`,
-                    margin: `10px`,
-                    textAlign: `center`,
-                    padding: `5px`,
-                    cursor: `pointer`
-                   }
-                 }
-                 className={`setSubModalVisible`}
-                 onClick={ () => {
-								  openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-							   }}>
+								style={
+									{
+										color: `#ffffff`,
+										backgroundColor: `#0582ca`,
+										borderRadius: `0.6rem`,
+										width: `130px`,
+										margin: `10px`,
+										textAlign: `center`,
+										padding: `5px`,
+										cursor: `pointer`,
+									}
+								}
+								className={`setSubModalVisible`}
+								onClick={ () => {
+									openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+								}}>
 								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 							</div>
 						</div>
@@ -804,7 +803,7 @@ const SubtitleEditor = props => {
 										topRight: false,
 										bottomRight: false,
 										bottomLeft: false,
-										topLeft: false
+										topLeft: false,
 									}
 								}
 								dragAxis='x'
@@ -813,7 +812,7 @@ const SubtitleEditor = props => {
 									{
 										x: e.target.getBoundingClientRect().x,
 										y: e.target.getBoundingClientRect().y,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={e => toggleTip()}
@@ -835,7 +834,7 @@ const SubtitleEditor = props => {
 												topRight: false,
 												bottomRight: false,
 												bottomLeft: false,
-												topLeft: false
+												topLeft: false,
 											}
 										}
 										bounds = {`parent`}
@@ -868,7 +867,7 @@ const SubtitleEditor = props => {
 							{
 								x: e.target.getBoundingClientRect().x,
 								y: e.target.getBoundingClientRect().y + 10,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}
