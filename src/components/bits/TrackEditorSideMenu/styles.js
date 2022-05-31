@@ -5,7 +5,11 @@ const Style = styled.div`
 	padding: 20px;
 
 	& .event-content {
-    height: 80%;
+    height: calc(100% - 20px - 10rem);
+		overflow-y: scroll;
+	}
+	& .event-content ::-webkit-scrollbar{
+			display: block !important;
 	}
 
 	& .closeEditor {

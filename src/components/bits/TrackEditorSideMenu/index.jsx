@@ -209,7 +209,7 @@ const TrackEditorSideMenu = props => {
 										type='text'
 										className='sideTabInput'
 										value={`${convertSecondsToMinute(end, videoLength)}`}
-										style={{ visibility: `${event.type === `Pause` ? `hidden` : `visible`}` }}
+										style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventETimeChange(e)}
 										onBlur={e => handleEditEventETimeFinalChange(e)}
