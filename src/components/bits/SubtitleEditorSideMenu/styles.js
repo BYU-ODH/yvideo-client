@@ -64,7 +64,7 @@ const Style = styled.div`
 			display: flex;
 			justify-content: space-evenly;
 			padding: 1rem;
-			
+
 			:hover {
 				background-color: rgba(5, 130, 202, 0.3);
 			}

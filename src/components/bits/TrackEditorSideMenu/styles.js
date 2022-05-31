@@ -5,7 +5,7 @@ const Style = styled.div`
 	padding: 20px;
 
 	& .event-content {
-    height: 80%;
+    height: calc(calc(100%-10rem)-25px);
 	}
 
 	& .closeEditor {

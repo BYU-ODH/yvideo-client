@@ -13,7 +13,16 @@ import {
 
 const TrackLayer = props => {
 
-	const { events, updateEvents, activeEvent, width, videoLength, displayLayer} = props
+	const {
+		events,
+		updateEvents,
+		activeEvent,
+		width,
+		videoLength,
+		displayLayer,
+		handleEventPosition,
+		setEventSeek,
+	} = props
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
@@ -172,8 +181,18 @@ const TrackLayer = props => {
 				resizeHandleStyles={resizeSpace}
 				enableResizing={Enable}
 				dragAxis='x'
-				onDragStop={(e, d) => handleDrag(d, event, index)}
-				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
+				onDragStop={(e, d) => {
+					handleDrag(d, event, index)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+					}
+				}
+				onResizeStop={(e, direction, ref, delta, position) => {
+					handleResize(direction, ref, delta, event, index, e, position)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+					}
+				}
 				key={index}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
