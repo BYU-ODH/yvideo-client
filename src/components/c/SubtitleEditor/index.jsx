@@ -58,6 +58,16 @@ const SubtitleEditor = props => {
 	// refs
 	const scrollRef = useRef()
 
+	const useAsync = () => { // eslint-disable-line no-unused-vars
+		const mountedRef = useRef(true)
+
+		useEffect = () => {
+			return function cleanup() {
+				mountedRef.current = false
+			}
+		}
+	}
+
 	useEffect(() => {
 		function handleResize() {
 			setZoomFactor(0)
