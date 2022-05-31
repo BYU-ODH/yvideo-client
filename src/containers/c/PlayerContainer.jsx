@@ -359,7 +359,7 @@ const PlayerContainer = props => {
 			}
 		}
 
-		setSubtitleTextIndex(index)
+		setSubtitleTextIndex(index) //THESE SETTERS ARE THE CULPRITS WE HAVE A WARRANT FOR LINE 362 AND LINE 363
 		setSubtitleText(value)
 	}
 
