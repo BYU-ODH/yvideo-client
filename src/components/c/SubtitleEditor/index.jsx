@@ -765,28 +765,10 @@ const SubtitleEditor = props => {
 								/>
 
 							}
-							<div
-								style={
-									{
-										color: `#ffffff`,
-										backgroundColor: `#0582ca`,
-										borderRadius: `0.6rem`,
-										width: `130px`,
-										margin: `10px`,
-										textAlign: `center`,
-										padding: `5px`,
-										cursor: `pointer`,
-									}
-								}
-								className={`setSubModalVisible`}
-								onClick={ () => {
-									openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-								}}>
-								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
-							</div>
 						</div>
 
 					</section>
+
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' id='zoom-factor'>
@@ -855,6 +837,28 @@ const SubtitleEditor = props => {
 					</div>
 				</Timeline>
 			</span>
+
+			<div
+				style={
+					{
+						color: `#ffffff`,
+						backgroundColor: `#0582ca`,
+						borderRadius: `0.6rem`,
+						width: `130px`,
+						margin: `10px`,
+						textAlign: `center`,
+						padding: `5px`,
+						cursor: `pointer`,
+						position: `absolute`,
+						bottom: `3.9%`,
+					}
+				}
+				className={`setSubModalVisible`}
+				onClick={ () => {
+					openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+				}}>
+				<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
+			</div>
 
 			<EventList minimized={eventListMinimized}>
 				<header>
