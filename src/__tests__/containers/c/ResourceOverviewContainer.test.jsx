@@ -18,12 +18,12 @@ const props = {
 }
 
 proxies.apiProxy.language.get = jest.fn()
-proxies.apiProxy.language.get.mockImplementation(()=>{
+proxies.apiProxy.language.get.mockImplementation( () => {
 	return Promise.resolve(`Korean;Japanese;`)
 })
 
 proxies.apiProxy.resources.files = jest.fn()
-proxies.apiProxy.resources.files.mockImplementation(()=>{
+proxies.apiProxy.resources.files.mockImplementation( () => {
 	return Promise.resolve([testutil.file1])
 })
 
@@ -32,7 +32,7 @@ global.MutationObserver = MutationObserver
 // TODO: need to fix `UnhandledPromiseRejectionWarning`. This is from the not mocked functions from the child componenet
 describe(`manage collection test`, () => {
 
-	it(`ResourceOverview should contain viewstate`, ()=> {
+	it(`ResourceOverview should contain viewstate`, () => {
 		const sWrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -41,7 +41,7 @@ describe(`manage collection test`, () => {
 		expect(viewstate.resourceCache).toBe(testutil.store.getState().resourceStore.cache)
 	})
 
-	it(`ResourceOverview should render`, async()=> {
+	it(`ResourceOverview should render`, async () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
