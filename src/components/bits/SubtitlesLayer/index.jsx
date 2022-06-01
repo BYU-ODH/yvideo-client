@@ -6,7 +6,18 @@ import { Style } from './styles'
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
 const SubtitlesLayer = props => {
-	const { subs, sideEditor, updateSubs, activeEvent, width, displayLayer, videoLength, setIsReady} = props
+	const {
+		subs,
+		sideEditor,
+		updateSubs,
+		activeEvent,
+		width,
+		displayLayer,
+		videoLength,
+		handleEventPosition,
+		setEventSeek,
+		setIsReady,
+	} = props
 	const layerIndex = props.layer
 	const layerRef = useRef(null)
 
@@ -143,14 +154,23 @@ const SubtitlesLayer = props => {
 				className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`}
 
 				id={`event-${index}`}
-				size={{width: `${(event.end - event.start)/videoLength * layerWidth}px`, height: `46px`}}
-				position={{ x: event.start/videoLength*layerWidth, y: 0}}
-				resizeHandleStyles={resizeSpace}
+				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `46px`}}
+				position={{ x: event.start / videoLength * layerWidth, y: 0}}
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
-				onDragStop={(e, d) => handleDrag(d, event, index)}
-				onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, event, index, e, position)}
+				onDragStop={(e, d) => {
+					handleDrag(d, event, index)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+				}
+				}
+				onResizeStop={(e, direction, ref, delta, position) => {
+					handleResize(direction, ref, delta, event, index, e, position)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+				}
+				}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
@@ -172,7 +192,7 @@ const SubtitlesLayer = props => {
 				<div ref={layerRef} className='eventsbox'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
 						{
-							subs !== undefined && videoLength!==0 ? (
+							subs !== undefined && videoLength !== 0 ? (
 								<>
 									{subs.map((event, index) => (
 										<div key={index}

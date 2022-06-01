@@ -9,7 +9,6 @@ export default class SubtitlesModal extends Component {
 		const {
 			mode,
 			deleteTitle,
-			isReady,
 		} = this.props.viewstate
 
 		const {
