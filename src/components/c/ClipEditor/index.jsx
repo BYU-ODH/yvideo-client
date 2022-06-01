@@ -59,6 +59,7 @@ const ClipEditor = props => {
 	const [clipIndex, setClipIndex] = useState(0)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	useEffect(() => {
@@ -341,6 +342,8 @@ const ClipEditor = props => {
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
 						className='video'
+						isReady ={isReady}
+						setIsReady={setIsReady}
 						url={props.viewstate.url}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTime} // set current time
@@ -367,7 +370,7 @@ const ClipEditor = props => {
 													{
 														x: e.target.getBoundingClientRect().x,
 														y: e.target.getBoundingClientRect().y,
-														width: e.currentTarget.offsetWidth
+														width: e.currentTarget.offsetWidth,
 													})
 												}
 												onMouseLeave={e => toggleTip()}>
@@ -386,9 +389,9 @@ const ClipEditor = props => {
 										<div
 											className={`handle`}
 											style={active === clip ?
-											{backgroundColor:`#002e5d`, color:`#fff`}
-											:
-											{backgroundColor:`#fff`, color:`#000`}}
+												{backgroundColor:`#002e5d`, color:`#fff`}
+												:
+												{backgroundColor:`#fff`, color:`#000`}}
 										>
 											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
@@ -428,7 +431,7 @@ const ClipEditor = props => {
 										{
 											x: e.target.getBoundingClientRect().x,
 											y: e.target.getBoundingClientRect().y,
-											width: e.currentTarget.offsetWidth
+											width: e.currentTarget.offsetWidth,
 										})
 									}
 									onMouseLeave={e => toggleTip()}
@@ -536,7 +539,7 @@ const ClipEditor = props => {
 				<AnnotationMessage style={
 					{
 						visibility: `${annotationsSaved ? `visible` : `hidden`}`,
-						opacity: `${annotationsSaved ? `1` : `0`}`
+						opacity: `${annotationsSaved ? `1` : `0`}`,
 					}
 				}>
 					<h2>Clip saved successfully</h2>
