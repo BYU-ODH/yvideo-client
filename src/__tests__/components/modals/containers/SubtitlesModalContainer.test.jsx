@@ -10,6 +10,7 @@ import * as testutil from '../../../testutil/testutil'
 const props = {
 	mode: `create`,
 	handleAddSubLayer: jest.fn(),
+	setIsReady: jest.fn(),
 }
 
 describe(`Subtitles Modal test`, () => {
@@ -63,7 +64,7 @@ describe(`Subtitles Modal test`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container handleAddSubLayerFromFile={handleClick} {...props} />
-			</Provider>
+			</Provider>,
 		)
 		wrapper.find(`.modalButton`).at(1).prop(`onClick`)()
 		expect(handleClick.calledOnce).toBe(true)
@@ -75,7 +76,7 @@ describe(`Subtitles Modal test`, () => {
 				<BrowserRouter>
 					<Container {...props} />
 				</BrowserRouter>
-			</Provider>
+			</Provider>,
 		)
 		wrapper.find({"id" : `subFileInput`}).simulate(`change`, { target: { files: `path` } })
 		const checked = wrapper.find(`[files="path"]`).first()
@@ -86,7 +87,7 @@ describe(`Subtitles Modal test`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container {...props}/>
-			</Provider>
+			</Provider>,
 		)
 		wrapper.find(`.closeModal`).simulate(`click`)
 		wrapper.find(`#modalSection`).simulate(`click`)
