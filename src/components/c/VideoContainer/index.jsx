@@ -530,6 +530,7 @@ const VideoContainer = props => {
 			</SubtitlesContainer>
 			<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
 		</Style>
+
 	)
 }
 
