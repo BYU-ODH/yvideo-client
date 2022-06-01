@@ -31,7 +31,6 @@ const SubtitlesModalContainer = props => {
 		toggleModal()
 	}
 
-
 	const viewstate = { mode, deleteTitle}
 
 	const handlers = {
@@ -41,12 +40,11 @@ const SubtitlesModalContainer = props => {
 		toggleModal,
 	}
 
-
-return <SubtitlesModal viewstate={viewstate} handlers={handlers}/>
+	return <SubtitlesModal viewstate={viewstate} handlers={handlers}/>
 }
 
 const mapStateToProps = store => ({
-	user: store.authStore.user
+	user: store.authStore.user,
 })
 
 const mapDispatchToProps = {

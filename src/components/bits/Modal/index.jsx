@@ -53,10 +53,10 @@ class Modal extends Component {
 
 		if (prevProps.active && !this.props.active) {
 			// setTimeout(() => {
-				this.wrapper.current.classList.remove(`active`)
-				// setTimeout(() => {
-					this.wrapper.current.classList.add(`hidden`)
-				// }, 250)
+			this.wrapper.current.classList.remove(`active`)
+			// setTimeout(() => {
+			this.wrapper.current.classList.add(`hidden`)
+			// }, 250)
 			// }, 1000)
 		}
 

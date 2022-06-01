@@ -780,8 +780,8 @@ const SubtitleEditor = props => {
 								}
 								className={`setSubModalVisible`}
 								onClick={ () => {
-								  openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-							   }}>
+									openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+								}}>
 								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 							</div>
 						</div>

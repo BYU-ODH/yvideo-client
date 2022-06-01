@@ -159,17 +159,17 @@ const SubtitlesEditorContainer = props => {
 		handleAddSubLayerFromFile,
 		handleDeleteSubLayer,
 		index,
-		) => {
+	) => {
 		props.toggleModal({
 			component: SubtitlesModal,
 			props: {
 				mode: subModalMode,
-				deleteTitle: deleteTitle,
-				handleAddSubLayer: handleAddSubLayer,
-				handleAddSubLayerFromFile: handleAddSubLayerFromFile,
-				handleDeleteSubLayer: handleDeleteSubLayer,
-				index: index,
-			}
+				deleteTitle,
+				handleAddSubLayer,
+				handleAddSubLayerFromFile,
+				handleDeleteSubLayer,
+				index,
+			},
 		})
 	}
 

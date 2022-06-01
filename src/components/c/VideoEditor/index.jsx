@@ -145,7 +145,6 @@ const VideoEditor = props => {
 	}
 
 	const addEventHandler = (item, index) => {
-		console.log(item)
 		addEventToLayer(item, index, videoCurrentTime)
 		setBlock(true)
 	}

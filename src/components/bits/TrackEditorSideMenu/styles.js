@@ -44,6 +44,10 @@ const Style = styled.div`
 			font-size: 12px;
 			margin: 15px auto 15px auto;
 		}
+		& #saveComment:disabled{
+			cursor: not-allowed;
+			background-color: #ddd;
+		}
 	}
 
 	& .sideButton {

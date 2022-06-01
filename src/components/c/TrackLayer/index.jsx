@@ -185,13 +185,13 @@ const TrackLayer = props => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
+				}
 				}
 				onResizeStop={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
+				}
 				}
 				key={index}
 			>
