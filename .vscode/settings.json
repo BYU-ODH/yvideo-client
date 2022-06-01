@@ -29,5 +29,5 @@
 	},
 	"eslint.autoFixOnSave": true,
 	"eslint.format.enable": true,
-	"files.autoSave": "off",
+	"files.autoSave": "afterDelay",
 }
