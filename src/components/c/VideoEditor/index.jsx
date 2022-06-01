@@ -95,6 +95,7 @@ const VideoEditor = props => {
 	const [displayLayer, setDisplayLayer] = useState(0)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
+	const [isReady, setIsReady] = useState(false)
 	const [eventSeek, setEventSeek] = useState(false)
 	const [eventPosition, setEventPosition] = useState(0)
 
@@ -492,6 +493,8 @@ const VideoEditor = props => {
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
 					className='video'
+					isReady ={isReady}
+					setIsReady={setIsReady}
 					url={url}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTimePercentage} // set current time

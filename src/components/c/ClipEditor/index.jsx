@@ -59,6 +59,7 @@ const ClipEditor = props => {
 	const [clipIndex, setClipIndex] = useState(0)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	useEffect(() => {
@@ -341,6 +342,8 @@ const ClipEditor = props => {
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
 						className='video'
+						isReady ={isReady}
+						setIsReady={setIsReady}
 						url={props.viewstate.url}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTime} // set current time

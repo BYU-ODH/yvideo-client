@@ -16,6 +16,7 @@ export default class SubtitlesModal extends Component {
 			handleAddLayerFromFile,
 			handleDeleteLayer,
 			toggleModal,
+			setIsReady,
 		} = this.props.handlers
 
 		const createLayer = {
@@ -25,6 +26,7 @@ export default class SubtitlesModal extends Component {
 			fromFile: () => {
 				const filePath = document.getElementById(`subFileInput`).files[0]
 				handleAddLayerFromFile(filePath)
+				setIsReady(false)
 			},
 		}
 		return (

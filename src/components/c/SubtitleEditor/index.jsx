@@ -41,6 +41,7 @@ const SubtitleEditor = props => {
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [eventListMinimized, setEventListMinimized] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
 	const [scrollBarWidth, setScrollBar] = useState(0)
@@ -657,6 +658,8 @@ const SubtitleEditor = props => {
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
 					className='video'
+					isReady={isReady}
+					setIsReady={setIsReady}
 					url={props.viewstate.url}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTime} // set current time
@@ -720,6 +723,8 @@ const SubtitleEditor = props => {
 										<Icon className={`trashIcon`} src={trashIcon}
 											onClick={ () => {
 												openSubModal(
+													``,
+													undefined,
 													`delete`,
 													sub.title !== `` ? sub.title : `No Language`,
 													handleAddSubLayer,
@@ -733,6 +738,8 @@ const SubtitleEditor = props => {
 										videoLength={videoLength}
 										minimized={eventListMinimized}
 										width={layerWidth}
+										setIsReady={setIsReady}
+										isReady={isReady}
 										subs={sub[`content`]}
 										activeEvent={subToEdit}
 										layer={index}
@@ -752,6 +759,8 @@ const SubtitleEditor = props => {
 									videoLength={videoLength}
 									minimized={eventListMinimized}
 									width={layerWidth}
+									isReady={isReady}
+									setIsReady={setIsReady}
 									subs={[]}
 									activeEvent={subToEdit}
 									layer={null}
@@ -780,7 +789,7 @@ const SubtitleEditor = props => {
 								}
 								className={`setSubModalVisible`}
 								onClick={ () => {
-									openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+									openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
 								}}>
 								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 							</div>

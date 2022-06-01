@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -16,6 +16,7 @@ const SubtitlesLayer = props => {
 		videoLength,
 		handleEventPosition,
 		setEventSeek,
+		setIsReady,
 	} = props
 	const layerIndex = props.layer
 	const layerRef = useRef(null)
@@ -28,6 +29,11 @@ const SubtitlesLayer = props => {
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
+	useEffect(() => {
+		setIsReady(true)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	useLayoutEffect(() => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
@@ -38,6 +44,7 @@ const SubtitlesLayer = props => {
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
