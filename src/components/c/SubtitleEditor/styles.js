@@ -43,6 +43,7 @@ export const Timeline = styled.div`
 	z-index: 0;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	border-bottom: 1px solid black;
 
 	& .zoom-controls {
 		width: calc(100% - 35rem - 1px);

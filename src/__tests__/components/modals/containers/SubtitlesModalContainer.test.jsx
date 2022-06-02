@@ -59,7 +59,7 @@ describe(`Subtitles Modal test`, () => {
 	})
 	it(`onClick createLayer.fromFile`, () => {
 		const mElement = { files: `file` }
-		const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
+		const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement) // eslint-disable-line no-unused-vars
 		const handleClick = sinon.spy()
 		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>

@@ -48,8 +48,6 @@ const PlayerSubtitlesContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, subtitles, indexToDisplay])
 
-
-
 	return <div></div>
 
 }

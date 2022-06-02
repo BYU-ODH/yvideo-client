@@ -253,7 +253,7 @@ const PlayerControls = props => {
 									value='Normal'
 									key={1}
 									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-									className={playbackRate === playbackAtIndex ? `active-value` : ``} />
+									className={playbackRate === playbackAtIndex ? `active-value` : ``} />,
 						)
 						}
 					</div>

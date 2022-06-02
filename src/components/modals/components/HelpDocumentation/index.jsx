@@ -17,7 +17,8 @@ export default class HelpDocumentation extends PureComponent {
 		return (
 			<>
 				<Back
-					onKeyUp={e => { e.code === `Escape` &&
+					onKeyUp={e => {
+						e.code === `Escape` &&
 						this.props.toggleModal()
 					}}
 					onClick={this.props.toggleModal}>
