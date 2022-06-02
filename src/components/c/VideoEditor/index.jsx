@@ -12,6 +12,7 @@ import muteIcon from 'assets/event_mute.svg'
 import pauseIcon from 'assets/event_pause.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
+import commentIcon from 'assets/event_comment.svg'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
@@ -30,7 +31,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Censor`}, {4: `Blank`}] // {3: `Comment`},
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`},{3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
 
 	const events = [
 		{
@@ -54,18 +55,18 @@ const VideoEditor = props => {
 			message: ``,
 			layer: 0,
 		},
-		// {
-		// 	type: `Comment`,
-		// 	icon: commentIcon,
-		// 	start: 0,
-		// 	end: 10,
-		// 	layer: 0,
-		// 	comment: ``,
-		// 	position: {
-		// 		x: 0,
-		// 		y: 0,
-		// 	},
-		// },
+		{
+			type: `Comment`,
+			icon: commentIcon,
+			start: 0,
+			end: 10,
+			layer: 0,
+			comment: ``,
+			position: {
+				x: 0,
+				y: 0,
+			},
+		},
 		{
 			type: `Censor`,
 			icon: censorIcon,
@@ -590,7 +591,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized}>
+			<EventEditor id='EventEditor' minimized={eventListMinimized} show = {showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}

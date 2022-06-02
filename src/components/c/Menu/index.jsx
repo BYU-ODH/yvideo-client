@@ -52,7 +52,7 @@ class Menu extends PureComponent {
 						{
 							x: window.innerWidth - 270,
 							y: 50,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}
@@ -128,7 +128,7 @@ class Menu extends PureComponent {
 						{
 							x: window.innerWidth - 270,
 							y: 50,
-							width: e.currentTarget.offsetWidth
+							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={e => toggleTip()}>

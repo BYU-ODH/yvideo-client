@@ -302,7 +302,7 @@ export const EventEditor = styled.div`
 
 		box-sizing: border-box;
 
-		/* border-bottom: 1px solid #555; */
+		border-bottom:${props => props.show !== false ? ` 1px solid var(--navy-blue)` : `none`};
 
 		color: black;
 		font-weight: 500;

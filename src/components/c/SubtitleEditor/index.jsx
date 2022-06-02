@@ -246,8 +246,7 @@ const SubtitleEditor = props => {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
-			}
-			else if (side === `end`) {
+			} else if (side === `end`) {
 				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					sub.end = convertToSeconds(sub.end, videoLength)
 					document.getElementById(`subEnd${index}`).style.border=null
@@ -790,8 +789,8 @@ const SubtitleEditor = props => {
 								}
 								className={`setSubModalVisible`}
 								onClick={ () => {
-								  openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-							   }}>
+									openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+								}}>
 								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 							</div>
 						</div>
