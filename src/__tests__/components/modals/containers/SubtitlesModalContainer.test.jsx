@@ -10,6 +10,7 @@ import * as testutil from '../../../testutil/testutil'
 const props = {
 	mode: `create`,
 	handleAddSubLayer: jest.fn(),
+	setIsReady: jest.fn(),
 }
 
 describe(`Subtitles Modal test`, () => {
