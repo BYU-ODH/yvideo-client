@@ -5,7 +5,7 @@ import skipIcon from 'assets/event_skip_gray.svg'
 
 import { convertSecondsToMinute } from '../../common/timeConversion'
 
-import { Icon, Style, } from './styles'
+import { Icon, Style } from './styles'
 
 const SkipLayer = props => {
 
@@ -97,7 +97,7 @@ const SkipLayer = props => {
 					<div className='tickbar'>
 					</div>
 					<p className='time'>{convertSecondsToMinute(tickInt * i)}</p>
-				</div>
+				</div>,
 			)
 		}
 		return ticks

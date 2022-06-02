@@ -28,7 +28,7 @@ const SubtitlesContainer = props => {
 				handleShowSubtitle(``)
 		}
 
-			// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, subtitles])
 
 	const eventClassArray = subtitles

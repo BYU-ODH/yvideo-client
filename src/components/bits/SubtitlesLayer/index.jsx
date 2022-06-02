@@ -79,7 +79,7 @@ const SubtitlesLayer = props => {
 			height: `100%`,
 			left: `0px`,
 			padding: `1px`,
-		}
+		},
 	}
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {

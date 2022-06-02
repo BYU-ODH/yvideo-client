@@ -389,7 +389,6 @@ const VideoEditor = props => {
 		setIsLoading(false)
 	}
 
-
 	const handleExportAnnotation = () => {
 		// Convert JSON Array to string.
 		// Convert JSON string to BLOB.

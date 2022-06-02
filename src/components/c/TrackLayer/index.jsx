@@ -96,7 +96,7 @@ const TrackLayer = props => {
 			height: `100%`,
 			left: `0px`,
 			padding: `1px`,
-		}
+		},
 	}
 
 	const calculateOverlaps = () => {

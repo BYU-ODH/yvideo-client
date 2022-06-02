@@ -64,11 +64,11 @@ const SubtitleEditor = props => {
 	const useAsync = () => { // eslint-disable-line no-unused-vars
 		const mountedRef = useRef(true)
 
-		useEffect = () => {
+		useEffect(() => {
 			return function cleanup() {
 				mountedRef.current = false
 			}
-		}
+		})
 	}
 
 	useEffect(() => {
@@ -256,15 +256,14 @@ const SubtitleEditor = props => {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
-			}
-			else if(side === `end`) {
-				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
-					sub.end = convertToSeconds(sub.end, videoLength)
-					document.getElementById(`subEnd${index}`).style.border=null
-				} else {
-					document.getElementById(`subEnd${index}`).style.border = `2px solid red`
-					needCheck = false
-				}
+			} else if(side === `end`) {
+					if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
+						sub.end = convertToSeconds(sub.end, videoLength)
+						document.getElementById(`subEnd${index}`).style.border=null
+					} else {
+						document.getElementById(`subEnd${index}`).style.border = `2px solid red`
+						needCheck = false
+					}
 			}
 		} catch (e) {
 			console.error(`updateSubs error`, e) // eslint-disable-line no-console
@@ -785,25 +784,6 @@ const SubtitleEditor = props => {
 								/>
 
 							}
-							<div
-								style={
-									{
-										color: `#ffffff`,
-										backgroundColor: `#0582ca`,
-										borderRadius: `0.6rem`,
-										width: `130px`,
-										margin: `10px`,
-										textAlign: `center`,
-										padding: `5px`,
-										cursor: `pointer`,
-									}
-								}
-								className={`setSubModalVisible`}
-								onClick={ () => {
-									openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-								}}>
-								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
-							</div>
 						</div>
 
 					</section>
@@ -894,7 +874,7 @@ const SubtitleEditor = props => {
 				}
 				className={`setSubModalVisible`}
 				onClick={ () => {
-					openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+					openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
 				}}>
 				<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 			</div>
