@@ -385,15 +385,50 @@ const VideoEditor = props => {
 		setIsLoading(false)
 	}
 
+
 	const handleExportAnnotation = () => {
 		// Convert JSON Array to string.
 		// Convert JSON string to BLOB.
-		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
+		// const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
 
+		var jsonData = [];
+
+		for (let e=0; e < allEvents.length; e++) {
+			if (allEvents[e].type !== 'Censor'){
+				const data = {"options": {
+					"end": allEvents[e].end,
+					"start": allEvents[e].start,
+					"type": allEvents[e].type,
+					"details": '{}',
+				}
+			}
+			jsonData.push(data);
+			console.log(jsonData);
+			}
+
+			else if (allEvents[e].type === 'Censor'){
+				const data = {"options": {
+					"start": allEvents[e].start,
+					"end": allEvents[e].end,
+					"type": allEvents[e].type,
+					"detals": {
+						"type": "black",
+						"interpolate": true,
+						"position": {
+							[e]:allEvents[e].position
+						}
+
+					}
+				}
+				}
+			}
+		}
+		const json = JSON.stringify(jsonData);
+		const blob = new Blob([json], {type: "application/json"})
 		// get the current website url
-		const url = window.URL || window.webkitURL
+		// const url = window.URL || window.webkitURL
 		// create a link pointing to the blob or binary object
-		const link = url.createObjectURL(blob)
+		const link = URL.createObjectURL(blob)
 		// create an anchor element to open the link we created
 		const a = document.createElement(`a`)
 		// trigger download and append file name
