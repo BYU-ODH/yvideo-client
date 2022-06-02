@@ -217,48 +217,54 @@ const CreateContentContainer = props => {
 					tags += `${element}`
 			})
 		}
+		try {
+			const videoId = new URL(data.url).search.split(`=`)[1]
 
-		const videoId = new URL(data.url).search.split(`=`)[1]
+			if(data.targetLanguage === ``){
+				alert(`Please, select a valid language`)
+				return
+			}
+			const SUPPORTED_LANGUAGES = [ // eslint-disable-line no-unused-vars
+				`German`,
+				`Spanish`,
+				`Russian`,
+			]
+			const backEndData = {
+				"allow-definitions": false,
+				"url": data.url,
+				"allow-captions": true,
+				"content-type": data.contentType,
+				"resource-id": `00000000-0000-0000-0000-000000000000`,
+				tags,
+				"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
+				"file-version": data.targetLanguage,
+				"file-id": `00000000-0000-0000-0000-000000000000`,
+				"collection-id": modal.collectionId,
+				"published": true,
+				"views": 0,
+				"annotations": ``,
+				"title": data.title,
+				"allow-notes": true,
+				"description": data.description,
+				"words": ``,
+				"clips": ``,
+			}
 
-		if(data.targetLanguage === ``){
-			alert(`Please, select a valid language`)
+			if(modal.isLabAssistantRoute) {
+				await adminCreateContent(backEndData)
+				adminGetCollectionContent(modal.collectionId, true)
+			} else {
+				await createContent(backEndData)
+				getCollections(true)
+			}
+			toggleModal()
+			setBlock(false)
+		}
+		catch(err) {
+			alert(`Please use a valid URL`)
 			return
 		}
-		const SUPPORTED_LANGUAGES = [ // eslint-disable-line no-unused-vars
-			`German`,
-			`Spanish`,
-			`Russian`,
-		]
-		const backEndData = {
-			"allow-definitions": false,
-			"url": data.url,
-			"allow-captions": true,
-			"content-type": data.contentType,
-			"resource-id": `00000000-0000-0000-0000-000000000000`,
-			tags,
-			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": data.targetLanguage,
-			"file-id": `00000000-0000-0000-0000-000000000000`,
-			"collection-id": modal.collectionId,
-			"published": true,
-			"views": 0,
-			"annotations": ``,
-			"title": data.title,
-			"allow-notes": true,
-			"description": data.description,
-			"words": ``,
-			"clips": ``,
-		}
 
-		if(modal.isLabAssistantRoute){
-			await adminCreateContent(backEndData)
-			adminGetCollectionContent(modal.collectionId, true)
-		} else{
-			await createContent(backEndData)
-			getCollections(true)
-		}
-		toggleModal()
-		setBlock(false)
 	}
 
 	const handleAddResourceSubmit = async (e) => {

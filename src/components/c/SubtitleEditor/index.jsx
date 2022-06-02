@@ -824,7 +824,7 @@ const SubtitleEditor = props => {
 										width: e.currentTarget.offsetWidth,
 									})
 								}
-								onMouseLeave={e => toggleTip()}
+								onMouseLeave={() => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 						</div>
@@ -879,7 +879,7 @@ const SubtitleEditor = props => {
 								width: e.currentTarget.offsetWidth,
 							})
 						}
-						onMouseLeave={e => toggleTip()}
+						onMouseLeave={() => toggleTip()}
 					/>
 					<div className={`save`}>
 						{disableSave ?

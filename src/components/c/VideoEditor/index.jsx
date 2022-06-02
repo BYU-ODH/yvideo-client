@@ -559,7 +559,7 @@ const VideoEditor = props => {
 										width: e.currentTarget.offsetWidth,
 									})
 								}
-								onMouseLeave={e => toggleTip()}
+								onMouseLeave={() => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 						</div>
@@ -604,7 +604,7 @@ const VideoEditor = props => {
 								width: e.currentTarget.offsetWidth,
 							})
 						}
-						onMouseLeave={e => toggleTip()}
+						onMouseLeave={() => toggleTip()}
 						style={{marginLeft:10,marginTop:15}}
 					/>
 					<div className={`save`}>

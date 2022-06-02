@@ -27,7 +27,7 @@ import Style, {} from './styles.js'
 		5. Paste the following mouse events in your element:
 			<Element
 				onMouseEnter={e => handleShowTip('name-of-tip', {x: e.target.getBoundingClientRect().x, y: e.target.getBoundingClientRect().y, width: e.currentTarget.offsetWidth})}
-				onMouseLeave={e => toggleTip()}
+				onMouseLeave={() => toggleTip()}
 				></Element
 		6. Make sure that all the necesary methods are available to your component.
 		7. Make sure to close the tip once the actual click event happens.
@@ -74,12 +74,9 @@ export const ToolTip = (props) => {
 		"closed-captions": `On/Off Captions`,
 		"collection-add-content": `Add content to collection`,
 		"collection-edit-name": `Edit collection name`,
-		"collection-permissions": `Edit collection users`,
-		"collection-publish": `Show/Hide collection`,
 		"fullscr": `Full-screen`,
 		"help": `Help`,
 		"list-block": `Change view`,
-		"manage-collections": `Edit collections`,
 		"menu": `Menu`,
 		"next-sub": `Next Subtitle`,
 		"MMSSMS": `MM:SS`,
@@ -88,6 +85,7 @@ export const ToolTip = (props) => {
 		"playback-rate": `Change video speed`,
 		"prev-sub": `Previous Subtitle`,
 		"restart": `Start Over`,
+		"settings": `Settings`,
 		"te-zoom": `Drag to zoom in/out`,
 		"transcript-hide": `Show/Hide`,
 		"transcript-seek": `Click to seek`,

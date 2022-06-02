@@ -148,7 +148,7 @@ const PlayerControls = props => {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 				/>
 				<p className='play-time'>{playTime}</p>
 				<img id='start-over' alt='' src={startOverIcon} onClick={e => handleSeekChange(null, 0)} width='20' height='20'
@@ -159,7 +159,7 @@ const PlayerControls = props => {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 				/>
 				{ subtitleTextIndex !== null &&
 				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt='Previous Subtitle'
@@ -170,7 +170,7 @@ const PlayerControls = props => {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 				/>
 				}
 				{ subtitleTextIndex !== null &&
@@ -182,7 +182,7 @@ const PlayerControls = props => {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 				/>
 				}
 
@@ -196,7 +196,7 @@ const PlayerControls = props => {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 				/>
 				<Speed src={clockIcon} onClick={handleChangeSpeed}
 					onMouseEnter={e => handleShowTip(`playback-rate`,
@@ -206,7 +206,7 @@ const PlayerControls = props => {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 				/>
 				{ subtitleTextIndex !== null &&
 				<ClosedCaptions
@@ -219,7 +219,7 @@ const PlayerControls = props => {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 				/>
 				}
 				{ isMobile &&
@@ -233,7 +233,7 @@ const PlayerControls = props => {
 								width: e.currentTarget.offsetWidth,
 							})
 						}
-						onMouseLeave={e => toggleTip()}
+						onMouseLeave={() => toggleTip()}
 					/>}
 			</div>
 			{ showSpeed &&

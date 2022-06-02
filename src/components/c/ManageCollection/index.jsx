@@ -80,7 +80,7 @@ export default class ManageCollection extends PureComponent {
 									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()}
+							onMouseLeave={() => toggleTip()}
 						>
 							{isEditingCollectionName ? <><SaveIcon/>Save</> : `Edit`}
 						</TitleEditButton>
@@ -103,14 +103,6 @@ export default class ManageCollection extends PureComponent {
 										onClick={togglePublish}
 										id={`publish-button`}
 										className={`std-outline-color`}
-										onMouseEnter={e => handleShowTip(`collection-publish`,
-											{
-												x: e.target.getBoundingClientRect().x,
-												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth,
-											})
-										}
-										onMouseLeave={e => toggleTip()}
 									>
 										{collection.published ? `Unpublish` : `Publish`}
 									</PublishButton>
@@ -122,16 +114,9 @@ export default class ManageCollection extends PureComponent {
 				</header>
 				<TabHeader>
 					<button id={`content-button`} className={`std-outline-color`} onClick={setTab(true)}>Content</button>
-					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}
-						onMouseEnter={e => handleShowTip(`collection-permissions`,
-							{
-								x: e.target.getBoundingClientRect().x,
-								y: e.target.getBoundingClientRect().y + 5,
-								width: e.currentTarget.offsetWidth,
-							})
-						}
-						onMouseLeave={e => toggleTip()}
-					>Edit User Access</button>
+					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}>
+						Edit User Access
+					</button>
 					<Selector isContentTab={isContentTab} />
 				</TabHeader>
 
@@ -173,12 +158,12 @@ export default class ManageCollection extends PureComponent {
 									onClick={createContent}
 									onMouseEnter={e => handleShowTip(`collection-add-content`,
 										{
-											x: e.target.getBoundingClientRect().x + 5,
-											y: e.target.getBoundingClientRect().y + 55,
+											x: e.target.getBoundingClientRect().x + 100,
+											y: e.target.getBoundingClientRect().y + 180,
 											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}>
+									onMouseLeave={() => toggleTip()}>
 									<Icon />
 								</NewContent>
 							)}
