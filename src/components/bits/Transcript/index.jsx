@@ -127,7 +127,7 @@ const Transcript = props => {
 								{
 									x: e.target.getBoundingClientRect().x - 65,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
 							onMouseLeave={e => toggleTip()} />
@@ -136,7 +136,7 @@ const Transcript = props => {
 								{
 									x: e.target.getBoundingClientRect().x - 65,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
 							onMouseLeave={e => toggleTip()} />
@@ -148,7 +148,7 @@ const Transcript = props => {
 								{
 									x: e.target.getBoundingClientRect().x - 20,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
 							onMouseLeave={e => toggleTip()} />
@@ -157,7 +157,7 @@ const Transcript = props => {
 								{
 									x: e.target.getBoundingClientRect().x - 20,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
 							onMouseLeave={e => toggleTip()} />
@@ -172,7 +172,7 @@ const Transcript = props => {
 							{
 								x: e.target.getBoundingClientRect().x - 80,
 								y: e.target.getBoundingClientRect().y - 25,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}
@@ -182,12 +182,12 @@ const Transcript = props => {
 					<h1>Transcript</h1>
 					<h2>
 						{ content !== undefined ?
-								content.settings.targetLanguage !== `` ?
-									`Video - ${content.settings.targetLanguage} |`
-									:
-									null
+							content.settings.targetLanguage !== `` ?
+								`Video - ${content.settings.targetLanguage} |`
 								:
 								null
+							:
+							null
 						}
 						Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}
 					</h2>
@@ -207,7 +207,7 @@ const Transcript = props => {
 										{
 											x: e.target.getBoundingClientRect().x - 20,
 											y: e.target.getBoundingClientRect().y - 30,
-											width: e.currentTarget.offsetWidth
+											width: e.currentTarget.offsetWidth,
 										})
 									}
 									onMouseLeave={e => toggleTip()}

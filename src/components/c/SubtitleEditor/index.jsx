@@ -41,6 +41,7 @@ const SubtitleEditor = props => {
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [eventListMinimized, setEventListMinimized] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0)
 	const [scrollBarWidth, setScrollBar] = useState(0)
@@ -55,6 +56,8 @@ const SubtitleEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(true)
 	const [scrollSub, setScrollSub] = useState(null)
+	const [eventSeek, setEventSeek] = useState(false)
+	const [eventPosition, setEventPosition] = useState(0)
 	// refs
 	const scrollRef = useRef()
 
@@ -644,7 +647,7 @@ const SubtitleEditor = props => {
 	const handleSubProgress = (currentTime) => {
 		let sub
 		if (subtitles.length !== 0){ // TODO: Come back to this if the subtitle editor starts having issues...
-			sub = subtitles[subLayerToEdit].content.findIndex((event)=> currentTime > event.start && currentTime <event.end)
+			sub = subtitles[subLayerToEdit].content.findIndex((event) => currentTime > event.start && currentTime < event.end)
 			if (sub !== -1){
 				if (scrollSub !== sub){
 					setScrollSub(sub)
@@ -656,11 +659,18 @@ const SubtitleEditor = props => {
 			}
 		}
 	}
+
+	const handleEventPosition = (position) => {
+		setEventPosition(position)
+	}
+
 	return (
 		<Style>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
 					className='video'
+					isReady={isReady}
+					setIsReady={setIsReady}
 					url={props.viewstate.url}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTime} // set current time
@@ -674,6 +684,9 @@ const SubtitleEditor = props => {
 					editorType={`subtitle`}
 					handleSubProgress={handleSubProgress}
 					aspectRatio={aspectRatio}
+					eventSeek={eventSeek}
+					setEventSeek={setEventSeek}
+					eventPosition={eventPosition}
 				>
 				</VideoContainer>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -719,21 +732,25 @@ const SubtitleEditor = props => {
 											}
 										</div>
 										<Icon className={`trashIcon`} src={trashIcon}
-                      onClick={ () => {
-                        openSubModal(
-                          `delete`,
-                          sub.title !== `` ? sub.title : `No Language`,
-                          handleAddSubLayer,
-                          handleAddSubLayerFromFile,
-                          handleDeleteSubLayer,
-                          index,
-                        )
-										}}/>
+											onClick={ () => {
+												openSubModal(
+													``,
+													undefined,
+													`delete`,
+													sub.title !== `` ? sub.title : `No Language`,
+													handleAddSubLayer,
+													handleAddSubLayerFromFile,
+													handleDeleteSubLayer,
+													index,
+												)
+											}}/>
 									</div>
 									<SubtitlesLayer
 										videoLength={videoLength}
 										minimized={eventListMinimized}
 										width={layerWidth}
+										setIsReady={setIsReady}
+										isReady={isReady}
 										subs={sub[`content`]}
 										activeEvent={subToEdit}
 										layer={index}
@@ -742,6 +759,8 @@ const SubtitleEditor = props => {
 										updateSubs={updateSubs}
 										closeEditor={closeSideEditor}
 										displayLayer={subLayerToEdit}
+										handleEventPosition={handleEventPosition}
+										setEventSeek={setEventSeek}
 									/>
 								</div>
 							))
@@ -751,6 +770,8 @@ const SubtitleEditor = props => {
 									videoLength={videoLength}
 									minimized={eventListMinimized}
 									width={layerWidth}
+									isReady={isReady}
+									setIsReady={setIsReady}
 									subs={[]}
 									activeEvent={subToEdit}
 									layer={null}
@@ -759,26 +780,28 @@ const SubtitleEditor = props => {
 									updateSubs={updateSubs}
 									closeEditor={closeSideEditor}
 									displayLayer={subLayerToEdit}
+									handleEventPosition={handleEventPosition}
+									setEventSeek={setEventSeek}
 								/>
 
 							}
 							<div
-                style={
-                  {
-                    color: `#ffffff`,
-                    backgroundColor: `#0582ca`,
-                    borderRadius: `0.6rem`,
-                    width: `130px`,
-                    margin: `10px`,
-                    textAlign: `center`,
-                    padding: `5px`,
-                    cursor: `pointer`
-                   }
-                 }
-                 className={`setSubModalVisible`}
-                 onClick={ () => {
-								  openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-							   }}>
+								style={
+									{
+										color: `#ffffff`,
+										backgroundColor: `#0582ca`,
+										borderRadius: `0.6rem`,
+										width: `130px`,
+										margin: `10px`,
+										textAlign: `center`,
+										padding: `5px`,
+										cursor: `pointer`,
+									}
+								}
+								className={`setSubModalVisible`}
+								onClick={ () => {
+									openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+								}}>
 								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 							</div>
 						</div>
@@ -800,7 +823,7 @@ const SubtitleEditor = props => {
 										topRight: false,
 										bottomRight: false,
 										bottomLeft: false,
-										topLeft: false
+										topLeft: false,
 									}
 								}
 								dragAxis='x'
@@ -809,7 +832,7 @@ const SubtitleEditor = props => {
 									{
 										x: e.target.getBoundingClientRect().x,
 										y: e.target.getBoundingClientRect().y,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={e => toggleTip()}
@@ -831,7 +854,7 @@ const SubtitleEditor = props => {
 												topRight: false,
 												bottomRight: false,
 												bottomLeft: false,
-												topLeft: false
+												topLeft: false,
 											}
 										}
 										bounds = {`parent`}
@@ -864,7 +887,7 @@ const SubtitleEditor = props => {
 							{
 								x: e.target.getBoundingClientRect().x,
 								y: e.target.getBoundingClientRect().y + 10,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}

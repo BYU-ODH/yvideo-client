@@ -143,7 +143,7 @@ export default class ContentOverview extends PureComponent {
 											{
 												x: e.target.getBoundingClientRect().x + 45,
 												y: e.target.getBoundingClientRect().y + 5,
-												width: e.currentTarget.offsetWidth
+												width: e.currentTarget.offsetWidth,
 											})
 									}}
 									onMouseOut={(e) => {
@@ -174,12 +174,12 @@ export default class ContentOverview extends PureComponent {
 							<br/>
 							<div className='tags'>
 								{ keywords ?
-										keywords.map((item, index) => item === `` ?
-											null
-											:
-											<Tag key={index} onClick={removeTag}>{item}</Tag>)
+									keywords.map((item, index) => item === `` ?
+										null
 										:
-										<></>
+										<Tag key={index} onClick={removeTag}>{item}</Tag>)
+									:
+									<></>
 								}
 							</div>
 						</Column>
@@ -195,7 +195,7 @@ export default class ContentOverview extends PureComponent {
 										{
 											x: e.target.getBoundingClientRect().x + 45,
 											y: e.target.getBoundingClientRect().y + 5,
-											width: e.currentTarget.offsetWidth
+											width: e.currentTarget.offsetWidth,
 										})
 									}
 									onMouseLeave={e => toggleTip()}

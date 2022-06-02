@@ -34,6 +34,9 @@ const props = {
 	width: 10,
 	sideEditor: jest.fn(),
 	updateSubs: jest.fn(),
+	handleEventPosition: jest.fn(),
+	setEventSeek: jest.fn(),
+	setIsReady: jest.fn(),
 }
 
 jest.mock(`react`, () => {

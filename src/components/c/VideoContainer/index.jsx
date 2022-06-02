@@ -4,7 +4,7 @@ import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-import { CurrentEvents, CensorChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, HandleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -17,6 +17,7 @@ const VideoContainer = props => {
 		url,
 		getDuration,
 		handleLastClick,
+		isReady, setIsReady,
 		getVideoTime,
 		events,
 		updateEvents,
@@ -28,6 +29,9 @@ const VideoContainer = props => {
 		editorType,
 		aspectRatio,
 		handleSubProgress,
+		eventSeek,
+		setEventSeek,
+		eventPosition,
 	} = props
 
 	const ref = useRef(null)
@@ -37,7 +41,6 @@ const VideoContainer = props => {
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
-	const [isReady, setIsReady] = useState(false)
 	const [duration, setDuration] = useState(0) // total time of video
 	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
@@ -47,6 +50,7 @@ const VideoContainer = props => {
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({})
 	const [playerPadding,setPlayerPadding] = useState([0,0])
+	const [isUploading, setIsUploadings] = useState(false)
 
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
@@ -82,6 +86,7 @@ const VideoContainer = props => {
 			setMuted(muted)
 			setPlaybackRate(playbackRate)
 			setIsReady(true)
+			setIsUploadings(true)
 			video.handleAspectRatio()
 		},
 		handleProgress: ({ played, playedSeconds }) => {
@@ -104,7 +109,7 @@ const VideoContainer = props => {
 			const values = CurrentEvents(playedSeconds,events,duration)
 
 			executeCensors(values, playedSeconds)
-			// for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
+			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
@@ -255,7 +260,6 @@ const VideoContainer = props => {
 		},
 		handleBlankClick : (height, width, x, y) => {
 			if(editorType !== `video`) return
-			// console.log(x,y)
 			const newX = x-playerPadding[0]
 			const newY = y-playerPadding[1]
 			let currentTime = ref.current.getCurrentTime()
@@ -394,6 +398,11 @@ const VideoContainer = props => {
 				handleHotKeys(e)
 			}
 		}
+		// Allowing the seeker bar to go straight to the event that is clicked, but only if eventSeek === true
+		if (eventSeek === true) {
+			video.handleSeek(null, eventPosition)
+			setEventSeek(false)
+		}
 
 		if(events) {
 			events.forEach(event => {
@@ -411,7 +420,7 @@ const VideoContainer = props => {
 			window.onkeyup = null
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [duration])
+	}, [duration, eventPosition])
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
@@ -451,8 +460,11 @@ const VideoContainer = props => {
 					</PauseMessage>
 				</Blank>
 			</div>
-
+			{/* Load the spinner if the paid is loading initially */}
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
+
+			{/* Load the spinner if a file is uploading */}
+			{!isUploading && <div className='loading-spinner'><Spinner/></div> }
 
 			<ReactPlayer ref={ref} config={config} url={url}
 				onContextMenu={e => e.preventDefault()}
@@ -518,6 +530,7 @@ const VideoContainer = props => {
 			</SubtitlesContainer>
 			<p id='seconds-time-holder' style={{ visibility: `hidden`, position: `absolute`, top: `0px`, right: `0px` }}></p>
 		</Style>
+
 	)
 }
 

@@ -12,6 +12,7 @@ import muteIcon from 'assets/event_mute.svg'
 import pauseIcon from 'assets/event_pause.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
+import commentIcon from 'assets/event_comment.svg'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
@@ -30,7 +31,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Censor`}, {4: `Blank`}] // {3: `Comment`},
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`},{3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
 
 	const events = [
 		{
@@ -54,18 +55,18 @@ const VideoEditor = props => {
 			message: ``,
 			layer: 0,
 		},
-		// {
-		// 	type: `Comment`,
-		// 	icon: commentIcon,
-		// 	start: 0,
-		// 	end: 10,
-		// 	layer: 0,
-		// 	comment: ``,
-		// 	position: {
-		// 		x: 0,
-		// 		y: 0,
-		// 	},
-		// },
+		{
+			type: `Comment`,
+			icon: commentIcon,
+			start: 0,
+			end: 10,
+			layer: 0,
+			comment: ``,
+			position: {
+				x: 0,
+				y: 0,
+			},
+		},
 		{
 			type: `Censor`,
 			icon: censorIcon,
@@ -94,6 +95,9 @@ const VideoEditor = props => {
 	const [displayLayer, setDisplayLayer] = useState(0)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
+	const [isReady, setIsReady] = useState(false)
+	const [eventSeek, setEventSeek] = useState(false)
+	const [eventPosition, setEventPosition] = useState(0)
 
 	// eslint-disable-next-line no-unused-vars
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
@@ -266,19 +270,19 @@ const VideoEditor = props => {
 		const index = eventToEdit
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
-		const posPrev = (
+		const posPrev =
 			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b) =>
 				parseFloat(cEvent.position[b]) - parseFloat(cEvent.position[a]))[0]
-		)
-		const posNext = (
+
+		const posNext =
 			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>
 				parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
-		)
+
 		setActiveCensorPosition(posPrev && posNext ?
 			posPrev ?
 				posPrev
 				: posNext
-			: -1
+			: -1,
 		)
 		delete cEvent.position[item]
 		updateEvents(index, cEvent, layer)
@@ -469,11 +473,17 @@ const VideoEditor = props => {
 		return allEvents[eventToEdit] !== undefined ? allEvents[eventToEdit] : currentEvent
 	}
 
+	const handleEventPosition = (position) => {
+		setEventPosition(position)
+	}
+
 	return (
 		<Style id='video-editor'>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
 					className='video'
+					isReady ={isReady}
+					setIsReady={setIsReady}
 					url={url}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTimePercentage} // set current time
@@ -486,6 +496,9 @@ const VideoEditor = props => {
 					setActiveCensorPosition = {setActiveCensorPosition}
 					editorType={`video`}
 					aspectRatio={aspectRatio}
+					eventSeek={eventSeek}
+					setEventSeek={setEventSeek}
+					eventPosition={eventPosition}
 				></VideoContainer>
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -510,6 +523,8 @@ const VideoEditor = props => {
 										// onDrop={(item) => eventDropHandler(item,index)}
 										updateEvents={updateEvents}
 										displayLayer={displayLayer}
+										handleEventPosition={handleEventPosition}
+										setEventSeek={setEventSeek}
 									/>
 								</div>
 							))}
@@ -530,7 +545,7 @@ const VideoEditor = props => {
 									{
 										x: e.target.getBoundingClientRect().x,
 										y: e.target.getBoundingClientRect().y,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={e => toggleTip()}
@@ -565,7 +580,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized}>
+			<EventEditor id='EventEditor' minimized={eventListMinimized} show = {showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}
@@ -575,7 +590,7 @@ const VideoEditor = props => {
 							{
 								x: e.target.getBoundingClientRect().x,
 								y: e.target.getBoundingClientRect().y + 10,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}

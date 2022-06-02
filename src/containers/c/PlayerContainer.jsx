@@ -100,11 +100,11 @@ const PlayerContainer = props => {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
-			const clips = (
+			const clips =
 				contentCache[params.id][`clips`] ?
 					JSON.parse(contentCache[params.id][`clips`])[params.clip]
 					: []
-			)
+
 			if (params.clip) setClipTime([clips[`start`], clips[`end`]])
 
 			if (contentCache[params.id].url !== ``) {
