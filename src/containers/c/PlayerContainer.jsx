@@ -86,6 +86,7 @@ const PlayerContainer = props => {
 	const ref = player => {
 		setPlayer(player)
 	}
+
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
 		setShowTranscript(false)
@@ -358,7 +359,7 @@ const PlayerContainer = props => {
 			}
 		}
 
-		setSubtitleTextIndex(index)
+		setSubtitleTextIndex(index) //THESE SETTERS ARE THE CULPRITS WE HAVE A WARRANT FOR LINE 362 AND LINE 363
 		setSubtitleText(value)
 	}
 
@@ -527,7 +528,7 @@ const PlayerContainer = props => {
 		handleOffSubtitles,
 	}
 
-	return <Player viewstate={viewstate} handlers={handlers} />
+		return <Player viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStore, interfaceStore }) => ({

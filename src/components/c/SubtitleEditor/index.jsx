@@ -61,6 +61,16 @@ const SubtitleEditor = props => {
 	// refs
 	const scrollRef = useRef()
 
+	const useAsync = () => { // eslint-disable-line no-unused-vars
+		const mountedRef = useRef(true)
+
+		useEffect = () => {
+			return function cleanup() {
+				mountedRef.current = false
+			}
+		}
+	}
+
 	useEffect(() => {
 		function handleResize() {
 			setZoomFactor(0)
@@ -242,48 +252,49 @@ const SubtitleEditor = props => {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.start = convertToSeconds(sub.start, videoLength)
 					document.getElementById(`subStart${index}`).style.border=null
-				}else {
+				} else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
-			} else if (side === `end`) {
-				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
+			}
+			else if(side === `end`) {
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.end = convertToSeconds(sub.end, videoLength)
 					document.getElementById(`subEnd${index}`).style.border=null
 				} else {
-					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
+					document.getElementById(`subEnd${index}`).style.border = `2px solid red`
 					needCheck = false
 				}
 			}
 		} catch (e) {
 			console.error(`updateSubs error`, e) // eslint-disable-line no-console
 		}
-		if(side===`beg` && needCheck === true) {
-			if(sub.start===``){
-				document.getElementById(`subStart${index}`).style.border=`2px solid red`
-				needCheck=false
+		if(side === `beg` && needCheck === true) {
+			if(sub.start === ``){
+				document.getElementById(`subStart${index}`).style.border = `2px solid red`
+				needCheck = false
 			} else {
 				if(sub.start < 0) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
+					document.getElementById(`subStart${index}`).style.border = `2px solid red`
+					needCheck = false
 				} else if(sub.start >= videoLength) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
+					document.getElementById(`subStart${index}`).style.border = `2px solid red`
+					needCheck = false
 				} else if(sub.start >= sub.end) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
+					document.getElementById(`subStart${index}`).style.border = `2px solid red`
+					needCheck = false
 				} else {
-					if(index !==0) {
+					if(index !== 0) {
 						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
-							document.getElementById(`subStart${index}`).style.border=`2px solid red`
-							needCheck=false
+							document.getElementById(`subStart${index}`).style.border = `2px solid red`
+							needCheck = false
 						}
 					}
 				}
 			}
-		} else if(side===`end` && needCheck === true) {
+		} else if(side === `end` && needCheck === true) {
 			// check end
-			if(sub.end===``) {
+			if(sub.end === ``) {
 				document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 				needCheck=false
 			} else {
