@@ -405,7 +405,6 @@ const VideoEditor = props => {
 			jsonData.push(data);
 			console.log(jsonData);
 			}
-
 			else if (allEvents[e].type === 'Censor'){
 				const data = {"options": {
 					"start": allEvents[e].start,
