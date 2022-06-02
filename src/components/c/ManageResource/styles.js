@@ -203,5 +203,6 @@ export const Help = styled.span`
     position: absolute;
     right: -3px;
     bottom: 5px;
+		cursor: pointer;
 	}
 `

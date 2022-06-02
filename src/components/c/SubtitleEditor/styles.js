@@ -352,6 +352,7 @@ export const Help = styled.img`
 	margin-left: 10px;
 	position: relative;
 	top: 10px;
+	cursor: pointer;
 `
 
 export const PlusIcon = styled.div`
