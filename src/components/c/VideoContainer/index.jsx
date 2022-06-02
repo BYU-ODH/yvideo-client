@@ -4,7 +4,7 @@ import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
-import { CurrentEvents, CensorChange, HandleSubtitle,CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, HandleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
