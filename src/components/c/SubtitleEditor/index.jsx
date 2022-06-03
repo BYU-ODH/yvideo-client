@@ -19,7 +19,6 @@ import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
 
 const SubtitleEditor = props => {
-
 	const { setEvents, updateContent, createSub, setAllSubs, activeUpdate, deleteSubtitles } = props
 
 	const {
@@ -458,7 +457,6 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const handleAddSubLayerFromFile = (url) => {
-		debugger
 		try{
 			const reader = new FileReader()
 			reader.onload = (e) => {

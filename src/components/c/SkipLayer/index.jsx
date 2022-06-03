@@ -95,7 +95,7 @@ const SkipLayer = props => {
 		const tickNum = (videoLength-videoLength % tickInt)/tickInt
 		for(let i = 0; i < tickNum+1; i++){
 			ticks.push(
-				<div className='timemarker' style={{left:`${tickInt/videoLength*i*100}%`}}>
+				<div className='timemarker' key={i} style={{left:`${tickInt/videoLength*i*100}%`}}>
 					<div className='tickbar'>
 					</div>
 					<p className='time'>{convertSecondsToMinute(tickInt*i)}</p>
