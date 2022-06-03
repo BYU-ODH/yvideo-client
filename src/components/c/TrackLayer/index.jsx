@@ -71,9 +71,33 @@ const TrackLayer = props => {
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
-	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
-	// This object is to overwrite the css properties of the right and left side of the Rnd
-	const resizeSpace = {right: {borderRight: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
+	const Enable = {
+		top: false,
+		right: true,
+		bottom: false,
+		left: true,
+		topRight: false,
+		bottomRight: false,
+		bottomLeft: false,
+		topLeft: false,
+	}
+	// This object is to overwrite the css properties of the right and left side of the Rnd, specifically the resize handles
+	const handleStyles = {
+		right: {
+			borderRight: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			right: `0px`,
+			padding: `1px`,
+		},
+		left: {
+			borderLeft: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			left: `0px`,
+			padding: `1px`,
+		},
+	}
 
 	const calculateOverlaps = () => {
 		const sortedEvents = JSON.parse(JSON.stringify(events))
@@ -178,7 +202,7 @@ const TrackLayer = props => {
 					}
 				}
 				position={{ x: event.start / videoLength * layerWidth, y: 0}}
-				resizeHandleStyles={resizeSpace}
+				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
 				onDragStop={(e, d) => {

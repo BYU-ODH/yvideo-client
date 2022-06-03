@@ -61,6 +61,16 @@ const SubtitleEditor = props => {
 	// refs
 	const scrollRef = useRef()
 
+	const useAsync = () => { // eslint-disable-line no-unused-vars
+		const mountedRef = useRef(true)
+
+		useEffect(() => {
+			return function cleanup() {
+				mountedRef.current = false
+			}
+		})
+	}
+
 	useEffect(() => {
 		function handleResize() {
 			setZoomFactor(0)
@@ -242,48 +252,48 @@ const SubtitleEditor = props => {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.start = convertToSeconds(sub.start, videoLength)
 					document.getElementById(`subStart${index}`).style.border=null
-				}else {
+				} else {
 					document.getElementById(`subStart${index}`).style.border=`2px solid red`
 					needCheck = false
 				}
-			} else if (side === `end`) {
-				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
-					sub.end = convertToSeconds(sub.end, videoLength)
-					document.getElementById(`subEnd${index}`).style.border=null
-				} else {
-					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
-					needCheck = false
-				}
+			} else if(side === `end`) {
+					if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
+						sub.end = convertToSeconds(sub.end, videoLength)
+						document.getElementById(`subEnd${index}`).style.border=null
+					} else {
+						document.getElementById(`subEnd${index}`).style.border = `2px solid red`
+						needCheck = false
+					}
 			}
 		} catch (e) {
 			console.error(`updateSubs error`, e) // eslint-disable-line no-console
 		}
-		if(side===`beg` && needCheck === true) {
-			if(sub.start===``){
-				document.getElementById(`subStart${index}`).style.border=`2px solid red`
-				needCheck=false
+		if(side === `beg` && needCheck === true) {
+			if(sub.start === ``){
+				document.getElementById(`subStart${index}`).style.border = `2px solid red`
+				needCheck = false
 			} else {
 				if(sub.start < 0) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
+					document.getElementById(`subStart${index}`).style.border = `2px solid red`
+					needCheck = false
 				} else if(sub.start >= videoLength) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
+					document.getElementById(`subStart${index}`).style.border = `2px solid red`
+					needCheck = false
 				} else if(sub.start >= sub.end) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
+					document.getElementById(`subStart${index}`).style.border = `2px solid red`
+					needCheck = false
 				} else {
-					if(index !==0) {
+					if(index !== 0) {
 						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
-							document.getElementById(`subStart${index}`).style.border=`2px solid red`
-							needCheck=false
+							document.getElementById(`subStart${index}`).style.border = `2px solid red`
+							needCheck = false
 						}
 					}
 				}
 			}
-		} else if(side===`end` && needCheck === true) {
+		} else if(side === `end` && needCheck === true) {
 			// check end
-			if(sub.end===``) {
+			if(sub.end === ``) {
 				document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 				needCheck=false
 			} else {
@@ -774,28 +784,10 @@ const SubtitleEditor = props => {
 								/>
 
 							}
-							<div
-								style={
-									{
-										color: `#ffffff`,
-										backgroundColor: `#0582ca`,
-										borderRadius: `0.6rem`,
-										width: `130px`,
-										margin: `10px`,
-										textAlign: `center`,
-										padding: `5px`,
-										cursor: `pointer`,
-									}
-								}
-								className={`setSubModalVisible`}
-								onClick={ () => {
-									openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-								}}>
-								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
-							</div>
 						</div>
 
 					</section>
+
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' id='zoom-factor'>
@@ -864,6 +856,28 @@ const SubtitleEditor = props => {
 					</div>
 				</Timeline>
 			</span>
+
+			<div
+				style={
+					{
+						color: `#ffffff`,
+						backgroundColor: `#0582ca`,
+						borderRadius: `0.6rem`,
+						width: `130px`,
+						margin: `10px`,
+						textAlign: `center`,
+						padding: `5px`,
+						cursor: `pointer`,
+						position: `absolute`,
+						bottom: `3.9%`,
+					}
+				}
+				className={`setSubModalVisible`}
+				onClick={ () => {
+					openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+				}}>
+				<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
+			</div>
 
 			<EventList minimized={eventListMinimized}>
 				<header>
