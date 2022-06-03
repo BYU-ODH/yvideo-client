@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 import helpIcon from 'assets/help/help-icon-black.svg'
@@ -208,10 +208,10 @@ export default class ContentOverview extends PureComponent {
 						</Column>
 					</InnerContainer>
 				}
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='Have you saved your changes already?'
-				/>
+				/> */}
 			</Style>
 		)
 	}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { interfaceService, resourceService, contentService, subtitlesService } from 'services'
@@ -100,13 +100,22 @@ const SubtitlesEditorContainer = props => {
 			}
 		}
 		// once the url is set we can get subtitles
+		// if(!calledGetSubtitles){
+		// 	console.log(`oops`) //eslint-disable-line
+		// 	getSubtitles(id)
+		// 	setCalledGetSubtitles(true)
+		// } else
+		// 	setSubs(allSubs)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [content, resource, eventsArray, currentContent, subs, streamKey, url, subContentId, getContent, sKey,calledGetSubtitles,allSubs])
+
+	useLayoutEffect(()=>{
 		if(!calledGetSubtitles){
 			getSubtitles(id)
 			setCalledGetSubtitles(true)
 		} else
 			setSubs(allSubs)
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
+	},[calledGetSubtitles,content,subs,allSubs])
 
 	const createAndAddSub = async () =>{
 		const subtitles = [...allSubs]

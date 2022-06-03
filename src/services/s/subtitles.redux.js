@@ -152,9 +152,10 @@ export default class SubtitlesService {
 
 		if(currentContentId !== id)
 			dispatch(this.actions.subtitlesClean())
-
+		console.log(`get`) //eslint-disable-line
 		try {
 			const result = await apiProxy.content.getSubtitles(id)
+			console.log(result) //eslint-disable-line
 			dispatch(this.actions.subtitlesGet(result, id))
 			return result
 		} catch (error) {

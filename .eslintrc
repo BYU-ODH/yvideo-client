@@ -1,5 +1,5 @@
 {
-	"parser": "babel-eslint",
+	"parser": "@babel/eslint-parser",
 	"parserOptions": {
 		"ecmaFeatures": {
 			"jsx": true,
@@ -78,7 +78,7 @@
 		"no-cond-assign": "error",
 		"no-const-assign": "error",
 		"no-console": "error",
-		"no-debugger": "error",
+		"no-debugger": "warn",
 		"no-dupe-args": "error",
 		"no-dupe-class-members": "error",
 		"no-dupe-else-if": "error",

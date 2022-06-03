@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
 import { VideoContainer, SkipLayer } from 'components'
 import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
-import Backend from 'react-dnd-html5-backend'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 
 // import * as Subtitle from 'subtitle'
@@ -338,7 +338,7 @@ const ClipEditor = props => {
 
 	return (
 		<Style>
-			<DndProvider backend={Backend}>
+			<DndProvider backend={HTML5Backend}>
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
 						className='video'
@@ -544,10 +544,10 @@ const ClipEditor = props => {
 				}>
 					<h2>Clip saved successfully</h2>
 				</AnnotationMessage>
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
-				/>
+				/> */}
 			</>
 		</Style>
 	)

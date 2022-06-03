@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
@@ -671,10 +671,10 @@ const VideoEditor = props => {
 			</EventEditor>
 
 			<>
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
-				/>
+				/> */}
 			</>
 		</Style>
 	)

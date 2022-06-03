@@ -97,11 +97,11 @@ const SubtitleEditorSideMenu = props => {
 									onChange={ (value) => editSub(null, null, value, subLayer, ind)} />
 								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
 									<input
-                    id={`subStart${ind}`}
-                    className={`subStart sideTabInput`}
-                    type='text'
+										id={`subStart${ind}`}
+										className={`subStart sideTabInput`}
+										type='text'
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
-                    onClick={ () => changeSubIndex(ind)}
+										onClick={ () => changeSubIndex(ind)}
 										onChange={e => editSub(`beg`, e.target.value, null, subLayer, ind, null)}
 										onBlur={e => editSub(`beg`, e.target.value, null, subLayer, ind, `onBlur`)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
