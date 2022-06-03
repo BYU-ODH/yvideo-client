@@ -1,3 +1,7 @@
+//This File is a temporary workaround for webpack 5
+//Once a fix has been found, please replace the current start in package.json with react-scripts start
+//Then delete this file
+
 webpack = require("webpack")
 
 module.exports = function override(config, env) {
@@ -17,8 +21,6 @@ module.exports = function override(config, env) {
       process: "process",
     }),
   ]
-  console.log(config.resolve)
-  console.log(config.plugins)
 
   return config
 }

@@ -140,7 +140,6 @@ export default class Player extends Component {
 			handleProgress(playedSeconds)
 			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
 			const subtitles = displaySubtitles
-			console.log(played*100,playedSeconds) //eslint-disable-line
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
 			if(document.getElementById(`time-dot`))

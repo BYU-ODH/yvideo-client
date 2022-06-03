@@ -30,19 +30,18 @@ import {
 	Tooltip,
 } from 'components/bits'
 
-const testPrint = () =>{
-	const stuff = (
-	<>
-		<Routes>
-			<Route path='/' element={<LandingContainer />} />
-			<Route path='/search-public-collections' element={<SearchPublicCollectionsContainer />}/>
-			<Route element={<Error error='404' message={`You've wandered too far`} />}/>
-		</Routes>
-	</>
-	)
-	console.log(stuff) //eslint-disable-line no-console
-	return stuff
-}
+// const testPrint = () =>{
+// 	const stuff = (
+// 	<>
+// 		<Routes>
+// 			<Route path='/' element={<LandingContainer />} />
+// 			<Route path='/search-public-collections' element={<SearchPublicCollectionsContainer />}/>
+// 			<Route element={<Error error='404' message={`You've wandered too far`} />}/>
+// 		</Routes>
+// 	</>
+// 	)
+// 	return stuff
+// }
 class Root extends PureComponent {
 
 	render() {
@@ -52,7 +51,6 @@ class Root extends PureComponent {
 			loading,
 			modal,
 		} = this.props.viewstate
-		console.log(user) //eslint-disable-line no-console
 		// TODO: route has to be touched mirroring with backend
 		return (
 			<Router>
@@ -135,21 +133,13 @@ class Root extends PureComponent {
 					</>
 					:
 					(
-						// <>
-						// 	<Routes>
-						// 		<Route exact path='/'>
-						// 			<LandingContainer />
-						// 		</Route>
-						// 		<Route exact path='/search-public-collections' >
-						// 			<MenuContainer />
-						// 			<SearchPublicCollectionsContainer />
-						// 		</Route>
-						// 		<Route>
-						// 			<Error error='404' message={`You've wandered too far`} />
-						// 		</Route>
-						// 	</Routes>
-						// </>
-						testPrint()
+						<>
+						<Routes>
+							<Route path='/' element={<LandingContainer />} />
+							<Route path='/search-public-collections' element={<SearchPublicCollectionsContainer />}/>
+							<Route element={<Error error='404' message={`You've wandered too far`} />}/>
+						</Routes>
+					</>
 					)
 				}
 
