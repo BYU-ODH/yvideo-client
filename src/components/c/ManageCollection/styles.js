@@ -6,6 +6,11 @@ import plusIcon from 'assets/plus-white.svg'
 const Style = styled.div`
 	overflow: auto;
 
+	.fa {
+		font-size: 1.9rem;
+		margin-right: .4rem;
+		}
+
   & > header {
 		height: 12rem;
 		padding: 0 3.8rem;

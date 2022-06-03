@@ -77,12 +77,12 @@ export default class ManageCollection extends PureComponent {
 								{
 									x: e.target.getBoundingClientRect().x,
 									y: e.target.getBoundingClientRect().y,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
 							onMouseLeave={e => toggleTip()}
 						>
-							{isEditingCollectionName ? <><SaveIcon/>Save</> : `Edit`}
+							{isEditingCollectionName ? [<i className='fa fa-save'></i>, `Save`] : `Edit`}
 						</TitleEditButton>
 					</Title>
 					<Publish>
@@ -107,7 +107,7 @@ export default class ManageCollection extends PureComponent {
 											{
 												x: e.target.getBoundingClientRect().x,
 												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth
+												width: e.currentTarget.offsetWidth,
 											})
 										}
 										onMouseLeave={e => toggleTip()}
@@ -127,7 +127,7 @@ export default class ManageCollection extends PureComponent {
 							{
 								x: e.target.getBoundingClientRect().x,
 								y: e.target.getBoundingClientRect().y + 5,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
 						onMouseLeave={e => toggleTip()}
@@ -175,7 +175,7 @@ export default class ManageCollection extends PureComponent {
 										{
 											x: e.target.getBoundingClientRect().x + 5,
 											y: e.target.getBoundingClientRect().y + 55,
-											width: e.currentTarget.offsetWidth
+											width: e.currentTarget.offsetWidth,
 										})
 									}
 									onMouseLeave={e => toggleTip()}>

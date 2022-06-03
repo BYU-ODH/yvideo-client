@@ -72,6 +72,8 @@ export const ToolTip = (props) => {
 	const tips = {
 		"actions": `Actions`,
 		"closed-captions": `On/Off Captions`,
+		"closed-captioning-on": `Captions on`,
+		"closed-captioning-off": `Captions off`,
 		"collection-add-content": `Add content to collection`,
 		"collection-edit-name": `Edit collection name`,
 		"collection-permissions": `Edit collection users`,
@@ -87,9 +89,13 @@ export const ToolTip = (props) => {
 		"play": `Play`,
 		"playback-rate": `Change video speed`,
 		"prev-sub": `Previous Subtitle`,
+		"published": `Published`,
+		"unpublished": `Not published`,
 		"restart": `Start Over`,
 		"te-zoom": `Drag to zoom in/out`,
 		"transcript-hide": `Show/Hide`,
+		"translation": `Translations on`,
+		"translation-off": `Translations off`,
 		"transcript-seek": `Click to seek`,
 		"definitions-disabled": `Definitions are not supported for this language`,
 	}

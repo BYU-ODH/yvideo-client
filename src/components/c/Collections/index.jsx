@@ -25,7 +25,7 @@ export default class Collections extends PureComponent {
 			isMobile,
 			publicCollections,
 			searchQuery,
-			hasCollectionPermissions
+			hasCollectionPermissions,
 		} = this.props.viewstate
 
 		const {
@@ -60,7 +60,7 @@ export default class Collections extends PureComponent {
 									{
 										x: e.target.getBoundingClientRect().x,
 										y: e.target.getBoundingClientRect().y + 10,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={e => toggleTip()}
@@ -75,7 +75,7 @@ export default class Collections extends PureComponent {
 									{
 										x: e.target.offsetLeft,
 										y: e.target.offsetTop + 12,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={toggleTip} />
@@ -84,15 +84,15 @@ export default class Collections extends PureComponent {
 							user !== null && user.roles < 3 &&
 								<h3>
 									<Link
-									to={`/manager`}
-									onClick={toggleTip}
-									onMouseEnter={e => handleShowTip(`manage-collections`,
-										{
-											x: e.target.offsetLeft,
-											y: e.target.offsetTop+20,
-											width: e.currentTarget.offsetWidth
-										})
-									}
+										to={`/manager`}
+										onClick={toggleTip}
+										onMouseEnter={e => handleShowTip(`manage-collections`,
+											{
+												x: e.target.offsetLeft,
+												y: e.target.offsetTop+20,
+												width: e.currentTarget.offsetWidth,
+											})
+										}
 										onMouseLeave={e => toggleTip()}>Manage Collections
 									</Link>
 								</h3>
