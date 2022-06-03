@@ -26,10 +26,8 @@ const SubtitlesContainer = props => {
 			}else if (currentTime > end || currentTime < start)
 				handleShowSubtitle(``)
 		}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, subtitles])
-
-
 
 	const eventClassArray = subtitles
 	const viewstate = {

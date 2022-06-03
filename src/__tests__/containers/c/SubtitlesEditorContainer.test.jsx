@@ -26,16 +26,16 @@ const props = {
 	setBreadcrumbs: jest.fn(),
 	allSubs: [
 		{
-			content: [ {start: 10, end: 20, text: `test`}, {start: 0, end: 10, text: `test`}, {start: 20, end: 30, text: `test`}, ]
-		}
+			content: [{start: 10, end: 20, text: `test`}, {start: 0, end: 10, text: `test`}, {start: 20, end: 30, text: `test`}],
+		},
 	],
 	handlers: {
 		openSubModal: jest.fn(),
 		setSideEditor: jest.fn(),
 	},
 	viewstate: {
-		showSideEditor: true
-	}
+		showSideEditor: true,
+	},
 }
 const modalProps1 = {
 	mode: `create`,

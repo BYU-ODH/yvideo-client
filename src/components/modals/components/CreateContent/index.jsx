@@ -140,9 +140,9 @@ export default class CreateContent extends PureComponent {
 							{
 								resourceContent && hideResources !== true &&
 									Object.keys(resourceContent).map(index =>
-									<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
-										<label>{resourceContent[index].resourceName}</label>
-									</li>
+										<li key={resourceContent[index].id} onClick={e => handleSelectResourceChange(e, resourceContent[index])}>
+											<label>{resourceContent[index].resourceName}</label>
+										</li>
 									)
 							}
 						</TableContainer>

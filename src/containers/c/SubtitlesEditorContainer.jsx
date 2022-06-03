@@ -106,7 +106,7 @@ const SubtitlesEditorContainer = props => {
 		// 	setCalledGetSubtitles(true)
 		// } else
 		// 	setSubs(allSubs)
-			// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [content, resource, eventsArray, currentContent, subs, streamKey, url, subContentId, getContent, sKey,calledGetSubtitles,allSubs])
 
 	useLayoutEffect(()=>{

@@ -26,8 +26,8 @@ export default class AuthService {
 		}),
 		authHasCollectionPermissions: permissions => ({
 			type: this.types.AUTH_HAS_COLLECTION_PERMISSIONS,
-			payload: { permissions }
-		})
+			payload: { permissions },
+		}),
 	}
 
 	// default store
@@ -122,8 +122,7 @@ export default class AuthService {
 			const result = await apiProxy.user.getHasPermissions(username)
 			// console.log('has collection permissions result: ', result)
 			dispatch(this.actions.authHasCollectionPermissions(result))
-		}
-		catch(error){
+		} catch(error) {
 			dispatch(this.actions.authError(error))
 		}
 	}

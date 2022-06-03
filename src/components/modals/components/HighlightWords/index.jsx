@@ -122,10 +122,10 @@ export default class HighlightWords extends PureComponent {
 								{
 									wordList.sort((a, b) =>
 										a > b ? 1 : -1).map((item, index) =>
-											item !== `` ?
-												<Tag key={index} onClick={removeWord}>{item}</Tag>
-												:
-												null
+										item !== `` ?
+											<Tag key={index} onClick={removeWord}>{item}</Tag>
+											:
+											null
 									)
 								}
 							</div>

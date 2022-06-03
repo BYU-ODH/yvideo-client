@@ -21,8 +21,8 @@ export default class HelpDocumentation extends PureComponent {
 						e.code === `Escape` ?
 							this.props.toggleModal()
 							:
-							void(0)
-						}
+							void 0
+					}
 					}
 					onClick={this.props.toggleModal}>
 					<Container id='help-documentation-container' onClick={e => {

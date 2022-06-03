@@ -97,7 +97,7 @@ class Root extends PureComponent {
 								user.roles < 3 &&
 								<Route path='/public-manager' element={<PublicManagerContainer />}>
 									<Route path=':id' element={<PublicManagerContainer />}/>
-									</Route>
+								</Route>
 							}
 
 							<Route path='/player' element={<PlayerContainer />}>
@@ -123,8 +123,8 @@ class Root extends PureComponent {
 							{
 								user.roles < 3 &&
 								<Route path='/clipeditor' element={<ClipEditorContainer />}>
-								<Route path=':id' element={<ClipEditorContainer />}/>
-							</Route>
+									<Route path=':id' element={<ClipEditorContainer />}/>
+								</Route>
 							}
 							<Route path='/feedback' element={<FeedbackContainer />}/>
 
@@ -134,12 +134,12 @@ class Root extends PureComponent {
 					:
 					(
 						<>
-						<Routes>
-							<Route path='/' element={<LandingContainer />} />
-							<Route path='/search-public-collections' element={<SearchPublicCollectionsContainer />}/>
-							<Route element={<Error error='404' message={`You've wandered too far`} />}/>
-						</Routes>
-					</>
+							<Routes>
+								<Route path='/' element={<LandingContainer />} />
+								<Route path='/search-public-collections' element={<SearchPublicCollectionsContainer />}/>
+								<Route element={<Error error='404' message={`You've wandered too far`} />}/>
+							</Routes>
+						</>
 					)
 				}
 
