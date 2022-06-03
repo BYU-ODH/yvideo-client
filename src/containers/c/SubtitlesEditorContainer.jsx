@@ -115,7 +115,7 @@ const SubtitlesEditorContainer = props => {
 	const createAndAddSub = async () => {
 		const subtitles = [...allSubs]
 		try {
-			for(let i = 0; i<subtitles.length;i++) {
+			for(let i = 0; i < subtitles.length; i++) { // eslint-disable-line react-hooks/exhaustive-deps
 				if (subtitles[i][`id`] === ``) {
 					subtitles[i][`content-id`] = id
 					const subId = await createSubtitle(subtitles[i])
