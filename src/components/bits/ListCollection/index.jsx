@@ -29,7 +29,9 @@ class ListCollection extends PureComponent {
 		const publishContent = content ? content.filter(item => item.published) : []
 
 		publishContent.sort((a, b) => {
-			return a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ? 1 : -1
+			return (a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ?
+				1 : -1
+			)
 		})
 
 		if (!content || this.props.collection.published !== true ) return null
@@ -38,14 +40,11 @@ class ListCollection extends PureComponent {
 			<Style>
 				<Header className='list-header' isOpen={isOpen} onClick={this.togglePanel} >
 					<h3>{name}</h3>
-					{
-						publishContent.length === 0 ? (
-							<p>This collection is empty</p>
-						)
-							:
-							publishContent.length === 1 ? (
+					{ publishContent.length === 0 ?
+						<p>This collection is empty</p>
+						:
+						publishContent.length === 1 ?
 								<p>1 item</p>
-							)
 								:
 								<p>{publishContent.length} items</p>
 					}

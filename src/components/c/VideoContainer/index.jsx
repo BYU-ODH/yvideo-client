@@ -333,6 +333,7 @@ const VideoContainer = props => {
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
+	let isPlaying = false
 
 	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
@@ -350,13 +351,13 @@ const VideoContainer = props => {
 			video.handleSeek(null, playedTime - .1)
 			break
 		case `Space`:
-			setPlaying(playing)
-			if (playing === true)
+			if(isPlaying) {
 				video.handlePause()
-
-			if (playing === false)
+				isPlaying = false
+			} else {
 				video.handlePlay()
-
+				isPlaying = true
+			}
 			break
 
 		default:

@@ -183,7 +183,7 @@ const Transcript = props => {
 					<h2>
 						{ content !== undefined ?
 							content.settings.targetLanguage !== `` ?
-								`Video - ${content.settings.targetLanguage} |`
+								`Video - ${content.settings.targetLanguage} | `
 								:
 								null
 							:
