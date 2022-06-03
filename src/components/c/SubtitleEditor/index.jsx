@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Style, { Timeline, EventList, Icon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
-import * as Subtitle from 'subtitle'
+// import * as Subtitle from 'subtitle'
 import {parse} from 'subtitle'
 
 import { VideoContainer, SkipLayer } from 'components'

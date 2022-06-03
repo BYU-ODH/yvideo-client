@@ -242,24 +242,19 @@ const PlayerControls = props => {
 					<div>
 						{playbackOptions.map((playbackAtIndex) =>
 							playbackAtIndex !== 1 ?
-								<>
-									<input
-										type='button'
-										value={playbackAtIndex}
-										key={playbackAtIndex}
-										onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-										className={playbackRate === playbackAtIndex ? `active-value` : ``} /><br/>
-								</>
+								<input
+									type='button'
+									value={playbackAtIndex}
+									key={playbackAtIndex}
+									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
+									className={playbackRate === playbackAtIndex ? `active-value` : ``} />
 								:
-								<>
-									<input
-										type='button'
-										value='Normal'
-										key={1}
-										onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-										className={playbackRate === playbackAtIndex ? `active-value` : ``} /><br/>
-								</>,
-						)
+								<input
+									type='button'
+									value='Normal'
+									key={1}
+									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
+									className={playbackRate === playbackAtIndex ? `active-value` : ``} />)
 						}
 					</div>
 				</div>
