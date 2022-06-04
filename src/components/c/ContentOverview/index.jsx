@@ -97,7 +97,19 @@ export default class ContentOverview extends PureComponent {
 					<div>
 						{editing &&
 							<div className='icon-Buttons'>
-								<PublishButton className='publish-button' published={content.published} onClick={handleTogglePublish}>{content.published ? [<i className='fa fa-eye-slash'></i>,`Unpublish`]: [<i className='fa fa-eye'></i>,`Publish`]}</PublishButton>
+								<PublishButton
+									className='publish-button'
+									published={content.published}
+									onClick={handleTogglePublish}>{content.published ?
+										<>
+											<i className='fa fa-eye-slash'></i> Unpublish
+										</>
+										:
+										<>
+											<i className='fa fa-eye'></i> Publish
+										</>
+									}
+								</PublishButton>
 								<RemoveButton className='remove-button' onClick={handleRemoveContent}><i className='fa fa-trash-o'></i>Delete</RemoveButton>
 								<EditButton id='edit-button' onClick={handleToggleEdit}><i className='fa fa-save'></i>Save</EditButton>
 							</div>
