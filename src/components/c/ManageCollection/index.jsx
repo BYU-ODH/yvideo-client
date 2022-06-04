@@ -82,7 +82,7 @@ export default class ManageCollection extends PureComponent {
 							}
 							onMouseLeave={e => toggleTip()}
 						>
-							{isEditingCollectionName ? <><SaveIcon/>Save</> : `Edit`}
+							{isEditingCollectionName ? [<i className='fa fa-save'></i>, `Save`] : `Edit`}
 						</TitleEditButton>
 					</Title>
 					<Publish>
