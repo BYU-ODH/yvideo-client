@@ -50,7 +50,7 @@ describe(`manage collection test`, () => {
 		wrapper.find(`button`).at(0).simulate(`click`)
 
 		expect(wrapper.find(`button`).at(0).text()).toContain(`Unpublish`)
-		expect(wrapper.find(`button`).at(1).props().children).toBe(`Delete`)
+		expect(wrapper.find(`button`).at(1).text()).toContain(`Delete`)
 		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 	})
 
@@ -58,7 +58,7 @@ describe(`manage collection test`, () => {
 
 		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
 		wrapper.find(`button`).at(0).simulate(`click`)
-		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
+		expect(wrapper.find(`button`).at(0).text()).toContain(`Unpublish`)
 
 		expect(wrapper.find(`ContentOverview`).props().viewstate.content.published).toBe(true)
 		wrapper.find(`button`).at(0).simulate(`click`)
@@ -69,7 +69,7 @@ describe(`manage collection test`, () => {
 
 		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
 		wrapper.find(`button`).at(0).simulate(`click`)
-		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
+		expect(wrapper.find(`button`).at(0).text()).toContain(`Unpublish`)
 
 		// method should not be called before click
 		expect(props.removeCollectionContent).not.toHaveBeenCalled()
@@ -101,7 +101,10 @@ describe(`manage collection test`, () => {
 		// click edit-button. It updates display without wrapper.update().
 		// click edit button trigger drop down menu.
 		expect(wrapper.find({"id" : `tag-input`}).length).toBe(0)
-		wrapper.find(`.fa .fa-save`)
+
+		wrapper.find(`button`).at(0).simulate(`click`)
+		expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(true)
+
 		wrapper.find({"id" : `edit-button`}).at(0).simulate(`click`)
 		expect(wrapper.find({"id" : `tag-input`}).length).toBe(1)
 
