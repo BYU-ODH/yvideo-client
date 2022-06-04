@@ -52,10 +52,6 @@ describe(`content overview test`, () => {
 		// expect(wrapper.find(`h4`).length).toBe(0)
 		// expect(wrapper.find(`h4`).props().children).toBe(`testname`)
 
-		// published
-		expect(wrapper.find(`em`).length).toBe(1)
-		expect(wrapper.find(`em`).props().children).toBe(`Published`)
-
 		// edit button on click re rerendering behavior, click behavior should be tested in ContentOverviewContainer
 		expect(wrapper.find(`#edit-button`).length).toBe(3)
 		viewstate.editing = true
