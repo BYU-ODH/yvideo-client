@@ -57,7 +57,7 @@ describe(`content overview test`, () => {
 		expect(wrapper.find(`em`).props().children).toBe(`Published`)
 
 		// edit button on click re rerendering behavior, click behavior should be tested in ContentOverviewContainer
-		expect(wrapper.find(`#edit-button`).length).toBe(3)
+		expect(wrapper.find(`#edit-button`).length).toBe(2)
 		viewstate.editing = true
 
 		const wrapperRerendered = mount( // eslint-disable-line no-unused-vars

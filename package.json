@@ -7,7 +7,7 @@
 		"build": "react-scripts build",
 		"test:react-18": "jest --config=jest.config.js",
 		"test:react-16": "USE_REACT_16=true jest --config=jest.config.js",
-		"test": "npm run test:react-18 && npm run test:react-16",
+		"test": "react-scripts test",
 		"lint": "eslint src/**/*.* --fix"
 	},
 	"jest": {
@@ -75,6 +75,7 @@
 		"yvideojs": "^1.1.8"
 	},
 	"devDependencies": {
+		"@cfaester/enzyme-adapter-react-18": "^0.5.1",
 		"@testing-library/dom": "^8.13.0",
 		"eslint-config-react-app": "^7.0.1",
 		"eslint-plugin-flowtype": "^8.0.3",
