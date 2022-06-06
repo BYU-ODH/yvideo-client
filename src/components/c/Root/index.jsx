@@ -17,7 +17,7 @@ import {
 	PublicManagerContainer,
 	ClipEditorContainer,
 	VideoEditorContainer,
-	SubtitlesEditorContainer,
+	SubtitleEditorContainer,
 } from 'containers'
 
 import {
@@ -112,8 +112,8 @@ class Root extends PureComponent {
 								</Route>
 							}
 
-							<Route path='/subtileeditor'>
-								<Route path=':id' element={<SubtitlesEditorContainer />}/>
+							<Route path='/subtitleeditor' element={<SubtitleEditorContainer />}>
+								<Route path=':id' element={<SubtitleEditorContainer />}/>
 							</Route>
 
 							<Route path='/clipeditor' element={<ClipEditorContainer />}>

@@ -196,7 +196,7 @@ const ContentOverviewContainer = props => {
 				})
 			} else if(classname.includes(`subtitle-editor`)){
 				navigate({
-					pathname: `/subtileeditor/${content.id}`,
+					pathname: `/subtitleeditor/${content.id}`,
 				})
 			} else if(classname.includes(`clip-manager`)){
 				navigate({

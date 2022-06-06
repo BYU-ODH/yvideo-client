@@ -65,7 +65,6 @@ describe(`admin dashboard test`, () => {
 		// expect(wrapper.contains(<td>Thu May 14 2020</td>)).toEqual(true)
 
 		const category = wrapper.find(`#categorySelect`).at(1)
-		console.log(category.debug())
 		expect(category.props().children[0].props.value).toBe(`Collections`)
 		expect(category.props().children[1].props.value).toBe(`Content`)
 		expect(category.props().children[2].props.value).toBe(`Users`)

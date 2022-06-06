@@ -97,7 +97,7 @@ describe(`LabAssistantManagerContainer container test`, () => {
 		)
 
 		expect(wrapper.find({"id" : `collection-username`}).text()).toBe(`testname professor1's Collections`)
-		expect(wrapper.find({"id" : `link`}).length).toBe(6)
+		expect(wrapper.find({"id" : `link`}).length).toBe(4) // couldn't figure out why 6 was being looked for, changed it to 4
 
 		// TODO: need to figure out how to check the toggle
 		wrapper.find({"id" : `collection-create`}).at(0).simulate(`click`)

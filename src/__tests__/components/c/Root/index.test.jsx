@@ -40,7 +40,7 @@ describe(`root route paring test`, () => {
 		expect(pathMap[`/public-manager/:id?`]).toBe(`PublicManagerContainer`)
 		expect(pathMap[`/player/:id/:clip?`]).toBe(`PlayerContainer`)
 		expect(pathMap[`/videoeditor/:id`]).toBe(`VideoEditorContainer`)
-		expect(pathMap[`/subtileeditor/:id`]).toBe(`SubtitlesEditorContainer`)
+		expect(pathMap[`/subtitleeditor/:id`]).toBe(`SubtitleEditorContainer`)
 		expect(pathMap[`/clipeditor/:id`]).toBe(`ClipEditorContainer`)
 		expect(pathMap[`/feedback`]).toBe(`FeedbackContainer`)
 		expect(pathMap[`/search-public-collections`]).toBe(`SearchPublicCollectionsContainer`)

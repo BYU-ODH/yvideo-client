@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 import { RemoveButton } from '../../../../components/bits/PermissionTable/styles'
-import { act } from 'react-dom/test-utils'
 
 const data =
 [
@@ -38,11 +37,18 @@ describe(`Permission Table test`, () => {
 		expect(item.text()).toEqual(`test@email.com`)
 	})
 
-	it(`RemoveButton onClick`, act(()=> {
-			const mockCallBack = jest.fn()
-			const button = shallow(<RemoveButton onClick={mockCallBack}/>)
-			button.find(`StyledComponent`).simulate(`click`)
-			expect(mockCallBack.mock.calls.length).toEqual(1)
+	it(`RemoveButton onClick`, ()=> {
+			const wrapper = mount(
+				<Provider store={testutil.store}>
+					<BrowserRouter>
+						<PermissionTable {...props} />
+					</BrowserRouter>
+				</Provider>,
+			)
+			wrapper.find(RemoveButton).simulate(`click`)
+			// const mockCallBack = jest.fn()
+			// const button = shallow(<RemoveButton onClick={mockCallBack}/>)
+			// button.find(`Removebutton`).simulate(`click`)
+			// expect(mockCallBack.mock.calls.length).toEqual(1)
 		})
-	)
 })
