@@ -5,7 +5,7 @@ import { VideoContainer, SkipLayer } from 'components'
 import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 
 // import * as Subtitle from 'subtitle'
@@ -17,7 +17,7 @@ import plus from 'assets/plus-circle.svg'
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
-import Style, { Timeline, AnnotationMessage, SideEditor, Icon} from './styles'
+import Style, { Timeline, AnnotationMessage, SideEditor, Icon } from './styles'
 
 const ClipEditor = props => {
 	const {
@@ -385,7 +385,7 @@ const ClipEditor = props => {
 									</div>
 								))}
 								{Object.keys(clipList).map((clip,index)=>(
-									<div className={`flex`}>
+									<div className={`flex`} key={index}>
 										<div
 											className={`handle`}
 											style={active === clip ?
@@ -488,45 +488,47 @@ const ClipEditor = props => {
 						</table>
 						<div className='clipList'>
 							<table>
-								<tbody>
-									{
-										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-											<div className={`singleClip ${i === clipIndex ? `clipActive` : ``}`}>
-												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
-													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
-													<td>
-														<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
-															onChange={(e) => setStartTime(e.target.value, `input`,item)}
-															onBlur={(e) => setStartTime(e.target.value, `onBlur`,item)}
-															onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
-																{
-																	x: e.target.getBoundingClientRect().x - 5,
-																	y: e.target.getBoundingClientRect().y + 5,
-																	width: e.currentTarget.offsetWidth + 20,
-																})
-															}
-															onMouseLeave={e => toggleTip()}
-														/>
-													</td>
-													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
-														onChange={(e) => setEndTime(e.target.value, `input`,item)}
-														onBlur={(e) => setEndTime(e.target.value, `onBlur`,item)}
+								{
+									Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+										<tbody key={i} className={`singleClip ${i === clipIndex ? `clipActive` : ``}`}>
+											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
+												<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+												<td>
+													<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+														onChange={(e) => setStartTime(e.target.value, `input`,item)}
+														onBlur={(e) => setStartTime(e.target.value, `onBlur`,item)}
 														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 															{
-																x: e.target.getBoundingClientRect().x + 35,
+																x: e.target.getBoundingClientRect().x - 5,
 																y: e.target.getBoundingClientRect().y + 5,
 																width: e.currentTarget.offsetWidth + 20,
 															})
 														}
 														onMouseLeave={e => toggleTip()}
 													/>
-													</td>
-												</tr>
-												<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
-											</div>
-										))
-									}
-								</tbody>
+												</td>
+												<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
+													onChange={(e) => setEndTime(e.target.value, `input`,item)}
+													onBlur={(e) => setEndTime(e.target.value, `onBlur`,item)}
+													onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+														{
+															x: e.target.getBoundingClientRect().x + 35,
+															y: e.target.getBoundingClientRect().y + 5,
+															width: e.currentTarget.offsetWidth + 20,
+														})
+													}
+													onMouseLeave={e => toggleTip()}
+												/>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
+												</td>
+											</tr>
+										</tbody>
+									))
+								}
 							</table>
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/>
 							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
