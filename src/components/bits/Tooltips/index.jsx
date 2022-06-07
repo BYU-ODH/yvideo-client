@@ -82,6 +82,7 @@ export const ToolTip = (props) => {
 		"help": `Help`,
 		"list-block": `Change view`,
 		"manage-collections": `Edit collections`,
+		"manage-public-collections": `Edit public collections`,
 		"menu": `Menu`,
 		"next-sub": `Next Subtitle`,
 		"MMSSMS": `MM:SS`,
