@@ -16,7 +16,6 @@ import Style, {
 	Tab,
 	NewContent,
 	Icon,
-	SaveIcon,
 	Publish,
 	Spinner,
 } from './styles'

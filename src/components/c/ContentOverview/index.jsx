@@ -164,7 +164,10 @@ export default class ContentOverview extends PureComponent {
 					}
 					{ !editing &&
 						<SettingsIcon
-							onClick={handleToggleEdit}
+							onClick={() => {
+								handleToggleEdit()
+								toggleTip()
+							}}
 							onMouseEnter={e => handleShowTip(`settings`,
 								{
 									x: e.target.getBoundingClientRect().x + 45,
@@ -174,7 +177,6 @@ export default class ContentOverview extends PureComponent {
 							}
 							onMouseLeave={() => toggleTip()} />
 					}
-					<EditButton id='edit-button' onClick={handleToggleEdit}>{editing ? <><SaveIcon/>Save</> : <></>}</EditButton>
 				</Preview>
 				{editing &&
 					<InnerContainer>
