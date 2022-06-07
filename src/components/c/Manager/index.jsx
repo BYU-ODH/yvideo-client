@@ -78,7 +78,7 @@ export default class Manager extends PureComponent {
 														width: e.currentTarget.offsetWidth,
 													})
 												}
-												onMouseLeave={e => toggleTip()}
+												onMouseLeave={() => toggleTip()}
 											><img id='help-document' src={helpIcon} alt='' onClick={handleShowHelp} />
 											</Help>
 										</h4>

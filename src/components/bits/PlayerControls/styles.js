@@ -215,8 +215,9 @@ export const Help = styled.img`
 	margin: 0px;
 	width: 22px;
 	height: 22px;
-	@media screen and (max-width: 375px){
+	@media screen and (max-width: 375px) {
 		height: 15px;
 		width: 15px;
 	}
+	cursor: pointer;
 `
