@@ -80,22 +80,22 @@ proxies.apiProxy.content.get.mockImplementation(()=>{
 
 // TODO: need to re-write player container test
 describe(`PlayerContainer test`, () => {
-	let contentServiceConstructor // eslint-disable-line no-unused-vars
-	let authServiceConstructor // eslint-disable-line no-unused-vars
-	let dispatch // eslint-disable-line no-unused-vars
-	let getState // eslint-disable-line no-unused-vars
-	let apiProxy // eslint-disable-line no-unused-vars
+	// let contentServiceConstructor // eslint-disable-line no-unused-vars
+	// let authServiceConstructor // eslint-disable-line no-unused-vars
+	// let dispatch // eslint-disable-line no-unused-vars
+	// let getState // eslint-disable-line no-unused-vars
+	// let apiProxy // eslint-disable-line no-unused-vars
 
-	beforeEach(async() => {
-		authServiceConstructor = new AuthService()
-		contentServiceConstructor = new ContentService()
+	// beforeEach(async() => {
+	// 	authServiceConstructor = new AuthService()
+	// 	contentServiceConstructor = new ContentService()
 
-		dispatch = testutil.store.dispatch
-		getState = testutil.store.getState
-		apiProxy = proxies.apiProxy
+	// 	dispatch = testutil.store.dispatch
+	// 	getState = testutil.store.getState
+	// 	apiProxy = proxies.apiProxy
 
 		// await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
 
 		// await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
-	})
+	// })
 })

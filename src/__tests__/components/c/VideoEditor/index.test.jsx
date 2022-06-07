@@ -238,8 +238,9 @@ describe(`VideoEditor testing`, () => {
 		)
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
+			wrapper.find(`.plusIcon`).at(0).simulate(`click`)
 		})
-		wrapper.find(`.plusIcon`).at(0).simulate(`click`)
+
 
 		act(() => {
 			wrapper.find(`Rnd`).forEach(e=>e.prop(`onDragStop`)(``, {x: 10}))

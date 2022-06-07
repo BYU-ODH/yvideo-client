@@ -65,9 +65,9 @@ const TrackLayer = props => {
 			setLayerWidth(layerWidth + width)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[width])
-	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
+	if(document.getElementById(`timeBarProgress`) !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
-		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
+		document.getElementById(`timeBarProgress`).style.width = `${layerWidth - 2}px`
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left

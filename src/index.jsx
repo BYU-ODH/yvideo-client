@@ -9,8 +9,8 @@ import { Provider } from 'react-redux'
 import store from 'services/store'
 
 import { RootContainer } from 'containers'
-const cont = 	document.getElementById(`root`)
-const root = ReactDOM.createRoot(cont)
+const container = document.getElementById(`root`)
+const root = ReactDOM.createRoot(container)
 root.render(
 	<Provider store={store}>
 		<RootContainer />
