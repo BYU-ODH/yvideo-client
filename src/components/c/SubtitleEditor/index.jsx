@@ -257,13 +257,13 @@ const SubtitleEditor = props => {
 					needCheck = false
 				}
 			} else if(side === `end`) {
-					if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
-						sub.end = convertToSeconds(sub.end, videoLength)
-						document.getElementById(`subEnd${index}`).style.border=null
-					} else {
-						document.getElementById(`subEnd${index}`).style.border = `2px solid red`
-						needCheck = false
-					}
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
+					sub.end = convertToSeconds(sub.end, videoLength)
+					document.getElementById(`subEnd${index}`).style.border=null
+				} else {
+					document.getElementById(`subEnd${index}`).style.border = `2px solid red`
+					needCheck = false
+				}
 			}
 		} catch (e) {
 			console.error(`updateSubs error`, e) // eslint-disable-line no-console

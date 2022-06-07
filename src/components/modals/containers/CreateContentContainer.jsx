@@ -259,8 +259,7 @@ const CreateContentContainer = props => {
 			}
 			toggleModal()
 			setBlock(false)
-		}
-		catch(err) {
+		} catch(err) {
 			alert(`Please use a valid URL`)
 			return
 		}

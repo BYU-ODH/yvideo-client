@@ -80,6 +80,12 @@ export default class ContentOverview extends PureComponent {
 			description,
 		} = content
 
+		// for testing purposes, I made this which just wraps 2 functions together
+		const handleEditAndTip = () => {
+			handleToggleEdit()
+			toggleTip()
+		}
+
 		return (
 			<Style>
 				<Preview onClick={handleToggleEdit}>
@@ -164,10 +170,7 @@ export default class ContentOverview extends PureComponent {
 					}
 					{ !editing &&
 						<SettingsIcon
-							onClick={() => {
-								handleToggleEdit()
-								toggleTip()
-							}}
+							onClick={handleEditAndTip}
 							onMouseEnter={e => handleShowTip(`settings`,
 								{
 									x: e.target.getBoundingClientRect().x + 45,
