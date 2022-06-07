@@ -304,7 +304,7 @@ const VideoContainer = props => {
 			}
 			const EventEditor = document.getElementById(`EventEditor`)
 			if(EventEditor)
-				EventEditor.style.height = `${blank.offsetHeight}px - 1px`
+				EventEditor.style.height = `${height -1}px`
 
 		},
 	}

@@ -9,7 +9,6 @@ import helpIcon from 'assets/help/help-icon-black.svg'
 import Style, {
 	EditButton,
 	Icon,
-	SaveIcon,
 	Preview,
 	PublishButton,
 	RemoveButton,
@@ -96,23 +95,65 @@ export default class ContentOverview extends PureComponent {
 						</Link>
 					</div>
 					<div>
+						{editing &&
+							<div className='icon-Buttons'>
+								<PublishButton
+									className='publish-button'
+									published={content.published}
+									onClick={handleTogglePublish}>{content.published ?
+										<>
+											<i className='fa fa-eye-slash'></i> Unpublish
+										</>
+										:
+										<>
+											<i className='fa fa-eye'></i> Publish
+										</>
+									}
+								</PublishButton>
+								<RemoveButton className='remove-button' onClick={handleRemoveContent}><i className='fa fa-trash-o'></i>Delete</RemoveButton>
+								<EditButton id='edit-button' onClick={handleToggleEdit}><i className='fa fa-save'></i>Save</EditButton>
+							</div>
+						}
 						{editing ?
 							<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
 							:
 							<TitleWrapper><h3 className={`content-title`}>{content.name}</h3></TitleWrapper>}
 						<ul>
-							<Icon className='translation' checked={allowDefinitions} />
-							<Icon className='captions' checked={showCaptions} />
+							<Icon className='translation' checked={allowDefinitions} onMouseEnter={e => handleShowTip(`${allowDefinitions ? `translation` : `translation-off`}`,
+								{
+									x: e.target.getBoundingClientRect().x + 10,
+									y: e.target.getBoundingClientRect().y + 5,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={e => toggleTip()}/>
+							<Icon className='captions' checked={showCaptions} onMouseEnter={e => handleShowTip(`${showCaptions ? `closed-captioning-on` : `closed-captioning-off`}`,
+								{
+									x: e.target.getBoundingClientRect().x + 10,
+									y: e.target.getBoundingClientRect().y + 5,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={e => toggleTip()}/>
 							<Icon className='annotations' checked={showAnnotations} />
+							<Icon>{content.published ? <i className='fa fa-eye'
+								onMouseEnter={e => handleShowTip(`published`,
+									{
+										x: e.target.getBoundingClientRect().x + 10,
+										y: e.target.getBoundingClientRect().y + 7,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={e => toggleTip()}></i> : <i className='fa fa-eye-slash'
+								onMouseEnter={e => handleShowTip(`unpublished`,
+									{
+										x: e.target.getBoundingClientRect().x + 10,
+										y: e.target.getBoundingClientRect().y + 5,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={e => toggleTip()}></i>}</Icon>
 						</ul>
-						{editing ?
-							<div>
-								<PublishButton className='publish-button' published={content.published} onClick={handleTogglePublish}>{content.published ? `Unpublish` : `Publish`}</PublishButton>
-								<RemoveButton className='remove-button' onClick={handleRemoveContent}>Delete</RemoveButton>
-							</div>
-							:
-							<em>{content.published ? `Published` : `Unpublished`}</em>
-						}
 					</div>
 					{editing ||
 						<LinksWrapper className='LinksWrapper'>
@@ -146,6 +187,7 @@ export default class ContentOverview extends PureComponent {
 							</div>
 							<h4>
 								Allow automatic definitions
+								<Icon className='translation-always-on'/>
 								<div
 									onMouseEnter={(e) => {
 										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)
@@ -173,8 +215,10 @@ export default class ContentOverview extends PureComponent {
 							</h4>
 							<h4>
 								Captions
+								<Icon className='caption-always-on'/>
 								<SwitchToggle id='captions-toggle'on={showCaptions} setToggle={handleToggleSettings} size={1.5} data_key='showCaptions' />
 							</h4>
+
 						</Column>
 						<Column>
 							<h4>Tags</h4>
