@@ -46,7 +46,6 @@ const TrackLayer = props => {
 			const overlapCount = calculateOverlaps()
 
 			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
-			
 			document.getElementById(`layer-${layerIndex}`).style.height =
 			`${overlapCount.length !== 0 ?
 				26 * (overlapCount.length + 1)
@@ -233,7 +232,7 @@ const TrackLayer = props => {
 									backgroundColor: `rgba(5, 130, 202, 0.1)`,
 									marginTop: layerOverlap.length > 0 ?
 										`${26 * layerOverlap.length}px`
-										: `0px`
+										: `0px`,
 								}
 							}
 						>
