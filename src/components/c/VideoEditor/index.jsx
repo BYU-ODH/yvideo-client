@@ -391,21 +391,7 @@ const VideoEditor = props => {
 
 
 	const handleExportAnnotation = () => {
-		// Convert JSON Array to string.
-		// Convert JSON string to BLOB.
-		// const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
 		var jsonData = [];
-		// for(let i=0; i < allEvents.length; i++) {
-		// 	if(allEvents[i].type ==='Censor'){
-		// 		var censorPositionData = {};
-		// 		for(const value of Object.values(allEvents[i].position)) {
-		// 			const time = value[0]
-		// 			const pos = value.slice(1)
-		// 			censorPositionData[time] = pos
-		// 		}
-		// 	}
-		// }
-
     for (let e=0; e < allEvents.length; e++) {
       if (allEvents[e].type !== 'Censor'){
         const data = {"options": {
@@ -442,7 +428,6 @@ const VideoEditor = props => {
     const json = JSON.stringify(jsonData);
     const blob = new Blob([json], {type: "application/json"})
     // get the current website url
-    // const url = window.URL || window.webkitURL
     // create a link pointing to the blob or binary object
     const link = URL.createObjectURL(blob)
     // create an anchor element to open the link we created
