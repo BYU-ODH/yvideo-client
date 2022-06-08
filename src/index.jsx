@@ -10,7 +10,7 @@ import store from 'services/store'
 
 import { RootContainer } from 'containers'
 
-const container = document.getElementById(`root`)
+const container = document.getElementById(`root`) || document.createElement(`div`)
 const root = ReactDOM.createRoot(container)
 root.render(
 	<Provider store={store}>
