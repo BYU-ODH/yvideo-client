@@ -73,19 +73,19 @@ const SubtitleEditorSideMenu = props => {
 	return (
 		<Style id='subtitleEditorSideMenu'>
 			<div>
-				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+				<img alt='closeEditor' className='closeEditor' src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
 
-			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
-				<Icon id={`initial`} className={`initial`} src={plus} onClick={()=>addSub(subLayer,0,`top`)}
+			<div id = 'allSubs' className='allSubs' ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
+				<Icon id='initial' className='initial' src={plus} onClick={()=>addSub(subLayer,0,`top`)}
 					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length === 0 && disableSave === false ? `visible`: `hidden`}
 				/>
 				{subs[subLayer][`content`].map((sub,ind) => (
 					<div id={`sub-${subLayer}-${ind}`} key={ind}>
-						<div className={`container`}>
+						<div className='container'>
 							{/* This toggles the z-index of the icons as the state for the submodal changes */}
-							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
-								position={`top`}
+							<Icon className='IconMiddle' src={plus} ind={ind} onClick={()=>addSub(subLayer,ind,`top`)}
+								position='top'
 								visibility={subs[subLayer][`content`][0].start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
 							/>
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive` : ``}`}>
@@ -95,10 +95,10 @@ const SubtitleEditorSideMenu = props => {
 									onClick={ () => changeSubIndex(ind)}
 									value={sub.text}
 									onChange={ (value) => editSub(null, null, value, subLayer, ind)} />
-								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
+								<div id={`${ind === index ? `subStartEnd`: ``}`} className='subStartEnd'>
 									<input
 										id={`subStart${ind}`}
-										className={`subStart sideTabInput`}
+										className='subStart sideTabInput'
 										type='text'
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
 										onClick={ () => changeSubIndex(ind)}
@@ -116,7 +116,7 @@ const SubtitleEditorSideMenu = props => {
 									/>
 									<input
 										id={`subEnd${ind}`}
-										className={`subEnd`}
+										className='subEnd'
 										type='text'
 										value={`${sub.end ===`` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
 										onClick={ () => changeSubIndex(ind) }
@@ -132,7 +132,7 @@ const SubtitleEditorSideMenu = props => {
 										onMouseLeave={() => toggleTip()}
 									/>
 								</div>
-								<img alt={`delete subtitle`} className={`subtitle-delete`} src={trashIcon} width='20px' onClick={() => deleteSub(ind)} />
+								<img alt='delete subtitle' className='subtitle-delete' src={trashIcon} width='20px' onClick={() => deleteSub(ind)} />
 							</div>
 						</div>
 						{

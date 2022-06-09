@@ -60,7 +60,7 @@ class PublicListCollection extends PureComponent {
 									{!isOwner ?
 										<PublicButton
 											onClick={handlePublicCollection}
-											className={`public-button`}
+											className='public-button'
 										>
 											{isSubscribed ?
 												<h3>Unsubscribe</h3>

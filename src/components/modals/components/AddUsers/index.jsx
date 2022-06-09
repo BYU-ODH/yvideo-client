@@ -53,7 +53,7 @@ export default class AddUsers extends PureComponent {
 
 				<div>
 					<CloseButton className='std-outline-color' type='button' onClick={handleClose}>Close</CloseButton>
-					<SubmitButton className='std-outline-color' type='submit' color={`#0582CA`} disabled={isSubmitted} >Submit</SubmitButton>
+					<SubmitButton className='std-outline-color' type='submit' color='#0582CA' disabled={isSubmitted} >Submit</SubmitButton>
 				</div>
 
 			</Form>

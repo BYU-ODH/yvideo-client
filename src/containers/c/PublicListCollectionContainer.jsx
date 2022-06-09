@@ -20,10 +20,6 @@ const PublicListCollectionContainer = props => {
 		searchCollectionsByUserId,
 		collections,
 		defaultSubscription,
-		// getSubscribers,
-		// getUserById,
-		// searchedUser,
-		// emptySearchedUser,
 	} = props
 
 	const [isOpen, setIsOpen] = useState(false)
@@ -97,7 +93,6 @@ const PublicListCollectionContainer = props => {
 
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
-		// console.log(isCopyrighted)
 	}
 
 	const viewstate = {

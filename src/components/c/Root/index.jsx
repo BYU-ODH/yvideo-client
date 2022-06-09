@@ -129,7 +129,7 @@ class Root extends PureComponent {
 							</Route>
 
 							<Route>
-								<Error error='404' message={`You've wandered too far`} />
+								<Error error='404' message="You've wandered too far" />
 							</Route>
 						</Switch>
 					</>

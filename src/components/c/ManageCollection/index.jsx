@@ -55,7 +55,7 @@ export default class ManageCollection extends PureComponent {
 							// TODO When switching between collections, it uses the same value
 							<TitleEdit
 								type='text'
-								id={`title-edit`}
+								id='title-edit'
 								value={collectionName}
 								contenteditable='true'
 								onChange={handleNameChange}
@@ -69,7 +69,7 @@ export default class ManageCollection extends PureComponent {
 							<h6 onClick={e => toggleEdit(e)}>{collectionName}</h6>
 						)}
 						<TitleEditButton
-							id={`title-edit-button`}
+							id='title-edit-button'
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
 							onMouseEnter={e => handleShowTip(`collection-edit-name`,
@@ -89,7 +89,7 @@ export default class ManageCollection extends PureComponent {
 							<>
 								{ user.roles !== undefined ? (
 									<>{user.roles === 0 || user.roles === 1 ? (
-										<ArchiveButton id={`archive-button`} className={`std-outline-color`} onClick={unarchive}>Unarchive</ArchiveButton>
+										<ArchiveButton id='archive-button' className='std-outline-color' onClick={unarchive}>Unarchive</ArchiveButton>
 									) : ( <p>Cannot unarchive</p> )}
 									</>
 								) : null }
@@ -100,20 +100,20 @@ export default class ManageCollection extends PureComponent {
 									<PublishButton
 										published={collection.published}
 										onClick={togglePublish}
-										id={`publish-button`}
-										className={`std-outline-color`}
+										id='publish-button'
+										className='std-outline-color'
 									>
 										{collection.published ? `Unpublish` : `Publish`}
 									</PublishButton>
 								): (<></>)}
-								<ArchiveButton id={`archive-button`} className={`std-outline-color`} onClick={archive}>Archive</ArchiveButton>
+								<ArchiveButton id='archive-button' className='std-outline-color' onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
 					</Publish>
 				</header>
 				<TabHeader>
-					<button id={`content-button`} className={`std-outline-color`} onClick={setTab(true)}>Content</button>
-					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}>
+					<button id='content-button' className='std-outline-color' onClick={setTab(true)}>Content</button>
+					<button id='permissions-button' className='std-outline-color' onClick={setTab(false)}>
 						Edit User Access
 					</button>
 					<Selector isContentTab={isContentTab} />

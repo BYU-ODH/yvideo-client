@@ -88,26 +88,16 @@ export default class Player extends Component {
 			url,
 			playing,
 			playbackRate,
-			// playbackOptions,
 			progress,
-			// playTime,
 			volume,
 			muted,
 			blank,
-			// videoComment,
-			// commentPosition,
 			duration,
 			showTranscript,
-			// toggleTranscript,
-			// content,
 			subtitleText,
-			// subtitleTextIndex,
 			displaySubtitles,
-			// isCaption,
 			indexToDisplay,
 			isMobile,
-			// censorPosition,
-			// censorActive,
 			clipTime,
 			isLandscape,
 			hasPausedClip,
@@ -131,7 +121,6 @@ export default class Player extends Component {
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
-			// handleOnReady
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -154,7 +143,6 @@ export default class Player extends Component {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					// console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
@@ -183,8 +171,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(!muted)
 						handleMuted()
-					// console.log("muting")
-
 					break
 				case `Pause`:
 					events[index].active = false
@@ -194,12 +180,10 @@ export default class Player extends Component {
 						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
-					// console.log("pausing")
 					break
 				case `Skip`:
 					events[index].active = false
 					handleSeekChange(null,values.allEvents[y].end)
-					// console.log('skipping')
 					break
 				default:
 					break
@@ -217,7 +201,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(muted){
 						handleUnmuted()
-						// console.log("unmuting")
 						events[index].active = false
 					}
 					break
@@ -300,7 +283,6 @@ export default class Player extends Component {
 				</div>
 				{
 					url !== `` && showTranscript ? (
-						// showsubtitles
 						<PlayerSubtitlesContainer
 							currentTime={progress}
 							duration={duration}

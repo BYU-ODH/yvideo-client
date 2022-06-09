@@ -155,8 +155,6 @@ const SubtitleEditor = props => {
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active)
 			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight*0.5
-
-		// console.log(`side editor`, t2-t1)
 	}
 	const closeSideEditor = () => {
 		setSideEditor(false)
@@ -211,22 +209,6 @@ const SubtitleEditor = props => {
 				currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
 			else
 				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
-
-			// if(!zoom){
-			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-			// 	})
-			// } else {
-			// 	scrubber.scrollLeft = currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
-			// 	})
-			// }
 
 			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
@@ -472,7 +454,6 @@ const SubtitleEditor = props => {
 			const reader = new FileReader()
 			reader.onload = (e) => {
 				const temp = Subtitle.parse(e.target.result)
-				// console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000
 					temp[i].end = temp[i].end /1000
@@ -680,7 +661,7 @@ const SubtitleEditor = props => {
 					updateEvents={null}
 					eventToEdit={null}
 					activeCensorPosition={activeCensorPosition}
-					editorType={`subtitle`}
+					editorType='subtitle'
 					handleSubProgress={handleSubProgress}
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
@@ -693,11 +674,11 @@ const SubtitleEditor = props => {
 					<section>
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
-								<div id={`layer-${index}`} className={`layer`} key={index}>
-									<div className={`skip-handle`}>
+								<div id={`layer-${index}`} className='layer' key={index}>
+									<div className='skip-handle'>
 										<p>Allow Skip</p>
-										<div className={`allow-event`}>
-											<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
+										<div className='allow-event'>
+											<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className='allow-event-button' />
 										</div>
 									</div>
 									<SkipLayer
@@ -708,9 +689,9 @@ const SubtitleEditor = props => {
 								</div>
 							))}
 							{subtitles.map((sub, index) => (
-								<div className={`layer`} key={index}>
-									<div className={`handle`} >
-										<div className={`handleFocus`} onClick={() => handleFocus(index)}>
+								<div className='layer' key={index}>
+									<div className='handle' >
+										<div className='handleFocus' onClick={() => handleFocus(index)}>
 											<SubtitlesCard
 												title={sub.title !== `` ?
 													sub.title
@@ -725,12 +706,12 @@ const SubtitleEditor = props => {
 											/>
 											{
 												subLayerToEdit === index && isEdit ?
-													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
+													<Icon className='saveIcon' src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
 													:
-													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
+													<Icon className='editIcon' src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
 											}
 										</div>
-										<Icon className={`trashIcon`} src={trashIcon}
+										<Icon className='trashIcon' src={trashIcon}
 											onClick={ () => {
 												openSubModal(
 													``,
@@ -793,8 +774,8 @@ const SubtitleEditor = props => {
 						<div className='zoom-factor' id='zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -822,7 +803,7 @@ const SubtitleEditor = props => {
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+								<div id='zoom-scroll-container' className='zoom-scroll-container'>
 									<Rnd
 										className= 'zoom-scroll-indicator'
 										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
@@ -838,7 +819,7 @@ const SubtitleEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
+										bounds = 'parent'
 										onDrag = {(e,d)=>{
 											handleScrollFactor(d.x)
 										}}
@@ -846,10 +827,10 @@ const SubtitleEditor = props => {
 									</Rnd>
 								</div>
 							</div>
-							<div id={`time-indicator-container`}>
-								<div id={`layer-time-indicator`}>
-									<span id={`layer-time-indicator-line`}></span>
-									<span id={`layer-time-indicator-line-shadow`}></span>
+							<div id='time-indicator-container'>
+								<div id='layer-time-indicator'>
+									<span id='layer-time-indicator-line'></span>
+									<span id='layer-time-indicator-line-shadow'></span>
 								</div>
 							</div>
 						</div>
@@ -872,17 +853,17 @@ const SubtitleEditor = props => {
 						bottom: `3.9%`,
 					}
 				}
-				className={`setSubModalVisible`}
+				className='setSubModalVisible'
 				onClick={ () => {
 					openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
 				}}>
-				<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
+				<p id='editIcon' style={{ fontWeight:700 }}>Add Subtitle Track +</p>
 			</div>
 
 			<EventList minimized={eventListMinimized}>
 				<header>
 					<img
-						alt={`helpIcon`}
+						alt='helpIcon'
 						src={helpIcon}
 						onClick={handleShowHelp}
 						style={{ marginLeft: 10, marginTop: 15 }}
@@ -895,9 +876,9 @@ const SubtitleEditor = props => {
 						}
 						onMouseLeave={() => toggleTip()}
 					/>
-					<div className={`save`}>
+					<div className='save'>
 						{disableSave ?
-							<button className={`disable`}>
+							<button className='disable'>
 								<span>Save</span>
 							</button>
 							:

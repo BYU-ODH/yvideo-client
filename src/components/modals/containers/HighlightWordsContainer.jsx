@@ -87,7 +87,6 @@ const HighlightWordsContainer = props => {
 
 	const changeCheckWord = e => {
 		setCheckWord(e.target.value)
-		// console.log(checkResponse)
 		if(checkResponse)
 			setCheckResponse(false)
 
@@ -99,7 +98,6 @@ const HighlightWordsContainer = props => {
 
 	const handleCheckWord = async e => {
 		const response = await checkTranslation(checkWord, language)
-		// console.log(response)
 		setCheckResponse(response.success)
 		writeTranslation(response.json)
 		// setCheckWord('')

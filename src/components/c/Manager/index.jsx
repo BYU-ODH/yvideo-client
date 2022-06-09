@@ -49,7 +49,7 @@ export default class Manager extends PureComponent {
 						{user ? (
 							<>
 								<h1 id='no-collections'>{user.name} does not have any collections</h1>
-								<div id={`create-button`}>
+								<div id='create-button'>
 									<button onClick={createNew}>Create New Collection</button>
 								</div>
 							</>
@@ -83,11 +83,11 @@ export default class Manager extends PureComponent {
 											</Help>
 										</h4>
 
-										<Accordion id='collection-published' className='std-outline-color' header={`Published`} active>
+										<Accordion id='collection-published' className='std-outline-color' header='Published' active>
 											{sideLists.published.map(({ id, name }, index) =>
 												<div key={index} >
 													<Link
-														id={`link`}
+														id='link'
 														className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
 														onClick={handleToggleSideBar}
 														to={`/${path}/${id}`} >{name}
@@ -95,11 +95,11 @@ export default class Manager extends PureComponent {
 												</div>)}
 										</Accordion>
 
-										<Accordion header={`Unpublished`} className='std-outline-color' active>
+										<Accordion header='Unpublished' className='std-outline-color' active>
 											{sideLists.unpublished.map(({ id, name }, index) =>
 												<div key={index} >
 													<Link
-														id={`link`}
+														id='link'
 														className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
 														onClick={handleToggleSideBar}
 														to={`/${path}/${id}`}>{name}
@@ -108,11 +108,11 @@ export default class Manager extends PureComponent {
 										</Accordion>
 
 										{
-											admin && <Accordion header={`Archived`} className='std-outline-color'>
+											admin && <Accordion header='Archived' className='std-outline-color'>
 												{sideLists.archived.map(({ id, name }, index) =>
 													<div key={index} >
 														<Link
-															id={`link`}
+															id='link'
 															className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
 															to={`/${path}/${id}`}>{name}
 														</Link>

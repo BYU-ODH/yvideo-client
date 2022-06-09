@@ -69,9 +69,9 @@ export default class CreateResource extends PureComponent {
 					<div>
 						<Button className='std-outline-color' id='create-resource-cancel' type='button' onClick={toggleModal}>Cancel</Button>
 						{resourceName ?
-							<Button className='std-outline-color' id='create-resource-create' type='submit' color={`#0582CA`}>Create</Button>
+							<Button className='std-outline-color' id='create-resource-create' type='submit' color='#0582CA'>Create</Button>
 							:
-							<Button className='std-outline-color' id='create-resource-create disabled' disabled={resourceName === undefined} type='submit' color={`#A0A0A0`}>Create</Button>
+							<Button className='std-outline-color' id='create-resource-create disabled' disabled={resourceName === undefined} type='submit' color='#A0A0A0'>Create</Button>
 						}
 					</div>
 				</Form>

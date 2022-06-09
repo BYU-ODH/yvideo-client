@@ -99,14 +99,14 @@ export default class FileUpload extends PureComponent {
 					{selectedFile !== undefined ?
 						<>
 							{progress === 0 ? (
-								<Button type='submit' color={`#0582CA`}>Upload</Button>
+								<Button type='submit' color='#0582CA'>Upload</Button>
 							):(
-								<Button disabled type='submit' color={`#A0A0A0`}>Uploading...</Button>
+								<Button disabled type='submit' color='#A0A0A0'>Uploading...</Button>
 							)
 							}
 						</>
 						:
-						<Button disabled={selectedFile === undefined} type='submit' color={`#A0A0A0`}>Upload</Button>
+						<Button disabled={selectedFile === undefined} type='submit' color='#A0A0A0'>Upload</Button>
 					}
 				</div>
 			</Form>

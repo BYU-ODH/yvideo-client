@@ -21,13 +21,10 @@ import skipForward from 'assets/skip-forward-white.svg'
 const PlayerControls = props => {
 
 	const {
-		// duration,
 		fullscreen,
 		hovering,
 		progress,
 		playTime,
-		// volume,
-		// muted,
 		playing,
 		isCaption,
 		isAdmin,
@@ -93,10 +90,6 @@ const PlayerControls = props => {
 	const clipPercent = clipTime.map(e =>{
 		return e/duration
 	})
-	// console.log((clipPercent[1]-clipPercent[0])*100)
-	// const handleSubmitSpeed = (e) => {
-	// 	e.preventDefault()
-	// }
 
 	const handleChangeSpeed = () => {
 		toggleTip()
@@ -293,7 +286,7 @@ const PlayerControls = props => {
 				<div className='menu-modal' onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>
 					<div className='caption-list'>
-						<input type='button' value={displaySubtitles.title} className={`active-value`}/>
+						<input type='button' value={displaySubtitles.title} className='active-value'/>
 					</div>
 				</div>
 			}

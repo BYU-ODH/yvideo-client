@@ -354,18 +354,18 @@ const ClipEditor = props => {
 						updateEvents={null}
 						eventToEdit={null}
 						activeCensorPosition = {activeCensorPosition}
-						editorType={`clip`}
+						editorType='clip'
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
 
-						<div className={`layer`} style={{paddingBottom:`40px`}}>
+						<div className='layer' style={{paddingBottom:`40px`}}>
 							<div>
 								{layers.map((layer, index) => (
-									<div className={`flex`} key={index}>
-										<div className={`skip-handle`}>
+									<div className='flex' key={index}>
+										<div className='skip-handle'>
 											<p>Allow Skip</p>
-											<div className={`allow-event`}
+											<div className='allow-event'
 												onMouseEnter={e => handleShowTip(`allow-events`,
 													{
 														x: e.target.getBoundingClientRect().x,
@@ -374,7 +374,7 @@ const ClipEditor = props => {
 													})
 												}
 												onMouseLeave={() => toggleTip()}>
-												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
+												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className='allow-event-button' />
 											</div>
 										</div>
 										<SkipLayer
@@ -385,9 +385,9 @@ const ClipEditor = props => {
 									</div>
 								))}
 								{Object.keys(clipList).map((clip,index)=>(
-									<div className={`flex`}>
+									<div className='flex'>
 										<div
-											className={`handle`}
+											className='handle'
 											style={active === clip ?
 												{backgroundColor:`#002e5d`, color:`#fff`}
 												:
@@ -422,8 +422,8 @@ const ClipEditor = props => {
 							<div className='zoom-factor'>
 								<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 								<Rnd
-									className={`zoom-indicator`}
-									bounds={`parent`}
+									className='zoom-indicator'
+									bounds='parent'
 									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
@@ -441,10 +441,10 @@ const ClipEditor = props => {
 							<div className='zoom-scroll'>
 								<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
 								</div>
-								<div id={`time-indicator-container`}>
-									<div id={`layer-time-indicator`}>
-										<span id={`layer-time-indicator-line`}></span>
-										<span id={`layer-time-indicator-line-shadow`}></span>
+								<div id='time-indicator-container'>
+									<div id='layer-time-indicator'>
+										<span id='layer-time-indicator-line'></span>
+										<span id='layer-time-indicator-line-shadow'></span>
 									</div>
 								</div>
 							</div>
@@ -455,7 +455,7 @@ const ClipEditor = props => {
 					<header>
 						<div className='sideButton'>
 							{disableSave ?
-								<button className={`disable`}>
+								<button className='disable'>
 									<span>Save</span>
 								</button>
 								:
@@ -475,7 +475,7 @@ const ClipEditor = props => {
 
 					</header>
 					<div className='clipItems'>
-						<p id={`clipMessage`}></p>
+						<p id='clipMessage'></p>
 						<table className='tableHeader'>
 							<thead>
 								<tr>
@@ -522,7 +522,7 @@ const ClipEditor = props => {
 													/>
 													</td>
 												</tr>
-												<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
+												<img className='trashIcon' alt='trashIcon' src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
 											</div>
 										))
 									}

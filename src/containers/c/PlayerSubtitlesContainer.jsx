@@ -11,9 +11,6 @@ const PlayerSubtitlesContainer = props => {
 		currentTime,
 		duration,
 		indexToDisplay,
-		// handleShowSubtitle,
-		// getSubtitles,
-		// active,
 	} = props
 
 	const [subtitlesArray, setSubtitlesArray] = useState([])

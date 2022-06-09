@@ -29,7 +29,7 @@ const CensorDnD = props => {
 				position={{ x: censorValues[censorEdit][1]/100*screenWidth - censorValues[censorEdit][3]/100*screenWidth/2 , y: censorValues[censorEdit][2]/100*screenHeight - censorValues[censorEdit][4]/100*screenHeight/2}}
 				enableResizing={Enable}
 				dragAxis='both'
-				bounds={`parent`}
+				bounds='parent'
 				onDragStop={(e, d) => handleUpdateCensorPosition(d)}
 				onResizeStop={(e, direction, ref, delta, position) => handleUpdateCensorResize(delta, position)}
 				style={{border:`3px solid rgba(5, 130, 202,0.7)`,backgroundColor:`rgba(5, 130, 202,0.4)`}}

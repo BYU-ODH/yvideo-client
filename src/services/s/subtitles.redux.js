@@ -95,7 +95,6 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_GET:
-			// console.log(`??//`,action.payload)
 			return {
 				...store,
 				cache: action.payload.subtitles,
@@ -129,7 +128,6 @@ export default class SubtitlesService {
 		}
 	}
 	setSubtitles = (content) => async (dispatch, getState, { apiProxy }) => {
-		// console.log('updated content1', content)
 
 		try {
 			// TODO: Why doesn't this update to state cause it to rerender?
@@ -143,10 +141,7 @@ export default class SubtitlesService {
 	}
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
-		// console.log('updated store', contentIds)
 		const currentContentId = getState().subtitlesStore.contentId
-
-		// console.log(`USED SESSION ID`, window.clj_session_id)
 
 		dispatch(this.actions.subtitlesStart())
 
@@ -221,7 +216,6 @@ export default class SubtitlesService {
 
 		try {
 			await apiProxy.subtitles.delete(ids)
-			// console.log(result.data)
 
 			// TODO: Why doesn't this update to state cause it to rerender?
 			// dispatch(this.actions.contentCreate(data))

@@ -15,8 +15,6 @@ const SearchPublicCollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		content,
-		// setContent,
-		// collections,
 		searchedPublicCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,

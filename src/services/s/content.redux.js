@@ -298,11 +298,6 @@ export default class ContentService {
 			// eslint-disable-next-line no-unused-vars
 			const results = await apiProxy.content.addSubtitles(subs)
 
-			// const metaResult =
-			// await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
-
 			dispatch(this.actions.contentAddSubtitles(subs))
 
 		} catch (error) {

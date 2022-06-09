@@ -30,7 +30,7 @@ export default class ContentOverview extends PureComponent {
 			return (
 				<Style>
 					<div className='expired'>
-						<h3 className={`content-title`}>{this.props.content[`content-title`]} <span>Expired</span></h3><br/>
+						<h3 className='content-title'>{this.props.content[`content-title`]} <span>Expired</span></h3><br/>
 						<p>Please, contact a lab assistant to learn how to recover this content</p>
 					</div>
 				</Style>
@@ -123,7 +123,7 @@ export default class ContentOverview extends PureComponent {
 						{editing ?
 							<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
 							:
-							<TitleWrapper><h3 className={`content-title`}>{content.name}</h3></TitleWrapper>}
+							<TitleWrapper><h3 className='content-title'>{content.name}</h3></TitleWrapper>}
 						<ul>
 							<Icon className='translation' checked={allowDefinitions} onMouseEnter={e => handleShowTip(`${allowDefinitions ? `translation` : `translation-off`}`,
 								{
@@ -229,7 +229,7 @@ export default class ContentOverview extends PureComponent {
 							<h4>Tags</h4>
 							<div style={{ display: `flex` }}>
 								<input type='text' placeholder='Add tags...' onChange={changeTag} value={tag} id='tag-input' />
-								<button id={`add-tag`} onClick={addTag}>Add</button>
+								<button id='add-tag' onClick={addTag}>Add</button>
 							</div>
 							<br/>
 							<div className='tags'>
@@ -249,7 +249,7 @@ export default class ContentOverview extends PureComponent {
 						</Column>
 						<Column>
 							<h4>Important Words
-								<img src={helpIcon} alt={`help`}
+								<img src={helpIcon} alt='help'
 									onClick={handleShowHelp}
 									onMouseEnter={e => handleShowTip(`help`,
 										{
@@ -264,7 +264,7 @@ export default class ContentOverview extends PureComponent {
 							<p>Add a list of important words to be highlighted in the transcript. The highlighted
 							words will have quick translation on click if there is
 							one available.</p><br/>
-							<button className={`words-modal`} onClick={handleShowWordsModal}>OPEN</button>
+							<button className='words-modal' onClick={handleShowWordsModal}>OPEN</button>
 						</Column>
 					</InnerContainer>
 				}

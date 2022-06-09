@@ -36,7 +36,7 @@ class PublicMoreListCollection extends PureComponent {
 							<PublicCollectionButton>
 								<PublicButton
 									onClick={handlePublicCollection}
-									className={`public-button`}
+									className='public-button'
 								>
 									{isOwner ? <>Unsubscribe</> : <>Subscribe</>}
 								</PublicButton>

@@ -22,7 +22,7 @@ class Error extends PureComponent {
 			<SError>
 				<h1>{error}</h1>
 				<h2>{message}</h2>
-				<SLink to={`/`}>Go back home</SLink>
+				<SLink to='/'>Go back home</SLink>
 			</SError >
 		)
 	}

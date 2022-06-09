@@ -113,9 +113,6 @@ const VideoContainer = props => {
 
 			if(subtitles)
 				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
-			// const testMute = values.allEvents.map(val => val.type)
-
-			// if (!testMute.includes(`Mute`)) video.handleUnmute()
 			if(values.allEvents){
 				if(values.allEvents.filter(e => e.type === `Mute`).length === 0){
 					if (muted)
@@ -515,8 +512,8 @@ const VideoContainer = props => {
 								document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
 							}
 						}}>
-							<div id={`time-bar-container`}>
-								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
+							<div id='time-bar-container'>
+								<progress id='timeBarProgress' className='total' value='0' max='100' onClick={video.handleSeek}></progress>
 								<span id='time-text'></span>
 								<span id='time-bar-shadow'><p id='time-bar-shadow-text'></p></span>
 							</div>

@@ -186,7 +186,6 @@ const VideoEditor = props => {
 				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 
@@ -194,7 +193,6 @@ const VideoEditor = props => {
 				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 			}
@@ -390,53 +388,52 @@ const VideoEditor = props => {
 	}
 
 	const handleExportAnnotation = () => {
-		var jsonData = [];
-    for (let e=0; e < allEvents.length; e++) {
-      if (allEvents[e].type !== 'Censor'){
-        const data = {"options": {
-          "end": allEvents[e].end,
-          "start": allEvents[e].start,
-          "type": allEvents[e].type,
-          "details": '{}',
-        }
-      }
-      jsonData.push(data);
-      }
-      else if (allEvents[e].type === 'Censor'){
-				var censorPositionData = {};
+		const jsonData = []
+		for (let e=0; e < allEvents.length; e++) {
+			if (allEvents[e].type !== `Censor`){
+				const data = {"options": {
+					"end": allEvents[e].end,
+					"start": allEvents[e].start,
+					"type": allEvents[e].type,
+					"details": `{}`,
+				},
+				}
+				jsonData.push(data)
+			} else if (allEvents[e].type === `Censor`){
+				let censorPositionData = {}
 				for(const value of Object.values(allEvents[e].position)) {
 					const time = value[0]
 					const pos = value.slice(1)
 					censorPositionData[time] = pos
 				}
-        const data = {"options": {
-          "start": allEvents[e].start,
-          "end": allEvents[e].end,
-          "type": allEvents[e].type,
-          "details": {
-            "type": "blur",
-            "interpolate": true,
-            "position": censorPositionData
-          }
-        }
-        }
-				jsonData.push(data);
+				const data = {"options": {
+					"start": allEvents[e].start,
+					"end": allEvents[e].end,
+					"type": allEvents[e].type,
+					"details": {
+						"type": `blur`,
+						"interpolate": true,
+						"position": censorPositionData,
+					},
+				},
+				}
+				jsonData.push(data)
 				censorPositionData = {}
-      }
-    }
-    const json = JSON.stringify(jsonData);
-    const blob = new Blob([json], {type: "application/json"})
-    // get the current website url
-    // create a link pointing to the blob or binary object
-    const link = URL.createObjectURL(blob)
-    // create an anchor element to open the link we created
-    const a = document.createElement(`a`)
-    // trigger download and append file name
-    a.download = `${content.name}_annotations.json`
-    a.href = link
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+			}
+		}
+		const json = JSON.stringify(jsonData)
+		const blob = new Blob([json], {type: `application/json`})
+		// get the current website url
+		// create a link pointing to the blob or binary object
+		const link = URL.createObjectURL(blob)
+		// create an anchor element to open the link we created
+		const a = document.createElement(`a`)
+		// trigger download and append file name
+		a.download = `${content.name}_annotations.json`
+		a.href = link
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
 	}
 
 	const handleZoomChange = (e, d) => {
@@ -466,28 +463,7 @@ const VideoEditor = props => {
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			// if(document.getElementsByClassName(`events`).length > 1)
-			// 	currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			// else
-			// 	currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
-
-			// if(!zoom){
-			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-			// 	})
-			// } else {
-			// 	scrubber.scrollLeft = currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
-			// 	})
-			// }
 			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
-
 			const dis = direction/scrollBarContainer
 			scrubber.scrollLeft = currentLayerWidth * dis
 			timeIndicator.scrollLeft = currentLayerWidth * dis
@@ -536,7 +512,7 @@ const VideoEditor = props => {
 					eventToEdit={eventToEdit}
 					activeCensorPosition = {activeCensorPosition}
 					setActiveCensorPosition = {setActiveCensorPosition}
-					editorType={`video`}
+					editorType='video'
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
@@ -549,10 +525,10 @@ const VideoEditor = props => {
 						<div className='event-layers' id='layers-component'>
 
 							{layers.map((layer, index) => (
-								<div id={`layer-${index}`} className={`layer`} key={index}>
-									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
+								<div id={`layer-${index}`} className='layer' key={index}>
+									<div className='handle' onClick={() => setDisplayLayer(index)}>
 										<EventCard event={events[index]} key={index}/>
-										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
+										<PlusIcon className='plusIcon' onClick={ e => addEventHandler(layer[index], index)}/>
 									</div>
 
 									<TrackLayer
@@ -562,7 +538,6 @@ const VideoEditor = props => {
 										events={allEvents}
 										activeEvent={eventToEdit}
 										index={index}
-										// onDrop={(item) => eventDropHandler(item,index)}
 										updateEvents={updateEvents}
 										displayLayer={displayLayer}
 										handleEventPosition={handleEventPosition}
@@ -578,8 +553,8 @@ const VideoEditor = props => {
 						<div className='zoom-factor' id = 'zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								bounds='parent'
 								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
@@ -597,12 +572,12 @@ const VideoEditor = props => {
 
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+								<div id='zoom-scroll-container' className='zoom-scroll-container'>
 									<Rnd
 										className= 'zoom-scroll-indicator'
 										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
-										bounds = {`parent`}
+										bounds = 'parent'
 										onDrag = {(e,d)=>{
 											handleScrollFactor(d.x)
 										}}
@@ -611,10 +586,10 @@ const VideoEditor = props => {
 								</div>
 							</div>
 
-							<div id={`time-indicator-container`}>
-								<div id={`layer-time-indicator`}>
-									<span id={`layer-time-indicator-line`}></span>
-									<span id={`layer-time-indicator-line-shadow`}></span>
+							<div id='time-indicator-container'>
+								<div id='layer-time-indicator'>
+									<span id='layer-time-indicator-line'></span>
+									<span id='layer-time-indicator-line-shadow'></span>
 								</div>
 							</div>
 						</div>
@@ -626,7 +601,7 @@ const VideoEditor = props => {
 				<header>
 					<img
 						src={helpIcon}
-						alt={`helpIcon`}
+						alt='helpIcon'
 						onClick={handleShowHelp}
 						onMouseEnter={e => handleShowTip(`help`,
 							{
@@ -638,13 +613,13 @@ const VideoEditor = props => {
 						onMouseLeave={() => toggleTip()}
 						style={{marginLeft:10,marginTop:15}}
 					/>
-					<div className={`save`}>
+					<div className='save'>
 						{disableSave ?
-							<button className={`disable`}>
+							<button className='disable'>
 								<span>Save</span>
 							</button>
 							:
-							<button className={`handleSaveAnnotation`} onClick={handleSaveAnnotation}>
+							<button className='handleSaveAnnotation' onClick={handleSaveAnnotation}>
 								{blockLeave ?
 									null
 									:
@@ -657,9 +632,9 @@ const VideoEditor = props => {
 							</button>
 						}
 					</div>
-					<div className={`save`}>
+					<div className='save'>
 						{!disableSave && !blockLeave && !isLoading ?
-							<button className={`handleExportAnnotation`} onClick={handleExportAnnotation}>
+							<button className='handleExportAnnotation' onClick={handleExportAnnotation}>
 								<span>Export</span>
 							</button>
 							:

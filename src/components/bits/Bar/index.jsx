@@ -5,16 +5,6 @@ import Style, { BarBall, BarCurrent, BarBackground, BarClip, BarSkippedGrey } fr
 const Bar = props => {
 	const { duration, skipArray } = props
 
-	// useEffect(() => {
-	// 		// if(events){
-	// 		// 	const eventFilterSkip = events.filter((values) => {
-	// 		// 		return values.type == `Skip`
-	// 		// 	})
-	// 		// 	setSkipArray(eventFilterSkip)
-	// 		// }
-	// 		handleOnReady();
-	// }, [skipArray, events]);
-	// console.log(skipArray)
 	return (
 		<Style position={props.position} active={props.active} onClick={props.handleClick}>
 			<BarBackground position={props.position} active={props.active} />

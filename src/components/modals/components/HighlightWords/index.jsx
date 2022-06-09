@@ -49,19 +49,16 @@ export default class HighlightWords extends PureComponent {
 
 		let wordList = []
 
-		// console.table(subtitlesObjects[activeSubtitle])
-		// console.log(activeSubtitle)
 		if(subtitlesObjects[activeSubtitle] !== undefined)
 			wordList = subtitlesObjects[activeSubtitle].words.split(`,`)
-			// console.log(wordList)
 
 		return (
 			<Style>
 				<h2>
 					Important Words &nbsp;&nbsp;
-					<img src={closeIcon} alt='' width='25' height='25' id={`close-modal`} onClick={toggleModal}/>
+					<img src={closeIcon} alt='' width='25' height='25' id='close-modal' onClick={toggleModal}/>
 				</h2><br/>
-				<div id={`subtitles-selection`}>
+				<div id='subtitles-selection'>
 					<p>Working on subtitle: &nbsp;</p>
 					<Select onChange={handleChangeActive}>
 						{
@@ -75,8 +72,8 @@ export default class HighlightWords extends PureComponent {
 						}
 					</Select>
 				</div>
-				<div id={`words-container`}>
-					<div id={`translation-container`}>
+				<div id='words-container'>
+					<div id='translation-container'>
 						<TranslationCheck>
 							<h4>See available translation</h4>
 							<p><i>Enter a word; then, enter the language. If translation is available it will be displayed</i></p><br/>
@@ -94,7 +91,7 @@ export default class HighlightWords extends PureComponent {
 									height='25'
 									style={{ border: `none`, position: `relative`, left: `3px` }}
 								/>
-								<Button className={`check-tag`} onClick={handleCheckWord}>Check</Button>
+								<Button className='check-tag' onClick={handleCheckWord}>Check</Button>
 							</div>
 							<br/>
 						</TranslationCheck><br/>
@@ -114,7 +111,7 @@ export default class HighlightWords extends PureComponent {
 								<p><i>Add a single word. Or, add words separated by ", ". Ex: do, be</i></p><br/>
 								<div style={{ display: `flex` }}>
 									<input id='tag-input' type='text' placeholder='Add word/s' onChange={changeWord} value={word} />
-									<Button className={`add-tag`} onClick={addWord}>Add</Button>
+									<Button className='add-tag' onClick={addWord}>Add</Button>
 								</div>
 							</div>
 							<br/>

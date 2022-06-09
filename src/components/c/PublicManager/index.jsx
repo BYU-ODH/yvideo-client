@@ -44,7 +44,7 @@ export default class PublicManager extends PureComponent {
 						{ user ? (
 							<>
 								<h1 id='no-collections'>{ user.name } does not have any collections</h1>
-								<div id={`create-button`}>
+								<div id='create-button'>
 									<button onClick={createNew}>Create New Public Collection</button>
 								</div>
 							</>
@@ -77,11 +77,11 @@ export default class PublicManager extends PureComponent {
 							{
 								admin &&
 								<>
-									<Accordion header={`Public Collections`} active>
+									<Accordion header='Public Collections' active>
 										{sideLists.publicCollections.map(({ id, name }, index) =>
 											<div
 												key={index}
-												id={`link`}
+												id='link'
 												className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
 												<Link to={`/${path}/${id}`} >
 													{name}
@@ -89,11 +89,11 @@ export default class PublicManager extends PureComponent {
 											</div>)}
 									</Accordion>
 
-									<Accordion header={`Archived`} active>
+									<Accordion header='Archived' active>
 										{sideLists.publicArchived.map(({ id, name }, index) =>
 											<div
 												key={index}
-												id={`link`}
+												id='link'
 												className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
 												<Link to={`/${path}/${id}`} >
 													{name}

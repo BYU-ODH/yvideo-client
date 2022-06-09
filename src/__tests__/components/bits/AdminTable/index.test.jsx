@@ -65,7 +65,7 @@ describe(`admin table test`, () => {
 			</BrowserRouter>,
 		)
 
-		expect(wrapper.contains(<Link to={`/lab-assistant-manager/2323`} target='_blank'>Collections</Link>)).toEqual(true)
+		expect(wrapper.contains(<Link to='/lab-assistant-manager/2323' target='_blank'>Collections</Link>)).toEqual(true)
 		expect(wrapper.contains(<button className='userDelete' onClick={handlers.handleConfirmDelete}>Delete</button>)).toEqual(true)
 		expect(wrapper.contains(<td>testusername</td>)).toEqual(true)
 		expect(wrapper.contains(<td>testname</td>)).toEqual(true)
@@ -104,7 +104,7 @@ describe(`admin table test`, () => {
 			</BrowserRouter>,
 		)
 
-		expect(wrapper.contains(<Link to={`/lab-assistant-manager/owner/2323`} target='_blank'>View/Edit</Link>)).toEqual(true)
+		expect(wrapper.contains(<Link to='/lab-assistant-manager/owner/2323' target='_blank'>View/Edit</Link>)).toEqual(true)
 		expect(wrapper.contains(<button className='collectionsDelete' onClick={handlers.handleConfirmDelete}>Delete</button>)).toEqual(true)
 		expect(wrapper.contains(<td>testname</td>)).toEqual(true)
 		expect(wrapper.contains(<td>testusername1</td>)).toEqual(true)
@@ -135,8 +135,8 @@ describe(`admin table test`, () => {
 
 		// console.log(wrapper.debug())
 
-		expect(wrapper.contains(<Link to={`/player/2323`} target='_blank'>View</Link>)).toEqual(true)
-		expect(wrapper.contains(<Link to={`/videoeditor/2323`}>Edit</Link>)).toEqual(true)
+		expect(wrapper.contains(<Link to='/player/2323' target='_blank'>View</Link>)).toEqual(true)
+		expect(wrapper.contains(<Link to='/videoeditor/2323'>Edit</Link>)).toEqual(true)
 		expect(wrapper.contains(<button>Disable</button>)).toEqual(true)
 		expect(wrapper.contains(<button className='contentDelete' onClick={handlers.handleConfirmDelete}>Delete</button>)).toEqual(true)
 		expect(wrapper.contains(<td>testname</td>)).toEqual(true)

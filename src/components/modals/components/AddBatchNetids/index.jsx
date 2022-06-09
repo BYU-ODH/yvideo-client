@@ -10,7 +10,6 @@ export default class AddBatchNetids extends PureComponent {
 
 		return (
 			<Form onSubmit={ handleNewId }>
-				{/* <h1>Add Many</h1><br/> */}
 				<h3>Paste a list of netids, one per line.</h3>
 				<br/>
 				<AddManyForm >
@@ -19,7 +18,7 @@ export default class AddBatchNetids extends PureComponent {
 				<br/>
 				<div>
 					<CancelButton className='std-outline-color' type='button' onClick={e => toggleModal()}>Cancel</CancelButton>
-					<AddManyButton className='std-outline-color' type='submit' color={`#0582CA`} disabled={disabledUser} >Add Many</AddManyButton>
+					<AddManyButton className='std-outline-color' type='submit' color='#0582CA' disabled={disabledUser} >Add Many</AddManyButton>
 				</div>
 			</Form>
 		)

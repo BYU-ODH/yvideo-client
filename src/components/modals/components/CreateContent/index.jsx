@@ -60,8 +60,8 @@ export default class CreateContent extends PureComponent {
 				<h2 className='create-content-title'>Create New Content</h2>
 
 				<Tabs>
-					<Tab className='tab-url' selected={tab === `url`} onClick={changeTab} name={`url`}>From URL</Tab>
-					<Tab className='tab-search-resources' selected={tab === `resource`} onClick={changeTab} name={`resource`}>Search Resources</Tab>
+					<Tab className='tab-url' selected={tab === `url`} onClick={changeTab} name='url'>From URL</Tab>
+					<Tab className='tab-search-resources' selected={tab === `resource`} onClick={changeTab} name='resource'>Search Resources</Tab>
 				</Tabs>
 
 				{tab === `url` &&
@@ -122,7 +122,7 @@ export default class CreateContent extends PureComponent {
 
 						<div>
 							<Button type='button' className='std-outline-color' onClick={toggleModal}>Cancel</Button>
-							<Button type='submit' className='std-outline-color' color={`#0582CA`}>Create</Button>
+							<Button type='submit' className='std-outline-color' color='#0582CA'>Create</Button>
 						</div>
 					</Form>
 				}
@@ -131,7 +131,7 @@ export default class CreateContent extends PureComponent {
 					<FormResource onSubmit={handleAddResourceSubmit}>
 						<Search>
 							<SearchIcon />
-							<input className='resource-search-title' type='search' name='searchInput' placeholder={`Search Resource`} autoComplete='off' value={searchQuery} onChange={handleSearchTextChange} />
+							<input className='resource-search-title' type='search' name='searchInput' placeholder='Search Resource' autoComplete='off' value={searchQuery} onChange={handleSearchTextChange} />
 						</Search>
 						<TableContainer
 							className='table-container'
@@ -206,11 +206,11 @@ export default class CreateContent extends PureComponent {
 							<Button id='url-content-cancel' className='std-outline-color' type='button' onClick={toggleModal}>Cancel</Button>
 							{targetLanguage.length > 0 ?
 								(
-									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#0582CA`}>Create</Button>
+									<Button id='url-content-create' className='std-outline-color' type='submit' color='#0582CA'>Create</Button>
 								)
 								:
 								(
-									<Button id='url-content-create' className='std-outline-color' type='submit' color={`#A0A0A0`} disabled>Create</Button>
+									<Button id='url-content-create' className='std-outline-color' type='submit' color='#A0A0A0' disabled>Create</Button>
 								)
 							}
 						</div>

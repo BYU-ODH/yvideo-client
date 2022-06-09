@@ -105,7 +105,7 @@ const SkipLayer = props => {
 	return (
 		<Style layerWidth={layerWidth} className='layer-container'>
 			<div ref={layerRef} className='eventsbox'>
-				<div id={`layer-skip`} className={`layer-skip} events half-event`}>
+				<div id='layer-skip' className='layer-skip events half-event'>
 					{
 						events !== undefined && events.length > 0 && videoLength !== 0 ? (
 							<>

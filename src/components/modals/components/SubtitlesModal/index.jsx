@@ -32,21 +32,21 @@ export default class SubtitlesModal extends Component {
 		return (
 			<Style>
 				{ mode === `create` &&
-						<div className={`inner`}>
+						<div className='inner'>
 							<div>
-								<div className={`header`}>
+								<div className='header'>
 									<h1>Choose an Option</h1>
-									<img alt={`close`} className={`closeModal`} src={`${closeIcon}`} onClick={toggleModal}/>
+									<img alt='close' className='closeModal' src={`${closeIcon}`} onClick={toggleModal}/>
 								</div>
 								<table>
 									<tr>
-										<td className={`modalSection`}>
-											<div id={`modalSection`} className={`modalButton`} onClick={ () => createLayer.fromScratch() }><p>Start from scratch</p></div>
+										<td className='modalSection'>
+											<div id='modalSection' className='modalButton' onClick={ () => createLayer.fromScratch() }><p>Start from scratch</p></div>
 										</td>
-										<td className={`modalSectionRight`}>
-											<h4 className={`modalSectionRightTitle`} >Import Srt or Vtt File</h4>
-											<input type={`file`} accept={`.srt,.vtt`} id={`subFileInput`}/>
-											<button id ={`create-button`} className={`modalButton`} onClick={ () => createLayer.fromFile() }>Submit</button>
+										<td className='modalSectionRight'>
+											<h4 className='modalSectionRightTitle' >Import Srt or Vtt File</h4>
+											<input type='file' accept='.srt,.vtt' id='subFileInput'/>
+											<button id ='create-button' className='modalButton' onClick={ () => createLayer.fromFile() }>Submit</button>
 										</td>
 									</tr>
 								</table>
@@ -54,9 +54,9 @@ export default class SubtitlesModal extends Component {
 						</div>
 				}
 				{ mode === `delete` &&
-						<div className={`delete-div`}>
+						<div className='delete-div'>
 							<h2>Are you sure you want to delete the subtitle track: <u>{deleteTitle}</u>?</h2>
-							<div className={`delete-buttons`}>
+							<div className='delete-buttons'>
 								<Button className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
 								<Button className='url-content-delete' type='submit' onClick={handleDeleteLayer}>Delete</Button>
 							</div>

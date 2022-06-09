@@ -52,10 +52,6 @@ const ManageInstructorsContainer = props => {
 		const { value } = e.target
 		setSearchQuery(value)
 	}
-	// const handleSearchSubmit = e => {
-	// 	e.preventDefault()
-	// 	search(`user`, searchQuery, true)
-	// }
 
 	const addInstructor = async() => {
 

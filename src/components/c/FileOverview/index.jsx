@@ -40,7 +40,7 @@ export class FileOverview extends PureComponent {
 							<FileTitle>
 								<TitleEdit
 									type='text'
-									id={`title-edit`}
+									id='title-edit'
 									value={fileState[`metadata`]}
 									contenteditable='true'
 									onChange={handleFileMetadata}

@@ -83,7 +83,7 @@ export default class Collections extends PureComponent {
 						{
 							user !== null && user.roles < 3 &&
 								<h3>
-									<Link to={`/manager`}>
+									<Link to='/manager'>
 										Manage Collections
 									</Link>
 								</h3>
@@ -129,7 +129,7 @@ export default class Collections extends PureComponent {
 									</Search>
 									<div>
 										{user.roles === 0 &&
-										<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
+										<h3><Link to='/public-manager' >Manage Public Collections</Link></h3>
 										}
 									</div>
 								</header>
@@ -155,7 +155,7 @@ export default class Collections extends PureComponent {
 						<>
 							<SearchMobile className='resource-search-submit-mobile' id='searchSubmitMobile' onSubmit={handleSearchQuerySubmit}>
 								<SearchIcon />
-								<input className='resource-search-input-mobile' type='search' placeholder={`search in public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+								<input className='resource-search-input-mobile' type='search' placeholder='search in public collections' onChange={handleSearchTextChange} value={searchQuery} />
 							</SearchMobile>
 						</>
 					</header>

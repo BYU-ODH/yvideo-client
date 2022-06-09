@@ -66,54 +66,45 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditEventBTimeChange = (e) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
 
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
-			// editEvent(index, cEvent, layer, `beg`)
 			editEvent(`beg`,cEvent.start, null, layer, index, null)
-			// (side, time, value, layer, ind, type)
 		}
 	}
 
 	const handleEditEventBTimeFinalChange = (e) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
 
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
-			// updateEvents(index, cEvent, layer, `beg`, `onBlur`)
 			editEvent(`beg`,cEvent.start, null, layer, index, `onBlur`)
 		}
 	}
 
 	const handleEditEventETimeChange = (e) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
 
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
-			// updateEvents(index, cEvent, layer, `end`)
 			editEvent(`end`,cEvent.end, null, layer, index, null)
 		}
 	}
 
 	const handleEditEventETimeFinalChange = (e) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
 
 		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
-			// updateEvents(index, cEvent, layer, `end`, `onBlur`)
 			editEvent(`end`,cEvent.end, null, layer, index, `onBlur`)
 		}
 	}
@@ -132,11 +123,9 @@ const TrackEditorSideMenu = props => {
 			editComment.comment
 
 		updateEvents(ind, cEvent, layer, `null`)
-		// document.getElementById(`saveComment`).disabled = true
 	}
 
 	const handleEditComment = (value, cEvent, int) => {
-		// document.getElementById(`saveComment`).disabled = false
 		switch (int) {
 		case 1:
 			if(editComment.position !== undefined)
@@ -177,11 +166,11 @@ const TrackEditorSideMenu = props => {
 		<Style>
 			<div className='event-content'>
 				<div>
-					<p id={`sideTabMessage`}></p>
-					<p id={`sideTabExplanation`}></p>
+					<p id='sideTabMessage'></p>
+					<p id='sideTabExplanation'></p>
 					{event !== undefined ?
 						<>
-							<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+							<img alt='closeEditor' className='closeEditor' src={`${closeIcon}`} onClick={closeSideEditor}/>
 							<>
 								<div className='center'>
 									<label>Start</label>
@@ -264,7 +253,7 @@ const TrackEditorSideMenu = props => {
 						<div className='censorMenu'>
 							<label>Blur Times</label><br/><br/>
 							<table>
-								<thead className={`tableHeader`}>
+								<thead className='tableHeader'>
 									<tr>
 										<th align='center'>Time</th>
 										<th align='center'>X</th>
@@ -274,7 +263,7 @@ const TrackEditorSideMenu = props => {
 										<th align='center'>&nbsp;</th>
 									</tr>
 								</thead>
-								<tbody className={`censorList`}>
+								<tbody className='censorList'>
 									{event.type === `Censor`?
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
@@ -283,7 +272,7 @@ const TrackEditorSideMenu = props => {
 												<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
 												<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
 												<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][4]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
-												<td><img className={`trashIcon`} src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
+												<td><img className='trashIcon' src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
 											</tr>
 										))
 										:``}

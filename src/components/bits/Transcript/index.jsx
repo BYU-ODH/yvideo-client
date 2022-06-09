@@ -89,7 +89,6 @@ const Transcript = props => {
 				// highlight and push changes
 				matches.forEach(m => {
 					const cleanString = m.replace(/\s/g,``)
-					// console.log('Matched', cleanString)
 					const rep = new RegExp(`${cleanString}`, `gmi`)
 
 					if(cleanString !== `. ` && cleanString !== `, ` && cleanString !== `` && cleanString !== `.`)
@@ -122,7 +121,7 @@ const Transcript = props => {
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>
-						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+						<img src={chevron} alt='chevron' className='toggle-transcript' onClick={handleToggleTranscript}
 							onMouseEnter={e => handleShowTip(`transcript-hide`,
 								{
 									x: e.target.getBoundingClientRect().x - 65,
@@ -143,7 +142,7 @@ const Transcript = props => {
 					</>
 					:
 					<>
-						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+						<img src={chevron} alt='chevron' className='toggle-transcript' onClick={handleToggleTranscript}
 							onMouseEnter={e => handleShowTip(`transcript-hide`,
 								{
 									x: e.target.getBoundingClientRect().x - 20,
@@ -166,8 +165,8 @@ const Transcript = props => {
 
 			</div>
 			<div className={isMobile ? `main-bar main-mobile` : `main-bar`} >
-				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
-					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+				<div className='close-transcript' style={{ display: `${isMobile ? `initial` : `none`}` }}>
+					<img src={closeIcon} alt='closeIcon' className='toggle-transcript' onClick={handleToggleTranscript}
 						onMouseEnter={e => handleShowTip(`transcript-hide`,
 							{
 								x: e.target.getBoundingClientRect().x - 80,
@@ -178,7 +177,7 @@ const Transcript = props => {
 						onMouseLeave={() => toggleTip()}
 					/>
 				</div>
-				<div className={`transcript-title`}>
+				<div className='transcript-title'>
 					<h1>Transcript</h1>
 					<h2>
 						{ content !== undefined ?
@@ -193,7 +192,7 @@ const Transcript = props => {
 					</h2>
 				</div>
 				<br/><br/><br/>
-				<div className={`transcript-content`}>
+				<div className='transcript-content'>
 					{	displaySubtitles !== null && displaySubtitles.content !== `` ?
 						displaySubtitles[`content`].map((element, index) =>
 							<div className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index ? `active-sub` : ``}`}
@@ -212,7 +211,7 @@ const Transcript = props => {
 									}
 									onMouseLeave={() => toggleTip()}
 								>
-									<span><img src={seek} alt={`seek`} width='20' height='20'/></span>
+									<span><img src={seek} alt='seek' width='20' height='20'/></span>
 								</div>
 							</div>,
 						)

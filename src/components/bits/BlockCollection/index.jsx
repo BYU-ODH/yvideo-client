@@ -68,7 +68,7 @@ export default class BlockCollection extends Component {
 			return (
 				<Container>
 					<Header>
-						<Link to={`/`}>{name}</Link>
+						<Link to='/'>{name}</Link>
 						{
 							publishContent.length === 0 ? (
 								<p>This collection is empty</p>
@@ -81,7 +81,7 @@ export default class BlockCollection extends Component {
 									<p>{publishContent.length} items</p>
 						}
 						{ this.props.collection.id === `public` ? (
-							<Link to={`/search-public-collections`}>Search Public Collections</Link>
+							<Link to='/search-public-collections'>Search Public Collections</Link>
 						) : ``}
 					</Header>
 					<div>

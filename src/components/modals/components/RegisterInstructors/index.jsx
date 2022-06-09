@@ -54,7 +54,7 @@ export default class FileUpload extends PureComponent {
 										<td>{item.name}</td>
 										<td>{item.roles}</td>
 										<td>{item.email}</td>
-										<td><Button color={`#0582CA`}>add</Button></td>
+										<td><Button color='#0582CA'>add</Button></td>
 									</tr>,
 							)}
 						</tbody>
@@ -65,7 +65,7 @@ export default class FileUpload extends PureComponent {
 
 				<div>
 					<Button type='button' onClick={toggleModal}>Cancel</Button>
-					<Button type='submit' color={`#0582CA`}>Save</Button>
+					<Button type='submit' color='#0582CA'>Save</Button>
 				</div>
 			</Form>
 		)

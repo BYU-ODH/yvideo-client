@@ -790,18 +790,6 @@ const apiProxy = {
 				return res.data
 			})
 			return result
-			// return result.reduce((map, item) => {
-			// 	if(item['collection-name'] !== undefined){
-			// 		item[`name`] = item[`collection-name`]
-			// 		item['name'] = item['name'] + ` ${course['department']} ${course['catalog-number']}`
-			// 		item['content'] = []
-
-			// 		delete item[`collection-name`]
-			// 		map[item.id] = item
-			// 	}
-
-			// 	return map
-			// }, {})
 		},
 	},
 	email: {
