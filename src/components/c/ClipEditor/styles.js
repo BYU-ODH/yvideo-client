@@ -413,4 +413,5 @@ export const Icon = styled.div`
   width: 20px;
   height: 20px;
 	margin-left: 1rem;
+	cursor: pointer;
 `

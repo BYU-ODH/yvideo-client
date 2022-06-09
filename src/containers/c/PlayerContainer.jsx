@@ -86,6 +86,7 @@ const PlayerContainer = props => {
 	const ref = player => {
 		setPlayer(player)
 	}
+
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
 		setShowTranscript(false)

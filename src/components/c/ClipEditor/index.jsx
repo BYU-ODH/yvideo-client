@@ -59,6 +59,7 @@ const ClipEditor = props => {
 	const [clipIndex, setClipIndex] = useState(0)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
 	useEffect(() => {
@@ -341,6 +342,8 @@ const ClipEditor = props => {
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
 						className='video'
+						isReady ={isReady}
+						setIsReady={setIsReady}
 						url={props.viewstate.url}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTime} // set current time
@@ -370,7 +373,7 @@ const ClipEditor = props => {
 														width: e.currentTarget.offsetWidth,
 													})
 												}
-												onMouseLeave={e => toggleTip()}>
+												onMouseLeave={() => toggleTip()}>
 												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 											</div>
 										</div>
@@ -431,7 +434,7 @@ const ClipEditor = props => {
 											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}
+									onMouseLeave={() => toggleTip()}
 								></Rnd>
 								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 							</div>
@@ -502,7 +505,7 @@ const ClipEditor = props => {
 																	width: e.currentTarget.offsetWidth + 20,
 																})
 															}
-															onMouseLeave={e => toggleTip()}
+															onMouseLeave={() => toggleTip()}
 														/>
 													</td>
 													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
@@ -515,7 +518,7 @@ const ClipEditor = props => {
 																width: e.currentTarget.offsetWidth + 20,
 															})
 														}
-														onMouseLeave={e => toggleTip()}
+														onMouseLeave={() => toggleTip()}
 													/>
 													</td>
 												</tr>

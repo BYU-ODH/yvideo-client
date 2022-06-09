@@ -34,20 +34,19 @@ const PlayerSubtitlesContainer = props => {
 			}
 			setSubtitlesArray(subtitles[indexToDisplay].content)
 		}
+		for(let i = 0; i < subtitlesArray.length; i++){
+			const element = subtitlesArray[i]
+			const start = element.start
+			const end = element.end
+
+			if(currentTime >= start && currentTime <= end){
+				props.handleShowSubtitle(element.text, i)
+				break
+			} else if (currentTime > end || currentTime < start)
+				props.handleShowSubtitle(``)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, subtitles, indexToDisplay])
-
-	for(let i = 0; i < subtitlesArray.length; i++){
-		const element = subtitlesArray[i]
-		const start = element.start
-		const end = element.end
-
-		if(currentTime >= start && currentTime <= end){
-			props.handleShowSubtitle(element.text, i)
-			break
-		} else if (currentTime > end || currentTime < start)
-			// console.log("overwriting ")
-			props.handleShowSubtitle(``)
-	}
 
 	return <div></div>
 

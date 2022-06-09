@@ -111,7 +111,7 @@ const SubtitleEditorSideMenu = props => {
 												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
-										onMouseLeave={e => toggleTip()}
+										onMouseLeave={() => toggleTip()}
 
 									/>
 									<input
@@ -129,7 +129,7 @@ const SubtitleEditorSideMenu = props => {
 												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
-										onMouseLeave={e => toggleTip()}
+										onMouseLeave={() => toggleTip()}
 									/>
 								</div>
 								<img alt={`delete subtitle`} className={`subtitle-delete`} src={trashIcon} width='20px' onClick={() => deleteSub(ind)} />

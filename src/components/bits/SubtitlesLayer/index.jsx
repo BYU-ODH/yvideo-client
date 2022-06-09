@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -15,7 +15,8 @@ const SubtitlesLayer = props => {
 		displayLayer,
 		videoLength,
 		handleEventPosition,
-		setEventSeek
+		setEventSeek,
+		setIsReady,
 	} = props
 	const layerIndex = props.layer
 	const layerRef = useRef(null)
@@ -28,6 +29,11 @@ const SubtitlesLayer = props => {
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
+	useEffect(() => {
+		setIsReady(true)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	useLayoutEffect(() => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
@@ -38,6 +44,7 @@ const SubtitlesLayer = props => {
 			setLayerWidth(layerWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
@@ -47,9 +54,33 @@ const SubtitlesLayer = props => {
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
-	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
-	// This object is to overwrite the css properties of the right and left side of the Rnd
-	const resizeSpace = {right: {borderRight: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
+	const Enable = {
+		top: false,
+		right: true,
+		bottom: false,
+		left: true,
+		topRight: false,
+		bottomRight: false,
+		bottomLeft: false,
+		topLeft: false,
+	}
+	// This object is to overwrite the css properties of the right and left side of the Rnd, specifically the resize handles
+	const handleStyles = {
+		right: {
+			borderRight: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			right: `0px`,
+			padding: `1px`,
+		},
+		left: {
+			borderLeft: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			left: `0px`,
+			padding: `1px`,
+		},
+	}
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		toggleEditor(layerIndex, index)
@@ -156,14 +187,15 @@ const SubtitlesLayer = props => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
+				}
 				}
 				onResizeStop={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
 				}
+				}
+				resizeHandleStyles={handleStyles}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}

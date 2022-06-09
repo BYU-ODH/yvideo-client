@@ -33,6 +33,7 @@ const TrackEditorSideMenu = props => {
 	}, [index, event, singleEvent])
 
 	const editEvent = (side, time, value, layer, ind, type) => {
+		document.getElementById()
 		const ev = {...event}
 		if (side === `beg`) {
 			if(time===``)
@@ -131,10 +132,11 @@ const TrackEditorSideMenu = props => {
 			editComment.comment
 
 		updateEvents(ind, cEvent, layer, `null`)
+		// document.getElementById(`saveComment`).disabled = true
 	}
 
 	const handleEditComment = (value, cEvent, int) => {
-
+		// document.getElementById(`saveComment`).disabled = false
 		switch (int) {
 		case 1:
 			if(editComment.position !== undefined)
@@ -203,13 +205,13 @@ const TrackEditorSideMenu = props => {
 												width: e.currentTarget.offsetWidth+20,
 											})
 										}
-										onMouseLeave={e => toggleTip()}
+										onMouseLeave={() => toggleTip()}
 									/>
 									<input
 										type='text'
 										className='sideTabInput'
 										value={`${convertSecondsToMinute(end, videoLength)}`}
-										style={{ visibility: `${event.type === `Pause` ? `hidden` : `visible`}` }}
+										style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventETimeChange(e)}
 										onBlur={e => handleEditEventETimeFinalChange(e)}
@@ -220,7 +222,7 @@ const TrackEditorSideMenu = props => {
 												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
-										onMouseLeave={e => toggleTip()}
+										onMouseLeave={() => toggleTip()}
 									/>
 									{event.type === `Pause` ? (
 										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='sideTabInput' value={event.message}
@@ -251,7 +253,7 @@ const TrackEditorSideMenu = props => {
 								<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
 								<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
 								<p><i>Save is only required when changing the X, Y, or comment values</i></p>
-								<button onClick={handleSaveComment} className='sideButton'>Save Comment</button>
+								<button id='saveComment' onClick={handleSaveComment} className='sideButton'>Save Comment</button>
 							</div>
 						</div>
 					) : null

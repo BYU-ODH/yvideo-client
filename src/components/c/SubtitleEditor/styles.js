@@ -43,6 +43,7 @@ export const Timeline = styled.div`
 	z-index: 0;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	border-bottom: 1px solid black;
 
 	& .zoom-controls {
 		width: calc(100% - 35rem - 1px);
@@ -260,6 +261,10 @@ export const EventList = styled.div`
 		background: var(--navy-blue);
 		border-bottom: 5px solid var(--light-blue);
 
+		& > img {
+			cursor: pointer;
+		}
+
 		& > .save {
 			float: right;
 			width: 8rem;
@@ -344,14 +349,6 @@ export const AnnotationMessage = styled.div`
 	& #success {
 		color: green;
 	}
-`
-
-export const Help = styled.img`
-	width: 30px;
-	height: 30px;
-	margin-left: 10px;
-	position: relative;
-	top: 10px;
 `
 
 export const PlusIcon = styled.div`

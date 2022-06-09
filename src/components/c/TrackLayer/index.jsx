@@ -40,7 +40,7 @@ const TrackLayer = props => {
 
 		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
 
-		if(events && layerIndex === 3){
+		if(events && layerIndex === 4){
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
@@ -71,9 +71,33 @@ const TrackLayer = props => {
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
-	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
-	// This object is to overwrite the css properties of the right and left side of the Rnd
-	const resizeSpace = {right: {borderRight: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1.5px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
+	const Enable = {
+		top: false,
+		right: true,
+		bottom: false,
+		left: true,
+		topRight: false,
+		bottomRight: false,
+		bottomLeft: false,
+		topLeft: false,
+	}
+	// This object is to overwrite the css properties of the right and left side of the Rnd, specifically the resize handles
+	const handleStyles = {
+		right: {
+			borderRight: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			right: `0px`,
+			padding: `1px`,
+		},
+		left: {
+			borderLeft: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			left: `0px`,
+			padding: `1px`,
+		},
+	}
 
 	const calculateOverlaps = () => {
 		const sortedEvents = JSON.parse(JSON.stringify(events))
@@ -178,20 +202,20 @@ const TrackLayer = props => {
 					}
 				}
 				position={{ x: event.start / videoLength * layerWidth, y: 0}}
-				resizeHandleStyles={resizeSpace}
+				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
 				onDragStop={(e, d) => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
+				}
 				}
 				onResizeStop={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-					}
+				}
 				}
 				key={index}
 			>
@@ -211,7 +235,7 @@ const TrackLayer = props => {
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
-				{layerIndex !== 3 &&
+				{layerIndex !== 4 &&
 					<div ref={layerRef} className='eventsbox'>
 						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
 							{
@@ -224,7 +248,7 @@ const TrackLayer = props => {
 						</div>
 					</div>
 				} {/* new layer function that will provide maximum layer overlap */ }
-				{layerIndex === 3 && layerOverlap !== null &&
+				{layerIndex === 4 && layerOverlap !== null &&
 					<div ref={layerRef} className='eventsbox'>
 						<div
 							className={`layer-${layerIndex} ${layerOverlap.length > 0 ? `half-layer` : ``} events ${displayLayer === layerIndex ? `active-layer` : ``}`}

@@ -26,16 +26,16 @@ const props = {
 	setBreadcrumbs: jest.fn(),
 	allSubs: [
 		{
-			content: [ {start: 10, end: 20, text: `test`}, {start: 0, end: 10, text: `test`}, {start: 20, end: 30, text: `test`}, ]
-		}
+			content: [{start: 10, end: 20, text: `test`}, {start: 0, end: 10, text: `test`}, {start: 20, end: 30, text: `test`}],
+		},
 	],
 	handlers: {
 		openSubModal: jest.fn(),
 		setSideEditor: jest.fn(),
 	},
 	viewstate: {
-		showSideEditor: true
-	}
+		showSideEditor: true,
+	},
 }
 const modalProps1 = {
 	mode: `create`,
@@ -108,14 +108,14 @@ describe(`SubtitlesEditorContainer testing`, () => {
 			<BrowserRouter>
 				<Modal {...modalProps1}/>
 			</BrowserRouter>
-		</Provider>
+		</Provider>,
 	)
 	const modal2 = mount(
 		<Provider store={testutil.store}>
 			<BrowserRouter>
 				<Modal {...modalProps2}/>
 			</BrowserRouter>
-		</Provider>
+		</Provider>,
 	)
 
 	jest.useFakeTimers()
