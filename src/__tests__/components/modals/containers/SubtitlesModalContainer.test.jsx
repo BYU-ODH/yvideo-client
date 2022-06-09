@@ -149,7 +149,7 @@ describe(`Subtitles Modal test`, () => {
 			render(deleteWrapper)
 
 			const user = userEvent.setup()
-			const deleteButton = screen.getByText(new RegExp(`Delete`))
+			const deleteButton = screen.getByText(/Delete/)
 
 			await user.click(deleteButton)
 			expect(deleteProps.handleDeleteSubLayer).toHaveBeenCalled()
