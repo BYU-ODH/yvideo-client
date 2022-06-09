@@ -421,7 +421,7 @@ const VideoContainer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, eventPosition])
-
+	console.log(events)
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
@@ -430,11 +430,13 @@ const VideoContainer = props => {
 					id='blank'
 					blank={blank}
 					onContextMenu={e => e.preventDefault()}
-					onClick={ (e) => activeCensorPosition === -1 ?
-						video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
-						: ``
+					onClick={ (e) =>{
+						activeCensorPosition === -1 && video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
+						console.log(e)
+					}
 					}
 					ref={videoRef}
+					// style={{cursor:events?events[eventToEdit].type === `Censor`?`crosshair`:`auto`:`auto`}}
 				>
 					{activeCensorPosition !== -1 ? (
 						<CensorDnD

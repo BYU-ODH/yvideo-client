@@ -341,6 +341,8 @@ const VideoEditor = props => {
 
 	// THIS IS PART OF CENSOR
 	const handleLastClick = (height, width, x, y, time) => {
+		console.log(x,y)
+		console.log(eventToEdit)
 		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
 
 			const index = eventToEdit

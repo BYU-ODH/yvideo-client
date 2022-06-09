@@ -49,7 +49,6 @@ export const CurrentEvents = (time,events,duration) => {
 	censors.forEach((val,ind)=>{
 		censorValues.push(Position(val.position,time))
 	})
-
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
 	handleBlank(blanks)
 	const censorContainer = document.getElementById(`censorContainer`)
