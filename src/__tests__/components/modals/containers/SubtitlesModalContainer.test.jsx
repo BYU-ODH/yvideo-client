@@ -37,14 +37,18 @@ const deleteWrapper =
 
 describe(`Subtitles Modal test`, () => {
 	describe(`Create onclick tests`, () => {
-		it(`render create`, () => {
+		beforeEach(() => {
 			render(createWrapper)
+		})
+		afterEach(() => {
+			jest.resetAllMocks()
+		})
+		it(`render create`, () => {
 			expect(screen.getByText(/Choose an Option/)).toBeVisible()
 			expect(screen.getByText(/Start from scratch/)).toBeVisible()
 		})
 
 		it(`From scratch create onClick`, async () => {
-			render(createWrapper)
 			const user = userEvent.setup()
 			const button = screen.getByTestId(`modalButton1`)
 
@@ -53,7 +57,6 @@ describe(`Subtitles Modal test`, () => {
 		})
 
 		it(`File input create onClick`, async () => {
-			render (createWrapper)
 			const user = userEvent.setup()
 			const button = screen.getByTestId(`modalButton2`)
 			await user.click(button)
@@ -63,7 +66,6 @@ describe(`Subtitles Modal test`, () => {
 		})
 
 		it(`close create onClick`, async ()=> {
-			render(createWrapper)
 			const user = userEvent.setup()
 			const closeButton = screen.getByAltText(`close`)
 
@@ -71,21 +73,19 @@ describe(`Subtitles Modal test`, () => {
 		})
 	})
 
-	afterEach(() => {
-		jest.resetAllMocks()
-	})
-
 	describe(`File Upload onclick tests`, () => {
 		let vttFile
 		let srtFile
 		beforeEach(() => {
+			render(createWrapper)
 			vttFile = new File(['(⌐□_□)'], 'test.vtt', { kind: 'subtitles', type: 'text/vtt' })
 			srtFile = new File(['(⌐□_□)'], 'test.srt', { kind: 'subtitles', type: 'text/plain' })
 		})
+		afterEach(() => {
+			jest.resetAllMocks()
+		})
 
 		it(`onClick createLayer fromFile (1)`, async () => {
-			render(createWrapper)
-
 			const user = userEvent.setup()
 			const button = screen.getByTestId(`modalButton2`)
 			const fileInput = screen.getByTestId(`subFileInput`)
@@ -93,7 +93,6 @@ describe(`Subtitles Modal test`, () => {
 			await waitFor(() => fireEvent.change(fileInput, { target: { files: [vttFile] } }))
 			expect(fileInput.files[0].name).toBe(`test.vtt`)
 			expect(fileInput.files.length).toBe(1)
-
 			await user.click(button)
 
 			await waitFor(() => fireEvent.change(fileInput, { target: { files: [srtFile] } }))
@@ -105,8 +104,6 @@ describe(`Subtitles Modal test`, () => {
 		})
 
 		it(`onClick createLayer fromFile (2 || >2)`, async () => {
-			render(createWrapper)
-
 			const user = userEvent.setup()
 			const button = screen.getByTestId(`modalButton2`)
 			const fileInput = screen.getByTestId(`subFileInput`)
@@ -121,24 +118,21 @@ describe(`Subtitles Modal test`, () => {
 		})
 	})
 
-	afterEach(() => {
-		jest.resetAllMocks()
-	})
-
 	describe(`Delete onclick tests`, () => {
-		it(`render delete`, () => {
+		beforeEach(() => {
 			render(deleteWrapper)
-
+		})
+		afterEach(() => {
+			jest.resetAllMocks()
+		})
+		it(`render delete`, () => {
 			const deleteTitle = deleteProps.deleteTitle
 			expect(deleteTitle).toBe(`testSubs`)
-			expect(screen.getByText(new RegExp(`Are you sure you want to delete the subtitle track:`))).toBeVisible()
+			expect(screen.getByText(/Are you sure you want to delete the subtitle track:/)).toBeVisible()
 			expect(screen.getByText(new RegExp(`${deleteTitle}`))).toBeVisible()
 		})
 
 		it(`Cancel delete onClick`, async () => {
-			render(deleteWrapper)
-
-
 			const user = userEvent.setup()
 			const cancel = screen.getByText(/Cancel/i)
 
@@ -146,8 +140,6 @@ describe(`Subtitles Modal test`, () => {
 		})
 
 		it(`Confirm delete onClick`, async () => {
-			render(deleteWrapper)
-
 			const user = userEvent.setup()
 			const deleteButton = screen.getByText(/Delete/)
 
