@@ -21,6 +21,10 @@ const FileOverviewContainer = props => {
 
 	const [fileState, setFileState] = useState(file)
 
+	const sayHello = () => {
+		console.log('hello')
+	}
+
 	useEffect(() => {
 	}, [fileCache])
 
@@ -29,6 +33,7 @@ const FileOverviewContainer = props => {
 			...fileState,
 			"file-version": e.target.value,
 		})
+		sayHello()
 	}
 
 	const handleFileMetadata = e => {
@@ -36,6 +41,7 @@ const FileOverviewContainer = props => {
 			...fileState,
 			metadata: e.target.value,
 		})
+		sayHello()
 	}
 
 	const handleUpdateFile = e => {
@@ -64,9 +70,10 @@ const FileOverviewContainer = props => {
 
 	const handlers = {
 		handleFileMetadata,
+		handleFileVersion,
 		handleUpdateFile,
 		handleRemoveFile,
-		handleFileVersion,
+		sayHello,
 	}
 
 	return <FileOverview viewstate={viewstate} handlers={handlers} />
@@ -82,8 +89,8 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	editFileResource: resourceService.editFile,
 	updateFileVersion: resourceService.updateFileVersion,
-	removeFile: fileService.delete,
 	updateFile: fileService.update,
+	removeFile: fileService.delete,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileOverviewContainer)
