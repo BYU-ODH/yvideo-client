@@ -1,5 +1,4 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
@@ -43,12 +42,7 @@ describe(`File Overview test`, () => {
 
 	describe(`File Overview events`, () => {
 		beforeEach(() => {
-			const {
-				handleFileMetadata = jest.fn(),
-				handleFileVersion = jest.fn(),
-				handleUpdateFile = jest.fn(),
-				handleRemoveFile = jest.fn(),
-			} = render(wrapper)
+			render(wrapper)
 		})
 		afterEach(() => {
 			jest.resetAllMocks()
