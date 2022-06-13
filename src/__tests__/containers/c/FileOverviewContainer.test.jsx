@@ -17,7 +17,6 @@ const props = {
 	handleFileVersion: jest.fn(),
 	handleUpdateFile: jest.fn(),
 	handleRemoveFile: jest.fn(),
-	sayHello: jest.fn(),
 }
 
 const wrapper =
@@ -46,6 +45,7 @@ describe(`File Overview test`, () => {
 		})
 		afterEach(() => {
 			jest.resetAllMocks()
+			cleanup()
 		})
 		it(`Edit title`, async () => {
 			// make sure there is at least one file

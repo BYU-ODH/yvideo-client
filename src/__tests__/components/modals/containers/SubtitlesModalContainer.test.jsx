@@ -42,6 +42,7 @@ describe(`Subtitles Modal test`, () => {
 		})
 		afterEach(() => {
 			jest.resetAllMocks()
+			cleanup()
 		})
 		it(`render create`, () => {
 			expect(screen.getByText(/Choose an Option/)).toBeVisible()
@@ -83,6 +84,7 @@ describe(`Subtitles Modal test`, () => {
 		})
 		afterEach(() => {
 			jest.resetAllMocks()
+			cleanup()
 		})
 
 		it(`onClick createLayer fromFile (1)`, async () => {
@@ -124,6 +126,7 @@ describe(`Subtitles Modal test`, () => {
 		})
 		afterEach(() => {
 			jest.resetAllMocks()
+			cleanup()
 		})
 		it(`render delete`, () => {
 			const deleteTitle = deleteProps.deleteTitle

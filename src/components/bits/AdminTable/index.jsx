@@ -307,7 +307,7 @@ export default class AdminTable extends PureComponent {
 				<Table>
 					<thead>
 						<tr>
-							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' onClick={()=>sort(data,header.title)}/></th>)}
+							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={()=>sort(data, header.title)}/></th>)}
 							<th/>
 						</tr>
 					</thead>
@@ -316,7 +316,7 @@ export default class AdminTable extends PureComponent {
 							item => <tr key={item.id}>
 								{ printTableValues(searchCategory, item) }
 								<td>
-									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip(`actions`, {x: e.target.getBoundingClientRect().x + 40, y: e.target.getBoundingClientRect().y +15, width: e.currentTarget.offsetWidth+20})}
+									<ItemEdit data-testid='item-edit' onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip(`actions`, {x: e.target.getBoundingClientRect().x + 40, y: e.target.getBoundingClientRect().y +15, width: e.currentTarget.offsetWidth+20})}
 										onMouseLeave={e => toggleTip()}
 									></ItemEdit>
 								</td>
