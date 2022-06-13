@@ -139,7 +139,20 @@ export default class AdminTable extends PureComponent {
 									<option value='2'>2: instructor / professor</option>
 									<option value='3'>3: student</option>
 								</select>
-								<button type='submit' className='userRoleSave' onClick={userRoleSave}>Save</button>
+								<button type='submit'
+									className='userRoleSave'
+									onClick={userRoleSave}
+									style={{
+										borderRadius: `10px`,
+										fontSize: `1.3rem`,
+										color: `white`,
+										backgroundColor: `var(--light-blue)`,
+										border: `2px solid transparent`,
+										width: `5rem !important`,
+										margin: `0px 0px 0px 10px`,
+										fontWeight: `bold`,
+									}}
+								>Save</button>
 							</td>
 							<td>{item.email}</td>
 							<td>{date.toString().substring(0, 16)}</td>
