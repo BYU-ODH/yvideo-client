@@ -164,7 +164,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<>
 						<td>{item.name}</td>
-						<td><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></td>
+						<td><u><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></u></td>
 						<td>{item.contentType}</td>
 						<td>{item.expired.toString()}</td>
 						<td>{item.resourceId}</td>
@@ -213,9 +213,6 @@ export default class AdminTable extends PureComponent {
 						</li>
 						<li>
 							<Link to={`/videoeditor/${data.id}`}>Edit</Link>
-						</li>
-						<li>
-							<button>Disable</button>
 						</li>
 						<li>
 							<button className='contentDelete' onClick={handleConfirmDelete}>Delete</button>
