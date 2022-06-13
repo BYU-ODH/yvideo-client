@@ -134,12 +134,10 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const openSubEditor = (layerIndex,subIndex) => {
-		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
-		const t2 = performance.now() // eslint-disable-line no-unused-vars
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active)
@@ -231,11 +229,9 @@ const SubtitleEditor = props => {
 	}
 
 	const updateSubs = (index, sub, subLayerIndex, side, type) => {
-		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-		const t1_1 = performance.now() // eslint-disable-line no-unused-vars
 		try {
 			if(side === `beg`) {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
@@ -311,7 +307,6 @@ const SubtitleEditor = props => {
 				}
 			}
 		}
-		const t3_1 = performance.now() // eslint-disable-line no-unused-vars
 
 		if(needCheck)
 			setDisableSave(false)
@@ -715,9 +710,9 @@ const SubtitleEditor = props => {
 											/>
 											{
 												subLayerToEdit === index && isEdit ?
-													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
+													<Icon data-testid='editIcon' className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
 													:
-													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
+													<Icon data-testid='editIcon' className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
 											}
 										</div>
 										<Icon className={`trashIcon`} src={trashIcon}
@@ -787,6 +782,7 @@ const SubtitleEditor = props => {
 										cursor: `pointer`,
 									}
 								}
+								data-testid='setSubModalVisible'
 								className={`setSubModalVisible`}
 								onClick={ () => {
 									openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)

@@ -467,7 +467,7 @@ const VideoContainer = props => {
 			{/* Load the spinner if a file is uploading */}
 			{!isUploading && <div className='loading-spinner'><Spinner/></div> }
 
-			<ReactPlayer ref={ref} config={config} url={url}
+			<ReactPlayer ref={ref} config={config} url={url} data-testid='react-player'
 				onContextMenu={e => e.preventDefault()}
 				key={url}
 
