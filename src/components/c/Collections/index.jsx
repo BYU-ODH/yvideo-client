@@ -138,15 +138,7 @@ export default class Collections extends PureComponent {
 									</Search>
 									<div>
 										{user.roles === 0 &&
-										<h3><Link to={`/public-manager`}
-											onMouseEnter={e => handleShowTip(`manage-public-collections`,
-												{
-													x: e.target.offsetLeft,
-													y: e.target.offsetTop+20,
-													width: e.currentTarget.offsetWidth,
-												})
-											}
-											onMouseLeave={e => toggleTip()} >Manage Public Collections</Link></h3>
+										<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
 										}
 									</div>
 								</header>
