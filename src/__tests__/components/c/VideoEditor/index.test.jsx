@@ -242,7 +242,6 @@ describe(`VideoEditor testing`, () => {
 			wrapper.find(`.plusIcon`).at(0).simulate(`click`)
 		})
 
-
 		act(() => {
 			wrapper.find(`Rnd`).forEach(e=>e.prop(`onDragStop`)(``, {x: 10}))
 			jest.advanceTimersByTime(100)

@@ -34,7 +34,7 @@ describe(`File Overview test`, () => {
 		})
 		it(`FileOverview should display files`, () => {
 			expect(screen.getByText(/Path:/)).toBeVisible()
-			//This comes from the testutil file
+			// This comes from the testutil file
 			expect(screen.getByText(/test file path/)).toBeVisible()
 		})
 	})

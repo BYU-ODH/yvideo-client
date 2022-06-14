@@ -134,14 +134,13 @@ describe(`Admin Table test`, () => {
 
 				const select1 = screen.getAllByRole(`combobox`)[0]
 				const select2 = screen.getAllByRole(`combobox`)[1]
-				const options = screen.getAllByText(/[0-3]:/) //match all 4 options * 2 because there are 2 menus
+				const options = screen.getAllByText(/[0-3]:/) // match all 4 options * 2 because there are 2 menus
 				const save = screen.getAllByText(/Save/)
 
 				for (const i in options)
 					expect(options[i]).toBeVisible()
 
-				expect((options[0] && options[4]).selected).toBeTruthy() //admin is selected
-
+				expect((options[0] && options[4]).selected).toBeTruthy() // admin is selected
 
 				await waitFor(() => {
 					user.selectOptions(select1, `1: lab assistant`)
@@ -225,7 +224,7 @@ describe(`Admin Table test`, () => {
 			cleanup()
 		})
 		it(`Test ellipsis menu`, async () => {
-		const sortMock = jest.fn()
+			const sortMock = jest.fn()
 
 			// viewstate.searchCategory is `Content`
 			const user = userEvent.setup()

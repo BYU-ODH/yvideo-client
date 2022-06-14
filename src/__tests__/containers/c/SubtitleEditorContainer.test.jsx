@@ -42,14 +42,14 @@ const createModProps = {
 	handleAddSubLayer: jest.fn(),
 	handleAddSubLayerFromFile: jest.fn(),
 	setIsReady: jest.fn(),
-	index: 0
+	index: 0,
 }
 
 const deleteModProps = {
 	mode: `delete`,
 	deleteTitle: `testSubs`,
 	handleDeleteSubLayer: jest.fn(),
-	index: 0
+	index: 0,
 }
 const mock = {x: 100, y: 50}
 window.ResizeObserver =

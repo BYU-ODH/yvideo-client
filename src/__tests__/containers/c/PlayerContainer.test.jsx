@@ -94,8 +94,8 @@ describe(`PlayerContainer test`, () => {
 	// 	getState = testutil.store.getState
 	// 	apiProxy = proxies.apiProxy
 
-		// await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
+	// await authServiceConstructor.checkAuth()(dispatch, getState, { apiProxy })
 
-		// await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
+	// await contentServiceConstructor.getContent([0], true)(dispatch, getState, { apiProxy })
 	// })
 })

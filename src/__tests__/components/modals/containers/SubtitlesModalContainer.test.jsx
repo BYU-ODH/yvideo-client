@@ -79,8 +79,8 @@ describe(`Subtitles Modal test`, () => {
 		let srtFile
 		beforeEach(() => {
 			render(createWrapper)
-			vttFile = new File(['(⌐□_□)'], 'test.vtt', { kind: 'subtitles', type: 'text/vtt' })
-			srtFile = new File(['(⌐□_□)'], 'test.srt', { kind: 'subtitles', type: 'text/plain' })
+			vttFile = new File([`(⌐□_□)`], `test.vtt`, { kind: `subtitles`, type: `text/vtt` })
+			srtFile = new File([`(⌐□_□)`], `test.srt`, { kind: `subtitles`, type: `text/plain` })
 		})
 		afterEach(() => {
 			jest.resetAllMocks()

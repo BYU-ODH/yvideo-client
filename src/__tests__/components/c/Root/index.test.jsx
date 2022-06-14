@@ -30,13 +30,13 @@ describe(`root route paring test`, () => {
 				pathMap[routeProps.path] =
 					routeProps.element.type.WrappedComponent.name
 			} else {
-					if (routeProps.children.props.children === undefined) {
-					pathMap[routeProps.path + `/` + routeProps.children.props.path] =
+				if (routeProps.children.props.children === undefined) {
+					pathMap[`${routeProps.path}/${routeProps.children.props.path}`] =
 						routeProps.element.type.WrappedComponent.name
-					} else {
-						pathMap[routeProps.path + `/` + routeProps.children.props.path + `/` + routeProps.children.props.children.props.path] =
+				} else {
+					pathMap[`${routeProps.path}/${routeProps.children.props.path}/${routeProps.children.props.children.props.path}`] =
 							routeProps.element.type.WrappedComponent.name
-					}
+				}
 			}
 			return pathMap
 

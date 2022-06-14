@@ -1,12 +1,12 @@
-import index from "../index";
+import index from '../index'
 
-describe('Renders the application', () => {
+describe(`Renders the application`, () => {
 
-	it("Should render app without crashing", () => {
+	it(`Should render app without crashing`, () => {
 		expect(
 			JSON.stringify(
-				Object.assign({}, index, { _reactInternalInstance: 'censored' }),
+				Object.assign({}, index, { _reactInternalInstance: `censored` }),
 			),
-		).toMatchSnapshot();
-	});
-});
+		).toMatchSnapshot()
+	})
+})

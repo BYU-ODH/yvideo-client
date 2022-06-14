@@ -8,6 +8,6 @@ Enzyme.configure({
 	disableLifecycleMethods: true,
 })
 
-configure ({
+configure({
 	asyncUtilTimeout: 2500,
 })

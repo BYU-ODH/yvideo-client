@@ -1,6 +1,6 @@
 import React from 'react'
 import Tag from '../../../../components/bits/Tag'
-import { render, cleanup, screen, fireEvent, } from '@testing-library/react'
+import { render, cleanup, screen, fireEvent } from '@testing-library/react'
 import { BrowserRouter} from 'react-router-dom'
 
 const props = {
