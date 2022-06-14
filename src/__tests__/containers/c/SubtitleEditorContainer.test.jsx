@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/SubtitleEditorContainer'
@@ -37,24 +37,19 @@ const props = {
 		showSideEditor: true,
 	},
 }
-const modalProps1 = {
+const createModProps = {
 	mode: `create`,
-	deleteTitle: jest.fn(),
 	handleAddSubLayer: jest.fn(),
 	handleAddSubLayerFromFile: jest.fn(),
-	handleDeleteSubLayer: jest.fn(),
-	toggleModal: jest.fn(),
-	index: 0,
+	setIsReady: jest.fn(),
+	index: 0
 }
 
-const modalProps2 = {
+const deleteModProps = {
 	mode: `delete`,
-	deleteTitle: jest.fn(),
-	handleAddSubLayer: jest.fn(),
-	handleAddSubLayerFromFile: jest.fn(),
+	deleteTitle: `testSubs`,
 	handleDeleteSubLayer: jest.fn(),
-	toggleModal: jest.fn(),
-	index: 0,
+	index: 0
 }
 const mock = {x: 100, y: 50}
 window.ResizeObserver =
@@ -94,9 +89,18 @@ jest.mock(`react-router-dom`, () => ({
 // }))
 describe(`SubtitleEditorContainer testing`, () => {
 	let wrapper
-	let modal1
-	let modal2
+	// let modal1
+	// let modal2
 	beforeEach(() => {
+		wrapper = mount(
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<Container {...props}/>
+					<Modal {...createModProps}/>
+					<Modal {...deleteModProps}/>
+				</BrowserRouter>
+			</Provider>
+		)
 		// modal1 = mount(
 		// 	<Provider store={testutil.emptyStore}>
 		// 		<BrowserRouter>
@@ -111,15 +115,6 @@ describe(`SubtitleEditorContainer testing`, () => {
 		// 		</BrowserRouter>
 		// 	</Provider>
 		// )
-		wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props}/>
-					<Modal {...modalProps1}/>
-					<Modal {...modalProps2}/>
-				</BrowserRouter>
-			</Provider>
-		)
 	})
 
 	jest.useFakeTimers()
