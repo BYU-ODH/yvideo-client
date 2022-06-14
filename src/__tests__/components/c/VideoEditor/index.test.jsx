@@ -162,7 +162,6 @@ describe(`VideoEditor testing`, () => {
 		})
 		expect(wrapper.contains(<label>Blur Times</label>)).toEqual(false)
 		wrapper.find(`.plusIcon`).at(9).simulate(`click`)
-		console.log(wrapper.find(`.plusIcon`).at(9).debug())
 		act(() => {
 			jest.advanceTimersByTime(100)
 		})

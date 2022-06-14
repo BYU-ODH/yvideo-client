@@ -31,7 +31,7 @@ const props = {
 
 }
 
-const handlers = {
+const handlers = { // eslint-disable-line no-unused-vars
 	removeTag: jest.fn(),
 	removeWord: jest.fn(),
 }

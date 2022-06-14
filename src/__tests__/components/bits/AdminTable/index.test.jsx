@@ -1,10 +1,10 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
+import { render, screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import '@testing-library/dom'
 import AdminTable from '../../../../components/bits/AdminTable/index'
-import { Link, BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const viewstate = {
 	data:[
@@ -113,7 +113,7 @@ describe(`Admin Table test`, () => {
 				for (const i in netIds) {
 					expect(netIds[i]).toBeVisible()
 					expect(names[i]).toBeVisible()
-					expect(roles[i]).toBeVisible
+					expect(roles[i]).toBeVisible()
 					expect(emails[i]).toBeVisible()
 					expect(lastLogins[i]).toBeVisible()
 				}
