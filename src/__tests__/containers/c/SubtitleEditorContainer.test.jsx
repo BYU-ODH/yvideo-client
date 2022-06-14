@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/SubtitleEditorContainer'
@@ -73,50 +73,54 @@ jest.mock(`react-router-dom`, () => ({
 	useRouteMatch: () => ({ url: `/lab-assistant-manager/22/0` }),
 }))
 
-jest.mock(`react`, () => {
-	const originReact = jest.requireActual(`react`)
-	const mUseRef = jest.fn()
-	return {
-		...originReact,
-		useRef: mUseRef,
-	}
-})
+// jest.mock(`react`, () => {
+// 	const originReact = jest.requireActual(`react`)
+// 	const mUseRef = jest.fn()
+// 	return {
+// 		...originReact,
+// 		useRef: mUseRef,
+// 	}
+// })
 
-jest.mock(`react`, () => ({
-	...jest.requireActual(`react`),
-	useRef: () => ({
-		current: {
-			// scrollTo: () => {},
-			// scrollHeight: 100,
-			// clientHeight: 50,
-		},
-	}),
-}))
+// jest.mock(`react`, () => ({
+// 	...jest.requireActual(`react`),
+// 	useRef: () => ({
+// 		current: {
+// 			// scrollTo: () => {},
+// 			// scrollHeight: 100,
+// 			// clientHeight: 50,
+// 		},
+// 	}),
+// }))
 describe(`SubtitleEditorContainer testing`, () => {
 	let wrapper
+	let modal1
+	let modal2
 	beforeEach(() => {
+		// modal1 = mount(
+		// 	<Provider store={testutil.emptyStore}>
+		// 		<BrowserRouter>
+		// 			<Modal {...modalProps1}/>
+		// 		</BrowserRouter>
+		// 	</Provider>
+		// )
+		// modal2 = mount(
+		// 	<Provider store={testutil.emptyStore}>
+		// 		<BrowserRouter>
+		// 			<Modal {...modalProps2}/>
+		// 		</BrowserRouter>
+		// 	</Provider>
+		// )
 		wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
+					<Modal {...modalProps1}/>
+					<Modal {...modalProps2}/>
 				</BrowserRouter>
-			</Provider>,
+			</Provider>
 		)
 	})
-	const modal1 = mount(
-		<Provider store={testutil.store}>
-			<BrowserRouter>
-				<Modal {...modalProps1}/>
-			</BrowserRouter>
-		</Provider>
-	)
-	const modal2 = mount(
-		<Provider store={testutil.store}>
-			<BrowserRouter>
-				<Modal {...modalProps2}/>
-			</BrowserRouter>
-		</Provider>
-	)
 
 	jest.useFakeTimers()
 	jest.spyOn(global, `setTimeout`)
@@ -130,20 +134,20 @@ describe(`SubtitleEditorContainer testing`, () => {
 		getBoundingClientRect: () => {
 			return boundingMock
 		} }
-	document.getElementById = jest.fn((tag) => {
-		return scrubberMock
-	})
+	// window.getElementById = jest.fn((tag) => {
+	// 	return scrubberMock
+	// })
 
 	it(`Add subtitle`, () => {
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		})
 
-		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(false)
+		expect(wrapper.contains(<h1>Choose an Option</h1>)).not.toEqual(false)
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		expect(modal1.contains(<h1>Choose an Option</h1>)).toEqual(true)
-		expect(modal1.contains(`No Language`)).toEqual(false)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(true)
+		expect(wrapper.contains(`No Language`)).toEqual(false)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		// Edit title
 		expect(wrapper.contains(`Updated Title`)).toEqual(false)
@@ -162,10 +166,8 @@ describe(`SubtitleEditorContainer testing`, () => {
 		})
 
 		wrapper.find(`.trashIcon`).at(0).simulate(`click`)
-		modal2.find(`.url-content-cancel`).at(0).simulate(`click`)
-
-		wrapper.find(`.trashIcon`).at(0).simulate(`click`)
-		modal2.find(`.url-content-delete`).at(0).simulate(`click`)
+		wrapper.find(`.url-content-cancel`).at(0).simulate(`click`)
+		wrapper.find(`.url-content-delete`).at(0).simulate(`click`)
 	})
 
 	// it(`SubtitleEditorSideMenu: Edit text & time $ add top button`, () => {
@@ -175,7 +177,7 @@ describe(`SubtitleEditorContainer testing`, () => {
 
 	// 	const chicken = wrapper.find({"id": `subtitleEditorSideMenu`})
 
-	// 	modal1.find(`.modalButton`).at(0).simulate(`click`)
+	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
 
 	// 	wrapper.find(`.subText`).simulate(`change`, { target: { value: `Updated text` } })
@@ -222,8 +224,7 @@ describe(`SubtitleEditorContainer testing`, () => {
 	// 	})
 
 	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
-	// 	modal1.find(`.modalButton`).at(0).simulate(`click`)
-
+	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
 	// 	expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
 	// 	expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:04.00`)
@@ -258,7 +259,7 @@ describe(`SubtitleEditorContainer testing`, () => {
 	// 	})
 
 	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
-	// 	modal1.find(`.modalButton`).at(0).simulate(`click`)
+	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
 
@@ -285,14 +286,14 @@ describe(`SubtitleEditorContainer testing`, () => {
 	it(`SubtitlesLayer: drag and drop`, () => {
 
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		wrapper.find(`Rnd`).forEach((comp)=>{
 			comp.simulate(`click`)
 		})
-		wrapper.find(`Rnd`).forEach((comp)=>{
-			comp.prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
-		})
+		// wrapper.find(`Rnd`).forEach((comp)=>{
+		// 	comp.prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
+		// })
 		wrapper.find(`Rnd`).forEach((comp)=>{
 			comp.prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
 		})
@@ -308,26 +309,26 @@ describe(`SubtitleEditorContainer testing`, () => {
 
 	it(`Zoom control`, () => {
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		window.onload = function () {
-			document.getElementsByClassName(`events`).clientWidth = jest.fn((tag) => {
+			window.getElementsByClassName(`events`).clientWidth = jest.fn((tag) => {
 				return 1100
 			})
 
-			document.getElementById(`time-bar`).scrollLeft = jest.fn(() => {
+			window.getElementById(`time-bar`).scrollLeft = jest.fn(() => {
 				return 0
 			})
-			document.getElementById(`time-indicator-container`).scrollLeft = jest.fn((tag) => {
+			window.getElementById(`time-indicator-container`).scrollLeft = jest.fn((tag) => {
 				return 0
 			})
 		}
-		wrapper.find(`Rnd`).forEach(comp=>{
-			comp.prop(`onDragStop`)( ``, {d: {x: 10}})
-		})
+		// wrapper.find(`Rnd`).forEach(comp=>{
+		// 	comp.prop(`onDragStop`)( ``, {d: {x: 10}})
+		// })
 		// wrapper.find(`Rnd`).prop(`onMouseLeave`)()
 
 	})
