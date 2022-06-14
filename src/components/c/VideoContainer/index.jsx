@@ -103,7 +103,11 @@ const VideoContainer = props => {
 			}
 
 			setElapsed(playedSeconds)
-			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
+			const tempOnload = window.onload
+			window.onload = () => {
+				document.getElementById(`seconds-time-holder`).innerText = playedSeconds
+				window.onload = tempOnload
+			}
 
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
@@ -370,29 +374,33 @@ const VideoContainer = props => {
 			count++
 			// checking for time bar and setting event listener
 			if(document.getElementById(`time-bar`) !== null && duration !== 0){
-				document.getElementById(`time-bar`).addEventListener(`mousemove`, (e) => {
-					// calculate current time based on mouse position
-					const currentLayerWidth = document.getElementById(`time-bar-container`).clientWidth
-					const currentScrollLeft = document.getElementById(`time-bar-container`).scrollLeft
+				const tempOnload = window.onload
+				window.onload = () => {
+					document.getElementById(`time-bar`).addEventListener(`mousemove`, (e) => {
+						// calculate current time based on mouse position
+						const currentLayerWidth = document.getElementById(`time-bar-container`).clientWidth
+						const currentScrollLeft = document.getElementById(`time-bar-container`).scrollLeft
 
-					const secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
+						const secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
 
-					const dateElapsed = new Date(null)
-					dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
-					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+						const dateElapsed = new Date(null)
+						dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
+						const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-					// set new x position to the red bar
-					document.getElementById(`time-bar-shadow`).style.visibility = `visible`
-					document.getElementById(`time-bar-shadow`).style.transform = `translateX(${e.offsetX - 2}px)`
-					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
-					if(e.offsetX > window.innerWidth / 2)
-						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
-					else
-						document.getElementById(`time-bar-shadow-text`).style.right = `0`
+						// set new x position to the red bar
+						document.getElementById(`time-bar-shadow`).style.visibility = `visible`
+						document.getElementById(`time-bar-shadow`).style.transform = `translateX(${e.offsetX - 2}px)`
+						document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
+						if(e.offsetX > window.innerWidth / 2)
+							document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
+						else
+							document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
-					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
-					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
-				})
+						document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
+						document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
+						window.onload = tempOnload
+					})
+				}
 			}
 			// checking video container and setting event listener for hot keys
 			window.onkeyup = (e) => {
@@ -512,8 +520,12 @@ const VideoContainer = props => {
 
 						<div id='time-bar' onMouseLeave={(e) => {
 							if(document.getElementById(`time-bar-shadow`) !== null && document.getElementById(`layer-time-indicator-line-shadow`) !== null) {
-								document.getElementById(`time-bar-shadow`).style.visibility = `hidden`
-								document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
+								const tempOnload = window.onload
+								window.onload = () => {
+									document.getElementById(`time-bar-shadow`).style.visibility = `hidden`
+									document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
+									window.onload = tempOnload
+								}
 							}
 						}}>
 							<div id={`time-bar-container`}>

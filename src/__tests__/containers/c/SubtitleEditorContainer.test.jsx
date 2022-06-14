@@ -129,9 +129,9 @@ describe(`SubtitleEditorContainer testing`, () => {
 		getBoundingClientRect: () => {
 			return boundingMock
 		} }
-	// window.getElementById = jest.fn((tag) => {
-	// 	return scrubberMock
-	// })
+	document.getElementById = jest.fn((tag) => {
+		return scrubberMock
+	})
 
 	it(`Add subtitle`, () => {
 		act(() => {
@@ -286,9 +286,9 @@ describe(`SubtitleEditorContainer testing`, () => {
 		wrapper.find(`Rnd`).forEach((comp)=>{
 			comp.simulate(`click`)
 		})
-		// wrapper.find(`Rnd`).forEach((comp)=>{
-		// 	comp.prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
-		// })
+		wrapper.find(`Rnd`).forEach((comp)=>{
+			comp.prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
+		})
 		wrapper.find(`Rnd`).forEach((comp)=>{
 			comp.prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
 		})
@@ -310,23 +310,21 @@ describe(`SubtitleEditorContainer testing`, () => {
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		window.onload = function () {
-			window.getElementsByClassName(`events`).clientWidth = jest.fn((tag) => {
+			document.getElementsByClassName(`events`).clientWidth = jest.fn((tag) => {
 				return 1100
 			})
 
-			window.getElementById(`time-bar`).scrollLeft = jest.fn(() => {
+			document.getElementById(`time-bar`).scrollLeft = jest.fn(() => {
 				return 0
 			})
-			window.getElementById(`time-indicator-container`).scrollLeft = jest.fn((tag) => {
+			document.getElementById(`time-indicator-container`).scrollLeft = jest.fn((tag) => {
 				return 0
 			})
 		}
-		// wrapper.find(`Rnd`).forEach(comp=>{
-		// 	comp.prop(`onDragStop`)( ``, {d: {x: 10}})
-		// })
+		wrapper.find(`Rnd`).forEach(comp=>{
+			comp.prop(`onDragStop`)( ``, {d: {x: 10}})
+		})
 		// wrapper.find(`Rnd`).prop(`onMouseLeave`)()
 
 	})
 })
-
-// 69.88

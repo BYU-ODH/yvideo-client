@@ -39,24 +39,24 @@ const props = {
 	setIsReady: jest.fn(),
 }
 
-jest.mock(`react`, () => {
-	const originReact = jest.requireActual(`react`)
-	const mUseRef = jest.fn()
-	return {
-		...originReact,
-		useRef: mUseRef,
-	}
-})
+// jest.mock(`react`, () => {
+// 	const originReact = jest.requireActual(`react`)
+// 	const mUseRef = jest.fn()
+// 	return {
+// 		...originReact,
+// 		useRef: mUseRef,
+// 	}
+// })
 
-jest.mock(`react`, () => ({
-	...jest.requireActual(`react`),
-	useRef: () => ({
-		current: {
-			offsetWidth: 10,
-			offsetHeight: 10,
-		},
-	}),
-}))
+// jest.mock(`react`, () => ({
+// 	...jest.requireActual(`react`),
+// 	useRef: () => ({
+// 		current: {
+// 			offsetWidth: 10,
+// 			offsetHeight: 10,
+// 		},
+// 	}),
+// }))
 
 describe(`Subtitles Layer test`, () => {
 	const mockElementClass = [{ style: {width: 10} }, { style: {width: 10} }]

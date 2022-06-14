@@ -214,17 +214,20 @@ const SubtitleEditor = props => {
 			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
 			// 	})
 			// }
+			const tempOnload = window.onload
+			window.onload = () => {
+				const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
-			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
+				const dis = direction/scrollBarContainer
+				scrubber.scrollLeft = currentLayerWidth * dis
+				timeIndicator.scrollLeft = currentLayerWidth * dis
 
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
-
-			allLayers.forEach((element, i) => {
-				allLayers[i].scrollLeft = currentLayerWidth * dis
-			})
-			skipLayer.scrollLeft = currentLayerWidth * dis
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = currentLayerWidth * dis
+				})
+				skipLayer.scrollLeft = currentLayerWidth * dis
+				window.onload = tempOnload
+			}
 		}
 	}
 

@@ -423,8 +423,12 @@ const VideoEditor = props => {
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
-			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		const tempOnload = window.onload
+		window.onload = () => {
+			if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+			window.onload = tempOnload
+		}
 
 	}
 	const handleScrollFactor = (direction, zoom) => {
