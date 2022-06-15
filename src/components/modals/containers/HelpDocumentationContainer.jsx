@@ -10,6 +10,7 @@ import seek from 'assets/skip-forward.svg'
 import startOverIcon from 'assets/start_over_icon_black.svg'
 
 import manager from 'assets/help/help-manager.png'
+import createButton from 'assets/help/help-manager-create.png'
 
 import content from 'assets/help/help-content.png'
 import contentEdit from 'assets/help/help-content-edit.png'
@@ -78,13 +79,14 @@ const HelpDocumentationContainer = props => {
 						<br/>- &nbsp;<b>Unpublished</b> collections are hidden from students.
 						<br/>- &nbsp;<b>Archived</b> collections are the ones that you are not working on and students can't see them.
 						<br/><br/>
-						<b>Create New Collection:</b> this button allows you to create a new collection and add it as an unpublished collection, so students can't see it.
+						<img src="${createButton}" width="130px" style="float:left"> <br>this button allows you to create a new collection and add it as an unpublished collection, so students can't see it.
 					</p>
 					<h4>Managing Collections</h4><br/>
 					<ul>
-						<p>Under content and permissions you can do the following</p>
+						<p>After you click on desired collection, a panel should open to the right: </p>
+						<br>
 						<li><b>Content</b>: edit all the content that belongs to your collection including creating new videos, adding subtitles, editting the video, and more</li>
-						<li><b>Permissions</b>: add users to have editor priviledge in your collection. The users can be people that are auditing the class, TAs, other professors, or students as long as they have a BYU netid</li>
+						<li><b>Edit User Access</b>: add users to have editor priviledge in your collection. The users can be people that are auditing the class, TAs, other professors, or students as long as they have a BYU netid</li>
 					</ul>
 				</div>
 				<div class="section large-img">
@@ -104,7 +106,7 @@ const HelpDocumentationContainer = props => {
 						<b>Edit Content:</b><br/><br/>
 						<ul>
 							<li><b>Definitions:</b> allow quick translation to help students understand the meaning of a word</li>
-							<li><b>Caption:</b> turn captions on and off. This will turn off captions on the video and hide the transcript on the side of the video</li>
+							<li><b>Caption:</b> turn captions on and off or select caption option. This will turn off captions on the video and hide the transcript on the side of the video, or select the specific language of subtitles desired</li>
 							<li><b>Tags:</b> this is a way to let users find content based on topics</li>
 							<li><b>Important Words:</b> it is a list of words to be highlighted in the transcript.
 							These words will be clickable to allow students to get a quick translation for those specific words</li>
@@ -126,7 +128,7 @@ const HelpDocumentationContainer = props => {
 				</div>
 				<div class="section flex-column">
 					<h3>Collections</h3>
-					<p>Collections contain a group of contents. To play a content in a collection just click on the content you want to watch.
+					<p>Collections contain a group        of contents. To play a content in a collection just click on the content you want to watch.
 					For instructors, a “Manage Collections” button will appear in the top right, where you can create and edit collections.
 					</p><br/>
 				</div>
@@ -173,7 +175,7 @@ const HelpDocumentationContainer = props => {
 					</p>
 					<ol>
 						<li>The time indicator at the bottom of the video</li>
-						<li><p>The red bar over the layers indicating how far along you are on the video with respect of the layers</p></li>
+						<li><p>The grey bar over the layers indicating how far along you are on the video with respect of the layers</p></li>
 					</ol>
 				</div>
 				<div class="section flex-column">
@@ -266,7 +268,7 @@ const HelpDocumentationContainer = props => {
 					<ul>
 						<li><img class="icon" src="${bookIcon}"/>: This icon shows the transcript which contains all the subtitles in the video to follow along</li>
 						<li><img class="icon" src="${clockIcon}"/>: This icon allows you to change the speed of the video. Faster is any number above normal speed or 1</li>
-						<li>&nbsp;<b>CC</b>&nbsp;&nbsp;: This icon allows you to turn on or off the captions</li>
+						<li>&nbsp;<b>CC</b>&nbsp;&nbsp;: This icon allows you to turn on or off the captions or change the caption language if there is multiple caption languages</li>
 						<li>Play/Pause and Full screen icons: Common video functionality</li>
 					</ul>
 				</div>
@@ -288,7 +290,7 @@ const HelpDocumentationContainer = props => {
 					<ul>
 						<li><img class="icon" src="${clockIcon}"/>: This icon allows you to change the speed of the video. Faster is any number above normal speed or 1</li>
 						<li><img class="icon" src="${startOverIcon}"/>: This icon allows you to start the video over from the beginning</li>
-						<li><b>CC</b>: This icon allows you to turn on or off the captions</li>
+						<li><b>CC</b>: This icon allows you to turn on or off the captions or to change the caption language if there is multiple caption languages</li>
 						<li>Play/Pause and Full screen icons: These support common video functionality</li>
 					</ul>
 				</div>
