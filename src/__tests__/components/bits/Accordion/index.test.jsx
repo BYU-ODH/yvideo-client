@@ -13,8 +13,8 @@ const wrapper =
 
 const wrapperWithContent = //This is to test that with 2+ contents, the accordion displays them all
 	<AccordionMenu {...props}>
-		<div>test</div>
-		<div>test</div>
+		<div>test1</div>
+		<div>test2</div>
 	</AccordionMenu>
 
 describe(`AccordionMenu test`, () => {
