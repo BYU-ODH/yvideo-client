@@ -1,7 +1,7 @@
 import React from 'react'
+import AccordionMenu from '../../../../components/bits/Accordion/index'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import AccordionMenu from '../../../../components/bits/Accordion/index'
 
 const props = {
 	active: true,
