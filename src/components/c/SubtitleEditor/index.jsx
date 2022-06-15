@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Prompt } from 'react-router'
-import Style, { Timeline, EventList, Icon } from './styles'
+import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
 import * as Subtitle from 'subtitle'
@@ -257,13 +257,13 @@ const SubtitleEditor = props => {
 					needCheck = false
 				}
 			} else if(side === `end`) {
-					if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
-						sub.end = convertToSeconds(sub.end, videoLength)
-						document.getElementById(`subEnd${index}`).style.border=null
-					} else {
-						document.getElementById(`subEnd${index}`).style.border = `2px solid red`
-						needCheck = false
-					}
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
+					sub.end = convertToSeconds(sub.end, videoLength)
+					document.getElementById(`subEnd${index}`).style.border=null
+				} else {
+					document.getElementById(`subEnd${index}`).style.border = `2px solid red`
+					needCheck = false
+				}
 			}
 		} catch (e) {
 			console.error(`updateSubs error`, e) // eslint-disable-line no-console
@@ -707,6 +707,18 @@ const SubtitleEditor = props => {
 									/>
 								</div>
 							))}
+							<div className={`layer`}>
+								<div className={`addtrack`}>
+									<div
+										className={`setSubModalVisible`}
+										onClick={ () => {
+											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+										}}>
+										<p id={`editIcon`} style={{ fontWeight:400, color: `white`, fontSize: `14px`, display: `flex` }}>Add Subtitle Track <PlusIcon /></p>
+									</div>
+								</div>
+							</div>
+
 							{subtitles.map((sub, index) => (
 								<div className={`layer`} key={index}>
 									<div className={`handle`} >
@@ -782,8 +794,8 @@ const SubtitleEditor = props => {
 									handleEventPosition={handleEventPosition}
 									setEventSeek={setEventSeek}
 								/>
-
 							}
+
 						</div>
 
 					</section>
@@ -856,28 +868,6 @@ const SubtitleEditor = props => {
 					</div>
 				</Timeline>
 			</span>
-
-			<div
-				style={
-					{
-						color: `#ffffff`,
-						backgroundColor: `#0582ca`,
-						borderRadius: `0.6rem`,
-						width: `130px`,
-						margin: `10px`,
-						textAlign: `center`,
-						padding: `5px`,
-						cursor: `pointer`,
-						position: `absolute`,
-						bottom: `3.9%`,
-					}
-				}
-				className={`setSubModalVisible`}
-				onClick={ () => {
-					openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-				}}>
-				<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
-			</div>
 
 			<EventList minimized={eventListMinimized}>
 				<header>

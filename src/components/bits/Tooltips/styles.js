@@ -2,11 +2,11 @@ import styled from 'styled-components'
 
 const Style = styled.div`
 	position: absolute;
-	z-index: 25;
+	z-index: 50;
 
 	border-radius: 5px;
 
-	width: 70px;
+	width: 85px;
 	min-height: 3vh;
 	max-height: auto;
 	display: flex;

@@ -139,12 +139,14 @@ export const AddManyButton = styled.button`
 
 export const Table = styled.table`
 	/* border: 1px solid black; */
-	width: 400px;
-	padding: 10px;
+	width: 445px;
+	padding: 5px;
 
 	& th {
 		font-size: 1.4rem;
+		horizontal-align: middle;
 	}
+
 
 	& td {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.2);

@@ -365,15 +365,7 @@ const ClipEditor = props => {
 									<div className={`flex`} key={index}>
 										<div className={`skip-handle`}>
 											<p>Allow Skip</p>
-											<div className={`allow-event`}
-												onMouseEnter={e => handleShowTip(`allow-events`,
-													{
-														x: e.target.getBoundingClientRect().x,
-														y: e.target.getBoundingClientRect().y,
-														width: e.currentTarget.offsetWidth,
-													})
-												}
-												onMouseLeave={e => toggleTip()}>
+											<div className={`allow-event`}>
 												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 											</div>
 										</div>
