@@ -63,7 +63,7 @@ export default class Collections extends PureComponent {
 										width: e.currentTarget.offsetWidth,
 									})
 								}
-								onMouseLeave={e => toggleTip()}
+								onMouseLeave={() => toggleTip()}
 							/></h3>
 					</div>
 					<div>
@@ -83,17 +83,8 @@ export default class Collections extends PureComponent {
 						{
 							user !== null && user.roles < 3 &&
 								<h3>
-									<Link
-										to={`/manager`}
-										onClick={toggleTip}
-										onMouseEnter={e => handleShowTip(`manage-collections`,
-											{
-												x: e.target.offsetLeft,
-												y: e.target.offsetTop+20,
-												width: e.currentTarget.offsetWidth,
-											})
-										}
-										onMouseLeave={e => toggleTip()}>Manage Collections
+									<Link to={`/manager`}>
+										Manage Collections
 									</Link>
 								</h3>
 						}
@@ -138,7 +129,7 @@ export default class Collections extends PureComponent {
 									</Search>
 									<div>
 										{user.roles === 0 &&
-										<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
+										<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
 										}
 									</div>
 								</header>

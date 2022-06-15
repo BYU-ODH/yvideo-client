@@ -58,9 +58,33 @@ const SubtitlesLayer = props => {
 		window.onload = tempOnload
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
-	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
-	// This object is to overwrite the css properties of the right and left side of the Rnd
-	const resizeSpace = {right: {borderRight: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, right: `0px`, padding: `1px`}, left: {borderLeft: `1px solid var(--light-blue)`, width: `2px`, height: `100%`, left: `0px`, padding: `1px`} }
+	const Enable = {
+		top: false,
+		right: true,
+		bottom: false,
+		left: true,
+		topRight: false,
+		bottomRight: false,
+		bottomLeft: false,
+		topLeft: false,
+	}
+	// This object is to overwrite the css properties of the right and left side of the Rnd, specifically the resize handles
+	const handleStyles = {
+		right: {
+			borderRight: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			right: `0px`,
+			padding: `1px`,
+		},
+		left: {
+			borderLeft: `1.5px solid var(--light-blue)`,
+			width: `2px`,
+			height: `100%`,
+			left: `0px`,
+			padding: `1px`,
+		},
+	}
 	// Drag within the layer
 	const handleDrag = (d, event, index) => {
 		toggleEditor(layerIndex, index)
@@ -175,6 +199,7 @@ const SubtitlesLayer = props => {
 					handleEventPosition(event.start)
 				}
 				}
+				resizeHandleStyles={handleStyles}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
 				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}

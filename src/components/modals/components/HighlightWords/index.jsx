@@ -125,7 +125,7 @@ export default class HighlightWords extends PureComponent {
 										item !== `` ?
 											<Tag key={index} onClick={removeWord}>{item}</Tag>
 											:
-											null
+											null,
 									)
 								}
 							</div>

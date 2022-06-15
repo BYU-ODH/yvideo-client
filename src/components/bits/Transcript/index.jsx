@@ -130,7 +130,7 @@ const Transcript = props => {
 									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{
@@ -139,7 +139,7 @@ const Transcript = props => {
 									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 					</>
 					:
 					<>
@@ -151,7 +151,7 @@ const Transcript = props => {
 									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{
@@ -160,7 +160,7 @@ const Transcript = props => {
 									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 					</>
 				}
 
@@ -175,7 +175,7 @@ const Transcript = props => {
 								width: e.currentTarget.offsetWidth,
 							})
 						}
-						onMouseLeave={e => toggleTip()}
+						onMouseLeave={() => toggleTip()}
 					/>
 				</div>
 				<div className={`transcript-title`}>
@@ -183,7 +183,7 @@ const Transcript = props => {
 					<h2>
 						{ content !== undefined ?
 							content.settings.targetLanguage !== `` ?
-								`Video - ${content.settings.targetLanguage} | `
+								`Video - ${content.settings.targetLanguage} |`
 								:
 								null
 							:
@@ -210,7 +210,7 @@ const Transcript = props => {
 											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}
+									onMouseLeave={() => toggleTip()}
 								>
 									<span><img src={seek} alt={`seek`} width='20' height='20'/></span>
 								</div>

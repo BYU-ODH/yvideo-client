@@ -53,8 +53,8 @@ const SkipLayer = props => {
 				className={`layer-event half-event`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
-				size={{width: `${(event.end - event.start)/videoLength*layerWidth}px`, height: `31px`}}
-				position={{ x: event.start/videoLength * layerWidth, y: 0}}
+				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `31px`}}
+				position={{ x: event.start / videoLength * layerWidth, y: 0}}
 				key={index}
 				enableResizing={Enable}
 				disableDragging={true}
@@ -90,13 +90,13 @@ const SkipLayer = props => {
 			console.log(`This video is too long!`) // eslint-disable-line no-console
 			return
 		}
-		const tickNum = (videoLength-videoLength % tickInt)/tickInt
-		for(let i = 0; i < tickNum+1; i++){
+		const tickNum = (videoLength - videoLength % tickInt) / tickInt
+		for(let i = 0; i < tickNum + 1; i++){
 			ticks.push(
-				<div className='timemarker' key={i} style={{left:`${tickInt/videoLength*i*100}%`}}>
+				<div className='timemarker' key={i} style={{left:`${tickInt / videoLength * i * 100}%`}}>
 					<div className='tickbar'>
 					</div>
-					<p className='time'>{convertSecondsToMinute(tickInt*i)}</p>
+					<p className='time'>{convertSecondsToMinute(tickInt * i)}</p>
 				</div>,
 			)
 		}
@@ -107,7 +107,7 @@ const SkipLayer = props => {
 			<div ref={layerRef} className='eventsbox'>
 				<div id={`layer-skip`} className={`layer-skip} events half-event`}>
 					{
-						events !== undefined && events.length > 0 && videoLength !== 0? (
+						events !== undefined && events.length > 0 && videoLength !== 0 ? (
 							<>
 								{ events.map((event, index) => printEvents(event, index))}
 							</>

@@ -16,7 +16,8 @@ const SubtitlesContainer = props => {
 
 		}else
 			setSubtitlesArray([])
-		for(let i = 0; i<subtitlesArray.length; i++){
+
+		for(let i = 0; i < subtitlesArray.length; i++){
 			const element = subtitlesArray[i]
 			const start = element.start
 			const end = element.end

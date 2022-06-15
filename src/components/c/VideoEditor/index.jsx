@@ -12,6 +12,7 @@ import muteIcon from 'assets/event_mute.svg'
 import pauseIcon from 'assets/event_pause.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
+import commentIcon from 'assets/event_comment.svg'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
@@ -30,7 +31,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Censor`}, {4: `Blank`}] // {3: `Comment`},
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`},{3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
 
 	const events = [
 		{
@@ -54,18 +55,18 @@ const VideoEditor = props => {
 			message: ``,
 			layer: 0,
 		},
-		// {
-		// 	type: `Comment`,
-		// 	icon: commentIcon,
-		// 	start: 0,
-		// 	end: 10,
-		// 	layer: 0,
-		// 	comment: ``,
-		// 	position: {
-		// 		x: 0,
-		// 		y: 0,
-		// 	},
-		// },
+		{
+			type: `Comment`,
+			icon: commentIcon,
+			start: 0,
+			end: 10,
+			layer: 0,
+			comment: ``,
+			position: {
+				x: 0,
+				y: 0,
+			},
+		},
 		{
 			type: `Censor`,
 			icon: censorIcon,
@@ -389,22 +390,53 @@ const VideoEditor = props => {
 	}
 
 	const handleExportAnnotation = () => {
-		// Convert JSON Array to string.
-		// Convert JSON string to BLOB.
-		const blob = new Blob([JSON.stringify(allEvents, null, 2)], {type : `application/json`})
-
-		// get the current website url
-		const url = window.URL || window.webkitURL
-		// create a link pointing to the blob or binary object
-		const link = url.createObjectURL(blob)
-		// create an anchor element to open the link we created
-		const a = document.createElement(`a`)
-		// trigger download and append file name
-		a.download = `${content.name}_annotations.json`
-		a.href = link
-		document.body.appendChild(a)
-		a.click()
-		document.body.removeChild(a)
+		var jsonData = [];
+    for (let e=0; e < allEvents.length; e++) {
+      if (allEvents[e].type !== 'Censor'){
+        const data = {"options": {
+          "end": allEvents[e].end,
+          "start": allEvents[e].start,
+          "type": allEvents[e].type,
+          "details": '{}',
+        }
+      }
+      jsonData.push(data);
+      }
+      else if (allEvents[e].type === 'Censor'){
+				var censorPositionData = {};
+				for(const value of Object.values(allEvents[e].position)) {
+					const time = value[0]
+					const pos = value.slice(1)
+					censorPositionData[time] = pos
+				}
+        const data = {"options": {
+          "start": allEvents[e].start,
+          "end": allEvents[e].end,
+          "type": allEvents[e].type,
+          "details": {
+            "type": "blur",
+            "interpolate": true,
+            "position": censorPositionData
+          }
+        }
+        }
+				jsonData.push(data);
+				censorPositionData = {}
+      }
+    }
+    const json = JSON.stringify(jsonData);
+    const blob = new Blob([json], {type: "application/json"})
+    // get the current website url
+    // create a link pointing to the blob or binary object
+    const link = URL.createObjectURL(blob)
+    // create an anchor element to open the link we created
+    const a = document.createElement(`a`)
+    // trigger download and append file name
+    a.download = `${content.name}_annotations.json`
+    a.href = link
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
 	}
 
 	const handleZoomChange = (e, d) => {
@@ -562,7 +594,7 @@ const VideoEditor = props => {
 										width: e.currentTarget.offsetWidth,
 									})
 								}
-								onMouseLeave={e => toggleTip()}
+								onMouseLeave={() => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 						</div>
@@ -594,7 +626,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized}>
+			<EventEditor id='EventEditor' minimized={eventListMinimized} show ={showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}
@@ -607,7 +639,7 @@ const VideoEditor = props => {
 								width: e.currentTarget.offsetWidth,
 							})
 						}
-						onMouseLeave={e => toggleTip()}
+						onMouseLeave={() => toggleTip()}
 						style={{marginLeft:10,marginTop:15}}
 					/>
 					<div className={`save`}>

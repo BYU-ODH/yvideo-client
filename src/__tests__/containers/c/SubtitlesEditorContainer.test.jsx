@@ -89,8 +89,6 @@ jest.mock(`react-router-dom`, () => ({
 // }))
 describe(`SubtitlesEditorContainer testing`, () => {
 	let wrapper
-	// let modal1
-	// let modal2
 	beforeEach(() => {
 		wrapper = mount(
 			<Provider store={testutil.store}>
@@ -101,20 +99,6 @@ describe(`SubtitlesEditorContainer testing`, () => {
 				</BrowserRouter>
 			</Provider>
 		)
-		// modal1 = mount(
-		// 	<Provider store={testutil.emptyStore}>
-		// 		<BrowserRouter>
-		// 			<Modal {...modalProps1}/>
-		// 		</BrowserRouter>
-		// 	</Provider>
-		// )
-		// modal2 = mount(
-		// 	<Provider store={testutil.emptyStore}>
-		// 		<BrowserRouter>
-		// 			<Modal {...modalProps2}/>
-		// 		</BrowserRouter>
-		// 	</Provider>
-		// )
 	})
 
 	jest.useFakeTimers()

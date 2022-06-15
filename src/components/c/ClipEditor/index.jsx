@@ -373,7 +373,7 @@ const ClipEditor = props => {
 														width: e.currentTarget.offsetWidth,
 													})
 												}
-												onMouseLeave={e => toggleTip()}>
+												onMouseLeave={() => toggleTip()}>
 												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 											</div>
 										</div>
@@ -434,7 +434,7 @@ const ClipEditor = props => {
 											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}
+									onMouseLeave={() => toggleTip()}
 								></Rnd>
 								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
 							</div>
@@ -504,7 +504,7 @@ const ClipEditor = props => {
 																width: e.currentTarget.offsetWidth + 20,
 															})
 														}
-														onMouseLeave={e => toggleTip()}
+														onMouseLeave={() => toggleTip()}
 													/>
 												</td>
 												<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}

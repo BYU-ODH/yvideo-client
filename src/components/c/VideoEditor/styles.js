@@ -238,8 +238,11 @@ export const EventEditor = styled.div`
 	& > header {
 		height: 5rem;
 		background: var(--navy-blue);
-
 		border-bottom: 5px solid var(--light-blue);
+
+		& > img {
+			cursor: pointer;
+		}
 
 		& > .carat {
 			float: left;
@@ -302,7 +305,7 @@ export const EventEditor = styled.div`
 
 		box-sizing: border-box;
 
-		/* border-bottom: 1px solid #555; */
+		border-bottom:${props => props.show !== false ? ` 1px solid var(--navy-blue)` : `none`};
 
 		color: black;
 		font-weight: 500;
@@ -385,12 +388,4 @@ export const EventListCarat = styled.button`
 	&.minimized {
 		transform: rotate(90deg);
 	}
-`
-
-export const Help = styled.img`
-	width: 30px;
-	height: 30px;
-	margin-left: 10px;
-	position: relative;
-	top: 10px;
 `
