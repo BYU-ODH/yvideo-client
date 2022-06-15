@@ -359,7 +359,7 @@ export const EventEditor = styled.div`
 		border: 2px solid #eb6e79;
 		background-color: #eb6e79;
 		color: white;
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		font-weight: 500;
 		border-radius: 5px;
 		cursor: pointer;

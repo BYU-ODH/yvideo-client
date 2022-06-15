@@ -154,6 +154,43 @@ export const Timeline = styled.div`
 		width: 100%;
 		border-bottom: 1px dashed var(--light-blue);
 	}
+	& .addtrack {
+		width: 162px !important;
+		min-width: 162px;
+		height: 46px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		box-sizing: border-box;
+		position: relative;
+		cursor: pointer;
+		border-bottom: 1px solid #555;
+		border-right: 1px solid var(--light-blue);
+		transition: .5s;
+		background-color: var(--navy-blue);
+		border-bottom: 1px solid;
+		border-color: white;
+
+		transition: .5s ease;
+
+		:hover {
+			background-color: var(--light-blue);
+		}
+		& p {
+			padding-left: 1.3rem;
+			color: black;
+			font-size: 1.5rem;
+			& .layer-delete {
+				margin: auto auto -3px 15px;
+				opacity: 0.3;
+
+				transition: .5s ease;
+				:hover {
+					opacity: 1;
+				}
+			}
+		}
+	}
 
 	& .handle {
 		width: 162px !important;
@@ -203,6 +240,8 @@ export const Timeline = styled.div`
 			}
 		}
 	}
+
+
 
 	& .skip-handle {
 		width: 162px !important;
@@ -353,6 +392,8 @@ export const AnnotationMessage = styled.div`
 
 export const PlusIcon = styled.div`
   background: url(${plusIcon}) center no-repeat;
-  width: 20px;
-  height: 15px;
+	color: white;
+  width: 1.3rem;
+  height: 1.3rem;
+	padding-left: 10px;
 `

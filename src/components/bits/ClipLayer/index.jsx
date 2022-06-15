@@ -129,7 +129,7 @@ const ClipLayer = props => {
 							key={`clip-${clipName}`}
 							style={style}
 						>
-							<p style={{margin: `auto 0px auto 2px`}}>Clip: {convertSecondsToMinute(start, videoLength)} - {convertSecondsToMinute(end, videoLength)}</p>
+							<p style={{margin: `auto 0px auto 2px`, fontSize: `1.1rem`}}>Clip: {convertSecondsToMinute(start, videoLength)} - {convertSecondsToMinute(end, videoLength)}</p>
 						</Rnd>
 					</div>
 				</div>
