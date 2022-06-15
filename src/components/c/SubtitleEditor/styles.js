@@ -45,7 +45,6 @@ export const Timeline = styled.div`
 	overflow-x: hidden;
 	border-bottom: 1px solid black;
 
-
 	& .zoom-controls {
 		width: calc(100% - 35rem - 1px);
 		height: 40px;
@@ -137,7 +136,6 @@ export const Timeline = styled.div`
 				}
 			}
 		}
-
 	}
 
 	& > section {
