@@ -53,12 +53,15 @@ describe(`AccordionMenu test`, () => {
 
 			const accordButton = screen.getByTestId(`accordion`)
 			const list = screen.getByTestId(`list`)
+			const contents = screen.queryAllByText(/test/i)
 
 			await user.click(accordButton)
 			expect(list).toHaveStyle(`height: 0px`)
 
 			await user.click(accordButton)
 			expect(list).toHaveStyle(`height: calc(4.16rem * 2)`)
+			expect(contents).not.toBeNull()
+
 		})
 	})
 })
