@@ -55,7 +55,7 @@ class Menu extends PureComponent {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}
+					onMouseLeave={() => toggleTip()}
 					onClick={e => {
 						e.stopPropagation()
 					}}
@@ -131,7 +131,7 @@ class Menu extends PureComponent {
 							width: e.currentTarget.offsetWidth,
 						})
 					}
-					onMouseLeave={e => toggleTip()}>
+					onMouseLeave={() => toggleTip()}>
 
 					<UserPic>{initials}</UserPic>
 					<h4>{user.name}</h4>

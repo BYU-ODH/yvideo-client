@@ -80,6 +80,12 @@ export default class ContentOverview extends PureComponent {
 			description,
 		} = content
 
+		// for testing purposes, I made this which just wraps 2 functions together
+		const handleEditAndTip = () => {
+			handleToggleEdit()
+			toggleTip()
+		}
+
 		return (
 			<Style>
 				<Preview onClick={handleToggleEdit}>
@@ -162,8 +168,18 @@ export default class ContentOverview extends PureComponent {
 							<IconWrapper onClick={handleLinks} className='clip-manager-wrapper'><ContentIcons className='clip-manager'/><StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink></IconWrapper>
 						</LinksWrapper>
 					}
-					{!editing && <SettingsIcon onClick={handleToggleEdit} />}
-
+					{ !editing &&
+						<SettingsIcon
+							onClick={handleEditAndTip}
+							onMouseEnter={e => handleShowTip(`settings`,
+								{
+									x: e.target.getBoundingClientRect().x + 45,
+									y: e.target.getBoundingClientRect().y - 5,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={() => toggleTip()} />
+					}
 				</Preview>
 				{editing &&
 					<InnerContainer>
@@ -242,7 +258,7 @@ export default class ContentOverview extends PureComponent {
 											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}
+									onMouseLeave={() => toggleTip()}
 									width='20' height='20'/>
 							</h4>
 							<p>Add a list of important words to be highlighted in the transcript. The highlighted

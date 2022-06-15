@@ -119,6 +119,7 @@ export const Help = styled.img`
 	margin-left: -5px;
 	position: relative;
 	bottom: -4px;
+	cursor: pointer;
 `
 
 export const Button = styled.button`
