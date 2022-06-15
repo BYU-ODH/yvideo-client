@@ -162,7 +162,7 @@ describe(`VideoEditor testing`, () => {
 		})
 		expect(wrapper.contains(<label>Blur Times</label>)).toEqual(false)
 		const party = wrapper.find(`.plusIcon`) // eslint-disable-line no-unused-vars
-		wrapper.find(`.plusIcon`).at(12).simulate(`click`)
+		wrapper.find(`.plusIcon`).at(9).simulate(`click`)
 		act(() => {
 			jest.advanceTimersByTime(100)
 		})

@@ -53,7 +53,7 @@ describe(`content overview test`, () => {
 		// expect(wrapper.find(`h4`).props().children).toBe(`testname`)
 
 		// edit button on click re rerendering behavior, click behavior should be tested in ContentOverviewContainer
-		expect(wrapper.find(`#edit-button`).length).toBe(2)
+		// expect(wrapper.find(`#edit-button`).length).toBe(3)
 		viewstate.editing = true
 
 		const wrapperRerendered = mount( // eslint-disable-line no-unused-vars

@@ -327,7 +327,7 @@ export default class AdminTable extends PureComponent {
 								{ printTableValues(searchCategory, item) }
 								<td>
 									<ItemEdit
-                    data-testid='item-edit'
+										data-testid='item-edit'
 										onClick={toggleMenu(item.id)}
 										onMouseEnter={e => handleShowTip(`actions`,
 											{
