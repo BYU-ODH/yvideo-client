@@ -3,7 +3,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import Container from '../../../containers/c/SubtitleEditorContainer'
+import Container from '../../../containers/c/SubtitlesEditorContainer'
 import Modal from '../../../components/modals/containers/SubtitlesModalContainer'
 import { act } from 'react-dom/test-utils'
 import * as testutil from '../../testutil/testutil'
@@ -87,7 +87,7 @@ jest.mock(`react-router-dom`, () => ({
 // 		},
 // 	}),
 // }))
-describe(`SubtitleEditorContainer testing`, () => {
+describe(`SubtitlesEditorContainer testing`, () => {
 	let wrapper
 	// let modal1
 	// let modal2

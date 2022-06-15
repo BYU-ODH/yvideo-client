@@ -17,7 +17,7 @@ import PlayerContainer from './c/PlayerContainer'
 import RootContainer from './c/RootContainer'
 import ManageResourceContainer from './c/ManageResourceContainer'
 import SubtitlesContainer from './c/SubtitlesContainer'
-import SubtitleEditorContainer from './c/SubtitleEditorContainer'
+import SubtitlesEditorContainer from './c/SubtitlesEditorContainer'
 import PlayerSubtitlesContainer from './c/PlayerSubtitlesContainer'
 import FileOverviewContainer from './c/FileOverviewContainer'
 import SearchPublicCollectionsContainer from './c/SearchPublicCollectionsContainer'
@@ -48,7 +48,7 @@ export {
 	RootContainer,
 	ManageResourceContainer,
 	SubtitlesContainer,
-	SubtitleEditorContainer,
+	SubtitlesEditorContainer,
 	FileOverviewContainer,
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,

@@ -8,7 +8,7 @@ import HelpDocumentation from 'components/modals/containers/HelpDocumentationCon
 
 import SubtitlesModal from 'components/modals/containers/SubtitlesModalContainer'
 
-const SubtitleEditorContainer = props => {
+const SubtitlesEditorContainer = props => {
 
 	const {
 		content,
@@ -242,4 +242,4 @@ const mapThunksToProps = {
 	getFiles: resourceService.getFiles,
 }
 
-export default connect(mapStoreToProps, mapThunksToProps)(SubtitleEditorContainer)
+export default connect(mapStoreToProps, mapThunksToProps)(SubtitlesEditorContainer)
