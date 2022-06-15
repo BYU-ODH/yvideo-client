@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event'
 
 const props = {
 	active: true,
-	handleToggle: jest.fn(),
 }
 
 const wrapper =

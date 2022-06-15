@@ -1,8 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
-import '@testing-library/dom'
 import Container from '../../../containers/c/FileOverviewContainer'
 import { Provider } from 'react-redux'
 import * as testutil from '../../testutil/testutil'
