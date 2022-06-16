@@ -239,6 +239,9 @@ export default class Player extends Component {
 			}
 		}
 
+		const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
+
 		return (
 			<Style>
 				<div style={
@@ -266,10 +269,17 @@ export default class Player extends Component {
 							onSeek={e => e}
 							progressInterval={30}
 							onProgress={handleOnProgress}
-							// onProgressBar={handleOnReady}
 							onDuration={handleDuration}
 
 							config={{
+								file: {
+									forceHLS: !isSafari,
+									forceVideo: true,
+									hlsVersion: '0.12.4',
+									attributes: {
+										disablePictureInPicture: true
+									}
+								},
 								youtube: {
 									iv_load_policy: 3,
 									modestbranding: 1,
