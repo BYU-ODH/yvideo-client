@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { ItemContainer, Thumbnail } from './styles.js'
+import { LazyImage } from 'components/bits'
+
+import defaultThumbnail from 'assets/default-thumb.svg'
+
+import { ItemContainer } from './styles.js'
 
 export default class BlockItem extends Component {
 
@@ -12,7 +16,9 @@ export default class BlockItem extends Component {
 		return (
 			<ItemContainer>
 				<Link to={`/player/${id}`}>
-					<Thumbnail src={thumbnail}/>
+					<LazyImage
+						src={thumbnail !== `empty` ? thumbnail : defaultThumbnail}
+					/>
 					<h4>{name}</h4>
 				</Link>
 			</ItemContainer>
