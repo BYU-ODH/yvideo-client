@@ -1,14 +1,9 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import {
-	ListCollection,
-	BlockCollection,
-} from 'components/bits'
+import { ListCollection, BlockCollection } from 'components/bits'
 
-import {
-	PublicListCollectionContainer,
-} from 'containers'
+import { PublicListCollectionContainer } from 'containers'
 
 import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
 

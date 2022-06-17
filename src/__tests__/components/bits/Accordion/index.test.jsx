@@ -10,7 +10,7 @@ const props = {
 const wrapper =
 <AccordionMenu {...props} />
 
-const wrapperWithContent = //This is to test that with 2+ contents, the accordion displays them all
+const wrapperWithContent = // This is to test that with 2+ contents, the accordion displays them all
 	<AccordionMenu {...props}>
 		<div>test1</div>
 		<div>test2</div>
