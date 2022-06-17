@@ -11,7 +11,7 @@ const CensorDnD = props => {
 		setCensorEdit(time.toString())
 		seekTo(null,parseFloat(censorValues[time][0]))
 	}
-	if(censorEdit === -1 || censorValues.length===0)
+	if(censorEdit === -1 || censorEdit === `-1` || censorValues.length===0)
 		return (<></>)
 
 	const checkExisting = () =>{

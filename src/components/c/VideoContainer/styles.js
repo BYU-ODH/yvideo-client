@@ -81,7 +81,7 @@ export const TimeBar = styled.div`
 			& > #time-bar {
 				overflow-x:  smooth;
 				overflow-y: hidden;
-				scroll-behavior: smooth;
+				/* scroll-behavior: smooth; */
 				position: relative;
 				height: 50px;
 				flex: 1;

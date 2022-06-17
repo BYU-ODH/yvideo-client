@@ -26,6 +26,8 @@ const props = {
 	setActiveCensorPosition: jest.fn(),
 	toggleTip: jest.fn(),
 	handleShowTip: jest.fn(),
+	setEventSeek: jest.fn(),
+	handleEventPosition: jest.fn(),
 }
 
 describe(`TrackEditorSideMenu test`, () => {

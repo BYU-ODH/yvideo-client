@@ -107,7 +107,7 @@ export const Timeline = styled.div`
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
-				scroll-behavior: smooth;
+				/* scroll-behavior: smooth; */
 				pointer-events: none;
 				bottom: 0px;
 
