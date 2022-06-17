@@ -73,7 +73,7 @@ const wrapper =
 		<BlockCollection {...props} />
 	</BrowserRouter>
 
-describe(`collections test`, () => {
+describe(`BlockCollection test`, () => {
 	beforeEach(() => {
 		render(wrapper)
 	})

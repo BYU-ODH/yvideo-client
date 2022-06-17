@@ -48,11 +48,9 @@ export default class BlockCollection extends Component {
 			this.setState({
 				right: true,
 			}, () => {
-				setTimeout(() => {
-					this.setState({
-						hideRight: true,
-					})
-				}, 250)
+				this.setState({
+					hideRight: true,
+				})
 			})
 		}
 	}
