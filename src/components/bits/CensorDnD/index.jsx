@@ -1,6 +1,9 @@
 import React from 'react'
 import { Rnd } from 'react-rnd'
 import { CloseBox, BeforeButton, AfterButton} from './styles'
+import closeIcon from 'assets/close_icon.svg'
+import arrowRight from 'assets/arrow-right.svg'
+import arrowLeft from 'assets/arrow-left.svg'
 const CensorDnD = props => {
 	const {censorValues, censorEdit, handleUpdateCensorPosition, handleUpdateCensorResize,setCensorEdit,screenWidth,screenHeight,seekTo} = props
 	const Enable = {top:true, right:true, bottom:true, left:true, topRight:true, bottomRight:true, bottomLeft:true, topLeft:true}
@@ -12,18 +15,18 @@ const CensorDnD = props => {
 		return (<></>)
 
 	const checkExisting = () =>{
-		// const keys = censorValues.map(val => val[0])
-		// const next = keys.filter(value => parseFloat(value) > parseFloat(censorValues[censorEdit][0])).sort((a,b) => parseFloat(a)-parseFloat(b))[0]
-		const next = censorValues.findIndex(censorValues.filter(val => parseFloat(val) > censorValues[censorEdit][0]).sort((a,b)=>parseFloat(a[0])-parseFloat(b[0]))[0])
-		const previous = censorValues.findIndex(censorValues.filter(val => parseFloat(val) < censorValues[censorEdit][0]).sort((a,b)=>parseFloat(b[0])-parseFloat(a[0]))[0])
-		// const previous = keys.filter(value => parseFloat(value) < parseFloat(censorValues[censorEdit][0])).sort((a,b) => parseFloat(b)-parseFloat(a))[0]
+		const vals = Object.values(censorValues)
+		const next = Object.keys(censorValues).find(val => censorValues[val] === vals.filter(value => parseFloat(value) > parseFloat(censorValues[censorEdit][0])).sort((a,b) => parseFloat(a)-parseFloat(b))[0])
+		// const next = censor.findIndex(censor.filter(val => parseFloat(val) > censor[censorEdit][0]).sort((a,b)=>parseFloat(a[0])-parseFloat(b[0]))[0])
+		// const previous = censor.findIndex(censor.filter(val => parseFloat(val) < censor[censorEdit][0]).sort((a,b)=>parseFloat(b[0])-parseFloat(a[0]))[0])
+		const previous = Object.keys(censorValues).find(val=> censorValues[val] === vals.filter(value => parseFloat(value) < parseFloat(censorValues[censorEdit][0])).sort((a,b) => parseFloat(b)-parseFloat(a))[0])
 		// const prevKey = censorValues.find(val => val[0] === previous)
 		// const nextKey = censorValues.find(val => val[0] === next)
-
 		return(<div style={{width:`100%`,height:`100%`,position:`absolute`}}>
 			{previous !== `-Infinity`&& previous !== undefined ? (
 				<BeforeButton onClick={()=>handleChange(previous)}>
-					<h1 style={{fontWeight:700,color:`black`}}>Previous</h1>
+					{/* <h1 style={{fontWeight:700,color:`black`}}>Previous</h1> */}
+					<img src={arrowLeft} alt='previous' />
 				</BeforeButton>
 			):null}
 			<Rnd
@@ -38,12 +41,14 @@ const CensorDnD = props => {
 			>
 			</Rnd>
 			<CloseBox onClick={()=>setCensorEdit(-1)}>
-				<h1 style={{textAlign:`center`,fontWeight:900}}>X</h1>
+				{/* <h1 style={{textAlign:`center`,fontWeight:900}}>X</h1> */}
+				<img src={closeIcon} alt='close' />
 			</CloseBox>
 
 			{next !== undefined && next !== `Infinity`? (
 				<AfterButton onClick={()=>handleChange(parseInt(next))}>
-					<h1 style={{fontWeight:700,color:`black`}}>Next</h1>
+					{/* <h1 style={{fontWeight:700,color:`black`}}>Next</h1> */}
+					<img src={arrowRight} alt='next' />
 				</AfterButton>
 			):null}
 		</div>)

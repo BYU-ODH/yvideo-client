@@ -156,30 +156,41 @@ export const CensorChange = async (ind,censorData, playedSeconds) =>{
 
 	if(document.getElementById(`censorBox-${censorData.next}-${dataLeft1Value}`)){
 		const censorBox = document.getElementById(`censorBox-${censorData.next}-${dataLeft1Value}`)
-		const width =
+		let width = 0
+		let height = 0
+		let top = 0
+		let left = 0
+		if(censorData.previous !== undefined && censorData.next !== undefined){
+			width =
 			censorData.top1 + censorData.top2 !== 0 ?
 				censorData.width1 + (playedSeconds-censorData.previous) / (censorData.next-censorData.previous) * (censorData.width2-censorData.width1)
 				: 0
 
-		censorBox.style.width = `${width}%`
-		const height =
+			censorBox.style.width = `${width}%`
+			height =
 			censorData.top1 + censorData.top2 !== 0 ?
 				censorData.height1 + (playedSeconds-censorData.previous) / (censorData.next-censorData.previous) * (censorData.height2-censorData.height1)
 				: 0
 
-		censorBox.style.height = `${height}%`
-		const top =
+			top =
 			censorData.top1 + censorData.top2 !== 0 ?
 				censorData.top1-height / 2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.top2 - censorData.top1)
 				: 0
 
-		const left =
+			left =
 			censorData.left1 + censorData.left2 !== 0 ?
-				censorData.left1 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.left2 - censorData.left1)
+				censorData.left1 - width/2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.left2 - censorData.left1)
 				: 0
-
-		censorBox.style.top = `${top < 0 ? `0%` : `${top}%`}`
-		censorBox.style.left = `${left < 0 ? `0%` : `${left + left * .2}%`}`
+		}else if(typeof censorData.previous === `undefined` || typeof censorData.next === `undefined`){
+			width = censorData.width1
+			height = censorData.height1
+			top = censorData.top1 - height /2
+			left = censorData.left1 - width /2
+		}
+		censorBox.style.top = `${`${top}%`}`
+		censorBox.style.left = `${`${left}%`}`
+		censorBox.style.height = `${height}%`
+		censorBox.style.width = `${width}%`
 	}
 }
 export const CommentChange = (ind,commentData, playedSeconds) =>{

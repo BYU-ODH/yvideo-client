@@ -26,7 +26,6 @@ const getPos = (events, t) => {
 		// const previous = next !== undefined ? Math.max(...filterKeys).toFixed(1).toString() : Math.max(...keys).toFixed(1).toString()
 		const prevKey = Object.keys(events).find(val => events[val][0] === previous)
 		const nextKey = Object.keys(events).find(val => events[val][0] === next)
-		console.log(previous,next)
 		if (next === undefined || next === `Infinity`){
 			const values = new Values(events[prevKey][2],events[prevKey][2],events[prevKey][1],events[prevKey][1],events[prevKey][3],events[prevKey][3],events[prevKey][4],events[prevKey][4],next,previous)
 			// const values = {}
