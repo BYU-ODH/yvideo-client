@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import Container from '../../../../components/modals/containers/RegistorInstructorsContainer'
+import Container from '../../../../components/modals/containers/RegisterInstructorsContainer'
 import { Form, Button } from '../../../../components/modals/components/RegisterInstructors/styles'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
@@ -10,7 +10,7 @@ const props = {
 	search: jest.fn(),
 }
 
-describe(`RegistorInstructorsContainer test`, () => {
+describe(`RegisterInstructorsContainer test`, () => {
 
 	it(`should pass event handlers test`, ()=> {
 		const wrapper = mount(

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 import helpIcon from 'assets/help/help-icon-black.svg'
@@ -164,7 +164,7 @@ export default class ContentOverview extends PureComponent {
 					{editing ||
 						<LinksWrapper className='LinksWrapper'>
 							<IconWrapper onClick={handleLinks} className='video-editor-wrapper'><ContentIcons className='video-editor'/><StyledLink to={`/videoeditor/${content.id}`}>Video Editor</StyledLink></IconWrapper>
-							<IconWrapper onClick={handleLinks} className='subtitle-editor-wrapper'><ContentIcons className='subtitle-editor'/><StyledLink to={`/subtileeditor/${content.id}`}>Subtitle Editor</StyledLink></IconWrapper>
+							<IconWrapper onClick={handleLinks} className='subtitle-editor-wrapper'><ContentIcons className='subtitle-editor'/><StyledLink to={`/subtitleeditor/${content.id}`}>Subtitle Editor</StyledLink></IconWrapper>
 							<IconWrapper onClick={handleLinks} className='clip-manager-wrapper'><ContentIcons className='clip-manager'/><StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink></IconWrapper>
 						</LinksWrapper>
 					}
@@ -268,10 +268,10 @@ export default class ContentOverview extends PureComponent {
 						</Column>
 					</InnerContainer>
 				}
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='Have you saved your changes already?'
-				/>
+				/> */}
 			</Style>
 		)
 	}

@@ -63,8 +63,8 @@ describe(`collections test`, () => {
 
 		const arrowLeft = wrapper.find({"className" : `left`})
 		const arrowRight = wrapper.find({"className" : `right`})
-		expect(arrowLeft).toHaveLength(2)
-		expect(arrowRight).toHaveLength(2)
+		expect(arrowLeft).toHaveLength(1)
+		expect(arrowRight).toHaveLength(1)
 
 		// link mapping test
 		// TODO: find this again

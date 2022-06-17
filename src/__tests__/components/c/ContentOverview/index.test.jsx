@@ -63,7 +63,6 @@ describe(`content overview test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		// console.log(wrapperRerendered.debug())
 		// expect(wrapperRerendered.find(`ContentSettingsContainer`).length).toBe(1)
 		// expect(wrapperRerendered.find(`button`).length).toBe(7)
 		// expect(wrapperRerendered.find(`button`).at(0).props().children).toBe(`Unpublish`)

@@ -177,7 +177,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<>
 						<td>{item.name}</td>
-						<td><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></td>
+						<td><u><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></u></td>
 						<td>{item.contentType}</td>
 						<td>{item.expired.toString()}</td>
 						<td>{item.resourceId}</td>
@@ -226,9 +226,6 @@ export default class AdminTable extends PureComponent {
 						</li>
 						<li>
 							<Link to={`/videoeditor/${data.id}`}>Edit</Link>
-						</li>
-						<li>
-							<button>Disable</button>
 						</li>
 						<li>
 							<button className='contentDelete' onClick={handleConfirmDelete}>Delete</button>
@@ -320,7 +317,7 @@ export default class AdminTable extends PureComponent {
 				<Table>
 					<thead>
 						<tr>
-							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' onClick={()=>sort(data,header.title)}/></th>)}
+							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={()=>sort(data, header.title)}/></th>)}
 							<th/>
 						</tr>
 					</thead>
@@ -330,6 +327,7 @@ export default class AdminTable extends PureComponent {
 								{ printTableValues(searchCategory, item) }
 								<td>
 									<ItemEdit
+										data-testid='item-edit'
 										onClick={toggleMenu(item.id)}
 										onMouseEnter={e => handleShowTip(`actions`,
 											{

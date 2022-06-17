@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
@@ -390,53 +390,52 @@ const VideoEditor = props => {
 	}
 
 	const handleExportAnnotation = () => {
-		var jsonData = [];
-    for (let e=0; e < allEvents.length; e++) {
-      if (allEvents[e].type !== 'Censor'){
-        const data = {"options": {
-          "end": allEvents[e].end,
-          "start": allEvents[e].start,
-          "type": allEvents[e].type,
-          "details": '{}',
-        }
-      }
-      jsonData.push(data);
-      }
-      else if (allEvents[e].type === 'Censor'){
-				var censorPositionData = {};
+		const jsonData = []
+		for (let e=0; e < allEvents.length; e++) {
+			if (allEvents[e].type !== `Censor`){
+				const data = {"options": {
+					"end": allEvents[e].end,
+					"start": allEvents[e].start,
+					"type": allEvents[e].type,
+					"details": `{}`,
+				},
+				}
+				jsonData.push(data)
+			} else if (allEvents[e].type === `Censor`){
+				let censorPositionData = {}
 				for(const value of Object.values(allEvents[e].position)) {
 					const time = value[0]
 					const pos = value.slice(1)
 					censorPositionData[time] = pos
 				}
-        const data = {"options": {
-          "start": allEvents[e].start,
-          "end": allEvents[e].end,
-          "type": allEvents[e].type,
-          "details": {
-            "type": "blur",
-            "interpolate": true,
-            "position": censorPositionData
-          }
-        }
-        }
-				jsonData.push(data);
+				const data = {"options": {
+					"start": allEvents[e].start,
+					"end": allEvents[e].end,
+					"type": allEvents[e].type,
+					"details": {
+						"type": `blur`,
+						"interpolate": true,
+						"position": censorPositionData,
+					},
+				},
+				}
+				jsonData.push(data)
 				censorPositionData = {}
-      }
-    }
-    const json = JSON.stringify(jsonData);
-    const blob = new Blob([json], {type: "application/json"})
-    // get the current website url
-    // create a link pointing to the blob or binary object
-    const link = URL.createObjectURL(blob)
-    // create an anchor element to open the link we created
-    const a = document.createElement(`a`)
-    // trigger download and append file name
-    a.download = `${content.name}_annotations.json`
-    a.href = link
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+			}
+		}
+		const json = JSON.stringify(jsonData)
+		const blob = new Blob([json], {type: `application/json`})
+		// get the current website url
+		// create a link pointing to the blob or binary object
+		const link = URL.createObjectURL(blob)
+		// create an anchor element to open the link we created
+		const a = document.createElement(`a`)
+		// trigger download and append file name
+		a.download = `${content.name}_annotations.json`
+		a.href = link
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
 	}
 
 	const handleZoomChange = (e, d) => {
@@ -455,8 +454,12 @@ const VideoEditor = props => {
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
-			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+		const tempOnload = window.onload
+		window.onload = () => {
+			if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
+			window.onload = tempOnload
+		}
 
 	}
 	const handleScrollFactor = (direction, zoom) => {
@@ -703,10 +706,10 @@ const VideoEditor = props => {
 			</EventEditor>
 
 			<>
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
-				/>
+				/> */}
 			</>
 		</Style>
 	)

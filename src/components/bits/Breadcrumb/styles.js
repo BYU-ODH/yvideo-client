@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Style = styled.div`
-	margin-left: 2rem
+	margin-left: 2rem;
 
 	& button {
 		color: var(--light-blue);

@@ -124,9 +124,10 @@ export const Button = styled.button`
 	place-self: start;
 	background: transparent;
 	border-radius: 3px;
-	border: none
-	:hover {
-		border: 1px solid grey;
+	border: none;
+	// :hover {
+	// 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6);
+	// 	transition: 0.5s;
 	}
 `
 

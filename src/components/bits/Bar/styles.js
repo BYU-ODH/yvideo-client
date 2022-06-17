@@ -13,9 +13,9 @@ const Style = styled.div`
 export default Style
 
 export const BarBall = styled.div.attrs(props => ({
-	style: {
-		left: `calc(${props.position * 100}% - .5rem)`,
-	},
+	// style: {
+	// 	left: `calc(${props.position * 100}% - .5rem)`,
+	// },
 }))`
 	position: absolute;
 	top: ${props => props.active ? `-.2rem` : `.3rem`};
@@ -29,9 +29,9 @@ export const BarBall = styled.div.attrs(props => ({
 `
 
 export const BarCurrent = styled.div.attrs(props => ({
-	style: {
-		width: `${props.position * 100}%`,
-	},
+	// style: {
+	// 	width: `${props.position * 100}%`,
+	// },
 }))`
 	position: absolute;
 	left: 0;

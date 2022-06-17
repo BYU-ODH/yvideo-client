@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
 import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
-import * as Subtitle from 'subtitle'
+// import * as Subtitle from 'subtitle'
+import {parse} from 'subtitle'
 
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
@@ -18,7 +19,6 @@ import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
 
 const SubtitleEditor = props => {
-
 	const { setEvents, updateContent, createSub, setAllSubs, activeUpdate, deleteSubtitles } = props
 
 	const {
@@ -88,7 +88,6 @@ const SubtitleEditor = props => {
 			eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
 			largestLayer = eventsArray[eventsArray.length-1].layer
 		}
-
 		// Find the largest layer number
 		const initialLayers = []
 
@@ -145,12 +144,10 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const openSubEditor = (layerIndex,subIndex) => {
-		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
-		const t2 = performance.now() // eslint-disable-line no-unused-vars
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active)
@@ -227,26 +224,27 @@ const SubtitleEditor = props => {
 			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
 			// 	})
 			// }
+			const tempOnload = window.onload
+			window.onload = () => {
+				const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
-			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
+				const dis = direction/scrollBarContainer
+				scrubber.scrollLeft = currentLayerWidth * dis
+				timeIndicator.scrollLeft = currentLayerWidth * dis
 
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
-
-			allLayers.forEach((element, i) => {
-				allLayers[i].scrollLeft = currentLayerWidth * dis
-			})
-			skipLayer.scrollLeft = currentLayerWidth * dis
+				allLayers.forEach((element, i) => {
+					allLayers[i].scrollLeft = currentLayerWidth * dis
+				})
+				skipLayer.scrollLeft = currentLayerWidth * dis
+				window.onload = tempOnload
+			}
 		}
 	}
 
 	const updateSubs = (index, sub, subLayerIndex, side, type) => {
-		const t1 = performance.now() // eslint-disable-line no-unused-vars
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-		const t1_1 = performance.now() // eslint-disable-line no-unused-vars
 		try {
 			if(side === `beg`) {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
@@ -322,7 +320,6 @@ const SubtitleEditor = props => {
 				}
 			}
 		}
-		const t3_1 = performance.now() // eslint-disable-line no-unused-vars
 
 		if(needCheck)
 			setDisableSave(false)
@@ -471,7 +468,8 @@ const SubtitleEditor = props => {
 		try{
 			const reader = new FileReader()
 			reader.onload = (e) => {
-				const temp = Subtitle.parse(e.target.result)
+				console.log(e) //eslint-disable-line
+				const temp = parse(e.target.result)
 				// console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000
@@ -737,9 +735,9 @@ const SubtitleEditor = props => {
 											/>
 											{
 												subLayerToEdit === index && isEdit ?
-													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
+													<Icon data-testid='editIcon' className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
 													:
-													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
+													<Icon data-testid='editIcon' className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
 											}
 										</div>
 										<Icon className={`trashIcon`} src={trashIcon}
@@ -929,10 +927,10 @@ const SubtitleEditor = props => {
 				</>
 			</EventList>
 			<>
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
-				/>
+				/> */}
 			</>
 		</Style>
 	)

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useLocation, useHistory } from 'react-router-dom'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { collectionService, interfaceService } from 'services'
@@ -30,7 +30,7 @@ const PublicManagerContainer = props => {
 
 	const params = useParams()
 	const location = useLocation()
-	const history = useHistory()
+	const navigate = useNavigate()
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
@@ -44,7 +44,7 @@ const PublicManagerContainer = props => {
 		}
 
 		if(Object.keys(newCollectionInfo).length !== 0){
-			history.push({
+			navigate({
 				pathname: `/public-manager/${newCollectionInfo}`,
 			})
 			removeCreatedCollectionIdFromStore()

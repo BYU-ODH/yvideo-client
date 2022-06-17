@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import EventCard from '../../../../components/bits/EventCard/index'
 import { BrowserRouter} from 'react-router-dom'
 import { DndProvider } from 'react-dnd'
-import Backend from 'react-dnd-html5-backend'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 describe(`event card`, () => {
 	it(`mock useDrag`, ()=> {
@@ -18,7 +18,7 @@ describe(`event card`, () => {
 		]
 		const	wrapper = mount( // eslint-disable-line no-unused-vars
 			<BrowserRouter>
-				<DndProvider backend={Backend}>
+				<DndProvider backend={HTML5Backend}>
 					<EventCard event={event}/>
 				</DndProvider>
 			</BrowserRouter>,

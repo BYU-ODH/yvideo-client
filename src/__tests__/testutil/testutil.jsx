@@ -850,7 +850,7 @@ export const store = mockStore(
 					id: `1`,
 					language: `spanish`,
 					title: `title1`,
-					words: `a, d c`,
+					words: `a, d, c`,
 				},
 			],
 			loading: false,

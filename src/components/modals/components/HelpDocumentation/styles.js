@@ -107,6 +107,7 @@ export const Container = styled.div`
 				padding-right: 8px;
 				border-radius: 5px;
 				box-shadow: 2px 2px 3px rgba(0,0,0, 0.2);
+				border 1px solid #666666;
 			}
 
 			& li {
