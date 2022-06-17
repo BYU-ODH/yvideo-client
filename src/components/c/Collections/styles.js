@@ -71,6 +71,9 @@ const Style = styled.div`
 				:hover {
 					box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.5);
 				}
+				@media screen and (max-width: 320px){
+					font-size: .9rem;
+				}
 			}
 		}
 }
@@ -95,6 +98,7 @@ const Style = styled.div`
 			}
 		}
 }
+
 `
 
 export default Style
@@ -115,6 +119,7 @@ export const Help = styled.img`
 	margin-left: -5px;
 	position: relative;
 	bottom: -4px;
+	cursor: pointer;
 `
 
 export const Button = styled.button`
@@ -140,6 +145,11 @@ export const SearchIcon = styled.span`
 	background-size: contain;
 	height: 1.8rem;
 	width: 1.8rem;
+	@media screen and (max-width: 320px){
+		top: 1.3rem;
+		height: 1.5rem;
+		width: 1.5rem;
+	}
 `
 
 export const MenuIcon = styled.span`
@@ -220,7 +230,11 @@ export const SearchMobile = styled.form`
 
 		outline: none;
 		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		@media screen and (max-width: 320px){
+			font-size: 1rem;
+		}
 	}
+
 `
 
 export const FeedbackMessage = styled.div`
@@ -233,5 +247,8 @@ export const FeedbackMessage = styled.div`
 		font-weight: 200;
 		font-size: 20px;
 		margin: auto;
+		@media screen and (max-width: 320px){
+			font-size: 19px;
+		}
 	}
 `

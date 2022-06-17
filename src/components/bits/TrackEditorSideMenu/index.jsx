@@ -212,7 +212,7 @@ const TrackEditorSideMenu = props => {
 												width: e.currentTarget.offsetWidth+20,
 											})
 										}
-										onMouseLeave={e => toggleTip()}
+										onMouseLeave={() => toggleTip()}
 									/>
 									<input
 										type='text'
@@ -229,7 +229,7 @@ const TrackEditorSideMenu = props => {
 												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
-										onMouseLeave={e => toggleTip()}
+										onMouseLeave={() => toggleTip()}
 									/>
 									{event.type === `Pause` ? (
 										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='sideTabInput' value={event.message}

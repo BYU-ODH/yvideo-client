@@ -387,6 +387,10 @@ export const Column = styled.div`
 		line-height: 2rem;
 		margin-bottom: 1rem;
 		font-size: 1.4rem;
+
+		& > img {
+			cursor: pointer;
+		}
 	}
 
 	& div {

@@ -43,7 +43,7 @@ export class ManageResource extends PureComponent {
 									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()}
+							onMouseLeave={() => toggleTip()}
 						/>
 					</Help>
 
