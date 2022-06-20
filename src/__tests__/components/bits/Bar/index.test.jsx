@@ -10,16 +10,14 @@ const skipProps = {
 	skipArray: [
 		// { start: 0, end: 100, type: 'skip' },
 		// { start: 400, end: 900, type: 'skip' },
-		{ start: 0, end: 990, type: 'skip' },
+		{ start: 0, end: 990, type: `skip` },
 	],
 	handleClick: jest.fn(),
 	progress: 0,
 }
 const clipProps = {
 	duration: 1000,
-	skipArray: [
-		{ start: 0, end: 100, type: 'skip' },
-	],
+	skipArray: [{ start: 0, end: 100, type: `skip` }],
 	clipTime: [200, 300],
 	clipPercent: [.20, .30],
 	handleClick: jest.fn(),
@@ -42,17 +40,15 @@ describe(`Bar test`, () => {
 			cleanup()
 		})
 		it(`Should render gray bar with skips`, () => {
-			expect(screen.queryAllByTestId('gray-bar')).not.toBeNull()
-			expect(screen.queryByTestId('yellow-bar')).toBeNull()
+			expect(screen.queryAllByTestId(`gray-bar`)).not.toBeNull()
+			expect(screen.queryByTestId(`yellow-bar`)).toBeNull()
 		})
 		it(`Onclick`, async () => {
 			const user = userEvent.setup()
-			const bar = screen.getByTestId('bar')
+			const bar = screen.getByTestId(`bar`)
 
 			await user.click(bar)
 			expect(skipProps.handleClick).toHaveBeenCalled()
-
-			expect(screen.getByTestId(`timeBarProgress`)).toHaveStyle(`height: 6rem`)
 		})
 	})
 	describe(`Clip tests`, () => {
@@ -64,12 +60,12 @@ describe(`Bar test`, () => {
 			cleanup()
 		})
 		it(`Should render yellow bar with clips`, () => {
-			expect(screen.queryAllByTestId('gray-bar')).not.toBeNull()
-			expect(screen.queryAllByTestId('yellow-bar')).not.toBeNull()
+			expect(screen.queryAllByTestId(`gray-bar`)).not.toBeNull()
+			expect(screen.queryAllByTestId(`yellow-bar`)).not.toBeNull()
 		})
 		it(`Onclick`, async () => {
 			const user = userEvent.setup()
-			const bar = screen.getByTestId('bar')
+			const bar = screen.getByTestId(`bar`)
 
 			await user.click(bar)
 			expect(clipProps.handleClick).toHaveBeenCalled()

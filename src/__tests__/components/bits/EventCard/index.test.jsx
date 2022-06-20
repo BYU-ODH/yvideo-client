@@ -1,7 +1,7 @@
 import React from 'react'
 import EventCard from '../../../../components/bits/EventCard/index'
 import { BrowserRouter} from 'react-router-dom'
-import { render, screen, cleanup, /*fireEvent*/ } from '@testing-library/react'
+import { render, screen, cleanup /* fireEvent*/ } from '@testing-library/react'
 
 const event =
 	{
@@ -13,12 +13,12 @@ const event =
 	}
 
 const props = {
-	event
+	event,
 }
 
 const	wrapper =
 	<BrowserRouter>
-			<EventCard {...props}/>
+		<EventCard {...props}/>
 	</BrowserRouter>
 
 describe(`event card`, () => {
