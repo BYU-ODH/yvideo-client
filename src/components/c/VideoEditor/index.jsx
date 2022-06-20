@@ -341,6 +341,8 @@ const VideoEditor = props => {
 
 	// THIS IS PART OF CENSOR
 	const handleLastClick = (height, width, x, y, time) => {
+		const newWidth = 30
+		const newHeight = 40
 		if(eventToEdit < allEvents.length && allEvents[eventToEdit].type === `Censor`){
 
 			const index = eventToEdit
@@ -358,9 +360,29 @@ const VideoEditor = props => {
 			if(exists){
 				const existId = Object.keys(cEvent.position).find(val => cEvent.position[val][0] === `${time.toFixed(1)}`)
 				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`,x / width * 100, (y-86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
-			} else
-				cEvent.position[`${id}`] = [`${time.toFixed(1)}`,x / width * 100, (y-86) / height * 100, 30, 40]
-
+			} else{
+				let newX = x / width * 100
+				let newY = (y - 86) / height * 100
+				let w = newWidth
+				let h = newHeight
+				if(newX - newWidth / 2 < 0){
+					newX = (newX + newWidth / 2) / 2
+					w = newX * 2
+				}
+				if(newX + newWidth / 2 > 100){
+					newX = 100 - (100 - newX + newWidth / 2) / 2
+					w = (100 - newX) * 2
+				}
+				if (newY - newHeight / 2 < 0){
+					newY = (newY + newWidth / 2) / 2
+					h = newY * 2
+				}
+				if(newY+newHeight / 2 > 100){
+					newY = 100 - (100 - newY + newHeight / 2) / 2
+					h = (100 - newY) * 2
+				}
+				cEvent.position[`${id}`] = [`${time.toFixed(1)}`, newX, newY, w, h]
+			}
 			updateEvents(index, cEvent, layer)
 		}
 	}
@@ -698,6 +720,8 @@ const VideoEditor = props => {
 							setActiveCensorPosition = {setActiveCensorPosition}
 							toggleTip={toggleTip}
 							handleShowTip={handleShowTip}
+							setEventSeek = {setEventSeek}
+							handleEventPosition = {handleEventPosition}
 						></TrackEditorSideMenu>
 						:
 						<></>

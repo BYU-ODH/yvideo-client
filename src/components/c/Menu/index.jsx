@@ -50,8 +50,8 @@ class Menu extends PureComponent {
 				<Style editorStyle={editorStyle} className={menuActive && `active`}
 					onMouseEnter={e => handleShowTip(`menu`,
 						{
-							x: window.innerWidth - 270,
-							y: 50,
+							x: window.innerWidth - 300,
+							y: 54,
 							width: e.currentTarget.offsetWidth,
 						})
 					}

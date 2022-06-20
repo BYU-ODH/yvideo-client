@@ -51,8 +51,8 @@ const SubtitlesLayer = props => {
 	const tempOnload = window.onload
 	window.onload = () => {
 		if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0) {
-			document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
-			document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
+			document.getElementById(`time-bar-container`).style.width = `${layerWidth - 163}px`
+			document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 163}px`
 			document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 		}
 		window.onload = tempOnload

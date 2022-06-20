@@ -9,14 +9,13 @@ import userEvent from '@testing-library/user-event'
 
 const props = {
 	censorEdit: `1`,
-	censorValues: { '0': [0, 0, 800, 600], '1': [0, 0, 800, 600] },
+	censorValues: { '0': [0, 0, 0, 800, 600], '1': [1, 0, 0, 800, 600] },
 	// screenHeight: 100,
 	handleUpdateCensorPosition: jest.fn(),
 	handleUpdateCensorResize: jest.fn(),
 	setCensorEdit: jest.fn(),
 	seekTo: jest.fn(),
-
-}
+  
 const wrapper =
 	<BrowserRouter>
 		<CensorDnD {...props}/>

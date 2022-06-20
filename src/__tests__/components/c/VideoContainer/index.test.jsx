@@ -134,8 +134,8 @@ describe(`VideoContainer test`, () => {
 
 	it(`wrapper simulate click`, ()=> {
 		const wrapper = setup()
-		wrapper.find(`CensorDnD`).prop(`handleUpdateCensorPosition`)({ x: 10, y: 10 })
-		wrapper.find(`CensorDnD`).prop(`handleUpdateCensorResize`)({width: 10, height: 10}, { x: 10, y: 10 })
+		// wrapper.find(`CensorDnD`).prop(`handleUpdateCensorPosition`)({ x: 10, y: 10 })
+		// wrapper.find(`CensorDnD`).prop(`handleUpdateCensorResize`)({width: 10, height: 10}, { x: 10, y: 10 })
 		wrapper.find(`CensorDnD`).prop(`seekTo`)({pageX: 10, currentTarget: { getBoundingClientRect: () => {
 			return boundingMock
 		}}}, 100)
