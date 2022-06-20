@@ -19,17 +19,17 @@ const state = {
 }
 
 const wrapper =
-<BrowserRouter>
-	<BlockItem {...props} state={state}/>
-</BrowserRouter>
+	<BrowserRouter>
+		<BlockItem {...props} state={state}/>
+	</BrowserRouter>
 
 describe(`BlockItem test`, () => {
-		beforeEach(() => {
-			render(wrapper)
-		})
-		afterEach(() => {
-			cleanup()
-		})
+	beforeEach(() => {
+		render(wrapper)
+	})
+	afterEach(() => {
+		cleanup()
+	})
 	it(`test render BlockItem`, () => {
 		const link = screen.queryByRole(`link`)
 		const name = screen.queryByText(/testname/i)
