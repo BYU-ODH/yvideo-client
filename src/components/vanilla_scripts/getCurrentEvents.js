@@ -147,7 +147,7 @@ export const CurrentEvents = (time,events,duration) => {
 	}
 	return eventValues
 }
-export const CensorChange = async (ind,censorData, playedSeconds) =>{
+export const CensorChange = async (ind, censorData, playedSeconds) =>{
 	const dataLeft1Value =
 		censorData.left1 !== undefined ?
 			censorData.left1.toFixed(2)
@@ -184,8 +184,8 @@ export const CensorChange = async (ind,censorData, playedSeconds) =>{
 		}else if(typeof censorData.previous === `undefined` || typeof censorData.next === `undefined`){
 			width = censorData.width1
 			height = censorData.height1
-			top = censorData.top1 - height /2
-			left = censorData.left1 - width /2
+			top = censorData.top1 - height / 2
+			left = censorData.left1 - width / 2
 		}
 		censorBox.style.top = `${`${top}%`}`
 		censorBox.style.left = `${`${left}%`}`
