@@ -1,9 +1,6 @@
 import React from 'react'
-import { shallow } from 'enzyme'
 import BlockItem from '../../../../components/bits/BlockItem/index'
 import { render, screen, cleanup } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { Link } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 const props = {
