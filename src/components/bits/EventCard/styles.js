@@ -34,7 +34,7 @@ const Style = styled.div`
 
 export default Style
 
-export const I = styled.i`
+export const Img = styled.img`
 	display: block;
 	height: 2rem;
 	width: 2rem;
