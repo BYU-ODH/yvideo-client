@@ -1,8 +1,7 @@
 import React from 'react'
 import Bar from '../../../../components/bits/Bar'
-import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
 
 // Bar needs logic updates for interplay between clip bar and skip bar
 // And needs to have all skips disabled when clip bar is active
