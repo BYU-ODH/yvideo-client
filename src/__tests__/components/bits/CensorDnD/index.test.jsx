@@ -9,7 +9,7 @@ const props = {
 	setCensorEdit: jest.fn(),
 	seekTo: jest.fn(),
 	censorEdit: `1`,
-	censorValues: { '0': [0, 0, 800, 600], '1': [0, 0, 800, 600] },
+	censorValues: { '0': [0, 0, 0, 800, 600], '1': [1, 0, 0, 800, 600] },
 	// screenHeight: 100,
 }
 
