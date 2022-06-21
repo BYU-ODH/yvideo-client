@@ -23,8 +23,8 @@ export default class DeleteConfirm extends Component {
 						<div className={`delete-div`}>
 							<h2>Are you sure you want to delete {type}: <u>{title}</u>? It cannot be recovered</h2>
 							<div className={`delete-buttons`}>
-								<Button className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
-								<Button className='url-content-delete' type='submit' onClick={handleRemoveItem}>Delete</Button>
+								<Button id='confirm-delete-cancel' className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+								<Button id='confirm-delete' className='url-content-delete' type='submit' onClick={handleRemoveItem}>Delete</Button>
 							</div>
 						</div>
 					</Style>
