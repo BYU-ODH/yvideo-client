@@ -14,7 +14,6 @@ import {
 	ContentOverview,
 } from 'components'
 
-import ContentDeleteContainer from '../../components/modals/containers/ContentDeleteContainer'
 import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -106,16 +105,13 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleRemoveContent = e => {
-		props.toggleModal({
-			component: ContentDeleteContainer,
-			props: {
-				content,
-				toggleModal,
-				removeCollectionContent,
-				isLabAssistant,
-				adminRemoveCollectionContent,
-			},
-		})
+		if(isLabAssistant) {
+			adminRemoveCollectionContent(content.id)
+			setBlock(true)
+		} else {
+			removeCollectionContent(content.collectionId, content.id)
+			setBlock(true)
+		}
 	}
 
 	const handleTogglePublish = e => {
