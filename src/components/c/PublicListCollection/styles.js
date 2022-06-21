@@ -30,8 +30,6 @@ export const Collection = styled.div`
 	border-top: 1px solid #ccc;
 
 	& > div {
-		flex: 1;
-
 		background: url(${carrot}) center no-repeat;
 		background-size: contain;
 		height: 1.5rem;
@@ -112,13 +110,17 @@ export const PublicCollectionButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
 
-	& > h3{
+	& > h3 {
 		width: 100%;
 		text-align: end !important;
 		margin-top: 1rem;
 		margin-right: 1rem;
 		font-weight: lighter;
 		font-size: 1.2rem;
+	}
+	& > #collection-owned {
+		font-size: 1.4rem;
+		font-weight: bold;
 	}
 `
 

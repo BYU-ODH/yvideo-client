@@ -10,7 +10,7 @@ import {
 	PublicListCollectionContainer,
 } from 'containers'
 
-import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
+import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -21,6 +21,7 @@ export default class Collections extends PureComponent {
 		const {
 			user,
 			displayBlocks,
+			publicDisplayBlocks,
 			collections,
 			isMobile,
 			publicCollections,
@@ -30,6 +31,7 @@ export default class Collections extends PureComponent {
 
 		const {
 			toggleCollectionsDisplay,
+			togglePublicCollectionsDisplay,
 			handleShowHelp,
 			handleShowTip,
 			toggleTip,
@@ -128,8 +130,22 @@ export default class Collections extends PureComponent {
 										{/* <button type='submit'>Search</button> */}
 									</Search>
 									<div>
-										{user.roles === 0 &&
-										<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
+										{
+											!isMobile && <PublicViewToggle
+												publicDisplayBlocks={publicDisplayBlocks}
+												onClick={togglePublicCollectionsDisplay}
+												onMouseEnter={e => handleShowTip(`public-list-block`,
+													{
+														x: e.target.offsetLeft,
+														y: e.target.offsetTop + 12,
+														width: e.currentTarget.offsetWidth,
+													})
+												}
+												onMouseLeave={toggleTip} />
+										}
+										{
+											user.roles === 0 &&
+											<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
 										}
 									</div>
 								</header>
@@ -162,15 +178,21 @@ export default class Collections extends PureComponent {
 				}
 				<div className='public-collections-list'>
 					{
-						Object.keys(publicCollections).length > 0 ? (
+						Object.keys(publicCollections).length > 0 ?
 							<>
 								{
-									Object.keys(publicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />,
-									)
+									isMobile ?
+										Object.keys(publicCollections).map(key =>
+											<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+										:
+										publicDisplayBlocks ?
+											Object.keys(publicCollections).map(key =>
+												<BlockCollection key={key} collection={publicCollections[key]}/>)
+											:
+											Object.keys(publicCollections).map(key =>
+												<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
 								}
 							</>
-						)
 							:
 							<>
 								<FeedbackMessage id='message-public-collection'><p>Loading..</p></FeedbackMessage>

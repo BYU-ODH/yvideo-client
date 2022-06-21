@@ -71,12 +71,11 @@ const PublicMoreListCollectionContainer = props => {
 	return <PublicMoreListCollection viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore, adminStore }) => ({
+const mapStateToProps = ({ authStore, collectionStore, contentStore, adminStore }) => ({
 	isProf: authStore.user.roles === 2,
 	isAdmin: authStore.user.roles === 0,
 	isStu: authStore.user.roles === 3,
 	user: authStore.user,
-	displayBlocks: interfaceStore.displayBlocks,
 	content: contentStore.cache,
 	collections: collectionStore.cache,
 	searchedUser: adminStore.searchedUser,

@@ -739,6 +739,7 @@ export const store = mockStore(
 				props: { active: true },
 			},
 			displayBlocks: browserStorage.displayBlocks,
+			publicDisplayBlocks: browserStorage.publicDisplayBlocks,
 			headerBorder: false,
 			editorStyle: false,
 			lost: false,

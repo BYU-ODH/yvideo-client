@@ -97,7 +97,6 @@ const PublicListCollectionContainer = props => {
 
 	const isOpenEventHandler = async() => {
 		setIsOpen(!isOpen)
-		// console.log(isCopyrighted)
 	}
 
 	const viewstate = {
@@ -117,9 +116,8 @@ const PublicListCollectionContainer = props => {
 	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore, adminStore }) => ({
+const mapStateToProps = ({ authStore, collectionStore, contentStore, adminStore }) => ({
 	user: authStore.user,
-	displayBlocks: interfaceStore.displayBlocks,
 	content: contentStore.cache,
 	collections: collectionStore.cache,
 	searchedUser: adminStore.searchedUser,

@@ -79,6 +79,7 @@ export const ToolTip = (props) => {
 		"fullscr": `Full-screen`,
 		"help": `Help`,
 		"list-block": `Change view`,
+		"public-list-block": `Change view`,
 		"menu": `Menu`,
 		"next-sub": `Next Subtitle`,
 		"MMSSMS": `MM:SS`,

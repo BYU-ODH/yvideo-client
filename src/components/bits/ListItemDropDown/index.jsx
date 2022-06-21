@@ -50,7 +50,7 @@ class ListItemDropDown extends PureComponent {
 						<Link to={`/player/${id}`}>
 							<Clip>
 								<div className='name'>
-									<h4>Full Video</h4>
+									<h4><u>Full Video</u></h4>
 								</div>
 								<div />
 							</Clip>
@@ -64,7 +64,7 @@ class ListItemDropDown extends PureComponent {
 									<Link to={`/player/${id}/${item}`}>
 										<Clip>
 											<div className='name'>
-											Clip - {parsedClips[item][`title`]}
+												<u>Clip - {parsedClips[item][`title`]}</u>
 											</div>
 											<div>
 												<h4>From {new Date(parsedClips[item][`start`] * 1000).toISOString().substr(11, 8)} to {new Date(parsedClips[item][`end`] * 1000).toISOString().substr(11, 8)}</h4>
