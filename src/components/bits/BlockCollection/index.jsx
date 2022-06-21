@@ -12,12 +12,18 @@ export default class BlockCollection extends Component {
 		this.state = {
 			left: true,
 			hideLeft: true,
+			right: false,
+			hideRight: false,
 		}
 
 		this.wrapper = React.createRef()
 	}
 
 	scrollListener = e => {
+		const { content } = this.props.collection
+		const publishContent = content ? content.filter(item => item.published) : []
+		const count = publishContent.length
+
 		if (e.target.scrollLeft === 0) {
 			this.setState({
 				left: true,
@@ -28,12 +34,22 @@ export default class BlockCollection extends Component {
 					})
 				}, 250)
 			})
-		} else if (e.target.scrollLeft !== 0) {
+		} else if (e.target.scrollLeft !== 0 && e.target.scrollRight !== 0) {
 			this.setState({
 				hideLeft: false,
+				hideRight: false,
 			}, () => {
 				this.setState({
 					left: false,
+					right: false,
+				})
+			})
+		} if (e.target.scrollLeft === 181 + (count - 5) * 228) { // right
+			this.setState({
+				right: true,
+			}, () => {
+				this.setState({
+					hideRight: true,
 				})
 			})
 		}
@@ -47,7 +63,7 @@ export default class BlockCollection extends Component {
 
 	scrollRight = () => {
 		this.wrapper.current.scrollBy({
-			left: 178,
+			left: 179,
 		})
 	}
 
@@ -59,16 +75,15 @@ export default class BlockCollection extends Component {
 		// const contentIds = this.props.contentIds
 
 		const publishContent = content ? content.filter(item => item.published) : []
-
 		publishContent.sort((a, b) => {
 			return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
 		})
 
-		if(this.props.collection.published){
-			return (
+		return (
+			this.props.collection.published && (
 				<Container>
 					<Header>
-						<Link to={`/`}>{name}</Link>
+						<Link to={`/manager/${this.props.collection.id}`}>{name}</Link>
 						{
 							publishContent.length === 0 ? (
 								<p>This collection is empty</p>
@@ -85,25 +100,23 @@ export default class BlockCollection extends Component {
 						) : ``}
 					</Header>
 					<div>
-						<Arrow className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
+						<Arrow data-testid='left-arrow' className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 							<div />
 						</Arrow>
-						<SlideWrapper className='slide-wrapper' count={publishContent.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
+						<SlideWrapper data-testid='slide-wrapper' className='slide-wrapper' count={publishContent.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 							{
-								publishContent.map(item => {
+								publishContent.map((item, index) => {
 									return <BlockItem key={item.id} data={item}/>
 								})
 							}
 							<BlockEnd />
 						</SlideWrapper>
-						<Arrow className='right' onClick={this.scrollRight}>
+						<Arrow data-testid='right-arrow' className='right' right={this.state.right} hideRight={this.state.hideRight} onClick={this.scrollRight}>
 							<div />
 						</Arrow>
 					</div>
 				</Container>
 			)
-		} else
-			return null
-
+		)
 	}
 }
