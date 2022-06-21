@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const Style = styled.div`
 	position: absolute;
-	z-index: 50;
+	z-index: 25;
 
 	border-radius: 5px;
 
