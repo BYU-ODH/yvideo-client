@@ -251,7 +251,7 @@ export default class Player extends Component {
 						overflow: `hidden`,
 					}
 				}>
-					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
+					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }} playsinline>
 						<ReactPlayer
 							ref={ref}
 							className='react-player'
