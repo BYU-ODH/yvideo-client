@@ -16,7 +16,7 @@ export default class ContentDelete extends Component {
 		return (
 			<Style>
 				<div className={`delete-div`}>
-					<h2>Are you sure you want to delete the content: <u>{deleteContentItem}</u>?</h2>
+					<h2>Are you sure you want to delete content item: <u>{deleteContentItem}</u>?</h2>
 					<div className={`delete-buttons`}>
 						<Button className='content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
 						<Button className='content-delete' type='submit' onClick={handleDeleteContent}>Delete</Button>
