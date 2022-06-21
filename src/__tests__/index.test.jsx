@@ -1,9 +1,12 @@
-import ReactDOM from 'react-dom'
+import index from '../index'
 
-jest.mock(`react-dom`)
+describe(`Renders the application`, () => {
 
-require(`../index`)
-
-test(`Renders the application`, () => {
-	expect(ReactDOM.render).toBeCalled()
+	it(`Should render app without crashing`, () => {
+		expect(
+			JSON.stringify(
+				Object.assign({}, index, { _reactInternalInstance: `censored` }),
+			),
+		).toMatchSnapshot()
+	})
 })

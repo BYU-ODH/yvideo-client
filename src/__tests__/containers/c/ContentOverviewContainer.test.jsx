@@ -43,8 +43,6 @@ describe(`manage collection test`, () => {
 		expect(viewstate.content.expired).toBe(true)
 		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 
-		// console.log(wrapper.find(`ContentOverview`).instance().props.handlers)
-
 		// simulate edit button clicks, it should show 3 other buttons when it is clicked
 		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)

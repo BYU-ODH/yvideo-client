@@ -239,7 +239,6 @@ export default class Player extends Component {
 			}
 		}
 
-
 		return (
 			<Style>
 				<div style={
@@ -267,6 +266,7 @@ export default class Player extends Component {
 							onSeek={e => e}
 							progressInterval={30}
 							onProgress={handleOnProgress}
+							// onProgressBar={handleOnReady}
 							onDuration={handleDuration}
 
 							config={{

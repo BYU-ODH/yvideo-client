@@ -14,7 +14,7 @@ const SubtitlesModalContainer = props => {
 		handleDeleteSubLayer,
 		toggleModal,
 		index,
-		isReady, setIsReady,
+		setIsReady,
 	} = props
 
 	const handleAddLayer = (array) => {
@@ -35,7 +35,6 @@ const SubtitlesModalContainer = props => {
 	const viewstate = {
 		mode,
 		deleteTitle,
-		isReady,
 	}
 
 	const handlers = {

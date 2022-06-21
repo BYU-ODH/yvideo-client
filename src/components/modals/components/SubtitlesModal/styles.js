@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-	overflow: none
+	overflow: none;
 
 	& .inner {
 		background-color: #ffffff;

@@ -254,23 +254,11 @@ const PlayerControls = props => {
 									value='Normal'
 									key={1}
 									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-									className={playbackRate === playbackAtIndex ? `active-value` : ``} />,
-						)
+									className={playbackRate === playbackAtIndex ? `active-value` : ``} />)
 						}
 					</div>
 				</div>
 			}
-			{/* { isCaption &&
-				<div className="menu-modal" onMouseLeave={e => setIsCaption(false)}>
-					<h3>Select Caption</h3>
-					<div className="caption-list">
-						{subtitles.map((element, index) =>
-							<input key={element.id} type="button" value={element.language} onClick={e => handleChangeSubtitle(index)} className={ indexToDisplay == index ? ('active-value') : ('')}/>
-						)
-						}
-					</div>
-				</div>
-			} */}
 			{ isCaption && (isAdmin || isProf) &&
 				<div className='menu-modal' onMouseLeave={e => setIsCaption(false)}>
 					<h3>Select Caption</h3>

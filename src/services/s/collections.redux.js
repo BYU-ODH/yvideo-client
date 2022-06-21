@@ -503,9 +503,8 @@ export default class CollectionService {
 			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
 
-			// eslint-disable-next-line no-unused-vars
-			let currentState = {}
-			currentState = getState().collectionStore.cache[collectionId]
+			// let currentState = {}
+			// currentState = getState().collectionStore.cache[collectionId]
 			const currentUsers = getState().collectionStore.users
 			const currentCourses = getState().collectionStore.courses
 

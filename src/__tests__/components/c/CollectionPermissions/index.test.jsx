@@ -118,10 +118,11 @@ describe(`CollectionPermissions test`, () => {
 		expect(wrapper.text().includes(`2020-05-29`)).toBe(true)
 		wrapper.find(`td`).at(7).simulate(`click`)
 
-		wrapper.setState({ sortType: { reverse: false } })
+		// wrapper.setState({ sortType: { reverse: false } })
+		wrapper.sortType = { reverse: false }
 		wrapper.find(Sort).at(0).simulate(`click`, props.viewstate.userTA, `Username`)
 		wrapper.find(Sort).at(1).simulate(`click`, props.viewstate.userTA, `Name`)
-		wrapper.setState({ sortType: { reverse: true } })
+		wrapper.sortType = { reverse: true }
 		wrapper.find(Sort).at(0).simulate(`click`, props.viewstate.userTA, `Username`)
 		wrapper.find(Sort).at(1).simulate(`click`, props.viewstate.userTA, `Name`)
 	})

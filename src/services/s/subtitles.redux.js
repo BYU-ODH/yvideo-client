@@ -152,7 +152,6 @@ export default class SubtitlesService {
 
 		if(currentContentId !== id)
 			dispatch(this.actions.subtitlesClean())
-
 		try {
 			const result = await apiProxy.content.getSubtitles(id)
 			dispatch(this.actions.subtitlesGet(result, id))

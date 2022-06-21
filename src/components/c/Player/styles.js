@@ -134,7 +134,7 @@ export const PauseMessage = styled.div`
 `
 
 export const PlayButton = styled.img`
-	display: ${props => props.playing ? `none` : `block`}
+	display: ${props => props.playing ? `none` : `block`};
 	width: 15rem;
 	height: 15rem;
 	position: relative;

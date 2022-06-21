@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Tooltip } from 'components/bits'
 
 import {
@@ -14,6 +14,7 @@ import {
 	ContentOverview,
 } from 'components'
 
+import ContentDeleteContainer from '../../components/modals/containers/ContentDeleteContainer'
 import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -32,7 +33,7 @@ const ContentOverviewContainer = props => {
 		toggleTip,
 	} = props
 
-	const history = useHistory()
+	const navigate = useNavigate()
 
 	const [editing, setEditing] = useState(false)
 	const [showing, setShowing] = useState(false)
@@ -105,13 +106,16 @@ const ContentOverviewContainer = props => {
 	}
 
 	const handleRemoveContent = e => {
-		if(isLabAssistant) {
-			adminRemoveCollectionContent(content.id)
-			setBlock(true)
-		} else {
-			removeCollectionContent(content.collectionId, content.id)
-			setBlock(true)
-		}
+		props.toggleModal({
+			component: ContentDeleteContainer,
+			props: {
+				content,
+				toggleModal,
+				removeCollectionContent,
+				isLabAssistant,
+				adminRemoveCollectionContent,
+			},
+		})
 	}
 
 	const handleTogglePublish = e => {
@@ -191,15 +195,15 @@ const ContentOverviewContainer = props => {
 		const classname = e.target.className
 		if(classname){
 			if(classname.includes(`video-editor`)){
-				history.push({
+				navigate({
 					pathname: `/videoeditor/${content.id}`,
 				})
 			} else if(classname.includes(`subtitle-editor`)){
-				history.push({
-					pathname: `/subtileeditor/${content.id}`,
+				navigate({
+					pathname: `/subtitleeditor/${content.id}`,
 				})
 			} else if(classname.includes(`clip-manager`)){
-				history.push({
+				navigate({
 					pathname: `/clipeditor/${content.id}`,
 				})
 			}

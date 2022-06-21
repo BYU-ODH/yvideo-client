@@ -16,7 +16,7 @@ const Style = styled.div`
 		padding: 0 3.8rem;
     display: flex;
 		align-items: center;
-    justify-content: space-between
+    justify-content: space-between;
 
     & h6 {
       font-size: 1.8rem;
