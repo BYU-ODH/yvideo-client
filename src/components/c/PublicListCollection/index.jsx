@@ -42,12 +42,29 @@ class PublicListCollection extends PureComponent {
 								:
 								theContent.length === 1 ? (
 									<>
-										<p>1 item</p>
-										<p>Owned</p>
+										<p>1 item
+											{ isOwner ?
+												<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
+												:
+												isSubscribed ?
+													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
+													:
+													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
+											}
+										</p>
 									</>
 								)
 									:
-									<p>{theContent.length} items</p>
+									<p>{theContent.length} items
+										{ isOwner ?
+											<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
+											:
+											isSubscribed ?
+												<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
+												:
+												<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
+										}
+									</p>
 						}
 						{/* { isOwner ?
 							<p>haha</p>

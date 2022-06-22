@@ -44,7 +44,7 @@ export default class BlockCollection extends Component {
 					right: false,
 				})
 			})
-		} if (e.target.scrollLeft === 181 + (count - 5) * 228) { // right
+		} if (e.target.scrollLeft === Math.round(3.8 + (count - 4) * 273.6) || count <= 4) { // right
 			this.setState({
 				right: true,
 			}, () => {
@@ -75,6 +75,7 @@ export default class BlockCollection extends Component {
 		// const contentIds = this.props.contentIds
 
 		const publishContent = content ? content.filter(item => item.published) : []
+		const count = publishContent.length
 		publishContent.sort((a, b) => {
 			return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
 		})
@@ -111,9 +112,11 @@ export default class BlockCollection extends Component {
 							}
 							<BlockEnd />
 						</SlideWrapper>
-						<Arrow data-testid='right-arrow' className='right' right={this.state.right} hideRight={this.state.hideRight} onClick={this.scrollRight}>
-							<div />
-						</Arrow>
+						{ count > 4 &&
+							<Arrow data-testid='right-arrow' className='right' right={this.state.right} hideRight={this.state.hideRight} onClick={this.scrollRight}>
+								<div />
+							</Arrow>
+						}
 					</div>
 				</Container>
 			)
