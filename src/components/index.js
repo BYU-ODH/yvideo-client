@@ -24,6 +24,7 @@ import SkipLayer from './c/SkipLayer'
 import SubtitleEditor from './c/SubtitleEditor'
 import PublicManager from './c/PublicManager'
 import PublicListCollection from './c/PublicListCollection'
+import BlockCollection from './c/BlockCollection'
 import ClipEditor from './c/ClipEditor'
 import PublicMoreListCollection from './c/PublicMoreListCollection'
 import VideoEditor from './c/VideoEditor'
@@ -57,6 +58,7 @@ export {
 	SubtitleEditor,
 	PublicManager,
 	PublicListCollection,
+	BlockCollection,
 	ClipEditor,
 	PublicMoreListCollection,
 	VideoEditor,

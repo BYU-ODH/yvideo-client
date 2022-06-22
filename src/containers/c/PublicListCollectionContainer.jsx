@@ -13,7 +13,6 @@ const PublicListCollectionContainer = props => {
 		toggleModal,
 		collection,
 		setHeaderBorder,
-		toggleTip,
 		updateCollectionPermissions,
 		user,
 		isAdmin,
@@ -31,7 +30,6 @@ const PublicListCollectionContainer = props => {
 	const isOwner = user ? user.id === collection.owner : false
 
 	useEffect(() => {
-		toggleTip()
 		setHeaderBorder(false)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen, collections, isSubscribed])
@@ -116,9 +114,8 @@ const PublicListCollectionContainer = props => {
 	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, collectionStore, contentStore, adminStore }) => ({
+const mapStateToProps = ({ authStore, collectionStore, adminStore }) => ({
 	user: authStore.user,
-	content: contentStore.cache,
 	collections: collectionStore.cache,
 	searchedUser: adminStore.searchedUser,
 })

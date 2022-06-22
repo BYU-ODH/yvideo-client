@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { ListCollection, BlockCollection } from 'components/bits'
+import { ListCollection } from 'components/bits'
 
-import { PublicListCollectionContainer } from 'containers'
+import { PublicListCollectionContainer, BlockCollectionContainer } from 'containers'
 
 import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
 
@@ -64,8 +64,8 @@ export default class Collections extends PureComponent {
 							/></h3>
 					</div>
 					<div>
-						{
-							!isMobile && <ViewToggle
+						{ !isMobile &&
+							<ViewToggle
 								displayBlocks={displayBlocks}
 								onClick={toggleCollectionsDisplay}
 								onMouseEnter={e => handleShowTip(`list-block`,
@@ -91,14 +91,16 @@ export default class Collections extends PureComponent {
 
 					{ Object.keys(collections).length > 0 ? (
 						<>
-							{
-								isMobile ?
-									Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
+							{ isMobile ?
+								Object.keys(collections).map(key =>
+									<ListCollection key={key} collection={collections[key]}/>)
+								:
+								displayBlocks ?
+									Object.keys(collections).map(key =>
+										<BlockCollectionContainer key={key} collection={collections[key]}/>)
 									:
-									displayBlocks ?
-										Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
-										:
-										Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
+									Object.keys(collections).map(key =>
+										<ListCollection key={key} collection={collections[key]}/>)
 							}
 						</>
 					) : (
@@ -109,7 +111,7 @@ export default class Collections extends PureComponent {
 					) }
 				</div>
 
-				{!isMobile ?
+				{ !isMobile ?
 					<>
 						{
 							user !== null && (user.roles < 3 || hasCollectionPermissions) ?
@@ -125,8 +127,8 @@ export default class Collections extends PureComponent {
 										{/* <button type='submit'>Search</button> */}
 									</Search>
 									<div>
-										{
-											!isMobile && <PublicViewToggle
+										{ !isMobile &&
+											<PublicViewToggle
 												publicDisplayBlocks={publicDisplayBlocks}
 												onClick={togglePublicCollectionsDisplay}
 												onMouseEnter={e => handleShowTip(`public-list-block`,
@@ -175,17 +177,16 @@ export default class Collections extends PureComponent {
 					{
 						Object.keys(publicCollections).length > 0 ?
 							<>
-								{
-									isMobile ?
+								{ isMobile ?
+									Object.keys(publicCollections).map(key =>
+										<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+									:
+									publicDisplayBlocks ?
+										Object.keys(publicCollections).map(key =>
+											<BlockCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+										:
 										Object.keys(publicCollections).map(key =>
 											<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
-										:
-										publicDisplayBlocks ?
-											Object.keys(publicCollections).map(key =>
-												<BlockCollection key={key} collection={publicCollections[key]}/>)
-											:
-											Object.keys(publicCollections).map(key =>
-												<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
 								}
 							</>
 							:

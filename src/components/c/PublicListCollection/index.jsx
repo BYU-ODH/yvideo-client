@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ListItem, ListItemDropDown } from 'components/bits'
 
-import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsLable } from './styles'
+import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsTable } from './styles'
 
 class PublicListCollection extends PureComponent {
 
@@ -22,7 +22,8 @@ class PublicListCollection extends PureComponent {
 			handlePublicCollection,
 		} = this.props.handlers
 
-		if (!collection || collection === undefined) return null
+		if (!collection || collection === undefined)
+			return null
 
 		const theContent = collection.content.sort((a, b) => {
 			return a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ?
@@ -79,7 +80,7 @@ class PublicListCollection extends PureComponent {
 				{theContent && (user !== undefined && user !== null) ? (
 					<Body isOpen={isOpen}>
 						{user.roles < 4 &&
-							<PublicCollectionsLable>
+							<PublicCollectionsTable isOwner={isOwner}>
 
 								<PublicCollectionButton>
 									{/* TODO: possibely add */}
@@ -88,6 +89,7 @@ class PublicListCollection extends PureComponent {
 										<PublicButton
 											onClick={handlePublicCollection}
 											className={`public-button`}
+											isSubscribed={isSubscribed}
 										>
 											{isSubscribed ?
 												<h3>Unsubscribe</h3>
@@ -98,7 +100,7 @@ class PublicListCollection extends PureComponent {
 										<h3 id='collection-owned'>You own this collection</h3>
 									}
 								</PublicCollectionButton>
-							</PublicCollectionsLable>
+							</PublicCollectionsTable>
 						}
 
 						{ theContent.length > 0 ?

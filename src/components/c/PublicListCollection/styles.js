@@ -66,49 +66,52 @@ export const Body = styled.div`
 `
 
 export const PublicButton = styled.button`
-  color: white;
-	& > h3{
+	font-size: 1rem;
+	color: ${props => props.isSubscribed === true ? `var(--red)` : `white`};
+	background-color: ${props => props.isSubscribed === true ? `white` : `var(--yellow)`};
+
+	border: ${props => props.isSubscribed === true ? `.25rem solid var(--red)` : `none`};
+	margin: 1rem;
+  padding: ${props => props.isSubscribed === true ? `0.55rem 1.5rem` : `0.8rem 1.5rem`};
+
+  letter-spacing: 0.05rem;
+
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+  outline: none;
+
+	:hover {
+		background-color: ${props => props.isSubscribed === true ? `var(--red)` : `var(--dark-yellow)`};
+		color: #ffffff;
+	}
+
+	& > h3 {
 		font-weight: lighter;
 	}
-	font-size: 1rem;
-  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
-
-  letter-spacing: 0.05rem;
-
-  padding: 0.8rem 1.5rem;
-  /* margin-right: 3rem; */
-
-	margin: 1rem;
-
-  border: none;
-  border-radius: 0.3rem;
-
-  cursor: pointer;
-  outline: none;
 `
 
-export const MoreButton = styled.button`
-  color: white;
-  font-weight: bold;
-  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
+// export const MoreButton = styled.button`
+//   color: white;
+//   font-weight: bold;
+//   background-color: var(--yellow)
 
-  letter-spacing: 0.05rem;
+//   letter-spacing: 0.05rem;
 
-  padding: 0.8rem 1.5rem;
-  /* margin-right: 3rem; */
+//   padding: 0.8rem 1.5rem;
+//   /* margin-right: 3rem; */
 
-	margin: 1rem;
+// 	margin: 1rem;
 
-  border: none;
-  border-radius: 0.3rem;
+//   border: none;
+//   border-radius: 0.3rem;
 
-  cursor: pointer;
-  outline: none;
-`
+//   cursor: pointer;
+//   outline: none;
+// `
 
 export const PublicCollectionButton = styled.div`
 	display: flex;
-	justify-content: flex-end;
 
 	& > h3 {
 		width: 100%;
@@ -119,15 +122,18 @@ export const PublicCollectionButton = styled.div`
 		font-size: 1.2rem;
 	}
 	& > #collection-owned {
+		margin-left: 2rem;
+		margin-bottom: 1rem;
 		font-size: 1.4rem;
 		font-weight: bold;
 	}
 `
 
-export const PublicCollectionsLable = styled.div`
+export const PublicCollectionsTable = styled.div`
 	display: grid;
-	grid-template-columns: auto auto 2rem;
+	grid-template-columns: auto;
 	align-items: center;
+	justify-items: ${props => props.isOwner === true ? `flex-start` : `flex-end`};
 
 		& .ownership{
 			display:flex;
@@ -170,7 +176,7 @@ export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
-	color: #ff4c4c;
+	color: var(--red);
 	${TextButton}
 	text-align: center !important;
 

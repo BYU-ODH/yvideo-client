@@ -5,6 +5,7 @@ import captions from 'assets/captions.svg'
 import annotations from 'assets/annotations.svg'
 
 export const Style = styled.div`
+	border-top: 1px solid #ccc;
 	background: #efefef;
 	:hover {
 		background: #d7d7d7;

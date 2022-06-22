@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Collections from '../../../../components/c/Collections/index'
-import BlockCollection from '../../../../components/bits/BlockCollection'
+import BlockCollectionContainer from '../../../../containers/c/BlockCollectionContainer'
 import { interfaceService } from 'services'
 import { Link, BrowserRouter } from 'react-router-dom'
 import * as testutil from '../../../testutil/testutil'
@@ -85,7 +85,7 @@ describe(`collections test`, () => {
 	it(`test render BlockCollection`, ()=> {
 		const wrapper = mount(
 			<BrowserRouter>
-				<BlockCollection {...props}/>
+				<BlockCollectionContainer {...props}/>
 			</BrowserRouter>,
 		)
 

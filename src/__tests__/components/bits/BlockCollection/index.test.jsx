@@ -1,5 +1,5 @@
 import React from 'react'
-import BlockCollection from '../../../../components/bits/BlockCollection'
+import BlockCollectionContainer from '../../../../containers/c/BlockCollectionContainer'
 import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
@@ -70,7 +70,7 @@ const props = {
 
 const wrapper =
 	<BrowserRouter>
-		<BlockCollection {...props} />
+		<BlockCollectionContainer {...props} />
 	</BrowserRouter>
 
 describe(`BlockCollection test`, () => {

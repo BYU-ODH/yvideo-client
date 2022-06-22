@@ -1,7 +1,6 @@
 import Accordion from './Accordion'
 import AdminTable from './AdminTable'
 import Bar from './Bar'
-import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
 import Captcha from './Captcha'
 import EventCard from './EventCard'
@@ -30,7 +29,6 @@ export {
 	Accordion,
 	AdminTable,
 	Bar,
-	BlockCollection,
 	BlockItem,
 	Captcha,
 	EventCard,

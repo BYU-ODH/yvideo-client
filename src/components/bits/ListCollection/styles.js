@@ -64,7 +64,7 @@ export const Body = styled.div`
 export const PublicButton = styled.button`
   color: white;
   font-weight: bold;
-  background-color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+  background-color: ${props => props.published ? `var(--yellow)` : `#0582CA`};
 
   letter-spacing: 0.05rem;
 
