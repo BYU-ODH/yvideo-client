@@ -12,11 +12,33 @@ const Style = styled.div`
 
 export default Style
 
-export const BarBall = styled.div.attrs(props => ({
-	// style: {
-	// 	left: `calc(${props.position * 100}% - .5rem)`,
-	// },
-}))`
+export const BarBackground = styled.div`
+	position: absolute;
+	width: 100%;
+	transition: all ${transSpeed} linear;
+	height: ${barActive};
+	background-color: #fff;
+`
+
+export const BarCurrent = styled.div`
+	position: absolute;
+	left: 0;
+	transition: all ${transSpeed} linear;
+	height: ${barActive};
+	background-color: #0057b8;
+
+`
+
+export const BarClipYellow = styled.div`
+	position: absolute;
+	width: ${props => (props.clipPercent[1] - props.clipPercent[0]) * 100}%;
+	left: ${props => props.clipPercent[0] * 100}%;
+	background-color: rgba(200, 200, 0, 1);
+	transition: all ${transSpeed} linear;
+	height: ${barActive};
+`
+
+export const BarBall = styled.div`
 	position: absolute;
 	top: ${props => props.active ? `-.2rem` : `.3rem`};
 
@@ -28,44 +50,10 @@ export const BarBall = styled.div.attrs(props => ({
 	background-color: #0057b8;
 `
 
-export const BarCurrent = styled.div.attrs(props => ({
-	// style: {
-	// 	width: `${props.position * 100}%`,
-	// },
-}))`
+export const BarSkippedGray = styled.div`
 	position: absolute;
-	left: 0;
-	transition: all ${transSpeed} linear;
-	height: ${barActive};
-	background-color: #0057b8;
-`
-
-export const BarBackground = styled.div`
-	position: absolute;
-	width: 100%;
-	transition: all ${transSpeed} linear;
-	height: ${barActive};
-	background-color: #fff;
-`
-export const BarClip = styled.div.attrs(props => ({
-	style: {
-		width: `${(props.clipTime[1]-props.clipTime[0]) * 100}%`,
-		left: `${props.clipTime[0]*100}%`,
-	},
-}))`
-	position: absolute;
-	background-color: rgba(200,200,0,1);
-	transition: all ${transSpeed} linear;
-	height: ${barActive};
-`
-
-export const BarSkippedGrey = styled.div.attrs(props => ({
-	style: {
-		width: `${(props.end - props.start) / props.duration * 100}%`,
-		left: `${props.start / props.duration * 100}%`,
-	},
-}))`
-	position: absolute;
-	background-color:grey;
+	width: ${props => (props.end - props.start) / props.duration * 100}%;
+	left: ${props => props.start / props.duration * 100}%;
+	background-color: gray;
 	height: ${barActive};
 	`

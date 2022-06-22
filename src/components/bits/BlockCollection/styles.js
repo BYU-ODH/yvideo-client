@@ -82,15 +82,19 @@ export const Arrow = styled.div`
 	cursor: pointer;
 
 	&.right{
-		right: 0;
+		right: ${props => props.hideRight ? `-100rem` : `0`};
+
+		opacity: ${props => props.right ? `0` : `1`};
+		transition: opacity .25s ease-in-out;
 		background-image: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
 
 		& > div {
 			height: 1.5rem;
 			width: 1.5rem;
 
-			transition: opacity .25s ease-in-out;
 			opacity: ${props => props.right ? `0` : `1`};
+			transition: opacity .25s ease-in-out;
+
 			background-image: url(${arrowRight});
 			background-size: cover;
 		}
@@ -99,16 +103,17 @@ export const Arrow = styled.div`
 	&.left {
 		left: ${props => props.hideLeft ? `-100rem` : `0`};
 
-		transition: opacity .25s ease-in-out;
 		opacity: ${props => props.left ? `0` : `1`};
+		transition: opacity .25s ease-in-out;
 		background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
 
 		& > div {
 			height: 1.5rem;
 			width: 1.5rem;
 
+			opacity: ${props => props.right ? `0` : `1`};
 			transition: opacity .25s ease-in-out;
-			opacity: ${props => props.left ? `0` : `1`};
+
 			background-image: url(${arrowLeft});
 			background-size: cover;
 		}

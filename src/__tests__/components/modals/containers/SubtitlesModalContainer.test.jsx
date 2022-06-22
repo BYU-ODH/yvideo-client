@@ -1,8 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
-import '@testing-library/dom'
 import { Provider } from 'react-redux'
 import Container from '../../../../components/modals/containers/SubtitlesModalContainer'
 import { BrowserRouter } from 'react-router-dom'

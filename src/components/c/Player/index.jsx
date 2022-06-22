@@ -270,15 +270,20 @@ export default class Player extends Component {
 							onDuration={handleDuration}
 
 							config={{
+								file: {
+									forceHLS: true,
+									forceVideo: true,
+									hlsVersion: '0.12.4',
+									attributes: {
+										disablePictureInPicture: true
+									}
+								},
 								youtube: {
 									iv_load_policy: 3,
 									modestbranding: 1,
 									playsinline: 1,
 									rel: 0,
 									showinfo: 0,
-								},
-								file: {
-									attributes: {},
 								},
 							}}
 						/>

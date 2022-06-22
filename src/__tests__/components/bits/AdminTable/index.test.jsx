@@ -1,8 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
-import '@testing-library/dom'
 import AdminTable from '../../../../components/bits/AdminTable/index'
 import { BrowserRouter } from 'react-router-dom'
 

@@ -16,14 +16,14 @@ const Style = styled.div`
 			justify-content: space-evenly;
 		}
 
-		& .url-content-cancel {
+		& .content-cancel {
 			:hover {
 				background-color: #0582ca;
 				color: #ffffff
 			}
 		}
 
-		& .url-content-delete {
+		& .content-delete {
 			color: #ff4c4c;
 			border: 3px solid #ff4c4c;
 			:hover {
