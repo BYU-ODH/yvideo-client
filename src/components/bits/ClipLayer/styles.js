@@ -1,9 +1,12 @@
 import styled from 'styled-components'
 
 import timeBarIcon from 'assets/time-bar-icon.svg'
-
 export const Style = styled.div`
 
+
+	& .Rnd{
+		box-shadow: 2px 2px 3px rgba(0,0,0, 0.2), -2px -2px 3px rgba(0,0,0, 0.2);
+	}
 	/* width: auto; */
 	width: 100%;
 	height: auto;
