@@ -16,18 +16,11 @@ export default class BlockCollection extends Component {
 			hideRight: false,
 		}
 
-		this.user = this.props.viewstate.user
-		this.collection = this.props.viewstate.collection
-		this.isSubscribed = this.props.viewstate.isSubscribed
-		this.isOwner = this.props.viewstate.isOwner
-
-		this.handlePublicCollection = this.props.handlers.handlePublicCollection
-
 		this.wrapper = React.createRef()
 	}
 
 	scrollListener = e => {
-		const { content } = this.collection
+		const { content } = this.props.viewstate.collection
 		const publishContent = content ? content.filter(item => item.published) : []
 		const count = publishContent.length
 
@@ -51,7 +44,9 @@ export default class BlockCollection extends Component {
 					right: false,
 				})
 			})
-		} if (e.target.scrollLeft === Math.round(3.8 + (count - 4) * 273.6) || count <= 4) { // right
+		}
+		const expression = Math.round(3.8 + (count - 4) * 273.6)
+		if (e.target.scrollLeft === expression) {
 			this.setState({
 				right: true,
 			}, () => {
@@ -76,43 +71,59 @@ export default class BlockCollection extends Component {
 
 	render() {
 
-		if (!this.collection || this.collection === undefined)
+		const {
+			user,
+			collection,
+			isSubscribed,
+			isOwner,
+		} = this.props.viewstate
+
+		const {
+			handlePublicCollection,
+		} = this.props.handlers
+
+		const {
+			name,
+			content,
+			id,
+		} = this.props.viewstate.collection
+
+		if (!collection || collection === undefined)
 			return null
 
-		const { name, content, id } = this.collection
 		// contentIds is filtered for published content
 		// This way, the number of videos (<p>{content.length} Videos</p>) includes the unpublished ones
 		// const contentIds = this.props.contentIds
 
 		const publishContent = content ? content.filter(item => item.published) : []
-		const count = publishContent.length
 		publishContent.sort((a, b) => {
 			return a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ?
 				1 : -1
 		})
+		const count = publishContent.length
 
 		return (
-			this.user !== undefined && this.user !== null && this.collection.published ? (
+			user !== undefined && user !== null && collection.published ? (
 				<Container>
 					<Header>
 						<Link to={`/manager/${id}`}>{name}</Link>
 						{
-							publishContent.length === 0 ? (
+							count === 0 ? (
 								<p>This collection is empty</p>
 							)
 								:
-								publishContent.length === 1 ? (
+								count === 1 ? (
 									<p>1 item</p>
 								)
 									:
-									<p>{publishContent.length} items</p>
+									<p>{count} items</p>
 						}
 					</Header>
 					<div>
 						<Arrow data-testid='left-arrow' className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 							<div />
 						</Arrow>
-						<SlideWrapper data-testid='slide-wrapper' className='slide-wrapper' count={publishContent.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
+						<SlideWrapper data-testid='slide-wrapper' className='slide-wrapper' count={count} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 							{
 								publishContent.map((item) => {
 									return <BlockItem key={item.id} data={item}/>
@@ -129,21 +140,21 @@ export default class BlockCollection extends Component {
 				</Container>
 			)
 				:
-				this.collection.public && (
+				collection.public && (
 					<Container>
 						<Header>
-							<Link to={`/public-manager/${this.collection.id}`}>{name}</Link>
+							<Link to={`/public-manager/${collection.id}`}>{name}</Link>
 							{
-								publishContent.length === 0 ? (
+								count === 0 ? (
 									<p>This collection is empty</p>
 								)
 									:
-									publishContent.length === 1 ? (
+									count === 1 ? (
 										<p>1 item
-											{ this.isOwner ?
+											{ isOwner ?
 												<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
 												:
-												this.isSubscribed ?
+												isSubscribed ?
 													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
 													:
 													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
@@ -151,11 +162,11 @@ export default class BlockCollection extends Component {
 										</p>
 									)
 										:
-										<p>{publishContent.length} items
-											{ this.isOwner ?
+										<p>{count} items
+											{ isOwner ?
 												<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
 												:
-												this.isSubscribed ?
+												isSubscribed ?
 													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
 													:
 													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
@@ -167,7 +178,7 @@ export default class BlockCollection extends Component {
 							<Arrow data-testid='left-arrow' className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
 								<div />
 							</Arrow>
-							<SlideWrapper data-testid='slide-wrapper' className='slide-wrapper' count={publishContent.length} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
+							<SlideWrapper data-testid='slide-wrapper' className='slide-wrapper' count={count} onScroll={this.scrollListener} ref={this.wrapper} onScrollCapture={this.scrollListener}>
 								{
 									publishContent.map((item) => {
 										return <BlockItem key={item.id} data={item}/>

@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { ListCollection } from 'components/bits'
-
 import { PublicListCollectionContainer, BlockCollectionContainer } from 'containers'
 
 import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
@@ -93,14 +91,14 @@ export default class Collections extends PureComponent {
 						<>
 							{ isMobile ?
 								Object.keys(collections).map(key =>
-									<ListCollection key={key} collection={collections[key]}/>)
+									<PublicListCollectionContainer key={key} collection={collections[key]}/>)
 								:
 								displayBlocks ?
 									Object.keys(collections).map(key =>
 										<BlockCollectionContainer key={key} collection={collections[key]}/>)
 									:
 									Object.keys(collections).map(key =>
-										<ListCollection key={key} collection={collections[key]}/>)
+										<PublicListCollectionContainer key={key} collection={collections[key]}/>)
 							}
 						</>
 					) : (

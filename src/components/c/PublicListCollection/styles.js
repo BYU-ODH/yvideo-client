@@ -67,8 +67,8 @@ export const Body = styled.div`
 
 export const PublicButton = styled.button`
 	font-size: 1rem;
-	color: ${props => props.isSubscribed === true ? `var(--red)` : `white`};
-	background-color: ${props => props.isSubscribed === true ? `white` : `var(--yellow)`};
+	color: ${props => props.isSubscribed === true ? `var(--red)` : `#efefef`};
+	background-color: ${props => props.isSubscribed === true ? `#efefef` : `var(--light-yellow)`};
 
 	border: ${props => props.isSubscribed === true ? `.25rem solid var(--red)` : `none`};
 	margin: 1rem;
@@ -82,7 +82,7 @@ export const PublicButton = styled.button`
   outline: none;
 
 	:hover {
-		background-color: ${props => props.isSubscribed === true ? `var(--red)` : `var(--dark-yellow)`};
+		background-color: ${props => props.isSubscribed === true ? `var(--red)` : `var(--yellow)`};
 		color: #ffffff;
 	}
 
