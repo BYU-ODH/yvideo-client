@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-	overflow: none
+	overflow: none;
 
 	& .delete-div {
 		border-radius: 10px;
