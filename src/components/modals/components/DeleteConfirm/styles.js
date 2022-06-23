@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
-	overflow: none
+	overflow: none;
 
 	& .delete-div {
 		border-radius: 10px;
@@ -19,7 +19,7 @@ const Style = styled.div`
 		& .url-content-cancel {
 			:hover {
 				background-color: #0582ca;
-				color: #ffffff
+				color: #ffffff;
 			}
 		}
 
