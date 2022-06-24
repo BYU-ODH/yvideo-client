@@ -25,7 +25,7 @@ import PublicManagerContainer from './c/PublicManagerContainer'
 import ListCollectionContainer from './c/ListCollectionContainer'
 import BlockCollectionContainer from './c/BlockCollectionContainer'
 import ClipEditorContainer from './c/ClipEditorContainer'
-import PublicMoreListCollectionContainer from './c/PublicMoreListCollectiionContainer'
+import PublicMoreListCollectionContainer from './c/PublicMoreListCollectionContainer'
 import VideoEditorContainer from './c/VideoEditorContainer'
 
 export {
