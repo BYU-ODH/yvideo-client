@@ -135,7 +135,7 @@ export const PublicCollectionsTable = styled.div`
 	display: grid;
 	grid-template-columns: auto;
 	align-items: center;
-	justify-items: ${props => props.isOwner === true ? `flex-start` : `flex-end`};
+	justify-items: ${props => props.isOwner === true ? `center` : `flex-end`};
 
 		& .ownership{
 			display:flex;
