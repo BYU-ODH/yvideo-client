@@ -6,7 +6,6 @@ import Captcha from './Captcha'
 import EventCard from './EventCard'
 import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
-import ListCollection from './ListCollection'
 import ListItem from './ListItem'
 import ListItemDropDown from './ListItemDropDown'
 import Modal from './Modal'
@@ -34,7 +33,6 @@ export {
 	EventCard,
 	LabAssistantTable,
 	LazyImage,
-	ListCollection,
 	ListItem,
 	ListItemDropDown,
 	Modal,
