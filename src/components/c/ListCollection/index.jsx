@@ -4,7 +4,7 @@ import { ListItem, ListItemDropDown } from 'components/bits'
 
 import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsTable } from './styles'
 
-class PublicListCollection extends PureComponent {
+class ListCollection extends PureComponent {
 
 	render() {
 
@@ -55,9 +55,11 @@ class PublicListCollection extends PureComponent {
 							<div />
 						</Collection>
 					</CollectionRow>
-
 					{ publishContent && (user !== undefined && user !== null) && (
-						<Body isOpen={isOpen} count={count}>
+						<Body
+							isOpen={isOpen}
+							count={count}
+							isPublic={collection.public}>
 							{
 								publishContent.map(item => {
 									return (
@@ -114,7 +116,7 @@ class PublicListCollection extends PureComponent {
 						</CollectionRow>
 
 						{ publishContent && (user !== undefined && user !== null) && (
-							<Body isOpen={isOpen}>
+							<Body isOpen={isOpen} count={count} isPublic={collection.public}>
 								{user.roles < 4 &&
 									<PublicCollectionsTable isOwner={isOwner}>
 
@@ -159,4 +161,4 @@ class PublicListCollection extends PureComponent {
 	}
 }
 
-export default PublicListCollection
+export default ListCollection

@@ -5,8 +5,6 @@ import trashIcon from 'assets/trash.svg'
 
 const Style = styled.div`
 
-	& > div {
-	}
 `
 export default Style
 
@@ -24,12 +22,14 @@ export const Collection = styled.div`
 	grid-template-columns: 20rem auto 1.5rem;
 	justify-items: start;
 	align-items: center;
-	background: ${props => props.isOpen ? ` #d7d7d7` : ``};
+	background: ${props => props.isOpen && `#d7d7d7`};
 
 	padding: 2rem;
 	border-top: 1px solid #ccc;
 
 	& > div {
+		flex 1;
+
 		background: url(${carrot}) center no-repeat;
 		background-size: contain;
 		height: 1.5rem;
@@ -41,12 +41,13 @@ export const Collection = styled.div`
 
 	& > h3 {
 		flex: 2;
-		padding-right:1rem;
+		padding-right: 2.5rem;
 		font-weight: 400;
 	}
 
 	& > p {
 		flex: 2;
+		text-align: center;
 		color: #a4a4a4;
 	}
 
@@ -55,14 +56,15 @@ export const Collection = styled.div`
 		text-decoration: underline;
 		background: #bfbfbf;
 	}
+	@media screen and (max-width: 320px) {
+		grid-template-columns: 15rem auto 1.5rem;
+	}
 `
 
 export const Body = styled.div`
-	height: ${props => props.isOpen ? `${(parseInt(props.count) * 7 + 6).toString()}rem` : `0`};
-	transition: height .25s ease-in-out;
+	height: ${props => props.isOpen ? `auto` : `0rem`};
 	overflow: hidden;
 	background: #efefef;
-
 `
 
 export const PublicButton = styled.button`

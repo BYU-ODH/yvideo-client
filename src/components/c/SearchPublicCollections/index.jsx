@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import {
-	PublicListCollectionContainer,
+	ListCollectionContainer,
 } from 'containers'
 
 import Style, {Search, SearchIcon, ListLable, FeedbackMessage} from './styles'
@@ -41,7 +41,7 @@ export default class SearchPublicCollections extends PureComponent {
 						<>
 							<ListLable>Search Results</ListLable>
 							{Object.keys(searchedPublicCollections).map(key =>
-								<PublicListCollectionContainer key={key} collection={searchedPublicCollections[key]}/>
+								<ListCollectionContainer key={key} collection={searchedPublicCollections[key]}/>
 								,
 							)}
 						</>

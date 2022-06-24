@@ -2,14 +2,14 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import Container from '../../../containers/c/PublicListCollectionContainer'
-import { PublicButton } from '../../../components/c/PublicListCollection/styles'
+import Container from '../../../containers/c/ListCollectionContainer'
+import { PublicButton } from '../../../components/c/ListCollection/styles'
 import * as testutil from '../../testutil/testutil'
 
 const collection1 = testutil.collection1
 const collection7 = testutil.collection7
 
-describe(`PublicListCollectionContainer test`, () => {
+describe(`ListCollectionContainer test`, () => {
 	it(`wrapper: currentTime >= start && currentTime <= end)`, () => {
 		const props = {
 			isAdmin: true,

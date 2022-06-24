@@ -23,7 +23,7 @@ import SearchPublicCollections from './c/SearchPublicCollections'
 import SkipLayer from './c/SkipLayer'
 import SubtitleEditor from './c/SubtitleEditor'
 import PublicManager from './c/PublicManager'
-import PublicListCollection from './c/PublicListCollection'
+import ListCollection from './c/ListCollection'
 import BlockCollection from './c/BlockCollection'
 import ClipEditor from './c/ClipEditor'
 import PublicMoreListCollection from './c/PublicMoreListCollection'
@@ -57,7 +57,7 @@ export {
 	SkipLayer,
 	SubtitleEditor,
 	PublicManager,
-	PublicListCollection,
+	ListCollection,
 	BlockCollection,
 	ClipEditor,
 	PublicMoreListCollection,

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { PublicListCollectionContainer, BlockCollectionContainer } from 'containers'
+import { ListCollectionContainer, BlockCollectionContainer } from 'containers'
 
 import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
 
@@ -91,14 +91,14 @@ export default class Collections extends PureComponent {
 						<>
 							{ isMobile ?
 								Object.keys(collections).map(key =>
-									<PublicListCollectionContainer key={key} collection={collections[key]}/>)
+									<ListCollectionContainer key={key} collection={collections[key]}/>)
 								:
 								displayBlocks ?
 									Object.keys(collections).map(key =>
 										<BlockCollectionContainer key={key} collection={collections[key]}/>)
 									:
 									Object.keys(collections).map(key =>
-										<PublicListCollectionContainer key={key} collection={collections[key]}/>)
+										<ListCollectionContainer key={key} collection={collections[key]}/>)
 							}
 						</>
 					) : (
@@ -177,14 +177,14 @@ export default class Collections extends PureComponent {
 							<>
 								{ isMobile ?
 									Object.keys(publicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+										<ListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
 									:
 									publicDisplayBlocks ?
 										Object.keys(publicCollections).map(key =>
 											<BlockCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
 										:
 										Object.keys(publicCollections).map(key =>
-											<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+											<ListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
 								}
 							</>
 							:

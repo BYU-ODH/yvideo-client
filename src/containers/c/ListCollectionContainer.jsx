@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 
 import { adminService, collectionService, interfaceService } from 'services'
 
-import { PublicListCollection } from 'components'
+import { ListCollection } from 'components'
 
 import MorePublicCollectionsContainer from 'components/modals/containers/MorePublicCollectionsContainer'
 
-const PublicListCollectionContainer = props => {
+const ListCollectionContainer = props => {
 
 	const {
 		toggleModal,
@@ -93,7 +93,7 @@ const PublicListCollectionContainer = props => {
 		}
 	}
 
-	const isOpenEventHandler = async() => {
+	const isOpenEventHandler = async () => {
 		setIsOpen(!isOpen)
 	}
 
@@ -111,7 +111,7 @@ const PublicListCollectionContainer = props => {
 		handlePublicCollection,
 	}
 
-	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
+	return <ListCollection viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = ({ authStore, collectionStore, adminStore }) => ({
@@ -131,4 +131,4 @@ const mapDispatchToProps = {
 	emptySearchedUser: adminService.emptySearchedUser,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublicListCollectionContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ListCollectionContainer)
