@@ -50,6 +50,7 @@ class ListCollection extends PureComponent {
 									:
 									<p>{count} items</p>
 							}
+							<p />
 							<div />
 						</Collection>
 					</CollectionRow>
@@ -79,35 +80,21 @@ class ListCollection extends PureComponent {
 							<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >
 								<h3>{name}</h3>
 								{
-									count === 0 ? (
+									count === 0 ?
 										<p>The collection is empty</p>
-									)
 										:
-										count === 1 ? (
-											<>
-												<p>1 item
-													{ isOwner ?
-														<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
-														:
-														isSubscribed ?
-															<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
-															:
-															<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
-													}
-												</p>
-											</>
-										)
+										count === 1 ?
+											<p>1 item</p>
 											:
-											<p>{count} items
-												{ isOwner ?
-													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
-													:
-													isSubscribed ?
-														<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
-														:
-														<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
-												}
-											</p>
+											<p>{count} items</p>
+								}
+								{ isOwner ?
+									<p>Owned</p>
+									:
+									isSubscribed ?
+										<p>Subscribed</p>
+										:
+										<p>Not Subscribed</p>
 								}
 								<div />
 							</Collection>

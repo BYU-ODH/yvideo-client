@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { BlockItem } from 'components/bits'
 
-import { Container, Header, SlideWrapper, Arrow, BlockEnd } from './styles.js'
+import { Container, Header, SlideWrapper, Arrow, BlockEnd, PublicCollectionButton, PublicButton } from './styles.js'
 
 export default class BlockCollection extends Component {
 	constructor(props) {
@@ -104,7 +104,7 @@ export default class BlockCollection extends Component {
 
 		return (
 			user !== undefined && user !== null && collection.published ? (
-				<Container>
+				<Container isPublic={collection.public}>
 					<Header>
 						<Link to={`/manager/${id}`}>{name}</Link>
 						{
@@ -141,38 +141,42 @@ export default class BlockCollection extends Component {
 			)
 				:
 				collection.public && (
-					<Container>
+					<Container isOwner={isOwner} isPublic={collection.public}>
 						<Header>
 							<Link to={`/public-manager/${collection.id}`}>{name}</Link>
 							{
-								count === 0 ? (
+								count === 0 ?
 									<p>This collection is empty</p>
-								)
 									:
-									count === 1 ? (
-										<p>1 item
-											{ isOwner ?
-												<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
-												:
-												isSubscribed ?
-													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
-													:
-													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
-											}
-										</p>
-									)
+									count === 1 ?
+										<p>1 item</p>
 										:
-										<p>{count} items
-											{ isOwner ?
-												<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Owned)</>
-												:
-												isSubscribed ?
-													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Subscribed)</>
-													:
-													<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Not Subscribed)</>
-											}
-										</p>
+										<p>{count} items</p>
 							}
+							{ isOwner ?
+								<p>Owned</p>
+								:
+								isSubscribed ?
+									<p>Subscribed</p>
+									:
+									<p>Not Subscribed</p>
+							}
+							<PublicCollectionButton>
+								{!isOwner ?
+									<PublicButton
+										onClick={handlePublicCollection}
+										className={`public-button`}
+										isSubscribed={isSubscribed}
+									>
+										{isSubscribed ?
+											<h3>Unsubscribe</h3>
+											:
+											<h3>Subscribe</h3>}
+									</PublicButton>
+									:
+									<h3 id='collection-owned'>You own this collection</h3>
+								}
+							</PublicCollectionButton>
 						</Header>
 						<div>
 							<Arrow data-testid='left-arrow' className='left' left={this.state.left} hideLeft={this.state.hideLeft} onClick={this.scrollLeft}>
