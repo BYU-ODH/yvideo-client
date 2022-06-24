@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { collectionService, interfaceService, contentService, authService } from 'services'
 
@@ -31,7 +31,7 @@ const CollectionsContainer = props => {
 	const [isMobile, setIsMobile] = useState(false)
 	const [isContentTab, setIsContentTab] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
-	const history = useHistory()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		setBreadcrumbs({path:[`Home`], collectionId: ``, contentId: ``})
@@ -78,7 +78,7 @@ const CollectionsContainer = props => {
 		e.preventDefault()
 
 		if(searchQuery !== ``){
-			history.push({
+			navigate({
 				pathname: `/search-public-collections`,
 				state:{
 					searchQuery,
@@ -95,7 +95,7 @@ const CollectionsContainer = props => {
 	const linkToManageCollection = e => {
 		e.preventDefault()
 
-		history.push({
+		navigate({
 			pathname: `/manager`,
 		})
 	}
@@ -103,7 +103,7 @@ const CollectionsContainer = props => {
 	const linkToManagePublicCollection = e => {
 		e.preventDefault()
 
-		history.push({
+		navigate({
 			pathname: `/public-manager`,
 		})
 	}

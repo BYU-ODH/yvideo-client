@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { interfaceService, resourceService, contentService, subtitlesService } from 'services'
@@ -99,20 +99,24 @@ const SubtitlesEditorContainer = props => {
 				})
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [content, resource, eventsArray, currentContent, subs, streamKey, url, subContentId, getContent, sKey, calledGetSubtitles, allSubs])
+
+	useLayoutEffect( () => {
 		// once the url is set we can get subtitles
-		if(!calledGetSubtitles){
+		if(!calledGetSubtitles) {
 			getSubtitles(id)
 			setCalledGetSubtitles(true)
 		} else
 			setSubs(allSubs)
 			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [content, resource, eventsArray, currentContent, subs, setSubs, allSubs, getSubtitles, streamKey, url, subContentId, getContent, sKey])
+	}, [calledGetSubtitles, content, subs, allSubs])
 
-	const createAndAddSub = async () =>{
+	const createAndAddSub = async () => {
 		const subtitles = [...allSubs]
-		try{
-			for(let i = 0; i<subtitles.length;i++){
-				if (subtitles[i][`id`] === ``){
+		try {
+			for(let i = 0; i < subtitles.length; i++) { // eslint-disable-line react-hooks/exhaustive-deps
+				if (subtitles[i][`id`] === ``) {
 					subtitles[i][`content-id`] = id
 					const subId = await createSubtitle(subtitles[i])
 					subtitles[i][`id`] = subId
@@ -126,10 +130,10 @@ const SubtitlesEditorContainer = props => {
 
 	}
 
-	const deleteSubs = (subs) =>{
+	const deleteSubs = (subs) => {
 		deleteSubtitle(subs)
 	}
-	const setAllSubs = (subs) =>{
+	const setAllSubs = (subs) => {
 		setSubtitles(subs)
 	}
 

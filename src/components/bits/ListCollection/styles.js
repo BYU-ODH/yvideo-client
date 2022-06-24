@@ -49,6 +49,9 @@ export const Header = styled.div`
 		text-decoration: underline;
 		background: #bfbfbf;
 	}
+	@media screen and (max-width: 320px){
+		grid-template-columns: 15rem auto 1.5rem;
+	}
 `
 
 export const Body = styled.div`

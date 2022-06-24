@@ -79,9 +79,9 @@ export const TimeBar = styled.div`
 			}
 
 			& > #time-bar {
-				overflow-x: scroll;
+				overflow-x:  smooth;
 				overflow-y: hidden;
-				scroll-behavior: smooth;
+				/* scroll-behavior: smooth; */
 				position: relative;
 				height: 50px;
 				flex: 1;
@@ -91,6 +91,7 @@ export const TimeBar = styled.div`
 					margin-top: 20px;
 					position: absolute;
 					height: .75rem;
+					width: 100%; !important;
 
 					& #time-bar-shadow {
 						position: absolute;
@@ -149,7 +150,7 @@ export const TimeBar = styled.div`
 				position: relative;
 				height: calc(var(--header-height) - 2px);
 				width: var(--header-height);
-				margin: 0 2rem 0 0;
+				margin: 0;
 				border-right: 1px solid rgba(255, 255, 255, 0.8);
 
 				display: flex;

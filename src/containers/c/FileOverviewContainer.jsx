@@ -64,9 +64,9 @@ const FileOverviewContainer = props => {
 
 	const handlers = {
 		handleFileMetadata,
+		handleFileVersion,
 		handleUpdateFile,
 		handleRemoveFile,
-		handleFileVersion,
 	}
 
 	return <FileOverview viewstate={viewstate} handlers={handlers} />
@@ -82,8 +82,8 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 	editFileResource: resourceService.editFile,
 	updateFileVersion: resourceService.updateFileVersion,
-	removeFile: fileService.delete,
 	updateFile: fileService.update,
+	removeFile: fileService.delete,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileOverviewContainer)

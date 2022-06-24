@@ -19,7 +19,7 @@ import Style, {
 	ResourceTitle,
 } from './styles'
 import { SwitchToggle } from 'components/bits'
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
 
 export class ResourceOverview extends PureComponent {
 
@@ -147,10 +147,10 @@ export class ResourceOverview extends PureComponent {
 						</InnerContainer>
 					}
 				</BoxRow>
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='Have you saved your changes already?'
-				/>
+				/> */}
 			</>
 		)
 	}

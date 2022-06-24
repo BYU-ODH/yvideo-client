@@ -9,9 +9,9 @@ import {
 	adminService,
 } from 'services'
 
-import RegisterrInstructors from 'components/modals/components/RegisterInstructors'
+import RegisterInstructors from 'components/modals/components/RegisterInstructors'
 
-const RegistorInstructorsContainer = props => {
+const RegisterInstructorsContainer = props => {
 
 	const {
 		toggleModal,
@@ -50,7 +50,7 @@ const RegistorInstructorsContainer = props => {
 		toggleModal,
 	}
 
-	return <RegisterrInstructors viewstate={viewstate} handlers={handlers}/>
+	return <RegisterInstructors viewstate={viewstate} handlers={handlers}/>
 }
 
 const mapStateToProps = store => ({
@@ -74,4 +74,4 @@ const mapDispatchToProps = {
 	removeFile: fileService.delete,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistorInstructorsContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterInstructorsContainer)

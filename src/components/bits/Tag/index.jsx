@@ -6,7 +6,7 @@ const Tag = props => {
 	return (
 		<Style>
 			{props.children}
-			<Remove onClick={props.onClick} data-value={props.children} />
+			<Remove data-testid='remove' onClick={props.onClick} data-value={props.children} />
 		</Style>
 	)
 }

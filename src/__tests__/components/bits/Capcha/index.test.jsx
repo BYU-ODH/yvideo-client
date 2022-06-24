@@ -1,10 +1,21 @@
 import React from 'react'
-import { shallow } from 'enzyme'
 import Captcha from '../../../../components/bits/Captcha/index'
+import { render, cleanup } from '@testing-library/react'
+
+const props = {
+	handleCaptchaChange: jest.fn(),
+}
+
+const wrapper = <Captcha {...props} />
 
 describe(`Captcha test`, () => {
-	it(`test wrapper`, ()=> {
-		const wrapper = shallow(<Captcha />)
+	beforeEach(() => {
+		render(wrapper)
+	})
+	afterEach(() => {
+		cleanup()
+	})
+	it(`test wrapper`, () => {
 		expect(wrapper).toBeDefined()
 	})
 })

@@ -37,23 +37,18 @@ const props = {
 		showSideEditor: true,
 	},
 }
-const modalProps1 = {
+const createModProps = {
 	mode: `create`,
-	deleteTitle: jest.fn(),
 	handleAddSubLayer: jest.fn(),
 	handleAddSubLayerFromFile: jest.fn(),
-	handleDeleteSubLayer: jest.fn(),
-	toggleModal: jest.fn(),
+	setIsReady: jest.fn(),
 	index: 0,
 }
 
-const modalProps2 = {
+const deleteModProps = {
 	mode: `delete`,
-	deleteTitle: jest.fn(),
-	handleAddSubLayer: jest.fn(),
-	handleAddSubLayerFromFile: jest.fn(),
+	deleteTitle: `testSubs`,
 	handleDeleteSubLayer: jest.fn(),
-	toggleModal: jest.fn(),
 	index: 0,
 }
 const mock = {x: 100, y: 50}
@@ -73,25 +68,25 @@ jest.mock(`react-router-dom`, () => ({
 	useRouteMatch: () => ({ url: `/lab-assistant-manager/22/0` }),
 }))
 
-jest.mock(`react`, () => {
-	const originReact = jest.requireActual(`react`)
-	const mUseRef = jest.fn()
-	return {
-		...originReact,
-		useRef: mUseRef,
-	}
-})
+// jest.mock(`react`, () => {
+// 	const originReact = jest.requireActual(`react`)
+// 	const mUseRef = jest.fn()
+// 	return {
+// 		...originReact,
+// 		useRef: mUseRef,
+// 	}
+// })
 
-jest.mock(`react`, () => ({
-	...jest.requireActual(`react`),
-	useRef: () => ({
-		current: {
-			// scrollTo: () => {},
-			// scrollHeight: 100,
-			// clientHeight: 50,
-		},
-	}),
-}))
+// jest.mock(`react`, () => ({
+// 	...jest.requireActual(`react`),
+// 	useRef: () => ({
+// 		current: {
+// 			// scrollTo: () => {},
+// 			// scrollHeight: 100,
+// 			// clientHeight: 50,
+// 		},
+// 	}),
+// }))
 describe(`SubtitlesEditorContainer testing`, () => {
 	let wrapper
 	beforeEach(() => {
@@ -99,24 +94,12 @@ describe(`SubtitlesEditorContainer testing`, () => {
 			<Provider store={testutil.store}>
 				<BrowserRouter>
 					<Container {...props}/>
+					<Modal {...createModProps}/>
+					<Modal {...deleteModProps}/>
 				</BrowserRouter>
-			</Provider>,
+			</Provider>
 		)
 	})
-	const modal1 = mount(
-		<Provider store={testutil.store}>
-			<BrowserRouter>
-				<Modal {...modalProps1}/>
-			</BrowserRouter>
-		</Provider>,
-	)
-	const modal2 = mount(
-		<Provider store={testutil.store}>
-			<BrowserRouter>
-				<Modal {...modalProps2}/>
-			</BrowserRouter>
-		</Provider>,
-	)
 
 	jest.useFakeTimers()
 	jest.spyOn(global, `setTimeout`)
@@ -139,11 +122,11 @@ describe(`SubtitlesEditorContainer testing`, () => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		})
 
-		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(false)
+		expect(wrapper.contains(<h1>Choose an Option</h1>)).not.toEqual(false)
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		expect(modal1.contains(<h1>Choose an Option</h1>)).toEqual(true)
-		expect(modal1.contains(`No Language`)).toEqual(false)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(true)
+		expect(wrapper.contains(`No Language`)).toEqual(false)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		// Edit title
 		expect(wrapper.contains(`Updated Title`)).toEqual(false)
@@ -162,10 +145,8 @@ describe(`SubtitlesEditorContainer testing`, () => {
 		})
 
 		wrapper.find(`.trashIcon`).at(0).simulate(`click`)
-		modal2.find(`.url-content-cancel`).at(0).simulate(`click`)
-
-		wrapper.find(`.trashIcon`).at(0).simulate(`click`)
-		modal2.find(`.url-content-delete`).at(0).simulate(`click`)
+		wrapper.find(`.url-content-cancel`).at(0).simulate(`click`)
+		wrapper.find(`.url-content-delete`).at(0).simulate(`click`)
 	})
 
 	// it(`SubtitleEditorSideMenu: Edit text & time $ add top button`, () => {
@@ -175,7 +156,7 @@ describe(`SubtitlesEditorContainer testing`, () => {
 
 	// 	const chicken = wrapper.find({"id": `subtitleEditorSideMenu`})
 
-	// 	modal1.find(`.modalButton`).at(0).simulate(`click`)
+	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
 
 	// 	wrapper.find(`.subText`).simulate(`change`, { target: { value: `Updated text` } })
@@ -222,8 +203,7 @@ describe(`SubtitlesEditorContainer testing`, () => {
 	// 	})
 
 	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
-	// 	modal1.find(`.modalButton`).at(0).simulate(`click`)
-
+	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
 	// 	expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
 	// 	expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:04.00`)
@@ -258,7 +238,7 @@ describe(`SubtitlesEditorContainer testing`, () => {
 	// 	})
 
 	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
-	// 	modal1.find(`.modalButton`).at(0).simulate(`click`)
+	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
 
@@ -285,7 +265,7 @@ describe(`SubtitlesEditorContainer testing`, () => {
 	it(`SubtitlesLayer: drag and drop`, () => {
 
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		wrapper.find(`Rnd`).forEach((comp)=>{
 			comp.simulate(`click`)
@@ -308,10 +288,10 @@ describe(`SubtitlesEditorContainer testing`, () => {
 
 	it(`Zoom control`, () => {
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
-		modal1.find(`.modalButton`).at(0).simulate(`click`)
+		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		window.onload = function () {
 			document.getElementsByClassName(`events`).clientWidth = jest.fn((tag) => {
@@ -332,5 +312,3 @@ describe(`SubtitlesEditorContainer testing`, () => {
 
 	})
 })
-
-// 69.88

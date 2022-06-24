@@ -103,7 +103,11 @@ const VideoContainer = props => {
 			}
 
 			setElapsed(playedSeconds)
-			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
+			const tempOnload = window.onload
+			window.onload = () => {
+				document.getElementById(`seconds-time-holder`).innerText = playedSeconds
+				window.onload = tempOnload
+			}
 
 			if(!events) return
 			const values = CurrentEvents(playedSeconds,events,duration)
@@ -198,11 +202,11 @@ const VideoContainer = props => {
 		},
 		handlePause: () => {
 			setPlaying(false)
-			getVideoTime(elapsed.toFixed(2)/duration)
+			getVideoTime(elapsed.toFixed(2) / duration)
 		},
 		handlePlay: () => {
 			setPlaying(true)
-			getVideoTime(elapsed.toFixed(2)/duration)
+			getVideoTime(elapsed.toFixed(2) / duration)
 			setActiveCensorPosition(-1)
 		},
 		handleMute: () => {
@@ -236,65 +240,73 @@ const VideoContainer = props => {
 
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
-					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + event.position[activeCensorPosition][2]/2
-					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + event.position[activeCensorPosition][3]/2
+					event.position[activeCensorPosition][1] = pos.x / videoRef.current.offsetWidth * 100 + event.position[activeCensorPosition][3] / 2
+					event.position[activeCensorPosition][2] = pos.y / videoRef.current.offsetHeight * 100 + event.position[activeCensorPosition][4] / 2
 				}
 			}
 
 			updateEvents(eventToEdit,event,event[`layer`])
+			video.handleProgress({
+				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration), 
+				playedSeconds:parseFloat(event.position[activeCensorPosition][0]) + 0.001,
+			})
 		},
-		handleUpdateCensorResize: (delta, pos)=>{
+		handleUpdateCensorResize: (delta, pos) => {
 
 			const event = events[eventToEdit]
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
-					const width = event.position[activeCensorPosition][2] + delta.width/videoRef.current.offsetWidth*100
-					const height = event.position[activeCensorPosition][3] + delta.height/videoRef.current.offsetHeight*100
-					event.position[activeCensorPosition][2] = width
-					event.position[activeCensorPosition][3] = height
-					event.position[activeCensorPosition][0] = pos.x/videoRef.current.offsetWidth*100 + width/2
-					event.position[activeCensorPosition][1] = pos.y/videoRef.current.offsetHeight*100 + height/2
+					const width = event.position[activeCensorPosition][3] + delta.width / videoRef.current.offsetWidth * 100
+					const height = event.position[activeCensorPosition][4] + delta.height / videoRef.current.offsetHeight * 100
+					event.position[activeCensorPosition][3] = width
+					event.position[activeCensorPosition][4] = height
+					event.position[activeCensorPosition][1] = pos.x / videoRef.current.offsetWidth * 100 + width / 2
+					event.position[activeCensorPosition][2] = pos.y / videoRef.current.offsetHeight * 100 + height / 2
 				}
 			}
-			updateEvents(eventToEdit,event,event[`layer`])
+			updateEvents(eventToEdit, event, event[`layer`])
+			video.handleProgress({
+				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
+				playedSeconds: parseFloat(event.position[activeCensorPosition][0]) + 0.001
+			})
 		},
-		handleBlankClick : (height, width, x, y) => {
+		handleBlankClick: (height, width, x, y) => {
 			if(editorType !== `video`) return
-			const newX = x-playerPadding[0]
-			const newY = y-playerPadding[1]
+			const newX = x - playerPadding[0]
+			const newY = y - playerPadding[1]
 			let currentTime = ref.current.getCurrentTime()
 			if (!currentTime) currentTime = 0
 			if(handleLastClick)
-				handleLastClick(height,width,newX, newY, currentTime)
+				handleLastClick(height, width, newX, newY, currentTime)
 
 		},
-		handleAspectRatio: ()=>{
+		handleAspectRatio: () => {
 			const cont = document.getElementById(`blankContainer`)
 			if (!cont || !aspectRatio)
 				return
 
 			const width = cont.offsetWidth
-			const height = cont.offsetHeight -50
+			const height = cont.offsetHeight - 50
 			const blank = document.getElementById(`blank`)
 			const comment = document.getElementById(`commentContainer`)
 			const censor = document.getElementById(`censorContainer`)
-			if(width/height > aspectRatio[0]/aspectRatio[1]){
-				const videoWidth = height*(aspectRatio[0]/aspectRatio[1])
-				const pad = (width-videoWidth)/2
-				blank.style.marginLeft = `${pad}px`
-				blank.style.marginTop = `0px`
+			if(width/height > aspectRatio[0] / aspectRatio[1]) {
+				const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
+				const pad = (width - videoWidth) / 2
+				blank.style.left = `${pad}px`
+				blank.style.top = `0px`
 				blank.style.width = `${videoWidth}px`
 				comment.style.width = `${videoWidth}px`
 				censor.style.width = `${videoWidth}px`
 				blank.style.height = `${height}px`
 				comment.style.height = `${height}px`
 				censor.style.height = `${height}px`
-				setPlayerPadding([pad,0])
-			} else if(width/height < aspectRatio[0]/aspectRatio[1]){
-				const videoHeight = width * aspectRatio[1]/aspectRatio[0]
-				const pad = (height - videoHeight)/2
-				blank.style.marginTop = `${pad}px`
-				blank.style.marginLeft = `0px`
+				setPlayerPadding([pad, 0])
+			} else if(width/height < aspectRatio[0] / aspectRatio[1]){
+				const videoHeight = width * aspectRatio[1] / aspectRatio[0]
+				const pad = (height - videoHeight) / 2
+				blank.style.top = `${pad}px`
+				blank.style.left = `0px`
 				blank.style.height = `${videoHeight}px`
 				comment.style.height = `${videoHeight}px`
 				censor.style.height = `${videoHeight}px`
@@ -304,8 +316,7 @@ const VideoContainer = props => {
 			}
 			const EventEditor = document.getElementById(`EventEditor`)
 			if(EventEditor)
-				EventEditor.style.height = `${height -1}px`
-
+				EventEditor.style.height = `${height - 1}px`
 		},
 	}
 
@@ -333,6 +344,7 @@ const VideoContainer = props => {
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
+	let isPlaying = false
 
 	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
@@ -350,13 +362,13 @@ const VideoContainer = props => {
 			video.handleSeek(null, playedTime - .1)
 			break
 		case `Space`:
-			setPlaying(playing)
-			if (playing === true)
+			if(isPlaying) {
 				video.handlePause()
-
-			if (playing === false)
+				isPlaying = false
+			} else {
 				video.handlePlay()
-
+				isPlaying = true
+			}
 			break
 
 		default:
@@ -369,29 +381,33 @@ const VideoContainer = props => {
 			count++
 			// checking for time bar and setting event listener
 			if(document.getElementById(`time-bar`) !== null && duration !== 0){
-				document.getElementById(`time-bar`).addEventListener(`mousemove`, (e) => {
-					// calculate current time based on mouse position
-					const currentLayerWidth = document.getElementById(`time-bar-container`).clientWidth
-					const currentScrollLeft = document.getElementById(`time-bar-container`).scrollLeft
+				const tempOnload = window.onload
+				window.onload = () => {
+					document.getElementById(`time-bar`).addEventListener(`mousemove`, (e) => {
+						// calculate current time based on mouse position
+						const currentLayerWidth = document.getElementById(`time-bar-container`).clientWidth
+						const currentScrollLeft = document.getElementById(`time-bar-container`).scrollLeft
 
-					const secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
+						const secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
 
-					const dateElapsed = new Date(null)
-					dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
-					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+						const dateElapsed = new Date(null)
+						dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
+						const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
-					// set new x position to the red bar
-					document.getElementById(`time-bar-shadow`).style.visibility = `visible`
-					document.getElementById(`time-bar-shadow`).style.transform = `translateX(${e.offsetX - 2}px)`
-					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
-					if(e.offsetX > window.innerWidth / 2)
-						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
-					else
-						document.getElementById(`time-bar-shadow-text`).style.right = `0`
+						// set new x position to the red bar
+						document.getElementById(`time-bar-shadow`).style.visibility = `visible`
+						document.getElementById(`time-bar-shadow`).style.transform = `translateX(${e.offsetX - 2}px)`
+						document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
+						if(e.offsetX > window.innerWidth / 2)
+							document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
+						else
+							document.getElementById(`time-bar-shadow-text`).style.right = `0`
 
-					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
-					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
-				})
+						document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
+						document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
+						window.onload = tempOnload
+					})
+				}
 			}
 			// checking video container and setting event listener for hot keys
 			window.onkeyup = (e) => {
@@ -421,7 +437,6 @@ const VideoContainer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, eventPosition])
-
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
@@ -430,24 +445,14 @@ const VideoContainer = props => {
 					id='blank'
 					blank={blank}
 					onContextMenu={e => e.preventDefault()}
-					onClick={ (e) => activeCensorPosition === -1 ?
-						video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
-						: ``
+					onClick={ (e) =>{
+						activeCensorPosition === -1 && video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
+					}
 					}
 					ref={videoRef}
+					// style={{cursor:events?events[eventToEdit].type === `Censor`?`crosshair`:`auto`:`auto`}}
 				>
-					{activeCensorPosition !== -1 ? (
-						<CensorDnD
-							censorValues = {censorPosition}
-							censorEdit = {activeCensorPosition}
-							handleUpdateCensorPosition = {video.handleUpdateCensorPosition}
-							handleUpdateCensorResize = {video.handleUpdateCensorResize}
-							setCensorEdit = {setActiveCensorPosition}
-							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth : 0}
-							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
-							seekTo = {video.handleSeek}
-						/>
-					):``}
+
 					{subtitleText !== `` ?(
 						<Subtitles type={editorType}>{subtitleText}</Subtitles>
 					) :``}
@@ -458,6 +463,18 @@ const VideoContainer = props => {
 					<PauseMessage id='pauseMessage'>
 						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
 					</PauseMessage>
+					{activeCensorPosition !== -1 ? (
+						<CensorDnD
+							censorValues = {events[eventToEdit].position}
+							censorEdit = {activeCensorPosition}
+							handleUpdateCensorPosition = {video.handleUpdateCensorPosition}
+							handleUpdateCensorResize = {video.handleUpdateCensorResize}
+							setCensorEdit = {setActiveCensorPosition}
+							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth : 0}
+							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
+							seekTo = {video.handleSeek}
+						/>
+					):``}
 				</Blank>
 			</div>
 			{/* Load the spinner if the paid is loading initially */}
@@ -466,7 +483,7 @@ const VideoContainer = props => {
 			{/* Load the spinner if a file is uploading */}
 			{!isUploading && <div className='loading-spinner'><Spinner/></div> }
 
-			<ReactPlayer ref={ref} config={config} url={url}
+			<ReactPlayer ref={ref} config={config} url={url} data-testid='react-player'
 				onContextMenu={e => e.preventDefault()}
 				key={url}
 
@@ -511,8 +528,12 @@ const VideoContainer = props => {
 
 						<div id='time-bar' onMouseLeave={(e) => {
 							if(document.getElementById(`time-bar-shadow`) !== null && document.getElementById(`layer-time-indicator-line-shadow`) !== null) {
-								document.getElementById(`time-bar-shadow`).style.visibility = `hidden`
-								document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
+								const tempOnload = window.onload
+								window.onload = () => {
+									document.getElementById(`time-bar-shadow`).style.visibility = `hidden`
+									document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
+									window.onload = tempOnload
+								}
 							}
 						}}>
 							<div id={`time-bar-container`}>

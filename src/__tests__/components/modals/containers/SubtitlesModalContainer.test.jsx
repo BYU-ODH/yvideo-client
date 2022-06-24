@@ -1,96 +1,152 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import Container from '../../../../components/modals/containers/SubtitlesModalContainer'
-import Style from '../../../../components/modals/components/SubtitlesModal/styles'
 import { BrowserRouter } from 'react-router-dom'
-import sinon from 'sinon'
 import * as testutil from '../../../testutil/testutil'
 
-const props = {
+const createProps = {
 	mode: `create`,
 	handleAddSubLayer: jest.fn(),
+	handleAddSubLayerFromFile: jest.fn(),
 	setIsReady: jest.fn(),
 }
 
+const deleteProps = {
+	mode: `delete`,
+	deleteTitle: `testSubs`,
+	handleDeleteSubLayer: jest.fn(),
+}
+
+const createWrapper =
+<Provider store={testutil.emptyStore}>
+	<BrowserRouter>
+		<Container {...createProps} />
+	</BrowserRouter>
+</Provider>
+
+const deleteWrapper =
+<Provider store={testutil.emptyStore}>
+	<BrowserRouter>
+		<Container {...deleteProps} />
+	</BrowserRouter>
+</Provider>
+
 describe(`Subtitles Modal test`, () => {
-	it(`mount`, () => {
-		const wrapper = mount(
-			<Provider store={testutil.emptyStore}>
-				<BrowserRouter>
-					<Container {...props} />
-				</BrowserRouter>
-			</Provider>,
-		)
-		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(true)
-		expect(wrapper.contains(<p>Start from scratch</p>)).toEqual(true)
+	describe(`Create onclick tests`, () => {
+		beforeEach(() => {
+			render(createWrapper)
+		})
+		afterEach(() => {
+			jest.resetAllMocks()
+			cleanup()
+		})
+		it(`render create`, () => {
+			expect(screen.getByText(/Choose an Option/)).toBeVisible()
+			expect(screen.getByText(/Start from scratch/)).toBeVisible()
+		})
+
+		it(`From scratch create onClick`, async () => {
+			const user = userEvent.setup()
+			const button = screen.getByTestId(`modalButton1`)
+
+			await user.click(button)
+			expect(createProps.handleAddSubLayer).toHaveBeenCalled()
+		})
+
+		it(`File input create onClick`, async () => {
+			const user = userEvent.setup()
+			const button = screen.getByTestId(`modalButton2`)
+			await user.click(button)
+
+			// The button is set up to do nothing if there is no file input
+			expect(createProps.handleAddSubLayerFromFile).not.toHaveBeenCalled()
+		})
+
+		it(`close create onClick`, async ()=> {
+			const user = userEvent.setup()
+			const closeButton = screen.getByAltText(`close`)
+
+			await user.click(closeButton)
+		})
 	})
 
-	it(`modalButton1 onClick`, ()=> {
-		const mockCallBack = jest.fn()
-		const button = shallow(<Style onClick={mockCallBack}/>)
-		button.find(`StyledComponent`).simulate(`click`)
-		expect(mockCallBack.mock.calls.length).toEqual(1)
+	describe(`File Upload onclick tests`, () => {
+		let vttFile
+		let srtFile
+		beforeEach(() => {
+			render(createWrapper)
+			vttFile = new File([`(⌐□_□)`], `test.vtt`, { kind: `subtitles`, type: `text/vtt` })
+			srtFile = new File([`(⌐□_□)`], `test.srt`, { kind: `subtitles`, type: `text/plain` })
+		})
+		afterEach(() => {
+			jest.resetAllMocks()
+			cleanup()
+		})
+
+		it(`onClick createLayer fromFile (1)`, async () => {
+			const user = userEvent.setup()
+			const button = screen.getByTestId(`modalButton2`)
+			const fileInput = screen.getByTestId(`subFileInput`)
+
+			await waitFor(() => fireEvent.change(fileInput, { target: { files: [vttFile] } }))
+			expect(fileInput.files[0].name).toBe(`test.vtt`)
+			expect(fileInput.files.length).toBe(1)
+			await user.click(button)
+
+			await waitFor(() => fireEvent.change(fileInput, { target: { files: [srtFile] } }))
+			expect(fileInput.files[0].name).toBe(`test.srt`)
+			expect(fileInput.files.length).toBe(1)
+
+			await user.click(button)
+			expect(createProps.handleAddSubLayerFromFile).toHaveBeenCalledTimes(2)
+		})
+
+		it(`onClick createLayer fromFile (2 || >2)`, async () => {
+			const user = userEvent.setup()
+			const button = screen.getByTestId(`modalButton2`)
+			const fileInput = screen.getByTestId(`subFileInput`)
+
+			await waitFor(() => fireEvent.change(fileInput, { target: { files: [vttFile, srtFile] } }))
+			expect(fileInput.files[0].name).toBe(`test.vtt`)
+			expect(fileInput.files[1].name).toBe(`test.srt`)
+			expect(fileInput.files.length).toBe(2)
+
+			await user.click(button)
+			expect(createProps.handleAddSubLayerFromFile).not.toHaveBeenCalled()
+		})
 	})
 
-	it(`modalButton2 onClick`, ()=> {
-		const mockCallBack = jest.fn()
-		const imgButton = shallow(<img alt='close' className='closeModal' src='close_icon.svg' onClick={mockCallBack}/>)
-		imgButton.find(`img`).simulate(`click`)
-		expect(mockCallBack.mock.calls.length).toEqual(1)
-	})
+	describe(`Delete onclick tests`, () => {
+		beforeEach(() => {
+			render(deleteWrapper)
+		})
+		afterEach(() => {
+			jest.resetAllMocks()
+			cleanup()
+		})
+		it(`render delete`, () => {
+			const deleteTitle = deleteProps.deleteTitle
+			expect(deleteTitle).toBe(`testSubs`)
+			expect(screen.getByText(/Are you sure you want to delete the subtitle track:/)).toBeVisible()
+			expect(screen.getByText(new RegExp(`${deleteTitle}`))).toBeVisible()
+		})
 
-	it(`simulate onClick`, ()=> {
-		const mockCallBack = jest.fn()
-		const button = shallow(<div className='modalSection modalButton' onClick={mockCallBack}/>)
-		button.find(`div`).simulate(`click`)
-		expect(mockCallBack.mock.calls.length).toEqual(1)
-	})
+		it(`Cancel delete onClick`, async () => {
+			const user = userEvent.setup()
+			const cancel = screen.getByText(/Cancel/i)
 
-	it(`simulate onClick`, () => {
-		const mockCallBack = jest.fn()
-		const button = shallow(<button style={{margin:`10px`}} className='modalButton' onClick={mockCallBack}>Submit</button>)
-		button.find(`button`).simulate(`click`)
-		expect(mockCallBack.mock.calls.length).toEqual(1)
-	})
+			await user.click(cancel)
+		})
 
-	afterEach(() => {
-		jest.resetAllMocks()
-	})
-	it(`onClick createLayer.fromFile`, () => {
-		const mElement = { files: `file` }
-		const file = document.getElementById = jest.fn().mockReturnValueOnce(mElement) // eslint-disable-line no-unused-vars
-		const handleClick = sinon.spy()
-		const wrapper = mount(
-			<Provider store={testutil.emptyStore}>
-				<Container handleAddSubLayerFromFile={handleClick} {...props} />
-			</Provider>,
-		)
-		wrapper.find(`.modalButton`).at(1).prop(`onClick`)()
-		expect(handleClick.calledOnce).toBe(true)
-	})
+		it(`Confirm delete onClick`, async () => {
+			const user = userEvent.setup()
+			const deleteButton = screen.getByText(/Delete/)
 
-	it(`simulate onChange files`, () => {
-		const wrapper = mount(
-			<Provider store={testutil.store}>
-				<BrowserRouter>
-					<Container {...props} />
-				</BrowserRouter>
-			</Provider>,
-		)
-		wrapper.find({"id" : `subFileInput`}).simulate(`change`, { target: { files: `path` } })
-		const checked = wrapper.find(`[files="path"]`).first()
-		expect(checked).toBeDefined()
-	})
-
-	it(`simulate onClick`, ()=> {
-		const wrapper = mount(
-			<Provider store={testutil.emptyStore}>
-				<Container {...props}/>
-			</Provider>,
-		)
-		wrapper.find(`.closeModal`).simulate(`click`)
-		wrapper.find(`#modalSection`).simulate(`click`)
+			await user.click(deleteButton)
+			expect(deleteProps.handleDeleteSubLayer).toHaveBeenCalled()
+		})
 	})
 
 })

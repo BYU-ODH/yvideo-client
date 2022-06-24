@@ -21,7 +21,7 @@ const props = {
 
 jest.mock(`react-router-dom`, () => ({
 	...jest.requireActual(`react-router-dom`),
-	useHistory: () => ({
+	useNavigate: () => ({
 		location: {
 			hash: ``,
 			key: `efe1jw`,

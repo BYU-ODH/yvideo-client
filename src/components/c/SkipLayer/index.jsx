@@ -13,7 +13,7 @@ const SkipLayer = props => {
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
-	const Enable = {top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
+	const Enable = {top: false, right: false, bottom: false, left: false, topRight: false, bottomRight: false, bottomLeft: false, topLeft: false}
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)

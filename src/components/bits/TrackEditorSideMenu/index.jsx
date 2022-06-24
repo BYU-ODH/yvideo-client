@@ -23,6 +23,8 @@ const TrackEditorSideMenu = props => {
 		setActiveCensorPosition,
 		toggleTip,
 		handleShowTip,
+		setEventSeek,
+		handleEventPosition,
 	} = props
 
 	const timeInputConstrain = /^[0-9,.,:\b]+$/
@@ -33,7 +35,7 @@ const TrackEditorSideMenu = props => {
 	}, [index, event, singleEvent])
 
 	const editEvent = (side, time, value, layer, ind, type) => {
-		document.getElementById()
+		// document.getElementById()
 		const ev = {...event}
 		if (side === `beg`) {
 			if(time===``)
@@ -171,6 +173,11 @@ const TrackEditorSideMenu = props => {
 		setEvent(cEvent)
 		updateEvents(index, cEvent, layer)
 	}
+	const handleCensorActive = (e) => {
+		setEventSeek(true)
+		handleEventPosition(event.position[e][0])
+		setActiveCensorPosition(e)
+	}
 	const start = event.start
 	const end = event.end
 	return (
@@ -278,11 +285,11 @@ const TrackEditorSideMenu = props => {
 									{event.type === `Censor`?
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
-												<td><input onClick={()=>setActiveCensorPosition(item)} className='censorRow' type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-												<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
-												<td><input disabled onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
-												<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
-												<td><input onClick={()=>setActiveCensorPosition(item)} type='number' placeholder={`${event.position[item][4]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
+												<td><input onClick={() => handleCensorActive(item)} className='censorRow' type='number' placeholder={`${event.position[item][0]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+												<td><input disabled onClick={() => handleCensorActive(item)} type='number' placeholder={`${event.position[item][1]}`} onChange={(e) => handleEditCensor(e, item, 1)}/></td>
+												<td><input disabled onClick={() => handleCensorActive(item)} type='number' placeholder={`${event.position[item][2]}`} onChange={(e) => handleEditCensor(e, item, 2)}/></td>
+												<td><input onClick={() => handleCensorActive(item)} type='number' placeholder={`${event.position[item][3]}`} onChange={(e) => handleEditCensor(e, item, 3)}/></td>
+												<td><input onClick={() => handleCensorActive(item)} type='number' placeholder={`${event.position[item][4]}`} onChange={(e) => handleEditCensor(e, item, 4)}/></td>
 												<td><img className={`trashIcon`} src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
 											</tr>
 										))
