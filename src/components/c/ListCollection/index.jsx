@@ -42,20 +42,18 @@ class ListCollection extends PureComponent {
 					<CollectionRow>
 						<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler}>
 							<h3>{name}</h3>
-							{ count === 0 ? (
+							{ count === 0 ?
 								<p>This collection is empty</p>
-							)
 								:
-								count === 1 ? (
+								count === 1 ?
 									<p>1 item</p>
-								)
 									:
 									<p>{count} items</p>
 							}
 							<div />
 						</Collection>
 					</CollectionRow>
-					{ publishContent && (user !== undefined && user !== null) && (
+					{ publishContent && user !== undefined && user !== null &&
 						<Body
 							isOpen={isOpen}
 							count={count}
@@ -71,7 +69,7 @@ class ListCollection extends PureComponent {
 								})
 							}
 						</Body>
-					)}
+					}
 				</Style>
 			)
 				:
