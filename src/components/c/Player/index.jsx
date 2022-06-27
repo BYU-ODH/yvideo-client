@@ -257,6 +257,7 @@ export default class Player extends Component {
 							url={url}
 							playing={playing}
 							playbackRate={parseFloat(playbackRate)}
+							playsinline={true}
 							volume={volume}
 							muted={muted}
 							onPlay={handlePlay}
@@ -271,11 +272,10 @@ export default class Player extends Component {
 
 							config={{
 								file: {
-									forceHLS: true,
 									forceVideo: true,
-									hlsVersion: '0.12.4',
+									hlsVersion: `0.12.4`,
 									attributes: {
-										disablePictureInPicture: true
+										disablePictureInPicture: true,
 									}
 								},
 								youtube: {
