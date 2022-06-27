@@ -173,8 +173,11 @@ export default class Player extends Component {
 				}
 			}
 			for (let y = 0; y < values.allEvents.length; y++){
-				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
-
+				let index = 0
+				if (values.allEvents[y].type === `Pause`)
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start)
+				else
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 				if(!events[index].active)
 					return
 				const pauseMessage = document.getElementById(`pauseMessage`)
