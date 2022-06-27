@@ -132,8 +132,6 @@ const VideoContainer = props => {
 					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start)
 				else
 					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
-				console.log(values.allEvents,events)
-				console.log(index)
 				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
 				const pauseMessage = document.getElementById(`pauseMessage`)

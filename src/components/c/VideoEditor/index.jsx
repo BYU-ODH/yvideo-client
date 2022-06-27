@@ -277,7 +277,7 @@ const VideoEditor = props => {
 
 		let canAccessDom = false
 		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
-			canAccessDom = true
+			canAccessDom = true // eslint-disable-line no-unused-vars
 			document.getElementById(`sideTabMessage`).style.color=`red`
 		}
 
