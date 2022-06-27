@@ -37,7 +37,7 @@ export const CurrentEvents = (time,events,duration) => {
 	events.forEach((val,ind)=>{
 		const newVal = {...val}
 		const start = val.start
-		const end = val.end
+		const end = val.end || val.start + 0.5
 		newVal.start = start
 		newVal.end = end
 
