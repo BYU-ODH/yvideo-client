@@ -91,14 +91,14 @@ export default class Collections extends PureComponent {
 						<>
 							{ isMobile ?
 								Object.keys(collections).map(key =>
-									<ListCollectionContainer key={key} collection={collections[key]}/>)
+									<ListCollectionContainer key={key} collection={collections[key]} defaultSubscription={true}/>)
 								:
 								displayBlocks ?
 									Object.keys(collections).map(key =>
-										<BlockCollectionContainer key={key} collection={collections[key]}/>)
+										<BlockCollectionContainer key={key} collection={collections[key]} defaultSubscription={true}/>)
 									:
 									Object.keys(collections).map(key =>
-										<ListCollectionContainer key={key} collection={collections[key]}/>)
+										<ListCollectionContainer key={key} collection={collections[key]} defaultSubscription={true}/>)
 							}
 						</>
 					) : (

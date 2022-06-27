@@ -37,7 +37,7 @@ class ListCollection extends PureComponent {
 		const count = publishContent.length
 
 		return (
-			collection.published ? (
+			!collection.public && collection.published ? (
 				<Style>
 					<CollectionRow>
 						<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler}>
@@ -74,7 +74,7 @@ class ListCollection extends PureComponent {
 				</Style>
 			)
 				:
-				collection.public && (
+				collection.public && !collection.archived && (
 					<Style>
 						<CollectionRow>
 							<Collection className='list-header' isOpen={isOpen} onClick={isOpenEventHandler} >

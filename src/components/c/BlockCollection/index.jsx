@@ -103,7 +103,7 @@ export default class BlockCollection extends Component {
 		const count = publishContent.length
 
 		return (
-			user !== undefined && user !== null && collection.published ? (
+			user !== undefined && user !== null && collection.published && !collection.public ? (
 				<Container isPublic={collection.public}>
 					<Header>
 						<Link to={`/manager/${id}`}>{name}</Link>
@@ -140,7 +140,7 @@ export default class BlockCollection extends Component {
 				</Container>
 			)
 				:
-				collection.public && (
+				collection.public && !collection.archived && (
 					<Container isOwner={isOwner} isPublic={collection.public}>
 						<Header>
 							<Link to={`/public-manager/${collection.id}`}>{name}</Link>

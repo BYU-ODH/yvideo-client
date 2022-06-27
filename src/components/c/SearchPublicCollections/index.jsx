@@ -41,7 +41,7 @@ export default class SearchPublicCollections extends PureComponent {
 						<>
 							<ListLable>Search Results</ListLable>
 							{Object.keys(searchedPublicCollections).map(key =>
-								<ListCollectionContainer key={key} collection={searchedPublicCollections[key]}/>
+								<ListCollectionContainer key={key} collection={searchedPublicCollections[key]} defaultSubscription={true} />
 								,
 							)}
 						</>

@@ -351,10 +351,10 @@ export default class CollectionService {
 
 		case `archive`:
 			currentState.archived = true
+			currentState.published = false
 			break
 
 		case `unarchive`:
-			currentState.published = false
 			currentState.archived = false
 			break
 		case `public`:
