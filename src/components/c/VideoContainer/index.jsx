@@ -48,7 +48,7 @@ const VideoContainer = props => {
 	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
-	const [censorPosition, setCensorPosition] = useState({})
+	const [censorPosition, setCensorPosition] = useState({}) // eslint-disable-line no-unused-vars
 	const [playerPadding,setPlayerPadding] = useState([0,0])
 	const [isUploading, setIsUploadings] = useState(false)
 
@@ -132,8 +132,6 @@ const VideoContainer = props => {
 					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start)
 				else
 					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
-				console.log(values.allEvents,events)
-				console.log(index)
 				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
 				const pauseMessage = document.getElementById(`pauseMessage`)

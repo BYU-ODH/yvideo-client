@@ -6,8 +6,6 @@ import {
 	Style,
 } from './styles'
 
-import { convertSecondsToMinute } from '../../common/timeConversion'
-
 const ClipLayer = props => {
 
 	const {clipName, width, start, end, setStart, setEnd, videoLength, active, index, handleEditClip} = props
