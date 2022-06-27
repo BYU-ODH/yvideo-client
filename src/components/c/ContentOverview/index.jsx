@@ -46,7 +46,7 @@ export default class ContentOverview extends PureComponent {
 			editing,
 			content,
 			tag,
-			blockLeave,
+			blockLeave, // eslint-disable-line no-unused-vars
 		} = this.props.viewstate
 
 		const {

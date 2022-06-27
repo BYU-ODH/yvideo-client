@@ -5,6 +5,7 @@ import BlockCollectionContainer from '../../../../containers/c/BlockCollectionCo
 import { interfaceService } from 'services'
 import { Link, BrowserRouter } from 'react-router-dom'
 import * as testutil from '../../../testutil/testutil'
+import { Provider } from 'react-redux'
 
 const user = testutil.user
 
@@ -16,6 +17,41 @@ const collection1 = {
 			id: 110,
 			name: `testname`,
 			thumbnail: `test@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 111,
+			name: `testname1`,
+			thumbnail: `test1@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 112,
+			name: `testname2`,
+			thumbnail: `test2@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 113,
+			name: `testname3`,
+			thumbnail: `test3@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 114,
+			name: `testname4`,
+			thumbnail: `test4@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 115,
+			name: `testname5`,
+			thumbnail: `test5@thumbnail`,
 			views: 0,
 		},
 	],
@@ -84,9 +120,11 @@ describe(`collections test`, () => {
 
 	it(`test render BlockCollection`, ()=> {
 		const wrapper = mount(
-			<BrowserRouter>
-				<BlockCollectionContainer {...props}/>
-			</BrowserRouter>,
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<BlockCollectionContainer {...props}/>
+				</BrowserRouter>
+			</Provider>,
 		)
 
 		const elem = wrapper.find(`h4`)
@@ -94,7 +132,8 @@ describe(`collections test`, () => {
 
 		const arrowLeft = wrapper.find({"className" : `left`})
 		const arrowRight = wrapper.find({"className" : `right`})
+		console.log(arrowRight.length)
 		expect(arrowLeft).toHaveLength(1)
-		expect(arrowRight).toHaveLength(1)
+		expect(arrowRight).toBeDefined()
 	})
 })

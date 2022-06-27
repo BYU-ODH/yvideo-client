@@ -48,7 +48,7 @@ const VideoContainer = props => {
 	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
-	const [censorPosition, setCensorPosition] = useState({})
+	const [censorPosition, setCensorPosition] = useState({}) // eslint-disable-line no-unused-vars
 	const [playerPadding,setPlayerPadding] = useState([0,0])
 	const [isUploading, setIsUploadings] = useState(false)
 
@@ -247,7 +247,7 @@ const VideoContainer = props => {
 
 			updateEvents(eventToEdit,event,event[`layer`])
 			video.handleProgress({
-				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration), 
+				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
 				playedSeconds:parseFloat(event.position[activeCensorPosition][0]) + 0.001,
 			})
 		},
@@ -267,7 +267,7 @@ const VideoContainer = props => {
 			updateEvents(eventToEdit, event, event[`layer`])
 			video.handleProgress({
 				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
-				playedSeconds: parseFloat(event.position[activeCensorPosition][0]) + 0.001
+				playedSeconds: parseFloat(event.position[activeCensorPosition][0]) + 0.001,
 			})
 		},
 		handleBlankClick: (height, width, x, y) => {

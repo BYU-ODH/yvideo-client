@@ -3,6 +3,8 @@ import BlockCollectionContainer from '../../../../containers/c/BlockCollectionCo
 import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import * as testutil from '../../../testutil/testutil'
 
 const collection = {
 	archived: false,
@@ -69,9 +71,11 @@ const props = {
 }
 
 const wrapper =
-	<BrowserRouter>
-		<BlockCollectionContainer {...props} />
-	</BrowserRouter>
+	<Provider store={testutil.store}>
+		<BrowserRouter>
+			<BlockCollectionContainer {...props} />
+		</BrowserRouter>
+	</Provider>
 
 describe(`BlockCollection test`, () => {
 	beforeEach(() => {
