@@ -68,7 +68,7 @@ export const Body = styled.div`
 export const PublicButton = styled.button`
   color: white;
   font-weight: bold;
-  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
+  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `var(--yellow)` : `#0582CA`};
 
   letter-spacing: 0.05rem;
 
@@ -87,7 +87,7 @@ export const PublicButton = styled.button`
 export const MoreButton = styled.button`
   color: white;
   font-weight: bold;
-  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
+  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `var(--yellow)` : `#0582CA`};
 
   letter-spacing: 0.05rem;
 
@@ -152,7 +152,7 @@ export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
-	color: #ff4c4c;
+	color: var(--red);
 	${TextButton}
 	text-align: center !important;
 

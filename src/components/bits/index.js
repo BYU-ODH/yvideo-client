@@ -1,13 +1,11 @@
 import Accordion from './Accordion'
 import AdminTable from './AdminTable'
 import Bar from './Bar'
-import BlockCollection from './BlockCollection'
 import BlockItem from './BlockItem'
 import Captcha from './Captcha'
 import EventCard from './EventCard'
 import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
-import ListCollection from './ListCollection'
 import ListItem from './ListItem'
 import ListItemDropDown from './ListItemDropDown'
 import Modal from './Modal'
@@ -30,13 +28,11 @@ export {
 	Accordion,
 	AdminTable,
 	Bar,
-	BlockCollection,
 	BlockItem,
 	Captcha,
 	EventCard,
 	LabAssistantTable,
 	LazyImage,
-	ListCollection,
 	ListItem,
 	ListItemDropDown,
 	Modal,

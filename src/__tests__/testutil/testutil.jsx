@@ -350,6 +350,17 @@ export const collection7 = {
 	public: false,
 }
 
+export const collection8 = {
+	archived: false,
+	content: [{thumbnail: `test@thumbnail`}],
+	id: 1,
+	name: `Collection 5`,
+	owner: 12,
+	published: false,
+	thumbnail: `test@thumbnail`,
+	public: true,
+}
+
 export const collections = {
 	0:collection1,
 	1:collection2,
@@ -739,6 +750,7 @@ export const store = mockStore(
 				props: { active: true },
 			},
 			displayBlocks: browserStorage.displayBlocks,
+			publicDisplayBlocks: browserStorage.publicDisplayBlocks,
 			headerBorder: false,
 			editorStyle: false,
 			lost: false,

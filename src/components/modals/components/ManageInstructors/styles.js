@@ -119,7 +119,7 @@ export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
-	color: #ff4c4c;
+	color: var(--red);
 	${TextButton}
 	text-align: center !important;
 

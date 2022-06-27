@@ -17,11 +17,13 @@ const CollectionsContainer = props => {
 		hasCollectionPermissions,
 		checkHasCollectionPermissions,
 		displayBlocks,
+		publicDisplayBlocks,
 		content,
 		setContent,
 		collections,
 		getCollections,
 		toggleCollectionsDisplay,
+		togglePublicCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
@@ -111,6 +113,7 @@ const CollectionsContainer = props => {
 	const viewstate = {
 		user,
 		displayBlocks,
+		publicDisplayBlocks,
 		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
 		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
@@ -121,6 +124,7 @@ const CollectionsContainer = props => {
 
 	const handlers = {
 		toggleCollectionsDisplay,
+		togglePublicCollectionsDisplay,
 		handleShowHelp,
 		handleShowTip,
 		toggleTip,
@@ -138,6 +142,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 	user: authStore.user,
 	hasCollectionPermissions: authStore.hasCollectionPermissions,
 	displayBlocks: interfaceStore.displayBlocks,
+	publicDisplayBlocks: interfaceStore.publicDisplayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,
 })
@@ -147,6 +152,7 @@ const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
+	togglePublicCollectionsDisplay: interfaceService.togglePublicCollectionsDisplay,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,

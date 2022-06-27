@@ -276,10 +276,10 @@ export default class Player extends Component {
 							config={{
 								file: {
 									forceVideo: true,
-									hlsVersion: '0.12.4',
+									hlsVersion: `0.12.4`,
 									attributes: {
-										disablePictureInPicture: true
-									}
+										disablePictureInPicture: true,
+									},
 								},
 								youtube: {
 									iv_load_policy: 3,

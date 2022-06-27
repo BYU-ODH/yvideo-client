@@ -22,9 +22,10 @@ import PlayerSubtitlesContainer from './c/PlayerSubtitlesContainer'
 import FileOverviewContainer from './c/FileOverviewContainer'
 import SearchPublicCollectionsContainer from './c/SearchPublicCollectionsContainer'
 import PublicManagerContainer from './c/PublicManagerContainer'
-import PublicListCollectionContainer from './c/PublicListCollectionContainer'
+import ListCollectionContainer from './c/ListCollectionContainer'
+import BlockCollectionContainer from './c/BlockCollectionContainer'
 import ClipEditorContainer from './c/ClipEditorContainer'
-import PublicMoreListCollectionContainer from './c/PublicMoreListCollectiionContainer'
+import PublicMoreListCollectionContainer from './c/PublicMoreListCollectionContainer'
 import VideoEditorContainer from './c/VideoEditorContainer'
 
 export {
@@ -52,7 +53,8 @@ export {
 	FileOverviewContainer,
 	SearchPublicCollectionsContainer,
 	PublicManagerContainer,
-	PublicListCollectionContainer,
+	ListCollectionContainer,
+	BlockCollectionContainer,
 	ClipEditorContainer,
 	PublicMoreListCollectionContainer,
 	VideoEditorContainer,

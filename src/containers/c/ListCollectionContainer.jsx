@@ -3,17 +3,16 @@ import { connect } from 'react-redux'
 
 import { adminService, collectionService, interfaceService } from 'services'
 
-import { PublicListCollection } from 'components'
+import { ListCollection } from 'components'
 
 import MorePublicCollectionsContainer from 'components/modals/containers/MorePublicCollectionsContainer'
 
-const PublicListCollectionContainer = props => {
+const ListCollectionContainer = props => {
 
 	const {
 		toggleModal,
 		collection,
 		setHeaderBorder,
-		toggleTip,
 		updateCollectionPermissions,
 		user,
 		isAdmin,
@@ -31,7 +30,6 @@ const PublicListCollectionContainer = props => {
 	const isOwner = user ? user.id === collection.owner : false
 
 	useEffect(() => {
-		toggleTip()
 		setHeaderBorder(false)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen, collections, isSubscribed])
@@ -95,9 +93,8 @@ const PublicListCollectionContainer = props => {
 		}
 	}
 
-	const isOpenEventHandler = async() => {
+	const isOpenEventHandler = async () => {
 		setIsOpen(!isOpen)
-		// console.log(isCopyrighted)
 	}
 
 	const viewstate = {
@@ -114,13 +111,11 @@ const PublicListCollectionContainer = props => {
 		handlePublicCollection,
 	}
 
-	return <PublicListCollection viewstate={viewstate} handlers={handlers} />
+	return <ListCollection viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore, adminStore }) => ({
+const mapStateToProps = ({ authStore, collectionStore, adminStore }) => ({
 	user: authStore.user,
-	displayBlocks: interfaceStore.displayBlocks,
-	content: contentStore.cache,
 	collections: collectionStore.cache,
 	searchedUser: adminStore.searchedUser,
 })
@@ -136,4 +131,4 @@ const mapDispatchToProps = {
 	emptySearchedUser: adminService.emptySearchedUser,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublicListCollectionContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ListCollectionContainer)
