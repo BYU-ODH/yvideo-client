@@ -64,6 +64,7 @@ export default class Collections extends PureComponent {
 						{ !isMobile &&
 							<ViewToggle
 								displayBlocks={displayBlocks}
+								role={user.roles}
 								onClick={toggleCollectionsDisplay}
 								onMouseEnter={e => handleShowTip(`list-block`,
 									{
@@ -127,8 +128,8 @@ export default class Collections extends PureComponent {
 										{ !isMobile &&
 											<PublicViewToggle
 												publicDisplayBlocks={publicDisplayBlocks}
-												onClick={togglePublicCollectionsDisplay}
 												role={user.roles}
+												onClick={togglePublicCollectionsDisplay}
 												onMouseEnter={e => handleShowTip(`public-list-block`,
 													{
 														x: e.target.offsetLeft,

@@ -110,7 +110,7 @@ export const ViewToggle = styled.button`
 	border: none;
 	height: 1.5rem;
 	width: 1.5rem;
-	margin-right: 1rem;
+	margin-right: ${props => props.role === 0 ? `1rem` : `0rem`};
 	outline: none;
 	cursor: pointer;
 `
