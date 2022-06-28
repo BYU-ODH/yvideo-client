@@ -6,7 +6,6 @@ import { ListCollectionContainer, BlockCollectionContainer } from 'containers'
 import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
-
 export default class Collections extends PureComponent {
 
 	render() {
@@ -121,7 +120,7 @@ export default class Collections extends PureComponent {
 									</div>
 									<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 										<SearchIcon />
-										<input id='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+										<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
 										{/* <button type='submit'>Search</button> */}
 									</Search>
 									<div>
@@ -129,6 +128,7 @@ export default class Collections extends PureComponent {
 											<PublicViewToggle
 												publicDisplayBlocks={publicDisplayBlocks}
 												onClick={togglePublicCollectionsDisplay}
+												role={user.roles}
 												onMouseEnter={e => handleShowTip(`public-list-block`,
 													{
 														x: e.target.offsetLeft,
