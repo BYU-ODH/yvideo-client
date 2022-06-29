@@ -37,6 +37,7 @@ const VideoContainer = props => {
 	const ref = useRef(null)
 	const videoRef = useRef(null)
 
+	const [started, setStarted] = useState(false)
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
@@ -440,6 +441,17 @@ const VideoContainer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, eventPosition])
+
+	useEffect(() => {
+		if(started === false)
+			document.getElementById(`censorContainer`).style.visibility = `hidden`
+		if (elapsed > 0)
+			setStarted(true)
+		if (started === true)
+			document.getElementById(`censorContainer`).style.visibility = `visible`
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [elapsed])
+
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
 			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
@@ -456,9 +468,9 @@ const VideoContainer = props => {
 					// style={{cursor:events?events[eventToEdit].type === `Censor`?`crosshair`:`auto`:`auto`}}
 				>
 
-					{subtitleText !== `` ?(
+					{subtitleText !== `` &&
 						<Subtitles type={editorType}>{subtitleText}</Subtitles>
-					) :``}
+					}
 					<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
 					</div>
 					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
@@ -466,7 +478,7 @@ const VideoContainer = props => {
 					<PauseMessage id='pauseMessage'>
 						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
 					</PauseMessage>
-					{activeCensorPosition !== -1 ? (
+					{activeCensorPosition !== -1 &&
 						<CensorDnD
 							censorValues = {events[eventToEdit].position}
 							censorEdit = {activeCensorPosition}
@@ -477,7 +489,7 @@ const VideoContainer = props => {
 							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
 							seekTo = {video.handleSeek}
 						/>
-					):``}
+					}
 				</Blank>
 			</div>
 			{/* Load the spinner if the paid is loading initially */}

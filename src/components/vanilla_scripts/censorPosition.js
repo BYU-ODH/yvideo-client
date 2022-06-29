@@ -20,7 +20,7 @@ const getPos = (events, t) => {
 	}else{
 		const keys = Object.keys(events).map(val => events[val][0])
 		// const next = Math.min(...keys.filter(value => parseFloat(value) > time)).toFixed(1).toString()
-		const next = keys.filter(value => parseFloat(value) > time).sort((a,b) => parseFloat(a)-parseFloat(b))[0]
+		const next = keys.filter(value => parseFloat(value) >= time).sort((a,b) => parseFloat(a)-parseFloat(b))[0]
 		const previous = keys.filter(value => parseFloat(value) < time).sort((a,b) => parseFloat(b)-parseFloat(a))[0]
 		// const filterKeys = keys.map(num => parseFloat(num)).filter(value => value < parseFloat(next))
 		// const previous = next !== undefined ? Math.max(...filterKeys).toFixed(1).toString() : Math.max(...keys).toFixed(1).toString()

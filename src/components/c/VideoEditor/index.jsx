@@ -180,7 +180,7 @@ const VideoEditor = props => {
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
-					canAccessDom=false
+					canAccessDom = false
 				}
 
 			} else if(side === `end`) {
@@ -188,7 +188,7 @@ const VideoEditor = props => {
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
-					canAccessDom=false
+					canAccessDom = false
 				}
 			}
 		} catch (e) {
@@ -196,7 +196,7 @@ const VideoEditor = props => {
 		}
 
 		// check start event times
-		if(event.start < 0){
+		if(event.start < 0 || event.start.isNaN){
 			event.start = 0
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
@@ -365,6 +365,9 @@ const VideoEditor = props => {
 
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
+		case 0:
+			pos[item][0] = value // time in seconds of start of censor
+			break
 		case 1: // x in %
 			pos[item][1] = value
 			break

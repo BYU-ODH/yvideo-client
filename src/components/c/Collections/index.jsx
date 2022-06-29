@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { ListCollectionContainer, BlockCollectionContainer } from 'containers'
 
-import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
+import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, SearchInput, FeedbackMessage } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 export default class Collections extends PureComponent {
@@ -122,6 +122,7 @@ export default class Collections extends PureComponent {
 									<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 										<SearchIcon />
 										<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+										<SearchInput placeholder='haha'/>
 										{/* <button type='submit'>Search</button> */}
 									</Search>
 									<div>
