@@ -77,6 +77,7 @@ const SubtitleEditor = props => {
 	useEffect(() => {
 		if (showPrompt)
 			handleNavigation(confirmNavigation, cancelNavigation)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showPrompt])
 
 	useEffect(() => {

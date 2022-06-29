@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
@@ -24,7 +24,7 @@ import Style, {
 	SettingsIcon,
 } from './styles'
 
-export const ContentOverview = props => {
+const ContentOverview = props => {
 
 	if(props.isExpired){
 		return (
@@ -81,8 +81,7 @@ export const ContentOverview = props => {
 		description,
 	} = content
 
-	const [showPrompt, confirmNavigation, cancelNavigation] =
-		useCallbackPrompt(blockLeave)
+	const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(blockLeave)
 
 	// for testing purposes, I made this which just wraps 2 functions together
 	const handleEditAndTip = () => {
@@ -92,6 +91,7 @@ export const ContentOverview = props => {
 	useEffect(() => {
 		if (showPrompt)
 			handleNavigation(confirmNavigation, cancelNavigation)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showPrompt])
 
 	return (
@@ -284,3 +284,4 @@ export const ContentOverview = props => {
 	)
 }
 
+export default ContentOverview
