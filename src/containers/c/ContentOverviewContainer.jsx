@@ -14,6 +14,7 @@ import {
 	ContentOverview,
 } from 'components'
 
+import DialogBox from 'components/modals/components/DialogBox'
 import ContentDeleteContainer from '../../components/modals/containers/ContentDeleteContainer'
 import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
@@ -90,6 +91,18 @@ const ContentOverviewContainer = props => {
 			}, 500)
 		} else
 			setEditing(true)
+
+	}
+
+	const handleNavigation = (confirmNavigation, cancelNavigation) => {
+		toggleModal({
+			component: DialogBox,
+			props: {
+				confirmNavigation,
+				cancelNavigation,
+				toggleModal,
+			},
+		})
 
 	}
 
@@ -248,6 +261,7 @@ const ContentOverviewContainer = props => {
 		handleLinks,
 		handleShowTip,
 		toggleTip,
+		handleNavigation,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

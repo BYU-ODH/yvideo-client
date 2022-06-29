@@ -132,7 +132,6 @@ describe(`collections test`, () => {
 
 		const arrowLeft = wrapper.find({"className" : `left`})
 		const arrowRight = wrapper.find({"className" : `right`})
-		console.log(arrowRight.length)
 		expect(arrowLeft).toHaveLength(1)
 		expect(arrowRight).toBeDefined()
 	})

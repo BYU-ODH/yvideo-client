@@ -6,6 +6,7 @@ import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } f
 // import * as Subtitle from 'subtitle'
 import {parse} from 'subtitle'
 
+import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 
@@ -29,7 +30,7 @@ const SubtitleEditor = props => {
 		showSideEditor,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor } = props.handlers
+	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor, handleNavigation } = props.handlers
 	const layers = [{0: `Skip`}]
 
 	const [isLoading,setIsLoading] = useState(false)
@@ -58,6 +59,8 @@ const SubtitleEditor = props => {
 	const [scrollSub, setScrollSub] = useState(null)
 	const [eventSeek, setEventSeek] = useState(false)
 	const [eventPosition, setEventPosition] = useState(0)
+	const [showPrompt, confirmNavigation, cancelNavigation] =
+		useCallbackPrompt(blockLeave)
 	// refs
 	const scrollRef = useRef()
 
@@ -70,6 +73,12 @@ const SubtitleEditor = props => {
 			}
 		})
 	}
+
+	useEffect(() => {
+		if (showPrompt)
+			handleNavigation(confirmNavigation, cancelNavigation)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showPrompt])
 
 	useEffect(() => {
 		function handleResize() {

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 // import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
+import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
+// import {DialogBox} from '../../../modals/components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -30,7 +32,7 @@ const VideoEditor = props => {
 		aspectRatio,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
+	const { handleShowTip, toggleTip, handleShowHelp, handleNavigation } = props.handlers
 	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`},{3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
 
 	const events = [
@@ -98,6 +100,8 @@ const VideoEditor = props => {
 	const [isReady, setIsReady] = useState(false)
 	const [eventSeek, setEventSeek] = useState(false)
 	const [eventPosition, setEventPosition] = useState(0)
+	const [showPrompt, confirmNavigation, cancelNavigation] =
+		useCallbackPrompt(blockLeave)
 
 	// eslint-disable-next-line no-unused-vars
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
@@ -113,6 +117,11 @@ const VideoEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 
 	// refs
+	useEffect(() => {
+		if (showPrompt)
+			handleNavigation(confirmNavigation, cancelNavigation)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showPrompt])
 
 	useEffect(() => {
 		function handleResize() {

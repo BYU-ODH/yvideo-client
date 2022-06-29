@@ -9,6 +9,8 @@ import { VideoEditor } from 'components'
 
 import { Tooltip } from 'components/bits'
 
+import DialogBox from 'components/modals/components/DialogBox'
+
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const VideoEditorContainer = props => {
@@ -121,6 +123,18 @@ const VideoEditorContainer = props => {
 		})
 	}
 
+	const handleNavigation = (confirmNavigation, cancelNavigation) => {
+		toggleModal({
+			component: DialogBox,
+			props: {
+				confirmNavigation,
+				cancelNavigation,
+				toggleModal,
+			},
+		})
+
+	}
+
 	const viewstate = {
 		eventsArray,
 		content,
@@ -133,6 +147,7 @@ const VideoEditorContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleShowHelp,
+		handleNavigation,
 	}
 
 	return <VideoEditor
