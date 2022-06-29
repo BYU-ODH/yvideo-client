@@ -27,7 +27,6 @@ const emptyWrapper =
 		</BrowserRouter>
 	</Provider>
 
-
 describe(`BreadcrumbContainer`, () => {
 	afterEach(() => {
 		jest.resetAllMocks()

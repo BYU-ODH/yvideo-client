@@ -641,6 +641,8 @@ const VideoEditor = props => {
 										displayLayer={displayLayer}
 										handleEventPosition={handleEventPosition}
 										setEventSeek={setEventSeek}
+										activeCensorPosition={activeCensorPosition}
+										setActiveCensorPosition={setActiveCensorPosition}
 									/>
 								</div>
 							))}

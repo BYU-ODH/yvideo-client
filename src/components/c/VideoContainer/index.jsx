@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useLayoutEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
 import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
@@ -305,6 +305,7 @@ const VideoContainer = props => {
 				blank.style.height = `${height}px`
 				comment.style.height = `${height}px`
 				censor.style.height = `${height}px`
+				censor.style.visibility = `hidden`
 				setPlayerPadding([pad, 0])
 			} else if(width/height < aspectRatio[0] / aspectRatio[1]){
 				const videoHeight = width * aspectRatio[1] / aspectRatio[0]
@@ -317,6 +318,7 @@ const VideoContainer = props => {
 				blank.style.width = `${width}px`
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
+				censor.style.visibility = `hidden`
 			}
 			const EventEditor = document.getElementById(`EventEditor`)
 			if(EventEditor)
@@ -443,12 +445,16 @@ const VideoContainer = props => {
 	}, [duration, eventPosition])
 
 	useEffect(() => {
-		if(started === false)
-			document.getElementById(`censorContainer`).style.visibility = `hidden`
-		if (elapsed > 0)
-			setStarted(true)
-		if (started === true)
-			document.getElementById(`censorContainer`).style.visibility = `visible`
+		try{
+			if(started === false)
+				document.getElementById(`censorContainer`).style.visibility = `hidden`
+			if (elapsed > 0)
+				setStarted(true)
+			if (started === true)
+				document.getElementById(`censorContainer`).style.visibility = `visible`
+		} catch(e){
+			return
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [elapsed])
 
