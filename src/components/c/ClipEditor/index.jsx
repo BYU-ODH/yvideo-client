@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 // import { Prompt } from 'react-router'
+
+import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
@@ -31,6 +33,7 @@ const ClipEditor = props => {
 	const {
 		toggleTip,
 		handleShowTip,
+		handleNavigation,
 	} = props.handlers
 
 	const updateContent = props.updateContent
@@ -60,8 +63,16 @@ const ClipEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
 	const [isReady, setIsReady] = useState(false)
+	const [showPrompt, confirmNavigation, cancelNavigation] =
+		useCallbackPrompt(blockLeave)
 
 	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
+
+	useEffect(() => {
+		if (showPrompt)
+			handleNavigation(confirmNavigation, cancelNavigation)
+	}, [showPrompt])
+
 	useEffect(() => {
 		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {

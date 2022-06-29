@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { interfaceService, resourceService, contentService, subtitlesService } from 'services'
 import { SubtitleEditor } from 'components'
 import { Tooltip } from 'components/bits'
+import DialogBox from 'components/modals/components/DialogBox'
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 import SubtitlesModal from 'components/modals/containers/SubtitlesModalContainer'
@@ -50,6 +51,17 @@ const SubtitlesEditorContainer = props => {
 		const testsubs = await getSubtitles(id)
 		const returnThis = testsubs !== undefined ? testsubs : []
 		return returnThis
+	}
+
+	const handleNavigation = (confirmNavigation, cancelNavigation) => {
+		toggleModal({
+			component: DialogBox,
+			props: {
+				confirmNavigation,
+				cancelNavigation,
+				toggleModal,
+			},
+		})
 	}
 
 	useEffect(() => {
@@ -198,6 +210,7 @@ const SubtitlesEditorContainer = props => {
 		handleShowHelp,
 		openSubModal,
 		setSideEditor,
+		handleNavigation,
 	}
 
 	return <SubtitleEditor

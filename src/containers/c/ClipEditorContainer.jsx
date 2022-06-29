@@ -9,6 +9,8 @@ import { ClipEditor } from 'components'
 
 import { Tooltip } from 'components/bits'
 
+import DialogBox from 'components/modals/components/DialogBox'
+
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 const ClipEditorContainer = props => {
@@ -89,6 +91,18 @@ const ClipEditorContainer = props => {
 		})
 	}
 
+	const handleNavigation = (confirmNavigation, cancelNavigation) => {
+		toggleModal({
+			component: DialogBox,
+			props: {
+				confirmNavigation,
+				cancelNavigation,
+				toggleModal,
+			},
+		})
+
+	}
+
 	const viewstate = {
 		currentContent,
 		url,
@@ -100,6 +114,7 @@ const ClipEditorContainer = props => {
 	const handlers = {
 		toggleTip,
 		handleShowTip,
+		handleNavigation,
 	}
 
 	return <ClipEditor
