@@ -87,7 +87,7 @@ describe(`VideoEditor testing`, () => {
 
 	const listenerMock = {offsetX: 100}
 	const boundingMock = {x: 100, y: 50, right: 10000}
-	const classMock = [{ clientWidth: 10, value: 10, style: {width: 10}},{ clientWidth: 10, value: 10, style: {width: 10}}]
+	const classMock = [{ clientWidth: 10, value: 10, style: {width: 10}}, { clientWidth: 10, value: 10, style: {width: 10}}]
 	const scrubberMock = { scrollLeft: 10, style: {color: `red`},
 		addEventListener: () => {
 			return listenerMock

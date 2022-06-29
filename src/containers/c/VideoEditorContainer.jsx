@@ -41,7 +41,7 @@ const VideoEditorContainer = props => {
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	const [aspectRatio,setAspectRatio] = useState([16,9])
+	const [aspectRatio, setAspectRatio] = useState([16, 9])
 
 	const useAsync = () => { // eslint-disable-line no-unused-vars
 		const mountedRef = useRef(true)
@@ -66,10 +66,10 @@ const VideoEditorContainer = props => {
 				setUrl(contentCache[id].url)
 				if(contentCache[id].url.includes(`youtube`)){
 					const fetchData = async() => {
-						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`,{method:`GET`})
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`, {method:`GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
-							setAspectRatio([data.width,data.height])
+							setAspectRatio([data.width, data.height])
 
 						return data
 					}

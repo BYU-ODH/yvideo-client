@@ -24,7 +24,7 @@ export default class SubtitlesService {
 		subtitlesGet: (subtitles, id) => ({ type: this.types.SUBTITLES_GET, payload: { subtitles, id } }),
 		subtitlesUpdate: subtitles => ({ type: this.types.SUBTITLES_UPDATE, payload: { subtitles }}),
 		activeUpdate: active => ({ type: this.types.ACTIVE_UPDATE, payload: { active }}),
-		setContentId: id => ({type: this.types.SET_CONTENT_ID,payload: {id}}),
+		setContentId: id => ({type: this.types.SET_CONTENT_ID, payload: {id}}),
 	}
 
 	store = {
@@ -95,7 +95,6 @@ export default class SubtitlesService {
 			}
 
 		case SUBTITLES_GET:
-			// console.log(`??//`,action.payload)
 			return {
 				...store,
 				cache: action.payload.subtitles,
@@ -202,7 +201,7 @@ export default class SubtitlesService {
 			tempSub[`content-id`] = subtitle[`content-id`]
 			tempSub[`words`] = subtitle[`words`]
 
-			await apiProxy.subtitles.edit(tempSub,subtitle[`id`])
+			await apiProxy.subtitles.edit(tempSub, subtitle[`id`])
 		} catch (error) {
 			dispatch(this.actions.subtitlesError(error))
 		}
@@ -211,7 +210,7 @@ export default class SubtitlesService {
 	activeUpdate = active => async (dispatch, _getState, { apiProxy }) => {
 		dispatch(this.actions.activeUpdate(active))
 	}
-	setContentId = id => async(dispatch,getState, {apiProxy}) => {
+	setContentId = id => async(dispatch, getState, {apiProxy}) => {
 		dispatch(this.actions.setContentId(id))
 	}
 	deleteSubtitle = (ids) => async (dispatch, getState, { apiProxy }) => {

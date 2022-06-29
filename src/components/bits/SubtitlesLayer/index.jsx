@@ -121,7 +121,7 @@ const SubtitlesLayer = props => {
 			setShowError(false)
 			cEvents[index].start = beginTimePercentage
 			cEvents[index].end = endPercentage
-			updateSubs(index, cEvents[index],layerIndex)
+			updateSubs(index, cEvents[index], layerIndex)
 		}
 	}
 	// Resize within the layer
@@ -167,7 +167,7 @@ const SubtitlesLayer = props => {
 		}
 		if(!isError) {
 			setShowError(false)
-			updateSubs(index, cEvents[index],layerIndex)
+			updateSubs(index, cEvents[index], layerIndex)
 		}
 	}
 

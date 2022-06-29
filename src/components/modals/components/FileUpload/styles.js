@@ -77,7 +77,7 @@ export const CategorySelect = styled.select`
 	text-align-last:center;
 
 	outline: none;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 `
 
 export const ProgressBar = styled.progress`

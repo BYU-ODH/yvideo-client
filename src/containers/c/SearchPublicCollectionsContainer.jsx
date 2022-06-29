@@ -113,7 +113,7 @@ const SearchPublicCollectionsContainer = props => {
 		displayBlocks,
 		searchedCount,
 		searchedPublicCollections,
-		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k, v]) => k),
 		isSearched,
 	}
 

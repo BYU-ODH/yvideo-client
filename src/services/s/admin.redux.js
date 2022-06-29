@@ -766,7 +766,7 @@ export default class AdminService {
 
 			const currentResults = [...getState().adminStore.data]
 
-			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId) ,1)
+			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId), 1)
 			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.admin.collection.delete(collectionId)
 
@@ -785,7 +785,7 @@ export default class AdminService {
 		if(fromAdmin){
 			currentState = [...getState().adminStore.data]
 
-			currentState.splice(currentState.findIndex((element) => element.id === contentId) ,1)
+			currentState.splice(currentState.findIndex((element) => element.id === contentId), 1)
 		} else {
 			currentState = { ...getState().adminStore.profCollectionContent }
 
@@ -812,7 +812,7 @@ export default class AdminService {
 
 		const currentResults = [...getState().adminStore.data]
 
-		currentResults.splice(currentResults.findIndex((element) => element.id === userId) ,1)
+		currentResults.splice(currentResults.findIndex((element) => element.id === userId), 1)
 
 		try {
 			// eslint-disable-next-line no-unused-vars

@@ -82,7 +82,7 @@ const PlayerContainer = props => {
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 
 	// aspect ratio
-	const [aspectRatio, setAspectRatio] = useState([16,9])
+	const [aspectRatio, setAspectRatio] = useState([16, 9])
 	const ref = player => {
 		setPlayer(player)
 	}
@@ -115,10 +115,10 @@ const PlayerContainer = props => {
 				setUrl(contentCache[params.id].url)
 				if(contentCache[params.id].url.includes(`youtube`)){
 					const fetchData = async() => {
-						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`,{method:`GET`})
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`, {method:`GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
-							setAspectRatio([data.width,data.height])
+							setAspectRatio([data.width, data.height])
 
 						return data
 					}
@@ -190,7 +190,7 @@ const PlayerContainer = props => {
 		if (errorMessage !== errorPrev)
 			handleError()
 			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage,errorPrev])
+	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({

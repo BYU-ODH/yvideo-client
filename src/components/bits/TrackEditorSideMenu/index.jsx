@@ -64,7 +64,7 @@ const TrackEditorSideMenu = props => {
 			console.log(error) // eslint-disable-line no-console
 		}
 		setEvent(ev)
-		updateEvents(ind,ev,layer,side,type)
+		updateEvents(ind, ev, layer, side, type)
 	}
 
 	const handleEditEventBTimeChange = (e) => {
@@ -76,7 +76,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
 			// editEvent(index, cEvent, layer, `beg`)
-			editEvent(`beg`,cEvent.start, null, layer, index, null)
+			editEvent(`beg`, cEvent.start, null, layer, index, null)
 			// (side, time, value, layer, ind, type)
 		}
 	}
@@ -90,7 +90,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
 			// updateEvents(index, cEvent, layer, `beg`, `onBlur`)
-			editEvent(`beg`,cEvent.start, null, layer, index, `onBlur`)
+			editEvent(`beg`, cEvent.start, null, layer, index, `onBlur`)
 		}
 	}
 
@@ -103,7 +103,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
 			// updateEvents(index, cEvent, layer, `end`)
-			editEvent(`end`,cEvent.end, null, layer, index, null)
+			editEvent(`end`, cEvent.end, null, layer, index, null)
 		}
 	}
 
@@ -116,7 +116,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
 			// updateEvents(index, cEvent, layer, `end`, `onBlur`)
-			editEvent(`end`,cEvent.end, null, layer, index, `onBlur`)
+			editEvent(`end`, cEvent.end, null, layer, index, `onBlur`)
 		}
 	}
 

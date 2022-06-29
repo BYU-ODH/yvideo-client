@@ -361,7 +361,7 @@ export const InnerContainer = styled.div`
 	grid-template-columns: 1fr 1fr 1.5fr 1fr;
 	padding: 2rem 3rem 3rem 3rem;
 	border-radius: 5px;
-	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 	background-color: white;
 
 	& .tags {

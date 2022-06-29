@@ -161,7 +161,7 @@ const ContentOverviewContainer = props => {
 
 	const addTag = (e) => {
 		e.preventDefault()
-		const newTags = tag.split(/[ ,]+/)
+		const newTags = tag.split(/[ , ]+/)
 		setContentState({
 			...contentState,
 			resource: {

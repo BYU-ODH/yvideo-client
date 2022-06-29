@@ -50,11 +50,11 @@ const VideoContainer = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({}) // eslint-disable-line no-unused-vars
-	const [playerPadding,setPlayerPadding] = useState([0,0])
+	const [playerPadding, setPlayerPadding] = useState([0, 0])
 	const [isUploading, setIsUploadings] = useState(false)
 
 	const executeCensors = async (values, playedSeconds) => {
-		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+		for (let i = 0; i < values.censors.length; i++) CensorChange(i, values.censors[i], playedSeconds)
 	}
 
 	const video = {
@@ -111,13 +111,13 @@ const VideoContainer = props => {
 			}
 
 			if(!events) return
-			const values = CurrentEvents(playedSeconds,events,duration)
+			const values = CurrentEvents(playedSeconds, events, duration)
 
 			executeCensors(values, playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
-				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
+				if(subtitles.length > 0) HandleSubtitle(playedSeconds, subtitles, 0)
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()
@@ -249,7 +249,7 @@ const VideoContainer = props => {
 				}
 			}
 
-			updateEvents(eventToEdit,event,event[`layer`])
+			updateEvents(eventToEdit, event, event[`layer`])
 			video.handleProgress({
 				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
 				playedSeconds:parseFloat(event.position[activeCensorPosition][0]) + 0.001,
@@ -460,7 +460,7 @@ const VideoContainer = props => {
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
-			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
+			<div id='blankContainer' style={{width:`70%`, height: `100%`, position:`absolute`}}>
 				<Blank
 					className='blank'
 					id='blank'
@@ -477,9 +477,9 @@ const VideoContainer = props => {
 					{subtitleText !== `` &&
 						<Subtitles type={editorType}>{subtitleText}</Subtitles>
 					}
-					<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+					<div id='censorContainer' style={{width:`100%`, height:`100%`, position:`absolute`}}>
 					</div>
-					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+					<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`}}>
 					</div>
 					<PauseMessage id='pauseMessage'>
 						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>

@@ -59,7 +59,7 @@ describe(`TrackEditorSideMenu test`, () => {
 	it(`TrackEditorSideMenu onChange`, ()=> {
 		const mElement = { style: {color: `red`} }
 		const color = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
-		const wrapper = shallow(<TrackEditorSideMenu {...props}/>,{ attachTo: color })
+		const wrapper = shallow(<TrackEditorSideMenu {...props}/>, { attachTo: color })
 
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: 10 } })
 		const checked = wrapper.find(`[value=10]`).first()

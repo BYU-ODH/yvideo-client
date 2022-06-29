@@ -313,7 +313,7 @@ export const ToggleCarat = styled.div`
 // 	width: 100%;
 // 	text-align: center;
 // 	& h3 {
-// 		background-color: rgba(0,0,0,0.5);
+// 		background-color: rgba(0, 0, 0, 0.5);
 // 		padding: 3px;
 // 		font-size: 1.8rem;
 // 		text-align: center;
@@ -330,7 +330,7 @@ export const Subtitles = styled.div`
 	position: absolute;
 	height: 10%;
 	bottom:0;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	font-size: 1.5rem;
 	color: #ffffff;
 	z-index: 20;

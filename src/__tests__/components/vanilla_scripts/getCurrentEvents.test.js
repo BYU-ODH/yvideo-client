@@ -134,9 +134,9 @@ test(`should call CurrentEvents, without commentChildren`, () => {
 })
 
 test(`should call CensorChange`, () => {
-	CensorChange(0, {top1: 1, top2: 2, left1: 1,left2: 2, previous: 3, width2: 2, width1: 1}, 10)
+	CensorChange(0, {top1: 1, top2: 2, left1: 1, left2: 2, previous: 3, width2: 2, width1: 1}, 10)
 })
 
 test(`should call CommentChange`, () => {
-	CommentChange(0,{ x: 10, y: 10})
+	CommentChange(0, { x: 10, y: 10})
 })

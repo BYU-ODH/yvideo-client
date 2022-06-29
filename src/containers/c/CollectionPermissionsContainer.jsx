@@ -59,7 +59,7 @@ const CollectionPermissionsContainer = props => {
 		} else
 			getCollectionInfo(collection.id)
 
-	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
+	}, [collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
 
 	const handlers = {
 		makePublic: e => {

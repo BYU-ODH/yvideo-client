@@ -63,7 +63,7 @@ const props = {
 	subtitles: {},
 	handleScroll: jest.fn(),
 	editorType: `video`,
-	aspectRatio: [16,9],
+	aspectRatio: [16, 9],
 }
 
 // const reactPlayerProps = {

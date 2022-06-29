@@ -35,7 +35,7 @@ export const BoxRow = styled.div`
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border-radius: 5px;
-	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 	background-color: white;
 `
 
@@ -199,7 +199,7 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
-	box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+	box-shadow: 2px 2px 1px -1px rgba(0, 0, 0, 0.15);
 	border-radius: 3px;
 
 	& > i {

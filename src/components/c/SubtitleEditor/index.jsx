@@ -33,7 +33,7 @@ const SubtitleEditor = props => {
 	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor, handleNavigation } = props.handlers
 	const layers = [{0: `Skip`}]
 
-	const [isLoading,setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
@@ -51,7 +51,7 @@ const SubtitleEditor = props => {
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
 	const [subChanges, setSubChanges] = useState(0)
-	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
@@ -106,7 +106,7 @@ const SubtitleEditor = props => {
 		setEvents(allEvents)
 		if(subtitles[0] && !showSideEditor){
 			if (subtitles[0][`content`][0])
-				openSubEditor(0,0)
+				openSubEditor(0, 0)
 		}
 		if(document.getElementById(`blankContainer`))
 			document.getElementById(`blankContainer`).style.width = `100%`
@@ -119,7 +119,7 @@ const SubtitleEditor = props => {
 			window.onbeforeunload = undefined
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [eventsArray, blockLeave, isEdit,subtitles])
+	}, [eventsArray, blockLeave, isEdit, subtitles])
 	// end of useEffect
 
 	const getVideoDuration = (duration) => {
@@ -138,7 +138,7 @@ const SubtitleEditor = props => {
 	}
 	const deleteSub = (index) => {
 		const currentSubs = [...subtitles]
-		currentSubs[subLayerToEdit][`content`].splice(index,1)
+		currentSubs[subLayerToEdit][`content`].splice(index, 1)
 		setSubs(currentSubs)
 		setAllSubs(currentSubs)
 
@@ -152,7 +152,7 @@ const SubtitleEditor = props => {
 		checkSubError(currentSubs, `delete`, index)
 		setBlock(true)
 	}
-	const openSubEditor = (layerIndex,subIndex) => {
+	const openSubEditor = (layerIndex, subIndex) => {
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
@@ -564,7 +564,7 @@ const SubtitleEditor = props => {
 		else
 			return subtitles[subLayerToEdit][`content`][subToEdit]
 	}
-	const handleChangeSubIndex = (index,subLayer) => {
+	const handleChangeSubIndex = (index, subLayer) => {
 		setSubToEdit(index)
 		setFocus(false)
 	}
@@ -858,7 +858,7 @@ const SubtitleEditor = props => {
 											}
 										}
 										bounds = {`parent`}
-										onDrag = {(e,d)=>{
+										onDrag = {(e, d)=>{
 											handleScrollFactor(d.x)
 										}}
 									>

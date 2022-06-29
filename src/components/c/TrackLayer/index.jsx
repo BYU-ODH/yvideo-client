@@ -68,7 +68,7 @@ const TrackLayer = props => {
 		else
 			setLayerWidth(layerWidth + width)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[width])
+	}, [width])
 	if(document.getElementById(`timeBarProgress`) !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementById(`timeBarProgress`).style.width = `${layerWidth - 2}px`

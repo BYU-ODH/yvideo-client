@@ -42,10 +42,10 @@ const SubtitleEditorContainer = props => {
 	const [eventsArray, setEventsArray] = useState([])
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [currentContent, setCurrentContent] = useState({})
-	const [subs,setSubs] = useState([])
+	const [subs, setSubs] = useState([])
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	const [aspectRatio,setAspectRatio] = useState([16,9])
+	const [aspectRatio, setAspectRatio] = useState([16, 9])
 
 	const getAllSubtitles = async() => {
 		const testsubs = await getSubtitles(id)
@@ -78,10 +78,10 @@ const SubtitleEditorContainer = props => {
 				setUrl(content[id].url)
 			if(content[id].url.includes(`youtube`)){
 				const fetchData = async() => {
-					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`,{method:`GET`})
+					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`, {method:`GET`})
 					const data = await rawData.json()
 					if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
-						setAspectRatio([data.width,data.height])
+						setAspectRatio([data.width, data.height])
 
 					return data
 				}

@@ -390,7 +390,6 @@ const apiProxy = {
 				}).then( async res => {
 
 				await updateSessionId(res.headers[`session-id`])
-				// console.log(`results are`,res)
 				return res.data
 			})
 			return results
@@ -519,7 +518,7 @@ const apiProxy = {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
 					// eslint-disable-next-line no-unused-vars
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${userName}/868a60ef-1bc3-440c-a4a8-70f4c89844ca`,{headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${userName}/868a60ef-1bc3-440c-a4a8-70f4c89844ca`, {headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						await updateSessionId(res.data[`session-id`])
 					})
@@ -546,7 +545,7 @@ const apiProxy = {
 		post: async (body) => {
 			try {
 				const url = `${process.env.REACT_APP_YVIDEO_SERVER}/api/user/byu/create`
-				const result = await axios.post(url, body,{
+				const result = await axios.post(url, body, {
 					withCredentials: true,
 					headers: {
 						'Content-Type': `application/json`,
@@ -564,7 +563,7 @@ const apiProxy = {
 			}
 		},
 		getHasPermissions: async (username) => {
-			const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${username}/ta-permissions`,{
+			const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/user/${username}/ta-permissions`, {
 				withCredentials: true,
 				headers: {
 					'Content-Type': `application/json`,
@@ -686,7 +685,7 @@ const apiProxy = {
 			return res.data
 		}),
 
-		patch: async (fileId, file) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file/${fileId}`, file,{
+		patch: async (fileId, file) => await axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/file/${fileId}`, file, {
 			withCredentials: true,
 			headers: {
 				'Content-Type': `application/json`,
@@ -722,7 +721,7 @@ const apiProxy = {
 	},
 	subtitles: {
 		post: async (data) => {
-			const returnMe = await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle`,data,{
+			const returnMe = await axios.post(`${process.env.REACT_APP_YVIDEO_SERVER}/api/subtitle`, data, {
 				withCredentials: true,
 				headers: {
 					'Content-Type' : `application/json`,

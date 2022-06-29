@@ -9,7 +9,7 @@ const Style = styled.div`
 export default Style
 
 export const BoxRow = styled.div`
-	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 	background-color: white;
 
 	& > div {
@@ -119,5 +119,5 @@ export const CategorySelect = styled.select`
 	text-align-last:center;
 
 	outline: none;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 `

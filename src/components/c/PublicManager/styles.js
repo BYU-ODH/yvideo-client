@@ -158,7 +158,7 @@ export const Button = styled.button`
 		margin-top: 2rem;
 		padding-right: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 6rem;

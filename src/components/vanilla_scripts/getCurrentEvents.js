@@ -5,7 +5,7 @@ const handleBlank = (blanks) => {
 	if (blanks.length > 0){
 		if (!blank){
 			const blank = document.createElement(`div`)
-			blank.setAttribute(`id`,`blankBox`)
+			blank.setAttribute(`id`, `blankBox`)
 			blankContainer.appendChild(blank)
 		}
 	}else{
@@ -15,7 +15,7 @@ const handleBlank = (blanks) => {
 
 	}
 }
-export const HandleSubtitle = (time,subtitles,ind,duration) => {
+export const HandleSubtitle = (time, subtitles, ind, duration) => {
 	const tempOnload = window.onload
 	window.onload = () => {
 		const subtitleNode = document.getElementById(`subtitle`)
@@ -31,10 +31,10 @@ export const HandleSubtitle = (time,subtitles,ind,duration) => {
 		window.onload = tempOnload
 	}
 }
-export const CurrentEvents = (time,events,duration) => {
+export const CurrentEvents = (time, events, duration) => {
 	const activeEvents = []
 	const doneEvents = []
-	events.forEach((val,ind)=>{
+	events.forEach((val, ind)=>{
 		const newVal = {...val}
 		const start = val.start
 		const end = val.end || val.start + 0.5
@@ -70,8 +70,8 @@ export const CurrentEvents = (time,events,duration) => {
 			if(document.getElementById(`censorBox-${censorValues[i].next}-${left1Value}`) === null){
 				// if the censor does not exist we create a new one
 				const cen = document.createElement(`div`)
-				cen.setAttribute(`class`,`censorBox`)
-				cen.setAttribute(`id`,`censorBox-${censorValues[i].next}-${left1Value}`)
+				cen.setAttribute(`class`, `censorBox`)
+				cen.setAttribute(`id`, `censorBox-${censorValues[i].next}-${left1Value}`)
 				const can = document.createElement(`canvas`)
 				cen.appendChild(can)
 				censorContainer.appendChild(cen)
@@ -124,8 +124,8 @@ export const CurrentEvents = (time,events,duration) => {
 				if (commentChildren[i]) exists = true
 			if (!exists){
 				const com = document.createElement(`div`)
-				com.setAttribute(`class`,`comment`)
-				com.setAttribute(`id`,`comment-${i}`)
+				com.setAttribute(`class`, `comment`)
+				com.setAttribute(`id`, `comment-${i}`)
 				com.innerHTML = comments[i].comment
 				commentContainer.appendChild(com)
 			}
@@ -197,7 +197,7 @@ export const CensorChange = async (ind, censorData, playedSeconds) =>{
 		censorBox.style.width = `${width}%`
 	}
 }
-export const CommentChange = (ind,commentData, playedSeconds) =>{
+export const CommentChange = (ind, commentData, playedSeconds) =>{
 	if(document.getElementById(`comment-${ind}`)){
 		const commentBox = document.getElementById(`comment-${ind}`)
 		commentBox.style.top = `${commentData.y}%`

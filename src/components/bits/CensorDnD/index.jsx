@@ -30,7 +30,7 @@ const CensorDnD = props => {
 
 	const handleChange = (time) => {
 		setCensorEdit(time.toString())
-		seekTo(null,parseFloat(censorValues[time][0]))
+		seekTo(null, parseFloat(censorValues[time][0]))
 	}
 
 	if (censorEdit === -1 || censorEdit === `-1` || censorValues.length === 0)
@@ -38,12 +38,12 @@ const CensorDnD = props => {
 
 	const checkExisting = () => {
 		const vals = Object.values(censorValues)
-		const next = Object.keys(censorValues).find(val => censorValues[val] === vals.filter(value => parseFloat(value) > parseFloat(censorValues[censorEdit][0])).sort((a,b) => parseFloat(a)-parseFloat(b))[0])
-		const previous = Object.keys(censorValues).find(val=> censorValues[val] === vals.filter(value => parseFloat(value) < parseFloat(censorValues[censorEdit][0])).sort((a,b) => parseFloat(b)-parseFloat(a))[0])
+		const next = Object.keys(censorValues).find(val => censorValues[val] === vals.filter(value => parseFloat(value) > parseFloat(censorValues[censorEdit][0])).sort((a, b) => parseFloat(a)-parseFloat(b))[0])
+		const previous = Object.keys(censorValues).find(val=> censorValues[val] === vals.filter(value => parseFloat(value) < parseFloat(censorValues[censorEdit][0])).sort((a, b) => parseFloat(b)-parseFloat(a))[0])
 		// const prevKey = censorValues.find(val => val[0] === previous)
 		// const nextKey = censorValues.find(val => val[0] === next)
 
-		return(<div style={{width:`100%`,height:`100%`,position:`absolute`}}>
+		return(<div style={{width:`100%`, height:`100%`, position:`absolute`}}>
 			{ previous !== `-Infinity`&& previous !== undefined &&
 				<BeforeButton onClick={()=>handleChange(previous)}>
 					<img src={arrowLeft} alt='previous' />
@@ -67,8 +67,8 @@ const CensorDnD = props => {
 				onResizeStop={(e, d, ref, delta, position) => handleUpdateCensorResize(delta, position)}
 				style={
 					{
-						border:`3px solid rgba(5, 130, 202,0.7)`,
-						backgroundColor:`rgba(5, 130, 202,0.4)`,
+						border:`3px solid rgba(5, 130, 202, 0.7)`,
+						backgroundColor:`rgba(5, 130, 202, 0.4)`,
 					}}
 			>
 			</Rnd>
