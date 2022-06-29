@@ -48,7 +48,7 @@ const VideoContainer = props => {
 	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
-	const [censorPosition, setCensorPosition] = useState({})
+	const [censorPosition, setCensorPosition] = useState({}) // eslint-disable-line no-unused-vars
 	const [playerPadding,setPlayerPadding] = useState([0,0])
 	const [isUploading, setIsUploadings] = useState(false)
 
@@ -127,8 +127,11 @@ const VideoContainer = props => {
 				}
 			}
 			for (let y = 0; y < values.allEvents.length; y++){
-				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
-
+				let index = 0
+				if (values.allEvents[y].type === `Pause`)
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start)
+				else
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 				if(!events[index].active && values.allEvents[y].type !== `Mute`)
 					return
 				const pauseMessage = document.getElementById(`pauseMessage`)
@@ -247,7 +250,7 @@ const VideoContainer = props => {
 
 			updateEvents(eventToEdit,event,event[`layer`])
 			video.handleProgress({
-				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration), 
+				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
 				playedSeconds:parseFloat(event.position[activeCensorPosition][0]) + 0.001,
 			})
 		},
@@ -267,7 +270,7 @@ const VideoContainer = props => {
 			updateEvents(eventToEdit, event, event[`layer`])
 			video.handleProgress({
 				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
-				playedSeconds: parseFloat(event.position[activeCensorPosition][0]) + 0.001
+				playedSeconds: parseFloat(event.position[activeCensorPosition][0]) + 0.001,
 			})
 		},
 		handleBlankClick: (height, width, x, y) => {

@@ -44,7 +44,7 @@ export class ResourceOverview extends PureComponent {
 			editing,
 			accessCount,
 			user,
-			blockLeave,
+			blockLeave, // eslint-disable-line no-unused-vars
 		} = this.props.viewstate
 
 		const {

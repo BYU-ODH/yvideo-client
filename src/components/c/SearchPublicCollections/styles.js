@@ -33,6 +33,7 @@ export default Style
 export const Search = styled.form`
 	position: relative;
 	margin-bottom: 5rem;
+	display: flex;
 
 	& > input {
 		z-index: 1;

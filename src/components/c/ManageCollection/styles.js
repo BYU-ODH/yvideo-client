@@ -81,7 +81,10 @@ export const Publish = styled.div`
 export const PublishButton = styled.button`
   color: white;
   font-weight: bold;
-  background-color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+  background-color: ${props => props.published ? `var(--yellow)` : `var(--light-blue)`};
+	:hover {
+		background-color: ${props => props.published ? `var(--dark-yellow)` : `var(--navy-blue)`};
+	}
 
   letter-spacing: 0.05rem;
 
@@ -95,15 +98,21 @@ export const PublishButton = styled.button`
 `
 
 export const ArchiveButton = styled.button`
-  color: #ff4c4c;
+  color: var(--red);
+	border: 3px solid var(--red);
   font-weight: bold;
+	background-color: white;
+
+	:hover {
+		background-color: var(--red);
+		color: white;
+	}
 
   letter-spacing: 0.05rem;
 
-  padding: 0;
-  background: transparent;
+  padding: 0.55rem 1.5rem;
+	border-radius: 0.3rem;
 
-  border: none;
   cursor: pointer;
 `
 export const CopyrightedButton = styled.button`

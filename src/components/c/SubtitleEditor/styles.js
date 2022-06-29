@@ -390,7 +390,7 @@ export const AnnotationMessage = styled.div`
 	}
 `
 
-export const PlusIcon = styled.div`
+export const PlusIcon = styled.i`
   background: url(${plusIcon}) center no-repeat;
 	color: white;
   width: 1.3rem;

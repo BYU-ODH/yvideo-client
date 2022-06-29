@@ -173,8 +173,11 @@ export default class Player extends Component {
 				}
 			}
 			for (let y = 0; y < values.allEvents.length; y++){
-				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
-
+				let index = 0
+				if (values.allEvents[y].type === `Pause`)
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start)
+				else
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 				if(!events[index].active)
 					return
 				const pauseMessage = document.getElementById(`pauseMessage`)
@@ -256,6 +259,7 @@ export default class Player extends Component {
 							height='100%'
 							url={url}
 							playing={playing}
+							playsinline={true}
 							playbackRate={parseFloat(playbackRate)}
 							volume={volume}
 							muted={muted}
@@ -270,15 +274,19 @@ export default class Player extends Component {
 							onDuration={handleDuration}
 
 							config={{
+								file: {
+									forceVideo: true,
+									hlsVersion: `0.12.4`,
+									attributes: {
+										disablePictureInPicture: true,
+									},
+								},
 								youtube: {
 									iv_load_policy: 3,
 									modestbranding: 1,
 									playsinline: 1,
 									rel: 0,
 									showinfo: 0,
-								},
-								file: {
-									attributes: {},
 								},
 							}}
 						/>

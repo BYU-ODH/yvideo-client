@@ -98,10 +98,10 @@ const Style = styled.div`
 		}
 
 		& .url-content-delete {
-			color: #ff4c4c;
-			border: 3px solid #ff4c4c;
+			color: var(--red);
+			border: 3px solid var(--red);
 			:hover {
-				background-color: #ff4c4c;
+				background-color: var(--red);
 				color: #ffffff;
 			}
 		}

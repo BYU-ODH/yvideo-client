@@ -5,8 +5,6 @@ import trashIcon from 'assets/trash.svg'
 
 const Style = styled.div`
 
-	& > div {
-	}
 `
 export default Style
 
@@ -21,16 +19,16 @@ export const CollectionRow = styled.div`
 export const Collection = styled.div`
 	display: grid;
 	/* grid-template-columns: 8rem 15rem auto 2rem; */
-	grid-template-columns: 20rem auto 1.5rem;
+	grid-template-columns: 20rem 15rem auto 1.5rem;
 	justify-items: start;
 	align-items: center;
-	background: ${props => props.isOpen ? ` #d7d7d7` : ``};
+	background: ${props => props.isOpen && `#d7d7d7`};
 
 	padding: 2rem;
 	border-top: 1px solid #ccc;
 
 	& > div {
-		flex: 1;
+		flex 1;
 
 		background: url(${carrot}) center no-repeat;
 		background-size: contain;
@@ -43,12 +41,13 @@ export const Collection = styled.div`
 
 	& > h3 {
 		flex: 2;
-		padding-right:1rem;
+		padding-right: 2.5rem;
 		font-weight: 400;
 	}
 
 	& > p {
 		flex: 2;
+		text-align: center;
 		color: #a4a4a4;
 	}
 
@@ -57,62 +56,66 @@ export const Collection = styled.div`
 		text-decoration: underline;
 		background: #bfbfbf;
 	}
+	@media screen and (max-width: 320px) {
+		grid-template-columns: 15rem auto 1.5rem;
+	}
 `
 
 export const Body = styled.div`
-	height: ${props => props.isOpen ? `${(parseInt(props.count) * 7 + 6).toString()}rem` : `0`};
-	transition: height .25s ease-in-out;
+	height: ${props => props.isOpen ? `auto` : `0rem`};
 	overflow: hidden;
 	background: #efefef;
-
 `
 
 export const PublicButton = styled.button`
-  color: white;
-	& > h3{
+	font-size: 1rem;
+	color: ${props => props.isSubscribed === true ? `var(--red)` : `#efefef`};
+	background-color: ${props => props.isSubscribed === true ? `#efefef` : `var(--light-yellow)`};
+
+	border: ${props => props.isSubscribed === true ? `.25rem solid var(--red)` : `none`};
+	margin: 1rem;
+  padding: ${props => props.isSubscribed === true ? `0.55rem 1.5rem` : `0.8rem 1.5rem`};
+
+  letter-spacing: 0.05rem;
+
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+  outline: none;
+
+	:hover {
+		background-color: ${props => props.isSubscribed === true ? `var(--red)` : `var(--yellow)`};
+		color: #ffffff;
+	}
+
+	& > h3 {
 		font-weight: lighter;
 	}
-	font-size: 1rem;
-  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
-
-  letter-spacing: 0.05rem;
-
-  padding: 0.8rem 1.5rem;
-  /* margin-right: 3rem; */
-
-	margin: 1rem;
-
-  border: none;
-  border-radius: 0.3rem;
-
-  cursor: pointer;
-  outline: none;
 `
 
-export const MoreButton = styled.button`
-  color: white;
-  font-weight: bold;
-  background-color: ${props => props.isPublic === 0 && props.isPublic === 1 ? `#FFBF00` : `#0582CA`};
+// export const MoreButton = styled.button`
+//   color: white;
+//   font-weight: bold;
+//   background-color: var(--yellow)
 
-  letter-spacing: 0.05rem;
+//   letter-spacing: 0.05rem;
 
-  padding: 0.8rem 1.5rem;
-  /* margin-right: 3rem; */
+//   padding: 0.8rem 1.5rem;
+//   /* margin-right: 3rem; */
 
-	margin: 1rem;
+// 	margin: 1rem;
 
-  border: none;
-  border-radius: 0.3rem;
+//   border: none;
+//   border-radius: 0.3rem;
 
-  cursor: pointer;
-  outline: none;
-`
+//   cursor: pointer;
+//   outline: none;
+// `
 
 export const PublicCollectionButton = styled.div`
 	display: flex;
-	justify-content: flex-end;
 
-	& > h3{
+	& > h3 {
 		width: 100%;
 		text-align: end !important;
 		margin-top: 1rem;
@@ -120,12 +123,19 @@ export const PublicCollectionButton = styled.div`
 		font-weight: lighter;
 		font-size: 1.2rem;
 	}
+	& > #collection-owned {
+		margin-left: 2rem;
+		margin-bottom: 1rem;
+		font-size: 1.4rem;
+		font-weight: bold;
+	}
 `
 
-export const PublicCollectionsLable = styled.div`
+export const PublicCollectionsTable = styled.div`
 	display: grid;
-	grid-template-columns: auto auto 2rem;
+	grid-template-columns: auto;
 	align-items: center;
+	justify-items: ${props => props.isOwner === true ? `center` : `flex-end`};
 
 		& .ownership{
 			display:flex;
@@ -168,7 +178,7 @@ export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
-	color: #ff4c4c;
+	color: var(--red);
 	${TextButton}
 	text-align: center !important;
 

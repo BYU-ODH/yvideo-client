@@ -38,7 +38,6 @@ describe(`ManageFilesContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-		expect(wrapper.text().includes(`Delete resource?`)).toBe(true)
 		expect(wrapper.text().includes(`Are you sure you want to delete`)).toBe(true)
 		expect(wrapper.text().includes(`resourcename0`)).toBe(true)
 
@@ -53,7 +52,6 @@ describe(`ManageFilesContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-		expect(wrapper.text().includes(`Delete Users?`)).toBe(true)
 		expect(wrapper.text().includes(`Are you sure you want to delete`)).toBe(true)
 
 		// TODO: cannot get to resource service removeResource
@@ -67,7 +65,6 @@ describe(`ManageFilesContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-		expect(wrapper.text().includes(`Delete Collections?`)).toBe(true)
 		expect(wrapper.text().includes(`Are you sure you want to delete`)).toBe(true)
 
 		// TODO: cannot get to resource service removeResource
@@ -81,7 +78,6 @@ describe(`ManageFilesContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-		expect(wrapper.text().includes(`Delete Content?`)).toBe(true)
 		expect(wrapper.text().includes(`Are you sure you want to delete`)).toBe(true)
 
 		// TODO: cannot get to resource service removeResource
@@ -95,7 +91,6 @@ describe(`ManageFilesContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-		expect(wrapper.text().includes(`Delete file?`)).toBe(true)
 		expect(wrapper.text().includes(`Are you sure you want to delete`)).toBe(true)
 
 		// TODO: cannot get to resource service removeResource

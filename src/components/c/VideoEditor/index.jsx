@@ -180,15 +180,8 @@ const VideoEditor = props => {
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
 
-	const updateEvents = (index, event, layerIndex, side, type) => {
-
+	const runTimeCheck = (side,event,type) => {
 		let canAccessDom = false
-		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
-			canAccessDom = true
-			document.getElementById(`sideTabMessage`).style.color=`red`
-		}
-
-		const currentEvents = [...allEvents]
 		try {
 			if(side === `beg`) {
 				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
@@ -248,6 +241,59 @@ const VideoEditor = props => {
 			}
 		} else
 			setDisableSave(true)
+
+	}
+
+	const runPauseTimeCheck = (side, event, type) => {
+		let canAccessDom = false
+		try {
+			if(side === `beg`) {
+				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+					event.start = convertToSeconds(event.start, videoLength)
+				else {
+					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					canAccessDom=false
+				}
+
+			}
+		} catch (e) {
+			console.log(`catch`) // eslint-disable-line no-console
+		}
+		if(event.start < 0){
+			event.start = 0
+			if(canAccessDom)
+				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
+
+		} else if(event.start >= videoLength) {
+			if(canAccessDom)
+				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
+
+		}
+		if(event.start >= 0 && event.start < videoLength){
+			if(canAccessDom){
+				document.getElementById(`sideTabMessage`).style.color=`green`
+				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
+				document.getElementById(`sideTabExplanation`).innerHTML=``
+				setDisableSave(false)
+			}
+		} else
+			setDisableSave(true)
+
+	}
+
+	const updateEvents = (index, event, layerIndex, side, type) => {
+
+		let canAccessDom = false
+		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
+			canAccessDom = true // eslint-disable-line no-unused-vars
+			document.getElementById(`sideTabMessage`).style.color=`red`
+		}
+
+		const currentEvents = [...allEvents]
+		if(event.type === `Pause`)
+			runPauseTimeCheck(side,event,type)
+		else
+			runTimeCheck(side,event,type)
 
 		currentEvents[index] = event
 

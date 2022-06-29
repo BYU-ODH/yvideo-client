@@ -1,13 +1,8 @@
-import React, { PureComponent } from 'react'
+import Style, { Button } from './styles'
 
-import {
-	ConfirmDeleteBox,
-	ConfirmBox,
-	ConfirmButton,
-	Logo,
-} from './styles'
+import React, { Component } from 'react'
 
-export default class DeleteConfirm extends PureComponent {
+export default class DeleteConfirm extends Component {
 
 	render() {
 
@@ -24,18 +19,16 @@ export default class DeleteConfirm extends PureComponent {
 		return (
 			<>
 				{
-					<ConfirmDeleteBox>
-						<ConfirmBox>
-							<div>
-								<Logo /><p>Delete {type}?</p>
+					<Style>
+						<div className={`delete-div`}>
+							<h2>Are you sure you want to delete {type}: <u>{title}</u>? It cannot be recovered</h2>
+							<div className={`delete-buttons`}>
+								<Button id='confirm-delete-cancel' className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+								<Button id='confirm-delete' className='url-content-delete' type='submit' onClick={handleRemoveItem}>Delete</Button>
 							</div>
-							<p>Are you sure you want to delete '{title}'?<br/>Once deleted it cannot be recovered.</p>
-							<div>
-								<button id='confirm-delete-cancel' onClick={toggleModal}>Cancel</button>
-								<ConfirmButton id='confirm-delete' onClick={handleRemoveItem}>Delete</ConfirmButton>
-							</div>
-						</ConfirmBox>
-					</ConfirmDeleteBox>
+						</div>
+					</Style>
+
 				}
 			</>
 		)

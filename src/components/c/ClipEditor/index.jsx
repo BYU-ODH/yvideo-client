@@ -136,7 +136,7 @@ const ClipEditor = props => {
 			setZoomFactor(d.x)
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
-		const layerContainer = document.getElementByClassName(`layer-container`)
+		const layerContainer = document.getElementsByClassName(`layer-container`)
 		const events = document.getElementsByClassName(`events`)
 		if(layerContainer && events[0].clientWidth !== 0) {
 			setScrollBar(

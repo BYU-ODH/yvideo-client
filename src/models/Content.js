@@ -10,7 +10,7 @@ export default class Content {
 	isCopyrighted = false
 	name = ``
 	physicalCopyExists = false
-	published = false
+	published = true
 	requester = ``
 	resourceId = ``
 	thumbnail = ``

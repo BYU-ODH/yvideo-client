@@ -2,14 +2,15 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import Container from '../../../containers/c/PublicListCollectionContainer'
-import { PublicButton } from '../../../components/c/PublicListCollection/styles'
+import Container from '../../../containers/c/ListCollectionContainer'
+import { PublicButton } from '../../../components/c/ListCollection/styles'
 import * as testutil from '../../testutil/testutil'
 
 const collection1 = testutil.collection1
 const collection7 = testutil.collection7
+const collection8 = testutil.collection8
 
-describe(`PublicListCollectionContainer test`, () => {
+describe(`ListCollectionContainer test`, () => {
 	it(`wrapper: currentTime >= start && currentTime <= end)`, () => {
 		const props = {
 			isAdmin: true,
@@ -34,7 +35,8 @@ describe(`PublicListCollectionContainer test`, () => {
 	it(`not owner, isSubscribed == true`, () => {
 		const props = {
 			isAdmin: true,
-			collection: collection7,
+			isOwner: false,
+			collection: collection8,
 			defaultSubscription: true,
 		}
 		const wrapper = mount(
@@ -44,7 +46,6 @@ describe(`PublicListCollectionContainer test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		// user.roles < 4, isOwner == false
 		wrapper.find(PublicButton).simulate(`click`)
 		expect(wrapper.contains(<h3>Unsubscribe</h3>))
 		expect(wrapper.contains(<p>This collection has no content</p>))
@@ -62,7 +63,6 @@ describe(`PublicListCollectionContainer test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		// user.roles < 4, isOwner == false
 		expect(wrapper.contains(<h3>Subscribe</h3>))
 	})
 })

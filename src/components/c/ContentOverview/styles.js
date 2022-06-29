@@ -79,7 +79,7 @@ export const Preview = styled.div`
 
 
 		.fa-trash-o{
-			color: #ff4c4c;
+			color: var(--red);
 		}
 
 
@@ -292,7 +292,7 @@ export const TitleEdit = styled.input`
 `
 
 export const PublishButton = styled.button`
-	color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+	color: ${props => props.published ? `var(--yellow)` : `#0582CA`};
 	font-weight: bold;
 	display: flex;
 	line-height: 1.5rem;
@@ -309,7 +309,7 @@ export const PublishButton = styled.button`
 `
 
 export const RemoveButton = styled.button`
-	color: #ff4c4c;
+	color: var(--red);
 	font-weight: bold;
 	line-height: 1.5rem;
 	letter-spacing: .05rem;
@@ -327,7 +327,7 @@ export const RemoveButton = styled.button`
 
 export const TrashIcon = styled.span`
 	background: url(${trashIcon}) center no-repeat;
-	color: #ff4c4c;
+	color: var(--red);
 	height: 2.8rem;
 	width: 1.65rem;
 `
