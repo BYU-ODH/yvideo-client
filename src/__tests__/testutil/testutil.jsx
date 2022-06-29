@@ -890,7 +890,7 @@ export const store2 = mockStore(
 				component: (props) => (<div></div>),
 				props: { active: false },
 			},
-			breadcrumbs: {	path: [`Home`, `Feedback`, `Lab Assistant Manager`, `Admin Dashboard`, `Lab assistant Dashboard`, `Manage Resource`, `Manage Public Collections`, `Player`, `Subtitle Editor`, `Clip Manager`, `Manage Collections`],
+			breadcrumbs: {	path: [`Home`, `Feedback`, `Lab Assistant Manager`, `Admin Dashboard`, `Lab Assistant Dashboard`, `Manage Resource`, `Manage Public Collections`, `Player`, `Subtitle Editor`, `Clip Manager`, `Manage Collections`],
 				collectionId: `collectionId`,
 				contentId: `contentId`},
 		},

@@ -22,6 +22,8 @@ const TrackLayer = props => {
 		displayLayer,
 		handleEventPosition,
 		setEventSeek,
+		activeCensorPosition,
+		setActiveCensorPosition,
 	} = props
 	const layerIndex = parseInt(props.index)
 
@@ -142,6 +144,8 @@ const TrackLayer = props => {
 	}
 
 	const handleDrag = (d, event, index) => {
+		setActiveCensorPosition(-1)
+
 		const cEvents = events
 		const beginTimePercentage = d.x/layerWidth*100*videoLength/100
 		const endPercentage = beginTimePercentage + event.end - event.start

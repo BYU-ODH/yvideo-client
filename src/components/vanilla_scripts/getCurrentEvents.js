@@ -50,8 +50,8 @@ export const CurrentEvents = (time,events,duration) => {
 	const comments = activeEvents.filter(val => val.type === `Comment`)
 	const censorValues = []
 
-	censors.forEach((val,ind)=>{
-		censorValues.push(Position(val.position,time))
+	censors.forEach((val, ind)=>{
+		censorValues.push(Position(val.position, time))
 	})
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
 	handleBlank(blanks)
