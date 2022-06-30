@@ -16,7 +16,7 @@ export const Preview = styled.div`
 	justify-content: space-between;
 
 	@media screen and (max-width: 1000px) {
-		flex-direction: ${props => props.editing ? `column` : ``};
+		flex-direction: ${props => props.editing && `column`};
 	}
 
 	& > div {
@@ -24,8 +24,8 @@ export const Preview = styled.div`
 		align-items: center;
 
 		@media screen and (max-width: 1000px) {
-      justify-content: ${props => props.editing ? `space-evenly` : ``};
-			margin-top: ${props => props.editing ? `1rem` : ``};
+      justify-content: ${props => props.editing && `space-evenly`};
+			margin-top: ${props => props.editing && `1rem`};
     }
 
 	}

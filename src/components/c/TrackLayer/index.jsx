@@ -197,8 +197,8 @@ const TrackLayer = props => {
 			<Rnd
 				className={
 					`layer-event
-					${isMultiEvent ? `half-event`:``}
-					${activeEvent === index ? `active-event` : ``}`}
+					${isMultiEvent && `half-event`}
+					${activeEvent === index && `active-event`}`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={
@@ -226,7 +226,7 @@ const TrackLayer = props => {
 				key={index}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
-				<Icon src={event.icon} className={isMultiEvent ? `half-icon` : ``}/>
+				<Icon src={event.icon} className={isMultiEvent && `half-icon`}/>
 				{ event.type !== `Pause` ? (
 					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
 				) : (
@@ -243,7 +243,7 @@ const TrackLayer = props => {
 				{/* overflow-x should be like scroll or something */}
 				{layerIndex !== 4 &&
 					<div ref={layerRef} className='eventsbox'>
-						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
+						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex && `active-layer`}`}>
 							{
 								events !== undefined && events.length > 0 && videoLength !== 0? (
 									<>
@@ -257,7 +257,7 @@ const TrackLayer = props => {
 				{layerIndex === 4 && layerOverlap !== null &&
 					<div ref={layerRef} className='eventsbox'>
 						<div
-							className={`layer-${layerIndex} ${layerOverlap.length > 0 ? `half-layer` : ``} events ${displayLayer === layerIndex ? `active-layer` : ``}`}
+							className={`layer-${layerIndex} ${layerOverlap.length > 0 && `half-layer`} events ${displayLayer === layerIndex && `active-layer`}`}
 							style={
 								{
 									backgroundColor: `rgba(5, 130, 202, 0.1)`,
@@ -281,16 +281,13 @@ const TrackLayer = props => {
 							}
 						</div>
 						{ layerOverlap.map((halfLayer, overlapIndex) => (
-							<div key={overlapIndex} className={`layer-${layerIndex} half-layer events ${displayLayer === layerIndex ? `active-layer` : ``}`}
+							<div key={overlapIndex} className={`layer-${layerIndex} half-layer events ${displayLayer === layerIndex && `active-layer`}`}
 								style={
 									{
 										marginTop: overlapIndex > 0 ?
 											`${26 * overlapIndex}px`
 											: `0px`,
-										backgroundColor: overlapIndex % 2 !== 0 ?
-											`rgba(5, 130, 202, 0.1)`
-											:
-											``,
+										backgroundColor: overlapIndex % 2 !== 0 && `rgba(5, 130, 202, 0.1)`,
 									}}
 							>
 								{

@@ -28,7 +28,7 @@ export default Style
 
 export const Search = styled.form`
 	position: relative;
-	text-align: ${props => props.isMobile ? `center` : ``};
+	text-align: ${props => props.isMobile && `center`};
 
 	& > input {
 		z-index: 1;

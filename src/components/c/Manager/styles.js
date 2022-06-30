@@ -59,7 +59,7 @@ export const SideMenu = styled.div`
 
 	@media screen and (max-width: 1000px) {
 		width: -webkit-fill-available;
-		display: ${props => props.isOpen === false ? `none` : ``};
+		display: ${props => props.isOpen === false && `none`};
 	}
 
 	& > h4 {

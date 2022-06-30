@@ -758,7 +758,7 @@ const VideoEditor = props => {
 						{ showSideEditor &&
 								<>
 									<>
-										<span className='current'>{allEvents !== [] ? `${checkSideBarTitle()}` : ``}</span>
+										<span className='current'>{allEvents !== [] && `${checkSideBarTitle()}`}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>

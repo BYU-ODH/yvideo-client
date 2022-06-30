@@ -179,7 +179,7 @@ const SubtitlesLayer = props => {
 	const printEvents = (event, index) => {
 		return (
 			<Rnd
-				className={`layer-event ${activeEvent === index && layerIndex === displayLayer ? `active-event` : ``}`}
+				className={`layer-event ${activeEvent === index && layerIndex === displayLayer && `active-event`}`}
 
 				id={`event-${index}`}
 				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `46px`}}
@@ -219,7 +219,7 @@ const SubtitlesLayer = props => {
 			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='eventsbox'>
-					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
+					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex && `active-layer`}`}>
 						{
 							subs !== undefined && videoLength !== 0 ? (
 								<>

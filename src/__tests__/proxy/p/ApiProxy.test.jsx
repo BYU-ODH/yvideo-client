@@ -570,7 +570,6 @@ describe(`ApiProxy test`, () => {
 		const expected = {
 			1:collection4,
 		}
-		// const expected = {"1": {"archived": false, "content": [{"authKey": ``, "collectionId": `collectionsid1`, "contentType": `video`, "dateValidated": ``, "description": `test`, "expired": false, "fullVideo": false, "id": `contentid1`, "isCopyrighted": false, "name": `testname`, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "allowNote": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com`, "url": `test url`, "views": 0, "words": ""}, {"authKey": ``, "collectionId": `collectionsid2`, "contentType": `video2`, "dateValidated": ``, "description": `test2`, "expired": false, "fullVideo": false, "id": `contentid2`, "isCopyrighted": false, "name": undefined, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "allowNote": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com2`, "url": `test ur2l`, "views": 0, "words": ""}], "id": 1, "name": undefined, "owner": 22, "published": true, "thumbnail": `test@thumbnail`}}
 
 		axios.mockResolvedValue(data)
 		// axios.mockImplementation(() => Promise.resolve(data))

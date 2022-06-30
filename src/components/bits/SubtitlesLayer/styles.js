@@ -65,7 +65,7 @@ export const Style = styled.div`
 	}
 
 	& .active-event {
-		border: ${props => props.showError ? `2px solid red !important` : ``};
+		border: ${props => props.showError && `2px solid red !important`};
 		background-color: var(--navy-blue);
 		z-index: 100;
 		& p { color: white !important; };

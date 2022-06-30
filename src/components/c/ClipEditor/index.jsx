@@ -494,8 +494,8 @@ const ClipEditor = props => {
 							<table>
 								{
 									Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-										<tbody key={i} className={`singleClip ${i === clipIndex ? `clipActive` : ``}`}>
-											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
+										<tbody key={i} className={`singleClip ${i === clipIndex && `clipActive`}`}>
+											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
 												<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
 												<td>
 													<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}

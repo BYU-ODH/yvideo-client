@@ -88,14 +88,14 @@ const SubtitleEditorSideMenu = props => {
 								position={`top`}
 								visibility={subs[subLayer][`content`][0].start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
 							/>
-							<div id={`subContainer${ind}`} className={`subContainer ${ind === index ? `subActive` : ``}`}>
+							<div id={`subContainer${ind}`} className={`subContainer ${ind === index && `subActive`}`}>
 								<textarea
 									className='subText'
 									type='text'
 									onClick={ () => changeSubIndex(ind)}
 									value={sub.text}
 									onChange={ (value) => editSub(null, null, value, subLayer, ind)} />
-								<div id={`${ind === index ? `subStartEnd`: ``}`} className={`subStartEnd`}>
+								<div id={`${ind === index && `subStartEnd`}`} className={`subStartEnd`}>
 									<input
 										id={`subStart${ind}`}
 										className={`subStart sideTabInput`}

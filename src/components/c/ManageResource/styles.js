@@ -113,7 +113,7 @@ export const TableContainer = styled.div`
 `
 export const Search = styled.form`
 	position: relative;
-	text-align: ${props => props.isMobile ? `center` : ``};
+	text-align: ${props => props.isMobile && `center`};
 	margin-bottom: 3rem;
 
 	& > input {

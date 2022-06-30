@@ -247,14 +247,14 @@ const PlayerControls = props => {
 									value={playbackAtIndex}
 									key={playbackAtIndex}
 									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-									className={playbackRate === playbackAtIndex ? `active-value` : ``} />
+									className={playbackRate === playbackAtIndex && `active-value`} />
 								:
 								<input
 									type='button'
 									value='Normal'
 									key={1}
 									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-									className={playbackRate === playbackAtIndex ? `active-value` : ``} />)
+									className={playbackRate === playbackAtIndex && `active-value`} />)
 						}
 					</div>
 				</div>
@@ -269,11 +269,11 @@ const PlayerControls = props => {
 								type='button'
 								value={element.title}
 								onClick={e => handleChangeSubtitle(index)}
-								className={ indexToDisplay === index && showTranscript === true ? `active-value` : ``}
+								className={ indexToDisplay === index && showTranscript === true && `active-value`}
 							/>,
 						)
 						}
-						<button type='button' className={`${showTranscript === false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
+						<button type='button' className={`${showTranscript === false && `active-value`} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}
