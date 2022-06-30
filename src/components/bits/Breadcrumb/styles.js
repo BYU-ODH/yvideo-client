@@ -19,7 +19,7 @@ export const Style = styled.div`
 export default Style
 
 export const Slash = styled.span`
-	display: ${props => props.disabled ? `none` : ``};
+	display: ${props => props.disabled && `none`};
 
 `
 
