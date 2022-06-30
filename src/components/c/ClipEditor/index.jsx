@@ -438,7 +438,7 @@ const ClipEditor = props => {
 											topRight: false,
 											bottomRight: false,
 											bottomLeft: false,
-											topLeft: false
+											topLeft: false,
 										}
 									}
 									dragAxis='x'

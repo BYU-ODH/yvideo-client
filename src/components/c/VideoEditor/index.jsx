@@ -674,7 +674,7 @@ const VideoEditor = props => {
 										topRight: false,
 										bottomRight: false,
 										bottomLeft: false,
-										topLeft: false
+										topLeft: false,
 									}
 								}
 								dragAxis='x'
@@ -706,7 +706,7 @@ const VideoEditor = props => {
 												topRight: false,
 												bottomRight: false,
 												bottomLeft: false,
-												topLeft: false
+												topLeft: false,
 											}
 										}
 										bounds = {`parent`}
