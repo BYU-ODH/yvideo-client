@@ -635,7 +635,7 @@ const VideoEditor = props => {
 								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
 										<EventCard event={events[index]} key={index}/>
-										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
+										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index) }/>
 									</div>
 
 									<TrackLayer
@@ -688,7 +688,7 @@ const VideoEditor = props => {
 								}
 								onMouseLeave={() => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
 
 						<div className='zoom-scroll'>

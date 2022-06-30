@@ -34,7 +34,7 @@ export default class InterfaceService {
 		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute: false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
 		tipToggle: (payload) => ({ type: this.types.TIP_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
-		publicCollectionsDisplayToggle: () => ({ type: this.types.PUBLIC_COLLECTIONS_DISPLAY_TOGGLE}),
+		publicCollectionsDisplayToggle: () => ({ type: this.types.PUBLIC_COLLECTIONS_DISPLAY_TOGGLE }),
 		setHeaderBorder: active => ({ type: this.types.SET_HEADER_BORDER, payload: { active }}),
 		setEditorStyle: active => ({ type: this.types.SET_EDITOR_STYLE, payload: { active }}),
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Rnd } from 'react-rnd'
-import { CloseBox, BeforeButton, AfterButton} from './styles'
+import { CloseBox, BeforeButton, AfterButton } from './styles'
 import closeIcon from 'assets/close_icon.svg'
 import arrowRight from 'assets/arrow-right.svg'
 import arrowLeft from 'assets/arrow-left.svg'

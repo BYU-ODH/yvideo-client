@@ -183,7 +183,7 @@ const SubtitlesLayer = props => {
 
 				id={`event-${index}`}
 				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `46px`}}
-				position={{ x: event.start / videoLength * layerWidth, y: 0}}
+				position={{ x: event.start / videoLength * layerWidth, y: 0 }}
 				enableResizing={Enable}
 				dragAxis='x'
 				bounds={`.layer-${layerIndex}`}
@@ -202,7 +202,7 @@ const SubtitlesLayer = props => {
 				resizeHandleStyles={handleStyles}
 				key={index}
 				onClick={() => toggleEditor(layerIndex, index)}
-				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important`}}
+				style={{ left: `${event.start}% !important`, top: `-${layerHeight}px !important` }}
 			>
 				{ event.type !== `Pause` ? (
 					<p>{event.text}</p>

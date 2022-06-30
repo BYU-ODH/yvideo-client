@@ -60,7 +60,7 @@ export default class AdminService {
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
-		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {}}),
+		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {} }),
 		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload: {content, collectionId}}),
 		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload: {content, collectionId}}),
 		adminAddUsers: (successResult, failResult) => ({type: this.types.ADMIN_POST_USERS, payload: {successResult, failResult}}),
@@ -697,7 +697,7 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		// Grab all the collections from the admin store
-		const collections = { ...getState().adminStore.professorCollections}
+		const collections = { ...getState().adminStore.professorCollections }
 		// Grab the current collection from the admin store
 		const professorId = { ...getState().adminStore.professor.id }
 		let currentCollection
@@ -750,7 +750,7 @@ export default class AdminService {
 				await this.searchCollections(professorId, true)
 				// The result will be the updated professorCollections
 				// This will be the paidload for the adminSeachCollections
-				const result = { ...getState().adminStore.professorCollections}
+				const result = { ...getState().adminStore.professorCollections }
 				dispatch(this.actions.adminSearchCollections(result))
 			} catch (error) {
 				dispatch(this.actions.adminError(error))

@@ -54,7 +54,7 @@ const SkipLayer = props => {
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `31px`}}
-				position={{ x: event.start / videoLength * layerWidth, y: 0}}
+				position={{ x: event.start / videoLength * layerWidth, y: 0 }}
 				key={index}
 				enableResizing={Enable}
 				disableDragging={true}
@@ -109,7 +109,7 @@ const SkipLayer = props => {
 					{
 						events !== undefined && events.length > 0 && videoLength !== 0 ? (
 							<>
-								{ events.map((event, index) => printEvents(event, index))}
+								{ events.map((event, index) => printEvents(event, index)) }
 							</>
 						) : null
 					}

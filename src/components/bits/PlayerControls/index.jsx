@@ -211,7 +211,7 @@ const PlayerControls = props => {
 				{ subtitleTextIndex !== null &&
 				<ClosedCaptions
 					isCaptions={isCaption}
-					onClick={ isAdmin || isProf ? handleChangeCaption : handleToggleSubtitles}
+					onClick={ isAdmin || isProf ? handleChangeCaption : handleToggleSubtitles }
 					onMouseEnter={e => handleShowTip(`closed-captions`,
 						{
 							x: e.target.getBoundingClientRect().x,
@@ -269,7 +269,7 @@ const PlayerControls = props => {
 								type='button'
 								value={element.title}
 								onClick={e => handleChangeSubtitle(index)}
-								className={ indexToDisplay === index && showTranscript === true && `active-value`}
+								className={ indexToDisplay === index && showTranscript === true && `active-value` }
 							/>,
 						)
 						}

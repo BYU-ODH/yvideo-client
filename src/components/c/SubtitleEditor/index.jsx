@@ -837,7 +837,7 @@ const SubtitleEditor = props => {
 								}
 								onMouseLeave={() => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>

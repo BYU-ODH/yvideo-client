@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import PlayerControls from '../../../../components/bits/PlayerControls'
 import { PlayPause, ClosedCaptions, Fullscreen, Speed, Book, Help } from '../../../../components/bits/PlayerControls/styles'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const props = {
 	handlers : {

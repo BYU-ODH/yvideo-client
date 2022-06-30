@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Admin from '../../../../components/c/Admin/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const viewstate = {
 	category: {

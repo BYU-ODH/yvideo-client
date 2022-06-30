@@ -152,7 +152,7 @@ const SubtitleEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Subtitle Editor`},
+			props: { name: `Subtitle Editor` },
 		})
 	}
 

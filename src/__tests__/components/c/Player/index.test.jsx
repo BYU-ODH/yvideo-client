@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Player from '../../../../components/c/Player/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 

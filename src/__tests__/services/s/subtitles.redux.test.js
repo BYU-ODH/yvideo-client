@@ -110,7 +110,7 @@ describe(`content service test`, () => {
 	it(`subtitlesCreate`, () => {
 		expect(store.getState().cache).toEqual([{sub1}])
 		const result = store.dispatch(subtitleServiceConstructor.actions.subtitlesCreate([{sub1}, {sub2}]))
-		expect(store.getState().cache).toEqual({ 0: {sub1}, 1: {sub2}})
+		expect(store.getState().cache).toEqual({ 0: {sub1}, 1: {sub2} })
 		expect(result.type).toBe(`SUBTITLES_CREATE`)
 	})
 

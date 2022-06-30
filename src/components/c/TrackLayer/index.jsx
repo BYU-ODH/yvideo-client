@@ -206,7 +206,7 @@ const TrackLayer = props => {
 						height: `${isMultiEvent ? 23 : 46}px`,
 					}
 				}
-				position={{ x: event.start / videoLength * layerWidth, y: 0}}
+				position={{ x: event.start / videoLength * layerWidth, y: 0 }}
 				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
@@ -246,7 +246,7 @@ const TrackLayer = props => {
 							{
 								events !== undefined && events.length > 0 && videoLength !== 0? (
 									<>
-										{ events.map((event, index) => printEvents(event, index, false))}
+										{ events.map((event, index) => printEvents(event, index, false)) }
 									</>
 								) : null
 							}

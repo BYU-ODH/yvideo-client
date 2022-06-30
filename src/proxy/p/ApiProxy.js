@@ -36,7 +36,7 @@ const apiProxy = {
 			public: {
 				collection: {
 					get: async (term) => {
-						const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/public-collection/${term}`, { withCredentials: true})
+						const result = await axios(`${process.env.REACT_APP_YVIDEO_SERVER}/api/admin/public-collection/${term}`, { withCredentials: true })
 
 						result.data.forEach(element => {
 							element[`name`] = element[`collection-name`]
@@ -208,7 +208,7 @@ const apiProxy = {
 		 * @param id The ID of the collection
 		 * @param action The action to perform, must be one of `archive`, `unarchive`, `publish`, `unpublish`
 		 */
-		edit: async (id, state) => axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}`, state, { withCredentials: true, headers: {'session-id': window.clj_session_id}})
+		edit: async (id, state) => axios.patch(`${process.env.REACT_APP_YVIDEO_SERVER}/api/collection/${id}`, state, { withCredentials: true, headers: {'session-id': window.clj_session_id} })
 			.then( async res => {
 				await updateSessionId(res.headers[`session-id`])
 				return res.data

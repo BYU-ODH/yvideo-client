@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import LabAssistant from '../../../../components/c/LabAssistant/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const viewstate = {
 	data: [

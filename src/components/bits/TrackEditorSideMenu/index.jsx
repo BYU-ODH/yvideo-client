@@ -233,7 +233,7 @@ const TrackEditorSideMenu = props => {
 										onMouseLeave={() => toggleTip()}
 									/>
 									{event.type === `Pause` ? (
-										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='sideTabInput' value={event.message}
+										<textarea style={{ margin: `5%`, width: `90%` }} rows='4' cols='50' className='sideTabInput' value={event.message}
 											placeholder = 'Enter message'
 											onChange={e => editPauseMessage(e)}/>
 									) : <></>
@@ -257,9 +257,9 @@ const TrackEditorSideMenu = props => {
 								<input type='number' className='sideTabInput' placeholder={event.position.x.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 1)}/>
 								<input type='number' className='sideTabInput' placeholder={event.position.y.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 2)}/>
 							</div>
-							<div className='center' style={{ flexDirection: `column`}}>
+							<div className='center' style={{ flexDirection: `column` }}>
 								<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
-								<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
+								<textarea style={{ margin: `5%`, width: `90%` }} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
 								<p><i>Save is only required when changing the X, Y, or comment values</i></p>
 								<button id='saveComment' onClick={handleSaveComment} className='sideButton'>Save Comment</button>
 							</div>

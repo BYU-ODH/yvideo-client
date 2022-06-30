@@ -21,7 +21,7 @@ class ListItemDropDown extends PureComponent {
 		} = this.state
 
 		// console.log(this.props.data)
-		const { id, name, thumbnail, translation, captions, annotations, clips} = this.props.data
+		const { id, name, thumbnail, translation, captions, annotations, clips } = this.props.data
 		const parsedClips = JSON.parse(clips)
 		return (
 			<Style>

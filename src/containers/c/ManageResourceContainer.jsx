@@ -76,7 +76,7 @@ const ManageResourceContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Manage Resource`},
+			props: { name: `Manage Resource` },
 		})
 	}
 

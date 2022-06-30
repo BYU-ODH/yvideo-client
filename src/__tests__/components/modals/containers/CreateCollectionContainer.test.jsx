@@ -29,6 +29,6 @@ describe(`CreateCollectionContainer test`, () => {
 		wrapper.find(`#create-collection-create`).at(0).simulate(`click`)
 
 		// TODO: need to check to see if the thunk is initiated
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 	})
 })

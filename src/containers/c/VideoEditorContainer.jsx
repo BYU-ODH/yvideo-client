@@ -109,7 +109,7 @@ const VideoEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Video Editor`},
+			props: { name: `Video Editor` },
 		})
 	}
 

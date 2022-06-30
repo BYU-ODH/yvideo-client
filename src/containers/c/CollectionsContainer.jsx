@@ -57,7 +57,7 @@ const CollectionsContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Home Page`},
+			props: { name: `Home Page` },
 		})
 		toggleTip()
 	}

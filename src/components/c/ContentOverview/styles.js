@@ -1,4 +1,4 @@
-import styled, { keyframes, css} from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { Link } from 'react-router-dom'
 import trashIcon from 'assets/trash_icon.svg'
 import translationsBlack from 'assets/translation_black.svg'

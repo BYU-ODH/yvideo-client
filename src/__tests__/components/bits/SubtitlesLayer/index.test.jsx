@@ -80,14 +80,14 @@ describe(`Subtitles Layer test`, () => {
 			wrapper.find(`Rnd`).at(0).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(0).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 
-			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `right`, ``, { width: 10}, ``)
+			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `left`, ``, { width: 5 }, ``)
 			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 
-			wrapper.find(`Rnd`).at(2).prop(`onResizeStop`)(``, `right`, ``, { width: 10}, ``)
+			wrapper.find(`Rnd`).at(2).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(2).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 
-			wrapper.find(`Rnd`).at(3).prop(`onResizeStop`)(``, `right`, ``, { width: 10}, ``)
+			wrapper.find(`Rnd`).at(3).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(3).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 		})
 	})

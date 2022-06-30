@@ -219,7 +219,7 @@ describe(`content service test`, () => {
 			return Promise.resolve(translate, language)
 		})
 		const json = await interfaceServiceConstructor.checkTranslation(translate, language)(dispatch, getState, { apiProxy })
-		expect(json).toEqual({ "json": `apple`, "success": true})
+		expect(json).toEqual({ "json": `apple`, "success": true })
 	})
 
 	it(`checkTranslation: can't find match language`, async() => {
@@ -230,7 +230,7 @@ describe(`content service test`, () => {
 			return Promise.resolve(translate, language)
 		})
 		const json = await interfaceServiceConstructor.checkTranslation(translate, language)(dispatch, getState, { apiProxy })
-		expect(json).toEqual({ "json": {}, "success": false})
+		expect(json).toEqual({ "json": {}, "success": false })
 	})
 
 	it(`sendNoAttachment`, async() => {

@@ -33,14 +33,14 @@ describe(`FileUploadContainer test`, () => {
 
 		// upload file
 		expect(wrapper.find(`FileUpload`).props().viewstate.selectedFile).toBe(undefined)
-		wrapper.find({id : `files-input`}).simulate(`change`, {target: { name: `file`, files: [`first file added`]}})
+		wrapper.find({id : `files-input`}).simulate(`change`, {target: { name: `file`, files: [`first file added`] }})
 		expect(wrapper.find(`FileUpload`).props().viewstate.selectedFile).toBe(`first file added`)
 
 		// select file version
 		wrapper.find(`#categorySelect`).at(0).simulate(`change`, {target: { value: `lang1` }})
 
 		// cannot find the way to parse FormData
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 
 		// select file version other
 		expect(wrapper.find(`FileUpload`).props().viewstate.isOther).toBe(false)
@@ -53,6 +53,6 @@ describe(`FileUploadContainer test`, () => {
 		expect(wrapper.find(`#type-language`).props().value).toBe(`customized lang`)
 
 		// cannot find the way to parse FormData
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 	})
 })

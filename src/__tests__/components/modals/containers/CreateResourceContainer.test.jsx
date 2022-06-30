@@ -34,12 +34,12 @@ describe(`CreateResourceContainer test`, () => {
 
 		// update title
 		expect(wrapper.find(`#create-resource-name`).props().value).toBe(``)
-		wrapper.find(`#create-resource-name`).simulate(`change`, {target: { name: `resourceName`, value: `changed resource name`}})
+		wrapper.find(`#create-resource-name`).simulate(`change`, {target: { name: `resourceName`, value: `changed resource name` }})
 		expect(wrapper.find(`#create-resource-name`).props().value).toBe(`changed resource name`)
 
 		// update requester email
 		expect(wrapper.find(`#create-resource-requester-email`).props().value).toBe(``)
-		wrapper.find(`#create-resource-requester-email`).simulate(`change`, {target: { name: `requesterEmail`, value: `chagned@email.com`}})
+		wrapper.find(`#create-resource-requester-email`).simulate(`change`, {target: { name: `requesterEmail`, value: `chagned@email.com` }})
 		expect(wrapper.find(`#create-resource-requester-email`).props().value).toBe(`chagned@email.com`)
 
 		// update resource type
@@ -59,6 +59,6 @@ describe(`CreateResourceContainer test`, () => {
 
 		wrapper.find(`#create-resource-cancel`).at(0).simulate(`click`)
 
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 	})
 })

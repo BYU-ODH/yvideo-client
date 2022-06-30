@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import VideoEditor from '../../../../components/c/VideoEditor'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 import { act } from 'react-dom/test-utils'
@@ -20,14 +20,14 @@ const viewstate = {
 			layer: 0,
 			start: 0,
 			type: `Skip`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 15.63888888888889,
 			halfLayer: 0,
 			icon: `/static/media/event_censor.2d09c134.svg`,
 			layer: 3,
-			position: { x: 50, y: 50},
+			position: { x: 50, y: 50 },
 			start: 5.638888888888889,
 			type: `Censor`,
 		},
@@ -87,7 +87,7 @@ describe(`VideoEditor testing`, () => {
 
 	const listenerMock = {offsetX: 100}
 	const boundingMock = {x: 100, y: 50, right: 10000}
-	const classMock = [{ clientWidth: 10, value: 10, style: {width: 10}}, { clientWidth: 10, value: 10, style: {width: 10}}]
+	const classMock = [{ clientWidth: 10, value: 10, style: {width: 10} }, { clientWidth: 10, value: 10, style: {width: 10} }]
 	const scrubberMock = { scrollLeft: 10, style: {color: `red`},
 		addEventListener: () => {
 			return listenerMock
@@ -214,7 +214,7 @@ describe(`VideoEditor testing`, () => {
 			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: 0}))
 			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: 10}))
 			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: -10}))
-			wrapper.find(`Rnd`).forEach(e =>e.prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` ))
+			wrapper.find(`Rnd`).forEach(e =>e.prop(`onResizeStop`)( { x: 318, y: 574 }, `right`, ``, {width: 144, height: 0} , `` ))
 
 			wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
 				{ target:
@@ -274,7 +274,7 @@ describe(`VideoEditor testing`, () => {
 				layer: 0,
 				start: 0,
 				type: `Skip`,
-				position: { x: 10, y: 50},
+				position: { x: 10, y: 50 },
 				halfLayer: true,
 			},
 		]

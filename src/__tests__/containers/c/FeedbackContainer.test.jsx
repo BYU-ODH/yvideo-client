@@ -27,7 +27,7 @@ describe(`manage collection test`, () => {
 		expect(button).toBeDefined()
 		button = wrapper.find(`textarea`).at(0).simulate(`change`, { target: { value: `text` } })
 		expect(button).toBeDefined()
-		button = wrapper.find(`input`).at(3).simulate(`change`, { target: { files: [{attachment: `path`}] } })
+		button = wrapper.find(`input`).at(3).simulate(`change`, { target: {files: [{attachment: `path`}]} })
 		expect(button).toBeDefined()
 		wrapper.find(`.test-mailing`).simulate(`submit`)
 	})

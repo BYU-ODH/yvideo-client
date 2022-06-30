@@ -92,16 +92,16 @@ const SubtitleEditorSideMenu = props => {
 								<textarea
 									className='subText'
 									type='text'
-									onClick={ () => changeSubIndex(ind)}
+									onClick={ () => changeSubIndex(ind) }
 									value={sub.text}
-									onChange={ (value) => editSub(null, null, value, subLayer, ind)} />
+									onChange={ (value) => editSub(null, null, value, subLayer, ind) } />
 								<div id={`${ind === index && `subStartEnd`}`} className={`subStartEnd`}>
 									<input
 										id={`subStart${ind}`}
 										className={`subStart sideTabInput`}
 										type='text'
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
-										onClick={ () => changeSubIndex(ind)}
+										onClick={ () => changeSubIndex(ind) }
 										onChange={e => editSub(`beg`, e.target.value, null, subLayer, ind, null)}
 										onBlur={e => editSub(`beg`, e.target.value, null, subLayer, ind, `onBlur`)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
@@ -146,7 +146,7 @@ const SubtitleEditorSideMenu = props => {
 									active={ind === index ? `subActive` : `nonActive`}
 								/>
 								:
-								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`)}
+								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
 									visibility={ subs[subLayer][`content`][ind + 1].start - subs[subLayer][`content`][ind].end !== 0 && disableSave === false ?
 										`visible`
 										:

@@ -64,7 +64,7 @@ const SearchPublicCollectionsContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: ``,
-			props: { name: `Home Page`},
+			props: { name: `Home Page` },
 		})
 		toggleTip()
 	}

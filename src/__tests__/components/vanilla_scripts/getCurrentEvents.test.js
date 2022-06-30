@@ -43,7 +43,7 @@ test(`should call CurrentEvents`, () => {
 			layer: 0,
 			start: 0,
 			type: `Skip`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 10,
@@ -51,7 +51,7 @@ test(`should call CurrentEvents`, () => {
 			layer: 0,
 			start: 0,
 			type: `Comment`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 	], 0)
 	expect(result).toBeDefined()
@@ -65,7 +65,7 @@ test(`should call CurrentEvents, without comment`, () => {
 			layer: 0,
 			start: 0,
 			type: `Skip`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 	], 0)
 	expect(result).toBeDefined()
@@ -103,7 +103,7 @@ test(`should call CurrentEvents, without commentChildren`, () => {
 			layer: 0,
 			start: 0,
 			type: `Skip`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 10,
@@ -111,7 +111,7 @@ test(`should call CurrentEvents, without commentChildren`, () => {
 			layer: 0,
 			start: 0,
 			type: `Comment`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 10,
@@ -119,7 +119,7 @@ test(`should call CurrentEvents, without commentChildren`, () => {
 			layer: 0,
 			start: 0,
 			type: `Censor`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 10,
@@ -127,7 +127,7 @@ test(`should call CurrentEvents, without commentChildren`, () => {
 			layer: 0,
 			start: 0,
 			type: `Blank`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 	], 0)
 	expect(result).toBeDefined()
@@ -138,5 +138,5 @@ test(`should call CensorChange`, () => {
 })
 
 test(`should call CommentChange`, () => {
-	CommentChange(0, { x: 10, y: 10})
+	CommentChange(0, { x: 10, y: 10 })
 })

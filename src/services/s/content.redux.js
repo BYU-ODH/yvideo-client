@@ -225,7 +225,7 @@ export default class ContentService {
 			const newContent = new Content(content) // POST https://yvideodev.byu.edu/api/content
 
 			// TODO: Why doesn't this update to state cause it to rerender?
-			dispatch(this.actions.contentCreate({ [id]: newContent}))
+			dispatch(this.actions.contentCreate({ [id]: newContent }))
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {

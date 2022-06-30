@@ -91,7 +91,7 @@ const ManagerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Manage Collections`},
+			props: { name: `Manage Collections` },
 		})
 	}
 
