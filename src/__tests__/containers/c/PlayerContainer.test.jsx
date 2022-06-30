@@ -69,12 +69,12 @@ jest.mock(`react-router-dom`, () => ({
 }))
 
 proxies.apiProxy.user.get = jest.fn()
-proxies.apiProxy.user.get.mockImplementation(()=>{
+proxies.apiProxy.user.get.mockImplementation(() => {
 	return Promise.resolve(testutil.user)
 })
 
 proxies.apiProxy.content.get = jest.fn()
-proxies.apiProxy.content.get.mockImplementation(()=>{
+proxies.apiProxy.content.get.mockImplementation(() => {
 	return Promise.resolve({0: content[0]})
 })
 

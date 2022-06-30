@@ -267,13 +267,13 @@ describe(`SubtitleEditorContainer testing`, () => {
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
-		wrapper.find(`Rnd`).forEach((comp)=>{
+		wrapper.find(`Rnd`).forEach((comp) => {
 			comp.simulate(`click`)
 		})
-		wrapper.find(`Rnd`).forEach((comp)=>{
+		wrapper.find(`Rnd`).forEach((comp) => {
 			comp.prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
 		})
-		wrapper.find(`Rnd`).forEach((comp)=>{
+		wrapper.find(`Rnd`).forEach((comp) => {
 			comp.prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
 		})
 		wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(

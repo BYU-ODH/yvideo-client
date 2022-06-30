@@ -18,7 +18,7 @@ describe(`CreateCollectionContainer test`, () => {
 		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
-	it(`should pass event handlers test`, async()=> {
+	it(`should pass event handlers test`, async() =>  {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>

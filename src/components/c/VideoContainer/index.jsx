@@ -432,7 +432,7 @@ const VideoContainer = props => {
 			})
 		}
 		const wrap = document.getElementById(`blankContainer`)
-		const wraplisten = new ResizeObserver((entry)=>{
+		const wraplisten = new ResizeObserver((entry) => {
 			video.handleAspectRatio()
 		})
 		if(wrap)
@@ -520,7 +520,7 @@ const VideoContainer = props => {
 
 				// handlers
 				onReady={video.handleReady}
-				onError={()=>{
+				onError={() => {
 					showError()
 				}}
 

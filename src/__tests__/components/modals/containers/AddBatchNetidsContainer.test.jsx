@@ -19,7 +19,7 @@ describe(`AddBatchNetidsContainer test`, () => {
 		).childAt(0).dive()
 	})
 
-	it(`should pass event handlers test`, async()=> {
+	it(`should pass event handlers test`, async () =>  {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>

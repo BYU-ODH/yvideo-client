@@ -155,7 +155,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`getSubtitles`, async() => {
-		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(() => {
 			return Promise.resolve(subtitle1)
 		})
 		expect(store.getState().cache).toEqual([{sub1}])
@@ -164,7 +164,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`getSubtitles: catch error`, async() => {
-		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.getSubtitles.mockImplementationOnce(() => {
 			return Promise.reject(error)
 		})
 		expect(store.getState().cache).toEqual([{sub1}])
@@ -173,7 +173,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`createSubtitle`, async() => {
-		proxies.apiProxy.subtitles.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.post.mockImplementationOnce(() => {
 			return Promise.resolve(subtitle)
 		})
 		expect(store.getState().cache).toEqual([{sub1}])
@@ -181,7 +181,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateSubtitle: content === string`, async() => {
-		proxies.apiProxy.subtitles.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.edit.mockImplementationOnce(() => {
 			return Promise.resolve(updateSubtitle)
 		})
 		expect(store.getState().cache).toEqual([{sub1}])
@@ -189,7 +189,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateSubtitle: content !== string`, async() => {
-		proxies.apiProxy.subtitles.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.edit.mockImplementationOnce(() => {
 			return Promise.resolve(updateSubtitle1)
 		})
 		expect(store.getState().cache).toEqual([{sub1}])
@@ -198,7 +198,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateSubtitle: catch error`, async() => {
-		proxies.apiProxy.subtitles.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.edit.mockImplementationOnce(() => {
 			return Promise.reject(error)
 		})
 		expect(store.getState().loading).toEqual(false)
@@ -221,11 +221,11 @@ describe(`content service test`, () => {
 	})
 
 	it(`deleteSubtitle`, async() => {
-		proxies.apiProxy.subtitles.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.post.mockImplementationOnce(() => {
 			return Promise.resolve(subtitle1)
 		})
 
-		proxies.apiProxy.subtitles.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.delete.mockImplementationOnce(() => {
 			return Promise.resolve(subtitle1)
 		})
 
@@ -235,11 +235,11 @@ describe(`content service test`, () => {
 	})
 
 	it(`deleteSubtitle: catch error`, async() => {
-		proxies.apiProxy.subtitles.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.post.mockImplementationOnce(() => {
 			return Promise.resolve(subtitle1)
 		})
 
-		proxies.apiProxy.subtitles.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.subtitles.delete.mockImplementationOnce(() => {
 			return Promise.reject(error)
 		})
 

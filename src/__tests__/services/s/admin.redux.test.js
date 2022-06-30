@@ -211,7 +211,7 @@ describe(`content service test`, () => {
 	// TODO: need to figure out how to check actions to be called
 	it(`search`, async() => {
 		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults)
 		})
 
@@ -234,7 +234,7 @@ describe(`content service test`, () => {
 	it(`search: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 		await adminServiceConstructor.search(`user`, `testusername`, true)(dispatch, getState, { apiProxy })
@@ -243,7 +243,7 @@ describe(`content service test`, () => {
 
 	it(`searchPublicCollection`, async() => {
 		proxies.apiProxy.admin.search.public.collection.get = jest.fn()
-		proxies.apiProxy.admin.search.public.collection.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.public.collection.get.mockImplementationOnce(() => {
 			return Promise.resolve([collection])
 		})
 		const result = {}
@@ -265,7 +265,7 @@ describe(`content service test`, () => {
 	it(`searchPublicCollection: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.search.public.collection.get = jest.fn()
-		proxies.apiProxy.admin.search.public.collection.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.public.collection.get.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 		await adminServiceConstructor.searchPublicCollection(`testusername`, true)(dispatch, getState, { apiProxy })
@@ -276,7 +276,7 @@ describe(`content service test`, () => {
 	it(`searchProfessors`, async() => {
 
 		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults)
 		})
 
@@ -290,7 +290,7 @@ describe(`content service test`, () => {
 	it(`searchProfessors: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 		await adminServiceConstructor.searchProfessors(`testusername`, true)(dispatch, getState, { apiProxy })
@@ -300,7 +300,7 @@ describe(`content service test`, () => {
 	it(`setProfessor`, async() => {
 
 		proxies.apiProxy.admin.user.get = jest.fn()
-		proxies.apiProxy.admin.user.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.user.get.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults[0])
 		})
 
@@ -312,7 +312,7 @@ describe(`content service test`, () => {
 	it(`setProfessor: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.user.get = jest.fn()
-		proxies.apiProxy.admin.user.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.user.get.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 		await adminServiceConstructor.setProfessor(22, true)(dispatch, getState, { apiProxy })
@@ -322,7 +322,7 @@ describe(`content service test`, () => {
 	it(`getCollectionContent`, async() => {
 
 		proxies.apiProxy.admin.collection.content.get = jest.fn()
-		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(() => {
 			return Promise.resolve({content})
 		})
 
@@ -336,7 +336,7 @@ describe(`content service test`, () => {
 	it(`getCollectionContent: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.collection.content.get = jest.fn()
-		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
@@ -345,7 +345,7 @@ describe(`content service test`, () => {
 
 	it(`createContent`, async() => {
 		proxies.apiProxy.content.post = jest.fn()
-		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.post.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 			})
@@ -356,7 +356,7 @@ describe(`content service test`, () => {
 	it(`createContent: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.content.post = jest.fn()
-		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.post.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 		await adminServiceConstructor.createContent(`content`)(dispatch, getState, { apiProxy })
@@ -366,7 +366,7 @@ describe(`content service test`, () => {
 	it(`createContentFromResource`, async() => {
 
 		proxies.apiProxy.admin.collection.content.createFromResource = jest.fn()
-		proxies.apiProxy.admin.collection.content.createFromResource.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.content.createFromResource.mockImplementationOnce(() => {
 			return Promise.resolve({
 				data: testutil.content[0],
 			})
@@ -378,7 +378,7 @@ describe(`content service test`, () => {
 	it(`createContentFromResource: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.collection.content.createFromResource = jest.fn()
-		proxies.apiProxy.admin.collection.content.createFromResource.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.content.createFromResource.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 
@@ -388,7 +388,7 @@ describe(`content service test`, () => {
 
 	it(`searchCollections`, async() => {
 		proxies.apiProxy.admin.collection.get = jest.fn()
-		proxies.apiProxy.admin.collection.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.get.mockImplementationOnce(() => {
 			return Promise.resolve({data: searchResults})
 		})
 
@@ -404,7 +404,7 @@ describe(`content service test`, () => {
 	it(`searchCollections: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.collection.get = jest.fn()
-		proxies.apiProxy.admin.collection.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.get.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 
@@ -415,7 +415,7 @@ describe(`content service test`, () => {
 	it(`updateCollectionStatus`, async() => {
 
 		proxies.apiProxy.collection.edit = jest.fn()
-		proxies.apiProxy.collection.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.edit.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 			})
@@ -444,7 +444,7 @@ describe(`content service test`, () => {
 	it(`updateCollectionStatus: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.edit = jest.fn()
-		proxies.apiProxy.collection.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.edit.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 
@@ -456,7 +456,7 @@ describe(`content service test`, () => {
 	it(`deleteCollection`, async() => {
 
 		proxies.apiProxy.admin.collection.delete = jest.fn()
-		proxies.apiProxy.admin.collection.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.delete.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults[0])
 		})
 
@@ -466,7 +466,7 @@ describe(`content service test`, () => {
 	it(`deleteCollection: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.admin.collection.delete = jest.fn()
-		proxies.apiProxy.admin.collection.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.delete.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 
@@ -478,7 +478,7 @@ describe(`content service test`, () => {
 
 		// get content
 		proxies.apiProxy.admin.collection.content.get = jest.fn()
-		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(() => {
 			return Promise.resolve({content})
 		})
 
@@ -487,7 +487,7 @@ describe(`content service test`, () => {
 		expect(store.getState().profCollectionContent).toEqual({content})
 		// delete content not as an admin
 		proxies.apiProxy.admin.content.delete = jest.fn()
-		proxies.apiProxy.admin.content.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.content.delete.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults[0])
 		})
 
@@ -504,13 +504,13 @@ describe(`content service test`, () => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		// get content
 		proxies.apiProxy.admin.collection.content.get = jest.fn()
-		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.collection.content.get.mockImplementationOnce(() => {
 			return Promise.resolve({content})
 		})
 
 		await adminServiceConstructor.getCollectionContent(0, true)(dispatch, getState, { apiProxy })
 		proxies.apiProxy.admin.content.delete = jest.fn()
-		proxies.apiProxy.admin.content.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.content.delete.mockImplementationOnce(() => {
 			return Promise.reject(`error`)
 		})
 
@@ -520,7 +520,7 @@ describe(`content service test`, () => {
 
 	it(`deleteUser`, async() => {
 		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults)
 		})
 

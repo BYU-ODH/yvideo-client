@@ -89,7 +89,7 @@ const VideoEditorContainer = props => {
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				if (resourceIdStream !== ``){
-					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{ // eslint-disable-line no-unused-vars
+					const files = Promise.resolve(getFiles(resourceIdStream)).then((value) => { // eslint-disable-line no-unused-vars
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
 							if (file[`aspect-ratio`])

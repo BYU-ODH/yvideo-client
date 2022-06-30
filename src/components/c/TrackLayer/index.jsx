@@ -57,7 +57,7 @@ const TrackLayer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
-	useLayoutEffect(()=>{
+	useLayoutEffect(() => {
 
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)

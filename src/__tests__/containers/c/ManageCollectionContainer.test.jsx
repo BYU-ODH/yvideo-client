@@ -281,7 +281,7 @@ describe(`manage collection container test`, () => {
 
 		// first content
 		proxies.apiProxy.content.post = jest.fn()
-		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.post.mockImplementationOnce(() => {
 			return Promise.resolve({
 				data: content1,
 			})
@@ -289,7 +289,7 @@ describe(`manage collection container test`, () => {
 		await contentServiceConstructor.createContent(newcontent, 0)(dispatch, getState, { apiProxy })
 
 		// second content
-		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.post.mockImplementationOnce(() => {
 			return Promise.resolve({
 				data: content2,
 			})
@@ -297,7 +297,7 @@ describe(`manage collection container test`, () => {
 		await contentServiceConstructor.createContent(newcontent, 0)(dispatch, getState, { apiProxy })
 
 		// third content
-		proxies.apiProxy.content.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.content.post.mockImplementationOnce(() => {
 			return Promise.resolve({
 				data: content3,
 			})

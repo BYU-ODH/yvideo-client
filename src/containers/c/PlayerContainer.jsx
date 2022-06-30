@@ -146,7 +146,7 @@ const PlayerContainer = props => {
 				}
 				if (resourceIdStream !== ``){
 					// eslint-disable-next-line no-unused-vars
-					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
+					const files = Promise.resolve(getFiles(resourceIdStream)).then((value) => {
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
 							if (file[`aspect-ratio`])
@@ -164,7 +164,7 @@ const PlayerContainer = props => {
 
 			}
 			const wrap = document.getElementById(`player-container`)
-			const wraplisten = new ResizeObserver(()=>{
+			const wraplisten = new ResizeObserver(() => {
 
 				handleAspectRatio()
 			})

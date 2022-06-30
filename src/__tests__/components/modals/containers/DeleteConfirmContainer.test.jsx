@@ -32,7 +32,7 @@ describe(`ManageFilesContainer test`, () => {
 		expect(viewstate.resources).toEqual(testutil.resourcesNew)
 	})
 
-	it(`should pass event handlers test with resource`, async()=> {
+	it(`should pass event handlers test with resource`, async () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>
@@ -45,7 +45,7 @@ describe(`ManageFilesContainer test`, () => {
 		wrapper.find(`#confirm-delete`).at(0).simulate(`click`)
 	})
 
-	it(`should pass event handlers test with Users`, async()=> {
+	it(`should pass event handlers test with Users`, async () => {
 		props.type = `Users`
 		const wrapper = mount(
 			<Provider store={testutil.store}>

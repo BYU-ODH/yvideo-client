@@ -29,7 +29,7 @@ const searchResults = [
 		email: `test@test.com`,
 		id: 0,
 		"last-login": `2020-05-29T20:45:58.551Z`,
-		"account-name": `testname`,
+		"account-name":`testname`,
 		"account-type": [`admin`],
 		username: `searchResults testusername`,
 	},
@@ -94,7 +94,7 @@ describe(`admin container mount`, () => {
 				lastFetchedProfContent: 0,
 				lastFetchedProfessors: 0,
 				lastFetchedCollections: 0,
-				adminStore: {
+				adminStore:{
 					data: [],
 					cache: {},
 					professors: [],
@@ -131,7 +131,7 @@ describe(`admin container mount`, () => {
 		)
 
 		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults)
 		})
 

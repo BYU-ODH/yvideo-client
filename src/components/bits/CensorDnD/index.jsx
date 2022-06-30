@@ -45,7 +45,7 @@ const CensorDnD = props => {
 
 		return(<div style={{width: `100%`, height: `100%`, position: `absolute`}}>
 			{ previous !== `-Infinity`&& previous !== undefined &&
-				<BeforeButton onClick={()=>handleChange(previous)}>
+				<BeforeButton onClick={() => handleChange(previous)}>
 					<img src={arrowLeft} alt='previous' />
 				</BeforeButton>
 			}
@@ -77,7 +77,7 @@ const CensorDnD = props => {
 			</CloseBox>
 
 			{ next !== undefined && next !== `Infinity` &&
-				<AfterButton onClick={()=>handleChange(parseInt(next))}>
+				<AfterButton onClick={() => handleChange(parseInt(next))}>
 					<img src={arrowRight} alt='next' />
 				</AfterButton>
 			}

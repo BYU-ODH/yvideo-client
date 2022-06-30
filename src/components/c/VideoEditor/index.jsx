@@ -354,7 +354,7 @@ const VideoEditor = props => {
 				`${parseInt(Object.keys(pos).sort((a, b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
 				: `0`
 			let exists = false
-			Object.keys(pos).forEach((val)=>{
+			Object.keys(pos).forEach((val) => {
 				if (pos[val][0].toString() === parseFloat(time).toFixed(1).toString()) exists = true
 			})
 			if(exists) return
@@ -412,7 +412,7 @@ const VideoEditor = props => {
 				: `0`
 
 			let exists = false
-			Object.keys(pos).forEach((val)=>{
+			Object.keys(pos).forEach((val) => {
 				if (pos[val][0].toString() === time.toFixed(1).toString()) exists = true
 			})
 			if(exists){

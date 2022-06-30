@@ -27,12 +27,12 @@ const props = {
 global.MutationObserver = MutationObserver
 
 proxies.apiProxy.admin.search.get = jest.fn()
-proxies.apiProxy.admin.search.get.mockImplementation(()=>{
+proxies.apiProxy.admin.search.get.mockImplementation(() => {
 	return Promise.resolve(`search`)
 })
 
 proxies.apiProxy.content.post = jest.fn()
-proxies.apiProxy.content.post.mockImplementation(()=>{
+proxies.apiProxy.content.post.mockImplementation(() => {
 	return Promise.resolve(content)
 })
 

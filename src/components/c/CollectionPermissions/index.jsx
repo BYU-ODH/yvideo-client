@@ -159,8 +159,8 @@ export class CollectionPermissions extends PureComponent {
 							<Table border='1'>
 								<thead>
 									<tr>
-										<th>Username<Sort onClick={()=>sort(userTA, `Username`)}></Sort></th>
-										<th>Name<Sort onClick={()=>sort(userTA, `Name`)}></Sort></th>
+										<th>Username<Sort onClick={() => sort(userTA, `Username`)}></Sort></th>
+										<th>Name<Sort onClick={() => sort(userTA, `Name`)}></Sort></th>
 										<th>type</th>
 										<th>Last Login</th>
 										<th>Remove</th>
@@ -205,8 +205,8 @@ export class CollectionPermissions extends PureComponent {
 							<Table border='1'>
 								<thead>
 									<tr>
-										<th>Username<Sort onClick={()=>sort(users, `Username`)}></Sort></th>
-										<th>Name<Sort onClick={()=>sort(users, `Name`)}></Sort></th>
+										<th>Username<Sort onClick={() => sort(users, `Username`)}></Sort></th>
+										<th>Name<Sort onClick={() => sort(users, `Name`)}></Sort></th>
 										<th>type</th>
 										<th>Last Login</th>
 										<th>Remove</th>

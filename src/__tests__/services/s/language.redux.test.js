@@ -90,7 +90,7 @@ describe(`language service test`, () => {
 	it(`post`, async() => {
 
 		proxies.apiProxy.language.post = jest.fn()
-		proxies.apiProxy.language.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.language.post.mockImplementationOnce(() => {
 			return Promise.resolve(lang1)
 		})
 
@@ -103,12 +103,12 @@ describe(`language service test`, () => {
 	it(`delete`, async() => {
 
 		proxies.apiProxy.language.post = jest.fn()
-		proxies.apiProxy.language.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.language.post.mockImplementationOnce(() => {
 			return Promise.resolve(lang1)
 		})
 
 		proxies.apiProxy.language.delete = jest.fn()
-		proxies.apiProxy.language.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.language.delete.mockImplementationOnce(() => {
 			return Promise.resolve(lang1)
 		})
 
@@ -121,7 +121,7 @@ describe(`language service test`, () => {
 	it(`get`, async() => {
 
 		proxies.apiProxy.language.get = jest.fn()
-		proxies.apiProxy.language.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.language.get.mockImplementationOnce(() => {
 			return Promise.resolve(lang1)
 		})
 

@@ -102,7 +102,7 @@ const SubtitleEditorContainer = props => {
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				// eslint-disable-next-line no-unused-vars
-				const files = Promise.resolve(getFiles(sKey)).then((value)=>{
+				const files = Promise.resolve(getFiles(sKey)).then((value) => {
 					if (value){
 						const file = value.find(element => element[`file-version`].includes(content[id].settings.targetLanguage) !== false)
 						if (file[`aspect-ratio`])

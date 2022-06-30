@@ -132,7 +132,7 @@ const ClipLayer = props => {
 
 								handleDrag(d)
 							}}
-							onClick = {()=>handleEditClip(clipName, index)}
+							onClick = {() => handleEditClip(clipName, index)}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
 							key={`clip-${clipName}`}
 							style={style}
