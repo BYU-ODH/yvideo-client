@@ -31,7 +31,7 @@ export default class InterfaceService {
 		menuToggle: () => ({ type: this.types.MENU_TOGGLE }),
 		menuOpen: () => ({type: this.types.MENU_OPEN}),
 		menuClose: () => ({type: this.types.MENU_CLOSE}),
-		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute:false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
+		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute: false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
 		tipToggle: (payload) => ({ type: this.types.TIP_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
 		publicCollectionsDisplayToggle: () => ({ type: this.types.PUBLIC_COLLECTIONS_DISPLAY_TOGGLE}),

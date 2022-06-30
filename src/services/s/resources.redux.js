@@ -13,7 +13,7 @@ export default class ResourceService {
 		RESOURCE_ADD: `RESOURCE_ADD`,
 		RESOURCE_FILES: `RESOURCE_FILES`,
 		RESOURCE_FILE_DELETE: `RESOURCE_FILE_DELETE`, // eslint-disable-line no-unused-vars
-		RESOURCE_SEARCH:`RESOURCE_SEARCH`,
+		RESOURCE_SEARCH: `RESOURCE_SEARCH`,
 		RESOURCE_EDIT: `RESOURCE_EDIT`,
 		RESOURCE_DELETE: `RESOURCE_DELETE`,
 		RESOURCE_STREAM: `RESOURCE_STREAM`,
@@ -151,7 +151,7 @@ export default class ResourceService {
 					...store.cache,
 					[action.payload.resourceId]: {
 						...store.cache[action.payload.resourceId],
-						files:action.payload.files,
+						files: action.payload.files,
 					},
 				},
 				loading: false,
@@ -207,7 +207,7 @@ export default class ResourceService {
 		case RESOURCE_REMOVE_ACCESS:
 			return {
 				...store,
-				access:{
+				access: {
 					...store.access,
 					[action.payload.resourceId]: action.payload.access,
 				},

@@ -32,7 +32,7 @@ const props = {
 		progress: {
 			played: `played`,
 		},
-		playing:true,
+		playing: true,
 		isCaption: true,
 		isAdmin: true,
 		isProf: true,

@@ -38,7 +38,7 @@ const ManagerContainer = props => {
 	const [isOpen, setOpen] = useState(true)
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
 
 		setHeaderBorder(true)
 

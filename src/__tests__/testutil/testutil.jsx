@@ -8,26 +8,26 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 export const settings = {
-	allowDefinitions:false,
-	showAnnotations:false,
-	showCaptions:false,
-	showTranscripts:false,
-	showWordList:false,
-	aspectRatio:`1.77`,
-	description:``,
+	allowDefinitions: false,
+	showAnnotations: false,
+	showCaptions: false,
+	showTranscripts: false,
+	showWordList: false,
+	aspectRatio: `1.77`,
+	description: ``,
 	targetLanguage: `English`,
 	annotationDocument: [],
 	captionTrack: [],
 }
 
 export const changedSettings = {
-	allowDefinitions:true,
-	showAnnotations:true,
-	showCaptions:true,
-	showTranscripts:true,
-	showWordList:true,
-	aspectRatio:`1.77`,
-	description:`changed`,
+	allowDefinitions: true,
+	showAnnotations: true,
+	showCaptions: true,
+	showTranscripts: true,
+	showWordList: true,
+	aspectRatio: `1.77`,
+	description: `changed`,
 	targetLanguage: `english`,
 	annotationDocument: [],
 	captionTrack: [],
@@ -91,29 +91,29 @@ export const resource = {
 	description: `description`,
 	keywords: [``],
 	languages: {
-		iso639_3:[],
+		iso639_3: [],
 	},
 	files: [file1],
 	type: `video`,
 	dateAdded: `1591672795`,
-	dateModified:`1591672795`,
-	status:`normal`,
+	dateModified: `1591672795`,
+	status: `normal`,
 	clientUser: {
 		id: `user:22`,
 	},
-	client:{
+	client: {
 		id: `byu_demo`,
 		name: `BYU Demos`,
 	},
-	content:{
-		files:[
+	content: {
+		files: [
 			{
-				streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
-				bytes:0,
-				representation:`original`,
-				quality:1,
-				mime:`video/x-youtube`,
-				mimeType:`video/x-youtube`,
+				streamUri: `https://www.youtube.com/watch?v=H_431Dxt-4c`,
+				bytes: 0,
+				representation: `original`,
+				quality: 1,
+				mime: `video/x-youtube`,
+				mimeType: `video/x-youtube`,
 				attributes: [],
 			},
 		],
@@ -126,29 +126,29 @@ export const resource2 = {
 	description: `description`,
 	keywords: [``],
 	languages: {
-		iso639_3:[],
+		iso639_3: [],
 	},
 	files: [file2],
 	type: `video`,
 	dateAdded: `1591672795`,
-	dateModified:`1591672795`,
-	status:`normal`,
+	dateModified: `1591672795`,
+	status: `normal`,
 	clientUser: {
 		id: `user:22`,
 	},
-	client:{
+	client: {
 		id: `byu_demo`,
 		name: `BYU Demos`,
 	},
-	content:{
-		files:[
+	content: {
+		files: [
 			{
-				streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
-				bytes:0,
-				representation:`original`,
-				quality:1,
-				mime:`video/x-youtube`,
-				mimeType:`video/x-youtube`,
+				streamUri: `https://www.youtube.com/watch?v=H_431Dxt-4c`,
+				bytes: 0,
+				representation: `original`,
+				quality: 1,
+				mime: `video/x-youtube`,
+				mimeType: `video/x-youtube`,
 				attributes: [],
 			},
 		],
@@ -160,18 +160,18 @@ export const content = [
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
 		collectionId: 85,
 		contentType: `video`,
-		dateValidated:``,
+		dateValidated: ``,
 		description: `test`,
-		expired:true,
+		expired: true,
 		fullVideo: true,
 		id: 0,
-		isCopyrighted:false,
+		isCopyrighted: false,
 		copyrighted: false,
 		name: `testname`,
-		physicalCopyExists:false,
-		published:true,
-		requester:``,
-		resourceId:`5ebdaef833e57cec218b457c`,
+		physicalCopyExists: false,
+		published: true,
+		requester: ``,
+		resourceId: `5ebdaef833e57cec218b457c`,
 		settings,
 		thumbnail: `test@thumbnail.com`,
 		url: `test url`,
@@ -186,18 +186,18 @@ export const content = [
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
 		collectionId: 85,
 		contentType: `video2`,
-		dateValidated:``,
+		dateValidated: ``,
 		description: `test2`,
-		expired:true,
+		expired: true,
 		fullVideo: true,
 		id: 1,
-		isCopyrighted:false,
+		isCopyrighted: false,
 		copyrighted: false,
 		name: `testname2`,
-		physicalCopyExists:false,
-		published:true,
-		requester:``,
-		resourceId:`5ebdaef833e57cec218b457c`,
+		physicalCopyExists: false,
+		published: true,
+		requester: ``,
+		resourceId: `5ebdaef833e57cec218b457c`,
 		settings,
 		thumbnail: `test@thumbnail.com`,
 		url: `test url2`,
@@ -216,23 +216,23 @@ export const contentBeforeModel = [
 		views: 0,
 		"collection-id": `collectionsid1`,
 		url: `test url`,
-		"content-type":`video`,
-		"resource-id":`5ebdaef833e57cec218b457c`,
+		"content-type": `video`,
+		"resource-id": `5ebdaef833e57cec218b457c`,
 		thumbnail: `test@thumbnail.com`,
 		description: `test`,
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
-		dateValidated:``,
-		expired:true,
+		dateValidated: ``,
+		expired: true,
 		fullVideo: true,
-		isCopyrighted:false,
+		isCopyrighted: false,
 		copyrighted: false,
 		"title": `testname`,
-		physicalCopyExists:false,
-		published:true,
-		requester:``,
+		physicalCopyExists: false,
+		published: true,
+		requester: ``,
 		tags: ``,
-		"allow-definitions":true,
-		"allow-captions":true,
+		"allow-definitions": true,
+		"allow-captions": true,
 		"allow-notes": true,
 		"file-version": [],
 		"annotations": ``,
@@ -243,23 +243,23 @@ export const contentBeforeModel = [
 		views: 0,
 		"collection-id": `collectionsid2`,
 		url: `test ur2l`,
-		"content-type":`video2`,
-		"resource-id":`5ebdaef833e57cec218b457c`,
+		"content-type": `video2`,
+		"resource-id": `5ebdaef833e57cec218b457c`,
 		thumbnail: `test@thumbnail.com2`,
 		description: `test2`,
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
-		dateValidated:``,
-		expired:true,
+		dateValidated: ``,
+		expired: true,
 		fullVideo: true,
-		isCopyrighted:false,
+		isCopyrighted: false,
 		copyrighted: false,
 		name: `testname2`,
-		physicalCopyExists:false,
-		published:true,
-		requester:``,
+		physicalCopyExists: false,
+		published: true,
+		requester: ``,
 		tags: ``,
-		"allow-definitions":true,
-		"allow-captions":true,
+		"allow-definitions": true,
+		"allow-captions": true,
 		"allow-notes": true,
 		"file-version": [],
 		"annotations": ``,
@@ -362,12 +362,12 @@ export const collection8 = {
 }
 
 export const collections = {
-	0:collection1,
-	1:collection2,
+	0: collection1,
+	1: collection2,
 }
 
 export const collections1 = {
-	0:collection1,
+	0: collection1,
 }
 collections1.content = content
 
@@ -406,28 +406,28 @@ export const resources = [
 		description: `description`,
 		keywords: [],
 		languages: {
-			iso639_3:[],
+			iso639_3: [],
 		},
 		type: `video`,
 		dateAdded: `1591672795`,
-		dateModified:`1591672795`,
-		status:`normal`,
+		dateModified: `1591672795`,
+		status: `normal`,
 		clientUser: {
 			id: `user:22`,
 		},
-		client:{
+		client: {
 			id: `byu_demo`,
 			name: `BYU Demos`,
 		},
-		content:{
-			files:[
+		content: {
+			files: [
 				{
-					streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
-					bytes:0,
-					representation:`original`,
-					quality:1,
-					mime:`video/x-youtube`,
-					mimeType:`video/x-youtube`,
+					streamUri: `https://www.youtube.com/watch?v=H_431Dxt-4c`,
+					bytes: 0,
+					representation: `original`,
+					quality: 1,
+					mime: `video/x-youtube`,
+					mimeType: `video/x-youtube`,
 					attributes: [],
 				},
 			],
@@ -473,28 +473,28 @@ export const resources2 = [
 		description: `description2`,
 		keywords: [],
 		languages: {
-			iso639_3:[],
+			iso639_3: [],
 		},
 		type: `video`,
 		dateAdded: `1591672795`,
-		dateModified:`1591672795`,
-		status:`normal`,
+		dateModified: `1591672795`,
+		status: `normal`,
 		clientUser: {
 			id: `user:22`,
 		},
-		client:{
+		client: {
 			id: `byu_demo`,
 			name: `BYU Demos`,
 		},
-		content:{
-			files:[
+		content: {
+			files: [
 				{
-					streamUri:`https://www.youtube.com/watch?v=H_431Dxt-4c`,
-					bytes:0,
-					representation:`original`,
-					quality:1,
-					mime:`video/x-youtube`,
-					mimeType:`video/x-youtube`,
+					streamUri: `https://www.youtube.com/watch?v=H_431Dxt-4c`,
+					bytes: 0,
+					representation: `original`,
+					quality: 1,
+					mime: `video/x-youtube`,
+					mimeType: `video/x-youtube`,
 					attributes: [],
 				},
 			],
@@ -503,44 +503,44 @@ export const resources2 = [
 ]
 
 export const roles = {
-	0:{
+	0: {
 		courses: [
 			{
 				catalogNumber: 122,
 				department: `ACC`,
 				id: `course id`,
-				sectionNumber:12,
+				sectionNumber: 12,
 			},
 		],
-		admins:[
+		admins: [
 			{
-				id:22,
+				id: 22,
 				username: `testusername`,
-				name:`testname`,
-				email:`test@test.com`,
-				linked:-1,
+				name: `testname`,
+				email: `test@test.com`,
+				linked: -1,
 				roles: 0,
-				lastLogin:`2020-05-29T20:45:58.551Z`,
-				exceptions:[
+				lastLogin: `2020-05-29T20:45:58.551Z`,
+				exceptions: [
 					{
-						email:`test@test.com`,
-						id:22,
-						lastLogin:`2020-05-29T20:45:58.551Z`,
-						name:`testname`,
-						linked:-1,
+						email: `test@test.com`,
+						id: 22,
+						lastLogin: `2020-05-29T20:45:58.551Z`,
+						name: `testname`,
+						linked: -1,
 						roles: 0,
 						username: `testusername`,
 					},
 				],
 			},
 		],
-		exceptions:[
+		exceptions: [
 			{
-				email:`test@test.com`,
-				id:22,
-				lastLogin:`2020-05-29T20:45:58.551Z`,
-				name:`testname`,
-				linked:-1,
+				email: `test@test.com`,
+				id: 22,
+				lastLogin: `2020-05-29T20:45:58.551Z`,
+				name: `testname`,
+				linked: -1,
 				roles: 0,
 				username: `testusername`,
 			},
@@ -649,16 +649,16 @@ export const emptyStore = mockStore(
 			courses: [],
 			newCollectionId: `b3a29aff-235e-4261-9b08-7b32023afc9e`,
 		},
-		contentStore:{
+		contentStore: {
 			cache: [],
 		},
-		fileStore:{
+		fileStore: {
 			cache: {},
 		},
-		languageStore:{
+		languageStore: {
 			cache: {},
 		},
-		subtitlesStore:{
+		subtitlesStore: {
 			cache: [],
 		},
 	},
@@ -668,7 +668,7 @@ export const emptyStore = mockStore(
 export const store = mockStore(
 	{
 		resourceStore: {
-			cache:{
+			cache: {
 				"0": {
 					allFileVersions: `English;Spanish;Korean;`,
 					copyrighted: true,
@@ -732,8 +732,8 @@ export const store = mockStore(
 				professor2,
 			],
 			professorCollections: collections,
-			profCollectionContent:{
-				190:content[0],
+			profCollectionContent: {
+				190: content[0],
 			},
 			professor: professor1,
 			morePublicCollections: {
@@ -802,7 +802,7 @@ export const store = mockStore(
 			courses: [],
 			newCollectionId: `b3a29aff-235e-4261-9b08-7b32023afc9e`,
 		},
-		contentStore:{
+		contentStore: {
 			cache: {
 				"0": {
 					authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -828,19 +828,19 @@ export const store = mockStore(
 				},
 			},
 		},
-		fileStore:{
+		fileStore: {
 			cache: {},
 			loading: false,
 			lastFetched: 0,
 		},
-		languageStore:{
+		languageStore: {
 			cache: {
-				langs:[`test version`, `lang1`, `lang2`, `lang3`, `other`],
+				langs: [`test version`, `lang1`, `lang2`, `lang3`, `other`],
 			},
 			loading: false,
 			lastFetched: 0,
 		},
-		subtitlesStore:{
+		subtitlesStore: {
 			cache: [
 				{
 					content: [
@@ -900,7 +900,7 @@ export const store2 = mockStore(
 			users: [],
 			courses: [],
 		},
-		contentStore:{
+		contentStore: {
 			cache: {
 				"0": {
 					authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -925,13 +925,13 @@ export const store2 = mockStore(
 				},
 			},
 		},
-		fileStore:{
+		fileStore: {
 			cache: {},
 		},
-		languageStore:{
+		languageStore: {
 			cache: {},
 		},
-		subtitlesStore:{
+		subtitlesStore: {
 			cache: [
 				{
 					words: ``,

@@ -22,8 +22,8 @@ describe(`language service test`, () => {
 		store = createStore(
 			languageServiceConstructor.reducer,
 			{
-				cache:{},
-				languageStore:{
+				cache: {},
+				languageStore: {
 					cache: {
 					},
 				},

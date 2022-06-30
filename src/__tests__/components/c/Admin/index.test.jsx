@@ -4,8 +4,8 @@ import Admin from '../../../../components/c/Admin/index'
 import { BrowserRouter} from 'react-router-dom'
 
 const viewstate = {
-	category:{
-		Collections:{
+	category: {
+		Collections: {
 			name: `Collections`,
 			placeholder: `Search for a collection`,
 			url: `collection`,

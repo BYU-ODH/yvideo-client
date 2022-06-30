@@ -192,9 +192,10 @@ const TrackEditorSideMenu = props => {
 							<>
 								<div className='center'>
 									<label>Start</label>
-									{event.type === `Pause` ? (
+									{event.type === `Pause` ?
 										<label>Message: </label>
-									):<label>End</label>
+										:
+										<label>End</label>
 									}
 								</div>
 								<div className='center'>

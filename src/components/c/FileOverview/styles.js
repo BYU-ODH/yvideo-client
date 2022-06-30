@@ -14,7 +14,7 @@ export const BoxRow = styled.div`
 
 	& > div {
 		display: grid;
-		padding-top:1rem;
+		padding-top: 1rem;
 		padding-bottom: 1rem;
 		padding-right: 1rem;
 	}
@@ -116,7 +116,7 @@ export const CategorySelect = styled.select`
 	border-radius: 2rem;
 
 	padding: 0 1.25rem;
-	text-align-last:center;
+	text-align-last: center;
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);

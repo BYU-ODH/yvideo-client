@@ -61,32 +61,32 @@ export class CollectionPermissions extends PureComponent {
 		const sort = (data, sortType) => {
 			if (this.state.sortType.reverse === false){
 				this.setState({
-					sortType:{
+					sortType: {
 						reverse: true,
 					},
 				})
 				data.sort((a, b) => {
 					switch (sortType) {
 					case `Username`:
-						return b.username.localeCompare(a.username, {sensitivity:`base`})
+						return b.username.localeCompare(a.username, {sensitivity: `base`})
 					case `Name`:
-						return b[`account-name`].localeCompare(a[`account-name`], {sensitivity:`base`})
+						return b[`account-name`].localeCompare(a[`account-name`], {sensitivity: `base`})
 					default:
 						return ``
 					}
 				})
 			}else{
 				this.setState({
-					sortType:{
+					sortType: {
 						reverse: false,
 					},
 				})
 				data.sort((a, b) => {
 					switch (sortType) {
 					case `Username`:
-						return a.username.localeCompare(b.username, {sensitivity:`base`})
+						return a.username.localeCompare(b.username, {sensitivity: `base`})
 					case `Name`:
-						return a[`account-name`].localeCompare(b[`account-name`], {sensitivity:`base`})
+						return a[`account-name`].localeCompare(b[`account-name`], {sensitivity: `base`})
 					default:
 						return ``
 					}

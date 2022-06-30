@@ -7,7 +7,7 @@ const Style = styled.div`
 	& .allSubs {
 		margin-top: 1rem;
 		padding-top: 2rem;
-		scroll-behavior:smooth;
+		scroll-behavior: smooth;
 	}
 
 	& .closeEditor {

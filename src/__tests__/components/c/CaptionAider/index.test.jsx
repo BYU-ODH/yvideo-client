@@ -7,7 +7,7 @@ const ref = React.createRef()
 const mockref = ref
 
 const viewstate = {
-	target:mockref,
+	target: mockref,
 }
 
 describe(`CaptionAider test`, () => {

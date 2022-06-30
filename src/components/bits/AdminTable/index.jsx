@@ -241,7 +241,7 @@ export default class AdminTable extends PureComponent {
 		const isReverse = (sortType) =>{
 			if (this.state.sortType.id === sortType && this.state.sortType.reverse === false){
 				this.setState({
-					sortType:{
+					sortType: {
 						id: sortType,
 						reverse: true,
 					},
@@ -249,7 +249,7 @@ export default class AdminTable extends PureComponent {
 				return true
 			} else {
 				this.setState({
-					sortType:{
+					sortType: {
 						id: sortType,
 						reverse: false,
 					},
@@ -264,30 +264,30 @@ export default class AdminTable extends PureComponent {
 				case `Name`:
 					return (
 						isReverse(sortType) ?
-							a.name.localeCompare(b.name, {sensitivity:`base`})
+							a.name.localeCompare(b.name, {sensitivity: `base`})
 							:
-							b.name.localeCompare(a.name, {sensitivity:`base`})
+							b.name.localeCompare(a.name, {sensitivity: `base`})
 					)
 				case `NetID`:
 					return (
 						isReverse(sortType) ?
-							a.username.localeCompare(b.username, {sensitivity:`base`})
+							a.username.localeCompare(b.username, {sensitivity: `base`})
 							:
-							b.username.localeCompare(a.username, {sensitivity:`base`})
+							b.username.localeCompare(a.username, {sensitivity: `base`})
 					)
 				case `Email`:
 					return (
 						isReverse(sortType) ?
-							a.email.localeCompare(b.email, {sensitivity:`base`})
+							a.email.localeCompare(b.email, {sensitivity: `base`})
 							:
-							b.email.localeCompare(a.email, {sensitivity:`base`})
+							b.email.localeCompare(a.email, {sensitivity: `base`})
 					)
 				case `Owner`:
 					return (
 						isReverse(sortType) ?
-							a.owner.localeCompare(b.owner, {sensitivity:`base`})
+							a.owner.localeCompare(b.owner, {sensitivity: `base`})
 							:
-							b.owner.localeCompare(a.owner, {sensitivity:`base`})
+							b.owner.localeCompare(a.owner, {sensitivity: `base`})
 					)
 				case `Roles`:
 					return isReverse(sortType) ? a.roles - b.roles : b.roles - a.roles

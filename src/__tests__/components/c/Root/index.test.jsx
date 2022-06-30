@@ -17,7 +17,7 @@ const viewstate = {
 		active: false,
 		collectionId: -1,
 		components: null,
-		isLabAssistantRoute:false,
+		isLabAssistantRoute: false,
 	},
 }
 // routeProps.children.props.children.props.

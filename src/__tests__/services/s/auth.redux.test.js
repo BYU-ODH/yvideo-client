@@ -26,7 +26,7 @@ describe(`content service test`, () => {
 				loading: true,
 				message: ``,
 				tried: false,
-				authStore:{
+				authStore: {
 					user: null,
 					loading: true,
 					message: ``,

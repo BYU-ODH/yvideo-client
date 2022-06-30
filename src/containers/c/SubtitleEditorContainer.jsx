@@ -72,13 +72,13 @@ const SubtitleEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
+			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
 			if(content[id].url.includes(`youtube`)){
 				const fetchData = async() => {
-					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`, {method:`GET`})
+					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`, {method: `GET`})
 					const data = await rawData.json()
 					if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
 						setAspectRatio([data.width, data.height])

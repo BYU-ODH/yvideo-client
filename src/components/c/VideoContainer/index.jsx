@@ -252,7 +252,7 @@ const VideoContainer = props => {
 			updateEvents(eventToEdit, event, event[`layer`])
 			video.handleProgress({
 				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
-				playedSeconds:parseFloat(event.position[activeCensorPosition][0]) + 0.001,
+				playedSeconds: parseFloat(event.position[activeCensorPosition][0]) + 0.001,
 			})
 		},
 		handleUpdateCensorResize: (delta, pos) => {
@@ -460,7 +460,7 @@ const VideoContainer = props => {
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
-			<div id='blankContainer' style={{width:`70%`, height: `100%`, position:`absolute`}}>
+			<div id='blankContainer' style={{width: `70%`, height: `100%`, position: `absolute`}}>
 				<Blank
 					className='blank'
 					id='blank'
@@ -471,18 +471,18 @@ const VideoContainer = props => {
 					}
 					}
 					ref={videoRef}
-					// style={{cursor:events?events[eventToEdit].type === `Censor`?`crosshair`:`auto`:`auto`}}
+					// style={{cursor: events ? events[eventToEdit].type === `Censor`?`crosshair` : `auto` : `auto`}}
 				>
 
 					{subtitleText !== `` &&
 						<Subtitles type={editorType}>{subtitleText}</Subtitles>
 					}
-					<div id='censorContainer' style={{width:`100%`, height:`100%`, position:`absolute`}}>
+					<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
 					</div>
-					<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`}}>
+					<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
 					</div>
 					<PauseMessage id='pauseMessage'>
-						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
+						<button type='button' style={{width: `90px`, height: `50px`, position: `bottom right`}}>Close</button>
 					</PauseMessage>
 					{activeCensorPosition !== -1 &&
 						<CensorDnD

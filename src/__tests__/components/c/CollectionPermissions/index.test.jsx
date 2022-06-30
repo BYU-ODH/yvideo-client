@@ -14,7 +14,7 @@ const viewstate = {
 			username: `test`,
 		},
 	],
-	course:[
+	course: [
 		{
 			catalog: `100`,
 			department: `ENG`,
@@ -53,7 +53,7 @@ const viewstate = {
 			[`username`]: `asd`,
 		},
 	],
-	courses:[
+	courses: [
 		{
 			[`catalog-number`]: `100`,
 			department: `ENG`,

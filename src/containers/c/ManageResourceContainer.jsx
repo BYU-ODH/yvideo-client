@@ -29,7 +29,7 @@ const ManageResourceContainer = props => {
 	const [isSearched, setIsSearched] = useState(false)
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Manage Resource`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Manage Resource`], collectionId: ``, contentId: ``})
 
 		// find default setup for the access
 		if(Object.keys(resources).length !== resourceCount){

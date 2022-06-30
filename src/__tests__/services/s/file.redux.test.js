@@ -23,8 +23,8 @@ describe(`file service test`, () => {
 			fileServiceConstructor.reducer,
 			{
 				data: {},
-				cache:{},
-				fileStore:{
+				cache: {},
+				fileStore: {
 					data: {},
 					cache: {},
 				},

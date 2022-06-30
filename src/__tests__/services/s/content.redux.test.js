@@ -16,13 +16,13 @@ const newcontent = {
 	contentType: `newcontent`,
 	collectionId: 85,
 	thumbnail: `test@thumbnail.com`,
-	physicalCopyExists:false,
-	isCopyrighted:false,
-	expired:true,
-	dateValidated:``,
-	requester:``,
-	resourceId:`5ebdaef833e57cec218b457c`,
-	published:true,
+	physicalCopyExists: false,
+	isCopyrighted: false,
+	expired: true,
+	dateValidated: ``,
+	requester: ``,
+	resourceId: `5ebdaef833e57cec218b457c`,
+	published: true,
 	settings,
 	resource,
 	fullVideo: true,
@@ -59,11 +59,11 @@ describe(`content service test`, () => {
 		store = createStore(
 			contentServiceConstructor.reducer,
 			{
-				cache:{
+				cache: {
 					"contentid2": new Content(contentBeforeModel2),
 				},
-				contentStore:{
-					cache:{
+				contentStore: {
+					cache: {
 						"contentid2": new Content(contentBeforeModel2),
 					},
 				},

@@ -721,7 +721,7 @@ const SubtitleEditor = props => {
 										onClick={ () => {
 											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
 										}}>
-										<p id={`editIcon`} style={{ fontWeight:400, color: `white`, fontSize: `14px`, display: `flex` }}>Add Subtitle Track <PlusIcon /></p>
+										<p id={`editIcon`} style={{ fontWeight: 400, color: `white`, fontSize: `14px`, display: `flex` }}>Add Subtitle Track <PlusIcon /></p>
 									</div>
 								</div>
 							</div>
@@ -844,7 +844,7 @@ const SubtitleEditor = props => {
 								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
-										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={
 											{
 												top: false,

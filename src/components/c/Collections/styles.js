@@ -65,7 +65,7 @@ const Style = styled.div`
 				border-radius: 6px;
 				text-align: center;
 				cursor: pointer;
-				font-weight:5000;
+				font-weight: 5000;
 				padding: 8px 5px;
 
 				:hover {

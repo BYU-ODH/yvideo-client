@@ -38,9 +38,9 @@ export const Style = styled.div`
 			color: var(--light-blue);
 			font-size: 1rem;
 			position: absolute;
-			top:0px;
-			height:100%;
-			display:inherit;
+			top: 0px;
+			height: 100%;
+			display: inherit;
 					-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -50,8 +50,8 @@ export const Style = styled.div`
 			& .tickbar{
 				width: 1px;
 				background-color: var(--light-blue);
-				height:100%;
-				margin:0;
+				height: 100%;
+				margin: 0;
 			}
 			&.time{
 				top: 5px;

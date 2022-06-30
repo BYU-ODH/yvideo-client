@@ -76,7 +76,7 @@ const SubtitleEditorSideMenu = props => {
 				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
 
-			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY:`scroll`, height:`68vh`}}>
+			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY: `scroll`, height: `68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={()=>addSub(subLayer, 0, `top`)}
 					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length === 0 && disableSave === false ? `visible`: `hidden`}
 				/>

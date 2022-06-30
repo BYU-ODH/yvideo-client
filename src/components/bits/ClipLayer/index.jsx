@@ -18,22 +18,22 @@ const ClipLayer = props => {
 	const style = active !== clipName ?
 		{
 			top: `0px`,
-			backgroundColor:`#fff`,
-			border:`1px solid #0582ca`,
-			color:`#000`, fontSize:`1.3rem`,
-			justifyContent:`center`,
-			alignItems:`center`,
+			backgroundColor: `#fff`,
+			border: `1px solid #0582ca`,
+			color: `#000`, fontSize: `1.3rem`,
+			justifyContent: `center`,
+			alignItems: `center`,
 		}
 		:
 		{
 			left: `${start}% !important`,
 			top: `0px`,
-			backgroundColor:`#002e5d`,
-			border:`1px solid #0582ca`,
-			color:`#fff`,
-			fontSize:`1.3rem`,
-			justifyContent:`center`,
-			alignItems:`center`,
+			backgroundColor: `#002e5d`,
+			border: `1px solid #0582ca`,
+			color: `#fff`,
+			fontSize: `1.3rem`,
+			justifyContent: `center`,
+			alignItems: `center`,
 		}
 
 	if(shouldUpdate)
@@ -57,7 +57,16 @@ const ClipLayer = props => {
 	}
 
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
-	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
+	const Enable = {
+		top: false,
+		right: true,
+		bottom: false,
+		left: true,
+		topRight: false,
+		bottomRight: false,
+		bottomLeft: false,
+		topLeft: false,
+	}
 
 	// Drag within the layer
 	const handleDrag = (d) => {

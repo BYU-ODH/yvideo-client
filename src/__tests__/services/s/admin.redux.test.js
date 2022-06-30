@@ -12,11 +12,11 @@ const collection = testutil.collection
 
 const searchResults = [
 	{
-		email:`test@test.com`,
-		id:22,
-		"last-login":`2020-05-29T20:45:58.551Z`,
-		"account-name":`testname`,
-		linked:-1,
+		email: `test@test.com`,
+		id: 22,
+		"last-login": `2020-05-29T20:45:58.551Z`,
+		"account-name": `testname`,
+		linked: -1,
 		"account-type": [`admin`],
 		username: `testusername`,
 		published: false,
@@ -52,7 +52,7 @@ describe(`content service test`, () => {
 				lastFetchedProfContent: 0,
 				lastFetchedProfessors: 0,
 				lastFetchedCollections: 0,
-				adminStore:{
+				adminStore: {
 					data: [searchResults[0]],
 					cache: {},
 					professors: [],

@@ -192,7 +192,7 @@ const ContentOverviewContainer = props => {
 	const handleShowWordsModal = () => {
 		toggleModal({
 			component: HighlightWordsContainer,
-			props:{ contentId: content.id},
+			props: { contentId: content.id},
 		})
 	}
 

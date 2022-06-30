@@ -20,7 +20,7 @@ const FeedbackContainer = props => {
 	})
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Feedback`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Feedback`], collectionId: ``, contentId: ``})
 	})
 
 	const handleCaptchaChange = () => {

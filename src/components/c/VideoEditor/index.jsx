@@ -665,7 +665,18 @@ const VideoEditor = props => {
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
-								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								enableResizing={
+									{
+										top: false,
+										right: false,
+										bottom: false,
+										left: false,
+										topRight: false,
+										bottomRight: false,
+										bottomLeft: false,
+										topLeft: false
+									}
+								}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
@@ -685,8 +696,19 @@ const VideoEditor = props => {
 								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
-										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
-										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										enableResizing={
+											{
+												top: false,
+												right: false,
+												bottom: false,
+												left: false,
+												topRight: false,
+												bottomRight: false,
+												bottomLeft: false,
+												topLeft: false
+											}
+										}
 										bounds = {`parent`}
 										onDrag = {(e, d)=>{
 											handleScrollFactor(d.x)
@@ -721,7 +743,7 @@ const VideoEditor = props => {
 							})
 						}
 						onMouseLeave={() => toggleTip()}
-						style={{marginLeft:10, marginTop:15}}
+						style={{marginLeft: 10, marginTop: 15}}
 					/>
 					<div className={`save`}>
 						{disableSave ?

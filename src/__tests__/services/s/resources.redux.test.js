@@ -40,7 +40,7 @@ describe(`content service test`, () => {
 				cache: {},
 				loading: false,
 				lastFetched: 0,
-				resourceStore:{
+				resourceStore: {
 					cache: {
 						"resourceId2" : resource2,
 						loading: false,
@@ -194,7 +194,7 @@ describe(`content service test`, () => {
 							resources: {
 								resources,
 							},
-							relations:[
+							relations: [
 								{
 									type: `resourceId`,
 								},

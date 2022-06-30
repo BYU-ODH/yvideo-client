@@ -80,7 +80,7 @@ export default class FileUpload extends PureComponent {
 									<span><>{progress}%</></span>
 								</Progress>
 							</label>
-						):(
+						) : (
 							<label htmlFor='empty'>
 								<div></div>
 							</label>
@@ -100,7 +100,7 @@ export default class FileUpload extends PureComponent {
 						<>
 							{progress === 0 ? (
 								<Button type='submit' color={`#0582CA`}>Upload</Button>
-							):(
+							) : (
 								<Button disabled type='submit' color={`#A0A0A0`}>Uploading...</Button>
 							)
 							}

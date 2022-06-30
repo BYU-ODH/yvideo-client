@@ -136,7 +136,7 @@ export const MenuIcon = styled.div`
 	border-radius: 3px;
 	margin-top: 1.5rem;
 	margin-left: 2.5rem;
-	text-align:center;
+	text-align: center;
 	line-height: 2.5rem;
 	background-color: gray;
 	color: white;

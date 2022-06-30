@@ -115,7 +115,7 @@ const PlayerContainer = props => {
 				setUrl(contentCache[params.id].url)
 				if(contentCache[params.id].url.includes(`youtube`)){
 					const fetchData = async() => {
-						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`, {method:`GET`})
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
 							setAspectRatio([data.width, data.height])

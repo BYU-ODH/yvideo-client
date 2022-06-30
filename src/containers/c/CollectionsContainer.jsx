@@ -36,7 +36,7 @@ const CollectionsContainer = props => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`], collectionId: ``, contentId: ``})
 
 		toggleTip()
 		getCollections()
@@ -57,7 +57,7 @@ const CollectionsContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props:{ name: `Home Page`},
+			props: { name: `Home Page`},
 		})
 		toggleTip()
 	}
@@ -82,7 +82,7 @@ const CollectionsContainer = props => {
 		if(searchQuery !== ``){
 			navigate({
 				pathname: `/search-public-collections`,
-				state:{
+				state: {
 					searchQuery,
 				},
 			})

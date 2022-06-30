@@ -60,13 +60,13 @@ const VideoEditorContainer = props => {
 			setContent(contentCache[id])
 			setEventsArray(contentCache[id].settings.annotationDocument)
 			setEvents(contentCache[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
+			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Video Editor`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
 
 			if(contentCache[id].url !== ``){
 				setUrl(contentCache[id].url)
 				if(contentCache[id].url.includes(`youtube`)){
 					const fetchData = async() => {
-						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`, {method:`GET`})
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
 							setAspectRatio([data.width, data.height])

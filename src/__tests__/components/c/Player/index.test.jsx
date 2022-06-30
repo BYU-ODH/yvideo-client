@@ -19,7 +19,7 @@ const viewstate = {
 	videoComment: `videoComment`,
 	commentPosition: {
 		x: 10,
-		y:10,
+		y: 10,
 	},
 	duration: 10,
 	showTranscript: true,
@@ -38,7 +38,7 @@ const viewstate = {
 			},
 		],
 	},
-	clipTime: [`1:20`, `2:29`],
+	clipTime: [`1: 20`, `2:29`],
 }
 
 const handlers = {

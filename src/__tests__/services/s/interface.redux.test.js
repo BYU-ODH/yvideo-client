@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import proxies, { browserStorage } from 'proxy'
 import CreateContentContainer from '../../../components/modals/containers/CreateContentContainer'
 
-const modal = { component: CreateContentContainer, collectionId: 0, isLabAssistantRoute:false }
+const modal = { component: CreateContentContainer, collectionId: 0, isLabAssistantRoute: false }
 
 describe(`content service test`, () => {
 
@@ -40,7 +40,7 @@ describe(`content service test`, () => {
 				events: [],
 				error: ``,
 				jsonResponse: undefined,
-				interfaceStore:{
+				interfaceStore: {
 					menuActive: false,
 					modal: {
 						active: false,

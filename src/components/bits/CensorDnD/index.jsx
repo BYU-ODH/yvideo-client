@@ -43,7 +43,7 @@ const CensorDnD = props => {
 		// const prevKey = censorValues.find(val => val[0] === previous)
 		// const nextKey = censorValues.find(val => val[0] === next)
 
-		return(<div style={{width:`100%`, height:`100%`, position:`absolute`}}>
+		return(<div style={{width: `100%`, height: `100%`, position: `absolute`}}>
 			{ previous !== `-Infinity`&& previous !== undefined &&
 				<BeforeButton onClick={()=>handleChange(previous)}>
 					<img src={arrowLeft} alt='previous' />
@@ -67,8 +67,8 @@ const CensorDnD = props => {
 				onResizeStop={(e, d, ref, delta, position) => handleUpdateCensorResize(delta, position)}
 				style={
 					{
-						border:`3px solid rgba(5, 130, 202, 0.7)`,
-						backgroundColor:`rgba(5, 130, 202, 0.4)`,
+						border: `3px solid rgba(5, 130, 202, 0.7)`,
+						backgroundColor: `rgba(5, 130, 202, 0.4)`,
 					}}
 			>
 			</Rnd>

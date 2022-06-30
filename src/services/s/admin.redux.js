@@ -61,10 +61,10 @@ export default class AdminService {
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
 		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {}}),
-		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
-		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
-		adminAddUsers: (successResult, failResult) => ({type: this.types.ADMIN_POST_USERS, payload:{successResult, failResult}}),
-		adminEmptyUsersResult: () => ({type: this.types.ADMIN_EMPTY_USERS_RESULT, payload:{}}),
+		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload: {content, collectionId}}),
+		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload: {content, collectionId}}),
+		adminAddUsers: (successResult, failResult) => ({type: this.types.ADMIN_POST_USERS, payload: {successResult, failResult}}),
+		adminEmptyUsersResult: () => ({type: this.types.ADMIN_EMPTY_USERS_RESULT, payload: {}}),
 	}
 
 	// default store
@@ -72,7 +72,7 @@ export default class AdminService {
 	store = {
 		data: null,
 		cache: {},
-		searchedUser:{}, // store user here from get by id
+		searchedUser: {}, // store user here from get by id
 		addedUsers: {},
 		professors: [],
 		professor: {},
@@ -223,7 +223,7 @@ export default class AdminService {
 		case ADMIN_GET_PUBLIC_COLLECTION_CONTENT:
 			return{
 				...store,
-				publicCollections:{
+				publicCollections: {
 					...store.publicCollections,
 					[action.payload.collectionId]: {
 						...store.publicCollections[action.payload.collectionId],
@@ -235,7 +235,7 @@ export default class AdminService {
 		case ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT:
 			return{
 				...store,
-				morePublicCollections:{
+				morePublicCollections: {
 					...store.morePublicCollections,
 					[action.payload.collectionId]: {
 						...store.morePublicCollections[action.payload.collectionId],

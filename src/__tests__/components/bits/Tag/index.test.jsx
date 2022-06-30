@@ -8,7 +8,7 @@ const props = {
 	title: `resource title`,
 	description: `description`,
 	keywords: [`test`],
-	words:[`wordTest`],
+	words: [`wordTest`],
 	languages: { iso639_3: [] },
 	files: [
 		{

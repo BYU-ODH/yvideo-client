@@ -107,7 +107,7 @@ export default class SubtitlesService {
 		case SUBTITLES_UPDATE:
 			return {
 				...store,
-				cache:action.payload.subtitles,
+				cache: action.payload.subtitles,
 				errorMessage: ``,
 				loading: false,
 			}

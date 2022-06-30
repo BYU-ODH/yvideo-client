@@ -371,7 +371,7 @@ const ClipEditor = props => {
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
 
-						<div className={`layer`} style={{paddingBottom:`40px`}}>
+						<div className={`layer`} style={{paddingBottom: `40px`}}>
 							<div>
 								{layers.map((layer, index) => (
 									<div className={`flex`} key={index}>
@@ -394,11 +394,11 @@ const ClipEditor = props => {
 										<div
 											className={`handle`}
 											style={active === clip ?
-												{backgroundColor:`#002e5d`, color:`#fff`}
+												{backgroundColor: `#002e5d`, color: `#fff`}
 												:
-												{backgroundColor:`#fff`, color:`#000`}}
+												{backgroundColor: `#fff`, color: `#000`}}
 										>
-											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
+											<p style={{color: `inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
 										<ClipLayer
 											clipName = {clip}
@@ -429,7 +429,18 @@ const ClipEditor = props => {
 								<Rnd
 									className={`zoom-indicator`}
 									bounds={`parent`}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+									enableResizing={
+										{
+											top: false,
+											right: false,
+											bottom: false,
+											left: false,
+											topRight: false,
+											bottomRight: false,
+											bottomLeft: false,
+											topLeft: false
+										}
+									}
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
 									onMouseEnter={e => handleShowTip(`te-zoom`,
