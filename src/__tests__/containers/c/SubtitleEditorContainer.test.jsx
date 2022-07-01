@@ -113,7 +113,7 @@ describe(`SubtitleEditorContainer testing`, () => {
 		},
 		getBoundingClientRect: () => {
 			return boundingMock
-		}
+		},
 	}
 	document.getElementById = jest.fn((tag) => {
 		return scrubberMock

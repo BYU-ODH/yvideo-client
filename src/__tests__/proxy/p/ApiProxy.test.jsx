@@ -72,7 +72,7 @@ describe(`ApiProxy test`, () => {
 		await expect(proxies.apiProxy.admin.collection.create(`collectionName`, `collectionOwner`)).resolves.toEqual(expected)
 		expect(axios.post).toBeCalledWith(
 			`//api.yvideobeta.byu.edu/collection/create`,
-			`{"name":"collectionName", "ownerId":"collectionOwner"}`,
+			`{"name":"collectionName","ownerId":"collectionOwner"}`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
 			})

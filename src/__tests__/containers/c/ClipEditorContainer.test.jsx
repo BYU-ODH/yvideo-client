@@ -52,7 +52,7 @@ describe(`Simulate Event`, () => {
 		wrapper.find(`input`).at(0).simulate(`click`)
 		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		expect(wrapper.find(`input`).at(0).props().value).toBe(``)
-		expect(wrapper.find(`input`).at(1).props().value).toBe(`00: 00.00`)
+		expect(wrapper.find(`input`).at(1).props().value).toBe(`00:00.00`)
 		expect(wrapper.find(`input`).at(2).props().value).toBe(`01:00.00`)
 		wrapper.find(`input`).at(0).simulate(`change`, { target: { value: `Updated text` } })
 		expect(wrapper.find(`input`).at(0).props().value).toBe(`Updated text`)
