@@ -66,7 +66,7 @@ describe(`content service test`, () => {
 	proxies.apiProxy.media.getKey = jest.fn()
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = resourcesServiceConstructor.types
 
 		expect(types.RESOURCE_START).toBe(`RESOURCE_START`)

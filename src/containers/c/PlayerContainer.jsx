@@ -395,7 +395,7 @@ const PlayerContainer = props => {
 		setToggleTranscript(!toggleTranscript)
 	}
 
-	const handleAspectRatio = ()=>{
+	const handleAspectRatio = () => {
 		const cont = document.getElementById(`player-container`)
 		if(!cont)
 			return

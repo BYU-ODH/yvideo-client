@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 describe(`MorePublicCollectionsContainer test`, () => {
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 		const props = {
 			toggleModal: jest.fn(),
 			ownerName: `test owner`,
@@ -23,7 +23,7 @@ describe(`MorePublicCollectionsContainer test`, () => {
 		wrapper.find(Button).simulate(`click`)
 		wrapper.find(Wrapper).prop(`onSubmit`)()
 	})
-	it(`ownerName is null`, ()=> {
+	it(`ownerName is null`, () => {
 		const props = {
 			toggleModal: jest.fn(),
 			publicCollections: {

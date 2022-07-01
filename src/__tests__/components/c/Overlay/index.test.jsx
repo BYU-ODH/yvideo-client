@@ -4,7 +4,7 @@ import Overlay from '../../../../components/c/Overlay/index'
 import { BrowserRouter } from 'react-router-dom'
 
 describe(`Overlay test`, () => {
-	it(`wrapper simulate click`, ()=> {
+	it(`wrapper simulate click`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<Overlay />

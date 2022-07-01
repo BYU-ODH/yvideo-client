@@ -102,7 +102,7 @@ describe(`VideoEditor testing`, () => {
 		return classMock
 	})
 
-	it(`Layer 0: Skip`, ()=> {
+	it(`Layer 0: Skip`, () => {
 
 		wrapper.find(`.plusIcon`).at(0).simulate(`click`)
 		act(() => {
@@ -156,7 +156,7 @@ describe(`VideoEditor testing`, () => {
 		)
 	})
 
-	it(`Layer 3: Censor`, async ()=> {
+	it(`Layer 3: Censor`, async () => {
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		})
@@ -177,7 +177,7 @@ describe(`VideoEditor testing`, () => {
 		// wrapper.find(`.closeEditor`).simulate(`click`)
 	})
 
-	it(`Rnd`, ()=> {
+	it(`Rnd`, () => {
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		})
@@ -208,13 +208,13 @@ describe(`VideoEditor testing`, () => {
 		})
 	})
 
-	it(`zoom-indicator`, ()=> {
+	it(`zoom-indicator`, () => {
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
-			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: 0}))
-			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: 10}))
-			wrapper.find(`Rnd`).forEach(e =>e.prop(`onDragStop`)(``, {x: -10}))
-			wrapper.find(`Rnd`).forEach(e =>e.prop(`onResizeStop`)( { x: 318, y: 574 }, `right`, ``, {width: 144, height: 0} , `` ))
+			wrapper.find(`Rnd`).forEach(e => e.prop(`onDragStop`)(``, {x: 0}))
+			wrapper.find(`Rnd`).forEach(e => e.prop(`onDragStop`)(``, {x: 10}))
+			wrapper.find(`Rnd`).forEach(e => e.prop(`onDragStop`)(``, {x: -10}))
+			wrapper.find(`Rnd`).forEach(e => e.prop(`onResizeStop`)( { x: 318, y: 574 }, `right`, ``, {width: 144, height: 0} , `` ))
 
 			wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
 				{ target:
@@ -228,7 +228,7 @@ describe(`VideoEditor testing`, () => {
 		})
 	})
 
-	it(`empty eventsArray`, async ()=> {
+	it(`empty eventsArray`, async () => {
 		props.viewstate.eventsArray = []
 		wrapper = mount(
 			<Provider store={testutil.store}>
@@ -243,7 +243,7 @@ describe(`VideoEditor testing`, () => {
 		})
 
 		act(() => {
-			wrapper.find(`Rnd`).forEach(e=>e.prop(`onDragStop`)(``, {x: 10}))
+			wrapper.find(`Rnd`).forEach(e => e.prop(`onDragStop`)(``, {x: 10}))
 			jest.advanceTimersByTime(100)
 		})
 		// await wrapper.find(`.handleSaveAnnotation`).simulate(`click`)
@@ -259,7 +259,7 @@ describe(`VideoEditor testing`, () => {
 		// await wrapper.find(`.deleteEventButton`).simulate(`click`)
 	})
 
-	it(`halfLayer eventsArray`, async ()=> {
+	it(`halfLayer eventsArray`, async () => {
 		window.ResizeObserver =
 	window.ResizeObserver ||
 	jest.fn().mockImplementation(() => ({

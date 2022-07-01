@@ -10,7 +10,7 @@ const props = {
 }
 
 describe(`CreateCollectionContainer test`, () => {
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()

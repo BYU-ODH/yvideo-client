@@ -95,7 +95,7 @@ const props = {
 }
 
 describe(`manage collection test`, () => {
-	it(`ContentOverviewContainer should be connected`, ()=> {
+	it(`ContentOverviewContainer should be connected`, () => {
 
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
@@ -105,7 +105,7 @@ describe(`manage collection test`, () => {
 		// expect(wrapper.find(`Connect(ContentOverviewContainer)`).length).toBe(1)
 	})
 
-	it(`CollectionPermissionsContainer should be connected`, ()=> {
+	it(`CollectionPermissionsContainer should be connected`, () => {
 		props.viewstate.isContentTab = false
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
@@ -115,7 +115,7 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find(`Connect(CollectionPermissionsContainer)`).length).toBe(1)
 	})
 
-	it(`test viewstate`, ()=> {
+	it(`test viewstate`, () => {
 		props.viewstate.isContentTab = true
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -137,7 +137,7 @@ describe(`manage collection test`, () => {
 		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 
-	it(`simulate click action`, ()=> {
+	it(`simulate click action`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -154,7 +154,7 @@ describe(`manage collection test`, () => {
 		wrapper.find(`h6`).simulate(`click`)
 	})
 
-	it(`simulate click action`, ()=> {
+	it(`simulate click action`, () => {
 		props.viewstate.isEditingCollectionName = true
 		props.viewstate.collection = collection6
 		const wrapper = mount(

@@ -43,7 +43,7 @@ describe(`content service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = authServiceConstructor.types
 
 		expect(types.AUTH_START).toBe(`AUTH_START`)

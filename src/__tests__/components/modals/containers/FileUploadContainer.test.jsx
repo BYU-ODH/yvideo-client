@@ -14,7 +14,7 @@ const props = {
 
 describe(`FileUploadContainer test`, () => {
 
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -23,7 +23,7 @@ describe(`FileUploadContainer test`, () => {
 		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>

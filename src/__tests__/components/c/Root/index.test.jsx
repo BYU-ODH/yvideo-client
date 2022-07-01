@@ -22,7 +22,7 @@ const viewstate = {
 }
 // routeProps.children.props.children.props.
 describe(`root route paring test`, () => {
-	it(`should be true`, ()=> {
+	it(`should be true`, () => {
 		const root = shallow(<Root viewstate={viewstate}/>)
 		const pathMap = root.find(Route).reduce((pathMap, route) => {
 			const routeProps = route.props()

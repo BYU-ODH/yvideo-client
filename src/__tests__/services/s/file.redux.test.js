@@ -39,7 +39,7 @@ describe(`file service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = fileServiceConstructor.types
 
 		expect(types.FILE_START).toBe(`FILE_START`)

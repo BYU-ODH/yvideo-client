@@ -238,7 +238,7 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
-		const isReverse = (sortType) =>{
+		const isReverse = (sortType) => {
 			if (this.state.sortType.id === sortType && this.state.sortType.reverse === false){
 				this.setState({
 					sortType: {

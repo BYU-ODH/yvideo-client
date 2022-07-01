@@ -70,53 +70,53 @@ describe(`Style onclick`, () => {
 		)
 	})
 
-	it(`Fullscreen onClick`, ()=> {
+	it(`Fullscreen onClick`, () => {
 		const button = wrapper.find(Fullscreen).simulate(`click`)
 		expect(button).toBeDefined()
 	})
-	it(`Speed onMouseEnter`, ()=> {
+	it(`Speed onMouseEnter`, () => {
 		const button = wrapper.find(Speed).simulate(`mouseEnter`)
 		expect(button).toBeDefined()
 	})
-	it(`Speed onMouseLeave`, ()=> {
+	it(`Speed onMouseLeave`, () => {
 		const button = wrapper.find(Speed).simulate(`mouseLeave`)
 		expect(button).toBeDefined()
 	})
-	it(`PlayPause onClick`, ()=> {
+	it(`PlayPause onClick`, () => {
 		const button = wrapper.find(PlayPause).simulate(`click`)
 		expect(button).toBeDefined()
 	})
-	it(`ClosedCaptions onClick`, ()=> {
+	it(`ClosedCaptions onClick`, () => {
 		const button = wrapper.find(ClosedCaptions).simulate(`click`)
 		expect(button).toBeDefined()
 	})
-	it(`ClosedCaptions onMouseEnter`, ()=> {
+	it(`ClosedCaptions onMouseEnter`, () => {
 		const button = wrapper.find(ClosedCaptions).simulate(`mouseEnter`)
 		expect(button).toBeDefined()
 	})
-	it(`ClosedCaptions onMouseLeave`, ()=> {
+	it(`ClosedCaptions onMouseLeave`, () => {
 		const button = wrapper.find(ClosedCaptions).simulate(`mouseLeave`)
 		expect(button).toBeDefined()
 	})
-	it(`Book onClick`, ()=> {
+	it(`Book onClick`, () => {
 		const button = wrapper.find(Book).simulate(`click`)
 		expect(button).toBeDefined()
 	})
-	it(`Help onClick`, ()=> {
+	it(`Help onClick`, () => {
 		const button = wrapper.find(Help).simulate(`click`)
 		expect(button).toBeDefined()
 	})
-	it(`Help onMouseEnter`, ()=> {
+	it(`Help onMouseEnter`, () => {
 		const button = wrapper.find(Help).simulate(`mouseEnter`)
 		expect(button).toBeDefined()
 	})
-	it(`Help onMouseLeave`, ()=> {
+	it(`Help onMouseLeave`, () => {
 		const button = wrapper.find(Help).simulate(`mouseLeave`)
 		expect(button).toBeDefined()
 	})
 })
 
-it(`simulate input`, ()=> {
+it(`simulate input`, () => {
 	props.viewstate.isCaption = false
 	const wrapper = shallow(<PlayerControls {...props}/>)
 	wrapper.find(Speed).simulate(`click`)
@@ -163,7 +163,7 @@ it(`simulate input`, ()=> {
 
 })
 
-it(`simulate isCaption`, ()=> {
+it(`simulate isCaption`, () => {
 	props.viewstate.isCaption = true
 	const wrapper = shallow(<PlayerControls {...props}/>)
 	wrapper.find(`.menu-modal`).simulate(`MouseLeave`)
@@ -175,14 +175,14 @@ it(`simulate isCaption`, ()=> {
 	expect(mockCallBack.mock.calls.length).toEqual(1)
 })
 
-it(`simulate setShowSpeed`, ()=> {
+it(`simulate setShowSpeed`, () => {
 	props.viewstate.isCaption = true
 	const wrapper = shallow(<PlayerControls {...props}/>)
 	wrapper.find(Speed).simulate(`click`)
 	wrapper.find(`.menu-modal`).at(0).simulate(`MouseLeave`)
 })
 
-it(`simulate setShowSpeed`, ()=> {
+it(`simulate setShowSpeed`, () => {
 	props.viewstate.isCaption = true
 	props.viewstate.isAdmin = false
 	props.viewstate.isProf = false
@@ -190,7 +190,7 @@ it(`simulate setShowSpeed`, ()=> {
 	wrapper.find(`.menu-modal`).at(0).simulate(`MouseLeave`)
 })
 
-it(`simulate setIsCaption`, ()=> {
+it(`simulate setIsCaption`, () => {
 	props.viewstate.isCaption = true
 	props.handlers.handleShowSubtitle = jest.fn()
 

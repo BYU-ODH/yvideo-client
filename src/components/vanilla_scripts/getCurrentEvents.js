@@ -34,7 +34,7 @@ export const HandleSubtitle = (time, subtitles, ind, duration) => {
 export const CurrentEvents = (time, events, duration) => {
 	const activeEvents = []
 	const doneEvents = []
-	events.forEach((val, ind)=>{
+	events.forEach((val, ind) => {
 		const newVal = {...val}
 		const start = val.start
 		const end = val.end || val.start + 0.5
@@ -50,7 +50,7 @@ export const CurrentEvents = (time, events, duration) => {
 	const comments = activeEvents.filter(val => val.type === `Comment`)
 	const censorValues = []
 
-	censors.forEach((val, ind)=>{
+	censors.forEach((val, ind) => {
 		censorValues.push(Position(val.position, time))
 	})
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
@@ -151,7 +151,7 @@ export const CurrentEvents = (time, events, duration) => {
 	}
 	return eventValues
 }
-export const CensorChange = async (ind, censorData, playedSeconds) =>{
+export const CensorChange = async (ind, censorData, playedSeconds) => {
 	const dataLeft1Value =
 		censorData.left1 !== undefined ?
 			censorData.left1.toFixed(2)
@@ -197,7 +197,7 @@ export const CensorChange = async (ind, censorData, playedSeconds) =>{
 		censorBox.style.width = `${width}%`
 	}
 }
-export const CommentChange = (ind, commentData, playedSeconds) =>{
+export const CommentChange = (ind, commentData, playedSeconds) => {
 	if(document.getElementById(`comment-${ind}`)){
 		const commentBox = document.getElementById(`comment-${ind}`)
 		commentBox.style.top = `${commentData.y}%`

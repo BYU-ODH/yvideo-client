@@ -330,7 +330,7 @@ const VideoEditor = props => {
 				parseFloat(cEvent.position[b]) - parseFloat(cEvent.position[a]))[0]
 
 		const posNext =
-			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a, b)=>
+			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a, b) =>
 				parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
 
 		setActiveCensorPosition(posPrev && posNext ?
@@ -351,7 +351,7 @@ const VideoEditor = props => {
 			const layer = cEvent.layer
 			const pos = cEvent.position
 			const id = Object.keys(pos).length !== 0 ?
-				`${parseInt(Object.keys(pos).sort((a, b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				`${parseInt(Object.keys(pos).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
 				: `0`
 			let exists = false
 			Object.keys(pos).forEach((val) => {
@@ -408,7 +408,7 @@ const VideoEditor = props => {
 			const layer = cEvent.layer
 			const pos = cEvent.position
 			const id = Object.keys(pos).length !== 0 ?
-				`${parseInt(Object.keys(pos).sort((a, b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				`${parseInt(Object.keys(pos).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
 				: `0`
 
 			let exists = false
@@ -710,7 +710,7 @@ const VideoEditor = props => {
 											}
 										}
 										bounds = {`parent`}
-										onDrag = {(e, d)=>{
+										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
 									>

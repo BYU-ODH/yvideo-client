@@ -40,7 +40,7 @@ const props = {
 }
 
 describe(`admin dashboard test`, () => {
-	it(`should be true`, ()=> {
+	it(`should be true`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<LabAssistant {...props}/>

@@ -39,7 +39,7 @@ const CensorDnD = props => {
 	const checkExisting = () => {
 		const vals = Object.values(censorValues)
 		const next = Object.keys(censorValues).find(val => censorValues[val] === vals.filter(value => parseFloat(value) > parseFloat(censorValues[censorEdit][0])).sort((a, b) => parseFloat(a)-parseFloat(b))[0])
-		const previous = Object.keys(censorValues).find(val=> censorValues[val] === vals.filter(value => parseFloat(value) < parseFloat(censorValues[censorEdit][0])).sort((a, b) => parseFloat(b)-parseFloat(a))[0])
+		const previous = Object.keys(censorValues).find(val => censorValues[val] === vals.filter(value => parseFloat(value) < parseFloat(censorValues[censorEdit][0])).sort((a, b) => parseFloat(b)-parseFloat(a))[0])
 		// const prevKey = censorValues.find(val => val[0] === previous)
 		// const nextKey = censorValues.find(val => val[0] === next)
 

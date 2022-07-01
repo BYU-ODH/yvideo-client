@@ -6,7 +6,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 describe(`event card`, () => {
-	it(`mock useDrag`, ()=> {
+	it(`mock useDrag`, () => {
 		const	wrapper = mount(
 			<BrowserRouter>
 				<DndProvider backend={HTML5Backend}>

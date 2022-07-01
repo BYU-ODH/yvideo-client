@@ -38,7 +38,7 @@ describe(`language service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = languageServiceConstructor.types
 
 		expect(types.LANGUAGE_START).toBe(`LANGUAGE_START`)

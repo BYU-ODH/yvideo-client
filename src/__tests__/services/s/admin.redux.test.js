@@ -78,7 +78,7 @@ describe(`content service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = adminServiceConstructor.types
 
 		expect(types.ADMIN_START).toBe(`ADMIN_START`)

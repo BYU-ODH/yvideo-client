@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 describe(`Error test`, () => {
-	it(`wrapper`, ()=> {
+	it(`wrapper`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>

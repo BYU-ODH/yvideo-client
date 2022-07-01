@@ -56,7 +56,7 @@ describe(`TrackEditorSideMenu test`, () => {
 	// 	wrapper.find(`.sideButton`).simulate(`click`)
 	// })
 
-	it(`TrackEditorSideMenu onChange`, ()=> {
+	it(`TrackEditorSideMenu onChange`, () => {
 		const mElement = { style: {color: `red`} }
 		const color = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
 		const wrapper = shallow(<TrackEditorSideMenu {...props}/>, { attachTo: color })
@@ -66,7 +66,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		expect(checked).toBeDefined()
 	})
 
-	it(`TrackEditorSideMenu onChange`, ()=> {
+	it(`TrackEditorSideMenu onChange`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<TrackEditorSideMenu {...props}/>
@@ -109,7 +109,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseLeave`)()
 	})
 
-	it(`TrackEditorSideMenu censor`, ()=> {
+	it(`TrackEditorSideMenu censor`, () => {
 		props.singleEvent.type = `Censor`
 
 		const wrapper = mount(

@@ -944,5 +944,5 @@ export const store2 = mockStore(
 )
 
 describe(`test util`, () => {
-	it(`test util ready to use`, ()=> {})
+	it(`test util ready to use`, () => {})
 })

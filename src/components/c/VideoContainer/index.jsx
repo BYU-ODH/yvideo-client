@@ -352,7 +352,7 @@ const VideoContainer = props => {
 	let count = 0 // this is to make sure that event listeners are applied only once
 	let isPlaying = false
 
-	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
+	const handleHotKeys = (e) => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
@@ -466,7 +466,7 @@ const VideoContainer = props => {
 					id='blank'
 					blank={blank}
 					onContextMenu={e => e.preventDefault()}
-					onClick={ (e) =>{
+					onClick={ (e) => {
 						activeCensorPosition === -1 && video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
 					}
 					}
@@ -502,7 +502,7 @@ const VideoContainer = props => {
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 
 			{/* Load the spinner if a file is uploading */}
-			{!isUploading && <div className='loading-spinner'><Spinner/></div> }
+			{ !isUploading && <div className='loading-spinner'><Spinner/></div> }
 
 			<ReactPlayer ref={ref} config={config} url={url} data-testid='react-player'
 				onContextMenu={e => e.preventDefault()}
@@ -547,7 +547,7 @@ const VideoContainer = props => {
 							/>
 						</button>
 
-						<div id='time-bar' onMouseLeave={(e) => {
+						<div id='time-bar' onMouseLeave={() => {
 							if(document.getElementById(`time-bar-shadow`) !== null && document.getElementById(`layer-time-indicator-line-shadow`) !== null) {
 								const tempOnload = window.onload
 								window.onload = () => {

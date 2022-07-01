@@ -44,7 +44,7 @@ const ManageInstructorsContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resourceAccess, blockLeave])
 
-	const handleRegister = async (e) =>{
+	const handleRegister = async (e) => {
 		e.preventDefault()
 	}
 

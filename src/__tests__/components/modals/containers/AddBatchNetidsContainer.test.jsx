@@ -13,7 +13,7 @@ const props = {
 }
 
 describe(`AddBatchNetidsContainer test`, () => {
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()

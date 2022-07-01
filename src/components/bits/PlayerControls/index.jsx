@@ -90,13 +90,9 @@ const PlayerControls = props => {
 	})
 
 	const [showSpeed, setShowSpeed] = useState(false)
-	const clipPercent = clipTime.map(e =>{
+	const clipPercent = clipTime.map(e => {
 		return e/duration
 	})
-	// console.log((clipPercent[1]-clipPercent[0])*100)
-	// const handleSubmitSpeed = (e) => {
-	// 	e.preventDefault()
-	// }
 
 	const handleChangeSpeed = () => {
 		toggleTip()

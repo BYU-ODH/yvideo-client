@@ -146,7 +146,7 @@ describe(`content service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = collectionServiceConstructor.types
 
 		expect(types.COLLECTIONS_START).toBe(`COLLECTIONS_START`)
@@ -159,7 +159,7 @@ describe(`content service test`, () => {
 		expect(types.COLLECTION_ROLES_UPDATE).toBe(`COLLECTION_ROLES_UPDATE`)
 	})
 
-	it(`should return correct role endpoint`, ()=> {
+	it(`should return correct role endpoint`, () => {
 		const endpoints = collectionServiceConstructor.roleEndpoints
 
 		expect(endpoints.addCourse).toBe(`add-course`)

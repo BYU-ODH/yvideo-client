@@ -72,7 +72,7 @@ const ListCollectionContainer = props => {
 
 	// TODO: we can modify this idea later
 	// eslint-disable-next-line no-unused-vars
-	const handleMorePublicCollection = async() =>{
+	const handleMorePublicCollection = async() => {
 		const result = await searchCollectionsByUserId(collection.owner, true, true)
 		let morePublicCollections
 

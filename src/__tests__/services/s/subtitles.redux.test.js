@@ -70,7 +70,7 @@ describe(`content service test`, () => {
 	proxies.apiProxy.subtitles.delete = jest.fn()
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = subtitleServiceConstructor.types
 
 		expect(types.SUBTITLES_START).toBe(`SUBTITLES_START`)

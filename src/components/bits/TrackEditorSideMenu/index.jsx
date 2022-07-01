@@ -156,9 +156,9 @@ const TrackEditorSideMenu = props => {
 			break
 		case 3:
 			if(editComment.position !== undefined)
-				setEditComment({...editComment, comment: value })
+				setEditComment({ ...editComment, comment: value })
 			else
-				setEditComment({...cEvent, comment: value })
+				setEditComment({ ...cEvent, comment: value })
 
 			break
 

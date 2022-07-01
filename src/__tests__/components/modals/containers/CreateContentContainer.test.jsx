@@ -27,18 +27,18 @@ const props = {
 global.MutationObserver = MutationObserver
 
 proxies.apiProxy.admin.search.get = jest.fn()
-proxies.apiProxy.admin.search.get.mockImplementation(()=>{
+proxies.apiProxy.admin.search.get.mockImplementation(() => {
 	return Promise.resolve(`search`)
 })
 
 proxies.apiProxy.content.post = jest.fn()
-proxies.apiProxy.content.post.mockImplementation(()=>{
+proxies.apiProxy.content.post.mockImplementation(() => {
 	return Promise.resolve(content)
 })
 
 describe(`CreateContentContainer test`, () => {
 
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -51,7 +51,7 @@ describe(`CreateContentContainer test`, () => {
 		expect(viewstate.adminContent[0].username).toBe(`testusername`)
 	})
 
-	it(`test event handlers`, ()=> {
+	it(`test event handlers`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>
@@ -110,7 +110,7 @@ describe(`CreateContentContainer test`, () => {
 		wrapper.find({id: `url-content-cancel`}).at(0).simulate(`click`)
 	})
 
-	it(`should rerender when new content is added`, ()=> {
+	it(`should rerender when new content is added`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>

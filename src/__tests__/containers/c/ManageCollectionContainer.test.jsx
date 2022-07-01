@@ -166,7 +166,7 @@ const updatedProps = { // eslint-disable-line no-unused-vars
 
 describe(`manage collection container test`, () => {
 
-	it(`container shallow render should be success`, ()=> {
+	it(`container shallow render should be success`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).dive()
@@ -181,7 +181,7 @@ describe(`manage collection container test`, () => {
 		expect(content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 
-	it(`viewstate should be generated successfully`, ()=> {
+	it(`viewstate should be generated successfully`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -239,7 +239,7 @@ describe(`manage collection container test`, () => {
 		expect(wrapper.find(`ManageCollection`).props().viewstate.isContentTab).toBe(true)
 	})
 
-	it(`test rest of event handlers`, ()=> {
+	it(`test rest of event handlers`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -270,7 +270,7 @@ describe(`manage collection container test`, () => {
 	})
 
 	// TODO: still need to complete
-	it(`test`, async()=> {
+	it(`test`, async() => {
 
 		const contentServiceConstructor = new ContentService()
 		const authServiceConstructor = new AuthService()

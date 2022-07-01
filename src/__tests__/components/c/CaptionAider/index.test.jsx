@@ -11,7 +11,7 @@ const viewstate = {
 }
 
 describe(`CaptionAider test`, () => {
-	it(`test render CaptionAider`, ()=> {
+	it(`test render CaptionAider`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<CaptionAider viewstate={viewstate} />

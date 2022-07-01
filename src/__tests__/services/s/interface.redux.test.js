@@ -73,7 +73,7 @@ describe(`content service test`, () => {
 	proxies.apiProxy.email.postWithAttachment = jest.fn()
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = interfaceServiceConstructor.types
 
 		expect(types.MENU_TOGGLE).toBe(`MENU_TOGGLE`)

@@ -188,7 +188,6 @@ export class CollectionPermissions extends PureComponent {
 										: <></>
 									}
 								</tbody>
-								{/* } */}
 							</Table>
 						</UserList>
 						<UserList id='user-table'>
@@ -234,7 +233,6 @@ export class CollectionPermissions extends PureComponent {
 										: <></>
 									}
 								</tbody>
-								{/* } */}
 							</Table>
 						</UserList>
 					</UserListTable>

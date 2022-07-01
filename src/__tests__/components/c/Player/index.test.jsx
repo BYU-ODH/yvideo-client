@@ -69,7 +69,7 @@ const props = {
 }
 
 describe(`Overlay test`, () => {
-	it(`wrapper simulate click`, ()=> {
+	it(`wrapper simulate click`, () => {
 		mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>

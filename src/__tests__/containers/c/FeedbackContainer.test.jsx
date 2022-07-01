@@ -18,7 +18,7 @@ describe(`manage collection test`, () => {
 		)
 	})
 
-	it(`FeedbackContainer`, ()=> {
+	it(`FeedbackContainer`, () => {
 		let button = wrapper.find(`input`).at(0).simulate(`change`, { target: { value: `name` } })
 		expect(button).toBeDefined()
 		button = wrapper.find(`input`).at(1).simulate(`change`, { target: { value: `email` } })

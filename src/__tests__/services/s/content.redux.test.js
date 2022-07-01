@@ -78,7 +78,7 @@ describe(`content service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		contentServiceConstructor = new ContentService()
 		const types = contentServiceConstructor.types
 

@@ -84,7 +84,7 @@ const props = {
 }
 
 describe(`CollectionPermissions test`, () => {
-	it(`test render CaptionAider`, ()=> {
+	it(`test render CaptionAider`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<CollectionPermissions {...props} />
@@ -106,7 +106,7 @@ describe(`CollectionPermissions test`, () => {
 		wrapper.find(`td`).at(3).simulate(`click`)
 	})
 
-	it(`test loaded = false`, ()=> {
+	it(`test loaded = false`, () => {
 		props.viewstate.loaded = false
 		const wrapper = mount(
 			<BrowserRouter>

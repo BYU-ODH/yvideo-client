@@ -23,7 +23,7 @@ const props = {
 }
 
 describe(`Captcha test`, () => {
-	it(`simulate onClick`, ()=> {
+	it(`simulate onClick`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<Feedback {...props} />

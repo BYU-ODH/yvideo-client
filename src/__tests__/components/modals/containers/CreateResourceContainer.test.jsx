@@ -12,7 +12,7 @@ const props = {
 
 describe(`CreateResourceContainer test`, () => {
 
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -24,7 +24,7 @@ describe(`CreateResourceContainer test`, () => {
 		expect(viewstate.data.resourceType).toBe(`video`)
 	})
 
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>
