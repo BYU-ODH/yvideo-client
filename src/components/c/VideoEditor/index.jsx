@@ -180,7 +180,6 @@ const VideoEditor = props => {
 		const eventIndex = currentEvents.length-1 < 0 ? 0 : currentEvents.length-1
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
-
 	const runTimeCheck = (side,event,type) => {
 		let canAccessDom = false
 		try {
@@ -206,7 +205,7 @@ const VideoEditor = props => {
 
 		// check start event times
 		if(event.start < 0 || event.start.isNaN){
-			event.start = 0
+			event.start = 0.0
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
 
@@ -234,13 +233,13 @@ const VideoEditor = props => {
 		}
 
 		if(event.start >= 0 && event.start < event.end && event.end <= videoLength){
-			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).style.color=`green`
-				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-				document.getElementById(`sideTabExplanation`).innerHTML=``
-				setDisableSave(false)
-			}
-		} else
+			// if(canAccessDom){
+			// document.getElementById(`sideTabMessage`).style.color=`green`
+			// document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
+			// document.getElementById(`sideTabExplanation`).innerHTML=``
+			setDisableSave(false)
+			// }
+		}else
 			setDisableSave(true)
 
 	}
@@ -370,25 +369,46 @@ const VideoEditor = props => {
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
 		const pos = cEvent.position
-		const value = parseFloat(e.target.value).toFixed(1)
+		let value
+		if(int === 0)
+			value = parseFloat(e.target.value).toFixed(1)
+		else
+			value = parseFloat(e.target.value).toFixed(0)
 
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
 		case 0:
-			pos[item][0] = value // time in seconds of start of censor
+			if(isNaN(value)) {
+				pos[item][0] = `0.0`
+				document.getElementById(`censorTimeInput-${item - 1}`).value = `0.0`
+			}else
+				pos[item][0] = value // time in seconds of start of censor
 			break
+
 		case 1: // x in %
 			pos[item][1] = value
 			break
+
 		case 2: // y in %
 			pos[item][2] = value
 			break
+
 		case 3: // width in %
-			pos[item][3] = value
+			if(isNaN(value)) {
+				pos[item][3] = 0
+				document.getElementById(`censorWidthInput-${item - 1}`).value = 0
+			}else
+				pos[item][3] = value
 			break
+
 		case 4: // height in %
-			pos[item][4] = value
+			if(isNaN(value)) {
+				pos[item][4] = 0
+				document.getElementById(`censorHeightInput-${item - 1}`).value = 0
+			}else
+				pos[item][4] = value
 			break
+
 		default:
 			break
 		}
@@ -707,7 +727,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized} show ={showSideEditor}>
+			<EventEditor id='EventEditor' minimized={eventListMinimized} show={showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}
