@@ -95,7 +95,7 @@ const SubtitleEditor = props => {
 		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
 		if(eventsArray !== undefined && eventsArray.length > 0){
 			eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
-			largestLayer = eventsArray[eventsArray.length-1].layer
+			largestLayer = eventsArray[eventsArray.length - 1].layer
 		}
 		// Find the largest layer number
 		const initialLayers = []
@@ -145,7 +145,7 @@ const SubtitleEditor = props => {
 		if(currentSubs[subLayerToEdit][`content`].length === 0 || currentSubs[subLayerToEdit][`content`].length === 1)
 			setSubToEdit(0)
 		else if(currentSubs[subLayerToEdit][`content`].length === index)
-			setSubToEdit(index-1)
+			setSubToEdit(index - 1)
 		else
 			setSubToEdit(index)
 
@@ -160,7 +160,7 @@ const SubtitleEditor = props => {
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active)
-			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight*0.5
+			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight * 0.5
 
 		// console.log(`side editor`, t2-t1)
 	}
@@ -199,7 +199,7 @@ const SubtitleEditor = props => {
 			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
 		}
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+		if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
 			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 
 	}
@@ -291,7 +291,7 @@ const SubtitleEditor = props => {
 					needCheck = false
 				} else {
 					if(index !== 0) {
-						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
+						if(sub.start < tempSubs[subLayerIndex][`content`][index - 1].end){
 							document.getElementById(`subStart${index}`).style.border = `2px solid red`
 							needCheck = false
 						}
@@ -304,7 +304,7 @@ const SubtitleEditor = props => {
 				document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 				needCheck=false
 			} else {
-				if(needCheck ===true) {
+				if(needCheck === true) {
 					if(sub.end < 0){
 						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 						document.getElementById(`subStart${index}`).style.border=``
@@ -318,8 +318,8 @@ const SubtitleEditor = props => {
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
 					} else {
-						if(index !== tempSubs[subLayerIndex][`content`].length-1) {
-							if(sub.end > tempSubs[subLayerIndex][`content`][index+1].start){
+						if(index !== tempSubs[subLayerIndex][`content`].length - 1) {
+							if(sub.end > tempSubs[subLayerIndex][`content`][index + 1].start){
 								document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 								document.getElementById(`subStart${index}`).style.border=``
 								needCheck=false
@@ -340,7 +340,7 @@ const SubtitleEditor = props => {
 
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
-		setSubChanges(subChanges+1)
+		setSubChanges(subChanges + 1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
@@ -357,7 +357,7 @@ const SubtitleEditor = props => {
 		const addingTime = 2
 
 		try{
-			if(currentSubs[index][`content`].length ===0){
+			if(currentSubs[index][`content`].length === 0){
 				newSub = {
 					start: 0,
 					end: addingTime,
@@ -388,9 +388,9 @@ const SubtitleEditor = props => {
 					}
 
 				} else {
-					if(subIndex !== currentSubs[index][`content`].length-1) {
+					if(subIndex !== currentSubs[index][`content`].length - 1) {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
-						const nextStartTime = currentSubs[index][`content`][subIndex+1].start
+						const nextStartTime = currentSubs[index][`content`][subIndex + 1].start
 
 						if(curEndTime === nextStartTime)
 							isError = true
@@ -399,7 +399,7 @@ const SubtitleEditor = props => {
 							subEnd = currentSubs[index][`content`][subIndex].end + addingTime
 						} else {
 							subStart = currentSubs[index][`content`][subIndex].end
-							subEnd = currentSubs[index][`content`][subIndex+1].start
+							subEnd = currentSubs[index][`content`][subIndex + 1].start
 						}
 						newSub = {
 							start: subStart,
@@ -407,7 +407,7 @@ const SubtitleEditor = props => {
 							text: ``,
 						}
 						if(!isError)
-							currentSubs[index][`content`].splice(subIndex+1, 0, newSub)
+							currentSubs[index][`content`].splice(subIndex + 1, 0, newSub)
 
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
@@ -426,9 +426,9 @@ const SubtitleEditor = props => {
 							text: ``,
 						}
 						if(!isError) {
-							setSubToEdit(subIndex+1)
+							setSubToEdit(subIndex + 1)
 							currentSubs[index][`content`].push(newSub)
-							setSubToEdit(subIndex+1)
+							setSubToEdit(subIndex + 1)
 							scrollToMyRef()
 						}
 					}
@@ -557,7 +557,7 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const checkSub = () => {
-		if(subLayerToEdit === subtitles[subLayerToEdit].length-1)
+		if(subLayerToEdit === subtitles[subLayerToEdit].length - 1)
 			return subtitles[0][`content`][0]
 		else
 			return subtitles[subLayerToEdit][`content`][subToEdit]
@@ -581,8 +581,8 @@ const SubtitleEditor = props => {
 			let curStart = 0
 			let curEnd = 0
 			let nextStart = 0
-			if(checking===`update` && i===index) {
-				if(updateSub.side ===`beg`) {
+			if(checking === `update` && i === index) {
+				if(updateSub.side === `beg`) {
 					curStart = updateSub.sub.start
 					curEnd = subs[subLayerToEdit][`content`][i].end
 				} else {
@@ -594,36 +594,36 @@ const SubtitleEditor = props => {
 				curEnd = subs[subLayerToEdit][`content`][i].end
 			}
 
-			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd<=0 || curEnd>videoLength) {
+			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd <= 0 || curEnd>videoLength) {
 				checkError = true
 				disable = false
-				if(checking===`delete` && i>=index) {
-					if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
+				if(checking === `delete` && i >= index) {
+					if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
 						document.getElementById(`subStart${i}`).style.border=`2px solid red`
-						document.getElementById(`subStart${i+1}`).style.border=``
-					} else if(document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
+						document.getElementById(`subStart${i + 1}`).style.border=``
+					} else if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
 						document.getElementById(`subEnd${i}`).style.border=`2px solid red`
-						document.getElementById(`subEnd${i+1}`).style.border=``
+						document.getElementById(`subEnd${i + 1}`).style.border=``
 					}
 				}
-			} else if(i !== subs[subLayerToEdit][`content`].length-1){
-				if(i===index-1 && checking===`update`)
+			} else if(i !== subs[subLayerToEdit][`content`].length - 1){
+				if(i === index - 1 && checking === `update`)
 					nextStart = updateSub.sub.start
 				else
-					nextStart = subs[subLayerToEdit][`content`][i+1].start
+					nextStart = subs[subLayerToEdit][`content`][i + 1].start
 
 				if(curEnd > nextStart) {
 					checkError = true
 					disable = false
-					if(checking===`delete` && i>=index) {
-						if(	document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
+					if(checking === `delete` && i >= index) {
+						if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
 							document.getElementById(`subEnd${i}`).style.border=`2px solid red`
-							document.getElementById(`subEnd${i+1}`).style.border=``
-						} else if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
+							document.getElementById(`subEnd${i + 1}`).style.border=``
+						} else if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
 							document.getElementById(`subStart${i}`).style.border=`2px solid red`
-							document.getElementById(`subStart${i+1}`).style.border=``
-						} else if(i === subs[subLayerToEdit][`content`].length-2)
-							document.getElementById(`subStart${i+1}`).style.border=`2px solid red`
+							document.getElementById(`subStart${i + 1}`).style.border=``
+						} else if(i === subs[subLayerToEdit][`content`].length - 2)
+							document.getElementById(`subStart${i + 1}`).style.border=`2px solid red`
 					}
 				}
 			}

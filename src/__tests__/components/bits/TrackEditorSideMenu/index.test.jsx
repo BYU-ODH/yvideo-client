@@ -75,7 +75,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		const boundingMock = {x: 100, y: 50}
 
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `` } })
-		wrapper.find(`.sideTabInput`).at(0).prop(`onBlur`)( { target: { value: `` } })
+		wrapper.find(`.sideTabInput`).at(0).prop(`onBlur`)( { target: { value: `` } } )
 		wrapper.find(`.center`).at(0).simulate(`click`)
 		wrapper.find(`.sideTabInput`).at(0).prop(`onKeyUp`)({stopPropagation: () => {
 			return 1
@@ -92,7 +92,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseLeave`)()
 
 		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `` } })
-		wrapper.find(`.sideTabInput`).at(1).prop(`onBlur`)( { target: { value: `` } })
+		wrapper.find(`.sideTabInput`).at(1).prop(`onBlur`)( { target: { value: `` } } )
 		wrapper.find(`.center`).at(0).simulate(`click`)
 		wrapper.find(`.sideTabInput`).at(1).prop(`onKeyUp`)({stopPropagation: () => {
 			return 1

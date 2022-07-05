@@ -177,7 +177,7 @@ const VideoEditor = props => {
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 
-		const eventIndex = currentEvents.length-1 < 0 ? 0 : currentEvents.length-1
+		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
 
@@ -417,7 +417,7 @@ const VideoEditor = props => {
 			})
 			if(exists){
 				const existId = Object.keys(cEvent.position).find(val => cEvent.position[val][0] === `${time.toFixed(1)}`)
-				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`, x / width * 100, (y-86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
+				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`, x / width * 100, (y - 86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
 			} else{
 				let newX = x / width * 100
 				let newY = (y - 86) / height * 100
@@ -435,7 +435,7 @@ const VideoEditor = props => {
 					newY = (newY + newWidth / 2) / 2
 					h = newY * 2
 				}
-				if(newY+newHeight / 2 > 100){
+				if(newY + newHeight / 2 > 100){
 					newY = 100 - (100 - newY + newHeight / 2) / 2
 					h = (100 - newY) * 2
 				}
@@ -536,7 +536,7 @@ const VideoEditor = props => {
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 		const tempOnload = window.onload
 		window.onload = () => {
-			if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
 				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 			window.onload = tempOnload
 		}

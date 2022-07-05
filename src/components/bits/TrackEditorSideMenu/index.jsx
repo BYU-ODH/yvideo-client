@@ -38,7 +38,7 @@ const TrackEditorSideMenu = props => {
 		// document.getElementById()
 		const ev = {...event}
 		if (side === `beg`) {
-			if(time===``)
+			if(time === ``)
 				ev.start=``
 			else
 				ev.start = time
@@ -48,7 +48,7 @@ const TrackEditorSideMenu = props => {
 
 		} else if(side === `end`) {
 			ev.start = singleEvent.start
-			if(time===``)
+			if(time === ``)
 				ev.end=``
 			else
 				ev.end = time
@@ -206,11 +206,11 @@ const TrackEditorSideMenu = props => {
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventBTimeChange(e)}
 										onBlur={e => handleEditEventBTimeFinalChange(e)}
-										onMouseEnter={e => handleShowTip(`${videoLength<3600 ? `MMSSMS`: `HMMSSMS`}`,
+										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS`: `HMMSSMS`}`,
 											{
-												x: e.target.getBoundingClientRect().x-15,
+												x: e.target.getBoundingClientRect().x - 15,
 												y: e.target.getBoundingClientRect().y + 20,
-												width: e.currentTarget.offsetWidth+20,
+												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
 										onMouseLeave={() => toggleTip()}

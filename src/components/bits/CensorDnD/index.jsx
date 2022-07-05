@@ -44,7 +44,7 @@ const CensorDnD = props => {
 		// const nextKey = censorValues.find(val => val[0] === next)
 
 		return(<div style={{width: `100%`, height: `100%`, position: `absolute`}}>
-			{ previous !== `-Infinity`&& previous !== undefined &&
+			{ previous !== `-Infinity` && previous !== undefined &&
 				<BeforeButton onClick={() => handleChange(previous)}>
 					<img src={arrowLeft} alt='previous' />
 				</BeforeButton>

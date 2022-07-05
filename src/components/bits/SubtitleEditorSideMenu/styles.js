@@ -112,7 +112,7 @@ export const Icon = styled.div`
 	position: relative;
 	z-index: 10;
 	margin-bottom: -1rem;
-	visibility: ${props => props.visibility ===`visible` ? `visible` : `hidden`};
+	visibility: ${props => props.visibility === `visible` ? `visible` : `hidden`};
 
 	:hover {
 		cursor: pointer;

@@ -116,10 +116,10 @@ export class CollectionPermissions extends PureComponent {
 						<form onSubmit={handlers.addCourse}>
 							<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Dept - Ex: ENGL'/>
 							<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} onKeyPress={e => {
-								if (e.charCode ===13) handlers.handleCatalogBlur(e)
+								if (e.charCode === 13) handlers.handleCatalogBlur(e)
 							}} onBlur={handlers.handleCatalogBlur} value={catalog} placeholder='Course - Ex: 101' required/>
 							<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} onKeyPress={e => {
-								if (e.charCode ===13) handlers.handleSectionBlur(e)
+								if (e.charCode === 13) handlers.handleSectionBlur(e)
 							}} onBlur={handlers.handleSectionBlur} value={section} placeholder='Section - Ex: 001' required/>
 							<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
 						</form><br/>

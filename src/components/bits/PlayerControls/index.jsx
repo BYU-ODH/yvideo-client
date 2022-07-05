@@ -91,7 +91,7 @@ const PlayerControls = props => {
 
 	const [showSpeed, setShowSpeed] = useState(false)
 	const clipPercent = clipTime.map(e => {
-		return e/duration
+		return e / duration
 	})
 
 	const handleChangeSpeed = () => {

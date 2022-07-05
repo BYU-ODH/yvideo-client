@@ -42,8 +42,8 @@ const ClipEditor = props => {
 	// const parseSub = Subtitle.parse(testingSubtitle)
 
 	// for (let i = 0; i < parseSub.length; i++){
-	// 	parseSub[i].start = parseSub[i].start/1000
-	// 	parseSub[i].end = parseSub[i].end/1000
+	// 	parseSub[i].start = parseSub[i].start / 1000
+	// 	parseSub[i].end = parseSub[i].end / 1000
 	// }
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
@@ -329,7 +329,7 @@ const ClipEditor = props => {
 	}
 	const saveClips = () => {
 		setIsLoading(true)
-		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length === 0)
+		if (Object.keys(clipList).length === 0 && Object.keys(clipsToDelete).length === 0)
 			return
 		const clips = {...clipList}
 		const content = {...currentContent}

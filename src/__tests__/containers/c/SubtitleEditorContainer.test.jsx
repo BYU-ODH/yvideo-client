@@ -308,7 +308,7 @@ describe(`SubtitleEditorContainer testing`, () => {
 			})
 		}
 		wrapper.find(`Rnd`).forEach(comp => {
-			comp.prop(`onDragStop`)( ``, {d: {x: 10}})
+			comp.prop(`onDragStop`)(``, {d: {x: 10}})
 		})
 		// wrapper.find(`Rnd`).prop(`onMouseLeave`)()
 

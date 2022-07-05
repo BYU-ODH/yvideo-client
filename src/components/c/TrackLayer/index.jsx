@@ -39,7 +39,7 @@ const TrackLayer = props => {
 
 	useLayoutEffect(() => {
 
-		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 
 		if(events && layerIndex === 4){
 			// we are in censor, calculate overlapping
@@ -146,7 +146,7 @@ const TrackLayer = props => {
 		setActiveCensorPosition(-1)
 
 		const cEvents = events
-		const beginTimePercentage = d.x/layerWidth*100*videoLength/100
+		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
 		const endPercentage = beginTimePercentage + event.end - event.start
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
@@ -167,7 +167,7 @@ const TrackLayer = props => {
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
 
 		const cEvents = events
-		const difference = delta.width / layerWidth * 100*videoLength/100
+		const difference = delta.width / layerWidth * 100 * videoLength / 100
 		if(direction === `right`){
 			cEvents[index].end += difference
 
@@ -180,7 +180,7 @@ const TrackLayer = props => {
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength-0.001
+				cEvents[index].start = videoLength - 0.001
 				cEvents[index].end = videoLength
 			}
 		}

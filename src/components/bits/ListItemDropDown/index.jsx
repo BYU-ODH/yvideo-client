@@ -45,7 +45,7 @@ class ListItemDropDown extends PureComponent {
 						<span />
 					</div>
 				</Header>
-				<Body isOpen={isOpen} count={parsedClips.length+1}>
+				<Body isOpen={isOpen} count={parsedClips.length + 1}>
 					<div className='link'>
 						<Link to={`/player/${id}`}>
 							<Clip>

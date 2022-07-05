@@ -202,7 +202,7 @@ const CollectionPermissionsContainer = props => {
 		removeUser: value => {
 			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
 			setIsEdited(true)
-			setNumUsers(numUsers-1)
+			setNumUsers(numUsers - 1)
 		},
 		AddBatchNetids: () => {
 			toggleModal({

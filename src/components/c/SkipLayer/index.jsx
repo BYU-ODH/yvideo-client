@@ -35,7 +35,7 @@ const SkipLayer = props => {
 		else
 			setLayerWidth(layerWidth + width)
 
-		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
 

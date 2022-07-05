@@ -41,7 +41,7 @@ export default class FileUpload extends PureComponent {
 					<h4>File Version</h4>
 
 					<CategorySelect id='categorySelect' onChange={handleFileVersion}>
-						{langs.map( (lang, index) => (
+						{langs.map((lang, index) => (
 							<option value={lang} key={index}>
 								{lang}
 							</option>

@@ -101,7 +101,7 @@ const ClipLayer = props => {
 			if(s < 0)
 				s = 0
 			else if(s > videoLength){
-				s = videoLength-30
+				s = videoLength - 30
 				en = videoLength
 			}
 		}
@@ -119,10 +119,10 @@ const ClipLayer = props => {
 						<Rnd
 							ref={dragRef}
 							className={`Rnd`}
-							size={{width: `${(end - start)/videoLength * layerWidth}px`, height: `46px`}}
+							size={{width: `${(end - start) / videoLength * layerWidth}px`, height: `46px`}}
 							position={
 								{
-									x: start/videoLength * layerWidth === Infinity || isNaN(start/videoLength * layerWidth) ? 0 : start/videoLength * layerWidth ,
+									x: start / videoLength * layerWidth === Infinity || isNaN(start / videoLength * layerWidth) ? 0 : start / videoLength * layerWidth ,
 									y: 0,
 								}}
 							enableResizing={Enable}

@@ -58,7 +58,7 @@ export const CurrentEvents = (time, events, duration) => {
 	const censorContainer = document.getElementById(`censorContainer`)
 	if (censorContainer){
 		const censorChildren = censorContainer.children
-		for (let i = 0; i<censorValues.length; i++){
+		for (let i = 0; i < censorValues.length; i++){
 			// MATCH CENSOR VALUES BY UNIQUE IDENTIFIER NOT INDEX
 			// IF WE TAKE THE NEXT VALUE INTO ACCOUNT EACH CENSOR VALUE HAS A UNIQUE NEXT
 			const left1Value =
@@ -118,7 +118,7 @@ export const CurrentEvents = (time, events, duration) => {
 	const commentContainer = document.getElementById(`commentContainer`)
 	if (commentContainer){
 		const commentChildren = commentContainer.children
-		for (let i = 0; i<comments.length; i++){
+		for (let i = 0; i < comments.length; i++){
 			let exists = false
 			for (let x = 0; x < commentChildren.length; x++)
 				if (commentChildren[i]) exists = true
@@ -183,7 +183,7 @@ export const CensorChange = async (ind, censorData, playedSeconds) => {
 
 			left =
 			censorData.left1 + censorData.left2 !== 0 ?
-				censorData.left1 - width/2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.left2 - censorData.left1)
+				censorData.left1 - width / 2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.left2 - censorData.left1)
 				: 0
 		}else if(typeof censorData.previous === `undefined` || typeof censorData.next === `undefined`){
 			width = censorData.width1

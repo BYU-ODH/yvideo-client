@@ -46,7 +46,7 @@ const VideoEditorContainer = props => {
 	const useAsync = () => { // eslint-disable-line no-unused-vars
 		const mountedRef = useRef(true)
 
-		useEffect( () => {
+		useEffect(() => {
 			return function cleanup() {
 				mountedRef.current = false
 			}

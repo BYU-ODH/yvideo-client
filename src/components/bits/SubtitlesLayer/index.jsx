@@ -43,7 +43,7 @@ const SubtitlesLayer = props => {
 		else
 			setLayerWidth(layerWidth + width)
 
-		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
@@ -90,16 +90,16 @@ const SubtitlesLayer = props => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
-		const beginTimePercentage = d.x /layerWidth*100*videoLength/100
+		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
 		const endPercentage = beginTimePercentage + (event.end - event.start)
 
-		if(index===0 && index+1 === cEvents.length)
+		if(index === 0 && index + 1 === cEvents.length)
 			isError = false
-		else if(index+1 === cEvents.length) {
+		else if(index + 1 === cEvents.length) {
 			if(cEvents[index].end > videoLength)
 				cEvents[index].end = videoLength
 
-			if(beginTimePercentage < cEvents[index-1].end) {
+			if(beginTimePercentage < cEvents[index - 1].end) {
 				setShowError(true)
 				isError = true
 			}
@@ -107,11 +107,11 @@ const SubtitlesLayer = props => {
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 
-			if(endPercentage > cEvents[index+1].start){
+			if(endPercentage > cEvents[index + 1].start){
 				setShowError(true)
 				isError = true
 			}
-		} else if(endPercentage > cEvents[index+1].start || beginTimePercentage < cEvents[index-1].end) {
+		} else if(endPercentage > cEvents[index + 1].start || beginTimePercentage < cEvents[index - 1].end) {
 			setShowError(true)
 			isError = true
 		}
@@ -129,17 +129,17 @@ const SubtitlesLayer = props => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
-		const difference = delta.width/layerWidth*100*videoLength/100
+		const difference = delta.width / layerWidth * 100 * videoLength / 100
 		if(direction === `right`){
 			if(cEvents[index].end > videoLength)
 				cEvents[index].end = videoLength
 
-			if(index===0 && index+1 === cEvents.length)
+			if(index === 0 && index + 1 === cEvents.length)
 				cEvents[index].end += difference
 			else {
-				if(index+1 === cEvents.length)
+				if(index + 1 === cEvents.length)
 					cEvents[index].end += difference
-				else if(cEvents[index].end+difference > cEvents[index+1].start) {
+				else if(cEvents[index].end + difference > cEvents[index + 1].start) {
 					setShowError(true)
 					isError = true
 				} else
@@ -149,16 +149,16 @@ const SubtitlesLayer = props => {
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength-0.01
+				cEvents[index].start = videoLength - 0.01
 				cEvents[index].end = videoLength
 			}
 
-			if(index===0 && index+1 === cEvents.length)
+			if(index === 0 && index + 1 === cEvents.length)
 				cEvents[index].start -= difference
 			else {
-				if(index===0)
+				if(index === 0)
 					cEvents[index].start -= difference
-				else if(cEvents[index].start-difference < cEvents[index-1].end) {
+				else if(cEvents[index].start - difference < cEvents[index - 1].end) {
 					setShowError(true)
 					isError = true
 				} else

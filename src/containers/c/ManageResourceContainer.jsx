@@ -37,7 +37,7 @@ const ManageResourceContainer = props => {
 			setIsDefaultSearched(false)
 		}
 
-		if (!isDefaultSearched && defaultSearch[0].length >1) {
+		if (!isDefaultSearched && defaultSearch[0].length > 1) {
 			searchResource(defaultSearch[0])
 			setIsDefaultSearched(true)
 		}

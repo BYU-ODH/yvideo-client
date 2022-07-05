@@ -39,7 +39,7 @@ const SubtitleEditorSideMenu = props => {
 	const editSub = (side, time, value, layer, ind, type) => {
 		const sub = {...event}
 		if (side === `beg`) {
-			if(time===``)
+			if(time === ``)
 				sub.start=``
 			else
 				sub.start = time
@@ -49,7 +49,7 @@ const SubtitleEditorSideMenu = props => {
 
 		} else if(side === `end`) {
 			sub.start = subs[layer][`content`][ind].start
-			if(time===``)
+			if(time === ``)
 				sub.end=``
 			else
 				sub.end = time
@@ -118,7 +118,7 @@ const SubtitleEditorSideMenu = props => {
 										id={`subEnd${ind}`}
 										className={`subEnd`}
 										type='text'
-										value={`${sub.end ===`` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
+										value={`${sub.end === `` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
 										onClick={ () => changeSubIndex(ind) }
 										onChange={e => editSub(`end`, e.target.value, null, subLayer, ind, null)}
 										onBlur={e => editSub(`end`, e.target.value, null, subLayer, ind, `onBlur`)}
@@ -136,7 +136,7 @@ const SubtitleEditorSideMenu = props => {
 							</div>
 						</div>
 						{
-							ind === subs[subLayer][`content`].length-1 ?
+							ind === subs[subLayer][`content`].length - 1 ?
 								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
 									visibility={ subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave === false ?
 										`visible`

@@ -114,7 +114,7 @@ const SubtitleEditorContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [content, resource, eventsArray, currentContent, subs, streamKey, url, subContentId, getContent, sKey, calledGetSubtitles, allSubs])
 
-	useLayoutEffect( () => {
+	useLayoutEffect(() => {
 		// once the url is set we can get subtitles
 		if(!calledGetSubtitles) {
 			getSubtitles(id)
