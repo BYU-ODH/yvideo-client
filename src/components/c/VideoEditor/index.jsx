@@ -369,7 +369,6 @@ const VideoEditor = props => {
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
 		const pos = cEvent.position
-		const censorInput = document.getElementById(`censorInput${item - 1}`)
 		let value
 		if(int === 0)
 			value = parseFloat(e.target.value).toFixed(1)
@@ -382,7 +381,7 @@ const VideoEditor = props => {
 		case 0:
 			if(isNaN(value)) {
 				pos[item][0] = `0.0`
-				censorInput.value = `0.0`
+				document.getElementById(`censorTimeInput-${item - 1}`).value = `0.0`
 			}else
 				pos[item][0] = value // time in seconds of start of censor
 			break
@@ -398,7 +397,7 @@ const VideoEditor = props => {
 		case 3: // width in %
 			if(isNaN(value)) {
 				pos[item][3] = 0
-				censorInput.value = 0
+				document.getElementById(`censorWidthInput-${item - 1}`).value = 0
 			}else
 				pos[item][3] = value
 			break
@@ -406,7 +405,7 @@ const VideoEditor = props => {
 		case 4: // height in %
 			if(isNaN(value)) {
 				pos[item][4] = 0
-				censorInput.value = 0
+				document.getElementById(`censorHeightInput-${item - 1}`).value = 0
 			}else
 				pos[item][4] = value
 			break
