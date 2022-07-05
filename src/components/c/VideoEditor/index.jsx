@@ -375,7 +375,6 @@ const VideoEditor = props => {
 		else
 			value = parseFloat(e.target.value).toFixed(0)
 
-
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
 		case 0:
