@@ -3,6 +3,7 @@ import ClipLayer from '../../../../components/bits/ClipLayer'
 import { render, screen, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+
 const props = {
 	clipName: 0,
 	clipList: {
@@ -13,29 +14,54 @@ const props = {
 		1: {
 			start: 61,
 			end: 120,
-		}
+		},
 	},
+	width: 0,
 	videoLength: 120,
-	active: 1,
-	index: 1,
+	active: 0, //this is the index of the currently active clip
+	index: 0,
 	setStart: jest.fn(),
 	setEnd: jest.fn(),
 	handleEditClip: jest.fn(),
 }
 
-const wrapper =
+const activeWrapper =
 	<ClipLayer {...props} />
 
+props.active = 1
+const inactiveWrapper =
+	<ClipLayer {...props} />
+
+
 describe(`ClipLayer test`, () => {
-	beforeEach(() => {
-		render(wrapper)
+	describe(`Active`, () => {
+		beforeEach(() => {
+			render(activeWrapper)
+		})
+		afterEach(() => {
+			jest.resetAllMocks()
+			cleanup()
+		})
+		it(`renders with active`, () => {
+			const Rnd = screen.getByTestId(`Rnd`)
+
+			expect(activeWrapper).toBeDefined()
+			expect(Rnd).toHaveStyle(`background-color: var(--navy-blue)`)
+		})
 	})
-	afterEach(() => {
-		jest.resetAllMocks()
-		cleanup()
-	})
-	it(`renders`, () => {
-		// screen.getByText(`haha`)
-		screen.getByRole(`teehee`)
+	describe(`Inactive`, () => {
+		beforeEach(() => {
+			render(inactiveWrapper)
+		})
+		afterEach(() => {
+			jest.resetAllMocks()
+			cleanup()
+		})
+		it(`renders with inactive`, () => {
+			const Rnd = screen.getByTestId(`Rnd`)
+
+			expect(activeWrapper).toBeDefined()
+			expect(Rnd).toHaveStyle(`background-color: #ffffff`)
+		})
 	})
 })
