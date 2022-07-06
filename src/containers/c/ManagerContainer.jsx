@@ -126,7 +126,9 @@ const ManagerContainer = props => {
 
 	})
 	if (collectionError !== collectionErrorPrev) {
-		alert(collectionError)
+		if(	alert(collectionError));
+		window.location = `${process.env.REACT_APP_YVIDEO_SERVER}`
+
 		collectionSyncError()
 	}
 
