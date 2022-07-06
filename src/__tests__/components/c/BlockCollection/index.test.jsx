@@ -105,7 +105,7 @@ describe(`BlockCollection test`, () => {
 		const arrowRight = screen.getByTestId(`right-arrow`)
 		const slideWrapper = screen.getByTestId(`slide-wrapper`)
 		const items = screen.getAllByRole(`heading`)
-		const farEnd = 181 + (items.length - 5) * 228 // eslint-disable-line unused-vars
+		const farEnd = 181 + (items.length - 5) * 228
 
 		expect(arrowLeft).not.toBeVisible()
 		expect(arrowRight).toBeVisible()

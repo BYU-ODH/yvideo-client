@@ -104,6 +104,7 @@ const ManageCollectionContainer = props => {
 			collectionId: collection.id,
 			props: {
 				isPublic: collection.public,
+				collection,
 			},
 		})
 

@@ -571,6 +571,7 @@ export default class AdminService {
 			const results = await apiProxy.admin.user.get(userId)
 
 			dispatch(this.actions.adminGetUserById(new User(results)))
+			return new User(results)
 
 		} catch (error) {
 			console.error(`ERROR: `, error.message) // eslint-disable-line no-console

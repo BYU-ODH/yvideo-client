@@ -58,6 +58,7 @@ const LabAssistantManageCollectionContainer = props => {
 			component: CreateContentContainer,
 			collectionId: collection.id,
 			isLabAssistantRoute: true,
+			collection,
 		})
 	}
 
