@@ -1,5 +1,5 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import LabAssistantTable from '../../../../components/bits/LabAssistantTable'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -24,19 +24,34 @@ const data = [
 	},
 ]
 
-describe(`LabAssistantTable dashboard test`, () => {
-	it(`should be true`, ()=> {
-		const wrapper = mount(
-			<BrowserRouter>
-				<LabAssistantTable data={data}/>
-			</BrowserRouter>,
-		)
+const wrapper =
+	<BrowserRouter>
+		<LabAssistantTable data={data}/>
+	</BrowserRouter>
 
-		wrapper.find(`.styled-link`).forEach((node, index) => {
-			if(node.to !== undefined){
-				expect(node.text()).toEqual(`View Collections`)
-				expect(node.prop(`to`)).toEqual(`/lab-assistant-manager/${data[index].id}`)
-			}
+
+describe(`LabAssistantTable dashboard test`, () => {
+	beforeEach(() => {
+		render(wrapper)
+	})
+	afterEach(() => {
+		jest.resetAllMocks()
+		cleanup()
+	})
+	it(`links render and are correct`, () => {
+		const links = screen.getAllByText(/Collections/)
+		expect(links).toHaveLength(2)
+
+		links.forEach((link, index) => {
+			expect(link).toHaveAttribute(`href`, `/lab-assistant-manager/${data[index].id}`)
+		})
+	})
+	it(`names render and are correct`, () => {
+		const names = screen.getAllByTestId(`name`)
+		expect(names).toHaveLength(2)
+
+		names.forEach((name, index) => {
+			expect(name).toHaveTextContent(`${data[index].name}`)
 		})
 	})
 })

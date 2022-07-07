@@ -1,7 +1,6 @@
 import React from 'react'
 import ClipLayer from '../../../../components/bits/ClipLayer'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
 const props = {

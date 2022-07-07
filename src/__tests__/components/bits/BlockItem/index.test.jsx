@@ -35,6 +35,8 @@ describe(`BlockItem test`, () => {
 		const name = screen.queryByText(/testname/i)
 
 		expect(link).not.toBeNull()
+		expect(link).toHaveAttribute(`href`, `/player/${props.data.id}`)
+
 		expect(name).not.toBeNull()
 	})
 })
