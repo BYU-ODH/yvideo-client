@@ -1,8 +1,8 @@
 import React from 'react'
 import ClipLayer from '../../../../components/bits/ClipLayer'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
+import { act } from 'react-dom/test-utils'
 
 const props = {
 	clipName: 0,
@@ -18,10 +18,8 @@ const props = {
 	},
 	width: 0,
 	videoLength: 120,
-	active: 0, //this is the index of the currently active clip
+	active: 0, // this is the index of the currently active clip
 	index: 0,
-	setStart: jest.fn(),
-	setEnd: jest.fn(),
 	handleEditClip: jest.fn(),
 }
 
@@ -31,7 +29,6 @@ const activeWrapper =
 props.active = 1
 const inactiveWrapper =
 	<ClipLayer {...props} />
-
 
 describe(`ClipLayer test`, () => {
 	describe(`Active`, () => {
@@ -59,6 +56,11 @@ describe(`ClipLayer test`, () => {
 		})
 		it(`renders with inactive`, () => {
 			const Rnd = screen.getByTestId(`Rnd`)
+			act(() => {
+				fireEvent.resize(Rnd)
+			})
+			fireEvent.click(Rnd)
+			expect(props.handleEditClip).toHaveBeenCalled()
 
 			expect(activeWrapper).toBeDefined()
 			expect(Rnd).toHaveStyle(`background-color: #ffffff`)
