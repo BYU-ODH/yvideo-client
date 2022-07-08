@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup } from '@testing-library/react'
 import LabAssistantTable from '../../../../components/bits/LabAssistantTable'
 import { BrowserRouter } from 'react-router-dom'
 
