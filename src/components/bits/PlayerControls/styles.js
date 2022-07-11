@@ -19,7 +19,7 @@ const Style = styled.div`
 	height: 5rem;
 	width: 100%;
 
-	background: rgba(0,0,0,0.5);
+	background: rgba(0, 0, 0, 0.5);
 
 	display: grid;
 
@@ -62,7 +62,7 @@ const Style = styled.div`
 			color: white;
 
 			:hover {
-				background-color: rgba(5,130,202,1);
+				background-color: rgba(5, 130, 202, 1);
 				color: white;
 			}
 		}
@@ -182,7 +182,7 @@ const Style = styled.div`
 		color: white;
 
 		:hover {
-			background-color: rgba(5,130,202,1);
+			background-color: rgba(5, 130, 202, 1);
 			color: white;
 		}
 	}

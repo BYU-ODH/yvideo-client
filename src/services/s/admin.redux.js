@@ -60,11 +60,11 @@ export default class AdminService {
 		adminContentDelete: content => ({ type: this.types.ADMIN_CONTENT_DELETE, payload: { content }}),
 		adminContentDeleteFromTable: content => ({ type: this.types.ADMIN_CONTENT_DELETE_FROM_TABLE, payload: { content }}),
 		adminGetUserById: user => ({ type: this.types.ADMIN_GET_USER_BY_ID, payload: { user }}),
-		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {}}),
-		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
-		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload:{content, collectionId}}),
-		adminAddUsers: (successResult, failResult) => ({type: this.types.ADMIN_POST_USERS, payload:{successResult, failResult}}),
-		adminEmptyUsersResult: () => ({type: this.types.ADMIN_EMPTY_USERS_RESULT, payload:{}}),
+		adminEmptySearchedUser: () => ({ type: this.types.ADMIN_EMPTY_SEARCHED_USER, payload: {} }),
+		adminGetPublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload: {content, collectionId}}),
+		adminGetMorePublicCollectionContents: (content, collectionId) => ({type: this.types.ADMIN_GET_PUBLIC_COLLECTION_CONTENT, payload: {content, collectionId}}),
+		adminAddUsers: (successResult, failResult) => ({type: this.types.ADMIN_POST_USERS, payload: {successResult, failResult}}),
+		adminEmptyUsersResult: () => ({type: this.types.ADMIN_EMPTY_USERS_RESULT, payload: {}}),
 	}
 
 	// default store
@@ -72,7 +72,7 @@ export default class AdminService {
 	store = {
 		data: null,
 		cache: {},
-		searchedUser:{}, // store user here from get by id
+		searchedUser: {}, // store user here from get by id
 		addedUsers: {},
 		professors: [],
 		professor: {},
@@ -223,7 +223,7 @@ export default class AdminService {
 		case ADMIN_GET_PUBLIC_COLLECTION_CONTENT:
 			return{
 				...store,
-				publicCollections:{
+				publicCollections: {
 					...store.publicCollections,
 					[action.payload.collectionId]: {
 						...store.publicCollections[action.payload.collectionId],
@@ -235,7 +235,7 @@ export default class AdminService {
 		case ADMIN_GET_MORE_PUBLIC_COLLECTION_CONTENT:
 			return{
 				...store,
-				morePublicCollections:{
+				morePublicCollections: {
 					...store.morePublicCollections,
 					[action.payload.collectionId]: {
 						...store.morePublicCollections[action.payload.collectionId],
@@ -697,7 +697,7 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		// Grab all the collections from the admin store
-		const collections = { ...getState().adminStore.professorCollections}
+		const collections = { ...getState().adminStore.professorCollections }
 		// Grab the current collection from the admin store
 		const professorId = { ...getState().adminStore.professor.id }
 		let currentCollection
@@ -750,7 +750,7 @@ export default class AdminService {
 				await this.searchCollections(professorId, true)
 				// The result will be the updated professorCollections
 				// This will be the paidload for the adminSeachCollections
-				const result = { ...getState().adminStore.professorCollections}
+				const result = { ...getState().adminStore.professorCollections }
 				dispatch(this.actions.adminSearchCollections(result))
 			} catch (error) {
 				dispatch(this.actions.adminError(error))
@@ -766,7 +766,7 @@ export default class AdminService {
 
 			const currentResults = [...getState().adminStore.data]
 
-			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId) ,1)
+			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId), 1)
 			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.admin.collection.delete(collectionId)
 
@@ -785,7 +785,7 @@ export default class AdminService {
 		if(fromAdmin){
 			currentState = [...getState().adminStore.data]
 
-			currentState.splice(currentState.findIndex((element) => element.id === contentId) ,1)
+			currentState.splice(currentState.findIndex((element) => element.id === contentId), 1)
 		} else {
 			currentState = { ...getState().adminStore.profCollectionContent }
 
@@ -812,7 +812,7 @@ export default class AdminService {
 
 		const currentResults = [...getState().adminStore.data]
 
-		currentResults.splice(currentResults.findIndex((element) => element.id === userId) ,1)
+		currentResults.splice(currentResults.findIndex((element) => element.id === userId), 1)
 
 		try {
 			// eslint-disable-next-line no-unused-vars

@@ -25,7 +25,7 @@ const RegisterInstructorsContainer = props => {
 
 	}, [])
 
-	const handleRegister = async (e) =>{
+	const handleRegister = async (e) => {
 		e.preventDefault()
 	}
 

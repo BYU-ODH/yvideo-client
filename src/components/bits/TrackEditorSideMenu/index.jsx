@@ -38,7 +38,7 @@ const TrackEditorSideMenu = props => {
 		// document.getElementById()
 		const ev = {...event}
 		if (side === `beg`) {
-			if(time===``)
+			if(time === ``)
 				ev.start=``
 			else
 				ev.start = time
@@ -48,7 +48,7 @@ const TrackEditorSideMenu = props => {
 
 		} else if(side === `end`) {
 			ev.start = singleEvent.start
-			if(time===``)
+			if(time === ``)
 				ev.end=``
 			else
 				ev.end = time
@@ -64,7 +64,7 @@ const TrackEditorSideMenu = props => {
 			console.log(error) // eslint-disable-line no-console
 		}
 		setEvent(ev)
-		updateEvents(ind,ev,layer,side,type)
+		updateEvents(ind, ev, layer, side, type)
 	}
 
 	const handleEditEventBTimeChange = (e) => {
@@ -76,7 +76,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
 			// editEvent(index, cEvent, layer, `beg`)
-			editEvent(`beg`,cEvent.start, null, layer, index, null)
+			editEvent(`beg`, cEvent.start, null, layer, index, null)
 			// (side, time, value, layer, ind, type)
 		}
 	}
@@ -89,7 +89,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
 			// updateEvents(index, cEvent, layer, `beg`, `onBlur`)
-			editEvent(`beg`,cEvent.start, null, layer, index, `onBlur`)
+			editEvent(`beg`, cEvent.start, null, layer, index, `onBlur`)
 		}
 	}
 
@@ -102,7 +102,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
 			// updateEvents(index, cEvent, layer, `end`)
-			editEvent(`end`,cEvent.end, null, layer, index, null)
+			editEvent(`end`, cEvent.end, null, layer, index, null)
 		}
 	}
 
@@ -115,7 +115,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
 			// updateEvents(index, cEvent, layer, `end`, `onBlur`)
-			editEvent(`end`,cEvent.end, null, layer, index, `onBlur`)
+			editEvent(`end`, cEvent.end, null, layer, index, `onBlur`)
 		}
 	}
 
@@ -155,9 +155,9 @@ const TrackEditorSideMenu = props => {
 			break
 		case 3:
 			if(editComment.position !== undefined)
-				setEditComment({...editComment, comment: value })
+				setEditComment({ ...editComment, comment: value })
 			else
-				setEditComment({...cEvent, comment: value })
+				setEditComment({ ...cEvent, comment: value })
 
 			break
 
@@ -191,9 +191,10 @@ const TrackEditorSideMenu = props => {
 							<>
 								<div className='center'>
 									<label>Start</label>
-									{event.type === `Pause` ? (
+									{event.type === `Pause` ?
 										<label>Message: </label>
-									):<label>End</label>
+										:
+										<label>End</label>
 									}
 								</div>
 								<div className='center'>
@@ -206,9 +207,9 @@ const TrackEditorSideMenu = props => {
 										onBlur={e => handleEditEventBTimeFinalChange(e)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS`: `HMMSSMS`}`,
 											{
-												x: e.target.getBoundingClientRect().x-15,
+												x: e.target.getBoundingClientRect().x - 15,
 												y: e.target.getBoundingClientRect().y + 20,
-												width: e.currentTarget.offsetWidth+20,
+												width: e.currentTarget.offsetWidth + 20,
 											})
 										}
 										onMouseLeave={() => toggleTip()}
@@ -231,7 +232,7 @@ const TrackEditorSideMenu = props => {
 										onMouseLeave={() => toggleTip()}
 									/>
 									{event.type === `Pause` ? (
-										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='sideTabInput' value={event.message}
+										<textarea style={{ margin: `5%`, width: `90%` }} rows='4' cols='50' className='sideTabInput' value={event.message}
 											placeholder = 'Enter message'
 											onChange={e => editPauseMessage(e)}/>
 									) : <></>
@@ -255,9 +256,9 @@ const TrackEditorSideMenu = props => {
 								<input type='number' className='sideTabInput' placeholder={event.position.x.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 1)}/>
 								<input type='number' className='sideTabInput' placeholder={event.position.y.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 2)}/>
 							</div>
-							<div className='center' style={{ flexDirection: `column`}}>
+							<div className='center' style={{ flexDirection: `column` }}>
 								<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
-								<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
+								<textarea style={{ margin: `5%`, width: `90%` }} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
 								<p><i>Save is only required when changing the X, Y, or comment values</i></p>
 								<button id='saveComment' onClick={handleSaveComment} className='sideButton'>Save Comment</button>
 							</div>
@@ -281,9 +282,9 @@ const TrackEditorSideMenu = props => {
 									</tr>
 								</thead>
 								<tbody className={`censorList`}>
-									{event.type === `Censor`?
+									{event.type === `Censor` &&
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
-											<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
+											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
 												<td><input id={`censorTimeInput-${i}`} onClick={() => handleCensorActive(item)} className='censorRow' type='number' defaultValue={`${event.position[item][0]}`} onBlur={(e) => handleEditCensor(e, item, 0)}/></td>
 												<td><input disabled onClick={() => handleCensorActive(item)} type='number' defaultValue={`${event.position[item][1]}`} onBlur={(e) => handleEditCensor(e, item, 1)}/></td>
 												<td><input disabled onClick={() => handleCensorActive(item)} type='number' defaultValue={`${event.position[item][2]}`} onBlur={(e) => handleEditCensor(e, item, 2)}/></td>
@@ -292,7 +293,7 @@ const TrackEditorSideMenu = props => {
 												<td><img className={`trashIcon`} src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
 											</tr>
 										))
-										:``}
+									}
 								</tbody>
 							</table>
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>

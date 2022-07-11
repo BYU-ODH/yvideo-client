@@ -35,7 +35,7 @@ const SkipLayer = props => {
 		else
 			setLayerWidth(layerWidth + width)
 
-		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
 
@@ -54,7 +54,7 @@ const SkipLayer = props => {
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `31px`}}
-				position={{ x: event.start / videoLength * layerWidth, y: 0}}
+				position={{ x: event.start / videoLength * layerWidth, y: 0 }}
 				key={index}
 				enableResizing={Enable}
 				disableDragging={true}
@@ -93,7 +93,7 @@ const SkipLayer = props => {
 		const tickNum = (videoLength - videoLength % tickInt) / tickInt
 		for(let i = 0; i < tickNum + 1; i++){
 			ticks.push(
-				<div className='timemarker' key={i} style={{left:`${tickInt / videoLength * i * 100}%`}}>
+				<div className='timemarker' key={i} style={{left: `${tickInt / videoLength * i * 100}%`}}>
 					<div className='tickbar'>
 					</div>
 					<p className='time'>{convertSecondsToMinute(tickInt * i)}</p>
@@ -109,7 +109,7 @@ const SkipLayer = props => {
 					{
 						events !== undefined && events.length > 0 && videoLength !== 0 ? (
 							<>
-								{ events.map((event, index) => printEvents(event, index))}
+								{ events.map((event, index) => printEvents(event, index)) }
 							</>
 						) : null
 					}

@@ -1,11 +1,11 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Admin from '../../../../components/c/Admin/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const viewstate = {
-	category:{
-		Collections:{
+	category: {
+		Collections: {
 			name: `Collections`,
 			placeholder: `Search for a collection`,
 			url: `collection`,
@@ -51,7 +51,7 @@ const tipHandlers = {
 
 // TODO: need to check again for the updated admin dashboard
 describe(`admin dashboard test`, () => {
-	it(`should be true`, ()=> {
+	it(`should be true`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<Admin viewstate={viewstate} handlers={handlers} tipHandlers={tipHandlers}/>
@@ -69,7 +69,7 @@ describe(`admin dashboard test`, () => {
 		expect(category.props().children[1].props.value).toBe(`Content`)
 		expect(category.props().children[2].props.value).toBe(`Users`)
 	})
-	it(`data is empty `, ()=> {
+	it(`data is empty `, () => {
 		viewstate.data = []
 		const wrapper = mount(
 			<BrowserRouter>
@@ -78,7 +78,7 @@ describe(`admin dashboard test`, () => {
 		)
 		expect(wrapper.contains(<p>No users matched your search</p>)).toEqual(true)
 	})
-	it(`data is null `, ()=> {
+	it(`data is null `, () => {
 		viewstate.data = null
 		const wrapper = mount(
 			<BrowserRouter>

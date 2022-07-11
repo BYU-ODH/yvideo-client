@@ -40,7 +40,7 @@ const ManageCollectionContainer = props => {
 	}
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: collection.id, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Manage Collections`], collectionId: collection.id, contentId: ``})
 		setCollectionName(collection.name)
 
 		if(isEdited) {

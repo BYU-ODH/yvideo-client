@@ -17,8 +17,8 @@ export const FormResource = styled.form`
 		& input {
 			width: 100%;
 			border: none;
-			border-bottom: 1px solid rgba(0,0,0,0.3);
-			/* background-color: rgba(0,0,0,0.03); */
+			border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+			/* background-color: rgba(0, 0, 0, 0.03); */
 			outline: none;
 			margin: 10px 0px 2px 0px;
 		}
@@ -126,7 +126,7 @@ export const Button = styled.button`
 	border-radius: 3px;
 	border: none;
 	// :hover {
-	// 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6);
+	// 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.6);
 	// 	transition: 0.5s;
 	}
 `
@@ -192,7 +192,7 @@ export const TableContainer = styled.div`
 
 export const Table = styled.table`
 	/*background: white;*/
-	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
+	/*box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15);*/
 
 	height: ${props => props.height ? `${props.height * 15}px`: `0px`};
 	width: 80%;
@@ -207,7 +207,7 @@ export const Table = styled.table`
 
 	& tr {
 		background: white;
-		box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15);
 	}
 
 	& td {
@@ -244,7 +244,7 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
-	box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+	box-shadow: 2px 2px 1px -1px rgba(0, 0, 0, 0.15);
 	border-radius: 3px;
 
 	& > i {
@@ -274,7 +274,7 @@ export const Search = styled.div`
 		border: none;
 		border-radius: 1.5rem;
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 		padding: 0 1.25rem 0 3.25rem;
 	}
 
@@ -285,7 +285,7 @@ export const Search = styled.div`
     background-color: var(--light-blue);
     margin-left: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 2rem;

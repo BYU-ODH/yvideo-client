@@ -23,8 +23,8 @@ describe(`file service test`, () => {
 			fileServiceConstructor.reducer,
 			{
 				data: {},
-				cache:{},
-				fileStore:{
+				cache: {},
+				fileStore: {
 					data: {},
 					cache: {},
 				},
@@ -39,7 +39,7 @@ describe(`file service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = fileServiceConstructor.types
 
 		expect(types.FILE_START).toBe(`FILE_START`)
@@ -90,7 +90,7 @@ describe(`file service test`, () => {
 	it(`upload`, async() => {
 
 		proxies.apiProxy.file.post = jest.fn()
-		proxies.apiProxy.file.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.file.post.mockImplementationOnce(() => {
 			return Promise.resolve(file1)
 		})
 
@@ -102,12 +102,12 @@ describe(`file service test`, () => {
 	it(`delete`, async() => {
 
 		proxies.apiProxy.file.post = jest.fn()
-		proxies.apiProxy.file.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.file.post.mockImplementationOnce(() => {
 			return Promise.resolve(file1)
 		})
 
 		proxies.apiProxy.file.delete = jest.fn()
-		proxies.apiProxy.file.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.file.delete.mockImplementationOnce(() => {
 			return Promise.resolve(file1)
 		})
 
@@ -122,12 +122,12 @@ describe(`file service test`, () => {
 	it(`update`, async() => {
 
 		proxies.apiProxy.file.post = jest.fn()
-		proxies.apiProxy.file.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.file.post.mockImplementationOnce(() => {
 			return Promise.resolve(file1)
 		})
 
 		proxies.apiProxy.file.patch = jest.fn()
-		proxies.apiProxy.file.patch.mockImplementationOnce(()=>{
+		proxies.apiProxy.file.patch.mockImplementationOnce(() => {
 			return Promise.resolve(file1)
 		})
 

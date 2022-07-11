@@ -5,7 +5,7 @@ import { Form, AddManyForm, AddManyButton, CancelButton } from './styles'
 export default class AddBatchNetids extends PureComponent {
 
 	render() {
-		const { id , disabledUser} = this.props.viewState
+		const { id , disabledUser } = this.props.viewState
 		const { handleNewId, handleIdChange, toggleModal } = this.props.handler
 
 		return (

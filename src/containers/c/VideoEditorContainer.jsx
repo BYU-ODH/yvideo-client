@@ -41,12 +41,12 @@ const VideoEditorContainer = props => {
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	const [aspectRatio,setAspectRatio] = useState([16,9])
+	const [aspectRatio, setAspectRatio] = useState([16, 9])
 
 	const useAsync = () => { // eslint-disable-line no-unused-vars
 		const mountedRef = useRef(true)
 
-		useEffect( () => {
+		useEffect(() => {
 			return function cleanup() {
 				mountedRef.current = false
 			}
@@ -60,16 +60,16 @@ const VideoEditorContainer = props => {
 			setContent(contentCache[id])
 			setEventsArray(contentCache[id].settings.annotationDocument)
 			setEvents(contentCache[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Video Editor`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
+			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Video Editor`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
 
 			if(contentCache[id].url !== ``){
 				setUrl(contentCache[id].url)
 				if(contentCache[id].url.includes(`youtube`)){
 					const fetchData = async() => {
-						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`,{method:`GET`})
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
-							setAspectRatio([data.width,data.height])
+							setAspectRatio([data.width, data.height])
 
 						return data
 					}
@@ -89,7 +89,7 @@ const VideoEditorContainer = props => {
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				if (resourceIdStream !== ``){
-					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{ // eslint-disable-line no-unused-vars
+					const files = Promise.resolve(getFiles(resourceIdStream)).then((value) => { // eslint-disable-line no-unused-vars
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
 							if (file[`aspect-ratio`])
@@ -109,7 +109,7 @@ const VideoEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Video Editor`},
+			props: { name: `Video Editor` },
 		})
 	}
 

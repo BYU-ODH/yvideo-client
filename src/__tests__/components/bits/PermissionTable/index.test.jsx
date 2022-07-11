@@ -37,7 +37,7 @@ describe(`Permission Table test`, () => {
 		expect(item.text()).toEqual(`test@email.com`)
 	})
 
-	it(`RemoveButton onClick`, ()=> {
+	it(`RemoveButton onClick`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>

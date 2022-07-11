@@ -11,7 +11,7 @@ const props = {
 
 describe(`ManageFilesContainer test`, () => {
 
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -21,7 +21,7 @@ describe(`ManageFilesContainer test`, () => {
 		expect(viewstate.files).toEqual([testutil.file1, testutil.file2])
 	})
 
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>

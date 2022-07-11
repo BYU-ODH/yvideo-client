@@ -34,7 +34,7 @@ const LabAssistantManageCollectionContainer = props => {
 	const [collectionName, setCollectionName] = useState(collection.name)
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Lab Assistant Manager`], collectionId: collection.id, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Lab Assistant Manager`], collectionId: collection.id, contentId: ``})
 
 		getCollectionContent(collection.id, true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps

@@ -25,7 +25,7 @@ const data = [
 ]
 
 describe(`LabAssistantTable dashboard test`, () => {
-	it(`should be true`, ()=> {
+	it(`should be true`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<LabAssistantTable data={data}/>

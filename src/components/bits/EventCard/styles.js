@@ -21,7 +21,7 @@ const Style = styled.div`
 	border-top: 1px solid;
 	border-bottom: 1px solid; */
 	/* margin-bottom: 1rem; */
-	/* box-shadow: 0px 2px 4px -2px rgba(0,0,0,0.75); */
+	/* box-shadow: 0px 2px 4px -2px rgba(0, 0, 0, 0.75); */
 
 	opacity: ${props => props.opacity};
 

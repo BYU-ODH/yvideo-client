@@ -177,7 +177,7 @@ export default class CreateContent extends PureComponent {
 
 							<span>Target Language</span>
 							{
-								isResourceSelected && resourceFiles &&(
+								isResourceSelected && resourceFiles && (
 									languages.length > 0 ?
 										<select name='fileId' onChange={handleTextChange} required>
 											<option value=''>Select</option>

@@ -52,7 +52,7 @@ cursor: pointer;
 
 font-weight: ${props => props.selected ? `500` : `300`};
 color: ${props => props.selected ? `#0057B8` : `black`};
-box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+box-shadow: 2px 2px 1px -1px rgba(0, 0, 0, 0.15);
 border-radius: 3px;
 
 & > i {

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
 import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
@@ -50,11 +50,11 @@ const VideoContainer = props => {
 	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
 	const [censorPosition, setCensorPosition] = useState({}) // eslint-disable-line no-unused-vars
-	const [playerPadding,setPlayerPadding] = useState([0,0])
+	const [playerPadding, setPlayerPadding] = useState([0, 0])
 	const [isUploading, setIsUploadings] = useState(false)
 
 	const executeCensors = async (values, playedSeconds) => {
-		for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+		for (let i = 0; i < values.censors.length; i++) CensorChange(i, values.censors[i], playedSeconds)
 	}
 
 	const video = {
@@ -111,13 +111,13 @@ const VideoContainer = props => {
 			}
 
 			if(!events) return
-			const values = CurrentEvents(playedSeconds,events,duration)
+			const values = CurrentEvents(playedSeconds, events, duration)
 
 			executeCensors(values, playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
-				if(subtitles.length > 0) HandleSubtitle(playedSeconds,subtitles,0)
+				if(subtitles.length > 0) HandleSubtitle(playedSeconds, subtitles, 0)
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()
@@ -249,10 +249,10 @@ const VideoContainer = props => {
 				}
 			}
 
-			updateEvents(eventToEdit,event,event[`layer`])
+			updateEvents(eventToEdit, event, event[`layer`])
 			video.handleProgress({
 				played: parseFloat(event.position[activeCensorPosition][0]) / parseFloat(duration),
-				playedSeconds:parseFloat(event.position[activeCensorPosition][0]) + 0.001,
+				playedSeconds: parseFloat(event.position[activeCensorPosition][0]) + 0.001,
 			})
 		},
 		handleUpdateCensorResize: (delta, pos) => {
@@ -352,7 +352,7 @@ const VideoContainer = props => {
 	let count = 0 // this is to make sure that event listeners are applied only once
 	let isPlaying = false
 
-	const handleHotKeys = (e) => { // eslint-disable-line no-unused-vars
+	const handleHotKeys = (e) => {
 		const playedTime = parseFloat(document.getElementById(`seconds-time-holder`).innerHTML)
 		switch (e.code) {
 		case `ArrowRight`:
@@ -432,7 +432,7 @@ const VideoContainer = props => {
 			})
 		}
 		const wrap = document.getElementById(`blankContainer`)
-		const wraplisten = new ResizeObserver((entry)=>{
+		const wraplisten = new ResizeObserver((entry) => {
 			video.handleAspectRatio()
 		})
 		if(wrap)
@@ -460,29 +460,29 @@ const VideoContainer = props => {
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
-			<div id='blankContainer' style={{width:`70%`,height: `100%`, position:`absolute`}}>
+			<div id='blankContainer' style={{width: `70%`, height: `100%`, position: `absolute`}}>
 				<Blank
 					className='blank'
 					id='blank'
 					blank={blank}
 					onContextMenu={e => e.preventDefault()}
-					onClick={ (e) =>{
+					onClick={ (e) => {
 						activeCensorPosition === -1 && video.handleBlankClick(videoRef.current.offsetHeight, videoRef.current.offsetWidth, e.clientX, e.clientY)
 					}
 					}
 					ref={videoRef}
-					// style={{cursor:events?events[eventToEdit].type === `Censor`?`crosshair`:`auto`:`auto`}}
+					// style={{cursor: events ? events[eventToEdit].type === `Censor`?`crosshair` : `auto` : `auto`}}
 				>
 
 					{subtitleText !== `` &&
 						<Subtitles type={editorType}>{subtitleText}</Subtitles>
 					}
-					<div id='censorContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+					<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
 					</div>
-					<div id ='commentContainer' style={{width:`100%`,height:`100%`,position:`absolute`}}>
+					<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
 					</div>
 					<PauseMessage id='pauseMessage'>
-						<button type='button' style={{width: `90px`, height:`50px`, position:`bottom right`}}>Close</button>
+						<button type='button' style={{width: `90px`, height: `50px`, position: `bottom right`}}>Close</button>
 					</PauseMessage>
 					{activeCensorPosition !== -1 &&
 						<CensorDnD
@@ -502,7 +502,7 @@ const VideoContainer = props => {
 			{!isReady && <div className='loading-spinner'><Spinner/></div>}
 
 			{/* Load the spinner if a file is uploading */}
-			{!isUploading && <div className='loading-spinner'><Spinner/></div> }
+			{ !isUploading && <div className='loading-spinner'><Spinner/></div> }
 
 			<ReactPlayer ref={ref} config={config} url={url} data-testid='react-player'
 				onContextMenu={e => e.preventDefault()}
@@ -520,7 +520,7 @@ const VideoContainer = props => {
 
 				// handlers
 				onReady={video.handleReady}
-				onError={()=>{
+				onError={() => {
 					showError()
 				}}
 
@@ -547,7 +547,7 @@ const VideoContainer = props => {
 							/>
 						</button>
 
-						<div id='time-bar' onMouseLeave={(e) => {
+						<div id='time-bar' onMouseLeave={() => {
 							if(document.getElementById(`time-bar-shadow`) !== null && document.getElementById(`layer-time-indicator-line-shadow`) !== null) {
 								const tempOnload = window.onload
 								window.onload = () => {

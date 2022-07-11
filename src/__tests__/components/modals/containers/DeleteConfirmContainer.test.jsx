@@ -22,7 +22,7 @@ const props = {
 
 describe(`ManageFilesContainer test`, () => {
 
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -32,7 +32,7 @@ describe(`ManageFilesContainer test`, () => {
 		expect(viewstate.resources).toEqual(testutil.resourcesNew)
 	})
 
-	it(`should pass event handlers test with resource`, async()=> {
+	it(`should pass event handlers test with resource`, async () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>
@@ -45,7 +45,7 @@ describe(`ManageFilesContainer test`, () => {
 		wrapper.find(`#confirm-delete`).at(0).simulate(`click`)
 	})
 
-	it(`should pass event handlers test with Users`, async()=> {
+	it(`should pass event handlers test with Users`, async () => {
 		props.type = `Users`
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -58,7 +58,7 @@ describe(`ManageFilesContainer test`, () => {
 		wrapper.find(`#confirm-delete`).at(0).simulate(`click`)
 	})
 
-	it(`should pass event handlers test with Collections`, async()=> {
+	it(`should pass event handlers test with Collections`, async() => {
 		props.type = `Collections`
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -71,7 +71,7 @@ describe(`ManageFilesContainer test`, () => {
 		wrapper.find(`#confirm-delete`).at(0).simulate(`click`)
 	})
 
-	it(`should pass event handlers test with Content`, async()=> {
+	it(`should pass event handlers test with Content`, async() => {
 		props.type = `Content`
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -84,7 +84,7 @@ describe(`ManageFilesContainer test`, () => {
 		wrapper.find(`#confirm-delete`).at(0).simulate(`click`)
 	})
 
-	it(`should pass event handlers test with file`, async()=> {
+	it(`should pass event handlers test with file`, async() => {
 		props.type = `file`
 		const wrapper = mount(
 			<Provider store={testutil.store}>

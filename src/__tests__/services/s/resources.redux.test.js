@@ -40,7 +40,7 @@ describe(`content service test`, () => {
 				cache: {},
 				loading: false,
 				lastFetched: 0,
-				resourceStore:{
+				resourceStore: {
 					cache: {
 						"resourceId2" : resource2,
 						loading: false,
@@ -66,7 +66,7 @@ describe(`content service test`, () => {
 	proxies.apiProxy.media.getKey = jest.fn()
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = resourcesServiceConstructor.types
 
 		expect(types.RESOURCE_START).toBe(`RESOURCE_START`)
@@ -185,7 +185,7 @@ describe(`content service test`, () => {
 	// thunk
 	// TODO: check this later
 	it(`getResources`, async() => {
-		proxies.apiProxy.resources.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.get.mockImplementationOnce(() => {
 			return Promise.resolve(
 				{
 					data: {
@@ -194,7 +194,7 @@ describe(`content service test`, () => {
 							resources: {
 								resources,
 							},
-							relations:[
+							relations: [
 								{
 									type: `resourceId`,
 								},
@@ -211,7 +211,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`search`, async() => {
-		proxies.apiProxy.resources.search.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.search.mockImplementationOnce(() => {
 			return Promise.resolve(resources2)
 		})
 
@@ -221,7 +221,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`editResource`, async() => {
-		proxies.apiProxy.resources.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.edit.mockImplementationOnce(() => {
 			return Promise.resolve(resources2)
 		})
 
@@ -231,7 +231,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`updateFileVersion`, async() => {
-		proxies.apiProxy.resources.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.edit.mockImplementationOnce(() => {
 			return Promise.resolve(resources2)
 		})
 
@@ -243,7 +243,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`editFile`, async() => {
-		proxies.apiProxy.resources.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.get.mockImplementationOnce(() => {
 			return Promise.resolve(resource2)
 		})
 
@@ -255,7 +255,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`getResource`, async() => {
-		proxies.apiProxy.resources.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.get.mockImplementationOnce(() => {
 			return Promise.resolve(resource2)
 		})
 
@@ -265,7 +265,7 @@ describe(`content service test`, () => {
 	})
 
 	it(`addResource`, async() => {
-		proxies.apiProxy.resources.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.post.mockImplementationOnce(() => {
 			return Promise.resolve(resource2)
 		})
 
@@ -276,11 +276,11 @@ describe(`content service test`, () => {
 
 	// TODO: need to check this again. Files length need to be changed 1 to 2.
 	it(`getFiles`, async() => {
-		proxies.apiProxy.resources.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.post.mockImplementationOnce(() => {
 			return Promise.resolve(resource2)
 		})
 
-		proxies.apiProxy.resources.files.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.files.mockImplementationOnce(() => {
 			return Promise.resolve([file1, file2])
 		})
 
@@ -291,11 +291,11 @@ describe(`content service test`, () => {
 	})
 
 	it(`removeResource`, async() => {
-		proxies.apiProxy.resources.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.post.mockImplementationOnce(() => {
 			return Promise.resolve(resource2)
 		})
 
-		proxies.apiProxy.resources.delete.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.delete.mockImplementationOnce(() => {
 			return Promise.resolve(resource2)
 		})
 		await resourcesServiceConstructor.addResource(resource2, resource2)(dispatch, getState, { apiProxy })
@@ -310,11 +310,11 @@ describe(`content service test`, () => {
 	})
 
 	it(`getStreamKey`, async() => {
-		proxies.apiProxy.resources.files.mockImplementationOnce(()=>{
+		proxies.apiProxy.resources.files.mockImplementationOnce(() => {
 			return Promise.resolve([file1, file2])
 		})
 
-		proxies.apiProxy.media.getKey.mockImplementationOnce(()=>{
+		proxies.apiProxy.media.getKey.mockImplementationOnce(() => {
 			return Promise.resolve({
 				"file-key" : `stream key`,
 			})

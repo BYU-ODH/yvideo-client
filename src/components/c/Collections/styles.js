@@ -60,16 +60,16 @@ const Style = styled.div`
 				outline: none;
 				background-color: var(--light-blue);
 				/* background-color: #A9A9A9; */
-				box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.15);
+				box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.15);
 				border: none;
 				border-radius: 6px;
 				text-align: center;
 				cursor: pointer;
-				font-weight:5000;
+				font-weight: 5000;
 				padding: 8px 5px;
 
 				:hover {
-					box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.5);
+					box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.5);
 				}
 				@media screen and (max-width: 320px){
 					font-size: .9rem;
@@ -195,7 +195,7 @@ export const Search = styled.form`
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	}
 
 	& > button {
@@ -205,7 +205,7 @@ export const Search = styled.form`
     background-color: var(--light-blue);
     margin-left: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.2rem;
     border: none;
     border-radius: 2rem;
@@ -241,7 +241,7 @@ export const SearchMobile = styled.form`
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 		@media screen and (max-width: 320px){
 			font-size: 1rem;
 		}

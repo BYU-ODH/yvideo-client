@@ -113,7 +113,7 @@ export const Timeline = styled.div`
 
 				& #layer-time-indicator {
 					height: 10px;
-					width:100%;
+					width: 100%;
 					position: absolute;
 					background-color: transparent;
 

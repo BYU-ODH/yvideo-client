@@ -10,7 +10,7 @@ const professor1 = testutil.professor1
 const professor2 = testutil.professor2
 
 const props = {
-	professors :[
+	professors: [
 		professor1,
 		professor2,
 	],

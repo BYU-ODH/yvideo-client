@@ -36,7 +36,7 @@ const ClipEditorContainer = props => {
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
 	// eslint-disable-next-line no-unused-vars
-	const [subs,setSubs] = useState([])
+	const [subs, setSubs] = useState([])
 
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
@@ -50,7 +50,7 @@ const ClipEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Clip Manager`], collectionId: content[id].collectionId, contentId: content[id].id})
+			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Clip Manager`], collectionId: content[id].collectionId, contentId: content[id].id})
 
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
@@ -77,7 +77,7 @@ const ClipEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Clip Manager`},
+			props: { name: `Clip Manager` },
 		})
 	}
 

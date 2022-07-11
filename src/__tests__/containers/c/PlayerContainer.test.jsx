@@ -10,17 +10,17 @@ const content = [
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
 		collectionId: 85,
 		contentType: `video`,
-		dateValidated:``,
+		dateValidated: ``,
 		description: `test`,
-		expired:true,
+		expired: true,
 		fullVideo: true,
 		id: 0,
-		isCopyrighted:false,
+		isCopyrighted: false,
 		name: `testname`,
-		physicalCopyExists:false,
-		published:true,
-		requester:``,
-		resourceId:`5ebdaef833e57cec218b457c`,
+		physicalCopyExists: false,
+		published: true,
+		requester: ``,
+		resourceId: `5ebdaef833e57cec218b457c`,
 		settings,
 		thumbnail: `test@thumbnail.com`,
 		url: `test url`,
@@ -33,13 +33,13 @@ const content = [
 		contentType: `video2`,
 		collectionId: 85,
 		thumbnail: `test@thumbnail.com`,
-		physicalCopyExists:false,
-		isCopyrighted:false,
-		expired:true,
-		dateValidated:``,
-		requester:``,
-		resourceId:`5ebdaef833e57cec218b457c`,
-		published:true,
+		physicalCopyExists: false,
+		isCopyrighted: false,
+		expired: true,
+		dateValidated: ``,
+		requester: ``,
+		resourceId: `5ebdaef833e57cec218b457c`,
+		published: true,
 		settings,
 		fullVideo: true,
 		authKey: `5377628e855d31ad4d84a8fdedf5758b`,
@@ -69,12 +69,12 @@ jest.mock(`react-router-dom`, () => ({
 }))
 
 proxies.apiProxy.user.get = jest.fn()
-proxies.apiProxy.user.get.mockImplementation(()=>{
+proxies.apiProxy.user.get.mockImplementation(() => {
 	return Promise.resolve(testutil.user)
 })
 
 proxies.apiProxy.content.get = jest.fn()
-proxies.apiProxy.content.get.mockImplementation(()=>{
+proxies.apiProxy.content.get.mockImplementation(() => {
 	return Promise.resolve({0: content[0]})
 })
 

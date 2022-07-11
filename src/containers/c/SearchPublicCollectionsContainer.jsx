@@ -64,7 +64,7 @@ const SearchPublicCollectionsContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: ``,
-			props:{ name: `Home Page`},
+			props: { name: `Home Page` },
 		})
 		toggleTip()
 	}
@@ -113,7 +113,7 @@ const SearchPublicCollectionsContainer = props => {
 		displayBlocks,
 		searchedCount,
 		searchedPublicCollections,
-		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k, v]) => k),
 		isSearched,
 	}
 

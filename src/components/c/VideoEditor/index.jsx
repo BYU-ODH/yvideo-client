@@ -33,7 +33,7 @@ const VideoEditor = props => {
 	} = props.viewstate
 
 	const { handleShowTip, toggleTip, handleShowHelp, handleNavigation } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`},{3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
 
 	const events = [
 		{
@@ -112,8 +112,8 @@ const VideoEditor = props => {
 	// eslint-disable-next-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [editCensor, setEditCensor] = useState({})
-	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
-	const [isLoading,setIsLoading] = useState(false)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
+	const [isLoading, setIsLoading] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 
 	// refs
@@ -177,10 +177,12 @@ const VideoEditor = props => {
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 
-		const eventIndex = currentEvents.length-1 < 0 ? 0 : currentEvents.length-1
+		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
-	const runTimeCheck = (side,event,type) => {
+
+	const runTimeCheck = (side, event, type) => {
+
 		let canAccessDom = false
 		try {
 			if(side === `beg`) {
@@ -291,9 +293,9 @@ const VideoEditor = props => {
 
 		const currentEvents = [...allEvents]
 		if(event.type === `Pause`)
-			runPauseTimeCheck(side,event,type)
+			runPauseTimeCheck(side, event, type)
 		else
-			runTimeCheck(side,event,type)
+			runTimeCheck(side, event, type)
 
 		currentEvents[index] = event
 
@@ -325,11 +327,11 @@ const VideoEditor = props => {
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
 		const posPrev =
-			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b) =>
+			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a, b) =>
 				parseFloat(cEvent.position[b]) - parseFloat(cEvent.position[a]))[0]
 
 		const posNext =
-			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>
+			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a, b) =>
 				parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
 
 		setActiveCensorPosition(posPrev && posNext ?
@@ -350,15 +352,15 @@ const VideoEditor = props => {
 			const layer = cEvent.layer
 			const pos = cEvent.position
 			const id = Object.keys(pos).length !== 0 ?
-				`${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				`${parseInt(Object.keys(pos).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
 				: `0`
 			let exists = false
-			Object.keys(pos).forEach((val)=>{
+			Object.keys(pos).forEach((val) => {
 				if (pos[val][0].toString() === parseFloat(time).toFixed(1).toString()) exists = true
 			})
 			if(exists) return
 
-			cEvent.position[id] = [`${parseFloat(time).toFixed(1)}`,50, 50, 30, 40]
+			cEvent.position[id] = [`${parseFloat(time).toFixed(1)}`, 50, 50, 30, 40]
 			updateEvents(index, cEvent, layer)
 		}
 	}
@@ -428,16 +430,16 @@ const VideoEditor = props => {
 			const layer = cEvent.layer
 			const pos = cEvent.position
 			const id = Object.keys(pos).length !== 0 ?
-				`${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				`${parseInt(Object.keys(pos).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
 				: `0`
 
 			let exists = false
-			Object.keys(pos).forEach((val)=>{
+			Object.keys(pos).forEach((val) => {
 				if (pos[val][0].toString() === time.toFixed(1).toString()) exists = true
 			})
 			if(exists){
 				const existId = Object.keys(cEvent.position).find(val => cEvent.position[val][0] === `${time.toFixed(1)}`)
-				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`,x / width * 100, (y-86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
+				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`, x / width * 100, (y - 86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
 			} else{
 				let newX = x / width * 100
 				let newY = (y - 86) / height * 100
@@ -455,7 +457,7 @@ const VideoEditor = props => {
 					newY = (newY + newWidth / 2) / 2
 					h = newY * 2
 				}
-				if(newY+newHeight / 2 > 100){
+				if(newY + newHeight / 2 > 100){
 					newY = 100 - (100 - newY + newHeight / 2) / 2
 					h = (100 - newY) * 2
 				}
@@ -556,7 +558,7 @@ const VideoEditor = props => {
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 		const tempOnload = window.onload
 		window.onload = () => {
-			if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
 				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 			window.onload = tempOnload
 		}
@@ -655,7 +657,7 @@ const VideoEditor = props => {
 								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
 										<EventCard event={events[index]} key={index}/>
-										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
+										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index) }/>
 									</div>
 
 									<TrackLayer
@@ -665,7 +667,7 @@ const VideoEditor = props => {
 										events={allEvents}
 										activeEvent={eventToEdit}
 										index={index}
-										// onDrop={(item) => eventDropHandler(item,index)}
+										// onDrop={(item) => eventDropHandler(item, index)}
 										updateEvents={updateEvents}
 										displayLayer={displayLayer}
 										handleEventPosition={handleEventPosition}
@@ -685,7 +687,18 @@ const VideoEditor = props => {
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
-								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								enableResizing={
+									{
+										top: false,
+										right: false,
+										bottom: false,
+										left: false,
+										topRight: false,
+										bottomRight: false,
+										bottomLeft: false,
+										topLeft: false,
+									}
+								}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
@@ -697,7 +710,7 @@ const VideoEditor = props => {
 								}
 								onMouseLeave={() => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
 
 						<div className='zoom-scroll'>
@@ -705,10 +718,21 @@ const VideoEditor = props => {
 								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
-										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
-										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										enableResizing={
+											{
+												top: false,
+												right: false,
+												bottom: false,
+												left: false,
+												topRight: false,
+												bottomRight: false,
+												bottomLeft: false,
+												topLeft: false,
+											}
+										}
 										bounds = {`parent`}
-										onDrag = {(e,d)=>{
+										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
 									>
@@ -741,7 +765,7 @@ const VideoEditor = props => {
 							})
 						}
 						onMouseLeave={() => toggleTip()}
-						style={{marginLeft:10,marginTop:15}}
+						style={{marginLeft: 10, marginTop: 15}}
 					/>
 					<div className={`save`}>
 						{disableSave ?
@@ -778,7 +802,7 @@ const VideoEditor = props => {
 						{ showSideEditor &&
 								<>
 									<>
-										<span className='current'>{allEvents !== [] ? `${checkSideBarTitle()}` : ``}</span>
+										<span className='current'>{allEvents !== [] && `${checkSideBarTitle()}`}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>

@@ -1,10 +1,10 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Load from '../../../../components/c/Load/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 describe(`Load test`, () => {
-	it(`wrapper`, ()=> {
+	it(`wrapper`, () => {
 		const parent = mount(
 			<div id='load'></div>,
 		)
