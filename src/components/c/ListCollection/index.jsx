@@ -65,7 +65,7 @@ class ListCollection extends PureComponent {
 										item.clips.length < 3 ?
 											<ListItem key={item.id} data={item} />
 											:
-											<ListItemDropDown key={item.id} data={item} />
+											<ListItemDropDown key={item.id} data={item} isDropDown={true}/>
 									)
 								})
 							}
@@ -132,7 +132,7 @@ class ListCollection extends PureComponent {
 											item.clips.length < 3 ?
 												<ListItem key={item.id} data={item} />
 												:
-												<ListItemDropDown key={item.id} data={item} />
+												<ListItemDropDown key={item.id} data={item} isDropDown={true} />
 										)
 									})
 									:
