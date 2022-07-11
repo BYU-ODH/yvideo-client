@@ -20,17 +20,17 @@ describe(`LazyImage test`, () => {
 		render(wrapper)
 		expect(wrapper).toBeDefined()
 
-		const image = screen.getByRole(`img`, { alt: /test/i })
+		const image = screen.getByRole(`img`)
+		expect(screen.getByAltText(`test`)).toEqual(image)
 
 		expect(image).toBeDefined()
 	})
 
 	it(`test render LazyImage with no image given`, () => {
 		render(noImageWrapper)
-		screen.getByText(/haha/)
 		expect(noImageWrapper).toBeDefined()
 
-		const image = screen.queryByRole(`img`, { alt: /test/i })
+		const image = screen.queryByRole(`img`)
 
 		expect(image).toBeNull()
 	})

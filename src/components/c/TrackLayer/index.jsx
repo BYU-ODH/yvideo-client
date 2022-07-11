@@ -22,7 +22,6 @@ const TrackLayer = props => {
 		displayLayer,
 		handleEventPosition,
 		setEventSeek,
-		activeCensorPosition,
 		setActiveCensorPosition,
 	} = props
 	const layerIndex = parseInt(props.index)
