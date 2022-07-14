@@ -59,6 +59,7 @@ describe(`CreateContentContainer test`, () => {
 		)
 
 		// changes title changes
+		wrapper.find({className: `url`}).at(0).simulate(`click`)
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.title).toBe(``)
 		wrapper.find({className: `url-title-input`}).at(0).simulate(`change`, {target: { name: `title`, value: `title changed` }})
 		expect(wrapper.find(`CreateContent`).props().viewstate.data.title).toBe(`title changed`)
@@ -117,8 +118,8 @@ describe(`CreateContentContainer test`, () => {
 				<Container {...props}/>
 			</Provider>,
 		)
-
-		wrapper.find({className: `url-content-url`}).at(0).simulate(`change`, {target: { name: `url`, value: `https://urlchanged` }})
-		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
+		wrapper.find({className: `url`}).at(0).simulate(`click`)
+		wrapper.find({className: `url-content-url`}).at(0).simulate(`change`, {target: { name: `url`, value: `https://urlchanged`}})
+		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
 	})
 })

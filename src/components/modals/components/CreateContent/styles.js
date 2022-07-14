@@ -29,7 +29,7 @@ export const FormResource = styled.form`
 
 		& select {
 			margin-left: 20px;
-			width: 150px;
+			width: 200px;
 		}
 
 		& > .resource-content-remove {
@@ -128,7 +128,26 @@ export const Button = styled.button`
 	// :hover {
 	// 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.6);
 	// 	transition: 0.5s;
-	}
+	/* } */
+`
+export const DecideButton = styled.button`
+	font-size: 1.5rem;
+	color: ${props => props.color || `black`};
+	cursor: pointer;
+	place-self: start;
+	background: transparent;
+	border-radius: 5px;
+	border: 3px solid #0582ca;
+	padding:0.5rem;
+	align-self:center;
+	:hover {
+			background-color: #0582ca;
+			color: #ffffff;
+		}
+	// :hover {
+	// 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6);
+	// 	transition: 0.5s;
+	/* } */
 `
 
 export const SearchIcon = styled.span`
@@ -154,7 +173,7 @@ export const RemoveKeyword = styled.button`
 	padding: 0;
 	margin: 0 -.25rem 0 .25rem;
 
-	$ > .resource-content-remove-button {
+	> .resource-content-remove-button {
 		height: 2.5rem;
 		width: 2.5rem;
 	}

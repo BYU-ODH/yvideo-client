@@ -57,7 +57,11 @@ const LabAssistantManageCollectionContainer = props => {
 		props.toggleModal({
 			component: CreateContentContainer,
 			collectionId: collection.id,
+			props:{
+				collection,
+			},
 			isLabAssistantRoute: true,
+			collection,
 		})
 	}
 
