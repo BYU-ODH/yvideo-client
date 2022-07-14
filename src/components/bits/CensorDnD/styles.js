@@ -56,6 +56,7 @@ export const CloseBox = styled.div `
 		width: 100%;
 		height: 100%;
 	}
+	cursor: pointer;
 `
 export const BeforeButton = styled.div `
 	height: 10%;
@@ -70,6 +71,11 @@ export const BeforeButton = styled.div `
 	display: flex;
   justify-content: center;
   align-items: center;
+	cursor: pointer;
+
+	& img {
+		padding-left: 11px;
+	}
 `
 export const AfterButton = styled.div `
 	height: 10%;
@@ -84,4 +90,5 @@ export const AfterButton = styled.div `
 	display: flex;
   justify-content: center;
   align-items: center;
+	cursor: pointer;
 `
