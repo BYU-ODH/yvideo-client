@@ -32,7 +32,7 @@ describe(`manage collection test`, () => {
 		)
 	})
 
-	it(`ContentOverviewContainer should render`, ()=> {
+	it(`ContentOverviewContainer should render`, () => {
 		// test viewstate made correctly
 		const viewstate = wrapper.find(`ContentOverview`).props().viewstate
 		expect(viewstate.content.name).toBe(`testname`)
@@ -52,7 +52,7 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 	})
 
-	it(`Unpublish event handler test`, ()=> {
+	it(`Unpublish event handler test`, () => {
 
 		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)
@@ -63,7 +63,7 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find(`ContentOverview`).props().viewstate.content.published).toBe(false)
 	})
 
-	it(`delete event handler test`, ()=> {
+	it(`delete event handler test`, () => {
 
 		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)
@@ -79,7 +79,7 @@ describe(`manage collection test`, () => {
 		}, 500)
 	})
 
-	it(`save event handler test`, ()=> {
+	it(`save event handler test`, () => {
 
 		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)
@@ -94,7 +94,7 @@ describe(`manage collection test`, () => {
 	})
 
 	// TODO: need to figure out which store it updates.
-	it(`toggle, tags and description test`, ()=> {
+	it(`toggle, tags and description test`, () => {
 
 		// click edit-button. It updates display without wrapper.update().
 		// click edit button trigger drop down menu.

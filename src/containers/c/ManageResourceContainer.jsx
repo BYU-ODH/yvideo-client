@@ -29,7 +29,7 @@ const ManageResourceContainer = props => {
 	const [isSearched, setIsSearched] = useState(false)
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Manage Resource`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Manage Resource`], collectionId: ``, contentId: ``})
 
 		// find default setup for the access
 		if(Object.keys(resources).length !== resourceCount){
@@ -37,7 +37,7 @@ const ManageResourceContainer = props => {
 			setIsDefaultSearched(false)
 		}
 
-		if (!isDefaultSearched && defaultSearch[0].length >1) {
+		if (!isDefaultSearched && defaultSearch[0].length > 1) {
 			searchResource(defaultSearch[0])
 			setIsDefaultSearched(true)
 		}
@@ -76,7 +76,7 @@ const ManageResourceContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Manage Resource`},
+			props: { name: `Manage Resource` },
 		})
 	}
 

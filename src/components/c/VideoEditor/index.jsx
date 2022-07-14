@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 // import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
+import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
+// import {DialogBox} from '../../../modals/components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -30,8 +32,8 @@ const VideoEditor = props => {
 		aspectRatio,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp } = props.handlers
-	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`},{3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
+	const { handleShowTip, toggleTip, handleShowHelp, handleNavigation } = props.handlers
+	const layers = [{0: `Skip`}, {1: `Mute`}, {2: `Pause`}, {3: `Comment`}, {4: `Censor`}, {5: `Blank`}]
 
 	const events = [
 		{
@@ -98,6 +100,8 @@ const VideoEditor = props => {
 	const [isReady, setIsReady] = useState(false)
 	const [eventSeek, setEventSeek] = useState(false)
 	const [eventPosition, setEventPosition] = useState(0)
+	const [showPrompt, confirmNavigation, cancelNavigation] =
+		useCallbackPrompt(blockLeave)
 
 	// eslint-disable-next-line no-unused-vars
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
@@ -108,11 +112,16 @@ const VideoEditor = props => {
 	// eslint-disable-next-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [editCensor, setEditCensor] = useState({})
-	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
-	const [isLoading,setIsLoading] = useState(false)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
+	const [isLoading, setIsLoading] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
 
 	// refs
+	useEffect(() => {
+		if (showPrompt)
+			handleNavigation(confirmNavigation, cancelNavigation)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showPrompt])
 
 	useEffect(() => {
 		function handleResize() {
@@ -168,11 +177,12 @@ const VideoEditor = props => {
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 
-		const eventIndex = currentEvents.length-1 < 0 ? 0 : currentEvents.length-1
+		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
 		updateEvents(eventIndex, eventObj, displayLayer)
 	}
 
-	const runTimeCheck = (side,event,type) => {
+	const runTimeCheck = (side, event, type) => {
+
 		let canAccessDom = false
 		try {
 			if(side === `beg`) {
@@ -180,7 +190,7 @@ const VideoEditor = props => {
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
-					canAccessDom=false
+					canAccessDom = false
 				}
 
 			} else if(side === `end`) {
@@ -188,7 +198,7 @@ const VideoEditor = props => {
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
-					canAccessDom=false
+					canAccessDom = false
 				}
 			}
 		} catch (e) {
@@ -196,8 +206,8 @@ const VideoEditor = props => {
 		}
 
 		// check start event times
-		if(event.start < 0){
-			event.start = 0
+		if(event.start < 0 || event.start.isNaN){
+			event.start = 0.0
 			if(canAccessDom)
 				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
 
@@ -225,13 +235,13 @@ const VideoEditor = props => {
 		}
 
 		if(event.start >= 0 && event.start < event.end && event.end <= videoLength){
-			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).style.color=`green`
-				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-				document.getElementById(`sideTabExplanation`).innerHTML=``
-				setDisableSave(false)
-			}
-		} else
+			// if(canAccessDom){
+			// document.getElementById(`sideTabMessage`).style.color=`green`
+			// document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
+			// document.getElementById(`sideTabExplanation`).innerHTML=``
+			setDisableSave(false)
+			// }
+		}else
 			setDisableSave(true)
 
 	}
@@ -283,9 +293,9 @@ const VideoEditor = props => {
 
 		const currentEvents = [...allEvents]
 		if(event.type === `Pause`)
-			runPauseTimeCheck(side,event,type)
+			runPauseTimeCheck(side, event, type)
 		else
-			runTimeCheck(side,event,type)
+			runTimeCheck(side, event, type)
 
 		currentEvents[index] = event
 
@@ -317,11 +327,11 @@ const VideoEditor = props => {
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
 		const posPrev =
-			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a,b) =>
+			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) < parseFloat(cEvent.position[item])).sort((a, b) =>
 				parseFloat(cEvent.position[b]) - parseFloat(cEvent.position[a]))[0]
 
 		const posNext =
-			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a,b)=>
+			Object.keys(cEvent[`position`]).filter(val => parseFloat(cEvent.position[val]) > parseFloat(cEvent.position[item])).sort((a, b) =>
 				parseFloat(cEvent.position[a])-parseFloat(cEvent.position[b]))[0]
 
 		setActiveCensorPosition(posPrev && posNext ?
@@ -342,15 +352,15 @@ const VideoEditor = props => {
 			const layer = cEvent.layer
 			const pos = cEvent.position
 			const id = Object.keys(pos).length !== 0 ?
-				`${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				`${parseInt(Object.keys(pos).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
 				: `0`
 			let exists = false
-			Object.keys(pos).forEach((val)=>{
+			Object.keys(pos).forEach((val) => {
 				if (pos[val][0].toString() === parseFloat(time).toFixed(1).toString()) exists = true
 			})
 			if(exists) return
 
-			cEvent.position[id] = [`${parseFloat(time).toFixed(1)}`,50, 50, 30, 40]
+			cEvent.position[id] = [`${parseFloat(time).toFixed(1)}`, 50, 50, 30, 40]
 			updateEvents(index, cEvent, layer)
 		}
 	}
@@ -361,22 +371,46 @@ const VideoEditor = props => {
 		const cEvent = allEvents[index]
 		const layer = cEvent.layer
 		const pos = cEvent.position
-		const value = parseFloat(e.target.value).toFixed(1)
+		let value
+		if(int === 0)
+			value = parseFloat(e.target.value).toFixed(1)
+		else
+			value = parseFloat(e.target.value).toFixed(0)
 
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
+		case 0:
+			if(isNaN(value)) {
+				pos[item][0] = `0.0`
+				document.getElementById(`censorTimeInput-${item - 1}`).value = `0.0`
+			}else
+				pos[item][0] = value // time in seconds of start of censor
+			break
+
 		case 1: // x in %
 			pos[item][1] = value
 			break
+
 		case 2: // y in %
 			pos[item][2] = value
 			break
+
 		case 3: // width in %
-			pos[item][3] = value
+			if(isNaN(value)) {
+				pos[item][3] = 0
+				document.getElementById(`censorWidthInput-${item - 1}`).value = 0
+			}else
+				pos[item][3] = value
 			break
+
 		case 4: // height in %
-			pos[item][4] = value
+			if(isNaN(value)) {
+				pos[item][4] = 0
+				document.getElementById(`censorHeightInput-${item - 1}`).value = 0
+			}else
+				pos[item][4] = value
 			break
+
 		default:
 			break
 		}
@@ -396,16 +430,16 @@ const VideoEditor = props => {
 			const layer = cEvent.layer
 			const pos = cEvent.position
 			const id = Object.keys(pos).length !== 0 ?
-				`${parseInt(Object.keys(pos).sort((a,b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+				`${parseInt(Object.keys(pos).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
 				: `0`
 
 			let exists = false
-			Object.keys(pos).forEach((val)=>{
+			Object.keys(pos).forEach((val) => {
 				if (pos[val][0].toString() === time.toFixed(1).toString()) exists = true
 			})
 			if(exists){
 				const existId = Object.keys(cEvent.position).find(val => cEvent.position[val][0] === `${time.toFixed(1)}`)
-				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`,x / width * 100, (y-86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
+				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`, x / width * 100, (y - 86) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
 			} else{
 				let newX = x / width * 100
 				let newY = (y - 86) / height * 100
@@ -423,7 +457,7 @@ const VideoEditor = props => {
 					newY = (newY + newWidth / 2) / 2
 					h = newY * 2
 				}
-				if(newY+newHeight / 2 > 100){
+				if(newY + newHeight / 2 > 100){
 					newY = 100 - (100 - newY + newHeight / 2) / 2
 					h = (100 - newY) * 2
 				}
@@ -524,7 +558,7 @@ const VideoEditor = props => {
 		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 		const tempOnload = window.onload
 		window.onload = () => {
-			if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
+			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
 				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
 			window.onload = tempOnload
 		}
@@ -623,7 +657,7 @@ const VideoEditor = props => {
 								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
 										<EventCard event={events[index]} key={index}/>
-										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index)}/>
+										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index) }/>
 									</div>
 
 									<TrackLayer
@@ -633,11 +667,13 @@ const VideoEditor = props => {
 										events={allEvents}
 										activeEvent={eventToEdit}
 										index={index}
-										// onDrop={(item) => eventDropHandler(item,index)}
+										// onDrop={(item) => eventDropHandler(item, index)}
 										updateEvents={updateEvents}
 										displayLayer={displayLayer}
 										handleEventPosition={handleEventPosition}
 										setEventSeek={setEventSeek}
+										activeCensorPosition={activeCensorPosition}
+										setActiveCensorPosition={setActiveCensorPosition}
 									/>
 								</div>
 							))}
@@ -651,7 +687,18 @@ const VideoEditor = props => {
 							<Rnd
 								className={`zoom-indicator`}
 								bounds={`parent`}
-								enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+								enableResizing={
+									{
+										top: false,
+										right: false,
+										bottom: false,
+										left: false,
+										topRight: false,
+										bottomRight: false,
+										bottomLeft: false,
+										topLeft: false,
+									}
+								}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
@@ -663,7 +710,7 @@ const VideoEditor = props => {
 								}
 								onMouseLeave={() => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
 
 						<div className='zoom-scroll'>
@@ -671,10 +718,21 @@ const VideoEditor = props => {
 								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
-										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
-										enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										enableResizing={
+											{
+												top: false,
+												right: false,
+												bottom: false,
+												left: false,
+												topRight: false,
+												bottomRight: false,
+												bottomLeft: false,
+												topLeft: false,
+											}
+										}
 										bounds = {`parent`}
-										onDrag = {(e,d)=>{
+										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
 									>
@@ -693,7 +751,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized} show ={showSideEditor}>
+			<EventEditor id='EventEditor' minimized={eventListMinimized} show={showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}
@@ -707,7 +765,7 @@ const VideoEditor = props => {
 							})
 						}
 						onMouseLeave={() => toggleTip()}
-						style={{marginLeft:10,marginTop:15}}
+						style={{marginLeft: 10, marginTop: 15}}
 					/>
 					<div className={`save`}>
 						{disableSave ?
@@ -744,7 +802,7 @@ const VideoEditor = props => {
 						{ showSideEditor &&
 								<>
 									<>
-										<span className='current'>{allEvents !== [] ? `${checkSideBarTitle()}` : ``}</span>
+										<span className='current'>{allEvents !== [] && `${checkSideBarTitle()}`}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>

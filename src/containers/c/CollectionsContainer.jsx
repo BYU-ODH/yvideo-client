@@ -36,7 +36,7 @@ const CollectionsContainer = props => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`], collectionId: ``, contentId: ``})
 
 		toggleTip()
 		getCollections()
@@ -57,7 +57,7 @@ const CollectionsContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props:{ name: `Home Page`},
+			props: { name: `Home Page` },
 		})
 		toggleTip()
 	}
@@ -82,7 +82,7 @@ const CollectionsContainer = props => {
 		if(searchQuery !== ``){
 			navigate({
 				pathname: `/search-public-collections`,
-				state:{
+				state: {
 					searchQuery,
 				},
 			})
@@ -114,9 +114,9 @@ const CollectionsContainer = props => {
 		user,
 		displayBlocks,
 		publicDisplayBlocks,
-		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
-		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
-		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k, v]) => v),
+		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k, v]) => v),
+		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k, v]) => k),
 		isMobile,
 		hasCollectionPermissions,
 		isContentTab,

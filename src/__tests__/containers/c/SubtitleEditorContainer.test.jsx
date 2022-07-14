@@ -106,13 +106,15 @@ describe(`SubtitleEditorContainer testing`, () => {
 
 	const listenerMock = {offsetX: 100}
 	const boundingMock = {x: 100, y: 50}
-	const scrubberMock = { scrollLeft: 10, style: {color: `red`},
+	const scrubberMock = {
+		scrollLeft: 10, style: {color: `red`},
 		addEventListener: () => {
 			return listenerMock
 		},
 		getBoundingClientRect: () => {
 			return boundingMock
-		} }
+		},
+	}
 	document.getElementById = jest.fn((tag) => {
 		return scrubberMock
 	})
@@ -267,14 +269,14 @@ describe(`SubtitleEditorContainer testing`, () => {
 		wrapper.find(`.setSubModalVisible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
-		wrapper.find(`Rnd`).forEach((comp)=>{
+		wrapper.find(`Rnd`).forEach((comp) => {
 			comp.simulate(`click`)
 		})
-		wrapper.find(`Rnd`).forEach((comp)=>{
+		wrapper.find(`Rnd`).forEach((comp) => {
 			comp.prop(`onDrag`)( {x: 67}, {start: 34, end: 36, text: ``} )
 		})
-		wrapper.find(`Rnd`).forEach((comp)=>{
-			comp.prop(`onResizeStop`)( { x: 318, y: 574}, `right`, ``, {width: 144, height: 0} , `` )
+		wrapper.find(`Rnd`).forEach((comp) => {
+			comp.prop(`onResizeStop`)({ x: 318, y: 574 }, `right`, ``, {width: 144, height: 0} , ``)
 		})
 		wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
 			{ target:
@@ -305,8 +307,8 @@ describe(`SubtitleEditorContainer testing`, () => {
 				return 0
 			})
 		}
-		wrapper.find(`Rnd`).forEach(comp=>{
-			comp.prop(`onDragStop`)( ``, {d: {x: 10}})
+		wrapper.find(`Rnd`).forEach(comp => {
+			comp.prop(`onDragStop`)(``, {d: {x: 10}})
 		})
 		// wrapper.find(`Rnd`).prop(`onMouseLeave`)()
 

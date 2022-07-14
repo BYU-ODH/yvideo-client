@@ -26,7 +26,7 @@ export const Search = styled.form`
 		background: white;
 		border-radius: 1.3rem;
 		border: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 		height: 2.6rem;
 		margin-bottom: 1.6rem;
 		margin-right: 2rem;
@@ -53,7 +53,7 @@ export const DepartmentSelect = styled.input`
 	background: white;
 	border-radius: 1.3rem;
 	border: none;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	height: 2.6rem;
 	margin-bottom: 1.6rem;
 	margin-right: 2rem;
@@ -77,7 +77,7 @@ export const CatalogInput = styled.input`
 
 	outline: none;
 
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
@@ -97,7 +97,7 @@ export const SectionInput = styled.input`
 
 	outline: none;
 
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
@@ -117,7 +117,7 @@ export const AddButton = styled.button`
 
 	${props => props.disabled ? `` : `cursor: pointer`}
 
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
@@ -128,7 +128,7 @@ export const AddManyButton = styled.button`
 	margin-left: 1rem;
 	border: none;
 	border-radius: 1.3rem;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	white-space: nowrap;
 	overflow-x: auto;
 	overflow-y: hidden;

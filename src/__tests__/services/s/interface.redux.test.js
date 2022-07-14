@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import proxies, { browserStorage } from 'proxy'
 import CreateContentContainer from '../../../components/modals/containers/CreateContentContainer'
 
-const modal = { component: CreateContentContainer, collectionId: 0, isLabAssistantRoute:false }
+const modal = { component: CreateContentContainer, collectionId: 0, isLabAssistantRoute: false }
 
 describe(`content service test`, () => {
 
@@ -40,7 +40,7 @@ describe(`content service test`, () => {
 				events: [],
 				error: ``,
 				jsonResponse: undefined,
-				interfaceStore:{
+				interfaceStore: {
 					menuActive: false,
 					modal: {
 						active: false,
@@ -73,7 +73,7 @@ describe(`content service test`, () => {
 	proxies.apiProxy.email.postWithAttachment = jest.fn()
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = interfaceServiceConstructor.types
 
 		expect(types.MENU_TOGGLE).toBe(`MENU_TOGGLE`)
@@ -203,7 +203,7 @@ describe(`content service test`, () => {
 		const translate = `apple`
 		const language = `spanish`
 
-		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(()=>{
+		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(() => {
 			return Promise.resolve(translate)
 		})
 		expect(store.getState().jsonResponse).toEqual(undefined)
@@ -215,22 +215,22 @@ describe(`content service test`, () => {
 		const language = `spanish`
 		const translate = `apple`
 
-		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(()=>{
+		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(() => {
 			return Promise.resolve(translate, language)
 		})
 		const json = await interfaceServiceConstructor.checkTranslation(translate, language)(dispatch, getState, { apiProxy })
-		expect(json).toEqual({ "json": `apple`, "success": true})
+		expect(json).toEqual({ "json": `apple`, "success": true })
 	})
 
 	it(`checkTranslation: can't find match language`, async() => {
 		const language = `english`
 		const translate = `apple`
 
-		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(()=>{
+		proxies.apiProxy.translation.getTranslation.mockImplementationOnce(() => {
 			return Promise.resolve(translate, language)
 		})
 		const json = await interfaceServiceConstructor.checkTranslation(translate, language)(dispatch, getState, { apiProxy })
-		expect(json).toEqual({ "json": {}, "success": false})
+		expect(json).toEqual({ "json": {}, "success": false })
 	})
 
 	it(`sendNoAttachment`, async() => {
@@ -241,7 +241,7 @@ describe(`content service test`, () => {
 			"message": `body`,
 		}
 
-		proxies.apiProxy.email.postNoAttachment.mockImplementationOnce(()=>{
+		proxies.apiProxy.email.postNoAttachment.mockImplementationOnce(() => {
 			return Promise.resolve(success)
 		})
 
@@ -261,7 +261,7 @@ describe(`content service test`, () => {
 		formData.append(`subject`, `title`)
 		formData.append(`message`, `body`)
 
-		proxies.apiProxy.email.postWithAttachment.mockImplementationOnce(()=>{
+		proxies.apiProxy.email.postWithAttachment.mockImplementationOnce(() => {
 			return Promise.resolve(200)
 		})
 

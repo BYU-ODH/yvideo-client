@@ -58,35 +58,35 @@ export class CollectionPermissions extends PureComponent {
 			username,
 		} = this.props.viewstate.user
 
-		const sort = (data,sortType) => {
+		const sort = (data, sortType) => {
 			if (this.state.sortType.reverse === false){
 				this.setState({
-					sortType:{
+					sortType: {
 						reverse: true,
 					},
 				})
 				data.sort((a, b) => {
 					switch (sortType) {
 					case `Username`:
-						return b.username.localeCompare(a.username,{sensitivity:`base`})
+						return b.username.localeCompare(a.username, {sensitivity: `base`})
 					case `Name`:
-						return b[`account-name`].localeCompare(a[`account-name`],{sensitivity:`base`})
+						return b[`account-name`].localeCompare(a[`account-name`], {sensitivity: `base`})
 					default:
 						return ``
 					}
 				})
 			}else{
 				this.setState({
-					sortType:{
+					sortType: {
 						reverse: false,
 					},
 				})
 				data.sort((a, b) => {
 					switch (sortType) {
 					case `Username`:
-						return a.username.localeCompare(b.username,{sensitivity:`base`})
+						return a.username.localeCompare(b.username, {sensitivity: `base`})
 					case `Name`:
-						return a[`account-name`].localeCompare(b[`account-name`],{sensitivity:`base`})
+						return a[`account-name`].localeCompare(b[`account-name`], {sensitivity: `base`})
 					default:
 						return ``
 					}
@@ -116,10 +116,10 @@ export class CollectionPermissions extends PureComponent {
 						<form onSubmit={handlers.addCourse}>
 							<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Dept - Ex: ENGL'/>
 							<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} onKeyPress={e => {
-								if (e.charCode ===13) handlers.handleCatalogBlur(e)
+								if (e.charCode === 13) handlers.handleCatalogBlur(e)
 							}} onBlur={handlers.handleCatalogBlur} value={catalog} placeholder='Course - Ex: 101' required/>
 							<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} onKeyPress={e => {
-								if (e.charCode ===13) handlers.handleSectionBlur(e)
+								if (e.charCode === 13) handlers.handleSectionBlur(e)
 							}} onBlur={handlers.handleSectionBlur} value={section} placeholder='Section - Ex: 001' required/>
 							<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
 						</form><br/>
@@ -159,8 +159,8 @@ export class CollectionPermissions extends PureComponent {
 							<Table border='1'>
 								<thead>
 									<tr>
-										<th>Username<Sort onClick={()=>sort(userTA,`Username`)}></Sort></th>
-										<th>Name<Sort onClick={()=>sort(userTA,`Name`)}></Sort></th>
+										<th>Username<Sort onClick={() => sort(userTA, `Username`)}></Sort></th>
+										<th>Name<Sort onClick={() => sort(userTA, `Name`)}></Sort></th>
 										<th>type</th>
 										<th>Last Login</th>
 										<th>Remove</th>
@@ -188,7 +188,6 @@ export class CollectionPermissions extends PureComponent {
 										: <></>
 									}
 								</tbody>
-								{/* } */}
 							</Table>
 						</UserList>
 						<UserList id='user-table'>
@@ -205,8 +204,8 @@ export class CollectionPermissions extends PureComponent {
 							<Table border='1'>
 								<thead>
 									<tr>
-										<th>Username<Sort onClick={()=>sort(users,`Username`)}></Sort></th>
-										<th>Name<Sort onClick={()=>sort(users,`Name`)}></Sort></th>
+										<th>Username<Sort onClick={() => sort(users, `Username`)}></Sort></th>
+										<th>Name<Sort onClick={() => sort(users, `Name`)}></Sort></th>
 										<th>type</th>
 										<th>Last Login</th>
 										<th>Remove</th>
@@ -234,7 +233,6 @@ export class CollectionPermissions extends PureComponent {
 										: <></>
 									}
 								</tbody>
-								{/* } */}
 							</Table>
 						</UserList>
 					</UserListTable>

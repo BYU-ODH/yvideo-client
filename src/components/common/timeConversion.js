@@ -1,8 +1,8 @@
-export const convertSecondsToMinute = (time, videoLength) =>{
+export const convertSecondsToMinute = (time, videoLength) => {
 	try {
 		// here is meant to use two equal
 		if(typeof time == `number`) { // eslint-disable-line eqeqeq
-			if(videoLength<3600)
+			if(videoLength < 3600)
 				return new Date(Number(time) * 1000).toISOString().substr(14, 8)
 			else
 				return new Date(Number(time) * 1000).toISOString().substr(12, 10)
@@ -19,7 +19,7 @@ export const convertToSeconds = (time, videoLength) => {
 	let second = 0
 	let milliseconds =0
 	const t = time.split(`:`)
-	// HH:MM:SS.MS || HH:MM:SS|| MM:SS.MS || MM:SS || H || SS.MS
+	// HH:MM:SS.MS || HH:MM:SS || MM:SS.MS || MM:SS || H || SS.MS
 	if(t.length > 2) {
 		hour = Number(+t[0])
 		minute = Number(+t[1])
@@ -73,10 +73,10 @@ export const convertToSeconds = (time, videoLength) => {
 }
 
 const millisecondCalculation = (s) => {
-	if(s[1]!== ``) {
+	if(s[1] !== ``) {
 		if(Number(s[1]) > 99) {
 			const hundreds = s[1].substr(0, 3)
-			return Math.round(hundreds/10)
+			return Math.round(hundreds / 10)
 		} else
 			return Number(+s[1])
 	} else

@@ -82,7 +82,7 @@ const PlayerContainer = props => {
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 
 	// aspect ratio
-	const [aspectRatio, setAspectRatio] = useState([16,9])
+	const [aspectRatio, setAspectRatio] = useState([16, 9])
 	const ref = player => {
 		setPlayer(player)
 	}
@@ -115,10 +115,10 @@ const PlayerContainer = props => {
 				setUrl(contentCache[params.id].url)
 				if(contentCache[params.id].url.includes(`youtube`)){
 					const fetchData = async() => {
-						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`,{method:`GET`})
+						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
-							setAspectRatio([data.width,data.height])
+							setAspectRatio([data.width, data.height])
 
 						return data
 					}
@@ -146,7 +146,7 @@ const PlayerContainer = props => {
 				}
 				if (resourceIdStream !== ``){
 					// eslint-disable-next-line no-unused-vars
-					const files = Promise.resolve(getFiles(resourceIdStream)).then((value)=>{
+					const files = Promise.resolve(getFiles(resourceIdStream)).then((value) => {
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
 							if (file[`aspect-ratio`])
@@ -164,7 +164,7 @@ const PlayerContainer = props => {
 
 			}
 			const wrap = document.getElementById(`player-container`)
-			const wraplisten = new ResizeObserver(()=>{
+			const wraplisten = new ResizeObserver(() => {
 
 				handleAspectRatio()
 			})
@@ -190,7 +190,7 @@ const PlayerContainer = props => {
 		if (errorMessage !== errorPrev)
 			handleError()
 			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage,errorPrev])
+	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -395,7 +395,7 @@ const PlayerContainer = props => {
 		setToggleTranscript(!toggleTranscript)
 	}
 
-	const handleAspectRatio = ()=>{
+	const handleAspectRatio = () => {
 		const cont = document.getElementById(`player-container`)
 		if(!cont)
 			return
@@ -405,9 +405,9 @@ const PlayerContainer = props => {
 		const blank = document.getElementById(`blank`)
 		const comment = document.getElementById(`commentContainer`)
 		const censor = document.getElementById(`censorContainer`)
-		if(width/height > aspectRatio[0]/aspectRatio[1]){
-			const videoWidth = height*(aspectRatio[0]/aspectRatio[1])
-			const pad = (width-videoWidth)/2
+		if(width / height > aspectRatio[0] / aspectRatio[1]) {
+			const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
+			const pad = (width - videoWidth) / 2
 			blank.style.marginLeft = `${pad}px`
 			blank.style.marginTop = `0px`
 			blank.style.width = `${videoWidth}px`
@@ -416,9 +416,9 @@ const PlayerContainer = props => {
 			blank.style.height = `${height}px`
 			comment.style.height = `${height}px`
 			censor.style.height = `${height}px`
-		} else if(width/height < aspectRatio[0]/aspectRatio[1]){
-			const videoHeight = width * aspectRatio[1]/aspectRatio[0]
-			const pad = (height - videoHeight)/2
+		} else if(width / height < aspectRatio[0] / aspectRatio[1]) {
+			const videoHeight = width * aspectRatio[1] / aspectRatio[0]
+			const pad = (height - videoHeight) / 2
 			blank.style.marginTop = `${pad}px`
 			blank.style.marginLeft = `0px`
 			blank.style.height = `${videoHeight}px`

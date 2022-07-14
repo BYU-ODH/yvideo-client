@@ -39,7 +39,7 @@ export const Header = styled.div`
 			transition: transform .25s ease-in-out;
 		}
 		& >.name h4 {
-			font-weight:500;
+			font-weight: 500;
 		}
 		& > h3 {
 			flex: 2;
@@ -58,7 +58,6 @@ export const Header = styled.div`
 `
 
 export const Body = styled.div`
-	/* height: ${props => props.isOpen ? `${(parseInt(props.count) * 6.5 + 2).toString()}rem` : `0`}; */
 	height: ${props => props.isOpen ? `auto` : `0`};
 	transition: height .25s ease-in-out;
 	overflow: hidden;
@@ -88,7 +87,7 @@ export const Clip = styled.div`
 			font-weight: 300;
 		}
 		& div h4 {
-			font-weight:300;
+			font-weight: 300;
 		}
 
 		@media screen and (max-width: 425px){

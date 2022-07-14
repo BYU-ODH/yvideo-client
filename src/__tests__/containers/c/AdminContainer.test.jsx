@@ -26,9 +26,9 @@ const category = testutil.adminCategory
 
 const searchResults = [
 	{
-		email:`test@test.com`,
-		id:0,
-		"last-login":`2020-05-29T20:45:58.551Z`,
+		email: `test@test.com`,
+		id: 0,
+		"last-login": `2020-05-29T20:45:58.551Z`,
 		"account-name":`testname`,
 		"account-type": [`admin`],
 		username: `searchResults testusername`,
@@ -131,7 +131,7 @@ describe(`admin container mount`, () => {
 		)
 
 		proxies.apiProxy.admin.search.get = jest.fn()
-		proxies.apiProxy.admin.search.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.admin.search.get.mockImplementationOnce(() => {
 			return Promise.resolve(searchResults)
 		})
 

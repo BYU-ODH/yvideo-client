@@ -60,16 +60,16 @@ const Style = styled.div`
 				outline: none;
 				background-color: var(--light-blue);
 				/* background-color: #A9A9A9; */
-				box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.15);
+				box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.15);
 				border: none;
 				border-radius: 6px;
 				text-align: center;
 				cursor: pointer;
-				font-weight:5000;
+				font-weight: 5000;
 				padding: 8px 5px;
 
 				:hover {
-					box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.5);
+					box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.5);
 				}
 				@media screen and (max-width: 320px){
 					font-size: .9rem;
@@ -110,7 +110,7 @@ export const ViewToggle = styled.button`
 	border: none;
 	height: 1.5rem;
 	width: 1.5rem;
-	margin-right: 1rem;
+	margin-right: ${props => props.role === 0 ? `1rem` : `0rem`};
 	outline: none;
 	cursor: pointer;
 `
@@ -120,7 +120,8 @@ export const PublicViewToggle = styled.button`
 	border: none;
 	height: 1.5rem;
 	width: 1.5rem;
-	margin-right: 1rem;
+	margin-right: ${props => props.role === 0 ? `1rem` : `0rem`};
+	margin-left: 2rem;
 	outline: none;
 	cursor: pointer;
 `
@@ -151,7 +152,7 @@ export const SearchIcon = styled.span`
 	position: absolute;
 	z-index: 10;
 	top: 1rem;
-	left: 2rem;
+	left: 1rem;
 	background: url(${searchIcon}) center no-repeat;
 	background-size: contain;
 	height: 1.8rem;
@@ -190,11 +191,11 @@ export const Search = styled.form`
 		border: none;
 		border-radius: .5rem;
 
-		margin-left: 1rem;
+		// margin-left: 1rem;
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	}
 
 	& > button {
@@ -204,7 +205,7 @@ export const Search = styled.form`
     background-color: var(--light-blue);
     margin-left: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.2rem;
     border: none;
     border-radius: 2rem;
@@ -240,7 +241,7 @@ export const SearchMobile = styled.form`
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 		@media screen and (max-width: 320px){
 			font-size: 1rem;
 		}

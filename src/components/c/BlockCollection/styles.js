@@ -87,7 +87,7 @@ export const Arrow = styled.div`
 
 		opacity: ${props => props.right ? `0` : `1`};
 		transition: opacity .25s ease-in-out;
-		background-image: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+		background-image: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 
 		& > div {
 			height: 1.5rem;
@@ -106,7 +106,7 @@ export const Arrow = styled.div`
 
 		opacity: ${props => props.left ? `0` : `1`};
 		transition: opacity .25s ease-in-out;
-		background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+		background-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 
 		& > div {
 			height: 1.5rem;

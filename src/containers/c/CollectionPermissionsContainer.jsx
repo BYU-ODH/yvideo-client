@@ -59,7 +59,7 @@ const CollectionPermissionsContainer = props => {
 		} else
 			getCollectionInfo(collection.id)
 
-	},[collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
+	}, [collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
 
 	const handlers = {
 		makePublic: e => {
@@ -202,7 +202,7 @@ const CollectionPermissionsContainer = props => {
 		removeUser: value => {
 			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
 			setIsEdited(true)
-			setNumUsers(numUsers-1)
+			setNumUsers(numUsers - 1)
 		},
 		AddBatchNetids: () => {
 			toggleModal({

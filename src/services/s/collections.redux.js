@@ -33,7 +33,7 @@ export default class CollectionService {
 		collectionsAbort: () => ({ type: this.types.COLLECTIONS_ABORT }),
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
-		collectionsErrorSync: error => ({type: this.types.COLLECTIONS_ERROR_SYNC, payload:{ error }}),
+		collectionsErrorSync: error => ({type: this.types.COLLECTIONS_ERROR_SYNC, payload: { error }}),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
 		collectionsRemoveContent: (id, collection) => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT, payload: {id, collection} }),
 		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),

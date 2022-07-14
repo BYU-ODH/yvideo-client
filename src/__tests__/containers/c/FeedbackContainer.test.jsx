@@ -18,7 +18,7 @@ describe(`manage collection test`, () => {
 		)
 	})
 
-	it(`FeedbackContainer`, ()=> {
+	it(`FeedbackContainer`, () => {
 		let button = wrapper.find(`input`).at(0).simulate(`change`, { target: { value: `name` } })
 		expect(button).toBeDefined()
 		button = wrapper.find(`input`).at(1).simulate(`change`, { target: { value: `email` } })
@@ -27,7 +27,7 @@ describe(`manage collection test`, () => {
 		expect(button).toBeDefined()
 		button = wrapper.find(`textarea`).at(0).simulate(`change`, { target: { value: `text` } })
 		expect(button).toBeDefined()
-		button = wrapper.find(`input`).at(3).simulate(`change`, { target: { files: [{attachment: `path`}] } })
+		button = wrapper.find(`input`).at(3).simulate(`change`, { target: {files: [{attachment: `path`}]} })
 		expect(button).toBeDefined()
 		wrapper.find(`.test-mailing`).simulate(`submit`)
 	})

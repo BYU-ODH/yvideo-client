@@ -5,7 +5,7 @@ const handleBlank = (blanks) => {
 	if (blanks.length > 0){
 		if (!blank){
 			const blank = document.createElement(`div`)
-			blank.setAttribute(`id`,`blankBox`)
+			blank.setAttribute(`id`, `blankBox`)
 			blankContainer.appendChild(blank)
 		}
 	}else{
@@ -15,7 +15,7 @@ const handleBlank = (blanks) => {
 
 	}
 }
-export const HandleSubtitle = (time,subtitles,ind,duration) => {
+export const HandleSubtitle = (time, subtitles, ind, duration) => {
 	const tempOnload = window.onload
 	window.onload = () => {
 		const subtitleNode = document.getElementById(`subtitle`)
@@ -31,10 +31,10 @@ export const HandleSubtitle = (time,subtitles,ind,duration) => {
 		window.onload = tempOnload
 	}
 }
-export const CurrentEvents = (time,events,duration) => {
+export const CurrentEvents = (time, events, duration) => {
 	const activeEvents = []
 	const doneEvents = []
-	events.forEach((val,ind)=>{
+	events.forEach((val, ind) => {
 		const newVal = {...val}
 		const start = val.start
 		const end = val.end || val.start + 0.5
@@ -50,15 +50,15 @@ export const CurrentEvents = (time,events,duration) => {
 	const comments = activeEvents.filter(val => val.type === `Comment`)
 	const censorValues = []
 
-	censors.forEach((val,ind)=>{
-		censorValues.push(Position(val.position,time))
+	censors.forEach((val, ind) => {
+		censorValues.push(Position(val.position, time))
 	})
 	const blanks = activeEvents.filter(val => val.type === `Blank`)
 	handleBlank(blanks)
 	const censorContainer = document.getElementById(`censorContainer`)
 	if (censorContainer){
 		const censorChildren = censorContainer.children
-		for (let i = 0; i<censorValues.length; i++){
+		for (let i = 0; i < censorValues.length; i++){
 			// MATCH CENSOR VALUES BY UNIQUE IDENTIFIER NOT INDEX
 			// IF WE TAKE THE NEXT VALUE INTO ACCOUNT EACH CENSOR VALUE HAS A UNIQUE NEXT
 			const left1Value =
@@ -70,8 +70,8 @@ export const CurrentEvents = (time,events,duration) => {
 			if(document.getElementById(`censorBox-${censorValues[i].next}-${left1Value}`) === null){
 				// if the censor does not exist we create a new one
 				const cen = document.createElement(`div`)
-				cen.setAttribute(`class`,`censorBox`)
-				cen.setAttribute(`id`,`censorBox-${censorValues[i].next}-${left1Value}`)
+				cen.setAttribute(`class`, `censorBox`)
+				cen.setAttribute(`id`, `censorBox-${censorValues[i].next}-${left1Value}`)
 				const can = document.createElement(`canvas`)
 				cen.appendChild(can)
 				censorContainer.appendChild(cen)
@@ -118,14 +118,14 @@ export const CurrentEvents = (time,events,duration) => {
 	const commentContainer = document.getElementById(`commentContainer`)
 	if (commentContainer){
 		const commentChildren = commentContainer.children
-		for (let i = 0; i<comments.length; i++){
+		for (let i = 0; i < comments.length; i++){
 			let exists = false
 			for (let x = 0; x < commentChildren.length; x++)
 				if (commentChildren[i]) exists = true
 			if (!exists){
 				const com = document.createElement(`div`)
-				com.setAttribute(`class`,`comment`)
-				com.setAttribute(`id`,`comment-${i}`)
+				com.setAttribute(`class`, `comment`)
+				com.setAttribute(`id`, `comment-${i}`)
 				com.innerHTML = comments[i].comment
 				commentContainer.appendChild(com)
 			}
@@ -151,7 +151,7 @@ export const CurrentEvents = (time,events,duration) => {
 	}
 	return eventValues
 }
-export const CensorChange = async (ind, censorData, playedSeconds) =>{
+export const CensorChange = async (ind, censorData, playedSeconds) => {
 	const dataLeft1Value =
 		censorData.left1 !== undefined ?
 			censorData.left1.toFixed(2)
@@ -183,7 +183,7 @@ export const CensorChange = async (ind, censorData, playedSeconds) =>{
 
 			left =
 			censorData.left1 + censorData.left2 !== 0 ?
-				censorData.left1 - width/2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.left2 - censorData.left1)
+				censorData.left1 - width / 2 + (playedSeconds - censorData.previous) / (censorData.next - censorData.previous) * (censorData.left2 - censorData.left1)
 				: 0
 		}else if(typeof censorData.previous === `undefined` || typeof censorData.next === `undefined`){
 			width = censorData.width1
@@ -197,7 +197,7 @@ export const CensorChange = async (ind, censorData, playedSeconds) =>{
 		censorBox.style.width = `${width}%`
 	}
 }
-export const CommentChange = (ind,commentData, playedSeconds) =>{
+export const CommentChange = (ind, commentData, playedSeconds) => {
 	if(document.getElementById(`comment-${ind}`)){
 		const commentBox = document.getElementById(`comment-${ind}`)
 		commentBox.style.top = `${commentData.y}%`
