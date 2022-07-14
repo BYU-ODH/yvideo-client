@@ -170,30 +170,31 @@ const CreateContentContainer = props => {
 	}
 
 	const handleSelectResourceChange = async (e, resource) => {
-		const access = await getAccess(resource.id)
 		let theAccess = true
+		if(user.id === collection.owner){
+			const access = await getAccess(resource.id)
 
-		if(access.length !== 0) {
-			for (let i = 0; i < access.length; i++) {
-				if(user.username === access[i].username) {
-					setIsAccess(true)
-					theAccess = true
-					setData({
-						...data,
-						title: resource.resourceName,
-					})
-					break
+			if(access.length !== 0) {
+				for (let i = 0; i < access.length; i++) {
+					if(user.username === access[i].username) {
+						setIsAccess(true)
+						theAccess = true
+						break
+					}
+					if(i === access.length -1) {
+						setIsAccess(false)
+						theAccess = false
+
+					}
 				}
-				if(i === access.length -1) {
-					setIsAccess(false)
-					theAccess = false
-
-				}
-			}
-		} else
-			theAccess = false
-
-		if(theAccess) {
+			} else
+				theAccess = false
+		}
+		setData({
+			...data,
+			title: resource.resourceName,
+		})
+		if(theAccess || user.roles === 0 || user.roles === 1) {
 			setSelectedResourceName(resource.resourceName)
 			setSelectedResourceId(resource.id)
 			setIsResourceSelected(true)
@@ -208,6 +209,7 @@ const CreateContentContainer = props => {
 		}
 		setSearchQuery(``)
 		setHide(true)
+
 	}
 
 	const handleTypeChange = e => {
@@ -293,7 +295,7 @@ const CreateContentContainer = props => {
 	}
 	const adminResourceCheckPermissions = async(e) =>{
 		e.preventDefault()
-		if(user.roles === 0){
+		if(user.roles < 2){
 			try{
 				const owner = await adminGetUserById(collection.owner)
 				const uname = owner.username

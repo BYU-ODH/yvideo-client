@@ -67,13 +67,13 @@ export default class CreateContent extends PureComponent {
 				isValidatingAddPermissions?(
 					<div style={{padding:`2rem`}}>
 						<h2 style={{textAlign:`center`}} className='create-content-title'>Warning:</h2>
-						<h3 style={{textAlign:`center`, width:`50vh`, marginTop:`15px`}}>The Owner of this collection does not have permission to use this resource, would you like to continue and give them permission?</h3>
+						<h3 style={{textAlign:`center`, width:`50vh`, marginTop:`15px`}}>The owner of this collection does not have permission to use this resource, would you like to continue and give them permission?</h3>
 						<div style={{width:`50vh`,display:`flex`, justifyContent:`space-around`, marginTop:`3rem`}}>
 							<div>
 								<DecideButton className='tab-url' onClick={cancelAdminPermissions} name={`url`}>Cancel</DecideButton>
 							</div>
 							<div>
-								<DecideButton className='tab-search-resources' onClick={confirmAdminPermissions} name={`resource`}>Continue</DecideButton>
+								<DecideButton className='tab-search-resources' onClick={confirmAdminPermissions} name={`resource`}>Grant Permission</DecideButton>
 							</div>
 						</div>
 						<div style={{display:`flex`, justifyContent:`space-around`}}>
