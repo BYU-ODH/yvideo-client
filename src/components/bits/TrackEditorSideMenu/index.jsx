@@ -251,9 +251,6 @@ const TrackEditorSideMenu = props => {
 									{event.type === `Censor` &&
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
-												{
-													console.log(event.position[item])
-												}
 												<td id='time-td'><input
 													id={`censorTimeInput-${i}`}
 													className='censorRow'
