@@ -5,7 +5,7 @@ import { Rnd } from 'react-rnd'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
-import { convertToSeconds } from '../../common/timeConversion'
+import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 // import {DialogBox} from '../../../modals/components'
 
@@ -365,7 +365,7 @@ const VideoEditor = props => {
 		}
 	}
 
-	const handleEditCensor = (e, item, int) => {
+	const handleEditCensor = (e, item, int, type) => {
 		const object = editCensor
 		const index = eventToEdit
 		const cEvent = allEvents[index]
@@ -373,18 +373,18 @@ const VideoEditor = props => {
 		const pos = cEvent.position
 		let value
 		if(int === 0)
-			value = parseFloat(e.target.value).toFixed(1)
+			value = convertToSeconds(e.target.value, videoLength)
 		else
-			value = parseFloat(e.target.value).toFixed(0)
+			value = Number(parseFloat(e.target.value).toFixed(0))
 
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
 		case 0:
-			if(isNaN(value)) {
+			if(value === 0 && type === `onBlur`) {
 				pos[item][0] = `0.0`
-				document.getElementById(`censorTimeInput-${item - 1}`).value = `0.0`
-			}else
-				pos[item][0] = value // time in seconds of start of censor
+				document.getElementById(`censorTimeInput-${item - 1}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
+			} else
+				pos[item][0] = value.toFixed(1)
 			break
 
 		case 1: // x in %
@@ -396,18 +396,17 @@ const VideoEditor = props => {
 			break
 
 		case 3: // width in %
-			if(isNaN(value)) {
+			if(isNaN(value))
 				pos[item][3] = 0
-				document.getElementById(`censorWidthInput-${item - 1}`).value = 0
-			}else
+			else
 				pos[item][3] = value
+
 			break
 
 		case 4: // height in %
-			if(isNaN(value)) {
+			if(isNaN(value))
 				pos[item][4] = 0
-				document.getElementById(`censorHeightInput-${item - 1}`).value = 0
-			}else
+			else
 				pos[item][4] = value
 			break
 
@@ -415,7 +414,7 @@ const VideoEditor = props => {
 			break
 		}
 		cEvent.position = pos
-		updateEvents(index, cEvent, layer)
+		updateEvents(index, cEvent, layer, ``, type)
 		setEditCensor(object)
 	}
 
@@ -493,7 +492,7 @@ const VideoEditor = props => {
 
 	const handleExportAnnotation = () => {
 		const jsonData = []
-		for (let e=0; e < allEvents.length; e++) {
+		for (let e = 0; e < allEvents.length; e++) {
 			if (allEvents[e].type !== `Censor`){
 				const data = {"options": {
 					"end": allEvents[e].end,
