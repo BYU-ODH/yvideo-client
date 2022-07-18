@@ -73,14 +73,14 @@ describe(`Admin Table test`, () => {
 				cleanup()
 			})
 			it(`Test ellipsis menu`, async () => {
-				const sortMock = jest.fn()
+				// const sortMock = jest.fn()
 
 				// viewstate.searchCategory is `Users`
 				const user = userEvent.setup()
 				const collectionLink = screen.getByRole(`link`)
 				const edit = screen.getByText(/Edit/)
 				const deleteButton = screen.getByText(/Delete/)
-				const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
+				// const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
 
 				expect(collectionLink).toBeVisible()
 				expect(edit).toBeVisible()
@@ -178,13 +178,13 @@ describe(`Admin Table test`, () => {
 			cleanup()
 		})
 		it(`Test ellipsis menu`, async () => {
-			const sortMock = jest.fn()
+			// const sortMock = jest.fn()
 
 			// viewstate.searchCategory is `Collections`
 			const user = userEvent.setup()
 			const collectionLink = screen.getByRole(`link`)
 			const deleteButton = screen.getByText(/Delete/)
-			const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
+			// const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
 
 			expect(collectionLink).toBeVisible()
 			expect(deleteButton).toBeVisible()
@@ -222,14 +222,14 @@ describe(`Admin Table test`, () => {
 			cleanup()
 		})
 		it(`Test ellipsis menu`, async () => {
-			const sortMock = jest.fn()
+			// const sortMock = jest.fn()
 
 			// viewstate.searchCategory is `Content`
 			const user = userEvent.setup()
 			const viewLink = screen.getByText(/View/)
 			const edit = screen.getByText(/Edit/)
 			const deleteButton = screen.getByText(/Delete/)
-			const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
+			// const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
 
 			expect(viewLink).toBeVisible()
 			expect(edit).toBeVisible()
