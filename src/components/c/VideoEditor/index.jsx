@@ -190,8 +190,7 @@ const VideoEditor = props => {
 				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					event.start = convertToSeconds(event.start, videoLength)
 					setHotkeysActive(true)
-				}
-				else {
+				} else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
@@ -200,8 +199,7 @@ const VideoEditor = props => {
 				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					event.end = convertToSeconds(event.end, videoLength)
 					setHotkeysActive(true)
-				}
-				else {
+				} else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
@@ -371,9 +369,6 @@ const VideoEditor = props => {
 	}
 
 	const handleEditCensor = async (e, item, int, type) => {
-		if (type === `onBlur`){
-			setHotkeysActive(true)
-		}
 		const object = editCensor
 		const index = eventToEdit
 		const cEvent = allEvents[index]
@@ -384,6 +379,9 @@ const VideoEditor = props => {
 			value = convertToSeconds(e.target.value, videoLength)
 		else
 			value = Number(parseFloat(e.target.value).toFixed(0))
+
+		if (type === `onBlur`)
+			setHotkeysActive(true)
 
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
