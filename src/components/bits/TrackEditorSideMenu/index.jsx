@@ -25,6 +25,7 @@ const TrackEditorSideMenu = props => {
 		handleShowTip,
 		setEventSeek,
 		handleEventPosition,
+		handleHotkeysActive,
 	} = props
 
 	const timeInputConstrain = /^[0-9,.,:\b]+$/
@@ -60,6 +61,7 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditEventBTimeChange = (e, type) => {
+		handleHotkeysActive()
 		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
@@ -139,6 +141,7 @@ const TrackEditorSideMenu = props => {
 		updateEvents(index, cEvent, layer)
 	}
 	const handleCensorActive = (e) => {
+		handleHotkeysActive()
 		setEventSeek(true)
 		handleEventPosition(event.position[e][0])
 		setActiveCensorPosition(e)
@@ -252,11 +255,12 @@ const TrackEditorSideMenu = props => {
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
 												<td id='time-td'><input
-													id={`censorTimeInput-${i}`}
+													id={`censorTimeInput-${item}`}
 													className='censorRow'
 													type='text'
 													defaultValue={`${convertSecondsToMinute(parseFloat(event.position[item][0]), videoLength)}`}
 													onClick={() => handleCensorActive(item)}
+													onChange={handleHotkeysActive}
 													onBlur={(e) => handleEditCensor(e, item, 0, `onBlur`)}
 													onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 														{

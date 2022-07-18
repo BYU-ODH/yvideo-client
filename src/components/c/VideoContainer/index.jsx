@@ -32,6 +32,9 @@ const VideoContainer = props => {
 		eventSeek,
 		setEventSeek,
 		eventPosition,
+		handleShowTip,
+		toggleTip,
+		hotkeysActive,
 	} = props
 
 	const ref = useRef(null)
@@ -104,11 +107,7 @@ const VideoContainer = props => {
 			}
 
 			setElapsed(playedSeconds)
-			const tempOnload = window.onload
-			window.onload = () => {
-				document.getElementById(`seconds-time-holder`).innerText = playedSeconds
-				window.onload = tempOnload
-			}
+			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
 
 			if(!events) return
 			const values = CurrentEvents(playedSeconds, events, duration)
@@ -417,7 +416,8 @@ const VideoContainer = props => {
 			}
 			// checking video container and setting event listener for hot keys
 			window.onkeyup = (e) => {
-				handleHotKeys(e)
+				if(hotkeysActive)
+					handleHotKeys(e)
 			}
 		}
 		// Allowing the seeker bar to go straight to the event that is clicked, but only if eventSeek === true
@@ -538,7 +538,17 @@ const VideoContainer = props => {
 					</button>
 
 					<div className='scrubber'>
-						<span className='time'>{formattedElapsed}</span>
+						<span
+							className='time'
+							onMouseEnter={e => handleShowTip(`HMMSSMS`,
+								{
+									x: e.target.getBoundingClientRect().x,
+									y: e.target.getBoundingClientRect().y - 75,
+									width: e.currentTarget.offsetWidth + 20,
+								})
+							}
+							onMouseLeave={() => toggleTip()}
+						>{formattedElapsed}</span>
 
 						<button className='mute' onClick={video.toggleMute}>
 							<img

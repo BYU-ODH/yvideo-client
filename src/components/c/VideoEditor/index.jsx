@@ -115,6 +115,7 @@ const VideoEditor = props => {
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [isLoading, setIsLoading] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
+	const [hotkeysActive, setHotkeysActive] = useState(true)
 
 	// refs
 	useEffect(() => {
@@ -186,16 +187,20 @@ const VideoEditor = props => {
 		let canAccessDom = false
 		try {
 			if(side === `beg`) {
-				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					event.start = convertToSeconds(event.start, videoLength)
+					setHotkeysActive(true)
+				}
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
 
 			} else if(side === `end`) {
-				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					event.end = convertToSeconds(event.end, videoLength)
+					setHotkeysActive(true)
+				}
 				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
@@ -365,7 +370,10 @@ const VideoEditor = props => {
 		}
 	}
 
-	const handleEditCensor = (e, item, int, type) => {
+	const handleEditCensor = async (e, item, int, type) => {
+		if (type === `onBlur`){
+			setHotkeysActive(true)
+		}
 		const object = editCensor
 		const index = eventToEdit
 		const cEvent = allEvents[index]
@@ -380,11 +388,11 @@ const VideoEditor = props => {
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
 		case 0:
-			if(value === 0 && type === `onBlur`) {
+			if(value === 0)
 				pos[item][0] = `0.0`
-				document.getElementById(`censorTimeInput-${item - 1}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
-			} else
-				pos[item][0] = value.toFixed(1)
+			else
+				pos[item][0] = value
+			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
 			break
 
 		case 1: // x in %
@@ -416,6 +424,10 @@ const VideoEditor = props => {
 		cEvent.position = pos
 		updateEvents(index, cEvent, layer, ``, type)
 		setEditCensor(object)
+	}
+
+	const handleHotkeysActive = () => {
+		setHotkeysActive(false)
 	}
 
 	// THIS IS PART OF CENSOR
@@ -645,6 +657,9 @@ const VideoEditor = props => {
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
 					eventPosition={eventPosition}
+					handleShowTip={handleShowTip}
+					toggleTip={toggleTip}
+					hotkeysActive={hotkeysActive}
 				></VideoContainer>
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -814,17 +829,19 @@ const VideoEditor = props => {
 							videoLength={videoLength}
 							closeSideEditor={closeSideEditor}
 							updateEvents={updateEvents}
-							editCensor = {editCensor}
+							editCensor={editCensor}
 							index={eventToEdit}
-							handleEditCensor = {handleEditCensor}
-							handleCensorRemove = {handleCensorRemove}
-							handleAddCensor = {handleAddCensor}
-							activeCensorPosition = {activeCensorPosition}
-							setActiveCensorPosition = {setActiveCensorPosition}
+							handleEditCensor={handleEditCensor}
+							handleCensorRemove={handleCensorRemove}
+							handleAddCensor={handleAddCensor}
+							activeCensorPosition={activeCensorPosition}
+							setActiveCensorPosition={setActiveCensorPosition}
 							toggleTip={toggleTip}
 							handleShowTip={handleShowTip}
-							setEventSeek = {setEventSeek}
-							handleEventPosition = {handleEventPosition}
+							setEventSeek={setEventSeek}
+							handleEventPosition={handleEventPosition}
+							setHotkeysActive={setHotkeysActive}
+							handleHotkeysActive={handleHotkeysActive}
 						></TrackEditorSideMenu>
 						:
 						<></>
