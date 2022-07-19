@@ -108,7 +108,7 @@ const ClipLayer = props => {
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
-				<div ref={layerRef} data-testid='haha' className='clipbox'>
+				<div ref={layerRef} className='clipbox'>
 					<div className={`clip-layer-${clipName} events`}>
 						<Rnd
 							ref={dragRef}
