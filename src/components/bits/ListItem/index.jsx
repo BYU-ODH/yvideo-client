@@ -16,7 +16,7 @@ class ListItem extends PureComponent {
 
 		return (
 			isDropDown ?
-				<Header data-testid='list-item' className='list-header' isOpen={isOpen} onClick={togglePanel} >
+				<Header data-testid='list-item-dropDown' className='list-header' isOpen={isOpen} onClick={togglePanel} >
 					<div className='list-header-content'>
 						<LazyImage
 							src={thumbnail !== `empty` ? thumbnail : defaultThumbnail}
@@ -37,7 +37,7 @@ class ListItem extends PureComponent {
 					</div>
 				</Header>
 				:
-				<Style>
+				<Style data-testid='list-item'>
 					<Link to={`/player/${id}`}>
 						<LazyImage
 							src={thumbnail !== `empty` ? thumbnail : defaultThumbnail}

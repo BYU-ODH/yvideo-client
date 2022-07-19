@@ -1,6 +1,6 @@
 import React from 'react'
 import ListItem from '../../../../components/bits/ListItem/index'
-import { render, screen, cleanup, waitFor } from '@testing-library/react'
+import { render, screen, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -13,19 +13,7 @@ const props = {
 		captions: [],
 		annotations: [],
 	},
-	isDropDown: false
-}
-
-const dropProps = {
-	data: {
-		id: `110`,
-		name: `testname`,
-		thumbnail: `test@thumbnail`,
-		translation: `testTranslation`,
-		captions: [],
-		annotations: [],
-	},
-	isDropDown: true,
+	isDropDown: false,
 	togglePanel: jest.fn(),
 }
 
@@ -34,9 +22,11 @@ const wrapper =
 		<ListItem {...props} />
 	</BrowserRouter>
 
+props.isDropDown = true
+
 const dropWrapper =
 	<BrowserRouter>
-		<ListItem {...dropProps} />
+		<ListItem {...props} />
 	</BrowserRouter>
 
 describe(`ListItem test`, () => {
@@ -60,17 +50,15 @@ describe(`ListItem test`, () => {
 		expect(img).not.toBeNull()
 		expect(screen.queryByAltText(``)).toEqual(img)
 	})
-	it(`test render ListItem with `, async () => {
+	it(`test render ListItem with dropDown`, async () => {
 		render(dropWrapper)
-		expect(dropWrapper).toBeDefined()
+
 		const user = userEvent.setup()
+		expect(screen.getByTestId(`list-item-dropDown`)).toBeDefined() // difference
 
 		const name = screen.queryByText(/testname/i)
 		const img = screen.queryByRole(`img`)
 		const carrot = screen.queryByTestId(`carrot`)
-		const listItem = screen.queryByTestId(`list-item`)
-
-		expect(screen.queryByRole(`link`)).toBeNull()
 
 		expect(name).not.toBeNull()
 		expect(img).not.toBeNull()
@@ -79,6 +67,6 @@ describe(`ListItem test`, () => {
 		expect(carrot).not.toBeNull()
 		expect(carrot).toHaveStyle(`transform: rotate(0deg)`)
 
-		await user.click(listItem)
+		await user.click(screen.getByTestId(`list-item-dropDown`))
 	})
 })
