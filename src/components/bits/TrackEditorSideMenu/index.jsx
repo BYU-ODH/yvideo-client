@@ -25,6 +25,7 @@ const TrackEditorSideMenu = props => {
 		handleShowTip,
 		setEventSeek,
 		handleEventPosition,
+		handleHotkeysActive,
 	} = props
 
 	const timeInputConstrain = /^[0-9,.,:\b]+$/
@@ -35,23 +36,15 @@ const TrackEditorSideMenu = props => {
 	}, [index, event, singleEvent])
 
 	const editEvent = (side, time, value, layer, ind, type) => {
-		// document.getElementById()
 		const ev = {...event}
 		if (side === `beg`) {
-			if(time === ``)
-				ev.start=``
-			else
-				ev.start = time
-
+			ev.start = time
 			ev.end = singleEvent.end
 			ev.text = singleEvent.text
 
 		} else if(side === `end`) {
 			ev.start = singleEvent.start
-			if(time === ``)
-				ev.end=``
-			else
-				ev.end = time
+			ev.end = time
 		}
 
 		try{
@@ -64,10 +57,11 @@ const TrackEditorSideMenu = props => {
 			console.log(error) // eslint-disable-line no-console
 		}
 		setEvent(ev)
-		updateEvents(ind, ev, layer, side, type)
+		updateEvents(ind, event, layer, side, type)
 	}
 
-	const handleEditEventBTimeChange = (e) => {
+	const handleEditEventBTimeChange = (e, type) => {
+		handleHotkeysActive()
 		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
@@ -76,24 +70,11 @@ const TrackEditorSideMenu = props => {
 			cEvent.start = e.target.value
 			setEvent(cEvent)
 			// editEvent(index, cEvent, layer, `beg`)
-			editEvent(`beg`, cEvent.start, null, layer, index, null)
-			// (side, time, value, layer, ind, type)
+			editEvent(`beg`, cEvent.start, null, layer, index, type)
 		}
 	}
 
-	const handleEditEventBTimeFinalChange = (e) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
-		const cEvent = event
-		const layer = cEvent.layer
-		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
-			cEvent.start = e.target.value
-			setEvent(cEvent)
-			// updateEvents(index, cEvent, layer, `beg`, `onBlur`)
-			editEvent(`beg`, cEvent.start, null, layer, index, `onBlur`)
-		}
-	}
-
-	const handleEditEventETimeChange = (e) => {
+	const handleEditEventETimeChange = (e, type) => {
 		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
@@ -102,20 +83,7 @@ const TrackEditorSideMenu = props => {
 			cEvent.end = e.target.value
 			setEvent(cEvent)
 			// updateEvents(index, cEvent, layer, `end`)
-			editEvent(`end`, cEvent.end, null, layer, index, null)
-		}
-	}
-
-	const handleEditEventETimeFinalChange = (e) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
-		const cEvent = event
-		const layer = cEvent.layer
-
-		if (e.target.value === `` || timeInputConstrain.test(e.target.value)) {
-			cEvent.end = e.target.value
-			setEvent(cEvent)
-			// updateEvents(index, cEvent, layer, `end`, `onBlur`)
-			editEvent(`end`, cEvent.end, null, layer, index, `onBlur`)
+			editEvent(`end`, cEvent.end, null, layer, index, type)
 		}
 	}
 
@@ -173,6 +141,7 @@ const TrackEditorSideMenu = props => {
 		updateEvents(index, cEvent, layer)
 	}
 	const handleCensorActive = (e) => {
+		handleHotkeysActive()
 		setEventSeek(true)
 		handleEventPosition(event.position[e][0])
 		setActiveCensorPosition(e)
@@ -203,8 +172,8 @@ const TrackEditorSideMenu = props => {
 										className='sideTabInput'
 										value={`${convertSecondsToMinute(start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
-										onChange={e => handleEditEventBTimeChange(e)}
-										onBlur={e => handleEditEventBTimeFinalChange(e)}
+										onChange={e => handleEditEventBTimeChange(e, `onChange`)}
+										onBlur={e => handleEditEventBTimeChange(e, `onBlur`)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS`: `HMMSSMS`}`,
 											{
 												x: e.target.getBoundingClientRect().x - 15,
@@ -220,8 +189,8 @@ const TrackEditorSideMenu = props => {
 										value={`${convertSecondsToMinute(end, videoLength)}`}
 										style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}
 										onKeyUp={e => e.stopPropagation()}
-										onChange={e => handleEditEventETimeChange(e)}
-										onBlur={e => handleEditEventETimeFinalChange(e)}
+										onChange={e => handleEditEventETimeChange(e, `onChange`)}
+										onBlur={e => handleEditEventETimeChange(e, `onBlur`)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 											{
 												x: e.target.getBoundingClientRect().x - 15,
@@ -285,11 +254,51 @@ const TrackEditorSideMenu = props => {
 									{event.type === `Censor` &&
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
-												<td><input id={`censorTimeInput-${i}`} onClick={() => handleCensorActive(item)} className='censorRow' type='number' defaultValue={`${event.position[item][0]}`} onBlur={(e) => handleEditCensor(e, item, 0)}/></td>
-												<td><input disabled onClick={() => handleCensorActive(item)} type='number' defaultValue={`${event.position[item][1]}`} onBlur={(e) => handleEditCensor(e, item, 1)}/></td>
-												<td><input disabled onClick={() => handleCensorActive(item)} type='number' defaultValue={`${event.position[item][2]}`} onBlur={(e) => handleEditCensor(e, item, 2)}/></td>
-												<td><input id={`censorWidthInput-${i}`} onClick={() => handleCensorActive(item)} type='number' defaultValue={`${event.position[item][3]}`} onBlur={(e) => handleEditCensor(e, item, 3)}/></td>
-												<td><input id={`censorHeightInput-${i}`} onClick={() => handleCensorActive(item)} type='number' defaultValue={`${event.position[item][4]}`} onBlur={(e) => handleEditCensor(e, item, 4)}/></td>
+												<td id='time-td'><input
+													id={`censorTimeInput-${item}`}
+													className='censorRow'
+													type='text'
+													defaultValue={`${convertSecondsToMinute(parseFloat(event.position[item][0]), videoLength)}`}
+													onClick={() => handleCensorActive(item)}
+													onChange={handleHotkeysActive}
+													onBlur={(e) => handleEditCensor(e, item, 0, `onBlur`)}
+													onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+														{
+															x: e.target.getBoundingClientRect().x - 125,
+															y: e.target.getBoundingClientRect().y - 25,
+															width: e.currentTarget.offsetWidth + 20,
+														})
+													}
+													onMouseLeave={() => toggleTip()}
+												/></td>
+												<td><input disabled
+													type='number'
+													value={`${event.position[item][1]}`}
+													onClick={() => handleCensorActive(item)}
+													onChange={(e) => handleEditCensor(e, item, 1)}
+												/></td>
+												<td><input disabled
+													type='number'
+													value={`${event.position[item][2]}`}
+													onClick={() => handleCensorActive(item)}
+													onChange={(e) => handleEditCensor(e, item, 2)}
+												/></td>
+												<td><input
+													id={`censorWidthInput-${i}`}
+													type='number'
+													value={`${event.position[item][3]}`}
+													onClick={() => handleCensorActive(item)}
+													onBlur={(e) => handleEditCensor(e, item, 3, `onBlur`)}
+													onChange={(e) => handleEditCensor(e, item, 3, `onChange`)}
+												/></td>
+												<td><input
+													id={`censorHeightInput-${i}`}
+													type='number'
+													value={`${event.position[item][4]}`}
+													onClick={() => handleCensorActive(item)}
+													onBlur={(e) => handleEditCensor(e, item, 4, `onBlur`)}
+													onChange={(e) => handleEditCensor(e, item, 4, `onChange`)}
+												/></td>
 												<td><img className={`trashIcon`} src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
 											</tr>
 										))

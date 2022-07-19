@@ -5,7 +5,7 @@ import { Rnd } from 'react-rnd'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
-import { convertToSeconds } from '../../common/timeConversion'
+import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 // import {DialogBox} from '../../../modals/components'
 
@@ -115,6 +115,7 @@ const VideoEditor = props => {
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [isLoading, setIsLoading] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
+	const [hotkeysActive, setHotkeysActive] = useState(true)
 
 	// refs
 	useEffect(() => {
@@ -186,17 +187,19 @@ const VideoEditor = props => {
 		let canAccessDom = false
 		try {
 			if(side === `beg`) {
-				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					event.start = convertToSeconds(event.start, videoLength)
-				else {
+					setHotkeysActive(true)
+				} else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
 
 			} else if(side === `end`) {
-				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
+				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
 					event.end = convertToSeconds(event.end, videoLength)
-				else {
+					setHotkeysActive(true)
+				} else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
@@ -365,7 +368,7 @@ const VideoEditor = props => {
 		}
 	}
 
-	const handleEditCensor = (e, item, int) => {
+	const handleEditCensor = async (e, item, int, type) => {
 		const object = editCensor
 		const index = eventToEdit
 		const cEvent = allEvents[index]
@@ -373,18 +376,21 @@ const VideoEditor = props => {
 		const pos = cEvent.position
 		let value
 		if(int === 0)
-			value = parseFloat(e.target.value).toFixed(1)
+			value = convertToSeconds(e.target.value, videoLength)
 		else
-			value = parseFloat(e.target.value).toFixed(0)
+			value = Number(parseFloat(e.target.value).toFixed(0))
+
+		if (type === `onBlur`)
+			setHotkeysActive(true)
 
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
 		case 0:
-			if(isNaN(value)) {
+			if(value === 0)
 				pos[item][0] = `0.0`
-				document.getElementById(`censorTimeInput-${item - 1}`).value = `0.0`
-			}else
-				pos[item][0] = value // time in seconds of start of censor
+			else
+				pos[item][0] = value
+			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
 			break
 
 		case 1: // x in %
@@ -396,18 +402,17 @@ const VideoEditor = props => {
 			break
 
 		case 3: // width in %
-			if(isNaN(value)) {
+			if(isNaN(value))
 				pos[item][3] = 0
-				document.getElementById(`censorWidthInput-${item - 1}`).value = 0
-			}else
+			else
 				pos[item][3] = value
+
 			break
 
 		case 4: // height in %
-			if(isNaN(value)) {
+			if(isNaN(value))
 				pos[item][4] = 0
-				document.getElementById(`censorHeightInput-${item - 1}`).value = 0
-			}else
+			else
 				pos[item][4] = value
 			break
 
@@ -415,8 +420,12 @@ const VideoEditor = props => {
 			break
 		}
 		cEvent.position = pos
-		updateEvents(index, cEvent, layer)
+		updateEvents(index, cEvent, layer, ``, type)
 		setEditCensor(object)
+	}
+
+	const handleHotkeysActive = () => {
+		setHotkeysActive(false)
 	}
 
 	// THIS IS PART OF CENSOR
@@ -493,7 +502,7 @@ const VideoEditor = props => {
 
 	const handleExportAnnotation = () => {
 		const jsonData = []
-		for (let e=0; e < allEvents.length; e++) {
+		for (let e = 0; e < allEvents.length; e++) {
 			if (allEvents[e].type !== `Censor`){
 				const data = {"options": {
 					"end": allEvents[e].end,
@@ -646,6 +655,9 @@ const VideoEditor = props => {
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
 					eventPosition={eventPosition}
+					handleShowTip={handleShowTip}
+					toggleTip={toggleTip}
+					hotkeysActive={hotkeysActive}
 				></VideoContainer>
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -815,17 +827,19 @@ const VideoEditor = props => {
 							videoLength={videoLength}
 							closeSideEditor={closeSideEditor}
 							updateEvents={updateEvents}
-							editCensor = {editCensor}
+							editCensor={editCensor}
 							index={eventToEdit}
-							handleEditCensor = {handleEditCensor}
-							handleCensorRemove = {handleCensorRemove}
-							handleAddCensor = {handleAddCensor}
-							activeCensorPosition = {activeCensorPosition}
-							setActiveCensorPosition = {setActiveCensorPosition}
+							handleEditCensor={handleEditCensor}
+							handleCensorRemove={handleCensorRemove}
+							handleAddCensor={handleAddCensor}
+							activeCensorPosition={activeCensorPosition}
+							setActiveCensorPosition={setActiveCensorPosition}
 							toggleTip={toggleTip}
 							handleShowTip={handleShowTip}
-							setEventSeek = {setEventSeek}
-							handleEventPosition = {handleEventPosition}
+							setEventSeek={setEventSeek}
+							handleEventPosition={handleEventPosition}
+							setHotkeysActive={setHotkeysActive}
+							handleHotkeysActive={handleHotkeysActive}
 						></TrackEditorSideMenu>
 						:
 						<></>
