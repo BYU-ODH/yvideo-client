@@ -49,7 +49,7 @@ export const Search = styled.form`
 
 		padding: 0 1.25rem 0 3.25rem;
 
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 		outline-color: var(--light-blue);
 
 		@media (max-width: 800px){
@@ -63,7 +63,7 @@ export const Search = styled.form`
     color: white;
     background-color: var(--light-blue);
     margin-left: 1rem;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 2rem;
@@ -109,7 +109,7 @@ export const CategorySelect = styled.select`
 
 	padding: 0 1.25rem;
 
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 
 	& option {
 		margin: auto auto 6px auto;
@@ -150,7 +150,7 @@ export const Button = styled.button`
 		margin-bottom: 2rem;
 		margin-top: 2rem;
 		padding-right: 1rem;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 6rem;

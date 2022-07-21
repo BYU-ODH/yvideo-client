@@ -4,20 +4,17 @@ import Style, { Slash } from './styles'
 
 const Breadcrumb = props => {
 
-	const {crumbs } = props.viewstate
-	const { isLast, toLink, isManager, isPlayer } = props.handler
+	const { crumbs } = props.viewstate
+	const { isLast, toLink, isManager, isPlayer } = props.handlers
 	return (
 		<Style>
 			<div>
 				{
-					Object.values(crumbs.path).map((crumb, ci) => {
-						const disabled = isLast(ci)
+					Object.values(crumbs.path).map((crumb, index) => {
+						const disabled = isLast(index)
 						const link = toLink(crumb)
 						return (
-							<span
-								key={ ci }
-								className='breadcrumb-item align-items-center'
-							>
+							<span key={index} className='breadcrumb-item align-items-center'>
 								{
 									isManager(crumb) ?
 										disabled ?

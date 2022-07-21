@@ -104,7 +104,7 @@ const props = {
 }
 
 describe(`collections test`, () => {
-	it(`Link pair with manage collections`, ()=> {
+	it(`Link pair with manage collections`, () => {
 		const wrapper = shallow(
 			<Collections {...collectionsProps}/>,
 		)
@@ -118,7 +118,7 @@ describe(`collections test`, () => {
 		expect(linkMap[`/manager`]).toBe(`Manage Collections`)
 	})
 
-	it(`test render BlockCollection`, ()=> {
+	it(`test render BlockCollection`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>

@@ -14,6 +14,7 @@ import {
 	ContentOverview,
 } from 'components'
 
+import DialogBox from 'components/modals/components/DialogBox'
 import ContentDeleteContainer from '../../components/modals/containers/ContentDeleteContainer'
 import HighlightWordsContainer from 'components/modals/containers/HighlightWordsContainer'
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
@@ -93,6 +94,18 @@ const ContentOverviewContainer = props => {
 
 	}
 
+	const handleNavigation = (confirmNavigation, cancelNavigation) => {
+		toggleModal({
+			component: DialogBox,
+			props: {
+				confirmNavigation,
+				cancelNavigation,
+				toggleModal,
+			},
+		})
+
+	}
+
 	const handleNameChange = e => {
 		setContentState({
 			...contentState,
@@ -148,7 +161,7 @@ const ContentOverviewContainer = props => {
 
 	const addTag = (e) => {
 		e.preventDefault()
-		const newTags = tag.split(/[ ,]+/)
+		const newTags = tag.split(/[ , ]+/)
 		setContentState({
 			...contentState,
 			resource: {
@@ -179,14 +192,14 @@ const ContentOverviewContainer = props => {
 	const handleShowWordsModal = () => {
 		toggleModal({
 			component: HighlightWordsContainer,
-			props:{ contentId: content.id},
+			props: { contentId: content.id },
 		})
 	}
 
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Important Words`},
+			props: { name: `Important Words` },
 		})
 	}
 
@@ -248,6 +261,7 @@ const ContentOverviewContainer = props => {
 		handleLinks,
 		handleShowTip,
 		toggleTip,
+		handleNavigation,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

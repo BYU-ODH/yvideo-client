@@ -35,12 +35,12 @@ const resourcesResult = {
 }
 
 proxies.apiProxy.user.get = jest.fn()
-proxies.apiProxy.user.get.mockImplementationOnce(()=>{
+proxies.apiProxy.user.get.mockImplementationOnce(() => {
 	return Promise.resolve(testutil.user)
 })
 
 proxies.apiProxy.resources.search = jest.fn()
-proxies.apiProxy.resources.search.mockImplementation(()=>{
+proxies.apiProxy.resources.search.mockImplementation(() => {
 	return Promise.resolve(resourcesResult)
 })
 

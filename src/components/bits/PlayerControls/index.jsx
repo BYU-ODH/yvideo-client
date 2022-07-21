@@ -90,13 +90,9 @@ const PlayerControls = props => {
 	})
 
 	const [showSpeed, setShowSpeed] = useState(false)
-	const clipPercent = clipTime.map(e =>{
-		return e/duration
+	const clipPercent = clipTime.map(e => {
+		return e / duration
 	})
-	// console.log((clipPercent[1]-clipPercent[0])*100)
-	// const handleSubmitSpeed = (e) => {
-	// 	e.preventDefault()
-	// }
 
 	const handleChangeSpeed = () => {
 		toggleTip()
@@ -211,7 +207,7 @@ const PlayerControls = props => {
 				{ subtitleTextIndex !== null &&
 				<ClosedCaptions
 					isCaptions={isCaption}
-					onClick={ isAdmin || isProf ? handleChangeCaption : handleToggleSubtitles}
+					onClick={ isAdmin || isProf ? handleChangeCaption : handleToggleSubtitles }
 					onMouseEnter={e => handleShowTip(`closed-captions`,
 						{
 							x: e.target.getBoundingClientRect().x,
@@ -247,14 +243,14 @@ const PlayerControls = props => {
 									value={playbackAtIndex}
 									key={playbackAtIndex}
 									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-									className={playbackRate === playbackAtIndex ? `active-value` : ``} />
+									className={playbackRate === playbackAtIndex && `active-value`} />
 								:
 								<input
 									type='button'
 									value='Normal'
 									key={1}
 									onClick={e => handlePlaybackRateChange(playbackAtIndex)}
-									className={playbackRate === playbackAtIndex ? `active-value` : ``} />)
+									className={playbackRate === playbackAtIndex && `active-value`} />)
 						}
 					</div>
 				</div>
@@ -269,11 +265,11 @@ const PlayerControls = props => {
 								type='button'
 								value={element.title}
 								onClick={e => handleChangeSubtitle(index)}
-								className={ indexToDisplay === index && showTranscript === true ? `active-value` : ``}
+								className={ indexToDisplay === index && showTranscript === true && `active-value` }
 							/>,
 						)
 						}
-						<button type='button' className={`${showTranscript === false ? `active-value` : ``} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
+						<button type='button' className={`${showTranscript === false && `active-value`} subtitlesOffButton`} onClick={handleOffSubtitles}>Off</button>
 					</div>
 				</div>
 			}

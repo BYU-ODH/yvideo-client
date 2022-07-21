@@ -35,7 +35,7 @@ export const Timeline = styled.div`
 	color: #5F5F5F; */
 
 	position: relative;
-	height: ${props => props.minimized ? `0vh` : `18vh`};
+	height: ${props => props.minimized ? `0vh` : `19vh`};
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
@@ -113,7 +113,7 @@ export const Timeline = styled.div`
 
 				& #layer-time-indicator {
 					height: 10px;
-					width:100%;
+					width: 100%;
 					position: absolute;
 					background-color: transparent;
 

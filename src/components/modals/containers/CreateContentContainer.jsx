@@ -127,7 +127,8 @@ const CreateContentContainer = props => {
 			}else
 				setHide(true)
 		}
-	},[isTyping])
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isTyping])
 	const changeTab = e => {
 		setTab(e.target.name)
 	}

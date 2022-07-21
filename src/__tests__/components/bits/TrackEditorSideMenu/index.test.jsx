@@ -28,6 +28,7 @@ const props = {
 	handleShowTip: jest.fn(),
 	setEventSeek: jest.fn(),
 	handleEventPosition: jest.fn(),
+	handleHotkeysActive: jest.fn(),
 }
 
 describe(`TrackEditorSideMenu test`, () => {
@@ -56,17 +57,17 @@ describe(`TrackEditorSideMenu test`, () => {
 	// 	wrapper.find(`.sideButton`).simulate(`click`)
 	// })
 
-	it(`TrackEditorSideMenu onChange`, ()=> {
+	it(`TrackEditorSideMenu onChange`, () => {
 		const mElement = { style: {color: `red`} }
 		const color = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
-		const wrapper = shallow(<TrackEditorSideMenu {...props}/>,{ attachTo: color })
+		const wrapper = shallow(<TrackEditorSideMenu {...props}/>, { attachTo: color })
 
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: 10 } })
 		const checked = wrapper.find(`[value=10]`).first()
 		expect(checked).toBeDefined()
 	})
 
-	it(`TrackEditorSideMenu onChange`, ()=> {
+	it(`TrackEditorSideMenu onChange`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<TrackEditorSideMenu {...props}/>
@@ -75,7 +76,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		const boundingMock = {x: 100, y: 50}
 
 		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `` } })
-		wrapper.find(`.sideTabInput`).at(0).prop(`onBlur`)( { target: { value: `` } })
+		wrapper.find(`.sideTabInput`).at(0).prop(`onBlur`)( { target: { value: `` } } )
 		wrapper.find(`.center`).at(0).simulate(`click`)
 		wrapper.find(`.sideTabInput`).at(0).prop(`onKeyUp`)({stopPropagation: () => {
 			return 1
@@ -92,7 +93,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseLeave`)()
 
 		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `` } })
-		wrapper.find(`.sideTabInput`).at(1).prop(`onBlur`)( { target: { value: `` } })
+		wrapper.find(`.sideTabInput`).at(1).prop(`onBlur`)( { target: { value: `` } } )
 		wrapper.find(`.center`).at(0).simulate(`click`)
 		wrapper.find(`.sideTabInput`).at(1).prop(`onKeyUp`)({stopPropagation: () => {
 			return 1
@@ -109,7 +110,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseLeave`)()
 	})
 
-	it(`TrackEditorSideMenu censor`, ()=> {
+	it(`TrackEditorSideMenu censor`, () => {
 		props.singleEvent.type = `Censor`
 
 		const wrapper = mount(

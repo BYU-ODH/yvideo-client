@@ -28,13 +28,13 @@ export default class ContentService {
 		contentClean: () => ({ type: this.types.CONTENT_CLEAN }),
 		contentCreate: (content) => ({ type: this.types.CONTENT_CREATE, payload: { content }}),
 		contentError: error => ({ type: this.types.CONTENT_ERROR, payload: { error } }),
-		contentErrorSync: error => ({type: this.types.CONTENT_ERROR_SYNC, payload:{ error }}),
+		contentErrorSync: error => ({type: this.types.CONTENT_ERROR_SYNC, payload: { error }}),
 		contentSet: content => ({ type: this.types.CONTENT_SET, payload: { content } }),
 		contentGet: content => ({ type: this.types.CONTENT_GET, payload: { content } }),
 		contentAddView: id => ({ type: this.types.CONTENT_ADD_VIEW, payload: { id } }),
 		contentUpdate: content => ({ type: this.types.CONTENT_UPDATE, payload: { content }}),
 		contentGetSubtitles: ids => ({type: this.types.CONTENT_GET_SUBTITLES, payload: {ids}}),
-		contentAddSubtitles: ids => ({type: this.types.CONTENT_ADD_SUBTITLES, payload:{ids}}),
+		contentAddSubtitles: ids => ({type: this.types.CONTENT_ADD_SUBTITLES, payload: {ids}}),
 	}
 
 	// default store
@@ -225,7 +225,7 @@ export default class ContentService {
 			const newContent = new Content(content) // POST https://yvideodev.byu.edu/api/content
 
 			// TODO: Why doesn't this update to state cause it to rerender?
-			dispatch(this.actions.contentCreate({ [id]: newContent}))
+			dispatch(this.actions.contentCreate({ [id]: newContent }))
 
 			dispatch(this.actions.contentAbort())
 		} catch (error) {

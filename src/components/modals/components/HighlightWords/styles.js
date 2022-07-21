@@ -79,7 +79,7 @@ export const TranslationCheck = styled.div`
 			border-top: none;
 			border-right: none;
 			border-left: none;
-			border-bottom: 1px solid rgba(0,0,0,0.3);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 			margin-right: 5px;
 
 			:focus {
@@ -101,7 +101,7 @@ export const ImportantWords = styled.div`
 		border-top: none;
 		border-right: none;
 		border-left: none;
-		border-bottom: 1px solid rgba(0,0,0,0.3);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 		margin-right: 5px;
 
 		:focus {

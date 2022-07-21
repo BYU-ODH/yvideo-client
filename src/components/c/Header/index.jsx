@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import Style, { LogoWrapper, Name, Shadow, Logo} from './styles'
+import Style, { LogoWrapper, Name, Shadow, Logo } from './styles'
 
 import BreadcrumbContainer from '../../../containers/c/BreadcrumbContainer'
 

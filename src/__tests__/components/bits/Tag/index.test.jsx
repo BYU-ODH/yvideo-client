@@ -1,14 +1,14 @@
 import React from 'react'
 import Tag from '../../../../components/bits/Tag'
 import { render, cleanup, screen, fireEvent } from '@testing-library/react'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const props = {
 	id: `resourceId`,
 	title: `resource title`,
 	description: `description`,
 	keywords: [`test`],
-	words:[`wordTest`],
+	words: [`wordTest`],
 	languages: { iso639_3: [] },
 	files: [
 		{

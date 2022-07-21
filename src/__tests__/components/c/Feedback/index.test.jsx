@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Feedback from '../../../../components/c/Feedback/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const props = {
 	viewstate: {
@@ -23,7 +23,7 @@ const props = {
 }
 
 describe(`Captcha test`, () => {
-	it(`simulate onClick`, ()=> {
+	it(`simulate onClick`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<Feedback {...props} />
