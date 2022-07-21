@@ -19,7 +19,7 @@ export default class Header extends PureComponent {
 		else if (editorStyle) backgroundColor = `transparent`
 
 		return (
-			<Style backgroundColor={backgroundColor} border={border}>
+			<Style id='navbar' backgroundColor={backgroundColor} border={border}>
 				<LogoWrapper className='std-outline-color' to='/'>
 					<Logo />
 					<Name>Y-VIDEO</Name>
