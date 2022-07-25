@@ -122,7 +122,6 @@ export default class Collections extends PureComponent {
 									<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 										<SearchIcon />
 										<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-										{/* <button type='submit'>Search</button> */}
 									</Search>
 									<div>
 										{ !isMobile &&
@@ -154,7 +153,7 @@ export default class Collections extends PureComponent {
 									</div>
 									<Search className='resource-search-submit-not-admin' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 										<SearchIcon />
-										<input id='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+										<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
 									</Search>
 								</header>
 						}

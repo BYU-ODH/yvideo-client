@@ -14,6 +14,7 @@ export default class SearchPublicCollections extends PureComponent {
 			searchQuery,
 			searchedPublicCollections,
 			isSearched,
+			location,
 		} = this.props.viewstate
 
 		const {
@@ -32,7 +33,7 @@ export default class SearchPublicCollections extends PureComponent {
 
 				<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSubmit}>
 					<SearchIcon />
-					<input id='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+					<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} defaultValue={searchQuery} />
 					<button type='submit'>Search</button>
 				</Search>
 
