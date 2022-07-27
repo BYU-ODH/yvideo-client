@@ -45,15 +45,18 @@ export default class ManageCollection extends PureComponent {
 			handleShowTip,
 			toggleTip,
 		} = this.props.handlers
-
+		
 		const expiredContent = collection[`expired-content`]
+		componentDidMount = () => {
+			expiredContent.sort((a,b) => {
+				return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
+			})
+		}
 
 		content.sort((a, b) => {
 			return a.name.toLowerCase().replace(sortingRegex, `$1`) > b.name.toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
 		})
-		expiredContent.sort((a,b) => {
-			return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
-		})
+		
 		return (
 			<Style>
 				<header>
