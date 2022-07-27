@@ -45,7 +45,7 @@ export default class ManageCollection extends PureComponent {
 		} = this.props.handlers
 
 		content.sort((a, b) => {
-			return a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ? 1 : -1
+			return a.name.toLowerCase().replace(/^(?:an? |the )?(.*)/, `$1`) > b.name.toLowerCase().replace(/^(?:an? |the )?(.*)/, `$1`) ? 1 : -1
 		})
 		return (
 			<Style>
