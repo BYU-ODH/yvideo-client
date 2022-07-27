@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import { BlockItem } from 'components/bits'
+import sorting_regex from 'components/vanilla_scripts/sorting_regex'
 
 import { Container, Header, SlideWrapper, Arrow, BlockEnd, PublicCollectionButton, PublicButton } from './styles.js'
 
@@ -97,7 +98,7 @@ export default class BlockCollection extends Component {
 
 		const publishContent = content ? content.filter(item => item.published) : []
 		publishContent.sort((a, b) => {
-			return a.name.toLowerCase().replace(/^(?:an? |the )?(.*)/, `$1`) > b.name.toLowerCase().replace(/^(?:an? |the )?(.*)/, `$1`) ?
+			return a.name.toLowerCase().replace(sorting_regex, `$1`) > b.name.toLowerCase().replace(sorting_regex, `$1`) ?
 				1 : -1
 		})
 		const count = publishContent.length
