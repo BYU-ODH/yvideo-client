@@ -46,8 +46,13 @@ export default class ManageCollection extends PureComponent {
 			toggleTip,
 		} = this.props.handlers
 
+		const expiredContent = collection[`expired-content`]
+
 		content.sort((a, b) => {
 			return a.name.toLowerCase().replace(sortingRegex, `$1`) > b.name.toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
+		})
+		expiredContent.sort((a,b) => {
+			return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
 		})
 		return (
 			<Style>
@@ -127,6 +132,20 @@ export default class ManageCollection extends PureComponent {
 					:
 					<>
 						<Tab>
+							{expiredContent &&
+								<>
+									<h3 id='expiredTitle'>Expired Content</h3>
+									<hr />
+								</>
+							}
+							{isContentTab && expiredContent ?
+								expiredContent.map((item, index) => (
+									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
+								))
+								:
+								null
+							}
+							{ expiredContent && <hr />}
 							{isContentTab ?
 								content.map((item, index) => (
 									<div key={index}>
@@ -145,13 +164,6 @@ export default class ManageCollection extends PureComponent {
 								: (
 									<CollectionPermissionsContainer collection={collection} />
 								)}
-							{isContentTab && collection[`expired-content`] ?
-								collection[`expired-content`].map((item, index) => (
-									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
-								))
-								:
-								null
-							}
 							{isContentTab && (
 								<NewContent
 									id='newcontent-button'
