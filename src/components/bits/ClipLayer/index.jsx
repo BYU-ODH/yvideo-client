@@ -46,8 +46,8 @@ const ClipLayer = props => {
 		else if (width === 0)
 			setLayerWidth(initialWidth)
 		else
-			setLayerWidth(layerWidth + width)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+			setLayerWidth(initialWidth + width)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){

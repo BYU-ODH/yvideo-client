@@ -216,15 +216,15 @@ describe(`VideoEditor testing`, () => {
 			wrapper.find(`Rnd`).forEach(e => e.prop(`onDragStop`)(``, {x: -10}))
 			wrapper.find(`Rnd`).forEach(e => e.prop(`onResizeStop`)( { x: 318, y: 574 }, `right`, ``, {width: 144, height: 0} , `` ))
 
-			wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
-				{ target:
-					{ getBoundingClientRect: () => {
-						return boundingMock
-					}}
-				, currentTarget: {offsetWidth: 10},
-				},
-			)
-			wrapper.find(`Rnd`).at(0).prop(`onMouseLeave`)()
+			// wrapper.find(`Rnd`).at(0).prop(`onMouseEnter`)(
+			// 	{ target:
+			// 		{ getBoundingClientRect: () => {
+			// 			return boundingMock
+			// 		}}
+			// 	, currentTarget: {offsetWidth: 10},
+			// 	},
+			// )
+			// wrapper.find(`Rnd`).at(0).prop(`onMouseLeave`)()
 		})
 	})
 

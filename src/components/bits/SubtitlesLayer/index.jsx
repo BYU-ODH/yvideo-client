@@ -41,10 +41,7 @@ const SubtitlesLayer = props => {
 		else if (width === 0)
 			setLayerWidth(initialWidth)
 		else
-			setLayerWidth(layerWidth + width)
-
-		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
-
+			setLayerWidth(initialWidth + width)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 

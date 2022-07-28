@@ -553,27 +553,16 @@ const VideoEditor = props => {
 
 	const handleZoomChange = (e, d) => {
 		toggleTip()
-		if(d.x < zoomFactor){
-			if(d.x === 0){
-				setZoomFactor(0)
-				setWidth(0)
-				handleScrollFactor(0)
-			} else {
-				setZoomFactor(d.x)
-				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-			}
-		} else if(d.x > zoomFactor) {
-			setZoomFactor(d.x)
-			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
-		}
-		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		const tempOnload = window.onload
-		window.onload = () => {
+		let width = 0
+		if(document.getElementsByClassName(`eventsbox`)){
+			const eventsBoxWidth = document.getElementsByClassName(`eventsbox`)[0].offsetWidth
+			const zoomWidth = document.getElementById(`zoom-factor`).offsetWidth - document.getElementById(`zoom-indicator`).offsetWidth
+			width = d.x * videoLength/10
+			setWidth(width)
+			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
 			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
-				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
-			window.onload = tempOnload
+				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventsBoxWidth + width))
 		}
-
 	}
 	const handleScrollFactor = (direction, zoom) => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
@@ -582,26 +571,6 @@ const VideoEditor = props => {
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			// if(document.getElementsByClassName(`events`).length > 1)
-			// 	currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			// else
-			// 	currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
-
-			// if(!zoom){
-			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-			// 	})
-			// } else {
-			// 	scrubber.scrollLeft = currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
-			// 	})
-			// }
 			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
 			const dis = direction/scrollBarContainer
@@ -700,6 +669,7 @@ const VideoEditor = props => {
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
 								className={`zoom-indicator`}
+								id={`zoom-indicator`}
 								bounds={`parent`}
 								enableResizing={
 									{
@@ -715,14 +685,14 @@ const VideoEditor = props => {
 								}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
-								onMouseEnter={e => handleShowTip(`te-zoom`,
-									{
-										x: e.target.getBoundingClientRect().x,
-										y: e.target.getBoundingClientRect().y,
-										width: e.currentTarget.offsetWidth,
-									})
-								}
-								onMouseLeave={() => toggleTip()}
+								// onMouseEnter={e => handleShowTip(`te-zoom`,
+								// 	{
+								// 		x: e.target.getBoundingClientRect().x,
+								// 		y: e.target.getBoundingClientRect().y,
+								// 		width: e.currentTarget.offsetWidth,
+								// 	})
+								// }
+								// onMouseLeave={() => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
