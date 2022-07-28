@@ -13,7 +13,7 @@ export const Style = styled.div`
 	z-index: 0;
 	overflow-x: scroll;
 
-	& .eventsbox {
+	& .clipbox {
     position: relative;
     width: 100%;
     height: 100%;

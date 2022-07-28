@@ -58,14 +58,13 @@ const TrackLayer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
 	useLayoutEffect(() => {
-
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
 		else if (width === 0)
 			setLayerWidth(initialWidth)
 		else
-			setLayerWidth(layerWidth + width)
+			setLayerWidth(initialWidth + width)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 	if(document.getElementById(`timeBarProgress`) !== undefined && layerWidth !== 0){
