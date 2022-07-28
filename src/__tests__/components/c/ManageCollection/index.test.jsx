@@ -126,15 +126,17 @@ describe(`manage collection test`, () => {
 		)
 
 		const viewstate = wrapper.find(`ContentOverviewContainer`).at(0).childAt(0).props().viewstate
-		expect(viewstate.content.id).toBe(115)
-		expect(viewstate.content.name).toBe(`testname`)
-		expect(viewstate.content.contentType).toBe(`video`)
-		expect(viewstate.content.collectionId).toBe(85)
-		expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
-		expect(viewstate.content.physicalCopyExists).toBe(false)
-		expect(viewstate.content.isCopyrighted).toBe(false)
-		expect(viewstate.content.expired).toBe(true)
-		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
+		if(viewstate) {
+			expect(viewstate.content.id).toBe(115)
+			expect(viewstate.content.name).toBe(`testname`)
+			expect(viewstate.content.contentType).toBe(`video`)
+			expect(viewstate.content.collectionId).toBe(85)
+			expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
+			expect(viewstate.content.physicalCopyExists).toBe(false)
+			expect(viewstate.content.isCopyrighted).toBe(false)
+			expect(viewstate.content.expired).toBe(true)
+			expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
+		}
 	})
 
 	it(`simulate click action`, () => {
