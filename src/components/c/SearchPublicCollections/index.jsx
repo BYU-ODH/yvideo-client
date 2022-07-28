@@ -14,20 +14,17 @@ export default class SearchPublicCollections extends PureComponent {
 			searchQuery,
 			searchedPublicCollections,
 			isSearched,
-			location,
 		} = this.props.viewstate
 
 		const {
 			handleSubmit,
 			handleSearchTextChange,
-			// setNoCollections,
 		} = this.props.handlers
 
 		return (
 			<Style>
 				<header>
 					<div>
-						{/* <h2>Search Public Collections</h2> */}
 					</div>
 				</header>
 
@@ -42,7 +39,7 @@ export default class SearchPublicCollections extends PureComponent {
 						<>
 							<ListLable>Search Results</ListLable>
 							{Object.keys(searchedPublicCollections).map(key =>
-								<ListCollectionContainer key={key} collection={searchedPublicCollections[key]} defaultSubscription={true} />
+								<ListCollectionContainer key={key} identifier={key} collection={searchedPublicCollections[key]} defaultSubscription={false} />
 								,
 							)}
 						</>

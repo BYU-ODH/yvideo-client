@@ -53,10 +53,10 @@ const SearchPublicCollectionsContainer = props => {
 	}, [setHeaderBorder, searchedPublicCollections.length])
 
 	const defaultSearch = async() => {
-		if(location.search !== undefined) {
-			location.search = location.search.replace(/(\?)(.*)/, `$2`)
-			await searchPublicCollections(location.search)
-			setSearchQuery(location.search)
+		if(location.hash !== undefined) {
+			location.hash = location.hash.replace(`#`, ``)
+			await searchPublicCollections(location.hash)
+			setSearchQuery(location.hash)
 			setIsSearched(true)
 		}
 	}

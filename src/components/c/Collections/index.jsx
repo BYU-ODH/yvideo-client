@@ -19,6 +19,7 @@ export default class Collections extends PureComponent {
 			publicCollections,
 			searchQuery,
 			hasCollectionPermissions,
+			subscribedObj,
 		} = this.props.viewstate
 
 		const {
@@ -29,6 +30,7 @@ export default class Collections extends PureComponent {
 			toggleTip,
 			handleSearchQuerySubmit,
 			handleSearchTextChange,
+			handleSetSubscribedObj,
 		} = this.props.handlers
 
 		// collections.sort((a, b) => a.name > b.name ? 1 : -1)
@@ -91,14 +93,14 @@ export default class Collections extends PureComponent {
 						<>
 							{ isMobile ?
 								Object.keys(collections).map(key =>
-									<ListCollectionContainer key={key} collection={collections[key]} defaultSubscription={true}/>)
+									<ListCollectionContainer key={key} collection={collections[key]} />)
 								:
 								displayBlocks ?
 									Object.keys(collections).map(key =>
-										<BlockCollectionContainer key={key} collection={collections[key]} defaultSubscription={true}/>)
+										<BlockCollectionContainer key={key} collection={collections[key]} />)
 									:
 									Object.keys(collections).map(key =>
-										<ListCollectionContainer key={key} collection={collections[key]} defaultSubscription={true}/>)
+										<ListCollectionContainer key={key} collection={collections[key]} />)
 							}
 						</>
 					) : (
@@ -177,14 +179,31 @@ export default class Collections extends PureComponent {
 							<>
 								{ isMobile ?
 									Object.keys(publicCollections).map(key =>
-										<ListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+										<ListCollectionContainer
+											key={key}
+											identifier={key}
+											collection={publicCollections[key]}
+											handleSetSubscribedObj={handleSetSubscribedObj}
+											defaultSubscription={subscribedObj[key].isSubscribed}
+										/>)
 									:
 									publicDisplayBlocks ?
 										Object.keys(publicCollections).map(key =>
-											<BlockCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+											<BlockCollectionContainer
+												key={key}
+												identifier={key}
+												collection={publicCollections[key]}
+												handleSetSubscribedObj={handleSetSubscribedObj}
+												defaultSubscription={subscribedObj[key].isSubscribed}
+											/>)
 										:
 										Object.keys(publicCollections).map(key =>
-											<ListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />)
+											<ListCollectionContainer key={key}
+												identifier={key}
+												collection={publicCollections[key]}
+												handleSetSubscribedObj={handleSetSubscribedObj}
+												defaultSubscription={subscribedObj[key].isSubscribed}
+											/>)
 								}
 							</>
 							:
