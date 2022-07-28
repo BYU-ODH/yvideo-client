@@ -34,7 +34,6 @@ const SearchPublicCollectionsContainer = props => {
 
 	useEffect(() => {
 		setBreadcrumbs({path: [`Home`, `Search Public Collections`], collectionId: ``, contentId: ``})
-
 		toggleTip()
 
 		if(location) defaultSearch()
@@ -54,9 +53,10 @@ const SearchPublicCollectionsContainer = props => {
 	}, [setHeaderBorder, searchedPublicCollections.length])
 
 	const defaultSearch = async() => {
-		if(location.state !== undefined){
-			await searchPublicCollections(location.state.searchQuery)
-			setSearchQuery(location.state.searchQuery)
+		if(location.search !== undefined) {
+			location.search = location.search.replace(/(\?)(.*)/, `$2`)
+			await searchPublicCollections(location.search)
+			setSearchQuery(location.search)
 			setIsSearched(true)
 		}
 	}
@@ -115,6 +115,8 @@ const SearchPublicCollectionsContainer = props => {
 		searchedPublicCollections,
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k, v]) => k),
 		isSearched,
+		searchQuery,
+		location,
 	}
 
 	const handlers = {

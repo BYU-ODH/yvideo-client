@@ -82,9 +82,7 @@ const CollectionsContainer = props => {
 		if(searchQuery !== ``){
 			navigate({
 				pathname: `/search-public-collections`,
-				state: {
-					searchQuery,
-				},
+				search: searchQuery,
 			})
 		}
 	}
