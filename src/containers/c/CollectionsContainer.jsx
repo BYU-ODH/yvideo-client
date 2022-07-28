@@ -37,12 +37,6 @@ const CollectionsContainer = props => {
 	const [subscribedObj, setSubscribedObj] = useState({})
 	const navigate = useNavigate()
 
-	// const publicCollections = Object.keys(collections).filter(key => collections[key].public)
-	// let userSubscribed = {}
-	// for (const key of publicCollections) {
-	// 	userSubscribed = {...userSubscribed, [key]: {isSubscribed: true}}
-	// }
-
 	useEffect(() => {
 		setBreadcrumbs({path: [`Home`], collectionId: ``, contentId: ``})
 		toggleTip()
@@ -92,9 +86,8 @@ const CollectionsContainer = props => {
 		e.preventDefault()
 
 		if(searchQuery !== ``){
-			navigate({
-				pathname: `/search-public-collections`,
-				hash: searchQuery,
+			navigate(`/search-public-collections`, {
+				state: {searchQuery, subscribedObj},
 			})
 		}
 	}

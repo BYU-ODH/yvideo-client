@@ -33,8 +33,6 @@ export default class Collections extends PureComponent {
 			handleSetSubscribedObj,
 		} = this.props.handlers
 
-		// collections.sort((a, b) => a.name > b.name ? 1 : -1)
-
 		const setNoCollections = () => {
 			setTimeout(() => {
 				if(document.getElementById(`collection-message`) !== null)

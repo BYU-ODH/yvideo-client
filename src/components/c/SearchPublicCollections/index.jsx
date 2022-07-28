@@ -14,6 +14,7 @@ export default class SearchPublicCollections extends PureComponent {
 			searchQuery,
 			searchedPublicCollections,
 			isSearched,
+			subscribedObj,
 		} = this.props.viewstate
 
 		const {
@@ -38,7 +39,7 @@ export default class SearchPublicCollections extends PureComponent {
 					{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
 						<>
 							<ListLable>Search Results</ListLable>
-							{Object.keys(searchedPublicCollections).map(key =>
+							{Object.keys(searchedPublicCollections).filter(key => !Object.keys(subscribedObj).includes(key)).map(key =>
 								<ListCollectionContainer key={key} identifier={key} collection={searchedPublicCollections[key]} defaultSubscription={false} />
 								,
 							)}

@@ -53,10 +53,9 @@ const SearchPublicCollectionsContainer = props => {
 	}, [setHeaderBorder, searchedPublicCollections.length])
 
 	const defaultSearch = async() => {
-		if(location.hash !== undefined) {
-			location.hash = location.hash.replace(`#`, ``)
-			await searchPublicCollections(location.hash)
-			setSearchQuery(location.hash)
+		if(location.state.searchQuery !== undefined) {
+			await searchPublicCollections(location.state.searchQuery)
+			setSearchQuery(location.state.searchQuery)
 			setIsSearched(true)
 		}
 	}
@@ -116,7 +115,7 @@ const SearchPublicCollectionsContainer = props => {
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k, v]) => k),
 		isSearched,
 		searchQuery,
-		location,
+		subscribedObj: location.state.subscribedObj,
 	}
 
 	const handlers = {
