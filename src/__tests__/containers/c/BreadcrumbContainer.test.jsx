@@ -34,7 +34,6 @@ describe(`BreadcrumbContainer`, () => {
 	})
 	it(`BreadcrumbContainer`, () => {
 		render(wrapper)
-		const user = userEvent.setup()
 		// all of these breadcrumbs come from testutil.store.breadcrumbs
 		// screen.getByText(/teehee/)
 		const Home = screen.getByText(/Home/i)

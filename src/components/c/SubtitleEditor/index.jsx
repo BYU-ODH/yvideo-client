@@ -185,27 +185,19 @@ const SubtitleEditor = props => {
 
 	const handleZoomChange = (e, d) => {
 		toggleTip()
-		if(d.x < zoomFactor){
-			if(d.x === 0){
-				setZoomFactor(0)
-				setWidth(0)
-				handleScrollFactor(0)
-			} else {
-				setZoomFactor(d.x)
-				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-			}
-		} else if(d.x > zoomFactor) {
-			setZoomFactor(d.x)
-			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+		let width = 0
+		if(document.getElementsByClassName(`eventsbox`)[0]){
+			const eventsBoxWidth = document.getElementsByClassName(`eventsbox`)[0].offsetWidth
+			width = d.x * videoLength/10
+			setWidth(width)
+			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
+			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
+				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventsBoxWidth + width))
 		}
-		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
-			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
-
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
-		if(document.getElementsByClassName(`layer-container`) !== undefined){
+		if(document.getElementsByClassName(`layer-container`) !== undefined && document.getElementById(`zoom-scroll-container`)){
 			const scrubber = document.getElementById(`time-bar`)
 			const scrubberShadow = document.getElementById(`time-bar-shadow`) // eslint-disable-line no-unused-vars
 			const timeIndicator = document.getElementById(`time-indicator-container`)
@@ -213,40 +205,22 @@ const SubtitleEditor = props => {
 			const skipLayer = document.getElementById(`layer-skip`)
 			let currentLayerWidth
 
-			if(document.getElementsByClassName(`events`).length > 1)
+			if(document.getElementsByClassName(`events`).length >= 1)
 				currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
 			else
 				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
+			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
-			// if(!zoom){
-			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
+			const dis = direction/scrollBarContainer
+			scrubber.scrollLeft = currentLayerWidth * dis
+			timeIndicator.scrollLeft = currentLayerWidth * dis
 
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-			// 	})
-			// } else {
-			// 	scrubber.scrollLeft = currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
-			// 	})
+			allLayers.forEach((element, i) => {
+				allLayers[i].scrollLeft = currentLayerWidth * dis
+			})
+			skipLayer.scrollLeft = currentLayerWidth * dis
+			// 	window.onload = tempOnload
 			// }
-			const tempOnload = window.onload
-			window.onload = () => {
-				const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
-
-				const dis = direction/scrollBarContainer
-				scrubber.scrollLeft = currentLayerWidth * dis
-				timeIndicator.scrollLeft = currentLayerWidth * dis
-
-				allLayers.forEach((element, i) => {
-					allLayers[i].scrollLeft = currentLayerWidth * dis
-				})
-				skipLayer.scrollLeft = currentLayerWidth * dis
-				window.onload = tempOnload
-			}
 		}
 	}
 
@@ -829,7 +803,7 @@ const SubtitleEditor = props => {
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,
-										y: e.target.getBoundingClientRect().y,
+										y: e.target.getBoundingClientRect().y - 100,
 										width: e.currentTarget.offsetWidth,
 									})
 								}

@@ -139,6 +139,14 @@ export const Tab = styled.div`
   padding: 2rem;
 
   height: calc(100vh - 24.6rem);
+
+	& #expiredTitle {
+		padding-left: 2rem;
+
+	}
+	hr {
+		margin-left: 2rem;
+	}
 `
 
 export const TabHeader = styled.div`
