@@ -19,6 +19,8 @@ const ListCollectionContainer = props => {
 		searchCollectionsByUserId,
 		collections,
 		defaultSubscription,
+		identifier,
+		handleSetSubscribedObj,
 		// getSubscribers,
 		// getUserById,
 		// searchedUser,
@@ -37,9 +39,13 @@ const ListCollectionContainer = props => {
 	const handlePublicCollection = async() => {
 		if (isSubscribed) {
 			await updateCollectionPermissions(collection.id, `remove-user`, user)
+			if(handleSetSubscribedObj)
+				handleSetSubscribedObj(identifier, false)
 			setIsSubscribed(false)
 		} else {
 			await updateCollectionPermissions(collection.id, `add-user`, user)
+			if(handleSetSubscribedObj)
+				handleSetSubscribedObj(identifier, true)
 			setIsSubscribed(true)
 		}
 	}
