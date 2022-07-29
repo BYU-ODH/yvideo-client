@@ -1,1 +1,2 @@
-export default /^(?:an? |the )?(.*)/
+const regex = /^(?:an? |the )?(.*)/
+export default regex

@@ -60,7 +60,7 @@ const ContentOverviewContainer = props => {
 		else
 			window.onbeforeunload = undefined
 
-		if(!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)){
+		if(content.settings && !SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)){
 			if (content.settings.allowDefinitions){
 				setContentState({
 					...contentState,
