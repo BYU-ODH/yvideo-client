@@ -71,6 +71,7 @@ export const TimeBar = styled.div`
 				color: white;
 				position: relative;
 				top: 1px;
+				margin-left: .5rem;
 				width: 5rem;
 				display: flex;
 				justify-content: center;

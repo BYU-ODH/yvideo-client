@@ -50,15 +50,15 @@ describe(`VideoEditorContainer testing`, () => {
 		)
 		const mock = {x: 100, y: 50}
 		// wrapper.find(`.helpIcon`).simulate(`click`)
-		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseLeave`)()
-		wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseEnter`)(
-			{ target:
-				{ getBoundingClientRect: () => {
-					return mock
-				}}
-			, currentTarget: {offsetWidth: 10},
-			},
-		)
+		// wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseLeave`)()
+		// wrapper.find(`.zoom-indicator`).at(0).prop(`onMouseEnter`)(
+		// 	{ target:
+		// 		{ getBoundingClientRect: () => {
+		// 			return mock
+		// 		}}
+		// 	, currentTarget: {offsetWidth: 10},
+		// 	},
+		// )
 
 	})
 	it(`contentCache[id].url === empty`, () => {
