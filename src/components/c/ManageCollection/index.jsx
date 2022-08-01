@@ -135,20 +135,20 @@ export default class ManageCollection extends PureComponent {
 					:
 					<>
 						<Tab>
-							{expiredContent &&
+							{expiredContent.length > 0 &&
 								<>
 									<h3 id='expiredTitle'>Expired Content</h3>
 									<hr />
 								</>
 							}
-							{isContentTab && expiredContent ?
+							{isContentTab && expiredContent.length > 0 ?
 								expiredContent.map((item, index) => (
 									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
 								))
 								:
 								null
 							}
-							{ expiredContent && <hr />}
+							{ expiredContent.length > 0 && <hr />}
 							{isContentTab ?
 								content.map((item, index) => (
 									<div key={index}>

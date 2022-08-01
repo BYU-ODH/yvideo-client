@@ -324,6 +324,8 @@ const ClipEditor = props => {
 						eventToEdit={null}
 						activeCensorPosition = {activeCensorPosition}
 						editorType={`clip`}
+						handleShowTip={handleShowTip}
+						toggleTip={toggleTip}
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
@@ -403,7 +405,7 @@ const ClipEditor = props => {
 									onMouseEnter={e => handleShowTip(`te-zoom`,
 										{
 											x: e.target.getBoundingClientRect().x,
-											y: e.target.getBoundingClientRect().y,
+											y: e.target.getBoundingClientRect().y - 100,
 											width: e.currentTarget.offsetWidth,
 										})
 									}
