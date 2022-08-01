@@ -174,6 +174,7 @@ const SubtitleEditorContainer = props => {
 		deleteTitle,
 		handleAddSubLayer,
 		handleAddSubLayerFromFile,
+		keyup,
 		handleDeleteSubLayer,
 		index,
 	) => {
@@ -186,6 +187,7 @@ const SubtitleEditorContainer = props => {
 				deleteTitle,
 				handleAddSubLayer,
 				handleAddSubLayerFromFile,
+				keyup,
 				handleDeleteSubLayer,
 				index,
 			},

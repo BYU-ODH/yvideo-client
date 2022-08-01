@@ -106,6 +106,7 @@ const VideoEditorContainer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contentCache, getContent, streamKey, content, sKey, eventsArray])
+
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,

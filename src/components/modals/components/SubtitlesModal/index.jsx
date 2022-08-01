@@ -4,6 +4,19 @@ import closeIcon from 'assets/close_icon.svg'
 
 export default class SubtitlesModal extends Component {
 
+	constructor(props) {
+		super(props)
+		this.keyup = this.props.viewstate.keyup
+	}
+
+	componentDidMount = () => {
+		window.onkeyup = null
+	}
+
+	componentWillUnmount() {
+		window.onkeyup = this.keyup
+	}
+
 	render() {
 
 		const {
@@ -46,31 +59,33 @@ export default class SubtitlesModal extends Component {
 										onClick={toggleModal}/>
 								</div>
 								<table>
-									<tr>
-										<td className='modalSection'>
-											<div
-												id='modalSection'
-												data-testid='modalButton1'
-												className='modalButton'
-												onClick={ () => createLayer.fromScratch() }>
-												<p>Start from scratch</p>
-											</div>
-										</td>
-										<td className='modalSectionRight'>
-											<h4 className='modalSectionRightTitle' >Import Srt or Vtt File</h4>
-											<input
-												type='file'
-												accept='.srt,.vtt'
-												id='subFileInput'
-												data-testid='subFileInput'/>
-											<button
-												id='create-button'
-												data-testid='modalButton2'
-												className='modalButton'
-												onClick={ () => createLayer.fromFile() }
-											>Submit</button>
-										</td>
-									</tr>
+									<tbody>
+										<tr>
+											<td className='modalSection'>
+												<div
+													id='modalSection'
+													data-testid='modalButton1'
+													className='modalButton'
+													onClick={ () => createLayer.fromScratch() }>
+													<p>Start from scratch</p>
+												</div>
+											</td>
+											<td className='modalSectionRight'>
+												<h4 className='modalSectionRightTitle' >Import Srt or Vtt File</h4>
+												<input
+													type='file'
+													accept='.srt,.vtt'
+													id='subFileInput'
+													data-testid='subFileInput'/>
+												<button
+													id='create-button'
+													data-testid='modalButton2'
+													className='modalButton'
+													onClick={ () => createLayer.fromFile() }
+												>Submit</button>
+											</td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
 						</div>
