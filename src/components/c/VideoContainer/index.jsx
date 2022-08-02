@@ -412,7 +412,7 @@ const VideoContainer = props => {
 			}
 			// checking video container and setting event listener for hot keys
 			window.onkeyup = (e) => {
-					handleHotKeys(e)
+				handleHotKeys(e)
 			}
 		}
 		// Allowing the seeker bar to go straight to the event that is clicked, but only if eventSeek === true
