@@ -92,7 +92,7 @@ export const TimeBar = styled.div`
 					margin-top: 20px;
 					position: absolute;
 					height: .75rem;
-					width: 100%; !important;
+					width: 100% !important;
 
 					& #time-bar-shadow {
 						position: absolute;
@@ -129,7 +129,7 @@ export const TimeBar = styled.div`
 		& button {
 
 			height: 1.5rem;
-			width: 1.5rem;
+			width: 1rem;
 
 			margin: 0 1.5rem;
 			padding: 0;
