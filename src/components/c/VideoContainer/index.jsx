@@ -385,7 +385,8 @@ const VideoContainer = props => {
 		if(count === 0){
 			count++
 			// checking for time bar and setting event listener
-			if(document.getElementById(`time-bar`) !== null && duration !== 0){
+			if(document.getElementById(`time-bar`) && duration !== 0){
+				console.log(document.getElementById(`time-bar`))
 				document.getElementById(`time-bar`).addEventListener(`mousemove`, (e) => {
 					// calculate current time based on mouse position
 					const currentLayerWidth = document.getElementById(`time-bar-container`).clientWidth
