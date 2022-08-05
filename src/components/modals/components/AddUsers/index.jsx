@@ -37,7 +37,6 @@ export default class AddUsers extends PureComponent {
 							<></>
 					}
 				</AddManyForm>
-
 				<br/>
 
 				{addedUsersResult && addedUsersResult.successResult && addedUsersResult.failResult ?

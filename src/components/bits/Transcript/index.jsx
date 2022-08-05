@@ -44,7 +44,7 @@ const Transcript = props => {
 
 	const [words, setWords] = useState(``)
 	const [meanings, setMeanings] = useState(``)
-
+	
 	useEffect(() => {
 		setWords(``)
 		setMeanings(``)
@@ -88,7 +88,7 @@ const Transcript = props => {
 			if(matches !== null){
 				// highlight and push changes
 				matches.forEach(m => {
-					const cleanString = m.replace(/\s/g,``)
+					const cleanString = m.replace(/\s/g, ``)
 					// console.log('Matched', cleanString)
 					const rep = new RegExp(`${cleanString}`, `gmi`)
 
@@ -242,7 +242,6 @@ const Transcript = props => {
 }
 
 const mapStateToProps = store => ({
-	// data: store.adminStore.data,
 	languageCodes: store.interfaceStore.languageCodes,
 	jsonResponse: store.interfaceStore.jsonResponse,
 })

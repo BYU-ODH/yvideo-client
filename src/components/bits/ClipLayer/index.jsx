@@ -24,7 +24,8 @@ const ClipLayer = props => {
 			top: `0px`,
 			backgroundColor:`#fff`,
 			border:`1px solid #0582ca`,
-			color:`#000`,fontSize:`1.3rem`,
+			color:`#000`,
+			fontSize:`1.3rem`,
 			justifyContent:`center`,
 			alignItems:`center`,
 		}
@@ -76,8 +77,8 @@ const ClipLayer = props => {
 		if(s < 0)
 			s = 0
 		// call handler from parent
-		setStart(s,null,clipName)
-		setEnd(e,null,clipName)
+		setStart(s, null, clipName)
+		setEnd(e, null, clipName)
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
@@ -99,8 +100,8 @@ const ClipLayer = props => {
 				en = videoLength
 			}
 		}
-		setStart(s,null,clipName)
-		setEnd(en,null,clipName)
+		setStart(s, null, clipName)
+		setEnd(en, null, clipName)
 	}
 	// eslint-disable-next-line no-unused-vars
 	const curr = {...dragRef.current}
@@ -127,7 +128,7 @@ const ClipLayer = props => {
 
 								handleDrag(d)
 							}}
-							onClick = {()=>handleEditClip(clipName,index)}
+							onClick = {()=>handleEditClip(clipName, index)}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
 							key={`clip-${clipName}`}
 							style={style}
