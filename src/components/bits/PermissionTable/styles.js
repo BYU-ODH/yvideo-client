@@ -11,7 +11,7 @@ export default Style
 export const Table = styled.table`
 	background: white;
 	border-collapse: collapse;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	margin-bottom: 3rem;
 	table-layout: fixed;
 	&>thead {

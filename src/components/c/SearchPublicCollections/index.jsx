@@ -14,25 +14,24 @@ export default class SearchPublicCollections extends PureComponent {
 			searchQuery,
 			searchedPublicCollections,
 			isSearched,
+			subscribedObj,
 		} = this.props.viewstate
 
 		const {
 			handleSubmit,
 			handleSearchTextChange,
-			// setNoCollections,
 		} = this.props.handlers
 
 		return (
 			<Style>
 				<header>
 					<div>
-						{/* <h2>Search Public Collections</h2> */}
 					</div>
 				</header>
 
 				<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSubmit}>
 					<SearchIcon />
-					<input id='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+					<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} defaultValue={searchQuery} />
 					<button type='submit'>Search</button>
 				</Search>
 
@@ -40,8 +39,8 @@ export default class SearchPublicCollections extends PureComponent {
 					{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
 						<>
 							<ListLable>Search Results</ListLable>
-							{Object.keys(searchedPublicCollections).map(key =>
-								<ListCollectionContainer key={key} collection={searchedPublicCollections[key]} defaultSubscription={true} />
+							{Object.keys(searchedPublicCollections).filter(key => !Object.keys(subscribedObj).includes(key)).map(key =>
+								<ListCollectionContainer key={key} identifier={key} collection={searchedPublicCollections[key]} defaultSubscription={false} />
 								,
 							)}
 						</>

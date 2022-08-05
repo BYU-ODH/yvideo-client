@@ -39,35 +39,32 @@ const TrackLayer = props => {
 
 	useLayoutEffect(() => {
 
-		setLayerHeight(layerRef.current.offsetHeight*layerIndex)
+		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 
 		if(events && layerIndex === 4){
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
-			const tempOnload = window.onload
-			window.onload = () => {
-				if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
-				document.getElementById(`layer-${layerIndex}`).style.height =
-				`${overlapCount.length !== 0 ?
-					26 * (overlapCount.length + 1)
-					: 46}px`
-				window.onload = tempOnload
+			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
+
+			if(document.getElementById(`layer-${layerIndex}`)) {
+				document.getElementById(`layer-${layerIndex}`).style.height =`${overlapCount.length !== 0 ? 26 * (overlapCount.length + 1)
+					:
+					46}px`
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
-	useLayoutEffect(()=>{
-
+	useLayoutEffect(() => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
 			setLayerWidth(layerRef.current.offsetWidth + width)
 		else if (width === 0)
 			setLayerWidth(initialWidth)
 		else
-			setLayerWidth(layerWidth + width)
+			setLayerWidth(initialWidth + width)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[width])
+	}, [width])
 	if(document.getElementById(`timeBarProgress`) !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementById(`timeBarProgress`).style.width = `${layerWidth - 2}px`
@@ -146,7 +143,7 @@ const TrackLayer = props => {
 		setActiveCensorPosition(-1)
 
 		const cEvents = events
-		const beginTimePercentage = d.x/layerWidth*100*videoLength/100
+		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
 		const endPercentage = beginTimePercentage + event.end - event.start
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
@@ -167,7 +164,7 @@ const TrackLayer = props => {
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
 
 		const cEvents = events
-		const difference = delta.width / layerWidth * 100*videoLength/100
+		const difference = delta.width / layerWidth * 100 * videoLength / 100
 		if(direction === `right`){
 			cEvents[index].end += difference
 
@@ -180,7 +177,7 @@ const TrackLayer = props => {
 			if(cEvents[index].start < 0)
 				cEvents[index].start = 0
 			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength-0.001
+				cEvents[index].start = videoLength - 0.001
 				cEvents[index].end = videoLength
 			}
 		}
@@ -196,8 +193,8 @@ const TrackLayer = props => {
 			<Rnd
 				className={
 					`layer-event
-					${isMultiEvent ? `half-event`:``}
-					${activeEvent === index ? `active-event` : ``}`}
+					${isMultiEvent && `half-event`}
+					${activeEvent === index && `active-event`}`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={
@@ -206,7 +203,7 @@ const TrackLayer = props => {
 						height: `${isMultiEvent ? 23 : 46}px`,
 					}
 				}
-				position={{ x: event.start / videoLength * layerWidth, y: 0}}
+				position={{ x: event.start / videoLength * layerWidth, y: 0 }}
 				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
@@ -225,7 +222,7 @@ const TrackLayer = props => {
 				key={index}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
-				<Icon src={event.icon} className={isMultiEvent ? `half-icon` : ``}/>
+				<Icon src={event.icon} className={isMultiEvent && `half-icon`}/>
 				{ event.type !== `Pause` ? (
 					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
 				) : (
@@ -242,11 +239,11 @@ const TrackLayer = props => {
 				{/* overflow-x should be like scroll or something */}
 				{layerIndex !== 4 &&
 					<div ref={layerRef} className='eventsbox'>
-						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex ? `active-layer` : ``}`}>
+						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex && `active-layer`}`}>
 							{
 								events !== undefined && events.length > 0 && videoLength !== 0? (
 									<>
-										{ events.map((event, index) => printEvents(event, index, false))}
+										{ events.map((event, index) => printEvents(event, index, false)) }
 									</>
 								) : null
 							}
@@ -256,7 +253,7 @@ const TrackLayer = props => {
 				{layerIndex === 4 && layerOverlap !== null &&
 					<div ref={layerRef} className='eventsbox'>
 						<div
-							className={`layer-${layerIndex} ${layerOverlap.length > 0 ? `half-layer` : ``} events ${displayLayer === layerIndex ? `active-layer` : ``}`}
+							className={`layer-${layerIndex} ${layerOverlap.length > 0 && `half-layer`} events ${displayLayer === layerIndex && `active-layer`}`}
 							style={
 								{
 									backgroundColor: `rgba(5, 130, 202, 0.1)`,
@@ -280,16 +277,13 @@ const TrackLayer = props => {
 							}
 						</div>
 						{ layerOverlap.map((halfLayer, overlapIndex) => (
-							<div key={overlapIndex} className={`layer-${layerIndex} half-layer events ${displayLayer === layerIndex ? `active-layer` : ``}`}
+							<div key={overlapIndex} className={`layer-${layerIndex} half-layer events ${displayLayer === layerIndex && `active-layer`}`}
 								style={
 									{
 										marginTop: overlapIndex > 0 ?
 											`${26 * overlapIndex}px`
 											: `0px`,
-										backgroundColor: overlapIndex % 2 !== 0 ?
-											`rgba(5, 130, 202, 0.1)`
-											:
-											``,
+										backgroundColor: overlapIndex % 2 !== 0 && `rgba(5, 130, 202, 0.1)`,
 									}}
 							>
 								{

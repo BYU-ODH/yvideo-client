@@ -72,6 +72,6 @@ describe(`collection container test`, () => {
 		expect(wrapper.find(`Link`).at(2).props().to).toEqual(`/player/1`)
 
 		// TODO: toggle modal test need to be updated
-		wrapper.find(`#collections-help-documentation`).at(0).simulate(`click`, { preventDefault () {} })
+		wrapper.find(`#collections-help-documentation`).at(0).simulate(`click`, { preventDefault() {} })
 	})
 })

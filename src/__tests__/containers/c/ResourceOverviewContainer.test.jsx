@@ -18,12 +18,12 @@ const props = {
 }
 
 proxies.apiProxy.language.get = jest.fn()
-proxies.apiProxy.language.get.mockImplementation( () => {
+proxies.apiProxy.language.get.mockImplementation(() => {
 	return Promise.resolve(`Korean;Japanese;`)
 })
 
 proxies.apiProxy.resources.files = jest.fn()
-proxies.apiProxy.resources.files.mockImplementation( () => {
+proxies.apiProxy.resources.files.mockImplementation(() => {
 	return Promise.resolve([testutil.file1])
 })
 

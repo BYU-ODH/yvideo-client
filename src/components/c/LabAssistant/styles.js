@@ -28,7 +28,7 @@ export default Style
 
 export const Search = styled.form`
 	position: relative;
-	text-align: ${props => props.isMobile ? `center` : ``};
+	text-align: ${props => props.isMobile && `center`};
 
 	& > input {
 		z-index: 1;
@@ -48,7 +48,7 @@ export const Search = styled.form`
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	}
 
 	& > button {
@@ -58,7 +58,7 @@ export const Search = styled.form`
     background-color: var(--light-blue);
     margin-left: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 2rem;

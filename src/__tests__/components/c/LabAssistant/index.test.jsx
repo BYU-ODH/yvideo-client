@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import LabAssistant from '../../../../components/c/LabAssistant/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const viewstate = {
 	data: [
@@ -40,7 +40,7 @@ const props = {
 }
 
 describe(`admin dashboard test`, () => {
-	it(`should be true`, ()=> {
+	it(`should be true`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<LabAssistant {...props}/>

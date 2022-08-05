@@ -5,7 +5,7 @@ import AdminTable from '../../../../components/bits/AdminTable/index'
 import { BrowserRouter } from 'react-router-dom'
 
 const viewstate = {
-	data:[
+	data: [
 		{
 			email: `atest@email.com`,
 			id: 22,
@@ -40,7 +40,7 @@ const viewstate = {
 	menuActive: true,
 	mousePos: 0,
 	menuItemInfo: {
-		id:`2323`,
+		id: `2323`,
 		owner: `owner`,
 	},
 }

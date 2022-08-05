@@ -125,7 +125,7 @@ describe(`BlockCollection test`, () => {
 		expect(arrowLeft).toBeVisible()
 		expect(arrowRight).toBeVisible()
 
-		fireEvent.scroll(slideWrapper, { target: { scrollLeft: farEnd - 4 }})
+		fireEvent.scroll(slideWrapper, { target: { scrollLeft: farEnd - 4 } })
 		expect(arrowLeft).toBeVisible()
 		/* Not working for some reason, so commented out*/
 		// expect(arrowRight).not.toBeVisible()

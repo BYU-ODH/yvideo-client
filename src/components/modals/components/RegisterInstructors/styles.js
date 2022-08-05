@@ -42,7 +42,7 @@ export const Search = styled.div`
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 
 		@media (max-width: 800px){
 			width: 20rem;
@@ -56,7 +56,7 @@ export const Search = styled.div`
     background-color: var(--light-blue);
     margin-left: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 2rem;
@@ -95,7 +95,7 @@ export const CategorySelect = styled.select`
 	padding: 0 1.25rem;
 
 	outline: none;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	& option {
 		margin: auto auto 6px auto;
 	}
@@ -174,7 +174,7 @@ export const Form = styled.form`
 
 export const Table = styled.table`
 	background: white;
-	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15);
 	border-radius: 10px;
 	width: 100%;
 
@@ -182,7 +182,7 @@ export const Table = styled.table`
 		padding: 1.5rem;
 		font-size: 1.5rem;
 		text-align: left;
-		border-bottom: 0.7px solid rgba(0,0,0,0.15)
+		border-bottom: 0.7px solid rgba(0, 0, 0, 0.15)
 	}
 
 	& td {

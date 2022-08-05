@@ -31,7 +31,7 @@ const Style = styled.div`
 
 	&.active {
 		left: calc(100% - 32rem);
-		box-shadow: 0 -.5rem 3rem 0 rgba(0,0,0,0.25);
+		box-shadow: 0 -.5rem 3rem 0 rgba(0, 0, 0, 0.25);
 
 		& > button:first-of-type {
 			position: relative;

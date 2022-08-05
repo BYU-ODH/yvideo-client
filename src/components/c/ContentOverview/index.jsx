@@ -212,10 +212,10 @@ const ContentOverview = props => {
 												width: e.currentTarget.offsetWidth,
 											})
 									}}
-									onMouseOut={(e) => {
+									onMouseOut={() => {
 										!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) && toggleTip()
 									}}
-									style={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) ? {cursor:`not-allowed`} : {cursor:`auto`}}
+									style={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage) ? {cursor: `not-allowed`} : {cursor: `auto`}}
 								>
 									<SwitchToggle
 										disabled={!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)}
