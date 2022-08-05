@@ -103,7 +103,6 @@ export default class Player extends Component {
 			subtitleText,
 			// subtitleTextIndex,
 			displaySubtitles,
-			isCaption,
 			indexToDisplay,
 			isMobile,
 			// censorPosition,
@@ -112,7 +111,6 @@ export default class Player extends Component {
 			isLandscape,
 			hasPausedClip,
 			events,
-			showSpeed,
 		} = this.props.viewstate
 
 		const {

@@ -44,7 +44,7 @@ const Transcript = props => {
 
 	const [words, setWords] = useState(``)
 	const [meanings, setMeanings] = useState(``)
-	
+
 	useEffect(() => {
 		setWords(``)
 		setMeanings(``)
