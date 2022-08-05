@@ -553,13 +553,9 @@ const VideoContainer = props => {
 						</button>
 
 						<div id='time-bar' onMouseLeave={() => {
-							if(document.getElementById(`time-bar-shadow`) !== null && document.getElementById(`layer-time-indicator-line-shadow`) !== null) {
-								const tempOnload = window.onload
-								window.onload = () => {
-									document.getElementById(`time-bar-shadow`).style.visibility = `hidden`
-									document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
-									window.onload = tempOnload
-								}
+							if(document.getElementById(`time-bar-shadow`) && document.getElementById(`layer-time-indicator-line-shadow`)) {
+								document.getElementById(`time-bar-shadow`).style.visibility = `hidden`
+								document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `hidden`
 							}
 						}}>
 							<div id={`time-bar-container`}>

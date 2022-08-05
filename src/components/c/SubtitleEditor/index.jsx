@@ -219,8 +219,6 @@ const SubtitleEditor = props => {
 				allLayers[i].scrollLeft = currentLayerWidth * dis
 			})
 			skipLayer.scrollLeft = currentLayerWidth * dis
-			// 	window.onload = tempOnload
-			// }
 		}
 	}
 
