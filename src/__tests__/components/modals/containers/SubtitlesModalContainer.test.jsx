@@ -64,7 +64,7 @@ describe(`Subtitles Modal test`, () => {
 			expect(createProps.handleAddSubLayerFromFile).not.toHaveBeenCalled()
 		})
 
-		it(`close create onClick`, async ()=> {
+		it(`close create onClick`, async () => {
 			const user = userEvent.setup()
 			const closeButton = screen.getByAltText(`close`)
 

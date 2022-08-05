@@ -20,7 +20,7 @@ export const Style = styled.div`
 	}
 
 	& .player-wrapper {
-		height:100%;
+		height: 100%;
 		position: relative;
 		background-color: black;
 		height: 100%;
@@ -51,12 +51,12 @@ export const Blank = styled.div`
 	z-index: 15;
 	}
 	& #blankBox{
-		position:absolute;
+		position: absolute;
 		width: 100%;
 		height: 100%;
 		background-color: black;
 		z-index: 100;
-		top:0;
+		top: 0;
 	}
 	& #pauseMessage{
 		& button{
@@ -68,7 +68,7 @@ export const Blank = styled.div`
 			display: inline-block;
     	cursor: pointer;
 			top: 90%;
-			left:90%;
+			left: 90%;
 		}
 	}
 `
@@ -101,7 +101,7 @@ export const Subtitles = styled.div`
 	width: 100%;
 
 	& h3 {
-		background-color: ${props => props.subtitleText ===`` ? `transparent` : `rgba(0,0,0,0.5)`};
+		background-color: ${props => props.subtitleText === `` ? `transparent` : `rgba(0, 0, 0, 0.5)`};
 		padding: 3px;
 		font-size: 1.8rem;
 		text-align: center;
@@ -115,21 +115,21 @@ export const Subtitles = styled.div`
 `
 export const PauseMessage = styled.div`
 	padding: 1%;
-	width:90% !important;
-	height:50% !important;
+	width: 90% !important;
+	height: 50% !important;
 	font-size: 1.5rem;
-	position:absolute;
+	position: absolute;
 	display: block;
 	top: 15%;
 	left: 5%;
-	border-width:1px;
+	border-width: 1px;
 	border-radius: 1px;
 	border-style: solid;
 	border-color: var(--navy-blue);
 	cursor: pointer;
 	justify-content: center;
 	background-color: rgba(241, 241, 244, 0.79);
-	z-index:10000;
+	z-index: 10000;
 	visibility: hidden
 `
 

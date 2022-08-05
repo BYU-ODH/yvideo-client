@@ -14,21 +14,21 @@ const newcontent = { // eslint-disable-line no-unused-vars
 	contentType: `video2`,
 	collectionId: 85,
 	thumbnail: `test@thumbnail.com`,
-	physicalCopyExists:false,
-	isCopyrighted:false,
-	expired:true,
-	dateValidated:``,
-	requester:``,
-	resourceId:`5ebdaef833e57cec218b457c`,
-	published:true,
+	physicalCopyExists: false,
+	isCopyrighted: false,
+	expired: true,
+	dateValidated: ``,
+	requester: ``,
+	resourceId: `5ebdaef833e57cec218b457c`,
+	published: true,
 	settings: {
-		allowDefinitions:false,
-		showAnnotations:false,
-		showCaptions:false,
-		showTranscripts:false,
-		showWordList:false,
-		aspectRatio:`1.77`,
-		description:``,
+		allowDefinitions: false,
+		showAnnotations: false,
+		showCaptions: false,
+		showTranscripts: false,
+		showWordList: false,
+		aspectRatio: `1.77`,
+		description: ``,
 		targetLanguage: ``,
 		annotationDocument: [],
 		captionTrack: [],
@@ -52,21 +52,21 @@ const props = {
 				contentType: `video`,
 				collectionId: 85,
 				thumbnail: `test@thumbnail.com`,
-				physicalCopyExists:false,
-				isCopyrighted:false,
-				expired:true,
-				dateValidated:``,
-				requester:``,
-				resourceId:`5ebdaef833e57cec218b457c`,
-				published:true,
+				physicalCopyExists: false,
+				isCopyrighted: false,
+				expired: true,
+				dateValidated: ``,
+				requester: ``,
+				resourceId: `5ebdaef833e57cec218b457c`,
+				published: true,
 				settings: {
-					allowDefinitions:false,
-					showAnnotations:false,
-					showCaptions:false,
-					showTranscripts:false,
-					showWordList:false,
-					aspectRatio:`1.77`,
-					description:``,
+					allowDefinitions: false,
+					showAnnotations: false,
+					showCaptions: false,
+					showTranscripts: false,
+					showWordList: false,
+					aspectRatio: `1.77`,
+					description: ``,
 					targetLanguage: ``,
 					annotationDocument: [],
 					captionTrack: [],
@@ -95,7 +95,7 @@ const props = {
 }
 
 describe(`manage collection test`, () => {
-	it(`ContentOverviewContainer should be connected`, ()=> {
+	it(`ContentOverviewContainer should be connected`, () => {
 
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
@@ -105,7 +105,7 @@ describe(`manage collection test`, () => {
 		// expect(wrapper.find(`Connect(ContentOverviewContainer)`).length).toBe(1)
 	})
 
-	it(`CollectionPermissionsContainer should be connected`, ()=> {
+	it(`CollectionPermissionsContainer should be connected`, () => {
 		props.viewstate.isContentTab = false
 		const wrapper = shallow(
 			<ManageCollection {...props} />,
@@ -115,7 +115,7 @@ describe(`manage collection test`, () => {
 		expect(wrapper.find(`Connect(CollectionPermissionsContainer)`).length).toBe(1)
 	})
 
-	it(`test viewstate`, ()=> {
+	it(`test viewstate`, () => {
 		props.viewstate.isContentTab = true
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -126,18 +126,20 @@ describe(`manage collection test`, () => {
 		)
 
 		const viewstate = wrapper.find(`ContentOverviewContainer`).at(0).childAt(0).props().viewstate
-		expect(viewstate.content.id).toBe(115)
-		expect(viewstate.content.name).toBe(`testname`)
-		expect(viewstate.content.contentType).toBe(`video`)
-		expect(viewstate.content.collectionId).toBe(85)
-		expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
-		expect(viewstate.content.physicalCopyExists).toBe(false)
-		expect(viewstate.content.isCopyrighted).toBe(false)
-		expect(viewstate.content.expired).toBe(true)
-		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
+		if(viewstate) {
+			expect(viewstate.content.id).toBe(115)
+			expect(viewstate.content.name).toBe(`testname`)
+			expect(viewstate.content.contentType).toBe(`video`)
+			expect(viewstate.content.collectionId).toBe(85)
+			expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
+			expect(viewstate.content.physicalCopyExists).toBe(false)
+			expect(viewstate.content.isCopyrighted).toBe(false)
+			expect(viewstate.content.expired).toBe(true)
+			expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
+		}
 	})
 
-	it(`simulate click action`, ()=> {
+	it(`simulate click action`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -154,7 +156,7 @@ describe(`manage collection test`, () => {
 		wrapper.find(`h6`).simulate(`click`)
 	})
 
-	it(`simulate click action`, ()=> {
+	it(`simulate click action`, () => {
 		props.viewstate.isEditingCollectionName = true
 		props.viewstate.collection = collection6
 		const wrapper = mount(

@@ -175,7 +175,7 @@ const PlayerControls = props => {
 				<ClosedCaptions
 					data-testid='closed-captions'
 					isCaptions={isCaption}
-					onClick={ isAdmin || isProf ? handleChangeCaption : handleToggleSubtitles}
+					onClick={ isAdmin || isProf ? handleChangeCaption : handleToggleSubtitles }
 					onMouseEnter={e => handleShowTip(`closed-captions`,
 						{
 							x: e.target.getBoundingClientRect().x,

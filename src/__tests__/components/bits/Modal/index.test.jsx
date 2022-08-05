@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Modal from '../../../../components/bits/Modal/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 

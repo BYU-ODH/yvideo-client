@@ -1,6 +1,6 @@
 import React from 'react'
 import EventCard from '../../../../components/bits/EventCard/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { render, screen, cleanup } from '@testing-library/react'
 
 const event =

@@ -19,6 +19,8 @@ const ListCollectionContainer = props => {
 		searchCollectionsByUserId,
 		collections,
 		defaultSubscription,
+		identifier,
+		handleSetSubscribedObj,
 		// getSubscribers,
 		// getUserById,
 		// searchedUser,
@@ -37,9 +39,13 @@ const ListCollectionContainer = props => {
 	const handlePublicCollection = async() => {
 		if (isSubscribed) {
 			await updateCollectionPermissions(collection.id, `remove-user`, user)
+			if(handleSetSubscribedObj)
+				handleSetSubscribedObj(identifier, false)
 			setIsSubscribed(false)
 		} else {
 			await updateCollectionPermissions(collection.id, `add-user`, user)
+			if(handleSetSubscribedObj)
+				handleSetSubscribedObj(identifier, true)
 			setIsSubscribed(true)
 		}
 	}
@@ -72,13 +78,13 @@ const ListCollectionContainer = props => {
 
 	// TODO: we can modify this idea later
 	// eslint-disable-next-line no-unused-vars
-	const handleMorePublicCollection = async() =>{
-		const result = await searchCollectionsByUserId(collection.owner,true, true)
+	const handleMorePublicCollection = async() => {
+		const result = await searchCollectionsByUserId(collection.owner, true, true)
 		let morePublicCollections
 
 		// prevent null error
 		if(result) {
-			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k,v]) => v)
+			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k, v]) => v)
 
 			// open toggle modal for presenting owner's more public collections
 			if(morePublicCollections.length > 0){

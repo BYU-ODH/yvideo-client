@@ -42,10 +42,10 @@ const SubtitleEditorContainer = props => {
 	const [eventsArray, setEventsArray] = useState([])
 	const [showSideEditor, setSideEditor] = useState(false)
 	const [currentContent, setCurrentContent] = useState({})
-	const [subs,setSubs] = useState([])
+	const [subs, setSubs] = useState([])
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	const [aspectRatio,setAspectRatio] = useState([16,9])
+	const [aspectRatio, setAspectRatio] = useState([16, 9])
 
 	const getAllSubtitles = async() => {
 		const testsubs = await getSubtitles(id)
@@ -72,16 +72,16 @@ const SubtitleEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setBreadcrumbs({path:[`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
+			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
 
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
 			if(content[id].url.includes(`youtube`)){
 				const fetchData = async() => {
-					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`,{method:`GET`})
+					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`, {method: `GET`})
 					const data = await rawData.json()
 					if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
-						setAspectRatio([data.width,data.height])
+						setAspectRatio([data.width, data.height])
 
 					return data
 				}
@@ -102,7 +102,7 @@ const SubtitleEditorContainer = props => {
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				// eslint-disable-next-line no-unused-vars
-				const files = Promise.resolve(getFiles(sKey)).then((value)=>{
+				const files = Promise.resolve(getFiles(sKey)).then((value) => {
 					if (value){
 						const file = value.find(element => element[`file-version`].includes(content[id].settings.targetLanguage) !== false)
 						if (file[`aspect-ratio`])
@@ -114,7 +114,7 @@ const SubtitleEditorContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [content, resource, eventsArray, currentContent, subs, streamKey, url, subContentId, getContent, sKey, calledGetSubtitles, allSubs])
 
-	useLayoutEffect( () => {
+	useLayoutEffect(() => {
 		// once the url is set we can get subtitles
 		if(!calledGetSubtitles) {
 			getSubtitles(id)
@@ -152,7 +152,7 @@ const SubtitleEditorContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Subtitle Editor`},
+			props: { name: `Subtitle Editor` },
 		})
 	}
 
@@ -174,6 +174,7 @@ const SubtitleEditorContainer = props => {
 		deleteTitle,
 		handleAddSubLayer,
 		handleAddSubLayerFromFile,
+		keyup,
 		handleDeleteSubLayer,
 		index,
 	) => {
@@ -186,6 +187,7 @@ const SubtitleEditorContainer = props => {
 				deleteTitle,
 				handleAddSubLayer,
 				handleAddSubLayerFromFile,
+				keyup,
 				handleDeleteSubLayer,
 				index,
 			},

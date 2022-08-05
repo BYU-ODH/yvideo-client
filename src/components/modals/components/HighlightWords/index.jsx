@@ -22,7 +22,7 @@ export default class HighlightWords extends PureComponent {
 
 	render() {
 		const {
-			// files,checkWord,
+			// files, checkWord,
 			checkWord,
 			word,
 			checkResponse,

@@ -41,7 +41,7 @@ const props = {
 
 describe(`List collection test`, () => {
 
-	it(`test render ListCollection`, ()=> {
+	it(`test render ListCollection`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>
@@ -56,7 +56,7 @@ describe(`List collection test`, () => {
 		expect(wrapper.contains(<p>2 items</p>)).toEqual(true)
 	})
 
-	it(`ListCollection togglePanel test`, ()=> {
+	it(`ListCollection togglePanel test`, () => {
 		const wrapper = shallow( // eslint-disable-line no-unused-vars
 			<Provider store={testutil.store}>
 				<ListCollectionContainer {...props} />

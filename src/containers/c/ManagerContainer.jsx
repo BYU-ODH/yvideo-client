@@ -38,7 +38,7 @@ const ManagerContainer = props => {
 	const [isOpen, setOpen] = useState(true)
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
 
 		setHeaderBorder(true)
 
@@ -91,7 +91,7 @@ const ManagerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Manage Collections`},
+			props: { name: `Manage Collections` },
 		})
 	}
 
@@ -126,7 +126,9 @@ const ManagerContainer = props => {
 
 	})
 	if (collectionError !== collectionErrorPrev) {
-		alert(collectionError)
+		if(	alert(collectionError));
+		window.location = `${process.env.REACT_APP_YVIDEO_SERVER}`
+
 		collectionSyncError()
 	}
 

@@ -60,7 +60,7 @@ const ContentOverviewContainer = props => {
 		else
 			window.onbeforeunload = undefined
 
-		if(!SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)){
+		if(content.settings && !SUPPORTED_LANGUAGES.join(``).includes(content.settings.targetLanguage)){
 			if (content.settings.allowDefinitions){
 				setContentState({
 					...contentState,
@@ -161,7 +161,7 @@ const ContentOverviewContainer = props => {
 
 	const addTag = (e) => {
 		e.preventDefault()
-		const newTags = tag.split(/[ ,]+/)
+		const newTags = tag.split(/[ , ]+/)
 		setContentState({
 			...contentState,
 			resource: {
@@ -192,14 +192,14 @@ const ContentOverviewContainer = props => {
 	const handleShowWordsModal = () => {
 		toggleModal({
 			component: HighlightWordsContainer,
-			props:{ contentId: content.id},
+			props: { contentId: content.id },
 		})
 	}
 
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Important Words`},
+			props: { name: `Important Words` },
 		})
 	}
 

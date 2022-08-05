@@ -196,7 +196,7 @@ const Transcript = props => {
 				<div className={`transcript-content`}>
 					{	displaySubtitles !== null && displaySubtitles.content !== `` ?
 						displaySubtitles[`content`].map((element, index) =>
-							<div className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index ? `active-sub` : ``}`}
+							<div className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>

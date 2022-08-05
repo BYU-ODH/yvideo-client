@@ -114,7 +114,7 @@ export const PublicCollectionsLable = styled.div`
 	align-items: center;
 
 		& .ownership{
-			display:flex;
+			display: flex;
 			margin-left: 2rem;
 			flex: 2;
 			font-weight: 500;

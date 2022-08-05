@@ -138,7 +138,7 @@ export const PublicCollectionsTable = styled.div`
 	justify-items: ${props => props.isOwner === true ? `center` : `flex-end`};
 
 		& .ownership{
-			display:flex;
+			display: flex;
 			margin-left: 2rem;
 			margin-top: 1rem;
 			margin-bottom: 1rem;

@@ -101,7 +101,6 @@ const Style = styled.div`
 		overflow-y: scroll;
 		position: relative;
 		top: 20px;
-
 		& td {
 			width: 15%;
 			padding: 2px;
@@ -119,6 +118,9 @@ const Style = styled.div`
 				margin: auto;
 				cursor: pointer;
 			}
+		}
+		& #time-td {
+			width: 25%;
 		}
 
 		& #loader {
@@ -142,6 +144,7 @@ const Style = styled.div`
 		border: none;
 		position: absolute;
 		bottom: 0px;
+		padding-top: 0px;
 	}
 
 	& .arrowDown {
@@ -176,8 +179,10 @@ const Style = styled.div`
 export const Icon = styled.div`
 	/* transform: rotate(45deg); */
   background: url(${props => props.src}) center no-repeat;
-  width: 20px;
-  height: 15px;
+	background-size: 25px;
+	cursor: pointer;
+  width: 25px;
+  height: 25px;
 `
 export const Help = styled.span`
 	width: 20px;

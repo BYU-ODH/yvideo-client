@@ -27,7 +27,7 @@ const LabAssistantContainer = props => {
 	const [isSubmitted, setIsSubmitted] = useState(false)
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Lab assistant Dashboard`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Lab assistant Dashboard`], collectionId: ``, contentId: ``})
 
 		setHeaderBorder(true)
 		return () => {

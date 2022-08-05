@@ -7,7 +7,7 @@ const Style = styled.div`
 	& .allSubs {
 		margin-top: 1rem;
 		padding-top: 2rem;
-		scroll-behavior:smooth;
+		scroll-behavior: smooth;
 	}
 
 	& .closeEditor {
@@ -112,7 +112,7 @@ export const Icon = styled.div`
 	position: relative;
 	z-index: 10;
 	margin-bottom: -1rem;
-	visibility: ${props => props.visibility ===`visible` ? `visible` : `hidden`};
+	visibility: ${props => props.visibility === `visible` ? `visible` : `hidden`};
 
 	:hover {
 		cursor: pointer;

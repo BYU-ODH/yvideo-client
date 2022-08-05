@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, cleanup, fireEvent, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import PlayerControls from '../../../../components/bits/PlayerControls'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const props = {
 	handlers : {
