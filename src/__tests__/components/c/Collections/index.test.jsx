@@ -95,7 +95,7 @@ const viewstate = {
 	{
 		0: { isSubscribed: true },
 		1: { isSubscribed: true },
-	}
+	},
 }
 
 const collectionsProps = {

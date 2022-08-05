@@ -115,7 +115,6 @@ const VideoEditor = props => {
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [isLoading, setIsLoading] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
-	const [hotkeysActive, setHotkeysActive] = useState(true)
 
 	// refs
 	useEffect(() => {
@@ -187,19 +186,17 @@ const VideoEditor = props => {
 		let canAccessDom = false
 		try {
 			if(side === `beg`) {
-				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
+				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
-					setHotkeysActive(true)
-				} else {
+				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
 
 			} else if(side === `end`) {
-				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
+				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
-					setHotkeysActive(true)
-				} else {
+				else {
 					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
@@ -380,9 +377,6 @@ const VideoEditor = props => {
 		else
 			value = Number(parseFloat(e.target.value).toFixed(0))
 
-		if (type === `onBlur`)
-			setHotkeysActive(true)
-
 		// 0 by default is the actual time of the video when the censor is added
 		switch (int) {
 		case 0:
@@ -422,10 +416,6 @@ const VideoEditor = props => {
 		cEvent.position = pos
 		updateEvents(index, cEvent, layer, ``, type)
 		setEditCensor(object)
-	}
-
-	const handleHotkeysActive = () => {
-		setHotkeysActive(false)
 	}
 
 	// THIS IS PART OF CENSOR
@@ -628,7 +618,6 @@ const VideoEditor = props => {
 					eventPosition={eventPosition}
 					handleShowTip={handleShowTip}
 					toggleTip={toggleTip}
-					hotkeysActive={hotkeysActive}
 				></VideoContainer>
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -685,14 +674,14 @@ const VideoEditor = props => {
 								}
 								dragAxis='x'
 								onDragStop={(e, d) => handleZoomChange(e, d)}
-								// onMouseEnter={e => handleShowTip(`te-zoom`,
-								// 	{
-								// 		x: e.target.getBoundingClientRect().x,
-								// 		y: e.target.getBoundingClientRect().y,
-								// 		width: e.currentTarget.offsetWidth,
-								// 	})
-								// }
-								// onMouseLeave={() => toggleTip()}
+								onMouseEnter={e => handleShowTip(`te-zoom`,
+									{
+										x: e.target.getBoundingClientRect().x,
+										y: e.target.getBoundingClientRect().y - 100,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={() => toggleTip()}
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
@@ -810,8 +799,6 @@ const VideoEditor = props => {
 							handleShowTip={handleShowTip}
 							setEventSeek={setEventSeek}
 							handleEventPosition={handleEventPosition}
-							setHotkeysActive={setHotkeysActive}
-							handleHotkeysActive={handleHotkeysActive}
 						></TrackEditorSideMenu>
 						:
 						<></>

@@ -28,7 +28,6 @@ const props = {
 	handleShowTip: jest.fn(),
 	setEventSeek: jest.fn(),
 	handleEventPosition: jest.fn(),
-	handleHotkeysActive: jest.fn(),
 }
 
 describe(`TrackEditorSideMenu test`, () => {

@@ -324,6 +324,8 @@ const ClipEditor = props => {
 						eventToEdit={null}
 						activeCensorPosition = {activeCensorPosition}
 						editorType={`clip`}
+						handleShowTip={handleShowTip}
+						toggleTip={toggleTip}
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
@@ -403,7 +405,7 @@ const ClipEditor = props => {
 									onMouseEnter={e => handleShowTip(`te-zoom`,
 										{
 											x: e.target.getBoundingClientRect().x,
-											y: e.target.getBoundingClientRect().y,
+											y: e.target.getBoundingClientRect().y - 100,
 											width: e.currentTarget.offsetWidth,
 										})
 									}
@@ -488,9 +490,13 @@ const ClipEditor = props => {
 									Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
 										<tbody key={i} className={`singleClip ${i === clipIndex && `clipActive`}`}>
 											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
-												<td><input onClick={() => handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+												<td><input onKeyUp={e => e.stopPropagation()} onClick={() => handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
 												<td>
-													<input onClick={() => handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+													<input
+														type='text'
+														value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleEditClip(item, i)}
 														onChange={(e) => setStartTime(e.target.value, `input`, item)}
 														onBlur={(e) => setStartTime(e.target.value, `onBlur`, item)}
 														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
@@ -503,18 +509,23 @@ const ClipEditor = props => {
 														onMouseLeave={() => toggleTip()}
 													/>
 												</td>
-												<td><input onClick={() => handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
-													onChange={(e) => setEndTime(e.target.value, `input`, item)}
-													onBlur={(e) => setEndTime(e.target.value, `onBlur`, item)}
-													onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
-														{
-															x: e.target.getBoundingClientRect().x + 35,
-															y: e.target.getBoundingClientRect().y + 5,
-															width: e.currentTarget.offsetWidth + 20,
-														})
-													}
-													onMouseLeave={e => toggleTip()}
-												/>
+												<td>
+													<input
+														type='text'
+														value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleEditClip(item, i)}
+														onChange={(e) => setEndTime(e.target.value, `input`, item)}
+														onBlur={(e) => setEndTime(e.target.value, `onBlur`, item)}
+														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+															{
+																x: e.target.getBoundingClientRect().x + 35,
+																y: e.target.getBoundingClientRect().y + 5,
+																width: e.currentTarget.offsetWidth + 20,
+															})
+														}
+														onMouseLeave={e => toggleTip()}
+													/>
 												</td>
 											</tr>
 											<tr>
