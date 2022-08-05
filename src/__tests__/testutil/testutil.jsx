@@ -794,7 +794,7 @@ export const store = mockStore(
 			breadcrumbs: {
 				path: [`Home`, `Manage Collections`, `Video Editor`],
 				collectionId: `collectionId`,
-				contentId: `contentId`
+				contentId: `contentId`,
 			},
 		},
 		collectionStore: {

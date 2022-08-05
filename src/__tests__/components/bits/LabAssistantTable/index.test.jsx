@@ -29,7 +29,6 @@ const wrapper =
 		<LabAssistantTable data={data}/>
 	</BrowserRouter>
 
-
 describe(`LabAssistantTable dashboard test`, () => {
 	beforeEach(() => {
 		render(wrapper)

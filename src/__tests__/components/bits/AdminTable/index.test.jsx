@@ -114,9 +114,9 @@ describe(`Admin Table test`, () => {
 				}
 
 				Object.values(columns).forEach((column) => {
-					for(const j in Object.keys(viewstate.data).length) {
+					for(const j in Object.keys(viewstate.data).length)
 						expect(column[j]).toBeVisible()
-					}
+
 				})
 			})
 		})
@@ -164,9 +164,9 @@ describe(`Admin Table test`, () => {
 				}
 
 				Object.values(columns).forEach((column) => {
-					for(const j in Object.keys(viewstate.data).length) {
+					for(const j in Object.keys(viewstate.data).length)
 						expect(column[j]).toBeVisible()
-					}
+
 				})
 			})
 		})
@@ -214,9 +214,9 @@ describe(`Admin Table test`, () => {
 			}
 
 			Object.values(columns).forEach((column) => {
-				for(const j in Object.keys(viewstate.data).length) {
+				for(const j in Object.keys(viewstate.data).length)
 					expect(column[j]).toBeVisible()
-				}
+
 			})
 		})
 	})
@@ -268,9 +268,9 @@ describe(`Admin Table test`, () => {
 			}
 
 			Object.values(columns).forEach((column, i) => {
-				for(const j in Object.keys(viewstate.data).length) {
+				for(const j in Object.keys(viewstate.data).length)
 					expect(column[j]).toBeVisible()
-				}
+
 			})
 		})
 	})

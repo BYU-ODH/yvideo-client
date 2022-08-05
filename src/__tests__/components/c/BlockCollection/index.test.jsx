@@ -94,7 +94,7 @@ describe(`BlockCollection test`, () => {
 
 		expect(collLink).toBeVisible() // it's a link
 		expect(collLink).toHaveAttribute(`href`, `/manager/${props.collection.id}`) // it's got the right link
-		
+
 		expect(collection === collLink).toBeTruthy() // it's the same element
 
 		expect(screen.getByText(/6 items/i)).toBeVisible() // it has 6 items in it

@@ -82,7 +82,7 @@ const wrapper =
 		<PlayerControls {...props} />
 	</BrowserRouter>
 
-describe('PlayerControls test', () => {
+describe(`PlayerControls test`, () => {
 	describe(`Clean events tests`, () => {
 		beforeEach(() => {
 			render(wrapper)
@@ -171,7 +171,7 @@ describe('PlayerControls test', () => {
 			const PlayPause = screen.getByTestId(`playPause`)
 
 			await user.click(PlayPause)
-			await user.click(PlayPause)  // user.click is a combo of mouseEnter, mouseDown, mouseUp, and others
+			await user.click(PlayPause) // user.click is a combo of mouseEnter, mouseDown, mouseUp, and others
 			expect(props.handlers.handlePlay).toHaveBeenCalledTimes(2)
 			expect(props.handlers.handleShowTip).toHaveBeenCalled()
 			fireEvent.mouseLeave(PlayPause)

@@ -52,7 +52,7 @@ describe(`File Overview test`, () => {
 			const titleEdit = screen.getByTestId(`title-edit`)
 			await waitFor(() =>
 				fireEvent.change(titleEdit, {target: {value: `new title`}}
-			))
+				))
 
 			expect(titleEdit.value).toEqual(`new title`)
 		})
