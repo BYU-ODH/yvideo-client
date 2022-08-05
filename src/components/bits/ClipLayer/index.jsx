@@ -123,6 +123,7 @@ const ClipLayer = props => {
 						<Rnd
 							ref={dragRef}
 							className={`Rnd`}
+							data-testid='Rnd'
 							size={{width: `${(end - start) / videoLength * layerWidth}px`, height: `46px`}}
 							position={
 								{
