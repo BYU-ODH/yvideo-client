@@ -4,9 +4,10 @@ import ReactPlayer from 'react-player'
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
 import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
+import {isMobile, isIE, isSafari, isFirefox, isMobileSafari, isIOS, isChrome } from 'react-device-detect'
 
 import playButton from 'assets/hexborder.svg'
-import Style, { Blank, Subtitles, PlayButton, PauseMessage } from './styles'
+import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
 export default class Player extends Component {
 	constructor(props) {
 		super(props)
@@ -232,6 +233,9 @@ export default class Player extends Component {
 			const t1 = performance.now()
 		}
 
+		const alertMessage = "video does not work <br><br>"
+
+
 		const handleOnReady = () => {
 			handleAspectRatio()
 			if(events){
@@ -240,6 +244,11 @@ export default class Player extends Component {
 				})
 				this.setState({skipArray: eventFilterSkip})
 			}
+			if(!isChrome || isMobile)
+				document.getElementById('alertMessage').style.visibility = `visible`
+				const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
+				document.getElementById('alertMessage').innerHTML = alertMessage + alertMessageButton
+
 		}
 
 		return (
@@ -301,6 +310,7 @@ export default class Player extends Component {
 							</div>
 							<PauseMessage id='pauseMessage'>
 							</PauseMessage>
+							<AlertMessage id='alertMessage'></AlertMessage>
 						</Blank>
 					</div>
 					<Transcript viewstate={this.props.viewstate} handlers={this.props.handlers}>
