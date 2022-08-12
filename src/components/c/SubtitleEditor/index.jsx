@@ -532,7 +532,6 @@ const SubtitleEditor = props => {
 			console.error(error) // eslint-disable-line no-console
 		}
 	}
-	console.log(subs)
 	const handleAddSubLayer = () => {
 		if (subtitles === [] || !subtitles){
 			const tempSubList = []
