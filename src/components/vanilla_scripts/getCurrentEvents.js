@@ -16,20 +16,21 @@ const handleBlank = (blanks) => {
 	}
 }
 export const HandleSubtitle = (time, subtitles, ind, duration) => {
-	const tempOnload = window.onload
-	window.onload = () => {
-		const subtitleNode = document.getElementById(`subtitle`)
-		const currentsub = subtitles.content
-		let subtext = ``
-		const filtered =
+	const subtitleNode = document.getElementById(`subtitle`)
+	const subtitleBox = document.getElementById(`subtitleBox`)
+	const currentsub = subtitles.content
+	let subtext = ``
+	const filtered =
 			currentsub !== undefined ?
 				currentsub.filter(val => time < val.end && time > val.start)
 				: []
+	if (filtered.length > 0){
+		subtext = filtered[0].text
+		subtitleBox.style.display = `flex`
+	}else
+		subtitleBox.style.display = `none`
 
-		if (filtered.length > 0) subtext = filtered[0].text
-		subtitleNode.innerHTML = subtext
-		window.onload = tempOnload
-	}
+	subtitleNode.innerHTML = subtext
 }
 export const CurrentEvents = (time, events, duration) => {
 	const activeEvents = []
