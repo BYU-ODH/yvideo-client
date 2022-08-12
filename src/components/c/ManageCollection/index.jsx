@@ -5,7 +5,7 @@ import {
 	CollectionPermissionsContainer,
 } from 'containers'
 
-import sorting_regex from 'components/vanilla_scripts/sorting_regex'
+import * as sortingRegex from 'components/vanilla_scripts/sorting_regex'
 
 import Style, {
 	Title,
@@ -46,9 +46,17 @@ export default class ManageCollection extends PureComponent {
 			toggleTip,
 		} = this.props.handlers
 
+		const expiredContent = collection[`expired-content`]
+		if(expiredContent && expiredContent[`content-title`]) {
+			expiredContent.sort((a,b) => {
+				return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
+			})
+		}
+
 		content.sort((a, b) => {
-			return a.name.toLowerCase().replace(sorting_regex, `$1`) > b.name.toLowerCase().replace(sorting_regex, `$1`) ? 1 : -1
+			return a.name.toLowerCase().replace(sortingRegex, `$1`) > b.name.toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
 		})
+
 		return (
 			<Style>
 				<header>
@@ -127,6 +135,20 @@ export default class ManageCollection extends PureComponent {
 					:
 					<>
 						<Tab>
+							{expiredContent && expiredContent.length > 0 &&
+								<>
+									<h3 id='expiredTitle'>Expired Content</h3>
+									<hr />
+								</>
+							}
+							{isContentTab && expiredContent && expiredContent.length > 0 ?
+								expiredContent.map((item, index) => (
+									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
+								))
+								:
+								null
+							}
+							{expiredContent && expiredContent.length > 0 && <hr />}
 							{isContentTab ?
 								content.map((item, index) => (
 									<div key={index}>
@@ -145,13 +167,6 @@ export default class ManageCollection extends PureComponent {
 								: (
 									<CollectionPermissionsContainer collection={collection} />
 								)}
-							{isContentTab && collection[`expired-content`] ?
-								collection[`expired-content`].map((item, index) => (
-									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
-								))
-								:
-								null
-							}
 							{isContentTab && (
 								<NewContent
 									id='newcontent-button'

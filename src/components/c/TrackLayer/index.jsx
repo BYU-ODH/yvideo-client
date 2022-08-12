@@ -45,14 +45,12 @@ const TrackLayer = props => {
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
-			const tempOnload = window.onload
-			window.onload = () => {
-				if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
-				document.getElementById(`layer-${layerIndex}`).style.height =
-				`${overlapCount.length !== 0 ?
-					26 * (overlapCount.length + 1)
-					: 46}px`
-				window.onload = tempOnload
+			if(overlapCount.length !== layerOverlap.length) setLayerOverlap(overlapCount)
+
+			if(document.getElementById(`layer-${layerIndex}`)) {
+				document.getElementById(`layer-${layerIndex}`).style.height =`${overlapCount.length !== 0 ? 26 * (overlapCount.length + 1)
+					:
+					46}px`
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

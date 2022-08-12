@@ -219,8 +219,6 @@ const SubtitleEditor = props => {
 				allLayers[i].scrollLeft = currentLayerWidth * dis
 			})
 			skipLayer.scrollLeft = currentLayerWidth * dis
-			// 	window.onload = tempOnload
-			// }
 		}
 	}
 
@@ -665,6 +663,8 @@ const SubtitleEditor = props => {
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
 					eventPosition={eventPosition}
+					handleShowTip={handleShowTip}
+					toggleTip={toggleTip}
 				>
 				</VideoContainer>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -691,7 +691,7 @@ const SubtitleEditor = props => {
 									<div
 										className={`setSubModalVisible`}
 										onClick={ () => {
-											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile, window.onkeyup)
 										}}>
 										<p id={`editIcon`} style={{ fontWeight: 400, color: `white`, fontSize: `14px`, display: `flex` }}>Add Subtitle Track <PlusIcon /></p>
 									</div>
@@ -730,6 +730,7 @@ const SubtitleEditor = props => {
 													sub.title !== `` ? sub.title : `No Language`,
 													handleAddSubLayer,
 													handleAddSubLayerFromFile,
+													window.onkeyup,
 													handleDeleteSubLayer,
 													index,
 												)

@@ -25,7 +25,6 @@ const TrackEditorSideMenu = props => {
 		handleShowTip,
 		setEventSeek,
 		handleEventPosition,
-		handleHotkeysActive,
 	} = props
 
 	const timeInputConstrain = /^[0-9,.,:\b]+$/
@@ -61,7 +60,6 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditEventBTimeChange = (e, type) => {
-		handleHotkeysActive()
 		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const cEvent = event
 		const layer = cEvent.layer
@@ -141,7 +139,6 @@ const TrackEditorSideMenu = props => {
 		updateEvents(index, cEvent, layer)
 	}
 	const handleCensorActive = (e) => {
-		handleHotkeysActive()
 		setEventSeek(true)
 		handleEventPosition(event.position[e][0])
 		setActiveCensorPosition(e)
@@ -259,8 +256,8 @@ const TrackEditorSideMenu = props => {
 													className='censorRow'
 													type='text'
 													defaultValue={`${convertSecondsToMinute(parseFloat(event.position[item][0]), videoLength)}`}
+													onKeyUp={e => e.stopPropagation()}
 													onClick={() => handleCensorActive(item)}
-													onChange={handleHotkeysActive}
 													onBlur={(e) => handleEditCensor(e, item, 0, `onBlur`)}
 													onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 														{
@@ -274,12 +271,14 @@ const TrackEditorSideMenu = props => {
 												<td><input disabled
 													type='number'
 													value={`${event.position[item][1]}`}
+													onKeyUp={e => e.stopPropagation()}
 													onClick={() => handleCensorActive(item)}
 													onChange={(e) => handleEditCensor(e, item, 1)}
 												/></td>
 												<td><input disabled
 													type='number'
 													value={`${event.position[item][2]}`}
+													onKeyUp={e => e.stopPropagation()}
 													onClick={() => handleCensorActive(item)}
 													onChange={(e) => handleEditCensor(e, item, 2)}
 												/></td>
@@ -287,6 +286,7 @@ const TrackEditorSideMenu = props => {
 													id={`censorWidthInput-${i}`}
 													type='number'
 													value={`${event.position[item][3]}`}
+													onKeyUp={e => e.stopPropagation()}
 													onClick={() => handleCensorActive(item)}
 													onBlur={(e) => handleEditCensor(e, item, 3, `onBlur`)}
 													onChange={(e) => handleEditCensor(e, item, 3, `onChange`)}
@@ -295,6 +295,7 @@ const TrackEditorSideMenu = props => {
 													id={`censorHeightInput-${i}`}
 													type='number'
 													value={`${event.position[item][4]}`}
+													onKeyUp={e => e.stopPropagation()}
 													onClick={() => handleCensorActive(item)}
 													onBlur={(e) => handleEditCensor(e, item, 4, `onBlur`)}
 													onChange={(e) => handleEditCensor(e, item, 4, `onChange`)}

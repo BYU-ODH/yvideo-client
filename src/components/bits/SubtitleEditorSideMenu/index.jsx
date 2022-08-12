@@ -92,6 +92,7 @@ const SubtitleEditorSideMenu = props => {
 								<textarea
 									className='subText'
 									type='text'
+									onKeyUp={e => e.stopPropagation()}
 									onClick={ () => changeSubIndex(ind) }
 									value={sub.text}
 									onChange={ (value) => editSub(null, null, value, subLayer, ind) } />
@@ -101,6 +102,7 @@ const SubtitleEditorSideMenu = props => {
 										className={`subStart sideTabInput`}
 										type='text'
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
+										onKeyUp={e => e.stopPropagation()}
 										onClick={ () => changeSubIndex(ind) }
 										onChange={e => editSub(`beg`, e.target.value, null, subLayer, ind, null)}
 										onBlur={e => editSub(`beg`, e.target.value, null, subLayer, ind, `onBlur`)}
@@ -119,6 +121,7 @@ const SubtitleEditorSideMenu = props => {
 										className={`subEnd`}
 										type='text'
 										value={`${sub.end === `` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
+										onKeyUp={e => e.stopPropagation()}
 										onClick={ () => changeSubIndex(ind) }
 										onChange={e => editSub(`end`, e.target.value, null, subLayer, ind, null)}
 										onBlur={e => editSub(`end`, e.target.value, null, subLayer, ind, `onBlur`)}
