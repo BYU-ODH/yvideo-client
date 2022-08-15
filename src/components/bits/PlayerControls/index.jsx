@@ -7,7 +7,6 @@ import Style, {
 	ClosedCaptions,
 	Fullscreen,
 	Book,
-	// Volume,
 	Speed,
 	Help,
 } from './styles'
@@ -128,7 +127,7 @@ const PlayerControls = props => {
 		}
 
 		const start = displaySubtitles.content[seekToIndex].start
-		handleSeekChange(null, start + start * .001)
+		handleSeekChange(null, start + start * .001, seekToIndex)
 	}
 
 	return (
