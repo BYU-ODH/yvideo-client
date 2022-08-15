@@ -378,6 +378,7 @@ const PlayerContainer = props => {
 		setShowTranscript(true)
 	}
 
+
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
@@ -456,6 +457,7 @@ const PlayerContainer = props => {
 			handleChangeSubtitle(result)
 		}
 	}
+
 
 	const viewstate = {
 		showTranscript,
