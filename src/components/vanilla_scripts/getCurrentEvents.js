@@ -26,11 +26,14 @@ export const HandleSubtitle = (time, subtitles, ind, duration) => {
 				: []
 	if (filtered.length > 0){
 		subtext = filtered[0].text
-		subtitleBox.style.display = `flex`
-	}else
-		subtitleBox.style.display = `none`
-
-	subtitleNode.innerHTML = subtext
+		if(subtitleBox)
+			subtitleBox.style.display = `flex`
+	}else {
+		if(subtitleBox)
+			subtitleBox.style.display = `none`
+	}
+	if(subtitleNode)
+		subtitleNode.innerHTML = subtext
 }
 export const CurrentEvents = (time, events, duration) => {
 	const activeEvents = []
