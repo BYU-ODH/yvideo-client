@@ -263,7 +263,7 @@ const PlayerContainer = props => {
 
 	}
 
-	const handleSeekChange = (e, time, newIndex) => {
+	const handleSeekChange = (e, time, newIndex, newText) => {
 		toggleTip()
 		// reset events
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
@@ -277,9 +277,12 @@ const PlayerContainer = props => {
 
 		} else
 			newPlayed = time / duration
-		if (duration > 0) {
+		if (duration > 0)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
+
+		if (newIndex !== undefined && newText !== undefined) {
 			setSubtitleTextIndex(newIndex)
+			setSubtitleText(newText)
 		}
 		if (events) {
 			// for all of the events. If the new seek time goes before events that were already executed activate the events again

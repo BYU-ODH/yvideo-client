@@ -89,7 +89,6 @@ const Transcript = props => {
 				// highlight and push changes
 				matches.forEach(m => {
 					const cleanString = m.replace(/\s/g, ``)
-					// console.log('Matched', cleanString)
 					const rep = new RegExp(`${cleanString}`, `gmi`)
 
 					if(cleanString !== `. ` && cleanString !== `, ` && cleanString !== `` && cleanString !== `.`)
@@ -200,7 +199,7 @@ const Transcript = props => {
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start + element.start * .001, displaySubtitles.content.indexOf(element))}
+								<div onClick={e => handleSeekChange(null, element.start + element.start * .001, displaySubtitles.content.indexOf(element), element.text)}
 									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`,

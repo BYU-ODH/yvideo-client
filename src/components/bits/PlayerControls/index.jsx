@@ -89,6 +89,7 @@ const PlayerControls = props => {
 	})
 
 	const [showSpeed, setShowSpeed] = useState(false)
+	const [handleSeekToSubtitleCalled, setHandleSeekToSubtitleCalled] = useState(false)
 	const clipPercent = clipTime.map(e => {
 		return e / duration
 	})
@@ -109,8 +110,14 @@ const PlayerControls = props => {
 
 	}
 
-	const handleSeekToSubtitle= (e) => {
+	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
+
+		if(!handleSeekToSubtitleCalled) {
+			handleSeekChange(null, displaySubtitles.content[seekToIndex].start, seekToIndex, displaySubtitles.content[seekToIndex].text)
+			setHandleSeekToSubtitleCalled(true)
+			return
+		}
 
 		if(displaySubtitles && subtitleTextIndex !== undefined){
 			if(e.target.id === `prev-sub`){
@@ -127,7 +134,8 @@ const PlayerControls = props => {
 		}
 
 		const start = displaySubtitles.content[seekToIndex].start
-		handleSeekChange(null, start + start * .001, seekToIndex)
+		const text = displaySubtitles.content[seekToIndex].text
+		handleSeekChange(null, start + start * .001, seekToIndex, text)
 	}
 
 	return (
