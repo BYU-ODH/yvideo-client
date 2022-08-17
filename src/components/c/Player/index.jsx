@@ -104,7 +104,6 @@ export default class Player extends Component {
 			subtitleText,
 			// subtitleTextIndex,
 			displaySubtitles,
-			// isCaption,
 			indexToDisplay,
 			isMobile,
 			// censorPosition,
@@ -155,7 +154,6 @@ export default class Player extends Component {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					// console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
@@ -187,7 +185,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(!muted)
 						handleMuted()
-					// console.log("muting")
 
 					break
 				case `Pause`:
@@ -198,12 +195,10 @@ export default class Player extends Component {
 						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
-					// console.log("pausing")
 					break
 				case `Skip`:
 					events[index].active = false
 					handleSeekChange(null, values.allEvents[y].end)
-					// console.log('skipping')
 					break
 				default:
 					break
@@ -221,7 +216,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(muted){
 						handleUnmuted()
-						// console.log("unmuting")
 						events[index].active = false
 					}
 					break

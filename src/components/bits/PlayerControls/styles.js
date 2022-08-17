@@ -190,13 +190,13 @@ const Style = styled.div`
 export default Style
 
 export const PlayPause = styled.button`
-	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
+	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat !important;
 `
 export const ClosedCaptions = styled.button`
 	/* background: ${props => props.isCaptions !== false ? `url(${closedCaption}) center no-repeat` : `url(${closedCaptionOff}) center no-repeat`}; */
 	background: url(${closedCaption}) center no-repeat;
 `
-export const Fullscreen = styled.button`
+export const FullScreen = styled.button`
 	width: 20px;
 	height: 20px;
 	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;

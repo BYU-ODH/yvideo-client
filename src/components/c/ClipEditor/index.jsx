@@ -179,7 +179,6 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const setStartTime = (value, type, name) => {
-		// console.log(clipList, value, name)
 		const input = value
 		if(type === `input` || type === `onBlur`) {
 			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) || type === `onBlur`)
@@ -353,23 +352,22 @@ const ClipEditor = props => {
 										<div
 											className={`handle`}
 											style={active === clip ?
-												{backgroundColor: `#002e5d`, color: `#fff`}
+												{backgroundColor:`var(--navy-blue)`, color:`#fff`}
 												:
 												{backgroundColor: `#fff`, color: `#000`}}
 										>
 											<p style={{color: `inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
 										<ClipLayer
-											clipName = {clip}
-											start={clipList[clip][`start`]}
+											clipName={clip}
+											clipList={clipList}
 											setStart={setStartTime}
-											end={clipList[clip][`end`]}
 											setEnd={setEndTime}
-											width={layerWidth}
-											videoLength = {videoLength}
-											active = {active}
-											index = {index}
-											handleEditClip = {handleEditClip}
+											width={0}
+											videoLength={videoLength}
+											active={active}
+											index={index}
+											handleEditClip={handleEditClip}
 										/>
 									</div>
 								),

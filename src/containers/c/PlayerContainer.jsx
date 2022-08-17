@@ -70,6 +70,7 @@ const PlayerContainer = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, setCensorActive] = useState(false)
 	const [hasPausedClip, setHasPausedClip] = useState(false)
+	const [showSpeed, setShowSpeed] = useState(false)
 
 	// this is for caption toggle
 	const [isCaption, setIsCaption] = useState(false) // this is the state to toggle caption selection
@@ -396,7 +397,42 @@ const PlayerContainer = props => {
 		setToggleTranscript(!toggleTranscript)
 	}
 
-	const handleAspectRatio = () => {
+	const handleSeekToSubtitle = (e) => {
+		let seekToIndex = 0
+
+		if(displaySubtitles && subtitleTextIndex !== undefined){
+			if(e.target.id === `prev-sub`){
+				if(subtitleTextIndex > 1)
+					seekToIndex = subtitleTextIndex - 1
+
+			} else {
+				if(subtitleTextIndex < displaySubtitles.content.length - 1)
+					seekToIndex = subtitleTextIndex + 1
+				else
+					seekToIndex = displaySubtitles.content.length - 1
+
+			}
+		}
+
+		const start = displaySubtitles.content[seekToIndex].start
+		handleSeekChange(null, start + start * .001)
+	}
+
+	const handleChangeSpeed = () => {
+		toggleTip()
+		setShowSpeed(!showSpeed)
+		if(isCaption)
+			setIsCaption(!isCaption)
+	}
+
+	const handleChangeCaption = () => {
+		toggleTip()
+		setIsCaption(!isCaption)
+		if(showSpeed)
+			setShowSpeed(!showSpeed)
+	}
+
+	const handleAspectRatio = ()=>{
 		const cont = document.getElementById(`player-container`)
 		if(!cont)
 			return
@@ -493,6 +529,7 @@ const PlayerContainer = props => {
 		isLandscape,
 		hasPausedClip,
 		events,
+		showSpeed,
 	}
 
 	const handlers = {
@@ -528,6 +565,10 @@ const PlayerContainer = props => {
 		handleAspectRatio,
 		handleToggleSubtitles,
 		handleOffSubtitles,
+		setShowSpeed,
+		handleSeekToSubtitle,
+		handleChangeSpeed,
+		handleChangeCaption,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

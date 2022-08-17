@@ -60,7 +60,7 @@ const BreadcrumbContainer = props => {
 				link = `videoEditor`
 				break
 			case `Subtitle Editor`:
-				link = `subtitleeditor`
+				link = `subtitleEditor`
 				break
 			case `Clip Manager`:
 				link = `clipEditor`
