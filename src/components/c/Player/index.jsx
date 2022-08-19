@@ -100,7 +100,6 @@ export default class Player extends Component {
 			showTranscript,
 			// toggleTranscript,
 			// content,
-			subtitleText,
 			// subtitleTextIndex,
 			displaySubtitles,
 			// isCaption,
@@ -154,7 +153,6 @@ export default class Player extends Component {
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					// console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
@@ -186,7 +184,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(!muted)
 						handleMuted()
-					// console.log("muting")
 
 					break
 				case `Pause`:
@@ -197,12 +194,10 @@ export default class Player extends Component {
 						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
-					// console.log("pausing")
 					break
 				case `Skip`:
 					events[index].active = false
 					handleSeekChange(null, values.allEvents[y].end)
-					// console.log('skipping')
 					break
 				default:
 					break
@@ -220,7 +215,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(muted){
 						handleUnmuted()
-						// console.log("unmuting")
 						events[index].active = false
 					}
 					break
@@ -294,7 +288,7 @@ export default class Player extends Component {
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}
-							<Subtitles id='subtitleBox'><h3 subtitletext={subtitleText} id='subtitle'>{subtitleText}</h3></Subtitles>
+							<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles>
 							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
 							</div>
 							<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>

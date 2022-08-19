@@ -54,7 +54,6 @@ export const Style = styled.div`
 		background-color: white;
 		width: calc(100% - 35px);
 		height: 70vh;
-		/* overflow-y: scroll !important; */
 		/* border: 1px solid black; */
 		::-webkit-scrollbar {
 			display: block !important;

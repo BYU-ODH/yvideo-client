@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -70,6 +70,10 @@ const PlayerContainer = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, setCensorActive] = useState(false)
 	const [hasPausedClip, setHasPausedClip] = useState(false)
+
+	const [subsObj, setSubsObj] = useState({})
+	const [enableScroll, setEnableScroll] = useState({action: null})
+	const [disableScroll, setDisableScroll] = useState({action: null})
 
 	// this is for caption toggle
 	const [isCaption, setIsCaption] = useState(false) // this is the state to toggle caption selection
@@ -192,6 +196,12 @@ const PlayerContainer = props => {
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
 
+	useLayoutEffect(() => {
+		handleSubsObj()
+		handleScrollFuncs()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [displaySubtitles, duration])
+
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
 			component: Tooltip,
@@ -227,20 +237,23 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlayPause = () => {
-
-		if (playing)
+		if (playing) {
 			setPlaying(false)
-		else
+			enableScroll.action()
+		} else {
 			setPlaying(true)
-
+			disableScroll.action()
+		}
 	}
 
 	const handlePause = () => {
 		setPlaying(false)
+		enableScroll.action()
 	}
 
 	const handlePlay = () => {
 		setPlaying(true)
+		disableScroll.action()
 	}
 	const handleStart = () => {
 		setPlaying(true)
@@ -261,6 +274,41 @@ const PlayerContainer = props => {
 		setPlaytime(dateElapsed.toISOString().substr(11, 8))
 		setProgress(progression)
 
+		handleSubtitles(progression)
+		const subContainer = document.getElementById(`subtitles-container`)
+
+		if(subContainer && subsObj !== {}) {
+			if(subtitleTextIndex === undefined)
+				return
+			else
+				subContainer.scrollTo(0, subsObj[subtitleTextIndex].distanceDownTranscript)
+		}
+	}
+
+	const handleSubtitles = (progression) => {
+		const entries = Object.entries(subsObj)
+		const progressPercent = progression * 100 / duration
+
+		for (const i in entries) {
+			const numIndex = parseFloat(i)
+			if (numIndex < entries.length - 1) {
+				if (progressPercent < parseFloat(entries[0][1].percentPlayed)) {
+					setSubtitleTextIndex(undefined)
+					setSubtitleText(undefined)
+					return
+				}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) {
+					setSubtitleTextIndex(numIndex)
+					setSubtitleText(entries[numIndex][1].text)
+					return
+				}
+			} else if (numIndex === entries.length - 1) {
+				if(progressPercent < entries[i][1].percentPlayed && progression > entries[i - 1][1].percentPlayed) {
+					setSubtitleTextIndex(numIndex)
+					setSubtitleText(entries[numIndex][1].text)
+					return
+				}
+			}
+		}
 	}
 
 	const handleSeekChange = (e, time, newIndex, newText) => {
@@ -347,6 +395,25 @@ const PlayerContainer = props => {
 		setCommentPosition(position)
 	}
 
+	const handleSubsObj = () => {
+		if(displaySubtitles && duration) {
+			let temp = {}
+			const heights = [26.8, 46.8, 60.4, 77.2]
+			for (const i in displaySubtitles.content) {
+				const numIndex = parseFloat(i)
+				if(displaySubtitles.content[i].text.length <= 55)
+					temp = handleTempObj(temp, numIndex, heights, 0)
+				else if(displaySubtitles.content[i].text.length >= 55 && displaySubtitles.content[i].text.length < 100)
+					temp = handleTempObj(temp, numIndex, heights, 1)
+				else if(displaySubtitles.content[i].text.length >= 100 && displaySubtitles.content[i].text.length < 150)
+					temp = handleTempObj(temp, numIndex, heights, 2)
+				else if(displaySubtitles.content[i].text.length >= 150)
+					temp = handleTempObj(temp, numIndex, heights, 3)
+			}
+			setSubsObj(temp)
+		}
+	}
+
 	const handleShowSubtitle = (value, index) => {
 		// if(document.getElementById('subtitle-box') !== undefined){
 		// 	document.getElementById('subtitle-box').innerText = value
@@ -365,6 +432,65 @@ const PlayerContainer = props => {
 
 		setSubtitleTextIndex(index)
 		setSubtitleText(value)
+	}
+
+	const handleTempObj = (temp, loopIndex, heightsArray, heightsIndex) => {
+		return (
+			{...temp,
+				[loopIndex]: {
+					text: displaySubtitles.content[loopIndex].text,
+					percentPlayed: displaySubtitles.content[loopIndex].start * 100 / duration,
+					distanceDownTranscript: loopIndex === 0 ?
+						heightsArray[heightsIndex]
+						:
+						temp[loopIndex - 1].distanceDownTranscript + heightsArray[heightsIndex],
+				},
+			}
+		)
+	}
+
+	const handleScrollFuncs = () => {
+		let supportsPassive = false
+
+		const keys = {37: 1, 38: 1, 39: 1, 40: 1}
+
+		const preventDefault = (e) => {
+			e.preventDefault()
+		}
+
+		const preventDefaultForScrollKeys = (e) => {
+			if (keys[e.keyCode]) {
+				preventDefault(e)
+				return false
+			}
+		}
+
+		try {
+			document.getElementById(`subtitles-container`).addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
+				get: () => { // eslint-disable-line getter-return
+					supportsPassive = true
+				},
+			}))
+		} catch (e) {
+			return
+		}
+
+		const wheelEvent = `onwheel` in document.createElement(`div`) ? `wheel` : `mousewheel`
+		const wheelOpt = supportsPassive ? { passive: false } : false
+		const subsContainer = document.getElementById(`subtitles-container`)
+
+		setDisableScroll({action: () => {
+			subsContainer.addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
+			subsContainer.addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
+			subsContainer.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
+			subsContainer.addEventListener(`keydown`, preventDefaultForScrollKeys, false)
+		}})
+		setEnableScroll({action: () => {
+			subsContainer.removeEventListener(`DOMMouseScroll`, preventDefault, false)
+			subsContainer.removeEventListener(wheelEvent, preventDefault, wheelOpt)
+			subsContainer.removeEventListener(`touchmove`, preventDefault, wheelOpt)
+			subsContainer.removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
+		}})
 	}
 
 	const handleChangeSubtitle = (index) => {

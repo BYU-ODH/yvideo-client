@@ -164,7 +164,7 @@ const Transcript = props => {
 				}
 
 			</div>
-			<div className={isMobile ? `main-bar main-mobile` : `main-bar`} >
+			<div id='subtitles-container' className={isMobile ? `main-bar main-mobile` : `main-bar`} >
 				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
 					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
 						onMouseEnter={e => handleShowTip(`transcript-hide`,
