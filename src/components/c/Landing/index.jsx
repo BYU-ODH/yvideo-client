@@ -1,37 +1,32 @@
-import React, { PureComponent, useEffect } from 'react'
+import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Overlay } from 'components'
 
 import { Wrapper, Comets, Welcome, Logo, Button, AlertMessage } from './styles'
 
-import {isMobile, isSafari, isIOS } from 'react-device-detect'
-
 class Landing extends PureComponent {
+
+	constructor(props) {
+		super(props)
+		this.checkBrowser = this.props.handlers.checkBrowser
+	}
+
+	componentDidMount() {
+		this.checkBrowser()
+	}
 	render() {
 		const {
 			overlay,
+			alertMessage,
+			isAlertMessage,
 		} = this.props.viewstate
 
 		const {
 			toggleOverlay,
 			handleLogin,
+			toggleAlertMessage,
 		} = this.props.handlers
-
-		const checkBrowser = () => {
-			let alertMessage
-
-			//safari
-			if(isSafari)
-				alertMessage = "video playback doesn’t work on safari, we recommend Chrome."
-			//ios
-			if(isIOS && isMobile)
-				alertMessage = "video playback doesn’t work on the IOS system, please use a different device."
-
-			document.getElementById('alertMessage').style.visibility = `visible`
-			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
-			document.getElementById('alertMessage').innerHTML = alertMessage + alertMessageButton
-		}
 
 		return (
 			<Wrapper>
@@ -43,7 +38,12 @@ class Landing extends PureComponent {
 						<Logo />
 						<h1>Y-VIDEO</h1>
 					</div>
-				<AlertMessage id='alertMessage'>{checkBrowser}</AlertMessage>
+					{isAlertMessage &&
+						<AlertMessage id='alertMessage'>
+							<div>{alertMessage}</div>
+							<button type='button' onClick={toggleAlertMessage}>Close</button>
+						</AlertMessage>
+					}
 
 					<div className='button-wrapper'>
 						<Button id='primary' className='primary' onClick={handleLogin}>Sign In</Button>

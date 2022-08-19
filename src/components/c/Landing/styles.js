@@ -30,37 +30,37 @@ export const Comets = styled.div`
 `
 
 export const AlertMessage = styled.div`
-	padding: 2%;
-	width: 30% !important;
-	height: 4% !important;
-	font-size: 1rem;
+	display: grid;
+	padding: 2vw;
+	width: 30vw !important;
+	height: 4vh !important;
+	font-size: 12px;
 	position: absolute;
-	display: block;
 	top: 0%;
 	left: 34%;
-	border-width: 1px;
+	border: 1px solid black;
 	border-radius: 4px;
-	border-style: solid;
-	border-color: var(--navy-blue);
-	cursor: pointer;
-	justify-content: center;
-	background-color: white;
-	z-index: 10000;
-	visibility: hidden
-	& #alertMessage{
-		& button{
-			font-size: 1rem;
-			background: transparent;
-			border: none;
-			outline: none;
-			position: absolute;
-			display: inline-block;
-			cursor: pointer;
-			top: 80%;
-			left: 80%;
-			align: bottom-right;
-		}
+
+	background-color: #FCFCFC;
+	visibility: visible;
+
+	& div {
+		text-align: center;
 	}
+
+	& button {
+		font-size: 1rem;
+		background: transparent;
+
+		position: absolute;
+		top: 65%;
+		left: 85%;
+		display: inline-block;
+		cursor: pointer;
+		align: bottom-right;
+		cursor: pointer;
+	}
+
 `
 
 export const Welcome = styled.div`
