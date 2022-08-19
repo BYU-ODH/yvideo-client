@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import { FileOverview } from 'components'
 
+import {isChrome} from 'react-device-detect'
+
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
 
 import { interfaceService, fileService, resourceService } from 'services'
@@ -38,6 +40,11 @@ const FileOverviewContainer = props => {
 		})
 	}
 
+	const checkDevice = () => {
+		if(isChrome)
+			alert("good job")
+	}
+
 	const handleUpdateFile = e => {
 		e.preventDefault()
 		updateFile(file.id, fileState)
@@ -67,6 +74,7 @@ const FileOverviewContainer = props => {
 		handleFileVersion,
 		handleUpdateFile,
 		handleRemoveFile,
+		checkDevice,
 	}
 
 	return <FileOverview viewstate={viewstate} handlers={handlers} />

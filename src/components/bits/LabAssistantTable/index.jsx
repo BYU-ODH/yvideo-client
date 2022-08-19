@@ -28,7 +28,7 @@ export default class LabAssistantTable extends PureComponent {
 					<tbody>
 						{data.map((item, index) =>
 							<tr key={item.id}>
-								<td>{item.name}</td>
+								<td data-testid='name'>{item.name}</td>
 								<td className='view-collections'><Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link></td>
 							</tr>,
 						)}

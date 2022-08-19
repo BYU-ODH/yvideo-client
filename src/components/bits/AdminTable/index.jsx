@@ -189,13 +189,13 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
-		const menuOptions = (cat, data) => {
-			switch (cat) {
+		const menuOptions = (category, item) => {
+			switch (category) {
 			case `Users`:
 				return (
 					<ul>
 						<li>
-							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
+							<Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link>
 						</li>
 						<li>
 							<button className='userEdit' onClick={handleEdit}>Edit</button>
@@ -210,7 +210,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/lab-assistant-manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
+							<Link to={`/lab-assistant-manager/${item.owner}/${item.id}`} target='_blank'>View/Edit</Link>
 						</li>
 						<li>
 							<button className='collectionsDelete' onClick={handleConfirmDelete}>Delete</button>
@@ -222,10 +222,10 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/player/${data.id}`} target='_blank'>View</Link>
+							<Link to={`/player/${item.id}`} target='_blank'>View</Link>
 						</li>
 						<li>
-							<Link to={`/videoeditor/${data.id}`}>Edit</Link>
+							<Link to={`/videoeditor/${item.id}`}>Edit</Link>
 						</li>
 						<li>
 							<button className='contentDelete' onClick={handleConfirmDelete}>Delete</button>

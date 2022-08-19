@@ -47,9 +47,8 @@ describe(`admin dashboard test`, () => {
 			</BrowserRouter>,
 		)
 
-		// console.log(wrapper.debug())
-		expect(wrapper.contains(<td>professor testname</td>)).toEqual(true)
-		expect(wrapper.contains(<td>professor testname2</td>)).toEqual(true)
+		expect(wrapper.contains(<td data-testid='name'>professor testname</td>)).toEqual(true)
+		expect(wrapper.contains(<td data-testid='name'>professor testname2</td>)).toEqual(true)
 		// href="/lab-assistant-manager/22"
 
 		const testViewstate = wrapper.props().children.props.viewstate.data

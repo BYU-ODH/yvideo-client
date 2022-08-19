@@ -242,7 +242,6 @@ const Transcript = props => {
 }
 
 const mapStateToProps = store => ({
-	// data: store.adminStore.data,
 	languageCodes: store.interfaceStore.languageCodes,
 	jsonResponse: store.interfaceStore.jsonResponse,
 })

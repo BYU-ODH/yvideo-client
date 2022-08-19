@@ -36,7 +36,7 @@ const SubtitleEditorSideMenu = props => {
 			document.getElementById(`focus`).focus()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [index, event])
-	const editSub = (side, time, value, layer, ind, type) => {
+	const editSub = (side, time, value, layer, ind, type, trackId) => {
 		const sub = {...event}
 		if (side === `beg`) {
 			if(time === ``)
@@ -67,7 +67,7 @@ const SubtitleEditorSideMenu = props => {
 			console.log(error) // eslint-disable-line no-console
 		}
 		setEvent(sub)
-		updateSubs(ind, sub, layer, side, type)
+		updateSubs(ind, sub, layer, side, type, trackId)
 	}
 
 	return (
@@ -90,12 +90,13 @@ const SubtitleEditorSideMenu = props => {
 							/>
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index && `subActive`}`}>
 								<textarea
+									id={`subText${ind}`}
 									className='subText'
 									type='text'
 									onKeyUp={e => e.stopPropagation()}
 									onClick={ () => changeSubIndex(ind) }
 									value={sub.text}
-									onChange={ (value) => editSub(null, null, value, subLayer, ind) } />
+									onChange={ (value) => editSub(null, null, value, subLayer, ind, `onChange`, subs[subLayer].id) } />
 								<div id={`${ind === index && `subStartEnd`}`} className={`subStartEnd`}>
 									<input
 										id={`subStart${ind}`}
@@ -104,8 +105,8 @@ const SubtitleEditorSideMenu = props => {
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
 										onClick={ () => changeSubIndex(ind) }
-										onChange={e => editSub(`beg`, e.target.value, null, subLayer, ind, null)}
-										onBlur={e => editSub(`beg`, e.target.value, null, subLayer, ind, `onBlur`)}
+										onChange={e => editSub(`beg`, e.target.value, null, subLayer, ind, null, subs[subLayer].id)}
+										onBlur={e => editSub(`beg`, e.target.value, null, subLayer, ind, `onBlur`, subs[subLayer].id)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 											{
 												x: e.target.getBoundingClientRect().x + 30,
@@ -123,8 +124,8 @@ const SubtitleEditorSideMenu = props => {
 										value={`${sub.end === `` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
 										onClick={ () => changeSubIndex(ind) }
-										onChange={e => editSub(`end`, e.target.value, null, subLayer, ind, null)}
-										onBlur={e => editSub(`end`, e.target.value, null, subLayer, ind, `onBlur`)}
+										onChange={e => editSub(`end`, e.target.value, null, subLayer, ind, null, subs[subLayer].id)}
+										onBlur={e => editSub(`end`, e.target.value, null, subLayer, ind, `onBlur`, subs[subLayer].id)}
 										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 											{
 												x: e.target.getBoundingClientRect().x + 30,

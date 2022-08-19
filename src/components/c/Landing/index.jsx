@@ -6,6 +6,11 @@ import { Overlay } from 'components'
 import { Wrapper, Comets, Welcome, Logo, Button } from './styles'
 
 class Landing extends PureComponent {
+
+	componentDidMount(){
+		this.props.handlers.checkBrowser()
+	}
+
 	render() {
 
 		const {
@@ -15,6 +20,7 @@ class Landing extends PureComponent {
 		const {
 			toggleOverlay,
 			handleLogin,
+			checkBrowser,
 			// handlePublicCollections,
 		} = this.props.handlers
 

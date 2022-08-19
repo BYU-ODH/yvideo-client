@@ -8,32 +8,37 @@ import {
 
 const ClipLayer = props => {
 
-	const {clipName, width, start, end, setStart, setEnd, videoLength, active, index, handleEditClip} = props
+	const {clipName, clipList, width, setStart, setEnd, videoLength, active, index, handleEditClip} = props
 	const layerRef = useRef(null)
 	const dragRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
+
+	const start = clipList[clipName][`start`]
+	const end = clipList[clipName][`end`]
+
 	const style = active !== clipName ?
 		{
 			top: `0px`,
-			backgroundColor: `#fff`,
-			border: `1px solid #0582ca`,
-			color: `#000`, fontSize: `1.3rem`,
-			justifyContent: `center`,
-			alignItems: `center`,
+			backgroundColor:`#fff`,
+			border:`1px solid #0582ca`,
+			color:`#000`,
+			fontSize:`1.3rem`,
+			justifyContent:`center`,
+			alignItems:`center`,
 		}
 		:
 		{
 			left: `${start}% !important`,
 			top: `0px`,
-			backgroundColor: `#002e5d`,
-			border: `1px solid #0582ca`,
-			color: `#fff`,
-			fontSize: `1.3rem`,
-			justifyContent: `center`,
-			alignItems: `center`,
+			backgroundColor:`var(--navy-blue)`,
+			border:`1px solid #0582ca`,
+			color:`#fff`,
+			fontSize:`1.3rem`,
+			justifyContent:`center`,
+			alignItems:`center`,
 		}
 
 	if(shouldUpdate)
@@ -67,7 +72,6 @@ const ClipLayer = props => {
 		bottomLeft: false,
 		topLeft: false,
 	}
-
 	// Drag within the layer
 	const handleDrag = (d) => {
 
@@ -119,6 +123,7 @@ const ClipLayer = props => {
 						<Rnd
 							ref={dragRef}
 							className={`Rnd`}
+							data-testid='Rnd'
 							size={{width: `${(end - start) / videoLength * layerWidth}px`, height: `46px`}}
 							position={
 								{

@@ -43,15 +43,6 @@ const VideoEditorContainer = props => {
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	const [aspectRatio, setAspectRatio] = useState([16, 9])
 
-	const useAsync = () => { // eslint-disable-line no-unused-vars
-		const mountedRef = useRef(true)
-
-		useEffect(() => {
-			return function cleanup() {
-				mountedRef.current = false
-			}
-		})
-	}
 	useEffect(() => {
 		if (!contentCache.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
 			getContent(id)
