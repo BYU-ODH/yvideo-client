@@ -44,7 +44,7 @@ const SubtitleEditor = props => {
 	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [isReady, setIsReady] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0)
+	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
@@ -103,52 +103,8 @@ const SubtitleEditor = props => {
 		if(document.getElementById(`blankContainer`))
 			document.getElementById(`blankContainer`).style.width = `100%`
 
-		if(newSub.trueFalse === false) {
-			if(subs.length > 0 && subLayerToEdit !== undefined) {
-				for(const i in subs[subLayerToEdit].content) {
-					if(document.getElementById(`subStart${i}`)) {
-						document.getElementById(`subStart${i}`).style.border = null
-						document.getElementById(`subEnd${i}`).style.border = null
-						document.getElementById(`subText${i}`).style.border = null
-					}
-				}
-			}
-		}
-
-		if(newSub.trueFalse === true)
-			setNewSub({trueFalse: false, index: null})
-
-		if (invalidSubs.length > 0) {
-			invalidSubs.forEach((invalidSub, i) => {
-				if(!Object.values(invalidSub.invalidParts).includes(true))
-					setInvalidSubs(invalidSubs.filter((sub, j) => i !== j))
-			})
-		}
-		let tempInvalidArray = []
-		invalidSubs.forEach(sub => {
-			tempInvalidArray = [...tempInvalidArray, Object.entries(sub).map(([k, v]) => v)]
-		})
-		if(invalidSubs.length > 0) {
-			for(const i in subs[subLayerToEdit].content) {
-				for(const j in tempInvalidArray) {
-					if(subs[subLayerToEdit].id === tempInvalidArray[j][0] && parseFloat(i) === tempInvalidArray[j][1]) {
-
-						if(tempInvalidArray[j][2].start === true)
-							document.getElementById(`subStart${tempInvalidArray[j][1]}`).style.border = `2px solid red`
-						if(tempInvalidArray[j][2].end === true)
-							document.getElementById(`subEnd${tempInvalidArray[j][1]}`).style.border = `2px solid red`
-						if(tempInvalidArray[j][2].text === true)
-							document.getElementById(`subText${tempInvalidArray[j][1]}`).style.border = `2px solid red`
-
-					}
-				}
-			}
-		}
-
-		if(invalidSubs.length === 0)
-			setDisableSave(false)
-		else
-			setDisableSave(true)
+		handleNewSub()
+		handleInvalidSubs()
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
@@ -517,7 +473,7 @@ const SubtitleEditor = props => {
 				}
 			}
 
-			handleNewSub(subIndex + 1)
+			newSubSetter(subIndex + 1)
 			setInvalidSubs([...invalidSubs, {trackId: currentSubs[index].id, index: subIndex + 1, invalidParts: {start: false, end: false, text: true}}])
 
 			setSubLayerToEdit(index)
@@ -532,6 +488,59 @@ const SubtitleEditor = props => {
 			console.error(error) // eslint-disable-line no-console
 		}
 	}
+
+	const handleNewSub = () => {
+		if(newSub.trueFalse === false) {
+			if(subs.length > 0 && subLayerToEdit !== undefined) {
+				for(const i in subs[subLayerToEdit].content) {
+					if(document.getElementById(`subStart${i}`)) {
+						document.getElementById(`subStart${i}`).style.border = null
+						document.getElementById(`subEnd${i}`).style.border = null
+						document.getElementById(`subText${i}`).style.border = null
+					}
+				}
+			}
+		}
+
+		if(newSub.trueFalse === true)
+			setNewSub({trueFalse: false, index: null})
+	}
+
+	const handleInvalidSubs = () => {
+		let tempInvalidArray = []
+
+		if (invalidSubs.length > 0) {
+			invalidSubs.forEach((invalidSub, i) => {
+				if(!Object.values(invalidSub.invalidParts).includes(true))
+					setInvalidSubs(invalidSubs.filter((sub, j) => i !== j))
+			})
+		}
+		invalidSubs.forEach(sub => {
+			tempInvalidArray = [...tempInvalidArray, Object.entries(sub).map(([k, v]) => v)]
+		})
+		if(invalidSubs.length > 0) {
+			for(const i in subs[subLayerToEdit].content) {
+				for(const j in tempInvalidArray) {
+					if(subs[subLayerToEdit].id === tempInvalidArray[j][0] && parseFloat(i) === tempInvalidArray[j][1]) {
+
+						if(tempInvalidArray[j][2].start === true)
+							document.getElementById(`subStart${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+						if(tempInvalidArray[j][2].end === true)
+							document.getElementById(`subEnd${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+						if(tempInvalidArray[j][2].text === true)
+							document.getElementById(`subText${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+
+					}
+				}
+			}
+		}
+
+		if(invalidSubs.length === 0)
+			setDisableSave(false)
+		else
+			setDisableSave(true)
+	}
+
 	const handleAddSubLayer = () => {
 		if (subtitles === [] || !subtitles){
 			const tempSubList = []
@@ -557,7 +566,7 @@ const SubtitleEditor = props => {
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 		}
-		handleNewSub(0)
+		newSubSetter(0)
 		openSubEditor(subtitles.length, 0)
 		setSideEditor(true)
 		setBlock(true)
@@ -756,7 +765,7 @@ const SubtitleEditor = props => {
 		setEventPosition(position)
 	}
 
-	const handleNewSub = (index) => {
+	const newSubSetter = (index) => {
 		setNewSub({trueFalse: true, index})
 	}
 
