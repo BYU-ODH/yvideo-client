@@ -149,23 +149,19 @@ export const PauseMessage = styled.div`
 `
 
 export const AlertMessage = styled.div`
-	padding: 2%;
+	padding: 2vh;
 	width: 30% !important;
 	height: 15% !important;
 	font-size: 1.5rem;
 	position: absolute;
-	display: block;
 	top: 40%;
 	left: 30%;
-	border-width: 1px;
+	border: 1px solid white;
 	border-radius: 1px;
-	border-style: solid;
-	border-color: var(--navy-blue);
 	cursor: pointer;
-	justify-content: center;
-	background-color: rgba(241, 241, 244, 0.79);
+	background-color: rgba(241, 241, 244, 0.80);
 	z-index: 10000;
-	visibility: hidden
+	visibility: hidden;
 `
 
 export const PlayButton = styled.img`
