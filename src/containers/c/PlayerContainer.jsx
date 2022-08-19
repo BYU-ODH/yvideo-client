@@ -661,7 +661,7 @@ const PlayerContainer = props => {
 		hasPausedClip,
 		events,
 		showSpeed,
-		scrollDisabled
+		scrollDisabled,
 	}
 
 	const handlers = {
