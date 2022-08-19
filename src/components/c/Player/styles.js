@@ -166,8 +166,6 @@ export const AlertMessage = styled.div`
 	background-color: rgba(241, 241, 244, 0.79);
 	z-index: 10000;
 	visibility: hidden
-
-
 `
 
 export const PlayButton = styled.img`
