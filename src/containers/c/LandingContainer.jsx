@@ -23,19 +23,19 @@ const LandingContainer = props => {
 
 		// safari
 		if(isSafari)
-			alert(`video playback doesn't work on safari, we recommend Chrome.`)
+			alert(`Video playback does not currently work on Safari. For now, we recommend Chrome instead.`)
 
 		// ios
 		if(isIOS && isMobile)
-			alert(`video playback doesn't work on the IOS system, please use a different device.`)
+			alert(`Video playback does not currently work on iOS devices. For now, please use a different device.`)
 
 		// internet explorer
 		if(isIE)
-			alert(`video playback doesn't work on Internet Explorer, we recommend Chrome.`)
+			alert(`Video playback does not currently work on Internet Explorer. For now, we recommend Chrome instead.`)
 
 		// firefox
 		if(isFirefox)
-			alert(`video playback doesn't work on Firefox, we recommend Chrome.`)
+			alert(`Video playback does not currently work on Firefox. For now, we recommend Chrome instead.`)
 	}
 
 	const handlePublicCollections = e => {
