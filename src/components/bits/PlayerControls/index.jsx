@@ -97,44 +97,6 @@ const PlayerControls = props => {
 		return e/duration
 	})
 
-	const handleChangeSpeed = () => {
-		toggleTip()
-		setShowSpeed(!showSpeed)
-		if(isCaption)
-			setIsCaption(!isCaption)
-
-	}
-
-	const handleChangeCaption = () => {
-		toggleTip()
-		setIsCaption(!isCaption)
-		if(showSpeed)
-			setShowSpeed(!showSpeed)
-
-	}
-
-	const handleSeekToSubtitle = (e) => {
-		let seekToIndex = 0
-
-		if(displaySubtitles && subtitleTextIndex !== undefined){
-			if(e.target.id === `prev-sub`){
-				if(subtitleTextIndex > 1)
-					seekToIndex = subtitleTextIndex - 1
-
-			} else {
-				if(subtitleTextIndex < displaySubtitles.content.length - 1)
-					seekToIndex = subtitleTextIndex + 1
-				else
-					seekToIndex = displaySubtitles.content.length - 1
-
-			}
-		}
-
-		const start = displaySubtitles.content[seekToIndex].start
-		const text = displaySubtitles.content[seekToIndex].text
-		handleSeekChange(null, start + start * .001, seekToIndex, text)
-	}
-  
 	return (
 		<Style playing={playing} >
 

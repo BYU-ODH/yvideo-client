@@ -551,7 +551,8 @@ const PlayerContainer = props => {
 		}
 
 		const start = displaySubtitles.content[seekToIndex].start
-		handleSeekChange(null, start + start * .001)
+		const text = displaySubtitles.content[seekToIndex].text
+		handleSeekChange(null, start + start * .001, seekToIndex, text)
 	}
 
 	const handleChangeSpeed = () => {
