@@ -71,6 +71,21 @@ export const Blank = styled.div`
 			left: 90%;
 		}
 	}
+	& #alertMessage{
+		& button{
+			font-size: 1rem;
+			background: transparent;
+			border: none;
+			outline: none;
+			position: absolute;
+			display: inline-block;
+			cursor: pointer;
+			top: 80%;
+			left: 80%;
+			align: bottom-right;
+		}
+	}
+
 `
 export const Comment = styled.div`
 	--x: ${props => props.commentX !== 0 ? `${props.commentX}%` : `0%`};
@@ -131,6 +146,28 @@ export const PauseMessage = styled.div`
 	background-color: rgba(241, 241, 244, 0.79);
 	z-index: 10000;
 	visibility: hidden
+`
+
+export const AlertMessage = styled.div`
+	padding: 2%;
+	width: 30% !important;
+	height: 15% !important;
+	font-size: 1.5rem;
+	position: absolute;
+	display: block;
+	top: 40%;
+	left: 30%;
+	border-width: 1px;
+	border-radius: 1px;
+	border-style: solid;
+	border-color: var(--navy-blue);
+	cursor: pointer;
+	justify-content: center;
+	background-color: rgba(241, 241, 244, 0.79);
+	z-index: 10000;
+	visibility: hidden
+
+
 `
 
 export const PlayButton = styled.img`
