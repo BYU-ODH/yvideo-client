@@ -18,9 +18,8 @@ class Landing extends PureComponent {
 			handleLogin,
 		} = this.props.handlers
 
-		var alertMessage
-
 		const checkBrowser = () => {
+			let alertMessage
 
 			//safari
 			if(isSafari)
@@ -33,8 +32,6 @@ class Landing extends PureComponent {
 			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
 			document.getElementById('alertMessage').innerHTML = alertMessage + alertMessageButton
 		}
-
-
 
 		return (
 			<Wrapper>
