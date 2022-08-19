@@ -24,7 +24,7 @@ const SubtitlesLayer = props => {
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
-	const [layerHeight, setLayerHeight] = useState(0)
+	const [layerHeight, setLayerHeight] = useState(0) // eslint-disable-line no-unused-vars
 	const [showError, setShowError] = useState(false)
 	if(shouldUpdate)
 		setShouldUpdate(false)

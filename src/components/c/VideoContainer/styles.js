@@ -125,7 +125,7 @@ export const TimeBar = styled.div`
 				}
 			}
 		}
-
+		
 		& button {
 
 			height: 1.5rem;

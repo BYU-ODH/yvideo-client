@@ -17,7 +17,6 @@ class Landing extends PureComponent {
 		const {
 			toggleOverlay,
 			handleLogin,
-			// handlePublicCollections,
 		} = this.props.handlers
 
 		var alertMessage

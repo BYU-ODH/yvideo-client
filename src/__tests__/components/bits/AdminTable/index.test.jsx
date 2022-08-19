@@ -83,7 +83,10 @@ describe(`Admin Table test`, () => {
 				// const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
 
 				expect(collectionLink).toBeVisible()
+				expect(collectionLink).toHaveAttribute(`href`, `/lab-assistant-manager/${viewstate.menuItemInfo.id}`)
+
 				expect(edit).toBeVisible()
+
 				expect(deleteButton).toBeVisible()
 				const menuButtons = screen.getAllByTestId(`item-edit`)
 
@@ -102,19 +105,19 @@ describe(`Admin Table test`, () => {
 			})
 
 			it(`Content visible`, async () => {
-				const netIds = screen.getAllByText(/testuser/i)
-				const names = screen.getAllByText(/testname/i)
-				const roles = screen.getAllByText(/[0-4]/)
-				const emails = screen.getAllByText(/@email.com/i)
-				const lastLogins = screen.getAllByText(/2020/)
-
-				for (const i in netIds) {
-					expect(netIds[i]).toBeVisible()
-					expect(names[i]).toBeVisible()
-					expect(roles[i]).toBeVisible()
-					expect(emails[i]).toBeVisible()
-					expect(lastLogins[i]).toBeVisible()
+				const columns = {
+					netIds: screen.getAllByText(/testuser/i),
+					names: screen.getAllByText(/testname/i),
+					roles: screen.getAllByText(/[0-4]/),
+					emails: screen.getAllByText(/@email.com/i),
+					lastLogins: screen.getAllByText(/2020/),
 				}
+
+				Object.values(columns).forEach((column) => {
+					for(const j in Object.keys(viewstate.data).length)
+						expect(column[j]).toBeVisible()
+
+				})
 			})
 		})
 
@@ -153,17 +156,18 @@ describe(`Admin Table test`, () => {
 			})
 
 			it(`Other content still present`, async () => {
-				const netIds = screen.getAllByText(/testuser/i)
-				const names = screen.getAllByText(/testname/i)
-				const emails = screen.getAllByText(/@email.com/i)
-				const lastLogins = screen.getAllByText(/2020/)
-
-				for (const i in netIds) {
-					expect(netIds[i]).toBeVisible()
-					expect(names[i]).toBeVisible()
-					expect(emails[i]).toBeVisible()
-					expect(lastLogins[i]).toBeVisible()
+				const columns = {
+					netIds: screen.getAllByText(/testuser/i),
+					names: screen.getAllByText(/testname/i),
+					emails: screen.getAllByText(/@email.com/i),
+					lastLogins: screen.getAllByText(/2020/),
 				}
+
+				Object.values(columns).forEach((column) => {
+					for(const j in Object.keys(viewstate.data).length)
+						expect(column[j]).toBeVisible()
+
+				})
 			})
 		})
 	})
@@ -182,11 +186,13 @@ describe(`Admin Table test`, () => {
 
 			// viewstate.searchCategory is `Collections`
 			const user = userEvent.setup()
-			const collectionLink = screen.getByRole(`link`)
+			const collectionLink = screen.getByText(/View\/Edit/)
 			const deleteButton = screen.getByText(/Delete/)
 			// const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
 
 			expect(collectionLink).toBeVisible()
+			expect(collectionLink).toHaveAttribute(`href`, `/lab-assistant-manager/owner/${viewstate.menuItemInfo.id}`)
+
 			expect(deleteButton).toBeVisible()
 			const menuButtons = screen.getAllByTestId(`item-edit`)
 
@@ -202,13 +208,16 @@ describe(`Admin Table test`, () => {
 		})
 
 		it(`Content visible`, async () => {
-			const names = screen.getAllByText(/testname/i)
-			const owners = screen.getAllByText(/testuser/i)
-
-			for (const i in names) {
-				expect(names[i]).toBeVisible()
-				expect(owners[i]).toBeVisible()
+			const columns = {
+				names: screen.getAllByText(/testname/i),
+				owners: screen.getAllByText(/testuser/i),
 			}
+
+			Object.values(columns).forEach((column) => {
+				for(const j in Object.keys(viewstate.data).length)
+					expect(column[j]).toBeVisible()
+
+			})
 		})
 	})
 
@@ -232,6 +241,8 @@ describe(`Admin Table test`, () => {
 			// const sampleSort = screen.getAllByTestId(`sorting-button`)[0]
 
 			expect(viewLink).toBeVisible()
+			expect(viewLink).toHaveAttribute(`href`, `/player/${viewstate.menuItemInfo.id}`)
+
 			expect(edit).toBeVisible()
 			expect(deleteButton).toBeVisible()
 			const menuButtons = screen.getAllByTestId(`item-edit`)
@@ -248,19 +259,19 @@ describe(`Admin Table test`, () => {
 		})
 
 		it(`Content visible`, async () => {
-			const names = screen.getAllByText(/testname/i)
-			const collections = screen.getAllByText(/23 || 24/)
-			const types = screen.getAllByText(/contentType/)
-			const expirations = screen.getAllByText(/false || true/i)
-			const resourceIds = screen.getAllByText(/123 || 234/)
-
-			for (const i in names) {
-				expect(names[i]).toBeVisible()
-				expect(collections[i]).toBeVisible()
-				expect(types[i]).toBeVisible()
-				expect(expirations[i]).toBeVisible()
-				expect(resourceIds[i]).toBeVisible()
+			const columns = {
+				names: screen.getAllByText(/testname/i),
+				collections: screen.getAllByText(/23|24/),
+				types: screen.getAllByText(/contentType/),
+				expirations: screen.getAllByText(/false|true/i),
+				resourceIds: screen.getAllByText(/123|234/),
 			}
+
+			Object.values(columns).forEach((column, i) => {
+				for(const j in Object.keys(viewstate.data).length)
+					expect(column[j]).toBeVisible()
+
+			})
 		})
 	})
 

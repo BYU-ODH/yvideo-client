@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player'
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
 import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
-import {isMobile, isIE, isSafari, isFirefox, isMobileSafari, isIOS, isChrome } from 'react-device-detect'
+import { isChrome } from 'react-device-detect'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
@@ -101,10 +101,8 @@ export default class Player extends Component {
 			showTranscript,
 			// toggleTranscript,
 			// content,
-			subtitleText,
 			// subtitleTextIndex,
 			displaySubtitles,
-			// isCaption,
 			indexToDisplay,
 			isMobile,
 			// censorPosition,
@@ -149,13 +147,12 @@ export default class Player extends Component {
 					:
 					`calc(${played * 100}% - 2px)`
 			}
-			if(subtitles)
+			if(subtitles.content.length > 0)
 				HandleSubtitle(playedSeconds, subtitles, 0, duration)
 
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					// console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
@@ -187,7 +184,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(!muted)
 						handleMuted()
-					// console.log("muting")
 
 					break
 				case `Pause`:
@@ -198,12 +194,10 @@ export default class Player extends Component {
 						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
-					// console.log("pausing")
 					break
 				case `Skip`:
 					events[index].active = false
 					handleSeekChange(null, values.allEvents[y].end)
-					// console.log('skipping')
 					break
 				default:
 					break
@@ -221,7 +215,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(muted){
 						handleUnmuted()
-						// console.log("unmuting")
 						events[index].active = false
 					}
 					break
@@ -233,8 +226,7 @@ export default class Player extends Component {
 			const t1 = performance.now()
 		}
 
-		const alertMessage = "video does not work <br><br>"
-
+		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
 
 		const handleOnReady = () => {
 			handleAspectRatio()
@@ -244,11 +236,10 @@ export default class Player extends Component {
 				})
 				this.setState({skipArray: eventFilterSkip})
 			}
-			if(isSafari || isMobile)
-				document.getElementById('alertMessage').style.visibility = `visible`
-				const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
-				document.getElementById('alertMessage').innerHTML = alertMessage + alertMessageButton
-
+			if(!isChrome || isMobile)
+				document.getElementById(`alertMessage`).style.visibility = `visible`
+			  const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
+			  document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
 		}
 
 		return (
@@ -303,7 +294,7 @@ export default class Player extends Component {
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}
-							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id='subtitle'>{subtitleText}</h3></Subtitles>
+							<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles>
 							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
 							</div>
 							<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>

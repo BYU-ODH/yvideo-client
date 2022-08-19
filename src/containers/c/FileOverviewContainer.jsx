@@ -42,7 +42,7 @@ const FileOverviewContainer = props => {
 
 	const checkDevice = () => {
 		if(isChrome)
-			alert("good job")
+			alert(`good job`)
 	}
 
 	const handleUpdateFile = e => {

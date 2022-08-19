@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -70,6 +70,12 @@ const PlayerContainer = props => {
 	const [censorPosition, setCensorPosition] = useState({})
 	const [censorActive, setCensorActive] = useState(false)
 	const [hasPausedClip, setHasPausedClip] = useState(false)
+	const [showSpeed, setShowSpeed] = useState(false)
+
+	const [subsObj, setSubsObj] = useState({})
+	const [enableScroll, setEnableScroll] = useState({action: null})
+	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [scrollDisabled, setScrollDisabled] = useState(false)
 
 	// this is for caption toggle
 	const [isCaption, setIsCaption] = useState(false) // this is the state to toggle caption selection
@@ -192,6 +198,12 @@ const PlayerContainer = props => {
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
 
+	useLayoutEffect(() => {
+		handleSubsObj()
+		handleScrollFuncs()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [displaySubtitles, duration])
+
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
 			component: Tooltip,
@@ -227,20 +239,23 @@ const PlayerContainer = props => {
 	}
 
 	const handlePlayPause = () => {
-
-		if (playing)
+		if (playing) {
 			setPlaying(false)
-		else
+			enableScroll.action()
+		} else {
 			setPlaying(true)
-
+			disableScroll.action()
+		}
 	}
 
 	const handlePause = () => {
 		setPlaying(false)
+		enableScroll.action()
 	}
 
 	const handlePlay = () => {
 		setPlaying(true)
+		disableScroll.action()
 	}
 	const handleStart = () => {
 		setPlaying(true)
@@ -261,9 +276,50 @@ const PlayerContainer = props => {
 		setPlaytime(dateElapsed.toISOString().substr(11, 8))
 		setProgress(progression)
 
+		handleSubtitles(progression)
+		const subContainer = document.getElementById(`subtitles-container`)
+
+		if(subContainer && subsObj !== {}) {
+			if(subtitleTextIndex === undefined)
+				return
+			else
+				subContainer.scrollTo(0, subsObj[subtitleTextIndex].distanceDownTranscript)
+		}
 	}
 
-	const handleSeekChange = (e, time) => {
+	const handleSubtitles = (progression) => {
+		const entries = Object.entries(subsObj)
+		const progressPercent = progression * 100 / duration
+
+		for (const i in entries) {
+			const numIndex = parseFloat(i)
+			if (numIndex < entries.length - 1) {
+				if (progressPercent < parseFloat(entries[0][1].percentPlayed)) {
+					setSubtitleTextIndex(undefined)
+					setSubtitleText(undefined)
+					return
+				}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) {
+					setSubtitleTextIndex(numIndex)
+					setSubtitleText(entries[numIndex][1].text)
+					return
+				}
+			} else if (numIndex === entries.length - 1) {
+				if(entries.length === 1) {
+					setSubtitleTextIndex(0)
+					setSubtitleText(entries[numIndex][1].text)
+					return
+				} else {
+					if(progressPercent <= entries[numIndex][1].percentPlayed && progression > entries[i - 1][1].percentPlayed) {
+						setSubtitleTextIndex(numIndex)
+						setSubtitleText(entries[numIndex][1].text)
+						return
+					}
+				}
+			}
+		}
+	}
+
+	const handleSeekChange = (e, time, newIndex, newText) => {
 		toggleTip()
 		// reset events
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
@@ -280,6 +336,10 @@ const PlayerContainer = props => {
 		if (duration > 0)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 
+		if (newIndex !== undefined && newText !== undefined) {
+			setSubtitleTextIndex(newIndex)
+			setSubtitleText(newText)
+		}
 		if (events) {
 			// for all of the events. If the new seek time goes before events that were already executed activate the events again
 			events.forEach(event => {
@@ -343,10 +403,26 @@ const PlayerContainer = props => {
 		setCommentPosition(position)
 	}
 
+	const handleSubsObj = () => {
+		if(displaySubtitles && duration) {
+			let temp = {}
+			const heights = [26.8, 46.8, 60.4, 77.2]
+			for (const i in displaySubtitles.content) {
+				const numIndex = parseFloat(i)
+				if(displaySubtitles.content[i].text.length <= 55) // these numbers are the average amount of characters in a line of text
+					temp = handleTempObj(temp, numIndex, heights, 0)
+				else if(displaySubtitles.content[i].text.length >= 55 && displaySubtitles.content[i].text.length < 100)
+					temp = handleTempObj(temp, numIndex, heights, 1)
+				else if(displaySubtitles.content[i].text.length >= 100 && displaySubtitles.content[i].text.length < 150)
+					temp = handleTempObj(temp, numIndex, heights, 2)
+				else if(displaySubtitles.content[i].text.length >= 150)
+					temp = handleTempObj(temp, numIndex, heights, 3)
+			}
+			setSubsObj(temp)
+		}
+	}
+
 	const handleShowSubtitle = (value, index) => {
-		// if(document.getElementById('subtitle-box') !== undefined){
-		// 	document.getElementById('subtitle-box').innerText = value
-		// }
 		if (subtitleTextIndex !== index) {
 			if (document.getElementsByClassName(`transcript-row`)[index]) {
 				// grab the elements height and scroll that in pixels for the entire parent element
@@ -363,6 +439,67 @@ const PlayerContainer = props => {
 		setSubtitleText(value)
 	}
 
+	const handleTempObj = (temp, loopIndex, heightsArray, heightsIndex) => {
+		return (
+			{...temp,
+				[loopIndex]: {
+					text: displaySubtitles.content[loopIndex].text,
+					percentPlayed: displaySubtitles.content[loopIndex].start * 100 / duration,
+					distanceDownTranscript: loopIndex === 0 ?
+						heightsArray[heightsIndex] + 50
+						:
+						temp[loopIndex - 1].distanceDownTranscript + heightsArray[heightsIndex],
+				},
+			}
+		)
+	}
+
+	const handleScrollFuncs = () => {
+		let supportsPassive = false
+
+		const keys = {37: 1, 38: 1, 39: 1, 40: 1}
+
+		const preventDefault = (e) => {
+			e.preventDefault()
+		}
+
+		const preventDefaultForScrollKeys = (e) => {
+			if (keys[e.keyCode]) {
+				preventDefault(e)
+				return false
+			}
+		}
+
+		try {
+			document.getElementById(`subtitles-container`).addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
+				get: () => { // eslint-disable-line getter-return
+					supportsPassive = true
+				},
+			}))
+		} catch (e) {
+			return
+		}
+
+		const wheelEvent = `onwheel` in document.createElement(`div`) ? `wheel` : `mousewheel`
+		const wheelOpt = supportsPassive ? { passive: false } : false
+		const subsContainer = document.getElementById(`subtitles-container`)
+
+		setDisableScroll({action: () => {
+			subsContainer.addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
+			subsContainer.addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
+			subsContainer.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
+			subsContainer.addEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			setScrollDisabled(true)
+		}})
+		setEnableScroll({action: () => {
+			subsContainer.removeEventListener(`DOMMouseScroll`, preventDefault, false)
+			subsContainer.removeEventListener(wheelEvent, preventDefault, wheelOpt)
+			subsContainer.removeEventListener(`touchmove`, preventDefault, wheelOpt)
+			subsContainer.removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			setScrollDisabled(false)
+		}})
+	}
+
 	const handleChangeSubtitle = (index) => {
 		const temp = subtitles[index]
 		const currentContent = temp.content
@@ -377,7 +514,6 @@ const PlayerContainer = props => {
 		setDisplaySubtitles(temp)
 		setShowTranscript(true)
 	}
-
 
 	const handleShowHelp = () => {
 		toggleModal({
@@ -396,7 +532,43 @@ const PlayerContainer = props => {
 		setToggleTranscript(!toggleTranscript)
 	}
 
-	const handleAspectRatio = () => {
+	const handleSeekToSubtitle = (e) => {
+		let seekToIndex = 0
+
+		if(displaySubtitles && subtitleTextIndex !== undefined){
+			if(e.target.id === `prev-sub`){
+				if(subtitleTextIndex > 1)
+					seekToIndex = subtitleTextIndex - 1
+
+			} else {
+				if(subtitleTextIndex < displaySubtitles.content.length - 1)
+					seekToIndex = subtitleTextIndex + 1
+				else
+					seekToIndex = displaySubtitles.content.length - 1
+
+			}
+		}
+
+		const start = displaySubtitles.content[seekToIndex].start
+		const text = displaySubtitles.content[seekToIndex].text
+		handleSeekChange(null, start + start * .001, seekToIndex, text)
+	}
+
+	const handleChangeSpeed = () => {
+		toggleTip()
+		setShowSpeed(!showSpeed)
+		if(isCaption)
+			setIsCaption(!isCaption)
+	}
+
+	const handleChangeCaption = () => {
+		toggleTip()
+		setIsCaption(!isCaption)
+		if(showSpeed)
+			setShowSpeed(!showSpeed)
+	}
+
+	const handleAspectRatio = ()=>{
 		const cont = document.getElementById(`player-container`)
 		if(!cont)
 			return
@@ -458,7 +630,6 @@ const PlayerContainer = props => {
 		}
 	}
 
-
 	const viewstate = {
 		showTranscript,
 		duration,
@@ -493,6 +664,8 @@ const PlayerContainer = props => {
 		isLandscape,
 		hasPausedClip,
 		events,
+		showSpeed,
+		scrollDisabled
 	}
 
 	const handlers = {
@@ -528,6 +701,10 @@ const PlayerContainer = props => {
 		handleAspectRatio,
 		handleToggleSubtitles,
 		handleOffSubtitles,
+		setShowSpeed,
+		handleSeekToSubtitle,
+		handleChangeSpeed,
+		handleChangeCaption,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
