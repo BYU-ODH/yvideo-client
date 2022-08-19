@@ -35,7 +35,6 @@ const LandingContainer = props => {
 		toggleOverlay,
 		handleLogin,
 		handlePublicCollections,
-		// checkBrowser,
 	}
 
 	return <Landing viewstate={viewstate} handlers={handlers} />
