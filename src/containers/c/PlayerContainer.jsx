@@ -307,8 +307,7 @@ const PlayerContainer = props => {
 					setSubtitleTextIndex(0)
 					setSubtitleText(entries[numIndex][1].text)
 					return
-				}
-				else {
+				} else {
 					if(progressPercent <= entries[numIndex][1].percentPlayed && progression > entries[i - 1][1].percentPlayed) {
 						setSubtitleTextIndex(numIndex)
 						setSubtitleText(entries[numIndex][1].text)
