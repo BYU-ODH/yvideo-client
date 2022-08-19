@@ -33,14 +33,6 @@ class Landing extends PureComponent {
 			if(isIOS && isMobile)
 				alertMessage = "video playback doesn’t work on the IOS system, please use a different device."
 
-			//internet explorer
-			if(isIE)
-				alertMessage = "video playback doesn’t work on Internet Explorer, we recommend Chrome."
-
-			//firefox
-			if(isFirefox)
-				alertMessage = "video playback doesn’t work on Firefox, we recommend Chrome."
-
 			document.getElementById('alertMessage').style.visibility = `visible`
 			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
 			document.getElementById('alertMessage').innerHTML = alertMessage + alertMessageButton
