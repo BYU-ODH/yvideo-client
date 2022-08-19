@@ -178,21 +178,6 @@ const Transcript = props => {
 						onMouseLeave={() => toggleTip()}
 					/>
 				</div>
-				<div className={`transcript-title`}>
-					<h1>Transcript</h1>
-					<h2>
-						{ content !== undefined ?
-							content.settings.targetLanguage !== `` ?
-								`Video - ${content.settings.targetLanguage} | `
-								:
-								null
-							:
-							null
-						}
-						Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}
-					</h2>
-				</div>
-				<br/><br/><br/>
 				<div className={`transcript-content`}>
 					{	displaySubtitles !== null && displaySubtitles.content !== `` ?
 						displaySubtitles[`content`].map((element, index) =>
@@ -200,7 +185,7 @@ const Transcript = props => {
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start + element.start * .001, displaySubtitles.content.indexOf(element), element.text)}
+								<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001, displaySubtitles.content.indexOf(element), element.text)}
 									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`,

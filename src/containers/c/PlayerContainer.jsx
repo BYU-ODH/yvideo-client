@@ -293,22 +293,22 @@ const PlayerContainer = props => {
 
 		for (const i in entries) {
 			const numIndex = parseFloat(i)
-			if (numIndex < entries.length - 1) {
-				if (progressPercent < parseFloat(entries[0][1].percentPlayed)) {
+			if (numIndex < entries.length - 1) { // if not last entry
+				if (progressPercent < parseFloat(entries[0][1].percentPlayed)) { // if progress is less than first entry
 					setSubtitleTextIndex(undefined)
 					setSubtitleText(undefined)
 					return
-				}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) {
+				}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
 					setSubtitleTextIndex(numIndex)
 					setSubtitleText(entries[numIndex][1].text)
 					return
 				}
-			} else if (numIndex === entries.length - 1) {
-				if(entries.length === 1) {
+			} else if (numIndex === entries.length - 1) { // if last entry
+				if(entries.length === 1) { // if only one entry
 					setSubtitleTextIndex(0)
 					setSubtitleText(entries[numIndex][1].text)
 					return
-				} else {
+				} else { // if last entry and there is more than one entry
 					if(progressPercent <= entries[numIndex][1].percentPlayed && progression > entries[i - 1][1].percentPlayed) {
 						setSubtitleTextIndex(numIndex)
 						setSubtitleText(entries[numIndex][1].text)
@@ -336,10 +336,6 @@ const PlayerContainer = props => {
 		if (duration > 0)
 			player.seekTo(newPlayed.toFixed(10), `fraction`)
 
-		if (newIndex !== undefined && newText !== undefined) {
-			setSubtitleTextIndex(newIndex)
-			setSubtitleText(newText)
-		}
 		if (events) {
 			// for all of the events. If the new seek time goes before events that were already executed activate the events again
 			events.forEach(event => {
@@ -446,9 +442,9 @@ const PlayerContainer = props => {
 					text: displaySubtitles.content[loopIndex].text,
 					percentPlayed: displaySubtitles.content[loopIndex].start * 100 / duration,
 					distanceDownTranscript: loopIndex === 0 ?
-						heightsArray[heightsIndex] + 50
+						Math.round(heightsArray[heightsIndex] - 50)
 						:
-						temp[loopIndex - 1].distanceDownTranscript + heightsArray[heightsIndex],
+						Math.round(temp[loopIndex - 1].distanceDownTranscript + heightsArray[heightsIndex]),
 				},
 			}
 		)
@@ -551,7 +547,7 @@ const PlayerContainer = props => {
 
 		const start = displaySubtitles.content[seekToIndex].start
 		const text = displaySubtitles.content[seekToIndex].text
-		handleSeekChange(null, start + start * .001, seekToIndex, text)
+		handleSeekChange(null, start + start * .0000001, seekToIndex, text)
 	}
 
 	const handleChangeSpeed = () => {
