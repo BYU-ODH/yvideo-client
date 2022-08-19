@@ -7,7 +7,6 @@ import { Wrapper, Comets, Welcome, Logo, Button, AlertMessage } from './styles'
 
 import {isMobile, isSafari, isIOS } from 'react-device-detect'
 
-
 class Landing extends PureComponent {
 	render() {
 		const {
