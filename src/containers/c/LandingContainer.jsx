@@ -5,7 +5,7 @@ import { authService } from 'services'
 
 import { Landing } from 'components'
 
-import {isMobile, isIE, isSafari, isFirefox, isMobileSafari, isIOS, isChrome } from 'react-device-detect'
+import {isMobile, isIE, isSafari, isFirefox, isIOS } from 'react-device-detect'
 
 const LandingContainer = props => {
 
@@ -21,21 +21,21 @@ const LandingContainer = props => {
 
 	const checkBrowser = () => {
 
-		//safari
+		// safari
 		if(isSafari)
-			alert("video playback doesn’t work on safari, we recommend Chrome.")
+			alert(`Video playback does not currently work on Safari. For now, we recommend Chrome instead.`)
 
-		//ios
+		// ios
 		if(isIOS && isMobile)
-			alert("video playback doesn’t work on the IOS system, please use a different device.")
+			alert(`Video playback does not currently work on iOS devices. For now, please use a different device.`)
 
-		//internet explorer
+		// internet explorer
 		if(isIE)
-			alert("video playback doesn’t work on Internet Explorer, we recommend Chrome.")
+			alert(`Video playback does not currently work on Internet Explorer. For now, we recommend Chrome instead.`)
 
-		//firefox
+		// firefox
 		if(isFirefox)
-			alert("video playback doesn’t work on Firefox, we recommend Chrome.")
+			alert(`Video playback does not currently work on Firefox. For now, we recommend Chrome instead.`)
 	}
 
 	const handlePublicCollections = e => {

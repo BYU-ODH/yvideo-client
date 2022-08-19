@@ -20,8 +20,6 @@ class Landing extends PureComponent {
 		const {
 			toggleOverlay,
 			handleLogin,
-			checkBrowser,
-			// handlePublicCollections,
 		} = this.props.handlers
 
 		return (

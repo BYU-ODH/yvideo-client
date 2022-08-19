@@ -50,7 +50,7 @@ const ClipEditor = props => {
 
 	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0)
+	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [clipList, setClipList] = useState({})
@@ -158,7 +158,6 @@ const ClipEditor = props => {
 			const scrubber = document.getElementById(`time-bar`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
 			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const scrollBar = document.getElementsByClassName(`zoom-scroll-indicator`)[0]
 			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
 
 			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
