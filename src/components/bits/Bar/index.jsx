@@ -2,16 +2,16 @@ import React from 'react'
 import Style, { BarBall, BarCurrent, BarBackground, BarClipYellow, BarSkippedGray } from './styles'
 
 const Bar = props => {
-	const { duration, skipArray } = props
+	const { duration, skipArray, handleClick, clipPercent, active } = props
 
 	return (
-		<Style data-testid='bar' onClick={props.handleClick}>
+		<Style data-testid='bar' onClick={handleClick}>
 			<BarBackground />
 			<BarCurrent data-testid='timeBarProgress' id='timeBarProgress' />
-			{props.clipPercent &&
-				<BarClipYellow data-testid='yellow-bar' clipPercent={props.clipPercent} />
+			{clipPercent &&
+				<BarClipYellow data-testid='yellow-bar' clipPercent={clipPercent} />
 			}
-			<BarBall id='time-dot' active={props.active} />
+			<BarBall id='time-dot' active={active} />
 			{skipArray.map((skipEvent, index) => (
 				<BarSkippedGray data-testid='gray-bar' id='gray-bar' key={index} start={skipEvent.start} end={skipEvent.end} duration={duration} />
 			))}

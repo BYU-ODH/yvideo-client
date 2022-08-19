@@ -17,15 +17,21 @@ const handleBlank = (blanks) => {
 }
 export const HandleSubtitle = (time, subtitles, ind, duration) => {
 	const subtitleNode = document.getElementById(`subtitle`)
+	const subtitleBox = document.getElementById(`subtitleBox`)
 	const currentsub = subtitles.content
 	let subtext = ``
 	const filtered =
-		currentsub !== undefined ?
-			currentsub.filter(val => time < val.end && time > val.start)
-			: []
-
-	if (filtered.length > 0)
+			currentsub !== undefined ?
+				currentsub.filter(val => time < val.end && time > val.start)
+				: []
+	if (filtered.length > 0){
 		subtext = filtered[0].text
+		if(subtitleBox)
+			subtitleBox.style.display = `flex`
+	}else {
+		if(subtitleBox)
+			subtitleBox.style.display = `none`
+	}
 	if(subtitleNode)
 		subtitleNode.innerHTML = subtext
 }

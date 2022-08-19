@@ -7,7 +7,6 @@ import Style, {
 	ClosedCaptions,
 	FullScreen,
 	Book,
-	// Volume,
 	Speed,
 	Help,
 } from './styles'

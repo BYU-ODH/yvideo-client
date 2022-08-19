@@ -32,6 +32,7 @@ const Transcript = props => {
 		toggleTranscript,
 		showTranscript,
 		isMobile,
+		scrollDisabled,
 	} = props.viewstate
 
 	const {
@@ -89,7 +90,6 @@ const Transcript = props => {
 				// highlight and push changes
 				matches.forEach(m => {
 					const cleanString = m.replace(/\s/g, ``)
-					// console.log('Matched', cleanString)
 					const rep = new RegExp(`${cleanString}`, `gmi`)
 
 					if(cleanString !== `. ` && cleanString !== `, ` && cleanString !== `` && cleanString !== `.`)
@@ -118,7 +118,7 @@ const Transcript = props => {
 	}
 
 	return (
-		<Style style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
+		<Style id='transcript' style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>
@@ -165,7 +165,7 @@ const Transcript = props => {
 				}
 
 			</div>
-			<div className={isMobile ? `main-bar main-mobile` : `main-bar`} >
+			<div id='subtitles-container' className={isMobile ? `main-bar main-mobile` : `main-bar`} >
 				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
 					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
 						onMouseEnter={e => handleShowTip(`transcript-hide`,
@@ -200,7 +200,7 @@ const Transcript = props => {
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start + element.start * .001)}
+								<div onClick={e => handleSeekChange(null, element.start + element.start * .001, displaySubtitles.content.indexOf(element), element.text)}
 									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`,

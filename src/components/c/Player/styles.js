@@ -116,7 +116,7 @@ export const Subtitles = styled.div`
 	width: 100%;
 
 	& h3 {
-		background-color: ${props => props.subtitleText === `` ? `transparent` : `rgba(0, 0, 0, 0.5)`};
+		background-color: ${props => props.subtitletext === `` ? `transparent` : `rgba(0, 0, 0, 0.5)`};
 		padding: 3px;
 		font-size: 1.8rem;
 		text-align: center;

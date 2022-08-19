@@ -54,7 +54,6 @@ export const Style = styled.div`
 		background-color: white;
 		width: calc(100% - 35px);
 		height: 70vh;
-		/* overflow-y: scroll !important; */
 		/* border: 1px solid black; */
 		::-webkit-scrollbar {
 			display: block !important;
@@ -69,13 +68,13 @@ export const Style = styled.div`
 
 		/* Handle */
 		::-webkit-scrollbar-thumb {
-			background: var(--light-blue);
+			background: ${props => props.scrolldisabled ? `#AAAAAA` : `var(--light-blue)`};
 			border-radius: 10px;
 		}
 
 		/* Handle on hover */
 		::-webkit-scrollbar-thumb:hover {
-			background: var(--navy-blue);
+			background: ${props => props.scrolldisabled ? `` : `var(--navy-blue)`};
 		}
 
 		& .transcript-title {
