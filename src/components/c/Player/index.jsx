@@ -238,9 +238,8 @@ export default class Player extends Component {
 			}
 			if(!isChrome || isMobile)
 				document.getElementById(`alertMessage`).style.visibility = `visible`
-			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
-			document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
-
+			  const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
+			  document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
 		}
 
 		return (

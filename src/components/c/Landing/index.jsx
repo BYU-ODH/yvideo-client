@@ -1,18 +1,14 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Overlay } from 'components'
 
-import { Wrapper, Comets, Welcome, Logo, Button } from './styles'
+import { Wrapper, Comets, Welcome, Logo, Button, AlertMessage } from './styles'
+
+import {isMobile, isSafari, isIOS } from 'react-device-detect'
 
 class Landing extends PureComponent {
-
-	componentDidMount(){
-		this.props.handlers.checkBrowser()
-	}
-
 	render() {
-
 		const {
 			overlay,
 		} = this.props.viewstate
@@ -21,6 +17,21 @@ class Landing extends PureComponent {
 			toggleOverlay,
 			handleLogin,
 		} = this.props.handlers
+
+		const checkBrowser = () => {
+			let alertMessage
+
+			//safari
+			if(isSafari)
+				alertMessage = "video playback doesn’t work on safari, we recommend Chrome."
+			//ios
+			if(isIOS && isMobile)
+				alertMessage = "video playback doesn’t work on the IOS system, please use a different device."
+
+			document.getElementById('alertMessage').style.visibility = `visible`
+			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
+			document.getElementById('alertMessage').innerHTML = alertMessage + alertMessageButton
+		}
 
 		return (
 			<Wrapper>
@@ -32,6 +43,7 @@ class Landing extends PureComponent {
 						<Logo />
 						<h1>Y-VIDEO</h1>
 					</div>
+				<AlertMessage id='alertMessage'>{checkBrowser}</AlertMessage>
 
 					<div className='button-wrapper'>
 						<Button id='primary' className='primary' onClick={handleLogin}>Sign In</Button>
@@ -43,7 +55,6 @@ class Landing extends PureComponent {
 				</Welcome>
 
 				{ overlay && <Overlay toggleOverlay={toggleOverlay} /> }
-
 			</Wrapper>
 		)
 	}

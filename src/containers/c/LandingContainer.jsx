@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { authService } from 'services'
@@ -14,28 +14,8 @@ const LandingContainer = props => {
 	} = props
 
 	const [overlay, setOverlay] = useState(false)
-
 	const toggleOverlay = () => {
 		setOverlay(!overlay)
-	}
-
-	const checkBrowser = () => {
-
-		// safari
-		if(isSafari)
-			alert(`Video playback does not currently work on Safari. For now, we recommend Chrome instead.`)
-
-		// ios
-		if(isIOS && isMobile)
-			alert(`Video playback does not currently work on iOS devices. For now, please use a different device.`)
-
-		// internet explorer
-		if(isIE)
-			alert(`Video playback does not currently work on Internet Explorer. For now, we recommend Chrome instead.`)
-
-		// firefox
-		if(isFirefox)
-			alert(`Video playback does not currently work on Firefox. For now, we recommend Chrome instead.`)
 	}
 
 	const handlePublicCollections = e => {
@@ -55,7 +35,6 @@ const LandingContainer = props => {
 		toggleOverlay,
 		handleLogin,
 		handlePublicCollections,
-		checkBrowser,
 	}
 
 	return <Landing viewstate={viewstate} handlers={handlers} />
