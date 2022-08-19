@@ -227,7 +227,7 @@ export default class Player extends Component {
 			const t1 = performance.now()
 		}
 
-		const alertMessage = `video does not work <br><br>`
+		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
 
 		const handleOnReady = () => {
 			handleAspectRatio()
