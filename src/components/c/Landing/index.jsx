@@ -5,7 +5,7 @@ import { Overlay } from 'components'
 
 import { Wrapper, Comets, Welcome, Logo, Button, AlertMessage } from './styles'
 
-import {isMobile, isIE, isSafari, isFirefox, isMobileSafari, isIOS, isChrome } from 'react-device-detect'
+import {isMobile, isSafari, isIOS } from 'react-device-detect'
 
 
 class Landing extends PureComponent {
@@ -17,16 +17,14 @@ class Landing extends PureComponent {
 		const {
 			toggleOverlay,
 			handleLogin,
-			// checkBrowser,
 			// handlePublicCollections,
 		} = this.props.handlers
 
 		var alertMessage
-		// if(!isChrome || isMobile)
 
 		const checkBrowser = () => {
 
-		//safari
+			//safari
 			if(isSafari)
 				alertMessage = "video playback doesn’t work on safari, we recommend Chrome."
 			//ios
