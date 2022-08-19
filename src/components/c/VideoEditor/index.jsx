@@ -601,7 +601,7 @@ const VideoEditor = props => {
 					className='video'
 					isReady ={isReady}
 					setIsReady={setIsReady}
-					url={url} 
+					url={url}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTimePercentage} // set current time
 					handleLastClick = {handleLastClick}

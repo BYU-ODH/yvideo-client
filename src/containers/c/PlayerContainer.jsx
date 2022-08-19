@@ -74,6 +74,7 @@ const PlayerContainer = props => {
 	const [subsObj, setSubsObj] = useState({})
 	const [enableScroll, setEnableScroll] = useState({action: null})
 	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [scrollDisabled, setScrollDisabled] = useState(false)
 
 	// this is for caption toggle
 	const [isCaption, setIsCaption] = useState(false) // this is the state to toggle caption selection
@@ -302,10 +303,17 @@ const PlayerContainer = props => {
 					return
 				}
 			} else if (numIndex === entries.length - 1) {
-				if(progressPercent < entries[i][1].percentPlayed && progression > entries[i - 1][1].percentPlayed) {
-					setSubtitleTextIndex(numIndex)
+				if(entries.length === 1) {
+					setSubtitleTextIndex(0)
 					setSubtitleText(entries[numIndex][1].text)
 					return
+				}
+				else {
+					if(progressPercent <= entries[numIndex][1].percentPlayed && progression > entries[i - 1][1].percentPlayed) {
+						setSubtitleTextIndex(numIndex)
+						setSubtitleText(entries[numIndex][1].text)
+						return
+					}
 				}
 			}
 		}
@@ -401,7 +409,7 @@ const PlayerContainer = props => {
 			const heights = [26.8, 46.8, 60.4, 77.2]
 			for (const i in displaySubtitles.content) {
 				const numIndex = parseFloat(i)
-				if(displaySubtitles.content[i].text.length <= 55)
+				if(displaySubtitles.content[i].text.length <= 55) // these numbers are the average amount of characters in a line of text
 					temp = handleTempObj(temp, numIndex, heights, 0)
 				else if(displaySubtitles.content[i].text.length >= 55 && displaySubtitles.content[i].text.length < 100)
 					temp = handleTempObj(temp, numIndex, heights, 1)
@@ -415,9 +423,6 @@ const PlayerContainer = props => {
 	}
 
 	const handleShowSubtitle = (value, index) => {
-		// if(document.getElementById('subtitle-box') !== undefined){
-		// 	document.getElementById('subtitle-box').innerText = value
-		// }
 		if (subtitleTextIndex !== index) {
 			if (document.getElementsByClassName(`transcript-row`)[index]) {
 				// grab the elements height and scroll that in pixels for the entire parent element
@@ -441,7 +446,7 @@ const PlayerContainer = props => {
 					text: displaySubtitles.content[loopIndex].text,
 					percentPlayed: displaySubtitles.content[loopIndex].start * 100 / duration,
 					distanceDownTranscript: loopIndex === 0 ?
-						heightsArray[heightsIndex]
+						heightsArray[heightsIndex] + 50
 						:
 						temp[loopIndex - 1].distanceDownTranscript + heightsArray[heightsIndex],
 				},
@@ -484,12 +489,14 @@ const PlayerContainer = props => {
 			subsContainer.addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
 			subsContainer.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
 			subsContainer.addEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			setScrollDisabled(true)
 		}})
 		setEnableScroll({action: () => {
 			subsContainer.removeEventListener(`DOMMouseScroll`, preventDefault, false)
 			subsContainer.removeEventListener(wheelEvent, preventDefault, wheelOpt)
 			subsContainer.removeEventListener(`touchmove`, preventDefault, wheelOpt)
 			subsContainer.removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			setScrollDisabled(false)
 		}})
 	}
 
@@ -621,6 +628,7 @@ const PlayerContainer = props => {
 		isLandscape,
 		hasPausedClip,
 		events,
+		scrollDisabled,
 	}
 
 	const handlers = {

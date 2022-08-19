@@ -68,13 +68,13 @@ export const Style = styled.div`
 
 		/* Handle */
 		::-webkit-scrollbar-thumb {
-			background: var(--light-blue);
+			background: ${props => props.scrolldisabled ? `#AAAAAA` : `var(--light-blue)`};
 			border-radius: 10px;
 		}
 
 		/* Handle on hover */
 		::-webkit-scrollbar-thumb:hover {
-			background: var(--navy-blue);
+			background: ${props => props.scrolldisabled ? `` : `var(--navy-blue)`};
 		}
 
 		& .transcript-title {

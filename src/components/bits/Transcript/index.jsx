@@ -32,6 +32,7 @@ const Transcript = props => {
 		toggleTranscript,
 		showTranscript,
 		isMobile,
+		scrollDisabled,
 	} = props.viewstate
 
 	const {
@@ -117,7 +118,7 @@ const Transcript = props => {
 	}
 
 	return (
-		<Style style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
+		<Style id='transcript' style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>
