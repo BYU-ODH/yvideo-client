@@ -442,7 +442,7 @@ const PlayerContainer = props => {
 					text: displaySubtitles.content[loopIndex].text,
 					percentPlayed: displaySubtitles.content[loopIndex].start * 100 / duration,
 					distanceDownTranscript: loopIndex === 0 ?
-						Math.round(heightsArray[heightsIndex] - 50)
+						Math.round(heightsArray[heightsIndex] - 100)
 						:
 						Math.round(temp[loopIndex - 1].distanceDownTranscript + heightsArray[heightsIndex]),
 				},
