@@ -236,10 +236,11 @@ export default class Player extends Component {
 				})
 				this.setState({skipArray: eventFilterSkip})
 			}
-			if(isSafari || isIOS)
+			if(!isChrome || isMobile) {
 				document.getElementById(`alertMessage`).style.visibility = `visible`
 				const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
 				document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
+			}
 		}
 
 		return (
