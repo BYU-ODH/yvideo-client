@@ -59,14 +59,12 @@ const Style = styled.div`
 				color: white;
 				outline: none;
 				background-color: var(--light-blue);
-				/* background-color: #A9A9A9; */
-				box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.15);
 				border: none;
 				border-radius: 6px;
 				text-align: center;
 				cursor: pointer;
-				font-weight: 5000;
 				padding: 8px 5px;
+				white-space: nowrap;
 
 				:hover {
 					box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.5);
