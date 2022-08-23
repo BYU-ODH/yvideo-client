@@ -676,7 +676,6 @@ const PlayerContainer = props => {
 		events,
 		showSpeed,
 		scrollDisabled,
-		checkBrowser,
 	}
 
 	const handlers = {
@@ -716,6 +715,7 @@ const PlayerContainer = props => {
 		handleSeekToSubtitle,
 		handleChangeSpeed,
 		handleChangeCaption,
+		checkBrowser,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
