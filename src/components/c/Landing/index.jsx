@@ -5,7 +5,7 @@ import { Overlay } from 'components'
 
 import { Wrapper, Comets, Welcome, Logo, Button, AlertMessage } from './styles'
 
-import {isMobile, isSafari, isIOS } from 'react-device-detect'
+import { isIOS, isSafari } from 'react-device-detect'
 
 class Landing extends PureComponent {
 	render() {
@@ -23,10 +23,10 @@ class Landing extends PureComponent {
 
 			//safari
 			if(isSafari)
-				alertMessage = "video playback doesn’t work on safari, we recommend Chrome."
+				alertMessage = `Video playback does not currently work on Safari. We recommend using Chrome instead.`
 			//ios
-			if(isIOS && isMobile)
-				alertMessage = "video playback doesn’t work on the IOS system, please use a different device."
+			if(isIOS)
+				alertMessage = `Video playback does not currently work on iOS devices. Please use a different device."
 
 			document.getElementById('alertMessage').style.visibility = `visible`
 			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`

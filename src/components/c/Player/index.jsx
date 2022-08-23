@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player'
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
 import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
-import { isChrome } from 'react-device-detect'
+import { isIOS, isSafari } from 'react-device-detect'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
@@ -226,7 +226,7 @@ export default class Player extends Component {
 			const t1 = performance.now()
 		}
 
-		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
+		const alertMessage = `Video playback does not currently work on iOS devices or the Safari browser. <br><br>`
 
 		const handleOnReady = () => {
 			handleAspectRatio()
@@ -236,7 +236,7 @@ export default class Player extends Component {
 				})
 				this.setState({skipArray: eventFilterSkip})
 			}
-			if(!isChrome || isMobile)
+			if(isSafari || isIOS)
 				document.getElementById(`alertMessage`).style.visibility = `visible`
 			  const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
 			  document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
