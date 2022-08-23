@@ -17,7 +17,7 @@ export default class Player extends Component {
 		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
 		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
-		this.checkBrowser = this.props.handlers.checkBrowser
+		this.checkBrowser = () => this.props.handlers.checkBrowser
 		this.state = {
 			skipArray: [],
 		}
