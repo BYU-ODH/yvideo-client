@@ -1,8 +1,12 @@
-import styled, { keyframes, css} from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { Link } from 'react-router-dom'
-import saveIcon from 'assets/save.svg'
-import translation from 'assets/translation.svg'
+import trashIcon from 'assets/trash_icon.svg'
+import translationsBlack from 'assets/translation_black.svg'
+import translations from 'assets/translation.svg'
+import translationsLight from 'assets/translation_light.svg'
 import captions from 'assets/captions.svg'
+import captionsBlack from 'assets/captions_black.svg'
+import captionsLight from 'assets/captions_light.svg'
 import annotations from 'assets/annotations.svg'
 import videoeditorIcon from 'assets/video-edit.svg'
 import subtitlesIcon from 'assets/subtitles.svg'
@@ -67,14 +71,36 @@ export const Preview = styled.div`
 		}
 	}
 
+	.fa {
+		font-size: 1.95rem;
+		margin-right: .4rem;
+		position: relative;
+		bottom: 2px;
+
+
+		.fa-trash-o{
+			color: var(--red);
+		}
+
+
+	}
+
+
 	& > div:nth-child(2) {
 
 		/* flex: 1; */
 
 		display: flex;
+		min-width: 10rem;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		margin: 0px 0px 0px 2rem;
+
+		.icon-Buttons{
+			display: flex;
+			flex-direction: row;
+
+		}
 
 		& .content-title {
 			font-weight: 500;
@@ -88,6 +114,25 @@ export const Preview = styled.div`
 			display: grid;
 			grid-template-columns: repeat(3, 2rem);
 			grid-gap: .5rem;
+
+			.fa-eye:before {
+				position: relative;
+				top: 2px;
+				color: black;
+			}
+
+			.fa-eye-slash:before {
+				position: relative;
+				top: 2px;
+				color: #ECECEC
+				// #A4A4A4
+			}
+
+			.fa-closed-captioning:before {
+				position: relative;
+				top: 2px;
+
+			}
 		}
 
 		& em {
@@ -144,24 +189,14 @@ const TextButton = css`
 export const EditButton = styled.button`
 	${TextButton}
 
-	font-size: 1.5rem;
+	line-height: 1.5rem;
+	letter-spacing: .05rem;
+	font-size: 1.2rem;
 	font-weight: bold;
-  display: flex;
-	position: absolute;
-	right: 0;
-	margin-right: 5rem;
-  align-items: center;
+	display: flex;
+	width: fit-content;
+  align-items: flex-start;
   justify-content: center;
-
-  text-align: center !important;
-  & > span {
-    margin-right: .4rem;
-  }
-`
-export const SaveIcon = styled.span`
-  background: url(${saveIcon}) center no-repeat;
-  height: 1.8rem;
-  width: 1.65rem;
 `
 
 export const Icon = styled.li`
@@ -170,19 +205,31 @@ export const Icon = styled.li`
 	background-size: contain;
 	list-style: none;
 
-	&.translation {
-		background: url(${translation}) center no-repeat;
-		display: ${props => props.checked ? `block` : `none`};
+	&.translation{
+		background: url(${props => props.checked ? translationsBlack : translationsLight}) center no-repeat;
+		display: block;
+	}
+
+	&.translation-always-on{
+		background: url(${translations}) center no-repeat;
+		position: relative;
+		display: block;
 	}
 
 	&.captions {
-		background: url(${captions}) center no-repeat;
-		display: ${props => props.checked ? `block` : `none`};
+		background: url(${props => props.checked ? captionsBlack : captionsLight}) center no-repeat;
+		display: block;
 	}
 
 	&.annotations {
 		background: url(${annotations}) center no-repeat;
 		display: ${props => props.checked ? `block` : `none`};
+	}
+
+	&.caption-always-on{
+		background: url(${captions}) center no-repeat;
+		position: relative;
+		display: block;
 	}
 `
 
@@ -245,8 +292,9 @@ export const TitleEdit = styled.input`
 `
 
 export const PublishButton = styled.button`
-	color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+	color: ${props => props.published ? `var(--yellow)` : `#0582CA`};
 	font-weight: bold;
+	display: flex;
 	line-height: 1.5rem;
 	letter-spacing: .05rem;
 
@@ -254,26 +302,34 @@ export const PublishButton = styled.button`
 	width: fit-content;
 
 	border: none;
-	padding: 0;
 
 	cursor: pointer;
 	outline: none;
+
 `
 
 export const RemoveButton = styled.button`
-	color: #ff4c4c;
+	color: var(--red);
 	font-weight: bold;
 	line-height: 1.5rem;
 	letter-spacing: .05rem;
+	display: flex;
 
 	background: transparent;
 	width: fit-content;
 
 	border: none;
-	padding-left: 20px;
 
 	cursor: pointer;
 	outline: none;
+
+`
+
+export const TrashIcon = styled.span`
+	background: url(${trashIcon}) center no-repeat;
+	color: var(--red);
+	height: 2.8rem;
+	width: 1.65rem;
 `
 
 export const StyledLink = styled(Link)`
@@ -305,7 +361,7 @@ export const InnerContainer = styled.div`
 	grid-template-columns: 1fr 1fr 1.5fr 1fr;
 	padding: 2rem 3rem 3rem 3rem;
 	border-radius: 5px;
-	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 	background-color: white;
 
 	& .tags {
@@ -327,10 +383,14 @@ export const Column = styled.div`
 		border-bottom: 1px solid #c4c4c4;
 		display: grid;
 		grid-gap: 1rem;
-		grid-template-columns: 1fr 1.8rem;
+		grid-template-columns: 1fr 6rem 2.8rem;
 		line-height: 2rem;
 		margin-bottom: 1rem;
 		font-size: 1.4rem;
+
+		& > img {
+			cursor: pointer;
+		}
 	}
 
 	& div {

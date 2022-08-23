@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 
 import timeBarIcon from 'assets/time-bar-icon.svg'
-
 export const Style = styled.div`
 
+
+	& .Rnd{
+		box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2), -2px -2px 3px rgba(0, 0, 0, 0.2);
+	}
 	/* width: auto; */
 	width: 100%;
 	height: auto;
 	z-index: 0;
 	overflow-x: scroll;
 
-	& .eventsbox {
+	& .clipbox {
     position: relative;
     width: 100%;
     height: 100%;
@@ -36,7 +39,7 @@ export const Style = styled.div`
 		overflow: hidden !important;
 		display: flex !important;
 		background-color: white;
-		box-shadow: 2px 2px 3px rgba(0,0,0, 0.2), -2px -2px 3px rgba(0,0,0, 0.2);
+		box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2), -2px -2px 3px rgba(0, 0, 0, 0.2);
 		overflow-x: scroll !important;
 
 		&	p {

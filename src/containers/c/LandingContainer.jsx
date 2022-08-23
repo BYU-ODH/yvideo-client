@@ -5,6 +5,8 @@ import { authService } from 'services'
 
 import { Landing } from 'components'
 
+import {isMobile, isSafari, isIOS } from 'react-device-detect'
+
 const LandingContainer = props => {
 
 	const {
@@ -12,7 +14,8 @@ const LandingContainer = props => {
 	} = props
 
 	const [overlay, setOverlay] = useState(false)
-
+	const [isAlertMessage, setIsAlertMessage] = useState(false)
+	const [alertMessage, setAlertMessage] = useState(``)
 	const toggleOverlay = () => {
 		setOverlay(!overlay)
 	}
@@ -26,14 +29,35 @@ const LandingContainer = props => {
 		login()
 	}
 
+	const checkBrowser = () => {
+		// safari
+		if(isSafari) {
+			setAlertMessage(`video playback doesn't work on safari, we recommend Chrome.`)
+			setIsAlertMessage(true)
+		}else if(isIOS && isMobile) { // ios
+			setAlertMessage(`video playback doesn't work on the IOS system, please use a different device.`)
+			setIsAlertMessage(true)
+		}
+	}
+
+	const toggleAlertMessage = () => {
+		const alert = document.getElementById(`alertMessage`)
+		if (alert)
+			alert.style.visibility = `hidden`
+	}
+
 	const viewstate = {
 		overlay,
+		alertMessage,
+		isAlertMessage,
 	}
 
 	const handlers = {
 		toggleOverlay,
 		handleLogin,
 		handlePublicCollections,
+		checkBrowser,
+		toggleAlertMessage,
 	}
 
 	return <Landing viewstate={viewstate} handlers={handlers} />

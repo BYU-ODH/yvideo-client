@@ -1,7 +1,7 @@
 import React from 'react'
-import { shallow } from 'enzyme'
 import BlockItem from '../../../../components/bits/BlockItem/index'
-import { Link } from 'react-router-dom'
+import { render, screen, cleanup } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
 const props = {
 	data: {
@@ -18,14 +18,25 @@ const state = {
 	loaded: false,
 }
 
+const wrapper =
+	<BrowserRouter>
+		<BlockItem {...props} state={state}/>
+	</BrowserRouter>
+
 describe(`BlockItem test`, () => {
+	beforeEach(() => {
+		render(wrapper)
+	})
+	afterEach(() => {
+		cleanup()
+	})
+	it(`test render BlockItem`, () => {
+		const link = screen.queryByRole(`link`)
+		const name = screen.queryByText(/testname/i)
 
-	it(`test render BlockItem`, ()=> {
-		const wrapper = shallow(
-			<BlockItem {...props} state={state}/>,
-		)
+		expect(link).not.toBeNull()
+		expect(link).toHaveAttribute(`href`, `/player/${props.data.id}`)
 
-		expect(wrapper.find(Link).props().to).toBe(`/player/110`)
-		expect(wrapper.contains(<h4>testname</h4>)).toEqual(true)
+		expect(name).not.toBeNull()
 	})
 })

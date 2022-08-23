@@ -36,26 +36,27 @@ const props = {
 	updateSubs: jest.fn(),
 	handleEventPosition: jest.fn(),
 	setEventSeek: jest.fn(),
+	setIsReady: jest.fn(),
 }
 
-jest.mock(`react`, () => {
-	const originReact = jest.requireActual(`react`)
-	const mUseRef = jest.fn()
-	return {
-		...originReact,
-		useRef: mUseRef,
-	}
-})
+// jest.mock(`react`, () => {
+// 	const originReact = jest.requireActual(`react`)
+// 	const mUseRef = jest.fn()
+// 	return {
+// 		...originReact,
+// 		useRef: mUseRef,
+// 	}
+// })
 
-jest.mock(`react`, () => ({
-	...jest.requireActual(`react`),
-	useRef: () => ({
-		current: {
-			offsetWidth: 10,
-			offsetHeight: 10,
-		},
-	}),
-}))
+// jest.mock(`react`, () => ({
+// 	...jest.requireActual(`react`),
+// 	useRef: () => ({
+// 		current: {
+// 			offsetWidth: 10,
+// 			offsetHeight: 10,
+// 		},
+// 	}),
+// }))
 
 describe(`Subtitles Layer test`, () => {
 	const mockElementClass = [{ style: {width: 10} }, { style: {width: 10} }]
@@ -79,14 +80,14 @@ describe(`Subtitles Layer test`, () => {
 			wrapper.find(`Rnd`).at(0).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(0).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 
-			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `right`, ``, { width: 10}, ``)
+			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `left`, ``, { width: 5 }, ``)
 			wrapper.find(`Rnd`).at(1).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 
-			wrapper.find(`Rnd`).at(2).prop(`onResizeStop`)(``, `right`, ``, { width: 10}, ``)
+			wrapper.find(`Rnd`).at(2).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(2).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 
-			wrapper.find(`Rnd`).at(3).prop(`onResizeStop`)(``, `right`, ``, { width: 10}, ``)
+			wrapper.find(`Rnd`).at(3).prop(`onResizeStop`)(``, `right`, ``, { width: 10 }, ``)
 			wrapper.find(`Rnd`).at(3).prop(`onResizeStop`)(``, `left`, ``, { width: 10 }, ``)
 		})
 	})

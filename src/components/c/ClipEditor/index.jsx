@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 
-import { Prompt } from 'react-router'
+// import { Prompt } from 'react-router'
+
+import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
-import Backend from 'react-dnd-html5-backend'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 
 // import * as Subtitle from 'subtitle'
@@ -17,7 +19,7 @@ import plus from 'assets/plus-circle.svg'
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
-import Style, { Timeline, AnnotationMessage, SideEditor, Icon} from './styles'
+import Style, { Timeline, AnnotationMessage, SideEditor, Icon } from './styles'
 
 const ClipEditor = props => {
 	const {
@@ -31,6 +33,7 @@ const ClipEditor = props => {
 	const {
 		toggleTip,
 		handleShowTip,
+		handleNavigation,
 	} = props.handlers
 
 	const updateContent = props.updateContent
@@ -39,15 +42,15 @@ const ClipEditor = props => {
 	// const parseSub = Subtitle.parse(testingSubtitle)
 
 	// for (let i = 0; i < parseSub.length; i++){
-	// 	parseSub[i].start = parseSub[i].start/1000
-	// 	parseSub[i].end = parseSub[i].end/1000
+	// 	parseSub[i].start = parseSub[i].start / 1000
+	// 	parseSub[i].end = parseSub[i].end / 1000
 	// }
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 
 	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0)
+	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [clipList, setClipList] = useState({})
@@ -59,8 +62,18 @@ const ClipEditor = props => {
 	const [clipIndex, setClipIndex] = useState(0)
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
+	const [isReady, setIsReady] = useState(false)
+	const [showPrompt, confirmNavigation, cancelNavigation] =
+		useCallbackPrompt(blockLeave)
 
-	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
+
+	useEffect(() => {
+		if (showPrompt)
+			handleNavigation(confirmNavigation, cancelNavigation)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showPrompt])
+
 	useEffect(() => {
 		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		function handleResize() {
@@ -110,26 +123,33 @@ const ClipEditor = props => {
 		setVideoLength(duration)
 	}
 	const handleZoomChange = (e, d) => {
-		toggleTip()
-		if(d.x < zoomFactor){
-			if(d.x === 0){
-				setZoomFactor(0)
-				setWidth(0)
-				handleScrollFactor(`start`)
-			} else {
-				setZoomFactor(d.x)
-				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
+		// toggleTip()
+		// if(d.x < zoomFactor){
+		// 	if(d.x === 0){
+		// 		setZoomFactor(0)
+		// 		setWidth(0)
+		// 		handleScrollFactor(`start`)
+		// 	} else {
+		// 		setZoomFactor(d.x)
+		// 		setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
+		// 	}
+		// } else if(d.x > zoomFactor) {
+		// 	setZoomFactor(d.x)
+		// 	setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+		// }
+		if(document.getElementsByClassName(`clipbox`)){
+			let width = 0
+			const eventsBoxWidth = document.getElementsByClassName(`clipbox`)[0].offsetWidth
+			width = d.x * videoLength/10
+			setWidth(width)
+			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
+			const layerContainer = document.getElementsByClassName(`layer-container`)
+			const events = document.getElementsByClassName(`events`)
+			if(layerContainer && events[0].clientWidth !== 0) {
+				setScrollBar(
+					layerContainer[0].clientWidth * 100 / (eventsBoxWidth+width),
+				)
 			}
-		} else if(d.x > zoomFactor) {
-			setZoomFactor(d.x)
-			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
-		}
-		const layerContainer = document.getElementByClassName(`layer-container`)
-		const events = document.getElementsByClassName(`events`)
-		if(layerContainer && events[0].clientWidth !== 0) {
-			setScrollBar(
-				layerContainer[0].clientWidth * 100 / events[0].clientWidth,
-			)
 		}
 	}
 
@@ -137,69 +157,18 @@ const ClipEditor = props => {
 		if(document.getElementsByClassName(`layer-container`) !== undefined){
 			const scrubber = document.getElementById(`time-bar`)
 			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const alllayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const currentLayerWidth = document.getElementsByClassName(`events`)[0] && document.getElementsByClassName(`events`)[0].clientWidth
-			const scrollBarContainer = document.getElementsByClassName(`zoom-scroll-container`)[0].offsetWidth
-			const scrollBar = document.getElementsByClassName(`zoom-scroll-indicator`)[0]
+			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
+			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
 
-			const cLeft = parseInt(scrollBar.style.left)
-			const scrollBarOffset = scrollBarContainer * 0.03
-			const lastPossibleRight = document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth - document.getElementsByClassName(`zoom-scroll-indicator`)[0].clientWidth
-			switch (direction) {
-			case `start`:
-				scrubber.scrollLeft = 0
-				timeIndicator.scrollLeft = 0
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft = 0
-				})
-				scrollBar.style.left = `0px`
+			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
-				break
-			case `left`:
-				scrubber.scrollLeft -= currentLayerWidth * 0.03
-				timeIndicator.scrollLeft -= currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft -= currentLayerWidth * 0.03
-				})
-				// FIND 3 PERCENT OF PARENT
-				// CURRENT LEFT MINUS NEW LEFT
-				if(isNaN(cLeft) === false && cLeft - scrollBarOffset > -1)
-					scrollBar.style.left = `${cLeft - scrollBarOffset}px`
-				else if (cLeft - scrollBarOffset < 0)
-					scrollBar.style.left = `0px`
+			const dis = direction/scrollBarContainer
+			scrubber.scrollLeft = currentLayerWidth * dis
+			timeIndicator.scrollLeft = currentLayerWidth * dis
 
-				break
-			case `right`:
-				scrubber.scrollLeft += currentLayerWidth * 0.03
-				timeIndicator.scrollLeft += currentLayerWidth * 0.03
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth * 0.03
-				})
-				if(zoomFactor !== 0){
-					if(isNaN(cLeft) === true)
-						scrollBar.style.left = `${scrollBarOffset}px`
-					else
-						scrollBar.style.left = `${cLeft + scrollBarOffset}px`
-
-				}
-
-				if (cLeft + scrollBarOffset > lastPossibleRight)
-					scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-				break
-			case `end`:
-				scrubber.scrollLeft += currentLayerWidth
-				timeIndicator.scrollLeft += currentLayerWidth
-				alllayers.forEach((element, i) => {
-					alllayers[i].scrollLeft += currentLayerWidth
-				})
-				scrollBar.style.left = `${scrollBarContainer - scrollBar.clientWidth}px`
-
-				break
-
-			default:
-				break
-			}
+			allLayers.forEach((element, i) => {
+				allLayers[i].scrollLeft = currentLayerWidth * dis
+			})
 		}
 	}
 	const titleSet = (value) => {
@@ -209,7 +178,6 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 	const setStartTime = (value, type, name) => {
-		// console.log(clipList,value,name)
 		const input = value
 		if(type === `input` || type === `onBlur`) {
 			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) || type === `onBlur`)
@@ -283,11 +251,11 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 
-	const createClip = () =>{
+	const createClip = () => {
 		const id = Object.keys(clipList).length === 0 ?
 			`0`
 			:
-			`${parseInt(Object.keys(clipList).sort((a, b)=> parseFloat(b) - parseFloat(a))[0]) + 1}`
+			`${parseInt(Object.keys(clipList).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
 		const clip = {
 			start: 0,
 			end: 60,
@@ -298,7 +266,7 @@ const ClipEditor = props => {
 		setClipList(clips)
 		setBlock(true)
 	}
-	const deleteClip = (toDelete) =>{
+	const deleteClip = (toDelete) => {
 		setActive(``)
 		const clips = {...clipList}
 		const del = clipsToDelete
@@ -316,7 +284,7 @@ const ClipEditor = props => {
 	}
 	const saveClips = () => {
 		setIsLoading(true)
-		if (Object.keys(clipList).length===0 && Object.keys(clipsToDelete).length === 0)
+		if (Object.keys(clipList).length === 0 && Object.keys(clipsToDelete).length === 0)
 			return
 		const clips = {...clipList}
 		const content = {...currentContent}
@@ -337,10 +305,12 @@ const ClipEditor = props => {
 
 	return (
 		<Style>
-			<DndProvider backend={Backend}>
+			<DndProvider backend={HTML5Backend}>
 				<span style={{ zIndex: 0 }}>
 					<VideoContainer
 						className='video'
+						isReady ={isReady}
+						setIsReady={setIsReady}
 						url={props.viewstate.url}
 						getDuration={getVideoDuration}
 						getVideoTime={setCurrentTime} // set current time
@@ -352,25 +322,20 @@ const ClipEditor = props => {
 						eventToEdit={null}
 						activeCensorPosition = {activeCensorPosition}
 						editorType={`clip`}
+						handleShowTip={handleShowTip}
+						toggleTip={toggleTip}
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
 
-						<div className={`layer`} style={{paddingBottom:`40px`}}>
+						<div className={`layer`} style={{paddingBottom: `40px`}}>
 							<div>
 								{layers.map((layer, index) => (
 									<div className={`flex`} key={index}>
 										<div className={`skip-handle`}>
 											<p>Allow Skip</p>
-											<div className={`allow-event`}
-												onMouseEnter={e => handleShowTip(`allow-events`,
-													{
-														x: e.target.getBoundingClientRect().x,
-														y: e.target.getBoundingClientRect().y,
-														width: e.currentTarget.offsetWidth
-													})
-												}
-												onMouseLeave={e => toggleTip()}>
+
+											<div className={`allow-event`}>
 												<SwitchToggle on={allowEvents} setToggle={handleAllowEvents} data_key='`allow-event`' className={`allow-event-button`} />
 											</div>
 										</div>
@@ -381,28 +346,27 @@ const ClipEditor = props => {
 										/>
 									</div>
 								))}
-								{Object.keys(clipList).map((clip,index)=>(
-									<div className={`flex`}>
+								{Object.keys(clipList).map((clip, index) => (
+									<div className={`flex`} key={index}>
 										<div
 											className={`handle`}
 											style={active === clip ?
-											{backgroundColor:`#002e5d`, color:`#fff`}
-											:
-											{backgroundColor:`#fff`, color:`#000`}}
+												{backgroundColor:`var(--navy-blue)`, color:`#fff`}
+												:
+												{backgroundColor: `#fff`, color: `#000`}}
 										>
-											<p style={{color:`inherit`}}>{clipList[clip][`title`]}</p>
+											<p style={{color: `inherit`}}>{clipList[clip][`title`]}</p>
 										</div>
 										<ClipLayer
-											clipName = {clip}
-											start={clipList[clip][`start`]}
+											clipName={clip}
+											clipList={clipList}
 											setStart={setStartTime}
-											end={clipList[clip][`end`]}
 											setEnd={setEndTime}
 											width={0}
-											videoLength = {videoLength}
-											active = {active}
-											index = {index}
-											handleEditClip = {handleEditClip}
+											videoLength={videoLength}
+											active={active}
+											index={index}
+											handleEditClip={handleEditClip}
 										/>
 									</div>
 								),
@@ -421,22 +385,56 @@ const ClipEditor = props => {
 								<Rnd
 									className={`zoom-indicator`}
 									bounds={`parent`}
-									enableResizing={{top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
+									enableResizing={
+										{
+											top: false,
+											right: false,
+											bottom: false,
+											left: false,
+											topRight: false,
+											bottomRight: false,
+											bottomLeft: false,
+											topLeft: false,
+										}
+									}
 									dragAxis='x'
 									onDragStop={(e, d) => handleZoomChange(e, d)}
 									onMouseEnter={e => handleShowTip(`te-zoom`,
 										{
 											x: e.target.getBoundingClientRect().x,
-											y: e.target.getBoundingClientRect().y,
-											width: e.currentTarget.offsetWidth
+											y: e.target.getBoundingClientRect().y - 100,
+											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}
+									onMouseLeave={() => toggleTip()}
 								></Rnd>
-								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
+								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 							</div>
 							<div className='zoom-scroll'>
 								<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
+									<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+										<Rnd
+											className= 'zoom-scroll-indicator'
+											size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+											enableResizing={
+												{
+													top: false,
+													right: false,
+													bottom: false,
+													left: false,
+													topRight: false,
+													bottomRight: false,
+													bottomLeft: false,
+													topLeft: false,
+												}
+											}
+											bounds = {`parent`}
+											onDrag = {(e, d) => {
+												handleScrollFactor(d.x)
+											}}
+										>
+										</Rnd>
+									</div>
 								</div>
 								<div id={`time-indicator-container`}>
 									<div id={`layer-time-indicator`}>
@@ -485,29 +483,37 @@ const ClipEditor = props => {
 						</table>
 						<div className='clipList'>
 							<table>
-								<tbody>
-									{
-										Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
-											<div className={`singleClip ${i === clipIndex ? `clipActive` : ``}`}>
-												<tr className={`${activeCensorPosition === item ? `censorActive` : ``}`} key={item} >
-													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
-													<td>
-														<input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
-															onChange={(e) => setStartTime(e.target.value, `input`,item)}
-															onBlur={(e) => setStartTime(e.target.value, `onBlur`,item)}
-															onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
-																{
-																	x: e.target.getBoundingClientRect().x - 5,
-																	y: e.target.getBoundingClientRect().y + 5,
-																	width: e.currentTarget.offsetWidth + 20,
-																})
-															}
-															onMouseLeave={e => toggleTip()}
-														/>
-													</td>
-													<td><input onClick={(e)=>handleEditClip(item, i)} type='text' value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
-														onChange={(e) => setEndTime(e.target.value, `input`,item)}
-														onBlur={(e) => setEndTime(e.target.value, `onBlur`,item)}
+								{
+									Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+										<tbody key={i} className={`singleClip ${i === clipIndex && `clipActive`}`}>
+											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
+												<td><input onKeyUp={e => e.stopPropagation()} onClick={() => handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+												<td>
+													<input
+														type='text'
+														value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleEditClip(item, i)}
+														onChange={(e) => setStartTime(e.target.value, `input`, item)}
+														onBlur={(e) => setStartTime(e.target.value, `onBlur`, item)}
+														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+															{
+																x: e.target.getBoundingClientRect().x - 5,
+																y: e.target.getBoundingClientRect().y + 5,
+																width: e.currentTarget.offsetWidth + 20,
+															})
+														}
+														onMouseLeave={() => toggleTip()}
+													/>
+												</td>
+												<td>
+													<input
+														type='text'
+														value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleEditClip(item, i)}
+														onChange={(e) => setEndTime(e.target.value, `input`, item)}
+														onBlur={(e) => setEndTime(e.target.value, `onBlur`, item)}
 														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
 															{
 																x: e.target.getBoundingClientRect().x + 35,
@@ -517,13 +523,16 @@ const ClipEditor = props => {
 														}
 														onMouseLeave={e => toggleTip()}
 													/>
-													</td>
-												</tr>
-												<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
-											</div>
-										))
-									}
-								</tbody>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
+												</td>
+											</tr>
+										</tbody>
+									))
+								}
 							</table>
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/>
 							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
@@ -536,15 +545,15 @@ const ClipEditor = props => {
 				<AnnotationMessage style={
 					{
 						visibility: `${annotationsSaved ? `visible` : `hidden`}`,
-						opacity: `${annotationsSaved ? `1` : `0`}`
+						opacity: `${annotationsSaved ? `1` : `0`}`,
 					}
 				}>
 					<h2>Clip saved successfully</h2>
 				</AnnotationMessage>
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
-				/>
+				/> */}
 			</>
 		</Style>
 	)

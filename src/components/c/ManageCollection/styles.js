@@ -6,12 +6,17 @@ import plusIcon from 'assets/plus-white.svg'
 const Style = styled.div`
 	overflow: auto;
 
+	.fa {
+		font-size: 1.9rem;
+		margin-right: .4rem;
+		}
+
   & > header {
 		height: 12rem;
 		padding: 0 3.8rem;
     display: flex;
 		align-items: center;
-    justify-content: space-between
+    justify-content: space-between;
 
     & h6 {
       font-size: 1.8rem;
@@ -76,7 +81,10 @@ export const Publish = styled.div`
 export const PublishButton = styled.button`
   color: white;
   font-weight: bold;
-  background-color: ${props => props.published ? `#FFBF00` : `#0582CA`};
+  background-color: ${props => props.published ? `var(--yellow)` : `var(--light-blue)`};
+	:hover {
+		background-color: ${props => props.published ? `var(--dark-yellow)` : `var(--navy-blue)`};
+	}
 
   letter-spacing: 0.05rem;
 
@@ -90,15 +98,21 @@ export const PublishButton = styled.button`
 `
 
 export const ArchiveButton = styled.button`
-  color: #ff4c4c;
+  color: var(--red);
+	border: 3px solid var(--red);
   font-weight: bold;
+	background-color: white;
+
+	:hover {
+		background-color: var(--red);
+		color: white;
+	}
 
   letter-spacing: 0.05rem;
 
-  padding: 0;
-  background: transparent;
+  padding: 0.55rem 1.5rem;
+	border-radius: 0.3rem;
 
-  border: none;
   cursor: pointer;
 `
 export const CopyrightedButton = styled.button`
@@ -125,6 +139,14 @@ export const Tab = styled.div`
   padding: 2rem;
 
   height: calc(100vh - 24.6rem);
+
+	& #expiredTitle {
+		padding-left: 2rem;
+
+	}
+	hr {
+		margin-left: 2rem;
+	}
 `
 
 export const TabHeader = styled.div`

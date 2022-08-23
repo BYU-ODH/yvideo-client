@@ -6,7 +6,7 @@ const Style = styled.div`
 
 	border-radius: 5px;
 
-	width: 70px;
+	width: 85px;
 	min-height: 3vh;
 	max-height: auto;
 	display: flex;
@@ -21,7 +21,7 @@ const Style = styled.div`
 	top: ${props => props.position
 		? `${props.position.y < window.innerHeight / 2
 			? `calc(${props.position.y}px + 3%)`
-			: `calc(${props.position.y}px - 3% - 5vh)`}`
+			: `calc(${props.position.y}px - 3% + 6vh)`}`
 		: `-10px`};
 
 	/* if it is greater than 3/4 of width we display to the left of item */

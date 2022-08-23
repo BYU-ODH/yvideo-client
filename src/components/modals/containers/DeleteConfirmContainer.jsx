@@ -51,7 +51,7 @@ const DeleteConfirmContainer = props => {
 		}
 	}, [selectedFile, id, resources, type, menuItemInfo])
 
-	const handleRemoveItem = async(e) =>{
+	const handleRemoveItem = async(e) => {
 		e.preventDefault()
 
 		if(type === `resource`)

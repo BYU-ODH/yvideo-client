@@ -12,7 +12,7 @@ const props = {
 
 describe(`CreateResourceContainer test`, () => {
 
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -24,7 +24,7 @@ describe(`CreateResourceContainer test`, () => {
 		expect(viewstate.data.resourceType).toBe(`video`)
 	})
 
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -34,12 +34,12 @@ describe(`CreateResourceContainer test`, () => {
 
 		// update title
 		expect(wrapper.find(`#create-resource-name`).props().value).toBe(``)
-		wrapper.find(`#create-resource-name`).simulate(`change`, {target: { name: `resourceName`, value: `changed resource name`}})
+		wrapper.find(`#create-resource-name`).simulate(`change`, {target: { name: `resourceName`, value: `changed resource name` }})
 		expect(wrapper.find(`#create-resource-name`).props().value).toBe(`changed resource name`)
 
 		// update requester email
 		expect(wrapper.find(`#create-resource-requester-email`).props().value).toBe(``)
-		wrapper.find(`#create-resource-requester-email`).simulate(`change`, {target: { name: `requesterEmail`, value: `chagned@email.com`}})
+		wrapper.find(`#create-resource-requester-email`).simulate(`change`, {target: { name: `requesterEmail`, value: `chagned@email.com` }})
 		expect(wrapper.find(`#create-resource-requester-email`).props().value).toBe(`chagned@email.com`)
 
 		// update resource type
@@ -59,6 +59,6 @@ describe(`CreateResourceContainer test`, () => {
 
 		wrapper.find(`#create-resource-cancel`).at(0).simulate(`click`)
 
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 	})
 })

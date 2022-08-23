@@ -10,7 +10,7 @@ export default class Content {
 	isCopyrighted = false
 	name = ``
 	physicalCopyExists = false
-	published = false
+	published = true
 	requester = ``
 	resourceId = ``
 	thumbnail = ``
@@ -23,7 +23,7 @@ export default class Content {
 	fileId = ``
 
 	settings = {
-		aspectRatio:`1.77`,
+		aspectRatio: `1.77`,
 		captionTrack: [],
 		showTranscripts: false,
 		showWordList: false,

@@ -11,7 +11,7 @@ const PlayerSubtitlesContainer = props => {
 		currentTime,
 		duration,
 		indexToDisplay,
-		// handleShowSubtitle,
+		handleShowSubtitle,
 		// getSubtitles,
 		// active,
 	} = props
@@ -32,21 +32,24 @@ const PlayerSubtitlesContainer = props => {
 			} catch (e){
 				return
 			}
-			setSubtitlesArray(subtitles[indexToDisplay].content)
+			handleSubtitlesArray()
 		}
+		for(let i = 0; i < subtitlesArray.length; i++){
+			const element = subtitlesArray[i]
+			const start = element.start
+			const end = element.end
+
+			if(currentTime >= start && currentTime <= end){
+				handleShowSubtitle(element.text, i)
+				break
+			} else if (currentTime > end || currentTime < start)
+				handleShowSubtitle(``)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration, subtitles, indexToDisplay])
 
-	for(let i = 0; i < subtitlesArray.length; i++){
-		const element = subtitlesArray[i]
-		const start = element.start
-		const end = element.end
-
-		if(currentTime >= start && currentTime <= end){
-			props.handleShowSubtitle(element.text, i)
-			break
-		} else if (currentTime > end || currentTime < start)
-			// console.log("overwriting ")
-			props.handleShowSubtitle(``)
+	const handleSubtitlesArray = () => {
+		setSubtitlesArray(subtitles[indexToDisplay].content)
 	}
 
 	return <div></div>

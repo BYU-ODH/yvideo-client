@@ -20,7 +20,7 @@ export const Style = styled.div`
 	}
 
 	& .player-wrapper {
-		height:100%;
+		height: 100%;
 		position: relative;
 		background-color: black;
 		height: 100%;
@@ -51,12 +51,12 @@ export const Blank = styled.div`
 	z-index: 15;
 	}
 	& #blankBox{
-		position:absolute;
+		position: absolute;
 		width: 100%;
 		height: 100%;
 		background-color: black;
 		z-index: 100;
-		top:0;
+		top: 0;
 	}
 	& #pauseMessage{
 		& button{
@@ -68,9 +68,24 @@ export const Blank = styled.div`
 			display: inline-block;
     	cursor: pointer;
 			top: 90%;
-			left:90%;
+			left: 90%;
 		}
 	}
+	& #alertMessage{
+		& button{
+			font-size: 1rem;
+			background: transparent;
+			border: none;
+			outline: none;
+			position: absolute;
+			display: inline-block;
+			cursor: pointer;
+			top: 80%;
+			left: 80%;
+			align: bottom-right;
+		}
+	}
+
 `
 export const Comment = styled.div`
 	--x: ${props => props.commentX !== 0 ? `${props.commentX}%` : `0%`};
@@ -101,7 +116,7 @@ export const Subtitles = styled.div`
 	width: 100%;
 
 	& h3 {
-		background-color: ${props => props.subtitleText ===`` ? `transparent` : `rgba(0,0,0,0.5)`};
+		background-color: ${props => props.subtitletext === `` ? `transparent` : `rgba(0, 0, 0, 0.5)`};
 		padding: 3px;
 		font-size: 1.8rem;
 		text-align: center;
@@ -115,26 +130,42 @@ export const Subtitles = styled.div`
 `
 export const PauseMessage = styled.div`
 	padding: 1%;
-	width:90% !important;
-	height:50% !important;
+	width: 90% !important;
+	height: 50% !important;
 	font-size: 1.5rem;
-	position:absolute;
+	position: absolute;
 	display: block;
 	top: 15%;
 	left: 5%;
-	border-width:1px;
+	border-width: 1px;
 	border-radius: 1px;
 	border-style: solid;
 	border-color: var(--navy-blue);
 	cursor: pointer;
 	justify-content: center;
 	background-color: rgba(241, 241, 244, 0.79);
-	z-index:10000;
+	z-index: 10000;
 	visibility: hidden
 `
 
+export const AlertMessage = styled.div`
+	padding: 2vh;
+	width: 30% !important;
+	height: 15% !important;
+	font-size: 1.5rem;
+	position: absolute;
+	top: 40%;
+	left: 30%;
+	border: 1px solid white;
+	border-radius: 1px;
+	cursor: pointer;
+	background-color: rgba(241, 241, 244, 0.80);
+	z-index: 10000;
+	visibility: hidden;
+`
+
 export const PlayButton = styled.img`
-	display: ${props => props.playing ? `none` : `block`}
+	display: ${props => props.playing ? `none` : `block`};
 	width: 15rem;
 	height: 15rem;
 	position: relative;

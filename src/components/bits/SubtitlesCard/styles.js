@@ -15,7 +15,7 @@ export const I = styled.i`
 	display: block;
 	height: 2rem;
 	width: 2rem;
-	margin: auto 1.5rem;
+	margin: auto 1.2rem;
 	background: url(${props => props.src}) center no-repeat;
 	background-size: contain;
 `

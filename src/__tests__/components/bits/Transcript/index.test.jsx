@@ -39,7 +39,7 @@ const props = {
 	viewstate,
 	jsonResponse: {} ,
 	translate: ``,
-	languageCodes:{},
+	languageCodes: {},
 }
 
 describe(`Transcript test`, () => {
@@ -86,9 +86,6 @@ describe(`Transcript test`, () => {
 		expect(item).toBeDefined()
 	})
 	it(`words display`, () => {
-		expect(wrapper.contains(<h1>Transcript</h1>)).toEqual(true)
-		// expect(wrapper.contains(<h2>Video -	english | Caption -	english</h2>)).toEqual(true)
-		// expect(wrapper.contains(<h2>Caption Language - english</h2>)).toEqual(true)
 		expect(wrapper.contains(<h2>Quick Translation</h2>)).toEqual(true)
 		expect(wrapper.contains(<label>Translation: No matches found </label>)).toEqual(false)
 		expect(wrapper.contains(<label>Meaning: <b>0.</b>meaning </label>)).toEqual(true)

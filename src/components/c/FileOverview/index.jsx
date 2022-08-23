@@ -17,11 +17,10 @@ export class FileOverview extends PureComponent {
 	render() {
 
 		const {
-			handleUpdateFile,
 			handleFileMetadata,
-			handleRemoveFile,
 			handleFileVersion,
-			// toggleEdit,
+			handleUpdateFile,
+			handleRemoveFile,
 		} = this.props.handlers
 
 		const {
@@ -40,7 +39,8 @@ export class FileOverview extends PureComponent {
 							<FileTitle>
 								<TitleEdit
 									type='text'
-									id={`title-edit`}
+									id='title-edit'
+									data-testid='title-edit'
 									value={fileState[`metadata`]}
 									contenteditable='true'
 									onChange={handleFileMetadata}
@@ -55,9 +55,14 @@ export class FileOverview extends PureComponent {
 
 						<div>
 							<h4>version:</h4>
-							<CategorySelect className='file-change-lang' defaultValue={file[`file-version`]} id='categorySelect' onChange={handleFileVersion}>
-								{langs !== undefined && langs.map( (lang, index) => (
-									<option value={lang} key={index}>
+							<CategorySelect
+								className='file-change-lang'
+								defaultValue={file[`file-version`]}
+								id='categorySelect'
+								data-testid='version-edit'
+								onChange={handleFileVersion}>
+								{langs !== undefined && langs.map((lang, index) => (
+									<option data-testid='select-option' value={lang} key={index}>
 										{lang}
 									</option>
 								))}
@@ -67,7 +72,7 @@ export class FileOverview extends PureComponent {
 				</InnerContainer>
 				<div>
 					<EditButton id='edit-file-button' onClick={handleUpdateFile}><SaveIcon/>Update</EditButton>
-					<RemoveButton id='remove-file-button' onClick={handleRemoveFile}><RemoveIcon/>Delete</RemoveButton>
+					<RemoveButton id='remove-file-button' data-testid='remove-file-button' onClick={handleRemoveFile}><RemoveIcon/>Delete</RemoveButton>
 				</div>
 			</BoxRow>
 		)

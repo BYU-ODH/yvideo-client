@@ -1,10 +1,11 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Collections from '../../../../components/c/Collections/index'
-import BlockCollection from '../../../../components/bits/BlockCollection'
+import BlockCollectionContainer from '../../../../containers/c/BlockCollectionContainer'
 import { interfaceService } from 'services'
 import { Link, BrowserRouter } from 'react-router-dom'
 import * as testutil from '../../../testutil/testutil'
+import { Provider } from 'react-redux'
 
 const user = testutil.user
 
@@ -16,6 +17,41 @@ const collection1 = {
 			id: 110,
 			name: `testname`,
 			thumbnail: `test@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 111,
+			name: `testname1`,
+			thumbnail: `test1@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 112,
+			name: `testname2`,
+			thumbnail: `test2@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 113,
+			name: `testname3`,
+			thumbnail: `test3@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 114,
+			name: `testname4`,
+			thumbnail: `test4@thumbnail`,
+			views: 0,
+		},
+		{
+			contentType: `video`,
+			id: 115,
+			name: `testname5`,
+			thumbnail: `test5@thumbnail`,
 			views: 0,
 		},
 	],
@@ -55,6 +91,11 @@ const viewstate = {
 		collection1,
 		collection2,
 	],
+	subscribedObj:
+	{
+		0: { isSubscribed: true },
+		1: { isSubscribed: true },
+	},
 }
 
 const collectionsProps = {
@@ -68,7 +109,7 @@ const props = {
 }
 
 describe(`collections test`, () => {
-	it(`Link pair with manage collections`, ()=> {
+	it(`Link pair with manage collections`, () => {
 		const wrapper = shallow(
 			<Collections {...collectionsProps}/>,
 		)
@@ -82,11 +123,13 @@ describe(`collections test`, () => {
 		expect(linkMap[`/manager`]).toBe(`Manage Collections`)
 	})
 
-	it(`test render BlockCollection`, ()=> {
+	it(`test render BlockCollection`, () => {
 		const wrapper = mount(
-			<BrowserRouter>
-				<BlockCollection {...props}/>
-			</BrowserRouter>,
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<BlockCollectionContainer {...props}/>
+				</BrowserRouter>
+			</Provider>,
 		)
 
 		const elem = wrapper.find(`h4`)
@@ -94,7 +137,7 @@ describe(`collections test`, () => {
 
 		const arrowLeft = wrapper.find({"className" : `left`})
 		const arrowRight = wrapper.find({"className" : `right`})
-		expect(arrowLeft).toHaveLength(2)
-		expect(arrowRight).toHaveLength(2)
+		expect(arrowLeft).toHaveLength(1)
+		expect(arrowRight).toBeDefined()
 	})
 })

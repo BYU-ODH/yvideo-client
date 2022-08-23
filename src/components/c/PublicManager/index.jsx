@@ -65,10 +65,10 @@ export default class PublicManager extends PureComponent {
 										{
 											x: e.target.getBoundingClientRect().x + 10,
 											y: e.target.getBoundingClientRect().y + 5,
-											width: e.currentTarget.offsetWidth
+											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}
+									onMouseLeave={() => toggleTip()}
 								>
 									<img id='help-document' alt='' src={helpIcon} onClick={handleShowHelp}/>
 								</Help>
@@ -83,9 +83,9 @@ export default class PublicManager extends PureComponent {
 												key={index}
 												id={`link`}
 												className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
-													<Link to={`/${path}/${id}`} >
-														{name}
-													</Link>
+												<Link to={`/${path}/${id}`} >
+													{name}
+												</Link>
 											</div>)}
 									</Accordion>
 
@@ -95,9 +95,9 @@ export default class PublicManager extends PureComponent {
 												key={index}
 												id={`link`}
 												className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
-													<Link to={`/${path}/${id}`} >
-														{name}
-													</Link>
+												<Link to={`/${path}/${id}`} >
+													{name}
+												</Link>
 											</div>)}
 									</Accordion>
 								</>

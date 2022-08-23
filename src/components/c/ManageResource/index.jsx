@@ -40,10 +40,10 @@ export class ManageResource extends PureComponent {
 								{
 									x: e.target.getBoundingClientRect().x,
 									y: e.target.getBoundingClientRect().y,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()}
+							onMouseLeave={() => toggleTip()}
 						/>
 					</Help>
 

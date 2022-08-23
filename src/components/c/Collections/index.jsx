@@ -1,19 +1,11 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import {
-	ListCollection,
-	BlockCollection,
-} from 'components/bits'
+import { ListCollectionContainer, BlockCollectionContainer } from 'containers'
 
-import {
-	PublicListCollectionContainer,
-} from 'containers'
-
-import Style, { ViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
+import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
-
 export default class Collections extends PureComponent {
 
 	render() {
@@ -21,23 +13,25 @@ export default class Collections extends PureComponent {
 		const {
 			user,
 			displayBlocks,
+			publicDisplayBlocks,
 			collections,
 			isMobile,
 			publicCollections,
 			searchQuery,
-			hasCollectionPermissions
+			hasCollectionPermissions,
+			subscribedObj,
 		} = this.props.viewstate
 
 		const {
 			toggleCollectionsDisplay,
+			togglePublicCollectionsDisplay,
 			handleShowHelp,
 			handleShowTip,
 			toggleTip,
 			handleSearchQuerySubmit,
 			handleSearchTextChange,
+			handleSetSubscribedObj,
 		} = this.props.handlers
-
-		// collections.sort((a, b) => a.name > b.name ? 1 : -1)
 
 		const setNoCollections = () => {
 			setTimeout(() => {
@@ -60,22 +54,23 @@ export default class Collections extends PureComponent {
 									{
 										x: e.target.getBoundingClientRect().x,
 										y: e.target.getBoundingClientRect().y + 10,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
-								onMouseLeave={e => toggleTip()}
+								onMouseLeave={() => toggleTip()}
 							/></h3>
 					</div>
 					<div>
-						{
-							!isMobile && <ViewToggle
+						{ !isMobile &&
+							<ViewToggle
 								displayBlocks={displayBlocks}
+								role={user.roles}
 								onClick={toggleCollectionsDisplay}
 								onMouseEnter={e => handleShowTip(`list-block`,
 									{
 										x: e.target.offsetLeft,
 										y: e.target.offsetTop + 12,
-										width: e.currentTarget.offsetWidth
+										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={toggleTip} />
@@ -83,17 +78,8 @@ export default class Collections extends PureComponent {
 						{
 							user !== null && user.roles < 3 &&
 								<h3>
-									<Link
-									to={`/manager`}
-									onClick={toggleTip}
-									onMouseEnter={e => handleShowTip(`manage-collections`,
-										{
-											x: e.target.offsetLeft,
-											y: e.target.offsetTop+20,
-											width: e.currentTarget.offsetWidth
-										})
-									}
-										onMouseLeave={e => toggleTip()}>Manage Collections
+									<Link to={`/manager`}>
+										Manage Collections
 									</Link>
 								</h3>
 						}
@@ -103,14 +89,16 @@ export default class Collections extends PureComponent {
 
 					{ Object.keys(collections).length > 0 ? (
 						<>
-							{
-								isMobile ?
-									Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
+							{ isMobile ?
+								Object.keys(collections).map(key =>
+									<ListCollectionContainer key={key} collection={collections[key]} />)
+								:
+								displayBlocks ?
+									Object.keys(collections).map(key =>
+										<BlockCollectionContainer key={key} collection={collections[key]} />)
 									:
-									displayBlocks ?
-										Object.keys(collections).map(key => <BlockCollection key={key} collection={collections[key]}/>)
-										:
-										Object.keys(collections).map(key => <ListCollection key={key} collection={collections[key]}/>)
+									Object.keys(collections).map(key =>
+										<ListCollectionContainer key={key} collection={collections[key]} />)
 							}
 						</>
 					) : (
@@ -121,7 +109,7 @@ export default class Collections extends PureComponent {
 					) }
 				</div>
 
-				{!isMobile ?
+				{ !isMobile ?
 					<>
 						{
 							user !== null && (user.roles < 3 || hasCollectionPermissions) ?
@@ -133,12 +121,26 @@ export default class Collections extends PureComponent {
 									</div>
 									<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 										<SearchIcon />
-										<input id='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-										{/* <button type='submit'>Search</button> */}
+										<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
 									</Search>
 									<div>
-										{user.roles === 0 &&
-										<h3><Link to={`/public-manager`} >Manage Public Collections</Link></h3>
+										{ !isMobile &&
+											<PublicViewToggle
+												publicDisplayBlocks={publicDisplayBlocks}
+												role={user.roles}
+												onClick={togglePublicCollectionsDisplay}
+												onMouseEnter={e => handleShowTip(`public-list-block`,
+													{
+														x: e.target.offsetLeft,
+														y: e.target.offsetTop + 12,
+														width: e.currentTarget.offsetWidth,
+													})
+												}
+												onMouseLeave={toggleTip} />
+										}
+										{
+											user.roles === 0 &&
+											<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
 										}
 									</div>
 								</header>
@@ -151,7 +153,7 @@ export default class Collections extends PureComponent {
 									</div>
 									<Search className='resource-search-submit-not-admin' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
 										<SearchIcon />
-										<input id='resource-search-input' type='search' placeholder={`search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+										<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
 									</Search>
 								</header>
 						}
@@ -171,15 +173,37 @@ export default class Collections extends PureComponent {
 				}
 				<div className='public-collections-list'>
 					{
-						Object.keys(publicCollections).length > 0 ? (
+						Object.keys(publicCollections).length > 0 ?
 							<>
-								{
+								{ isMobile ?
 									Object.keys(publicCollections).map(key =>
-										<PublicListCollectionContainer key={key} collection={publicCollections[key]} defaultSubscription={true} />,
-									)
+										<ListCollectionContainer
+											key={key}
+											identifier={key}
+											collection={publicCollections[key]}
+											handleSetSubscribedObj={handleSetSubscribedObj}
+											defaultSubscription={subscribedObj[key].isSubscribed}
+										/>)
+									:
+									publicDisplayBlocks ?
+										Object.keys(publicCollections).map(key =>
+											<BlockCollectionContainer
+												key={key}
+												identifier={key}
+												collection={publicCollections[key]}
+												handleSetSubscribedObj={handleSetSubscribedObj}
+												defaultSubscription={subscribedObj[key].isSubscribed}
+											/>)
+										:
+										Object.keys(publicCollections).map(key =>
+											<ListCollectionContainer key={key}
+												identifier={key}
+												collection={publicCollections[key]}
+												handleSetSubscribedObj={handleSetSubscribedObj}
+												defaultSubscription={subscribedObj[key].isSubscribed}
+											/>)
 								}
 							</>
-						)
 							:
 							<>
 								<FeedbackMessage id='message-public-collection'><p>Loading..</p></FeedbackMessage>

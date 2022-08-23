@@ -107,6 +107,7 @@ export const Help = styled.span`
     position: absolute;
     right: -3px;
     bottom: 5px;
+		cursor: pointer;
 	}
 `
 
@@ -157,7 +158,7 @@ export const Button = styled.button`
 		margin-top: 2rem;
 		padding-right: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 6rem;
@@ -180,7 +181,6 @@ export const FeedbackMessage = styled.div`
 	left: 50%;
 	top: 50%;
   transform: translate(-50%, -50%);
-
 	& > p {
 		font-weight: 200;
 		font-size: 20px;

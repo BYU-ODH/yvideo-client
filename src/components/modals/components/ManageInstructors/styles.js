@@ -22,7 +22,7 @@ export const Search = styled.div`
 		padding: 0 1.25rem 0 3.25rem;
 
 		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 
 		@media (max-width: 800px){
 			width: 20rem;
@@ -36,7 +36,7 @@ export const Search = styled.div`
     background-color: var(--light-blue);
     margin-left: 1rem;
     outline: none;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 2rem;
@@ -60,7 +60,7 @@ export const InputForm = styled.div`
 	& > input {
 		background: white;
 		border-radius: 1.3rem;
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 		height: 2.6rem;
 		margin-bottom: 1rem;
 		margin-right: 2rem;
@@ -82,7 +82,7 @@ export const AddButton = styled.button`
 
 	${props => props.disabled ? `` : `cursor: pointer;`}
 
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
@@ -119,7 +119,7 @@ export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
-	color: #ff4c4c;
+	color: var(--red);
 	${TextButton}
 	text-align: center !important;
 
@@ -141,7 +141,7 @@ export const CategorySelect = styled.select`
 	padding: 0 1.25rem;
 
 	outline: none;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	& option {
 		margin: auto auto 6px auto;
 	}
@@ -247,7 +247,7 @@ export const Table = styled.table`
 		padding: 1.5rem;
 		font-size: 1.5rem;
 		text-align: center;
-		border-bottom: 0.7px solid rgba(0,0,0,0.15)
+		border-bottom: 0.7px solid rgba(0, 0, 0, 0.15)
 	}
 
 	& td {
@@ -268,7 +268,7 @@ export const RegisteredListTable = styled.table`
 		padding: 1.5rem;
 		font-size: 1.5rem;
 		text-align: center;
-		border-bottom: 0.7px solid rgba(0,0,0,0.15)
+		border-bottom: 0.7px solid rgba(0, 0, 0, 0.15)
 	}
 
 	& td {

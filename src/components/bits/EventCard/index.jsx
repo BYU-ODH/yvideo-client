@@ -1,11 +1,11 @@
 import React from 'react'
 
-import Style, { I } from './styles'
+import Style, { Img } from './styles'
 
 const EventCard = ({ event }) => {
 	return (
 		<Style >
-			<I src={event.icon}/>
+			<Img alt='icon' src={event.icon}/>
 			{event.type === `Censor` ? `Blur` : event.type}
 		</Style>
 	)

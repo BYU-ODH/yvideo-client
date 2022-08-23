@@ -17,7 +17,9 @@ const CreateContentContainer = props => {
 		adminContent,
 		adminCreateContent,
 		adminGetCollectionContent,
+		adminGetUserById,
 		createContent,
+		addAccess,
 		modal,
 		toggleModal,
 		getCollections,
@@ -28,6 +30,7 @@ const CreateContentContainer = props => {
 		getLanguages,
 		allLanguages,
 		getFiles,
+		collection,
 	} = props
 
 	const [tab, setTab] = useState(`url`)
@@ -42,7 +45,9 @@ const CreateContentContainer = props => {
 	const [blockLeave, setBlock] = useState(false)
 	const [isAccess, setIsAccess] = useState(true)
 	const [resourceFiles, setResourceFiles] = useState()
-
+	const [decision, setDecision] = useState(false)
+	const [isValidatingAddPermissions, setIsValidatingAddPermissions] = useState(false)
+	const [ownerUname, setOwnerUname] = useState(``)
 	const [data, setData] = useState({
 		url: ``,
 		resourceId: ``,
@@ -61,10 +66,10 @@ const CreateContentContainer = props => {
 		getLanguages()
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
-			const langs = (resourceContent[selectedResourceId].allFileVersions ?
+			const langs = resourceContent[selectedResourceId].allFileVersions ?
 				resourceContent[selectedResourceId].allFileVersions.split(`;`)
 				: []
-			)
+
 			const finalLanguages = []
 			langs.forEach((element, i) => {
 				if(element === ``)
@@ -78,6 +83,35 @@ const CreateContentContainer = props => {
 			setLanguages(finalLanguages)
 		}
 
+		// if(isTyping){
+		// 	setTimeout(() => {
+		// 		setIsTyping(false)
+		// 		setIsCalled(false)
+		// 	}, 1000)
+		// } else{
+		// 	if (searchQuery.length > 0 && searchQuery.match(/^[0-9a-zA-Z]+$/) && !isTyping) {
+		// 		if(!isCalled){
+		// 			searchResource(searchQuery)
+		// 			setHide(false)
+		// 			setIsCalled(true)
+		// 		}
+		// 	}else
+		// 		setHide(true)
+		// }
+
+		if(blockLeave)
+			window.onbeforeunload = () => true
+
+		else
+			window.onbeforeunload = undefined
+
+		return () => {
+			window.onbeforeunload = undefined
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [resourceContent, selectedResourceId, searchQuery, blockLeave, isResourceSelected])
+	// missing isTyping
+	useEffect(()=>{
 		if(isTyping){
 			setTimeout(() => {
 				setIsTyping(false)
@@ -93,20 +127,14 @@ const CreateContentContainer = props => {
 			}else
 				setHide(true)
 		}
-
-		if(blockLeave)
-			window.onbeforeunload = () => true
-
-		else
-			window.onbeforeunload = undefined
-
-		return () => {
-			window.onbeforeunload = undefined
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [resourceContent, selectedResourceId, searchQuery, isTyping, blockLeave, isResourceSelected])
-
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isTyping])
 	const changeTab = e => {
+		setTab(e.target.name)
+	}
+
+	const decideTab = e =>{
+		setDecision(true)
 		setTab(e.target.name)
 	}
 
@@ -143,30 +171,31 @@ const CreateContentContainer = props => {
 	}
 
 	const handleSelectResourceChange = async (e, resource) => {
-		const access = await getAccess(resource.id)
 		let theAccess = true
+		if(user.id === collection.owner){
+			const access = await getAccess(resource.id)
 
-		if(access.length !== 0) {
-			for (let i = 0; i < access.length; i++) {
-				if(user.username === access[i].username) {
-					setIsAccess(true)
-					theAccess = true
-					setData({
-						...data,
-						title: resource.resourceName,
-					})
-					break
+			if(access.length !== 0) {
+				for (let i = 0; i < access.length; i++) {
+					if(user.username === access[i].username) {
+						setIsAccess(true)
+						theAccess = true
+						break
+					}
+					if(i === access.length -1) {
+						setIsAccess(false)
+						theAccess = false
+
+					}
 				}
-				if(i === access.length -1) {
-					setIsAccess(false)
-					theAccess = false
-
-				}
-			}
-		} else
-			theAccess = false
-
-		if(theAccess) {
+			} else
+				theAccess = false
+		}
+		setData({
+			...data,
+			title: resource.resourceName,
+		})
+		if(theAccess || user.roles === 0 || user.roles === 1) {
 			setSelectedResourceName(resource.resourceName)
 			setSelectedResourceId(resource.id)
 			setIsResourceSelected(true)
@@ -181,6 +210,7 @@ const CreateContentContainer = props => {
 		}
 		setSearchQuery(``)
 		setHide(true)
+
 	}
 
 	const handleTypeChange = e => {
@@ -208,7 +238,6 @@ const CreateContentContainer = props => {
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		let tags = ``
-
 		if(data.resource.keywords.length !== 0){
 			data.resource.keywords.forEach((element, i) => {
 				if(i !== data.resource.keywords.length -1)
@@ -217,53 +246,101 @@ const CreateContentContainer = props => {
 					tags += `${element}`
 			})
 		}
+		try {
+			const videoId = new URL(data.url).search.split(`=`)[1]
 
-		const videoId = new URL(data.url).search.split(`=`)[1]
+			if(data.targetLanguage === ``){
+				alert(`Please, select a valid language`)
+				return
+			}
+			const SUPPORTED_LANGUAGES = [ // eslint-disable-line no-unused-vars
+				`German`,
+				`Spanish`,
+				`Russian`,
+			]
+			const backEndData = {
+				"allow-definitions": false,
+				"url": data.url,
+				"allow-captions": true,
+				"content-type": data.contentType,
+				"resource-id": `00000000-0000-0000-0000-000000000000`,
+				tags,
+				"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
+				"file-version": data.targetLanguage,
+				"file-id": `00000000-0000-0000-0000-000000000000`,
+				"collection-id": modal.collectionId,
+				"published": true,
+				"views": 0,
+				"annotations": ``,
+				"title": data.title,
+				"allow-notes": true,
+				"description": data.description,
+				"words": ``,
+				"clips": ``,
+			}
 
-		if(data.targetLanguage === ``){
-			alert(`Please, select a valid language`)
+			if(modal.isLabAssistantRoute) {
+				await adminCreateContent(backEndData)
+				adminGetCollectionContent(modal.collectionId, true)
+			} else {
+				await createContent(backEndData)
+				getCollections(true)
+			}
+			toggleModal()
+			setBlock(false)
+		} catch(err) {
+			alert(`Please use a valid URL`)
 			return
 		}
-		const SUPPORTED_LANGUAGES = [ // eslint-disable-line no-unused-vars
-			`German`,
-			`Spanish`,
-			`Russian`,
-		]
-		const backEndData = {
-			"allow-definitions": false,
-			"url": data.url,
-			"allow-captions": true,
-			"content-type": data.contentType,
-			"resource-id": `00000000-0000-0000-0000-000000000000`,
-			tags,
-			"thumbnail": `https://i.ytimg.com/vi/${videoId}/default.jpg`,
-			"file-version": data.targetLanguage,
-			"file-id": `00000000-0000-0000-0000-000000000000`,
-			"collection-id": modal.collectionId,
-			"published": true,
-			"views": 0,
-			"annotations": ``,
-			"title": data.title,
-			"allow-notes": true,
-			"description": data.description,
-			"words": ``,
-			"clips": ``,
-		}
 
-		if(modal.isLabAssistantRoute){
-			await adminCreateContent(backEndData)
-			adminGetCollectionContent(modal.collectionId, true)
-		} else{
-			await createContent(backEndData)
-			getCollections(true)
-		}
-		toggleModal()
-		setBlock(false)
 	}
-
-	const handleAddResourceSubmit = async (e) => {
+	const adminResourceCheckPermissions = async(e) =>{
 		e.preventDefault()
+		if(user.roles < 2){
+			try{
+				const owner = await adminGetUserById(collection.owner)
+				const uname = owner.username
+				setOwnerUname(uname)
+				const access = await getAccess(selectedResourceId)
+				let theAccess = false
+				if(access.length !== 0) {
+					for (let i = 0; i < access.length; i++) {
+						if(uname === access[i].username) {
+							theAccess = true
+							break
+						}
+						if(i === access.length -1)
+							theAccess = false
 
+					}
+				} else
+					theAccess = false
+				if (!theAccess)
+					// addAccess(selectedResourceId,uname)
+					setIsValidatingAddPermissions(true)
+				else
+					handleAddResourceSubmit1()
+
+			}catch(e){
+				alert(`Report following error to Yvideo team: `,e)
+			}
+		}
+	}
+	const cancelAdminPermissions = () => {
+		setIsValidatingAddPermissions(false)
+	}
+	const confirmAdminPermissions = async() =>{
+		if (ownerUname){
+			await addAccess(selectedResourceId,ownerUname)
+			handleAddResourceSubmit1()
+		}
+		setIsValidatingAddPermissions(false)
+	}
+	const handleAddResourceSubmit = (e) =>{
+		e.preventDefault()
+		handleAddResourceSubmit1()
+	}
+	const handleAddResourceSubmit1 = async () => {
 		if(data.targetLanguage === ``){
 			alert(`Please, select a valid language`)
 			return
@@ -304,7 +381,31 @@ const CreateContentContainer = props => {
 			"allow-notes": true,
 			"description": data.description,
 		}
+		// if(user.roles === 0){
+		// 	try{
+		// 		const owner = await adminGetUserById(collection.owner)
+		// 		const uname = owner.username
+		// 		const access = await getAccess(selectedResourceId)
+		// 		let theAccess = false
+		// 		if(access.length !== 0) {
+		// 			for (let i = 0; i < access.length; i++) {
+		// 				if(uname === access[i].username) {
+		// 					theAccess = true
+		// 					break
+		// 				}
+		// 				if(i === access.length -1)
+		// 					theAccess = false
 
+		// 			}
+		// 		} else
+		// 			theAccess = false
+		// 		if (!theAccess)
+		// 			addAccess(selectedResourceId,uname)
+
+		// 	}catch(e){
+		// 		alert(`Report following error to Yvideo team: `,e)
+		// 	}
+		// }
 		if(modal.isLabAssistantRoute){
 			await adminCreateContent(backEndData)
 			adminGetCollectionContent(modal.collectionId, true)
@@ -345,6 +446,9 @@ const CreateContentContainer = props => {
 		isAccess,
 		allLanguages,
 		resourceFiles,
+		decision,
+		isValidatingAddPermissions,
+		isAdmin: user.roles === 0,
 	}
 
 	const handlers = {
@@ -359,6 +463,10 @@ const CreateContentContainer = props => {
 		remove,
 		removeResource,
 		toggleModal,
+		decideTab,
+		cancelAdminPermissions,
+		confirmAdminPermissions,
+		adminResourceCheckPermissions,
 	}
 
 	return <CreateContent viewstate={viewstate} handlers={handlers} />
@@ -378,6 +486,7 @@ const mapDispatchToProps = {
 	adminCreateContent: adminService.createContent,
 	adminGetCollectionContent: adminService.getCollectionContent,
 	adminCreateContentFromResource: adminService.createContentFromResource,
+	adminGetUserById: adminService.getUserById,
 	createContent: contentService.createContent,
 	toggleModal: interfaceService.toggleModal,
 	search: adminService.search,
@@ -386,6 +495,7 @@ const mapDispatchToProps = {
 	getAccess: resourceService.readAccess,
 	getFiles: resourceService.getFiles,
 	getLanguages: languageService.get,
+	addAccess: resourceService.addAccess,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateContentContainer)

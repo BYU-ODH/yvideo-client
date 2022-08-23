@@ -6,7 +6,7 @@ import { PlayerSubtitlesContainer } from 'containers'
 import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
-import Style, { Blank, Subtitles, PlayButton, PauseMessage } from './styles'
+import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
 export default class Player extends Component {
 	constructor(props) {
 		super(props)
@@ -16,6 +16,7 @@ export default class Player extends Component {
 		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
 		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
+		this.checkBrowser = () => this.props.handlers.checkBrowser
 		this.state = {
 			skipArray: [],
 		}
@@ -26,6 +27,8 @@ export default class Player extends Component {
 		window.onkeyup = (e) => {
 			this.handleHotKeys(e)
 		}
+
+		this.checkBrowser()
 	}
 
 	componentWillUnmount(){
@@ -100,10 +103,8 @@ export default class Player extends Component {
 			showTranscript,
 			// toggleTranscript,
 			// content,
-			subtitleText,
 			// subtitleTextIndex,
 			displaySubtitles,
-			// isCaption,
 			indexToDisplay,
 			isMobile,
 			// censorPosition,
@@ -142,27 +143,27 @@ export default class Player extends Component {
 			const subtitles = displaySubtitles
 			if(document.getElementById(`timeBarProgress`))
 				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
-			if(document.getElementById(`time-dot`))
+			if(document.getElementById(`time-dot`)) {
 				document.getElementById(`time-dot`).style.left = played ?
 					`calc(${played * 100}% - 2px)`
 					:
 					`calc(${played * 100}% - 2px)`
-			if(subtitles)
-				HandleSubtitle(playedSeconds,subtitles,0,duration)
+			}
+			if(subtitles.content.length > 0)
+				HandleSubtitle(playedSeconds, subtitles, 0, duration)
 
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
 					handlePause()
-					// console.log(`setting pause`)
 					setHasPausedClip(true)
 				}
 			}
 
 			if(!events) return
 
-			const values = CurrentEvents(playedSeconds,events,duration)
+			const values = CurrentEvents(playedSeconds, events, duration)
 
-			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+			for (let i = 0; i < values.censors.length; i++) CensorChange(i, values.censors[i], playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(values.allEvents){
@@ -172,8 +173,11 @@ export default class Player extends Component {
 				}
 			}
 			for (let y = 0; y < values.allEvents.length; y++){
-				const index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
-
+				let index = 0
+				if (values.allEvents[y].type === `Pause`)
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start)
+				else
+					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
 				if(!events[index].active)
 					return
 				const pauseMessage = document.getElementById(`pauseMessage`)
@@ -182,7 +186,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(!muted)
 						handleMuted()
-					// console.log("muting")
 
 					break
 				case `Pause`:
@@ -193,12 +196,10 @@ export default class Player extends Component {
 						pauseMessage.style.visibility = `visible`
 						pauseMessage.innerHTML = events[index].message + pauseMessageButton
 					}
-					// console.log("pausing")
 					break
 				case `Skip`:
 					events[index].active = false
-					handleSeekChange(null,values.allEvents[y].end)
-					// console.log('skipping')
+					handleSeekChange(null, values.allEvents[y].end)
 					break
 				default:
 					break
@@ -216,7 +217,6 @@ export default class Player extends Component {
 				case `Mute`:
 					if(muted){
 						handleUnmuted()
-						// console.log("unmuting")
 						events[index].active = false
 					}
 					break
@@ -227,6 +227,8 @@ export default class Player extends Component {
 			// eslint-disable-next-line no-unused-vars
 			const t1 = performance.now()
 		}
+
+		const alertMessage = `Video playback does not currently work on iOS devices or the Safari browser. <br><br>`
 
 		const handleOnReady = () => {
 			handleAspectRatio()
@@ -244,7 +246,7 @@ export default class Player extends Component {
 					{
 						display: `${showTranscript !== false ? `flex` : `initial`}`,
 						height: `100%`,
-						overflow: `hidden`
+						overflow: `hidden`,
 					}
 				}>
 					<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
@@ -255,6 +257,7 @@ export default class Player extends Component {
 							height='100%'
 							url={url}
 							playing={playing}
+							playsinline={true}
 							playbackRate={parseFloat(playbackRate)}
 							volume={volume}
 							muted={muted}
@@ -269,6 +272,13 @@ export default class Player extends Component {
 							onDuration={handleDuration}
 
 							config={{
+								file: {
+									forceVideo: true,
+									hlsVersion: `0.12.4`,
+									attributes: {
+										disablePictureInPicture: true,
+									},
+								},
 								youtube: {
 									iv_load_policy: 3,
 									modestbranding: 1,
@@ -276,22 +286,20 @@ export default class Player extends Component {
 									rel: 0,
 									showinfo: 0,
 								},
-								file: {
-									attributes: {},
-								},
 							}}
 						/>
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}
-							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 subtitleText={subtitleText} id='subtitle'></h3></Subtitles>
-							<div id='censorContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
+							<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles>
+							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
 							</div>
-							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
+							<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
 							</div>
 							<PauseMessage id='pauseMessage'>
 							</PauseMessage>
+							<AlertMessage id='alertMessage'></AlertMessage>
 						</Blank>
 					</div>
 					<Transcript viewstate={this.props.viewstate} handlers={this.props.handlers}>

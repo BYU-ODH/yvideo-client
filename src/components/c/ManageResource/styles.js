@@ -65,7 +65,7 @@ export const Button = styled.button`
 		margin-bottom: 2rem;
 		margin-top: 2rem;
 		padding-right: 1rem;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 6rem;
@@ -85,7 +85,7 @@ export const Button = styled.button`
 
 export const Table = styled.table`
 	/*background: white;*/
-	/*box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);*/
+	/*box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15);*/
 	width: 100%;
 
 	& th {
@@ -95,7 +95,7 @@ export const Table = styled.table`
 
 	& tr {
 		background: white;
-		box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15);
 	}
 
 	& td {
@@ -113,7 +113,7 @@ export const TableContainer = styled.div`
 `
 export const Search = styled.form`
 	position: relative;
-	text-align: ${props => props.isMobile ? `center` : ``};
+	text-align: ${props => props.isMobile && `center`};
 	margin-bottom: 3rem;
 
 	& > input {
@@ -132,7 +132,7 @@ export const Search = styled.form`
 
 		padding: 0 1.5rem 0 4.5rem;
 
-		box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	}
 
 	& > button {
@@ -141,7 +141,7 @@ export const Search = styled.form`
     color: white;
     background-color: var(--light-blue);
     margin-left: 1rem;
-    box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
     font-size: 1.5rem;
     border: none;
     border-radius: 2rem;
@@ -203,5 +203,6 @@ export const Help = styled.span`
     position: absolute;
     right: -3px;
     bottom: 5px;
+		cursor: pointer;
 	}
 `

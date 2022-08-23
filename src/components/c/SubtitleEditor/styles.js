@@ -35,7 +35,7 @@ export const Timeline = styled.div`
 	color: #5F5F5F; */
 
 	position: relative;
-	height: ${props => props.minimized ? `0vh` : `18vh`};
+	height: ${props => props.minimized ? `0vh` : `19vh`};
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
@@ -43,6 +43,7 @@ export const Timeline = styled.div`
 	z-index: 0;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	border-bottom: 1px solid black;
 
 	& .zoom-controls {
 		width: calc(100% - 35rem - 1px);
@@ -106,13 +107,13 @@ export const Timeline = styled.div`
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
-				scroll-behavior: smooth;
+				/* scroll-behavior: smooth; */
 				pointer-events: none;
 				bottom: 0px;
 
 				& #layer-time-indicator {
 					height: 10px;
-					width:100%;
+					width: 100%;
 					position: absolute;
 					background-color: transparent;
 
@@ -152,6 +153,43 @@ export const Timeline = styled.div`
 		display: flex;
 		width: 100%;
 		border-bottom: 1px dashed var(--light-blue);
+	}
+	& .addtrack {
+		width: 162px !important;
+		min-width: 162px;
+		height: 46px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		box-sizing: border-box;
+		position: relative;
+		cursor: pointer;
+		border-bottom: 1px solid #555;
+		border-right: 1px solid var(--light-blue);
+		transition: .5s;
+		background-color: var(--navy-blue);
+		border-bottom: 1px solid;
+		border-color: white;
+
+		transition: .5s ease;
+
+		:hover {
+			background-color: var(--light-blue);
+		}
+		& p {
+			padding-left: 1.3rem;
+			color: black;
+			font-size: 1.5rem;
+			& .layer-delete {
+				margin: auto auto -3px 15px;
+				opacity: 0.3;
+
+				transition: .5s ease;
+				:hover {
+					opacity: 1;
+				}
+			}
+		}
 	}
 
 	& .handle {
@@ -202,6 +240,8 @@ export const Timeline = styled.div`
 			}
 		}
 	}
+
+
 
 	& .skip-handle {
 		width: 162px !important;
@@ -259,6 +299,10 @@ export const EventList = styled.div`
 		height: 5rem;
 		background: var(--navy-blue);
 		border-bottom: 5px solid var(--light-blue);
+
+		& > img {
+			cursor: pointer;
+		}
 
 		& > .save {
 			float: right;
@@ -346,16 +390,10 @@ export const AnnotationMessage = styled.div`
 	}
 `
 
-export const Help = styled.img`
-	width: 30px;
-	height: 30px;
-	margin-left: 10px;
-	position: relative;
-	top: 10px;
-`
-
-export const PlusIcon = styled.div`
+export const PlusIcon = styled.i`
   background: url(${plusIcon}) center no-repeat;
-  width: 20px;
-  height: 15px;
+	color: white;
+  width: 1.3rem;
+  height: 1.3rem;
+	padding-left: 10px;
 `

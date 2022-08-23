@@ -16,7 +16,7 @@ export const Preview = styled.div`
 	justify-content: space-between;
 
 	@media screen and (max-width: 1000px) {
-		flex-direction: ${props => props.editing ? `column` : ``};
+		flex-direction: ${props => props.editing && `column`};
 	}
 
 	& > div {
@@ -24,8 +24,8 @@ export const Preview = styled.div`
 		align-items: center;
 
 		@media screen and (max-width: 1000px) {
-      justify-content: ${props => props.editing ? `space-evenly` : ``};
-			margin-top: ${props => props.editing ? `1rem` : ``};
+      justify-content: ${props => props.editing && `space-evenly`};
+			margin-top: ${props => props.editing && `1rem`};
     }
 
 	}
@@ -35,7 +35,7 @@ export const BoxRow = styled.div`
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border-radius: 5px;
-	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 	background-color: white;
 `
 
@@ -144,7 +144,7 @@ export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
   justify-content: center;
-	color: #ff4c4c;
+	color: var(--red);
 	${TextButton}
 	text-align: center !important;
 
@@ -199,7 +199,7 @@ export const TypeButton = styled.button`
 
 	font-weight: ${props => props.selected ? `500` : `300`};
 	color: ${props => props.selected ? `#0057B8` : `black`};
-	box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.15);
+	box-shadow: 2px 2px 1px -1px rgba(0, 0, 0, 0.15);
 	border-radius: 3px;
 
 	& > i {

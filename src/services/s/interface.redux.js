@@ -11,6 +11,7 @@ export default class InterfaceService {
 		MODAL_TOGGLE: `MODAL_TOGGLE`,
 		TIP_TOGGLE: `TIP_TOGGLE`,
 		COLLECTIONS_DISPLAY_TOGGLE: `COLLECTIONS_DISPLAY_TOGGLE`,
+		PUBLIC_COLLECTIONS_DISPLAY_TOGGLE: `PUBLIC_COLLECTIONS_DISPLAY_TOGGLE`,
 		SET_HEADER_BORDER: `SET_HEADER_BORDER`,
 		SET_EDITOR_STYLE: `SET_EDITOR_STYLE`,
 		SET_LOST: `SET_LOST`,
@@ -30,9 +31,10 @@ export default class InterfaceService {
 		menuToggle: () => ({ type: this.types.MENU_TOGGLE }),
 		menuOpen: () => ({type: this.types.MENU_OPEN}),
 		menuClose: () => ({type: this.types.MENU_CLOSE}),
-		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute:false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
+		modalToggle: (payload = { component: null, collectionId: -1, isLabAssistantRoute: false }) => ({ type: this.types.MODAL_TOGGLE, payload }),
 		tipToggle: (payload) => ({ type: this.types.TIP_TOGGLE, payload }),
 		collectionsDisplayToggle: () => ({ type: this.types.COLLECTIONS_DISPLAY_TOGGLE }),
+		publicCollectionsDisplayToggle: () => ({ type: this.types.PUBLIC_COLLECTIONS_DISPLAY_TOGGLE }),
 		setHeaderBorder: active => ({ type: this.types.SET_HEADER_BORDER, payload: { active }}),
 		setEditorStyle: active => ({ type: this.types.SET_EDITOR_STYLE, payload: { active }}),
 		setLost: lost => ({ type: this.types.SET_LOST, payload: { lost }}),
@@ -63,6 +65,7 @@ export default class InterfaceService {
 		},
 		jsonResponse: {},
 		displayBlocks: browserStorage.displayBlocks,
+		publicDisplayBlocks: browserStorage.publicDisplayBlocks,
 		headerBorder: false,
 		editorStyle: false,
 		lost: false,
@@ -146,6 +149,13 @@ export default class InterfaceService {
 			return {
 				...store,
 				displayBlocks: !store.displayBlocks,
+			}
+
+		case this.types.PUBLIC_COLLECTIONS_DISPLAY_TOGGLE:
+			browserStorage.publicDisplayBlocks = !store.publicDisplayBlocks
+			return {
+				...store,
+				publicDisplayBlocks: !store.publicDisplayBlocks,
 			}
 
 		case this.types.SET_HEADER_BORDER:
@@ -251,6 +261,10 @@ export default class InterfaceService {
 
 	toggleCollectionsDisplay = () => async dispatch => {
 		dispatch(this.actions.collectionsDisplayToggle())
+	}
+
+	togglePublicCollectionsDisplay = () => async dispatch => {
+		dispatch(this.actions.publicCollectionsDisplayToggle())
 	}
 
 	setHeaderBorder = active => async dispatch => {

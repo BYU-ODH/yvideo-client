@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { collectionService, interfaceService, contentService, authService } from 'services'
 
@@ -17,11 +17,13 @@ const CollectionsContainer = props => {
 		hasCollectionPermissions,
 		checkHasCollectionPermissions,
 		displayBlocks,
+		publicDisplayBlocks,
 		content,
 		setContent,
 		collections,
 		getCollections,
 		toggleCollectionsDisplay,
+		togglePublicCollectionsDisplay,
 		setHeaderBorder,
 		toggleModal,
 		toggleTip,
@@ -31,11 +33,12 @@ const CollectionsContainer = props => {
 	const [isMobile, setIsMobile] = useState(false)
 	const [isContentTab, setIsContentTab] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
-	const history = useHistory()
+	const [publicCollections, setPublicCollections] = useState({})
+	const [subscribedObj, setSubscribedObj] = useState({})
+	const navigate = useNavigate()
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`], collectionId: ``, contentId: ``})
-
+		setBreadcrumbs({path: [`Home`], collectionId: ``, contentId: ``})
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
@@ -50,12 +53,17 @@ const CollectionsContainer = props => {
 			toggleTip(null)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [setContent, setHeaderBorder])
+	}, [setContent, setHeaderBorder, collections])
+
+	useLayoutEffect(() => {
+		handleSetPublicCollections(collections)
+		handleSubscribedObj(collections)
+	}, [collections])
 
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props:{ name: `Home Page`},
+			props: { name: `Home Page` },
 		})
 		toggleTip()
 	}
@@ -78,11 +86,8 @@ const CollectionsContainer = props => {
 		e.preventDefault()
 
 		if(searchQuery !== ``){
-			history.push({
-				pathname: `/search-public-collections`,
-				state:{
-					searchQuery,
-				},
+			navigate(`/search-public-collections`, {
+				state: {searchQuery, subscribedObj},
 			})
 		}
 	}
@@ -95,7 +100,7 @@ const CollectionsContainer = props => {
 	const linkToManageCollection = e => {
 		e.preventDefault()
 
-		history.push({
+		navigate({
 			pathname: `/manager`,
 		})
 	}
@@ -103,24 +108,48 @@ const CollectionsContainer = props => {
 	const linkToManagePublicCollection = e => {
 		e.preventDefault()
 
-		history.push({
+		navigate({
 			pathname: `/public-manager`,
 		})
+	}
+
+	const handleSubscribedObj = collections => {
+		const publicArray = Object.keys(collections).filter(key => collections[key].public)
+		let tempObj = {}
+		for (const key of publicArray)
+			tempObj = {...tempObj, [key]: {isSubscribed: true}}
+		setSubscribedObj(tempObj)
+	}
+
+	const handleSetPublicCollections = collections => {
+		const tempPubColl = Object.entries(collections).filter(([key, value]) => value.public)
+		let tempObj = {}
+		for (const entry of tempPubColl)
+			tempObj = {...tempObj, [entry[0]]: entry[1]}
+
+		setPublicCollections(tempObj)
+	}
+
+	const handleSetSubscribedObj = (key, boolean) => {
+		setSubscribedObj({...subscribedObj, [key]: {isSubscribed: boolean}})
 	}
 
 	const viewstate = {
 		user,
 		displayBlocks,
-		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k,v]) => v),
-		publicCollections: Object.entries(collections).filter(([k, v]) => v.public).map(([k,v]) => v),
-		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k,v]) => k),
+		publicDisplayBlocks,
+		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k, v]) => v),
+		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k, v]) => k),
 		isMobile,
 		hasCollectionPermissions,
 		isContentTab,
+		subscribedObj,
+		publicCollections,
 	}
 
 	const handlers = {
 		toggleCollectionsDisplay,
+		togglePublicCollectionsDisplay,
 		handleShowHelp,
 		handleShowTip,
 		toggleTip,
@@ -129,6 +158,7 @@ const CollectionsContainer = props => {
 		handleSearchQuerySubmit,
 		linkToManageCollection,
 		linkToManagePublicCollection,
+		handleSetSubscribedObj,
 	}
 
 	return <Collections viewstate={viewstate} handlers={handlers} />
@@ -138,6 +168,7 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 	user: authStore.user,
 	hasCollectionPermissions: authStore.hasCollectionPermissions,
 	displayBlocks: interfaceStore.displayBlocks,
+	publicDisplayBlocks: interfaceStore.publicDisplayBlocks,
 	collections: collectionStore.cache,
 	content: contentStore.cache,
 })
@@ -147,6 +178,7 @@ const mapDispatchToProps = {
 	getCollections: collectionService.getCollections,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
+	togglePublicCollectionsDisplay: interfaceService.togglePublicCollectionsDisplay,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	setHeaderBorder: interfaceService.setHeaderBorder,

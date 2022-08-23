@@ -32,7 +32,7 @@ describe(`manage collection test`, () => {
 		)
 	})
 
-	it(`ContentOverviewContainer should render`, ()=> {
+	it(`ContentOverviewContainer should render`, () => {
 		// test viewstate made correctly
 		const viewstate = wrapper.find(`ContentOverview`).props().viewstate
 		expect(viewstate.content.name).toBe(`testname`)
@@ -43,33 +43,31 @@ describe(`manage collection test`, () => {
 		expect(viewstate.content.expired).toBe(true)
 		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 
-		// console.log(wrapper.find(`ContentOverview`).instance().props.handlers)
-
 		// simulate edit button clicks, it should show 3 other buttons when it is clicked
-		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)
 
-		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
-		expect(wrapper.find(`button`).at(1).props().children).toBe(`Delete`)
+		expect(wrapper.find(`button`).at(0).text()).toContain(`Unpublish`)
+		expect(wrapper.find(`button`).at(1).text()).toContain(`Delete`)
 		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 	})
 
-	it(`Unpublish event handler test`, ()=> {
+	it(`Unpublish event handler test`, () => {
 
-		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)
-		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
+		expect(wrapper.find(`button`).at(0).text()).toContain(`Unpublish`)
 
 		expect(wrapper.find(`ContentOverview`).props().viewstate.content.published).toBe(true)
 		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`ContentOverview`).props().viewstate.content.published).toBe(false)
 	})
 
-	it(`delete event handler test`, ()=> {
+	it(`delete event handler test`, () => {
 
-		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)
-		expect(wrapper.find(`button`).at(0).props().children).toBe(`Unpublish`)
+		expect(wrapper.find(`button`).at(0).text()).toContain(`Unpublish`)
 
 		// method should not be called before click
 		expect(props.removeCollectionContent).not.toHaveBeenCalled()
@@ -81,9 +79,9 @@ describe(`manage collection test`, () => {
 		}, 500)
 	})
 
-	it(`save event handler test`, ()=> {
+	it(`save event handler test`, () => {
 
-		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleToggleEdit`)
+		expect(wrapper.find(`button`).at(0).props().onClick.name).toBe(`handleEditAndTip`)
 		wrapper.find(`button`).at(0).simulate(`click`)
 		expect(wrapper.find(`button`).at(2).text()).toContain(`Save`)
 
@@ -96,11 +94,15 @@ describe(`manage collection test`, () => {
 	})
 
 	// TODO: need to figure out which store it updates.
-	it(`toggle, tags and description test`, ()=> {
+	it(`toggle, tags and description test`, () => {
 
 		// click edit-button. It updates display without wrapper.update().
 		// click edit button trigger drop down menu.
 		expect(wrapper.find({"id" : `tag-input`}).length).toBe(0)
+
+		wrapper.find(`button`).at(0).simulate(`click`)
+		expect(wrapper.find(`ContentOverview`).props().viewstate.editing).toBe(true)
+
 		wrapper.find({"id" : `edit-button`}).at(0).simulate(`click`)
 		expect(wrapper.find({"id" : `tag-input`}).length).toBe(1)
 

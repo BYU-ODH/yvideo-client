@@ -33,7 +33,7 @@ export default class CollectionService {
 		collectionsAbort: () => ({ type: this.types.COLLECTIONS_ABORT }),
 		collectionsClean: () => ({ type: this.types.COLLECTIONS_CLEAN }),
 		collectionsError: error => ({ type: this.types.COLLECTIONS_ERROR, payload: { error } }),
-		collectionsErrorSync: error => ({type: this.types.COLLECTIONS_ERROR_SYNC, payload:{ error }}),
+		collectionsErrorSync: error => ({type: this.types.COLLECTIONS_ERROR_SYNC, payload: { error }}),
 		collectionsGet: collections => ({ type: this.types.COLLECTIONS_GET, payload: { collections } }),
 		collectionsRemoveContent: (id, collection) => ({ type: this.types.COLLECTIONS_REMOVE_CONTENT, payload: {id, collection} }),
 		collectionCreate: collection => ({ type: this.types.COLLECTION_CREATE, payload: { collection }}),
@@ -351,10 +351,10 @@ export default class CollectionService {
 
 		case `archive`:
 			currentState.archived = true
+			currentState.published = false
 			break
 
 		case `unarchive`:
-			currentState.published = false
 			currentState.archived = false
 			break
 		case `public`:
@@ -503,9 +503,8 @@ export default class CollectionService {
 			// eslint-disable-next-line no-unused-vars
 			const result = await apiProxy.collection.permissions.post(collectionId, endpoint, backEndBody)
 
-			// eslint-disable-next-line no-unused-vars
-			let currentState = {}
-			currentState = getState().collectionStore.cache[collectionId]
+			// let currentState = {}
+			// currentState = getState().collectionStore.cache[collectionId]
 			const currentUsers = getState().collectionStore.users
 			const currentCourses = getState().collectionStore.courses
 

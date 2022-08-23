@@ -52,12 +52,8 @@ describe(`content overview test`, () => {
 		// expect(wrapper.find(`h4`).length).toBe(0)
 		// expect(wrapper.find(`h4`).props().children).toBe(`testname`)
 
-		// published
-		expect(wrapper.find(`em`).length).toBe(1)
-		expect(wrapper.find(`em`).props().children).toBe(`Published`)
-
 		// edit button on click re rerendering behavior, click behavior should be tested in ContentOverviewContainer
-		expect(wrapper.find(`#edit-button`).length).toBe(3)
+		// expect(wrapper.find(`#edit-button`).length).toBe(3)
 		viewstate.editing = true
 
 		const wrapperRerendered = mount( // eslint-disable-line no-unused-vars
@@ -67,7 +63,6 @@ describe(`content overview test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		// console.log(wrapperRerendered.debug())
 		// expect(wrapperRerendered.find(`ContentSettingsContainer`).length).toBe(1)
 		// expect(wrapperRerendered.find(`button`).length).toBe(7)
 		// expect(wrapperRerendered.find(`button`).at(0).props().children).toBe(`Unpublish`)

@@ -26,7 +26,7 @@ describe(`content service test`, () => {
 				loading: true,
 				message: ``,
 				tried: false,
-				authStore:{
+				authStore: {
 					user: null,
 					loading: true,
 					message: ``,
@@ -43,7 +43,7 @@ describe(`content service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = authServiceConstructor.types
 
 		expect(types.AUTH_START).toBe(`AUTH_START`)
@@ -92,7 +92,7 @@ describe(`content service test`, () => {
 		window.clj_session_id = `{{ session-id }}`
 
 		proxies.apiProxy.user.get = jest.fn()
-		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.get.mockImplementationOnce(() => {
 			return Promise.resolve(testutil.user)
 		})
 
@@ -109,7 +109,7 @@ describe(`content service test`, () => {
 		window.location = mockLocation
 
 		proxies.apiProxy.user.get = jest.fn()
-		proxies.apiProxy.user.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.get.mockImplementationOnce(() => {
 			return Promise.resolve(testutil.user)
 		})
 
@@ -121,7 +121,7 @@ describe(`content service test`, () => {
 
 	it(`login`, async() => {
 		proxies.apiProxy.auth.cas = jest.fn()
-		proxies.apiProxy.auth.cas.mockImplementationOnce(()=>{
+		proxies.apiProxy.auth.cas.mockImplementationOnce(() => {
 			return Promise.resolve()
 		})
 
@@ -130,7 +130,7 @@ describe(`content service test`, () => {
 
 	it(`logout`, async() => {
 		proxies.apiProxy.auth.logout = jest.fn()
-		proxies.apiProxy.auth.logout.mockImplementationOnce(()=>{
+		proxies.apiProxy.auth.logout.mockImplementationOnce(() => {
 			return Promise.resolve()
 		})
 

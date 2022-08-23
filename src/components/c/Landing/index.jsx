@@ -3,19 +3,29 @@ import { Link } from 'react-router-dom'
 
 import { Overlay } from 'components'
 
-import { Wrapper, Comets, Welcome, Logo, Button } from './styles'
+import { Wrapper, Comets, Welcome, Logo, Button, AlertMessage } from './styles'
 
 class Landing extends PureComponent {
-	render() {
 
+	constructor(props) {
+		super(props)
+		this.checkBrowser = this.props.handlers.checkBrowser
+	}
+
+	componentDidMount() {
+		this.checkBrowser()
+	}
+	render() {
 		const {
 			overlay,
+			alertMessage,
+			isAlertMessage,
 		} = this.props.viewstate
 
 		const {
 			toggleOverlay,
 			handleLogin,
-			// handlePublicCollections,
+			toggleAlertMessage,
 		} = this.props.handlers
 
 		return (
@@ -28,6 +38,12 @@ class Landing extends PureComponent {
 						<Logo />
 						<h1>Y-VIDEO</h1>
 					</div>
+					{isAlertMessage &&
+						<AlertMessage id='alertMessage'>
+							<div>{alertMessage}</div>
+							<button type='button' onClick={toggleAlertMessage}>Close</button>
+						</AlertMessage>
+					}
 
 					<div className='button-wrapper'>
 						<Button id='primary' className='primary' onClick={handleLogin}>Sign In</Button>
@@ -39,7 +55,6 @@ class Landing extends PureComponent {
 				</Welcome>
 
 				{ overlay && <Overlay toggleOverlay={toggleOverlay} /> }
-
 			</Wrapper>
 		)
 	}

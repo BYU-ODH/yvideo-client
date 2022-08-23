@@ -23,7 +23,7 @@ const BreadcrumbContainer = props => {
 		crumbs,
 	}
 
-	const handler = {
+	const handlers = {
 		isLast(index) {
 			return index === crumbs.path.length - 1
 		},
@@ -60,7 +60,7 @@ const BreadcrumbContainer = props => {
 				link = `videoEditor`
 				break
 			case `Subtitle Editor`:
-				link = `subtileeditor`
+				link = `subtitleEditor`
 				break
 			case `Clip Manager`:
 				link = `clipEditor`
@@ -86,7 +86,7 @@ const BreadcrumbContainer = props => {
 		},
 	}
 
-	return <Breadcrumb viewstate={viewstate} handler={handler} />
+	return <Breadcrumb viewstate={viewstate} handlers={handlers} />
 }
 
 const mapStateToProps = store => ({

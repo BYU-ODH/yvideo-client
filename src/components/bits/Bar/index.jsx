@@ -1,28 +1,19 @@
 import React from 'react'
-
-import Style, { BarBall, BarCurrent, BarBackground, BarClip, BarSkippedGrey } from './styles'
+import Style, { BarBall, BarCurrent, BarBackground, BarClipYellow, BarSkippedGray } from './styles'
 
 const Bar = props => {
-	const { duration, skipArray } = props
+	const { duration, skipArray, handleClick, clipPercent, active } = props
 
-	// useEffect(() => {
-	// 		// if(events){
-	// 		// 	const eventFilterSkip = events.filter((values) => {
-	// 		// 		return values.type == `Skip`
-	// 		// 	})
-	// 		// 	setSkipArray(eventFilterSkip)
-	// 		// }
-	// 		handleOnReady();
-	// }, [skipArray, events]);
-	// console.log(skipArray)
 	return (
-		<Style position={props.position} active={props.active} onClick={props.handleClick}>
-			<BarBackground position={props.position} active={props.active} />
-			<BarCurrent id='timeBarProgress' position={props.position} active={props.active} />
-			<BarClip clipTime={props.clipPercent} active={props.active} />
-			<BarBall id='time-dot' position={props.position} active={props.active} />
-			{skipArray.map((value, index) => (
-				<BarSkippedGrey id='greybar' key={index} start={value.start} end={value.end} duration={duration} active={props.active} position={props.position} />
+		<Style data-testid='bar' onClick={handleClick}>
+			<BarBackground />
+			<BarCurrent data-testid='timeBarProgress' id='timeBarProgress' />
+			{clipPercent &&
+				<BarClipYellow data-testid='yellow-bar' clipPercent={clipPercent} />
+			}
+			<BarBall id='time-dot' active={active} />
+			{skipArray.map((skipEvent, index) => (
+				<BarSkippedGray data-testid='gray-bar' id='gray-bar' key={index} start={skipEvent.start} end={skipEvent.end} duration={duration} />
 			))}
 		</Style>
 	)

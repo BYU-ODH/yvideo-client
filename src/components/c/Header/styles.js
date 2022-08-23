@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import HexLogo from 'assets/hexborder.svg'
 
 const Style = styled.div`
-	height: 8.4rem;
+	height: var(--navbar-height);
 	width: 100%;
 	display: flex;
 	align-items: flex-start;

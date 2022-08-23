@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Style = styled.div`
-	margin-left: 2rem
+	margin-left: 2rem;
 
 	& button {
 		color: var(--light-blue);
@@ -19,7 +19,7 @@ export const Style = styled.div`
 export default Style
 
 export const Slash = styled.span`
-	display: ${props => props.disabled ? `none` : ``};
+	display: ${props => props.disabled && `none`};
 
 `
 

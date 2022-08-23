@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import PermissionTable from '../../../../components/bits/PermissionTable'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -37,10 +37,18 @@ describe(`Permission Table test`, () => {
 		expect(item.text()).toEqual(`test@email.com`)
 	})
 
-	it(`RemoveButton onClick`, ()=> {
-		const mockCallBack = jest.fn()
-		const button = shallow(<RemoveButton onClick={mockCallBack}/>)
-		button.find(`StyledComponent`).simulate(`click`)
-		expect(mockCallBack.mock.calls.length).toEqual(1)
+	it(`RemoveButton onClick`, () => {
+		const wrapper = mount(
+			<Provider store={testutil.store}>
+				<BrowserRouter>
+					<PermissionTable {...props} />
+				</BrowserRouter>
+			</Provider>,
+		)
+		wrapper.find(RemoveButton).simulate(`click`)
+		// const mockCallBack = jest.fn()
+		// const button = shallow(<RemoveButton onClick={mockCallBack}/>)
+		// button.find(`Removebutton`).simulate(`click`)
+		// expect(mockCallBack.mock.calls.length).toEqual(1)
 	})
 })

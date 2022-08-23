@@ -14,7 +14,7 @@ const viewstate = {
 			username: `test`,
 		},
 	],
-	course:[
+	course: [
 		{
 			catalog: `100`,
 			department: `ENG`,
@@ -53,7 +53,7 @@ const viewstate = {
 			[`username`]: `asd`,
 		},
 	],
-	courses:[
+	courses: [
 		{
 			[`catalog-number`]: `100`,
 			department: `ENG`,
@@ -84,7 +84,7 @@ const props = {
 }
 
 describe(`CollectionPermissions test`, () => {
-	it(`test render CaptionAider`, ()=> {
+	it(`test render CaptionAider`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<CollectionPermissions {...props} />
@@ -106,7 +106,7 @@ describe(`CollectionPermissions test`, () => {
 		wrapper.find(`td`).at(3).simulate(`click`)
 	})
 
-	it(`test loaded = false`, ()=> {
+	it(`test loaded = false`, () => {
 		props.viewstate.loaded = false
 		const wrapper = mount(
 			<BrowserRouter>
@@ -118,10 +118,11 @@ describe(`CollectionPermissions test`, () => {
 		expect(wrapper.text().includes(`2020-05-29`)).toBe(true)
 		wrapper.find(`td`).at(7).simulate(`click`)
 
-		wrapper.setState({ sortType: { reverse: false } })
+		// wrapper.setState({ sortType: { reverse: false } })
+		wrapper.sortType = { reverse: false }
 		wrapper.find(Sort).at(0).simulate(`click`, props.viewstate.userTA, `Username`)
 		wrapper.find(Sort).at(1).simulate(`click`, props.viewstate.userTA, `Name`)
-		wrapper.setState({ sortType: { reverse: true } })
+		wrapper.sortType = { reverse: true }
 		wrapper.find(Sort).at(0).simulate(`click`, props.viewstate.userTA, `Username`)
 		wrapper.find(Sort).at(1).simulate(`click`, props.viewstate.userTA, `Name`)
 	})

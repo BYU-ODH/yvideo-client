@@ -32,6 +32,7 @@ const Transcript = props => {
 		toggleTranscript,
 		showTranscript,
 		isMobile,
+		scrollDisabled,
 	} = props.viewstate
 
 	const {
@@ -88,8 +89,7 @@ const Transcript = props => {
 			if(matches !== null){
 				// highlight and push changes
 				matches.forEach(m => {
-					const cleanString = m.replace(/\s/g,``)
-					// console.log('Matched', cleanString)
+					const cleanString = m.replace(/\s/g, ``)
 					const rep = new RegExp(`${cleanString}`, `gmi`)
 
 					if(cleanString !== `. ` && cleanString !== `, ` && cleanString !== `` && cleanString !== `.`)
@@ -118,7 +118,7 @@ const Transcript = props => {
 	}
 
 	return (
-		<Style style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} isMobile={isMobile} id='transcript'>
+		<Style id='transcript' style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>
@@ -127,19 +127,19 @@ const Transcript = props => {
 								{
 									x: e.target.getBoundingClientRect().x - 65,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{
 									x: e.target.getBoundingClientRect().x - 65,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 					</>
 					:
 					<>
@@ -148,69 +148,54 @@ const Transcript = props => {
 								{
 									x: e.target.getBoundingClientRect().x - 20,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{
 									x: e.target.getBoundingClientRect().x - 20,
 									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth
+									width: e.currentTarget.offsetWidth,
 								})
 							}
-							onMouseLeave={e => toggleTip()} />
+							onMouseLeave={() => toggleTip()} />
 					</>
 				}
 
 			</div>
-			<div className={isMobile ? `main-bar main-mobile` : `main-bar`} >
+			<div id='subtitles-container' className={isMobile ? `main-bar main-mobile` : `main-bar`} >
 				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
 					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
 						onMouseEnter={e => handleShowTip(`transcript-hide`,
 							{
 								x: e.target.getBoundingClientRect().x - 80,
 								y: e.target.getBoundingClientRect().y - 25,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
-						onMouseLeave={e => toggleTip()}
+						onMouseLeave={() => toggleTip()}
 					/>
 				</div>
-				<div className={`transcript-title`}>
-					<h1>Transcript</h1>
-					<h2>
-						{ content !== undefined ?
-								content.settings.targetLanguage !== `` ?
-									`Video - ${content.settings.targetLanguage} |`
-									:
-									null
-								:
-								null
-						}
-						Caption - {displaySubtitles !== null ? displaySubtitles.title : `Unavailable`}
-					</h2>
-				</div>
-				<br/><br/><br/>
 				<div className={`transcript-content`}>
 					{	displaySubtitles !== null && displaySubtitles.content !== `` ?
 						displaySubtitles[`content`].map((element, index) =>
-							<div className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index ? `active-sub` : ``}`}
+							<div className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
 								key={index}
 							>
 								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start + element.start * .001)}
+								<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001, displaySubtitles.content.indexOf(element), element.text)}
 									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
 									onMouseEnter={e => handleShowTip(`transcript-seek`,
 										{
 											x: e.target.getBoundingClientRect().x - 20,
 											y: e.target.getBoundingClientRect().y - 30,
-											width: e.currentTarget.offsetWidth
+											width: e.currentTarget.offsetWidth,
 										})
 									}
-									onMouseLeave={e => toggleTip()}
+									onMouseLeave={() => toggleTip()}
 								>
 									<span><img src={seek} alt={`seek`} width='20' height='20'/></span>
 								</div>
@@ -242,7 +227,6 @@ const Transcript = props => {
 }
 
 const mapStateToProps = store => ({
-	// data: store.adminStore.data,
 	languageCodes: store.interfaceStore.languageCodes,
 	jsonResponse: store.interfaceStore.jsonResponse,
 })

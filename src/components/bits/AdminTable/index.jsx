@@ -139,7 +139,20 @@ export default class AdminTable extends PureComponent {
 									<option value='2'>2: instructor / professor</option>
 									<option value='3'>3: student</option>
 								</select>
-								<button type='submit' className='userRoleSave' onClick={userRoleSave}>Save</button>
+								<button type='submit'
+									className='userRoleSave'
+									onClick={userRoleSave}
+									style={{
+										borderRadius: `10px`,
+										fontSize: `1.3rem`,
+										color: `white`,
+										backgroundColor: `var(--light-blue)`,
+										border: `2px solid transparent`,
+										width: `5rem !important`,
+										margin: `0px 0px 0px 10px`,
+										fontWeight: `bold`,
+									}}
+								>Save</button>
 							</td>
 							<td>{item.email}</td>
 							<td>{date.toString().substring(0, 16)}</td>
@@ -164,7 +177,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<>
 						<td>{item.name}</td>
-						<td><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></td>
+						<td><u><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></u></td>
 						<td>{item.contentType}</td>
 						<td>{item.expired.toString()}</td>
 						<td>{item.resourceId}</td>
@@ -176,13 +189,13 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
-		const menuOptions = (cat, data) => {
-			switch (cat) {
+		const menuOptions = (category, item) => {
+			switch (category) {
 			case `Users`:
 				return (
 					<ul>
 						<li>
-							<Link to={`/lab-assistant-manager/${data.id}`} target='_blank'>Collections</Link>
+							<Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link>
 						</li>
 						<li>
 							<button className='userEdit' onClick={handleEdit}>Edit</button>
@@ -197,7 +210,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/lab-assistant-manager/${data.owner}/${data.id}`} target='_blank'>View/Edit</Link>
+							<Link to={`/lab-assistant-manager/${item.owner}/${item.id}`} target='_blank'>View/Edit</Link>
 						</li>
 						<li>
 							<button className='collectionsDelete' onClick={handleConfirmDelete}>Delete</button>
@@ -209,13 +222,10 @@ export default class AdminTable extends PureComponent {
 				return (
 					<ul>
 						<li>
-							<Link to={`/player/${data.id}`} target='_blank'>View</Link>
+							<Link to={`/player/${item.id}`} target='_blank'>View</Link>
 						</li>
 						<li>
-							<Link to={`/videoeditor/${data.id}`}>Edit</Link>
-						</li>
-						<li>
-							<button>Disable</button>
+							<Link to={`/videoeditor/${item.id}`}>Edit</Link>
 						</li>
 						<li>
 							<button className='contentDelete' onClick={handleConfirmDelete}>Delete</button>
@@ -228,10 +238,10 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
-		const isReverse = (sortType) =>{
+		const isReverse = (sortType) => {
 			if (this.state.sortType.id === sortType && this.state.sortType.reverse === false){
 				this.setState({
-					sortType:{
+					sortType: {
 						id: sortType,
 						reverse: true,
 					},
@@ -239,7 +249,7 @@ export default class AdminTable extends PureComponent {
 				return true
 			} else {
 				this.setState({
-					sortType:{
+					sortType: {
 						id: sortType,
 						reverse: false,
 					},
@@ -248,36 +258,36 @@ export default class AdminTable extends PureComponent {
 			}
 		}
 
-		const sort = (data,sortType) => {
+		const sort = (data, sortType) => {
 			data.sort((a, b) => {
 				switch (sortType) {
 				case `Name`:
 					return (
 						isReverse(sortType) ?
-							a.name.localeCompare(b.name, {sensitivity:`base`})
+							a.name.localeCompare(b.name, {sensitivity: `base`})
 							:
-							b.name.localeCompare(a.name,{sensitivity:`base`})
+							b.name.localeCompare(a.name, {sensitivity: `base`})
 					)
 				case `NetID`:
 					return (
 						isReverse(sortType) ?
-							a.username.localeCompare(b.username,{sensitivity:`base`})
+							a.username.localeCompare(b.username, {sensitivity: `base`})
 							:
-							b.username.localeCompare(a.username,{sensitivity:`base`})
+							b.username.localeCompare(a.username, {sensitivity: `base`})
 					)
 				case `Email`:
 					return (
 						isReverse(sortType) ?
-							a.email.localeCompare(b.email,{sensitivity:`base`})
+							a.email.localeCompare(b.email, {sensitivity: `base`})
 							:
-							b.email.localeCompare(a.email,{sensitivity:`base`})
+							b.email.localeCompare(a.email, {sensitivity: `base`})
 					)
 				case `Owner`:
 					return (
 						isReverse(sortType) ?
-							a.owner.localeCompare(b.owner,{sensitivity:`base`})
+							a.owner.localeCompare(b.owner, {sensitivity: `base`})
 							:
-							b.owner.localeCompare(a.owner,{sensitivity:`base`})
+							b.owner.localeCompare(a.owner, {sensitivity: `base`})
 					)
 				case `Roles`:
 					return isReverse(sortType) ? a.roles - b.roles : b.roles - a.roles
@@ -307,7 +317,7 @@ export default class AdminTable extends PureComponent {
 				<Table>
 					<thead>
 						<tr>
-							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' onClick={()=>sort(data,header.title)}/></th>)}
+							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={() => sort(data, header.title)}/></th>)}
 							<th/>
 						</tr>
 					</thead>
@@ -316,8 +326,17 @@ export default class AdminTable extends PureComponent {
 							item => <tr key={item.id}>
 								{ printTableValues(searchCategory, item) }
 								<td>
-									<ItemEdit onClick={toggleMenu(item.id)} onMouseEnter={e => handleShowTip(`actions`, {x: e.target.getBoundingClientRect().x + 40, y: e.target.getBoundingClientRect().y +15, width: e.currentTarget.offsetWidth+20})}
-										onMouseLeave={e => toggleTip()}
+									<ItemEdit
+										data-testid='item-edit'
+										onClick={toggleMenu(item.id)}
+										onMouseEnter={e => handleShowTip(`actions`,
+											{
+												x: e.target.getBoundingClientRect().x + 40,
+												y: e.target.getBoundingClientRect().y + 15,
+												width: e.currentTarget.offsetWidth + 20,
+											})
+										}
+										onMouseLeave={() => toggleTip()}
 									></ItemEdit>
 								</td>
 							</tr>,

@@ -7,11 +7,11 @@ const ref = React.createRef()
 const mockref = ref
 
 const viewstate = {
-	target:mockref,
+	target: mockref,
 }
 
 describe(`CaptionAider test`, () => {
-	it(`test render CaptionAider`, ()=> {
+	it(`test render CaptionAider`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<CaptionAider viewstate={viewstate} />

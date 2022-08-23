@@ -14,7 +14,7 @@ const props = {
 
 describe(`FileUploadContainer test`, () => {
 
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -23,7 +23,7 @@ describe(`FileUploadContainer test`, () => {
 		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -33,14 +33,14 @@ describe(`FileUploadContainer test`, () => {
 
 		// upload file
 		expect(wrapper.find(`FileUpload`).props().viewstate.selectedFile).toBe(undefined)
-		wrapper.find({id : `files-input`}).simulate(`change`, {target: { name: `file`, files: [`first file added`]}})
+		wrapper.find({id : `files-input`}).simulate(`change`, {target: { name: `file`, files: [`first file added`] }})
 		expect(wrapper.find(`FileUpload`).props().viewstate.selectedFile).toBe(`first file added`)
 
 		// select file version
 		wrapper.find(`#categorySelect`).at(0).simulate(`change`, {target: { value: `lang1` }})
 
 		// cannot find the way to parse FormData
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 
 		// select file version other
 		expect(wrapper.find(`FileUpload`).props().viewstate.isOther).toBe(false)
@@ -53,6 +53,6 @@ describe(`FileUploadContainer test`, () => {
 		expect(wrapper.find(`#type-language`).props().value).toBe(`customized lang`)
 
 		// cannot find the way to parse FormData
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 	})
 })

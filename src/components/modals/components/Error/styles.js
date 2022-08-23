@@ -25,15 +25,15 @@ export const Banner = styled.div`
 `
 
 export const h1Style = {
-	textAlign:`center`,
-	justifySelf:`center`,
-	margin:`auto`,
+	textAlign: `center`,
+	justifySelf: `center`,
+	margin: `auto`,
 	width: `50%`,
 	padding: `20px`,
 }
 
 export const h2Style = {
 	padding: `20px`,
-	textAlign:`left`,
+	textAlign: `left`,
 	lineHeight: 1.5,
 }

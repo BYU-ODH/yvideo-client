@@ -17,7 +17,8 @@ const SubtitlesCard = (props) => {
 			{
 				isEdit ?
 					subLayer === index ?
-						<input type='text' className='sideTabInput' style={{margin: `0px`, width: `100%`}} value={value}
+						<input data-testid='title-change' type='text' className='sideTabInput' style={{margin: `0px`, width: `100%`}} value={value}
+							onKeyUp={e => e.stopPropagation()}
 							onChange={handleChange}
 							onKeyPress={event => {
 								if (event.charCode === 13)

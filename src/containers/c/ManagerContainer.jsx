@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useLocation, useHistory } from 'react-router-dom'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { collectionService, interfaceService } from 'services'
@@ -32,13 +32,13 @@ const ManagerContainer = props => {
 
 	const params = useParams()
 	const location = useLocation()
-	const history = useHistory()
+	const navigate = useNavigate()
 	const [count, setCount] = useState(0) // set a count just to keep track of how many times we call get collections and make sure we only call with force = true only once.
 	const [isMobile, setIsMobile] = useState(false)
 	const [isOpen, setOpen] = useState(true)
 
 	useEffect(() => {
-		setBreadcrumbs({path:[`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
+		setBreadcrumbs({path: [`Home`, `Manage Collections`], collectionId: ``, contentId: ``})
 
 		setHeaderBorder(true)
 
@@ -51,7 +51,7 @@ const ManagerContainer = props => {
 
 		// open newly created collection immediately
 		if(Object.keys(newCollectionInfo).length !== 0){
-			history.push({
+			navigate({
 				pathname: `/manager/${newCollectionInfo}`,
 			})
 			removeCreatedCollectionIdFromStore()
@@ -91,7 +91,7 @@ const ManagerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Manage Collections`},
+			props: { name: `Manage Collections` },
 		})
 	}
 
@@ -126,7 +126,9 @@ const ManagerContainer = props => {
 
 	})
 	if (collectionError !== collectionErrorPrev) {
-		alert(collectionError)
+		if(	alert(collectionError));
+		window.location = `${process.env.REACT_APP_YVIDEO_SERVER}`
+
 		collectionSyncError()
 	}
 

@@ -6,8 +6,6 @@ import enterFullscreen from 'assets/controls_enter_fullscreen.svg'
 import exitFullscreen from 'assets/controls_exit_fullscreen.svg'
 import pauseIcon from 'assets/controls_pause.svg'
 import playIcon from 'assets/controls_play.svg'
-// import volumeIcon from 'assets/controls_volume.svg'
-// import volumeIconMute from 'assets/controls_muted.svg'
 import clockIcon from 'assets/te-clock.svg'
 import playerCheck from 'assets/player-check.svg'
 import bookIcon from 'assets/sidebar-white.svg'
@@ -19,7 +17,7 @@ const Style = styled.div`
 	height: 5rem;
 	width: 100%;
 
-	background: rgba(0,0,0,0.5);
+	background: rgba(0, 0, 0, 0.5);
 
 	display: grid;
 
@@ -62,7 +60,7 @@ const Style = styled.div`
 			color: white;
 
 			:hover {
-				background-color: rgba(5,130,202,1);
+				background-color: rgba(5, 130, 202, 1);
 				color: white;
 			}
 		}
@@ -182,7 +180,7 @@ const Style = styled.div`
 		color: white;
 
 		:hover {
-			background-color: rgba(5,130,202,1);
+			background-color: rgba(5, 130, 202, 1);
 			color: white;
 		}
 	}
@@ -190,13 +188,13 @@ const Style = styled.div`
 export default Style
 
 export const PlayPause = styled.button`
-	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat;
+	background: url(${props => props.playing ? pauseIcon : playIcon}) center no-repeat !important;
 `
 export const ClosedCaptions = styled.button`
 	/* background: ${props => props.isCaptions !== false ? `url(${closedCaption}) center no-repeat` : `url(${closedCaptionOff}) center no-repeat`}; */
 	background: url(${closedCaption}) center no-repeat;
 `
-export const Fullscreen = styled.button`
+export const FullScreen = styled.button`
 	width: 20px;
 	height: 20px;
 	background: url(${props => props.fullscreen ? exitFullscreen : enterFullscreen}) center no-repeat;
@@ -215,8 +213,9 @@ export const Help = styled.img`
 	margin: 0px;
 	width: 22px;
 	height: 22px;
-	@media screen and (max-width: 375px){
+	@media screen and (max-width: 375px) {
 		height: 15px;
 		width: 15px;
 	}
+	cursor: pointer;
 `

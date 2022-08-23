@@ -112,13 +112,13 @@ export const Timeline = styled.div`
 				position: absolute;
 				overflow-x: scroll;
 				overflow-y: hidden;
-				scroll-behavior: smooth;
+				/* scroll-behavior: smooth; */
 				pointer-events: none;
 				bottom: 0px;
 
 				& #layer-time-indicator {
 					height: 10px;
-					width:100%;
+					width: 100%;
 					position: absolute;
 					background-color: transparent;
 
@@ -238,8 +238,11 @@ export const EventEditor = styled.div`
 	& > header {
 		height: 5rem;
 		background: var(--navy-blue);
-
 		border-bottom: 5px solid var(--light-blue);
+
+		& > img {
+			cursor: pointer;
+		}
 
 		& > .carat {
 			float: left;
@@ -302,7 +305,7 @@ export const EventEditor = styled.div`
 
 		box-sizing: border-box;
 
-		/* border-bottom: 1px solid #555; */
+		border-bottom: ${props => props.show !== false ? ` 1px solid var(--navy-blue)` : `none`};
 
 		color: black;
 		font-weight: 500;
@@ -356,7 +359,7 @@ export const EventEditor = styled.div`
 		border: 2px solid #eb6e79;
 		background-color: #eb6e79;
 		color: white;
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		font-weight: 500;
 		border-radius: 5px;
 		cursor: pointer;
@@ -385,12 +388,4 @@ export const EventListCarat = styled.button`
 	&.minimized {
 		transform: rotate(90deg);
 	}
-`
-
-export const Help = styled.img`
-	width: 30px;
-	height: 30px;
-	margin-left: 10px;
-	position: relative;
-	top: 10px;
 `

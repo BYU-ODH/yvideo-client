@@ -20,7 +20,7 @@ describe(`ApiProxy test`, () => {
 	// admin
 	it(`admin search get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `search result success`,
@@ -41,7 +41,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`admin collection get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: [{"collection-name" : `test collection name`}],
@@ -60,7 +60,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`admin collection create`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collection created`,
@@ -89,7 +89,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`admin collection content get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: collection4,
@@ -112,7 +112,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`admin collection content createFromResource`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `createFromResource`,
@@ -131,7 +131,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`admin user delete`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `adminUserDelete`,
@@ -149,7 +149,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`admin user get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `admingUserGet`,
@@ -167,7 +167,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`admin content delete`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `deleteContent`,
@@ -191,7 +191,7 @@ describe(`ApiProxy test`, () => {
 	// collection
 	it(`collection create`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionCreate`,
@@ -210,7 +210,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`collection post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionPost`,
@@ -229,7 +229,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`collection edit`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionEdit`,
@@ -248,7 +248,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`collection remove`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionRemove`,
@@ -266,7 +266,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`collection permissions getUsers`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionPermissionsGetUsers`,
@@ -283,7 +283,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`collection permissions getCourses`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionPermissionsGetCourses`,
@@ -300,7 +300,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`collection permissions post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionPermissionsPost`,
@@ -318,7 +318,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`collection permissions postMany`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `collectionPermissionsPostMany`,
@@ -337,7 +337,7 @@ describe(`ApiProxy test`, () => {
 	// content
 	it(`content getSingleContent`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `contentGetSingleContent`,
@@ -355,7 +355,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`content get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: collection4.content[0],
@@ -377,7 +377,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`content post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `contentPost`,
@@ -396,7 +396,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`content addView get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `contentAddViewGet`,
@@ -413,7 +413,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`content metadata post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `contentMetadataPost`,
@@ -431,7 +431,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`content update`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `contentMetadataUpdate`,
@@ -450,7 +450,7 @@ describe(`ApiProxy test`, () => {
 	// resources
 	it(`resources post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `resourcesPost`,
@@ -468,7 +468,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`resources delete`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `resourcesDelete`,
@@ -485,14 +485,14 @@ describe(`ApiProxy test`, () => {
 
 	it(`resources edit`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `resourcesEdit`,
 		}
 
 		axios.patch.mockResolvedValue(res)
-		await expect(proxies.apiProxy.resources.edit(`resource` ,`resourceId`)).resolves.toEqual(`resourcesEdit`)
+		await expect(proxies.apiProxy.resources.edit(`resource` , `resourceId`)).resolves.toEqual(`resourcesEdit`)
 		expect(axios.patch).toBeCalledWith(
 			`//api.yvideobeta.byu.edu/api/resource/resourceId`,
 			`resource`,
@@ -503,7 +503,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`resources get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `resourcesGet`,
@@ -520,7 +520,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`resources search`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `resourcesSearch`,
@@ -533,7 +533,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`resources files`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `resourcesFiles`,
@@ -547,7 +547,7 @@ describe(`ApiProxy test`, () => {
 	// user
 	it(`user get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: user,
@@ -561,16 +561,15 @@ describe(`ApiProxy test`, () => {
 
 	it(`user collections get`, async () => {
 		const data = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
-			data:[collection4],
+			data: [collection4],
 		}
 
 		const expected = {
-			1:collection4,
+			1: collection4,
 		}
-		// const expected = {"1": {"archived": false, "content": [{"authKey": ``, "collectionId": `collectionsid1`, "contentType": `video`, "dateValidated": ``, "description": `test`, "expired": false, "fullVideo": false, "id": `contentid1`, "isCopyrighted": false, "name": `testname`, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "allowNote": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com`, "url": `test url`, "views": 0, "words": ""}, {"authKey": ``, "collectionId": `collectionsid2`, "contentType": `video2`, "dateValidated": ``, "description": `test2`, "expired": false, "fullVideo": false, "id": `contentid2`, "isCopyrighted": false, "name": undefined, "physicalCopyExists": false, "published": true, "requester": ``, "resource": {"keywords": [``]}, "resourceId": `5ebdaef833e57cec218b457c`, "settings": {"allowDefinitions": true, "allowNote": true, "annotationDocument": [], "showCaptions": true, "targetLanguages": []}, "thumbnail": `test@thumbnail.com2`, "url": `test ur2l`, "views": 0, "words": ""}], "id": 1, "name": undefined, "owner": 22, "published": true, "thumbnail": `test@thumbnail`}}
 
 		axios.mockResolvedValue(data)
 		// axios.mockImplementation(() => Promise.resolve(data))
@@ -581,7 +580,7 @@ describe(`ApiProxy test`, () => {
 	// language
 	it(`language post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `languagePost`,
@@ -594,7 +593,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`language get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `languageGet`,
@@ -607,7 +606,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`language delete`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `languageDelete`,
@@ -621,7 +620,7 @@ describe(`ApiProxy test`, () => {
 	// file
 	it(`file post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `filePost`,
@@ -634,7 +633,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`file patch`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `filePatch`,
@@ -647,7 +646,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`file delete`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `filePatch`,
@@ -661,7 +660,7 @@ describe(`ApiProxy test`, () => {
 	// media
 	it(`media getKey`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `mediaGetKey`,
@@ -675,7 +674,7 @@ describe(`ApiProxy test`, () => {
 	// subtitle
 	it(`subtitle post`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: {
@@ -690,7 +689,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`subtitle get`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `subtitleGet`,
@@ -704,7 +703,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`subtitle delete`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `subtitleDelete`,
@@ -718,7 +717,7 @@ describe(`ApiProxy test`, () => {
 
 	it(`subtitle edit`, async () => {
 		const res = {
-			headers:{
+			headers: {
 				"session-id": `id`,
 			},
 			data: `subtitleEdit`,

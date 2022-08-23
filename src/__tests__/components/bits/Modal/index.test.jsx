@@ -1,10 +1,9 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Modal from '../../../../components/bits/Modal/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
-// jest.mock('react-dom')
 
 describe(`Modal test`, () => {
 	it(`componentDidUpdate: classList: active`, () => {
@@ -37,3 +36,15 @@ describe(`Modal test`, () => {
 	// 	wrapper.update();
 	// })
 })
+
+// describe(`Modal test`, () => {
+// 	beforeEach(() => {
+// 		render(wrapper)
+// 	})
+// 	afterEach(() => {
+// 		jest.resetAllMocks()
+// 		cleanup()
+// 	})
+// 	it(`componentDidUpdate: classList: active`, () => {
+// 		expect(wrapper).toBeDefined()
+// 	})

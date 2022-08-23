@@ -37,10 +37,10 @@ test(`componentDidChange`, () => {
 		method = ``,
 		prevProps = {},
 		nextProps = {},
-		propsProperties = [{a:1}, {b:2}],
+		propsProperties = [{a: 1}, {b: 2}],
 		prevState = {},
 		nextState = {},
-		stateProperties = [{a:1}, {b:2}],
+		stateProperties = [{a: 1}, {b: 2}],
 	)
 })
 

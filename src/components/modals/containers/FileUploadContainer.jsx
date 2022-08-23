@@ -77,7 +77,7 @@ const FileUploadContainer = props => {
 		}, 2000)
 	}
 
-	const handleFileChange = e =>{
+	const handleFileChange = e => {
 		setSelectedFile(e.target.files[0])
 	}
 
@@ -93,7 +93,7 @@ const FileUploadContainer = props => {
 		}
 	}
 
-	const handleFileName = e =>{
+	const handleFileName = e => {
 		e.preventDefault()
 		setMetadata(e.target.value)
 	}
@@ -108,7 +108,7 @@ const FileUploadContainer = props => {
 		toggleModal()
 	}
 
-	const handleFileUpload = async (e) =>{
+	const handleFileUpload = async (e) => {
 		e.preventDefault()
 
 		const formData = new FormData()

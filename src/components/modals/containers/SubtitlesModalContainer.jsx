@@ -14,6 +14,8 @@ const SubtitlesModalContainer = props => {
 		handleDeleteSubLayer,
 		toggleModal,
 		index,
+		setIsReady,
+		keyup,
 	} = props
 
 	const handleAddLayer = (array) => {
@@ -31,22 +33,25 @@ const SubtitlesModalContainer = props => {
 		toggleModal()
 	}
 
-
-	const viewstate = { mode, deleteTitle}
+	const viewstate = {
+		mode,
+		deleteTitle,
+		keyup,
+	}
 
 	const handlers = {
 		handleAddLayer,
 		handleAddLayerFromFile,
 		handleDeleteLayer,
+		setIsReady,
 		toggleModal,
 	}
 
-
-return <SubtitlesModal viewstate={viewstate} handlers={handlers}/>
+	return <SubtitlesModal viewstate={viewstate} handlers={handlers}/>
 }
 
 const mapStateToProps = store => ({
-	user: store.authStore.user
+	user: store.authStore.user,
 })
 
 const mapDispatchToProps = {

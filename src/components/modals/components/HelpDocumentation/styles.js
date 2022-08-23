@@ -7,7 +7,7 @@ export const Back = styled.div`
 	left: 0px;
 	width: 100vw;
 	height: 100vh;
-	background-color: rgba(0,0,0, 0.2);
+	background-color: rgba(0, 0, 0, 0.2);
 `
 export const Container = styled.div`
 	margin: auto;
@@ -106,7 +106,8 @@ export const Container = styled.div`
 				padding-left: 8px;
 				padding-right: 8px;
 				border-radius: 5px;
-				box-shadow: 2px 2px 3px rgba(0,0,0, 0.2);
+				box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+				border 1px solid #666666;
 			}
 
 			& li {

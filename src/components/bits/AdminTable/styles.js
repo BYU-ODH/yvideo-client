@@ -16,15 +16,15 @@ export default Style
 
 export const Table = styled.table`
 	background: white;
-	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15);
 	border-radius: 10px;
 	width: 100%;
 
 	& th {
-		padding: 1.5rem;
+		padding: 1rem;
 		font-size: 1.5rem;
 		text-align: left;
-		border-bottom: 0.7px solid rgba(0,0,0,0.15)
+		border-bottom: 0.7px solid rgba(0, 0, 0, 0.15)
 	}
 
 	& td {
@@ -66,7 +66,7 @@ export const ItemMenu = styled.div`
 	left: ${props => props.mousePos.x - 170}px;
 
 	background: white;
-	box-shadow: 0 2px 5px -1px rgba(0,0,0,0.3);
+	box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.3);
 
 	width: 12rem;
 	font-size: 1.7rem;

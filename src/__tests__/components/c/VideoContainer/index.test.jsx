@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import VideoContainer from '../../../../components/c/VideoContainer'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 import { act } from 'react-dom/test-utils'
@@ -18,7 +18,7 @@ const props = {
 			layer: 0,
 			start: 0,
 			type: `Skip`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 10,
@@ -27,8 +27,8 @@ const props = {
 			start: 0,
 			type: `Censor`,
 			position: [
-				{ x: 10, y: 50},
-				{ x: 5, y: 30},
+				{ x: 10, y: 50 },
+				{ x: 5, y: 30 },
 			],
 		},
 		{
@@ -37,7 +37,7 @@ const props = {
 			layer: 0,
 			start: 0,
 			type: `Pause`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 10,
@@ -45,7 +45,7 @@ const props = {
 			layer: 0,
 			start: 0,
 			type: `Pause`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 		{
 			end: 10,
@@ -53,7 +53,7 @@ const props = {
 			layer: 0,
 			start: 0,
 			type: `Mute`,
-			position: { x: 10, y: 50},
+			position: { x: 10, y: 50 },
 		},
 	],
 	updateEvents: jest.fn(),
@@ -63,7 +63,7 @@ const props = {
 	subtitles: {},
 	handleScroll: jest.fn(),
 	editorType: `video`,
-	aspectRatio: [16,9],
+	aspectRatio: [16, 9],
 }
 
 // const reactPlayerProps = {
@@ -132,25 +132,25 @@ describe(`VideoContainer test`, () => {
 	// })
 	// })
 
-	it(`wrapper simulate click`, ()=> {
+	it(`wrapper simulate click`, () => {
 		const wrapper = setup()
-		wrapper.find(`CensorDnD`).prop(`handleUpdateCensorPosition`)({ x: 10, y: 10 })
-		wrapper.find(`CensorDnD`).prop(`handleUpdateCensorResize`)({width: 10, height: 10}, { x: 10, y: 10 })
+		// wrapper.find(`CensorDnD`).prop(`handleUpdateCensorPosition`)({ x: 10, y: 10 })
+		// wrapper.find(`CensorDnD`).prop(`handleUpdateCensorResize`)({width: 10, height: 10}, { x: 10, y: 10 })
 		wrapper.find(`CensorDnD`).prop(`seekTo`)({pageX: 10, currentTarget: { getBoundingClientRect: () => {
 			return boundingMock
 		}}}, 100)
 
 		act(() => {
-			wrapper.find(`ReactPlayer`).prop(`onContextMenu`)({ preventDefault: () => {}	})
+			wrapper.find(`ReactPlayer`).prop(`onContextMenu`)({ preventDefault: () => {} })
 			// wrapper.find(`ReactPlayer`).prop(`onReady`)({ props: reactPlayerProps })
 			wrapper.find(`ReactPlayer`).prop(`onError`)()
 			wrapper.find(`ReactPlayer`).prop(`onPlay`)()
 			wrapper.find(`ReactPlayer`).prop(`onPause`)()
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)( 100 )
-			wrapper.find(`ReactPlayer`).prop(`onProgress`)({played: 1, playedSeconds: 0})
-			// wrapper.find(`.play-btn`).prop(`onClick`)()
-			// wrapper.find(`.play-btn`).prop(`onClick`)()
-			// wrapper.find(`.mute`).prop(`onClick`)()
+			// wrapper.find(`ReactPlayer`).prop(`onProgress`)({played: 1, playedSeconds: 0})
+			wrapper.find(`.play-btn`).prop(`onClick`)()
+			wrapper.find(`.play-btn`).prop(`onClick`)()
+			wrapper.find(`.mute`).prop(`onClick`)()
 			wrapper.find(`#time-bar`).prop(`onMouseLeave`)()
 			wrapper.find(`#timeBarProgress`).prop(`onClick`)({pageX: 10, currentTarget: { getBoundingClientRect: () => {
 				return {x: 100, y: 50, right: 10000}

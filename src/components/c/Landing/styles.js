@@ -29,6 +29,39 @@ export const Comets = styled.div`
 	}
 `
 
+export const AlertMessage = styled.div`
+	display: grid;
+	padding: 1vw;
+	width: 290px !important;
+	height: 90px !important;
+	font-size: 12px;
+	position: absolute;
+	top: 0%;
+	border: 1px solid black;
+	border-radius: 4px;
+
+	background-color: #FCFCFC;
+	visibility: visible;
+
+	& div {
+		text-align: center;
+	}
+
+	& button {
+		font-size: 1rem;
+		background: transparent;
+
+		position: absolute;
+		top: 65%;
+		left: 80%;
+		display: inline-block;
+		cursor: pointer;
+		align: bottom-right;
+		cursor: pointer;
+	}
+
+`
+
 export const Welcome = styled.div`
 	position: fixed;
 	width: 100%;

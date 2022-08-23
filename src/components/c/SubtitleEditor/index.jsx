@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Prompt } from 'react-router'
-import Style, { Timeline, EventList, Icon } from './styles'
+// import { Prompt } from 'react-router'
+import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
-import * as Subtitle from 'subtitle'
+// import * as Subtitle from 'subtitle'
+import {parse} from 'subtitle'
 
+import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 
@@ -18,7 +20,6 @@ import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
 
 const SubtitleEditor = props => {
-
 	const { setEvents, updateContent, createSub, setAllSubs, activeUpdate, deleteSubtitles } = props
 
 	const {
@@ -29,10 +30,10 @@ const SubtitleEditor = props => {
 		showSideEditor,
 	} = props.viewstate
 
-	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor } = props.handlers
+	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor, handleNavigation } = props.handlers
 	const layers = [{0: `Skip`}]
 
-	const [isLoading,setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
@@ -41,15 +42,16 @@ const SubtitleEditor = props => {
 	const [timelineMinimized, setTimelineMinimized] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [eventListMinimized, setEventListMinimized] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0)
+	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
 	const [subChanges, setSubChanges] = useState(0)
-	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
@@ -57,11 +59,21 @@ const SubtitleEditor = props => {
 	const [scrollSub, setScrollSub] = useState(null)
 	const [eventSeek, setEventSeek] = useState(false)
 	const [eventPosition, setEventPosition] = useState(0)
+	const [newSub, setNewSub] = useState({trueFalse: false, index: null})
+	const [invalidSubs, setInvalidSubs] = useState([])
+	const [showPrompt, confirmNavigation, cancelNavigation] =
+		useCallbackPrompt(blockLeave)
 	// refs
 	const scrollRef = useRef()
 
 	useEffect(() => {
-		function handleResize() {
+		if (showPrompt)
+			handleNavigation(confirmNavigation, cancelNavigation)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showPrompt])
+
+	useEffect(() => {
+		const handleResize = () => {
 			setZoomFactor(0)
 			setWidth(0)
 			setZoomFactor(1)
@@ -75,9 +87,8 @@ const SubtitleEditor = props => {
 		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
 		if(eventsArray !== undefined && eventsArray.length > 0){
 			eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
-			largestLayer = eventsArray[eventsArray.length-1].layer
+			largestLayer = eventsArray[eventsArray.length - 1].layer
 		}
-
 		// Find the largest layer number
 		const initialLayers = []
 
@@ -86,11 +97,15 @@ const SubtitleEditor = props => {
 
 		setEvents(allEvents)
 		if(subtitles[0] && !showSideEditor){
-			if (subtitles[0][`content`][0])
-				openSubEditor(0,0)
+			if(subtitles[0].content[0])
+				openSubEditor(0, 0)
 		}
 		if(document.getElementById(`blankContainer`))
 			document.getElementById(`blankContainer`).style.width = `100%`
+
+		handleNewSub()
+		handleInvalidSubs()
+
 		if(blockLeave)
 			window.onbeforeunload = () => true
 		else
@@ -100,7 +115,7 @@ const SubtitleEditor = props => {
 			window.onbeforeunload = undefined
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [eventsArray, blockLeave, isEdit,subtitles])
+	}, [eventsArray, blockLeave, isEdit, subtitles, subLayerToEdit, invalidSubs])
 	// end of useEffect
 
 	const getVideoDuration = (duration) => {
@@ -108,9 +123,9 @@ const SubtitleEditor = props => {
 		const tempSubs = subs
 		for (let i = 0; i < tempSubs.length; i++){
 			try {
-				tempSubs[i][`content`] = JSON.parse(tempSubs[i][`content`])
+				tempSubs[i].content = JSON.parse(tempSubs[i].content)
 			} catch (e){
-				tempSubs[i][`content`] = []
+				tempSubs[i].content = []
 			}
 		}
 
@@ -119,33 +134,30 @@ const SubtitleEditor = props => {
 	}
 	const deleteSub = (index) => {
 		const currentSubs = [...subtitles]
-		currentSubs[subLayerToEdit][`content`].splice(index,1)
+		currentSubs[subLayerToEdit].content.splice(index, 1)
 		setSubs(currentSubs)
 		setAllSubs(currentSubs)
 
-		if(currentSubs[subLayerToEdit][`content`].length === 0 || currentSubs[subLayerToEdit][`content`].length === 1)
+		if(currentSubs[subLayerToEdit].content.length === 0 || currentSubs[subLayerToEdit].content.length === 1)
 			setSubToEdit(0)
-		else if(currentSubs[subLayerToEdit][`content`].length === index)
-			setSubToEdit(index-1)
+		else if(currentSubs[subLayerToEdit].content.length === index)
+			setSubToEdit(index - 1)
 		else
 			setSubToEdit(index)
 
 		checkSubError(currentSubs, `delete`, index)
 		setBlock(true)
 	}
-	const openSubEditor = (layerIndex,subIndex) => {
-		const t1 = performance.now() // eslint-disable-line no-unused-vars
+	const openSubEditor = (layerIndex, subIndex) => {
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
 		setSideEditor(true)
-		const t2 = performance.now() // eslint-disable-line no-unused-vars
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active)
-			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight*0.5
+			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight * 0.5
 
-		// console.log(`side editor`, t2-t1)
 	}
 	const closeSideEditor = () => {
 		setSideEditor(false)
@@ -168,27 +180,19 @@ const SubtitleEditor = props => {
 
 	const handleZoomChange = (e, d) => {
 		toggleTip()
-		if(d.x < zoomFactor){
-			if(d.x === 0){
-				setZoomFactor(0)
-				setWidth(0)
-				handleScrollFactor(0)
-			} else {
-				setZoomFactor(d.x)
-				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-			}
-		} else if(d.x > zoomFactor) {
-			setZoomFactor(d.x)
-			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+		let width = 0
+		if(document.getElementsByClassName(`eventsbox`)[0]){
+			const eventsBoxWidth = document.getElementsByClassName(`eventsbox`)[0].offsetWidth
+			width = d.x * videoLength/10
+			setWidth(width)
+			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
+			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
+				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventsBoxWidth + width))
 		}
-		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
-			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
-
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
-		if(document.getElementsByClassName(`layer-container`) !== undefined){
+		if(document.getElementsByClassName(`layer-container`) !== undefined && document.getElementById(`zoom-scroll-container`)){
 			const scrubber = document.getElementById(`time-bar`)
 			const scrubberShadow = document.getElementById(`time-bar-shadow`) // eslint-disable-line no-unused-vars
 			const timeIndicator = document.getElementById(`time-indicator-container`)
@@ -196,27 +200,10 @@ const SubtitleEditor = props => {
 			const skipLayer = document.getElementById(`layer-skip`)
 			let currentLayerWidth
 
-			if(document.getElementsByClassName(`events`).length > 1)
+			if(document.getElementsByClassName(`events`).length >= 1)
 				currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
 			else
 				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
-
-			// if(!zoom){
-			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-			// 	})
-			// } else {
-			// 	scrubber.scrollLeft = currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
-			// 	})
-			// }
-
 			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
 			const dis = direction/scrollBarContainer
@@ -230,101 +217,168 @@ const SubtitleEditor = props => {
 		}
 	}
 
-	const updateSubs = (index, sub, subLayerIndex, side, type) => {
-		const t1 = performance.now() // eslint-disable-line no-unused-vars
+	const updateSubs = (index, sub, subLayerIndex, side, type, trackId) => {
 		const tempSubs = [...subtitles]
 		const currentSubs = tempSubs[subLayerIndex]
 		let needCheck = true
-		const t1_1 = performance.now() // eslint-disable-line no-unused-vars
 		try {
 			if(side === `beg`) {
 				if(sub.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
 					sub.start = convertToSeconds(sub.start, videoLength)
-					document.getElementById(`subStart${index}`).style.border=null
-				}else {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck = false
-				}
-			}
-			else if (side === `end`) {
-				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`) {
-					sub.end = convertToSeconds(sub.end, videoLength)
-					document.getElementById(`subEnd${index}`).style.border=null
+					if(invalidSubs.length > 0) {
+						invalidSubs.forEach(invalidSub => {
+							if(invalidSub.trackId === trackId && invalidSub.index === index)
+								invalidSub.invalidParts.start = false
+						})
+					}
 				} else {
-					document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 					needCheck = false
+
+					let newNeeded = false
+					if(invalidSubs.length > 0) {
+						invalidSubs.forEach(invalidSub => {
+							if(invalidSub.trackId === trackId && invalidSub.index === index) {
+								invalidSub.invalidParts.start = true
+								newNeeded = false
+							} else
+								newNeeded = true
+						})
+						if(newNeeded)
+							setInvalidSubs([...invalidSubs, {trackId: currentSubs.id, index, invalidParts: {start: true, end: false, text: false}}])
+					} else
+						setInvalidSubs([{trackId: currentSubs.id, index, invalidParts: {start: true, end: false, text: false}}])
+				}
+			} else if(side === `end`) {
+				if(sub.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || sub.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`){
+					sub.end = convertToSeconds(sub.end, videoLength)
+					if(invalidSubs.length > 0) {
+						invalidSubs.forEach(invalidSub => {
+							if(invalidSub.trackId === trackId && invalidSub.index === index)
+								invalidSub.invalidParts.end = false
+						})
+					}
+				} else {
+					needCheck = false
+
+					let newNeeded = false
+					if(invalidSubs.length > 0) {
+						invalidSubs.forEach(invalidSub => {
+							if(invalidSub.trackId === trackId && invalidSub.index === index) {
+								invalidSub.invalidParts.end = true
+								newNeeded = false
+							} else
+								newNeeded = true
+						})
+						if(newNeeded)
+							setInvalidSubs([...invalidSubs, {trackId: currentSubs.id, index, invalidParts: {start: false, end: true, text: false}}])
+					} else
+						setInvalidSubs([{trackId: currentSubs.id, index, invalidParts: {start: false, end: true, text: false}}])
 				}
 			}
+			if(sub.text !== `` || undefined || null) {
+				if(invalidSubs.length > 0) {
+					invalidSubs.forEach(invalidSub => {
+						if(invalidSub.trackId === trackId && invalidSub.index === index)
+							invalidSub.invalidParts.text = false
+					})
+				}
+			} else {
+				needCheck = false
+
+				let newNeeded = false
+				if(invalidSubs.length > 0) {
+					invalidSubs.forEach(invalidSub => {
+						if(invalidSub.trackId === trackId && invalidSub.index === index) {
+							invalidSub.invalidParts.text = true
+							newNeeded = false
+						} else
+							newNeeded = true
+					})
+					if(newNeeded)
+						setInvalidSubs([...invalidSubs, {trackId: currentSubs.id, index, invalidParts: {start: false, end: false, text: true}}])
+				} else
+					setInvalidSubs([{trackId: currentSubs.id, index, invalidParts: {start: false, end: false, text: true}}])
+			}
+
 		} catch (e) {
 			console.error(`updateSubs error`, e) // eslint-disable-line no-console
 		}
-		if(side===`beg` && needCheck === true) {
-			if(sub.start===``){
-				document.getElementById(`subStart${index}`).style.border=`2px solid red`
-				needCheck=false
-			} else {
-				if(sub.start < 0) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
-				} else if(sub.start >= videoLength) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
-				} else if(sub.start >= sub.end) {
-					document.getElementById(`subStart${index}`).style.border=`2px solid red`
-					needCheck=false
-				} else {
-					if(index !==0) {
-						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
-							document.getElementById(`subStart${index}`).style.border=`2px solid red`
-							needCheck=false
-						}
-					}
-				}
-			}
-		} else if(side===`end` && needCheck === true) {
-			// check end
-			if(sub.end===``) {
-				document.getElementById(`subEnd${index}`).style.border=`2px solid red`
-				needCheck=false
-			} else {
-				if(needCheck ===true) {
-					if(sub.end < 0){
-						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
-						document.getElementById(`subStart${index}`).style.border=``
-						needCheck=false
-					} else if(sub.end >= videoLength) {
-						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
-						document.getElementById(`subStart${index}`).style.border=``
-						needCheck=false
-					} else if(sub.end <= sub.start){
-						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
-						document.getElementById(`subStart${index}`).style.border=``
-						needCheck=false
-					} else {
-						if(index !== tempSubs[subLayerIndex][`content`].length-1) {
-							if(sub.end > tempSubs[subLayerIndex][`content`][index+1].start){
-								document.getElementById(`subEnd${index}`).style.border=`2px solid red`
-								document.getElementById(`subStart${index}`).style.border=``
-								needCheck=false
-							}
-						}
-					}
-				}
-			}
-		}
-		const t3_1 = performance.now() // eslint-disable-line no-unused-vars
+		if(side === `beg` && needCheck === true) {
+			// check start
+			let match = false
+			let newNeeded = true
+			let error = false
 
-		if(needCheck)
-			setDisableSave(false)
-			// checkSubError(tempSubs, `update`, index, updateSub)
-		else
-			setDisableSave(true)
-		currentSubs[`content`][index] = sub
+			if(sub.start === ``)
+				error = true
+			else {
+				if(sub.start < 0)
+					error = true
+				else if(sub.start >= videoLength)
+					error = true
+				else if(sub.start >= sub.end)
+					error = true
+				else {
+					if(index !== 0) {
+						if(sub.start < tempSubs[subLayerIndex].content[index - 1].end)
+							error = true
+					}
+				}
+			}
+			invalidSubs.forEach(invalidSub => {
+				if(invalidSub.trackId === trackId && invalidSub.index === index) {
+					match = true
+					newNeeded = false
+				} else
+					newNeeded = true
+				if(error && match)
+					invalidSub.invalidParts.start = true
+			})
+			if(newNeeded && error)
+				setInvalidSubs([...invalidSubs, {trackId: currentSubs.id, index, invalidParts: {start: true, end: false, text: false}}])
+		} else if(side === `end` && needCheck === true) {
+			// check end
+			let match = false
+			let newNeeded = true
+			let error = false
+
+			if(sub.end === ``)
+				error = true
+			else {
+				if(sub.end < 0)
+					error = true
+				else if(sub.end >= videoLength)
+					error = true
+				else if(sub.end <= sub.start)
+					error = true
+				else {
+					if(index !== tempSubs[subLayerIndex].content.length - 1) {
+						if(sub.end > tempSubs[subLayerIndex].content[index + 1].start)
+							error = true
+					}
+				}
+			}
+
+			invalidSubs.forEach(invalidSub => {
+				if(invalidSub.trackId === trackId && invalidSub.index === index) {
+					match = true
+					newNeeded = false
+				} else
+					newNeeded = true
+
+				if(error && match)
+					invalidSub.invalidParts.end = true
+			})
+			if(newNeeded && error)
+				setInvalidSubs([...invalidSubs, {trackId: currentSubs.id, index, invalidParts: {start: false, end: true, text: false}}])
+		}
+
+		currentSubs.content[index] = sub
 		tempSubs[subLayerIndex] = currentSubs
 
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
-		setSubChanges(subChanges+1)
+		setSubChanges(subChanges + 1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
@@ -341,24 +395,24 @@ const SubtitleEditor = props => {
 		const addingTime = 2
 
 		try{
-			if(currentSubs[index][`content`].length ===0){
+			if(currentSubs[index].content.length === 0){
 				newSub = {
 					start: 0,
 					end: addingTime,
 					text: ``,
 				}
 
-				currentSubs[index][`content`].push(newSub)
+				currentSubs[index].content.push(newSub)
 				setSubToEdit(0)
 			} else {
 				if(position === `top`) {
 
-					if(currentSubs[index][`content`][subIndex].start <= 2) {
+					if(currentSubs[index].content[subIndex].start <= 2) {
 						subStart = 0
-						subEnd = currentSubs[index][`content`][subIndex].start
+						subEnd = currentSubs[index].content[subIndex].start
 					} else {
-						subStart = currentSubs[index][`content`][subIndex].start - addingTime
-						subEnd = currentSubs[index][`content`][subIndex].start
+						subStart = currentSubs[index].content[subIndex].start - addingTime
+						subEnd = currentSubs[index].content[subIndex].start
 					}
 
 					newSub = {
@@ -368,22 +422,22 @@ const SubtitleEditor = props => {
 					}
 					if(!isError) {
 						setSubToEdit(0)
-						currentSubs[index][`content`].unshift(newSub)
+						currentSubs[index].content.unshift(newSub)
 					}
 
 				} else {
-					if(subIndex !== currentSubs[index][`content`].length-1) {
-						const curEndTime = currentSubs[index][`content`][subIndex].end
-						const nextStartTime = currentSubs[index][`content`][subIndex+1].start
+					if(subIndex !== currentSubs[index].content.length - 1) {
+						const curEndTime = currentSubs[index].content[subIndex].end
+						const nextStartTime = currentSubs[index].content[subIndex + 1].start
 
 						if(curEndTime === nextStartTime)
 							isError = true
 						else if(nextStartTime-curEndTime > addingTime){
-							subStart = currentSubs[index][`content`][subIndex].end
-							subEnd = currentSubs[index][`content`][subIndex].end + addingTime
+							subStart = currentSubs[index].content[subIndex].end
+							subEnd = currentSubs[index].content[subIndex].end + addingTime
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end
-							subEnd = currentSubs[index][`content`][subIndex+1].start
+							subStart = currentSubs[index].content[subIndex].end
+							subEnd = currentSubs[index].content[subIndex + 1].start
 						}
 						newSub = {
 							start: subStart,
@@ -391,17 +445,17 @@ const SubtitleEditor = props => {
 							text: ``,
 						}
 						if(!isError)
-							currentSubs[index][`content`].splice(subIndex+1, 0, newSub)
+							currentSubs[index].content.splice(subIndex + 1, 0, newSub)
 
 					} else {
-						const curEndTime = currentSubs[index][`content`][subIndex].end
+						const curEndTime = currentSubs[index].content[subIndex].end
 
 						if(curEndTime + addingTime >= videoLength){
-							subStart = currentSubs[index][`content`][subIndex].end
+							subStart = currentSubs[index].content[subIndex].end
 							subEnd = videoLength
 						} else {
-							subStart = currentSubs[index][`content`][subIndex].end
-							subEnd = currentSubs[index][`content`][subIndex].end + addingTime
+							subStart = currentSubs[index].content[subIndex].end
+							subEnd = currentSubs[index].content[subIndex].end + addingTime
 						}
 
 						newSub = {
@@ -410,25 +464,83 @@ const SubtitleEditor = props => {
 							text: ``,
 						}
 						if(!isError) {
-							setSubToEdit(subIndex+1)
-							currentSubs[index][`content`].push(newSub)
-							setSubToEdit(subIndex+1)
+							setSubToEdit(subIndex + 1)
+							currentSubs[index].content.push(newSub)
+							setSubToEdit(subIndex + 1)
 							scrollToMyRef()
 						}
 					}
 				}
 			}
+
+			newSubSetter(subIndex + 1)
+			setInvalidSubs([...invalidSubs, {trackId: currentSubs[index].id, index: subIndex + 1, invalidParts: {start: false, end: false, text: true}}])
+
 			setSubLayerToEdit(index)
 			activeUpdate(index)
+
 			setSubs(currentSubs)
 			setAllSubs(currentSubs)
 			setBlock(true)
+
 		}catch(error) {
 			alert(`there was an error adding the subtitle`)
 			console.error(error) // eslint-disable-line no-console
 		}
-
 	}
+
+	const handleNewSub = () => {
+		if(newSub.trueFalse === false) {
+			if(subs.length > 0 && subLayerToEdit !== undefined) {
+				for(const i in subs[subLayerToEdit].content) {
+					if(document.getElementById(`subStart${i}`)) {
+						document.getElementById(`subStart${i}`).style.border = null
+						document.getElementById(`subEnd${i}`).style.border = null
+						document.getElementById(`subText${i}`).style.border = null
+					}
+				}
+			}
+		}
+
+		if(newSub.trueFalse === true)
+			setNewSub({trueFalse: false, index: null})
+	}
+
+	const handleInvalidSubs = () => {
+		let tempInvalidArray = []
+
+		if (invalidSubs.length > 0) {
+			invalidSubs.forEach((invalidSub, i) => {
+				if(!Object.values(invalidSub.invalidParts).includes(true))
+					setInvalidSubs(invalidSubs.filter((sub, j) => i !== j))
+			})
+		}
+		invalidSubs.forEach(sub => {
+			tempInvalidArray = [...tempInvalidArray, Object.entries(sub).map(([k, v]) => v)]
+		})
+		if(invalidSubs.length > 0) {
+			for(const i in subs[subLayerToEdit].content) {
+				for(const j in tempInvalidArray) {
+					if(subs[subLayerToEdit].id === tempInvalidArray[j][0] && parseFloat(i) === tempInvalidArray[j][1]) {
+
+						if(tempInvalidArray[j][2].start === true)
+							document.getElementById(`subStart${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+						if(tempInvalidArray[j][2].end === true)
+							document.getElementById(`subEnd${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+						if(tempInvalidArray[j][2].text === true)
+							document.getElementById(`subText${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+
+					}
+				}
+			}
+		}
+
+		if(invalidSubs.length === 0)
+			setDisableSave(false)
+		else
+			setDisableSave(true)
+	}
+
 	const handleAddSubLayer = () => {
 		if (subtitles === [] || !subtitles){
 			const tempSubList = []
@@ -446,13 +558,15 @@ const SubtitleEditor = props => {
 			const tempSub = {
 				title : ``,
 				language: ``,
-				content: [{start: 0, end: 2, text: ``}],
+				content: [{start: 0, end: 2, text: `Sample Text`}],
 				id: ``,
 			}
+			// handleSaveAnnotation()
 			tempSubList.push(tempSub)
 			setSubs(tempSubList)
 			setAllSubs(tempSubList)
 		}
+		newSubSetter(0)
 		openSubEditor(subtitles.length, 0)
 		setSideEditor(true)
 		setBlock(true)
@@ -461,8 +575,7 @@ const SubtitleEditor = props => {
 		try{
 			const reader = new FileReader()
 			reader.onload = (e) => {
-				const temp = Subtitle.parse(e.target.result)
-				// console.log(Subtitle.parse(e.target.result))
+				const temp = parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000
 					temp[i].end = temp[i].end /1000
@@ -491,7 +604,6 @@ const SubtitleEditor = props => {
 					}
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
-					// setAllSubs(tempSubList)
 				}else {
 					const tempSubList = [...subtitles]
 					const tempSub = {
@@ -521,9 +633,9 @@ const SubtitleEditor = props => {
 		closeSideEditor()
 		setSideEditor(false)
 		const tempSubs = [...subtitles]
-		if (tempSubs[index][`id`] !== `` && tempSubs[index][`id`] !== undefined){
+		if (tempSubs[index].id !== `` && tempSubs[index].id !== undefined){
 			const deleteSub = subLayersToDelete
-			deleteSub.push(tempSubs[index][`id`])
+			deleteSub.push(tempSubs[index].id)
 			setSubLayersToDelete(deleteSub)
 		}
 		tempSubs.splice(index, 1)
@@ -536,18 +648,18 @@ const SubtitleEditor = props => {
 			setIsEdit(false)
 
 		const temp = [...subtitles]
-		temp[subLayerToEdit][`title`] = title
+		temp[subLayerToEdit].title = title
 		setSubs(temp)
 		setAllSubs(temp)
 		setBlock(true)
 	}
 	const checkSub = () => {
-		if(subLayerToEdit === subtitles[subLayerToEdit].length-1)
-			return subtitles[0][`content`][0]
+		if(subLayerToEdit === subtitles[subLayerToEdit].length - 1)
+			return subtitles[0].content[0]
 		else
-			return subtitles[subLayerToEdit][`content`][subToEdit]
+			return subtitles[subLayerToEdit].content[subToEdit]
 	}
-	const handleChangeSubIndex = (index,subLayer) => {
+	const handleChangeSubIndex = (index, subLayer) => {
 		setSubToEdit(index)
 		setFocus(false)
 	}
@@ -561,61 +673,61 @@ const SubtitleEditor = props => {
 	}
 	const checkSubError = (subs, checking, index, updateSub) => {
 		let disable = true
-		for (let i = 0; i < subs[subLayerToEdit][`content`].length; i++) {
+		for (let i = 0; i < subs[subLayerToEdit].content.length; i++) {
 			let checkError = false
 			let curStart = 0
 			let curEnd = 0
 			let nextStart = 0
-			if(checking===`update` && i===index) {
-				if(updateSub.side ===`beg`) {
+			if(checking === `update` && i === index) {
+				if(updateSub.side === `beg`) {
 					curStart = updateSub.sub.start
-					curEnd = subs[subLayerToEdit][`content`][i].end
+					curEnd = subs[subLayerToEdit].content[i].end
 				} else {
-					curStart =subs[subLayerToEdit][`content`][i].start
+					curStart =subs[subLayerToEdit].content[i].start
 					curEnd = updateSub.sub.end
 				}
 			} else {
-				curStart =subs[subLayerToEdit][`content`][i].start
-				curEnd = subs[subLayerToEdit][`content`][i].end
+				curStart =subs[subLayerToEdit].content[i].start
+				curEnd = subs[subLayerToEdit].content[i].end
 			}
 
-			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd<=0 || curEnd>videoLength) {
+			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd <= 0 || curEnd>videoLength) {
 				checkError = true
 				disable = false
-				if(checking===`delete` && i>=index) {
-					if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
-						document.getElementById(`subStart${i}`).style.border=`2px solid red`
-						document.getElementById(`subStart${i+1}`).style.border=``
-					} else if(document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
-						document.getElementById(`subEnd${i}`).style.border=`2px solid red`
-						document.getElementById(`subEnd${i+1}`).style.border=``
+				if(checking === `delete` && i >= index) {
+					if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
+						document.getElementById(`subStart${i}`).style.border = `2px solid red`
+						document.getElementById(`subStart${i + 1}`).style.border = ``
+					} else if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
+						document.getElementById(`subEnd${i}`).style.border = `2px solid red`
+						document.getElementById(`subEnd${i + 1}`).style.border = ``
 					}
 				}
-			} else if(i !== subs[subLayerToEdit][`content`].length-1){
-				if(i===index-1 && checking===`update`)
+			} else if(i !== subs[subLayerToEdit].content.length - 1){
+				if(i === index - 1 && checking === `update`)
 					nextStart = updateSub.sub.start
 				else
-					nextStart = subs[subLayerToEdit][`content`][i+1].start
+					nextStart = subs[subLayerToEdit].content[i + 1].start
 
 				if(curEnd > nextStart) {
 					checkError = true
 					disable = false
-					if(checking===`delete` && i>=index) {
-						if(	document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
-							document.getElementById(`subEnd${i}`).style.border=`2px solid red`
-							document.getElementById(`subEnd${i+1}`).style.border=``
-						} else if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
-							document.getElementById(`subStart${i}`).style.border=`2px solid red`
-							document.getElementById(`subStart${i+1}`).style.border=``
-						} else if(i === subs[subLayerToEdit][`content`].length-2)
-							document.getElementById(`subStart${i+1}`).style.border=`2px solid red`
+					if(checking === `delete` && i >= index) {
+						if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
+							document.getElementById(`subEnd${i}`).style.border = `2px solid red`
+							document.getElementById(`subEnd${i + 1}`).style.border = ``
+						} else if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
+							document.getElementById(`subStart${i}`).style.border = `2px solid red`
+							document.getElementById(`subStart${i + 1}`).style.border = ``
+						} else if(i === subs[subLayerToEdit].content.length - 2)
+							document.getElementById(`subStart${i + 1}`).style.border = `2px solid red`
 					}
 				}
 			}
 			if(!checkError) {
 				if(document.getElementById(`subStart${i}`) && document.getElementById(`subStart${i}`).style){
-					document.getElementById(`subStart${i}`).style.border=``
-					document.getElementById(`subEnd${i}`).style.border=``
+					document.getElementById(`subStart${i}`).style.border = ``
+					document.getElementById(`subEnd${i}`).style.border = ``
 				}
 				setDisableSave(false)
 			}
@@ -635,7 +747,7 @@ const SubtitleEditor = props => {
 	}
 	const handleSubProgress = (currentTime) => {
 		let sub
-		if (subtitles.length !== 0){ // TODO: Come back to this if the subtitle editor starts having issues...
+		if (subtitles.length !== 0){
 			sub = subtitles[subLayerToEdit].content.findIndex((event) => currentTime > event.start && currentTime < event.end)
 			if (sub !== -1){
 				if (scrollSub !== sub){
@@ -653,11 +765,17 @@ const SubtitleEditor = props => {
 		setEventPosition(position)
 	}
 
+	const newSubSetter = (index) => {
+		setNewSub({trueFalse: true, index})
+	}
+
 	return (
 		<Style>
 			<span style={{ zIndex: 0 }}>
 				<VideoContainer
 					className='video'
+					isReady={isReady}
+					setIsReady={setIsReady}
 					url={props.viewstate.url}
 					getDuration={getVideoDuration}
 					getVideoTime={setCurrentTime} // set current time
@@ -674,6 +792,8 @@ const SubtitleEditor = props => {
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
 					eventPosition={eventPosition}
+					handleShowTip={handleShowTip}
+					toggleTip={toggleTip}
 				>
 				</VideoContainer>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -695,6 +815,18 @@ const SubtitleEditor = props => {
 									/>
 								</div>
 							))}
+							<div className={`layer`}>
+								<div className={`addtrack`}>
+									<div
+										className={`setSubModalVisible`}
+										onClick={ () => {
+											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile, window.onkeyup)
+										}}>
+										<p id={`editIcon`} style={{ fontWeight: 400, color: `white`, fontSize: `14px`, display: `flex` }}>Add Subtitle Track <PlusIcon /></p>
+									</div>
+								</div>
+							</div>
+
 							{subtitles.map((sub, index) => (
 								<div className={`layer`} key={index}>
 									<div className={`handle`} >
@@ -713,28 +845,33 @@ const SubtitleEditor = props => {
 											/>
 											{
 												subLayerToEdit === index && isEdit ?
-													<Icon className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
+													<Icon data-testid='editIcon' className={`saveIcon`} src={saveIcon} onClick={() => setIsEdit(false)}></Icon>
 													:
-													<Icon className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
+													<Icon data-testid='editIcon' className={`editIcon`} src={editIcon} onClick={() => handleEditSubTitle(index)}></Icon>
 											}
 										</div>
 										<Icon className={`trashIcon`} src={trashIcon}
-                      onClick={ () => {
-                        openSubModal(
-                          `delete`,
-                          sub.title !== `` ? sub.title : `No Language`,
-                          handleAddSubLayer,
-                          handleAddSubLayerFromFile,
-                          handleDeleteSubLayer,
-                          index,
-                        )
-										}}/>
+											onClick={ () => {
+												openSubModal(
+													``,
+													undefined,
+													`delete`,
+													sub.title !== `` ? sub.title : `No Language`,
+													handleAddSubLayer,
+													handleAddSubLayerFromFile,
+													window.onkeyup,
+													handleDeleteSubLayer,
+													index,
+												)
+											}}/>
 									</div>
 									<SubtitlesLayer
 										videoLength={videoLength}
 										minimized={eventListMinimized}
 										width={layerWidth}
-										subs={sub[`content`]}
+										setIsReady={setIsReady}
+										isReady={isReady}
+										subs={sub.content}
 										activeEvent={subToEdit}
 										layer={index}
 										index={subToEdit}
@@ -753,6 +890,8 @@ const SubtitleEditor = props => {
 									videoLength={videoLength}
 									minimized={eventListMinimized}
 									width={layerWidth}
+									isReady={isReady}
+									setIsReady={setIsReady}
 									subs={[]}
 									activeEvent={subToEdit}
 									layer={null}
@@ -764,30 +903,12 @@ const SubtitleEditor = props => {
 									handleEventPosition={handleEventPosition}
 									setEventSeek={setEventSeek}
 								/>
-
 							}
-							<div
-                style={
-                  {
-                    color: `#ffffff`,
-                    backgroundColor: `#0582ca`,
-                    borderRadius: `0.6rem`,
-                    width: `130px`,
-                    margin: `10px`,
-                    textAlign: `center`,
-                    padding: `5px`,
-                    cursor: `pointer`
-                   }
-                 }
-                 className={`setSubModalVisible`}
-                 onClick={ () => {
-								  openSubModal(`create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
-							   }}>
-								<p id={`editIcon`} style={{ fontWeight:700 }}>Add Subtitle Track +</p>
-							</div>
+
 						</div>
 
 					</section>
+
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
 						<div className='zoom-factor' id='zoom-factor'>
@@ -804,7 +925,7 @@ const SubtitleEditor = props => {
 										topRight: false,
 										bottomRight: false,
 										bottomLeft: false,
-										topLeft: false
+										topLeft: false,
 									}
 								}
 								dragAxis='x'
@@ -812,20 +933,20 @@ const SubtitleEditor = props => {
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,
-										y: e.target.getBoundingClientRect().y,
-										width: e.currentTarget.offsetWidth
+										y: e.target.getBoundingClientRect().y - 100,
+										width: e.currentTarget.offsetWidth,
 									})
 								}
-								onMouseLeave={e => toggleTip()}
+								onMouseLeave={() => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
 								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
-										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={
 											{
 												top: false,
@@ -835,11 +956,11 @@ const SubtitleEditor = props => {
 												topRight: false,
 												bottomRight: false,
 												bottomLeft: false,
-												topLeft: false
+												topLeft: false,
 											}
 										}
 										bounds = {`parent`}
-										onDrag = {(e,d)=>{
+										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
 									>
@@ -868,10 +989,10 @@ const SubtitleEditor = props => {
 							{
 								x: e.target.getBoundingClientRect().x,
 								y: e.target.getBoundingClientRect().y + 10,
-								width: e.currentTarget.offsetWidth
+								width: e.currentTarget.offsetWidth,
 							})
 						}
-						onMouseLeave={e => toggleTip()}
+						onMouseLeave={() => toggleTip()}
 					/>
 					<div className={`save`}>
 						{disableSave ?
@@ -917,10 +1038,10 @@ const SubtitleEditor = props => {
 				</>
 			</EventList>
 			<>
-				<Prompt
+				{/* <Prompt
 					when={blockLeave}
 					message='If you leave you will lose all your changes. Are you sure to leave without saving?'
-				/>
+				/> */}
 			</>
 		</Style>
 	)
