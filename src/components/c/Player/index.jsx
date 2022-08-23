@@ -4,7 +4,6 @@ import ReactPlayer from 'react-player'
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
 import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
-import { isIOS, isSafari } from 'react-device-detect'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
