@@ -17,6 +17,7 @@ export default class Player extends Component {
 		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
 		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
+		this.checkBrowser = this.props.viewstate.checkBrowser
 		this.state = {
 			skipArray: [],
 		}
@@ -27,6 +28,8 @@ export default class Player extends Component {
 		window.onkeyup = (e) => {
 			this.handleHotKeys(e)
 		}
+
+		this.checkBrowser()
 	}
 
 	componentWillUnmount(){
@@ -235,11 +238,6 @@ export default class Player extends Component {
 					return values.type === `Skip` // TODO: Make sure this is fine
 				})
 				this.setState({skipArray: eventFilterSkip})
-			}
-			if(!isChrome || isMobile) {
-				document.getElementById(`alertMessage`).style.visibility = `visible`
-				const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
-				document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
 			}
 		}
 
