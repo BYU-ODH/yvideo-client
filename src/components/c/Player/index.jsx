@@ -4,7 +4,6 @@ import ReactPlayer from 'react-player'
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
 import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
-import { isChrome } from 'react-device-detect'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
@@ -17,6 +16,7 @@ export default class Player extends Component {
 		this.handleToggleFullscreen = (bool) => this.props.handlers.handleToggleFullscreen(bool)
 		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
+		this.checkBrowser = () => this.props.handlers.checkBrowser
 		this.state = {
 			skipArray: [],
 		}
@@ -27,6 +27,8 @@ export default class Player extends Component {
 		window.onkeyup = (e) => {
 			this.handleHotKeys(e)
 		}
+
+		this.checkBrowser()
 	}
 
 	componentWillUnmount(){
@@ -226,7 +228,7 @@ export default class Player extends Component {
 			const t1 = performance.now()
 		}
 
-		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
+		const alertMessage = `Video playback does not currently work on iOS devices or the Safari browser. <br><br>`
 
 		const handleOnReady = () => {
 			handleAspectRatio()
@@ -235,11 +237,6 @@ export default class Player extends Component {
 					return values.type === `Skip` // TODO: Make sure this is fine
 				})
 				this.setState({skipArray: eventFilterSkip})
-			}
-			if(!isChrome || isMobile) {
-				document.getElementById(`alertMessage`).style.visibility = `visible`
-				const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
-				document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
 			}
 		}
 

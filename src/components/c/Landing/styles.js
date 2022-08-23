@@ -31,13 +31,12 @@ export const Comets = styled.div`
 
 export const AlertMessage = styled.div`
 	display: grid;
-	padding: 2vw;
-	width: 30vw !important;
-	height: 4vh !important;
+	padding: 1vw;
+	width: 290px !important;
+	height: 90px !important;
 	font-size: 12px;
 	position: absolute;
 	top: 0%;
-	left: 34%;
 	border: 1px solid black;
 	border-radius: 4px;
 
@@ -54,7 +53,7 @@ export const AlertMessage = styled.div`
 
 		position: absolute;
 		top: 65%;
-		left: 85%;
+		left: 80%;
 		display: inline-block;
 		cursor: pointer;
 		align: bottom-right;
