@@ -630,10 +630,11 @@ const PlayerContainer = props => {
 
 	const checkBrowser = () => {
 		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
-		if(isSafari || isIOS)
-		document.getElementById(`alertMessage`).style.visibility = `visible`
-		const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
-		document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
+		if(isSafari || isIOS) {
+			document.getElementById(`alertMessage`).style.visibility = `visible`
+			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
+			document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
+		}
 	}
 
 	const viewstate = {
