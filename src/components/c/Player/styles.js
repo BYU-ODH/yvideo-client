@@ -23,7 +23,6 @@ export const Style = styled.div`
 		height: 100%;
 		position: relative;
 		background-color: black;
-		height: 100%;
 	}
 `
 

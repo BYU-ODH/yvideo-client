@@ -55,7 +55,7 @@ const PlayerContainer = props => {
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
 	const [progress, setProgress] = useState(0)
-	const [playTime, setPlaytime] = useState(0)
+	const [playTime, setPlayTime] = useState(0)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	// eslint-disable-next-line no-unused-vars
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
@@ -73,6 +73,8 @@ const PlayerContainer = props => {
 	const [showSpeed, setShowSpeed] = useState(false)
 
 	const [subsObj, setSubsObj] = useState({})
+	const [fullyChecked, setFullyChecked] = useState(false)
+
 	const [enableScroll, setEnableScroll] = useState({action: null})
 	const [disableScroll, setDisableScroll] = useState({action: null})
 	const [scrollDisabled, setScrollDisabled] = useState(false)
@@ -197,10 +199,14 @@ const PlayerContainer = props => {
 			handleError()
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
-
 	useLayoutEffect(() => {
 		handleSubsObj()
 		handleScrollFuncs()
+
+		if (displaySubtitles === null)
+			setToggleTranscript(false)
+		else
+			setToggleTranscript(true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
 
@@ -273,53 +279,77 @@ const PlayerContainer = props => {
 	const handleProgress = progression => {
 		const dateElapsed = new Date(null)
 		dateElapsed.setSeconds(progression)
-		setPlaytime(dateElapsed.toISOString().substr(11, 8))
+		setPlayTime(dateElapsed.toISOString().substr(11, 8))
 		setProgress(progression)
 
 		handleSubtitles(progression)
-		const subContainer = document.getElementById(`subtitles-container`)
 
-		if(subContainer && subsObj !== {}) {
+		const subContainer = document.getElementById(`subtitles-container`)
+		if(subContainer && Object.keys(subsObj).length !== 0) {
 			if(subtitleTextIndex === undefined)
 				return
 			else
-				subContainer.scrollTo(0, subsObj[subtitleTextIndex].distanceDownTranscript)
+				subContainer.scrollTo({top: subsObj[subtitleTextIndex].distanceDownTranscript})
 		}
 	}
 
 	const handleSubtitles = (progression) => {
 		const entries = Object.entries(subsObj)
 		const progressPercent = progression * 100 / duration
+		if(fullyChecked) {
 
-		for (const i in entries) {
-			const numIndex = parseFloat(i)
-			if (numIndex < entries.length - 1) { // if not last entry
-				if (progressPercent < parseFloat(entries[0][1].percentPlayed)) { // if progress is less than first entry
-					setSubtitleTextIndex(undefined)
-					setSubtitleText(undefined)
-					return
-				}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
-					setSubtitleTextIndex(numIndex)
-					setSubtitleText(entries[numIndex][1].text)
-					return
-				}
-			} else if (numIndex === entries.length - 1) { // if last entry
-				if(entries.length === 1) { // if only one entry
-					setSubtitleTextIndex(0)
-					setSubtitleText(entries[numIndex][1].text)
-					return
-				} else { // if last entry and there is more than one entry
-					if(progressPercent <= entries[numIndex][1].percentPlayed && progression > entries[i - 1][1].percentPlayed) {
+			const closeCheck = subtitleTextIndex === undefined || subtitleTextIndex === 0 ?
+				{prevEntry: null, nextEntry: entries[1] ? entries[1][1] : null}
+				:
+				subtitleTextIndex === entries.length - 1 ?
+					{prevEntry: entries[subtitleTextIndex - 1][1], nextEntry: null}
+					:
+					{prevEntry: entries[subtitleTextIndex - 1][1], nextEntry: entries[subtitleTextIndex + 1][1]}
+
+			if(closeCheck.prevEntry !== null && progressPercent < parseFloat(closeCheck.prevEntry.percentPlayed)) {
+				setSubtitleTextIndex(subtitleTextIndex - 1)
+				setSubtitleText(closeCheck.prevEntry.text)
+			}else if(closeCheck.nextEntry !== null && progressPercent > parseFloat(closeCheck.nextEntry.percentPlayed)) {
+				setSubtitleTextIndex(subtitleTextIndex + 1)
+				setSubtitleText(closeCheck.nextEntry.text)
+			}else return
+
+		}else {
+			for (const i in entries) {
+				const numIndex = parseFloat(i)
+				if (numIndex < entries.length - 1) { // if not last entry
+					if (progressPercent < parseFloat(entries[0][1].percentPlayed)) { // if progress is less than first entry
+						setSubtitleTextIndex(undefined)
+						setSubtitleText(undefined)
+						setFullyChecked(true) // these are fine because this won't take effect until the function is left
+						return
+					}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
 						setSubtitleTextIndex(numIndex)
 						setSubtitleText(entries[numIndex][1].text)
+						setFullyChecked(true)
 						return
+					}
+				} else if (numIndex === entries.length - 1) { // if last entry
+					if(entries.length === 1) { // if only one entry
+						setSubtitleTextIndex(0)
+						setSubtitleText(entries[numIndex][1].text)
+						setFullyChecked(true)
+						return
+					} else { // if last entry and there is more than one entry
+						if(progressPercent > entries[numIndex][1].percentPlayed) {
+							setSubtitleTextIndex(numIndex)
+							setSubtitleText(entries[numIndex][1].text)
+							setFullyChecked(true)
+							return
+						}
 					}
 				}
 			}
 		}
 	}
 
-	const handleSeekChange = (e, time, newIndex, newText) => {
+	const handleSeekChange = (e, time) => {
+		setFullyChecked(false)
 		toggleTip()
 		// reset events
 		//* *TIME SHOULD BE A PERCENTAGE INSTEAD OF SECONDS */
@@ -402,17 +432,12 @@ const PlayerContainer = props => {
 	const handleSubsObj = () => {
 		if(displaySubtitles && duration) {
 			let temp = {}
-			const heights = [26.8, 46.8, 60.4, 77.2]
+			const navbarHeight = document.getElementById(`navbar`).getBoundingClientRect().height
 			for (const i in displaySubtitles.content) {
 				const numIndex = parseFloat(i)
-				if(displaySubtitles.content[i].text.length <= 55) // these numbers are the average amount of characters in a line of text
-					temp = handleTempObj(temp, numIndex, heights, 0)
-				else if(displaySubtitles.content[i].text.length >= 55 && displaySubtitles.content[i].text.length < 100)
-					temp = handleTempObj(temp, numIndex, heights, 1)
-				else if(displaySubtitles.content[i].text.length >= 100 && displaySubtitles.content[i].text.length < 150)
-					temp = handleTempObj(temp, numIndex, heights, 2)
-				else if(displaySubtitles.content[i].text.length >= 150)
-					temp = handleTempObj(temp, numIndex, heights, 3)
+				const elementYPos = document.getElementById(`t-row-${i}`).getBoundingClientRect().y
+
+				temp = handleTempObj(temp, numIndex, navbarHeight, elementYPos)
 			}
 			setSubsObj(temp)
 		}
@@ -435,16 +460,14 @@ const PlayerContainer = props => {
 		setSubtitleText(value)
 	}
 
-	const handleTempObj = (temp, loopIndex, heightsArray, heightsIndex) => {
+	const handleTempObj = (temp, loopIndex, navbarHeight, yPos) => {
+		const containerHeightFourth = document.getElementById(`subtitles-container`).getBoundingClientRect().height * .25
 		return (
 			{...temp,
 				[loopIndex]: {
 					text: displaySubtitles.content[loopIndex].text,
 					percentPlayed: displaySubtitles.content[loopIndex].start * 100 / duration,
-					distanceDownTranscript: loopIndex === 0 ?
-						Math.round(heightsArray[heightsIndex] - 100)
-						:
-						Math.round(temp[loopIndex - 1].distanceDownTranscript + heightsArray[heightsIndex]),
+					distanceDownTranscript: yPos - navbarHeight - containerHeightFourth,
 				},
 			}
 		)
@@ -476,22 +499,27 @@ const PlayerContainer = props => {
 			return
 		}
 
+		const subsContainer = document.getElementById(`subtitles-container`)
 		const wheelEvent = `onwheel` in document.createElement(`div`) ? `wheel` : `mousewheel`
 		const wheelOpt = supportsPassive ? { passive: false } : false
-		const subsContainer = document.getElementById(`subtitles-container`)
 
 		setDisableScroll({action: () => {
 			subsContainer.addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
 			subsContainer.addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
 			subsContainer.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
-			subsContainer.addEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			subsContainer.onkeyup = e => preventDefaultForScrollKeys(e)
+			subsContainer.onauxclick = () => { return false } // eslint-disable-line brace-style
+			subsContainer.oncontextmenu = () => { return false } // eslint-disable-line brace-style
+			subsContainer.onScroll = 	() => { return false } // eslint-disable-line brace-style
 			setScrollDisabled(true)
 		}})
 		setEnableScroll({action: () => {
 			subsContainer.removeEventListener(`DOMMouseScroll`, preventDefault, false)
 			subsContainer.removeEventListener(wheelEvent, preventDefault, wheelOpt)
 			subsContainer.removeEventListener(`touchmove`, preventDefault, wheelOpt)
-			subsContainer.removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			subsContainer.onkeyup = null
+			subsContainer.onauxclick = null
+			subsContainer.oncontextmenu = null
 			setScrollDisabled(false)
 		}})
 	}
@@ -546,8 +574,7 @@ const PlayerContainer = props => {
 		}
 
 		const start = displaySubtitles.content[seekToIndex].start
-		const text = displaySubtitles.content[seekToIndex].text
-		handleSeekChange(null, start + start * .0000001, seekToIndex, text)
+		handleSeekChange(null, start + start * .0000001)
 	}
 
 	const handleChangeSpeed = () => {
@@ -598,9 +625,10 @@ const PlayerContainer = props => {
 			censor.style.width = `${width}px`
 		}
 	}
+
 	// TODO: This might break, what it was before was
-	// (displaySubtitles == null && content != undefined)
-	if(displaySubtitles === null && content){
+	if (displaySubtitles === null && content !== undefined) {
+	// if(displaySubtitles === null && content){
 
 		// This statement prevents displaySubtitles from being null.
 		// If displaySubtitles is null then the transcript list will be empty and no subtitles will be passed to the PlayerSubtitlesContainer
