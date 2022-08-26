@@ -98,13 +98,14 @@ export const PublishButton = styled.button`
 `
 
 export const ArchiveButton = styled.button`
-  color: var(--red);
+  color: ${props => props.archived ? `var(--red)` : `white`};
 	border: 3px solid var(--red);
   font-weight: bold;
-	background-color: white;
+	background-color: ${props => props.archived ? `white` : `var(--red)`};
 
 	:hover {
-		background-color: var(--red);
+		background-color: ${props => props.archived ? `var(--red)` : `var(--dark-red)`};
+		border-color: ${props => props.archived ? `var(--red)` : `var(--dark-red)`};
 		color: white;
 	}
 
