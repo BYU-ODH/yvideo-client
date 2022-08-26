@@ -149,7 +149,7 @@ export default class Player extends Component {
 					:
 					`calc(${played * 100}% - 2px)`
 			}
-			if(subtitles.content.length > 0)
+			if(subtitles && subtitles.content.length > 0)
 				HandleSubtitle(playedSeconds, subtitles, 0, duration)
 
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
@@ -291,8 +291,9 @@ export default class Player extends Component {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
-							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}
-							<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles>
+							{displaySubtitles !== null &&
+								<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
+							}
 							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
 							</div>
 							<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
