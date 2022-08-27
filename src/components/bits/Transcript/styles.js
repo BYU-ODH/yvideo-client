@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 export const Style = styled.div`
 	position: ${props => props.isMobile ? `fixed` : `relative`};
-	/* position: relative; */
 	width: ${props => props.displayTranscript
 		? props.isMobile
 			? `calc(100vw)`
@@ -11,7 +10,7 @@ export const Style = styled.div`
 			? `0rem`
 			: `2rem`};
 	height: 100%;
-	padding: ${props => props.isMobile ? `0px` : `0px 10px 0px 10px`};
+	padding: ${props => props.isMobile ? `0px` : `6px 10px 0px 10px`};
 	border-top: 1px solid #c4c4c4;
 	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
@@ -49,12 +48,10 @@ export const Style = styled.div`
 		opacity: ${props => props.displayTranscript ? 1 : 0};
 		transition: opacity .5s ease;
 		margin-left: 45px;
-		/* height: calc(100vh - 84px); */
 		overflow-y: scroll !important;
 		background-color: white;
 		width: calc(100% - 35px);
 		height: 70vh;
-		/* border: 1px solid black; */
 		::-webkit-scrollbar {
 			display: block !important;
 			width: 20px;
