@@ -27,7 +27,7 @@ const ManageCollectionContainer = props => {
 
 	const [isContentTab, setIsContentTab] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
-	const [collectionName, setCollectionName] = useState(collection.name)
+	const [collectionName, setCollectionName] = useState(``)
 	const [isEdited, setIsEdited] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 
