@@ -10,7 +10,7 @@
 	},
 	"engines": {
     "node": "14.x" ,
-    "npm": "8.x"
+    "npm": "6.x"
   },
 	"jest": {
 		"transform": {
