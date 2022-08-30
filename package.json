@@ -8,6 +8,10 @@
 		"test": "eslint src/**/*.* --fix && react-scripts test",
 		"lint": "eslint src/**/*.* --fix"
 	},
+	"engines": {
+    "node": "14.x" ,
+    "npm": "8.x"
+  },
 	"jest": {
 		"transform": {
 			"^.+\\.[t|j]sx?$": "babel-jest"
