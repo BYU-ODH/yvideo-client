@@ -8,8 +8,6 @@ import userEvent from '@testing-library/user-event'
 const skipProps = {
 	duration: 1000,
 	skipArray: [
-		// { start: 0, end: 100, type: 'skip' },
-		// { start: 400, end: 900, type: 'skip' },
 		{ start: 0, end: 990, type: `skip` },
 	],
 	handleClick: jest.fn(),
