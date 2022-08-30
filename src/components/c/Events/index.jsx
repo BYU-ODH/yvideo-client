@@ -6,7 +6,7 @@ const Events = props => {
 
 	return (
 		<>
-			<p style={{visibility: `hidden`}} testid='eventTest'>{currentTime}{JSON.stringify(eventClassArray)}</p>
+			<p style={{visibility: `hidden`}}>{currentTime}{JSON.stringify(eventClassArray)}</p>
 		</>
 	)
 }
