@@ -1,4 +1,3 @@
-// stock-test: will be updated in like 1 day to be a real te
 import React from 'react';
 import Scrubber from '../../../../components/bits/Scrubber'
 import { render, screen, cleanup} from '@testing-library/react'
