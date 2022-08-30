@@ -60,7 +60,7 @@ const MenuContainer = props => {
 		initials: getInitials(user.name),
 		menuActive,
 		isProf: user.roles === 2,
-		isAdmin:user.roles === 0,
+		isAdmin: user.roles === 0,
 		isLab: user.roles === 1,
 		editorStyle,
 	}

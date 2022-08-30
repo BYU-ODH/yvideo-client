@@ -24,7 +24,8 @@ const ClipLayer = props => {
 			top: `0px`,
 			backgroundColor:`#fff`,
 			border:`1px solid #0582ca`,
-			color:`#000`,fontSize:`1.3rem`,
+			color:`#000`,
+			fontSize:`1.3rem`,
 			justifyContent:`center`,
 			alignItems:`center`,
 		}
@@ -50,8 +51,8 @@ const ClipLayer = props => {
 		else if (width === 0)
 			setLayerWidth(initialWidth)
 		else
-			setLayerWidth(layerWidth + width)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+			setLayerWidth(initialWidth + width)
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
 	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
@@ -61,7 +62,16 @@ const ClipLayer = props => {
 	}
 
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
-	const Enable = {top:false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
+	const Enable = {
+		top: false,
+		right: true,
+		bottom: false,
+		left: true,
+		topRight: false,
+		bottomRight: false,
+		bottomLeft: false,
+		topLeft: false,
+	}
 	// Drag within the layer
 	const handleDrag = (d) => {
 
@@ -76,8 +86,8 @@ const ClipLayer = props => {
 		if(s < 0)
 			s = 0
 		// call handler from parent
-		setStart(s,null,clipName)
-		setEnd(e,null,clipName)
+		setStart(s, null, clipName)
+		setEnd(e, null, clipName)
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e ) => {
@@ -95,12 +105,12 @@ const ClipLayer = props => {
 			if(s < 0)
 				s = 0
 			else if(s > videoLength){
-				s = videoLength-30
+				s = videoLength - 30
 				en = videoLength
 			}
 		}
-		setStart(s,null,clipName)
-		setEnd(en,null,clipName)
+		setStart(s, null, clipName)
+		setEnd(en, null, clipName)
 	}
 	// eslint-disable-next-line no-unused-vars
 	const curr = {...dragRef.current}
@@ -113,11 +123,11 @@ const ClipLayer = props => {
 						<Rnd
 							ref={dragRef}
 							className={`Rnd`}
-							data-testid={`Rnd`}
-							size={{width: `${(end - start)/videoLength * layerWidth}px`, height: `46px`}}
+							data-testid='Rnd'
+							size={{width: `${(end - start) / videoLength * layerWidth}px`, height: `46px`}}
 							position={
 								{
-									x: start/videoLength * layerWidth === Infinity || isNaN(start/videoLength * layerWidth) ? 0 : start/videoLength * layerWidth ,
+									x: start / videoLength * layerWidth === Infinity || isNaN(start / videoLength * layerWidth) ? 0 : start / videoLength * layerWidth ,
 									y: 0,
 								}}
 							enableResizing={Enable}
@@ -127,7 +137,7 @@ const ClipLayer = props => {
 
 								handleDrag(d)
 							}}
-							onClick = {()=>handleEditClip(clipName,index)}
+							onClick = {() => handleEditClip(clipName, index)}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
 							key={`clip-${clipName}`}
 							style={style}

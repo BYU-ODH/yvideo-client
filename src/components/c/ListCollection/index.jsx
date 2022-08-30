@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import { ListItem, ListItemDropDown } from 'components/bits'
+import * as sortingRegex from 'components/vanilla_scripts/sorting_regex'
 
 import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsTable } from './styles'
 
@@ -31,7 +32,7 @@ class ListCollection extends PureComponent {
 
 		const publishContent = content ? content.filter(item => item.published) : []
 		publishContent.sort((a, b) => {
-			return a.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) > b.name.toLowerCase().replace(/(?:an?|the)? ?(.*)/, `$1`) ?
+			return a.name.toLowerCase().replace(sortingRegex, `$1`) > b.name.toLowerCase().replace(sortingRegex, `$1`) ?
 				1 : -1
 		})
 		const count = publishContent.length

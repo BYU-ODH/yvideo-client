@@ -39,7 +39,7 @@ const props = {
 	viewstate,
 	jsonResponse: {} ,
 	translate: ``,
-	languageCodes:{},
+	languageCodes: {},
 }
 
 describe(`Transcript test`, () => {

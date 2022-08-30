@@ -14,7 +14,7 @@ const collection2 = testutil.collection2
 const collection3 = testutil.collection3
 
 const collectionChangedState = {
-	0:{
+	0: {
 		archived: false,
 		content: [],
 		id: 0,
@@ -35,7 +35,7 @@ const collectionChangedState = {
 }
 
 const newCollection = {
-	0:{
+	0: {
 		archived: false,
 		content: [],
 		id: 0,
@@ -51,7 +51,7 @@ const courses = [ // eslint-disable-line no-unused-vars
 		catalogNumber: 122,
 		department: `ACC`,
 		id: `course id`,
-		sectionNumber:12,
+		sectionNumber: 12,
 	},
 ]
 
@@ -60,26 +60,26 @@ const newCourses = [ // eslint-disable-line no-unused-vars
 		catalogNumber: 123,
 		department: `ENG`,
 		id: 13,
-		sectionNumber:12,
+		sectionNumber: 12,
 	},
 ]
 
 const admins = [ // eslint-disable-line no-unused-vars
 	{
-		id:22,
+		id: 22,
 		username: `testusername`,
-		name:`testname`,
-		email:`test@test.com`,
-		linked:-1,
+		name: `testname`,
+		email: `test@test.com`,
+		linked: -1,
 		roles: [`admin`],
-		lastLogin:`2020-05-29T20:45:58.551Z`,
-		exceptions:[
+		lastLogin: `2020-05-29T20:45:58.551Z`,
+		exceptions: [
 			{
-				email:`test@test.com`,
-				id:22,
-				lastLogin:`2020-05-29T20:45:58.551Z`,
-				name:`testname`,
-				linked:-1,
+				email: `test@test.com`,
+				id: 22,
+				lastLogin: `2020-05-29T20:45:58.551Z`,
+				name: `testname`,
+				linked: -1,
 				roles: [`admin`],
 				username: `testusername`,
 			},
@@ -89,11 +89,11 @@ const admins = [ // eslint-disable-line no-unused-vars
 
 const exceptions = [ // eslint-disable-line no-unused-vars
 	{
-		email:`test@test.com`,
-		id:22,
-		lastLogin:`2020-05-29T20:45:58.551Z`,
-		name:`testname`,
-		linked:-1,
+		email: `test@test.com`,
+		id: 22,
+		lastLogin: `2020-05-29T20:45:58.551Z`,
+		name: `testname`,
+		linked: -1,
 		roles: [`admin`],
 		username: `testusername`,
 	},
@@ -119,8 +119,8 @@ describe(`content service test`, () => {
 				loading: false,
 				lastFetched: 0,
 				courses: [],
-				users:[],
-				collectionStore:{
+				users: [],
+				collectionStore: {
 					roles: testutil.roles,
 					cache: {
 						0: collection1,
@@ -146,7 +146,7 @@ describe(`content service test`, () => {
 	})
 
 	// types
-	it(`should return correct types`, ()=> {
+	it(`should return correct types`, () => {
 		const types = collectionServiceConstructor.types
 
 		expect(types.COLLECTIONS_START).toBe(`COLLECTIONS_START`)
@@ -159,7 +159,7 @@ describe(`content service test`, () => {
 		expect(types.COLLECTION_ROLES_UPDATE).toBe(`COLLECTION_ROLES_UPDATE`)
 	})
 
-	it(`should return correct role endpoint`, ()=> {
+	it(`should return correct role endpoint`, () => {
 		const endpoints = collectionServiceConstructor.roleEndpoints
 
 		expect(endpoints.addCourse).toBe(`add-course`)
@@ -234,7 +234,7 @@ describe(`content service test`, () => {
 	// TODO: need to figure out how to check actions to be called
 	it(`getCollections`, async() => {
 		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.collections.get.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 				collections,
@@ -251,7 +251,7 @@ describe(`content service test`, () => {
 	it(`getCollections: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.collections.get.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
@@ -262,7 +262,7 @@ describe(`content service test`, () => {
 	it(`removeCollectionContent`, async() => {
 
 		proxies.apiProxy.collection.remove = jest.fn()
-		proxies.apiProxy.collection.remove.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.remove.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 				data: {
@@ -282,7 +282,7 @@ describe(`content service test`, () => {
 	it(`removeCollectionContent: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.remove = jest.fn()
-		proxies.apiProxy.collection.remove.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.remove.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
@@ -292,12 +292,12 @@ describe(`content service test`, () => {
 
 	it(`createCollection`, async() => {
 		proxies.apiProxy.collection.create = jest.fn()
-		proxies.apiProxy.collection.create.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.create.mockImplementationOnce(() => {
 			return Promise.resolve(collection3)
 		})
 
 		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.collections.get.mockImplementationOnce(() => {
 			return Promise.resolve({
 				0: collection1,
 				1: collection2,
@@ -313,7 +313,7 @@ describe(`content service test`, () => {
 	it(`createCollection: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.create = jest.fn()
-		proxies.apiProxy.collection.create.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.create.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
@@ -323,7 +323,7 @@ describe(`content service test`, () => {
 
 	it(`updateCollectionStatus`, async() => {
 		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.collections.get.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 				collections,
@@ -331,7 +331,7 @@ describe(`content service test`, () => {
 		})
 
 		proxies.apiProxy.collection.edit = jest.fn()
-		proxies.apiProxy.collection.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.edit.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 			})
@@ -366,7 +366,7 @@ describe(`content service test`, () => {
 	it(`updateCollectionStatus: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.collections.get.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 				collections,
@@ -374,7 +374,7 @@ describe(`content service test`, () => {
 		})
 
 		proxies.apiProxy.collection.edit = jest.fn()
-		proxies.apiProxy.collection.edit.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.edit.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
@@ -384,7 +384,7 @@ describe(`content service test`, () => {
 
 	it(`getCollectionInfo`, async() => {
 		proxies.apiProxy.collection.permissions.getUsers = jest.fn()
-		proxies.apiProxy.collection.permissions.getUsers.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.getUsers.mockImplementationOnce(() => {
 			return Promise.resolve([
 				{
 					"account-name": `testaccountname`,
@@ -398,7 +398,7 @@ describe(`content service test`, () => {
 		})
 
 		proxies.apiProxy.collection.permissions.getCourses = jest.fn()
-		proxies.apiProxy.collection.permissions.getCourses.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.getCourses.mockImplementationOnce(() => {
 			return Promise.resolve([
 				{
 					"catalog-number": `101`,
@@ -420,7 +420,7 @@ describe(`content service test`, () => {
 	it(`getCollectionInfo: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.permissions.getUsers = jest.fn()
-		proxies.apiProxy.collection.permissions.getUsers.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.getUsers.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 
@@ -430,7 +430,7 @@ describe(`content service test`, () => {
 
 	it(`updateCollectionName`, async() => {
 		proxies.apiProxy.user.collections.get = jest.fn()
-		proxies.apiProxy.user.collections.get.mockImplementationOnce(()=>{
+		proxies.apiProxy.user.collections.get.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 				collections,
@@ -438,7 +438,7 @@ describe(`content service test`, () => {
 		})
 
 		proxies.apiProxy.collection.post = jest.fn()
-		proxies.apiProxy.collection.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.post.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 			})
@@ -456,7 +456,7 @@ describe(`content service test`, () => {
 	it(`updateCollectionName: catch error`, async() => {
 		console.error = jest.fn() // eslint-disable-line no-console
 		proxies.apiProxy.collection.post = jest.fn()
-		proxies.apiProxy.collection.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.post.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 
 		})
@@ -476,7 +476,7 @@ describe(`content service test`, () => {
 		store = createStore(
 			collectionServiceConstructor.reducer,
 			{
-				collectionStore:{
+				collectionStore: {
 					roles: testutil.roles,
 					cache: {
 						0: collection1,
@@ -497,7 +497,7 @@ describe(`content service test`, () => {
 		apiProxy = proxies.apiProxy
 
 		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 			})
@@ -540,7 +540,7 @@ describe(`content service test`, () => {
 		apiProxy = proxies.apiProxy
 
 		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 			})
@@ -560,7 +560,7 @@ describe(`content service test`, () => {
 		}
 
 		proxies.apiProxy.collection.permissions.post = jest.fn()
-		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.post.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 
 		})
@@ -570,7 +570,7 @@ describe(`content service test`, () => {
 
 	it(`updateMany`, async() => {
 		proxies.apiProxy.collection.permissions.postMany = jest.fn()
-		proxies.apiProxy.collection.permissions.postMany.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.postMany.mockImplementationOnce(() => {
 			return Promise.resolve({
 				status: 200,
 			})
@@ -583,7 +583,7 @@ describe(`content service test`, () => {
 	it(`updateMany: catch error`, async() => {
 		window.alert = jest.fn()
 		proxies.apiProxy.collection.permissions.postMany = jest.fn()
-		proxies.apiProxy.collection.permissions.postMany.mockImplementationOnce(()=>{
+		proxies.apiProxy.collection.permissions.postMany.mockImplementationOnce(() => {
 			return Promise.reject({response: {data: `error`, status: 404}})
 		})
 

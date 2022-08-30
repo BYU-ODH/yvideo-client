@@ -29,7 +29,7 @@ export const Wrapper = styled.div`
 	animation: ${props => props.out ? fadeOut : fadeIn} .25s linear;
 	transition: visibility .25s linear;
 
-	background-color: rgba(0,0,0,0.25);
+	background-color: rgba(0, 0, 0, 0.25);
 
 	display: flex;
 	justify-content: center;
@@ -37,7 +37,7 @@ export const Wrapper = styled.div`
 
 	& > div {
 		background-color: white;
-		box-shadow: 0px .4rem .7rem -.1rem rgba(0,0,0,0.25);
+		box-shadow: 0px .4rem .7rem -.1rem rgba(0, 0, 0, 0.25);
 
 		min-width: 32rem;
 		width: auto;

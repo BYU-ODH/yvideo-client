@@ -6,7 +6,6 @@ const Style = styled.div`
 export default Style
 
 export const Body = styled.div`
-	/* height: ${props => props.isOpen ? `${(parseInt(props.count) * 6.5 + 2).toString()}rem` : `0`}; */
 	height: ${props => props.isOpen ? `auto` : `0`};
 	transition: height .25s ease-in-out;
 	overflow: hidden;
@@ -36,7 +35,7 @@ export const Clip = styled.div`
 			font-weight: 300;
 		}
 		& div h4 {
-			font-weight:300;
+			font-weight: 300;
 		}
 
 		@media screen and (max-width: 425px){

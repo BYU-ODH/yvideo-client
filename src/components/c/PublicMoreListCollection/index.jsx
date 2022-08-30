@@ -49,7 +49,7 @@ class PublicMoreListCollection extends PureComponent {
 							})
 						}
 					</Body>
-				):(
+				) : (
 					<></>
 				)}
 			</Style>

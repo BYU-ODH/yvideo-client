@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import LabAssistant from '../../../../components/c/LabAssistant/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 const viewstate = {
 	data: [
@@ -40,16 +40,15 @@ const props = {
 }
 
 describe(`admin dashboard test`, () => {
-	it(`should be true`, ()=> {
+	it(`should be true`, () => {
 		const wrapper = mount(
 			<BrowserRouter>
 				<LabAssistant {...props}/>
 			</BrowserRouter>,
 		)
 
-		// console.log(wrapper.debug())
-		expect(wrapper.contains(<td>professor testname</td>)).toEqual(true)
-		expect(wrapper.contains(<td>professor testname2</td>)).toEqual(true)
+		expect(wrapper.contains(<td data-testid='name'>professor testname</td>)).toEqual(true)
+		expect(wrapper.contains(<td data-testid='name'>professor testname2</td>)).toEqual(true)
 		// href="/lab-assistant-manager/22"
 
 		const testViewstate = wrapper.props().children.props.viewstate.data

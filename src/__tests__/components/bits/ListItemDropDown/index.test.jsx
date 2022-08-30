@@ -21,7 +21,7 @@ const props = {
 			}
 		}`,
 	},
-	isDropDown: false
+	isDropDown: false,
 }
 
 const wrapper =
@@ -95,7 +95,7 @@ describe(`ListItem test (dropDown)`, () => {
 
 		const links = screen.queryAllByRole(`link`)
 		const clipTitle = screen.queryByText(`Clip - ${JSON.parse(props.data.clips)[0].title}`)
-		const times = screen.getByText(/[0-9]\:[0-9]/i)
+		const times = screen.getByText(/[0-9]:[0-9]/i)
 
 		expect(links).not.toBeNull()
 		expect(links[0]).toHaveAttribute(`href`, `/player/${props.data.id}`)

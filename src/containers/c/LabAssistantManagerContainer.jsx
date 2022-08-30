@@ -70,7 +70,7 @@ const LabAssistantManagerContainer = props => {
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
-			props: { name: `Manage Collections`},
+			props: { name: `Manage Collections` },
 		})
 	}
 
@@ -90,7 +90,7 @@ const LabAssistantManagerContainer = props => {
 		// their current status published, unpublished, and archived
 
 		Object.keys(collections).forEach(item => {
-			const { archived, published, name, id} = collections[item]
+			const { archived, published, name, id } = collections[item]
 
 			if (archived) sideLists.archived.push({ id, name })
 			else if (published) sideLists.published.push({ id, name })

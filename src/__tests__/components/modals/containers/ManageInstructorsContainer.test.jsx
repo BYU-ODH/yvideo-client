@@ -16,7 +16,7 @@ const props = {
 }
 
 describe(`MorePublicCollectionsContainer test`, () => {
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 
 		const wrapper = mount(
 			<Provider store={testutil.store}>
@@ -30,7 +30,7 @@ describe(`MorePublicCollectionsContainer test`, () => {
 		wrapper.find(Button).at(0).simulate(`click`)
 		wrapper.find(Form).prop(`onSubmit`)
 	})
-	it(`resourceAccess is null`, ()=> {
+	it(`resourceAccess is null`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container {...props}/>

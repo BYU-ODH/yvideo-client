@@ -14,6 +14,8 @@ const BlockCollectionContainer = props => {
 		user,
 		collections,
 		defaultSubscription,
+		identifier,
+		handleSetSubscribedObj,
 	} = props
 
 	const [isSubscribed, setIsSubscribed] = useState(defaultSubscription)
@@ -27,9 +29,13 @@ const BlockCollectionContainer = props => {
 	const handlePublicCollection = async() => {
 		if (isSubscribed) {
 			await updateCollectionPermissions(collection.id, `remove-user`, user)
+			if(identifier)
+				handleSetSubscribedObj(identifier, false)
 			setIsSubscribed(false)
 		} else {
 			await updateCollectionPermissions(collection.id, `add-user`, user)
+			if(identifier)
+				handleSetSubscribedObj(identifier, true)
 			setIsSubscribed(true)
 		}
 	}

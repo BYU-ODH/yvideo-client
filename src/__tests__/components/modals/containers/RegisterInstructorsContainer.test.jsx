@@ -12,7 +12,7 @@ const props = {
 
 describe(`RegisterInstructorsContainer test`, () => {
 
-	it(`should pass event handlers test`, ()=> {
+	it(`should pass event handlers test`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>
@@ -27,7 +27,7 @@ describe(`RegisterInstructorsContainer test`, () => {
 		wrapper.find(Form).prop(`onSubmit`)()
 		wrapper.find(Button).at(0).simulate(`click`)
 	})
-	it(`data is null`, ()=> {
+	it(`data is null`, () => {
 		const wrapper = mount(
 			<Provider store={testutil.emptyStore}>
 				<Container {...props}/>

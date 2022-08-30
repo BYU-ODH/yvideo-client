@@ -1,4 +1,4 @@
-import styled, { keyframes, css} from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { Link } from 'react-router-dom'
 import trashIcon from 'assets/trash_icon.svg'
 import translationsBlack from 'assets/translation_black.svg'
@@ -361,7 +361,7 @@ export const InnerContainer = styled.div`
 	grid-template-columns: 1fr 1fr 1.5fr 1fr;
 	padding: 2rem 3rem 3rem 3rem;
 	border-radius: 5px;
-	box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 	background-color: white;
 
 	& .tags {

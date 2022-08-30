@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Player from '../../../../components/c/Player/index'
-import { BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
@@ -19,7 +19,7 @@ const viewstate = {
 	videoComment: `videoComment`,
 	commentPosition: {
 		x: 10,
-		y:10,
+		y: 10,
 	},
 	duration: 10,
 	showTranscript: true,
@@ -38,7 +38,7 @@ const viewstate = {
 			},
 		],
 	},
-	clipTime: [`1:20`, `2:29`],
+	clipTime: [`1: 20`, `2:29`],
 }
 
 const handlers = {
@@ -69,7 +69,7 @@ const props = {
 }
 
 describe(`Overlay test`, () => {
-	it(`wrapper simulate click`, ()=> {
+	it(`wrapper simulate click`, () => {
 		mount(
 			<Provider store={testutil.store}>
 				<BrowserRouter>

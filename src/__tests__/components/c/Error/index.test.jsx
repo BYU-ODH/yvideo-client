@@ -41,6 +41,7 @@ describe(`Error Message Test`, () => {
 		expect(props.viewstate.errorMessage).toContain(`401`)
 		expect(screen.getByText(title)).not.toBeNull()
 		expect(screen.queryByText(message)).not.toBeNull()
+
 	})
 
 	it(`Error 2 funcatinality test with buttons`, async () => {

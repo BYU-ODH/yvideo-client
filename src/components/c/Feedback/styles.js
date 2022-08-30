@@ -46,7 +46,7 @@ margin: 0 auto;
 	color: white;
 	background-color: var(--light-blue);
 	outline: none;
-	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.15);
+	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	font-size: 1.5rem;
 	border: none;
 	border-radius: 1rem;

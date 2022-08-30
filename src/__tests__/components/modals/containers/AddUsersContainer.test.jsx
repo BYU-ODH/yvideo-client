@@ -1,10 +1,7 @@
 import React from 'react'
-import {render, screen, cleanup, fireEvent, waitFor, act} from '@testing-library/react'
+import {render, screen, cleanup, fireEvent} from '@testing-library/react'
 import AddUsers from '../../../../components/modals/components/AddUsers'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import * as testutil from '../../../testutil/testutil'
 
 const props = {
 	viewstate:{
@@ -18,7 +15,6 @@ const props = {
 		handleClose: jest.fn(),
 	},
 }
-
 const wrapper=
 		<AddUsers {...props} />
 describe(`AddUsers test`, () => {

@@ -10,7 +10,7 @@ const props = {
 }
 
 describe(`CreateCollectionContainer test`, () => {
-	it(`should get viewstate correctly`, ()=> {
+	it(`should get viewstate correctly`, () => {
 		const wrapper = shallow(
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
@@ -18,7 +18,7 @@ describe(`CreateCollectionContainer test`, () => {
 		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
 	})
 
-	it(`should pass event handlers test`, async()=> {
+	it(`should pass event handlers test`, async() => {
 		const wrapper = mount(
 			<Provider store={testutil.store}>
 				<Container {...props}/>
@@ -29,6 +29,6 @@ describe(`CreateCollectionContainer test`, () => {
 		wrapper.find(`#create-collection-create`).at(0).simulate(`click`)
 
 		// TODO: need to check to see if the thunk is initiated
-		wrapper.find(`form`).simulate(`submit`, { preventDefault () {} })
+		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 	})
 })

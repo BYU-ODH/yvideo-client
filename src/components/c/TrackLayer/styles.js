@@ -30,7 +30,7 @@ export const Style = styled.div`
 	}
 
 	& .events {
-		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth}px` : `calc(100%)`};
+		width: ${props => props.layerWidth !== 0 ? `${props.layerWidth-2}px` : `calc(100%)`};
 		display: flex;
 		height: 45px;
 		position: absolute;
@@ -54,7 +54,7 @@ export const Style = styled.div`
 		overflow: hidden !important;
 		display: flex !important;
 		background-color: white;
-		box-shadow: 2px 2px 3px rgba(0,0,0, 0.2), -2px -2px 3px rgba(0,0,0, 0.2);
+		box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2), -2px -2px 3px rgba(0, 0, 0, 0.2);
 		overflow-x: scroll !important;
 
 		&	p {

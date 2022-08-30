@@ -103,7 +103,6 @@ export default class Player extends Component {
 			subtitleText,
 			// subtitleTextIndex,
 			displaySubtitles,
-			// isCaption,
 			indexToDisplay,
 			isMobile,
 			// censorPosition,
@@ -149,7 +148,7 @@ export default class Player extends Component {
 					`calc(${played * 100}% - 2px)`
 			}
 			if(subtitles)
-				HandleSubtitle(playedSeconds,subtitles,0,duration)
+				HandleSubtitle(playedSeconds, subtitles, 0, duration)
 
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
@@ -160,9 +159,9 @@ export default class Player extends Component {
 
 			if(!events) return
 
-			const values = CurrentEvents(playedSeconds,events,duration)
+			const values = CurrentEvents(playedSeconds, events, duration)
 
-			for (let i = 0; i < values.censors.length; i++) CensorChange(i,values.censors[i],playedSeconds)
+			for (let i = 0; i < values.censors.length; i++) CensorChange(i, values.censors[i], playedSeconds)
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(values.allEvents){
@@ -198,7 +197,7 @@ export default class Player extends Component {
 					break
 				case `Skip`:
 					events[index].active = false
-					handleSeekChange(null,values.allEvents[y].end)
+					handleSeekChange(null, values.allEvents[y].end)
 					break
 				default:
 					break
@@ -290,9 +289,9 @@ export default class Player extends Component {
 							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							{/* eslint-disable-next-line jsx-a11y/heading-has-content */}
 							<Subtitles style={{ display: `${subtitleText !== `` ? `flex` : `none`}` }} ><h3 id='subtitle'>{subtitleText}</h3></Subtitles>
-							<div id='censorContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
+							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
 							</div>
-							<div id ='commentContainer' style={{width:`100%`, height:`100%`, position:`absolute`, top:`0px`}}>
+							<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
 							</div>
 							<PauseMessage id='pauseMessage'>
 							</PauseMessage>

@@ -118,7 +118,7 @@ export const Timeline = styled.div`
 
 				& #layer-time-indicator {
 					height: 10px;
-					width:100%;
+					width: 100%;
 					position: absolute;
 					background-color: transparent;
 
@@ -305,7 +305,7 @@ export const EventEditor = styled.div`
 
 		box-sizing: border-box;
 
-		border-bottom:${props => props.show !== false ? ` 1px solid var(--navy-blue)` : `none`};
+		border-bottom: ${props => props.show !== false ? ` 1px solid var(--navy-blue)` : `none`};
 
 		color: black;
 		font-weight: 500;

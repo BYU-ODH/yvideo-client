@@ -33,7 +33,7 @@ const SubtitleEditor = props => {
 	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor, handleNavigation } = props.handlers
 	const layers = [{0: `Skip`}]
 
-	const [isLoading,setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
@@ -51,7 +51,7 @@ const SubtitleEditor = props => {
 	const [subLayerToEdit, setSubLayerToEdit] = useState(0)
 	const [subLayersToDelete, setSubLayersToDelete] = useState([])
 	const [subChanges, setSubChanges] = useState(0)
-	const [activeCensorPosition,setActiveCensorPosition] = useState(-1)
+	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [focus, setFocus] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
@@ -95,7 +95,7 @@ const SubtitleEditor = props => {
 		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
 		if(eventsArray !== undefined && eventsArray.length > 0){
 			eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
-			largestLayer = eventsArray[eventsArray.length-1].layer
+			largestLayer = eventsArray[eventsArray.length - 1].layer
 		}
 		// Find the largest layer number
 		const initialLayers = []
@@ -106,7 +106,7 @@ const SubtitleEditor = props => {
 		setEvents(allEvents)
 		if(subtitles[0] && !showSideEditor){
 			if (subtitles[0][`content`][0])
-				openSubEditor(0,0)
+				openSubEditor(0, 0)
 		}
 		if(document.getElementById(`blankContainer`))
 			document.getElementById(`blankContainer`).style.width = `100%`
@@ -119,7 +119,7 @@ const SubtitleEditor = props => {
 			window.onbeforeunload = undefined
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [eventsArray, blockLeave, isEdit,subtitles])
+	}, [eventsArray, blockLeave, isEdit, subtitles])
 	// end of useEffect
 
 	const getVideoDuration = (duration) => {
@@ -138,21 +138,21 @@ const SubtitleEditor = props => {
 	}
 	const deleteSub = (index) => {
 		const currentSubs = [...subtitles]
-		currentSubs[subLayerToEdit][`content`].splice(index,1)
+		currentSubs[subLayerToEdit][`content`].splice(index, 1)
 		setSubs(currentSubs)
 		setAllSubs(currentSubs)
 
 		if(currentSubs[subLayerToEdit][`content`].length === 0 || currentSubs[subLayerToEdit][`content`].length === 1)
 			setSubToEdit(0)
 		else if(currentSubs[subLayerToEdit][`content`].length === index)
-			setSubToEdit(index-1)
+			setSubToEdit(index - 1)
 		else
 			setSubToEdit(index)
 
 		checkSubError(currentSubs, `delete`, index)
 		setBlock(true)
 	}
-	const openSubEditor = (layerIndex,subIndex) => {
+	const openSubEditor = (layerIndex, subIndex) => {
 		setSubToEdit(subIndex)
 		setSubLayerToEdit(layerIndex)
 		activeUpdate(layerIndex)
@@ -160,7 +160,7 @@ const SubtitleEditor = props => {
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
 		const allSubsContainer = document.getElementById(`allSubs`)
 		if(active)
-			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight*0.5
+			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight * 0.5
 
 		// console.log(`side editor`, t2-t1)
 	}
@@ -185,27 +185,19 @@ const SubtitleEditor = props => {
 
 	const handleZoomChange = (e, d) => {
 		toggleTip()
-		if(d.x < zoomFactor){
-			if(d.x === 0){
-				setZoomFactor(0)
-				setWidth(0)
-				handleScrollFactor(0)
-			} else {
-				setZoomFactor(d.x)
-				setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-			}
-		} else if(d.x > zoomFactor) {
-			setZoomFactor(d.x)
-			setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
+		let width = 0
+		if(document.getElementsByClassName(`eventsbox`)[0]){
+			const eventsBoxWidth = document.getElementsByClassName(`eventsbox`)[0].offsetWidth
+			width = d.x * videoLength/10
+			setWidth(width)
+			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
+			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
+				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventsBoxWidth + width))
 		}
-		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0]&&document.getElementsByClassName(`events`)[0])
-			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / document.getElementsByClassName(`events`)[0].clientWidth)
-
 	}
 
 	const handleScrollFactor = (direction, zoom) => {
-		if(document.getElementsByClassName(`layer-container`) !== undefined){
+		if(document.getElementsByClassName(`layer-container`) !== undefined && document.getElementById(`zoom-scroll-container`)){
 			const scrubber = document.getElementById(`time-bar`)
 			const scrubberShadow = document.getElementById(`time-bar-shadow`) // eslint-disable-line no-unused-vars
 			const timeIndicator = document.getElementById(`time-indicator-container`)
@@ -213,40 +205,20 @@ const SubtitleEditor = props => {
 			const skipLayer = document.getElementById(`layer-skip`)
 			let currentLayerWidth
 
-			if(document.getElementsByClassName(`events`).length > 1)
+			if(document.getElementsByClassName(`events`).length >= 1)
 				currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
 			else
 				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
+			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
 
-			// if(!zoom){
-			// 	scrubber.scrollLeft = scrubber.scrollLeft + currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = timeIndicator.scrollLeft + currentLayerWidth * direction
+			const dis = direction/scrollBarContainer
+			scrubber.scrollLeft = currentLayerWidth * dis
+			timeIndicator.scrollLeft = currentLayerWidth * dis
 
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = allLayers[i].scrollLeft + currentLayerWidth * direction
-			// 	})
-			// } else {
-			// 	scrubber.scrollLeft = currentLayerWidth * direction
-			// 	timeIndicator.scrollLeft = currentLayerWidth * direction
-
-			// 	allLayers.forEach((element, i) => {
-			// 		allLayers[i].scrollLeft = currentLayerWidth * direction
-			// 	})
-			// }
-			const tempOnload = window.onload
-			window.onload = () => {
-				const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
-
-				const dis = direction/scrollBarContainer
-				scrubber.scrollLeft = currentLayerWidth * dis
-				timeIndicator.scrollLeft = currentLayerWidth * dis
-
-				allLayers.forEach((element, i) => {
-					allLayers[i].scrollLeft = currentLayerWidth * dis
-				})
-				skipLayer.scrollLeft = currentLayerWidth * dis
-				window.onload = tempOnload
-			}
+			allLayers.forEach((element, i) => {
+				allLayers[i].scrollLeft = currentLayerWidth * dis
+			})
+			skipLayer.scrollLeft = currentLayerWidth * dis
 		}
 	}
 
@@ -291,7 +263,7 @@ const SubtitleEditor = props => {
 					needCheck = false
 				} else {
 					if(index !== 0) {
-						if(sub.start < tempSubs[subLayerIndex][`content`][index-1].end){
+						if(sub.start < tempSubs[subLayerIndex][`content`][index - 1].end){
 							document.getElementById(`subStart${index}`).style.border = `2px solid red`
 							needCheck = false
 						}
@@ -304,7 +276,7 @@ const SubtitleEditor = props => {
 				document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 				needCheck=false
 			} else {
-				if(needCheck ===true) {
+				if(needCheck === true) {
 					if(sub.end < 0){
 						document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 						document.getElementById(`subStart${index}`).style.border=``
@@ -318,8 +290,8 @@ const SubtitleEditor = props => {
 						document.getElementById(`subStart${index}`).style.border=``
 						needCheck=false
 					} else {
-						if(index !== tempSubs[subLayerIndex][`content`].length-1) {
-							if(sub.end > tempSubs[subLayerIndex][`content`][index+1].start){
+						if(index !== tempSubs[subLayerIndex][`content`].length - 1) {
+							if(sub.end > tempSubs[subLayerIndex][`content`][index + 1].start){
 								document.getElementById(`subEnd${index}`).style.border=`2px solid red`
 								document.getElementById(`subStart${index}`).style.border=``
 								needCheck=false
@@ -340,7 +312,7 @@ const SubtitleEditor = props => {
 
 		setSubs(tempSubs)
 		setAllSubs(tempSubs)
-		setSubChanges(subChanges+1)
+		setSubChanges(subChanges + 1)
 		setSubToEdit(index)
 		setSubLayerToEdit(subLayerIndex)
 		activeUpdate(subLayerIndex)
@@ -357,7 +329,7 @@ const SubtitleEditor = props => {
 		const addingTime = 2
 
 		try{
-			if(currentSubs[index][`content`].length ===0){
+			if(currentSubs[index][`content`].length === 0){
 				newSub = {
 					start: 0,
 					end: addingTime,
@@ -388,9 +360,9 @@ const SubtitleEditor = props => {
 					}
 
 				} else {
-					if(subIndex !== currentSubs[index][`content`].length-1) {
+					if(subIndex !== currentSubs[index][`content`].length - 1) {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
-						const nextStartTime = currentSubs[index][`content`][subIndex+1].start
+						const nextStartTime = currentSubs[index][`content`][subIndex + 1].start
 
 						if(curEndTime === nextStartTime)
 							isError = true
@@ -399,7 +371,7 @@ const SubtitleEditor = props => {
 							subEnd = currentSubs[index][`content`][subIndex].end + addingTime
 						} else {
 							subStart = currentSubs[index][`content`][subIndex].end
-							subEnd = currentSubs[index][`content`][subIndex+1].start
+							subEnd = currentSubs[index][`content`][subIndex + 1].start
 						}
 						newSub = {
 							start: subStart,
@@ -407,7 +379,7 @@ const SubtitleEditor = props => {
 							text: ``,
 						}
 						if(!isError)
-							currentSubs[index][`content`].splice(subIndex+1, 0, newSub)
+							currentSubs[index][`content`].splice(subIndex + 1, 0, newSub)
 
 					} else {
 						const curEndTime = currentSubs[index][`content`][subIndex].end
@@ -426,9 +398,9 @@ const SubtitleEditor = props => {
 							text: ``,
 						}
 						if(!isError) {
-							setSubToEdit(subIndex+1)
+							setSubToEdit(subIndex + 1)
 							currentSubs[index][`content`].push(newSub)
-							setSubToEdit(subIndex+1)
+							setSubToEdit(subIndex + 1)
 							scrollToMyRef()
 						}
 					}
@@ -477,9 +449,7 @@ const SubtitleEditor = props => {
 		try{
 			const reader = new FileReader()
 			reader.onload = (e) => {
-				console.log(e) //eslint-disable-line
 				const temp = parse(e.target.result)
-				// console.log(Subtitle.parse(e.target.result))
 				for (let i = 0; i < temp.length; i++){
 					temp[i].start = temp[i].start /1000
 					temp[i].end = temp[i].end /1000
@@ -559,12 +529,12 @@ const SubtitleEditor = props => {
 		setBlock(true)
 	}
 	const checkSub = () => {
-		if(subLayerToEdit === subtitles[subLayerToEdit].length-1)
+		if(subLayerToEdit === subtitles[subLayerToEdit].length - 1)
 			return subtitles[0][`content`][0]
 		else
 			return subtitles[subLayerToEdit][`content`][subToEdit]
 	}
-	const handleChangeSubIndex = (index,subLayer) => {
+	const handleChangeSubIndex = (index, subLayer) => {
 		setSubToEdit(index)
 		setFocus(false)
 	}
@@ -583,8 +553,8 @@ const SubtitleEditor = props => {
 			let curStart = 0
 			let curEnd = 0
 			let nextStart = 0
-			if(checking===`update` && i===index) {
-				if(updateSub.side ===`beg`) {
+			if(checking === `update` && i === index) {
+				if(updateSub.side === `beg`) {
 					curStart = updateSub.sub.start
 					curEnd = subs[subLayerToEdit][`content`][i].end
 				} else {
@@ -596,36 +566,36 @@ const SubtitleEditor = props => {
 				curEnd = subs[subLayerToEdit][`content`][i].end
 			}
 
-			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd<=0 || curEnd>videoLength) {
+			if(curStart > curEnd || curStart < 0 || curStart >= videoLength || curEnd <= 0 || curEnd>videoLength) {
 				checkError = true
 				disable = false
-				if(checking===`delete` && i>=index) {
-					if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
+				if(checking === `delete` && i >= index) {
+					if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
 						document.getElementById(`subStart${i}`).style.border=`2px solid red`
-						document.getElementById(`subStart${i+1}`).style.border=``
-					} else if(document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
+						document.getElementById(`subStart${i + 1}`).style.border=``
+					} else if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
 						document.getElementById(`subEnd${i}`).style.border=`2px solid red`
-						document.getElementById(`subEnd${i+1}`).style.border=``
+						document.getElementById(`subEnd${i + 1}`).style.border=``
 					}
 				}
-			} else if(i !== subs[subLayerToEdit][`content`].length-1){
-				if(i===index-1 && checking===`update`)
+			} else if(i !== subs[subLayerToEdit][`content`].length - 1){
+				if(i === index - 1 && checking === `update`)
 					nextStart = updateSub.sub.start
 				else
-					nextStart = subs[subLayerToEdit][`content`][i+1].start
+					nextStart = subs[subLayerToEdit][`content`][i + 1].start
 
 				if(curEnd > nextStart) {
 					checkError = true
 					disable = false
-					if(checking===`delete` && i>=index) {
-						if(	document.getElementById(`subEnd${i+1}`).style.border===`2px solid red`) {
+					if(checking === `delete` && i >= index) {
+						if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
 							document.getElementById(`subEnd${i}`).style.border=`2px solid red`
-							document.getElementById(`subEnd${i+1}`).style.border=``
-						} else if(	document.getElementById(`subStart${i+1}`).style.border===`2px solid red`) {
+							document.getElementById(`subEnd${i + 1}`).style.border=``
+						} else if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
 							document.getElementById(`subStart${i}`).style.border=`2px solid red`
-							document.getElementById(`subStart${i+1}`).style.border=``
-						} else if(i === subs[subLayerToEdit][`content`].length-2)
-							document.getElementById(`subStart${i+1}`).style.border=`2px solid red`
+							document.getElementById(`subStart${i + 1}`).style.border=``
+						} else if(i === subs[subLayerToEdit][`content`].length - 2)
+							document.getElementById(`subStart${i + 1}`).style.border=`2px solid red`
 					}
 				}
 			}
@@ -693,6 +663,8 @@ const SubtitleEditor = props => {
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
 					eventPosition={eventPosition}
+					handleShowTip={handleShowTip}
+					toggleTip={toggleTip}
 				>
 				</VideoContainer>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -719,9 +691,9 @@ const SubtitleEditor = props => {
 									<div
 										className={`setSubModalVisible`}
 										onClick={ () => {
-											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile)
+											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile, window.onkeyup)
 										}}>
-										<p id={`editIcon`} style={{ fontWeight:400, color: `white`, fontSize: `14px`, display: `flex` }}>Add Subtitle Track <PlusIcon /></p>
+										<p id={`editIcon`} style={{ fontWeight: 400, color: `white`, fontSize: `14px`, display: `flex` }}>Add Subtitle Track <PlusIcon /></p>
 									</div>
 								</div>
 							</div>
@@ -758,6 +730,7 @@ const SubtitleEditor = props => {
 													sub.title !== `` ? sub.title : `No Language`,
 													handleAddSubLayer,
 													handleAddSubLayerFromFile,
+													window.onkeyup,
 													handleDeleteSubLayer,
 													index,
 												)
@@ -831,20 +804,20 @@ const SubtitleEditor = props => {
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,
-										y: e.target.getBoundingClientRect().y,
+										y: e.target.getBoundingClientRect().y - 100,
 										width: e.currentTarget.offsetWidth,
 									})
 								}
 								onMouseLeave={() => toggleTip()}
 							></Rnd>
-							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px`}}/>
+							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
 								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
 									<Rnd
 										className= 'zoom-scroll-indicator'
-										size={{width:scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
+										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={
 											{
 												top: false,
@@ -858,7 +831,7 @@ const SubtitleEditor = props => {
 											}
 										}
 										bounds = {`parent`}
-										onDrag = {(e,d)=>{
+										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
 									>
