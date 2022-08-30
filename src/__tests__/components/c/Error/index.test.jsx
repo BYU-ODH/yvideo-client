@@ -44,7 +44,7 @@ describe(`Error Message Test`, () => {
 
 	})
 
-	it(`Error 2 funcatinality test with buttons`, async () => {
+	it(`Error 2 functionality test with buttons`, async () => {
 		props.viewstate.errorMessage = errorForbidden
 		render(wrapper)
 		const title = (/403 forbidden/i)
