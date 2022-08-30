@@ -25,8 +25,9 @@ const AddUsersContainer = props => {
 
 	}, [addedUsersResult])
 
-	const handleIdChange = ( value ) => {
-		setUsernames(value)
+	const handleIdChange = ( e ) => {
+		const values = e.target.value
+		setUsernames(values)
 		setIsSubmitted(false)
 	}
 

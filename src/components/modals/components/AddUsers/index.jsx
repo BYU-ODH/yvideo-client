@@ -25,11 +25,11 @@ export default class AddUsers extends PureComponent {
 
 		// TODO: search list all the resources related to the email
 		return (
-			<Form onSubmit={ handleSubmit }>
+			<Form onSubmit={ handleSubmit } data-testid= 'form'>
 				{!isSubmitted &&<h3>Paste a list of usernames, one per line.</h3>}
 				<br/>
 				<AddManyForm >
-					<textarea className='textarea std-outline-color' type='text' value={usernames} onChange={ e => handleIdChange(e.target.value) } />
+					<textarea data-testid='success-text-area' className='textarea std-outline-color' type='text' value={usernames} onChange={handleIdChange} />
 					{
 						addedUsersResult.failResult && addedUsersResult.failResult.length > 0 ?
 							<textarea className='submit-result' readOnly={true} value={`Failed\n${addedUsersResult.failResult}`}/>
@@ -48,7 +48,6 @@ export default class AddUsers extends PureComponent {
 					:
 					<></>
 				}
-
 				<br/>
 
 				<div>
