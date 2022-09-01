@@ -108,9 +108,6 @@ export default class Collections extends PureComponent {
 						</>
 					) }
 				</div>
-				{
-					console.log(user)
-				}
 
 				{ !isMobile ?
 					<>
@@ -189,9 +186,6 @@ export default class Collections extends PureComponent {
 					</header>
 				}
 				<div className='public-collections-list'>
-					{
-						console.log(publicDisplayBlocks)
-					}
 					{
 						Object.keys(publicCollections).length > 0 ?
 							<>
