@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { connect } from 'react-redux'
 import {
 	contentService,
@@ -63,7 +63,6 @@ const CreateContentContainer = props => {
 	})
 
 	useEffect(() => {
-		getLanguages()
 		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
 
 			const langs = resourceContent[selectedResourceId].allFileVersions ?
@@ -129,6 +128,12 @@ const CreateContentContainer = props => {
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isTyping])
+
+	useLayoutEffect(() => {
+		getLanguages()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	const changeTab = e => {
 		setTab(e.target.name)
 	}
@@ -174,6 +179,7 @@ const CreateContentContainer = props => {
 		let theAccess = true
 		if(user.id === collection.owner){
 			const access = await getAccess(resource.id)
+			console.log(access)
 
 			if(access.length !== 0) {
 				for (let i = 0; i < access.length; i++) {
