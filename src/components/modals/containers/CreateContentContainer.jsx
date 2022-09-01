@@ -179,7 +179,6 @@ const CreateContentContainer = props => {
 		let theAccess = true
 		if(user.id === collection.owner){
 			const access = await getAccess(resource.id)
-			console.log(access)
 
 			if(access.length !== 0) {
 				for (let i = 0; i < access.length; i++) {
