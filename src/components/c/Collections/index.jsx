@@ -168,7 +168,7 @@ export default class Collections extends PureComponent {
 											})
 										}
 										onMouseLeave={toggleTip} />
-								}
+									}
 								</header>
 						}
 					</>
