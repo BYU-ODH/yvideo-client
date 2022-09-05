@@ -489,6 +489,7 @@ const VideoContainer = props => {
 							screenWidth = {videoRef.current !== null ? videoRef.current.offsetWidth : 0}
 							screenHeight = {videoRef.current !== null ? videoRef.current.offsetHeight : 0}
 							seekTo = {video.handleSeek}
+							style = {{width: video.offsetWidth}}
 						/>
 					}
 				</Blank>
