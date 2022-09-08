@@ -9,6 +9,8 @@ import { isSafari, isIOS } from 'react-device-detect'
 import { Player } from 'components'
 import { Tooltip } from 'components/bits'
 
+import { handleScrollFuncs } from '../../components/vanilla_scripts/toggleScroll'
+
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 import ErrorContainer from 'components/modals/containers/ErrorContainer'
@@ -202,7 +204,7 @@ const PlayerContainer = props => {
 
 	useLayoutEffect(() => {
 		handleSubsObj()
-		handleScrollFuncs()
+		handleScrollFuncs(document.getElementById(`subtitles-container`), setDisableScroll, setEnableScroll)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
 
@@ -244,20 +246,24 @@ const PlayerContainer = props => {
 		if (playing) {
 			setPlaying(false)
 			enableScroll.action()
+			setScrollDisabled(false)
 		} else {
 			setPlaying(true)
 			disableScroll.action()
+			setScrollDisabled(true)
 		}
 	}
 
 	const handlePause = () => {
 		setPlaying(false)
 		enableScroll.action()
+		setScrollDisabled(false)
 	}
 
 	const handlePlay = () => {
 		setPlaying(true)
 		disableScroll.action()
+		setScrollDisabled(true)
 	}
 	const handleStart = () => {
 		setPlaying(true)
@@ -452,52 +458,6 @@ const PlayerContainer = props => {
 		)
 	}
 
-	const handleScrollFuncs = () => {
-		let supportsPassive = false
-
-		const keys = {37: 1, 38: 1, 39: 1, 40: 1}
-
-		const preventDefault = (e) => {
-			e.preventDefault()
-		}
-
-		const preventDefaultForScrollKeys = (e) => {
-			if (keys[e.keyCode]) {
-				preventDefault(e)
-				return false
-			}
-		}
-
-		try {
-			document.getElementById(`subtitles-container`).addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
-				get: () => { // eslint-disable-line getter-return
-					supportsPassive = true
-				},
-			}))
-		} catch (e) {
-			return
-		}
-
-		const wheelEvent = `onwheel` in document.createElement(`div`) ? `wheel` : `mousewheel`
-		const wheelOpt = supportsPassive ? { passive: false } : false
-		const subsContainer = document.getElementById(`subtitles-container`)
-
-		setDisableScroll({action: () => {
-			subsContainer.addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
-			subsContainer.addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
-			subsContainer.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
-			subsContainer.addEventListener(`keydown`, preventDefaultForScrollKeys, false)
-			setScrollDisabled(true)
-		}})
-		setEnableScroll({action: () => {
-			subsContainer.removeEventListener(`DOMMouseScroll`, preventDefault, false)
-			subsContainer.removeEventListener(wheelEvent, preventDefault, wheelOpt)
-			subsContainer.removeEventListener(`touchmove`, preventDefault, wheelOpt)
-			subsContainer.removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
-			setScrollDisabled(false)
-		}})
-	}
-
 	const handleChangeSubtitle = (index) => {
 		const temp = subtitles[index]
 		const currentContent = temp.content
@@ -631,7 +591,7 @@ const PlayerContainer = props => {
 	const checkBrowser = () => {
 		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
 		if(isSafari || isIOS)
-		document.getElementById(`alertMessage`).style.visibility = `visible`
+			document.getElementById(`alertMessage`).style.visibility = `visible`
 		const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
 		document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
 	}

@@ -80,6 +80,7 @@ export const TimeBar = styled.div`
 			}
 
 			& > #time-bar {
+				cursor: default;
 				overflow-x:  smooth;
 				overflow-y: hidden;
 				/* scroll-behavior: smooth; */
@@ -89,10 +90,15 @@ export const TimeBar = styled.div`
 				z-index: 20;
 
 				& #time-bar-container {
-					margin-top: 20px;
+					margin-top: 10px;
 					position: absolute;
 					height: .75rem;
 					width: 100% !important;
+
+					& #time-bar-progress {
+						cursor: pointer;
+						height: 30px;
+					}
 
 					& #time-bar-shadow {
 						position: absolute;
@@ -109,14 +115,13 @@ export const TimeBar = styled.div`
 						& #time-bar-shadow-text {
 							color: white;
 							font-weight: 700;
-							margin-top: 5px;
+							margin-top: 10px;
 							margin-left: 5px;
 							position: relative;
 							width: 5rem;
 							height: auto;
 						}
 					}
-
 
 				}
 
@@ -125,7 +130,7 @@ export const TimeBar = styled.div`
 				}
 			}
 		}
-		
+
 		& button {
 
 			height: 1.5rem;

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
+import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
 
 import {
 	Style,
@@ -15,6 +16,7 @@ const ClipLayer = props => {
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
+	const [disableScroll, setDisableScroll] = useState({action: null})
 
 	const start = clipList[clipName][`start`]
 	const end = clipList[clipName][`end`]
@@ -55,7 +57,15 @@ const ClipLayer = props => {
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
-	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
+	useLayoutEffect(() => {
+		if(document.getElementsByClassName(`events`))
+			handleScrollFuncs(document.getElementsByClassName(`events`), setDisableScroll, null)
+		if(disableScroll.action !== null)
+			disableScroll.action()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [videoLength])
+
+	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0) {
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
@@ -118,7 +128,7 @@ const ClipLayer = props => {
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
-				<div ref={layerRef} className='clipbox'>
+				<div ref={layerRef} className='clip-box'>
 					<div className={`clip-layer-${clipName} events`}>
 						<Rnd
 							ref={dragRef}

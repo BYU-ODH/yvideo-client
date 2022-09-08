@@ -47,6 +47,7 @@ export const Header = styled.div`
 `
 
 export const SlideWrapper = styled.div`
+	width: calc(100%);
 	display: grid;
 	grid-auto-flow: column;
 	grid-template-columns: ${props => `repeat(${props.count}, 17.8rem)`};
@@ -83,10 +84,11 @@ export const Arrow = styled.div`
 	cursor: pointer;
 
 	&.right{
-		right: ${props => props.hideRight ? `-100rem` : `0`};
+		right: 0;
+		visibility: ${props => props.hideRight ? `hidden` : `visible`};
 
 		opacity: ${props => props.right ? `0` : `1`};
-		transition: opacity .25s ease-in-out;
+		transition: visibility .25s ease-in-out;
 		background-image: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 
 		& > div {
@@ -102,8 +104,7 @@ export const Arrow = styled.div`
 	}
 
 	&.left {
-		left: ${props => props.hideLeft ? `-100rem` : `0`};
-
+		left: 0;
 		opacity: ${props => props.left ? `0` : `1`};
 		transition: opacity .25s ease-in-out;
 		background-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));

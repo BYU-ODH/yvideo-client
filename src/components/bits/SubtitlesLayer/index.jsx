@@ -1,4 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
+import { handleScrollFuncs } from '../../../components/vanilla_scripts/toggleScroll'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -26,6 +27,8 @@ const SubtitlesLayer = props => {
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [layerHeight, setLayerHeight] = useState(0) // eslint-disable-line no-unused-vars
 	const [showError, setShowError] = useState(false)
+	const [disableScroll, setDisableScroll] = useState({action: null})
+
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
@@ -45,14 +48,18 @@ const SubtitlesLayer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
 
-	const tempOnload = window.onload
-	window.onload = () => {
-		if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0) {
-			document.getElementById(`time-bar-container`).style.width = `${layerWidth - 163}px`
-			document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 163}px`
-			document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
-		}
-		window.onload = tempOnload
+	useLayoutEffect(() => {
+		if(document.getElementsByClassName(`events`))
+			handleScrollFuncs(document.getElementsByClassName(`events`), setDisableScroll, null)
+		if(disableScroll.action !== null)
+			disableScroll.action()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [updateSubs])
+
+	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0) {
+		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
+		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
+		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
 	const Enable = {
@@ -215,7 +222,7 @@ const SubtitlesLayer = props => {
 		<>
 			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
-				<div ref={layerRef} className='eventsbox'>
+				<div ref={layerRef} className='events-box'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex && `active-layer`}`}>
 						{
 							subs !== undefined && videoLength !== 0 ? (

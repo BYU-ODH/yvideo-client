@@ -9,6 +9,7 @@ import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
+import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
 
 // import * as Subtitle from 'subtitle'
 import zoomIn from 'assets/te-zoom-in.svg'
@@ -76,7 +77,7 @@ const ClipEditor = props => {
 
 	useEffect(() => {
 		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
-		function handleResize() {
+		const handleResize = () => {
 			setZoomFactor(0)
 			setWidth(0)
 			setZoomFactor(1)
@@ -122,55 +123,7 @@ const ClipEditor = props => {
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
 	}
-	const handleZoomChange = (e, d) => {
-		// toggleTip()
-		// if(d.x < zoomFactor){
-		// 	if(d.x === 0){
-		// 		setZoomFactor(0)
-		// 		setWidth(0)
-		// 		handleScrollFactor(`start`)
-		// 	} else {
-		// 		setZoomFactor(d.x)
-		// 		setWidth(-(Math.abs(zoomFactor - d.x) * videoLength / 10))
-		// 	}
-		// } else if(d.x > zoomFactor) {
-		// 	setZoomFactor(d.x)
-		// 	setWidth(Math.abs(zoomFactor - d.x) * videoLength / 10)
-		// }
-		if(document.getElementsByClassName(`clipbox`)){
-			let width = 0
-			const eventsBoxWidth = document.getElementsByClassName(`clipbox`)[0].offsetWidth
-			width = d.x * videoLength/10
-			setWidth(width)
-			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-			const layerContainer = document.getElementsByClassName(`layer-container`)
-			const events = document.getElementsByClassName(`events`)
-			if(layerContainer && events[0].clientWidth !== 0) {
-				setScrollBar(
-					layerContainer[0].clientWidth * 100 / (eventsBoxWidth+width),
-				)
-			}
-		}
-	}
 
-	const handleScrollFactor = (direction) => {
-		if(document.getElementsByClassName(`layer-container`) !== undefined){
-			const scrubber = document.getElementById(`time-bar`)
-			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-
-			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
-
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
-
-			allLayers.forEach((element, i) => {
-				allLayers[i].scrollLeft = currentLayerWidth * dis
-			})
-		}
-	}
 	const titleSet = (value) => {
 		const clips = {...clipList}
 		clips[active][`title`] = value
@@ -362,7 +315,7 @@ const ClipEditor = props => {
 											clipList={clipList}
 											setStart={setStartTime}
 											setEnd={setEndTime}
-											width={0}
+											width={layerWidth}
 											videoLength={videoLength}
 											active={active}
 											index={index}
@@ -398,7 +351,7 @@ const ClipEditor = props => {
 										}
 									}
 									dragAxis='x'
-									onDragStop={(e, d) => handleZoomChange(e, d)}
+									onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`clip-box`))}
 									onMouseEnter={e => handleShowTip(`te-zoom`,
 										{
 											x: e.target.getBoundingClientRect().x,

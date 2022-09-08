@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { adminService, collectionService, interfaceService } from 'services'
 
+// import { handleScrollFuncs } from '../../components/vanilla_scripts/toggleScroll'
 import { BlockCollection } from 'components'
 
 const BlockCollectionContainer = props => {
@@ -19,12 +20,20 @@ const BlockCollectionContainer = props => {
 	} = props
 
 	const [isSubscribed, setIsSubscribed] = useState(defaultSubscription)
+	// const [disableScroll, setDisableScroll] = useState({action: null})
+
 	const isOwner = user ? user.id === collection.owner : false
 
 	useEffect(() => {
 		setHeaderBorder(false)
+		// handleScrollFuncs(document.getElementsByClassName(`slide-wrapper`), setDisableScroll, null)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collections, isSubscribed])
+
+	// useEffect(() => {
+	// 	if(disableScroll.action !== null)
+	// 		disableScroll.action()
+	// }, [disableScroll])
 
 	const handlePublicCollection = async() => {
 		if (isSubscribed) {

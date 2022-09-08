@@ -6,6 +6,7 @@ import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
+import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 // import {DialogBox} from '../../../modals/components'
 
@@ -541,36 +542,6 @@ const VideoEditor = props => {
 		document.body.removeChild(a)
 	}
 
-	const handleZoomChange = (e, d) => {
-		toggleTip()
-		let width = 0
-		if(document.getElementsByClassName(`eventsbox`)){
-			const eventsBoxWidth = document.getElementsByClassName(`eventsbox`)[0].offsetWidth
-			width = d.x * videoLength/10
-			setWidth(width)
-			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
-				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventsBoxWidth + width))
-		}
-	}
-	const handleScrollFactor = (direction, zoom) => {
-		if(document.getElementsByClassName(`layer-container`) !== undefined){
-			const scrubber = document.getElementById(`time-bar`)
-			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
-
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
-
-			allLayers.forEach((element, i) => {
-				allLayers[i].scrollLeft = currentLayerWidth * dis
-			})
-		}
-	}
-
 	const checkSideBarTitle = () => {
 		try {
 			const title = allEvents[eventToEdit].type === `Censor` ? `Blur` : allEvents[eventToEdit].type
@@ -622,7 +593,6 @@ const VideoEditor = props => {
 
 					<section>
 						<div className='event-layers' id='layers-component'>
-
 							{layers.map((layer, index) => (
 								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
@@ -671,7 +641,7 @@ const VideoEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDragStop={(e, d) => handleZoomChange(e, d)}
+								onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,

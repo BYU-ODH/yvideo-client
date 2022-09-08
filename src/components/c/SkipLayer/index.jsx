@@ -33,7 +33,7 @@ const SkipLayer = props => {
 		else if (width === 0)
 			setLayerWidth(initialWidth)
 		else
-			setLayerWidth(layerWidth + width)
+			setLayerWidth(initialWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -104,8 +104,8 @@ const SkipLayer = props => {
 	}
 	return (
 		<Style layerWidth={layerWidth} className='layer-container'>
-			<div ref={layerRef} className='eventsbox'>
-				<div id={`layer-skip`} className={`layer-skip} events half-event`}>
+			<div ref={layerRef} className='events-box'>
+				<div id={`layer-skip`} className={`layer-skip events half-event`}>
 					{
 						events !== undefined && events.length > 0 && videoLength !== 0 ? (
 							<>
