@@ -151,7 +151,7 @@ export class CollectionPermissions extends PureComponent {
 
 					<UserListTable>
 						<UserList id='user-table'>
-							<h4>TA</h4>
+							<h4>Instructors and TAs</h4>
 							<Search className='faculty-submit' onSubmit={handlers.addTA}>
 								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={userTA.username} />
 								<AddButton className='add-faculty-button' type='submit' disabled={disabledTA}>Add</AddButton>

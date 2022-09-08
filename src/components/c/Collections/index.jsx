@@ -155,6 +155,20 @@ export default class Collections extends PureComponent {
 										<SearchIcon />
 										<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
 									</Search>
+									{ !isMobile &&
+									<PublicViewToggle
+										publicDisplayBlocks={publicDisplayBlocks}
+										role={user.roles}
+										onClick={togglePublicCollectionsDisplay}
+										onMouseEnter={e => handleShowTip(`public-list-block`,
+											{
+												x: e.target.offsetLeft,
+												y: e.target.offsetTop + 12,
+												width: e.currentTarget.offsetWidth,
+											})
+										}
+										onMouseLeave={toggleTip} />
+									}
 								</header>
 						}
 					</>

@@ -12,6 +12,9 @@ const Style = styled.div`
 
 & .resource-search{
 	max-width: 100rem;
+	position: relative;
+	left: 50vw;
+	transform: translateX(-45vw);
 	padding: 2rem 2rem 0 2rem;
 	margin: 0 auto;
 }
@@ -119,19 +122,13 @@ export const Search = styled.form`
 	& > input {
 		z-index: 1;
 		background: white;
-
 		height: 4rem;
-		width: 90%;
-
+		width: 75%;
 		font-size: 1.5rem;
-
 		border: none;
 		border-radius: 2rem;
-
 		margin-left: 1rem;
-
 		padding: 0 1.5rem 0 4.5rem;
-
 		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	}
 
@@ -149,6 +146,7 @@ export const Search = styled.form`
 		cursor: pointer;
 		transition: .5s ease;
 		font-weight: 500;
+		white-space: nowrap;
 
 		@media screen and (max-width: 1000px) {
 			margin-top: 0.5rem;
