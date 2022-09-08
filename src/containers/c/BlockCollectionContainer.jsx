@@ -19,11 +19,11 @@ const BlockCollectionContainer = props => {
 	} = props
 
 	const [isSubscribed, setIsSubscribed] = useState(defaultSubscription)
+
 	const isOwner = user ? user.id === collection.owner : false
 
 	useEffect(() => {
 		setHeaderBorder(false)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collections, isSubscribed])
 
 	const handlePublicCollection = async() => {

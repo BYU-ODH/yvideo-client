@@ -18,7 +18,7 @@ export const Style = styled.div`
 	z-index: 0;
 	overflow-x: scroll;
 
-	& .eventsbox {
+	& .events-box {
     position: relative;
     width: 100%;
     height: 98%;

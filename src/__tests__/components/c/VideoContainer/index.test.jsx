@@ -152,7 +152,7 @@ describe(`VideoContainer test`, () => {
 			wrapper.find(`.play-btn`).prop(`onClick`)()
 			wrapper.find(`.mute`).prop(`onClick`)()
 			wrapper.find(`#time-bar`).prop(`onMouseLeave`)()
-			wrapper.find(`#timeBarProgress`).prop(`onClick`)({pageX: 10, currentTarget: { getBoundingClientRect: () => {
+			wrapper.find(`#time-bar-progress`).prop(`onClick`)({pageX: 10, currentTarget: { getBoundingClientRect: () => {
 				return {x: 100, y: 50, right: 10000}
 			}}}, 100)
 		})

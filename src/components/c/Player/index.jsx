@@ -141,8 +141,8 @@ export default class Player extends Component {
 			handleProgress(playedSeconds)
 			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
 			const subtitles = displaySubtitles
-			if(document.getElementById(`timeBarProgress`))
-				document.getElementById(`timeBarProgress`).style.width = `${played * 100}%`
+			if(document.getElementById(`time-bar-progress`))
+				document.getElementById(`time-bar-progress`).style.width = `${played * 100}%`
 			if(document.getElementById(`time-dot`)) {
 				document.getElementById(`time-dot`).style.left = played ?
 					`calc(${played * 100}% - 2px)`

@@ -9,6 +9,7 @@ import {parse} from 'subtitle'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
+import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -176,45 +177,6 @@ const SubtitleEditor = props => {
 	const handleSaveSubtitles = async() => {
 		const rawSubs = subtitles
 		createSub(rawSubs)
-	}
-
-	const handleZoomChange = (e, d) => {
-		toggleTip()
-		let width = 0
-		if(document.getElementsByClassName(`eventsbox`)[0]){
-			const eventsBoxWidth = document.getElementsByClassName(`eventsbox`)[0].offsetWidth
-			width = d.x * videoLength/10
-			setWidth(width)
-			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
-				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventsBoxWidth + width))
-		}
-	}
-
-	const handleScrollFactor = (direction, zoom) => {
-		if(document.getElementsByClassName(`layer-container`) !== undefined && document.getElementById(`zoom-scroll-container`)){
-			const scrubber = document.getElementById(`time-bar`)
-			const scrubberShadow = document.getElementById(`time-bar-shadow`) // eslint-disable-line no-unused-vars
-			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const skipLayer = document.getElementById(`layer-skip`)
-			let currentLayerWidth
-
-			if(document.getElementsByClassName(`events`).length >= 1)
-				currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			else
-				currentLayerWidth = document.getElementsByClassName(`events`).clientWidth
-			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
-
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
-
-			allLayers.forEach((element, i) => {
-				allLayers[i].scrollLeft = currentLayerWidth * dis
-			})
-			skipLayer.scrollLeft = currentLayerWidth * dis
-		}
 	}
 
 	const updateSubs = (index, sub, subLayerIndex, side, type, trackId) => {
@@ -929,7 +891,7 @@ const SubtitleEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDragStop={(e, d) => handleZoomChange(e, d)}
+								onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,

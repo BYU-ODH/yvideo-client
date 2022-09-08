@@ -15,7 +15,7 @@ export const Style = styled.div`
 	/* scroll-behavior: smooth; */
 	border-bottom: 1px dashed var(--light-blue);
 
-	& .eventsbox {
+	& .events-box {
     position: relative;
     width: 100%;
     height: 98%;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Scrubber from '../../../../components/bits/Scrubber'
 import { render, screen, cleanup} from '@testing-library/react'
 const props = {

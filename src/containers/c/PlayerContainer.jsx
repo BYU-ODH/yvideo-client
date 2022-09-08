@@ -9,6 +9,8 @@ import { isSafari, isIOS } from 'react-device-detect'
 import { Player } from 'components'
 import { Tooltip } from 'components/bits'
 
+import { handleScrollFuncs } from '../../components/vanilla_scripts/toggleScroll'
+
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
 import ErrorContainer from 'components/modals/containers/ErrorContainer'
@@ -203,7 +205,7 @@ const PlayerContainer = props => {
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
 	useLayoutEffect(() => {
 		handleSubsObj()
-		handleScrollFuncs()
+		handleScrollFuncs(document.getElementById(`subtitles-container`), setDisableScroll, setEnableScroll)
 
 		if (displaySubtitles === null)
 			setToggleTranscript(false)
@@ -250,20 +252,24 @@ const PlayerContainer = props => {
 		if (playing) {
 			setPlaying(false)
 			enableScroll.action()
+			setScrollDisabled(false)
 		} else {
 			setPlaying(true)
 			disableScroll.action()
+			setScrollDisabled(true)
 		}
 	}
 
 	const handlePause = () => {
 		setPlaying(false)
 		enableScroll.action()
+		setScrollDisabled(false)
 	}
 
 	const handlePlay = () => {
 		setPlaying(true)
 		disableScroll.action()
+		setScrollDisabled(true)
 	}
 	const handleStart = () => {
 		setPlaying(true)
@@ -473,57 +479,6 @@ const PlayerContainer = props => {
 				},
 			}
 		)
-	}
-
-	const handleScrollFuncs = () => {
-		let supportsPassive = false
-
-		const keys = {37: 1, 38: 1, 39: 1, 40: 1}
-
-		const preventDefault = (e) => {
-			e.preventDefault()
-		}
-
-		const preventDefaultForScrollKeys = (e) => {
-			if (keys[e.keyCode]) {
-				preventDefault(e)
-				return false
-			}
-		}
-
-		try {
-			document.getElementById(`subtitles-container`).addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
-				get: () => { // eslint-disable-line getter-return
-					supportsPassive = true
-				},
-			}))
-		} catch (e) {
-			return
-		}
-
-		const subsContainer = document.getElementById(`subtitles-container`)
-		const wheelEvent = `onwheel` in document.createElement(`div`) ? `wheel` : `mousewheel`
-		const wheelOpt = supportsPassive ? { passive: false } : false
-
-		setDisableScroll({action: () => {
-			subsContainer.addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
-			subsContainer.addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
-			subsContainer.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
-			subsContainer.onkeyup = e => preventDefaultForScrollKeys(e)
-			subsContainer.onauxclick = () => { return false } // eslint-disable-line brace-style
-			subsContainer.oncontextmenu = () => { return false } // eslint-disable-line brace-style
-			subsContainer.onScroll = 	() => { return false } // eslint-disable-line brace-style
-			setScrollDisabled(true)
-		}})
-		setEnableScroll({action: () => {
-			subsContainer.removeEventListener(`DOMMouseScroll`, preventDefault, false)
-			subsContainer.removeEventListener(wheelEvent, preventDefault, wheelOpt)
-			subsContainer.removeEventListener(`touchmove`, preventDefault, wheelOpt)
-			subsContainer.onkeyup = null
-			subsContainer.onauxclick = null
-			subsContainer.oncontextmenu = null
-			setScrollDisabled(false)
-		}})
 	}
 
 	const handleChangeSubtitle = (index) => {

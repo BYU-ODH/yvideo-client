@@ -2,6 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
+import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
 
 import {
 	Icon, Style,
@@ -34,6 +35,8 @@ const TrackLayer = props => {
 	const [layerWidth, setLayerWidth] = useState(0)
 	// eslint-disable-next-line no-unused-vars
 	const [layerHeight, setLayerHeight] = useState(0)
+	const [disableScroll, setDisableScroll] = useState({action: null})
+
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
@@ -65,9 +68,18 @@ const TrackLayer = props => {
 			setLayerWidth(initialWidth + width)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width])
-	if(document.getElementById(`timeBarProgress`) !== undefined && layerWidth !== 0){
+
+	useLayoutEffect(() => {
+		if(document.getElementsByClassName(`events`))
+			handleScrollFuncs(document.getElementsByClassName(`events`), setDisableScroll, null)
+		if(disableScroll.action !== null)
+			disableScroll.action()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [updateEvents])
+
+	if(document.getElementById(`time-bar-progress`) !== undefined && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
-		document.getElementById(`timeBarProgress`).style.width = `${layerWidth - 2}px`
+		document.getElementById(`time-bar-progress`).style.width = `${layerWidth - 2}px`
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
 	}
 	// This object is to tell the onReziseStop nevent for the Rnd component that resizing can only be right and left
@@ -238,7 +250,7 @@ const TrackLayer = props => {
 			<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				{layerIndex !== 4 &&
-					<div ref={layerRef} className='eventsbox'>
+					<div ref={layerRef} className='events-box'>
 						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex && `active-layer`}`}>
 							{
 								events !== undefined && events.length > 0 && videoLength !== 0? (
@@ -251,7 +263,7 @@ const TrackLayer = props => {
 					</div>
 				} {/* new layer function that will provide maximum layer overlap */ }
 				{layerIndex === 4 && layerOverlap !== null &&
-					<div ref={layerRef} className='eventsbox'>
+					<div ref={layerRef} className='events-box'>
 						<div
 							className={`layer-${layerIndex} ${layerOverlap.length > 0 && `half-layer`} events ${displayLayer === layerIndex && `active-layer`}`}
 							style={

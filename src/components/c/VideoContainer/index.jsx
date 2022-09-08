@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useLayoutEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
 import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 
 import { CurrentEvents, CensorChange, HandleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
+import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -55,6 +56,8 @@ const VideoContainer = props => {
 	const [playerPadding, setPlayerPadding] = useState([0, 0])
 	const [isUploading, setIsUploadings] = useState(false)
 
+	const [disableScroll, setDisableScroll] = useState({action: null})
+
 	const executeCensors = async (values, playedSeconds) => {
 		for (let i = 0; i < values.censors.length; i++) CensorChange(i, values.censors[i], playedSeconds)
 	}
@@ -93,8 +96,8 @@ const VideoContainer = props => {
 			video.handleAspectRatio()
 		},
 		handleProgress: ({ played, playedSeconds }) => {
-			if(document.getElementById(`timeBarProgress`) !== undefined)
-				document.getElementById(`timeBarProgress`).value = `${played * 100}`
+			if(document.getElementById(`time-bar-progress`) !== undefined)
+				document.getElementById(`time-bar-progress`).value = `${played * 100}`
 
 			if(document.getElementById(`layer-time-indicator`) !== undefined){
 				document.getElementById(`layer-time-indicator-line`).style.width = `calc(${played * 100}%)`
@@ -386,25 +389,27 @@ const VideoContainer = props => {
 			count++
 			// checking for time bar and setting event listener
 			if(document.getElementById(`time-bar`) && duration !== 0){
-				document.getElementById(`time-bar`).addEventListener(`mousemove`, (e) => {
+				const timeBar = document.getElementById(`time-bar`)
+				const timeBarProgress = document.getElementById(`time-bar-progress`)
+				const timeBarShadow = document.getElementById(`time-bar-shadow`)
+				const timeBarShadowText = document.getElementById(`time-bar-shadow-text`)
+
+				timeBarProgress.addEventListener(`mousemove`, (e) => {
 					// calculate current time based on mouse position
-					const currentLayerWidth = document.getElementById(`time-bar-container`).clientWidth
-					const currentScrollLeft = document.getElementById(`time-bar-container`).scrollLeft
-
-					const secondsCurrentTimePercent = (e.offsetX + currentScrollLeft) / currentLayerWidth
-
+					const scrubberScrollWidth = document.getElementById(`time-bar-progress`).scrollWidth
+					const mouseoverRatio = e.offsetX / scrubberScrollWidth // what percentage of through the scrubber is the mouse (including what's hidden)
 					const dateElapsed = new Date(null)
-					dateElapsed.setSeconds(secondsCurrentTimePercent * duration)
-					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 
+					dateElapsed.setSeconds(mouseoverRatio * duration)
+					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 					// set new x position to the red bar
-					document.getElementById(`time-bar-shadow`).style.visibility = `visible`
-					document.getElementById(`time-bar-shadow`).style.transform = `translateX(${e.offsetX - 2}px)`
-					document.getElementById(`time-bar-shadow-text`).innerText = `${formattedElapsed}`
-					if(e.offsetX > window.innerWidth / 2)
-						document.getElementById(`time-bar-shadow-text`).style.right = `6rem`
+					timeBarShadow.style.visibility = `visible`
+					timeBarShadow.style.transform = `translateX(${e.offsetX - 2}px)`
+					timeBarShadowText.innerText = `${formattedElapsed}`
+					if(e.offsetX > timeBar.offsetWidth / 2)
+						timeBarShadowText.style.right = `6rem`
 					else
-						document.getElementById(`time-bar-shadow-text`).style.right = `0`
+						timeBarShadowText.style.right = `0`
 
 					document.getElementById(`layer-time-indicator-line-shadow`).style.visibility = `visible`
 					document.getElementById(`layer-time-indicator-line-shadow`).style.transform = `translateX(${e.offsetX}px)`
@@ -452,6 +457,14 @@ const VideoContainer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [elapsed])
+
+	useLayoutEffect(() => {
+		if(document.getElementById(`time-bar-progress`))
+			handleScrollFuncs(document.getElementById(`time-bar`), setDisableScroll, null)
+		if(disableScroll.action !== null)
+			disableScroll.action()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [duration])
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
@@ -560,7 +573,7 @@ const VideoContainer = props => {
 							}
 						}}>
 							<div id={`time-bar-container`}>
-								<progress id='timeBarProgress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
+								<progress id='time-bar-progress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
 								<span id='time-text'></span>
 								<span id='time-bar-shadow'><p id='time-bar-shadow-text'></p></span>
 							</div>
