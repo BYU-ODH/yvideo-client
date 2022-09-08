@@ -399,7 +399,7 @@ const VideoContainer = props => {
 					const scrubberScrollWidth = document.getElementById(`time-bar-progress`).scrollWidth
 					const mouseoverRatio = e.offsetX / scrubberScrollWidth // what percentage of through the scrubber is the mouse (including what's hidden)
 					const dateElapsed = new Date(null)
-					
+
 					dateElapsed.setSeconds(mouseoverRatio * duration)
 					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
 					// set new x position to the red bar
