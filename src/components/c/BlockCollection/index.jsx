@@ -21,7 +21,6 @@ export default class BlockCollection extends Component {
 	}
 
 	scrollListener = e => {
-		console.log(e.target.scrollLeft)
 
 		if (e.target.scrollLeft === 0) {
 			this.setState({
