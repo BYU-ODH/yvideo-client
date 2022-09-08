@@ -99,7 +99,7 @@ export default class ManageCollection extends PureComponent {
 							<>
 								{ user.roles !== undefined ? (
 									<>{user.roles === 0 || user.roles === 1 ? (
-										<ArchiveButton id={`archive-button`} className={`std-outline-color`} onClick={unarchive}>Unarchive</ArchiveButton>
+										<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={unarchive}>Unarchive</ArchiveButton>
 									) : ( <p>Cannot unarchive</p> )}
 									</>
 								) : null }
@@ -116,7 +116,7 @@ export default class ManageCollection extends PureComponent {
 										{collection.published ? `Unpublish` : `Publish`}
 									</PublishButton>
 								): (<></>)}
-								<ArchiveButton id={`archive-button`} className={`std-outline-color`} onClick={archive}>Archive</ArchiveButton>
+								<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={archive}>Archive</ArchiveButton>
 							</>
 						)}
 					</Publish>

@@ -32,22 +32,22 @@ export class ManageResource extends PureComponent {
 				</div>
 
 				<div className='resource-search'>
-					<Help style={{ position: `relative` }}>
-						<img src={helpIcon}
-							alt={`help`}
-							onClick={handleShowHelp}
-							onMouseEnter={e => handleShowTip(`help`,
-								{
-									x: e.target.getBoundingClientRect().x,
-									y: e.target.getBoundingClientRect().y,
-									width: e.currentTarget.offsetWidth,
-								})
-							}
-							onMouseLeave={() => toggleTip()}
-						/>
-					</Help>
 
 					<Search id='searchSubmit' className='std-outline-color' onSubmit={handleSubmit} isMobile={isMobile}>
+						<Help style={{ position: `relative` }}>
+							<img src={helpIcon}
+								alt={`help`}
+								onClick={handleShowHelp}
+								onMouseEnter={e => handleShowTip(`help`,
+									{
+										x: e.target.getBoundingClientRect().x,
+										y: e.target.getBoundingClientRect().y,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={() => toggleTip()}
+							/>
+						</Help>
 						<SearchIcon />
 						<input id='resource-search-input' className='std-outline-color' type='search' placeholder={`search resources`} onChange={handleSearchTextChange} value={searchQuery} />
 						<button className='std-outline-color' type='submit'>Search</button>
