@@ -108,7 +108,6 @@ describe(`BlockCollection test`, () => {
 		const arrowRight = screen.getByTestId(`right-arrow`)
 		const slideWrapper = screen.getByTestId(`slide-wrapper`)
 		const expression = slideWrapper.scrollWidth - slideWrapper.getBoundingClientRect().width
-		console.log(expression)
 
 
 		expect(arrowLeft).not.toBeVisible()
@@ -127,13 +126,11 @@ describe(`BlockCollection test`, () => {
 		expect(arrowRight).toBeVisible()
 
 		fireEvent.scroll(slideWrapper, { target: { scrollLeft: expression } })
-		// expect(arrowLeft).toBeVisible()
 		/* Not working for some reason, so commented out*/
 		expect(arrowRight).not.toBeVisible()
 
 		fireEvent.scroll(slideWrapper, { target: { scrollLeft: 0 } })
 		expect(arrowLeft).not.toBeVisible()
-		// expect(arrowRight).toBeVisible()
 
 	})
 
