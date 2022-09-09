@@ -139,7 +139,7 @@ export default class Collections extends PureComponent {
 												onMouseLeave={toggleTip} />
 										}
 										{
-											(user.roles !== null ) &&
+											user.roles === 0 &&
 											<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
 										}
 									</div>
@@ -168,6 +168,10 @@ export default class Collections extends PureComponent {
 											})
 										}
 										onMouseLeave={toggleTip} />
+									}
+									{
+										user.roles === 0 &&
+										<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
 									}
 								</header>
 						}
