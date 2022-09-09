@@ -21,4 +21,3 @@ yarn-debug.log*
 yarn-error.log*
 .env.dev*
 .env.prod*
-.env.test*
