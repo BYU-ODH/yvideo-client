@@ -1,14 +1,10 @@
 import axios from 'axios'
 import User from 'models/User'
 import Content from 'models/Content'
-import userName from './DevUser'
 
 const updateSessionId = (id) => {
-	// console.log(`OLD => `, window.clj_session_id)
-	// console.log(`NEW => `, id)
 	if(id !== ``){
 		if(id === `expired`){
-			// console.log('got here')
 
 			alert(`Your session has expired. Please, log back in`)
 			apiProxy.auth.logout()
@@ -518,9 +514,9 @@ const apiProxy = {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
 					// eslint-disable-next-line no-unused-vars
-					const res = await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${userName}/868a60ef-1bc3-440c-a4a8-70f4c89844ca`, {headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
+					await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${process.env.REACT_APP_USER_NAME}/${process.env.REACT_APP_USER_KEY}`, {headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
-						await updateSessionId(res.data[`session-id`])
+						updateSessionId(res.data[`session-id`])
 					})
 					// window.clj_session_id = res.data['session-id']
 					// CALL TO GET THE USER ONCE THE SESSION ID HAS BEEN SET
@@ -533,7 +529,7 @@ const apiProxy = {
 							'session-id': window.clj_session_id,
 						},
 					}).then(async res => {
-						await updateSessionId(res.headers[`session-id`])
+						updateSessionId(res.headers[`session-id`])
 						return res
 					})
 					return new User(result.data)
