@@ -113,6 +113,7 @@ export default class Player extends Component {
 			isLandscape,
 			hasPausedClip,
 			events,
+			hovering,
 		} = this.props.viewstate
 
 		const {
@@ -228,8 +229,6 @@ export default class Player extends Component {
 			const t1 = performance.now()
 		}
 
-		const alertMessage = `Video playback does not currently work on iOS devices or the Safari browser. <br><br>`
-
 		const handleOnReady = () => {
 			handleAspectRatio()
 			if(events){
@@ -290,7 +289,7 @@ export default class Player extends Component {
 						/>
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
-							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
+							<PlayButton playing={playing} onClick={handlePlayPause} hovering={hovering} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 							{displaySubtitles !== null &&
 								<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
 							}
