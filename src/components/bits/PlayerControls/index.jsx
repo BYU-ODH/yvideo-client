@@ -68,6 +68,7 @@ const PlayerControls = props => {
 		handleChangeSpeed,
 		handleChangeCaption,
 		handleSeekToSubtitle,
+		handleMouseOver,
 	} = props.handlers
 
 	const {
@@ -98,7 +99,7 @@ const PlayerControls = props => {
 	})
 
 	return (
-		<Style playing={playing} >
+		<Style hovering={hovering} onMouseOver={handleMouseOver} playing={playing}>
 
 			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray}/>
 			<div className='left'>
@@ -106,7 +107,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`play`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -117,7 +118,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`restart`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -128,7 +129,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`prev-sub`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -140,7 +141,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`next-sub`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -154,7 +155,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`fullscr`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -164,7 +165,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`playback-rate`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 90,
+							y: e.target.getBoundingClientRect().y - 110,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -178,7 +179,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`closed-captions`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}

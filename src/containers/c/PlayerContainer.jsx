@@ -53,7 +53,6 @@ const PlayerContainer = props => {
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
 	// eslint-disable-next-line no-unused-vars
-	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [playbackOptions, setPlaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
 	const [player, setPlayer] = useState(null)
@@ -75,6 +74,7 @@ const PlayerContainer = props => {
 	const [censorActive, setCensorActive] = useState(false)
 	const [hasPausedClip, setHasPausedClip] = useState(false)
 	const [showSpeed, setShowSpeed] = useState(false)
+	const [hovering, setHovering] = useState(true)
 
 	const [subsObj, setSubsObj] = useState({})
 	const [fullyChecked, setFullyChecked] = useState(false)
@@ -241,11 +241,11 @@ const PlayerContainer = props => {
 	}
 
 	const handleMouseOver = e => {
-		// setHovering(true)
+		setHovering(true)
 	}
 
 	const handleMouseOut = e => {
-		// setHovering(false)
+		setHovering(false)
 	}
 
 	const handlePlayPause = () => {
@@ -612,7 +612,7 @@ const PlayerContainer = props => {
 	}
 
 	const checkBrowser = () => {
-		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
+		const alertMessage = `Video playback does not currently work on iOS devices or the Safari browser. <br><br>`
 		if(isSafari || isIOS) {
 			document.getElementById(`alertMessage`).style.visibility = `visible`
 			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
