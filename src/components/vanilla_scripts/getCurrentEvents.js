@@ -168,7 +168,7 @@ export const CensorChange = async (ind, censorData, playedSeconds) => {
 		let height = 0
 		let top = 0
 		let left = 0
-		if(censorData.previous !== undefined && censorData.next !== undefined){
+		if(censorData.previous && censorData.next){
 			width =
 			censorData.top1 + censorData.top2 !== 0 ?
 				censorData.width1 + (playedSeconds-censorData.previous) / (censorData.next-censorData.previous) * (censorData.width2-censorData.width1)

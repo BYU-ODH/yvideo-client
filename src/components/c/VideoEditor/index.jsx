@@ -235,14 +235,9 @@ const VideoEditor = props => {
 			}
 		}
 
-		if(event.start >= 0 && event.start < event.end && event.end <= videoLength){
-			// if(canAccessDom){
-			// document.getElementById(`sideTabMessage`).style.color=`green`
-			// document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-			// document.getElementById(`sideTabExplanation`).innerHTML=``
+		if(event.start >= 0 && event.start < event.end && event.end <= videoLength)
 			setDisableSave(false)
-			// }
-		}else
+		else
 			setDisableSave(true)
 
 	}

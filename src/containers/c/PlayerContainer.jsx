@@ -516,7 +516,7 @@ const PlayerContainer = props => {
 	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
 
-		if(displaySubtitles && subtitleTextIndex !== undefined){
+		if(displaySubtitles && subtitleTextIndex){
 			if(e.target.id === `prev-sub`){
 				if(subtitleTextIndex > 1)
 					seekToIndex = subtitleTextIndex - 1
@@ -584,7 +584,7 @@ const PlayerContainer = props => {
 	}
 
 	// TODO: This might break, what it was before was
-	if (displaySubtitles === null && content !== undefined) {
+	if (displaySubtitles === null && content) {
 	// if(displaySubtitles === null && content){
 
 		// This statement prevents displaySubtitles from being null.

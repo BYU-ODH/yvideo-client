@@ -665,7 +665,7 @@ export default class AdminService {
 				}else{
 					const results = await apiProxy.admin.collection.get(professorId)
 
-					if(results.data !== undefined && results.data.length > 0){
+					if(results?.data?.length > 0){
 						results.data.forEach(async(collection, index) => {
 							const res = await apiProxy.collection.permissions.getContents(collection.id)
 

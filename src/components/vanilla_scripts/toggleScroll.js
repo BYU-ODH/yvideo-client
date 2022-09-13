@@ -1,6 +1,10 @@
 export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 	let supportsPassive = false
 
+	const ifStatement = (ind) => {
+		return ind !== `length` && ind !== `item` && ind !== `namedItem`
+	}
+
 	const keys = {37: 1, 38: 1, 39: 1, 40: 1}
 
 	const preventDefault = (e) => {
@@ -16,7 +20,7 @@ export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) =
 
 	if(elements.length !== undefined) {
 		for(const i in elements) {
-			if(i !== `length` && i !== `item` && i !== `namedItem`) {
+			if(ifStatement(i)) {
 				try {
 					elements[i].addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
 						get: () => { // eslint-disable-line
@@ -46,7 +50,7 @@ export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) =
 	if(elements.length !== undefined) {
 		setDisableScroll({action: () => {
 			for(const i in elements) {
-				if(i !== `length` && i !== `item` && i !== `namedItem`) {
+				if(ifStatement(i)) {
 					elements[i].addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
 					elements[i].addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
 					elements[i].addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
@@ -57,7 +61,7 @@ export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) =
 		if(setEnableScroll) {
 			setEnableScroll({action: () => {
 				for(const i in elements) {
-					if(i !== `length` && i !== `item` && i !== `namedItem`) {
+					if(ifStatement(i)) {
 						elements[i].removeEventListener(`DOMMouseScroll`, preventDefault, false)
 						elements[i].removeEventListener(wheelEvent, preventDefault, wheelOpt)
 						elements[i].removeEventListener(`touchmove`, preventDefault, wheelOpt)

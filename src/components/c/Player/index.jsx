@@ -149,7 +149,7 @@ export default class Player extends Component {
 					:
 					`calc(${played * 100}% - 2px)`
 			}
-			if(subtitles && subtitles.content.length > 0)
+			if(subtitles?.content.length > 0)
 				HandleSubtitle(playedSeconds, subtitles, 0, duration)
 
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
