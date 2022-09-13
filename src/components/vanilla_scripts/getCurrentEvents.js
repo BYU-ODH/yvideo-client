@@ -15,7 +15,7 @@ const handleBlank = (blanks) => {
 
 	}
 }
-export const HandleSubtitle = (time, subtitles, ind, duration) => {
+export const handleSubtitle = (time, subtitles, ind, duration) => {
 	const subtitleNode = document.getElementById(`subtitle`)
 	const subtitleBox = document.getElementById(`subtitleBox`)
 	const currentsub = subtitles.content
