@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
-import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
@@ -150,8 +150,8 @@ export default class Player extends Component {
 					:
 					`calc(${played * 100}% - 2px)`
 			}
-			if(subtitles && subtitles.content.length > 0)
-				HandleSubtitle(playedSeconds, subtitles, 0, duration)
+			if(subtitles?.content.length > 0)
+				handleSubtitle(playedSeconds, subtitles, 0, duration)
 
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){

@@ -20,8 +20,6 @@ const PublicMoreListCollectionContainer = props => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const [contentsCount, setContentsCount] = useState(content.length) // null is already checked in SearchPublicCollections
-	// eslint-disable-next-line no-unused-vars
-	const [isContentUpdated, setIsContentUpdated] = useState(false)
 
 	useEffect(() => {
 		if(isOpen && collection.content && contentsCount !== collection.content.length)
@@ -32,7 +30,6 @@ const PublicMoreListCollectionContainer = props => {
 			setIsLoading(false)
 		}
 
-		// console.log(collection)
 	}, [isOpen, contentsCount, collection, morePublicCollections, isLoading])
 
 	const getContents = async() => {

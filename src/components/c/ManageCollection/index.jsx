@@ -47,7 +47,7 @@ export default class ManageCollection extends PureComponent {
 		} = this.props.handlers
 
 		const expiredContent = collection[`expired-content`]
-		if(expiredContent && expiredContent[`content-title`]) {
+		if(expiredContent?.[`content-title`]) {
 			expiredContent.sort((a,b) => {
 				return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
 			})
@@ -135,20 +135,20 @@ export default class ManageCollection extends PureComponent {
 					:
 					<>
 						<Tab>
-							{expiredContent && expiredContent.length > 0 &&
+							{expiredContent?.length > 0 &&
 								<>
 									<h3 id='expiredTitle'>Expired Content</h3>
 									<hr />
 								</>
 							}
-							{isContentTab && expiredContent && expiredContent.length > 0 ?
+							{isContentTab && expiredContent?.length > 0 ?
 								expiredContent.map((item, index) => (
 									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
 								))
 								:
 								null
 							}
-							{expiredContent && expiredContent.length > 0 && <hr />}
+							{expiredContent?.length > 0 && <hr />}
 							{isContentTab ?
 								content.map((item, index) => (
 									<div key={index}>

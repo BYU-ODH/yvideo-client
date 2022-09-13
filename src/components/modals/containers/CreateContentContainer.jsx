@@ -63,7 +63,7 @@ const CreateContentContainer = props => {
 	})
 
 	useEffect(() => {
-		if(resourceContent[selectedResourceId] !== undefined && isResourceSelected){
+		if(resourceContent[selectedResourceId] && isResourceSelected){
 
 			const langs = resourceContent[selectedResourceId].allFileVersions ?
 				resourceContent[selectedResourceId].allFileVersions.split(`;`)
@@ -81,22 +81,6 @@ const CreateContentContainer = props => {
 			})
 			setLanguages(finalLanguages)
 		}
-
-		// if(isTyping){
-		// 	setTimeout(() => {
-		// 		setIsTyping(false)
-		// 		setIsCalled(false)
-		// 	}, 1000)
-		// } else{
-		// 	if (searchQuery.length > 0 && searchQuery.match(/^[0-9a-zA-Z]+$/) && !isTyping) {
-		// 		if(!isCalled){
-		// 			searchResource(searchQuery)
-		// 			setHide(false)
-		// 			setIsCalled(true)
-		// 		}
-		// 	}else
-		// 		setHide(true)
-		// }
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
@@ -353,7 +337,7 @@ const CreateContentContainer = props => {
 
 		// FIND IF THE COLLECTION IS PUBLIC
 		// IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
-		if(modal.props !== undefined && modal.props.isPublic && resourceContent[selectedResourceId].copyrighted){
+		if(modal?.props?.isPublic && resourceContent[selectedResourceId].copyrighted){
 			alert(`The resource you are trying to add is copyrighted and cannot be added to a public collection`)
 			return
 		}
