@@ -297,7 +297,7 @@ const PlayerContainer = props => {
 			if(subtitleTextIndex === undefined)
 				return
 			else
-				subContainer.scrollTo({top: subsObj[subtitleTextIndex].distanceDownTranscript})
+				subContainer.scrollTo({top: subsObj?.[subtitleTextIndex]?.distanceDownTranscript})
 		}
 	}
 
