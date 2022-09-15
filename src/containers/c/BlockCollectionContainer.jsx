@@ -24,6 +24,7 @@ const BlockCollectionContainer = props => {
 
 	useEffect(() => {
 		setHeaderBorder(false)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [collections, isSubscribed])
 
 	const handlePublicCollection = async() => {
