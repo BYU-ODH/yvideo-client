@@ -161,11 +161,8 @@ const apiProxy = {
 		/**
 		 * Sets the current URL to the OAuth2 BYU CAS Login page, then redirects back to the original URL
 		 */
-		cas: (redirect) => {
-			if(redirect)
-				window.location.href = `https://cas.byu.edu/cas/login?service=${redirect}`
-			else
-				window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/login`
+		cas: () => {
+			window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/login`
 			// window.location.href = `${process.env.REACT_APP_YVIDEO_SERVER}/auth/cas/redirect${window.location.href}`
 		},
 		/**

@@ -15,15 +15,14 @@ class Error extends PureComponent {
 		this.props.setLost(false)
 		this.props.setHeaderBorder(true)
 	}
+
 	render() {
 		const { error, message } = this.props
 		return (
 			<SError>
 				<h1>{error}</h1>
 				<h2>{message}</h2>
-				<SLink to={`/`}>
-					{ error === `403` ? `Go back to login` : `Go back home`}
-				</SLink>
+				<SLink to={`/`}>Go back home</SLink>
 			</SError >
 		)
 	}

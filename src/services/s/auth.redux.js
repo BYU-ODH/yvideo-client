@@ -99,7 +99,7 @@ export default class AuthService {
 	/**
 	 * Tries to get the current user from the API. If unsuccessful, we know the user isn't logged in.
 	 */
-	checkAuth = () => async (dispatch, _getState, { apiProxy }) => {
+	checkAuth = () => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.authStart())
 		try {
 			let user
@@ -117,7 +117,7 @@ export default class AuthService {
 		}
 	}
 
-	checkHasCollectionPermissions = (username) => async (dispatch, _getState, { apiProxy }) => {
+	checkHasCollectionPermissions = (username) => async (dispatch, getState, { apiProxy }) => {
 		try {
 			const result = await apiProxy.user.getHasPermissions(username)
 			// console.log('has collection permissions result: ', result)
@@ -132,13 +132,6 @@ export default class AuthService {
 	 */
 	login = () => async (_dispatch, _getState, { apiProxy }) => {
 		apiProxy.auth.cas()
-	}
-
-	/**
-	 * Redirects to the BYU CAS Login page
-	 */
-	loginWithRedirect = (redirect) => async (_dispatch, _getState, { apiProxy }) => {
-		apiProxy.auth.cas(redirect)
 	}
 
 	/**

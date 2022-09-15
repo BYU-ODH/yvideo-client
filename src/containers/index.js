@@ -27,7 +27,6 @@ import BlockCollectionContainer from './c/BlockCollectionContainer'
 import ClipEditorContainer from './c/ClipEditorContainer'
 import PublicMoreListCollectionContainer from './c/PublicMoreListCollectionContainer'
 import VideoEditorContainer from './c/VideoEditorContainer'
-import RedirectContainer from './c/RedirectContainer'
 
 export {
 	AdminContainer,
@@ -59,5 +58,4 @@ export {
 	ClipEditorContainer,
 	PublicMoreListCollectionContainer,
 	VideoEditorContainer,
-	RedirectContainer,
 }
