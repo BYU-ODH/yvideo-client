@@ -33,7 +33,7 @@ describe(`ApiProxy test`, () => {
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.admin.search.get(`testSearchCategory`, `testSearchQuery`)).resolves.toEqual(expected)
 		expect(axios).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/admin/testSearchCategory/testSearchQuery`,
+			`//example.com/api/admin/testSearchCategory/testSearchQuery`,
 			{"headers": {"session-id": `sessionId`},
 				"withCredentials": true,
 			})
@@ -52,7 +52,7 @@ describe(`ApiProxy test`, () => {
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.admin.collection.get(`collectionId`)).resolves.toEqual(expected)
 		expect(axios).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/user/collectionId/collections`,
+			`//example.com/api/user/collectionId/collections`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -71,7 +71,7 @@ describe(`ApiProxy test`, () => {
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.admin.collection.create(`collectionName`, `collectionOwner`)).resolves.toEqual(expected)
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/collection/create`,
+			`//example.com/collection/create`,
 			`{"name":"collectionName","ownerId":"collectionOwner"}`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -81,7 +81,7 @@ describe(`ApiProxy test`, () => {
 	it(`admin collection delete`, async () => {
 		proxies.apiProxy.admin.collection.delete(`collectionDeleteId`)
 		expect(axios.delete).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/collectionDeleteId`,
+			`//example.com/api/collection/collectionDeleteId`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -104,7 +104,7 @@ describe(`ApiProxy test`, () => {
 
 		await expect(proxies.apiProxy.admin.collection.content.get(`collectionContentId`)).resolves.toEqual(expected)
 		expect(axios).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/collectionContentId/contents`,
+			`//example.com/api/collection/collectionContentId/contents`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -122,7 +122,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.admin.collection.content.createFromResource(`collectionId`, `resoureId`)
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/content/create/resource?collectionId=collectionId`,
+			`//example.com/content/create/resource?collectionId=collectionId`,
 			`{"resourceId":"resoureId"}`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
@@ -141,7 +141,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.admin.user.delete(`deleteUserId`)
 		expect(axios.delete).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/user/deleteUserId`,
+			`//example.com/api/user/deleteUserId`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -159,7 +159,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.admin.user.get(`userId`)
 		expect(axios.get).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/user/userId`,
+			`//example.com/api/user/userId`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -177,7 +177,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.admin.content.delete(`deleteContentId`)
 		expect(axios.delete).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/content/deleteContentId`,
+			`//example.com/api/content/deleteContentId`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -201,7 +201,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.collection.create({"collectionId": `collection`})
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection`,
+			`//example.com/api/collection`,
 			{"collectionId": `collection`},
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -220,7 +220,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.collection.post(`collectionId`, `name`)
 		expect(axios.patch).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/collectionId`,
+			`//example.com/api/collection/collectionId`,
 			{"collection-name": `name`},
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
@@ -239,7 +239,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.collection.edit(`collectionId`, `state`)
 		expect(axios.patch).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/collectionId`,
+			`//example.com/api/collection/collectionId`,
 			`state`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
@@ -258,7 +258,7 @@ describe(`ApiProxy test`, () => {
 
 		proxies.apiProxy.collection.remove(`collectionId`)
 		expect(axios.delete).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/content/collectionId`,
+			`//example.com/api/content/collectionId`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
 			})
@@ -275,7 +275,7 @@ describe(`ApiProxy test`, () => {
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.collection.permissions.getUsers(`userId`)).resolves.toEqual(`collectionPermissionsGetUsers`)
 		expect(axios).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/userId/users`,
+			`//example.com/api/collection/userId/users`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -292,7 +292,7 @@ describe(`ApiProxy test`, () => {
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.collection.permissions.getCourses(`courseId`)).resolves.toEqual(`collectionPermissionsGetCourses`)
 		expect(axios).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/courseId/courses`,
+			`//example.com/api/collection/courseId/courses`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -309,7 +309,7 @@ describe(`ApiProxy test`, () => {
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.collection.permissions.post(`id`, `endpoint`, {body: `body`})).resolves.toEqual({"data": `collectionPermissionsPost`, "headers": {"session-id": `id`}})
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/id/endpoint`,
+			`//example.com/api/collection/id/endpoint`,
 			{"body": `body`},
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -327,7 +327,7 @@ describe(`ApiProxy test`, () => {
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.collection.permissions.postMany(`id`, {body: `body`})).resolves.toEqual({"data": `collectionPermissionsPostMany`, "headers": {"session-id": `id`}})
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/collection/id/add-users`,
+			`//example.com/api/collection/id/add-users`,
 			{"body": `body`},
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -346,7 +346,7 @@ describe(`ApiProxy test`, () => {
 		axios.get.mockResolvedValue(res)
 		await expect(proxies.apiProxy.content.getSingleContent(`id`)).resolves.toEqual(`contentGetSingleContent`)
 		expect(axios.get).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/content/id`,
+			`//example.com/api/content/id`,
 			{"headers": {"Content-Type": `application/json`,
 				"session-id": `id`},
 			"withCredentials": true,
@@ -363,8 +363,8 @@ describe(`ApiProxy test`, () => {
 
 		axios.mockResolvedValue(res)
 		await proxies.apiProxy.content.get([`contentid1`, `contentid2`]).resolves
-		expect(axios).toBeCalledWith(`//api.yvideobeta.byu.edu/api/content/contentid1`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
-		expect(axios).toBeCalledWith(`//api.yvideobeta.byu.edu/api/content/contentid2`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios).toBeCalledWith(`//example.com/api/content/contentid1`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios).toBeCalledWith(`//example.com/api/content/contentid2`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 
 		const expected = [res.data].reduce((map, item) => {
 			const newItem = new Content(item)
@@ -387,7 +387,7 @@ describe(`ApiProxy test`, () => {
 
 		expect(await proxies.apiProxy.content.post(`contentPost`).resolves).toEqual()
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/content`,
+			`//example.com/api/content`,
 			`contentPost`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -405,7 +405,7 @@ describe(`ApiProxy test`, () => {
 		axios.mockResolvedValue(res)
 		await proxies.apiProxy.content.addView.get(`id`).resolves
 		expect(axios).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/content/id/addview`,
+			`//example.com/api/content/id/addview`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -422,7 +422,7 @@ describe(`ApiProxy test`, () => {
 		axios.post.mockResolvedValue(res)
 		proxies.apiProxy.content.metadata.post(`id`, {metadata: `metadata`})
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/content/id/metadata`,
+			`//example.com/content/id/metadata`,
 			`{"metadata":"metadata"}`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -440,7 +440,7 @@ describe(`ApiProxy test`, () => {
 		axios.patch.mockResolvedValue(res)
 		await expect(proxies.apiProxy.content.update(`content`)).resolves.toEqual(`contentMetadataUpdate`)
 		expect(axios.patch).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/content/undefined`,
+			`//example.com/api/content/undefined`,
 			`content`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -459,7 +459,7 @@ describe(`ApiProxy test`, () => {
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.resources.post(`resource`)).resolves.toEqual(`resourcesPost`)
 		expect(axios.post).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/resource`,
+			`//example.com/api/resource`,
 			`resource`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -477,7 +477,7 @@ describe(`ApiProxy test`, () => {
 		axios.delete.mockResolvedValue(res)
 		proxies.apiProxy.resources.delete(`resourceId`)
 		expect(axios.delete).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/resource/resourceId`,
+			`//example.com/api/resource/resourceId`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
 			})
@@ -494,7 +494,7 @@ describe(`ApiProxy test`, () => {
 		axios.patch.mockResolvedValue(res)
 		await expect(proxies.apiProxy.resources.edit(`resource` , `resourceId`)).resolves.toEqual(`resourcesEdit`)
 		expect(axios.patch).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/resource/resourceId`,
+			`//example.com/api/resource/resourceId`,
 			`resource`,
 			{"headers": {"Content-Type": `application/json`, "session-id": `id`},
 				"withCredentials": true,
@@ -512,7 +512,7 @@ describe(`ApiProxy test`, () => {
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.resources.get(`resourceId`)).resolves.toEqual(`resourcesGet`)
 		expect(axios).toBeCalledWith(
-			`//api.yvideobeta.byu.edu/api/resource/resourceId`,
+			`//example.com/api/resource/resourceId`,
 			{"headers": {"session-id": `id`},
 				"withCredentials": true,
 			})
@@ -528,7 +528,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.resources.search(`searchQuery`)).resolves.toEqual(`resourcesSearch`)
-		expect(axios).toBeCalledWith(`//api.yvideobeta.byu.edu/api/admin/resource/searchQuery`, {"headers": {"session-id": `id`}, "withCredentials": true})
+		expect(axios).toBeCalledWith(`//example.com/api/admin/resource/searchQuery`, {"headers": {"session-id": `id`}, "withCredentials": true})
 	})
 
 	it(`resources files`, async () => {
@@ -541,7 +541,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.resources.files(`resourceId`)).resolves.toEqual(`resourcesFiles`)
-		expect(axios).toBeCalledWith(`//api.yvideobeta.byu.edu/api/resource/resourceId/files`, {"headers": {"session-id": `id`}, "withCredentials": true})
+		expect(axios).toBeCalledWith(`//example.com/api/resource/resourceId/files`, {"headers": {"session-id": `id`}, "withCredentials": true})
 	})
 
 	// user
@@ -588,7 +588,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.language.post(`lang`)).resolves.toEqual(`languagePost`)
-		expect(axios.post).toBeCalledWith(`//api.yvideobeta.byu.edu/api/language`, `lang`, {"headers": {"session-id": `id`}, "withCredentials": true})
+		expect(axios.post).toBeCalledWith(`//example.com/api/language`, `lang`, {"headers": {"session-id": `id`}, "withCredentials": true})
 	})
 
 	it(`language get`, async () => {
@@ -601,7 +601,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.get.mockResolvedValue(res)
 		await expect(proxies.apiProxy.language.get()).resolves.toEqual(`languageGet`)
-		expect(axios.get).toBeCalledWith(`//api.yvideobeta.byu.edu/api/language`, {"headers": {"session-id": `id`}, "withCredentials": true})
+		expect(axios.get).toBeCalledWith(`//example.com/api/language`, {"headers": {"session-id": `id`}, "withCredentials": true})
 	})
 
 	it(`language delete`, async () => {
@@ -614,7 +614,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.delete.mockResolvedValue(res)
 		await expect(proxies.apiProxy.language.delete(`lang`)).resolves.toEqual(`languageDelete`)
-		expect(axios.delete).toBeCalledWith(`//api.yvideobeta.byu.edu/api/language`, `lang`, {"headers": {"session-id": `id`}, "withCredentials": true})
+		expect(axios.delete).toBeCalledWith(`//example.com/api/language`, `lang`, {"headers": {"session-id": `id`}, "withCredentials": true})
 	})
 
 	// file
@@ -628,7 +628,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.post.mockResolvedValue(res)
 		await expect(proxies.apiProxy.file.post(`file`)).resolves.toEqual(`filePost`)
-		expect(axios.post).toBeCalledWith(`//api.yvideobeta.byu.edu/api/file`, `file`, {"headers": {"Content-Type": `multipart/form-data`, "session-id": `id`}, "onUploadProgress": undefined, "withCredentials": true})
+		expect(axios.post).toBeCalledWith(`//example.com/api/file`, `file`, {"headers": {"Content-Type": `multipart/form-data`, "session-id": `id`}, "onUploadProgress": undefined, "withCredentials": true})
 	})
 
 	it(`file patch`, async () => {
@@ -641,7 +641,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.patch.mockResolvedValue(res)
 		await expect(proxies.apiProxy.file.patch(`fileId`, `file`)).resolves.toEqual(res)
-		expect(axios.patch).toBeCalledWith(`//api.yvideobeta.byu.edu/api/file/fileId`, `file`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios.patch).toBeCalledWith(`//example.com/api/file/fileId`, `file`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 	})
 
 	it(`file delete`, async () => {
@@ -654,7 +654,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.delete.mockResolvedValue(res)
 		await expect(proxies.apiProxy.file.delete(`fileId`)).resolves.toEqual(`filePatch`)
-		expect(axios.delete).toBeCalledWith(`//api.yvideobeta.byu.edu/api/file/fileId`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios.delete).toBeCalledWith(`//example.com/api/file/fileId`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 	})
 
 	// media
@@ -668,7 +668,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.get.mockResolvedValue(res)
 		await expect(proxies.apiProxy.media.getKey(`mediaId`)).resolves.toEqual(`mediaGetKey`)
-		expect(axios.get).toBeCalledWith(`//api.yvideobeta.byu.edu/api/media/get-file-key/mediaId`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios.get).toBeCalledWith(`//example.com/api/media/get-file-key/mediaId`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 	})
 
 	// subtitle
@@ -684,7 +684,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.post.mockResolvedValue(res)
 		expect(proxies.apiProxy.subtitles.post(`data`)).resolves.toEqual(`subtitleId`)
-		expect(axios.post).toBeCalledWith(`//api.yvideobeta.byu.edu/api/subtitle`, `data`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios.post).toBeCalledWith(`//example.com/api/subtitle`, `data`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 	})
 
 	it(`subtitle get`, async () => {
@@ -697,8 +697,8 @@ describe(`ApiProxy test`, () => {
 
 		axios.mockResolvedValue(res)
 		await expect(proxies.apiProxy.subtitles.get([`id`, `id2`])).resolves.toEqual([`subtitleGet`, `subtitleGet`])
-		expect(axios).toBeCalledWith(`//api.yvideobeta.byu.edu/api/subtitle/id`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
-		expect(axios).toBeCalledWith(`//api.yvideobeta.byu.edu/api/subtitle/id2`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios).toBeCalledWith(`//example.com/api/subtitle/id`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios).toBeCalledWith(`//example.com/api/subtitle/id2`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 	})
 
 	it(`subtitle delete`, async () => {
@@ -711,8 +711,8 @@ describe(`ApiProxy test`, () => {
 
 		axios.delete.mockResolvedValue(res)
 		proxies.apiProxy.subtitles.delete([`id`, `id2`])
-		expect(axios.delete).toBeCalledWith(`//api.yvideobeta.byu.edu/api/subtitle/id`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
-		expect(axios.delete).toBeCalledWith(`//api.yvideobeta.byu.edu/api/subtitle/id2`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios.delete).toBeCalledWith(`//example.com/api/subtitle/id`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios.delete).toBeCalledWith(`//example.com/api/subtitle/id2`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 	})
 
 	it(`subtitle edit`, async () => {
@@ -725,7 +725,7 @@ describe(`ApiProxy test`, () => {
 
 		axios.patch.mockResolvedValue(res)
 		proxies.apiProxy.subtitles.edit(`update`, `id`)
-		expect(axios.patch).toBeCalledWith(`//api.yvideobeta.byu.edu/api/subtitle/id`, `update`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
+		expect(axios.patch).toBeCalledWith(`//example.com/api/subtitle/id`, `update`, {"headers": {"Content-Type": `application/json`, "session-id": `id`}, "withCredentials": true})
 	})
 
 })

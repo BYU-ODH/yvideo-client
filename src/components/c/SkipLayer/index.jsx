@@ -33,13 +33,13 @@ const SkipLayer = props => {
 		else if (width === 0)
 			setLayerWidth(initialWidth)
 		else
-			setLayerWidth(layerWidth + width)
+			setLayerWidth(initialWidth + width)
 
 		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [width, events, layerOverlap])
 
-	if(document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0){
+	if(document.getElementsByClassName(`total`)?.[0] && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
@@ -104,10 +104,10 @@ const SkipLayer = props => {
 	}
 	return (
 		<Style layerWidth={layerWidth} className='layer-container'>
-			<div ref={layerRef} className='eventsbox'>
-				<div id={`layer-skip`} className={`layer-skip} events half-event`}>
+			<div ref={layerRef} className='events-box'>
+				<div id={`layer-skip`} className={`layer-skip events half-event`}>
 					{
-						events !== undefined && events.length > 0 && videoLength !== 0 ? (
+						events?.length > 0 && videoLength !== 0 ? (
 							<>
 								{ events.map((event, index) => printEvents(event, index)) }
 							</>

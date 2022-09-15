@@ -25,7 +25,6 @@ export default class CreateContent extends PureComponent {
 			tab,
 			resourceContent,
 			hideResources,
-			languages,
 			allLanguages,
 			isResourceSelected,
 			selectedResourceName,
@@ -153,7 +152,7 @@ export default class CreateContent extends PureComponent {
 						}
 
 						{tab === `resource` &&
-									<FormResource onSubmit={isAdmin?adminResourceCheckPermissions:handleAddResourceSubmit}>
+									<FormResource onSubmit={isAdmin ? adminResourceCheckPermissions : handleAddResourceSubmit}>
 										<Search>
 											<SearchIcon />
 											<input className='resource-search-title' type='search' name='searchInput' placeholder={`Search Resource`} autoComplete='off' value={searchQuery} onChange={handleSearchTextChange} />
@@ -184,10 +183,10 @@ export default class CreateContent extends PureComponent {
 										</label>
 										<br/>
 										{
-											!isAccess &&
-												<label>
-													<p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact Y-video admin for more information.</p>
-												</label>
+											!isAccess ?
+												<div className={`box`}><p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact Y-video admin for more information.</p></div>
+												:
+												``
 										}
 										<label>
 											<span><b>Display Title</b></span><br/>
@@ -200,10 +199,10 @@ export default class CreateContent extends PureComponent {
 										<textarea id='resource-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} cols={35} /><br/>
 										<label>
 
-											<span><b>Target Language</b></span>
+											<span><b>File Version</b><span id='no-files-message' style={{marginLeft: `10px`}}>{resourceFiles?.length <= 0 && `No files associated with this resource`}</span></span>
 											{
-												isResourceSelected && resourceFiles &&(
-													languages.length > 0 ?
+												isResourceSelected && (
+													resourceFiles?.length > 0 &&
 														<select name='fileId' onChange={handleTextChange} required>
 															<option value=''>Select</option>
 
@@ -214,14 +213,6 @@ export default class CreateContent extends PureComponent {
 																)
 															}
 														</select>
-
-														:
-														(
-															<div>
-																<br/>
-																<p>No file associate to this resource</p>
-															</div>
-														)
 												)
 											}
 										</label>

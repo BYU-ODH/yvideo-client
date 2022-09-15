@@ -21,9 +21,6 @@ export default class BlockCollection extends Component {
 	}
 
 	scrollListener = e => {
-		const { content } = this.props.viewstate.collection
-		const publishContent = content ? content.filter(item => item.published) : []
-		const count = publishContent.length
 
 		if (e.target.scrollLeft === 0) {
 			this.setState({
@@ -46,8 +43,8 @@ export default class BlockCollection extends Component {
 				})
 			})
 		}
-		const expression = Math.round(3.8 + (count - 4) * 273.6)
-		if (e.target.scrollLeft === expression) {
+		const expression = e.target.scrollWidth - e.target.getBoundingClientRect().width
+		if (Math.round(e.target.scrollLeft) <= Math.round(expression) + 1 && Math.round(e.target.scrollLeft) >= Math.round(expression) - 1) {
 			this.setState({
 				right: true,
 			}, () => {
@@ -104,7 +101,7 @@ export default class BlockCollection extends Component {
 		const count = publishContent.length
 
 		return (
-			user !== undefined && user !== null && collection.published && !collection.public ? (
+			user !== null && collection.published && !collection.public ? (
 				<Container isPublic={collection.public}>
 					<Header>
 						<Link to={`/manager/${id}`}>{name}</Link>

@@ -37,9 +37,8 @@ export const FormResource = styled.form`
 			align-items: baseline;
 		}
 
-		& > .unauthorized-message {
-			color: red;
-			font-size: 1.2rem;
+		& #no-files-message {
+			color: var(--red);
 			width: 300px;
 		}
 	}
@@ -47,6 +46,16 @@ export const FormResource = styled.form`
 	& > div {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	& .box {
+		inline-size: 300px;
+	}
+
+	& .unauthorized-message {
+		color: var(--red);
+		word-break: break-word;
+		width: 300px;
 	}
 `
 

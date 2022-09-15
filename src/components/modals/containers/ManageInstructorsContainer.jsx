@@ -67,9 +67,10 @@ const ManageInstructorsContainer = props => {
 	}
 
 	const removeInstructor = async(item) => {
-		if(item)
+		if(item){
 			await removeAccess(resource.id, item)
-
+			await readAccess(resource.id)
+		}
 		setBlock(true)
 	}
 

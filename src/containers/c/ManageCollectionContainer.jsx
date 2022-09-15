@@ -27,7 +27,7 @@ const ManageCollectionContainer = props => {
 
 	const [isContentTab, setIsContentTab] = useState(true)
 	const [isEditingCollectionName, setIsEditingCollectionName] = useState(false)
-	const [collectionName, setCollectionName] = useState(collection.name)
+	const [collectionName, setCollectionName] = useState(``)
 	const [isEdited, setIsEdited] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -56,7 +56,7 @@ const ManageCollectionContainer = props => {
 			}, 1000)
 		}
 
-		if(collection.content !== undefined && collection.content.length > 0){
+		if(collection?.content?.length > 0){
 			// compare old content to new content
 			if(contentCache[collection.content[0].id] && contentCache[collection.content[collection.content.length - 1].id]){
 				// console.log('got cached content')

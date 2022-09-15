@@ -85,7 +85,7 @@ const LabAssistantManagerContainer = props => {
 		archived: [],
 	}
 
-	if(collections !== undefined && collections !== null){
+	if(collections && collections !== null){
 		// This populates the sideList object to display all the collections based on
 		// their current status published, unpublished, and archived
 

@@ -27,20 +27,21 @@ export default class Error extends PureComponent {
 		let title = ``
 		let message = ``
 
+		if (errorMessage.includes(`401`)){
+			title = `401 Unauthenticated`
+			message = `If you have an account, please log in and try again`
+		}
+
 		if(errorMessage.includes(`403`)){
 			title = `403 Forbidden`
 			message = `You don't have access to this content. If you believe this to be a mistake, please contact your professor, lab assistant/TA, or Y-video Support`
 		}
-		// case errorMessage.includes(`401`):
-		// 	title = `401 Unauthenticated`
-		// 	message = `If you have an account, please log in and try again`
-		// 	break
-		// case errorMessage.includes(`500`):
-		// 	title = `500 Server Error`
-		// 	message = `We are currently experiencing server issues, please try again soon.`
-		// 	break
-		// default : return
-		// }
+
+		if (errorMessage.includes(`500`)){
+			title = `500 Server Error`
+			message = `We are currently experiencing server issues, please try again soon.`
+		}
+
 		return (
 			<>
 				<Style>

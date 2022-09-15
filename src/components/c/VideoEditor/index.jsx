@@ -6,6 +6,7 @@ import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
+import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 // import {DialogBox} from '../../../modals/components'
 
@@ -234,14 +235,9 @@ const VideoEditor = props => {
 			}
 		}
 
-		if(event.start >= 0 && event.start < event.end && event.end <= videoLength){
-			// if(canAccessDom){
-			// document.getElementById(`sideTabMessage`).style.color=`green`
-			// document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-			// document.getElementById(`sideTabExplanation`).innerHTML=``
+		if(event.start >= 0 && event.start < event.end && event.end <= videoLength)
 			setDisableSave(false)
-			// }
-		}else
+		else
 			setDisableSave(true)
 
 	}
@@ -497,9 +493,10 @@ const VideoEditor = props => {
 		for (let e = 0; e < allEvents.length; e++) {
 			if (allEvents[e].type !== `Censor`){
 				const data = {"options": {
-					"end": allEvents[e].end,
+					"type": allEvents[e].type.toLowerCase(),
+					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
 					"start": allEvents[e].start,
-					"type": allEvents[e].type,
+					"end": allEvents[e].end,
 					"details": `{}`,
 				},
 				}
@@ -512,9 +509,10 @@ const VideoEditor = props => {
 					censorPositionData[time] = pos
 				}
 				const data = {"options": {
+					"type": allEvents[e].type,
+					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
 					"start": allEvents[e].start,
 					"end": allEvents[e].end,
-					"type": allEvents[e].type,
 					"details": {
 						"type": `blur`,
 						"interpolate": true,
@@ -526,7 +524,7 @@ const VideoEditor = props => {
 				censorPositionData = {}
 			}
 		}
-		const json = JSON.stringify(jsonData)
+		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url
 		// create a link pointing to the blob or binary object
@@ -539,36 +537,6 @@ const VideoEditor = props => {
 		document.body.appendChild(a)
 		a.click()
 		document.body.removeChild(a)
-	}
-
-	const handleZoomChange = (e, d) => {
-		toggleTip()
-		let width = 0
-		if(document.getElementsByClassName(`eventsbox`)){
-			const eventsBoxWidth = document.getElementsByClassName(`eventsbox`)[0].offsetWidth
-			width = d.x * videoLength/10
-			setWidth(width)
-			handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-			if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
-				setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventsBoxWidth + width))
-		}
-	}
-	const handleScrollFactor = (direction, zoom) => {
-		if(document.getElementsByClassName(`layer-container`) !== undefined){
-			const scrubber = document.getElementById(`time-bar`)
-			const timeIndicator = document.getElementById(`time-indicator-container`)
-			const allLayers = Array.from(document.getElementsByClassName(`layer-container`))
-			const currentLayerWidth = document.getElementsByClassName(`events`)[0].clientWidth
-			const scrollBarContainer = document.getElementById(`zoom-scroll-container`).offsetWidth
-
-			const dis = direction/scrollBarContainer
-			scrubber.scrollLeft = currentLayerWidth * dis
-			timeIndicator.scrollLeft = currentLayerWidth * dis
-
-			allLayers.forEach((element, i) => {
-				allLayers[i].scrollLeft = currentLayerWidth * dis
-			})
-		}
 	}
 
 	const checkSideBarTitle = () => {
@@ -622,7 +590,6 @@ const VideoEditor = props => {
 
 					<section>
 						<div className='event-layers' id='layers-component'>
-
 							{layers.map((layer, index) => (
 								<div id={`layer-${index}`} className={`layer`} key={index}>
 									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
@@ -671,7 +638,7 @@ const VideoEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDragStop={(e, d) => handleZoomChange(e, d)}
+								onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,

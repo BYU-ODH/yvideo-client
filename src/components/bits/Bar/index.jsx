@@ -7,7 +7,7 @@ const Bar = props => {
 	return (
 		<Style data-testid='bar' onClick={handleClick}>
 			<BarBackground />
-			<BarCurrent data-testid='timeBarProgress' id='timeBarProgress' />
+			<BarCurrent data-testid='time-bar-progress' id='time-bar-progress' />
 			{clipPercent &&
 				<BarClipYellow data-testid='yellow-bar' clipPercent={clipPercent} />
 			}

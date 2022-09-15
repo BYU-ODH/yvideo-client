@@ -8,6 +8,7 @@ const Style = styled.div`
 	height: ${barActive};
 
 	position: relative;
+	cursor: pointer;
 `
 
 export default Style
@@ -56,4 +57,5 @@ export const BarSkippedGray = styled.div`
 	left: ${props => props.start / props.duration * 100}%;
 	background-color: gray;
 	height: ${barActive};
+	cursor: auto;
 	`
