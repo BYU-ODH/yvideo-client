@@ -30,7 +30,6 @@ import PublicMoreListCollection from './c/PublicMoreListCollection'
 import VideoEditor from './c/VideoEditor'
 import VideoContainer from './c/VideoContainer'
 import ErrorContainer from './modals/containers/ErrorContainer'
-import Redirect from './c/Redirect/index'
 
 export {
 	Admin,
@@ -65,5 +64,4 @@ export {
 	VideoEditor,
 	VideoContainer,
 	ErrorContainer,
-	Redirect,
 }

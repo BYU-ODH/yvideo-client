@@ -18,7 +18,6 @@ import {
 	ClipEditorContainer,
 	VideoEditorContainer,
 	SubtitleEditorContainer,
-	RedirectContainer,
 } from 'containers'
 
 import {
@@ -63,10 +62,12 @@ class Root extends PureComponent {
 
 							<Route path='/' element={<CollectionsContainer />}/>
 							<Route path='/search-public-collections' element={<SearchPublicCollectionsContainer />}/>
+
 							{
 								user.roles === 0 &&
 								<Route path='/admin' element={<AdminContainer />}/>
 							}
+
 							{
 								user.roles < 3 &&
 							<Route path='/lab-assistant' element={<LabAssistantContainer />}/>
@@ -127,7 +128,7 @@ class Root extends PureComponent {
 							}
 							<Route path='/feedback' element={<FeedbackContainer />}/>
 
-							<Route path='*' element={<Error error='404' message={`You've wandered too far`} />}/>
+							<Route element={<Error error='404' message={`You've wandered too far`} />}/>
 						</Routes>
 					</>
 					:
@@ -136,8 +137,7 @@ class Root extends PureComponent {
 							<Routes>
 								<Route path='/' element={<LandingContainer />} />
 								<Route path='/search-public-collections' element={<SearchPublicCollectionsContainer />}/>
-								<Route path='/player/*' element={<RedirectContainer />} />
-								<Route path='*' element={<Error error='403' message={`You don't have access to this content.`} />} />
+								<Route element={<Error error='404' message={`You've wandered too far`} />}/>
 							</Routes>
 						</>
 					)
