@@ -20,13 +20,10 @@ import skipForward from 'assets/skip-forward-white.svg'
 const PlayerControls = props => {
 
 	const {
-		// duration,
 		fullscreen,
 		hovering,
 		progress,
 		playTime,
-		// volume,
-		// muted,
 		playing,
 		isCaption,
 		isAdmin,
@@ -51,12 +48,7 @@ const PlayerControls = props => {
 		handlePlay,
 		handlePlaybackRateChange,
 		handleSeekChange,
-		// handleSeekMouseDown,
-		// handleSeekMouseUp,
 		handleToggleFullscreen,
-		// handleMuted,
-		// handleUnmuted,
-		// handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
 		handleShowTip,
@@ -124,7 +116,7 @@ const PlayerControls = props => {
 					}
 					onMouseLeave={() => toggleTip()}
 				/>
-				{ subtitleTextIndex !== null &&
+				{ subtitleTextIndex !== null && showTranscript &&
 				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt='Previous Subtitle'
 					onMouseEnter={e => handleShowTip(`prev-sub`,
 						{
@@ -136,7 +128,7 @@ const PlayerControls = props => {
 					onMouseLeave={() => toggleTip()}
 				/>
 				}
-				{ subtitleTextIndex !== null &&
+				{ subtitleTextIndex !== null && showTranscript &&
 				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt='Next Subtitle'
 					onMouseEnter={e => handleShowTip(`next-sub`,
 						{

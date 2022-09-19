@@ -91,24 +91,15 @@ export default class Player extends Component {
 			url,
 			playing,
 			playbackRate,
-			// playbackOptions,
 			progress,
-			// playTime,
 			volume,
 			muted,
 			blank,
-			// videoComment,
-			// commentPosition,
 			duration,
 			showTranscript,
-			// toggleTranscript,
-			// content,
-			// subtitleTextIndex,
 			displaySubtitles,
 			indexToDisplay,
 			isMobile,
-			// censorPosition,
-			// censorActive,
 			clipTime,
 			isLandscape,
 			hasPausedClip,
@@ -133,7 +124,6 @@ export default class Player extends Component {
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
-			// handleOnReady
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -290,7 +280,7 @@ export default class Player extends Component {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} hovering={hovering} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
-							{displaySubtitles !== null &&
+							{displaySubtitles !== null && showTranscript &&
 								<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
 							}
 							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
