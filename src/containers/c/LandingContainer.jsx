@@ -16,12 +16,9 @@ const LandingContainer = props => {
 	const [overlay, setOverlay] = useState(false)
 	const [isAlertMessage, setIsAlertMessage] = useState(false)
 	const [alertMessage, setAlertMessage] = useState(``)
+	const [disabled, setDisabled] = useState(false)
 	const toggleOverlay = () => {
 		setOverlay(!overlay)
-	}
-
-	const handlePublicCollections = e => {
-		// if(e) console.log(e.target.value)
 	}
 
 	const handleLogin = e => {
@@ -34,13 +31,16 @@ const LandingContainer = props => {
 		if(isSafari) {
 			setAlertMessage(`video playback doesn't work on safari, we recommend Chrome.`)
 			setIsAlertMessage(true)
+			setDisabled(true)
 		}else if(isIOS && isMobile) { // ios
 			setAlertMessage(`video playback doesn't work on the IOS system, please use a different device.`)
 			setIsAlertMessage(true)
+			setDisabled(true)
 		}
 	}
 
 	const toggleAlertMessage = () => {
+		setDisabled(false)
 		const alert = document.getElementById(`alertMessage`)
 		if (alert)
 			alert.style.visibility = `hidden`
@@ -50,12 +50,12 @@ const LandingContainer = props => {
 		overlay,
 		alertMessage,
 		isAlertMessage,
+		disabled,
 	}
 
 	const handlers = {
 		toggleOverlay,
 		handleLogin,
-		handlePublicCollections,
 		checkBrowser,
 		toggleAlertMessage,
 	}

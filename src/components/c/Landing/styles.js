@@ -30,15 +30,15 @@ export const Comets = styled.div`
 `
 
 export const AlertMessage = styled.div`
-	display: grid;
 	padding: 1vw;
-	width: 290px !important;
-	height: 90px !important;
-	font-size: 12px;
+	width: 800px !important;
+	height: 200px !important;
+	font-size: 30px;
 	position: absolute;
 	top: 0%;
 	border: 1px solid black;
 	border-radius: 4px;
+	line-height: 1.5;
 
 	background-color: #FCFCFC;
 	visibility: visible;
@@ -48,18 +48,26 @@ export const AlertMessage = styled.div`
 	}
 
 	& button {
-		font-size: 1rem;
+		font-size: 25px;
 		background: transparent;
 
 		position: absolute;
-		top: 65%;
-		left: 80%;
-		display: inline-block;
+		top: 75%;
+		left: 85%;
 		cursor: pointer;
-		align: bottom-right;
-		cursor: pointer;
-	}
 
+		color: white;
+		padding: 0.55rem 1.5rem;
+		border: 3px solid var(--red);
+		font-weight: bold;
+		background-color: var(--red);
+		border-radius: 0.3rem;
+		letter-spacing: 0.05rem;
+
+		:hover {
+			background-color: var(--dark-red);
+			border-color: var(--dark-red);
+		}
 `
 
 export const Welcome = styled.div`
@@ -96,6 +104,10 @@ export const Welcome = styled.div`
 
 			flex-direction: column;
 			margin-top: 8rem;
+
+			& .inactive {
+				pointer-events: ${props => props.disable ? `none` : `auto`};
+			}
 		}
 	}
 `
