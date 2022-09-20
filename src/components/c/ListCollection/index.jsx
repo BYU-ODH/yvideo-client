@@ -55,7 +55,7 @@ class ListCollection extends PureComponent {
 							<div />
 						</Collection>
 					</CollectionRow>
-					{ publishContent && user !== undefined && user !== null &&
+					{ publishContent && user && user !== null &&
 						<Body
 							isOpen={isOpen}
 							count={count}
@@ -101,7 +101,7 @@ class ListCollection extends PureComponent {
 							</Collection>
 						</CollectionRow>
 
-						{ publishContent && (user !== undefined && user !== null) && (
+						{ publishContent && (user && user !== null) && (
 							<Body isOpen={isOpen} count={count} isPublic={collection.public}>
 								{user.roles < 4 &&
 									<PublicCollectionsTable isOwner={isOwner}>

@@ -87,7 +87,7 @@ const SubtitleEditor = props => {
 		let largestLayer = 0
 
 		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
-		if(eventsArray !== undefined && eventsArray.length > 0){
+		if(eventsArray?.length > 0){
 			eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
 			largestLayer = eventsArray[eventsArray.length - 1].layer
 		}
@@ -454,7 +454,7 @@ const SubtitleEditor = props => {
 
 	const handleNewSub = () => {
 		if(newSub.trueFalse === false) {
-			if(subs.length > 0 && subLayerToEdit !== undefined) {
+			if(subs.length > 0 && subLayerToEdit) {
 				for(const i in subs[subLayerToEdit].content) {
 					if(document.getElementById(`subStart${i}`)) {
 						document.getElementById(`subStart${i}`).style.border = null
@@ -596,9 +596,10 @@ const SubtitleEditor = props => {
 		closeSideEditor()
 		setSideEditor(false)
 		const tempSubs = [...subtitles]
-		if (tempSubs[index].id !== `` && tempSubs[index].id !== undefined){
+		const indexId = tempSubs[index].id
+		if (indexId && indexId !== ``){
 			const deleteSub = subLayersToDelete
-			deleteSub.push(tempSubs[index].id)
+			deleteSub.push(indexId)
 			setSubLayersToDelete(deleteSub)
 		}
 		tempSubs.splice(index, 1)
@@ -688,7 +689,7 @@ const SubtitleEditor = props => {
 				}
 			}
 			if(!checkError) {
-				if(document.getElementById(`subStart${i}`) && document.getElementById(`subStart${i}`).style){
+				if(document.getElementById(`subStart${i}`)?.style){
 					document.getElementById(`subStart${i}`).style.border = ``
 					document.getElementById(`subEnd${i}`).style.border = ``
 				}

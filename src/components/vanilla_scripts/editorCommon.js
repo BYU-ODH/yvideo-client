@@ -32,8 +32,8 @@ const handleZoomChange = (_e, d, videoLength, setWidth, videoCurrentTime, setScr
 	}
 }
 
-export const handleScrollFactor = (direction, _zoom) => {
-	if(document.getElementsByClassName(`layer-container`) !== undefined && document.getElementById(`zoom-scroll-container`)){
+export const handleScrollFactor = (direction, zoom) => {
+	if(document.getElementsByClassName(`layer-container`) && document.getElementById(`zoom-scroll-container`)){
 		const scrubberContainer = document.getElementById(`time-bar`)
 		const scrubber = document.getElementById(`time-bar-progress`)
 		const timeIndicator = document.getElementById(`time-indicator-container`)

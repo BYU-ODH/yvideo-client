@@ -20,13 +20,10 @@ import skipForward from 'assets/skip-forward-white.svg'
 const PlayerControls = props => {
 
 	const {
-		// duration,
 		fullscreen,
 		hovering,
 		progress,
 		playTime,
-		// volume,
-		// muted,
 		playing,
 		isCaption,
 		isAdmin,
@@ -51,12 +48,7 @@ const PlayerControls = props => {
 		handlePlay,
 		handlePlaybackRateChange,
 		handleSeekChange,
-		// handleSeekMouseDown,
-		// handleSeekMouseUp,
 		handleToggleFullscreen,
-		// handleMuted,
-		// handleUnmuted,
-		// handleVolumeChange,
 		setIsCaption,
 		handleChangeSubtitle,
 		handleShowTip,
@@ -68,6 +60,7 @@ const PlayerControls = props => {
 		handleChangeSpeed,
 		handleChangeCaption,
 		handleSeekToSubtitle,
+		handleMouseOver,
 	} = props.handlers
 
 	const {
@@ -98,7 +91,7 @@ const PlayerControls = props => {
 	})
 
 	return (
-		<Style playing={playing} >
+		<Style hovering={hovering} onMouseOver={handleMouseOver} playing={playing}>
 
 			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray}/>
 			<div className='left'>
@@ -106,7 +99,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`play`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -117,30 +110,30 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`restart`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={() => toggleTip()}
 				/>
-				{ subtitleTextIndex !== null &&
+				{ subtitleTextIndex !== null && showTranscript &&
 				<img id='prev-sub' src={skipBack} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt='Previous Subtitle'
 					onMouseEnter={e => handleShowTip(`prev-sub`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
 					onMouseLeave={() => toggleTip()}
 				/>
 				}
-				{ subtitleTextIndex !== null &&
+				{ subtitleTextIndex !== null && showTranscript &&
 				<img id='next-sub' src={skipForward} onClick={e => handleSeekToSubtitle(e)} width='20' height='20' alt='Next Subtitle'
 					onMouseEnter={e => handleShowTip(`next-sub`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -154,7 +147,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`fullscr`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -164,7 +157,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`playback-rate`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 90,
+							y: e.target.getBoundingClientRect().y - 110,
 							width: e.currentTarget.offsetWidth,
 						})
 					}
@@ -178,7 +171,7 @@ const PlayerControls = props => {
 					onMouseEnter={e => handleShowTip(`closed-captions`,
 						{
 							x: e.target.getBoundingClientRect().x,
-							y: e.target.getBoundingClientRect().y - 75,
+							y: e.target.getBoundingClientRect().y - 100,
 							width: e.currentTarget.offsetWidth,
 						})
 					}

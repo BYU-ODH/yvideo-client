@@ -176,7 +176,7 @@ export class CollectionPermissions extends PureComponent {
 												<td>{element[`username`]}</td>
 												<td>{element[`account-name`]}</td>
 												<td>{element[`account-type`]}</td>
-												<td>{element[`last-login`] !== undefined && element[`last-login`].length > 2 ?
+												<td>{element[`last-login`]?.length > 2 ?
 													`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
 													:
 													`NA`
@@ -221,7 +221,7 @@ export class CollectionPermissions extends PureComponent {
 												<td>{element[`username`]}</td>
 												<td>{element[`account-name`]}</td>
 												<td>{element[`account-type`]}</td>
-												<td>{element[`last-login`] !== undefined && element[`last-login`].length > 2 ?
+												<td>{element[`last-login`]?.length > 2 ?
 													`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
 													:
 													`NA`

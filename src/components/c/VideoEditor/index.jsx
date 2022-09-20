@@ -236,14 +236,9 @@ const VideoEditor = props => {
 			}
 		}
 
-		if(event.start >= 0 && event.start < event.end && event.end <= videoLength){
-			// if(canAccessDom){
-			// document.getElementById(`sideTabMessage`).style.color=`green`
-			// document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-			// document.getElementById(`sideTabExplanation`).innerHTML=``
+		if(event.start >= 0 && event.start < event.end && event.end <= videoLength)
 			setDisableSave(false)
-			// }
-		}else
+		else
 			setDisableSave(true)
 
 	}
@@ -499,9 +494,10 @@ const VideoEditor = props => {
 		for (let e = 0; e < allEvents.length; e++) {
 			if (allEvents[e].type !== `Censor`){
 				const data = {"options": {
-					"end": allEvents[e].end,
+					"type": allEvents[e].type.toLowerCase(),
+					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
 					"start": allEvents[e].start,
-					"type": allEvents[e].type,
+					"end": allEvents[e].end,
 					"details": `{}`,
 				},
 				}
@@ -514,9 +510,10 @@ const VideoEditor = props => {
 					censorPositionData[time] = pos
 				}
 				const data = {"options": {
+					"type": allEvents[e].type,
+					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
 					"start": allEvents[e].start,
 					"end": allEvents[e].end,
-					"type": allEvents[e].type,
 					"details": {
 						"type": `blur`,
 						"interpolate": true,
@@ -528,7 +525,7 @@ const VideoEditor = props => {
 				censorPositionData = {}
 			}
 		}
-		const json = JSON.stringify(jsonData)
+		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url
 		// create a link pointing to the blob or binary object

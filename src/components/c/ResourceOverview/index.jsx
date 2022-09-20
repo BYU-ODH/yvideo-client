@@ -135,9 +135,9 @@ export class ResourceOverview extends PureComponent {
 
 								<div>
 									<h4>Files:</h4>
-									{files && files.length !== 0 ?
+									{files && files?.length !== 0 ?
 										<>
-											<Title>{files && files.length} files</Title>
+											<Title>{files?.length} files</Title>
 											<EditButton onClick={handleFiles}>Edit</EditButton>
 										</>
 										:
