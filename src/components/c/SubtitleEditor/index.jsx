@@ -9,8 +9,7 @@ import {parse} from 'subtitle'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import { handleZoomChange, handleScrollFactor, scrollDebounce } from '../../vanilla_scripts/editorCommon'
-import { debounce } from 'lodash'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -83,6 +82,7 @@ const SubtitleEditor = props => {
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
+		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
 
 		let largestLayer = 0
 
@@ -892,7 +892,10 @@ const SubtitleEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDrag={(e, d) => scrollDebounce(() => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`)), 50)}
+								onDrag={(e, d) => {
+									handleZoomEandD(e, d)
+									debouncedOnDrag()
+								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,

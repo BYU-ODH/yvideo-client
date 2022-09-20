@@ -9,7 +9,7 @@ import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 
 // import * as Subtitle from 'subtitle'
 import zoomIn from 'assets/te-zoom-in.svg'
@@ -85,6 +85,7 @@ const ClipEditor = props => {
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
+		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`clip-box`))
 
 		const largestLayer = 0
 		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
@@ -118,7 +119,7 @@ const ClipEditor = props => {
 			window.onbeforeunload = undefined
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [eventsArray, blockLeave])
+	}, [eventsArray, blockLeave, videoLength])
 
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
@@ -351,7 +352,10 @@ const ClipEditor = props => {
 										}
 									}
 									dragAxis='x'
-									onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`clip-box`))}
+									onDrag={(e, d) => {
+										handleZoomEandD(e, d)
+										debouncedOnDrag()
+									}}
 									onMouseEnter={e => handleShowTip(`te-zoom`,
 										{
 											x: e.target.getBoundingClientRect().x,
