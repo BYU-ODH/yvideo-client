@@ -18,7 +18,7 @@ const FileOverviewContainer = props => {
 		fileCache,
 		toggleModal,
 		editFileResource,
-		// resources,
+		handleFilesUpdated,
 	} = props
 
 	const [fileState, setFileState] = useState(file)
@@ -49,7 +49,7 @@ const FileOverviewContainer = props => {
 		e.preventDefault()
 		updateFile(file.id, fileState)
 		editFileResource(fileState[`resource-id`], fileState)
-		toggleModal()
+		handleFilesUpdated(true)
 	}
 
 	const handleRemoveFile = e => {
