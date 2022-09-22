@@ -6,7 +6,7 @@ import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 // import {DialogBox} from '../../../modals/components'
 
@@ -134,6 +134,7 @@ const VideoEditor = props => {
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
 		setEvents(allEvents)
+		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
@@ -144,7 +145,7 @@ const VideoEditor = props => {
 			window.onbeforeunload = undefined
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [eventsArray, blockLeave])
+	}, [eventsArray, blockLeave, videoLength])
 
 	// end of useEffect
 
@@ -638,7 +639,10 @@ const VideoEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))}
+								onDrag={(e, d) => {
+									handleZoomEandD(e, d)
+									debouncedOnDrag()
+								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,
