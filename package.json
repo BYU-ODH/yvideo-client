@@ -40,7 +40,6 @@
 		"jest": "^28.1.0",
 		"jest-enzyme": "^7.1.2",
 		"jest-redux-thunk": "^1.1.1",
-		"lodash": "^4.17.21",
 		"process": "^0.11.10",
 		"react": "^18.1.0",
 		"react-bootstrap": "^2.4.0",

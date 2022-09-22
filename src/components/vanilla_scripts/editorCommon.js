@@ -1,4 +1,4 @@
-import { debounce } from 'lodash'
+import debounce from './debounce/debounce.js'
 
 let zoomParams
 let lengthParam
