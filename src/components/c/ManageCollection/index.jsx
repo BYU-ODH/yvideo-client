@@ -97,7 +97,7 @@ export default class ManageCollection extends PureComponent {
 					<Publish>
 						{collection.archived ? (
 							<>
-								{ user.roles !== undefined ? (
+								{ user?.roles !== undefined ? (
 									<>{user.roles === 0 || user.roles === 1 ? (
 										<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={unarchive}>Unarchive</ArchiveButton>
 									) : ( <p>Cannot unarchive</p> )}
@@ -135,7 +135,7 @@ export default class ManageCollection extends PureComponent {
 					:
 					<>
 						<Tab>
-							{expiredContent?.length > 0 &&
+							{expiredContent?.length > 0 && isContentTab &&
 								<>
 									<h3 id='expiredTitle'>Expired Content</h3>
 									<hr />
@@ -148,7 +148,7 @@ export default class ManageCollection extends PureComponent {
 								:
 								null
 							}
-							{expiredContent?.length > 0 && <hr />}
+							{expiredContent?.length > 0 && isContentTab && <hr />}
 							{isContentTab ?
 								content.map((item, index) => (
 									<div key={index}>
