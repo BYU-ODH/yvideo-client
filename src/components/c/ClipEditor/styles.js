@@ -246,13 +246,14 @@ export const SideEditor = styled.div`
 
 	& tr {
 		& i {
-			filter: invert(100%) ;
+			opacity: 0%;
 		}
 	}
 
 	& td {
 		:hover {
 			& i {
+				opacity: 100%;
 				-webkit-filter: invert(50%);
 				filter: invert(50%);
 			}
@@ -262,7 +263,7 @@ export const SideEditor = styled.div`
 	& i {
 		z-index: 25 !important;
 		position: absolute;
-		padding-top: 4.5px;
+		padding-top: 5px;
 		right: 14px;
 		cursor: pointer;
 		:hover{
