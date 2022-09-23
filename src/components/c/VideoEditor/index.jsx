@@ -496,8 +496,8 @@ const VideoEditor = props => {
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
 					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
-					"start": allEvents[e].start,
-					"end": allEvents[e].end,
+					"start": parseFloat(allEvents[e].start.toFixed(2)),
+					"end": parseFloat(allEvents[e].end.toFixed(2)),
 					"details": `{}`,
 				},
 				}
@@ -512,8 +512,8 @@ const VideoEditor = props => {
 				const data = {"options": {
 					"type": allEvents[e].type,
 					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
-					"start": allEvents[e].start,
-					"end": allEvents[e].end,
+					"start": parseFloat(allEvents[e].start.toFixed(2)),
+					"end": parseFloat(allEvents[e].end.toFixed(2)),
 					"details": {
 						"type": `blur`,
 						"interpolate": true,
@@ -525,6 +525,7 @@ const VideoEditor = props => {
 				censorPositionData = {}
 			}
 		}
+		jsonData.sort((a, b) => ((a.options.start > b.options.start) - (a.options.start < b.options.start)))
 		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url
