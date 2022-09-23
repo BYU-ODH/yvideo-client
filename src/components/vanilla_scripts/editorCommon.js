@@ -40,3 +40,7 @@ export const handleScrollFactor = (direction, zoom) => {
 			skipLayer.scrollLeft = layerScrollWidth * dis
 	}
 }
+
+export const handleElapsed = (time, setElapsed) => {
+	setElapsed(time)
+}
