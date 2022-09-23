@@ -62,10 +62,6 @@ export const handleScrollFactor = (direction, zoom) => {
 	}
 }
 
-export const handleElapsed = (time, setElapsed) => {
-	setElapsed(time)
-}
-
 const updateZoom = () => {
 	handleZoomChange(zoomParams.e, zoomParams.d, lengthParam, setWidthParam, videoTimeParam, setScrollBarParam, eventsBoxParam)
 }
