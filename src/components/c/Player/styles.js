@@ -171,9 +171,10 @@ export const PlayButton = styled.img`
 	margin: auto;
 	top: ${props => props.isLandscape ? `20%` : `40%`};
 	cursor: pointer;
-	transition: .5s ease;
 	border-radius: 50%;
 	z-index: 100;
+	opacity: ${props => props.hovering ? 1 : 0};
+	transition: opacity 0.5s ease-in-out;
 
 	@media screen and (max-width: 425px){
 		width: 12rem;

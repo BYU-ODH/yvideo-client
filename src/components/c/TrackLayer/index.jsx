@@ -77,7 +77,7 @@ const TrackLayer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateEvents])
 
-	if(document.getElementById(`time-bar-progress`) !== undefined && layerWidth !== 0){
+	if(document.getElementById(`time-bar-progress`) && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementById(`time-bar-progress`).style.width = `${layerWidth - 2}px`
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
@@ -253,7 +253,7 @@ const TrackLayer = props => {
 					<div ref={layerRef} className='events-box'>
 						<div className={`layer-${layerIndex} events ${displayLayer === layerIndex && `active-layer`}`}>
 							{
-								events !== undefined && events.length > 0 && videoLength !== 0? (
+								events?.length > 0 && videoLength !== 0 ? (
 									<>
 										{ events.map((event, index) => printEvents(event, index, false)) }
 									</>
@@ -276,7 +276,7 @@ const TrackLayer = props => {
 							}
 						>
 							{
-								events !== undefined && events.length > 0 && videoLength !== 0 ? (
+								events?.length > 0 && videoLength !== 0 ? (
 									<>
 										{events.map((event, index) =>
 											event.halfLayer === 0 || event.halfLayer === undefined ?
@@ -299,7 +299,7 @@ const TrackLayer = props => {
 									}}
 							>
 								{
-									events !== undefined && events.length > 0 && videoLength !== 0 && halfLayer !== 0 ? (
+									events?.length > 0 && videoLength !== 0 && halfLayer !== 0 ? (
 										<>
 											{events.map((event, index) =>
 												event.halfLayer === halfLayer ? printEvents(event, index, true) : null,

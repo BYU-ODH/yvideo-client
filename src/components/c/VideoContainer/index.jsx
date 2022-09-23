@@ -5,7 +5,7 @@ import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 import { handleElapsed } from '../../vanilla_scripts/editorCommon'
 
-import { CurrentEvents, CensorChange, HandleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, handleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
 import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
 
 import play from 'assets/controls_play.svg'
@@ -120,7 +120,7 @@ const VideoContainer = props => {
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
-				if(subtitles.length > 0) HandleSubtitle(playedSeconds, subtitles, 0)
+				if(subtitles.length > 0) handleSubtitle(playedSeconds, subtitles, 0)
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()

@@ -36,7 +36,7 @@ export default class ManageInstructors extends PureComponent {
 					<h2>Instructors</h2>
 
 					<InputForm className='faculty-submit'>
-						<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={updateSearchBar} value={searchQuery} />
+						<input className='faculty-input' type='search' placeholder={`Enter netID`} onChange={updateSearchBar} value={searchQuery} />
 						<AddButton className='std-outline-color' onClick={addInstructor} type='submit'>Add</AddButton>
 					</InputForm>
 					<Hr />

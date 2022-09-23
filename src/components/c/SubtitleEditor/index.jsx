@@ -9,7 +9,7 @@ import {parse} from 'subtitle'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -83,11 +83,12 @@ const SubtitleEditor = props => {
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
+		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
 
 		let largestLayer = 0
 
 		// SORTING THE ARRAYS TO HAVE A BETTER WAY TO HANDLE THE EVENTS
-		if(eventsArray !== undefined && eventsArray.length > 0){
+		if(eventsArray?.length > 0){
 			eventsArray.sort((a, b) => a.layer > b.layer ? 1 : -1)
 			largestLayer = eventsArray[eventsArray.length - 1].layer
 		}
@@ -454,7 +455,7 @@ const SubtitleEditor = props => {
 
 	const handleNewSub = () => {
 		if(newSub.trueFalse === false) {
-			if(subs.length > 0 && subLayerToEdit !== undefined) {
+			if(subs.length > 0 && subLayerToEdit) {
 				for(const i in subs[subLayerToEdit].content) {
 					if(document.getElementById(`subStart${i}`)) {
 						document.getElementById(`subStart${i}`).style.border = null
@@ -596,9 +597,10 @@ const SubtitleEditor = props => {
 		closeSideEditor()
 		setSideEditor(false)
 		const tempSubs = [...subtitles]
-		if (tempSubs[index].id !== `` && tempSubs[index].id !== undefined){
+		const indexId = tempSubs[index].id
+		if (indexId && indexId !== ``){
 			const deleteSub = subLayersToDelete
-			deleteSub.push(tempSubs[index].id)
+			deleteSub.push(indexId)
 			setSubLayersToDelete(deleteSub)
 		}
 		tempSubs.splice(index, 1)
@@ -688,7 +690,7 @@ const SubtitleEditor = props => {
 				}
 			}
 			if(!checkError) {
-				if(document.getElementById(`subStart${i}`) && document.getElementById(`subStart${i}`).style){
+				if(document.getElementById(`subStart${i}`)?.style){
 					document.getElementById(`subStart${i}`).style.border = ``
 					document.getElementById(`subEnd${i}`).style.border = ``
 				}
@@ -894,7 +896,10 @@ const SubtitleEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))}
+								onDrag={(e, d) => {
+									handleZoomEandD(e, d)
+									debouncedOnDrag()
+								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,

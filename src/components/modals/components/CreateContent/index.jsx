@@ -184,7 +184,7 @@ export default class CreateContent extends PureComponent {
 										<br/>
 										{
 											!isAccess ?
-												<div className={`box`}><p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact Y-video admin for more information.</p></div>
+												<div className={`box`}><p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact a Y-video admin to demonstrate proof of ownership.</p></div>
 												:
 												``
 										}
@@ -199,10 +199,10 @@ export default class CreateContent extends PureComponent {
 										<textarea id='resource-content-description' className='std-outline-color' name='description' value={description} onChange={handleTextChange} rows={5} cols={35} /><br/>
 										<label>
 
-											<span><b>File Version</b><span id='no-files-message' style={{marginLeft: `10px`}}>{resourceFiles && resourceFiles.length <= 0 && `No files associated with this resource`}</span></span>
+											<span><b>File Version</b><span id='no-files-message' style={{marginLeft: `10px`}}>{resourceFiles?.length <= 0 && `No files associated with this resource`}</span></span>
 											{
-												isResourceSelected && resourceFiles &&(
-													resourceFiles.length > 0 &&
+												isResourceSelected && (
+													resourceFiles?.length > 0 &&
 														<select name='fileId' onChange={handleTextChange} required>
 															<option value=''>Select</option>
 

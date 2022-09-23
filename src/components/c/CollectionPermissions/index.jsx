@@ -153,7 +153,7 @@ export class CollectionPermissions extends PureComponent {
 						<UserList id='user-table'>
 							<h4>Instructors and TAs</h4>
 							<Search className='faculty-submit' onSubmit={handlers.addTA}>
-								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={userTA.username} />
+								<input className='faculty-input' type='search' placeholder={`Enter netID`} onChange={handlers.handleUserTAChange} value={userTA.username} />
 								<AddButton className='add-faculty-button' type='submit' disabled={disabledTA}>Add</AddButton>
 							</Search>
 							<Table border='1'>
@@ -176,7 +176,7 @@ export class CollectionPermissions extends PureComponent {
 												<td>{element[`username`]}</td>
 												<td>{element[`account-name`]}</td>
 												<td>{element[`account-type`]}</td>
-												<td>{element[`last-login`] !== undefined && element[`last-login`].length > 2 ?
+												<td>{element[`last-login`]?.length > 2 ?
 													`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
 													:
 													`NA`
@@ -195,7 +195,7 @@ export class CollectionPermissions extends PureComponent {
 								<h4>Current Users</h4>
 								<div>
 									<Search className='faculty-submit' onSubmit={handlers.addUser}>
-										<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
+										<input className='faculty-input' type='search' placeholder={`Enter netID`} onChange={handlers.handleUserChange} value={username} />
 										<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
 									</Search>
 									<AddManyButton type='button' onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
@@ -221,7 +221,7 @@ export class CollectionPermissions extends PureComponent {
 												<td>{element[`username`]}</td>
 												<td>{element[`account-name`]}</td>
 												<td>{element[`account-type`]}</td>
-												<td>{element[`last-login`] !== undefined && element[`last-login`].length > 2 ?
+												<td>{element[`last-login`]?.length > 2 ?
 													`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(element[`last-login`].length - 4, element[`last-login`].length)}`
 													:
 													`NA`

@@ -61,7 +61,7 @@ export class FileOverview extends PureComponent {
 								id='categorySelect'
 								data-testid='version-edit'
 								onChange={handleFileVersion}>
-								{langs !== undefined && langs.map((lang, index) => (
+								{langs?.map((lang, index) => (
 									<option data-testid='select-option' value={lang} key={index}>
 										{lang}
 									</option>
