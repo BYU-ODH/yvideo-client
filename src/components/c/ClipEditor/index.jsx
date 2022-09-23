@@ -589,7 +589,7 @@ const ClipEditor = props => {
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/>
 							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
-						<Icon src={plus} onClick={() => createClip(elapsed)} />
+						<Icon id='add-button' src={plus} onClick={() => createClip(elapsed)} />
 					</div>
 				</SideEditor>
 			</DndProvider>

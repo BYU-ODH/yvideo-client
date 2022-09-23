@@ -3,9 +3,6 @@ import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '../../../containers/c/ClipEditorContainer'
-// import { Timeline, EventList } from '../../../components/c/ClipEditor'
-import { Icon } from '../../../components/c/ClipEditor/styles'
-// import { interfaceService } from 'services'
 import * as testutil from '../../testutil/testutil'
 
 const props = {
@@ -48,7 +45,7 @@ describe(`Simulate Event`, () => {
 
 	it(`Add subtitle`, () => {
 		expect(wrapper.contains(<th align='center'>Title</th>)).toEqual(true)
-		wrapper.find(Icon).simulate(`click`)
+		wrapper.find(`#add-button`).at(0).simulate(`click`)
 		wrapper.find(`input`).at(0).simulate(`click`)
 		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		expect(wrapper.find(`input`).at(0).props().value).toBe(``)
