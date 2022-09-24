@@ -74,7 +74,7 @@ class Root extends PureComponent {
 						<Routes>
 
 							{
-								adminEndpoints.map((adminEntry, index) =>
+								adminEndpoints?.map((adminEntry, index) =>
 									user.roles === 0 ?
 										renderRoute(adminEntry, index)
 										:
@@ -83,7 +83,7 @@ class Root extends PureComponent {
 							}
 
 							{
-								labAssistantEndpoints.map((assistEntry, index) =>
+								labAssistantEndpoints?.map((assistEntry, index) =>
 									user.roles <= 1 ?
 										renderRoute(assistEntry, index)
 										:
@@ -92,7 +92,7 @@ class Root extends PureComponent {
 							}
 
 							{
-								instructorEndpoints.map((instructorEntry, index) =>
+								instructorEndpoints?.map((instructorEntry, index) =>
 									user.roles <= 2 ?
 										renderRoute(instructorEntry, index)
 										:
@@ -101,7 +101,7 @@ class Root extends PureComponent {
 							}
 
 							{
-								studentEndpoints.map((studentEntry, index) =>
+								studentEndpoints?.map((studentEntry, index) =>
 									user.roles <= 3 ?
 										renderRoute(studentEntry, index)
 										:
@@ -115,7 +115,7 @@ class Root extends PureComponent {
 					<>
 						<Routes>
 							{
-								unauthEndpoints.map((unauthEntry, index) =>
+								unauthEndpoints?.map((unauthEntry, index) =>
 									renderRoute(unauthEntry, index)
 								)
 							}

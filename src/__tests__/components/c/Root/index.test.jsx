@@ -42,6 +42,8 @@ describe(`root route paring test`, () => {
 
 		}, {})
 
+		console.log(pathMap)
+
 		expect(pathMap[`/`]).toBe(`CollectionsContainer`)
 		expect(pathMap[`/admin`]).toBe(`AdminContainer`)
 		expect(pathMap[`/collections`]).toBe(`CollectionsContainer`)
