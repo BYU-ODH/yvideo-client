@@ -88,7 +88,7 @@ const VideoEditor = props => {
 			layer: 0,
 		},
 	]
-
+	const [elapsed, setElapsed] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [currentEvent, setCurrentEvent] = useState()
 	const [shouldUpdate, setShouldUpdate] = useState(false)
@@ -157,7 +157,7 @@ const VideoEditor = props => {
 	}
 
 	const addEventHandler = (item, index) => {
-		addEventToLayer(item, index, videoCurrentTime)
+		addEventToLayer(item, index, elapsed)
 		setBlock(true)
 	}
 
@@ -178,9 +178,10 @@ const VideoEditor = props => {
 		eventObj.end = Number(startPercentage) + eventObj.end
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
-
 		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
 		updateEvents(eventIndex, eventObj, displayLayer)
+
+
 	}
 
 	const runTimeCheck = (side, event, type) => {
@@ -226,12 +227,12 @@ const VideoEditor = props => {
 		if(event.end <= event.start){
 			if(canAccessDom){
 				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than start time`
+				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number bigger than the start time`
 			}
 		} else if(event.end > videoLength){
 			// event.end = 100
 			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number less than ${videoLength}`
+				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number less than ${videoLength}`
 				document.getElementById(`sideTabExplanation`).innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
 			}
 		}
@@ -586,6 +587,8 @@ const VideoEditor = props => {
 					eventPosition={eventPosition}
 					handleShowTip={handleShowTip}
 					toggleTip={toggleTip}
+					elapsed={elapsed}
+					setElapsed={setElapsed}
 				></VideoContainer>
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>

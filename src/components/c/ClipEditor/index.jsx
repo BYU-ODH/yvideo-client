@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-// import { Prompt } from 'react-router'
-
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { ClipLayer, SwitchToggle } from 'components/bits'
@@ -11,7 +9,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 
-// import * as Subtitle from 'subtitle'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import trashIcon from 'assets/trash_icon.svg'
@@ -20,7 +17,7 @@ import plus from 'assets/plus-circle.svg'
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
 
-import Style, { Timeline, AnnotationMessage, SideEditor, Icon } from './styles'
+import Style, { Timeline, AnnotationMessage, SideEditor, Icon, Button } from './styles'
 
 const ClipEditor = props => {
 	const {
@@ -48,7 +45,7 @@ const ClipEditor = props => {
 	// }
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
-
+	const [elapsed, setElapsed] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
 	const [layerWidth, setWidth] = useState(0)
 	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
@@ -68,6 +65,9 @@ const ClipEditor = props => {
 		useCallbackPrompt(blockLeave)
 
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
+
+	const [clipItemIsDelete, setClipItemIsDelete] = useState([{}])
+	const [clipItemTimeChange, setClipItemTimeChange] = useState([{}])
 
 	useEffect(() => {
 		if (showPrompt)
@@ -121,6 +121,69 @@ const ClipEditor = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave, videoLength])
 
+	useEffect(() => {
+		initDeleteArray()
+		initChangeTimeArray()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [clipList])
+
+	const initDeleteArray = () =>{
+		if (clipList){
+			let tempArray = []
+			for(let i = 0; i < Object.entries(clipList).length; i++)
+				tempArray = [...tempArray, {id : clipList[i], trueFalse: false}]
+			setClipItemIsDelete(tempArray)
+		}
+	}
+
+	const toggleDeleteItem = (index, boolean) => {
+		for(let i = 0; i < Object.entries(clipItemIsDelete).length; i++){
+			if(parseInt(Object.keys(clipItemIsDelete)[i]) === index){
+				index = index.toString()
+				setClipItemIsDelete({...clipItemIsDelete, [index]: {id : clipList[i], trueFalse: boolean}})
+			}
+		}
+	}
+	const initChangeTimeArray = () => {
+		if (clipList){
+			let tempArray = []
+			for(let i = 0; i < Object.entries(clipList).length; i++)
+				tempArray = [...tempArray, {id : clipList[i], trueFalse: false}]
+			setClipItemTimeChange(tempArray)
+		}
+	}
+
+	const toggleItemTimeChange = (index, boolean, startOrEnd) => {
+		for(let i = 0; i < Object.entries(clipItemTimeChange).length; i++){
+			if(parseInt(Object.keys(clipItemTimeChange)[i]) === index){
+				index = index.toString()
+				setClipItemTimeChange({...clipItemTimeChange, [index]: {id : clipList[i], trueFalse: boolean, startOrEnd}})
+			}
+		}
+	}
+
+	const handleInputChange = (item, startOrEnd ) => {
+		for (let i = 0; i < Object.entries(clipList).length; i++){
+			if(Object.keys(clipList)[i] === item ){
+				const title = clipList[item].title
+				const end = clipList[item].end
+				const start = clipList[item].start
+				if(startOrEnd === `start`){
+					setClipList({...clipList, [item]: {start: elapsed, end , title}})
+					setBlock(true)
+				}else{
+					setClipList({...clipList, [item]: {start, end: elapsed, title}})
+					setBlock(true)
+				}
+			}
+		}
+	}
+
+	const setCurrentTimePercentage = (time) => {
+		const seconds = time * videoLength
+		setCurrentTime(seconds)
+	}
+
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
 	}
@@ -149,7 +212,7 @@ const ClipEditor = props => {
 			if (value > clips[name][`end`]) {
 				if(document.getElementById(`clipMessage`)) {
 					document.getElementById(`clipMessage`).style.color=`red`
-					document.getElementById(`clipMessage`).innerHTML=`Please, enter a number smaller than end time`
+					document.getElementById(`clipMessage`).innerHTML=`Please enter a number smaller than the end time`
 					setDisableSave(true)
 				}
 			} else {
@@ -186,7 +249,7 @@ const ClipEditor = props => {
 			if (value < clips[name][`start`]) {
 				if(document.getElementById(`clipMessage`)) {
 					document.getElementById(`clipMessage`).style.color=`red`
-					document.getElementById(`clipMessage`).innerHTML=`Please, enter a number bigger than start time`
+					document.getElementById(`clipMessage`).innerHTML=`Please enter a number bigger than the start time`
 					setDisableSave(true)
 				}
 			} else {
@@ -205,7 +268,7 @@ const ClipEditor = props => {
 		setBlock(true)
 	}
 
-	const createClip = () => {
+	const createClip = (startPercentage) => {
 		const id = Object.keys(clipList).length === 0 ?
 			`0`
 			:
@@ -215,6 +278,10 @@ const ClipEditor = props => {
 			end: 60,
 			title: ``,
 		}
+
+		clip.start = Number(startPercentage)
+		clip.end = Number(startPercentage) + clip.end
+
 		const clips = {...clipList}
 		clips[id] = clip
 		setClipList(clips)
@@ -267,7 +334,7 @@ const ClipEditor = props => {
 						setIsReady={setIsReady}
 						url={props.viewstate.url}
 						getDuration={getVideoDuration}
-						getVideoTime={setCurrentTime} // set current time
+						getVideoTime={setCurrentTimePercentage} // set current time
 						setActiveCensorPosition = {setActiveCensorPosition}
 						handleLastClick = {null}
 						handleScroll = {handleScrollFactor}
@@ -278,6 +345,8 @@ const ClipEditor = props => {
 						editorType={`clip`}
 						handleShowTip={handleShowTip}
 						toggleTip={toggleTip}
+						elapsed={elapsed}
+						setElapsed={setElapsed}
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
@@ -418,13 +487,12 @@ const ClipEditor = props => {
 										isLoading ?
 											<i className='fa fa-refresh fa-spin'/>
 											:
-											<i className='fa fa-check'></i>
+											<Icon className='fa fa-check'></Icon>
 									}
 									<span>Save</span>
 								</button>
 							}
 						</div>
-
 					</header>
 					<div className='clipItems'>
 						<p id={`clipMessage`}></p>
@@ -442,50 +510,77 @@ const ClipEditor = props => {
 							<table>
 								{
 									Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+
 										<tbody key={i} className={`singleClip ${i === clipIndex && `clipActive`}`}>
 											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
-												<td><input onKeyUp={e => e.stopPropagation()} onClick={() => handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
-												<td>
-													<input
-														type='text'
-														value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
-														onKeyUp={e => e.stopPropagation()}
-														onClick={() => handleEditClip(item, i)}
-														onChange={(e) => setStartTime(e.target.value, `input`, item)}
-														onBlur={(e) => setStartTime(e.target.value, `onBlur`, item)}
-														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
-															{
-																x: e.target.getBoundingClientRect().x - 5,
-																y: e.target.getBoundingClientRect().y + 5,
-																width: e.currentTarget.offsetWidth + 20,
-															})
+												{clipItemTimeChange.length !== 0 && clipItemTimeChange[i]?.trueFalse ?
+													<>
+														<td className='deleteTd'>Change start time to current player time?</td>
+														{clipItemTimeChange[i].startOrEnd === `start` ?
+															<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(item, `start`)}>Yes</Button></td>
+															:
+															<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(item, `end`)}>Yes</Button></td>
 														}
-														onMouseLeave={() => toggleTip()}
-													/>
-												</td>
-												<td>
-													<input
-														type='text'
-														value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
-														onKeyUp={e => e.stopPropagation()}
-														onClick={() => handleEditClip(item, i)}
-														onChange={(e) => setEndTime(e.target.value, `input`, item)}
-														onBlur={(e) => setEndTime(e.target.value, `onBlur`, item)}
-														onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
-															{
-																x: e.target.getBoundingClientRect().x + 35,
-																y: e.target.getBoundingClientRect().y + 5,
-																width: e.currentTarget.offsetWidth + 20,
-															})
-														}
-														onMouseLeave={e => toggleTip()}
-													/>
-												</td>
+														<td className='deleteTd'><Button className='content-delete'onClick={() => toggleItemTimeChange(i, false)}>No</Button></td>
+													</> :
+													<>
+														{/* {clipItemTimeChange.length !== 0 && clipItemTimeChange[i]?.trueFalse && `end` ?
+															<>
+																<td className='deleteTd'>Change start time to current player time?</td>
+																<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(item, `end`)}>Yes</Button></td>
+																<td className='deleteTd'><Button className='content-delete'onClick={() => toggleItemTimeChange(i, false)}>No</Button></td>
+															</> :
+															<> */}
+
+														{clipItemIsDelete.length !== 0 && clipItemIsDelete[i]?.trueFalse ?
+															<>
+																<td className='deleteTd'>Are you sure you want to delete this clip?</td>
+																<td className='deleteTd'><Button className='content-cancel' onClick={() => deleteClip(item)}>Yes</Button></td>
+																<td className='deleteTd'><Button className='content-delete'onClick={() => toggleDeleteItem(i, false)}>No</Button></td>
+															</> :
+															<>
+																<td className='clipTd'><input onKeyUp={e => e.stopPropagation()} onClick={() => handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+																<td className='clipTd'>
+
+																	<input
+																		type='text'
+																		id={`timeInput-${i}`}
+																		value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+																		onKeyUp={e => e.stopPropagation()}
+																		onClick={() => handleEditClip(item, i)}
+																		onChange={(e) => setStartTime(e.target.value, `input`, item)}
+																		onBlur={(e) => setStartTime(e.target.value, `onBlur`, item)}
+																	/>
+																	{clipItemTimeChange.length !== 0 && !clipItemTimeChange[i]?.trueFalse &&
+																	<i className='fa fa-clock' onClick={() => toggleItemTimeChange(i, true, `start`)}></i>}
+																</td>
+																<td className='clipTd'>
+																	{clipItemTimeChange.length !== 0 && !clipItemTimeChange[i]?.trueFalse &&
+																	<i className='fa fa-clock' onClick={() => toggleItemTimeChange(i, true, `end`)}></i>}
+																	<input
+																		type='text'
+																		value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
+																		onKeyUp={e => e.stopPropagation()}
+																		onClick={() => handleEditClip(item, i)}
+																		onChange={(e) => setEndTime(e.target.value, `input`, item)}
+																		onBlur={(e) => setEndTime(e.target.value, `onBlur`, item)}
+																	/>
+
+																</td>
+															</>}
+													</>}
+												{/* </>} */}
 											</tr>
 											<tr>
-												<td>
-													<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => deleteClip(item)}/>
-												</td>
+												{
+													// eslint-disable-next-line no-mixed-operators
+													clipItemTimeChange.length !== 0 && clipItemTimeChange[i]?.trueFalse ||
+													// eslint-disable-next-line no-mixed-operators
+													clipItemIsDelete.length !== 0 && !clipItemIsDelete[i]?.trueFalse &&
+														<td className='clipTd'>
+															<img className={`trashIcon`} alt={`trashIcon`} src={`${trashIcon}`} onClick={() => toggleDeleteItem(i, true)}/>
+														</td>
+												}
 											</tr>
 										</tbody>
 									))
@@ -494,7 +589,7 @@ const ClipEditor = props => {
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/>
 							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
-						<Icon src={plus} onClick={createClip} />
+						<Icon id='add-button' src={plus} onClick={() => createClip(elapsed)} />
 					</div>
 				</SideEditor>
 			</DndProvider>

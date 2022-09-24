@@ -34,6 +34,7 @@ const SubtitleEditor = props => {
 	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor, handleNavigation } = props.handlers
 	const layers = [{0: `Skip`}]
 
+	const [elapsed, setElapsed] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
@@ -758,6 +759,8 @@ const SubtitleEditor = props => {
 					eventPosition={eventPosition}
 					handleShowTip={handleShowTip}
 					toggleTip={toggleTip}
+					elapsed={elapsed}
+					setElapsed={setElapsed}
 				>
 				</VideoContainer>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
