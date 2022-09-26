@@ -3,7 +3,6 @@ import Style, { Button } from './styles'
 import closeIcon from 'assets/close_icon.svg'
 
 export default class SubtitlesModal extends Component {
-
 	constructor(props) {
 		super(props)
 		this.keyup = this.props.viewstate.keyup
