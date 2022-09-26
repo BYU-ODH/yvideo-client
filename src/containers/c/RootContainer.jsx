@@ -27,7 +27,7 @@ import {
 const RootContainer = props => {
 
 	const adminEndpoints = [ // 0
-		{ endpoints: [`admin`], element: <AdminContainer /> },
+		{ endpoints: [`/admin`], element: <AdminContainer /> },
 		{ endpoints: [`/public-manager`, `:id`], element: <PublicManagerContainer /> },
 	]
 	const labAssistantEndpoints = [ // 1
