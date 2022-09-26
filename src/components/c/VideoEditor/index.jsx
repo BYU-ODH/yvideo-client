@@ -181,7 +181,6 @@ const VideoEditor = props => {
 		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
 		updateEvents(eventIndex, eventObj, displayLayer)
 
-
 	}
 
 	const runTimeCheck = (side, event, type) => {
@@ -526,7 +525,7 @@ const VideoEditor = props => {
 				censorPositionData = {}
 			}
 		}
-		jsonData.sort((a, b) => ((a.options.start > b.options.start) - (a.options.start < b.options.start)))
+		jsonData.sort((a, b) => (a.options.start > b.options.start) - (a.options.start < b.options.start))
 		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url

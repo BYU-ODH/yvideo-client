@@ -40,7 +40,7 @@ export default class SubtitlesModal extends Component {
 				if (filePath?.length === 1) {
 					handleAddLayerFromFile(filePath[0])
 					setIsReady(false)
-				}	else if (filePath.files.length > 1)
+				}	else if (filePath?.length > 1)
 					alert(`Please select only one file`)
 			},
 		}
