@@ -37,9 +37,9 @@ export default class SubtitlesModal extends Component {
 				handleAddLayer([])
 			},
 			fromFile: () => {
-				const filePath = document.getElementById(`subFileInput`)
-				if (filePath?.files?.length === 1) {
-					handleAddLayerFromFile(filePath)
+				const filePath = document.getElementById(`subFileInput`).files
+				if (filePath?.length === 1) {
+					handleAddLayerFromFile(filePath[0])
 					setIsReady(false)
 				}	else if (filePath.files.length > 1)
 					alert(`Please select only one file`)
