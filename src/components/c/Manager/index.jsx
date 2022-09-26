@@ -108,7 +108,7 @@ export default class Manager extends PureComponent {
 										</Accordion>
 
 										{
-											admin && <Accordion header={`Archived`} className='std-outline-color'>
+											<Accordion header={`Archived`} className='std-outline-color'>
 												{sideLists.archived.map(({ id, name }, index) =>
 													<div key={index} >
 														<Link
