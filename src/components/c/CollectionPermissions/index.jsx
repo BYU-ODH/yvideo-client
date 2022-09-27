@@ -192,7 +192,7 @@ export class CollectionPermissions extends PureComponent {
 						</UserList>
 						<UserList id='user-table'>
 							<TableHeader>
-								<h4>Current Users</h4>
+								<h4>Guests (read-only)</h4>
 								<div>
 									<Search className='faculty-submit' onSubmit={handlers.addUser}>
 										<input className='faculty-input' type='search' placeholder={`Enter netID`} onChange={handlers.handleUserChange} value={username} />
