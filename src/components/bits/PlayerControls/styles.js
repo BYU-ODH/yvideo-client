@@ -92,7 +92,7 @@ const Style = styled.div`
 		}
 
 		& .play-time {
-			color: white;
+			color: ${props => props.progressentered ? `white` : `#AAAAAA`};
 			margin: 1rem;
 			@media screen and (max-width: 425px){
 				margin: .65 rem;

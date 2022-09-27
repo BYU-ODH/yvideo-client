@@ -116,11 +116,9 @@ export default class Player extends Component {
 			handleStart,
 			handleProgress,
 			handleSeekChange,
-			handlePlaybackRateChange, // eslint-disable-line no-unused-vars
 			handleMuted,
 			handleUnmuted,
 			handleShowSubtitle,
-			toggleTip, // eslint-disable-line no-unused-vars
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,

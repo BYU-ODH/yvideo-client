@@ -58,7 +58,8 @@ const PlayerContainer = props => {
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
 	const [progress, setProgress] = useState(0)
-	const [playTime, setPlayTime] = useState(0)
+	const [playTime, setPlayTime] = useState(`00:00:00`)
+	const [progressEntered, setProgressEntered] = useState(false)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	// eslint-disable-next-line no-unused-vars
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
@@ -287,6 +288,7 @@ const PlayerContainer = props => {
 	const handleProgress = progression => {
 		const dateElapsed = new Date(null)
 		dateElapsed.setSeconds(progression)
+		setProgressEntered(true)
 		setPlayTime(dateElapsed.toISOString().substr(11, 8))
 		setProgress(progression)
 
@@ -656,6 +658,7 @@ const PlayerContainer = props => {
 		events,
 		showSpeed,
 		scrollDisabled,
+		progressEntered,
 	}
 
 	const handlers = {
