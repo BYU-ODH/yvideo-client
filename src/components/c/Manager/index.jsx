@@ -23,7 +23,6 @@ import helpIcon from 'assets/manage-collection-help-circle.svg'
 export default class Manager extends PureComponent {
 	render() {
 		const {
-			admin,
 			collection,
 			path,
 			sideLists,
