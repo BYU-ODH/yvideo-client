@@ -43,17 +43,11 @@ export default class ManageInstructors extends PureComponent {
 					{
 						resourceAccess.length > 0 ?
 							<RegisteredListTable>
-								<thead>
-								</thead>
-								<tbody>
+								<tbody className='tbody'>
 									{resourceAccess.map(
 										item =>
 											<tr key={item.username}>
 												<td>{item.username}</td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
 												<td><RemoveButton onClick={e => removeInstructor(item.username)}><RemoveIcon/></RemoveButton></td>
 											</tr>,
 									)}
