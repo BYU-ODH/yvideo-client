@@ -65,7 +65,7 @@ export const Style = styled.div`
 
 		/* Handle */
 		::-webkit-scrollbar-thumb {
-			background: ${props => props.scrolldisabled ? `#AAAAAA` : `var(--light-blue)`};
+			background: ${props => props.scrolldisabled ? `gray` : `var(--light-blue)`};
 			border-radius: 10px;
 		}
 
