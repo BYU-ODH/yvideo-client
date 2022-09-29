@@ -21,7 +21,7 @@ const AdminContainer = props => {
 		toggleTip,
 		adminUpdateUserRole,
 		setBreadcrumbs,
-		getUser,
+		getUserById,
 	} = props
 
 	const category = {
@@ -70,12 +70,14 @@ const AdminContainer = props => {
 	}, [setHeaderBorder])
 
 	const getUserFunc = async () => {
-		let temp = []
-		for( const item of data ) {
-			const user = await getUser(item.owner)
-			temp = [...temp, user]
+		if(collectionUsers.length !== data?.length && data !== null) {
+			let temp = []
+			for( const item of data ) {
+				const user = await getUserById(item.owner)
+				temp = [...temp, user]
+			}
+			setCollectionUsers(temp)
 		}
-		setCollectionUsers(temp)
 	}
 
 	const viewstate = {
@@ -93,6 +95,7 @@ const AdminContainer = props => {
 	}
 
 	const handlers = {
+		getUserById,
 		getUserFunc,
 		updateCategory: e => {
 			e.preventDefault()
@@ -181,7 +184,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	adminUpdateUserRole: adminService.updateUserRole,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
-	getUser: adminService.getUserById,
+	getUserById: adminService.getUserById,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

@@ -21,6 +21,7 @@ export class Admin extends PureComponent {
 			handleSubmit,
 			updateCategory,
 			addUsers,
+			getUserFunc,
 		} = this.props.handlers
 
 		return (
@@ -50,7 +51,7 @@ export class Admin extends PureComponent {
 						data.length < 1 ?
 							<FeedbackMessage><p>No {searchCategory.toLowerCase()} matched your search</p></FeedbackMessage>
 							:
-							<AdminTable viewstate={this.props.viewstate} handlers={this.props.handlers} tipHandlers={this.props.tipHandlers}/>
+							<AdminTable onload={getUserFunc()} viewstate={this.props.viewstate} handlers={this.props.handlers} tipHandlers={this.props.tipHandlers}/>
 						:
 						<FeedbackMessage><p></p></FeedbackMessage>
 					}

@@ -18,13 +18,8 @@ export default class AdminTable extends PureComponent {
 				reverse: false,
 			},
 		}
-		this.data = this.props.viewstate.data
-		this.getUserFunc = this.props.handlers.getUserFunc
 	}
 
-	componentDidMount() {
-		this.getUserFunc()
-	}
 
 	render() {
 
@@ -177,7 +172,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<>
 						<td>{item.name}</td>
-						<td>{collectionUsers?.[i]?.name}{` (${item.username})`}</td>
+						<td>{`${collectionUsers?.[i]?.name} (${item.username})`}</td>
 					</>
 				)
 			case `Content`:
