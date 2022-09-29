@@ -70,14 +70,12 @@ const AdminContainer = props => {
 	}, [setHeaderBorder])
 
 	const getUserFunc = async () => {
-		if(collectionUsers.length !== data?.length && data !== null) {
-			let temp = []
-			for( const item of data ) {
-				const user = await getUserById(item.owner)
-				temp = [...temp, user]
-			}
-			setCollectionUsers(temp)
+		let temp = []
+		for( const item of data ) {
+			const user = await getUserById(item.owner)
+			temp = [...temp, user]
 		}
+		setCollectionUsers(temp)
 	}
 
 	const viewstate = {

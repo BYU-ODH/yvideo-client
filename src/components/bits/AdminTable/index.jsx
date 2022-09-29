@@ -18,6 +18,11 @@ export default class AdminTable extends PureComponent {
 				reverse: false,
 			},
 		}
+		this.getUserFunc = () => this.props.handlers.getUserFunc()
+	}
+
+	componentDidMount(){
+		this.getUserFunc()
 	}
 
 
