@@ -7,7 +7,7 @@ import Style from './styles'
 const Scrubber = props => {
 	return (
 		<Style data-testid='scrubber'>
-			<Bar duration={props.duration} clipTime={props.clipTime} clipPercent={props.clipPercent} position={props.progress} active={props.active} handleClick={props.handleClick} skipArray={props.skipArray}/>
+			<Bar duration={props.duration} clipTime={props.clipTime} clipPercent={props.clipPercent} position={props.progress} active={props.active} handleClick={props.handleClick} skipArray={props.skipArray} isClip={props.isClip}/>
 		</Style>
 	)
 }

@@ -40,6 +40,7 @@ const PlayerControls = props => {
 		subtitleTextIndex,
 		isMobile,
 		clipTime,
+		isClip,
 		duration,
 		events,
 		showSpeed,
@@ -100,7 +101,7 @@ const PlayerControls = props => {
 	return (
 		<Style playing={playing} >
 
-			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray}/>
+			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray} isClip={isClip}/>
 			<div className='left'>
 				<PlayPause data-testid='playPause' playing={playing} onClick={playing ? handlePause : handlePlay}
 					onMouseEnter={e => handleShowTip(`play`,

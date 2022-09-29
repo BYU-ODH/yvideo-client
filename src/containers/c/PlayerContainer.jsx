@@ -89,6 +89,7 @@ const PlayerContainer = props => {
 
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
+	const [isClip, setIsClip] = useState(false)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
@@ -274,6 +275,7 @@ const PlayerContainer = props => {
 	const handleStart = () => {
 		setPlaying(true)
 		if (clipTime.length > 0) player.seekTo(clipTime[0])
+		setIsClip(true)
 		setPlaying(true)
 	}
 	const handleBlank = (bool) => {
@@ -297,7 +299,7 @@ const PlayerContainer = props => {
 			if(subtitleTextIndex === undefined)
 				return
 			else
-				subContainer.scrollTo({top: subsObj[subtitleTextIndex].distanceDownTranscript})
+				subContainer.scrollTo({top: subsObj[subtitleTextIndex]?.distanceDownTranscript})
 		}
 	}
 
@@ -310,14 +312,14 @@ const PlayerContainer = props => {
 				{prevEntry: null, nextEntry: entries[1] ? entries[1][1] : null}
 				:
 				subtitleTextIndex === entries.length - 1 ?
-					{prevEntry: entries[subtitleTextIndex - 1][1], nextEntry: null}
+					{prevEntry: entries?.[subtitleTextIndex - 1]?.[1], nextEntry: null}
 					:
-					{prevEntry: entries[subtitleTextIndex - 1][1], nextEntry: entries[subtitleTextIndex + 1][1]}
+					{prevEntry: entries?.[subtitleTextIndex - 1]?.[1], nextEntry: entries?.[subtitleTextIndex + 1]?.[1]}
 
-			if(closeCheck.prevEntry !== null && progressPercent < parseFloat(closeCheck.prevEntry.percentPlayed)) {
+			if(closeCheck.prevEntry !== null && progressPercent < parseFloat(closeCheck?.prevEntry?.percentPlayed)) {
 				setSubtitleTextIndex(subtitleTextIndex - 1)
 				setSubtitleText(closeCheck.prevEntry.text)
-			}else if(closeCheck.nextEntry !== null && progressPercent > parseFloat(closeCheck.nextEntry.percentPlayed)) {
+			}else if(closeCheck.nextEntry !== null && progressPercent > parseFloat(closeCheck?.nextEntry?.percentPlayed)) {
 				setSubtitleTextIndex(subtitleTextIndex + 1)
 				setSubtitleText(closeCheck.nextEntry.text)
 			}else return
@@ -651,6 +653,7 @@ const PlayerContainer = props => {
 		censorPosition,
 		censorActive,
 		clipTime,
+		isClip,
 		isLandscape,
 		hasPausedClip,
 		events,

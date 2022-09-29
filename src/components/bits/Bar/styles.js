@@ -17,7 +17,7 @@ export const BarBackground = styled.div`
 	width: 100%;
 	transition: all ${transSpeed} linear;
 	height: ${barActive};
-	background-color: #fff;
+	background-color: ${props => props.isClip ? `gray` : `#fff`};
 `
 
 export const BarCurrent = styled.div`
@@ -25,7 +25,8 @@ export const BarCurrent = styled.div`
 	left: 0;
 	transition: all ${transSpeed} linear;
 	height: ${barActive};
-	background-color: #0057b8;
+	background-color: ${props => props.clipPercent < props.clipPercent[0] ? `gray` : `#0057b8`}
+	// background-color: #0057b8;
 
 `
 
@@ -33,7 +34,7 @@ export const BarClipYellow = styled.div`
 	position: absolute;
 	width: ${props => (props.clipPercent[1] - props.clipPercent[0]) * 100}%;
 	left: ${props => props.clipPercent[0] * 100}%;
-	background-color: rgba(200, 200, 0, 1);
+	background-color: white;
 	transition: all ${transSpeed} linear;
 	height: ${barActive};
 `
@@ -56,4 +57,12 @@ export const BarSkippedGray = styled.div`
 	left: ${props => props.start / props.duration * 100}%;
 	background-color: gray;
 	height: ${barActive};
-	`
+`
+
+export const BarBeforeClip = styled.div`
+	position: absolute;
+	width:${props => props.clipPercent[0] * 100}%;
+	left: 0;
+	background-color: gray;
+	height: ${barActive};
+`
