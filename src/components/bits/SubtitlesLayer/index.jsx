@@ -50,9 +50,8 @@ const SubtitlesLayer = props => {
 	useLayoutEffect(() => {
 		if(document.getElementsByClassName(`layer-container`))
 			handleScrollFuncs(Array.from(document.getElementsByClassName(`layer-container`)), setDisableScroll, null)
-		if(disableScroll.action !== null) {
+		if(disableScroll.action !== null)
 			disableScroll.action()
-		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateSubs])
 
