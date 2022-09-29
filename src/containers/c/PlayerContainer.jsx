@@ -9,7 +9,7 @@ import { isSafari, isIOS } from 'react-device-detect'
 import { Player } from 'components'
 import { Tooltip } from 'components/bits'
 
-import { handleScrollFuncs } from '../../components/vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../components/vanilla_scripts/toggleScroll'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 

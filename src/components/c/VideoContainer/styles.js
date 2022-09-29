@@ -98,6 +98,7 @@ export const TimeBar = styled.div`
 					& #time-bar-progress {
 						cursor: pointer;
 						height: 30px;
+						outline: none;
 					}
 
 					& #time-bar-shadow {
