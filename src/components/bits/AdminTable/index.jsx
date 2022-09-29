@@ -25,7 +25,6 @@ export default class AdminTable extends PureComponent {
 		this.getUserFunc()
 	}
 
-
 	render() {
 
 		const {
