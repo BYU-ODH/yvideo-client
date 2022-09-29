@@ -18,6 +18,12 @@ export default class AdminTable extends PureComponent {
 				reverse: false,
 			},
 		}
+		this.data = this.props.viewstate.data
+		this.getUserFunc = this.props.handlers.getUserFunc
+	}
+
+	componentDidMount() {
+		this.getUserFunc()
 	}
 
 	render() {
@@ -29,6 +35,7 @@ export default class AdminTable extends PureComponent {
 			data,
 			mousePos,
 			isEdit,
+			collectionUsers,
 		} = this.props.viewstate
 
 		const {
@@ -122,7 +129,7 @@ export default class AdminTable extends PureComponent {
 			},
 		}
 
-		const printTableValues = (category, item) => {
+		const printTableValues = (category, item, i) => {
 			const date = new Date(item.lastLogin)
 			switch (category) {
 			case `Users`:
@@ -170,7 +177,7 @@ export default class AdminTable extends PureComponent {
 				return (
 					<>
 						<td>{item.name}</td>
-						<td>{item.username}</td>
+						<td>{collectionUsers?.[i]?.name}{` (${item.username})`}</td>
 					</>
 				)
 			case `Content`:
@@ -323,8 +330,8 @@ export default class AdminTable extends PureComponent {
 					</thead>
 					<tbody>
 						{data.map(
-							item => <tr key={item.id}>
-								{ printTableValues(searchCategory, item) }
+							(item, i) => <tr key={item.id}>
+								{ printTableValues(searchCategory, item, i) }
 								<td>
 									<ItemEdit
 										data-testid='item-edit'
