@@ -8,6 +8,7 @@ const Style = styled.div`
 	height: ${barActive};
 
 	position: relative;
+	cursor: pointer;
 `
 
 export default Style
@@ -25,7 +26,7 @@ export const BarCurrent = styled.div`
 	left: 0;
 	transition: all ${transSpeed} linear;
 	height: ${barActive};
-	background-color: ${props => props.clipPercent < props.clipPercent?.[0] ? `gray` : `#0057b8`}
+	background-color: ${props => props?.clipPercent < props.clipPercent?.[0] ? `gray` : `#0057b8`}
 	// background-color: #0057b8;
 
 `
@@ -65,4 +66,5 @@ export const BarBeforeClip = styled.div`
 	left: 0;
 	background-color: gray;
 	height: ${barActive};
+	cursor: auto;
 `

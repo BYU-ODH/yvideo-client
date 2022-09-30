@@ -43,6 +43,7 @@ const handlers = {
 	handleSubmit: jest.fn(),
 	toggleMenu: jest.fn(),
 	handleConfirmDelete: jest.fn(),
+	getUserFunc: jest.fn(),
 }
 
 const tipHandlers = {

@@ -26,6 +26,7 @@ const Style = styled.div`
 		& .content-delete {
 			color: var(--red);
 			border: 3px solid var(--red);
+			background: transparent
 			:hover {
 				background-color: var(--red);
 				color: #ffffff;

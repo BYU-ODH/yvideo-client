@@ -1,4 +1,4 @@
-import { HandleSubtitle, CurrentEvents, CensorChange, CommentChange } from '../../../components/vanilla_scripts/getCurrentEvents'
+import { handleSubtitle, CurrentEvents, CensorChange, CommentChange } from '../../../components/vanilla_scripts/getCurrentEvents'
 
 const IdMock = {
 	style: {
@@ -23,7 +23,7 @@ document.getElementById = jest.fn((tag) => {
 	return IdMock
 })
 
-test(`should call HandleSubtitle`, () => {
+test(`should call handleSubtitle`, () => {
 	const subtitle = [
 		[
 			{	end: 10,
@@ -32,7 +32,7 @@ test(`should call HandleSubtitle`, () => {
 			},
 		],
 	]
-	HandleSubtitle(5, subtitle, 0)
+	handleSubtitle(5, subtitle, 0)
 })
 
 test(`should call CurrentEvents`, () => {

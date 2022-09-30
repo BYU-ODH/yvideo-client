@@ -8,6 +8,7 @@ import { act } from 'react-dom/test-utils'
 
 const props = {
 	url: `url`,
+	elapsed: 0,
 	getDuration: jest.fn(),
 	handleLastClick: jest.fn(),
 	getVideoTime: jest.fn(),

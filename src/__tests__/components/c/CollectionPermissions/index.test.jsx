@@ -95,7 +95,7 @@ describe(`CollectionPermissions test`, () => {
 		expect(wrapper.contains(<th>Course</th>)).toEqual(true)
 		expect(wrapper.contains(<th>Section</th>)).toEqual(true)
 		expect(wrapper.contains(<th>Remove</th>)).toEqual(true)
-		expect(wrapper.contains(<h4>Current Users</h4>)).toEqual(true)
+		expect(wrapper.contains(<h4>Guests (read-only)</h4>)).toEqual(true)
 		expect(wrapper.text().includes(`Username`)).toBe(true)
 		expect(wrapper.text().includes(`Name`)).toBe(true)
 		expect(wrapper.text().includes(`Last Login`)).toBe(true)

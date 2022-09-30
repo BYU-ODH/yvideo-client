@@ -21,6 +21,7 @@ const AdminContainer = props => {
 		toggleTip,
 		adminUpdateUserRole,
 		setBreadcrumbs,
+		getUserById,
 	} = props
 
 	const category = {
@@ -41,6 +42,7 @@ const AdminContainer = props => {
 		},
 	}
 
+	const [collectionUsers, setCollectionUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [searchCategory, setSearchCategory] = useState(category.Users.name)
 	const [placeholder, setPlaceholder] = useState(category.Users.placeholder)
@@ -67,6 +69,87 @@ const AdminContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setHeaderBorder])
 
+	const getUserFunc = async () => {
+		let temp = []
+		for( const item of data ) {
+			const user = await getUserById(item.owner)
+			temp = [...temp, user]
+		}
+		setCollectionUsers(temp)
+	}
+
+	const updateCategory = e => {
+		e.preventDefault()
+		clean()
+		setSearchQuery(``)
+		setSearchCategory(e.target.value)
+		setPlaceholder(category[e.target.value].placeholder)
+	}
+
+	const updateSearchBar = e => {
+		const { value } = e.target
+		setSearchQuery(value)
+	}
+
+	const handleSubmit = e => {
+		e.preventDefault()
+		search(category[searchCategory].url, searchQuery, true)
+	}
+
+	const toggleMenu = id => e => {
+		toggleTip()
+		data.forEach(item => {
+			if (item.id === id)
+				setMenuItemInfo(item)
+
+		})
+		setMenuActive(!menuActive)
+		setMousePos({
+			x: e.pageX,
+			y: e.pageY,
+		})
+	}
+
+	const handleConfirmDelete = e => {
+		e.preventDefault()
+		toggleModal({
+			component: DeleteConfirmContainer,
+			props: {
+				type: searchCategory,
+				menuItemInfo,
+			},
+		})
+	}
+
+	const handleEdit = e => {
+		setIsEdit(true)
+	}
+
+	const roleChange = e => {
+		setRole(parseInt(e.target.value))
+	}
+
+	const userRoleSave = e => {
+		adminUpdateUserRole(role, menuItemInfo.id)
+		setIsEdit(false)
+	}
+
+	const addUsers = e => {
+		toggleModal({
+			component: AddUsersContainer,
+		})
+	}
+
+	const handleShowTip = (tipName, position) => {
+		toggleTip({
+			component: Tooltip,
+			props: {
+				name: tipName,
+				position,
+			},
+		})
+	}
+
 	const viewstate = {
 		searchQuery,
 		searchCategory,
@@ -78,74 +161,20 @@ const AdminContainer = props => {
 		mousePos,
 		isMobile,
 		isEdit,
+		collectionUsers,
 	}
 
 	const handlers = {
-		updateCategory: e => {
-			e.preventDefault()
-			clean()
-			setSearchQuery(``)
-			setSearchCategory(e.target.value)
-			setPlaceholder(category[e.target.value].placeholder)
-		},
-		updateSearchBar: e => {
-			const { value } = e.target
-			setSearchQuery(value)
-		},
-		handleSubmit: e => {
-			e.preventDefault()
-			search(category[searchCategory].url, searchQuery, true)
-		},
-		toggleMenu: id => e => {
-			toggleTip()
-			data.forEach(item => {
-				if (item.id === id)
-					setMenuItemInfo(item)
-
-			})
-			setMenuActive(!menuActive)
-			setMousePos({
-				x: e.pageX,
-				y: e.pageY,
-			})
-		},
-		handleConfirmDelete: e => {
-			e.preventDefault()
-			toggleModal({
-				component: DeleteConfirmContainer,
-				props: {
-					type: searchCategory,
-					menuItemInfo,
-				},
-			})
-		},
-		handleEdit: e => {
-			setIsEdit(true)
-		},
-		roleChange: e => {
-			setRole(parseInt(e.target.value))
-		},
-
-		userRoleSave: e => {
-			adminUpdateUserRole(role, menuItemInfo.id)
-			setIsEdit(false)
-		},
-
-		addUsers: e => {
-			toggleModal({
-				component: AddUsersContainer,
-			})
-		},
-	}
-
-	const handleShowTip = (tipName, position) => {
-		toggleTip({
-			component: Tooltip,
-			props: {
-				name: tipName,
-				position,
-			},
-		})
+		getUserFunc,
+		updateCategory,
+		updateSearchBar,
+		handleSubmit,
+		toggleMenu,
+		handleConfirmDelete,
+		handleEdit,
+		roleChange,
+		userRoleSave,
+		addUsers,
 	}
 
 	const tipHandlers = {
@@ -168,6 +197,7 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	adminUpdateUserRole: adminService.updateUserRole,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
+	getUserById: adminService.getUserById,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)

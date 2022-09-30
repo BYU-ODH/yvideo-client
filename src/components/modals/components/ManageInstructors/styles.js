@@ -264,11 +264,20 @@ export const RegisteredListTable = styled.table`
 	margin-top: 15px;
 
 
+
 	& th {
 		padding: 1.5rem;
 		font-size: 1.5rem;
 		text-align: center;
 		border-bottom: 0.7px solid rgba(0, 0, 0, 0.15)
+	}
+
+	& tr{
+		display: inline-flex;
+		justify-content: space-between;
+		align-items: center;
+		box-shadow: 0px 2px 5px rgb(0 0 0 / 30%);
+		margin-bottom: 8px;
 	}
 
 	& td {
@@ -278,11 +287,13 @@ export const RegisteredListTable = styled.table`
 		padding-right: 1.5rem;
 		font-size: 1.4rem;
 		text-align: center;
-
-	& > tbody {
-		position: relative:
-		padding-bottom: 50px;
 	}
 
+
+	& tbody {
+		position: relative:
+		padding-bottom: 50px;
+		display: flex;
+		flex-direction: column;
 	}
 `

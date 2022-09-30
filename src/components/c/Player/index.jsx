@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
-import { CurrentEvents, CensorChange, CommentChange, HandleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
@@ -23,6 +23,8 @@ export default class Player extends Component {
 		}
 	}
 	componentDidMount(){
+		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
+	
 		window.onkeyup = (e) => {
 			this.handleHotKeys(e)
 		}
@@ -91,29 +93,21 @@ export default class Player extends Component {
 			url,
 			playing,
 			playbackRate,
-			// playbackOptions,
 			progress,
-			// playTime,
 			volume,
 			muted,
 			blank,
-			// videoComment,
-			// commentPosition,
 			duration,
 			showTranscript,
-			// toggleTranscript,
-			// content,
-			// subtitleTextIndex,
 			displaySubtitles,
 			indexToDisplay,
 			isMobile,
-			// censorPosition,
-			// censorActive,
 			clipTime,
 			isClip,
 			isLandscape,
 			hasPausedClip,
 			events,
+			hovering,
 		} = this.props.viewstate
 
 		const {
@@ -125,15 +119,12 @@ export default class Player extends Component {
 			handleStart,
 			handleProgress,
 			handleSeekChange,
-			handlePlaybackRateChange, // eslint-disable-line no-unused-vars
 			handleMuted,
 			handleUnmuted,
 			handleShowSubtitle,
-			toggleTip, // eslint-disable-line no-unused-vars
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
-			// handleOnReady
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -150,8 +141,8 @@ export default class Player extends Component {
 					:
 					`calc(${played * 100}% - 2px)`
 			}
-			if(subtitles && subtitles.content.length > 0)
-				HandleSubtitle(playedSeconds, subtitles, 0, duration)
+			if(subtitles?.content.length > 0)
+				handleSubtitle(playedSeconds, subtitles, 0, duration)
 
 			if (clipTime.length > 0 && playedSeconds > clipTime[1]){
 				if (!hasPausedClip){
@@ -289,8 +280,8 @@ export default class Player extends Component {
 						/>
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
-							<PlayButton playing={playing} onClick={handlePlayPause} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
-							{displaySubtitles !== null &&
+							<PlayButton playing={playing} onClick={handlePlayPause} hovering={hovering} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
+							{displaySubtitles !== null && showTranscript &&
 								<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
 							}
 							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>

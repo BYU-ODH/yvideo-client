@@ -48,7 +48,7 @@ export default class Manager extends PureComponent {
 					<>
 						{user ? (
 							<>
-								<h1 id='no-collections'>{user.name} does not have any collections</h1>
+								<h1 id='no-collections'>{user.name ? user.name : `This user`} does not have any collections</h1>
 								<div id={`create-button`}>
 									<button onClick={createNew}>Create New Collection</button>
 								</div>
@@ -108,7 +108,7 @@ export default class Manager extends PureComponent {
 										</Accordion>
 
 										{
-											admin && <Accordion header={`Archived`} className='std-outline-color'>
+											<Accordion header={`Archived`} className='std-outline-color'>
 												{sideLists.archived.map(({ id, name }, index) =>
 													<div key={index} >
 														<Link

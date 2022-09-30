@@ -9,9 +9,9 @@
 		"lint": "eslint src/**/*.* --fix"
 	},
 	"engines": {
-    "node": "14.x" ,
-    "npm": "6.x"
-  },
+		"node": "14.x",
+		"npm": "6.x"
+	},
 	"jest": {
 		"transform": {
 			"^.+\\.[t|j]sx?$": "babel-jest"
