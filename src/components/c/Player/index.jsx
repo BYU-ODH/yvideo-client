@@ -17,18 +17,20 @@ export default class Player extends Component {
 		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.checkBrowser = () => this.props.handlers.checkBrowser
+		this.handleProgress = () => this.props.handlers.handleProgress
 		this.state = {
 			skipArray: [],
 		}
 	}
 	componentDidMount(){
 		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
-
+	
 		window.onkeyup = (e) => {
 			this.handleHotKeys(e)
 		}
 
 		this.checkBrowser()
+		// this.handleProgress()
 	}
 
 	componentWillUnmount(){
@@ -101,6 +103,7 @@ export default class Player extends Component {
 			indexToDisplay,
 			isMobile,
 			clipTime,
+			isClip,
 			isLandscape,
 			hasPausedClip,
 			events,
