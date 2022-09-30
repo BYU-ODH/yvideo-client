@@ -36,7 +36,7 @@ export default class SearchPublicCollections extends PureComponent {
 				</Search>
 
 				<div className='list-public-collections'>
-					{ Object.keys(searchedPublicCollections).length > 0 && isSearched?
+					{ Object.keys(searchedPublicCollections).length > 0 && isSearched ?
 						<>
 							<ListLable>Search Results</ListLable>
 							{Object.keys(searchedPublicCollections).filter(key => !Object.keys(subscribedObj).includes(key)).map(key =>

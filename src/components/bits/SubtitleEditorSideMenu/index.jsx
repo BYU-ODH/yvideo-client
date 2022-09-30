@@ -78,7 +78,7 @@ const SubtitleEditorSideMenu = props => {
 
 			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY: `scroll`, height: `68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={() => addSub(subLayer, 0, `top`)}
-					visibility={subs[subLayer] !== undefined && subs[subLayer][`content`].length === 0 && disableSave === false ? `visible`: `hidden`}
+					visibility={subs?.[subLayer]?.[`content`]?.length === 0 && disableSave === false ? `visible`: `hidden`}
 				/>
 				{subs[subLayer][`content`].map((sub, ind) => (
 					<div id={`sub-${subLayer}-${ind}`} key={ind}>
@@ -86,7 +86,7 @@ const SubtitleEditorSideMenu = props => {
 							{/* This toggles the z-index of the icons as the state for the submodal changes */}
 							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={() => addSub(subLayer, ind, `top`)}
 								position={`top`}
-								visibility={subs[subLayer][`content`][0].start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
+								visibility={subs?.[subLayer]?.[`content`]?.[0]?.start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
 							/>
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index && `subActive`}`}>
 								<textarea

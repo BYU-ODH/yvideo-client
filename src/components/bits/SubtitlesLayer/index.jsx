@@ -56,7 +56,7 @@ const SubtitlesLayer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateSubs])
 
-	if(document.getElementsByClassName(`total`) && document.getElementsByClassName(`total`)[0] !== undefined && layerWidth !== 0) {
+	if(document.getElementsByClassName(`total`)?.[0] && layerWidth !== 0) {
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
 		document.getElementsByClassName(`total`)[0].style.width = `${layerWidth - 2}px`
 		document.getElementById(`layer-time-indicator`).style.width = `${layerWidth}px`
@@ -225,7 +225,7 @@ const SubtitlesLayer = props => {
 				<div ref={layerRef} className='events-box'>
 					<div className={`layer-${layerIndex} events ${displayLayer === layerIndex && `active-layer`}`}>
 						{
-							subs !== undefined && videoLength !== 0 ? (
+							subs && videoLength !== 0 ? (
 								<>
 									{subs.map((event, index) => (
 										<div key={index}

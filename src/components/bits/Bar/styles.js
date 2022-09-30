@@ -8,6 +8,7 @@ const Style = styled.div`
 	height: ${barActive};
 
 	position: relative;
+	cursor: pointer;
 `
 
 export default Style
@@ -65,4 +66,5 @@ export const BarBeforeClip = styled.div`
 	left: 0;
 	background-color: gray;
 	height: ${barActive};
+	cursor: auto;
 `

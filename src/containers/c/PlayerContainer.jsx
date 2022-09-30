@@ -53,13 +53,13 @@ const PlayerContainer = props => {
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
 	// eslint-disable-next-line no-unused-vars
-	const [hovering, setHovering] = useState(true)
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [playbackOptions, setPlaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
 	const [progress, setProgress] = useState(0)
-	const [playTime, setPlayTime] = useState(0)
+	const [playTime, setPlayTime] = useState(`00:00:00`)
+	const [progressEntered, setProgressEntered] = useState(false)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	// eslint-disable-next-line no-unused-vars
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
@@ -75,6 +75,7 @@ const PlayerContainer = props => {
 	const [censorActive, setCensorActive] = useState(false)
 	const [hasPausedClip, setHasPausedClip] = useState(false)
 	const [showSpeed, setShowSpeed] = useState(false)
+	const [hovering, setHovering] = useState(true)
 
 	const [subsObj, setSubsObj] = useState({})
 	const [fullyChecked, setFullyChecked] = useState(false)
@@ -242,11 +243,11 @@ const PlayerContainer = props => {
 	}
 
 	const handleMouseOver = e => {
-		// setHovering(true)
+		setHovering(true)
 	}
 
 	const handleMouseOut = e => {
-		// setHovering(false)
+		setHovering(false)
 	}
 
 	const handlePlayPause = () => {
@@ -289,6 +290,7 @@ const PlayerContainer = props => {
 	const handleProgress = progression => {
 		const dateElapsed = new Date(null)
 		dateElapsed.setSeconds(progression)
+		setProgressEntered(true)
 		setPlayTime(dateElapsed.toISOString().substr(11, 8))
 		setProgress(progression)
 
@@ -299,7 +301,7 @@ const PlayerContainer = props => {
 			if(subtitleTextIndex === undefined)
 				return
 			else
-				subContainer.scrollTo({top: subsObj[subtitleTextIndex]?.distanceDownTranscript})
+				subContainer.scrollTo({top: subsObj?.[subtitleTextIndex]?.distanceDownTranscript})
 		}
 	}
 
@@ -518,7 +520,7 @@ const PlayerContainer = props => {
 	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
 
-		if(displaySubtitles && subtitleTextIndex !== undefined){
+		if(displaySubtitles && subtitleTextIndex){
 			if(e.target.id === `prev-sub`){
 				if(subtitleTextIndex > 1)
 					seekToIndex = subtitleTextIndex - 1
@@ -586,7 +588,7 @@ const PlayerContainer = props => {
 	}
 
 	// TODO: This might break, what it was before was
-	if (displaySubtitles === null && content !== undefined) {
+	if (displaySubtitles === null && content) {
 	// if(displaySubtitles === null && content){
 
 		// This statement prevents displaySubtitles from being null.
@@ -614,7 +616,7 @@ const PlayerContainer = props => {
 	}
 
 	const checkBrowser = () => {
-		const alertMessage = `Video playback may not work on your browser/device. <br><br>`
+		const alertMessage = `Video playback does not currently work on iOS devices or the Safari browser. <br><br>`
 		if(isSafari || isIOS) {
 			document.getElementById(`alertMessage`).style.visibility = `visible`
 			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
@@ -659,6 +661,7 @@ const PlayerContainer = props => {
 		events,
 		showSpeed,
 		scrollDisabled,
+		progressEntered,
 	}
 
 	const handlers = {

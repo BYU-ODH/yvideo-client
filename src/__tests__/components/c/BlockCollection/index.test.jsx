@@ -109,7 +109,6 @@ describe(`BlockCollection test`, () => {
 		const slideWrapper = screen.getByTestId(`slide-wrapper`)
 		const expression = slideWrapper.scrollWidth - slideWrapper.getBoundingClientRect().width
 
-
 		expect(arrowLeft).not.toBeVisible()
 		expect(arrowRight).toBeVisible()
 

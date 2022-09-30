@@ -26,6 +26,8 @@ const Style = styled.div`
 		"scrubber scrubber"
 		"left right";
 	z-index: 20;
+	opacity: ${props => props.hovering ? 1 : 0};
+	transition: opacity .5s ease-in-out;
 
 	& .right {
 		grid-area: right;
@@ -90,7 +92,7 @@ const Style = styled.div`
 		}
 
 		& .play-time {
-			color: white;
+			color: ${props => props.progressentered ? `white` : `#AAAAAA`};
 			margin: 1rem;
 			@media screen and (max-width: 425px){
 				margin: .65 rem;

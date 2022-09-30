@@ -168,8 +168,10 @@ export const FileUploadButton = styled.button`
 
 export const TitleEdit = styled.input`
 	margin-left: 1rem;
+	padding-right: 400px;
 	box-sizing: border-box;
-	width: 18rem;
+	width: 100%;
+
 `
 
 export const Title = styled.form`

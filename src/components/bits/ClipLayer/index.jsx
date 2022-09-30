@@ -25,7 +25,7 @@ const ClipLayer = props => {
 		{
 			top: `0px`,
 			backgroundColor:`#fff`,
-			border:`1px solid #0582ca`,
+			border:`1.5px solid #0582ca`,
 			color:`#000`,
 			fontSize:`1.3rem`,
 			justifyContent:`center`,
@@ -36,7 +36,7 @@ const ClipLayer = props => {
 			left: `${start}% !important`,
 			top: `0px`,
 			backgroundColor:`var(--navy-blue)`,
-			border:`1px solid #0582ca`,
+			border:`1.5px solid #0582ca`,
 			color:`#fff`,
 			fontSize:`1.3rem`,
 			justifyContent:`center`,

@@ -3,8 +3,9 @@ import ReactPlayer from 'react-player'
 import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
+import { handleElapsed } from '../../vanilla_scripts/editorCommon'
 
-import { CurrentEvents, CensorChange, HandleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, handleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
 import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
 
 import play from 'assets/controls_play.svg'
@@ -35,6 +36,8 @@ const VideoContainer = props => {
 		eventPosition,
 		handleShowTip,
 		toggleTip,
+		elapsed,
+		setElapsed,
 	} = props
 
 	const ref = useRef(null)
@@ -46,7 +49,6 @@ const VideoContainer = props => {
 	const [muted, setMuted] = useState(false)
 	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
 	const [duration, setDuration] = useState(0) // total time of video
-	const [elapsed, setElapsed] = useState(0)
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
@@ -108,7 +110,7 @@ const VideoContainer = props => {
 
 			}
 
-			setElapsed(playedSeconds)
+			handleElapsed(playedSeconds, setElapsed)
 			document.getElementById(`seconds-time-holder`).innerText = playedSeconds
 
 			if(!events) return
@@ -118,7 +120,7 @@ const VideoContainer = props => {
 			for (let x = 0; x < values.comments.length; x++) CommentChange(x, values.comments[x].position)
 
 			if(subtitles)
-				if(subtitles.length > 0) HandleSubtitle(playedSeconds, subtitles, 0)
+				if(subtitles.length > 0) handleSubtitle(playedSeconds, subtitles, 0)
 			// const testMute = values.allEvents.map(val => val.type)
 
 			// if (!testMute.includes(`Mute`)) video.handleUnmute()

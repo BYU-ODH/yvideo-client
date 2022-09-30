@@ -31,7 +31,7 @@ export default class AddUsers extends PureComponent {
 				<AddManyForm >
 					<textarea data-testid='success-text-area' className='textarea std-outline-color' type='text' value={usernames} onChange={handleIdChange} />
 					{
-						addedUsersResult.failResult && addedUsersResult.failResult.length > 0 ?
+						addedUsersResult?.failResult?.length > 0 ?
 							<textarea className='submit-result' readOnly={true} value={`Failed\n${addedUsersResult.failResult}`}/>
 							:
 							<></>
@@ -39,7 +39,7 @@ export default class AddUsers extends PureComponent {
 				</AddManyForm>
 				<br/>
 
-				{addedUsersResult && addedUsersResult.successResult && addedUsersResult.failResult ?
+				{addedUsersResult?.successResult && addedUsersResult?.failResult ?
 					<>
 						<h4>Request successfully submitted</h4>
 						<h4>{addedUsersResult.successResult.length} successful out of {addedUsersResult.successResult.length + addedUsersResult.failResult.length}</h4>

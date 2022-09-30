@@ -69,7 +69,7 @@ function registerValidSW(swUrl, config) {
 								`tabs for this page are closed. See http://bit.ly/CRA-PWA.`)
 
 							// Execute callback
-							if (config && config.onUpdate)
+							if (config?.onUpdate)
 								config.onUpdate(registration)
 
 						} else {
@@ -79,7 +79,7 @@ function registerValidSW(swUrl, config) {
 							console.log(`Content is cached for offline use.`) // eslint-disable-line no-console
 
 							// Execute callback
-							if (config && config.onSuccess)
+							if (config?.onSuccess)
 								config.onSuccess(registration)
 
 						}

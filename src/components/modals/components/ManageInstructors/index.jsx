@@ -36,24 +36,18 @@ export default class ManageInstructors extends PureComponent {
 					<h2>Instructors</h2>
 
 					<InputForm className='faculty-submit'>
-						<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={updateSearchBar} value={searchQuery} />
+						<input className='faculty-input' type='search' placeholder={`Enter netID`} onChange={updateSearchBar} value={searchQuery} />
 						<AddButton className='std-outline-color' onClick={addInstructor} type='submit'>Add</AddButton>
 					</InputForm>
 					<Hr />
 					{
 						resourceAccess.length > 0 ?
 							<RegisteredListTable>
-								<thead>
-								</thead>
-								<tbody>
+								<tbody className='tbody'>
 									{resourceAccess.map(
 										item =>
 											<tr key={item.username}>
 												<td>{item.username}</td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
 												<td><RemoveButton onClick={e => removeInstructor(item.username)}><RemoveIcon/></RemoveButton></td>
 											</tr>,
 									)}
