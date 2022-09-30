@@ -310,13 +310,13 @@ const PlayerContainer = props => {
 		const progressPercent = progression * 100 / duration
 		if(fullyChecked) {
 
-			const closeCheck = subtitleTextIndex === undefined || subtitleTextIndex === 0 ?
+			const closeCheck = subtitleTextIndex === undefined || subtitleTextIndex === 0 && entries ?
 				{prevEntry: null, nextEntry: entries[1] ? entries[1][1] : null}
 				:
 				subtitleTextIndex === entries.length - 1 ?
-					{prevEntry: entries?.[subtitleTextIndex - 1]?.[1], nextEntry: null}
+					{prevEntry: entries[subtitleTextIndex - 1]?.[1], nextEntry: null}
 					:
-					{prevEntry: entries?.[subtitleTextIndex - 1]?.[1], nextEntry: entries?.[subtitleTextIndex + 1]?.[1]}
+					{prevEntry: entries[subtitleTextIndex - 1]?.[1], nextEntry: entries[subtitleTextIndex + 1]?.[1]}
 
 			if(closeCheck.prevEntry !== null && progressPercent < parseFloat(closeCheck?.prevEntry?.percentPlayed)) {
 				setSubtitleTextIndex(subtitleTextIndex - 1)
