@@ -519,8 +519,7 @@ const PlayerContainer = props => {
 
 	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
-
-		if(displaySubtitles && subtitleTextIndex){
+		if(displaySubtitles && subtitleTextIndex !== undefined){
 			if(e.target.id === `prev-sub`){
 				if(subtitleTextIndex > 1)
 					seekToIndex = subtitleTextIndex - 1

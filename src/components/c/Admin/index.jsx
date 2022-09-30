@@ -21,7 +21,6 @@ export class Admin extends PureComponent {
 			handleSubmit,
 			updateCategory,
 			addUsers,
-			getUserFunc,
 		} = this.props.handlers
 
 		return (
