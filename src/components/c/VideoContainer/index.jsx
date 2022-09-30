@@ -6,7 +6,7 @@ import { CensorDnD } from 'components/bits'
 import { handleElapsed } from '../../vanilla_scripts/editorCommon'
 
 import { CurrentEvents, CensorChange, handleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
-import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
@@ -575,7 +575,7 @@ const VideoContainer = props => {
 							}
 						}}>
 							<div id={`time-bar-container`}>
-								<progress id='time-bar-progress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
+								<progress id='time-bar-progress' tabIndex='101' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
 								<span id='time-text'></span>
 								<span id='time-bar-shadow'><p id='time-bar-shadow-text'></p></span>
 							</div>

@@ -116,6 +116,7 @@ const SubtitleEditor = props => {
 
 		return () => {
 			window.onbeforeunload = undefined
+			document.onmousedown = null
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave, isEdit, subtitles, subLayerToEdit, invalidSubs])
@@ -765,7 +766,7 @@ const SubtitleEditor = props => {
 				</VideoContainer>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
-					<section>
+					<section id='event-section'>
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
 								<div id={`layer-${index}`} className={`layer`} key={index}>

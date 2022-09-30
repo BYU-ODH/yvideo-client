@@ -15,6 +15,7 @@ export const Style = styled.div`
 	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
 	z-index: 20;
+	outline: none;
 	/* background-color: ${props => props.displayTranscript ? `white` : `var(--light-blue)`}; */
 
 	& .side-bar {

@@ -1,35 +1,36 @@
-export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
+const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 	let supportsPassive = false
 
-	const ifStatement = (ind) => {
-		return ind !== `length` && ind !== `item` && ind !== `namedItem`
-	}
-
-	const keys = {37: 1, 38: 1, 39: 1, 40: 1}
+	const keys = [`Space`, `ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`]
 
 	const preventDefault = (e) => {
 		e.preventDefault()
 	}
 
 	const preventDefaultForScrollKeys = (e) => {
-		if (keys[e.keyCode]) {
+		keys.forEach((key) => {
+			if (e.code === key) {
+				preventDefault(e)
+				return false
+			}
+		})
+	}
+
+	const preventDefaultForMultiple = (e) => {
+		if(e.shiftKey === true)
 			preventDefault(e)
-			return false
-		}
 	}
 
 	if(elements.length !== undefined) {
 		for(const i in elements) {
-			if(ifStatement(i)) {
-				try {
-					elements[i].addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
-						get: () => { // eslint-disable-line
-							supportsPassive = true
-						},
-					}))
-				} catch (e) {
-					return
-				}
+			try {
+				elements[i].addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
+					get: () => { // eslint-disable-line
+						supportsPassive = true
+					},
+				}))
+			} catch (e) {
+				return
 			}
 		}
 	} else {
@@ -50,23 +51,24 @@ export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) =
 	if(elements.length !== undefined) {
 		setDisableScroll({action: () => {
 			for(const i in elements) {
-				if(ifStatement(i)) {
-					elements[i].addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
-					elements[i].addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
-					elements[i].addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
-					elements[i].addEventListener(`keydown`, preventDefaultForScrollKeys, false)
+				// these elements are the ones in the editors and the collections page
+				elements[i].addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
+				elements[i].addEventListener(wheelEvent, preventDefaultForMultiple, wheelOpt) // modern desktop
+				elements[i].addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
+				elements[i].addEventListener(`keydown`, preventDefaultForScrollKeys, wheelOpt)
+				elements[i].onmousedown = e => { // disables middle mouse button
+					if (e.button === 1) return false
 				}
 			}
 		}})
 		if(setEnableScroll) {
 			setEnableScroll({action: () => {
 				for(const i in elements) {
-					if(ifStatement(i)) {
-						elements[i].removeEventListener(`DOMMouseScroll`, preventDefault, false)
-						elements[i].removeEventListener(wheelEvent, preventDefault, wheelOpt)
-						elements[i].removeEventListener(`touchmove`, preventDefault, wheelOpt)
-						elements[i].removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
-					}
+					elements[i].removeEventListener(`DOMMouseScroll`, preventDefault, false)
+					elements[i].removeEventListener(wheelEvent, preventDefaultForMultiple, wheelOpt)
+					elements[i].removeEventListener(`touchmove`, preventDefault, wheelOpt)
+					elements[i].removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
+					elements[i].onmousedown = null
 				}
 			}})
 		}
@@ -76,6 +78,9 @@ export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) =
 			elements.addEventListener(wheelEvent, preventDefault, wheelOpt) // modern desktop
 			elements.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
 			elements.addEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			elements.onmousedown = e => { // disables middle mouse button
+				if (e.button === 1) return false
+			}
 		}})
 		if(setEnableScroll) {
 			setEnableScroll({action: () => {
@@ -83,7 +88,10 @@ export const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) =
 				elements.removeEventListener(wheelEvent, preventDefault, wheelOpt)
 				elements.removeEventListener(`touchmove`, preventDefault, wheelOpt)
 				elements.removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
+				elements.onmousedown = null
 			}})
 		}
 	}
 }
+
+export default handleScrollFuncs
