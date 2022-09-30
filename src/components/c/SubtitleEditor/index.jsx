@@ -9,7 +9,7 @@ import {parse} from 'subtitle'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -34,6 +34,7 @@ const SubtitleEditor = props => {
 	const { handleShowTip, toggleTip, handleShowHelp, openSubModal, setSideEditor, handleNavigation } = props.handlers
 	const layers = [{0: `Skip`}]
 
+	const [elapsed, setElapsed] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
@@ -82,6 +83,7 @@ const SubtitleEditor = props => {
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
+		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
 
 		let largestLayer = 0
 
@@ -114,6 +116,7 @@ const SubtitleEditor = props => {
 
 		return () => {
 			window.onbeforeunload = undefined
+			document.onmousedown = null
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventsArray, blockLeave, isEdit, subtitles, subLayerToEdit, invalidSubs])
@@ -757,11 +760,13 @@ const SubtitleEditor = props => {
 					eventPosition={eventPosition}
 					handleShowTip={handleShowTip}
 					toggleTip={toggleTip}
+					elapsed={elapsed}
+					setElapsed={setElapsed}
 				>
 				</VideoContainer>
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
 
-					<section>
+					<section id='event-section'>
 						<div className='event-layers'>
 							{layers.map((layer, index) => (
 								<div id={`layer-${index}`} className={`layer`} key={index}>
@@ -892,7 +897,10 @@ const SubtitleEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))}
+								onDrag={(e, d) => {
+									handleZoomEandD(e, d)
+									debouncedOnDrag()
+								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,

@@ -243,6 +243,42 @@ export const SideEditor = styled.div`
 			text-align: left;
 		}
 	}
+
+	& tr {
+		& i {
+			opacity: 0%;
+		}
+	}
+
+	& td {
+		:hover {
+			& i {
+				opacity: 100%;
+				-webkit-filter: invert(50%);
+				filter: invert(50%);
+			}
+		}
+	}
+
+	& i {
+		z-index: 25 !important;
+		position: absolute;
+		padding-top: 5px;
+		right: 14px;
+		cursor: pointer;
+		:hover{
+			-webkit-filter: invert(0%) !important;
+			filter: invert(0%) !important;
+		}
+		//visibility: ${props => props.inputHover ? `visible` : `hidden`};
+	}
+
+	&  input {
+		position: relative;
+		box-sizing: border-box;
+		padding-right: 5px;
+	}
+
 	& > header {
 		height: 5rem;
 		background: var(--navy-blue);
@@ -273,12 +309,10 @@ export const SideEditor = styled.div`
 			height: 100%;
 			display: flex;
 
-			& i {
-				line-height: 5rem;
-			}
 
 			& .fa-check {
 				color: green;
+				padding-top: 20px;
 			}
 
 			& button {
@@ -318,6 +352,23 @@ export const SideEditor = styled.div`
 		padding-left: 3rem;
 		padding-right: 3rem;
 	}
+	& .content-cancel {
+		margin: 0px .5rem 0px .5rem;
+		color: #0582ca;
+		:hover {
+			background-color: #0582ca;
+			color: #ffffff;
+		}
+	}
+
+	& .content-delete {
+		color: var(--red);
+		border: 2px solid var(--red);
+		:hover {
+			background-color: var(--red);
+			color: #ffffff;
+		}
+	}
 
 	& .deleteEventButton {
 		width: 100px;
@@ -339,7 +390,7 @@ export const SideEditor = styled.div`
 		}
 	}
 	& .clipItems {
-		font-size: 1.5rem;
+		font-size: 1.4rem;
 		& label {
 			margin: 15px 5px 15px 15px;
 			width: 150px;
@@ -370,8 +421,11 @@ export const SideEditor = styled.div`
 				display: flex;
 				padding: 0.5rem;
 
-				& td {
+				& .clipTd {
+					position: relative;
+					box-sizing: border-box;
 					display: inline-flex;
+					padding-right: 5px;
 					width: 30% !important;
 					margin: auto;
 					& input {
@@ -380,6 +434,13 @@ export const SideEditor = styled.div`
 						&::-webkit-inner-spin-button {
 							-webkit-appearance: none;
 							margin: 0;
+						}
+					}
+					& .deleteTd {
+						display: inline-flex;
+						font-size: 16px !important;
+					}
+
 						}
 					}
 			}
@@ -414,4 +475,15 @@ export const Icon = styled.div`
   height: 20px;
 	margin-left: 1rem;
 	cursor: pointer;
+`
+
+export const Button = styled.button`
+	font-size: 1.5rem;
+	color: ${props => props.color || `#0582ca`};
+	background: transparent;
+	border: 2px solid #0582ca;
+	border-radius: 1rem;
+	outline: none;
+	cursor: pointer;
+	padding: 3px;
 `

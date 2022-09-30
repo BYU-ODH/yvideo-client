@@ -6,7 +6,7 @@ import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleZoomChange, handleScrollFactor } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 // import {DialogBox} from '../../../modals/components'
 
@@ -88,7 +88,7 @@ const VideoEditor = props => {
 			layer: 0,
 		},
 	]
-
+	const [elapsed, setElapsed] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [currentEvent, setCurrentEvent] = useState()
 	const [shouldUpdate, setShouldUpdate] = useState(false)
@@ -134,6 +134,7 @@ const VideoEditor = props => {
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
 		setEvents(allEvents)
+		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
@@ -144,7 +145,7 @@ const VideoEditor = props => {
 			window.onbeforeunload = undefined
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [eventsArray, blockLeave])
+	}, [eventsArray, blockLeave, videoLength])
 
 	// end of useEffect
 
@@ -156,7 +157,7 @@ const VideoEditor = props => {
 	}
 
 	const addEventHandler = (item, index) => {
-		addEventToLayer(item, index, videoCurrentTime)
+		addEventToLayer(item, index, elapsed)
 		setBlock(true)
 	}
 
@@ -177,9 +178,9 @@ const VideoEditor = props => {
 		eventObj.end = Number(startPercentage) + eventObj.end
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
-
 		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
 		updateEvents(eventIndex, eventObj, displayLayer)
+
 	}
 
 	const runTimeCheck = (side, event, type) => {
@@ -225,12 +226,12 @@ const VideoEditor = props => {
 		if(event.end <= event.start){
 			if(canAccessDom){
 				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number bigger than start time`
+				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number bigger than the start time`
 			}
 		} else if(event.end > videoLength){
 			// event.end = 100
 			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).innerHTML=`Please, enter a number less than ${videoLength}`
+				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number less than ${videoLength}`
 				document.getElementById(`sideTabExplanation`).innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
 			}
 		}
@@ -495,8 +496,8 @@ const VideoEditor = props => {
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
 					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
-					"start": allEvents[e].start,
-					"end": allEvents[e].end,
+					"start": parseFloat(allEvents[e].start.toFixed(2)),
+					"end": parseFloat(allEvents[e].end.toFixed(2)),
 					"details": `{}`,
 				},
 				}
@@ -511,8 +512,8 @@ const VideoEditor = props => {
 				const data = {"options": {
 					"type": allEvents[e].type,
 					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
-					"start": allEvents[e].start,
-					"end": allEvents[e].end,
+					"start": parseFloat(allEvents[e].start.toFixed(2)),
+					"end": parseFloat(allEvents[e].end.toFixed(2)),
 					"details": {
 						"type": `blur`,
 						"interpolate": true,
@@ -524,6 +525,7 @@ const VideoEditor = props => {
 				censorPositionData = {}
 			}
 		}
+		jsonData.sort((a, b) => (a.options.start > b.options.start) - (a.options.start < b.options.start))
 		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url
@@ -584,6 +586,8 @@ const VideoEditor = props => {
 					eventPosition={eventPosition}
 					handleShowTip={handleShowTip}
 					toggleTip={toggleTip}
+					elapsed={elapsed}
+					setElapsed={setElapsed}
 				></VideoContainer>
 
 				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
@@ -638,7 +642,10 @@ const VideoEditor = props => {
 									}
 								}
 								dragAxis='x'
-								onDrag={(e, d) => handleZoomChange(e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))}
+								onDrag={(e, d) => {
+									handleZoomEandD(e, d)
+									debouncedOnDrag()
+								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
 										x: e.target.getBoundingClientRect().x,

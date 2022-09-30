@@ -9,7 +9,7 @@ import { isSafari, isIOS } from 'react-device-detect'
 import { Player } from 'components'
 import { Tooltip } from 'components/bits'
 
-import { handleScrollFuncs } from '../../components/vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../components/vanilla_scripts/toggleScroll'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -58,7 +58,8 @@ const PlayerContainer = props => {
 	const [player, setPlayer] = useState(null)
 	const [playing, setPlaying] = useState(false) // Set to true or false to play or pause the media
 	const [progress, setProgress] = useState(0)
-	const [playTime, setPlayTime] = useState(0)
+	const [playTime, setPlayTime] = useState(`00:00:00`)
+	const [progressEntered, setProgressEntered] = useState(false)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
 	// eslint-disable-next-line no-unused-vars
 	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
@@ -89,6 +90,7 @@ const PlayerContainer = props => {
 
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
+	const [isClip, setIsClip] = useState(false)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
@@ -274,6 +276,7 @@ const PlayerContainer = props => {
 	const handleStart = () => {
 		setPlaying(true)
 		if (clipTime.length > 0) player.seekTo(clipTime[0])
+		setIsClip(true)
 		setPlaying(true)
 	}
 	const handleBlank = (bool) => {
@@ -287,6 +290,7 @@ const PlayerContainer = props => {
 	const handleProgress = progression => {
 		const dateElapsed = new Date(null)
 		dateElapsed.setSeconds(progression)
+		setProgressEntered(true)
 		setPlayTime(dateElapsed.toISOString().substr(11, 8))
 		setProgress(progression)
 
@@ -306,18 +310,18 @@ const PlayerContainer = props => {
 		const progressPercent = progression * 100 / duration
 		if(fullyChecked) {
 
-			const closeCheck = subtitleTextIndex === undefined || subtitleTextIndex === 0 ?
+			const closeCheck = subtitleTextIndex === undefined || subtitleTextIndex === 0 && entries ?
 				{prevEntry: null, nextEntry: entries[1] ? entries[1][1] : null}
 				:
 				subtitleTextIndex === entries.length - 1 ?
-					{prevEntry: entries[subtitleTextIndex - 1][1], nextEntry: null}
+					{prevEntry: entries[subtitleTextIndex - 1]?.[1], nextEntry: null}
 					:
-					{prevEntry: entries[subtitleTextIndex - 1][1], nextEntry: entries[subtitleTextIndex + 1][1]}
+					{prevEntry: entries[subtitleTextIndex - 1]?.[1], nextEntry: entries[subtitleTextIndex + 1]?.[1]}
 
-			if(closeCheck.prevEntry !== null && progressPercent < parseFloat(closeCheck.prevEntry.percentPlayed)) {
+			if(closeCheck.prevEntry !== null && progressPercent < parseFloat(closeCheck?.prevEntry?.percentPlayed)) {
 				setSubtitleTextIndex(subtitleTextIndex - 1)
 				setSubtitleText(closeCheck.prevEntry.text)
-			}else if(closeCheck.nextEntry !== null && progressPercent > parseFloat(closeCheck.nextEntry.percentPlayed)) {
+			}else if(closeCheck.nextEntry !== null && progressPercent > parseFloat(closeCheck?.nextEntry?.percentPlayed)) {
 				setSubtitleTextIndex(subtitleTextIndex + 1)
 				setSubtitleText(closeCheck.nextEntry.text)
 			}else return
@@ -515,8 +519,7 @@ const PlayerContainer = props => {
 
 	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
-
-		if(displaySubtitles && subtitleTextIndex){
+		if(displaySubtitles && subtitleTextIndex !== undefined){
 			if(e.target.id === `prev-sub`){
 				if(subtitleTextIndex > 1)
 					seekToIndex = subtitleTextIndex - 1
@@ -651,11 +654,13 @@ const PlayerContainer = props => {
 		censorPosition,
 		censorActive,
 		clipTime,
+		isClip,
 		isLandscape,
 		hasPausedClip,
 		events,
 		showSpeed,
 		scrollDisabled,
+		progressEntered,
 	}
 
 	const handlers = {

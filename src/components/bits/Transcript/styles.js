@@ -15,6 +15,7 @@ export const Style = styled.div`
 	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
 	z-index: 20;
+	outline: none;
 	/* background-color: ${props => props.displayTranscript ? `white` : `var(--light-blue)`}; */
 
 	& .side-bar {
@@ -65,7 +66,7 @@ export const Style = styled.div`
 
 		/* Handle */
 		::-webkit-scrollbar-thumb {
-			background: ${props => props.scrolldisabled ? `#AAAAAA` : `var(--light-blue)`};
+			background: ${props => props.scrolldisabled ? `gray` : `var(--light-blue)`};
 			border-radius: 10px;
 		}
 

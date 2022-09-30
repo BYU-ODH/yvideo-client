@@ -1,4 +1,25 @@
-export const handleZoomChange = (e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, eventElements) => {
+import debounce from './debounce/debounce.js'
+
+let zoomParams
+let lengthParam
+let setWidthParam
+let videoTimeParam
+let setScrollBarParam
+let eventsBoxParam
+
+export const getParameters = (videoLength, setWidth, videoCurrentTime, setScrollBar, eventsBox) => {
+	lengthParam = videoLength
+	setWidthParam = setWidth
+	videoTimeParam = videoCurrentTime
+	setScrollBarParam = setScrollBar
+	eventsBoxParam = eventsBox
+}
+
+export const handleZoomEandD = (e, d) => {
+	zoomParams = {e, d}
+}
+
+const handleZoomChange = (_e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, eventElements) => {
 	let width = 0
 	if(eventElements[0]){ // eventElements is any one of the Rnd containers
 		const eventElemsVisWidth = eventElements[0].offsetWidth // width of the area that contains the subtitle Rnds
@@ -33,10 +54,20 @@ export const handleScrollFactor = (direction, zoom) => {
 		timeIndicator.scrollLeft = scrubber.scrollWidth * dis
 		scrubberContainer.scrollLeft = scrubber.scrollWidth * dis
 
-		allLayers.forEach((element, i) => {
+		allLayers.forEach((_element, i) => {
 			allLayers[i].scrollLeft = layerScrollWidth * dis
 		})
 		if(skipLayer)
 			skipLayer.scrollLeft = layerScrollWidth * dis
 	}
 }
+
+export const handleElapsed = (time, setElapsed) => {
+	setElapsed(time)
+}
+
+const updateZoom = () => {
+	handleZoomChange(zoomParams.e, zoomParams.d, lengthParam, setWidthParam, videoTimeParam, setScrollBarParam, eventsBoxParam)
+}
+
+export const debouncedOnDrag = debounce(updateZoom, 25)

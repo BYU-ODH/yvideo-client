@@ -184,7 +184,7 @@ export default class CreateContent extends PureComponent {
 										<br/>
 										{
 											!isAccess ?
-												<div className={`box`}><p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact Y-video admin for more information.</p></div>
+												<div className={`box`}><p className='unauthorized-message'>You are currently unauthorized to add this resource. Please contact a Y-video admin to demonstrate proof of ownership.</p></div>
 												:
 												``
 										}

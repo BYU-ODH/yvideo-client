@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import {
@@ -11,17 +11,25 @@ import ManageFiles from 'components/modals/components/ManageFiles'
 
 const ManageFilesContainer = props => {
 
+	const [filesUpdated, setFilesUpdated] = useState(false)
+
 	const {
 		files,
 		toggleModal,
 	} = props
 
+	const handleFilesUpdated = (boolean) => {
+		setFilesUpdated(boolean)
+	}
+
 	const viewstate = {
 		files,
+		filesUpdated,
 	}
 
 	const handlers = {
 		toggleModal,
+		handleFilesUpdated,
 	}
 
 	return <ManageFiles viewstate={viewstate} handlers={handlers}/>

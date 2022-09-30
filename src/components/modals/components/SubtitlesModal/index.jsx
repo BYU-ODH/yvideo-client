@@ -3,7 +3,6 @@ import Style, { Button } from './styles'
 import closeIcon from 'assets/close_icon.svg'
 
 export default class SubtitlesModal extends Component {
-
 	constructor(props) {
 		super(props)
 		this.keyup = this.props.viewstate.keyup
@@ -37,11 +36,11 @@ export default class SubtitlesModal extends Component {
 				handleAddLayer([])
 			},
 			fromFile: () => {
-				const filePath = document.getElementById(`subFileInput`)
-				if (filePath?.files?.length === 1) {
-					handleAddLayerFromFile(filePath)
+				const filePath = document.getElementById(`subFileInput`).files
+				if (filePath?.length === 1) {
+					handleAddLayerFromFile(filePath[0])
 					setIsReady(false)
-				}	else if (filePath.files.length > 1)
+				}	else if (filePath?.length > 1)
 					alert(`Please select only one file`)
 			},
 		}

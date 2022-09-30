@@ -20,6 +20,7 @@ class Landing extends PureComponent {
 			overlay,
 			alertMessage,
 			isAlertMessage,
+			disabled,
 		} = this.props.viewstate
 
 		const {
@@ -33,7 +34,7 @@ class Landing extends PureComponent {
 				<Comets className='left' />
 				<Comets className='right' />
 
-				<Welcome>
+				<Welcome disable={disabled}>
 					<div>
 						<Logo />
 						<h1>Y-VIDEO</h1>
@@ -46,9 +47,9 @@ class Landing extends PureComponent {
 					}
 
 					<div className='button-wrapper'>
-						<Button id='primary' className='primary' onClick={handleLogin}>Sign In</Button>
-						<Button className='secondary' onClick={toggleOverlay}>About</Button>
-						<Button className='secondary'><Link to={`/search-public-collections`}>Public Videos</Link></Button>
+						<Button id='primary' className='primary' onClick={handleLogin} disabled={disabled}>Sign In</Button>
+						<Button className='secondary' onClick={toggleOverlay} disabled={disabled}>About</Button>
+						<Button className='secondary'><Link to={`/search-public-collections`} className='inactive'>Public Videos</Link></Button>
 						{/* <Button className='secondary' onClick={toggleOverlay}>Public</Button> */}
 					</div>
 

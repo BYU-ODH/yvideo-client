@@ -25,10 +25,10 @@ export const Style = styled.div`
 		width: ${props => props.layerWidth !== 0 ?
 		`${props.layerWidth}px`
 		:
-		`calc(100%)`
-};
+		`calc(100%)`};
+		outline: none;
 		display: flex;
-		height: 30px;
+		height: 29px;
 		position: absolute;
 		border-right: 2px solid var(--light-blue);
 		background-size: 200px 100%;

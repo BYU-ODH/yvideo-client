@@ -17,18 +17,20 @@ export default class Player extends Component {
 		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.checkBrowser = () => this.props.handlers.checkBrowser
+		this.handleProgress = () => this.props.handlers.handleProgress
 		this.state = {
 			skipArray: [],
 		}
 	}
 	componentDidMount(){
 		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
-
+	
 		window.onkeyup = (e) => {
 			this.handleHotKeys(e)
 		}
 
 		this.checkBrowser()
+		// this.handleProgress()
 	}
 
 	componentWillUnmount(){
@@ -91,25 +93,17 @@ export default class Player extends Component {
 			url,
 			playing,
 			playbackRate,
-			// playbackOptions,
 			progress,
-			// playTime,
 			volume,
 			muted,
 			blank,
-			// videoComment,
-			// commentPosition,
 			duration,
 			showTranscript,
-			// toggleTranscript,
-			// content,
-			// subtitleTextIndex,
 			displaySubtitles,
 			indexToDisplay,
 			isMobile,
-			// censorPosition,
-			// censorActive,
 			clipTime,
+			isClip,
 			isLandscape,
 			hasPausedClip,
 			events,
@@ -125,15 +119,12 @@ export default class Player extends Component {
 			handleStart,
 			handleProgress,
 			handleSeekChange,
-			handlePlaybackRateChange, // eslint-disable-line no-unused-vars
 			handleMuted,
 			handleUnmuted,
 			handleShowSubtitle,
-			toggleTip, // eslint-disable-line no-unused-vars
 			handlePlayPause,
 			setHasPausedClip,
 			handleAspectRatio,
-			// handleOnReady
 		} = this.props.handlers
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
@@ -290,7 +281,7 @@ export default class Player extends Component {
 						<PlayerControls viewstate={this.props.viewstate} handlers={this.props.handlers} skipArray={this.state.skipArray}/>
 						<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 							<PlayButton playing={playing} onClick={handlePlayPause} hovering={hovering} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
-							{displaySubtitles !== null &&
+							{displaySubtitles !== null && showTranscript &&
 								<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
 							}
 							<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>

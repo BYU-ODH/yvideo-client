@@ -23,6 +23,7 @@ export const BoxRow = styled.div`
 export const FileTitle = styled.div`
 	display: flex;
 	margin-left: 1rem;
+	width: 100%;
 	& > h4 {
 		display: flex;
 		align-items: center;
@@ -64,7 +65,7 @@ export const SaveIcon = styled.span`
 
 export const InnerContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr;
 	padding: 15px;
 `
 
@@ -117,6 +118,8 @@ export const CategorySelect = styled.select`
 
 	padding: 0 1.25rem;
 	text-align-last: center;
+
+	align-content: start;
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);

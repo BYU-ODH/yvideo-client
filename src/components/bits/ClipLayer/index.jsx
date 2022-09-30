@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
-import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
 
 import {
 	Style,
@@ -25,7 +25,7 @@ const ClipLayer = props => {
 		{
 			top: `0px`,
 			backgroundColor:`#fff`,
-			border:`1px solid #0582ca`,
+			border:`1.5px solid #0582ca`,
 			color:`#000`,
 			fontSize:`1.3rem`,
 			justifyContent:`center`,
@@ -36,7 +36,7 @@ const ClipLayer = props => {
 			left: `${start}% !important`,
 			top: `0px`,
 			backgroundColor:`var(--navy-blue)`,
-			border:`1px solid #0582ca`,
+			border:`1.5px solid #0582ca`,
 			color:`#fff`,
 			fontSize:`1.3rem`,
 			justifyContent:`center`,
@@ -59,7 +59,7 @@ const ClipLayer = props => {
 
 	useLayoutEffect(() => {
 		if(document.getElementsByClassName(`events`))
-			handleScrollFuncs(document.getElementsByClassName(`events`), setDisableScroll, null)
+			handleScrollFuncs(Array.from(document.getElementsByClassName(`events`)), setDisableScroll, null)
 		if(disableScroll.action !== null)
 			disableScroll.action()
 		// eslint-disable-next-line react-hooks/exhaustive-deps

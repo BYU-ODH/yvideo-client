@@ -50,6 +50,7 @@ const handlers = {
 	handleConfirmDelete: jest.fn(),
 	toggleMenu: jest.fn(),
 	userRoleSave: jest.fn(),
+	getUserFunc: jest.fn(),
 }
 
 const tipHandlers = {

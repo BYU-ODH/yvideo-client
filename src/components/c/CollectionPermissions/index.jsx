@@ -153,7 +153,7 @@ export class CollectionPermissions extends PureComponent {
 						<UserList id='user-table'>
 							<h4>Instructors and TAs</h4>
 							<Search className='faculty-submit' onSubmit={handlers.addTA}>
-								<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserTAChange} value={userTA.username} />
+								<input className='faculty-input' type='search' placeholder={`Enter netID`} onChange={handlers.handleUserTAChange} value={userTA.username} />
 								<AddButton className='add-faculty-button' type='submit' disabled={disabledTA}>Add</AddButton>
 							</Search>
 							<Table border='1'>
@@ -192,10 +192,10 @@ export class CollectionPermissions extends PureComponent {
 						</UserList>
 						<UserList id='user-table'>
 							<TableHeader>
-								<h4>Current Users</h4>
+								<h4>Guests (read-only)</h4>
 								<div>
 									<Search className='faculty-submit' onSubmit={handlers.addUser}>
-										<input className='faculty-input' type='search' placeholder={`Enter netID or name`} onChange={handlers.handleUserChange} value={username} />
+										<input className='faculty-input' type='search' placeholder={`Enter netID`} onChange={handlers.handleUserChange} value={username} />
 										<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>Add</AddButton>
 									</Search>
 									<AddManyButton type='button' onClick={handlers.AddBatchNetids}>Add many...</AddManyButton>
