@@ -76,7 +76,7 @@ export default class Collections extends PureComponent {
 								onMouseLeave={toggleTip} />
 						}
 						{
-							user !== null && user.roles < 3 &&
+							user !== null && (user.roles < 3 || hasCollectionPermissions) &&
 								<h3>
 									<Link to={`/manager`}>
 										Manage Collections

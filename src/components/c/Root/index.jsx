@@ -28,7 +28,9 @@ class Root extends PureComponent {
 			labAssistantEndpoints,
 			instructorEndpoints,
 			studentEndpoints,
+			studentTAEndpoints,
 			unauthEndpoints,
+			hasCollectionPermissions,
 		} = this.props.viewstate
 
 		const renderRoute = (entry, index) => {
@@ -108,6 +110,16 @@ class Root extends PureComponent {
 										renderError(studentEntry, index)
 								)
 							}
+
+							{
+								studentTAEndpoints?.map((studentTAEntry, index) =>
+									user.roles <= 3 && hasCollectionPermissions ?
+										renderRoute(studentTAEntry, index)
+										:
+										renderError(studentTAEntry, index)
+								)
+							}
+
 							<Route path='*' element={<Error error='404' message={`You've wandered too far`} />} />
 						</Routes>
 					</>
