@@ -72,8 +72,11 @@ const AdminContainer = props => {
 	const getUserFunc = async () => {
 		let temp = []
 		for( const item of data ) {
-			const user = await getUserById(item.owner)
-			temp = [...temp, user]
+			if(item.username !== ``) {
+				const user = await getUserById(item.owner)
+				temp = [...temp, user]
+			}else
+				temp = [...temp, `undefined`]
 		}
 		setCollectionUsers(temp)
 	}

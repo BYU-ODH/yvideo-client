@@ -24,7 +24,7 @@ export default class Player extends Component {
 	}
 	componentDidMount(){
 		if (this.props.clipTime) if(this.props.clipTime.length > 0) this.props.ref.seekto(this.props.clipTime[0])
-	
+
 		window.onkeyup = (e) => {
 			this.handleHotKeys(e)
 		}
@@ -103,7 +103,6 @@ export default class Player extends Component {
 			indexToDisplay,
 			isMobile,
 			clipTime,
-			isClip,
 			isLandscape,
 			hasPausedClip,
 			events,
