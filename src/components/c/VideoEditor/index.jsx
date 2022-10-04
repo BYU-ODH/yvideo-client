@@ -510,12 +510,13 @@ const VideoEditor = props => {
 					censorPositionData[time] = pos
 				}
 				const data = {"options": {
-					"type": allEvents[e].type,
+					"type": allEvents[e].type.toLowerCase(),
 					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
 					"start": parseFloat(allEvents[e].start.toFixed(2)),
 					"end": parseFloat(allEvents[e].end.toFixed(2)),
 					"details": {
 						"type": `blur`,
+						`amount`: `30px`,
 						"interpolate": true,
 						"position": censorPositionData,
 					},
