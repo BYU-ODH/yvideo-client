@@ -313,7 +313,7 @@ const AdminTable = props => {
 	}
 
 	return (
-		searchCategory !== `Collections` || collectionUsers.length === data.length ?
+		searchCategory !== `Collections` || collectionUsers?.length === data?.length ?
 			<Style>
 				<Table>
 					<thead>
