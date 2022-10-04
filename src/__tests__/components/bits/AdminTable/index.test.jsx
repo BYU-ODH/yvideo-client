@@ -59,8 +59,8 @@ const viewstate = {
 			name: `Owner1`,
 			roles: 0,
 			username: `testusername1`,
-		}
-	]
+		},
+	],
 }
 
 const handlers = {
