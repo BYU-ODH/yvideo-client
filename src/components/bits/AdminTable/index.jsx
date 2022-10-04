@@ -167,7 +167,6 @@ const AdminTable = props => {
 			)
 		case `Collections`:
 			return (
-				collectionUsers.length === data.length &&
 				<>
 					<td>{item.name}</td>
 					<td>
@@ -314,40 +313,43 @@ const AdminTable = props => {
 	}
 
 	return (
-		<Style>
-			<Table>
-				<thead>
-					<tr>
-						{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={() => sort(data, header.title)}/></th>)}
-						<th/>
-					</tr>
-				</thead>
-				<tbody>
-					{data.map(
-						(item, i) => <tr key={item.id}>
-							{ printTableValues(searchCategory, item, i) }
-							<td>
-								<ItemEdit
-									data-testid='item-edit'
-									onClick={toggleMenu(item.id)}
-									onMouseEnter={e => handleShowTip(`actions`,
-										{
-											x: e.target.getBoundingClientRect().x + 40,
-											y: e.target.getBoundingClientRect().y + 15,
-											width: e.currentTarget.offsetWidth + 20,
-										})
-									}
-									onMouseLeave={() => toggleTip()}
-								></ItemEdit>
-							</td>
-						</tr>,
-					)}
-				</tbody>
-			</Table>
-			{menuActive &&
-				<ItemMenu mousePos={mousePos} onMouseLeave={toggleMenu()}>{menuOptions(searchCategory, menuItemInfo)}</ItemMenu>
-			}
-		</Style>
+		searchCategory !== `Collections` || collectionUsers.length === data.length ?
+			<Style>
+				<Table>
+					<thead>
+						<tr>
+							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={() => sort(data, header.title)}/></th>)}
+							<th/>
+						</tr>
+					</thead>
+					<tbody>
+						{data.map(
+							(item, i) => <tr key={item.id}>
+								{ printTableValues(searchCategory, item, i) }
+								<td>
+									<ItemEdit
+										data-testid='item-edit'
+										onClick={toggleMenu(item.id)}
+										onMouseEnter={e => handleShowTip(`actions`,
+											{
+												x: e.target.getBoundingClientRect().x + 40,
+												y: e.target.getBoundingClientRect().y + 15,
+												width: e.currentTarget.offsetWidth + 20,
+											})
+										}
+										onMouseLeave={() => toggleTip()}
+									></ItemEdit>
+								</td>
+							</tr>,
+						)}
+					</tbody>
+				</Table>
+				{menuActive &&
+					<ItemMenu mousePos={mousePos} onMouseLeave={toggleMenu()}>{menuOptions(searchCategory, menuItemInfo)}</ItemMenu>
+				}
+			</Style>
+			:
+			null
 	)
 }
 
