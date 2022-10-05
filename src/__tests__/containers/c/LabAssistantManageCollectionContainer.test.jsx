@@ -9,9 +9,13 @@ const collection = testutil.collection
 
 const content = testutil.content
 
+const user = testutil.user
+
 const props = {
 	collection,
 	content,
+	// user,
+	user: testutil.user,
 	getCollectionContent: jest.fn(),
 	updateCollectionStatus: jest.fn(),
 }
