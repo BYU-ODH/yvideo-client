@@ -76,37 +76,41 @@ export default class ManageCollection extends PureComponent {
 								autoFocus
 							/>
 						) : (
-							<h6 onClick={e => toggleEdit(e)}>{collectionName}</h6>
+							<h6 onClick={user.roles <= 1 ? e => toggleEdit(e) : null}>{collectionName}</h6>
 						)}
-						<TitleEditButton
-							id={`title-edit-button`}
-							editing={isEditingCollectionName}
-							onClick={toggleEdit}
-							onMouseEnter={e => handleShowTip(`collection-edit-name`,
-								{
-									x: e.target.getBoundingClientRect().x,
-									y: e.target.getBoundingClientRect().y,
-									width: e.currentTarget.offsetWidth,
-								})
-							}
-							onMouseLeave={() => toggleTip()}
-						>
-							{isEditingCollectionName ? [<i className='fa fa-save'></i>, `Save`] : `Edit`}
-						</TitleEditButton>
+						{user.roles <= 1 &&
+							<TitleEditButton
+								id={`title-edit-button`}
+								editing={isEditingCollectionName}
+								onClick={toggleEdit}
+								onMouseEnter={e => handleShowTip(`collection-edit-name`,
+									{
+										x: e.target.getBoundingClientRect().x,
+										y: e.target.getBoundingClientRect().y,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={() => toggleTip()}
+							>
+								{isEditingCollectionName ? [<i className='fa fa-save'></i>, `Save`] : `Edit`}
+							</TitleEditButton>
+						}
 					</Title>
 					<Publish>
-						{collection.archived ? (
+						{collection.archived ?
 							<>
-								{ user?.roles !== undefined ? (
-									<>{user.roles === 0 || user.roles === 1 ? (
-										<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={unarchive}>Unarchive</ArchiveButton>
-									) : ( <p>Cannot unarchive</p> )}
+								{ user?.roles !== undefined ?
+									<>
+										{ user.roles <= 1 &&
+											<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={unarchive}>Unarchive</ArchiveButton>
+										}
 									</>
-								) : null }
+									: null
+								}
 							</>
-						) : (
+							:
 							<>
-								{ !collection.public ? (
+								{ !collection.public && user.roles <= 1 ?
 									<PublishButton
 										published={collection.published}
 										onClick={togglePublish}
@@ -115,17 +119,23 @@ export default class ManageCollection extends PureComponent {
 									>
 										{collection.published ? `Unpublish` : `Publish`}
 									</PublishButton>
-								): (<></>)}
-								<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={archive}>Archive</ArchiveButton>
+									:
+									<></>
+								}
+								{ user.roles <= 1 &&
+									<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={archive}>Archive</ArchiveButton>
+								}
 							</>
-						)}
+						}
 					</Publish>
 				</header>
 				<TabHeader>
 					<button id={`content-button`} className={`std-outline-color`} onClick={setTab(true)}>Content</button>
-					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}>
-						Edit User Access
-					</button>
+					{user.roles <= 2 &&
+						<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}>
+							Edit User Access
+						</button>
+					}
 					<Selector isContentTab={isContentTab} />
 				</TabHeader>
 
