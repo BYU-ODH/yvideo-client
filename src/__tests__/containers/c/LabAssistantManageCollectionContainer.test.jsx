@@ -14,8 +14,7 @@ const user = testutil.user
 const props = {
 	collection,
 	content,
-	// user,
-	user: testutil.user,
+	user,
 	getCollectionContent: jest.fn(),
 	updateCollectionStatus: jest.fn(),
 }
