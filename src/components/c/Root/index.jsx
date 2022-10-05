@@ -60,11 +60,13 @@ class Root extends PureComponent {
 
 		const renderError = (entry, index) => {
 			const endpoints = entry.endpoints
-			return (
-				<React.Fragment key={index}>
-					<Route path={endpoints[0]} element={<Error error='403' message={`You don't have permission to access this page`} />} />
-				</React.Fragment>
-			)
+			if (hasCollectionPermissions?.[`ta-permission`] === false && studentTAEndpoints.includes(entry)) {
+				return (
+					<React.Fragment key={index}>
+						<Route path={endpoints[0]} element={<Error error='403' message={`You don't have permission to access this page`} />} />
+					</React.Fragment>
+				)
+			} else return
 		}
 
 		return (
@@ -113,7 +115,7 @@ class Root extends PureComponent {
 
 							{
 								studentTAEndpoints?.map((studentTAEntry, index) =>
-									user.roles <= 3 && hasCollectionPermissions ?
+									hasCollectionPermissions?.[`ta-permission`] === true ?
 										renderRoute(studentTAEntry, index)
 										:
 										renderError(studentTAEntry, index)
