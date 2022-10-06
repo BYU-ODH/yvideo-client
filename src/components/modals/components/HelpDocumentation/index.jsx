@@ -1,91 +1,92 @@
-import React, { PureComponent } from 'react'
+import React, { useLayoutEffect } from 'react'
 
 import { Container, Back, CloseHelp, Header } from './styles'
 
 import closeIcon from 'assets/x.svg'
 
-export default class HelpDocumentation extends PureComponent {
+const HelpDocumentation = props => {
 
-	componentDidMount(){
-		document.getElementById(`content`).innerHTML += this.props.viewstate.help.htmlInstruction
-	}
+	const {
+		name,
+		help,
+	} = props.viewstate
+	const { htmlInstruction } = help
 
-	render() {
-		// eslint-disable-next-line no-unused-vars
-		const { name, help } = this.props.viewstate
+	const { toggleModal } = props.handlers
 
-		return (
-			<>
-				<Back
-					onKeyUp={e => {
-						e.code === `Escape` &&
-						this.props.toggleModal()
-					}}
-					onClick={this.props.toggleModal}>
-					<Container id='help-documentation-container' onClick={e => {
-						e.stopPropagation()
-					}} onScroll={this.handleScroll}>
-						<Header><h1>{name} <CloseHelp onClick={this.props.toggleModal}><img alt='' src={closeIcon} /></CloseHelp></h1></Header>
-						<div id='content'>
+	useLayoutEffect(() => {
+		document.getElementById(`content`).innerHTML += htmlInstruction
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	return (
+		<>
+			<Back
+				onKeyUp={e => e.code === `Escape` && toggleModal()}
+				onClick={toggleModal}>
+				<Container id='help-documentation-container' onClick={e => e.stopPropagation()}>
+					<Header><h1>{name} <CloseHelp onClick={toggleModal}><img alt='' src={closeIcon} /></CloseHelp></h1></Header>
+					<div id='content'>
+					</div>
+					{
+						name === `Manage Resource` ? (
+							<>
+								<div className='video-section'>
+									<h2>Create Resource Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/create-resource.webm`} type='video/webm'/>
+										</video>
+									</div>
+								</div>
+								<br/>
+							</>
+						) : null
+					}
+					<div className='video-section'>
+						<h2>{name} Video Tutorial</h2>
+						<div>
+							<video controls>
+								<source src={`/videos/${name.toLowerCase().replace(` `, `-`)}.webm`} type='video/webm'/>
+							</video>
 						</div>
-						{
-							name === `Manage Resource` ? (
-								<>
-									<div className='video-section'>
-										<h2>Create Resource Video Tutorial</h2>
-										<div>
-											<video controls>
-												<source src={`/videos/create-resource.webm`} type='video/webm'/>
-											</video>
-										</div>
+					</div>
+					<br/>
+					{
+						name === `Manage Collections` ? (
+							<>
+								<div className='video-section'>
+									<h2>Manage Content Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/manage-content.webm`} type='video/webm'/>
+										</video>
 									</div>
-									<br/>
-								</>
-							) : null
-						}
-						<div className='video-section'>
-							<h2>{name} Video Tutorial</h2>
-							<div>
-								<video controls>
-									<source src={`/videos/${name.toLowerCase().replace(` `, `-`)}.webm`} type='video/webm'/>
-								</video>
-							</div>
-						</div>
-						<br/>
-						{
-							name === `Manage Collections` ? (
-								<>
-									<div className='video-section'>
-										<h2>Manage Content Video Tutorial</h2>
-										<div>
-											<video controls>
-												<source src={`/videos/manage-content.webm`} type='video/webm'/>
-											</video>
-										</div>
+								</div>
+								<div className='video-section'>
+									<h2>Create Content From Online Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/content-from-online.webm`} type='video/webm'/>
+										</video>
 									</div>
-									<div className='video-section'>
-										<h2>Create Content From Online Video Tutorial</h2>
-										<div>
-											<video controls>
-												<source src={`/videos/content-from-online.webm`} type='video/webm'/>
-											</video>
-										</div>
+								</div>
+								<div className='video-section'>
+									<h2>Create Content From Resource Video Tutorial</h2>
+									<div>
+										<video controls>
+											<source src={`/videos/content-from-resource.webm`} type='video/webm'/>
+										</video>
 									</div>
-									<div className='video-section'>
-										<h2>Create Content From Resource Video Tutorial</h2>
-										<div>
-											<video controls>
-												<source src={`/videos/content-from-resource.webm`} type='video/webm'/>
-											</video>
-										</div>
-									</div>
-								</>
-							) : null
-						}
-						<br/>
-					</Container>
-				</Back>
-			</>
-		)
-	}
+								</div>
+							</>
+						) : null
+					}
+					<br/>
+				</Container>
+			</Back>
+		</>
+	)
 }
+
+export default HelpDocumentation

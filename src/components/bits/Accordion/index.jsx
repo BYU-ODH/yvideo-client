@@ -1,43 +1,31 @@
-import React, { PureComponent } from 'react'
+import React, { useState } from 'react'
 
 import { Container, List, Arrow } from './styles'
 
 import arrow from 'assets/carrot.svg'
 
-class AccordionMenu extends PureComponent {
+const AccordionMenu = props => {
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			active: props.active,
-		}
-	}
+	const { header, children = [], active } = props
 
-	handleToggle = e => {
+	const [isActive, setIsActive] = useState(active)
+
+	const handleToggle = e => {
 		e.preventDefault()
-
-		this.setState({
-			active: !this.state.active,
-		})
+		setIsActive(!isActive)
 	}
 
-	render() {
-
-		const { handleToggle } = this
-		const { header, children = [] } = this.props
-		const { active } = this.state
-		return (
-			<Container>
-				<h6 className='accordion' data-testid='accordion' onClick={handleToggle}>
-					{header}
-					<Arrow data-testid='carrot' src={arrow} active={this.state.active} />
-				</h6>
-				<List data-testid='list' numChildren={children.length} active={active}>
-					{children}
-				</List>
-			</Container>
-		)
-	}
+	return (
+		<Container>
+			<h6 className='accordion' data-testid='accordion' onClick={handleToggle}>
+				{header}
+				<Arrow data-testid='carrot' src={arrow} active={isActive} />
+			</h6>
+			<List data-testid='list' numChildren={children.length} active={isActive}>
+				{children}
+			</List>
+		</Container>
+	)
 
 }
 

@@ -412,7 +412,11 @@ const HelpDocumentationContainer = props => {
 		help: index[name],
 	}
 
-	return <HelpDocumentation viewstate={viewstate} toggleModal={toggleModal}/>
+	const handlers = {
+		toggleModal,
+	}
+
+	return <HelpDocumentation viewstate={viewstate} handlers={handlers}/>
 }
 
 const mapStateToProps = store => ({

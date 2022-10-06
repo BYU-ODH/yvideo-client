@@ -1,52 +1,44 @@
-import React, { PureComponent } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Wrapper } from './styles'
 
-class Overlay extends PureComponent {
+const Overlay = props => {
 
-	state = {
-		visible: false,
-	}
+	const toggleOverlay = props.toggleOverlay
+	const [visible, setVisible] = useState(false)
 
-	closeModal = e => {
+	useEffect(() => {
+		setVisible(true)
+	}, [])
+
+	const closeModal = e => {
 		e.preventDefault()
-
-		this.setState({
-			visible: false,
-		})
+		setVisible(false)
 
 		setTimeout(() => {
-			this.props.toggleOverlay()
+			toggleOverlay()
 		}, 250)
 
 	}
 
-	render() {
-		return (
-			<Wrapper visible={this.state.visible} out={!this.state.visible}>
+	return (
+		<Wrapper visible={visible} out={!visible}>
+			<div>
 				<div>
-					<div>
-						<h3>What is Y-video?</h3>
-						<p>Y-video is a web-app for streaming video and audio content for courses you are enrolled in at BYU. It has several features especially helpful for watching films in a foreign language.</p>
-					</div>
-					<div>
-						<h3>Text Helps</h3>
-						<p>When set up by the instructor, additional aids are available, such as captions and annotations. A key feature of the site enables learners to directly interact with subtitle tracks to quickly skip to specific phrases. For some languages, automatic translations are also available.</p>
-					</div>
-					<div>
-						<h3>For School</h3>
-						<p>Teachers or course designers are able to aggregate media into a single location and use a variety of tools to optimize the learning experience. We aim to be compliant with the Library of Congress' interpretations of Fair Use, so instructors can share media with their students with confidence.</p>
-					</div>
-					<button onClick={this.closeModal}>close</button>
+					<h3>What is Y-video?</h3>
+					<p>Y-video is a web-app for streaming video and audio content for courses you are enrolled in at BYU. It has several features especially helpful for watching films in a foreign language.</p>
 				</div>
-			</Wrapper>
-		)
-	}
-
-	componentDidMount = () => {
-		this.setState({
-			visible: true,
-		})
-	}
+				<div>
+					<h3>Text Helps</h3>
+					<p>When set up by the instructor, additional aids are available, such as captions and annotations. A key feature of the site enables learners to directly interact with subtitle tracks to quickly skip to specific phrases. For some languages, automatic translations are also available.</p>
+				</div>
+				<div>
+					<h3>For School</h3>
+					<p>Teachers or course designers are able to aggregate media into a single location and use a variety of tools to optimize the learning experience. We aim to be compliant with the Library of Congress' interpretations of Fair Use, so instructors can share media with their students with confidence.</p>
+				</div>
+				<button onClick={closeModal}>close</button>
+			</div>
+		</Wrapper>
+	)
 }
 
 export default Overlay

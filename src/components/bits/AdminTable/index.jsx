@@ -35,7 +35,7 @@ const AdminTable = props => {
 		toggleTip,
 	} = props.tipHandlers
 
-	const [sortType, setSortType] = useState({id: ``, reverse: false})
+	const [sortOrder, setSortOrder] = useState({id: ``, reverse: false})
 
 	useEffect(() => {
 		if(searchCategory === `Collections`)
@@ -242,64 +242,64 @@ const AdminTable = props => {
 		}
 	}
 
-	const isReverse = (sort) => {
-		if (sortType.id === sort && sortType.reverse === false){
-			setSortType({
-				id: sort,
+	const isReverse = (sortType) => {
+		if (sortOrder.id === sortType && sortOrder.reverse === false){
+			setSortOrder({
+				id: sortType,
 				reverse: true,
 			})
 			return true
 		} else {
-			setSortType({
-				id: sort,
+			setSortOrder({
+				id: sortType,
 				reverse: false,
 			})
 			return false
 		}
 	}
 
-	const sort = (data, sort) => {
+	const sort = (data, sortType) => {
 		data.sort((a, b) => {
-			switch (sort) {
+			switch (sortType) {
 			case `Name`:
 				return (
-					isReverse(sort) ?
+					isReverse(sortType) ?
 						a.name.localeCompare(b.name, {sensitivity: `base`})
 						:
 						b.name.localeCompare(a.name, {sensitivity: `base`})
 				)
 			case `NetID`:
 				return (
-					isReverse(sort) ?
+					isReverse(sortType) ?
 						a.username.localeCompare(b.username, {sensitivity: `base`})
 						:
 						b.username.localeCompare(a.username, {sensitivity: `base`})
 				)
 			case `Email`:
 				return (
-					isReverse(sort) ?
+					isReverse(sortType) ?
 						a.email.localeCompare(b.email, {sensitivity: `base`})
 						:
 						b.email.localeCompare(a.email, {sensitivity: `base`})
 				)
 			case `Owner`:
 				return (
-					isReverse(sort) ?
-						a.owner.localeCompare(b.owner, {sensitivity: `base`})
+					isReverse(sortType) ?
+						a.username.localeCompare(b.username, {sensitivity: `base`})
 						:
-						b.owner.localeCompare(a.owner, {sensitivity: `base`})
+						b.username.localeCompare(a.username, {sensitivity: `base`})
 				)
 			case `Roles`:
-				return isReverse(sort) ? a.roles - b.roles : b.roles - a.roles
+				return isReverse(sortType) ? a.roles - b.roles : b.roles - a.roles
 			case `Last Login`:
 				if(a.lastLogin === `na` && b.lastLogin !== `na`)
-					return isReverse(sort) ? 1 : 1
+					return isReverse(sortType) ? 1 : 1
 				else if(b.lastLogin === `na` && a.lastLogin !== `na`)
-					return isReverse(sort) ? -1 : -1
+					return isReverse(sortType) ? -1 : -1
 				else if(b.lastLogin === `na` && a.lastLogin === `na`)
-					return isReverse(sort) ? 0 : 0
+					return isReverse(sortType) ? 0 : 0
 				else {
-					return isReverse(sort) ?
+					return isReverse(sortType) ?
 						new Date(a.lastLogin) - new Date(b.lastLogin)
 						:
 						new Date(b.lastLogin) - new Date(a.lastLogin)

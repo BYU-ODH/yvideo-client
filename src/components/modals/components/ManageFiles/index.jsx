@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
 import FileOverviewContainer from '../../../../containers/c/FileOverviewContainer'
 
@@ -7,31 +7,30 @@ import {
 	Button,
 } from './styles'
 
-export default class ManageFiles extends PureComponent {
+const ManageFiles = props => {
 
-	render() {
+	const {
+		files,
+		filesUpdated,
+	} = props.viewstate
 
-		const {
-			files,
-			filesUpdated,
-		} = this.props.viewstate
+	const {
+		toggleModal,
+		handleFilesUpdated,
+	} = props.handlers
 
-		const {
-			toggleModal,
-			handleFilesUpdated,
-		} = this.props.handlers
+	return (
+		<>
+			<Form>
+				<div>
+					<h2>Manage Files</h2>
+					<Button id='manage-files-cancel' type='button' onClick={toggleModal}>{filesUpdated ? `Done` : `Cancel`}</Button>
+				</div>
 
-		return (
-			<>
-				<Form>
-					<div>
-						<h2>Manage Files</h2>
-						<Button id='manage-files-cancel' type='button' onClick={toggleModal}>{filesUpdated ? `Done` : `Cancel`}</Button>
-					</div>
-
-					{Object.keys(files).map(index => <FileOverviewContainer key={files[index].id} file={files[index]} handleFilesUpdated={handleFilesUpdated} />)}
-				</Form>
-			</>
-		)
-	}
+				{Object.keys(files).map(index => <FileOverviewContainer key={files[index].id} file={files[index]} handleFilesUpdated={handleFilesUpdated} />)}
+			</Form>
+		</>
+	)
 }
+
+export default ManageFiles
