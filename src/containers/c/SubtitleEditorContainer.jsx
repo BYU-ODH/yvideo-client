@@ -72,7 +72,7 @@ const SubtitleEditorContainer = props => {
 			setCurrentContent(content[id])
 			setEventsArray(content[id].settings.annotationDocument)
 			setEvents(content[id].settings.annotationDocument)
-			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Subtitle Editor`], collectionId: content[id].collectionId, contentId: content[id].id})
+			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Subtitle Editor`, `${content[id].name}`], collectionId: content[id].collectionId, contentId: content[id].id})
 
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
