@@ -496,8 +496,8 @@ const VideoEditor = props => {
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
 					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
-					"start": parseFloat(allEvents[e].start.toFixed(2)),
-					"end": parseFloat(allEvents[e].end.toFixed(2)),
+					"start": parseFloat(parseFloat(allEvents[e].start).toFixed(2)),
+					"end": parseFloat(parseFloat(allEvents[e].end).toFixed(2)),
 					"details": `{}`,
 				},
 				}
@@ -507,6 +507,7 @@ const VideoEditor = props => {
 				for(const value of Object.values(allEvents[e].position)) {
 					const time = value[0]
 					const pos = value.slice(1)
+					// Y-video positions point to center of the blur, but IC player uses top-left
 					pos[0] = pos[0] - pos[2]/2
 					pos[1] = pos[1] - pos[3]/2
 					pos[2] += 0.15
@@ -516,8 +517,8 @@ const VideoEditor = props => {
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
 					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
-					"start": parseFloat(allEvents[e].start.toFixed(2)),
-					"end": parseFloat(allEvents[e].end.toFixed(2)),
+					"start": parseFloat(parseFloat(allEvents[e].start).toFixed(2)),
+					"end": parseFloat(parseFloat(allEvents[e].end).toFixed(2)),
 					"details": {
 						"type": `blur`,
 						"amount": `30px`,
