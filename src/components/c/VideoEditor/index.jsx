@@ -507,6 +507,10 @@ const VideoEditor = props => {
 				for(const value of Object.values(allEvents[e].position)) {
 					const time = value[0]
 					const pos = value.slice(1)
+					pos[0] = pos[0] - pos[2]/2
+					pos[1] = pos[1] - pos[3]/2
+					pos[2] += 0.15
+					pos[3] += 0.15
 					censorPositionData[time] = pos
 				}
 				const data = {"options": {
@@ -516,7 +520,7 @@ const VideoEditor = props => {
 					"end": parseFloat(allEvents[e].end.toFixed(2)),
 					"details": {
 						"type": `blur`,
-						`amount`: `30px`,
+						"amount": `30px`,
 						"interpolate": true,
 						"position": censorPositionData,
 					},
