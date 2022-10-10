@@ -13,7 +13,7 @@ const AddBatchNetidsContainer = props => {
 		updateMany,
 		toggleModal,
 		setIsLoading,
-		collectionId
+		collectionId,
 	} = props
 
 	const [id, setId] = useState(``)
