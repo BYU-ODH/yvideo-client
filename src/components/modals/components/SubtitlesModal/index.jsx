@@ -7,7 +7,7 @@ const SubtitlesModal = props => {
 	const {
 		mode,
 		deleteTitle,
-		keyup
+		keyup,
 	} = props.viewstate
 
 	const {

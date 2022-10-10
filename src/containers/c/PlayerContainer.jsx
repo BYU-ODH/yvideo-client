@@ -225,8 +225,8 @@ const PlayerContainer = props => {
 		})
 	}
 
-	const handleToggleSubtitles = () => {
-		setShowTranscript(!showTranscript)
+	const handleToggleSubtitles = (isShowTranscript) => {
+		setShowTranscript(!isShowTranscript)
 		handleShowSubtitle(``)
 		handleAspectRatio()
 	}
@@ -249,7 +249,7 @@ const PlayerContainer = props => {
 		setHovering(false)
 	}
 
-	const handlePlayPause = () => {
+	const handlePlayPause = (playing) => {
 		if (playing) {
 			setPlaying(false)
 			if (enableScroll.action !== null) {

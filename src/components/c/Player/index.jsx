@@ -57,11 +57,13 @@ const Player = props => {
 	const [skipArray, setSkipArray] = useState([])
 	const isPlaying = useRef(playing)
 	const isFullscreen = useRef(fullscreen)
+	const isShowTranscript = useRef(showTranscript)
 
 	useEffect(() => {
 		isPlaying.current = playing
 		isFullscreen.current = fullscreen
-	}, [playing, fullscreen])
+		isShowTranscript.current = showTranscript
+	}, [playing, fullscreen, showTranscript])
 
 	useEffect(() => {
 		if (clipTime) {
@@ -107,16 +109,13 @@ const Player = props => {
 				break
 			}
 		case `Space`:
-			if(isPlaying.current)
-				handlePause()
-			else
-				handlePlay()
+			handlePlayPause(isPlaying.current)
 			break
 		case `KeyF`:
 			handleToggleFullscreen(isFullscreen.current)
 			break
 		case `KeyC`:
-			handleToggleSubtitles()
+			handleToggleSubtitles(isShowTranscript.current)
 			break
 		default:
 			break
