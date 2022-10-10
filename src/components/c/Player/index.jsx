@@ -231,6 +231,9 @@ const Player = props => {
 				}
 			}>
 				<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
+					{
+						console.log(`zoot`, ref)
+					}
 					<ReactPlayer
 						ref={ref}
 						className='react-player'

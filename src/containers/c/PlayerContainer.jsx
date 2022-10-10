@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -97,6 +97,7 @@ const PlayerContainer = props => {
 	// aspect ratio
 	const [aspectRatio, setAspectRatio] = useState([16, 9])
 	const ref = player => {
+		console.log(player)
 		setPlayer(player)
 	}
 

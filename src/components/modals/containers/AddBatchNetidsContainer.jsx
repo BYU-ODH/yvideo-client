@@ -8,8 +8,14 @@ import {
 import AddBatchNetids from 'components/modals/components/AddBatchNetids'
 
 const AddBatchNetidsContainer = props => {
-	const { updateMany, toggleModal } = props
-	const [list, setList] = useState([]) // eslint-disable-line no-unused-vars
+
+	const {
+		updateMany,
+		toggleModal,
+		setIsLoading,
+		collectionId
+	} = props
+
 	const [id, setId] = useState(``)
 	const [disabledUser, setDisableUser] = useState(true)
 
@@ -20,8 +26,8 @@ const AddBatchNetidsContainer = props => {
 			usernames: temp,
 			"account-role": 1,
 		}
-		props.setIsLoading(true)
-		updateMany(props.collectionId, body)
+		setIsLoading(true)
+		updateMany(collectionId, body)
 		toggleModal()
 	}
 
@@ -36,7 +42,6 @@ const AddBatchNetidsContainer = props => {
 	}
 
 	const viewstate = {
-		list,
 		id,
 		disabledUser,
 	}
@@ -47,7 +52,7 @@ const AddBatchNetidsContainer = props => {
 		toggleModal,
 	}
 
-	return <AddBatchNetids viewstate={viewstate} handler={handlers}/>
+	return <AddBatchNetids viewstate={viewstate} handlers={handlers}/>
 }
 
 const mapDispatchToProps = {

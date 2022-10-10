@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { mount } from 'enzyme'
 import Player from '../../../../components/c/Player/index'
 import { BrowserRouter } from 'react-router-dom'
@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 const viewstate = {
-	ref: `ref`,
+	ref: { seekto: jest.fn() },
 	url: `url`,
 	playing: true,
 	playbackRate: 10,
@@ -61,6 +61,7 @@ const handlers = {
 	toggleTip: jest.fn(),
 	setCensorActive: jest.fn(),
 	setCensorPosition: jest.fn(),
+	checkBrowser: jest.fn(),
 }
 
 const props = {

@@ -6,17 +6,22 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 const props = {
-	updateMany: jest.fn(),
-	toggleModal: jest.fn(),
-	setIsLoading: jest.fn(),
-	handleIdChange: jest.fn(),
+	viewstate: {
+		id: 12,
+		disabledUser: true,
+	},
+	handlers: {
+		toggleModal: jest.fn(),
+		handleIdChange: jest.fn(),
+		handleNewId: jest.fn(),
+	}
 }
 
 describe(`AddBatchNetidsContainer test`, () => {
 	it(`should get viewstate correctly`, () => {
 		shallow(
 			<Container store={testutil.store} {...props}/>,
-		).childAt(0).dive()
+		)
 	})
 
 	it(`should pass event handlers test`, async () => {
