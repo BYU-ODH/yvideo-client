@@ -48,7 +48,10 @@ const RootContainer = props => {
 		{ endpoints: [`/feedback`], element: <FeedbackContainer /> },
 	]
 	const studentTAEndpoints = [ // extras
-		{ endpoints: [`/manage-resource`], element: <ManageResourceContainer /> },
+		{ endpoints: [`/videoeditor`, `:id`], element: <VideoEditorContainer /> },
+		{ endpoints: [`/subtitleeditor`, `:id`], element: <SubtitleEditorContainer /> },
+		{ endpoints: [`/clipeditor`, `:id`], element: <ClipEditorContainer /> },
+		{ endpoints: [`/manager`, `:id`], element: <ManagerContainer /> },
 	]
 
 	const unauthEndpoints = [ // no user
@@ -68,7 +71,8 @@ const RootContainer = props => {
 	} = props
 
 	useEffect(() => {
-		checkHasCollectionPermissions(user?.username)
+		if(user?.username)
+			checkHasCollectionPermissions(user.username)
 		if (!user && !tried)
 			checkAuth()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,7 +97,7 @@ const RootContainer = props => {
 
 const mapStoreToProps = ({ authStore, interfaceStore, collectionStore, contentStore, resourceStore }) => ({
 	user: authStore.user,
-	hasCollectionPermissions: authStore.hasCollectionPermissions,
+	hasCollectionPermissions: authStore.permissions,
 	loading: authStore.loading,
 	tried: authStore.tried,
 	modal: interfaceStore.modal,
