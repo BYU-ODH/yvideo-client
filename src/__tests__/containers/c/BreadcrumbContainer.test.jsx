@@ -45,11 +45,11 @@ describe(`BreadcrumbContainer`, () => {
 		})
 		expect(breadcrumbs.home).toHaveAttribute(`href`, `/`)
 		expect(breadcrumbs.manage).toHaveAttribute(`href`, `/manager/collectionId`)
-		expect(breadcrumbs.editor).toHaveAttribute(`href`, `/videoEditor/contentId`)
+		expect(breadcrumbs.editor).not.toHaveAttribute(`href`, `/videoEditor/contentId`)
 
 		expect(screen.queryAllByText(/\//)).toHaveLength(3)
 		expect(screen.queryAllByRole(`button`)).toHaveLength(3)
-		expect(screen.queryAllByRole(`link`)).toHaveLength(3)
+		expect(screen.queryAllByRole(`link`)).toHaveLength(2)
 	})
 
 	it(`BreadcrumbContainer 2`, () => {
@@ -82,11 +82,11 @@ describe(`BreadcrumbContainer`, () => {
 		expect(breadcrumbs.player).toHaveAttribute(`href`, `/player/contentId`)
 		expect(breadcrumbs.subEditor).toHaveAttribute(`href`, `/subtitleEditor`)
 		expect(breadcrumbs.clipManager).toHaveAttribute(`href`, `/clipEditor/contentId`)
-		expect(breadcrumbs.manageColl).toHaveAttribute(`href`, `/manager/collectionId`)
+		expect(breadcrumbs.manageColl).not.toHaveAttribute(`href`, `/manager/collectionId`)
 
 		expect(screen.queryAllByText(/\//)).toHaveLength(11)
 		expect(screen.queryAllByRole(`button`)).toHaveLength(11)
-		expect(screen.queryAllByRole(`link`)).toHaveLength(11)
+		expect(screen.queryAllByRole(`link`)).toHaveLength(10)
 	})
 
 	it(`BreadcrumbContainer emptyStore`, () => {
