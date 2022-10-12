@@ -17,6 +17,7 @@ export default class Player extends Component {
 		this.handleToggleSubtitles = (bool) => this.props.handlers.handleToggleSubtitles(bool)
 		this.playbackOptions = this.props.viewstate.playbackOptions
 		this.checkBrowser = () => this.props.handlers.checkBrowser
+		this.handleProgress = () => this.props.handlers.handleProgress
 		this.state = {
 			skipArray: [],
 		}
@@ -29,6 +30,7 @@ export default class Player extends Component {
 		}
 
 		this.checkBrowser()
+		// this.handleProgress()
 	}
 
 	componentWillUnmount(){

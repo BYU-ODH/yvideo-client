@@ -65,6 +65,7 @@ export default class Collections extends PureComponent {
 							<ViewToggle
 								displayBlocks={displayBlocks}
 								role={user.roles}
+								hasCollectionPermissions={hasCollectionPermissions}
 								onClick={toggleCollectionsDisplay}
 								onMouseEnter={e => handleShowTip(`list-block`,
 									{
@@ -76,7 +77,7 @@ export default class Collections extends PureComponent {
 								onMouseLeave={toggleTip} />
 						}
 						{
-							user !== null && user.roles < 3 &&
+							user !== null && (user.roles < 3 || hasCollectionPermissions?.[`ta-permission`] === true) &&
 								<h3>
 									<Link to={`/manager`}>
 										Manage Collections
@@ -112,7 +113,7 @@ export default class Collections extends PureComponent {
 				{ !isMobile ?
 					<>
 						{
-							user !== null && (user.roles < 3 || hasCollectionPermissions) ?
+							user !== null && (user.roles < 3 || hasCollectionPermissions?.[`ta-permission`] === true) ?
 								<header className= 'collections-header'>
 									<div>
 										<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>

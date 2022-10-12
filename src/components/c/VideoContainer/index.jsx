@@ -6,12 +6,13 @@ import { CensorDnD } from 'components/bits'
 import { handleElapsed } from '../../vanilla_scripts/editorCommon'
 
 import { CurrentEvents, CensorChange, handleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
-import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
+import { convertSecondsToMinute } from '../../common/timeConversion'
 
 const VideoContainer = props => {
 
@@ -136,7 +137,7 @@ const VideoContainer = props => {
 					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start)
 				else
 					index = events.findIndex(event => event.type === values.allEvents[y].type && event.start === values.allEvents[y].start && event.end === values.allEvents[y].end)
-				if(!events[index].active && values.allEvents[y].type !== `Mute`)
+				if(!events?.[index]?.active && values.allEvents[y].type !== `Mute`)
 					return
 				const pauseMessage = document.getElementById(`pauseMessage`)
 				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
@@ -345,9 +346,7 @@ const VideoContainer = props => {
 		},
 	}
 
-	const dateElapsed = new Date(null)
-	dateElapsed.setSeconds(elapsed)
-	const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+	const formattedElapsed = convertSecondsToMinute(elapsed)
 
 	const showError = () => {
 		alert(`There was an error loading the video`)
@@ -400,10 +399,8 @@ const VideoContainer = props => {
 					// calculate current time based on mouse position
 					const scrubberScrollWidth = document.getElementById(`time-bar-progress`).scrollWidth
 					const mouseoverRatio = e.offsetX / scrubberScrollWidth // what percentage of through the scrubber is the mouse (including what's hidden)
-					const dateElapsed = new Date(null)
 
-					dateElapsed.setSeconds(mouseoverRatio * duration)
-					const formattedElapsed = dateElapsed.toISOString().substr(11, 8)
+					const formattedElapsed = convertSecondsToMinute(mouseoverRatio * duration)
 					// set new x position to the red bar
 					timeBarShadow.style.visibility = `visible`
 					timeBarShadow.style.transform = `translateX(${e.offsetX - 2}px)`
@@ -575,7 +572,7 @@ const VideoContainer = props => {
 							}
 						}}>
 							<div id={`time-bar-container`}>
-								<progress id='time-bar-progress' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
+								<progress id='time-bar-progress' tabIndex='101' className='total' value={`0`} max='100' onClick={video.handleSeek}></progress>
 								<span id='time-text'></span>
 								<span id='time-bar-shadow'><p id='time-bar-shadow-text'></p></span>
 							</div>

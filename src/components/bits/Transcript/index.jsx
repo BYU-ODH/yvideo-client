@@ -118,7 +118,7 @@ const Transcript = props => {
 	}
 
 	return (
-		<Style id='transcript' style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
+		<Style id='transcript' tabIndex='100' style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>

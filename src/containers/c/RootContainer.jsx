@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import services from 'services'
+import { authService } from 'services'
 
 import { Root } from 'components'
 
@@ -47,6 +47,12 @@ const RootContainer = props => {
 		{ endpoints: [`/player`, `:id`, `:clip`], element: <PlayerContainer /> },
 		{ endpoints: [`/feedback`], element: <FeedbackContainer /> },
 	]
+	const studentTAEndpoints = [ // extras
+		{ endpoints: [`/videoeditor`, `:id`], element: <VideoEditorContainer /> },
+		{ endpoints: [`/subtitleeditor`, `:id`], element: <SubtitleEditorContainer /> },
+		{ endpoints: [`/clipeditor`, `:id`], element: <ClipEditorContainer /> },
+		{ endpoints: [`/manager`, `:id`], element: <ManagerContainer /> },
+	]
 
 	const unauthEndpoints = [ // no user
 		{ endpoints: [`/`], element: <LandingContainer /> },
@@ -60,10 +66,16 @@ const RootContainer = props => {
 		modal,
 		tip,
 		checkAuth,
+		hasCollectionPermissions,
+		checkHasCollectionPermissions,
 	} = props
 
 	useEffect(() => {
-		if (!user && !tried) checkAuth()
+		if(user?.username)
+			checkHasCollectionPermissions(user.username)
+		if (!user && !tried)
+			checkAuth()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [checkAuth, tried, user])
 
 	const viewstate = {
@@ -75,7 +87,9 @@ const RootContainer = props => {
 		labAssistantEndpoints,
 		instructorEndpoints,
 		studentEndpoints,
+		studentTAEndpoints,
 		unauthEndpoints,
+		hasCollectionPermissions,
 	}
 
 	return <Root viewstate={viewstate} />
@@ -83,6 +97,7 @@ const RootContainer = props => {
 
 const mapStoreToProps = ({ authStore, interfaceStore, collectionStore, contentStore, resourceStore }) => ({
 	user: authStore.user,
+	hasCollectionPermissions: authStore.permissions,
 	loading: authStore.loading,
 	tried: authStore.tried,
 	modal: interfaceStore.modal,
@@ -90,7 +105,8 @@ const mapStoreToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 })
 
 const mapDispatchToProps = {
-	checkAuth: services.authService.checkAuth,
+	checkAuth: authService.checkAuth,
+	checkHasCollectionPermissions: authService.checkHasCollectionPermissions,
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(RootContainer)
