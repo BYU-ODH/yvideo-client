@@ -29,10 +29,9 @@ const Breadcrumb = props => {
 												<button><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></button>
 											:
 											disabled ?
-												<button><Link className='std-outline-color' to={`/${link}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+												<button><span className='std-outline-color'>{ crumb }</span></button>
 												:
 												<button><Link className='std-outline-color' to={`/${link}`}>{ crumb }</Link></button>
-
 								}
 								<Slash disabled={disabled}> / </Slash>
 							</span>
