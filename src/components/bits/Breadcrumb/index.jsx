@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Style, { Slash } from './styles'
+import Style, { Slash, Button } from './styles'
 
 const Breadcrumb = props => {
 
@@ -18,20 +18,20 @@ const Breadcrumb = props => {
 								{
 									isManager(crumb) ?
 										disabled ?
-											<button><Link className='std-outline-color' to={`/${link}/${crumbs.collectionId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+											<Button disabled={disabled}><span className='std-outline-color'>{ crumb }</span></Button>
 											:
-											<button><Link className='std-outline-color' to={`/${link}/${crumbs.collectionId}`}>{ crumb }</Link></button>
+											<Button disabled={disabled}><Link className='std-outline-color' to={`/${link}/${crumbs.collectionId}`}>{ crumb }</Link></Button>
 										:
 										isPlayer(crumb) ?
 											disabled ?
-												<button><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`} onClick={() => window.location.reload()}>{ crumb }</Link></button>
+												<Button disabled={disabled}><span className='std-outline-color'>{ crumb }</span></Button>
 												:
-												<button><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></button>
+												<Button disabled={disabled}><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></Button>
 											:
 											disabled ?
-												<button><span className='std-outline-color'>{ crumb }</span></button>
+												<Button disabled={disabled}><span className='std-outline-color'>{ crumb }</span></Button>
 												:
-												<button><Link className='std-outline-color' to={`/${link}`}>{ crumb }</Link></button>
+												<Button disabled={disabled}><Link className='std-outline-color' to={`/${link}`}>{ crumb }</Link></Button>
 								}
 								<Slash disabled={disabled}> / </Slash>
 							</span>
