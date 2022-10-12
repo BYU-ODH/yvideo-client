@@ -42,11 +42,14 @@ const PlayerContainer = props => {
 	} = props
 
 	const params = useParams()
-
+	const [parsedClips, setParsedClips] = useState(``)
+	const [clipTitle, setClipTitle] = useState(``)
+	const [clipId, setClipId] = useState(``)
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
 	const [isLandscape, setIsLandscape] = useState(false)
+	const [isClip, setIsClip] = useState(false)
 
 	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
 	const [duration, setDuration] = useState(0) // Set duration of the media
@@ -213,6 +216,22 @@ const PlayerContainer = props => {
 			setToggleTranscript(true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
+	useLayoutEffect(() => {
+		if (contentCache[params.id]?.clips){
+			const clips = contentCache[params.id].clips
+			const tempClips = JSON.parse(clips)
+			setParsedClips(tempClips)
+		}
+		if (contentCache[params.id]?.name){
+			const tempClipTitle = contentCache[params.id].name
+			setClipTitle(tempClipTitle)
+		}
+		if (contentCache[params.id]?.id){
+			const tempClipId = contentCache[params.id].id
+			setClipId(tempClipId)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [contentCache])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -508,11 +527,17 @@ const PlayerContainer = props => {
 		})
 		errorSync()
 	}
-	const handleToggleTranscript = () => {
+	const handleClipToggle = (clipOrTranscript) => {
+		if (clipOrTranscript === `Clip`)
+			setIsClip(true)
+		else
+			setIsClip(false)
+	}
+	const handleToggleTranscript = (clipOrTranscript) => {
 		toggleTip()
 		setToggleTranscript(!toggleTranscript)
+		setIsClip(false)
 	}
-
 	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
 
@@ -634,6 +659,7 @@ const PlayerContainer = props => {
 		ref,
 		url,
 		volume,
+		isClip,
 		blank,
 		videoComment,
 		commentPosition,
@@ -656,6 +682,9 @@ const PlayerContainer = props => {
 		events,
 		showSpeed,
 		scrollDisabled,
+		parsedClips,
+		clipTitle,
+		clipId,
 	}
 
 	const handlers = {
@@ -675,6 +704,7 @@ const PlayerContainer = props => {
 		handleShowComment,
 		handleBlank,
 		handleShowSubtitle,
+		setIsClip,
 		handleToggleTranscript,
 		setIsCaption,
 		setPlaybackOptions,
@@ -696,6 +726,7 @@ const PlayerContainer = props => {
 		handleChangeSpeed,
 		handleChangeCaption,
 		checkBrowser,
+		handleClipToggle,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

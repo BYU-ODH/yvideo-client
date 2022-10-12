@@ -49,6 +49,7 @@ const ManagerContainer = props => {
 			setCount(count + 1)
 		}
 
+
 		// open newly created collection immediately
 		if(Object.keys(newCollectionInfo).length !== 0){
 			navigate({

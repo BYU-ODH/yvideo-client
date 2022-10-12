@@ -21,6 +21,7 @@ class ListItemDropDown extends PureComponent {
 		const { id, clips } = this.props.data
 		const parsedClips = JSON.parse(clips)
 		const { isDropDown } = this.props
+
 		return (
 			<Style>
 				<ListItem data={this.props.data} isDropDown={isDropDown} isOpen={isOpen} togglePanel={this.togglePanel} />

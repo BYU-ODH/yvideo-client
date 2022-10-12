@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import captionsLight from 'assets/captions_light.svg'
 
 export const Style = styled.div`
 	position: ${props => props.isMobile ? `fixed` : `relative`};
@@ -22,8 +23,8 @@ export const Style = styled.div`
 		left: 0px;
 		width: 40px;
 		height: 100%;
-		/* background-color: rgba(5, 130, 202, 0.5); */
-		background-color: var(--light-blue);
+		// /* background-color: rgba(5, 130, 202, 0.5); */
+		background-color: ${props => props.isclip ? `var(--light-blue)` : props.toggletranscript ? `var(--navy-blue)` : `#444444`} !important;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -34,15 +35,80 @@ export const Style = styled.div`
 		}
 	}
 
+	& .clip-container {
+		display: flex;
+		flex-direction: column;
+
+		& .clip-header {
+			display: inline-flex;
+			margin: auto;
+			margin-bottom: 3rem;
+		}
+		& .hr-style {
+			width: 29.8rem;
+			position absolute;
+			text-align: center;
+			margin-left: 3rem;
+			top: 50px;
+		}
+	}
+	& .clip-item-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+	& .clip-item {
+		display: inline-flex;
+		box-shadow: 0px 2px 5px 1px rgb(0 0 0 / 30%);
+		font-size: 18px;
+		align-items: center;
+		margin-bottom: 1.5rem;
+		padding: 1rem;
+	}
+
+	& .clip-title {
+		display:inline-flex;
+	}
+}
+
+
 	& .toggle-transcript {
 		position: relative;
 		margin-top: 5px;
+		margin-bottom: 10px;
 		width: 30px;
 		height: 30px;
 		transition: .5s ease;
 		transform: ${props => props.displayTranscript ? `rotate(-180deg)` : `rotate(0deg)`};
 	}
 
+	& i {
+		position: relative;
+		margin-top: 5px;
+		width: 30px;
+		height: 30px;
+		font-size: 2rem;
+		color: white;
+		margin-left: .3rem;
+		margin-bottom: -.3rem;
+		transition: .5s ease;
+		cursor: pointer;
+	}
+
+	.fa {
+		margin-bottom: 1rem;
+		text-align: center;
+		margin-right: .2rem
+	}
+
+	& .hr-sidebar {
+		width: 30px;
+		position : absolute;
+		top: 40px;
+		border-style: solid;
+		border-color: white;
+
+	}
 	& .main-bar {
 		visibility: ${props => props.displayTranscript ? `visible` : `hidden`};
 		opacity: ${props => props.displayTranscript ? 1 : 0};
@@ -65,7 +131,7 @@ export const Style = styled.div`
 
 		/* Handle */
 		::-webkit-scrollbar-thumb {
-			background: ${props => props.scrolldisabled ? `#AAAAAA` : `var(--light-blue)`};
+			background: ${props => props.scrolldisabled ? `#AAAAAA` : props.isclip ? `var(--light-blue)` : `var(--navy-blue)`};
 			border-radius: 10px;
 		}
 
@@ -210,7 +276,6 @@ export const Style = styled.div`
 	}
 `
 export const Help = styled.img`
-	margin-top: 5px;
 	width: 25px;
 	height: 25px;
 `
