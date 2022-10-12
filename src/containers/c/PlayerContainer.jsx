@@ -102,7 +102,7 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		setBreadcrumbs({ path: [`Home`, `Player (${contentCache[params.id].name})`], collectionId: ``, contentId: `` })
+		setBreadcrumbs({ path: [`Home`, `Player (${contentCache?.[params.id]?.name})`], collectionId: ``, contentId: `` })
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
@@ -275,8 +275,10 @@ const PlayerContainer = props => {
 	}
 	const handleStart = () => {
 		setPlaying(true)
-		if (clipTime.length > 0) player.seekTo(clipTime[0])
-		setIsClip(true)
+		if (clipTime.length > 0) {
+			player.seekTo(clipTime[0])
+			setIsClip(true)
+		}
 		setPlaying(true)
 	}
 	const handleBlank = (bool) => {
