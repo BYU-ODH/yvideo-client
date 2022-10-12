@@ -94,7 +94,7 @@ describe(`BreadcrumbContainer`, () => {
 		// all of these breadcrumbs, which is none, come from testutil.emptyStore.breadcrumbs
 		expect(screen.getByText(/\//)).not.toBeVisible()
 		expect(screen.getByRole(`button`)).not.toHaveTextContent()
-		expect(screen.getByRole(`link`)).not.toHaveTextContent()
+		expect(screen.queryByRole(`link`)).toBeNull()
 	})
 
 	it(`Onclick`, async () => {
