@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { collectionService, interfaceService, contentService, authService } from 'services'
+import { collectionService, interfaceService, contentService } from 'services'
 
 import { Collections } from 'components'
 
@@ -15,7 +15,6 @@ const CollectionsContainer = props => {
 	const {
 		user,
 		hasCollectionPermissions,
-		checkHasCollectionPermissions,
 		displayBlocks,
 		publicDisplayBlocks,
 		content,
@@ -42,7 +41,6 @@ const CollectionsContainer = props => {
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
-		checkHasCollectionPermissions(user.username)
 
 		// determine mobiie size for different layout
 		if(window.innerWidth < 1000) setIsMobile(true)
@@ -166,7 +164,7 @@ const CollectionsContainer = props => {
 
 const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentStore }) => ({
 	user: authStore.user,
-	hasCollectionPermissions: authStore.hasCollectionPermissions,
+	hasCollectionPermissions: authStore.permissions,
 	displayBlocks: interfaceStore.displayBlocks,
 	publicDisplayBlocks: interfaceStore.publicDisplayBlocks,
 	collections: collectionStore.cache,
@@ -174,7 +172,6 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 })
 
 const mapDispatchToProps = {
-	checkHasCollectionPermissions: authService.checkHasCollectionPermissions,
 	getCollections: collectionService.getCollections,
 	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,

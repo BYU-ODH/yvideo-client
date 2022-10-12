@@ -2,7 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
-import { handleScrollFuncs } from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
 
 import {
 	Icon, Style,
@@ -71,7 +71,7 @@ const TrackLayer = props => {
 
 	useLayoutEffect(() => {
 		if(document.getElementsByClassName(`events`))
-			handleScrollFuncs(document.getElementsByClassName(`events`), setDisableScroll, null)
+			handleScrollFuncs(Array.from(document.getElementsByClassName(`events`)), setDisableScroll, null)
 		if(disableScroll.action !== null)
 			disableScroll.action()
 		// eslint-disable-next-line react-hooks/exhaustive-deps

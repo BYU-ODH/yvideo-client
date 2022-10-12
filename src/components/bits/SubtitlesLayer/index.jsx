@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
-import { handleScrollFuncs } from '../../../components/vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../../components/vanilla_scripts/toggleScroll'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -36,7 +36,6 @@ const SubtitlesLayer = props => {
 		setIsReady(true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
 	useLayoutEffect(() => {
 		setInitialWidth(layerRef.current.offsetWidth)
 		if(layerWidth === 0)
@@ -49,8 +48,8 @@ const SubtitlesLayer = props => {
 	}, [width])
 
 	useLayoutEffect(() => {
-		if(document.getElementsByClassName(`events`))
-			handleScrollFuncs(document.getElementsByClassName(`events`), setDisableScroll, null)
+		if(document.getElementsByClassName(`layer-container`))
+			handleScrollFuncs(Array.from(document.getElementsByClassName(`layer-container`)), setDisableScroll, null)
 		if(disableScroll.action !== null)
 			disableScroll.action()
 		// eslint-disable-next-line react-hooks/exhaustive-deps

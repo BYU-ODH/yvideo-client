@@ -28,7 +28,9 @@ class Root extends PureComponent {
 			labAssistantEndpoints,
 			instructorEndpoints,
 			studentEndpoints,
+			studentTAEndpoints,
 			unauthEndpoints,
+			hasCollectionPermissions,
 		} = this.props.viewstate
 
 		const renderRoute = (entry, index) => {
@@ -58,11 +60,13 @@ class Root extends PureComponent {
 
 		const renderError = (entry, index) => {
 			const endpoints = entry.endpoints
-			return (
-				<React.Fragment key={index}>
-					<Route path={endpoints[0]} element={<Error error='403' message={`You don't have permission to access this page`} />} />
-				</React.Fragment>
-			)
+			if (hasCollectionPermissions?.[`ta-permission`] === false && studentTAEndpoints.includes(entry)) {
+				return (
+					<React.Fragment key={index}>
+						<Route path={endpoints[0]} element={<Error error='403' message={`You don't have permission to access this page`} />} />
+					</React.Fragment>
+				)
+			} else return
 		}
 
 		return (
@@ -108,6 +112,16 @@ class Root extends PureComponent {
 										renderError(studentEntry, index)
 								)
 							}
+
+							{
+								studentTAEndpoints?.map((studentTAEntry, index) =>
+									hasCollectionPermissions?.[`ta-permission`] === true ?
+										renderRoute(studentTAEntry, index)
+										:
+										renderError(studentTAEntry, index)
+								)
+							}
+
 							<Route path='*' element={<Error error='404' message={`You've wandered too far`} />} />
 						</Routes>
 					</>

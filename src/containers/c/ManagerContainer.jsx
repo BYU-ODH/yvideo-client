@@ -17,6 +17,7 @@ const ManagerContainer = props => {
 
 	const {
 		admin,
+		user,
 		collections,
 		getCollections,
 		setHeaderBorder,
@@ -28,6 +29,7 @@ const ManagerContainer = props => {
 		collectionError,
 		collectionErrorPrev,
 		collectionSyncError,
+		hasCollectionPermissions,
 	} = props
 
 	const params = useParams()
@@ -135,24 +137,28 @@ const ManagerContainer = props => {
 	const viewstate = {
 		admin,
 		collection: collections[params.id],
+		user,
 		path: `manager`,
 		sideLists,
 		activeId: params.id,
 		isMobile,
 		isOpen,
 		isLabAssistant: false,
+		hasCollectionPermissions,
 	}
 
 	return <Manager viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStateToProps = store => ({
-	collections: store.collectionStore.cache,
-	admin: store.authStore.user.roles === 0,
-	isLabAssistant: store.authStore.user.roles === 1,
-	newCollectionInfo: store.collectionStore.newCollectionId,
-	collectionError: store.collectionStore.errorMessage,
-	collectionErrorPrev : store.collectionStore.errorMessagePrev,
+const mapStateToProps = ({ authStore, collectionStore }) => ({
+	admin: authStore.user.roles === 0,
+	isLabAssistant: authStore.user.roles === 1,
+	user: authStore.user,
+	hasCollectionPermissions: authStore.permissions,
+	collections: collectionStore.cache,
+	newCollectionInfo: collectionStore.newCollectionId,
+	collectionError: collectionStore.errorMessage,
+	collectionErrorPrev : collectionStore.errorMessagePrev,
 })
 
 const mapDispatchToProps = {
