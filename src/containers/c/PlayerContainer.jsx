@@ -102,7 +102,7 @@ const PlayerContainer = props => {
 	}
 
 	useEffect(() => {
-		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
+		setBreadcrumbs({ path: [`Home`, `Player (${contentCache[params.id].name})`], collectionId: ``, contentId: `` })
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
