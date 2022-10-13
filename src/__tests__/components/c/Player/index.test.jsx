@@ -51,6 +51,8 @@ const handlers = {
 	handleSeekChange: jest.fn(),
 	handlePlaybackRateChange: jest.fn(),
 	handleBlank: jest.fn(),
+	handleStart: jest.fn(),
+	handleClipStart: jest.fn(),
 	handleMuted: jest.fn(),
 	handleUnmuted: jest.fn(),
 	handleShowComment: jest.fn(),
