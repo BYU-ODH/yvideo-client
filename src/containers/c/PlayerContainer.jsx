@@ -75,6 +75,7 @@ const PlayerContainer = props => {
 	const [hasPausedClip, setHasPausedClip] = useState(false)
 	const [showSpeed, setShowSpeed] = useState(false)
 	const [hovering, setHovering] = useState(true)
+	const [started, setStarted] = useState(false)
 
 	const [subsObj, setSubsObj] = useState({})
 	const [fullyChecked, setFullyChecked] = useState(false)
@@ -281,10 +282,11 @@ const PlayerContainer = props => {
 		}
 	}
 	const handleStart = () => {
-		setPlaying(true)
-		if (clipTime.length > 0) player.seekTo(clipTime[0])
+		setStarted(true)
+	}
+	const handleClipStart = () => {
+		player.seekTo(clipTime[0])
 		setIsClip(true)
-		setPlaying(true)
 	}
 	const handleBlank = (bool) => {
 		setBlank(bool)
@@ -668,6 +670,7 @@ const PlayerContainer = props => {
 		showSpeed,
 		scrollDisabled,
 		progressEntered,
+		started,
 	}
 
 	const handlers = {
@@ -677,6 +680,7 @@ const PlayerContainer = props => {
 		handlePause,
 		handlePlay,
 		handleStart,
+		handleClipStart,
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,

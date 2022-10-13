@@ -29,8 +29,8 @@ const Player = props => {
 		isLandscape,
 		hasPausedClip,
 		events,
-		hovering,
 		playbackOptions,
+		started,
 	} = props.viewstate
 
 	const {
@@ -40,6 +40,7 @@ const Player = props => {
 		handlePause,
 		handlePlay,
 		handleStart,
+		handleClipStart,
 		handleProgress,
 		handleSeekChange,
 		handleMuted,
@@ -64,15 +65,11 @@ const Player = props => {
 		isFullscreen.current = fullscreen
 		isShowTranscript.current = showTranscript
 	}, [playing, fullscreen, showTranscript])
-
 	useEffect(() => {
-		if (clipTime) {
-			if(clipTime.length > 0)
-				ref.seekto(clipTime[0])
-		}
 		document.body.onkeyup = e => handleHotKeys(e)
 		checkBrowser()
-		// handleProgress()
+		if(clipTime.length > 0)
+			handleClipStart()
 		return () => document.body.onkeyup = null
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [duration])
@@ -230,7 +227,7 @@ const Player = props => {
 					overflow: `hidden`,
 				}
 			}>
-				<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ flex: 1 }}>
+				<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} onClick={playing ? handlePause : handlePlay} style={{ flex: 1 }}>
 					<ReactPlayer
 						ref={ref}
 						className='react-player'
@@ -244,7 +241,7 @@ const Player = props => {
 						muted={muted}
 						onPlay={handlePlay}
 						onPause={handlePause}
-						onStart = {handleStart}
+						onStart={handleStart}
 						onReady = {handleOnReady}
 						onSeek={e => e}
 						progressInterval={30}
@@ -271,7 +268,9 @@ const Player = props => {
 					/>
 					<PlayerControls viewstate={props.viewstate} handlers={props.handlers} skipArray={skipArray}/>
 					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
-						<PlayButton playing={playing} onClick={() => handlePlayPause(playing)} hovering={hovering} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
+						{ !started &&
+							<PlayButton playing={playing} onClick={() => handlePlayPause(playing)} started={started} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
+						}
 						{displaySubtitles !== null && showTranscript &&
 							<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
 						}

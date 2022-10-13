@@ -5,9 +5,21 @@ import { Bar } from 'components/bits'
 import Style from './styles'
 
 const Scrubber = props => {
+
+	const {
+		duration,
+		clipTime,
+		clipPercent,
+		progress,
+		active,
+		handleClick,
+		skipArray,
+		isClip,
+	} = props
+
 	return (
 		<Style data-testid='scrubber'>
-			<Bar duration={props.duration} clipTime={props.clipTime} clipPercent={props.clipPercent} position={props.progress} active={props.active} handleClick={props.handleClick} skipArray={props.skipArray} isClip={props.isClip}/>
+			<Bar duration={duration} clipTime={clipTime} clipPercent={clipPercent} position={progress} active={active} handleClick={handleClick} skipArray={skipArray} isClip={isClip}/>
 		</Style>
 	)
 }
