@@ -13,11 +13,6 @@ export const PlayPause = styled.div `
 	z-index: 9;
 `
 
-// export const ButtonBackground = styled.div`
-// 	width: 100%;
-
-// `
-
 const Wrapper = styled.div `
 	position: absolute;
 	background-color: transparent;
@@ -27,6 +22,5 @@ const Wrapper = styled.div `
 	top: 0px;
 	// transition: visibility 1s ease-in-out;
 `
-
 
 export default Wrapper

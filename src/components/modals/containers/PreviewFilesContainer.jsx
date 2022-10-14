@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { useParams } from 'react-router-dom'
 
 import PreviewFiles from '../components/PreviewFiles'
 
@@ -19,15 +18,13 @@ const PreviewFilesContainer = props => {
 		resourceId,
 	}= props
 
-	const params = useParams()
+	const volume = 0.8
 
-	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
 	const [url, setUrl] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 	const [playing, setPlaying] = useState(false)
-	const [volume, setVolume] = useState(0.8)
 	const [player, setPlayer] = useState(null)
 	const [mouseOn, setMouseOn] = useState(false)
 	const [playTime, setPlayTime] = useState(`00:00:00`)
@@ -35,8 +32,6 @@ const PreviewFilesContainer = props => {
 	const [duration, setDuration] = useState(0)
 	const [hovering, setHovering] = useState(true)
 	const [progressEntered, setProgressEntered] = useState(false)
-
-	const [fullyChecked, setFullyChecked] = useState(false)
 
 	const ref = player => {
 		setPlayer(player)
@@ -46,7 +41,7 @@ const PreviewFilesContainer = props => {
 		setBreadcrumbs({ path: [`Home`, `Manage Resources`], collectionId: ``, contentId: `` })
 
 		if (file && !isStreamKeyLoaded) {
-			getStreamKey(resourceId, file['file-version'])
+			getStreamKey(resourceId, file[`file-version`])
 			setIsStreamKeyLoaded(true)
 		}
 
@@ -55,9 +50,10 @@ const PreviewFilesContainer = props => {
 
 		if (sKey !== `` && !isUrlLoaded) {
 			setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
+			setIsUrlLoaded(true)
 		}
-
-	}, [contentCache, getContent, streamKey, content, sKey])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [contentCache, getContent, streamKey, sKey])
 
 	useLayoutEffect(() => {
 	},[duration])
@@ -94,7 +90,6 @@ const PreviewFilesContainer = props => {
 	}
 
 	const handleSeekChange = (e, time) => {
-		setFullyChecked(false)
 		toggleTip()
 		let newPlayed = 0
 		if (e) {
