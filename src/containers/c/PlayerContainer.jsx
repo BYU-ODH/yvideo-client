@@ -335,7 +335,8 @@ const PlayerContainer = props => {
 						setSubtitleText(undefined)
 						setFullyChecked(true) // these are fine because this won't take effect until the function is left
 						return
-					}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
+					}else if(progressPercent > entries[numIndex][1].percent
+						&& progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
 						setSubtitleTextIndex(numIndex)
 						setSubtitleText(entries[numIndex][1].text)
 						setFullyChecked(true)

@@ -6,10 +6,12 @@ import {
 	BoxRow,
 	RemoveButton,
 	RemoveIcon,
+	PreviewButton,
 	EditButton,
 	SaveIcon,
 	CategorySelect,
 	FileTitle,
+	PreviewIcon,
 } from './styles'
 
 export class FileOverview extends PureComponent {
@@ -21,6 +23,7 @@ export class FileOverview extends PureComponent {
 			handleFileVersion,
 			handleUpdateFile,
 			handleRemoveFile,
+			handlePreviewFile,
 		} = this.props.handlers
 
 		const {
@@ -72,6 +75,7 @@ export class FileOverview extends PureComponent {
 				</InnerContainer>
 				<div>
 					<EditButton id='edit-file-button' onClick={handleUpdateFile}><SaveIcon/>Update</EditButton>
+					<PreviewButton id='preview-file-button' onClick={handlePreviewFile}><PreviewIcon/>Preview</PreviewButton>
 					<RemoveButton id='remove-file-button' data-testid='remove-file-button' onClick={handleRemoveFile}><RemoveIcon/>Delete</RemoveButton>
 				</div>
 			</BoxRow>
