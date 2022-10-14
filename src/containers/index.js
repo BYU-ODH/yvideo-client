@@ -26,6 +26,7 @@ import BlockCollectionContainer from './c/BlockCollectionContainer'
 import ClipEditorContainer from './c/ClipEditorContainer'
 import PublicMoreListCollectionContainer from './c/PublicMoreListCollectionContainer'
 import VideoEditorContainer from './c/VideoEditorContainer'
+import PreviewFilesContainer from '../../src/components/modals/containers/PreviewFilesContainer'
 
 export {
 	AdminContainer,
@@ -56,4 +57,5 @@ export {
 	ClipEditorContainer,
 	PublicMoreListCollectionContainer,
 	VideoEditorContainer,
+	PreviewFilesContainer,
 }

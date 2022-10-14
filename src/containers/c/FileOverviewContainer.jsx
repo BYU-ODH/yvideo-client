@@ -6,6 +6,7 @@ import { FileOverview } from 'components'
 import {isChrome} from 'react-device-detect'
 
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
+import PreviewFilesContainer from '../../components/modals/containers/PreviewFilesContainer'
 
 import { interfaceService, fileService, resourceService } from 'services'
 
@@ -61,6 +62,17 @@ const FileOverviewContainer = props => {
 				selectedFile: file,
 			},
 		})
+
+	}
+
+	const handlePreviewFile = e => {
+		toggleModal({
+			component: PreviewFilesContainer,
+			props: {
+				file: file,
+				resourceId: fileState[`resource-id`],
+			}
+		})
 	}
 
 	const viewstate = {
@@ -75,6 +87,7 @@ const FileOverviewContainer = props => {
 		handleUpdateFile,
 		handleRemoveFile,
 		checkDevice,
+		handlePreviewFile,
 	}
 
 	return <FileOverview viewstate={viewstate} handlers={handlers} />
