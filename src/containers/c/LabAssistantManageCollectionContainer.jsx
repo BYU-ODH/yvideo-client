@@ -18,6 +18,7 @@ const LabAssistantManageCollectionContainer = props => {
 
 	const {
 		admin,
+		user,
 		collection,
 		professorId,
 		content,
@@ -98,6 +99,7 @@ const LabAssistantManageCollectionContainer = props => {
 
 	const viewstate = {
 		admin,
+		user,
 		collection,
 		content: Object.keys(content).map(key => content[key]),
 		isContentTab: isContent,
@@ -124,6 +126,7 @@ const LabAssistantManageCollectionContainer = props => {
 const mapStateToProps = store => ({
 	content: store.adminStore.profCollectionContent,
 	admin: store.authStore.user.roles,
+	user: store.authStore.user,
 	professorId: store.adminStore.professor.id,
 })
 

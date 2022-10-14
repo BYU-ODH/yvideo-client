@@ -9,7 +9,6 @@ import LabAssistantContainer from './c/LabAssistantContainer'
 import LabAssistantManageCollectionContainer from './c/LabAssistantManageCollectionContainer'
 import LabAssistantManagerContainer from './c/LabAssistantManagerContainer'
 import LandingContainer from './c/LandingContainer'
-import LoginContainer from './c/LoginContainer'
 import ManageCollectionContainer from './c/ManageCollectionContainer'
 import ManagerContainer from './c/ManagerContainer'
 import MenuContainer from './c/MenuContainer'
@@ -41,7 +40,6 @@ export {
 	LabAssistantManageCollectionContainer,
 	LabAssistantManagerContainer,
 	LandingContainer,
-	LoginContainer,
 	ManageCollectionContainer,
 	ManagerContainer,
 	MenuContainer,

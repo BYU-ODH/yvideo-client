@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
 import {
 	ContentOverviewContainer,
@@ -22,62 +22,62 @@ import Style, {
 	Spinner,
 } from './styles'
 
-export default class ManageCollection extends PureComponent {
-	render() {
-		const {
-			user,
-			collection,
-			collectionName,
-			isEditingCollectionName,
-			isContentTab,
-			content,
-			isLabAssistant,
-		} = this.props.viewstate
+const ManageCollection = props => {
+	const {
+		user,
+		collection,
+		collectionName,
+		isEditingCollectionName,
+		isContentTab,
+		content,
+		isLabAssistant,
+	} = props.viewstate
 
-		const {
-			unarchive,
-			toggleEdit,
-			handleNameChange,
-			togglePublish,
-			archive,
-			setTab,
-			createContent,
-			handleShowTip,
-			toggleTip,
-		} = this.props.handlers
+	const {
+		unarchive,
+		toggleEdit,
+		handleNameChange,
+		togglePublish,
+		archive,
+		setTab,
+		createContent,
+		handleShowTip,
+		toggleTip,
+	} = props.handlers
 
-		const expiredContent = collection[`expired-content`]
-		if(expiredContent?.[`content-title`]) {
-			expiredContent.sort((a,b) => {
-				return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
-			})
-		}
-
-		content.sort((a, b) => {
-			return a.name.toLowerCase().replace(sortingRegex, `$1`) > b.name.toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
+	const expiredContent = collection[`expired-content`]
+	if(expiredContent?.[`content-title`]) {
+		expiredContent.sort((a,b) => {
+			return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
 		})
+	}
 
-		return (
-			<Style>
-				<header>
-					<Title>
-						{isEditingCollectionName ? (
-							// TODO When switching between collections, it uses the same value
-							<TitleEdit
-								type='text'
-								id={`title-edit`}
-								value={collectionName}
-								contenteditable='true'
-								onChange={handleNameChange}
-								onKeyPress={event => {
-									if (event.key === `Enter`) toggleEdit()
-								}}
-								size={collectionName.length > 0 ? collectionName.length : 1}
-								autoFocus
-							/>
-						) : (
-							<h6 onClick={e => toggleEdit(e)}>{collectionName}</h6>
-						)}
+	content.sort((a, b) => {
+		return a.name.toLowerCase().replace(sortingRegex, `$1`) > b.name.toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
+	})
+
+	return (
+		<Style>
+			<header>
+				<Title>
+					{isEditingCollectionName ? (
+						// TODO When switching between collections, it uses the same value
+						<TitleEdit
+							type='text'
+							id={`title-edit`}
+							value={collectionName}
+							contenteditable='true'
+							onChange={handleNameChange}
+							onKeyPress={event => {
+								if (event.key === `Enter`) toggleEdit()
+							}}
+							size={collectionName.length > 0 ? collectionName.length : 1}
+							autoFocus
+						/>
+					) : (
+						<h6 onClick={user?.roles <= 2 ? e => toggleEdit(e) : null}>{collectionName}</h6>
+					)}
+					{user?.roles <= 2 &&
 						<TitleEditButton
 							id={`title-edit-button`}
 							editing={isEditingCollectionName}
@@ -93,101 +93,109 @@ export default class ManageCollection extends PureComponent {
 						>
 							{isEditingCollectionName ? [<i className='fa fa-save'></i>, `Save`] : `Edit`}
 						</TitleEditButton>
-					</Title>
-					<Publish>
-						{collection.archived ? (
-							<>
-								{ user?.roles !== undefined ? (
-									<>{user.roles === 0 || user.roles === 1 ? (
+					}
+				</Title>
+				<Publish>
+					{collection.archived ?
+						<>
+							{ user?.roles !== undefined ?
+								<>
+									{ user.roles <= 2 &&
 										<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={unarchive}>Unarchive</ArchiveButton>
-									) : ( <p>Cannot unarchive</p> )}
-									</>
-								) : null }
-							</>
-						) : (
-							<>
-								{ !collection.public ? (
-									<PublishButton
-										published={collection.published}
-										onClick={togglePublish}
-										id={`publish-button`}
-										className={`std-outline-color`}
-									>
-										{collection.published ? `Unpublish` : `Publish`}
-									</PublishButton>
-								): (<></>)}
+									}
+								</>
+								: null
+							}
+						</>
+						:
+						<>
+							{ !collection.public && user?.roles <= 2 ?
+								<PublishButton
+									published={collection.published}
+									onClick={togglePublish}
+									id={`publish-button`}
+									className={`std-outline-color`}
+								>
+									{collection.published ? `Unpublish` : `Publish`}
+								</PublishButton>
+								:
+								<></>
+							}
+							{ user?.roles <= 2 &&
 								<ArchiveButton id={`archive-button`} className={`std-outline-color`} archived={collection.archived} onClick={archive}>Archive</ArchiveButton>
-							</>
-						)}
-					</Publish>
-				</header>
-				<TabHeader>
-					<button id={`content-button`} className={`std-outline-color`} onClick={setTab(true)}>Content</button>
+							}
+						</>
+					}
+				</Publish>
+			</header>
+			<TabHeader>
+				<button id={`content-button`} className={`std-outline-color`} onClick={setTab(true)}>Content</button>
+				{user?.roles <= 2 &&
 					<button id={`permissions-button`} className={`std-outline-color`} onClick={setTab(false)}>
 						Edit User Access
 					</button>
-					<Selector isContentTab={isContentTab} />
-				</TabHeader>
-
-				{collection.content === undefined ?
-
-					<Spinner/>
-					:
-					<>
-						<Tab>
-							{expiredContent?.length > 0 && isContentTab &&
-								<>
-									<h3 id='expiredTitle'>Expired Content</h3>
-									<hr />
-								</>
-							}
-							{isContentTab && expiredContent?.length > 0 ?
-								expiredContent.map((item, index) => (
-									<ContentOverviewContainer key={index} content={item} isExpired={true}/>
-								))
-								:
-								null
-							}
-							{expiredContent?.length > 0 && isContentTab && <hr />}
-							{isContentTab ?
-								content.map((item, index) => (
-									<div key={index}>
-										{ item !== undefined ? (
-											<>
-												{ isLabAssistant !== undefined ? (
-													<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
-												) : (
-													<ContentOverviewContainer key={item.id} content={item}/>
-												)}
-											</>
-										) : null
-										}
-									</div>
-								))
-								: (
-									<CollectionPermissionsContainer collection={collection} />
-								)}
-							{isContentTab && (
-								<NewContent
-									id='newcontent-button'
-									className='std-outline-color'
-									onClick={createContent}
-									onMouseEnter={e => handleShowTip(`collection-add-content`,
-										{
-											x: e.target.getBoundingClientRect().x + 100,
-											y: e.target.getBoundingClientRect().y + 180,
-											width: e.currentTarget.offsetWidth,
-										})
-									}
-									onMouseLeave={() => toggleTip()}>
-									<Icon />
-								</NewContent>
-							)}
-						</Tab>
-					</>
-
 				}
-			</Style>
-		)
-	}
+				<Selector isContentTab={isContentTab} />
+			</TabHeader>
+
+			{collection.content === undefined ?
+
+				<Spinner/>
+				:
+				<>
+					<Tab>
+						{expiredContent?.length > 0 && isContentTab &&
+							<>
+								<h3 id='expiredTitle'>Expired Content</h3>
+								<hr />
+							</>
+						}
+						{isContentTab && expiredContent?.length > 0 ?
+							expiredContent.map((item, index) => (
+								<ContentOverviewContainer key={index} content={item} isExpired={true}/>
+							))
+							:
+							null
+						}
+						{expiredContent?.length > 0 && isContentTab && <hr />}
+						{isContentTab ?
+							content.map((item, index) => (
+								<div key={index}>
+									{ item !== undefined ? (
+										<>
+											{ isLabAssistant !== undefined ? (
+												<ContentOverviewContainer key={item.id} content={item} isLabAssistant={isLabAssistant}/>
+											) : (
+												<ContentOverviewContainer key={item.id} content={item}/>
+											)}
+										</>
+									) : null
+									}
+								</div>
+							))
+							: (
+								<CollectionPermissionsContainer collection={collection} />
+							)}
+						{isContentTab && (
+							<NewContent
+								id='newcontent-button'
+								className='std-outline-color'
+								onClick={createContent}
+								onMouseEnter={e => handleShowTip(`collection-add-content`,
+									{
+										x: e.target.getBoundingClientRect().x + 100,
+										y: e.target.getBoundingClientRect().y + 180,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={() => toggleTip()}>
+								<Icon />
+							</NewContent>
+						)}
+					</Tab>
+				</>
+			}
+		</Style>
+	)
 }
+export default ManageCollection
