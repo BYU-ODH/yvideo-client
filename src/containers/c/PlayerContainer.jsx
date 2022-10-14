@@ -13,7 +13,7 @@ import handleScrollFuncs from '../../components/vanilla_scripts/toggleScroll'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
-import ErrorContainer from 'components/modals/containers/ErrorContainer'
+import ErrorModalContainer from '../../components/modals/containers/ErrorModalContainer'
 
 const PlayerContainer = props => {
 
@@ -52,7 +52,6 @@ const PlayerContainer = props => {
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
-	// eslint-disable-next-line no-unused-vars
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [playbackOptions, setPlaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
 	const [player, setPlayer] = useState(null)
@@ -76,6 +75,7 @@ const PlayerContainer = props => {
 	const [hasPausedClip, setHasPausedClip] = useState(false)
 	const [showSpeed, setShowSpeed] = useState(false)
 	const [hovering, setHovering] = useState(true)
+	const [started, setStarted] = useState(false)
 
 	const [subsObj, setSubsObj] = useState({})
 	const [fullyChecked, setFullyChecked] = useState(false)
@@ -226,8 +226,8 @@ const PlayerContainer = props => {
 		})
 	}
 
-	const handleToggleSubtitles = () => {
-		setShowTranscript(!showTranscript)
+	const handleToggleSubtitles = (isShowTranscript) => {
+		setShowTranscript(!isShowTranscript)
 		handleShowSubtitle(``)
 		handleAspectRatio()
 	}
@@ -250,36 +250,43 @@ const PlayerContainer = props => {
 		setHovering(false)
 	}
 
-	const handlePlayPause = () => {
+	const handlePlayPause = (playing) => {
 		if (playing) {
 			setPlaying(false)
-			enableScroll.action()
-			setScrollDisabled(false)
+			if (enableScroll.action !== null) {
+				enableScroll.action()
+				setScrollDisabled(false)
+			}
 		} else {
 			setPlaying(true)
-			disableScroll.action()
-			setScrollDisabled(true)
+			if(disableScroll.action !== null) {
+				disableScroll.action()
+				setScrollDisabled(true)
+			}
 		}
 	}
 
 	const handlePause = () => {
 		setPlaying(false)
-		enableScroll.action()
-		setScrollDisabled(false)
+		if (enableScroll.action !== null) {
+			enableScroll.action()
+			setScrollDisabled(false)
+		}
 	}
 
 	const handlePlay = () => {
 		setPlaying(true)
-		disableScroll.action()
-		setScrollDisabled(true)
+		if(disableScroll.action !== null) {
+			disableScroll.action()
+			setScrollDisabled(true)
+		}
 	}
 	const handleStart = () => {
-		setPlaying(true)
-		if (clipTime.length > 0) {
-			player.seekTo(clipTime[0])
-			setIsClip(true)
-		}
-		setPlaying(true)
+		setStarted(true)
+	}
+	const handleClipStart = () => {
+		player.seekTo(clipTime[0])
+		setIsClip(true)
 	}
 	const handleBlank = (bool) => {
 		setBlank(bool)
@@ -390,7 +397,7 @@ const PlayerContainer = props => {
 		}
 	}
 
-	const handleToggleFullscreen = () => {
+	const handleToggleFullscreen = (fullscreen) => {
 
 		// find the element which contains subtitles and events placeholders
 		const elem = document.getElementById(`player-container`)
@@ -510,7 +517,7 @@ const PlayerContainer = props => {
 	}
 	const handleError = () => {
 		toggleModal({
-			component: ErrorContainer,
+			component: ErrorModalContainer,
 		})
 		errorSync()
 	}
@@ -663,6 +670,7 @@ const PlayerContainer = props => {
 		showSpeed,
 		scrollDisabled,
 		progressEntered,
+		started,
 	}
 
 	const handlers = {
@@ -672,6 +680,7 @@ const PlayerContainer = props => {
 		handlePause,
 		handlePlay,
 		handleStart,
+		handleClipStart,
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,

@@ -173,7 +173,7 @@ export const PlayButton = styled.img`
 	cursor: pointer;
 	border-radius: 50%;
 	z-index: 100;
-	opacity: ${props => props.hovering ? 1 : 0};
+	opacity: ${props => !props.started ? 1 : 0};
 	transition: opacity 0.5s ease-in-out;
 
 	@media screen and (max-width: 425px){

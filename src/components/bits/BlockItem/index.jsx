@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -8,20 +8,20 @@ import defaultThumbnail from 'assets/default-thumb.svg'
 
 import { ItemContainer } from './styles.js'
 
-export default class BlockItem extends Component {
+const BlockItem = props => {
 
-	render() {
-		const { name, id, thumbnail } = this.props.data
+	const { name, id, thumbnail } = props.data
 
-		return (
-			<ItemContainer>
-				<Link to={`/player/${id}`}>
-					<LazyImage
-						src={thumbnail !== `empty` ? thumbnail : defaultThumbnail}
-					/>
-					<h4>{name}</h4>
-				</Link>
-			</ItemContainer>
-		)
-	}
+	return (
+		<ItemContainer>
+			<Link to={`/player/${id}`}>
+				<LazyImage
+					src={thumbnail !== `empty` ? thumbnail : defaultThumbnail}
+				/>
+				<h4>{name}</h4>
+			</Link>
+		</ItemContainer>
+	)
 }
+
+export default BlockItem

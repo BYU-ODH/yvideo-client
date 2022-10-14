@@ -1,40 +1,40 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
 import Style, { Table } from './styles'
 
 import { Link } from 'react-router-dom'
 
-export default class LabAssistantTable extends PureComponent {
+const LabAssistantTable = props => {
 
-	render() {
-		const { data } = this.props
+	const { data } = props
 
-		if (data === null || !data.length || data[0] === undefined) return null
+	if (data === null || !data.length || data[0] === undefined) return null
 
-		return (
-			<Style>
-				<Table>
-					<thead>
-						<tr>
-							<th>
-								Name
-							</th>
-							<th>
-							</th>
-							<th>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{data.map((item, index) =>
-							<tr key={item.id}>
-								<td data-testid='name'>{item.name}</td>
-								<td className='view-collections'><Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link></td>
-							</tr>,
-						)}
-					</tbody>
-				</Table>
-			</Style>
-		)
-	}
+	return (
+		<Style>
+			<Table>
+				<thead>
+					<tr>
+						<th>
+							Name
+						</th>
+						<th>
+						</th>
+						<th>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{data.map((item, index) =>
+						<tr key={item.id}>
+							<td data-testid='name'>{item.name}</td>
+							<td className='view-collections'><Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link></td>
+						</tr>,
+					)}
+				</tbody>
+			</Table>
+		</Style>
+	)
 }
+
+export default LabAssistantTable
