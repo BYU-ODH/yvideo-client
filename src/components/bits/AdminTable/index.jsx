@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -18,7 +18,6 @@ const AdminTable = props => {
 		data,
 		mousePos,
 		isEdit,
-		collectionUsers,
 	} = props.viewstate
 
 	const {
@@ -27,7 +26,6 @@ const AdminTable = props => {
 		toggleMenu,
 		userRoleSave,
 		roleChange,
-		getUserFunc,
 	} = props.handlers
 
 	const {
@@ -36,12 +34,6 @@ const AdminTable = props => {
 	} = props.tipHandlers
 
 	const [sortOrder, setSortOrder] = useState({id: ``, reverse: false})
-
-	useEffect(() => {
-		if(searchCategory === `Collections`)
-			getUserFunc()
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data])
 
 	if (!data.length || data[0] === undefined) return null
 
@@ -169,12 +161,16 @@ const AdminTable = props => {
 			return (
 				<>
 					<td>{item.name}</td>
-					<td>
-						{
-							`${collectionUsers?.[i] === `undefined` ? collectionUsers[i] : collectionUsers[i]?.name}
-							${collectionUsers?.[i] !== `undefined` ? `(${item.username})` : ``}`
-						}
-					</td>
+					{item[`account-name`] !== `` ?
+						<td>
+							{item[`account-name`]}
+							{` (${item.username})`}
+						</td>
+						:
+						<td>
+							undefined
+						</td>
+					}
 				</>
 			)
 		case `Content`:
@@ -313,43 +309,40 @@ const AdminTable = props => {
 	}
 
 	return (
-		searchCategory !== `Collections` || collectionUsers?.length === data?.length ?
-			<Style>
-				<Table>
-					<thead>
-						<tr>
-							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={() => sort(data, header.title)}/></th>)}
-							<th/>
-						</tr>
-					</thead>
-					<tbody>
-						{data.map(
-							(item, i) => <tr key={item.id}>
-								{ printTableValues(searchCategory, item, i) }
-								<td>
-									<ItemEdit
-										data-testid='item-edit'
-										onClick={toggleMenu(item.id)}
-										onMouseEnter={e => handleShowTip(`actions`,
-											{
-												x: e.target.getBoundingClientRect().x + 40,
-												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth + 20,
-											})
-										}
-										onMouseLeave={() => toggleTip()}
-									></ItemEdit>
-								</td>
-							</tr>,
-						)}
-					</tbody>
-				</Table>
-				{menuActive &&
-					<ItemMenu mousePos={mousePos} onMouseLeave={toggleMenu()}>{menuOptions(searchCategory, menuItemInfo)}</ItemMenu>
-				}
-			</Style>
-			:
-			null
+		<Style>
+			<Table>
+				<thead>
+					<tr>
+						{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={() => sort(data, header.title)}/></th>)}
+						<th/>
+					</tr>
+				</thead>
+				<tbody>
+					{data.map(
+						(item, i) => <tr key={item.id}>
+							{ printTableValues(searchCategory, item, i) }
+							<td>
+								<ItemEdit
+									data-testid='item-edit'
+									onClick={toggleMenu(item.id)}
+									onMouseEnter={e => handleShowTip(`actions`,
+										{
+											x: e.target.getBoundingClientRect().x + 40,
+											y: e.target.getBoundingClientRect().y + 15,
+											width: e.currentTarget.offsetWidth + 20,
+										})
+									}
+									onMouseLeave={() => toggleTip()}
+								></ItemEdit>
+							</td>
+						</tr>,
+					)}
+				</tbody>
+			</Table>
+			{menuActive &&
+				<ItemMenu mousePos={mousePos} onMouseLeave={toggleMenu()}>{menuOptions(searchCategory, menuItemInfo)}</ItemMenu>
+			}
+		</Style>
 	)
 }
 
