@@ -21,7 +21,6 @@ const AdminContainer = props => {
 		toggleTip,
 		adminUpdateUserRole,
 		setBreadcrumbs,
-		getUserById,
 	} = props
 
 	const category = {
@@ -42,7 +41,6 @@ const AdminContainer = props => {
 		},
 	}
 
-	const [collectionUsers, setCollectionUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [searchCategory, setSearchCategory] = useState(category.Users.name)
 	const [placeholder, setPlaceholder] = useState(category.Users.placeholder)
@@ -68,18 +66,6 @@ const AdminContainer = props => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setHeaderBorder])
-
-	const getUserFunc = async () => {
-		let temp = []
-		for( const item of data ) {
-			if(item.username !== ``) {
-				const user = await getUserById(item.owner)
-				temp = [...temp, user]
-			}else
-				temp = [...temp, `undefined`]
-		}
-		setCollectionUsers(temp)
-	}
 
 	const updateCategory = e => {
 		e.preventDefault()
@@ -164,11 +150,9 @@ const AdminContainer = props => {
 		mousePos,
 		isMobile,
 		isEdit,
-		collectionUsers,
 	}
 
 	const handlers = {
-		getUserFunc,
 		updateCategory,
 		updateSearchBar,
 		handleSubmit,
@@ -200,7 +184,6 @@ const mapDispatchToProps = {
 	toggleTip: interfaceService.toggleTip,
 	adminUpdateUserRole: adminService.updateUserRole,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,
-	getUserById: adminService.getUserById,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContainer)
