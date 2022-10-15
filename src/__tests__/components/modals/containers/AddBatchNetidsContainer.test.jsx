@@ -14,7 +14,7 @@ const props = {
 		toggleModal: jest.fn(),
 		handleIdChange: jest.fn(),
 		handleNewId: jest.fn(),
-	}
+	},
 }
 
 describe(`AddBatchNetidsContainer test`, () => {

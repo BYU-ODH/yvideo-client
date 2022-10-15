@@ -65,13 +65,13 @@ const FileOverviewContainer = props => {
 
 	}
 
-	const handlePreviewFile = e => {
+	const handlePreviewFile = () => {
 		toggleModal({
 			component: PreviewFilesContainer,
 			props: {
-				file: file,
+				file,
 				resourceId: fileState[`resource-id`],
-			}
+			},
 		})
 	}
 

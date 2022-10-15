@@ -1,6 +1,6 @@
-import React , {useState} from 'react'
+import React from 'react'
 
-import  Wrapper, {PlayPause} from './styles'
+import Wrapper, { PlayPause } from './styles'
 
 const PlayPauseButton = props => {
 
@@ -10,7 +10,6 @@ const PlayPauseButton = props => {
 		handlePlay,
 		mouseOn,
 	} = props
-
 
 	return (
 		<Wrapper mouseOn={mouseOn}>
