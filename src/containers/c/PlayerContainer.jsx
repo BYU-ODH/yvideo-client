@@ -318,7 +318,6 @@ const PlayerContainer = props => {
 		const entries = Object.entries(subsObj)
 		const progressPercent = progression * 100 / duration
 		if(fullyChecked) {
-
 			const closeCheck = subtitleTextIndex === undefined || subtitleTextIndex === 0 ?
 				{prevEntry: null, nextEntry: entries[1] ? entries[1][1] : null}
 				:
@@ -344,7 +343,7 @@ const PlayerContainer = props => {
 						setSubtitleText(undefined)
 						setFullyChecked(true) // these are fine because this won't take effect until the function is left
 						return
-					}else if(progressPercent > entries[numIndex][1].percent
+					}else if(progressPercent > entries[numIndex][1].percentPlayed
 						&& progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
 						setSubtitleTextIndex(numIndex)
 						setSubtitleText(entries[numIndex][1].text)
@@ -477,7 +476,6 @@ const PlayerContainer = props => {
 
 			}
 		}
-
 		setSubtitleTextIndex(index)
 		setSubtitleText(value)
 	}
