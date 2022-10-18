@@ -31,6 +31,8 @@ const Player = props => {
 		events,
 		playbackOptions,
 		started,
+		hovering,
+		mouseInactive,
 	} = props.viewstate
 
 	const {
@@ -53,6 +55,7 @@ const Player = props => {
 		handleToggleFullscreen,
 		handleToggleSubtitles,
 		checkBrowser,
+		handleMouseMoved,
 	} = props.handlers
 
 	const [skipArray, setSkipArray] = useState([])
@@ -65,6 +68,7 @@ const Player = props => {
 		isFullscreen.current = fullscreen
 		isShowTranscript.current = showTranscript
 	}, [playing, fullscreen, showTranscript])
+
 	useEffect(() => {
 		document.body.onkeyup = e => handleHotKeys(e)
 		checkBrowser()
@@ -219,7 +223,7 @@ const Player = props => {
 	}
 
 	return (
-		<Style>
+		<Style onMouseMove={handleMouseMoved} hovering={hovering} started={started} playing={playing} mouseInactive={mouseInactive}>
 			<div style={
 				{
 					display: `${showTranscript !== false ? `flex` : `initial`}`,

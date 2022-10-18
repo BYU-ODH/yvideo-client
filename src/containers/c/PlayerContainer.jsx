@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -76,6 +76,7 @@ const PlayerContainer = props => {
 	const [showSpeed, setShowSpeed] = useState(false)
 	const [hovering, setHovering] = useState(true)
 	const [started, setStarted] = useState(false)
+	const [mouseInactive, setMouseInactive] = useState(false)
 
 	const [subsObj, setSubsObj] = useState({})
 	const [fullyChecked, setFullyChecked] = useState(false)
@@ -100,6 +101,9 @@ const PlayerContainer = props => {
 	const ref = player => {
 		setPlayer(player)
 	}
+
+	const [timeoutArray, setTimeoutArray] = useState([])
+	const arrayTracker = useRef(timeoutArray)
 
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player (${contentCache?.[params.id]?.name})`], collectionId: ``, contentId: `` })
@@ -128,7 +132,7 @@ const PlayerContainer = props => {
 				}
 				setUrl(contentCache[params.id].url)
 				if(contentCache[params.id].url.includes(`youtube`)){
-					const fetchData = async() => {
+					const fetchData = async() => { // eslint-disable-line no-unused-vars
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
@@ -136,7 +140,6 @@ const PlayerContainer = props => {
 
 						return data
 					}
-					const d =fetchData() // eslint-disable-line no-unused-vars
 				}
 			} else {
 				setKey(``)
@@ -205,6 +208,11 @@ const PlayerContainer = props => {
 			handleError()
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
+
+	useEffect(() => {
+		arrayTracker.current = timeoutArray
+	}, [timeoutArray])
+
 	useLayoutEffect(() => {
 		handleSubsObj()
 		handleScrollFuncs(document.getElementById(`subtitles-container`), setDisableScroll, setEnableScroll)
@@ -281,19 +289,34 @@ const PlayerContainer = props => {
 			setScrollDisabled(true)
 		}
 	}
+
 	const handleStart = () => {
 		setStarted(true)
 	}
+
 	const handleClipStart = () => {
 		player.seekTo(clipTime[0])
 		setIsClip(true)
 	}
+
 	const handleBlank = (bool) => {
 		setBlank(bool)
 	}
 
 	const handlePlaybackRateChange = (rate) => {
 		setPlaybackRate(rate)
+	}
+
+	let timeout
+	const handleMouseMoved = () => {
+		setMouseInactive(false)
+		for(const i in arrayTracker.current) {
+			clearTimeout(arrayTracker.current[i])
+			setTimeoutArray(timeoutArray.splice(i, 1))
+		}
+
+		timeout = setTimeout(() => setMouseInactive(true), 5000)
+		setTimeoutArray([...timeoutArray, timeout])
 	}
 
 	const handleProgress = progression => {
@@ -672,6 +695,8 @@ const PlayerContainer = props => {
 		scrollDisabled,
 		progressEntered,
 		started,
+		mouseInactive,
+		timeoutArray,
 	}
 
 	const handlers = {
@@ -713,6 +738,7 @@ const PlayerContainer = props => {
 		handleChangeSpeed,
 		handleChangeCaption,
 		checkBrowser,
+		handleMouseMoved,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />
