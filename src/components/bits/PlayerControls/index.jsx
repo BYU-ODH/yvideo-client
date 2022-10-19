@@ -22,6 +22,7 @@ const PlayerControls = props => {
 	const {
 		fullscreen,
 		hovering,
+		mouseInactive,
 		progress,
 		playTime,
 		playing,
@@ -94,7 +95,7 @@ const PlayerControls = props => {
 	})
 
 	return (
-		<Style onClick={e => e.stopPropagation()} hovering={hovering} started={started} onMouseOver={handleMouseOver} playing={playing} progressentered={progressEntered}>
+		<Style onClick={e => e.stopPropagation()} mouseInactive={mouseInactive} hovering={hovering} started={started} onMouseOver={handleMouseOver} playing={playing} progressentered={progressEntered}>
 
 			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray} isClip={isClip}/>
 			<div className='left'>

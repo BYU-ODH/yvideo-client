@@ -26,7 +26,7 @@ const Style = styled.div`
 		"scrubber scrubber"
 		"left right";
 	z-index: 20;
-	opacity: ${props => !props.started || props.hovering ? 1 : 0};
+	opacity: ${props => (!props.mouseInactive && props.hovering) || !props.started || !props.playing ? 1 : 0 /* eslint-disable-line no-extra-parens */};
 	transition: opacity .5s ease-in-out;
 
 	& .right {
