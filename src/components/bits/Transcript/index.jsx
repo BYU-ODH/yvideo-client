@@ -117,8 +117,8 @@ const Transcript = props => {
 	}
 
 	const parseString = (str) => {
-		const regexp = /(<(.*?)>.*?<\/\2>|[\p{L}-]+)/gu
-		const replStr = str.replaceAll(regexp, `<span>${highlightWords(`$1`)}</span>`)
+		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
+		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
 		return parse(replStr)
 	}
 
