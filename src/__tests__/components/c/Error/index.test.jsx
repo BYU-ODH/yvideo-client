@@ -1,6 +1,6 @@
 import React from 'react'
 import {render, screen, cleanup} from '@testing-library/react'
-import Error from '../../../../components/modals/components/Error'
+import ErrorModal from '../../../../components/modals/components/ErrorModal'
 import userEvent from '@testing-library/user-event'
 
 const props = {
@@ -12,8 +12,8 @@ const props = {
 	},
 }
 
-const wrapper=
-	<Error {...props}/>
+const wrapper =
+	<ErrorModal {...props}/>
 
 const errorForbidden = `403 forbidden`
 const errorUnauthenticated = `401 unauthenticated`

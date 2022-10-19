@@ -61,156 +61,167 @@ const CollectionPermissionsContainer = props => {
 
 	}, [collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
 
-	const handlers = {
-		makePublic: e => {
-			e.preventDefault()
-			if(collection.public !== undefined) updateCollectionStatus(collection.id, `public`)
-			setIsEdited(true)
-		},
-		handleDepartmentChange: e => {
-			setCourse({
-				...course,
-				department: e.target.value.toUpperCase(),
-			})
-			setIsEdited(true)
-		},
-		handleCatalogChange: e => {
-			setCourse({
-				...course,
-				catalog: e.target.value.toUpperCase(),
-			})
-			setIsEdited(true)
-		},
-		handleCatalogBlur: e => {
-			let catalog = e.target.value
-			let courseLength = 3
-			if (catalog.includes(`r`) || catalog.includes(`R`))
-				courseLength = 4
+	const makePublic = e => {
+		e.preventDefault()
+		if(collection.public !== undefined) updateCollectionStatus(collection.id, `public`)
+		setIsEdited(true)
+	}
 
-			if(catalog.length < courseLength && catalog.length !== 0) {
-				for(let i = catalog.length; i < courseLength; i++)
-					catalog = `0${catalog}`
+	const handleDepartmentChange = e => {
+		setCourse({
+			...course,
+			department: e.target.value.toUpperCase(),
+		})
+		setIsEdited(true)
+	}
 
-				setCourse({
-					...course,
-					catalog,
-				})
-			}
-		},
-		handleSectionChange: e => {
-			if(e.target.value.length > 0)
-				setDisable(false)
-			else
-				setDisable(true)
+	const handleCatalogChange = e => {
+		setCourse({
+			...course,
+			catalog: e.target.value.toUpperCase(),
+		})
+		setIsEdited(true)
+	}
+
+	const handleCatalogBlur = e => {
+		let catalog = e.target.value
+		let courseLength = 3
+		if (catalog.includes(`r`) || catalog.includes(`R`))
+			courseLength = 4
+
+		if(catalog.length < courseLength && catalog.length !== 0) {
+			for(let i = catalog.length; i < courseLength; i++)
+				catalog = `0${catalog}`
 
 			setCourse({
 				...course,
-				section: e.target.value,
+				catalog,
 			})
-			setIsEdited(true)
-		},
-		handleSectionBlur: e => {
-			let section = e.target.value
-			if(section.length < 3 && section.length !== 0) {
-				for(let i = section.length; i < 3; i++)
-					section = `0${section}`
+		}
+	}
 
-				setCourse({
-					...course,
-					section,
-				})
-			}
-		},
-		handleUserTAChange: e => {
-			if(e.target.value.length > 1)
-				setDisableTA(false)
-			else
-				setDisableTA(true)
-
-			setUserTA({
-				...userTA,
-				username: e.target.value,
-			})
-			setIsEdited(true)
-		},
-		handleUserChange: e => {
-			if(e.target.value.length > 1)
-				setDisableUser(false)
-			else
-				setDisableUser(true)
-
-			setUser({
-				...user,
-				username: e.target.value,
-			})
-			setIsEdited(true)
-		},
-		addCourse: e => {
-			e.preventDefault()
-
-			updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
+	const handleSectionChange = e => {
+		if(e.target.value.length > 0)
+			setDisable(false)
+		else
 			setDisable(true)
+
+		setCourse({
+			...course,
+			section: e.target.value,
+		})
+		setIsEdited(true)
+	}
+
+	const handleSectionBlur = e => {
+		let section = e.target.value
+		if(section.length < 3 && section.length !== 0) {
+			for(let i = section.length; i < 3; i++)
+				section = `0${section}`
+
 			setCourse({
 				...course,
-				department: ``,
-				catalog: ``,
-				section: ``,
+				section,
 			})
-			setIsEdited(true)
-		},
-		removeCourse: id => {
-			updateCollectionPermissions(collection.id, roleEndpoints.removeCourse, id)
-			setIsEdited(true)
-		},
-		addUser: e => {
-			e.preventDefault()
-			updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
-			setDisableUser(true)
-			setUser({
-				...user,
-				username: ``,
-			})
-			setIsEdited(true)
-		},
-		addTA: e => {
+		}
+	}
 
-			/*
-				account-type
-				0 = admin
-				1 = lab assistant
-				2 = faculty / instructor
-				3 = student
-		  */
-
-			/*
-				account-role
-				0 "instructor"
-				1 "ta"
-				2 "student"
-				3 "auditing"
-			*/
-
-			e.preventDefault()
-			updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
+	const handleUserTAChange = e => {
+		if(e.target.value.length > 1)
+			setDisableTA(false)
+		else
 			setDisableTA(true)
-			setUserTA({
-				...userTA,
-				username: ``,
-			})
-			setIsEdited(true)
-		},
-		removeUser: value => {
-			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
-			setIsEdited(true)
-			setNumUsers(numUsers - 1)
-		},
-		AddBatchNetids: () => {
-			toggleModal({
-				component: AddBatchNetidsContainer,
-				props: { collectionId: collection.id, isLoading },
-			})
-			setIsEdited(true)
-		},
+
+		setUserTA({
+			...userTA,
+			username: e.target.value,
+		})
+		setIsEdited(true)
+	}
+
+	const handleUserChange = e => {
+		if(e.target.value.length > 1)
+			setDisableUser(false)
+		else
+			setDisableUser(true)
+
+		setUser({
+			...user,
+			username: e.target.value,
+		})
+		setIsEdited(true)
+	}
+
+	const addCourse = e => {
+		e.preventDefault()
+
+		updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
+		setDisable(true)
+		setCourse({
+			...course,
+			department: ``,
+			catalog: ``,
+			section: ``,
+		})
+		setIsEdited(true)
+	}
+
+	const removeCourse = id => {
+		updateCollectionPermissions(collection.id, roleEndpoints.removeCourse, id)
+		setIsEdited(true)
+	}
+
+	const addUser = e => {
+		e.preventDefault()
+		updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
+		setDisableUser(true)
+		setUser({
+			...user,
+			username: ``,
+		})
+		setIsEdited(true)
+	}
+
+	const addTA = e => {
+
+		/*
+			account-type
+			0 = admin
+			1 = lab assistant
+			2 = faculty / instructor
+			3 = student
+		*/
+
+		/*
+			account-role
+			0 "instructor"
+			1 "ta"
+			2 "student"
+			3 "auditing"
+		*/
+
+		e.preventDefault()
+		updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
+		setDisableTA(true)
+		setUserTA({
+			...userTA,
+			username: ``,
+		})
+		setIsEdited(true)
+	}
+
+	const removeUser = value => {
+		updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
+		setIsEdited(true)
+		setNumUsers(numUsers - 1)
+	}
+
+	const addBatchNetids = () => {
+		toggleModal({
+			component: AddBatchNetidsContainer,
+			props: { collectionId: collection.id, isLoading },
+		})
+		setIsEdited(true)
 	}
 
 	const viewstate = {
@@ -225,6 +236,23 @@ const CollectionPermissionsContainer = props => {
 		disabledTA,
 		isLoading,
 		loggedinUser,
+	}
+
+	const handlers = {
+		makePublic,
+		handleDepartmentChange,
+		handleCatalogChange,
+		handleCatalogBlur,
+		handleSectionChange,
+		handleSectionBlur,
+		handleUserTAChange,
+		handleUserChange,
+		addCourse,
+		removeCourse,
+		addUser,
+		addTA,
+		removeUser,
+		addBatchNetids,
 	}
 
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />

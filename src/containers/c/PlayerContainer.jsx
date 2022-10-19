@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -13,7 +13,7 @@ import handleScrollFuncs from '../../components/vanilla_scripts/toggleScroll'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
-import ErrorContainer from 'components/modals/containers/ErrorContainer'
+import ErrorModalContainer from '../../components/modals/containers/ErrorModalContainer'
 
 const PlayerContainer = props => {
 
@@ -52,7 +52,6 @@ const PlayerContainer = props => {
 	const [duration, setDuration] = useState(0) // Set duration of the media
 	const [muted, setMuted] = useState(false) // Mutes the player
 	const [fullscreen, setFullscreen] = useState(false)
-	// eslint-disable-next-line no-unused-vars
 	const [playbackRate, setPlaybackRate] = useState(1.0) // Set the playback rate of the player
 	const [playbackOptions, setPlaybackOptions] = useState([0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2].sort())
 	const [player, setPlayer] = useState(null)
@@ -76,6 +75,8 @@ const PlayerContainer = props => {
 	const [hasPausedClip, setHasPausedClip] = useState(false)
 	const [showSpeed, setShowSpeed] = useState(false)
 	const [hovering, setHovering] = useState(true)
+	const [started, setStarted] = useState(false)
+	const [mouseInactive, setMouseInactive] = useState(false)
 
 	const [subsObj, setSubsObj] = useState({})
 	const [fullyChecked, setFullyChecked] = useState(false)
@@ -101,8 +102,11 @@ const PlayerContainer = props => {
 		setPlayer(player)
 	}
 
+	const [timeoutArray, setTimeoutArray] = useState([])
+	const arrayTracker = useRef(timeoutArray)
+
 	useEffect(() => {
-		setBreadcrumbs({ path: [`Home`, `Player`], collectionId: ``, contentId: `` })
+		setBreadcrumbs({ path: [`Home`, `Player (${contentCache?.[params.id]?.name})`], collectionId: ``, contentId: `` })
 		setShowTranscript(false)
 		setSubtitleText(``)
 		setDisplaySubtitles(null)
@@ -128,7 +132,7 @@ const PlayerContainer = props => {
 				}
 				setUrl(contentCache[params.id].url)
 				if(contentCache[params.id].url.includes(`youtube`)){
-					const fetchData = async() => {
+					const fetchData = async() => { // eslint-disable-line no-unused-vars
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
@@ -136,7 +140,6 @@ const PlayerContainer = props => {
 
 						return data
 					}
-					const d =fetchData() // eslint-disable-line no-unused-vars
 				}
 			} else {
 				setKey(``)
@@ -205,6 +208,11 @@ const PlayerContainer = props => {
 			handleError()
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
+
+	useEffect(() => {
+		arrayTracker.current = timeoutArray
+	}, [timeoutArray])
+
 	useLayoutEffect(() => {
 		handleSubsObj()
 		handleScrollFuncs(document.getElementById(`subtitles-container`), setDisableScroll, setEnableScroll)
@@ -226,8 +234,8 @@ const PlayerContainer = props => {
 		})
 	}
 
-	const handleToggleSubtitles = () => {
-		setShowTranscript(!showTranscript)
+	const handleToggleSubtitles = (isShowTranscript) => {
+		setShowTranscript(!isShowTranscript)
 		handleShowSubtitle(``)
 		handleAspectRatio()
 	}
@@ -250,41 +258,65 @@ const PlayerContainer = props => {
 		setHovering(false)
 	}
 
-	const handlePlayPause = () => {
+	const handlePlayPause = (playing) => {
 		if (playing) {
 			setPlaying(false)
-			enableScroll.action()
-			setScrollDisabled(false)
+			if (enableScroll.action !== null) {
+				enableScroll.action()
+				setScrollDisabled(false)
+			}
 		} else {
 			setPlaying(true)
-			disableScroll.action()
-			setScrollDisabled(true)
+			if(disableScroll.action !== null) {
+				disableScroll.action()
+				setScrollDisabled(true)
+			}
 		}
 	}
 
 	const handlePause = () => {
 		setPlaying(false)
-		enableScroll.action()
-		setScrollDisabled(false)
+		if (enableScroll.action !== null) {
+			enableScroll.action()
+			setScrollDisabled(false)
+		}
 	}
 
 	const handlePlay = () => {
 		setPlaying(true)
-		disableScroll.action()
-		setScrollDisabled(true)
+		if(disableScroll.action !== null) {
+			disableScroll.action()
+			setScrollDisabled(true)
+		}
 	}
+
 	const handleStart = () => {
-		setPlaying(true)
-		if (clipTime.length > 0) player.seekTo(clipTime[0])
-		setIsClip(true)
-		setPlaying(true)
+		setStarted(true)
 	}
+
+	const handleClipStart = () => {
+		player.seekTo(clipTime[0])
+		setIsClip(true)
+	}
+
 	const handleBlank = (bool) => {
 		setBlank(bool)
 	}
 
 	const handlePlaybackRateChange = (rate) => {
 		setPlaybackRate(rate)
+	}
+
+	let timeout
+	const handleMouseMoved = () => {
+		setMouseInactive(false)
+		for(const i in arrayTracker.current) {
+			clearTimeout(arrayTracker.current[i])
+			setTimeoutArray(timeoutArray.splice(i, 1))
+		}
+
+		timeout = setTimeout(() => setMouseInactive(true), 5000)
+		setTimeoutArray([...timeoutArray, timeout])
 	}
 
 	const handleProgress = progression => {
@@ -309,7 +341,6 @@ const PlayerContainer = props => {
 		const entries = Object.entries(subsObj)
 		const progressPercent = progression * 100 / duration
 		if(fullyChecked) {
-
 			const closeCheck = subtitleTextIndex === undefined || subtitleTextIndex === 0 ?
 				{prevEntry: null, nextEntry: entries[1] ? entries[1][1] : null}
 				:
@@ -335,7 +366,8 @@ const PlayerContainer = props => {
 						setSubtitleText(undefined)
 						setFullyChecked(true) // these are fine because this won't take effect until the function is left
 						return
-					}else if(progressPercent > entries[numIndex][1].percentPlayed && progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
+					}else if(progressPercent > entries[numIndex][1].percentPlayed
+						&& progressPercent < entries[numIndex + 1][1].percentPlayed) { // if progress is between two consecutive entries
 						setSubtitleTextIndex(numIndex)
 						setSubtitleText(entries[numIndex][1].text)
 						setFullyChecked(true)
@@ -388,7 +420,7 @@ const PlayerContainer = props => {
 		}
 	}
 
-	const handleToggleFullscreen = () => {
+	const handleToggleFullscreen = (fullscreen) => {
 
 		// find the element which contains subtitles and events placeholders
 		const elem = document.getElementById(`player-container`)
@@ -467,7 +499,6 @@ const PlayerContainer = props => {
 
 			}
 		}
-
 		setSubtitleTextIndex(index)
 		setSubtitleText(value)
 	}
@@ -508,7 +539,7 @@ const PlayerContainer = props => {
 	}
 	const handleError = () => {
 		toggleModal({
-			component: ErrorContainer,
+			component: ErrorModalContainer,
 		})
 		errorSync()
 	}
@@ -661,6 +692,9 @@ const PlayerContainer = props => {
 		showSpeed,
 		scrollDisabled,
 		progressEntered,
+		started,
+		mouseInactive,
+		timeoutArray,
 	}
 
 	const handlers = {
@@ -670,6 +704,7 @@ const PlayerContainer = props => {
 		handlePause,
 		handlePlay,
 		handleStart,
+		handleClipStart,
 		handlePlaybackRateChange,
 		handleProgress,
 		handleSeekChange,
@@ -701,6 +736,7 @@ const PlayerContainer = props => {
 		handleChangeSpeed,
 		handleChangeCaption,
 		checkBrowser,
+		handleMouseMoved,
 	}
 
 	return <Player viewstate={viewstate} handlers={handlers} />

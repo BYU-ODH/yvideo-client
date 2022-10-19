@@ -51,7 +51,7 @@ const VideoEditorContainer = props => {
 			setContent(contentCache[id])
 			setEventsArray(contentCache[id].settings.annotationDocument)
 			setEvents(contentCache[id].settings.annotationDocument)
-			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Video Editor`, `${contentCache[id].name}`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
+			setBreadcrumbs({path: [`Home`, `Manage Collections`, `Video Editor (${contentCache[id].name})`], collectionId: contentCache[id].collectionId, contentId: contentCache[id].id})
 
 			if(contentCache[id].url !== ``){
 				setUrl(contentCache[id].url)

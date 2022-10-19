@@ -1,19 +1,19 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
 import Style from './styles'
 
-export default class CaptionAider extends PureComponent {
-	render() {
+const CaptionAider = props => {
 
-		const {
-			target,
-		} = this.props.viewstate
+	const {
+		target,
+	} = props.viewstate
 
-		return (
-			<Style>
-				<div id='bottomContainer' ref={target} />
-				<div id='timeline' />
-			</Style>
-		)
-	}
+	return (
+		<Style>
+			<div id='bottomContainer' ref={target} />
+			<div id='timeline' />
+		</Style>
+	)
 }
+
+export default CaptionAider
