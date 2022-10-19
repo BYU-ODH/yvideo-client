@@ -5,6 +5,7 @@ export const Style = styled.div`
 	margin-top: 8.4rem;
 	height: calc(100vh - 8.4rem);
 	overflow: hidden;
+	cursor: ${props => !props.mouseInactive || !props.started || !props.playing ? `default` : `none`};
 
 	& > div {
 
@@ -173,7 +174,7 @@ export const PlayButton = styled.img`
 	cursor: pointer;
 	border-radius: 50%;
 	z-index: 100;
-	opacity: ${props => props.hovering ? 1 : 0};
+	opacity: ${props => !props.started ? 1 : 0};
 	transition: opacity 0.5s ease-in-out;
 
 	@media screen and (max-width: 425px){

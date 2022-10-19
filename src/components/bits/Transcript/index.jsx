@@ -79,7 +79,6 @@ const Transcript = props => {
 		// initialize the string where we can make changes
 		if(displaySubtitles === undefined || displaySubtitles.words === undefined)
 			return
-
 		const words = displaySubtitles.words.split(/[, ]+/)
 
 		let newString = text
@@ -122,6 +121,12 @@ const Transcript = props => {
 			})
 			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
 		}
+	}
+
+	const parseString = (str) => {
+		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
+		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
+		return parse(replStr)
 	}
 
 	return (

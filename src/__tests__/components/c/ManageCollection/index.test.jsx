@@ -7,6 +7,7 @@ import * as testutil from '../../../testutil/testutil'
 import { BrowserRouter } from 'react-router-dom'
 
 const resource = testutil.resource
+const user = testutil.user
 
 const newcontent = { // eslint-disable-line no-unused-vars
 	id: 116,
@@ -80,6 +81,7 @@ const props = {
 		collectionName: `Collection 1`,
 		isContentTab: true,
 		isEditingCollectionName: false,
+		user,
 	},
 	handlers: {
 		unarchive: jest.fn(),

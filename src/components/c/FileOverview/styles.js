@@ -1,6 +1,7 @@
 import styled, {css} from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
+import previewIcon from 'assets/previewIcon.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -23,6 +24,7 @@ export const BoxRow = styled.div`
 export const FileTitle = styled.div`
 	display: flex;
 	margin-left: 1rem;
+	width: 100%;
 	& > h4 {
 		display: flex;
 		align-items: center;
@@ -64,7 +66,7 @@ export const SaveIcon = styled.span`
 
 export const InnerContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr;
 	padding: 15px;
 `
 
@@ -95,6 +97,24 @@ export const RemoveIcon = styled.span`
 	width: 2rem;
 `
 
+export const PreviewIcon = styled.span`
+	background: url(${previewIcon}) center no-repeat;
+	height: 1.7rem;
+	width: 2rem;
+`
+export const PreviewButton = styled.button`
+	display: flex;
+	align-items: center !important;
+	justify-content: center !important;
+	color: #3CB371;
+	${TextButton};
+	text-align: center !important;
+
+	& > span {
+		margin-right: .1rem;
+	}
+`
+
 export const RemoveButton = styled.button`
 	display: flex;
 	align-items: center;
@@ -117,6 +137,8 @@ export const CategorySelect = styled.select`
 
 	padding: 0 1.25rem;
 	text-align-last: center;
+
+	align-content: start;
 
 	outline: none;
 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);

@@ -43,6 +43,24 @@ const viewstate = {
 		id: `2323`,
 		owner: `owner`,
 	},
+	collectionUsers: [
+		{
+			email: `atest@email.com`,
+			id: 22,
+			lastLogin: `2020-05-14T19:53:02.807Z`,
+			name: `Owner`,
+			roles: 0,
+			username: `testusername`,
+		},
+		{
+			email: `btest1@email.com`,
+			id: 23,
+			lastLogin: `2020-06-14T19:53:02.807Z`,
+			name: `Owner1`,
+			roles: 0,
+			username: `testusername1`,
+		},
+	],
 }
 
 const handlers = {
@@ -50,6 +68,7 @@ const handlers = {
 	handleConfirmDelete: jest.fn(),
 	toggleMenu: jest.fn(),
 	userRoleSave: jest.fn(),
+	getUserFunc: jest.fn(),
 }
 
 const tipHandlers = {

@@ -26,7 +26,7 @@ const Style = styled.div`
 		"scrubber scrubber"
 		"left right";
 	z-index: 20;
-	opacity: ${props => props.hovering ? 1 : 0};
+	opacity: ${props => (!props.mouseInactive && props.hovering) || !props.started || !props.playing ? 1 : 0 /* eslint-disable-line no-extra-parens */};
 	transition: opacity .5s ease-in-out;
 
 	& .right {
@@ -92,7 +92,7 @@ const Style = styled.div`
 		}
 
 		& .play-time {
-			color: white;
+			color: ${props => props.progressentered ? `white` : `#AAAAAA`};
 			margin: 1rem;
 			@media screen and (max-width: 425px){
 				margin: .65 rem;

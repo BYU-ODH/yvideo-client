@@ -71,7 +71,7 @@ export const TimeBar = styled.div`
 				color: white;
 				position: relative;
 				top: 1px;
-				margin-left: .5rem;
+				margin-left: 1.5rem;
 				width: 5rem;
 				display: flex;
 				justify-content: center;
@@ -98,6 +98,7 @@ export const TimeBar = styled.div`
 					& #time-bar-progress {
 						cursor: pointer;
 						height: 30px;
+						outline: none;
 					}
 
 					& #time-bar-shadow {
@@ -136,7 +137,7 @@ export const TimeBar = styled.div`
 			height: 1.5rem;
 			width: 1rem;
 
-			margin: 0 1.5rem;
+			margin: 0 1rem;
 			padding: 0;
 
 			border: none;

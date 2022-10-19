@@ -169,7 +169,7 @@ export const FileUploadButton = styled.button`
 export const TitleEdit = styled.input`
 	margin-left: 1rem;
 	box-sizing: border-box;
-	width: 26rem;
+	width: 40rem;
 `
 
 export const Title = styled.form`
@@ -183,7 +183,7 @@ export const Title = styled.form`
 
 export const ResourceTitle = styled.form`
 	display: flex;
-	margin-left: 1rem;
+	margin-left: .5rem;
 
 	& > h4 {
 		display: flex;
