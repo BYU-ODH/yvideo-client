@@ -73,7 +73,6 @@ const Transcript = props => {
 		// initialize the string where we can make changes
 		if(displaySubtitles === undefined || displaySubtitles.words === undefined)
 			return
-
 		const words = displaySubtitles.words.split(/[, ]+/)
 
 		let newString = text
@@ -115,6 +114,12 @@ const Transcript = props => {
 			})
 			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
 		}
+	}
+
+	const parseString = (str) => {
+		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
+		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
+		return parse(replStr)
 	}
 
 	return (
@@ -184,7 +189,7 @@ const Transcript = props => {
 							<div id={`t-row-${index}`} className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
 								key={index}
 							>
-								<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
+								<p className='transcript-trans' onClick={getTranslation}>{parseString(element.text)}</p>
 								<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001)}
 									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 									className='arrow'
