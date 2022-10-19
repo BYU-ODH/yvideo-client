@@ -49,7 +49,6 @@ const PlayerContainer = props => {
 	const [sKey, setKey] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
 	const [isLandscape, setIsLandscape] = useState(false)
-	const [isClip, setIsClip] = useState(false)
 
 	const [calledGetSubtitles, setCalledGetSubtitles] = useState(false)
 	const [duration, setDuration] = useState(0) // Set duration of the media
@@ -693,7 +692,6 @@ const PlayerContainer = props => {
 		ref,
 		url,
 		volume,
-		isClip,
 		blank,
 		videoComment,
 		commentPosition,

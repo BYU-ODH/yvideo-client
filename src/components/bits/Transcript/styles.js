@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import captionsLight from 'assets/captions_light.svg'
+import captionsLight from 'assets/captions_light.svg' // eslint-disable-line
 
 export const Style = styled.div`
 	position: ${props => props.isMobile ? `fixed` : `relative`};

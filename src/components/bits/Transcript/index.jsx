@@ -51,7 +51,6 @@ const Transcript = props => {
 
 	const [words, setWords] = useState(``)
 	const [meanings, setMeanings] = useState(``)
-	// const [parsedClips, setParsedClips] = useState(``)
 
 	useEffect(() => {
 		setWords(``)
@@ -240,7 +239,7 @@ const Transcript = props => {
 									<div id={`t-row-${index}`} className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
 										key={index}
 									>
-										<p className='transcript-trans' onClick={getTranslation}>{highlightWords(element.text)}</p>
+										<p className='transcript-trans' onClick={getTranslation}>{parseString(element.text)}</p>
 										<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001)}
 											// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 											className='arrow'
