@@ -52,7 +52,8 @@ export const SearchIcon = styled.span`
 export const DepartmentSelect = styled.input`
 	background: white;
 	border-radius: 1.3rem;
-	border: none;
+	border: ${props => props.isDeptValid ? 'none' : 'solid'};
+	border-color: ${props => props.isDeptValid ? 'none' : 'yellow'};
 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	height: 2.6rem;
 	margin-bottom: 1.6rem;
@@ -61,6 +62,7 @@ export const DepartmentSelect = styled.input`
 	padding-left: .6rem;
 	padding-right: 1.2rem;
 	width: 10rem;
+
 `
 
 export const CatalogInput = styled.input`
@@ -69,8 +71,9 @@ export const CatalogInput = styled.input`
 	height: 2.6rem;
 	width: 10rem;
 
-	border: none;
 	border-radius: 1.3rem;
+	border: ${props => props.isCourseValid ? 'none' : 'solid'};
+	border-color: ${props => props.isCourseValid ? 'none' : 'yellow'};
 
 	margin-bottom: 1.6rem;
 	margin-right: 2rem;
@@ -89,8 +92,9 @@ export const SectionInput = styled.input`
 	height: 2.6rem;
 	width: 10rem;
 
-	border: none;
 	border-radius: 1.3rem;
+	border: ${props => props.isSectionValid ? 'none' : 'solid'};
+	border-color: ${props => props.isSectionValid ? 'none' : 'yellow'};
 
 	margin-bottom: 1.6rem;
 	margin-right: 2rem;

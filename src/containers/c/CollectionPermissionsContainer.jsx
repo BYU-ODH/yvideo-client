@@ -6,6 +6,7 @@ import services, { interfaceService } from 'services'
 import { CollectionPermissions } from 'components'
 
 import AddBatchNetidsContainer from 'components/modals/containers/AddBatchNetidsContainer'
+import { validateDept, validateCourse, validateSection } from 'components/common/courseValidation'
 
 const CollectionPermissionsContainer = props => {
 
@@ -37,13 +38,16 @@ const CollectionPermissionsContainer = props => {
 		username: ``,
 		roles: 1,
 	})
-
+	
 	const [disabled, setDisable] = useState(true)
 	const [disabledUser, setDisableUser] = useState(true)
 	const [disabledTA, setDisableTA] = useState(true)
 	const [isLoading, setIsLoading] = useState(false)
 	const [isEdited, setIsEdited] = useState(true)
 	const [numUsers, setNumUsers] = useState(0)
+	const [isDeptValid, setIsDeptValid] = useState(true)
+	const [isCourseValid, setIsCourseValid] = useState(true)
+	const [isSectionValid, setIsSectionValid] = useState(true)
 
 	useEffect(() => {
 
@@ -68,6 +72,9 @@ const CollectionPermissionsContainer = props => {
 			setIsEdited(true)
 		},
 		handleDepartmentChange: e => {
+			const isDeptValid = validateDept(e.target.value.trim().toUpperCase())
+			setIsDeptValid(isDeptValid)
+
 			setCourse({
 				...course,
 				department: e.target.value.toUpperCase(),
@@ -75,6 +82,8 @@ const CollectionPermissionsContainer = props => {
 			setIsEdited(true)
 		},
 		handleCatalogChange: e => {
+			const isCourseValid = validateCourse(e.target.value.trim().toUpperCase())
+			setIsCourseValid(isCourseValid)
 			setCourse({
 				...course,
 				catalog: e.target.value.toUpperCase(),
@@ -98,6 +107,8 @@ const CollectionPermissionsContainer = props => {
 			}
 		},
 		handleSectionChange: e => {
+			const isSectionValid = validateSection(e.target.value.trim().toUpperCase())
+			setIsSectionValid(isSectionValid)
 			if(e.target.value.length > 0)
 				setDisable(false)
 			else
@@ -225,6 +236,9 @@ const CollectionPermissionsContainer = props => {
 		disabledTA,
 		isLoading,
 		loggedinUser,
+		isDeptValid,
+		isCourseValid,
+		isSectionValid,
 	}
 
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import arrow_down from 'assets/arrow_down.svg'
 
 import Style, {
 	Search,
@@ -46,6 +47,9 @@ export class CollectionPermissions extends PureComponent {
 			disabledUser,
 			disabledTA,
 			loggedinUser,
+			isDeptValid,
+			isCourseValid,
+			isSectionValid,
 		} = viewstate
 
 		const {
@@ -114,13 +118,21 @@ export class CollectionPermissions extends PureComponent {
 					<CourseTable id='course-table'>
 						<h4>Courses</h4>
 						<form onSubmit={handlers.addCourse}>
-							<DepartmentSelect className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Dept - Ex: ENGL'/>
-							<CatalogInput className='catalog-input' min='0' onChange={handlers.handleCatalogChange} onKeyPress={e => {
+							<DepartmentSelect isDeptValid={isDeptValid} className='department-select' value={department} onChange={handlers.handleDepartmentChange} placeholder='Dept - Ex: ENGL'/>
+							{isDeptValid === false && <img src={arrow_down} alt={`arrow`} />}
+							{isDeptValid === false && <p className='error'>Please enter a valid department. Disregard this error if this department ID is what you want.</p>}
+							
+							
+							<CatalogInput isCourseValid={isCourseValid} className='catalog-input' min='0' onChange={handlers.handleCatalogChange} onKeyPress={e => {
 								if (e.charCode === 13) handlers.handleCatalogBlur(e)
 							}} onBlur={handlers.handleCatalogBlur} value={catalog} placeholder='Course - Ex: 101' required/>
-							<SectionInput className='section-input' min='0' onChange={handlers.handleSectionChange} onKeyPress={e => {
+							{isCourseValid === false && <p className='error'>Please enter a valid course. Disregard this error if this course number is what you want.</p>}
+							
+							<SectionInput isSectionValid={isSectionValid} className='section-input' min='0' onChange={handlers.handleSectionChange}
+							onKeyPress={e => {
 								if (e.charCode === 13) handlers.handleSectionBlur(e)
 							}} onBlur={handlers.handleSectionBlur} value={section} placeholder='Section - Ex: 001' required/>
+							{isSectionValid === false && <p className='error'>Please enter a valid section. Disregard this error is this section number is what you want.</p>}
 							<AddButton className='add-course-button' type='submit' disabled={disabled}>Add</AddButton>
 						</form><br/>
 						<Table border='1'>

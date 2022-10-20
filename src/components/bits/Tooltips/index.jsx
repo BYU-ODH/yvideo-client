@@ -97,6 +97,7 @@ export const ToolTip = (props) => {
 		"translation-off": `Translations off`,
 		"transcript-seek": `Click to seek`,
 		"definitions-disabled": `Definitions are not supported for this language`,
+		"course-invalid" : `This course is not valid`,
 	}
 
 	// console.log("POSITION", position)
