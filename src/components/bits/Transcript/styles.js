@@ -75,8 +75,7 @@ export const Style = styled.div`
 
 	& .toggle-transcript {
 		position: relative;
-		margin-top: 5px;
-		margin-bottom: 10px;
+		margin-bottom: 15px;
 		width: 30px;
 		height: 30px;
 		transition: .5s ease;
@@ -90,16 +89,54 @@ export const Style = styled.div`
 		height: 30px;
 		font-size: 2rem;
 		color: white;
-		margin-left: .3rem;
+		margin-left: .1rem;
 		margin-bottom: -.3rem;
-		transition: .5s ease;
 		cursor: pointer;
 	}
 
-	.fa {
-		margin-bottom: 1rem;
+	.fa-film {
+		margin-bottom: .5rem;
 		text-align: center;
-		margin-right: .2rem
+		margin-right: .2rem;
+		padding: 7px 3px 2px 3px;
+		border: ${props => props.isclip ? `2px inset #dddddd` : `2px outset #dddddd`};
+		color: ${props => props.isclip ? `#aaaaaa` : `white`};
+
+		p {
+			font-size: 12px;
+			position: absolute;
+			color: var(--light-blue);
+			margin-left: 3.05rem;
+			margin-top: -1.5rem;
+		}
+	}
+
+	.fa-film:active {
+		border: 2px inset #dddddd;
+		color: #aaaaaa;
+		outline: 0;
+	}
+
+	.fa-file-text-o {
+		margin-bottom: .5rem;
+		text-align: center;
+		margin-right: .2rem;
+		padding: 7px 3px 2px 3px;
+		border: ${props => props.isclip ? `2px outset #dddddd` : `2px inset #dddddd`};
+		color: ${props => props.isclip ? `white` : `#aaaaaa`};
+
+		p {
+			font-size: 12px;
+			position: absolute;
+			color: var(--navy-blue);
+			margin-left: 3.05rem;
+			margin-top: -1.5rem;
+		}
+	}
+	.fa-file-text-o:active {
+		border: 2px inset #dddddd;
+		color: #aaaaaa;
+		outline: 0;
 	}
 
 	& .hr-sidebar {
@@ -287,4 +324,6 @@ export const Style = styled.div`
 export const Help = styled.img`
 	width: 25px;
 	height: 25px;
+	margin-top: 5px;
+	margin-right: 1px;
 `

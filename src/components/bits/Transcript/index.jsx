@@ -133,7 +133,7 @@ const Transcript = props => {
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>
-						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={() => handleToggleTranscript(`Transcript`)}
+						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
 							onMouseEnter={e => handleShowTip(`transcript-hide`,
 								{
 									x: e.target.getBoundingClientRect().x - 65,
@@ -143,8 +143,28 @@ const Transcript = props => {
 							}
 							onMouseLeave={() => toggleTip()} />
 						<hr className={`hr-sidebar`}/>
-						<i className='fa fa-film' onClick={() => handleClipToggle(`Clip`)}></i>
-						<i className='fa fa-file-text-o' onClick={() => handleClipToggle()}></i>
+
+						<i className='fa fa-film' onClick={() => handleClipToggle(`Clip`)}
+							onMouseEnter={e => handleShowTip(`clips-tab`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={() => toggleTip()} >
+							{ isClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }
+						</i>
+						<i className='fa fa-file-text-o' onClick={() => handleClipToggle()}
+							onMouseEnter={e => handleShowTip(`captions-tab`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={() => toggleTip()} >
+							{ !isClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }</i>
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{
@@ -157,7 +177,7 @@ const Transcript = props => {
 					</>
 					:
 					<>
-						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={() => handleToggleTranscript(`Transcript`)}
+						<img src={chevron} alt={`chevron`} className={`toggle-transcript`} onClick={handleToggleTranscript}
 							onMouseEnter={e => handleShowTip(`transcript-hide`,
 								{
 									x: e.target.getBoundingClientRect().x - 20,

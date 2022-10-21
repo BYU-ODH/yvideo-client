@@ -567,7 +567,7 @@ const PlayerContainer = props => {
 		else
 			setIsClip(false)
 	}
-	const handleToggleTranscript = (clipOrTranscript) => {
+	const handleToggleTranscript = () => {
 		toggleTip()
 		setToggleTranscript(!toggleTranscript)
 		setIsClip(false)
