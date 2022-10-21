@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Style = styled.div`
-	margin-left: 2rem;
+	margin-top: 2.7rem;
 `
 export default Style
 

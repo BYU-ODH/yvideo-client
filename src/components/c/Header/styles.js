@@ -10,8 +10,8 @@ const Style = styled.div`
 	display: flex;
 	align-items: flex-start;
 	justify-content: flex-start;
-	flex-direction: column;
-	justify-content: space-evenly;
+	flex-direction: row;
+	// justify-content: space-evenly;
 
 	border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
 
@@ -28,8 +28,9 @@ const Style = styled.div`
 		color: white;
 		padding: 1rem;
 		border-radius: .3rem;
-		margin-right: 7.4rem;
+		margin-right: 5rem;
 		cursor: pointer;
+		margin-buttom: 2rem;
 	}
 `
 
@@ -49,9 +50,9 @@ export const LogoWrapper = styled(Link)`
 export const Name = styled.h1`
 	font-family: 'Roboto Mono';
 	font-weight: bold;
-	font-size: 1.8rem;
+	font-size: 1.5rem;
 	line-height: 2.1rem;
-	margin: 0 0 0 1.3rem;
+	margin: 1.8rem 3rem 0 1.3rem;
 
 	z-index: 2;
 
@@ -68,7 +69,7 @@ export const Shadow = styled.h1`
 
 	font-family: 'Roboto Mono';
 	font-weight: bold;
-	font-size: 1.8rem;
+	font-size: 1.5rem;
 	line-height: 2.1rem;
 	margin: 0 0 0 4.9rem;
 
@@ -78,6 +79,7 @@ export const Shadow = styled.h1`
 export const Logo = styled.div`
 	background: url(${HexLogo}) no-repeat center;
 	background-size: contain;
-	height: 3.6rem;
-	width: 3.6rem;
+	height: 3.0rem;
+	width: 3.0rem;
+	margin-top: 1.8rem;
 `
