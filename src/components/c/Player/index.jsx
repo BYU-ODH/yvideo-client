@@ -33,6 +33,7 @@ const Player = props => {
 		started,
 		hovering,
 		mouseInactive,
+		controlsHovering,
 	} = props.viewstate
 
 	const {
@@ -223,7 +224,7 @@ const Player = props => {
 	}
 
 	return (
-		<Style onMouseMove={handleMouseMoved} hovering={hovering} started={started} playing={playing} mouseInactive={mouseInactive}>
+		<Style onMouseMove={handleMouseMoved} hovering={hovering} started={started} playing={playing} mouseInactive={mouseInactive} controlsHovering={controlsHovering}>
 			<div style={
 				{
 					display: `${showTranscript !== false ? `flex` : `initial`}`,
