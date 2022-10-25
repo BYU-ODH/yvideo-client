@@ -11,7 +11,6 @@ const Style = styled.div`
 	align-items: flex-start;
 	justify-content: flex-start;
 	flex-direction: row;
-	// justify-content: space-evenly;
 
 	border-bottom: ${props => props.border ? `1px solid #c4c4c4` : `none`};
 
