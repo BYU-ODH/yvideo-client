@@ -5,7 +5,7 @@ export const Style = styled.div`
 	margin-top: 8.4rem;
 	height: calc(100vh - 8.4rem);
 	overflow: hidden;
-	cursor: ${props => !props.mouseInactive || !props.started || !props.playing ? `default` : `none`};
+	cursor: ${props => !props.mouseInactive || !props.playing || props.controlsHovering ? `default` : `none`};
 
 	& > div {
 

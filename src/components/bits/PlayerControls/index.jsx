@@ -43,7 +43,7 @@ const PlayerControls = props => {
 		events,
 		showSpeed,
 		progressEntered,
-		started,
+		controlsHovering,
 	} = props.viewstate
 
 	const {
@@ -65,6 +65,7 @@ const PlayerControls = props => {
 		handleChangeCaption,
 		handleSeekToSubtitle,
 		handleMouseOver,
+		handleMouseOut,
 	} = props.handlers
 
 	const {
@@ -95,7 +96,16 @@ const PlayerControls = props => {
 	})
 
 	return (
-		<Style onClick={e => e.stopPropagation()} mouseInactive={mouseInactive} hovering={hovering} started={started} onMouseOver={handleMouseOver} playing={playing} progressentered={progressEntered}>
+		<Style id='controls-wrapper'
+			onClick={e => e.stopPropagation()}
+			onMouseOver={() => handleMouseOver(`controls`)}
+			onMouseOut={() => handleMouseOut(`controls`)}
+			mouseInactive={mouseInactive}
+			hovering={hovering}
+			playing={playing}
+			controlsHovering={controlsHovering}
+			progressentered={progressEntered}
+		>
 
 			<Scrubber duration={duration} events={events} clipTime={clipTime} clipPercent={clipPercent} progress={progress} active={hovering} handleClick={handleSeekChange} skipArray={skipArray} isClip={isClip}/>
 			<div className='left'>
@@ -147,7 +157,7 @@ const PlayerControls = props => {
 
 			</div>
 			<div className='right'>
-				<FullScreen data-testid='fullscreen' fullscreen={fullscreen} onClick={handleToggleFullscreen}
+				<FullScreen data-testid='fullscreen' fullscreen={fullscreen} onClick={() => handleToggleFullscreen(fullscreen)}
 					onMouseEnter={e => handleShowTip(`fullscr`,
 						{
 							x: e.target.getBoundingClientRect().x,
