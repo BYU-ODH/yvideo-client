@@ -176,8 +176,6 @@ const TrackEditorSideMenu = props => {
 												x: e.target.getBoundingClientRect().x - 15,
 												y: e.target.getBoundingClientRect().y + 20,
 												width: e.currentTarget.offsetWidth + 20,
-
-												
 											})
 										}
 										onMouseLeave={() => toggleTip()}
