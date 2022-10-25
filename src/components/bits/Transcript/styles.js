@@ -10,7 +10,7 @@ export const Style = styled.div`
 			? `0rem`
 			: `2rem`};
 	height: 100%;
-	padding: ${props => props.isMobile ? `0px` : `6px 10px 0px 10px`};
+	padding: ${props => props.isMobile ? `0px` : `0px 0px 0px 7px`};
 	border-top: 1px solid #c4c4c4;
 	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
@@ -48,7 +48,7 @@ export const Style = styled.div`
 		visibility: ${props => props.displayTranscript ? `visible` : `hidden`};
 		opacity: ${props => props.displayTranscript ? 1 : 0};
 		transition: opacity .5s ease;
-		margin-left: 45px;
+		margin-left: 42px;;
 		overflow-y: scroll !important;
 		background-color: white;
 		width: calc(100% - 35px);
