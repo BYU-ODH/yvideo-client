@@ -25,7 +25,7 @@ export const Style = styled.div`
 		width: 40px;
 		height: 100%;
 		// /* background-color: rgba(5, 130, 202, 0.5); */
-		background-color: ${props => props.isclip ? `var(--light-blue)` : props.toggletranscript ? `var(--navy-blue)` : `#444444`} !important;
+		background-color: ${props => props.sidebarisclip ? `var(--light-blue)` : props.toggletranscript ? `var(--navy-blue)` : `#444444`} !important;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -67,6 +67,11 @@ export const Style = styled.div`
 		padding: 1rem;
 	}
 
+	& .clip-item:active {
+		transform: translateY(2px);
+		box-shadow: 0px 0px 5px 1px rgb(0 0 0 / 30%);
+	}
+
 	& .clip-title {
 		display:inline-flex;
 	}
@@ -98,9 +103,9 @@ export const Style = styled.div`
 		margin-bottom: .5rem;
 		text-align: center;
 		margin-right: .2rem;
-		padding: 7px 3px 2px 3px;
-		border: ${props => props.isclip ? `2px inset #dddddd` : `2px outset #dddddd`};
-		color: ${props => props.isclip ? `#aaaaaa` : `white`};
+		padding: 7px 2px 2px 3px;
+		border: ${props => props.sidebarisclip ? `2px inset #dddddd` : `2px outset #dddddd`};
+		color: ${props => props.sidebarisclip ? `#aaaaaa` : `white`};
 
 		p {
 			font-size: 12px;
@@ -121,9 +126,9 @@ export const Style = styled.div`
 		margin-bottom: .5rem;
 		text-align: center;
 		margin-right: .2rem;
-		padding: 7px 3px 2px 3px;
-		border: ${props => props.isclip ? `2px outset #dddddd` : `2px inset #dddddd`};
-		color: ${props => props.isclip ? `white` : `#aaaaaa`};
+		padding: 7px 2px 2px 3px;
+		border: ${props => props.sidebarisclip ? `2px outset #dddddd` : `2px inset #dddddd`};
+		color: ${props => props.sidebarisclip ? `white` : `#aaaaaa`};
 
 		p {
 			font-size: 12px;
@@ -169,7 +174,7 @@ export const Style = styled.div`
 
 		/* Handle */
 		::-webkit-scrollbar-thumb {
-			background: ${props => props.scrolldisabled ? `#AAAAAA` : props.isclip ? `var(--light-blue)` : `var(--navy-blue)`};
+			background: ${props => props.scrolldisabled ? `#AAAAAA` : props.sidebarisclip ? `var(--light-blue)` : `var(--navy-blue)`};
 			border-radius: 10px;
 		}
 

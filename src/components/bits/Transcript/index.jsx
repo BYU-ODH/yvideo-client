@@ -34,7 +34,7 @@ const Transcript = props => {
 		showTranscript,
 		isMobile,
 		scrollDisabled,
-		isClip,
+		sideBarIsClip,
 		parsedClips,
 		clipTitle,
 		clipId,
@@ -129,7 +129,7 @@ const Transcript = props => {
 	}
 
 	return (
-		<Style id='transcript' isclip={isClip} toggletranscript={toggleTranscript} style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
+		<Style id='transcript' sidebarisclip={sideBarIsClip} toggletranscript={toggleTranscript} style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>
@@ -144,17 +144,6 @@ const Transcript = props => {
 							onMouseLeave={() => toggleTip()} />
 						<hr className={`hr-sidebar`}/>
 
-						<i className='fa fa-film' onClick={() => handleClipToggle(`Clip`)}
-							onMouseEnter={e => handleShowTip(`clips-tab`,
-								{
-									x: e.target.getBoundingClientRect().x - 65,
-									y: e.target.getBoundingClientRect().y - 25,
-									width: e.currentTarget.offsetWidth,
-								})
-							}
-							onMouseLeave={() => toggleTip()} >
-							{ isClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }
-						</i>
 						<i className='fa fa-file-text-o' onClick={() => handleClipToggle()}
 							onMouseEnter={e => handleShowTip(`captions-tab`,
 								{
@@ -164,7 +153,20 @@ const Transcript = props => {
 								})
 							}
 							onMouseLeave={() => toggleTip()} >
-							{ !isClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }</i>
+							{ !sideBarIsClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }
+						</i>
+
+						<i className='fa fa-film' onClick={() => handleClipToggle(`Clip`)}
+							onMouseEnter={e => handleShowTip(`clips-tab`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={() => toggleTip()} >
+							{ sideBarIsClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }
+						</i>
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{
@@ -198,7 +200,7 @@ const Transcript = props => {
 					</>
 				}
 			</div>
-			{ isClip ?
+			{ sideBarIsClip ?
 				<>
 
 					<div className={isMobile ? `main-bar main-mobile` : `main-bar`}>
@@ -224,9 +226,7 @@ const Transcript = props => {
 									Object.keys(parsedClips).map((item) => {
 										return (
 											<div key={item}>
-												<Link to={`/player/${clipId}/${item}`} onClick={() => {
-													window.params.reload(false)
-												}}>
+												<Link to={`/player/${clipId}/${item}`}>
 													<div className={`clip-item`}>
 														<p className={`clip-title`}>{clipTitle}: {new Date(parsedClips[item][`start`] * 1000).toISOString().substr(11, 8)} - {new Date(parsedClips[item][`end`] * 1000).toISOString().substr(11, 8)}</p>
 													</div>
