@@ -139,6 +139,7 @@ export const MenuIcon = styled.button`
 	width: 4rem;
 	border: .125rem solid white;
 	margin-right: 4rem;
+	margin-top: -1.3rem;
 	background: url(${menuIcon}) center no-repeat;
 
 	:hover {
