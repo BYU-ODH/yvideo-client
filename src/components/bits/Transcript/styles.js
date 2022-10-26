@@ -77,7 +77,6 @@ export const Style = styled.div`
 	}
 }
 
-
 	& .toggle-transcript {
 		position: relative;
 		margin-bottom: 15px;

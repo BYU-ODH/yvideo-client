@@ -216,6 +216,7 @@ const PlayerContainer = props => {
 	useEffect(() => {
 		if(clipTime.length > 0)
 			handleClipStart()
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [clipTime[0]])
 
 	useEffect(() => {
