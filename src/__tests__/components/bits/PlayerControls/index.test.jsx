@@ -21,6 +21,8 @@ const props = {
 		handleToggleSubtitles: jest.fn(),
 		handleOffSubtitles:	jest.fn(),
 		handleToggleTranscript: jest.fn(),
+		handleMouseOver: jest.fn(),
+		handleMouseOut: jest.fn(),
 
 		setShowSpeed: jest.fn(),
 		setIsCaption: jest.fn(),

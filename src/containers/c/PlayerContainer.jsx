@@ -75,6 +75,7 @@ const PlayerContainer = props => {
 	const [hasPausedClip, setHasPausedClip] = useState(false)
 	const [showSpeed, setShowSpeed] = useState(false)
 	const [hovering, setHovering] = useState(true)
+	const [controlsHovering, setControlsHovering] = useState(false)
 	const [started, setStarted] = useState(false)
 	const [mouseInactive, setMouseInactive] = useState(false)
 
@@ -250,12 +251,18 @@ const PlayerContainer = props => {
 		setDuration(duration)
 	}
 
-	const handleMouseOver = e => {
+	const handleMouseOver = element => {
 		setHovering(true)
+
+		if(element && element === `controls`)
+			setControlsHovering(true)
 	}
 
-	const handleMouseOut = e => {
+	const handleMouseOut = element => {
 		setHovering(false)
+
+		if(element && element === `controls`)
+			setControlsHovering(false)
 	}
 
 	const handlePlayPause = (playing) => {
@@ -421,7 +428,6 @@ const PlayerContainer = props => {
 	}
 
 	const handleToggleFullscreen = (fullscreen) => {
-
 		// find the element which contains subtitles and events placeholders
 		const elem = document.getElementById(`player-container`)
 		// if fullscreen is false we want to turn to full screen. Else, request cancelFullScreen.
@@ -695,6 +701,7 @@ const PlayerContainer = props => {
 		started,
 		mouseInactive,
 		timeoutArray,
+		controlsHovering,
 	}
 
 	const handlers = {
