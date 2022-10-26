@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import captionsLight from 'assets/captions_light.svg' // eslint-disable-line
 
 export const Style = styled.div`
 	position: ${props => props.isMobile ? `fixed` : `relative`};
@@ -23,8 +24,8 @@ export const Style = styled.div`
 		left: 0px;
 		width: 40px;
 		height: 100%;
-		/* background-color: rgba(5, 130, 202, 0.5); */
-		background-color: var(--light-blue);
+		// /* background-color: rgba(5, 130, 202, 0.5); */
+		background-color: ${props => props.sidebarisclip ? `var(--light-blue)` : props.toggletranscript ? `var(--navy-blue)` : `#444444`} !important;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -35,15 +36,121 @@ export const Style = styled.div`
 		}
 	}
 
+	& .clip-container {
+		display: flex;
+		flex-direction: column;
+
+		& .clip-header {
+			display: inline-flex;
+			margin: auto;
+			margin-bottom: 3rem;
+		}
+		& .hr-style {
+			width: 29.8rem;
+			position absolute;
+			text-align: center;
+			margin-left: 3rem;
+			top: 50px;
+		}
+	}
+	& .clip-item-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+	& .clip-item {
+		display: inline-flex;
+		box-shadow: 0px 2px 5px 1px rgb(0 0 0 / 30%);
+		font-size: 18px;
+		align-items: center;
+		margin-bottom: 1.5rem;
+		padding: 1rem;
+	}
+
+	& .clip-item:active {
+		transform: translateY(2px);
+		box-shadow: 0px 0px 5px 1px rgb(0 0 0 / 30%);
+	}
+
+	& .clip-title {
+		display:inline-flex;
+	}
+}
+
 	& .toggle-transcript {
 		position: relative;
-		margin-top: 5px;
+		margin-bottom: 15px;
 		width: 30px;
 		height: 30px;
 		transition: .5s ease;
 		transform: ${props => props.displayTranscript ? `rotate(-180deg)` : `rotate(0deg)`};
 	}
 
+	& i {
+		position: relative;
+		margin-top: 5px;
+		width: 30px;
+		height: 30px;
+		font-size: 2rem;
+		color: white;
+		margin-left: .1rem;
+		margin-bottom: -.3rem;
+		cursor: pointer;
+	}
+
+	.fa-film {
+		margin-bottom: .5rem;
+		text-align: center;
+		margin-right: .2rem;
+		padding: 7px 2px 2px 3px;
+		border: ${props => props.sidebarisclip ? `2px inset #dddddd` : `2px outset #dddddd`};
+		color: ${props => props.sidebarisclip ? `#aaaaaa` : `white`};
+
+		p {
+			font-size: 12px;
+			position: absolute;
+			color: var(--light-blue);
+			margin-left: 3.05rem;
+			margin-top: -1.5rem;
+		}
+	}
+
+	.fa-film:active {
+		border: 2px inset #dddddd;
+		color: #aaaaaa;
+		outline: 0;
+	}
+
+	.fa-file-text-o {
+		margin-bottom: .5rem;
+		text-align: center;
+		margin-right: .2rem;
+		padding: 7px 2px 2px 3px;
+		border: ${props => props.sidebarisclip ? `2px outset #dddddd` : `2px inset #dddddd`};
+		color: ${props => props.sidebarisclip ? `white` : `#aaaaaa`};
+
+		p {
+			font-size: 12px;
+			position: absolute;
+			color: var(--navy-blue);
+			margin-left: 3.05rem;
+			margin-top: -1.5rem;
+		}
+	}
+	.fa-file-text-o:active {
+		border: 2px inset #dddddd;
+		color: #aaaaaa;
+		outline: 0;
+	}
+
+	& .hr-sidebar {
+		width: 30px;
+		position : absolute;
+		top: 40px;
+		border-style: solid;
+		border-color: white;
+
+	}
 	& .main-bar {
 		visibility: ${props => props.displayTranscript ? `visible` : `hidden`};
 		opacity: ${props => props.displayTranscript ? 1 : 0};
@@ -66,7 +173,7 @@ export const Style = styled.div`
 
 		/* Handle */
 		::-webkit-scrollbar-thumb {
-			background: ${props => props.scrolldisabled ? `gray` : `var(--light-blue)`};
+			background: ${props => props.scrolldisabled ? `#AAAAAA` : props.sidebarisclip ? `var(--light-blue)` : `var(--navy-blue)`};
 			border-radius: 10px;
 		}
 
@@ -219,7 +326,8 @@ export const Style = styled.div`
 	}
 `
 export const Help = styled.img`
-	margin-top: 5px;
 	width: 25px;
 	height: 25px;
+	margin-top: 5px;
+	margin-right: 1px;
 `

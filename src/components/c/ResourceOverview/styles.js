@@ -170,7 +170,6 @@ export const TitleEdit = styled.input`
 	margin-left: 1rem;
 	box-sizing: border-box;
 	width: 40rem;
-
 `
 
 export const Title = styled.form`

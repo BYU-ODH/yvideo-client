@@ -42,7 +42,9 @@ const PlayerContainer = props => {
 	} = props
 
 	const params = useParams()
-
+	const [parsedClips, setParsedClips] = useState(``)
+	const [clipTitle, setClipTitle] = useState(``)
+	const [clipId, setClipId] = useState(``)
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
@@ -93,6 +95,7 @@ const PlayerContainer = props => {
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
 	const [isClip, setIsClip] = useState(false)
+	const [sideBarIsClip, setSideBarIsClip] = useState(false)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
@@ -208,7 +211,13 @@ const PlayerContainer = props => {
 		if (errorMessage !== errorPrev)
 			handleError()
 			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
+	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev, params])
+
+	useEffect(() => {
+		if(clipTime.length > 0)
+			handleClipStart()
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [clipTime[0]])
 
 	useEffect(() => {
 		arrayTracker.current = timeoutArray
@@ -224,6 +233,22 @@ const PlayerContainer = props => {
 			setToggleTranscript(true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
+	useLayoutEffect(() => {
+		if (contentCache[params.id]?.clips){
+			const clips = contentCache[params.id].clips
+			const tempClips = JSON.parse(clips)
+			setParsedClips(tempClips)
+		}
+		if (contentCache[params.id]?.name){
+			const tempClipTitle = contentCache[params.id].name
+			setClipTitle(tempClipTitle)
+		}
+		if (contentCache[params.id]?.id){
+			const tempClipId = contentCache[params.id].id
+			setClipId(tempClipId)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [contentCache])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -408,7 +433,7 @@ const PlayerContainer = props => {
 		// player.seekTo(played)
 		let newPlayed = 0
 		if (e) {
-			const scrubber = e.currentTarget.getBoundingClientRect()
+			const scrubber = e.currentTarget?.getBoundingClientRect()
 			if (scrubber.width !== 0)
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
 
@@ -482,10 +507,10 @@ const PlayerContainer = props => {
 	const handleSubsObj = () => {
 		if(displaySubtitles && duration) {
 			let temp = {}
-			const navbarHeight = document.getElementById(`navbar`).getBoundingClientRect().height
+			const navbarHeight = document.getElementById(`navbar`)?.getBoundingClientRect().height
 			for (const i in displaySubtitles.content) {
 				const numIndex = parseFloat(i)
-				const elementYPos = document.getElementById(`t-row-${i}`).getBoundingClientRect().y
+				const elementYPos = document.getElementById(`t-row-${i}`)?.getBoundingClientRect().y
 
 				temp = handleTempObj(temp, numIndex, navbarHeight, elementYPos)
 			}
@@ -510,7 +535,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleTempObj = (temp, loopIndex, navbarHeight, yPos) => {
-		const containerHeightFourth = document.getElementById(`subtitles-container`).getBoundingClientRect().height * .25
+		const containerHeightFourth = document.getElementById(`subtitles-container`)?.getBoundingClientRect().height * .25
 		return (
 			{...temp,
 				[loopIndex]: {
@@ -549,11 +574,17 @@ const PlayerContainer = props => {
 		})
 		errorSync()
 	}
+	const handleClipToggle = (clipOrTranscript) => {
+		if (clipOrTranscript === `Clip`)
+			setSideBarIsClip(true)
+		else
+			setSideBarIsClip(false)
+	}
 	const handleToggleTranscript = () => {
 		toggleTip()
 		setToggleTranscript(!toggleTranscript)
+		setSideBarIsClip(false)
 	}
-
 	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
 		if(displaySubtitles && subtitleTextIndex !== undefined){
@@ -692,11 +723,15 @@ const PlayerContainer = props => {
 		censorActive,
 		clipTime,
 		isClip,
+		sideBarIsClip,
 		isLandscape,
 		hasPausedClip,
 		events,
 		showSpeed,
 		scrollDisabled,
+		parsedClips,
+		clipTitle,
+		clipId,
 		progressEntered,
 		started,
 		mouseInactive,
@@ -743,6 +778,7 @@ const PlayerContainer = props => {
 		handleChangeSpeed,
 		handleChangeCaption,
 		checkBrowser,
+		handleClipToggle,
 		handleMouseMoved,
 	}
 
