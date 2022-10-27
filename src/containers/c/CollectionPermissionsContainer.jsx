@@ -6,10 +6,13 @@ import services, { interfaceService } from 'services'
 import { CollectionPermissions } from 'components'
 
 import AddBatchNetidsContainer from 'components/modals/containers/AddBatchNetidsContainer'
-import { validateDept, validateCourse, validateSection } from 'components/common/courseValidation'
+import {
+	validateDept,
+	validateCourse,
+	validateSection,
+} from 'components/common/courseValidation'
 
-const CollectionPermissionsContainer = props => {
-
+const CollectionPermissionsContainer = (props) => {
 	const { roleEndpoints } = services.collectionService
 
 	const {
@@ -38,8 +41,12 @@ const CollectionPermissionsContainer = props => {
 		username: ``,
 		roles: 1,
 	})
-	
-	const [disabled, setDisable] = useState(true)
+
+	const [disabled, setDisabled] = useState({
+		dept: true,
+		course: true,
+		section: true,
+	})
 	const [disabledUser, setDisableUser] = useState(true)
 	const [disabledTA, setDisableTA] = useState(true)
 	const [isLoading, setIsLoading] = useState(false)
@@ -50,30 +57,43 @@ const CollectionPermissionsContainer = props => {
 	const [isSectionValid, setIsSectionValid] = useState(true)
 
 	useEffect(() => {
-
-		if(isEdited){
+		if (isEdited) {
 			getCollectionInfo(collection.id)
 			setIsEdited(false)
 		}
 
-		if(isLoading === true) {
+		if (isLoading === true) {
 			setTimeout(() => {
 				setIsLoading(false)
 			}, 100)
-		} else
-			getCollectionInfo(collection.id)
-
-	}, [collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
+		} else getCollectionInfo(collection.id)
+	}, [
+		collection.id,
+		getCollectionInfo,
+		updateCollectionPermissions,
+		users,
+		courses,
+		collection.public,
+		isEdited,
+		isLoading,
+	])
 
 	const handlers = {
-		makePublic: e => {
+		makePublic: (e) => {
 			e.preventDefault()
-			if(collection.public !== undefined) updateCollectionStatus(collection.id, `public`)
+			if (collection.public !== undefined)
+				updateCollectionStatus(collection.id, `public`)
 			setIsEdited(true)
 		},
-		handleDepartmentChange: e => {
-			const isDeptValid = validateDept(e.target.value.trim().toUpperCase())
+		handleDepartmentChange: (e) => {
+			const isDeptValid = validateDept(
+				e.target.value.trim().toUpperCase()
+			)
 			setIsDeptValid(isDeptValid)
+			setDisabled({
+				...disabled,
+				dept: false,
+			})
 
 			setCourse({
 				...course,
@@ -81,23 +101,36 @@ const CollectionPermissionsContainer = props => {
 			})
 			setIsEdited(true)
 		},
-		handleCatalogChange: e => {
-			const isCourseValid = validateCourse(e.target.value.trim().toUpperCase())
+		handleCatalogChange: (e) => {
+			const isCourseValid = validateCourse(
+				e.target.value.trim().toUpperCase()
+			)
 			setIsCourseValid(isCourseValid)
+			if (isCourseValid) {
+				setDisabled({
+					...disabled,
+					course: false,
+				})
+			} else {
+				setDisabled({
+					...disabled,
+					course: true,
+				})
+			}
+
 			setCourse({
 				...course,
 				catalog: e.target.value.toUpperCase(),
 			})
 			setIsEdited(true)
 		},
-		handleCatalogBlur: e => {
+		handleCatalogBlur: (e) => {
 			let catalog = e.target.value
 			let courseLength = 3
-			if (catalog.includes(`r`) || catalog.includes(`R`))
-				courseLength = 4
+			if (catalog.includes(`r`) || catalog.includes(`R`)) courseLength = 4
 
-			if(catalog.length < courseLength && catalog.length !== 0) {
-				for(let i = catalog.length; i < courseLength; i++)
+			if (catalog.length < courseLength && catalog.length !== 0) {
+				for (let i = catalog.length; i < courseLength; i++)
 					catalog = `0${catalog}`
 
 				setCourse({
@@ -106,25 +139,32 @@ const CollectionPermissionsContainer = props => {
 				})
 			}
 		},
-		handleSectionChange: e => {
-			const isSectionValid = validateSection(e.target.value.trim().toUpperCase())
+		handleSectionChange: (e) => {
+			const isSectionValid = validateSection(
+				e.target.value.trim().toUpperCase()
+			)
 			setIsSectionValid(isSectionValid)
-			if(e.target.value.length > 0)
-				setDisable(false)
-			else
-				setDisable(true)
-
+			if (isSectionValid) {
+				setDisabled({
+					...disabled,
+					section: false,
+				})
+			} else {
+				setDisabled({
+					...disabled,
+					section: true,
+				})
+			}
 			setCourse({
 				...course,
 				section: e.target.value,
 			})
 			setIsEdited(true)
 		},
-		handleSectionBlur: e => {
+		handleSectionBlur: (e) => {
 			let section = e.target.value
-			if(section.length < 3 && section.length !== 0) {
-				for(let i = section.length; i < 3; i++)
-					section = `0${section}`
+			if (section.length < 3 && section.length !== 0) {
+				for (let i = section.length; i < 3; i++) section = `0${section}`
 
 				setCourse({
 					...course,
@@ -132,11 +172,9 @@ const CollectionPermissionsContainer = props => {
 				})
 			}
 		},
-		handleUserTAChange: e => {
-			if(e.target.value.length > 1)
-				setDisableTA(false)
-			else
-				setDisableTA(true)
+		handleUserTAChange: (e) => {
+			if (e.target.value.length > 1) setDisableTA(false)
+			else setDisableTA(true)
 
 			setUserTA({
 				...userTA,
@@ -144,11 +182,9 @@ const CollectionPermissionsContainer = props => {
 			})
 			setIsEdited(true)
 		},
-		handleUserChange: e => {
-			if(e.target.value.length > 1)
-				setDisableUser(false)
-			else
-				setDisableUser(true)
+		handleUserChange: (e) => {
+			if (e.target.value.length > 1) setDisableUser(false)
+			else setDisableUser(true)
 
 			setUser({
 				...user,
@@ -156,11 +192,15 @@ const CollectionPermissionsContainer = props => {
 			})
 			setIsEdited(true)
 		},
-		addCourse: e => {
+		addCourse: (e) => {
 			e.preventDefault()
 
-			updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
-			setDisable(true)
+			updateCollectionPermissions(
+				collection.id,
+				roleEndpoints.addCourse,
+				course
+			)
+			setDisabled(true)
 			setCourse({
 				...course,
 				department: ``,
@@ -169,13 +209,21 @@ const CollectionPermissionsContainer = props => {
 			})
 			setIsEdited(true)
 		},
-		removeCourse: id => {
-			updateCollectionPermissions(collection.id, roleEndpoints.removeCourse, id)
+		removeCourse: (id) => {
+			updateCollectionPermissions(
+				collection.id,
+				roleEndpoints.removeCourse,
+				id
+			)
 			setIsEdited(true)
 		},
-		addUser: e => {
+		addUser: (e) => {
 			e.preventDefault()
-			updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
+			updateCollectionPermissions(
+				collection.id,
+				roleEndpoints.addUser,
+				user
+			)
 			setDisableUser(true)
 			setUser({
 				...user,
@@ -183,8 +231,7 @@ const CollectionPermissionsContainer = props => {
 			})
 			setIsEdited(true)
 		},
-		addTA: e => {
-
+		addTA: (e) => {
 			/*
 				account-type
 				0 = admin
@@ -202,7 +249,11 @@ const CollectionPermissionsContainer = props => {
 			*/
 
 			e.preventDefault()
-			updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
+			updateCollectionPermissions(
+				collection.id,
+				roleEndpoints.addUser,
+				userTA
+			)
 			setDisableTA(true)
 			setUserTA({
 				...userTA,
@@ -210,8 +261,12 @@ const CollectionPermissionsContainer = props => {
 			})
 			setIsEdited(true)
 		},
-		removeUser: value => {
-			updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
+		removeUser: (value) => {
+			updateCollectionPermissions(
+				collection.id,
+				roleEndpoints.removeUser,
+				{ username: value }
+			)
 			setIsEdited(true)
 			setNumUsers(numUsers - 1)
 		},
@@ -228,8 +283,8 @@ const CollectionPermissionsContainer = props => {
 		collection,
 		user,
 		course,
-		userTA: users.filter(user => user[`account-role`] === 1),
-		users: users.filter(user => user[`account-role`] === 2),
+		userTA: users.filter((user) => user[`account-role`] === 1),
+		users: users.filter((user) => user[`account-role`] === 2),
 		courses,
 		disabled,
 		disabledUser,
@@ -244,7 +299,7 @@ const CollectionPermissionsContainer = props => {
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStoreToProps = store => ({
+const mapStoreToProps = (store) => ({
 	loggedinUser: store.authStore.user,
 	users: store.collectionStore.users,
 	courses: store.collectionStore.courses,
@@ -253,9 +308,13 @@ const mapStoreToProps = store => ({
 const mapDispatchToProps = {
 	getCollectionInfo: services.collectionService.getCollectionInfo,
 	getCollections: services.collectionService.getCollections,
-	updateCollectionPermissions: services.collectionService.updateCollectionPermissions,
+	updateCollectionPermissions:
+		services.collectionService.updateCollectionPermissions,
 	toggleModal: interfaceService.toggleModal,
 	updateCollectionStatus: services.collectionService.updateCollectionStatus,
 }
 
-export default connect(mapStoreToProps, mapDispatchToProps)(CollectionPermissionsContainer)
+export default connect(
+	mapStoreToProps,
+	mapDispatchToProps
+)(CollectionPermissionsContainer)
