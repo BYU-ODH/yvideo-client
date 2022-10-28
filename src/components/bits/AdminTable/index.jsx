@@ -195,7 +195,7 @@ const AdminTable = props => {
 			return (
 				<ul>
 					<li>
-						<Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link>
+						<Link to={`/lab-assistant-manager/${item.id}`}>Collections</Link>
 					</li>
 					<li>
 						<button className='userEdit' onClick={handleEdit}>Edit</button>
@@ -210,7 +210,7 @@ const AdminTable = props => {
 			return (
 				<ul>
 					<li>
-						<Link to={`/lab-assistant-manager/${item.owner}/${item.id}`} target='_blank'>View/Edit</Link>
+						<Link to={`/lab-assistant-manager/${item.owner}/${item.id}`}>View/Edit</Link>
 					</li>
 					<li>
 						<button className='collectionsDelete' onClick={handleConfirmDelete}>Delete</button>
@@ -222,7 +222,7 @@ const AdminTable = props => {
 			return (
 				<ul>
 					<li>
-						<Link to={`/player/${item.id}`} target='_blank'>View</Link>
+						<Link to={`/player/${item.id}`}>View</Link>
 					</li>
 					<li>
 						<Link to={`/videoeditor/${item.id}`}>Edit</Link>
