@@ -28,7 +28,7 @@ const LabAssistantTable = props => {
 					{data.map((item, index) =>
 						<tr key={item.id}>
 							<td data-testid='name'>{item.name}</td>
-							<td className='view-collections'><Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link></td>
+							<td className='view-collections'><Link to={`/lab-assistant-manager/${item.id}`}>Collections</Link></td>
 						</tr>,
 					)}
 				</tbody>
