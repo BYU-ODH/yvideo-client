@@ -1,6 +1,7 @@
 import styled, {css} from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
+import previewIcon from 'assets/previewIcon.svg'
 
 const Style = styled.div`
 	padding: 2rem;
@@ -94,6 +95,24 @@ export const RemoveIcon = styled.span`
 	background: url(${trashIcon}) center no-repeat;
 	height: 2.5rem;
 	width: 2rem;
+`
+
+export const PreviewIcon = styled.span`
+	background: url(${previewIcon}) center no-repeat;
+	height: 1.7rem;
+	width: 2rem;
+`
+export const PreviewButton = styled.button`
+	display: flex;
+	align-items: center !important;
+	justify-content: center !important;
+	color: #3CB371;
+	${TextButton};
+	text-align: center !important;
+
+	& > span {
+		margin-right: .1rem;
+	}
 `
 
 export const RemoveButton = styled.button`

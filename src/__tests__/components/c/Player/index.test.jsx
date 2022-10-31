@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import * as testutil from '../../../testutil/testutil'
 
 const viewstate = {
-	ref: `ref`,
+	ref: { seekto: jest.fn() },
 	url: `url`,
 	playing: true,
 	playbackRate: 10,
@@ -51,6 +51,8 @@ const handlers = {
 	handleSeekChange: jest.fn(),
 	handlePlaybackRateChange: jest.fn(),
 	handleBlank: jest.fn(),
+	handleStart: jest.fn(),
+	handleClipStart: jest.fn(),
 	handleMuted: jest.fn(),
 	handleUnmuted: jest.fn(),
 	handleShowComment: jest.fn(),
@@ -61,6 +63,7 @@ const handlers = {
 	toggleTip: jest.fn(),
 	setCensorActive: jest.fn(),
 	setCensorPosition: jest.fn(),
+	checkBrowser: jest.fn(),
 }
 
 const props = {

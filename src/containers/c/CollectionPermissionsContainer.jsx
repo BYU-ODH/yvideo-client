@@ -120,10 +120,11 @@ const CollectionPermissionsContainer = props => {
 	const handleCatalogBlur = e => {
 		let catalog = e.target.value
 		let courseLength = 3
-		if (catalog.includes(`r`) || catalog.includes(`R`)) courseLength = 4
+		if (catalog.includes(`r`) || catalog.includes(`R`))
+			courseLength = 4
 
-		if (catalog.length < courseLength && catalog.length !== 0) {
-			for (let i = catalog.length; i < courseLength; i++)
+		if(catalog.length < courseLength && catalog.length !== 0) {
+			for(let i = catalog.length; i < courseLength; i++)
 				catalog = `0${catalog}`
 
 			setCourse({
@@ -169,8 +170,10 @@ const CollectionPermissionsContainer = props => {
 	}
 
 	const handleUserTAChange = e => {
-		if (e.target.value.length > 1) setDisableTA(false)
-		else setDisableTA(true)
+		if(e.target.value.length > 1)
+			setDisableTA(false)
+		else
+			setDisableTA(true)
 
 		setUserTA({
 			...userTA,
@@ -180,8 +183,10 @@ const CollectionPermissionsContainer = props => {
 	}
 
 	const handleUserChange = e => {
-		if (e.target.value.length > 1) setDisableUser(false)
-		else setDisableUser(true)
+		if(e.target.value.length > 1)
+			setDisableUser(false)
+		else
+			setDisableUser(true)
 
 		setUser({
 			...user,
@@ -193,11 +198,7 @@ const CollectionPermissionsContainer = props => {
 	const addCourse = e => {
 		e.preventDefault()
 
-		updateCollectionPermissions(
-			collection.id,
-			roleEndpoints.addCourse,
-			course
-		)
+		updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
 		setDisabled(true)
 		setCourse({
 			...course,
@@ -209,21 +210,13 @@ const CollectionPermissionsContainer = props => {
 	}
 
 	const removeCourse = id => {
-		updateCollectionPermissions(
-			collection.id,
-			roleEndpoints.removeCourse,
-			id
-		)
+		updateCollectionPermissions(collection.id, roleEndpoints.removeCourse, id)
 		setIsEdited(true)
 	}
 
 	const addUser = e => {
 		e.preventDefault()
-		updateCollectionPermissions(
-			collection.id,
-			roleEndpoints.addUser,
-			user
-		)
+		updateCollectionPermissions(collection.id, roleEndpoints.addUser, user)
 		setDisableUser(true)
 		setUser({
 			...user,
@@ -250,11 +243,7 @@ const CollectionPermissionsContainer = props => {
 		*/
 
 		e.preventDefault()
-		updateCollectionPermissions(
-			collection.id,
-			roleEndpoints.addUser,
-			userTA
-		)
+		updateCollectionPermissions(collection.id, roleEndpoints.addUser, userTA)
 		setDisableTA(true)
 		setUserTA({
 			...userTA,
@@ -264,11 +253,7 @@ const CollectionPermissionsContainer = props => {
 	}
 
 	const removeUser = value => {
-		updateCollectionPermissions(
-			collection.id,
-			roleEndpoints.removeUser,
-			{ username: value }
-		)
+		updateCollectionPermissions(collection.id, roleEndpoints.removeUser, {username: value})
 		setIsEdited(true)
 		setNumUsers(numUsers - 1)
 	}
@@ -296,6 +281,23 @@ const CollectionPermissionsContainer = props => {
 		isDeptValid,
 		isCourseValid,
 		isSectionValid,
+	}
+
+	const handlers = {
+		makePublic,
+		handleDepartmentChange,
+		handleCatalogChange,
+		handleCatalogBlur,
+		handleSectionChange,
+		handleSectionBlur,
+		handleUserTAChange,
+		handleUserChange,
+		addCourse,
+		removeCourse,
+		addUser,
+		addTA,
+		removeUser,
+		addBatchNetids,
 	}
 
 	const handlers = {

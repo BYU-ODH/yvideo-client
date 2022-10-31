@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -18,7 +18,6 @@ const AdminTable = props => {
 		data,
 		mousePos,
 		isEdit,
-		collectionUsers,
 	} = props.viewstate
 
 	const {
@@ -27,7 +26,6 @@ const AdminTable = props => {
 		toggleMenu,
 		userRoleSave,
 		roleChange,
-		getUserFunc,
 	} = props.handlers
 
 	const {
@@ -35,13 +33,7 @@ const AdminTable = props => {
 		toggleTip,
 	} = props.tipHandlers
 
-	const [sortType, setSortType] = useState({id: ``, reverse: false})
-
-	useEffect(() => {
-		if(searchCategory === `Collections`)
-			getUserFunc()
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data])
+	const [sortOrder, setSortOrder] = useState({id: ``, reverse: false})
 
 	if (!data.length || data[0] === undefined) return null
 
@@ -169,12 +161,16 @@ const AdminTable = props => {
 			return (
 				<>
 					<td>{item.name}</td>
-					<td>
-						{
-							`${collectionUsers?.[i] === `undefined` ? collectionUsers[i] : collectionUsers[i]?.name}
-							${collectionUsers?.[i] !== `undefined` ? `(${item.username})` : ``}`
-						}
-					</td>
+					{item[`account-name`] !== `` ?
+						<td>
+							{item[`account-name`]}
+							{` (${item.username})`}
+						</td>
+						:
+						<td>
+							undefined
+						</td>
+					}
 				</>
 			)
 		case `Content`:
@@ -199,7 +195,7 @@ const AdminTable = props => {
 			return (
 				<ul>
 					<li>
-						<Link to={`/lab-assistant-manager/${item.id}`} target='_blank'>Collections</Link>
+						<Link to={`/lab-assistant-manager/${item.id}`}>Collections</Link>
 					</li>
 					<li>
 						<button className='userEdit' onClick={handleEdit}>Edit</button>
@@ -214,7 +210,7 @@ const AdminTable = props => {
 			return (
 				<ul>
 					<li>
-						<Link to={`/lab-assistant-manager/${item.owner}/${item.id}`} target='_blank'>View/Edit</Link>
+						<Link to={`/lab-assistant-manager/${item.owner}/${item.id}`}>View/Edit</Link>
 					</li>
 					<li>
 						<button className='collectionsDelete' onClick={handleConfirmDelete}>Delete</button>
@@ -226,7 +222,7 @@ const AdminTable = props => {
 			return (
 				<ul>
 					<li>
-						<Link to={`/player/${item.id}`} target='_blank'>View</Link>
+						<Link to={`/player/${item.id}`}>View</Link>
 					</li>
 					<li>
 						<Link to={`/videoeditor/${item.id}`}>Edit</Link>
@@ -242,64 +238,64 @@ const AdminTable = props => {
 		}
 	}
 
-	const isReverse = (sort) => {
-		if (sortType.id === sort && sortType.reverse === false){
-			setSortType({
-				id: sort,
+	const isReverse = (sortType) => {
+		if (sortOrder.id === sortType && sortOrder.reverse === false){
+			setSortOrder({
+				id: sortType,
 				reverse: true,
 			})
 			return true
 		} else {
-			setSortType({
-				id: sort,
+			setSortOrder({
+				id: sortType,
 				reverse: false,
 			})
 			return false
 		}
 	}
 
-	const sort = (data, sort) => {
+	const sort = (data, sortType) => {
 		data.sort((a, b) => {
-			switch (sort) {
+			switch (sortType) {
 			case `Name`:
 				return (
-					isReverse(sort) ?
+					isReverse(sortType) ?
 						a.name.localeCompare(b.name, {sensitivity: `base`})
 						:
 						b.name.localeCompare(a.name, {sensitivity: `base`})
 				)
 			case `NetID`:
 				return (
-					isReverse(sort) ?
+					isReverse(sortType) ?
 						a.username.localeCompare(b.username, {sensitivity: `base`})
 						:
 						b.username.localeCompare(a.username, {sensitivity: `base`})
 				)
 			case `Email`:
 				return (
-					isReverse(sort) ?
+					isReverse(sortType) ?
 						a.email.localeCompare(b.email, {sensitivity: `base`})
 						:
 						b.email.localeCompare(a.email, {sensitivity: `base`})
 				)
 			case `Owner`:
 				return (
-					isReverse(sort) ?
-						a.owner.localeCompare(b.owner, {sensitivity: `base`})
+					isReverse(sortType) ?
+						a.username.localeCompare(b.username, {sensitivity: `base`})
 						:
-						b.owner.localeCompare(a.owner, {sensitivity: `base`})
+						b.username.localeCompare(a.username, {sensitivity: `base`})
 				)
 			case `Roles`:
-				return isReverse(sort) ? a.roles - b.roles : b.roles - a.roles
+				return isReverse(sortType) ? a.roles - b.roles : b.roles - a.roles
 			case `Last Login`:
 				if(a.lastLogin === `na` && b.lastLogin !== `na`)
-					return isReverse(sort) ? 1 : 1
+					return isReverse(sortType) ? 1 : 1
 				else if(b.lastLogin === `na` && a.lastLogin !== `na`)
-					return isReverse(sort) ? -1 : -1
+					return isReverse(sortType) ? -1 : -1
 				else if(b.lastLogin === `na` && a.lastLogin === `na`)
-					return isReverse(sort) ? 0 : 0
+					return isReverse(sortType) ? 0 : 0
 				else {
-					return isReverse(sort) ?
+					return isReverse(sortType) ?
 						new Date(a.lastLogin) - new Date(b.lastLogin)
 						:
 						new Date(b.lastLogin) - new Date(a.lastLogin)
@@ -313,43 +309,40 @@ const AdminTable = props => {
 	}
 
 	return (
-		searchCategory !== `Collections` || collectionUsers?.length === data?.length ?
-			<Style>
-				<Table>
-					<thead>
-						<tr>
-							{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={() => sort(data, header.title)}/></th>)}
-							<th/>
-						</tr>
-					</thead>
-					<tbody>
-						{data.map(
-							(item, i) => <tr key={item.id}>
-								{ printTableValues(searchCategory, item, i) }
-								<td>
-									<ItemEdit
-										data-testid='item-edit'
-										onClick={toggleMenu(item.id)}
-										onMouseEnter={e => handleShowTip(`actions`,
-											{
-												x: e.target.getBoundingClientRect().x + 40,
-												y: e.target.getBoundingClientRect().y + 15,
-												width: e.currentTarget.offsetWidth + 20,
-											})
-										}
-										onMouseLeave={() => toggleTip()}
-									></ItemEdit>
-								</td>
-							</tr>,
-						)}
-					</tbody>
-				</Table>
-				{menuActive &&
-					<ItemMenu mousePos={mousePos} onMouseLeave={toggleMenu()}>{menuOptions(searchCategory, menuItemInfo)}</ItemMenu>
-				}
-			</Style>
-			:
-			null
+		<Style>
+			<Table>
+				<thead>
+					<tr>
+						{headers[searchCategory].columns.map((header, index) => <th className='headers' key={index}>{header.title}{header.filter && <Filter />}<Sort className='sorting-button' data-testid='sorting-button' onClick={() => sort(data, header.title)}/></th>)}
+						<th/>
+					</tr>
+				</thead>
+				<tbody>
+					{data.map(
+						(item, i) => <tr key={item.id}>
+							{ printTableValues(searchCategory, item, i) }
+							<td>
+								<ItemEdit
+									data-testid='item-edit'
+									onClick={toggleMenu(item.id)}
+									onMouseEnter={e => handleShowTip(`actions`,
+										{
+											x: e.target.getBoundingClientRect().x + 40,
+											y: e.target.getBoundingClientRect().y + 15,
+											width: e.currentTarget.offsetWidth + 20,
+										})
+									}
+									onMouseLeave={() => toggleTip()}
+								></ItemEdit>
+							</td>
+						</tr>,
+					)}
+				</tbody>
+			</Table>
+			{menuActive &&
+				<ItemMenu mousePos={mousePos} onMouseLeave={toggleMenu()}>{menuOptions(searchCategory, menuItemInfo)}</ItemMenu>
+			}
+		</Style>
 	)
 }
 

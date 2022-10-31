@@ -2,9 +2,10 @@ import styled from 'styled-components'
 
 export const Style = styled.div`
 
-	margin-top: 8.4rem;
-	height: calc(100vh - 8.4rem);
+	margin-top: 6rem;
+	height: calc(100vh - 6rem);
 	overflow: hidden;
+	cursor: ${props => !props.mouseInactive || !props.playing || props.controlsHovering ? `default` : `none`};
 
 	& > div {
 
@@ -12,7 +13,7 @@ export const Style = styled.div`
 		& .videoBox,
 		& .mediaPlayer {
 			width: 100% !important;
-			height: 70vh;
+			height: 90vh;
 		}
 		& .sliderContainer {
 			padding-bottom: 0 !important;
@@ -173,7 +174,7 @@ export const PlayButton = styled.img`
 	cursor: pointer;
 	border-radius: 50%;
 	z-index: 100;
-	opacity: ${props => props.hovering ? 1 : 0};
+	opacity: ${props => !props.started ? 1 : 0};
 	transition: opacity 0.5s ease-in-out;
 
 	@media screen and (max-width: 425px){
