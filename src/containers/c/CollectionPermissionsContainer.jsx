@@ -300,23 +300,6 @@ const CollectionPermissionsContainer = props => {
 		addBatchNetids,
 	}
 
-	const handlers = {
-		makePublic,
-		handleDepartmentChange,
-		handleCatalogChange,
-		handleCatalogBlur,
-		handleSectionChange,
-		handleSectionBlur,
-		handleUserTAChange,
-		handleUserChange,
-		addCourse,
-		removeCourse,
-		addUser,
-		addTA,
-		removeUser,
-		addBatchNetids,
-	}
-
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />
 }
 
