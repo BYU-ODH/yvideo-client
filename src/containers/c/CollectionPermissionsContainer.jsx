@@ -151,7 +151,7 @@ const CollectionPermissionsContainer = props => {
 		}
 		setCourse({
 			...course,
-			section: e.target.value,
+			section: e.target.value.toUpperCase(),
 		})
 		setIsEdited(true)
 	}
