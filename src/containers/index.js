@@ -9,7 +9,6 @@ import LabAssistantContainer from './c/LabAssistantContainer'
 import LabAssistantManageCollectionContainer from './c/LabAssistantManageCollectionContainer'
 import LabAssistantManagerContainer from './c/LabAssistantManagerContainer'
 import LandingContainer from './c/LandingContainer'
-import LoginContainer from './c/LoginContainer'
 import ManageCollectionContainer from './c/ManageCollectionContainer'
 import ManagerContainer from './c/ManagerContainer'
 import MenuContainer from './c/MenuContainer'
@@ -27,6 +26,7 @@ import BlockCollectionContainer from './c/BlockCollectionContainer'
 import ClipEditorContainer from './c/ClipEditorContainer'
 import PublicMoreListCollectionContainer from './c/PublicMoreListCollectionContainer'
 import VideoEditorContainer from './c/VideoEditorContainer'
+import PreviewFilesContainer from '../../src/components/modals/containers/PreviewFilesContainer'
 
 export {
 	AdminContainer,
@@ -40,7 +40,6 @@ export {
 	LabAssistantManageCollectionContainer,
 	LabAssistantManagerContainer,
 	LandingContainer,
-	LoginContainer,
 	ManageCollectionContainer,
 	ManagerContainer,
 	MenuContainer,
@@ -58,4 +57,5 @@ export {
 	ClipEditorContainer,
 	PublicMoreListCollectionContainer,
 	VideoEditorContainer,
+	PreviewFilesContainer,
 }

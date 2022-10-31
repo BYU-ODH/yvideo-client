@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
 import {
 	PublicMoreListCollectionContainer,
@@ -10,39 +10,38 @@ import {
 	Button,
 } from './styles'
 
-export default class MorePublicCollections extends PureComponent {
+const MorePublicCollections = props => {
 
-	render() {
+	const {
+		publicCollections,
+		ownerName,
+	} = props.viewstate
 
-		const {
-			publicCollections,
-			ownerName,
-		} = this.props.viewstate
+	const {
+		handleSubmit,
+		toggleModal,
+	} = props.handlers
 
-		const {
-			handleSubmit,
-			toggleModal,
-		} = this.props.handlers
-
-		return (
-			<Wrapper onSubmit={handleSubmit}>
-				{ownerName ?
-					<Title><h4>More Public Collections from:</h4> {ownerName}</Title>
-					: ``
+	return (
+		<Wrapper onSubmit={handleSubmit}>
+			{ownerName ?
+				<Title><h4>More Public Collections from:</h4> {ownerName}</Title>
+				: ``
+			}
+			<>
+				{
+					Object.keys(publicCollections).map(key =>
+						<PublicMoreListCollectionContainer key={key} collection={publicCollections[key]} content={publicCollections[key].content}/>
+						,
+					)
 				}
-				<>
-					{
-						Object.keys(publicCollections).map(key =>
-							<PublicMoreListCollectionContainer key={key} collection={publicCollections[key]} content={publicCollections[key].content}/>
-							,
-						)
-					}
-				</>
+			</>
 
-				<div>
-					<Button id='More-Public-Collections-Exit' type='button' onClick={toggleModal}>Exit</Button>
-				</div>
-			</Wrapper>
-		)
-	}
+			<div>
+				<Button id='More-Public-Collections-Exit' type='button' onClick={toggleModal}>Exit</Button>
+			</div>
+		</Wrapper>
+	)
 }
+
+export default MorePublicCollections

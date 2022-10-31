@@ -124,13 +124,13 @@ const CollectionPermissions = props => {
 							placeholder='Dept - Ex: ENGL'
 							required
 						/>
-						{isDeptValid === false && (
+						{isDeptValid === false &&
 							<p className='warning'>
 								Please enter a valid department. Disregard
 								this error if this department ID is what you
 								want.
 							</p>
-						)}
+						}
 
 						<CatalogInput
 							isCourseValid={isCourseValid}
@@ -146,12 +146,12 @@ const CollectionPermissions = props => {
 							placeholder='Course - Ex: 101'
 							required
 						/>
-						{isCourseValid === false && (
+						{isCourseValid === false &&
 							<p className='error'>
 								Please enter a valid course. Must be 3
 								numbers and an optional letter.
 							</p>
-						)}
+						}
 
 						<SectionInput
 							isSectionValid={isSectionValid}
@@ -167,12 +167,12 @@ const CollectionPermissions = props => {
 							placeholder='Section - Ex: 001'
 							required
 						/>
-						{isSectionValid === false && (
+						{isSectionValid === false &&
 							<p className='error'>
 								Please enter a valid section. Must be three
 								numbers.
 							</p>
-						)}
+						}
 						<AddButton
 							className='add-course-button'
 							type='submit'
@@ -195,17 +195,12 @@ const CollectionPermissions = props => {
 						</thead>
 						<tbody>
 							{courses.length > 0 ?
-								courses.map((element, index) => (
+								courses.map((element, index) =>
 									<tr key={index}>
 										<td>{element[`department`]}</td>
-										<td>
-											{element[`catalog-number`]}
-										</td>
-										<td>
-											{element[`section-number`]}
-										</td>
-										<td
-											onClick={() => removeCourse(element[`id`])}>
+										<td>{element[`catalog-number`]}</td>
+										<td>{element[`section-number`]}</td>
+										<td onClick={() => removeCourse(element[`id`])}>
 											<img
 												src={removeIcon}
 												alt=''
@@ -213,7 +208,7 @@ const CollectionPermissions = props => {
 											/>
 										</td>
 									</tr>
-								))
+								)
 								: null}
 						</tbody>
 					</Table>
@@ -222,10 +217,7 @@ const CollectionPermissions = props => {
 				<UserListTable>
 					<UserList id='user-table'>
 						<h4>Instructors and TAs</h4>
-						<Search
-							className='faculty-submit'
-							onSubmit={addTA}
-						>
+						<Search className='faculty-submit' onSubmit={addTA}>
 							<input
 								className='faculty-input'
 								type='search'
@@ -233,11 +225,7 @@ const CollectionPermissions = props => {
 								onChange={handleUserTAChange}
 								value={userTA.username}
 							/>
-							<AddButton
-								className='add-faculty-button'
-								type='submit'
-								disabled={disabledTA}
-							>
+							<AddButton className='add-faculty-button' type='submit' disabled={disabledTA}>
 								Add
 							</AddButton>
 						</Search>
@@ -259,7 +247,7 @@ const CollectionPermissions = props => {
 							</thead>
 							<tbody>
 								{userTA.length > 0 ?
-									userTA.map((element, index) => (
+									userTA.map((element, index) =>
 										<tr key={index}>
 											<td>{element[`username`]}</td>
 											<td>{element[`account-name`]}</td>
@@ -280,7 +268,7 @@ const CollectionPermissions = props => {
 												/>
 											</td>
 										</tr>
-									))
+									)
 									:
 									<></>
 								}
@@ -291,10 +279,7 @@ const CollectionPermissions = props => {
 						<TableHeader>
 							<h4>Guests (read-only)</h4>
 							<div>
-								<Search
-									className='faculty-submit'
-									onSubmit={addUser}
-								>
+								<Search className='faculty-submit' onSubmit={addUser}>
 									<input
 										className='faculty-input'
 										type='search'
@@ -302,18 +287,11 @@ const CollectionPermissions = props => {
 										onChange={handleUserChange}
 										value={username}
 									/>
-									<AddButton
-										className='add-faculty-button'
-										type='submit'
-										disabled={disabledUser}
-									>
+									<AddButton className='add-faculty-button' type='submit' disabled={disabledUser}>
 										Add
 									</AddButton>
 								</Search>
-								<AddManyButton
-									type='button'
-									onClick={addBatchNetids}
-								>
+								<AddManyButton type='button' onClick={addBatchNetids}>
 									Add many...
 								</AddManyButton>
 							</div>
@@ -336,7 +314,7 @@ const CollectionPermissions = props => {
 							</thead>
 							<tbody>
 								{users.length > 0 ?
-									users.map((element, index) => (
+									users.map((element, index) =>
 										<tr key={index}>
 											<td>{element[`username`]}</td>
 											<td>{element[`account-name`]}</td>
@@ -358,7 +336,7 @@ const CollectionPermissions = props => {
 												/>
 											</td>
 										</tr>
-									))
+									)
 									:
 									<></>
 								}

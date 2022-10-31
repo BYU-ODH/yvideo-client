@@ -5,9 +5,9 @@ import {
 	interfaceService,
 } from 'services'
 
-import Error from 'components/modals/components/Error'
+import ErrorModal from 'components/modals/components/ErrorModal'
 
-const ErrorContainer = props => {
+const ErrorModalContainer = props => {
 
 	const {
 		toggleModal,
@@ -22,7 +22,7 @@ const ErrorContainer = props => {
 		toggleModal,
 	}
 
-	return <Error viewstate={viewstate} handlers={handlers}/>
+	return <ErrorModal viewstate={viewstate} handlers={handlers}/>
 }
 
 const mapStateToProps = store => ({
@@ -35,4 +35,4 @@ const mapDispatchToProps = {
 	toggleModal: interfaceService.toggleModal,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ErrorContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorModalContainer)

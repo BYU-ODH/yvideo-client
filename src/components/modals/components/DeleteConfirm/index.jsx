@@ -1,36 +1,35 @@
+import React from 'react'
+
 import Style, { Button } from './styles'
 
-import React, { Component } from 'react'
+const DeleteConfirm = props => {
 
-export default class DeleteConfirm extends Component {
+	const {
+		title,
+		type,
+	} = props.viewstate
 
-	render() {
+	const {
+		handleRemoveItem,
+		toggleModal,
+	} = props.handlers
 
-		const {
-			title,
-			type,
-		} = this.props.viewstate
-
-		const {
-			handleRemoveItem,
-			toggleModal,
-		} = this.props.handlers
-
-		return (
-			<>
-				{
-					<Style>
-						<div className={`delete-div`}>
-							<h2>Are you sure you want to delete {type}: <u>{title}</u>? It cannot be recovered</h2>
-							<div className={`delete-buttons`}>
-								<Button id='confirm-delete-cancel' className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
-								<Button id='confirm-delete' className='url-content-delete' type='submit' onClick={handleRemoveItem}>Delete</Button>
-							</div>
+	return (
+		<>
+			{
+				<Style>
+					<div className={`delete-div`}>
+						<h2>Are you sure you want to delete {type}: <u>{title}</u>? It cannot be recovered</h2>
+						<div className={`delete-buttons`}>
+							<Button id='confirm-delete-cancel' className='url-content-cancel' type='button' onClick={toggleModal}>Cancel</Button>
+							<Button id='confirm-delete' className='url-content-delete' type='submit' onClick={handleRemoveItem}>Delete</Button>
 						</div>
-					</Style>
+					</div>
+				</Style>
 
-				}
-			</>
-		)
-	}
+			}
+		</>
+	)
 }
+
+export default DeleteConfirm

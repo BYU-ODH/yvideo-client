@@ -21,7 +21,6 @@ import {
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
 const Manager = props => {
-
 	const {
 		collection,
 		path,

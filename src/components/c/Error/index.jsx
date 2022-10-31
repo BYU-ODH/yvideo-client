@@ -1,31 +1,37 @@
-import React, { PureComponent } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { interfaceService } from 'services'
 
 import { SError, SLink } from './styles'
 
-class Error extends PureComponent {
-	componentDidMount = () => {
-		this.props.setLost(true)
-		this.props.setHeaderBorder(false)
-	}
+const Error = props => {
 
-	componentWillUnmount = () => {
-		this.props.setLost(false)
-		this.props.setHeaderBorder(true)
-	}
+	const {
+		error,
+		message,
+		setLost,
+		setHeaderBorder,
+	} = props
 
-	render() {
-		const { error, message } = this.props
-		return (
-			<SError>
-				<h1>{error}</h1>
-				<h2>{message}</h2>
-				<SLink to={`/`}>Go back home</SLink>
-			</SError >
-		)
-	}
+	useEffect(() => {
+		setLost(true)
+		setHeaderBorder(false)
+
+		return () => {
+			setLost(false)
+			setHeaderBorder(true)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	return (
+		<SError>
+			<h1>{error}</h1>
+			<h2>{message}</h2>
+			<SLink to={`/`}>Go back home</SLink>
+		</SError >
+	)
 }
 
 const mapDispatchToProps = {
