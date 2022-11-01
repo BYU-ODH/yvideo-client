@@ -7,6 +7,8 @@ import { CollectionPermissions } from 'components'
 
 import AddBatchNetidsContainer from 'components/modals/containers/AddBatchNetidsContainer'
 
+import { validateDept, validateCourse, validateSection } from 'components/common/courseValidation'
+
 const CollectionPermissionsContainer = props => {
 
 	const { roleEndpoints } = services.collectionService
@@ -38,36 +40,52 @@ const CollectionPermissionsContainer = props => {
 		roles: 1,
 	})
 
-	const [disabled, setDisable] = useState(true)
+	const [disabled, setDisabled] = useState({
+		dept: true,
+		course: true,
+		section: true,
+	})
+
 	const [disabledUser, setDisableUser] = useState(true)
 	const [disabledTA, setDisableTA] = useState(true)
 	const [isLoading, setIsLoading] = useState(false)
 	const [isEdited, setIsEdited] = useState(true)
 	const [numUsers, setNumUsers] = useState(0)
+	const [isDeptValid, setIsDeptValid] = useState(true)
+	const [isCourseValid, setIsCourseValid] = useState(true)
+	const [isSectionValid, setIsSectionValid] = useState(true)
 
 	useEffect(() => {
 
-		if(isEdited){
+		if (isEdited) {
 			getCollectionInfo(collection.id)
 			setIsEdited(false)
 		}
 
-		if(isLoading === true) {
+		if (isLoading === true) {
 			setTimeout(() => {
 				setIsLoading(false)
 			}, 100)
-		} else
-			getCollectionInfo(collection.id)
-
+		} else getCollectionInfo(collection.id)
 	}, [collection.id, getCollectionInfo, updateCollectionPermissions, users, courses, collection.public, isEdited, isLoading])
 
 	const makePublic = e => {
 		e.preventDefault()
-		if(collection.public !== undefined) updateCollectionStatus(collection.id, `public`)
+		if (collection.public !== undefined)
+			updateCollectionStatus(collection.id, `public`)
 		setIsEdited(true)
 	}
 
 	const handleDepartmentChange = e => {
+		const isDeptValid = validateDept(
+			e.target.value.trim().toUpperCase()
+		)
+		setIsDeptValid(isDeptValid)
+		setDisabled({
+			...disabled,
+			dept: false,
+		})
+
 		setCourse({
 			...course,
 			department: e.target.value.toUpperCase(),
@@ -76,6 +94,22 @@ const CollectionPermissionsContainer = props => {
 	}
 
 	const handleCatalogChange = e => {
+		const isCourseValid = validateCourse(
+			e.target.value.trim().toUpperCase()
+		)
+		setIsCourseValid(isCourseValid)
+		if (isCourseValid) {
+			setDisabled({
+				...disabled,
+				course: false,
+			})
+		} else {
+			setDisabled({
+				...disabled,
+				course: true,
+			})
+		}
+
 		setCourse({
 			...course,
 			catalog: e.target.value.toUpperCase(),
@@ -101,23 +135,32 @@ const CollectionPermissionsContainer = props => {
 	}
 
 	const handleSectionChange = e => {
-		if(e.target.value.length > 0)
-			setDisable(false)
-		else
-			setDisable(true)
-
+		const isSectionValid = validateSection(
+			e.target.value.trim().toUpperCase()
+		)
+		setIsSectionValid(isSectionValid)
+		if (isSectionValid) {
+			setDisabled({
+				...disabled,
+				section: false,
+			})
+		} else {
+			setDisabled({
+				...disabled,
+				section: true,
+			})
+		}
 		setCourse({
 			...course,
-			section: e.target.value,
+			section: e.target.value.toUpperCase(),
 		})
 		setIsEdited(true)
 	}
 
 	const handleSectionBlur = e => {
 		let section = e.target.value
-		if(section.length < 3 && section.length !== 0) {
-			for(let i = section.length; i < 3; i++)
-				section = `0${section}`
+		if (section.length < 3 && section.length !== 0) {
+			for (let i = section.length; i < 3; i++) section = `0${section}`
 
 			setCourse({
 				...course,
@@ -156,7 +199,7 @@ const CollectionPermissionsContainer = props => {
 		e.preventDefault()
 
 		updateCollectionPermissions(collection.id, roleEndpoints.addCourse, course)
-		setDisable(true)
+		setDisabled(true)
 		setCourse({
 			...course,
 			department: ``,
@@ -183,7 +226,6 @@ const CollectionPermissionsContainer = props => {
 	}
 
 	const addTA = e => {
-
 		/*
 			account-type
 			0 = admin
@@ -228,14 +270,17 @@ const CollectionPermissionsContainer = props => {
 		collection,
 		user,
 		course,
-		userTA: users.filter(user => user[`account-role`] === 1),
-		users: users.filter(user => user[`account-role`] === 2),
+		userTA: users.filter((user) => user[`account-role`] === 1),
+		users: users.filter((user) => user[`account-role`] === 2),
 		courses,
 		disabled,
 		disabledUser,
 		disabledTA,
 		isLoading,
 		loggedinUser,
+		isDeptValid,
+		isCourseValid,
+		isSectionValid,
 	}
 
 	const handlers = {
@@ -258,7 +303,7 @@ const CollectionPermissionsContainer = props => {
 	return <CollectionPermissions viewstate={viewstate} handlers={handlers} />
 }
 
-const mapStoreToProps = store => ({
+const mapStoreToProps = (store) => ({
 	loggedinUser: store.authStore.user,
 	users: store.collectionStore.users,
 	courses: store.collectionStore.courses,
@@ -267,9 +312,13 @@ const mapStoreToProps = store => ({
 const mapDispatchToProps = {
 	getCollectionInfo: services.collectionService.getCollectionInfo,
 	getCollections: services.collectionService.getCollections,
-	updateCollectionPermissions: services.collectionService.updateCollectionPermissions,
+	updateCollectionPermissions:
+		services.collectionService.updateCollectionPermissions,
 	toggleModal: interfaceService.toggleModal,
 	updateCollectionStatus: services.collectionService.updateCollectionStatus,
 }
 
-export default connect(mapStoreToProps, mapDispatchToProps)(CollectionPermissionsContainer)
+export default connect(
+	mapStoreToProps,
+	mapDispatchToProps
+)(CollectionPermissionsContainer)

@@ -60,6 +60,11 @@ const viewstate = {
 			[`section-number`]: `01`,
 		},
 	],
+	disabled: {
+		dept: false,
+		course: false,
+		section: false,
+	},
 	loaded: true,
 	loggedinUser: {
 		role: 0,
