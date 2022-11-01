@@ -75,6 +75,16 @@ export const LinkStyled = styled(Link)`
 	background: transparent;
 	border: none;
 `
+export const AStyled = styled.a`
+	margin-bottom: 1rem;
+	width: fit-content;
+
+	text-decoration: none;
+	font-weight: 300;
+
+	background: transparent;
+	border: none;
+`
 
 export const Header = styled.h4`
 	text-transform: uppercase;
