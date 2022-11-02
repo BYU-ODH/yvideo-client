@@ -235,15 +235,15 @@ const CreateContent = props => {
 
 			:(
 				<div style={{padding:`2rem`}}>
-					<h2 style={{textAlign:`center`}} className='create-content-title'>Create New Content</h2>
-					<div style={{width:`50vh`,display:`flex`, justifyContent:`space-around`, marginTop:`3rem`}}>
+					<h2 style={{textAlign:`center`}} className='create-content-title'>Create New Video or Audio Content</h2>
+					<div style={{width:`55vh`,display:`flex`, justifyContent:`space-around`, marginTop:`3rem`}}>
 						<div style={{display: `flex`,flexDirection: `column`}}>
 							<DecideButton className='url' onClick={decideTab} name={`url`}>From URL</DecideButton>
-							<p style={{textAlign:`center`,marginTop:`10px`}}>Youtube, Vimeo, etc.</p>
+							<p style={{textAlign:`center`,marginTop:`10px`}}>YouTube, Facebook, Twitch, SoundCloud, Vimeo, Kaltura, etc.</p>
 						</div>
 						<div style={{display: `flex`,flexDirection: `column`}}>
 							<DecideButton className='resources' onClick={decideTab} name={`resource`}>From Resource</DecideButton>
-							<p style={{textAlign:`center`,marginTop:`10px`}}>Digitized by ODH or Library</p>
+							<p style={{textAlign:`center`,marginTop:`10px`}}>Digitized by your institution</p>
 						</div>
 					</div>
 					<div style={{display:`flex`, justifyContent:`space-around`}}>
