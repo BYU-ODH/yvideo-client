@@ -100,13 +100,11 @@ const Menu = props => {
 				</>
 				}
 
-				<Footer>
-					<Header>Connect With Us</Header>
-					<hr />
-					<LinkStyled to='/feedback' className='std-outline-color' onClick={toggleMenu}>Contact Us</LinkStyled>
-					<AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>
-					<AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>
-				</Footer>
+				<Header>Connect With Us</Header>
+				<hr />
+				<LinkStyled to='/feedback' className='std-outline-color' onClick={toggleMenu}>Contact Us</LinkStyled>
+				<AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>
+				<AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>
 
 			</Style>
 			:
