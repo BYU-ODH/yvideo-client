@@ -65,6 +65,8 @@ const SubtitleEditor = props => {
 	const [invalidSubs, setInvalidSubs] = useState([])
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
+	const [isNameUnique,setIsNameUnique] = useState(false)
+	const [titleNameRequired,setTitleNameRequired] = useState(false)
 	// refs
 	const scrollRef = useRef()
 
@@ -535,10 +537,13 @@ const SubtitleEditor = props => {
 		openSubEditor(subtitles.length, 0)
 		setSideEditor(true)
 		setBlock(true)
+		setDisableSave(false)
+		setTitleNameRequired(true)
 	}
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
+			let nameSubTitle = url.name
 			reader.onload = (e) => {
 				const temp = parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
@@ -561,7 +566,7 @@ const SubtitleEditor = props => {
 				if (subtitles === [] || !subtitles){
 					const tempSubList = []
 					const tempSub = {
-						title : ``,
+						title : nameSubTitle,
 						language: ``,
 						content: filtered1,
 						id: ``,
@@ -572,7 +577,7 @@ const SubtitleEditor = props => {
 				}else {
 					const tempSubList = [...subtitles]
 					const tempSub = {
-						title : ``,
+						title : nameSubTitle,
 						language: ``,
 						content: filtered1,
 						id: ``,
@@ -733,6 +738,29 @@ const SubtitleEditor = props => {
 
 	const newSubSetter = (index) => {
 		setNewSub({trueFalse: true, index})
+	}
+
+	const validateTitleSub = (value) => {
+		var nameTrack = value.target.value
+		if(nameTrack === "" || nameTrack === null){
+			setTitleNameRequired(true)
+			setDisableSave(true)
+		}else {
+			setTitleNameRequired(false)
+			searchUniqueName(subs,nameTrack)
+		}
+		subs[subLayerToEdit].title = nameTrack
+	}
+
+	const searchUniqueName = (subtitles,fileName)=>{
+		const filtered = subtitles.filter(entry => entry.title === fileName)
+		if(filtered !== undefined && filtered !== null && filtered.length > 1){
+			setIsNameUnique(true)
+			setDisableSave(true)
+		}else {
+			setIsNameUnique(false)
+			setDisableSave(false)
+		}
 	}
 
 	return (
@@ -1004,6 +1032,9 @@ const SubtitleEditor = props => {
 							scrollRef={scrollRef}
 							handleShowTip={handleShowTip}
 							toggleTip={toggleTip}
+							validateTitleSub={validateTitleSub}
+							isNameUnique={isNameUnique}
+							titleNameRequired={titleNameRequired}
 						></SubtitleEditorSideMenu>
 					) }
 				</>
