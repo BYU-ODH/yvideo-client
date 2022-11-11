@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Style, { LinkStyled, Header, LogoutButton, Footer, MenuIcon, UserPic, AStyled } from './styles'
+import Style, { LinkStyled, Header, LogoutButton, MenuIcon, UserPic, AStyled } from './styles'
 
 const Menu = props => {
 
@@ -100,14 +100,12 @@ const Menu = props => {
 				</>
 				}
 
-				<Footer>
-					<Header>Connect With Us</Header>
-					<hr />
-					<LinkStyled to='/feedback' className='std-outline-color' onClick={toggleMenu}>Contact Us</LinkStyled>
-					{process.env.REACT_APP_PRIVACY_LINK !== undefined && <AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>}
+				<Header>Connect With Us</Header>
+				<hr />
+				<LinkStyled to='/feedback' className='std-outline-color' onClick={toggleMenu}>Contact Us</LinkStyled>
+				{process.env.REACT_APP_PRIVACY_LINK !== undefined && <AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>}
 
-					{process.env.REACT_APP_COOKIE !== undefined && <AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>}
-				</Footer>
+				{process.env.REACT_APP_COOKIE !== undefined && <AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>}
 
 			</Style>
 			:
@@ -130,14 +128,12 @@ const Menu = props => {
 
 				<LinkStyled to='/'>Sign in</LinkStyled>
 
-				<Footer>
-					<Header>Connect With Us</Header>
-					<hr />
-					<LinkStyled to='/feedback' >Contact Us</LinkStyled>
-					{process.env.REACT_APP_PRIVACY_LINK !== undefined && <AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>}
+				<Header>Connect With Us</Header>
+				<hr />
+				<LinkStyled to='/feedback' >Contact Us</LinkStyled>
+				{process.env.REACT_APP_PRIVACY_LINK !== undefined && <AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>}
 
-					{process.env.REACT_APP_COOKIE !== undefined && <AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>}
-				</Footer>
+				{process.env.REACT_APP_COOKIE !== undefined && <AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>}
 
 			</Style>
 
