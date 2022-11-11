@@ -21,7 +21,7 @@ const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 			preventDefault(e)
 	}
 
-	if(elements.length !== undefined) {
+	if(elements?.length !== undefined) {
 		for(const i in elements) {
 			try {
 				elements[i].addEventListener(`test`, null, Object.defineProperty({}, `passive`, {
@@ -48,7 +48,7 @@ const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 	const wheelEvent = `onwheel` in document.createElement(`div`) ? `wheel` : `mousewheel`
 	const wheelOpt = supportsPassive ? { passive: false } : false
 
-	if(elements.length !== undefined) {
+	if(elements?.length !== undefined) {
 		setDisableScroll({action: () => {
 			for(const i in elements) {
 				// these elements are the ones in the editors and the collections page

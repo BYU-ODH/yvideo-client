@@ -4,21 +4,20 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 const props = {
-	clipName: 0,
-	clipList: {
-		0: {
-			start: 0,
-			end: 60,
-		},
-		1: {
-			start: 61,
-			end: 120,
-		},
-	},
+	clipList: [{start: 0, end: 60}, {start: 61, end: 120}],
 	width: 0,
 	videoLength: 120,
-	active: 0, // this is the index of the currently active clip
+	activeIndex: 0, // this is the index of the currently active clip
 	index: 0,
+	handleEditClip: jest.fn(),
+}
+
+const inactiveProps = {
+	clipList: [{start: 0, end: 60}, {start: 61, end: 120}],
+	width: 0,
+	videoLength: 120,
+	activeIndex: 0, // this is the index of the currently active clip
+	index: 1,
 	handleEditClip: jest.fn(),
 }
 
@@ -27,7 +26,7 @@ const activeWrapper =
 
 props.active = 1
 const inactiveWrapper =
-	<ClipLayer {...props} />
+	<ClipLayer {...inactiveProps} />
 
 describe(`ClipLayer test`, () => {
 	describe(`Active`, () => {
@@ -59,7 +58,7 @@ describe(`ClipLayer test`, () => {
 				fireEvent.resize(Rnd)
 			})
 			fireEvent.click(Rnd)
-			expect(props.handleEditClip).toHaveBeenCalled()
+			expect(inactiveProps.handleEditClip).toHaveBeenCalled()
 
 			expect(activeWrapper).toBeDefined()
 			expect(Rnd).toHaveStyle(`background-color: #ffffff`)

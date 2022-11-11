@@ -23,26 +23,16 @@ const ClipEditor = props => {
 	const {
 		currentContent,
 		eventsArray,
-		// url,
-		// subs,
-		// allSubs,
 	} = props.viewstate
 
 	const {
 		toggleTip,
 		handleShowTip,
 		handleNavigation,
+		updateContent,
 	} = props.handlers
-
-	const updateContent = props.updateContent
 	const layers = [{0: `Skip`}]
 
-	// const parseSub = Subtitle.parse(testingSubtitle)
-
-	// for (let i = 0; i < parseSub.length; i++){
-	// 	parseSub[i].start = parseSub[i].start / 1000
-	// 	parseSub[i].end = parseSub[i].end / 1000
-	// }
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [elapsed, setElapsed] = useState(0)
@@ -51,8 +41,9 @@ const ClipEditor = props => {
 	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
-	const [clipList, setClipList] = useState({})
-	const [active, setActive] = useState(``)
+	const [clipList, setClipList] = useState([])
+	const [activeItem, setActiveItem] = useState(``)
+	const [activeIndex, setActiveIndex] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
 	const [clipsToDelete, setClipsToDelete] = useState({}) // eslint-disable-line no-unused-vars
 	const [blockLeave, setBlock] = useState(false)
@@ -92,11 +83,14 @@ const ClipEditor = props => {
 		// Find the largets layer number
 		const initialLayers = []
 
-		if(Object.keys(clipList).length === 0) {
+		if(clipList.length === 0) {
 			if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
 				const clips = JSON.parse(currentContent[`clips`])
+				clips.sort((a, b) => a.start !== b.start ? a.start - b.start : a.end - b.end)
 				setClipList(clips)
-				const saved = Object.keys(clips)
+				const saved = []
+				for (const clip in clips)
+					saved.push(clip)
 				setSavedClips(saved)
 			}
 		}
@@ -130,7 +124,7 @@ const ClipEditor = props => {
 	const initDeleteArray = () =>{
 		if (clipList){
 			let tempArray = []
-			for(let i = 0; i < Object.entries(clipList).length; i++)
+			for(let i = 0; i < clipList.length; i++)
 				tempArray = [...tempArray, {id : clipList[i], trueFalse: false}]
 			setClipItemIsDelete(tempArray)
 		}
@@ -147,8 +141,8 @@ const ClipEditor = props => {
 	const initChangeTimeArray = () => {
 		if (clipList){
 			let tempArray = []
-			for(let i = 0; i < Object.entries(clipList).length; i++)
-				tempArray = [...tempArray, {id : clipList[i], trueFalse: false}]
+			for(let i = 0; i < clipList.length; i++)
+				tempArray = [...tempArray, {id: clipList[i], trueFalse: false}]
 			setClipItemTimeChange(tempArray)
 		}
 	}
@@ -157,22 +151,25 @@ const ClipEditor = props => {
 		for(let i = 0; i < Object.entries(clipItemTimeChange).length; i++){
 			if(parseInt(Object.keys(clipItemTimeChange)[i]) === index){
 				index = index.toString()
-				setClipItemTimeChange({...clipItemTimeChange, [index]: {id : clipList[i], trueFalse: boolean, startOrEnd}})
+				setClipItemTimeChange({...clipItemTimeChange, [index]: {id: clipList[i], trueFalse: boolean, startOrEnd}})
 			}
 		}
 	}
 
-	const handleInputChange = (item, startOrEnd ) => {
-		for (let i = 0; i < Object.entries(clipList).length; i++){
-			if(Object.keys(clipList)[i] === item ){
-				const title = clipList[item].title
-				const end = clipList[item].end
-				const start = clipList[item].start
+	const handleInputChange = (index, item, startOrEnd ) => {
+		for (let i = 0; i < clipList.length; i++){
+			if(clipList[i] === item){
+				const title = clipList[index].title
+				const end = clipList[index].end
+				const start = clipList[index].start
+				const clips = [...clipList]
 				if(startOrEnd === `start`){
-					setClipList({...clipList, [item]: {start: elapsed, end , title}})
+					clips.splice(index, 1, {start: elapsed, end, title})
+					setClipList(clips)
 					setBlock(true)
 				}else{
-					setClipList({...clipList, [item]: {start, end: elapsed, title}})
+					clips.splice(index, 1, {start, end: elapsed, title})
+					setClipList(clips)
 					setBlock(true)
 				}
 			}
@@ -183,18 +180,18 @@ const ClipEditor = props => {
 		const seconds = time * videoLength
 		setCurrentTime(seconds)
 	}
-
 	const getVideoDuration = (duration) => {
 		setVideoLength(duration)
 	}
 
 	const titleSet = (value) => {
-		const clips = {...clipList}
-		clips[active][`title`] = value
+		const clips = [...clipList]
+		clips[activeIndex].title = value
 		setClipList(clips)
 		setBlock(true)
 	}
-	const setStartTime = (value, type, name) => {
+
+	const setStartTime = (value, type, index) => {
 		const input = value
 		if(type === `input` || type === `onBlur`) {
 			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) || type === `onBlur`)
@@ -202,14 +199,14 @@ const ClipEditor = props => {
 			else
 				value = input
 		}
-		const clips = {...clipList}
+		const clips = [...clipList]
 		if(value > videoLength)
-			clips[name][`start`] = videoLength - 30
+			clips[index][`start`] = videoLength - 30
 		else if(value < 0)
-			clips[name][`start`] = 0
+			clips[index][`start`] = 0
 		else {
-			clips[name][`start`] = value
-			if (value > clips[name][`end`]) {
+			clips[index][`start`] = value
+			if (value > clips[index][`end`]) {
 				if(document.getElementById(`clipMessage`)) {
 					document.getElementById(`clipMessage`).style.color=`red`
 					document.getElementById(`clipMessage`).innerHTML=`Please enter a number smaller than the end time`
@@ -224,29 +221,28 @@ const ClipEditor = props => {
 
 		if(type === `input` || type === `onBlur`) {
 			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				clips[name][`start`] = input
+				clips[index][`start`] = input
 		}
 
 		setClipList(clips)
 		setBlock(true)
 	}
-	const setEndTime = (value, type, name) => {
+	const setEndTime = (value, type, index) => {
 		const input = value
 		if(type === `input` || type === `onBlur`) {
 			if(value.match(/^\d{2}:\d{2}\.\d{2}/) !== null || value.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 				value = convertToSeconds(value, videoLength)
 			else
 				value = input
-
 		}
-		const clips = {...clipList}
+		const clips = [...clipList]
 		if(value > videoLength)
-			clips[name][`end`] = videoLength
+			clips[index][`end`] = videoLength
 		else if(value < 0)
-			clips[name][`end`] = 30
+			clips[index][`end`] = 30
 		else {
-			clips[name][`end`] = value
-			if (value < clips[name][`start`]) {
+			clips[index][`end`] = value
+			if (value < clips[index][`start`]) {
 				if(document.getElementById(`clipMessage`)) {
 					document.getElementById(`clipMessage`).style.color=`red`
 					document.getElementById(`clipMessage`).innerHTML=`Please enter a number bigger than the start time`
@@ -261,7 +257,7 @@ const ClipEditor = props => {
 
 		if(type === `input` || type === `onBlur`) {
 			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
-				clips[name][`end`] = input
+				clips[index][`end`] = input
 		}
 
 		setClipList(clips)
@@ -269,7 +265,7 @@ const ClipEditor = props => {
 	}
 
 	const createClip = (startPercentage) => {
-		const id = Object.keys(clipList).length === 0 ?
+		const id = clipList.length === 0 ?
 			`0`
 			:
 			`${parseInt(Object.keys(clipList).sort((a, b) => parseFloat(b) - parseFloat(a))[0]) + 1}`
@@ -282,41 +278,42 @@ const ClipEditor = props => {
 		clip.start = Number(startPercentage)
 		clip.end = Number(startPercentage) + clip.end
 
-		const clips = {...clipList}
+		const clips = [...clipList]
 		clips[id] = clip
 		setClipList(clips)
 		setBlock(true)
 	}
-	const deleteClip = (toDelete) => {
-		setActive(``)
-		const clips = {...clipList}
-		const del = clipsToDelete
-		const clip = clipList[toDelete]
-		del[toDelete] = clip
-		delete clips[toDelete]
-		// setClipList(clips)
-		// setClipsToDelete(del)
+	const deleteClip = (index) => {
+		setActiveItem(``)
+		setActiveIndex(``)
+		const clips = [...clipList]
+		clips.splice(index, 1)
+		clips.sort((a, b) => a.start !== b.start ? a.start - b.start : a.end - b.end)
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
 		setClipList(clips)
 		updateContent(content)
 		setBlock(true)
-		return savedClips.includes(active)
+		return savedClips.includes(activeItem)
 	}
 	const saveClips = () => {
+		setActiveItem(``)
 		setIsLoading(true)
-		if (Object.keys(clipList).length === 0 && Object.keys(clipsToDelete).length === 0)
+		if (clipList.length === 0 && Object.keys(clipsToDelete).length === 0)
 			return
-		const clips = {...clipList}
+		const clips = [...clipList]
+		clips.sort((a, b) => a.start !== b.start ? a.start - b.start : a.end - b.end)
 		const content = {...currentContent}
 		content[`clips`] = JSON.stringify(clips)
+		setClipList(clips)
 		updateContent(content)
 		setBlock(false)
 		setIsLoading(false)
 	}
 
 	const handleEditClip = (item, index) => {
-		setActive(item)
+		setActiveItem(item)
+		setActiveIndex(index)
 		setClipIndex(index)
 	}
 
@@ -350,10 +347,9 @@ const ClipEditor = props => {
 					>
 					</VideoContainer>
 					<Timeline zoom={scrollBarWidth}>
-
 						<div className={`layer`} style={{paddingBottom: `40px`}}>
 							<div>
-								{layers.map((layer, index) => (
+								{layers?.map((layer, index) => (
 									<div className={`flex`} key={index}>
 										<div className={`skip-handle`}>
 											<p>Allow Skip</p>
@@ -369,25 +365,24 @@ const ClipEditor = props => {
 										/>
 									</div>
 								))}
-								{Object.keys(clipList).map((clip, index) => (
+								{clipList?.map((clip, index) => (
 									<div className={`flex`} key={index}>
 										<div
 											className={`handle`}
-											style={active === clip ?
+											style={activeIndex === index ?
 												{backgroundColor:`var(--navy-blue)`, color:`#fff`}
 												:
 												{backgroundColor: `#fff`, color: `#000`}}
 										>
-											<p style={{color: `inherit`}}>{clipList[clip][`title`]}</p>
+											<p style={{color: `inherit`}}>{clipList?.[index]?.title}</p>
 										</div>
 										<ClipLayer
-											clipName={clip}
 											clipList={clipList}
 											setStart={setStartTime}
 											setEnd={setEndTime}
 											width={layerWidth}
 											videoLength={videoLength}
-											active={active}
+											activeIndex={activeIndex}
 											index={index}
 											handleEditClip={handleEditClip}
 										/>
@@ -509,47 +504,39 @@ const ClipEditor = props => {
 						<div className='clipList'>
 							<table>
 								{
-									Object.keys(clipList).sort((a, b) => parseFloat(a) > parseFloat(b) ? 1 : -1).map((item, i) => (
+									clipList?.sort((a, b) => parseFloat(a) > parseFloat(b) ? -1 : 1).map((item, i) => (
 
 										<tbody key={i} className={`singleClip ${i === clipIndex && `clipActive`}`}>
-											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
+											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={i} >
 												{clipItemTimeChange.length !== 0 && clipItemTimeChange[i]?.trueFalse ?
 													<>
 														<td className='deleteTd'>Change start time to current player time?</td>
 														{clipItemTimeChange[i].startOrEnd === `start` ?
-															<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(item, `start`)}>Yes</Button></td>
+															<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(i, item, `start`)}>Yes</Button></td>
 															:
-															<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(item, `end`)}>Yes</Button></td>
+															<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(i, item, `end`)}>Yes</Button></td>
 														}
 														<td className='deleteTd'><Button className='content-delete'onClick={() => toggleItemTimeChange(i, false)}>No</Button></td>
 													</> :
 													<>
-														{/* {clipItemTimeChange.length !== 0 && clipItemTimeChange[i]?.trueFalse && `end` ?
-															<>
-																<td className='deleteTd'>Change start time to current player time?</td>
-																<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(item, `end`)}>Yes</Button></td>
-																<td className='deleteTd'><Button className='content-delete'onClick={() => toggleItemTimeChange(i, false)}>No</Button></td>
-															</> :
-															<> */}
-
 														{clipItemIsDelete.length !== 0 && clipItemIsDelete[i]?.trueFalse ?
 															<>
 																<td className='deleteTd'>Are you sure you want to delete this clip?</td>
-																<td className='deleteTd'><Button className='content-cancel' onClick={() => deleteClip(item)}>Yes</Button></td>
+																<td className='deleteTd'><Button className='content-cancel' onClick={() => deleteClip(i)}>Yes</Button></td>
 																<td className='deleteTd'><Button className='content-delete'onClick={() => toggleDeleteItem(i, false)}>No</Button></td>
 															</> :
 															<>
-																<td className='clipTd'><input onKeyUp={e => e.stopPropagation()} onClick={() => handleEditClip(item, i)} type='text' value={`${clipList[item].title}`} onChange={e => titleSet(e.target.value)}/></td>
+																<td className='clipTd'><input onKeyUp={e => e.stopPropagation()} onClick={() => handleEditClip(item, i)} type='text' value={`${clipList?.[i]?.title}`} onChange={e => titleSet(e.target.value)}/></td>
 																<td className='clipTd'>
 
 																	<input
 																		type='text'
 																		id={`timeInput-${i}`}
-																		value={`${convertSecondsToMinute(clipList[item].start, videoLength)}`}
+																		value={`${convertSecondsToMinute(clipList?.[i]?.start, videoLength)}`}
 																		onKeyUp={e => e.stopPropagation()}
 																		onClick={() => handleEditClip(item, i)}
-																		onChange={(e) => setStartTime(e.target.value, `input`, item)}
-																		onBlur={(e) => setStartTime(e.target.value, `onBlur`, item)}
+																		onChange={(e) => setStartTime(e.target.value, `input`, i)}
+																		onBlur={(e) => setStartTime(e.target.value, `onBlur`, i)}
 																	/>
 																	{clipItemTimeChange.length !== 0 && !clipItemTimeChange[i]?.trueFalse &&
 																	<i className='fa fa-clock' onClick={() => toggleItemTimeChange(i, true, `start`)}></i>}
@@ -559,11 +546,11 @@ const ClipEditor = props => {
 																	<i className='fa fa-clock' onClick={() => toggleItemTimeChange(i, true, `end`)}></i>}
 																	<input
 																		type='text'
-																		value={`${convertSecondsToMinute(clipList[item].end, videoLength)}`}
+																		value={`${convertSecondsToMinute(clipList?.[i]?.end, videoLength)}`}
 																		onKeyUp={e => e.stopPropagation()}
 																		onClick={() => handleEditClip(item, i)}
-																		onChange={(e) => setEndTime(e.target.value, `input`, item)}
-																		onBlur={(e) => setEndTime(e.target.value, `onBlur`, item)}
+																		onChange={(e) => setEndTime(e.target.value, `input`, i)}
+																		onBlur={(e) => setEndTime(e.target.value, `onBlur`, i)}
 																	/>
 
 																</td>

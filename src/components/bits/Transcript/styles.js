@@ -104,20 +104,13 @@ export const Style = styled.div`
 		margin-right: .2rem;
 		padding: 7px 2px 2px 3px;
 		border: ${props => props.sidebarisclip ? `2px inset #dddddd` : `2px outset #dddddd`};
-		color: ${props => props.sidebarisclip ? `#aaaaaa` : `white`};
-
-		p {
-			font-size: 12px;
-			position: absolute;
-			color: var(--light-blue);
-			margin-left: 3.05rem;
-			margin-top: -1.5rem;
-		}
+		color: ${props => props.sidebarisclip ? `#999999` : `white`};
+		border-radius: 5px;
 	}
-
+	
 	.fa-film:active {
 		border: 2px inset #dddddd;
-		color: #aaaaaa;
+		color: #999999;
 		outline: 0;
 	}
 
@@ -127,19 +120,12 @@ export const Style = styled.div`
 		margin-right: .2rem;
 		padding: 7px 2px 2px 3px;
 		border: ${props => props.sidebarisclip ? `2px outset #dddddd` : `2px inset #dddddd`};
-		color: ${props => props.sidebarisclip ? `white` : `#aaaaaa`};
-
-		p {
-			font-size: 12px;
-			position: absolute;
-			color: var(--navy-blue);
-			margin-left: 3.05rem;
-			margin-top: -1.5rem;
-		}
+		color: ${props => props.sidebarisclip ? `white` : `#999999`};
+		border-radius: 5px;
 	}
 	.fa-file-text-o:active {
 		border: 2px inset #dddddd;
-		color: #aaaaaa;
+		color: #999999;
 		outline: 0;
 	}
 

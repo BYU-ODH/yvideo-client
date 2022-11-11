@@ -6,7 +6,7 @@ export const FormResource = styled.form`
 	display: grid;
 	/* grid: repeat(3, 1fr) / 1fr; */
 
-	min-width: 30rem;
+	min-width: 30rem; 
 	min-height: 35rem;
 
 	& > label {
