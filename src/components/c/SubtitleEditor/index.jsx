@@ -503,7 +503,7 @@ const SubtitleEditor = props => {
 			}
 		}
 
-		if(invalidSubs.length === 0 && !isNameUnique)
+		if(invalidSubs.length === 0 && !isNameUnique && !titleNameRequired)
 			setDisableSave(false)
 		else
 			setDisableSave(true)
@@ -620,6 +620,7 @@ const SubtitleEditor = props => {
 		if(fun === `onKeyPress`)
 			setIsEdit(false)
 
+		validateTitleSub(title)
 		const temp = [...subtitles]
 		temp[subLayerToEdit].title = title
 		setSubs(temp)
@@ -742,11 +743,10 @@ const SubtitleEditor = props => {
 		setNewSub({trueFalse: true, index})
 	}
 
-	const validateTitleSub = (value) => {
-		let nameTrack = value.target.value
+	const validateTitleSub = (nameTrack) => {
 		subs[subLayerToEdit].title = nameTrack
 		seTititleName(nameTrack)
-		if (nameTrack === "" || nameTrack === null) {
+		if (nameTrack === `` || nameTrack === null) {
 			setTitleNameRequired(true)
 			setDisableSave(true)
 		} else {

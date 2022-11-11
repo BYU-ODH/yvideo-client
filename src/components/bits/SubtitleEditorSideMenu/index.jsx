@@ -86,14 +86,14 @@ const SubtitleEditorSideMenu = props => {
 						type='text'
 						id='titleSub'
 						value={subs[subLayer].title}
-						className={disableSave ? 'titleSubDisable' : 'titleSub'}
+						className={disableSave ? `titleSubDisable` : `titleSub`}
 						placeholder='enter title...'
 						onKeyUp={e => e.stopPropagation()}
-						onChange={(value) => validateTitleSub(value)}>
+						onChange={(e) => validateTitleSub(e.target.value)}>
 					</input>
 				</p>
-				<p className={titleNameRequired ? 'titleWarn' : 'titleWarnDisable'}>*Title name is required</p>
-				<p className={isNameUnique ? 'titleWarn' : 'titleWarnDisable'}>*Title name most be unique</p>
+				<p className={titleNameRequired ? `titleWarn`: `titleWarnDisable`}>*Title name is required</p>
+				<p className={isNameUnique ? `titleWarn` : `titleWarnDisable`}>*Title name most be unique</p>
 			</div>
 			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY: `scroll`, height: `68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={() => addSub(subLayer, 0, `top`)}
