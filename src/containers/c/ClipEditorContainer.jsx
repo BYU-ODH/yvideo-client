@@ -115,14 +115,12 @@ const ClipEditorContainer = props => {
 		toggleTip,
 		handleShowTip,
 		handleNavigation,
+		handleShowHelp,
+		activeUpdate,
+		updateContent,
 	}
 
-	return <ClipEditor
-		viewstate={viewstate}
-		updateContent={updateContent}
-		activeUpdate={activeUpdate}
-		handleShowHelp={handleShowHelp}
-		handlers={handlers}/>
+	return <ClipEditor viewstate={viewstate} handlers={handlers}/>
 }
 
 const mapStoreToProps = ({ contentStore, resourceStore, subtitlesStore }) => ({

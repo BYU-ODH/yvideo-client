@@ -21,7 +21,7 @@ const PlayerContainer = props => {
 		isAdmin,
 		isProf,
 		contentCache,
-		getContent,
+		getContentCache,
 		getStreamKey,
 		addView,
 		setEvents,
@@ -42,8 +42,7 @@ const PlayerContainer = props => {
 	} = props
 
 	const params = useParams()
-	const [parsedClips, setParsedClips] = useState(``)
-	const [clipTitle, setClipTitle] = useState(``)
+	const [clips, setClips] = useState(``)
 	const [clipId, setClipId] = useState(``)
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
@@ -105,10 +104,8 @@ const PlayerContainer = props => {
 	const ref = player => {
 		setPlayer(player)
 	}
-
 	const [timeoutArray, setTimeoutArray] = useState([])
 	const arrayTracker = useRef(timeoutArray)
-
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player (${contentCache?.[params.id]?.name})`], collectionId: ``, contentId: `` })
 		setShowTranscript(false)
@@ -116,15 +113,15 @@ const PlayerContainer = props => {
 		setDisplaySubtitles(null)
 
 		if (!contentCache.hasOwnProperty(params.id)) // eslint-disable-line no-prototype-builtins
-			getContent(params.id)
+			getContentCache(params.id)
 
 		if (contentCache[params.id]) {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			const clips =
-				contentCache[params.id][`clips`] ?
-					JSON.parse(contentCache[params.id][`clips`])[params.clip]
+				Array.isArray(JSON.parse(contentCache?.[params.id]?.clips)) ?
+					JSON.parse(contentCache[params.id].clips)[params.clip]
 					: []
 
 			if (params.clip) setClipTime([clips[`start`], clips[`end`]])
@@ -191,7 +188,6 @@ const PlayerContainer = props => {
 			})
 			if(wrap)
 				wraplisten.observe(wrap)
-
 		}
 
 		if (window.innerWidth < 1000) {
@@ -210,8 +206,8 @@ const PlayerContainer = props => {
 		}
 		if (errorMessage !== errorPrev)
 			handleError()
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev, params])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [addView, contentCache, getContentCache, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev, params])
 
 	useEffect(() => {
 		if(clipTime.length > 0)
@@ -222,7 +218,6 @@ const PlayerContainer = props => {
 	useEffect(() => {
 		arrayTracker.current = timeoutArray
 	}, [timeoutArray])
-
 	useLayoutEffect(() => {
 		handleSubsObj()
 		handleScrollFuncs(document.getElementById(`subtitles-container`), setDisableScroll, setEnableScroll)
@@ -234,15 +229,9 @@ const PlayerContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
 	useLayoutEffect(() => {
-		if (contentCache[params.id]?.clips){
-			const clips = contentCache[params.id].clips
-			const tempClips = JSON.parse(clips)
-			setParsedClips(tempClips)
-		}
-		if (contentCache[params.id]?.name){
-			const tempClipTitle = contentCache[params.id].name
-			setClipTitle(tempClipTitle)
-		}
+		if (contentCache[params.id])
+			setClips(JSON.parse(contentCache[params.id].clips))
+
 		if (contentCache[params.id]?.id){
 			const tempClipId = contentCache[params.id].id
 			setClipId(tempClipId)
@@ -729,8 +718,7 @@ const PlayerContainer = props => {
 		events,
 		showSpeed,
 		scrollDisabled,
-		parsedClips,
-		clipTitle,
+		clips,
 		clipId,
 		progressEntered,
 		started,
@@ -801,7 +789,7 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 })
 
 const mapDispatchToProps = {
-	getContent: contentService.getContent,
+	getContentCache: contentService.getContent,
 	getStreamKey: resourceService.getStreamKey,
 	addView: contentService.addView,
 	setEvents: interfaceService.setEvents,
