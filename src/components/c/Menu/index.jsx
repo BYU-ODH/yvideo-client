@@ -131,8 +131,9 @@ const Menu = props => {
 					<Header>Connect With Us</Header>
 					<hr />
 					<LinkStyled to='/feedback' >Contact Us</LinkStyled>
-					<AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>
-					<AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>
+					{process.env.REACT_APP_PRIVACY_LINK !== undefined && <AStyled href={process.env.REACT_APP_PRIVACY_LINK} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Privacy Notice</AStyled>}
+
+					{process.env.REACT_APP_COOKIE !== undefined && <AStyled href={process.env.REACT_APP_COOKIE} target='_blank' rel='noopener noreferrer' className='std-outline-color'>Cookie Preferences</AStyled>}
 				</Footer>
 
 			</Style>

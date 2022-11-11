@@ -1,7 +1,9 @@
-const deptList = process.env.REACT_APP_DEPT_LIST.split(`,`)
+let noDeptList = false
+const deptList = process.env.REACT_APP_DEPT_LIST !== undefined ? process.env.REACT_APP_DEPT_LIST.split(`,`) : noDeptList = true
 
 export const validateDept = dept => {
-	if (deptList.indexOf(dept) !== -1 || dept === ``) return true
+	if (noDeptList) return true
+	else if (deptList.indexOf(dept) !== -1 || dept === ``) return true
 	else return false
 }
 
