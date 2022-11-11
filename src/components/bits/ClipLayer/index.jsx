@@ -9,7 +9,7 @@ import {
 
 const ClipLayer = props => {
 
-	const {clipName, clipList, width, setStart, setEnd, videoLength, active, index, handleEditClip} = props
+	const {clipList, width, setStart, setEnd, videoLength, activeIndex, index, handleEditClip} = props
 	const layerRef = useRef(null)
 	const dragRef = useRef(null)
 
@@ -18,10 +18,10 @@ const ClipLayer = props => {
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
 
-	const start = clipList[clipName][`start`]
-	const end = clipList[clipName][`end`]
+	const start = clipList[index][`start`]
+	const end = clipList[index][`end`]
 
-	const style = active !== clipName ?
+	const style = activeIndex !== index ?
 		{
 			top: `0px`,
 			backgroundColor:`#fff`,
@@ -96,11 +96,11 @@ const ClipLayer = props => {
 		if(s < 0)
 			s = 0
 		// call handler from parent
-		setStart(s, null, clipName)
-		setEnd(e, null, clipName)
+		setStart(s, null, index)
+		setEnd(e, null, index)
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
+	const handleResize = (direction, ref, delta, event, i, e ) => {
 		let s = start
 		let en = end
 		const difference = delta.width / layerWidth * videoLength
@@ -119,8 +119,8 @@ const ClipLayer = props => {
 				en = videoLength
 			}
 		}
-		setStart(s, null, clipName)
-		setEnd(en, null, clipName)
+		setStart(s, null, index)
+		setEnd(en, null, index)
 	}
 	// eslint-disable-next-line no-unused-vars
 	const curr = {...dragRef.current}
@@ -129,7 +129,7 @@ const ClipLayer = props => {
 			<Style layerWidth={layerWidth} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='clip-box'>
-					<div className={`clip-layer-${clipName} events`}>
+					<div className={`clip-layer-${index} events`}>
 						<Rnd
 							ref={dragRef}
 							className={`Rnd`}
@@ -142,14 +142,13 @@ const ClipLayer = props => {
 								}}
 							enableResizing={Enable}
 							dragAxis='x'
-							bounds={`.clip-layer-${clipName}`}
+							bounds={`.clip-layer-${index}`}
 							onDragStop={(e, d) => {
-
 								handleDrag(d)
 							}}
-							onClick = {() => handleEditClip(clipName, index)}
+							onClick = {() => handleEditClip(index, index)}
 							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
-							key={`clip-${clipName}`}
+							key={`clip-${index}`}
 							style={style}
 						>
 						</Rnd>

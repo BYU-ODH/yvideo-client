@@ -35,8 +35,7 @@ const Transcript = props => {
 		isMobile,
 		scrollDisabled,
 		sideBarIsClip,
-		parsedClips,
-		clipTitle,
+		clips,
 		clipId,
 	} = props.viewstate
 
@@ -153,7 +152,6 @@ const Transcript = props => {
 								})
 							}
 							onMouseLeave={() => toggleTip()} >
-							{ !sideBarIsClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }
 						</i>
 
 						<i className='fa fa-film' onClick={() => handleClipToggle(`Clip`)}
@@ -165,7 +163,6 @@ const Transcript = props => {
 								})
 							}
 							onMouseLeave={() => toggleTip()} >
-							{ sideBarIsClip && <p className='fa-solid fa-circle' onClick={e => e.stopPropagation()} /> }
 						</i>
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
@@ -223,12 +220,12 @@ const Transcript = props => {
 							</div>
 							<div className={`clip-item-container`}>
 								{
-									Object.keys(parsedClips).map((item) => {
+									clips.map((clip, index) => {
 										return (
-											<div key={item}>
-												<Link to={`/player/${clipId}/${item}`}>
+											<div key={index}>
+												<Link to={`/player/${clipId}/${index}`}>
 													<div className={`clip-item`}>
-														<p className={`clip-title`}>{clipTitle}: {new Date(parsedClips[item][`start`] * 1000).toISOString().substr(11, 8)} - {new Date(parsedClips[item][`end`] * 1000).toISOString().substr(11, 8)}</p>
+														<p className={`clip-title`}><b>{clip.title}:&nbsp;</b>{new Date(clip[`start`] * 1000).toISOString().substr(11, 8)} - {new Date(clip[`end`] * 1000).toISOString().substr(11, 8)}</p>
 													</div>
 												</Link>
 											</div>
