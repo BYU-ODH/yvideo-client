@@ -56,7 +56,7 @@ const PreviewFilesContainer = props => {
 	}, [contentCache, getContent, streamKey, sKey])
 
 	useLayoutEffect(() => {
-	},[duration])
+	}, [duration])
 
 	const handlePlayPause = () => {
 		if (playing)

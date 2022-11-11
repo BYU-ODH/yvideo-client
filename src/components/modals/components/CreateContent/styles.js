@@ -154,7 +154,7 @@ export const DecideButton = styled.button`
 			color: #ffffff;
 		}
 	// :hover {
-	// 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6);
+	// 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.6);
 	// 	transition: 0.5s;
 	/* } */
 `
