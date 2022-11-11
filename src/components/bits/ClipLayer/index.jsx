@@ -132,7 +132,7 @@ const ClipLayer = props => {
 					<div className={`clip-layer-${index} events`}>
 						<Rnd
 							ref={dragRef}
-							className={`Rnd`}
+							id='Rnd'
 							data-testid='Rnd'
 							size={{width: `${(end - start) / videoLength * layerWidth}px`, height: `46px`}}
 							position={
