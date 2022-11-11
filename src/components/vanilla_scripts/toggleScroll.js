@@ -58,8 +58,8 @@ const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 				// these elements are the ones in the editors and the collections page
 				elements[i].addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
 				elements[i].addEventListener(wheelEvent, preventDefaultShift, wheelOpt) // modern desktop
-				elements[i].addEventListener(wheelEvent, preventDefaultTrackPad, wheelOpt) // mobile
-				elements[i].addEventListener(`keydown`, preventDefaultForScrollKeys, wheelOpt)
+				elements[i].addEventListener(wheelEvent, preventDefaultTrackPad, wheelOpt) // mobile/trackpad
+				elements[i].addEventListener(`keydown`, preventDefaultForScrollKeys, wheelOpt) // arrow keys
 				elements[i].onmousedown = e => { // disables middle mouse button
 					if (e.button === 1) return false
 				}
@@ -70,7 +70,7 @@ const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 				for(const i in elements) {
 					elements[i].removeEventListener(`DOMMouseScroll`, preventDefault, false)
 					elements[i].removeEventListener(wheelEvent, preventDefaultShift, wheelOpt)
-					elements[i].removeEventListener(wheelEvent, preventDefaultTrackPad, wheelOpt) // mobile
+					elements[i].removeEventListener(wheelEvent, preventDefaultTrackPad, wheelOpt)
 					elements[i].removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
 					elements[i].onmousedown = null
 				}
@@ -80,9 +80,8 @@ const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 		setDisableScroll({action: () => {
 			elements.addEventListener(`DOMMouseScroll`, preventDefault, false) // older FF
 			elements.addEventListener(wheelEvent, preventDefaultShift, wheelOpt) // modern desktop
-			elements.addEventListener(wheelEvent, preventDefault, wheelOpt)
-			elements.addEventListener(`touchmove`, preventDefault, wheelOpt) // mobile
-			elements.addEventListener(`keydown`, preventDefaultForScrollKeys, false)
+			elements.addEventListener(wheelEvent, preventDefaultTrackPad, wheelOpt) // mobile/trackpad
+			elements.addEventListener(`keydown`, preventDefaultForScrollKeys, false) // arrow keys
 			elements.onmousedown = e => { // disables middle mouse button
 				if (e.button === 1) return false
 			}
@@ -91,8 +90,7 @@ const handleScrollFuncs = (elements, setDisableScroll, setEnableScroll) => {
 			setEnableScroll({action: () => {
 				elements.removeEventListener(`DOMMouseScroll`, preventDefault, false)
 				elements.removeEventListener(wheelEvent, preventDefaultShift, wheelOpt)
-				elements.removeEventListener(wheelEvent, preventDefault, wheelOpt)
-				elements.removeEventListener(`touchmove`, preventDefault, wheelOpt)
+				elements.removeEventListener(wheelEvent, preventDefaultTrackPad, wheelOpt)
 				elements.removeEventListener(`keydown`, preventDefaultForScrollKeys, false)
 				elements.onmousedown = null
 			}})
