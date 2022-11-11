@@ -107,7 +107,7 @@ export const Style = styled.div`
 		color: ${props => props.sidebarisclip ? `#999999` : `white`};
 		border-radius: 5px;
 	}
-	
+
 	.fa-film:active {
 		border: 2px inset #dddddd;
 		color: #999999;
