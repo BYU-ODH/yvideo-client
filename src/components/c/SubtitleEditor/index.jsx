@@ -65,9 +65,9 @@ const SubtitleEditor = props => {
 	const [invalidSubs, setInvalidSubs] = useState([])
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
-	const [isNameUnique,setIsNameUnique] = useState(false)
-	const [titleNameRequired,setTitleNameRequired] = useState(false)
-	const [titleName,seTititleName] = useState("")
+	const [isNameUnique, setIsNameUnique] = useState(false)
+	const [titleNameRequired, setTitleNameRequired] = useState(false)
+	const [titleName, seTititleName] = useState(``)
 	// refs
 	const scrollRef = useRef()
 
@@ -545,7 +545,7 @@ const SubtitleEditor = props => {
 		try{
 			const reader = new FileReader()
 			let nameSubTitle = url.name
-			searchUniqueName(subtitles,titleName)
+			searchUniqueName(subtitles, titleName)
 			reader.onload = (e) => {
 				const temp = parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
@@ -576,7 +576,7 @@ const SubtitleEditor = props => {
 					}
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
-					searchUniqueName(tempSubList,nameSubTitle)
+					searchUniqueName(tempSubList, nameSubTitle)
 				}else {
 					const tempSubList = [...subtitles]
 					const tempSub = {
@@ -589,7 +589,7 @@ const SubtitleEditor = props => {
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
-					searchUniqueName(tempSubList,nameSubTitle)
+					searchUniqueName(tempSubList, nameSubTitle)
 				}
 				setSideEditor(false)
 				openSubEditor(subtitles.length, 0)
