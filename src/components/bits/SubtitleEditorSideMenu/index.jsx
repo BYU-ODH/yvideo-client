@@ -25,6 +25,10 @@ const SubtitleEditorSideMenu = props => {
 		scrollRef,
 		handleShowTip,
 		toggleTip,
+		validateTitleSub,
+		isNameUnique,
+		titleNameRequired,
+		titleName,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -75,7 +79,22 @@ const SubtitleEditorSideMenu = props => {
 			<div>
 				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
-
+			<div>
+				<p>
+					<b>Title:</b>
+					<input
+						type='text'
+						id='titleSub'
+						value={subs[subLayer].title}
+						className={disableSave ? `titleSubDisable` : `titleSub`}
+						placeholder='enter title...'
+						onKeyUp={e => e.stopPropagation()}
+						onChange={(e) => validateTitleSub(e.target.value)}>
+					</input>
+				</p>
+				<p className={titleNameRequired ? `titleWarn`: `titleWarnDisable`}>*Title name is required</p>
+				<p className={isNameUnique ? `titleWarn` : `titleWarnDisable`}>*Title name most be unique</p>
+			</div>
 			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY: `scroll`, height: `68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={() => addSub(subLayer, 0, `top`)}
 					visibility={subs?.[subLayer]?.[`content`]?.length === 0 && disableSave === false ? `visible`: `hidden`}

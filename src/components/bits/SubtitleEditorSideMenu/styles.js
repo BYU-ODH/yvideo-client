@@ -18,6 +18,33 @@ const Style = styled.div`
 		margin-left: 90%;
 	}
 
+	& .titleSub {
+		width: 19rem;
+		text-align:left;
+		cursor: pointer;
+		margin-right: 100px;
+		margin-left: 0.4%;
+	}
+
+	& .titleSubDisable {
+		width: 19rem;
+		text-align:left;
+		cursor: pointer;
+		margin-right: 100px;
+		margin-left: 0.4%;
+		border-color: red;
+	}
+
+	& .titleWarn {
+		color:red;
+		font-weight: bold;
+		visibility: visible;
+	}
+
+	& .titleWarnDisable {
+		visibility: hidden;
+	}
+
 	& .title {
 		display: flex;
 
