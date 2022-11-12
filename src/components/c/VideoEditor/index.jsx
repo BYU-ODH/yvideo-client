@@ -437,7 +437,7 @@ const VideoEditor = props => {
 			})
 			if(exists){
 				const existId = Object.keys(cEvent.position).find(val => cEvent.position[val][0] === `${time.toFixed(1)}`)
-				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`,x / width * 100, (y-navHeight) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
+				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`, x / width * 100, (y-navHeight) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
 			} else{
 				let newX = x / width * 100
 				let newY = (y - navHeight) / height * 100
