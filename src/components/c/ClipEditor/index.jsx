@@ -86,7 +86,7 @@ const ClipEditor = props => {
 		if(clipList.length === 0) {
 			if(Object.keys(currentContent).length !== 0 && currentContent[`clips`] !== ``){
 				const clips = JSON.parse(currentContent[`clips`])
-				clips.sort((a, b) => a.start !== b.start ? a.start - b.start : a.end - b.end)
+				clips?.sort((a, b) => a.start !== b.start ? a.start - b.start : a.end - b.end)
 				setClipList(clips)
 				const saved = []
 				for (const clip in clips)

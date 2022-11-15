@@ -301,9 +301,9 @@ const VideoContainer = props => {
 			if(width/height > aspectRatio[0] / aspectRatio[1]) {
 				const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
 				const pad = (width - videoWidth) / 2
-				blank.style.left = `${pad}px`
+				blank.style.left =`0px`
 				blank.style.top = `0px`
-				blank.style.width = `${videoWidth}px`
+				blank.style.width = `100%`
 				comment.style.width = `${videoWidth}px`
 				censor.style.width = `${videoWidth}px`
 				blank.style.height = `${height}px`
@@ -314,12 +314,12 @@ const VideoContainer = props => {
 			} else if(width/height < aspectRatio[0] / aspectRatio[1]){
 				const videoHeight = width * aspectRatio[1] / aspectRatio[0]
 				const pad = (height - videoHeight) / 2
-				blank.style.top = `${pad}px`
+				blank.style.top = `0px`
 				blank.style.left = `0px`
+				blank.style.width = `100%`
 				blank.style.height = `${videoHeight}px`
 				comment.style.height = `${videoHeight}px`
 				censor.style.height = `${videoHeight}px`
-				blank.style.width = `${width}px`
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
 				setPlayerPadding([0, pad])
