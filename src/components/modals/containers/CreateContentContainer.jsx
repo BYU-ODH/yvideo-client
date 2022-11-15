@@ -305,13 +305,12 @@ const CreateContentContainer = props => {
 				} else
 					theAccess = false
 				if (!theAccess)
-					// addAccess(selectedResourceId,uname)
 					setIsValidatingAddPermissions(true)
 				else
 					handleAddResourceSubmit1()
 
 			}catch(e){
-				alert(`Report following error to Yvideo team: `,e)
+				alert(`Report following error to Yvideo team: `, e)
 			}
 		}
 	}
@@ -320,7 +319,7 @@ const CreateContentContainer = props => {
 	}
 	const confirmAdminPermissions = async() =>{
 		if (ownerUname){
-			await addAccess(selectedResourceId,ownerUname)
+			await addAccess(selectedResourceId, ownerUname)
 			handleAddResourceSubmit1()
 		}
 		setIsValidatingAddPermissions(false)

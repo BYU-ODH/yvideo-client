@@ -322,7 +322,7 @@ const VideoContainer = props => {
 				censor.style.height = `${videoHeight}px`
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
-				setPlayerPadding([0,pad])
+				setPlayerPadding([0, pad])
 				censor.style.visibility = `hidden`
 			}
 			const EventEditor = document.getElementById(`EventEditor`)

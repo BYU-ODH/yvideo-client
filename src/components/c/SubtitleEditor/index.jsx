@@ -65,6 +65,9 @@ const SubtitleEditor = props => {
 	const [invalidSubs, setInvalidSubs] = useState([])
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
+	const [isNameUnique, setIsNameUnique] = useState(false)
+	const [titleNameRequired, setTitleNameRequired] = useState(false)
+	const [titleName, seTititleName] = useState(``)
 	// refs
 	const scrollRef = useRef()
 
@@ -500,7 +503,7 @@ const SubtitleEditor = props => {
 			}
 		}
 
-		if(invalidSubs.length === 0)
+		if(invalidSubs.length === 0 && !isNameUnique && !titleNameRequired)
 			setDisableSave(false)
 		else
 			setDisableSave(true)
@@ -535,10 +538,14 @@ const SubtitleEditor = props => {
 		openSubEditor(subtitles.length, 0)
 		setSideEditor(true)
 		setBlock(true)
+		setDisableSave(true)
+		setTitleNameRequired(true)
 	}
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
+			let nameSubTitle = url.name
+			searchUniqueName(subtitles, titleName)
 			reader.onload = (e) => {
 				const temp = parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
@@ -561,7 +568,7 @@ const SubtitleEditor = props => {
 				if (subtitles === [] || !subtitles){
 					const tempSubList = []
 					const tempSub = {
-						title : ``,
+						title : nameSubTitle,
 						language: ``,
 						content: filtered1,
 						id: ``,
@@ -569,10 +576,11 @@ const SubtitleEditor = props => {
 					}
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
+					searchUniqueName(tempSubList, nameSubTitle)
 				}else {
 					const tempSubList = [...subtitles]
 					const tempSub = {
-						title : ``,
+						title : nameSubTitle,
 						language: ``,
 						content: filtered1,
 						id: ``,
@@ -581,7 +589,7 @@ const SubtitleEditor = props => {
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
-
+					searchUniqueName(tempSubList, nameSubTitle)
 				}
 				setSideEditor(false)
 				openSubEditor(subtitles.length, 0)
@@ -592,7 +600,6 @@ const SubtitleEditor = props => {
 			console.log(error) // eslint-disable-line no-console
 			alert(`There was an error importing subtitles`)
 		}
-
 	}
 	const handleDeleteSubLayer = (index) => {
 		closeSideEditor()
@@ -613,6 +620,7 @@ const SubtitleEditor = props => {
 		if(fun === `onKeyPress`)
 			setIsEdit(false)
 
+		validateTitleSub(title)
 		const temp = [...subtitles]
 		temp[subLayerToEdit].title = title
 		setSubs(temp)
@@ -733,6 +741,29 @@ const SubtitleEditor = props => {
 
 	const newSubSetter = (index) => {
 		setNewSub({trueFalse: true, index})
+	}
+
+	const validateTitleSub = (nameTrack) => {
+		subs[subLayerToEdit].title = nameTrack
+		seTititleName(nameTrack)
+		if (nameTrack === `` || nameTrack === null) {
+			setTitleNameRequired(true)
+			setDisableSave(true)
+		} else {
+			setTitleNameRequired(false)
+			searchUniqueName(subs, nameTrack)
+		}
+	}
+
+	const searchUniqueName = (subtitles, fileName) => {
+		const filtered = subtitles.filter(entry => entry.title === fileName)
+		if (filtered !== undefined && filtered !== null && filtered.length > 1) {
+			setIsNameUnique(true)
+			setDisableSave(true)
+		} else {
+			setIsNameUnique(false)
+			setDisableSave(false)
+		}
 	}
 
 	return (
@@ -1004,6 +1035,10 @@ const SubtitleEditor = props => {
 							scrollRef={scrollRef}
 							handleShowTip={handleShowTip}
 							toggleTip={toggleTip}
+							validateTitleSub={validateTitleSub}
+							isNameUnique={isNameUnique}
+							titleNameRequired={titleNameRequired}
+							titleName={titleName}
 						></SubtitleEditorSideMenu>
 					) }
 				</>

@@ -197,7 +197,7 @@ const Player = props => {
 			// needed for unmuting after muting event is done
 			const index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
 
-			if(!events[index].active)
+			if(!events[index]?.active)
 				return
 
 			switch(values.doneEvents[j].type){

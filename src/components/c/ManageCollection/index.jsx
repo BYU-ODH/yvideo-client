@@ -47,7 +47,7 @@ const ManageCollection = props => {
 
 	const expiredContent = collection[`expired-content`]
 	if(expiredContent?.[`content-title`]) {
-		expiredContent.sort((a,b) => {
+		expiredContent.sort((a, b) => {
 			return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
 		})
 	}

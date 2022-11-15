@@ -253,7 +253,7 @@ const CollectionPermissions = props => {
 											<td>{element[`account-name`]}</td>
 											<td>{element[`account-type`]}</td>
 											<td>{element[`last-login`]?.length > 2 ?
-												`${element[`last-login`].substring(0,11)}${element[`last-login`].substring(
+												`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(
 													element[`last-login`].length - 4,
 													element[`last-login`].length)
 												}`
@@ -320,7 +320,7 @@ const CollectionPermissions = props => {
 											<td>{element[`account-name`]}</td>
 											<td>{element[`account-type`]}</td>
 											<td>{element[`last-login`]?.length > 2 ?
-												`${element[`last-login`].substring(0,11)}${element[`last-login`].substring(
+												`${element[`last-login`].substring(0, 11)}${element[`last-login`].substring(
 													element[`last-login`].length - 4,
 													element[`last-login`].length)
 												}`
