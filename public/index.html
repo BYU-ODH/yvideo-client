@@ -8,10 +8,21 @@
 	<meta name='theme-color' content='#FFFFFF'>
 	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	<script type='text/javascript' src='https://cdn.cookielaw.org/consent/6985a5b2-0d75-4cac-8d42-8564ff47121f/OtAutoBlock.js' ></script>
-	<script src='https://cdn.cookielaw.org/scripttemplates/otSDKStub.js' type='text/javascript' charset='UTF-8' data-domain-script='6985a5b2-0d75-4cac-8d42-8564ff47121f' ></script>
-	<script type='text/javascript'>
-		function OptanonWrapper() { }
+
+	
+	
+		
+	<script>
+	(function() { // Scoping function to avoid globals
+    	(document.URL.indexOf('localhost') === -1) && 
+    	document.write(`<script src='https://cdn.cookielaw.org/scripttemplates/otSDKStub.js' type='text/javascript' charset='UTF-8' data-domain-script='6985a5b2-0d75-4cac-8d42-8564ff47121f' ><\/script>
+		<script type='text/javascript'>
+			function OptanonWrapper() { }
+		<\/script>`)
+	})();
 	</script>
+
+		
 
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
