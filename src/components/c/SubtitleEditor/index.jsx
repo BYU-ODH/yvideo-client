@@ -544,7 +544,7 @@ const SubtitleEditor = props => {
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
-			let nameSubTitle = url.name
+			const nameSubTitle = url.name
 			searchUniqueName(subtitles, titleName)
 			reader.onload = (e) => {
 				const temp = parse(e.target.result)

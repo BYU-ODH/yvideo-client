@@ -28,7 +28,6 @@ const SubtitleEditorSideMenu = props => {
 		validateTitleSub,
 		isNameUnique,
 		titleNameRequired,
-		titleName,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
