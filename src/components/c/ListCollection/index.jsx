@@ -105,8 +105,6 @@ const ListCollection = props => {
 								<PublicCollectionsTable isOwner={isOwner}>
 
 									<PublicCollectionButton>
-										{/* TODO: possibely add */}
-										{/* <MoreButton className='more-button' onClick={handleMorePublicCollection}>more</MoreButton> */}
 										{!isOwner ?
 											<PublicButton
 												onClick={handlePublicCollection}

@@ -395,7 +395,6 @@ const ClipEditor = props => {
 
 						</div>
 						<section>
-							{/* //TODO: Add delete logic */}
 						</section>
 						<div className='zoom-controls'>
 							<div className='zoom-factor'>

@@ -8,8 +8,6 @@ import {
 	Icon, Style,
 } from './styles'
 
-// TODO: Copy styles from NewTrackEditor used by these components into this file
-
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
 const TrackLayer = props => {
@@ -233,7 +231,6 @@ const TrackLayer = props => {
 				}
 				key={index}
 			>
-				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon} className={isMultiEvent && `half-icon`}/>
 				{ event.type !== `Pause` ? (
 					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
