@@ -154,6 +154,7 @@ const ClipEditor = props => {
 	}
 
 	const toggleItemTimeChange = (index, boolean, startOrEnd) => {
+		console.log(Object.en)
 		for(let i = 0; i < Object.entries(clipItemTimeChange).length; i++){
 			if(parseInt(Object.keys(clipItemTimeChange)[i]) === index){
 				index = index.toString()
@@ -165,6 +166,7 @@ const ClipEditor = props => {
 	const handleInputChange = (item, startOrEnd ) => {
 		for (let i = 0; i < Object.entries(clipList).length; i++){
 			if(Object.keys(clipList)[i] === item ){
+				console.log(item)
 				const title = clipList[item].title
 				const end = clipList[item].end
 				const start = clipList[item].start
@@ -515,7 +517,7 @@ const ClipEditor = props => {
 											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
 												{clipItemTimeChange.length !== 0 && clipItemTimeChange[i]?.trueFalse ?
 													<>
-														<td className='deleteTd'>Change start time to current player time?</td>
+														<td className='deleteTd'>·Change start time to current player time?</td>
 														{clipItemTimeChange[i].startOrEnd === `start` ?
 															<td className='deleteTd'><Button className='content-cancel' onClick={() => handleInputChange(item, `start`)}>Yes</Button></td>
 															:

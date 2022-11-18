@@ -2,6 +2,8 @@ import React from 'react'
 
 import { ListItem, ListItemDropDown } from 'components/bits'
 import * as sortingRegex from 'components/vanilla_scripts/sorting_regex'
+import Row from 'react-bootstrap/Row'
+
 
 import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsTable } from './styles'
 

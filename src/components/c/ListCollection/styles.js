@@ -46,9 +46,9 @@ export const Collection = styled.div`
 	}
 
 	& > p {
-		flex: 2;
 		text-align: center;
 		color: #a4a4a4;
+		margin-bottom: 0rem;
 	}
 
 	:hover {

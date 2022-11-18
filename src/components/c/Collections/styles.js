@@ -7,95 +7,150 @@ import menuIcon from 'assets/menu-black.svg'
 
 const Style = styled.div`
 
-	max-width: 100rem;
-	padding: 8.4rem 2.4rem 0 2.4rem;
-	margin: 0 auto;
+.subheader {
+	margin-top: var(--navbar-height);
 
-	& .list{
-		margin-bottom: 5rem;
+
+	& h3 {
+			margin: 0px;
+			display: inline;
+			font-weight: lighter;
+			font-size: 1.3rem;
 	}
 
-	& .resource-search-submit {
-		width: 62%;
+	.text-right {
+		text-align: right;
+		display: inline;
 	}
 
-	& .resource-search-submit-not-admin{
-		width: 80%;
-		margin-left: 7rem;
+	.text-left {
+		margin-left: 2rem;
+	}
+}
+
+.subheader2 {
+	margin-top: 6px;
+
+
+	& h3 {
+			margin: 0px;
+			display: inline;
+			font-weight: lighter;
+			font-size: 1.3rem;
 	}
 
-& .collections-header-not-admin {
-		display: flex;
-		align-items: center;
-		padding: 2rem;
+	.text-right {
+		text-align: right;
+		display: inline;
+	}
 
-		& > div {
-			display: flex;
-			align-items: center;
+	.text-center {
+		text-align: center;
+		display: inline
+	}
 
-			& > h3 {
-				font-weight: lighter;
-			}
-		}
+	.text-left {
+		margin-left: 2rem;
+	}
 }
 
-& .collections-header{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 2rem;
+h3 {
+	margin: 0px;
+	display: inline;
+	font-weight: lighter;
+	font-size: 1.3rem;
 
-		& > div {
-			display: flex;
-			align-items: center;
-
-			& > h3 {
-				font-weight: lighter;
-				font-size: 1.3rem;
-			}
-
-			& a {
-				font-size: 1.1rem;
-				color: white;
-				outline: none;
-				background-color: var(--light-blue);
-				border: none;
-				border-radius: 6px;
-				text-align: center;
-				cursor: pointer;
-				padding: 8px 5px;
-				white-space: nowrap;
-
-				:hover {
-					box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.5);
-				}
-				@media screen and (max-width: 320px){
-					font-size: .9rem;
-				}
-			}
-		}
 }
 
-& .collections-header-mobile{
-		margin: 2rem;
+// 	max-width: 100rem;
+// 	padding: 8.4rem 2.4rem 0 2.4rem;
+// 	margin: 0 auto;
 
-		& > div {
-			display: flex;
-			align-items: center;
+// 	& .list{
+// 		margin-bottom: 5rem;
+// 	}
 
-			& > h3 {
-				font-weight: bold;
-				font-size: 1.2rem;
-			}
+// 	& .resource-search-submit {
+// 		width: 62%;
+// 	}
 
-			& a {
-				font-weight: 300;
-				font-size: 1.2rem;
-				text-decoration: none;
-				color: #000;
-			}
-		}
-}
+// 	& .resource-search-submit-not-admin{
+// 		width: 80%;
+// 		margin-left: 7rem;
+// 	}
+
+// & .collections-header-not-admin {
+// 		display: flex;
+// 		align-items: center;
+// 		padding: 2rem;
+
+// 		& > div {
+// 			display: flex;
+// 			align-items: center;
+
+// 			& > h3 {
+// 				font-weight: lighter;
+// 			}
+// 		}
+// }
+
+// & .collections-header{
+// 		display: flex;
+// 		justify-content: space-between;
+// 		align-items: center;
+// 		padding: 2rem;
+
+// 		& > div {
+// 			display: flex;
+// 			align-items: center;
+
+// 			& > h3 {
+// 				font-weight: lighter;
+// 				font-size: 1.3rem;
+// 			}
+
+// 			& a {
+// 				font-size: 1.1rem;
+// 				color: white;
+// 				outline: none;
+// 				background-color: var(--light-blue);
+// 				border: none;
+// 				border-radius: 6px;
+// 				text-align: center;
+// 				cursor: pointer;
+// 				padding: 8px 5px;
+// 				white-space: nowrap;
+
+// 				:hover {
+// 					box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.5);
+// 				}
+// 				@media screen and (max-width: 320px){
+// 					font-size: .9rem;
+// 				}
+// 			}
+// 		}
+// }
+
+// & .collections-header-mobile{
+// 		margin: 2rem;
+
+// 		& > div {
+// 			display: flex;
+// 			align-items: center;
+
+// 			& > h3 {
+// 				font-weight: bold;
+// 				font-size: 1.2rem;
+// 			}
+
+// 			& a {
+// 				font-weight: 300;
+// 				font-size: 1.2rem;
+// 				text-decoration: none;
+// 				color: #000;
+// 			}
+// 		}
+// }
 
 `
 
@@ -127,7 +182,6 @@ export const Help = styled.img`
 	width: 20px;
 	height: 20px;
 	margin-left: -5px;
-	position: relative;
 	bottom: -4px;
 	cursor: pointer;
 `
@@ -175,7 +229,7 @@ export const MenuIcon = styled.span`
 export const Search = styled.form`
 
 	position: relative;
-	width: 62%;
+	width: 80%;
 
 	& > input {
 		z-index: 1;
