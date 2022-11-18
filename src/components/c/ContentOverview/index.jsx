@@ -65,6 +65,7 @@ const ContentOverview = props => {
 		handleShowTip,
 		toggleTip,
 		handleNavigation,
+		handleToggleClose,
 	} = props.handlers
 
 	const {
@@ -125,11 +126,11 @@ const ContentOverview = props => {
 									}
 								</PublishButton>
 								<RemoveButton className='remove-button' onClick={handleRemoveContent}><i className='fa fa-trash-o'></i>Delete</RemoveButton>
-								<EditButton id='edit-button' onClick={handleToggleEdit}><i className='fa fa-save'></i>Save</EditButton>
+								<EditButton id='edit-button' onClick={handleToggleClose}><i className='fa fa-save'></i>Save</EditButton>
 							</div>
 					}
 					{editing ?
-						<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
+						<TitleEdit type='text' value={content.name} onChange={handleNameChange} onBlur={handleToggleClose} onKeyUp={e => e.stopPropagation()} />
 						:
 						<TitleWrapper><h3 className={`content-title`}>{content.name}</h3></TitleWrapper>}
 					<ul>

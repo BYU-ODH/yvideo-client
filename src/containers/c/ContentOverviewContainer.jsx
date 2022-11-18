@@ -82,16 +82,20 @@ const ContentOverviewContainer = props => {
 		return <ContentOverview isExpired={true} content={content}/>
 
 	const handleToggleEdit = async () => {
-		if (editing) {
-			await updateContent(contentState)
-			setShowing(false)
-			setBlock(false)
-			setTimeout(() => {
-				setEditing(false)
-			}, 500)
-		} else
-			setEditing(true)
+		editing ? await handleUpdateContent() : setEditing(true)
+	}
 
+	const handleToggleClose = async () => {
+		await handleUpdateContent()
+		setTimeout(() => {
+			setEditing(false)
+		}, 500)
+	}
+
+	const handleUpdateContent = () => {
+		updateContent(contentState)
+		setShowing(false)
+		setBlock(false)
 	}
 
 	const handleNavigation = (confirmNavigation, cancelNavigation) => {
@@ -262,6 +266,7 @@ const ContentOverviewContainer = props => {
 		handleShowTip,
 		toggleTip,
 		handleNavigation,
+		handleToggleClose,
 	}
 
 	return <ContentOverview viewstate={viewstate} handlers={handlers} />

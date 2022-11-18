@@ -620,7 +620,6 @@ const PlayerContainer = props => {
 		const censor = document.getElementById(`censorContainer`)
 		if(width / height > aspectRatio[0] / aspectRatio[1]) {
 			const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
-			const pad = (width - videoWidth) / 2
 			blank.style.marginLeft =`0px`
 			blank.style.marginTop = `0px`
 			blank.style.width = `100%`
@@ -631,13 +630,12 @@ const PlayerContainer = props => {
 			censor.style.height = `${height}px`
 		} else if(width / height < aspectRatio[0] / aspectRatio[1]) {
 			const videoHeight = width * aspectRatio[1] / aspectRatio[0]
-			const pad = (height - videoHeight) / 2
 			blank.style.marginTop = `0px`
 			blank.style.marginLeft = `0px`
 			blank.style.width = `100%`
 			blank.style.height = `100%`
 			comment.style.height = `${videoHeight}px`
-			censor.style.height = `${videoHeight}px`			
+			censor.style.height = `${videoHeight}px`
 			comment.style.width = `${width}px`
 			censor.style.width = `${width}px`
 		}
