@@ -96,8 +96,6 @@ const PlayerContainer = props => {
 	const [isClip, setIsClip] = useState(false)
 	const [sideBarIsClip, setSideBarIsClip] = useState(false)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 
 	// aspect ratio
 	const [aspectRatio, setAspectRatio] = useState([16, 9])
@@ -120,7 +118,7 @@ const PlayerContainer = props => {
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			const clips =
-				Array.isArray(JSON.parse(contentCache?.[params.id]?.clips)) ?
+				contentCache?.[params.id]?.clips && Array.isArray(JSON.parse(contentCache[params.id].clips)) ?
 					JSON.parse(contentCache[params.id].clips)[params.clip]
 					: []
 
@@ -154,9 +152,8 @@ const PlayerContainer = props => {
 				if (streamKey)
 					setKey(streamKey)
 
-				if (sKey !== `` && !isUrlLoaded) {
+				if (sKey !== ``) {
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-					// setIsUrlLoaded(true)
 					if (subtitlesContentId !== params.id && calledGetSubtitles === false) {
 						getSubtitles(params.id)
 						setCalledGetSubtitles(true)
@@ -229,7 +226,7 @@ const PlayerContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
 	useLayoutEffect(() => {
-		if (contentCache[params.id])
+		if (contentCache?.[params.id]?.clips)
 			setClips(JSON.parse(contentCache[params.id].clips))
 
 		if (contentCache[params.id]?.id){

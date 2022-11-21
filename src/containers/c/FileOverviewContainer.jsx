@@ -71,6 +71,7 @@ const FileOverviewContainer = props => {
 			props: {
 				file,
 				resourceId: fileState[`resource-id`],
+				fileState,
 			},
 		})
 	}

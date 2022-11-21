@@ -20,7 +20,6 @@ const Wrapper = styled.div `
 	width: 100%;
 	height: 100%;
 	top: 0px;
-	// transition: visibility 1s ease-in-out;
 `
 
 export default Wrapper

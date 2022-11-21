@@ -38,7 +38,6 @@ const Modal = props => {
 			wrapper.current.classList.add(`active`)
 			wrapper.current.classList.remove(`hidden`)
 		}
-
 		if (!propsState.active && !active) {
 			setTimeout(() => {
 				wrapper.current.classList.remove(`active`)

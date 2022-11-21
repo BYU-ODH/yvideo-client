@@ -23,8 +23,8 @@ const TrackLayer = props => {
 		setEventSeek,
 		setActiveCensorPosition,
 	} = props
-	const layerIndex = parseInt(props.index)
 
+	const layerIndex = parseInt(props.index)
 	const layerRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
