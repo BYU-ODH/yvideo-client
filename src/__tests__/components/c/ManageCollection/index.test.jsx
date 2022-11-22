@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom'
 const resource = testutil.resource
 const user = testutil.user
 
-const newcontent = { // eslint-disable-line no-unused-vars
+const newcontent = {
 	id: 116,
 	name: `testname2`,
 	contentType: `video2`,
@@ -82,6 +82,7 @@ const props = {
 		isContentTab: true,
 		isEditingCollectionName: false,
 		user,
+		newcontent,
 	},
 	handlers: {
 		unarchive: jest.fn(),

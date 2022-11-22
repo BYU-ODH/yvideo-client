@@ -104,13 +104,7 @@ const VideoEditor = props => {
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
 
-	// eslint-disable-next-line no-unused-vars
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
-	// eslint-disable-next-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
@@ -126,9 +120,7 @@ const VideoEditor = props => {
 
 	useEffect(() => {
 		function handleResize() {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
@@ -282,11 +274,8 @@ const VideoEditor = props => {
 
 	const updateEvents = (index, event, layerIndex, side, type) => {
 
-		let canAccessDom = false
-		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
-			canAccessDom = true // eslint-disable-line no-unused-vars
-			document.getElementById(`sideTabMessage`).style.color=`red`
-		}
+		if(showSideEditor && document.getElementById(`sideTabMessage`))
+			document.getElementById(`sideTabMessage`).style.color = `red`
 
 		const currentEvents = [...allEvents]
 		if(event.type === `Pause`)
@@ -596,7 +585,7 @@ const VideoEditor = props => {
 					setElapsed={setElapsed}
 				></VideoContainer>
 
-				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+				<Timeline zoom={scrollBarWidth}>
 
 					<section>
 						<div className='event-layers' id='layers-component'>
@@ -609,7 +598,6 @@ const VideoEditor = props => {
 
 									<TrackLayer
 										videoLength={videoLength}
-										minimized={eventListMinimized}
 										width={layerWidth}
 										events={allEvents}
 										activeEvent={eventToEdit}
@@ -702,7 +690,7 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized} show={showSideEditor}>
+			<EventEditor id='EventEditor' show={showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}
@@ -760,7 +748,7 @@ const VideoEditor = props => {
 						}
 					</div>
 
-					{ showSideEditor !== false && eventListMinimized !== true ?
+					{ showSideEditor !== false ?
 						<TrackEditorSideMenu
 							singleEvent={checkEvent()}
 							videoLength={videoLength}

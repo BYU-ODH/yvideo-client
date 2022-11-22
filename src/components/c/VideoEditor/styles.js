@@ -40,7 +40,7 @@ export const Timeline = styled.div`
 	--header-height: 5rem;
 
 	position: relative;
-	height: ${props => props.minimized ? `0vh` : `30vh`};
+	height: 30vh;
 	width: 100%;
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
@@ -222,7 +222,7 @@ export const NewLayer = styled.button`
 	cursor: pointer;
 `
 export const EventEditor = styled.div`
-	--minimized: ${props => props.minimized};
+	--minimized: ${false};
 
 	width: 30%;
 	/* width: 4rem; */

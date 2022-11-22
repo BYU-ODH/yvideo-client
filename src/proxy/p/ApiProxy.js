@@ -513,7 +513,6 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					// eslint-disable-next-line no-unused-vars
 					await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${process.env.REACT_APP_USER_NAME}/${process.env.REACT_APP_USER_KEY}`, {headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						updateSessionId(res.data[`session-id`])

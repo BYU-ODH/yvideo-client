@@ -44,8 +44,6 @@ export default class PreviewFiles extends PureComponent {
 		} = this.props.viewstate
 
 		const handleOnProgress = ({ played, playedSeconds }) => {
-			// eslint-disable-next-line no-unused-vars
-			const t0 = performance.now()
 			handleProgress(playedSeconds)
 			if(document.getElementById(`time-bar-progress`))
 				document.getElementById(`time-bar-progress`).style.width = `${played * 100}%`

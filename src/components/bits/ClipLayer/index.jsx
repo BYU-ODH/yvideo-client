@@ -122,8 +122,7 @@ const ClipLayer = props => {
 		setStart(s, null, index)
 		setEnd(en, null, index)
 	}
-	// eslint-disable-next-line no-unused-vars
-	const curr = {...dragRef.current}
+
 	return (
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>

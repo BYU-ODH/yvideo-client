@@ -241,10 +241,7 @@ export default class ContentService {
 			// let finalData = 'asd'
 			const finalData = new BackEndContent(content).backEndData
 
-			// eslint-disable-next-line no-unused-vars
-			const results = await apiProxy.content.update(finalData)
-
-			// console.log(content)
+			await apiProxy.content.update(finalData)
 
 			dispatch(this.actions.contentUpdate(content))
 		} catch (error) {
@@ -255,7 +252,6 @@ export default class ContentService {
 	addView = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
 		const time = Date.now() - getState().contentStore.lastFetched
-		// eslint-disable-next-line no-unused-vars
 		const stale = time >= process.env.REACT_APP_STALE_TIME
 
 		if (stale || force) {
@@ -277,10 +273,6 @@ export default class ContentService {
 
 	getSubtitles = (id, force = false) => async (dispatch, getState, { apiProxy }) => {
 
-		const time = Date.now() - getState().contentStore.lastFetched
-
-		// eslint-disable-next-line no-unused-vars
-		const stale = time >= process.env.REACT_APP_STALE_TIME
 		dispatch(this.actions.contentStart())
 
 		try {
@@ -295,13 +287,7 @@ export default class ContentService {
 		dispatch(this.actions.contentStart())
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const results = await apiProxy.content.addSubtitles(subs)
-
-			// const metaResult =
-			// await apiProxy.content.metadata.post(id, metadata)
-
-			// console.log(settingsResult)
+			await apiProxy.content.addSubtitles(subs)
 
 			dispatch(this.actions.contentAddSubtitles(subs))
 

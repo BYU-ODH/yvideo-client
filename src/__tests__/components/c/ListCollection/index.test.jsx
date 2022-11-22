@@ -57,14 +57,14 @@ describe(`List collection test`, () => {
 	})
 
 	it(`ListCollection togglePanel test`, () => {
-		const wrapper = shallow( // eslint-disable-line no-unused-vars
+		const wrapper = shallow(
 			<Provider store={testutil.store}>
 				<ListCollectionContainer {...props} />
 			</Provider>,
 		)
 
 		// const togglePanel = jest.spyOn(wrapper.instance(), `togglePanel`)
-		// wrapper.instance().forceUpdate()
+		wrapper.instance().forceUpdate()
 		// wrapper.find(`.list-header`).simulate(`click`)
 
 		// expect(togglePanel).toBeCalled()

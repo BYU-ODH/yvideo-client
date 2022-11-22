@@ -40,13 +40,8 @@ const SubtitleEditor = props => {
 	const [blockLeave, setBlock] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [isReady, setIsReady] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
@@ -79,9 +74,7 @@ const SubtitleEditor = props => {
 
 	useEffect(() => {
 		const handleResize = () => {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
@@ -544,7 +537,7 @@ const SubtitleEditor = props => {
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
-			let nameSubTitle = url.name
+			const nameSubTitle = url.name
 			searchUniqueName(subtitles, titleName)
 			reader.onload = (e) => {
 				const temp = parse(e.target.result)
@@ -795,7 +788,7 @@ const SubtitleEditor = props => {
 					setElapsed={setElapsed}
 				>
 				</VideoContainer>
-				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+				<Timeline zoom={scrollBarWidth}>
 
 					<section id='event-section'>
 						<div className='event-layers'>
@@ -866,7 +859,6 @@ const SubtitleEditor = props => {
 									</div>
 									<SubtitlesLayer
 										videoLength={videoLength}
-										minimized={eventListMinimized}
 										width={layerWidth}
 										setIsReady={setIsReady}
 										isReady={isReady}
@@ -887,7 +879,6 @@ const SubtitleEditor = props => {
 							{subtitles.length === 0 &&
 								<SubtitlesLayer
 									videoLength={videoLength}
-									minimized={eventListMinimized}
 									width={layerWidth}
 									isReady={isReady}
 									setIsReady={setIsReady}
@@ -980,7 +971,7 @@ const SubtitleEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventList minimized={eventListMinimized}>
+			<EventList>
 				<header>
 					<img
 						alt={`helpIcon`}

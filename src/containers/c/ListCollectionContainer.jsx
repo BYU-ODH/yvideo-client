@@ -49,7 +49,7 @@ const ListCollectionContainer = props => {
 			setIsSubscribed(true)
 		}
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const readSubscription = () => {
 
 		if(collection.subscribers) {
@@ -77,7 +77,6 @@ const ListCollectionContainer = props => {
 	}
 
 	// TODO: we can modify this idea later
-	// eslint-disable-next-line no-unused-vars
 	const handleMorePublicCollection = async() => {
 		const result = await searchCollectionsByUserId(collection.owner, true, true)
 		let morePublicCollections
@@ -115,6 +114,8 @@ const ListCollectionContainer = props => {
 	const handlers = {
 		isOpenEventHandler,
 		handlePublicCollection,
+		readSubscription,
+		handleMorePublicCollection,
 	}
 
 	return <ListCollection viewstate={viewstate} handlers={handlers} />
