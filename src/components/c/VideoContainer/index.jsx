@@ -6,7 +6,7 @@ import { CensorDnD } from 'components/bits'
 import { handleElapsed } from '../../common/editorCommon'
 
 import { CurrentEvents, CensorChange, handleSubtitle, CommentChange } from 'components/common/getCurrentEvents'
-import handleScrollFuncs from '../../common/sorting_regex'
+import handleScrollFuncs from '../../common/toggleScroll'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'

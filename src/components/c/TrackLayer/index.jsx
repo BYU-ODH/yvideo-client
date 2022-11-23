@@ -2,7 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
-import handleScrollFuncs from '../../common/sorting_regex'
+import handleScrollFuncs from '../../common/toggleScroll'
 
 import {
 	Icon, Style,

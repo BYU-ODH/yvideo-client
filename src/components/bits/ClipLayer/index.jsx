@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
-import handleScrollFuncs from '../../common/sorting_regex'
+import handleScrollFuncs from '../../common/toggleScroll'
 
 import {
 	Style,
