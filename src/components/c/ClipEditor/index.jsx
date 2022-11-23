@@ -7,7 +7,7 @@ import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'

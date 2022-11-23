@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ListItem, ListItemDropDown } from 'components/bits'
-import * as sortingRegex from 'components/vanilla_scripts/sorting_regex'
+import * as sortingRegex from 'components/common/sorting_regex'
 
 import Style, { Collection, Body, PublicButton, FeedbackMessage, CollectionRow, PublicCollectionButton, PublicCollectionsTable } from './styles'
 
