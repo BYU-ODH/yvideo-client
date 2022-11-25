@@ -1,12 +1,12 @@
 import axios from 'axios'
 import User from 'models/User'
 import Content from 'models/Content'
+import Swal from 'sweetalert2'
 
 const updateSessionId = (id) => {
 	if(id !== ``){
 		if(id === `expired`){
-
-			alert(`Your session has expired. Please, log back in`)
+			Swal.fire(`Session Expired`,`Your session has expired. Please, log back in`,`warning`)
 			apiProxy.auth.logout()
 			// CAS LOGOUT https://cas.byu.edu/cas/logout
 		}

@@ -13,6 +13,7 @@ import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
 import { convertSecondsToMinute } from '../../common/timeConversion'
+import Swal from 'sweetalert2'
 
 const VideoContainer = props => {
 
@@ -349,7 +350,7 @@ const VideoContainer = props => {
 	const formattedElapsed = convertSecondsToMinute(elapsed)
 
 	const showError = () => {
-		alert(`There was an error loading the video`)
+		Swal.fire(`Error Video Loading`,`There was an error loading the video`,`error`)
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
