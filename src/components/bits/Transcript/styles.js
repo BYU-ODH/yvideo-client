@@ -144,7 +144,7 @@ export const Style = styled.div`
 		margin-left: 42px;;
 		overflow-y: scroll !important;
 		background-color: white;
-		width: calc(100% - 35px);
+		width: calc(100% - 45px);
 		height: 70vh;
 		::-webkit-scrollbar {
 			display: block !important;
@@ -286,6 +286,7 @@ export const Style = styled.div`
 			padding: 5px;
 			border: 1px solid black;
 			border-radius: 3px;
+			width: 95%;
 
 			& #translation-list {
 				height: 100%;
