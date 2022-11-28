@@ -217,7 +217,7 @@ const Player = props => {
 		handleAspectRatio()
 		if(events){
 			const eventFilterSkip = events.filter((values) => {
-				return values.type === `Skip` // TODO: Make sure this is fine
+				return values.type === `Skip`
 			})
 			setSkipArray(eventFilterSkip)
 		}
