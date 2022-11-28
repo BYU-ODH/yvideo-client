@@ -5,7 +5,7 @@ import {
 	CollectionPermissionsContainer,
 } from 'containers'
 
-import * as sortingRegex from 'components/vanilla_scripts/sorting_regex'
+import * as sortingRegex from 'components/common/sorting_regex'
 
 import Style, {
 	Title,

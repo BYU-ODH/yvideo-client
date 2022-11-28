@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
-import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/common/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
