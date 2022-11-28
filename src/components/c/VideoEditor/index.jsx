@@ -1,14 +1,14 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 // import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
+import {useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
-import Style, { Timeline, EventEditor, PlusIcon} from './styles'
-// import {DialogBox} from '../../../modals/components'
+import Style, { Timeline, EventEditor, PlusIcon } from './styles'
+// import { DialogBox } from '../../../modals/components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
