@@ -534,17 +534,17 @@ const VideoEditor = props => {
 			}
 		}
 		jsonData.sort((a, b) => (a.options.start > b.options.start) - (a.options.start < b.options.start))
-		createFileAnnotationsJson(jsonData,`icplayer`)
+		createFileAnnotationsJson(jsonData, `icplayer`)
 	}
 
 	const handleExportAnnotationYVideo = () => {
 		const jsonData = []
 		jsonData.push(allEvents)
 		jsonData.sort((a, b) => (a.start > b.start) - (a.start < b.start))
-		createFileAnnotationsJson(jsonData,`yvideo`)
+		createFileAnnotationsJson(jsonData, `yvideo`)
 	}
 
-	const createFileAnnotationsJson = (jsonData,option)=> {
+	const createFileAnnotationsJson = (jsonData, option)=> {
 		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url
@@ -564,7 +564,7 @@ const VideoEditor = props => {
 		if (allEvents.length !== 0) {
 			Swal.fire({
 				title: `Import Y-Video Format`,
-				text: `Do you want to replace actual content?`,
+				text: `Do you want to replace the actual content?`,
 				icon: `question`,
 				confirmButtonText: `Yes`,
 				showCancelButton: true,
@@ -574,7 +574,7 @@ const VideoEditor = props => {
 				result.isConfirmed ? setIsReplace(true) : setIsReplace(false)
 				await callImportFile()
 			}).catch((error)=>{
-				Swal.fire(`An error has occur`,error.message, `error`)
+				Swal.fire(`An error has occur`, error.message, `error`)
 			})
 		}
 	}
@@ -591,7 +591,7 @@ const VideoEditor = props => {
 			reader.onload = (e) => {
 				const newElements = JSON.parse(e.target.result)
 				if(isReplace)
-					allEvents.splice(0,allEvents.length)
+					allEvents.splice(0, allEvents.length)
 				for(let i = 0; i < newElements[0].length; i++)
 					allEvents.push(newElements[0][i])
 				setBlock(true)
@@ -599,7 +599,7 @@ const VideoEditor = props => {
 			if(filePath !== undefined )
 				reader.readAsText(filePath[0])
 		}catch (error){
-			Swal.fire(`An error has occur`,error.message,`error`)
+			Swal.fire(`An error has occur`, error.message, `error`)
 		}
 	}
 
