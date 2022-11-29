@@ -453,7 +453,7 @@ const SubtitleEditor = props => {
 			setBlock(true)
 
 		}catch(error) {
-			Swal.fire(`Error Adding Subtitles`,`there was an error adding the subtitle`,`error`)
+			Swal.fire(`Error Adding Subtitles`, `there was an error adding the subtitle`, `error`)
 			console.error(error) // eslint-disable-line no-console
 		}
 	}
@@ -565,7 +565,7 @@ const SubtitleEditor = props => {
 					return item.end < videoLength
 				})
 				if (removeArray > 0)
-					Swal.fire(`Editing Subtitles`,`Some subtitles had to be cut because the subtitles are longer than the video`,`warning`)
+					Swal.fire(`Editing Subtitles`, `Some subtitles had to be cut because the subtitles are longer than the video`, `warning`)
 				if (subtitles === [] || !subtitles){
 					const tempSubList = []
 					const tempSub = {
@@ -599,7 +599,7 @@ const SubtitleEditor = props => {
 			reader.readAsText(url)
 		}catch(error){
 			console.log(error) // eslint-disable-line no-console
-			Swal.fire(`Error Importing Subtitles`,`There was an error importing subtitles`,`error`)
+			Swal.fire(`Error Importing Subtitles`, `There was an error importing subtitles`, `error`)
 		}
 	}
 	const handleDeleteSubLayer = (index) => {
