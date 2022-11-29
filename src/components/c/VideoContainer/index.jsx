@@ -350,7 +350,7 @@ const VideoContainer = props => {
 	const formattedElapsed = convertSecondsToMinute(elapsed)
 
 	const showError = () => {
-		Swal.fire(`Error Video Loading`,`There was an error loading the video`,`error`)
+		Swal.fire(`Error Video Loading`, `There was an error loading the video`, `error`)
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once
