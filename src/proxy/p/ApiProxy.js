@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 const updateSessionId = (id) => {
 	if(id !== ``){
 		if(id === `expired`){
-			Swal.fire(`Session Expired`,`Your session has expired. Please, log back in`,`warning`)
+			Swal.fire(`Session Expired`, `Your session has expired. Please, log back in`, `warning`)
 			apiProxy.auth.logout()
 			// CAS LOGOUT https://cas.byu.edu/cas/logout
 		}
