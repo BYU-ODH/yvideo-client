@@ -19,6 +19,7 @@ import saveIcon from 'assets/check.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
+import Swal from 'sweetalert2'
 
 const SubtitleEditor = props => {
 	const { setEvents, updateContent, createSub, setAllSubs, activeUpdate, deleteSubtitles } = props
@@ -445,7 +446,7 @@ const SubtitleEditor = props => {
 			setBlock(true)
 
 		}catch(error) {
-			alert(`there was an error adding the subtitle`)
+			Swal.fire(`Error Adding Subtitles`, `there was an error adding the subtitle`, `error`)
 			console.error(error) // eslint-disable-line no-console
 		}
 	}
@@ -557,7 +558,7 @@ const SubtitleEditor = props => {
 					return item.end < videoLength
 				})
 				if (removeArray > 0)
-					alert(`Some subtitles had to be cut because the subtitles are longer than the video`)
+					Swal.fire(`Editing Subtitles`, `Some subtitles had to be cut because the subtitles are longer than the video`, `warning`)
 				if (subtitles === [] || !subtitles){
 					const tempSubList = []
 					const tempSub = {
@@ -591,7 +592,7 @@ const SubtitleEditor = props => {
 			reader.readAsText(url)
 		}catch(error){
 			console.log(error) // eslint-disable-line no-console
-			alert(`There was an error importing subtitles`)
+			Swal.fire(`Error Importing Subtitles`, `There was an error importing subtitles`, `error`)
 		}
 	}
 	const handleDeleteSubLayer = (index) => {

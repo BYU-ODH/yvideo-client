@@ -10,6 +10,7 @@ import {
 } from 'services'
 
 import CreateContent from 'components/modals/components/CreateContent'
+import Swal from 'sweetalert2'
 
 const CreateContentContainer = props => {
 
@@ -239,7 +240,7 @@ const CreateContentContainer = props => {
 			const videoId = new URL(data.url).search.split(`=`)[1]
 
 			if(data.targetLanguage === ``){
-				alert(`Please, select a valid language`)
+				Swal.fire(`Adding Language`, `Please, select a valid language`, `warning`)
 				return
 			}
 			// SUPPORTED LANGUAGES: German, Spanish, Russian
@@ -275,7 +276,7 @@ const CreateContentContainer = props => {
 			toggleModal()
 			setBlock(false)
 		} catch(err) {
-			alert(`Please use a valid URL`)
+			Swal.fire(`Invalid URL`, `Please use a valid URL`, `error`)
 			return
 		}
 
@@ -327,14 +328,14 @@ const CreateContentContainer = props => {
 	}
 	const handleAddResourceSubmit1 = async () => {
 		if(data.targetLanguage === ``){
-			alert(`Please, select a valid language`)
+			Swal.fire(`Valid Language`, `Please, select a valid language`, `warning`)
 			return
 		}
 
 		// FIND IF THE COLLECTION IS PUBLIC
 		// IF COLLECTION IS PUBLIC COPYRITED RESOURCES CANNOT BE ADDED TO IT
 		if(modal?.props?.isPublic && resourceContent[selectedResourceId].copyrighted){
-			alert(`The resource you are trying to add is copyrighted and cannot be added to a public collection`)
+			Swal.fire(`Adding Resources`, `The resource you are trying to add is copyrighted and cannot be added to a public collection`, `warning`)
 			return
 		}
 
@@ -383,10 +384,10 @@ const CreateContentContainer = props => {
 		// 		} else
 		// 			theAccess = false
 		// 		if (!theAccess)
-		// 			addAccess(selectedResourceId,uname)
+		// 			addAccess(selectedResourceId, uname)
 
 		// 	}catch(e){
-		// 		alert(`Report following error to Yvideo team: `,e)
+		// 		alert(`Report following error to Yvideo team: `, e)
 		// 	}
 		// }
 		if(modal.isLabAssistantRoute){
