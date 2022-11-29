@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
-import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/common/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
@@ -217,7 +217,7 @@ const Player = props => {
 		handleAspectRatio()
 		if(events){
 			const eventFilterSkip = events.filter((values) => {
-				return values.type === `Skip` // TODO: Make sure this is fine
+				return values.type === `Skip`
 			})
 			setSkipArray(eventFilterSkip)
 		}
@@ -276,7 +276,7 @@ const Player = props => {
 						{ !started &&
 							<PlayButton playing={playing} onClick={() => handlePlayPause(playing)} started={started} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 						}
-						{displaySubtitles !== null && showTranscript &&
+						{displaySubtitles !== null && displaySubtitles !== undefined && showTranscript &&
 							<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
 						}
 						<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
@@ -293,7 +293,6 @@ const Player = props => {
 			</div>
 			{
 				url !== `` && showTranscript ? (
-					// showsubtitles
 					<PlayerSubtitlesContainer
 						currentTime={progress}
 						duration={duration}

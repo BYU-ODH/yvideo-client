@@ -27,7 +27,6 @@ const CreateResource = props => {
 		toggleModal,
 	} = props.handlers
 
-	// TODO: search list all the resources related to the email
 	return (
 		<>
 			<Form onKeyPress={onKeyPress} onSubmit={handleSubmit} id='create-resource-form' >
@@ -50,15 +49,8 @@ const CreateResource = props => {
 						<TypeButton className='std-outline-color' id='create-resource-type-audio' type='button' selected={resourceType === `audio`} onClick={handleTypeChange} data-type='audio'><i className='fa fa-headphones' data-type='audio' />Audio</TypeButton>
 						<TypeButton className='std-outline-color' id='create-resource-type-image' type='button' selected={resourceType === `image`} onClick={handleTypeChange} data-type='image'><i className='fa fa-image' data-type='image' />Image</TypeButton>
 						<TypeButton className='std-outline-color' id='create-resource-type-text' type='button' selected={resourceType === `text`} onClick={handleTypeChange} data-type='text'><i className='fa fa-text-width' data-type='text' />Text</TypeButton>
-						{/* {console.log(TypeButton.data.type)} */}
 					</div>
 				</label>
-
-				{/* TODO: metadata can be used later as putting an extra data */}
-				{/* <label htmlFor='create-resource-metadata'>
-					<span>Metadata</span>
-				</label>
-				<textarea id='create-resource-metadata' name='metadata' value={metadata} onChange={handleTextChange} rows={4} required /> */}
 
 				<div>
 					<Button className='std-outline-color' id='create-resource-cancel' type='button' onClick={toggleModal}>Cancel</Button>

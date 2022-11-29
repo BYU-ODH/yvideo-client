@@ -9,7 +9,7 @@ import { isSafari, isIOS } from 'react-device-detect'
 import { Player } from 'components'
 import { Tooltip } from 'components/bits'
 
-import handleScrollFuncs from '../../components/vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../components/common/toggleScroll'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -117,7 +117,7 @@ const PlayerContainer = props => {
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			const clips =
-				Array.isArray(JSON.parse(contentCache?.[params.id]?.clips)) ?
+				contentCache?.[params.id]?.clips && Array.isArray(JSON.parse(contentCache[params.id].clips)) ?
 					JSON.parse(contentCache[params.id].clips)[params.clip]
 					: []
 
@@ -224,7 +224,7 @@ const PlayerContainer = props => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
 	useLayoutEffect(() => {
-		if (contentCache[params.id])
+		if (contentCache?.[params.id]?.clips)
 			setClips(JSON.parse(contentCache[params.id].clips))
 
 		if (contentCache[params.id]?.id){

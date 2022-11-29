@@ -220,7 +220,7 @@ const Transcript = props => {
 							</div>
 							<div className={`clip-item-container`}>
 								{
-									clips.map((clip, index) => {
+									clips?.map((clip, index) => {
 										return (
 											<div key={index}>
 												<Link to={`/player/${clipId}/${index}`}>

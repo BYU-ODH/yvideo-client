@@ -2,13 +2,11 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
-import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../common/toggleScroll'
 
 import {
 	Icon, Style,
 } from './styles'
-
-// TODO: Copy styles from NewTrackEditor used by these components into this file
 
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
@@ -25,8 +23,8 @@ const TrackLayer = props => {
 		setEventSeek,
 		setActiveCensorPosition,
 	} = props
-	const layerIndex = parseInt(props.index)
 
+	const layerIndex = parseInt(props.index)
 	const layerRef = useRef(null)
 
 	const [initialWidth, setInitialWidth] = useState(0)
@@ -229,7 +227,6 @@ const TrackLayer = props => {
 				}
 				key={index}
 			>
-				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon} className={isMultiEvent && `half-icon`}/>
 				{ event.type !== `Pause` ? (
 					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>

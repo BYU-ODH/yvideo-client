@@ -254,7 +254,6 @@ export default class CollectionService {
 					while(i < courses.length){
 						const response = await apiProxy.courses.getCollections(courses[i])
 						courseCollections.concat(response)
-						// TODO: See if this is actually fine to just disable for the linter...
 						setTimeout(() => { // eslint-disable-line no-loop-func
 							i++
 						}, 50)

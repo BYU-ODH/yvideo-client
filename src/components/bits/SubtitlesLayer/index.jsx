@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
-import handleScrollFuncs from '../../../components/vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../../components/common/toggleScroll'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
