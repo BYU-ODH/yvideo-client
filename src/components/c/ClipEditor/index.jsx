@@ -36,16 +36,15 @@ const ClipEditor = props => {
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [elapsed, setElapsed] = useState(0)
-	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
+	const [videoCurrentTime, setCurrentTime] = useState(0)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [clipList, setClipList] = useState([])
 	const [activeItem, setActiveItem] = useState(``)
 	const [activeIndex, setActiveIndex] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
-	const [clipsToDelete, setClipsToDelete] = useState({}) // eslint-disable-line no-unused-vars
+	const clipsToDelete = {}
 	const [blockLeave, setBlock] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const [clipIndex, setClipIndex] = useState(0)
@@ -69,9 +68,7 @@ const ClipEditor = props => {
 	useEffect(() => {
 		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		const handleResize = () => {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)

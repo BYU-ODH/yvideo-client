@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -21,8 +21,6 @@ const CaptionAiderContainer = props => {
 
 	const content = contentCache[id]
 
-	const [trackEditor, setTrackEditor] = useState() // eslint-disable-line no-unused-vars
-
 	useEffect(
 		() => {
 			if (!content) getContent([id])
@@ -35,7 +33,6 @@ const CaptionAiderContainer = props => {
 
 	const viewstate = {
 		target,
-		trackEditor,
 	}
 
 	return <CaptionAider viewstate={viewstate} />

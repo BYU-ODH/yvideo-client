@@ -31,16 +31,12 @@ const TrackLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [layerHeight, setLayerHeight] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
-
-		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 
 		if(events && layerIndex === 4){
 			// we are in censor, calculate overlapping

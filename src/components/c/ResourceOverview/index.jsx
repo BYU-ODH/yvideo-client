@@ -41,7 +41,6 @@ const ResourceOverview = props => {
 		editing,
 		accessCount,
 		user,
-		blockLeave, // eslint-disable-line no-unused-vars
 	} = props.viewstate
 
 	const {
