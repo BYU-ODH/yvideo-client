@@ -1,4 +1,3 @@
-
 export default class Content {
 	authKey = ``
 	collectionId = null
