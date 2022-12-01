@@ -28,7 +28,6 @@ const TrackLayer = props => {
 	const layerIndex = parseInt(props.index)
 
 	const layerRef = useRef(null)
-
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
@@ -174,7 +173,6 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-
 		const cEvents = events
 		const difference = delta.width / layerWidth * 100 * videoLength / 100
 		if(direction === `right`){
@@ -219,18 +217,16 @@ const TrackLayer = props => {
 				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
-				onDragStop={(e, d) => {
+				onDrag={(e, d) => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-				}
-				}
-				onResizeStop={(e, direction, ref, delta, position) => {
+				}}
+				onResize={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-				}
-				}
+				}}
 				key={index}
 			>
 				{/* //TODO: Change the p tag to be an svg icon */}
