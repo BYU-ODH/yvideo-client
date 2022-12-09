@@ -21,9 +21,10 @@ export const Style = styled.div`
 		font-size: 1.2rem;
 	}
 
-	.icon {
+	& span {
 		flex: 1;
 		background: url(${carrot}) center no-repeat;
+		display: inline-block;
 		background-size: contain;
 		position: relative;
 		height: 1.5rem;
@@ -31,10 +32,6 @@ export const Style = styled.div`
 
 		transform: ${props => props.isOpen ? `rotate(-180deg)` : `rotate(0deg)`};
 		transition: transform .25s ease-in-out;
-	}
-
-	.text-right {
-		text-align: right;
 	}
 }
 

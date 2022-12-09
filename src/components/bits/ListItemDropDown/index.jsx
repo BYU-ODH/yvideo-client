@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { ListItem } from 'components/bits'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 import Style, { Body, Clip } from './styles'
 
@@ -19,7 +22,8 @@ const ListItemDropDown = props => {
 
 	return (
 		<Style>
-			<ListItem data={data} isDropDown={isDropDown} isOpen={isOpen} togglePanel={togglePanel} />
+			<Container>
+			<Row data={data} isDropDown={isDropDown} isOpen={isOpen} togglePanel={togglePanel} />
 			{ isDropDown &&
 				<Body isOpen={isOpen} count={parsedClips.length + 1}>
 					<div className='link'>
@@ -37,7 +41,7 @@ const ListItemDropDown = props => {
 							return (
 								<div className='link' key={item}>
 									<Link to={`/player/${id}/${item}`}>
-										<Clip>
+										<Clipa>
 											<div className='name'>
 												<u>Clip - {parsedClips[item][`title`]}</u>
 											</div>
@@ -52,6 +56,7 @@ const ListItemDropDown = props => {
 					}
 				</Body>
 			}
+			</Container>
 		</Style>
 	)
 }

@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react'
 
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
+import { connect } from 'react-redux'
 
 import plus from 'assets/plus-circle.svg'
+import { interfaceService } from 'services'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 
 import Style, {Icon} from './styles.js'
 import { convertSecondsToMinute } from '../../common/timeConversion'
+import ComfirmationBox from 'components/modals/containers/ComfirmationBoxContainer'
+
+import clock from 'assets/clock-black.svg'
 
 const TrackEditorSideMenu = props => {
 
@@ -25,13 +31,20 @@ const TrackEditorSideMenu = props => {
 		handleShowTip,
 		setEventSeek,
 		handleEventPosition,
+		toggleModal,
 	} = props
 
 	const timeInputConstrain = /^[0-9,.,:\b]+$/
 	const [event, setEvent] = useState(singleEvent)
 	const [editComment, setEditComment] = useState({})
+	const [eventTimeChange, setEventTimeChange] = useState([{}])
+	const [videoCurrentTime, setCurrentTime] = useState(0)
+
+
 	useEffect(() => {
 		setEvent(singleEvent)
+		getParameters(videoLength, videoCurrentTime)
+
 	}, [index, event, singleEvent])
 
 	const editEvent = (side, time, value, layer, ind, type) => {
@@ -57,6 +70,23 @@ const TrackEditorSideMenu = props => {
 		}
 		setEvent(ev)
 		updateEvents(ind, event, layer, side, type)
+	}
+
+	const toggleItemTimeChange = (e, index, type, startOrEnd) => {
+		toggleModal({
+			component: ComfirmationBox,
+			props: {
+				index,
+				startOrEnd,
+				singleEvent,
+				updateEvents
+			}
+		})
+	}
+
+	const setCurrentTimePercentage = (time) => {
+		const seconds = time * videoLength
+		setCurrentTime(seconds)
 	}
 
 	const handleEditEventBTimeChange = (e, type) => {
@@ -180,6 +210,7 @@ const TrackEditorSideMenu = props => {
 										}
 										onMouseLeave={() => toggleTip()}
 									/>
+									<img src={clock} className={"start"} onClick = {(e, type)=>toggleItemTimeChange(e, index, type, `start`)}/>
 									<input
 										type='text'
 										className='sideTabInput'
@@ -197,6 +228,7 @@ const TrackEditorSideMenu = props => {
 										}
 										onMouseLeave={() => toggleTip()}
 									/>
+									<img src={clock} className={"end"} onClick = {(e, type)=>toggleItemTimeChange(e, index, type, `end`)}/>
 									{event.type === `Pause` ? (
 										<textarea style={{ margin: `5%`, width: `90%` }} rows='4' cols='50' className='sideTabInput' value={event.message}
 											placeholder = 'Enter message'
@@ -318,4 +350,12 @@ const TrackEditorSideMenu = props => {
 	)
 }
 
-export default TrackEditorSideMenu
+const mapStoreToProps = store => ({
+	modal: store.interfaceStore.modal,
+})
+
+const mapDispatchToProps = {
+	toggleModal: interfaceService.toggleModal,
+}
+
+export default connect(mapStoreToProps, mapDispatchToProps)(TrackEditorSideMenu)

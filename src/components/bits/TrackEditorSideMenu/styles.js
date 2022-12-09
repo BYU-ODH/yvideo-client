@@ -4,6 +4,14 @@ const Style = styled.div`
 	display: ${props => props.minimized !== false ? `initial` : `none`};
 	padding: 20px;
 
+	& .start {
+		left: 40%;
+	}
+
+	& .end {
+		left: 90%;
+	}
+
 	& .event-content {
     height: calc(100% - 20px - 10rem);
 		overflow-y: scroll;
@@ -32,6 +40,14 @@ const Style = styled.div`
 			height: 4rem;
 			margin: 10px;
 			border: 1px solid var(--royal-blue);
+
+			:hover{
+				& img {
+					opacity: 100%;
+					-webkit-filter: invert(50%);
+					filter: invert(50%);
+				}
+			}
 		}
 
 		& label {
@@ -47,6 +63,19 @@ const Style = styled.div`
 		& #saveComment:disabled{
 			cursor: not-allowed;
 			background-color: #ddd;
+		}
+
+		& img {
+			opacity: 100%;
+			z-index: 25 !important;
+			position: absolute;
+			padding-top: 12px;
+			cursor: pointer;
+
+			:hover{
+				-webkit-filter: invert(0%) !important;
+				filter: invert(0%) !important;
+			}
 		}
 	}
 

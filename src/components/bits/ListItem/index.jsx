@@ -17,10 +17,10 @@ const ListItem = props => {
 	const { isDropDown, isOpen, togglePanel } = props
 
 	return (
-		<Style>
+		<Style  isOpen={isOpen}>
 		{isDropDown ?
 		<Container className='listItem'>
-			<Row data-testid='list-item-dropDown' className='py-4 align-items-center justify-content-center' isOpen={isOpen} onClick={togglePanel}>
+			<Row data-testid='list-item-dropDown' className='py-4 align-items-center justify-content-center' onClick={togglePanel}>
 			<Col xs='1'></Col>
 			<Col xs='3'>
 					<LazyImage
@@ -41,8 +41,8 @@ const ListItem = props => {
 							<Icon className='captions' checked={captions} />
 							<Icon className='annotations' checked={annotations} />
 						</ul> */}
-						<Col xs='1'>
-					<div className='icon text-right' data-testid='carrot'></div>
+					<Col xs='1'>
+					<div data-testid='carrot'><span className="icon"></span></div>
 					</Col>
 					</Row>
 				</Col>
