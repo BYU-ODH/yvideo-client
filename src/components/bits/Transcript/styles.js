@@ -11,7 +11,7 @@ export const Style = styled.div`
 			? `0rem`
 			: `2rem`};
 	height: 100%;
-	padding: ${props => props.isMobile ? `0px` : `0px 0px 0px 7px`};
+	padding: ${props => props.isMobile ? `0px` : `0px 0px 0px 10px`};
 	border-top: 1px solid #c4c4c4;
 	transition: visibility 1s ease, opacity .5s ease;
 	display: flex;
@@ -141,10 +141,10 @@ export const Style = styled.div`
 		visibility: ${props => props.displayTranscript ? `visible` : `hidden`};
 		opacity: ${props => props.displayTranscript ? 1 : 0};
 		transition: opacity .5s ease;
-		margin-left: 42px;;
+		margin-left: 40px;;
 		overflow-y: scroll !important;
 		background-color: white;
-		width: calc(100% - 45px);
+		width: calc(100% - 60px);
 		height: 70vh;
 		::-webkit-scrollbar {
 			display: block !important;
@@ -271,8 +271,9 @@ export const Style = styled.div`
 		position: relative;
 		background-color: white !important;
 		/* border: 1px solid red; */
-		margin-left: 45px;
+		margin-left: 40px;
 		height: 15vh;
+		width:90%;
 
 		& h2 {
 			padding: 2px;
