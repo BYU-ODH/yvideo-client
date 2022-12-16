@@ -96,6 +96,9 @@ const PlayerContainer = props => {
 	const [sideBarIsClip, setSideBarIsClip] = useState(false)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 
+	const [showIcon, setShowIcon] = useState(true)
+	const [playPause,setPlayPause] = useState(``)
+
 	// aspect ratio
 	const [aspectRatio, setAspectRatio] = useState([16, 9])
 	const ref = player => {
@@ -296,6 +299,11 @@ const PlayerContainer = props => {
 			enableScroll.action()
 			setScrollDisabled(false)
 		}
+		setShowIcon(true)
+		setPlayPause(`pause`)
+		setTimeout(() => {
+			setShowIcon(false)
+		}, 1000)
 	}
 
 	const handlePlay = () => {
@@ -304,6 +312,11 @@ const PlayerContainer = props => {
 			disableScroll.action()
 			setScrollDisabled(true)
 		}
+		setShowIcon(true)
+		setPlayPause(`play`)
+		setTimeout(() => {
+			setShowIcon(false)
+		}, 1000)
 	}
 
 	const handleStart = () => {
@@ -718,6 +731,8 @@ const PlayerContainer = props => {
 		mouseInactive,
 		timeoutArray,
 		controlsHovering,
+		showIcon,
+		playPause,
 	}
 
 	const handlers = {
