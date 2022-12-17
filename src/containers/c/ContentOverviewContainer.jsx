@@ -82,11 +82,11 @@ const ContentOverviewContainer = props => {
 		return <ContentOverview isExpired={true} content={content}/>
 
 	const handleToggleEdit = async () => {
-		editing ? await handleUpdateContent() : setEditing(true)
+		editing ? handleUpdateContent() : setEditing(true)
 	}
 
 	const handleToggleClose = async () => {
-		await handleUpdateContent()
+		handleUpdateContent()
 		setTimeout(() => {
 			setEditing(false)
 		}, 500)

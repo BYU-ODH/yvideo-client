@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
-import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
+import Style, { TimeBar, Blank, Subtitles, Spinner, PauseMessage } from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
 import { handleElapsed } from '../../common/editorCommon'

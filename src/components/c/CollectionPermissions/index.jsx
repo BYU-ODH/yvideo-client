@@ -221,7 +221,7 @@ const CollectionPermissions = props => {
 							<input
 								className='faculty-input'
 								type='search'
-								placeholder={`Enter netID`}
+								placeholder='Enter netID'
 								onChange={handleUserTAChange}
 								value={userTA.username}
 							/>
@@ -283,7 +283,7 @@ const CollectionPermissions = props => {
 									<input
 										className='faculty-input'
 										type='search'
-										placeholder={`Enter netID`}
+										placeholder='Enter netID'
 										onChange={handleUserChange}
 										value={username}
 									/>

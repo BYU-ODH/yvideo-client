@@ -52,7 +52,7 @@ const PreviewFiles = props => {
 				<u><h1>{fileState[`metadata`]}</h1></u>
 			</div>
 			<ClosePreview onClick={modalToggle}><img alt='' src={closeIcon} /></ClosePreview>
-			<div style={{ height: `100%`, overflow: `hidden`}}>
+			<div style={{ height: `100%`, overflow: `hidden` }}>
 				<div className='player-wrapper' id={`player-container`} style={{ flex: 1 }} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
 					<ReactPlayer
 						ref={ref}

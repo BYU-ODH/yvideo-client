@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
-// import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
-import {useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
 import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
-// import { DialogBox } from '../../../modals/components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -585,7 +583,7 @@ const VideoEditor = props => {
 					allEvents.push(newElements[0][i])
 				setBlock(true)
 			}
-			if(filePath !== undefined )
+			if(filePath !== undefined)
 				reader.readAsText(filePath[0])
 		}catch (error){
 			Swal.fire(`An error has occur`, error.message, `error`)
@@ -630,7 +628,7 @@ const VideoEditor = props => {
 					eventToEdit={eventToEdit}
 					activeCensorPosition = {activeCensorPosition}
 					setActiveCensorPosition = {setActiveCensorPosition}
-					editorType={`video`}
+					editorType='video'
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
@@ -676,9 +674,9 @@ const VideoEditor = props => {
 						<div className='zoom-factor' id = 'zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								id={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								id='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -726,7 +724,7 @@ const VideoEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
+										bounds = 'parent'
 										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
@@ -750,7 +748,7 @@ const VideoEditor = props => {
 				<header>
 					<img
 						src={helpIcon}
-						alt={`helpIcon`}
+						alt='helpIcon'
 						onClick={handleShowHelp}
 						onMouseEnter={e => handleShowTip(`help`,
 							{

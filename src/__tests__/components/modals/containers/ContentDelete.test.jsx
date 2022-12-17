@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentDelete from '../../../../components/modals/components/ContentDelete'
-import {render, screen, cleanup} from '@testing-library/react'
+import { render, screen, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 const props ={

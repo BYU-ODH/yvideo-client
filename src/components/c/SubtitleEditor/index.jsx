@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-// import { Prompt } from 'react-router'
 import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
-// import * as Subtitle from 'subtitle'
-import {parse} from 'subtitle'
+import { parse } from 'subtitle'
 
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
 import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
@@ -777,7 +775,7 @@ const SubtitleEditor = props => {
 					updateEvents={null}
 					eventToEdit={null}
 					activeCensorPosition={activeCensorPosition}
-					editorType={`subtitle`}
+					editorType='subtitle'
 					handleSubProgress={handleSubProgress}
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
@@ -811,7 +809,7 @@ const SubtitleEditor = props => {
 							<div className={`layer`}>
 								<div className={`addtrack`}>
 									<div
-										className={`setSubModalVisible`}
+										className='setSubModalVisible'
 										onClick={ () => {
 											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile, window.onkeyup)
 										}}>
@@ -905,8 +903,8 @@ const SubtitleEditor = props => {
 						<div className='zoom-factor' id='zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -953,7 +951,7 @@ const SubtitleEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
+										bounds = 'parent'
 										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
@@ -975,7 +973,7 @@ const SubtitleEditor = props => {
 			<EventList>
 				<header>
 					<img
-						alt={`helpIcon`}
+						alt='helpIcon'
 						src={helpIcon}
 						onClick={handleShowHelp}
 						style={{ marginLeft: 10, marginTop: 15 }}

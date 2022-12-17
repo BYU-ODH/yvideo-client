@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen, cleanup, fireEvent} from '@testing-library/react'
+import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import AddUsers from '../../../../components/modals/components/AddUsers'
 import userEvent from '@testing-library/user-event'
 
