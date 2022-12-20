@@ -6,7 +6,7 @@ import {useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, updateZoom, handleZoomEandD, getParameters} from '../../common/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 // import { DialogBox } from '../../../modals/components'
 
@@ -90,6 +90,7 @@ const VideoEditor = props => {
 		},
 	]
 	const [elapsed, setElapsed] = useState(0)
+	const [eventCount, setEventCount] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [currentEvent, setCurrentEvent] = useState()
 	const [shouldUpdate, setShouldUpdate] = useState(false)
@@ -137,6 +138,8 @@ const VideoEditor = props => {
 		setAllEvents(eventsArray)
 		setEvents(allEvents)
 		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
+
+		setEventCount(events.length)
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
@@ -641,7 +644,7 @@ const VideoEditor = props => {
 					eventToEdit={eventToEdit}
 					activeCensorPosition = {activeCensorPosition}
 					setActiveCensorPosition = {setActiveCensorPosition}
-					editorType={`video`}
+					editorType='video'
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
@@ -657,10 +660,10 @@ const VideoEditor = props => {
 					<section>
 						<div className='event-layers' id='layers-component'>
 							{layers.map((layer, index) => (
-								<div id={`layer-${index}`} className={`layer`} key={index}>
-									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
+								<div id={`layer-${index}`} className='layer' key={index}>
+									<div className='handle' onClick={() => setDisplayLayer(index)}>
 										<EventCard event={events[index]} key={index}/>
-										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index) }/>
+										<PlusIcon className='plusIcon' onClick={ e => addEventHandler(layer[index], index) }/>
 									</div>
 
 									<TrackLayer
@@ -688,9 +691,9 @@ const VideoEditor = props => {
 						<div className='zoom-factor' id = 'zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								id={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								id='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -706,7 +709,10 @@ const VideoEditor = props => {
 								dragAxis='x'
 								onDrag={(e, d) => {
 									handleZoomEandD(e, d)
-									debouncedOnDrag()
+									if(eventCount > 100)
+										debouncedOnDrag()
+									else
+										updateZoom()
 								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
@@ -722,7 +728,7 @@ const VideoEditor = props => {
 
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+								<div id='zoom-scroll-container' className='zoom-scroll-container'>
 									<Rnd
 										className= 'zoom-scroll-indicator'
 										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
@@ -738,8 +744,8 @@ const VideoEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
-										onDrag = {(e, d) => {
+										bounds='parent'
+										onDrag={(e, d) => {
 											handleScrollFactor(d.x)
 										}}
 									>
@@ -747,10 +753,10 @@ const VideoEditor = props => {
 								</div>
 							</div>
 
-							<div id={`time-indicator-container`}>
-								<div id={`layer-time-indicator`}>
-									<span id={`layer-time-indicator-line`}></span>
-									<span id={`layer-time-indicator-line-shadow`}></span>
+							<div id='time-indicator-container'>
+								<div id='layer-time-indicator'>
+									<span id='layer-time-indicator-line'></span>
+									<span id='layer-time-indicator-line-shadow'></span>
 								</div>
 							</div>
 						</div>
@@ -762,7 +768,7 @@ const VideoEditor = props => {
 				<header>
 					<img
 						src={helpIcon}
-						alt={`helpIcon`}
+						alt='helpIcon'
 						onClick={handleShowHelp}
 						onMouseEnter={e => handleShowTip(`help`,
 							{
@@ -774,13 +780,13 @@ const VideoEditor = props => {
 						onMouseLeave={() => toggleTip()}
 						style={{marginLeft: 10, marginTop: 15}}
 					/>
-					<div className={`save`}>
+					<div id='save' className='header-button'>
 						{disableSave ?
-							<button className={`disable`}>
+							<button className='disable'>
 								<span>Save</span>
 							</button>
 							:
-							<button className={`handleSaveAnnotation`} onClick={handleSaveAnnotation}>
+							<button className='handleSaveAnnotation' onClick={handleSaveAnnotation}>
 								{blockLeave ?
 									null
 									:
@@ -793,27 +799,31 @@ const VideoEditor = props => {
 							</button>
 						}
 					</div>
-					<div className={`save`}>
-						{!disableSave && !blockLeave && !isLoading ?
-							<div className={`dropdown`}>
-								<button className={`dropbtn`}>Export</button>
-								<div className={`dropdown-content`}>
-									<a href='#' onClick={handleExportAnnotationYVideo}><b>Y-Video</b></a>
-									<a href='#' onClick={handleExportAnnotation}><b>IC Player</b></a>
+					<div id='export' className='header-button'>
+						{disableSave || blockLeave || isLoading ?
+							<button className='disable'>
+								<span>Export</span>
+							</button>
+							:
+							<div className='import-export'>
+								<button className='import-export-button'>Export</button>
+								<div className='dropdown-content'>
+									<span onClick={handleExportAnnotationYVideo}><b>Y-Video</b></span>
+									<span onClick={handleExportAnnotation}><b>IC Player</b></span>
 								</div>
 							</div>
-							:
-							null
 						}
 					</div>
-					<div className={`save`}>
-						{!disableSave && !blockLeave && !isLoading ?
-							<div className={`save`}>
-								<input type='button' id='get_file' className={`dropbtn`} value='Import' onClick={handleImportAnnotation}/>
+					<div id='import' className='header-button'>
+						{disableSave || blockLeave || isLoading ?
+							<button className='disable'>
+								<span>Import</span>
+							</button>
+							:
+							<div className='import-export'>
+								<button id='get_file' className='import-export-button' onClick={handleImportAnnotation}>Import</button>
 								<input type='file' accept='.json' id='import-file' onChange={processImportAnnotation} style={{display:`none`}}/>
 							</div>
-							:
-							null
 						}
 					</div>
 				</header>
