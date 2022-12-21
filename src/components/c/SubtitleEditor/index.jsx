@@ -4,10 +4,10 @@ import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
 import { parse } from 'subtitle'
 
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, updateZoom, handleZoomEandD, getParameters } from '../../common/editorCommon'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -34,6 +34,7 @@ const SubtitleEditor = props => {
 	const layers = [{0: `Skip`}]
 
 	const [elapsed, setElapsed] = useState(0)
+	const [subsCount, setSubsCount] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
@@ -79,6 +80,19 @@ const SubtitleEditor = props => {
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
 		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
+
+		let subsCount = 0
+		if (subs) {
+			for (const i in subs) {
+				try {
+					subsCount += JSON.parse(subs[i].content).length
+				}catch (e) {
+					subsCount += subs[i].content.length
+					JSON.stringify(subs[i].content)
+				}
+			}
+			setSubsCount(subsCount)
+		}
 
 		let largestLayer = 0
 
@@ -920,7 +934,10 @@ const SubtitleEditor = props => {
 								dragAxis='x'
 								onDrag={(e, d) => {
 									handleZoomEandD(e, d)
-									debouncedOnDrag()
+									if(subsCount > 100)
+										debouncedOnDrag()
+									else
+										updateZoom()
 								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
