@@ -17,10 +17,7 @@ const SkipLayer = props => {
 
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
-	const [layerOverlap, setLayerOverlap] = useState([]) // eslint-disable-line no-unused-vars
 	const [layerWidth, setLayerWidth] = useState(0)
-	const [layerHeight, setLayerHeight] = useState(0) // eslint-disable-line no-unused-vars
-	const [tickArray, setTickArray] = useState(Array.from(Array(5).keys())) // eslint-disable-line no-unused-vars
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -35,9 +32,8 @@ const SkipLayer = props => {
 		else
 			setLayerWidth(initialWidth + width)
 
-		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [width, events, layerOverlap])
+	}, [width, events])
 
 	if(document.getElementsByClassName(`total`)?.[0] && layerWidth !== 0){
 		document.getElementById(`time-bar-container`).style.width = `${layerWidth - 2}px`
@@ -50,7 +46,7 @@ const SkipLayer = props => {
 
 		return (
 			<Rnd
-				className={`layer-event half-event`}
+				className='layer-event half-event'
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `31px`}}

@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
-// import { Prompt } from 'react-router'
 import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
-// import * as Subtitle from 'subtitle'
 import { parse } from 'subtitle'
 
 import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
@@ -19,6 +17,7 @@ import saveIcon from 'assets/check.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
+import Swal from 'sweetalert2'
 
 const SubtitleEditor = props => {
 	const { setEvents, updateContent, createSub, setAllSubs, activeUpdate, deleteSubtitles } = props
@@ -41,13 +40,8 @@ const SubtitleEditor = props => {
 	const [blockLeave, setBlock] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [isReady, setIsReady] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
@@ -80,9 +74,7 @@ const SubtitleEditor = props => {
 
 	useEffect(() => {
 		const handleResize = () => {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
@@ -466,7 +458,7 @@ const SubtitleEditor = props => {
 			setBlock(true)
 
 		}catch(error) {
-			alert(`there was an error adding the subtitle`)
+			Swal.fire(`Error Adding Subtitles`, `there was an error adding the subtitle`, `error`)
 			console.error(error) // eslint-disable-line no-console
 		}
 	}
@@ -578,7 +570,7 @@ const SubtitleEditor = props => {
 					return item.end < videoLength
 				})
 				if (removeArray > 0)
-					alert(`Some subtitles had to be cut because the subtitles are longer than the video`)
+					Swal.fire(`Editing Subtitles`, `Some subtitles had to be cut because the subtitles are longer than the video`, `warning`)
 				if (subtitles === [] || !subtitles){
 					const tempSubList = []
 					const tempSub = {
@@ -612,7 +604,7 @@ const SubtitleEditor = props => {
 			reader.readAsText(url)
 		}catch(error){
 			console.log(error) // eslint-disable-line no-console
-			alert(`There was an error importing subtitles`)
+			Swal.fire(`Error Importing Subtitles`, `There was an error importing subtitles`, `error`)
 		}
 	}
 	const handleDeleteSubLayer = (index) => {
@@ -797,7 +789,7 @@ const SubtitleEditor = props => {
 					updateEvents={null}
 					eventToEdit={null}
 					activeCensorPosition={activeCensorPosition}
-					editorType={`subtitle`}
+					editorType='subtitle'
 					handleSubProgress={handleSubProgress}
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
@@ -809,7 +801,7 @@ const SubtitleEditor = props => {
 					setElapsed={setElapsed}
 				>
 				</VideoContainer>
-				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+				<Timeline zoom={scrollBarWidth}>
 
 					<section id='event-section'>
 						<div className='event-layers'>
@@ -831,7 +823,7 @@ const SubtitleEditor = props => {
 							<div className={`layer`}>
 								<div className={`addtrack`}>
 									<div
-										className={`setSubModalVisible`}
+										className='setSubModalVisible'
 										onClick={ () => {
 											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile, window.onkeyup)
 										}}>
@@ -880,7 +872,6 @@ const SubtitleEditor = props => {
 									</div>
 									<SubtitlesLayer
 										videoLength={videoLength}
-										minimized={eventListMinimized}
 										width={layerWidth}
 										setIsReady={setIsReady}
 										isReady={isReady}
@@ -901,7 +892,6 @@ const SubtitleEditor = props => {
 							{subtitles.length === 0 &&
 								<SubtitlesLayer
 									videoLength={videoLength}
-									minimized={eventListMinimized}
 									width={layerWidth}
 									isReady={isReady}
 									setIsReady={setIsReady}
@@ -927,8 +917,8 @@ const SubtitleEditor = props => {
 						<div className='zoom-factor' id='zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -978,7 +968,7 @@ const SubtitleEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
+										bounds = 'parent'
 										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
@@ -997,10 +987,10 @@ const SubtitleEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventList minimized={eventListMinimized}>
+			<EventList>
 				<header>
 					<img
-						alt={`helpIcon`}
+						alt='helpIcon'
 						src={helpIcon}
 						onClick={handleShowHelp}
 						style={{ marginLeft: 10, marginTop: 15 }}

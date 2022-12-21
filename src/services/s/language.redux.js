@@ -119,8 +119,7 @@ export default class LanguageService {
 		dispatch(this.actions.languageStart())
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.language.delete(lang)
+			await apiProxy.language.delete(lang)
 
 		} catch (error) {
 			dispatch(this.actions.languageError(error))

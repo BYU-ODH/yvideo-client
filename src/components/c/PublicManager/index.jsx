@@ -82,7 +82,7 @@ const PublicManager = props => {
 									{sideLists.publicCollections.map(({ id, name }, index) =>
 										<div
 											key={index}
-											id={`link`}
+											id='link'
 											className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
 											<Link to={`/${path}/${id}`} >
 												{name}
@@ -94,7 +94,7 @@ const PublicManager = props => {
 									{sideLists.publicArchived.map(({ id, name }, index) =>
 										<div
 											key={index}
-											id={`link`}
+											id='link'
 											className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}>
 											<Link to={`/${path}/${id}`} >
 												{name}

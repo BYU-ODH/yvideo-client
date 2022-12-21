@@ -4,7 +4,7 @@ import {
 	ListCollectionContainer,
 } from 'containers'
 
-import Style, {Search, SearchIcon, ListLable, FeedbackMessage} from './styles'
+import Style, { Search, SearchIcon, ListLable, FeedbackMessage } from './styles'
 
 const SearchPublicCollections = props => {
 

@@ -35,8 +35,6 @@ const ClipEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 	const [eventsArray, setEventsArray] = useState([])
 	const [currentContent, setCurrentContent] = useState({})
-	// eslint-disable-next-line no-unused-vars
-	const [subs, setSubs] = useState([])
 
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
@@ -107,7 +105,6 @@ const ClipEditorContainer = props => {
 		currentContent,
 		url,
 		eventsArray,
-		subs,
 		allSubs,
 	}
 

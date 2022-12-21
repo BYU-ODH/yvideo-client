@@ -26,7 +26,9 @@ const SubtitlesLayer = props => {
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
-	const [layerHeight, setLayerHeight] = useState(0) // eslint-disable-line no-unused-vars
+
+	const layerHeight = 0
+
 	const [showError, setShowError] = useState(false)
 	const [disableScroll, setDisableScroll] = useState({action: null})
 
@@ -129,7 +131,7 @@ const SubtitlesLayer = props => {
 		}
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
+	const handleResize = (direction, ref, delta, event, index, e) => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs

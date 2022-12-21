@@ -87,7 +87,7 @@ const Manager = props => {
 										{sideLists.published.map(({ id, name }, index) =>
 											<div key={index} >
 												<Link
-													id={`link`}
+													id='link'
 													className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
 													onClick={handleToggleSideBar}
 													to={`/${path}/${id}`} >{name}
@@ -99,7 +99,7 @@ const Manager = props => {
 										{sideLists.unpublished.map(({ id, name }, index) =>
 											<div key={index} >
 												<Link
-													id={`link`}
+													id='link'
 													className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
 													onClick={handleToggleSideBar}
 													to={`/${path}/${id}`}>{name}
@@ -112,7 +112,7 @@ const Manager = props => {
 											{sideLists.archived.map(({ id, name }, index) =>
 												<div key={index} >
 													<Link
-														id={`link`}
+														id='link'
 														className={`${id === activeId ? `active-collection link` : `link`} std-outline-color`}
 														to={`/${path}/${id}`}>{name}
 													</Link>
