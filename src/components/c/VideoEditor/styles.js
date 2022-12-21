@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-import carat from 'assets/carat_white.svg'
-
 import menu from 'assets/menu-white.svg'
 import plusIcon from 'assets/plus-white.svg'
 
@@ -26,20 +24,20 @@ const Style = styled.div`
 	}
 
 	/* Dropdown Button */
-	.dropbtn {
+	.import-export-button {
 	  background-color: #0582ca;
 	  color: white;
-	  padding: 16px;
+	  padding: 19px;
 	  font-size: 16px;
 	  border: none;
 	}
-	
+
 	/* The container <div> - needed to position the dropdown content */
-	.dropdown {
+	.import-export {
 	  position: relative;
 	  display: inline-block;
 	}
-	
+
 	/* Dropdown Content (Hidden by Default) */
 	.dropdown-content {
 	  display: none;
@@ -49,23 +47,34 @@ const Style = styled.div`
 	  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	  z-index: 1;
 	}
-	
+
 	/* Links inside the dropdown */
-	.dropdown-content a {
+	.dropdown-content span {
 	  color: black;
 	  padding: 12px 16px;
 	  text-decoration: none;
 	  display: block;
+		cursor: pointer;
 	}
-	
+
 	/* Change color of dropdown links on hover */
-	.dropdown-content a:hover {background-color: #ddd;}
-	
-	/* Show the dropdown menu on hover */
-	.dropdown:hover .dropdown-content {display: block;}
-	
-	/* Change the background color of the dropdown button when the dropdown content is shown */
-	.dropdown:hover .dropbtn {background-color: #0582ca;}e	
+	.dropdown-content span:hover {
+		background-color: #ddd;
+	}
+
+	/* Show the dropdown menu on hover if it exists */
+	.import-export:hover .dropdown-content {
+		display: block;
+	}
+
+	/* Change the background color of the import/export buttons when the dropdown content is shown/they are being hovered */
+	.import-export:hover .import-export-btn {
+		background-color: #0582ca;
+	}
+
+	#yeet:hover {
+		background-color: #0582ca;
+	}
 `
 export default Style
 
@@ -281,19 +290,19 @@ export const EventEditor = styled.div`
 		height: 5rem;
 		background: var(--navy-blue);
 		border-bottom: 5px solid var(--light-blue);
+		display: flex;
+		justify-content: space-evenly;
 
 		& > img {
 			cursor: pointer;
+			margin-right: auto;
+			padding-left: 9px;
+			padding-right: 9px;
+			padding-top: 3px;
+			padding-bottom: 17px;
 		}
 
-		& > .carat {
-			float: left;
-			margin: auto 0px auto 1rem;
-			align-items: center;
-			padding-right: 1rem;
-		}
-
-		& > .save {
+		& > .header-button {
 			position: relative;
 			float: right;
 			width: 8rem;
@@ -308,7 +317,7 @@ export const EventEditor = styled.div`
 				color: green;
 			}
 
-			& button, input {
+			& button, input, #get_file {
 				width: 100%;
 				height: 100%;
 				font-size: 1.7rem;
@@ -317,7 +326,6 @@ export const EventEditor = styled.div`
 				background-color: transparent;
 				color: white;
 				cursor: pointer;
-				transition: .5s ease;
 
 				:hover {
 					background-color: var(--light-blue)
@@ -325,9 +333,9 @@ export const EventEditor = styled.div`
 
 				& span, img {
 					margin: auto;
-
 				}
 			}
+
 			& > .disable {
 				color: grey;
 				cursor: no-drop;
@@ -363,18 +371,6 @@ export const EventEditor = styled.div`
 			border: none;
 			padding: 0;
 			margin: 0;
-
-			&.carat {
-				position: absolute;
-				left: 6.5rem;
-				top: 1.9rem;
-				height: 1rem;
-				width: 1rem;
-				transform: rotate(45deg);
-				border-top: 1px solid #555;
-				border-right: 1px solid #555;
-				background-color: white;
-			}
 
 			&.current {
 				flex: 1;
@@ -420,7 +416,6 @@ export const EventListCarat = styled.button`
 	border: none;
 	outline: none;
 	cursor: pointer;
-	background: url(${carat}) center no-repeat;
 	background-size: contain;
 	padding: 0;
 
