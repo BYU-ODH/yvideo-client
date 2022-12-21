@@ -66,7 +66,7 @@ export const handleElapsed = (time, setElapsed) => {
 	setElapsed(time)
 }
 
-export const updateZoom = () => {
+const updateZoom = () => {
 	handleZoomChange(zoomParams.e, zoomParams.d, lengthParam, setWidthParam, videoTimeParam, setScrollBarParam, eventsBoxParam)
 }
 
