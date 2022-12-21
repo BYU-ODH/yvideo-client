@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import carrot from 'assets/carrot.svg'
 import trashIcon from 'assets/trash.svg'

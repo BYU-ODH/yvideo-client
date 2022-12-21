@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
-import { Style, Help} from './styles'
+import { Style, Help } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
 import closeIcon from 'assets/close_icon.svg'

@@ -46,7 +46,7 @@ const SkipLayer = props => {
 
 		return (
 			<Rnd
-				className={`layer-event half-event`}
+				className='layer-event half-event'
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={{width: `${(event.end - event.start) / videoLength * layerWidth}px`, height: `31px`}}

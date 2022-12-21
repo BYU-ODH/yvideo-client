@@ -83,7 +83,7 @@ const ListCollectionContainer = props => {
 
 		// prevent null error
 		if(result) {
-			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public ).map(([k, v]) => v)
+			morePublicCollections = Object.entries(result).filter(([k, v]) => v.public).map(([k, v]) => v)
 
 			// open toggle modal for presenting owner's more public collections
 			if(morePublicCollections.length > 0){

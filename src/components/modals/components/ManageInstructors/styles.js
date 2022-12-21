@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 import searchIcon from 'assets/search.svg'
 import removeIcon from 'assets/trash.svg'
 

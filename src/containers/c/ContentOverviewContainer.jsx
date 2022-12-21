@@ -81,10 +81,12 @@ const ContentOverviewContainer = props => {
 	if (isExpired)
 		return <ContentOverview isExpired={true} content={content}/>
 
+	// TODO: probably don't need the await here
 	const handleToggleEdit = async () => {
 		editing ? await handleUpdateContent() : setEditing(true)
 	}
 
+	// TODO: probably don't need the await here
 	const handleToggleClose = async () => {
 		await handleUpdateContent()
 		setTimeout(() => {

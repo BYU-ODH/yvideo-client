@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom'
 
 import services from 'services'
 
-// import TrackEditor from 'lib/js/captionAider'
-
 import { CaptionAider } from 'components'
 
 const CaptionAiderContainer = props => {

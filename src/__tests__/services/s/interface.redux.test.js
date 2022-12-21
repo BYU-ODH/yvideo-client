@@ -1,4 +1,3 @@
-// import * as testutil from '../../testutil/testutil'
 import InterfaceService from '../../../services/s/interface.redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { applyMiddleware, createStore } from 'redux'

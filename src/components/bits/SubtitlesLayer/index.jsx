@@ -130,7 +130,7 @@ const SubtitlesLayer = props => {
 		}
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
+	const handleResize = (direction, ref, delta, event, index, e) => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs

@@ -2,7 +2,7 @@ import React from 'react'
 import Style, { BarBall, BarCurrent, BarBackground, BarClipYellow, BarSkippedGray, BarBeforeClip } from './styles'
 
 const Bar = props => {
-	const { duration, skipArray, handleClick, clipPercent, active, isClip} = props
+	const { duration, skipArray, handleClick, clipPercent, active, isClip } = props
 
 	return (
 		<Style data-testid='bar' onClick={handleClick}>

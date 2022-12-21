@@ -62,7 +62,7 @@ const CensorDnD = props => {
 					}}
 				enableResizing={Enable}
 				dragAxis='both'
-				bounds={`parent`}
+				bounds='parent'
 				onDragStop={(e, d) => handleUpdateCensorPosition(d)}
 				onResizeStop={(e, d, ref, delta, position) => handleUpdateCensorResize(delta, position)}
 				style={

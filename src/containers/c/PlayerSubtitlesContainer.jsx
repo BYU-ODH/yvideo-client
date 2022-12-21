@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { subtitlesService } from 'services'
-// import { Events } from 'components'
 
 const PlayerSubtitlesContainer = props => {
 
