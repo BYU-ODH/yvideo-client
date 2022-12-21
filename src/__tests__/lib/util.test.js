@@ -19,19 +19,18 @@ test(`should return true when object is not empty`, () => {
 	expect(result).toBe(false)
 })
 
-let toConsole = false // eslint-disable-line no-unused-vars
-let component = `` // eslint-disable-line no-unused-vars
-let method = `` // eslint-disable-line no-unused-vars
-let prevProps = {} // eslint-disable-line no-unused-vars
-let nextProps = {} // eslint-disable-line no-unused-vars
-let propsProperties = [] // eslint-disable-line no-unused-vars
-let prevState = {} // eslint-disable-line no-unused-vars
-let nextState = {} // eslint-disable-line no-unused-vars
-let stateProperties = [] // eslint-disable-line no-unused-vars
+let toConsole = false
+let component = ``
+let method = ``
+let prevProps = {}
+let nextProps = {}
+let propsProperties = []
+let prevState = {}
+let nextState = {}
+let stateProperties = []
 
 test(`componentDidChange`, () => {
-	// eslint-disable-next-line no-unused-vars
-	const change = componentDidChange(
+	componentDidChange(
 		toConsole = true,
 		component = ``,
 		method = ``,

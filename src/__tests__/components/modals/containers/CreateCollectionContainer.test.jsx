@@ -15,7 +15,8 @@ describe(`CreateCollectionContainer test`, () => {
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
 
-		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
+		const viewstate = wrapper.props().viewstate
+		expect(viewstate).toBeDefined()
 	})
 
 	it(`should pass event handlers test`, async() => {
@@ -28,7 +29,6 @@ describe(`CreateCollectionContainer test`, () => {
 		wrapper.find(`#create-collection-input`).simulate(`change`, {target: {value: `new added collection`}})
 		wrapper.find(`#create-collection-create`).at(0).simulate(`click`)
 
-		// TODO: need to check to see if the thunk is initiated
 		wrapper.find(`form`).simulate(`submit`, { preventDefault() {} })
 	})
 })

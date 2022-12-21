@@ -100,7 +100,7 @@ const ClipLayer = props => {
 		setEnd(e, null, index)
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, i, e ) => {
+	const handleResize = (direction, ref, delta, event, i, e) => {
 		let s = start
 		let en = end
 		const difference = delta.width / layerWidth * videoLength
@@ -122,8 +122,7 @@ const ClipLayer = props => {
 		setStart(s, null, index)
 		setEnd(en, null, index)
 	}
-	// eslint-disable-next-line no-unused-vars
-	const curr = {...dragRef.current}
+
 	return (
 		<>
 			<Style layerWidth={layerWidth} className='layer-container'>

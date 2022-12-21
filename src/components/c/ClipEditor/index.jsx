@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
@@ -36,16 +36,15 @@ const ClipEditor = props => {
 	const [videoLength, setVideoLength] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [elapsed, setElapsed] = useState(0)
-	const [videoCurrentTime, setCurrentTime] = useState(0) // eslint-disable-line no-unused-vars
+	const [videoCurrentTime, setCurrentTime] = useState(0)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [annotationsSaved, setSaved] = useState(false)
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [clipList, setClipList] = useState([])
 	const [activeItem, setActiveItem] = useState(``)
 	const [activeIndex, setActiveIndex] = useState(``)
 	const [savedClips, setSavedClips] = useState([])
-	const [clipsToDelete, setClipsToDelete] = useState({}) // eslint-disable-line no-unused-vars
+	const clipsToDelete = {}
 	const [blockLeave, setBlock] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const [clipIndex, setClipIndex] = useState(0)
@@ -69,9 +68,7 @@ const ClipEditor = props => {
 	useEffect(() => {
 		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
 		const handleResize = () => {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
@@ -156,7 +153,7 @@ const ClipEditor = props => {
 		}
 	}
 
-	const handleInputChange = (index, item, startOrEnd ) => {
+	const handleInputChange = (index, item, startOrEnd) => {
 		for (let i = 0; i < clipList.length; i++){
 			if(clipList[i] === item){
 				const title = clipList[index].title
@@ -220,7 +217,7 @@ const ClipEditor = props => {
 		}
 
 		if(type === `input` || type === `onBlur`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null) && type !== `onBlur`)
 				clips[index][`start`] = input
 		}
 
@@ -256,7 +253,7 @@ const ClipEditor = props => {
 		}
 
 		if(type === `input` || type === `onBlur`) {
-			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null ) && type !== `onBlur`)
+			if((input.match(/\d{2}:\d{2}\.\d{2}/) === null || input.match(/\d{1}:\d{2}:\d{2}\.?\d{2}/) === null) && type !== `onBlur`)
 				clips[index][`end`] = input
 		}
 
@@ -339,7 +336,7 @@ const ClipEditor = props => {
 						updateEvents={null}
 						eventToEdit={null}
 						activeCensorPosition = {activeCensorPosition}
-						editorType={`clip`}
+						editorType='clip'
 						handleShowTip={handleShowTip}
 						toggleTip={toggleTip}
 						elapsed={elapsed}
@@ -368,7 +365,7 @@ const ClipEditor = props => {
 								{clipList?.map((clip, index) => (
 									<div className={`flex`} key={index}>
 										<div
-											className={`handle`}
+											className='handle'
 											style={activeIndex === index ?
 												{backgroundColor:`var(--navy-blue)`, color:`#fff`}
 												:
@@ -400,8 +397,8 @@ const ClipEditor = props => {
 							<div className='zoom-factor'>
 								<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 								<Rnd
-									className={`zoom-indicator`}
-									bounds={`parent`}
+									className='zoom-indicator'
+									bounds='parent'
 									enableResizing={
 										{
 											top: false,
@@ -448,7 +445,7 @@ const ClipEditor = props => {
 													topLeft: false,
 												}
 											}
-											bounds = {`parent`}
+											bounds = 'parent'
 											onDrag = {(e, d) => {
 												handleScrollFactor(d.x)
 											}}

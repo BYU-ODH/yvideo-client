@@ -239,7 +239,7 @@ const PlayerControls = props => {
 								type='button'
 								value={element.title}
 								onClick={() => handleChangeSubtitle(index)}
-								className={ indexToDisplay === index && showTranscript === true ? `active-value` : ``}
+								className={indexToDisplay === index && showTranscript === true ? `active-value` : ``}
 							/>
 						)
 						}

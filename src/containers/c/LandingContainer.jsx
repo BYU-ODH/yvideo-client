@@ -5,7 +5,7 @@ import { authService } from 'services'
 
 import { Landing } from 'components'
 
-import {isMobile, isSafari, isIOS } from 'react-device-detect'
+import { isMobile, isSafari, isIOS } from 'react-device-detect'
 
 const LandingContainer = props => {
 

@@ -10,7 +10,7 @@ const user = testutil.user
 
 const data = [user]
 
-const props = { // eslint-disable-line no-unused-vars
+const props = {
 	data,
 	clean: jest.fn(),
 	search: jest.fn(),
@@ -22,7 +22,7 @@ it(`mount admin container`, async() => {
 	const wrapper = mount(
 		<Provider store={store}>
 			<BrowserRouter>
-				<Container/>
+				<Container {...props}/>
 			</BrowserRouter>
 		</Provider>,
 	)

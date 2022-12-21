@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Style, { I } from './styles'
 import captions from 'assets/captions.svg'
 

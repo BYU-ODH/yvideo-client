@@ -61,7 +61,7 @@ const CreateResource = props => {
 					}
 				</div>
 			</Form>
-			{!isCorrectUsername && <WarningLabel>'{requesterEmail}' does not exist. Please try again.</WarningLabel> }
+			{ !isCorrectUsername && <WarningLabel>'{requesterEmail}' does not exist. Please try again.</WarningLabel> }
 		</>
 	)
 }

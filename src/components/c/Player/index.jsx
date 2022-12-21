@@ -34,6 +34,8 @@ const Player = props => {
 		hovering,
 		mouseInactive,
 		controlsHovering,
+		showIcon,
+		playPause,
 	} = props.viewstate
 
 	const {
@@ -63,12 +65,14 @@ const Player = props => {
 	const isPlaying = useRef(playing)
 	const isFullscreen = useRef(fullscreen)
 	const isShowTranscript = useRef(showTranscript)
+	const isShowIcon = useRef(showIcon)
 
 	useEffect(() => {
 		isPlaying.current = playing
 		isFullscreen.current = fullscreen
 		isShowTranscript.current = showTranscript
-	}, [playing, fullscreen, showTranscript])
+		isShowIcon.current = showIcon
+	}, [playing, fullscreen, showTranscript,showIcon,playPause])
 
 	useEffect(() => {
 		document.body.onkeyup = e => handleHotKeys(e)
@@ -230,9 +234,12 @@ const Player = props => {
 					display: `${showTranscript !== false ? `flex` : `initial`}`,
 					height: `100%`,
 					overflow: `hidden`,
+					alignContent:`center`,
 				}
 			}>
+
 				<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} onClick={playing ? handlePause : handlePlay} style={{ flex: 1 }}>
+					<div className={showIcon === true ? `${playPause}-icon zoom-in-zoom-out`:`${playPause}-icon`}></div>
 					<ReactPlayer
 						ref={ref}
 						className='react-player'
@@ -271,6 +278,7 @@ const Player = props => {
 							},
 						}}
 					/>
+
 					<PlayerControls viewstate={props.viewstate} handlers={props.handlers} skipArray={skipArray}/>
 					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 						{ !started &&
@@ -288,6 +296,7 @@ const Player = props => {
 						<AlertMessage id='alertMessage'></AlertMessage>
 					</Blank>
 				</div>
+
 				<Transcript viewstate={props.viewstate} handlers={props.handlers}>
 				</Transcript>
 			</div>

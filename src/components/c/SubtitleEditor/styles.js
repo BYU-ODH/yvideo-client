@@ -35,7 +35,7 @@ export const Timeline = styled.div`
 	color: #5F5F5F; */
 
 	position: relative;
-	height: ${props => props.minimized ? `0vh` : `19vh`};
+	height: 19vh;
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
 	cursor: ${props => props.cursor};
@@ -285,7 +285,7 @@ export const Icon = styled.div`
 	}
 `
 export const EventList = styled.div`
-	--minimized: ${props => props.minimized};
+	--minimized: ${false};
 
 	width: ${props => props.minimized !== false ? `4rem` : `35rem`};
 	height: calc(100vh - var(--navbar-height));

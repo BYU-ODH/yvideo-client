@@ -3,6 +3,11 @@ import Tag from '../../../../components/bits/Tag'
 import { render, cleanup, screen, fireEvent } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
+const handlers = {
+	removeTag: jest.fn(),
+	removeWord: jest.fn(),
+}
+
 const props = {
 	id: `resourceId`,
 	title: `resource title`,
@@ -28,12 +33,7 @@ const props = {
 	content: { files: [[Object]] },
 	onClick: jest.fn(),
 	children: `test`,
-
-}
-
-const handlers = { // eslint-disable-line no-unused-vars
-	removeTag: jest.fn(),
-	removeWord: jest.fn(),
+	handlers,
 }
 
 const wrapper =

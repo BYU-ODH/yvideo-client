@@ -108,7 +108,7 @@ const ListCollection = props => {
 										{!isOwner ?
 											<PublicButton
 												onClick={handlePublicCollection}
-												className={`public-button`}
+												className='public-button'
 												isSubscribed={isSubscribed}
 											>
 												{isSubscribed ?
