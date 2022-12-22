@@ -65,7 +65,7 @@ const Style = styled.div`
 	.dropdown:hover .dropdown-content {display: block;}
 
 	/* Change the background color of the dropdown button when the dropdown content is shown */
-	.dropdown:hover .dropbtn {background-color: #0582ca;}e
+	.dropdown:hover .dropbtn {background-color: #0582ca;}
 `
 export default Style
 
