@@ -205,6 +205,11 @@ const TrackLayer = props => {
 					setEventSeek(true)
 					handleEventPosition(event.start)
 				}}
+				onDragStop={(e, d) => {
+					handleDrag(d, event, index)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+				}}
 				onResize={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
