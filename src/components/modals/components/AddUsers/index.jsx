@@ -21,7 +21,6 @@ const AddUsers = props => {
 		handleClose,
 	} = props.handlers
 
-	// TODO: search list all the resources related to the email
 	return (
 		<Form onSubmit={ handleSubmit } data-testid= 'form'>
 			{!isSubmitted &&<h3>Paste a list of usernames, one per line.</h3>}

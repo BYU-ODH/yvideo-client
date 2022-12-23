@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
-import handleScrollFuncs from '../../../components/vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../../components/common/toggleScroll'
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -25,7 +25,9 @@ const SubtitlesLayer = props => {
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
-	const [layerHeight, setLayerHeight] = useState(0) // eslint-disable-line no-unused-vars
+
+	const layerHeight = 0
+
 	const [showError, setShowError] = useState(false)
 	const [disableScroll, setDisableScroll] = useState({action: null})
 
@@ -128,7 +130,7 @@ const SubtitlesLayer = props => {
 		}
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
+	const handleResize = (direction, ref, delta, event, index, e) => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs

@@ -24,6 +24,48 @@ const Style = styled.div`
 			outline: none;
 		}
 	}
+
+	/* Dropdown Button */
+	.dropbtn {
+	  background-color: #0582ca;
+	  color: white;
+	  padding: 16px;
+	  font-size: 16px;
+	  border: none;
+	}
+	
+	/* The container <div> - needed to position the dropdown content */
+	.dropdown {
+	  position: relative;
+	  display: inline-block;
+	}
+	
+	/* Dropdown Content (Hidden by Default) */
+	.dropdown-content {
+	  display: none;
+	  position: absolute;
+	  background-color: #f1f1f1;
+	  min-width: 160px;
+	  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	  z-index: 1;
+	}
+	
+	/* Links inside the dropdown */
+	.dropdown-content a {
+	  color: black;
+	  padding: 12px 16px;
+	  text-decoration: none;
+	  display: block;
+	}
+	
+	/* Change color of dropdown links on hover */
+	.dropdown-content a:hover {background-color: #ddd;}
+	
+	/* Show the dropdown menu on hover */
+	.dropdown:hover .dropdown-content {display: block;}
+	
+	/* Change the background color of the dropdown button when the dropdown content is shown */
+	.dropdown:hover .dropbtn {background-color: #0582ca;}e	
 `
 export default Style
 
@@ -40,7 +82,7 @@ export const Timeline = styled.div`
 	--header-height: 5rem;
 
 	position: relative;
-	height: ${props => props.minimized ? `0vh` : `30vh`};
+	height: 30vh;
 	width: 100%;
 	box-sizing: border-box;
 	transition: height .5s cubic-bezier(0, 0, 0, 1.07);
@@ -222,7 +264,7 @@ export const NewLayer = styled.button`
 	cursor: pointer;
 `
 export const EventEditor = styled.div`
-	--minimized: ${props => props.minimized};
+	--minimized: ${false};
 
 	width: 30%;
 	/* width: 4rem; */
@@ -266,7 +308,7 @@ export const EventEditor = styled.div`
 				color: green;
 			}
 
-			& button {
+			& button, input {
 				width: 100%;
 				height: 100%;
 				font-size: 1.7rem;

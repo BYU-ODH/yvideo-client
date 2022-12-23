@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
-// import { Prompt } from 'react-router'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 import helpIcon from 'assets/help/help-icon-black.svg'
@@ -258,7 +257,7 @@ const ContentOverview = props => {
 						</Column>
 						<Column>
 							<h4>Important Words
-								<img src={helpIcon} alt={`help`}
+								<img src={helpIcon} alt='help'
 									onClick={handleShowHelp}
 									onMouseEnter={e => handleShowTip(`help`,
 										{

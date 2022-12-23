@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
-// import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
-// import {DialogBox} from '../../../modals/components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -20,6 +18,7 @@ import commentIcon from 'assets/event_comment.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
+import Swal from 'sweetalert2'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 const VideoEditor = props => {
@@ -104,18 +103,13 @@ const VideoEditor = props => {
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
 
-	// eslint-disable-next-line no-unused-vars
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
-	// eslint-disable-next-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [isLoading, setIsLoading] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
+	const [isReplace, setIsReplace] = useState(false)
 
 	// refs
 	useEffect(() => {
@@ -126,9 +120,7 @@ const VideoEditor = props => {
 
 	useEffect(() => {
 		function handleResize() {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
@@ -282,11 +274,8 @@ const VideoEditor = props => {
 
 	const updateEvents = (index, event, layerIndex, side, type) => {
 
-		let canAccessDom = false
-		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
-			canAccessDom = true // eslint-disable-line no-unused-vars
-			document.getElementById(`sideTabMessage`).style.color=`red`
-		}
+		if(showSideEditor && document.getElementById(`sideTabMessage`))
+			document.getElementById(`sideTabMessage`).style.color = `red`
 
 		const currentEvents = [...allEvents]
 		if(event.type === `Pause`)
@@ -532,6 +521,17 @@ const VideoEditor = props => {
 			}
 		}
 		jsonData.sort((a, b) => (a.options.start > b.options.start) - (a.options.start < b.options.start))
+		createFileAnnotationsJson(jsonData, `icplayer`)
+	}
+
+	const handleExportAnnotationYVideo = () => {
+		const jsonData = []
+		jsonData.push(allEvents)
+		jsonData.sort((a, b) => (a.start > b.start) - (a.start < b.start))
+		createFileAnnotationsJson(jsonData, `yvideo`)
+	}
+
+	const createFileAnnotationsJson = (jsonData, option)=> {
 		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url
@@ -540,11 +540,54 @@ const VideoEditor = props => {
 		// create an anchor element to open the link we created
 		const a = document.createElement(`a`)
 		// trigger download and append file name
-		a.download = `${content.name}_annotations.json`
+		a.download = `${content.name}_${option}_annotations.json`
 		a.href = link
 		document.body.appendChild(a)
 		a.click()
 		document.body.removeChild(a)
+	}
+
+	const handleImportAnnotation = () => {
+		if (allEvents.length !== 0) {
+			Swal.fire({
+				title: `Import Y-Video Format`,
+				text: `Do you want to replace the actual content?`,
+				icon: `question`,
+				confirmButtonText: `Yes`,
+				showCancelButton: true,
+				confirmButtonColor: `#0089b7`,
+				cancelButtonText: `No`,
+			}).then(async (result) => {
+				result.isConfirmed ? setIsReplace(true) : setIsReplace(false)
+				await callImportFile()
+			}).catch((error)=>{
+				Swal.fire(`An error has occur`, error.message, `error`)
+			})
+		}
+	}
+
+	const callImportFile = async () => {
+		if(document.getElementById(`import-file`) !== null)
+			document.getElementById(`import-file`).click()
+	}
+
+	const processImportAnnotation = async () => {
+		const filePath = document.getElementById(`import-file`).files
+		try {
+			const reader = new FileReader()
+			reader.onload = (e) => {
+				const newElements = JSON.parse(e.target.result)
+				if(isReplace)
+					allEvents.splice(0, allEvents.length)
+				for(let i = 0; i < newElements[0].length; i++)
+					allEvents.push(newElements[0][i])
+				setBlock(true)
+			}
+			if(filePath !== undefined)
+				reader.readAsText(filePath[0])
+		}catch (error){
+			Swal.fire(`An error has occur`, error.message, `error`)
+		}
 	}
 
 	const checkSideBarTitle = () => {
@@ -585,7 +628,7 @@ const VideoEditor = props => {
 					eventToEdit={eventToEdit}
 					activeCensorPosition = {activeCensorPosition}
 					setActiveCensorPosition = {setActiveCensorPosition}
-					editorType={`video`}
+					editorType='video'
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
@@ -596,7 +639,7 @@ const VideoEditor = props => {
 					setElapsed={setElapsed}
 				></VideoContainer>
 
-				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+				<Timeline zoom={scrollBarWidth}>
 
 					<section>
 						<div className='event-layers' id='layers-component'>
@@ -609,7 +652,6 @@ const VideoEditor = props => {
 
 									<TrackLayer
 										videoLength={videoLength}
-										minimized={eventListMinimized}
 										width={layerWidth}
 										events={allEvents}
 										activeEvent={eventToEdit}
@@ -632,9 +674,9 @@ const VideoEditor = props => {
 						<div className='zoom-factor' id = 'zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								id={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								id='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -682,7 +724,7 @@ const VideoEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
+										bounds = 'parent'
 										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
@@ -702,11 +744,11 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized} show={showSideEditor}>
+			<EventEditor id='EventEditor' show={showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}
-						alt={`helpIcon`}
+						alt='helpIcon'
 						onClick={handleShowHelp}
 						onMouseEnter={e => handleShowTip(`help`,
 							{
@@ -739,15 +781,28 @@ const VideoEditor = props => {
 					</div>
 					<div className={`save`}>
 						{!disableSave && !blockLeave && !isLoading ?
-							<button className={`handleExportAnnotation`} onClick={handleExportAnnotation}>
-								<span>Export</span>
-							</button>
+							<div className={`dropdown`}>
+								<button className={`dropbtn`}>Export</button>
+								<div className={`dropdown-content`}>
+									<a href='#' onClick={handleExportAnnotationYVideo}><b>Y-Video</b></a>
+									<a href='#' onClick={handleExportAnnotation}><b>IC Player</b></a>
+								</div>
+							</div>
+							:
+							null
+						}
+					</div>
+					<div className={`save`}>
+						{!disableSave && !blockLeave && !isLoading ?
+							<div className={`save`}>
+								<input type='button' id='get_file' className={`dropbtn`} value='Import' onClick={handleImportAnnotation}/>
+								<input type='file' accept='.json' id='import-file' onChange={processImportAnnotation} style={{display:`none`}}/>
+							</div>
 							:
 							null
 						}
 					</div>
 				</header>
-
 				<>
 					<div className='breadcrumbs'>
 						{ showSideEditor &&
@@ -760,7 +815,7 @@ const VideoEditor = props => {
 						}
 					</div>
 
-					{ showSideEditor !== false && eventListMinimized !== true ?
+					{ showSideEditor !== false ?
 						<TrackEditorSideMenu
 							singleEvent={checkEvent()}
 							videoLength={videoLength}
@@ -783,7 +838,6 @@ const VideoEditor = props => {
 					}
 				</>
 			</EventEditor>
-
 			<>
 				{/* <Prompt
 					when={blockLeave}

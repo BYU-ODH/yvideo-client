@@ -23,8 +23,6 @@ const ManageResourceContainer = props => {
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [isDefaultSearched, setIsDefaultSearched] = useState(false)
 	const [resourceCount, setResourceCount] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [selectedResource, setSelectedResource] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
 	const [isSearched, setIsSearched] = useState(false)
 
@@ -68,11 +66,6 @@ const ManageResourceContainer = props => {
 		setSearchQuery(value)
 	}
 
-	const handleSelectResourceChange = e => {
-		const { target } = e
-		setSelectedResource(target.value)
-	}
-
 	const handleShowHelp = () => {
 		toggleModal({
 			component: HelpDocumentation,
@@ -99,7 +92,6 @@ const ManageResourceContainer = props => {
 	}
 
 	const handlers = {
-		handleSelectResourceChange,
 		handleSearchTextChange,
 		addResource,
 		handleSubmit,

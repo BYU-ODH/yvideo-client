@@ -6,14 +6,17 @@ import playIcon from 'assets/controls_play.svg'
 export const Style = styled.div `
 
 	margin-top: 8.4rem;
-	margin-bottom： 4rem;
+	margin-bottom: 4rem;
 	height: calc(100vh - 8.4rem);
 	overflow: hidden;
 	width: 100%;
+	#header-container {
+		display: flex;
+		justify-content: center;
+	}
+
 
 	& > div {
-
-
 		& .ayamelPlayer,
 		& .videoBox,
 		& .mediaPlayer {

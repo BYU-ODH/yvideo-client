@@ -29,7 +29,8 @@ const VideoEditorContainer = props => {
 		contentError,
 		setBreadcrumbs,
 		getFiles,
-		resource,
+		// TODO: This is related to the other TODO in this file around line 90
+		// resource,
 	} = props
 
 	const {id} = useParams()
@@ -37,7 +38,6 @@ const VideoEditorContainer = props => {
 	const [url, setUrl] = useState(``)
 
 	const [eventsArray, setEventsArray] = useState([])
-	const [activeCensorPosition, setActiveCensorPosition] = useState(-1) // eslint-disable-line no-unused-vars
 	const [content, setContent] = useState({})
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
@@ -55,7 +55,7 @@ const VideoEditorContainer = props => {
 			if(contentCache[id].url !== ``){
 				setUrl(contentCache[id].url)
 				if(contentCache[id].url.includes(`youtube`)){
-					const fetchData = async() => {
+					async () => { // eslint-disable-line no-unused-expressions
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
@@ -63,7 +63,6 @@ const VideoEditorContainer = props => {
 
 						return data
 					}
-					const d = fetchData() // eslint-disable-line no-unused-vars
 				}
 			} else {
 				setKey(``)
@@ -79,7 +78,7 @@ const VideoEditorContainer = props => {
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
 				if (resourceIdStream !== ``){
-					const files = Promise.resolve(getFiles(resourceIdStream)).then((value) => { // eslint-disable-line no-unused-vars
+					Promise.resolve(getFiles(resourceIdStream)).then((value) => {
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
 							if (file?.[`aspect-ratio`])
@@ -87,11 +86,12 @@ const VideoEditorContainer = props => {
 						}
 					})
 				}
-				if(resource[resourceIdStream]){
-					if(resource[resourceIdStream][`files`]){
-						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false) // eslint-disable-line no-unused-vars
-					}
-				}
+				// TODO: figure out what this was for
+				// if(resource[resourceIdStream]){
+				// 	if(resource[resourceIdStream][`files`]){
+				// 		const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[id].settings.targetLanguage) !== false)
+				// 	}
+				// }
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

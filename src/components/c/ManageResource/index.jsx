@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Style, {Button, Search, SearchIcon, PlusIcon, FeedbackMessage, Help} from './styles'
+import Style, { Button, Search, SearchIcon, PlusIcon, FeedbackMessage, Help } from './styles'
 
 import ResourceOverviewContainer from '../../../containers/c/ResourceOverviewContainer'
 
@@ -35,7 +35,7 @@ const ManageResource = props => {
 				<Search id='searchSubmit' className='std-outline-color' onSubmit={handleSubmit} isMobile={isMobile}>
 					<Help style={{ position: `relative` }}>
 						<img src={helpIcon}
-							alt={`help`}
+							alt='help'
 							onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{

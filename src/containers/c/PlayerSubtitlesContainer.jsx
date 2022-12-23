@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { subtitlesService } from 'services'
-// import { Events } from 'components'
 
 const PlayerSubtitlesContainer = props => {
 
@@ -12,13 +10,9 @@ const PlayerSubtitlesContainer = props => {
 		duration,
 		indexToDisplay,
 		handleShowSubtitle,
-		// getSubtitles,
-		// active,
 	} = props
 
 	const [subtitlesArray, setSubtitlesArray] = useState([])
-	// eslint-disable-next-line no-unused-vars
-	const {id} = useParams()
 
 	useEffect(() => {
 		if(subtitles.length !== 0){

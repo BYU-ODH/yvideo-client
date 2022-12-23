@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
 import plus from 'assets/plus-circle.svg'
-import Style, {Icon} from './styles.js'
+import Style, { Icon } from './styles.js'
 
 import { convertSecondsToMinute } from '../../common/timeConversion'
 
@@ -28,7 +28,6 @@ const SubtitleEditorSideMenu = props => {
 		validateTitleSub,
 		isNameUnique,
 		titleNameRequired,
-		titleName,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -104,7 +103,7 @@ const SubtitleEditorSideMenu = props => {
 						<div className={`container`}>
 							{/* This toggles the z-index of the icons as the state for the submodal changes */}
 							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={() => addSub(subLayer, ind, `top`)}
-								position={`top`}
+								position='top'
 								visibility={subs?.[subLayer]?.[`content`]?.[0]?.start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
 							/>
 							<div id={`subContainer${ind}`} className={`subContainer ${ind === index && `subActive`}`}>
@@ -119,7 +118,7 @@ const SubtitleEditorSideMenu = props => {
 								<div id={`${ind === index && `subStartEnd`}`} className={`subStartEnd`}>
 									<input
 										id={`subStart${ind}`}
-										className={`subStart sideTabInput`}
+										className='subStart sideTabInput'
 										type='text'
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
@@ -138,7 +137,7 @@ const SubtitleEditorSideMenu = props => {
 									/>
 									<input
 										id={`subEnd${ind}`}
-										className={`subEnd`}
+										className='subEnd'
 										type='text'
 										value={`${sub.end === `` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}

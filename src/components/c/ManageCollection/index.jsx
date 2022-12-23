@@ -5,7 +5,7 @@ import {
 	CollectionPermissionsContainer,
 } from 'containers'
 
-import * as sortingRegex from 'components/vanilla_scripts/sorting_regex'
+import * as sortingRegex from 'components/common/sorting_regex'
 
 import Style, {
 	Title,
@@ -64,7 +64,7 @@ const ManageCollection = props => {
 						// TODO When switching between collections, it uses the same value
 						<TitleEdit
 							type='text'
-							id={`title-edit`}
+							id='title-edit'
 							value={collectionName}
 							contenteditable='true'
 							onChange={handleNameChange}
@@ -79,7 +79,7 @@ const ManageCollection = props => {
 					)}
 					{user?.roles <= 2 &&
 						<TitleEditButton
-							id={`title-edit-button`}
+							id='title-edit-button'
 							editing={isEditingCollectionName}
 							onClick={toggleEdit}
 							onMouseEnter={e => handleShowTip(`collection-edit-name`,
@@ -113,8 +113,8 @@ const ManageCollection = props => {
 								<PublishButton
 									published={collection.published}
 									onClick={togglePublish}
-									id={`publish-button`}
-									className={`std-outline-color`}
+									id='publish-button'
+									className='std-outline-color'
 								>
 									{collection.published ? `Unpublish` : `Publish`}
 								</PublishButton>

@@ -1,18 +1,19 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
-import Style, {TimeBar, Blank, Subtitles, Spinner, PauseMessage} from './styles'
+import Style, { TimeBar, Blank, Subtitles, Spinner, PauseMessage } from './styles'
 import { SubtitlesContainer } from 'containers'
 import { CensorDnD } from 'components/bits'
-import { handleElapsed } from '../../vanilla_scripts/editorCommon'
+import { handleElapsed } from '../../common/editorCommon'
 
-import { CurrentEvents, CensorChange, handleSubtitle, CommentChange } from 'components/vanilla_scripts/getCurrentEvents'
-import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
+import { CurrentEvents, CensorChange, handleSubtitle, CommentChange } from 'components/common/getCurrentEvents'
+import handleScrollFuncs from '../../common/toggleScroll'
 
 import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
 import { convertSecondsToMinute } from '../../common/timeConversion'
+import Swal from 'sweetalert2'
 
 const VideoContainer = props => {
 
@@ -48,14 +49,10 @@ const VideoContainer = props => {
 	const [playing, setPlaying] = useState(false)
 	const [volume, setVolumeState] = useState(1)
 	const [muted, setMuted] = useState(false)
-	const [played, setPlayed] = useState(0) // eslint-disable-line no-unused-vars
 	const [duration, setDuration] = useState(0) // total time of video
 	const [playbackRate, setPlaybackRate] = useState(1)
 	const [blank, setBlank] = useState(false)
-	const [videoComment, setVideoComment] = useState(``) // eslint-disable-line no-unused-vars
-	const [commentPosition, setCommentPosition] = useState({x: 0, y: 0}) // eslint-disable-line no-unused-vars
 	const [subtitleText, setSubtitleText] = useState(``)
-	const [censorPosition, setCensorPosition] = useState({}) // eslint-disable-line no-unused-vars
 	const [playerPadding, setPlayerPadding] = useState([0, 0])
 	const [isUploading, setIsUploadings] = useState(false)
 
@@ -72,7 +69,6 @@ const VideoContainer = props => {
 		playing,
 		volume,
 		muted,
-		played,
 		duration,
 		elapsed,
 		playbackRate,
@@ -175,15 +171,18 @@ const VideoContainer = props => {
 			if(typeof handleSubProgress === `function`)
 				handleSubProgress(playedSeconds)
 		},
+
 		handleDuration: duration => {
 			if(typeof getDuration === `function`)
 				getDuration(duration)
 
 			setDuration(duration)
 		},
+
 		handlePlaybackRate: rate => {
 			setPlaybackRate(rate)
 		},
+
 		handleSeek: (e, time) => {
 			let newPlayed = 0
 
@@ -201,6 +200,7 @@ const VideoContainer = props => {
 				getVideoTime(newPlayed)
 			}
 		},
+
 		handleSkip: (time) => {
 			const newPlayed = duration / time
 			if(newPlayed !== Infinity && newPlayed !== -Infinity){
@@ -208,41 +208,34 @@ const VideoContainer = props => {
 				getVideoTime(time)
 			}
 		},
+
 		handlePause: () => {
 			setPlaying(false)
 			getVideoTime(elapsed.toFixed(2) / duration)
 		},
+
 		handlePlay: () => {
 			setPlaying(true)
 			getVideoTime(elapsed.toFixed(2) / duration)
 			setActiveCensorPosition(-1)
 		},
+
 		handleMute: () => {
 			setMuted(true)
 		},
+
 		handleUnmute: () => {
 			setMuted(false)
 		},
+
 		handleBlank: (bool) => {
 			setBlank(bool)
 		},
-		handleShowComment: (value, position) => {
-			setVideoComment(value)
-			setCommentPosition(position)
 
-		},
 		handleShowSubtitle: (value) => {
 			setSubtitleText(value)
 		},
 
-		// For when returning values of two subtitles
-		handleCensorPosition: (position) => {
-			if(position !== undefined){
-				setCensorPosition(
-					position,
-				)
-			}
-		},
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
 
@@ -349,7 +342,7 @@ const VideoContainer = props => {
 	const formattedElapsed = convertSecondsToMinute(elapsed)
 
 	const showError = () => {
-		alert(`There was an error loading the video`)
+		Swal.fire(`Error Video Loading`, `There was an error loading the video`, `error`)
 	}
 
 	let count = 0 // this is to make sure that event listeners are applied only once

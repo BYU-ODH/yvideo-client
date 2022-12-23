@@ -25,7 +25,8 @@ describe(`EventsContainer test`, () => {
 			<Container store={testutil.store} {...props}/>,
 		).childAt(0).dive()
 
-		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
+		const viewstate = wrapper.props().viewstate
+		expect(viewstate).toBeDefined()
 	})
 
 	it(`check correct form of landing`, () => {

@@ -1,4 +1,4 @@
-import { handleSubtitle, CurrentEvents, CensorChange, CommentChange } from '../../../components/vanilla_scripts/getCurrentEvents'
+import { handleSubtitle, CurrentEvents, CensorChange, CommentChange } from '../../../components/common/getCurrentEvents'
 
 const IdMock = {
 	style: {

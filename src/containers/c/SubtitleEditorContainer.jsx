@@ -77,7 +77,7 @@ const SubtitleEditorContainer = props => {
 			if(content[id].url !== ``)
 				setUrl(content[id].url)
 			if(content[id].url.includes(`youtube`)){
-				const fetchData = async() => {
+				async () => { // eslint-disable-line no-unused-expressions
 					const rawData = await fetch(`https://www.youtube.com/oembed?url=${content[id].url}&format=JSON`, {method: `GET`})
 					const data = await rawData.json()
 					if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
@@ -85,7 +85,6 @@ const SubtitleEditorContainer = props => {
 
 					return data
 				}
-				const d =fetchData() // eslint-disable-line no-unused-vars
 			} else {
 				setKey(``)
 				setUrl(``)
@@ -101,8 +100,8 @@ const SubtitleEditorContainer = props => {
 				}
 				if (sKey !== ``)
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-				// eslint-disable-next-line no-unused-vars
-				const files = Promise.resolve(getFiles(sKey)).then((value) => {
+
+				Promise.resolve(getFiles(sKey)).then((value) => {
 					if (value){
 						const file = value.find(element => element[`file-version`].includes(content[id].settings.targetLanguage) !== false)
 						if (file[`aspect-ratio`])
