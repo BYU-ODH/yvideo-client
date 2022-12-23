@@ -167,8 +167,6 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-		// eslint-disable-next-line no-console
-		console.log(event)
 		// this gets the active front of the 
 		const start = position.x / layerWidth * videoLength
 		const end = (position.x + ref.offsetWidth) / layerWidth * videoLength
@@ -203,8 +201,6 @@ const TrackLayer = props => {
 				enableResizing={Enable}
 				dragAxis='x'
 				onDrag={(e, d) => {
-					// eslint-disable-next-line no-console
-					console.log(event)
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
