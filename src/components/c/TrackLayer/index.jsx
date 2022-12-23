@@ -184,10 +184,7 @@ const TrackLayer = props => {
 
 		return (
 			<Rnd
-				className={
-					`layer-event
-					${isMultiEvent && `half-event`}
-					${activeEvent === index && `active-event`}`}
+				className={`layer-event ${isMultiEvent ? `half-event` : ``} ${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={
