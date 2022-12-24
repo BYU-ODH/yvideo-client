@@ -105,7 +105,7 @@ const VideoEditor = props => {
 		useCallbackPrompt(blockLeave)
 
 	const [layerWidth, setWidth] = useState(0)
-	const [scrollBarWidth, setScrollBar] = useState(0)
+	const [scrollBarWidth, setScrollBar] = useState(100)
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [isLoading, setIsLoading] = useState(false)
@@ -168,9 +168,12 @@ const VideoEditor = props => {
 			layer: index,
 		}
 
+		const percentOfBarWeWantCovered = 30 // one thirtieth of the bar
+		const scrollBArdWidthRatio = 100 // scroll bar width at normal zoom is 100 so we need to divide by 100 to get the ratio as we zoom in
+
 		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
-		eventObj.end = Number(startPercentage) + eventObj.end
+		eventObj.end = Number(startPercentage) + videoLength / percentOfBarWeWantCovered * (scrollBarWidth / scrollBArdWidthRatio)
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
