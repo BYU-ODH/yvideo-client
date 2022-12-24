@@ -61,7 +61,7 @@ describe(`Simulate Event`, () => {
 		expect(wrapper.find(`input`).at(1).props().value).toBe(`02:00.00`)
 
 		expect(wrapper.contains(<i className='fa fa-check'></i>)).toEqual(false)
-		wrapper.find(`.sideButton`).simulate(`click`)
+		wrapper.find(`.side-button`).simulate(`click`)
 		wrapper.update()
 		// expect(wrapper.contains(<i className='fa fa-check'></i>)).toEqual(true)
 	})

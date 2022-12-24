@@ -12,7 +12,7 @@ const Style = styled.div`
 			display: block !important;
 	}
 
-	& .closeEditor {
+	& .close-editor {
 		width: 2rem;
 		text-align: right;
 		cursor: pointer;
@@ -25,7 +25,7 @@ const Style = styled.div`
 		display: flex;
 		font-size: 1.5rem;
 
-		& .sideTabInput {
+		& .side-tab-input {
 			margin: auto 10px auto auto !important;
 			padding: 0px 10px;
 			width: 120px;
@@ -44,13 +44,13 @@ const Style = styled.div`
 			font-size: 12px;
 			margin: 15px auto 15px auto;
 		}
-		& #saveComment:disabled{
+		& #save-comment:disabled{
 			cursor: not-allowed;
 			background-color: #ddd;
 		}
 	}
 
-	& .sideButton {
+	& .side-button {
 		width: 50%;
 		margin-left: 25%;
 		border: none;
@@ -68,17 +68,17 @@ const Style = styled.div`
 		}
 	}
 
-	& #sideTabMessage{
+	& #side-tab-message{
 		margin-left: 10px;
 		font-size: 1.3rem;
 	}
 
-	& #sideTabExplanation{
+	& #side-tab-explanation{
 		margin-left: 10px;
 		font-size: 1.3rem;
 	}
 
-	& .censorMenu {
+	& .censor-menu {
 		font-size: 1.5rem;
 		height: 65%;
 		overflow-y: scroll;
@@ -89,12 +89,12 @@ const Style = styled.div`
 			text-align: left;
 		}
 
-		& .tableHeader {
+		& .table-header {
 			margin-left: 10px;
 		}
 	}
 
-	& .censorList {
+	& .censor-list {
 		width: 100%;
 		height: 85%;
 		margin-left: 10px;
@@ -137,7 +137,7 @@ const Style = styled.div`
 		}
 	}
 
-	& .addCensor {
+	& .add-censor {
 		float: left;
 		margin-left: 5px;
 		background: none;
@@ -147,26 +147,16 @@ const Style = styled.div`
 		padding-top: 0px;
 	}
 
-	& .arrowDown {
-		width: 100%;
-		text-align: center;
+	& .sub-card {
+		border-bottom: 1px solid var(--light-blue);
+		padding: 1rem;
 	}
 
-	& .subCard {
-		border-bottom: 1px solid var(--light-blue);
-		padding: 1rem;
-	}
-	& .subTitleCard {
-		font-size: 2rem;
-		border-bottom: 1px solid var(--light-blue);
-		padding: 1rem;
-		color: black;
-	}
-	& .subActive {
+	& .sub-active {
 		background-color: var(--navy-blue);
 		color: white;
 	}
-	& .censorActive {
+	& .censor-active {
 		background-color: var(--navy-blue);
 		color: white;
 	}

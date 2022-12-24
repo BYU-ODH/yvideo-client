@@ -167,7 +167,7 @@ const SubtitleEditor = props => {
 		activeUpdate(layerIndex)
 		setSideEditor(true)
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
-		const allSubsContainer = document.getElementById(`allSubs`)
+		const allSubsContainer = document.getElementById(`all-subs`)
 		if(active)
 			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight * 0.5
 
@@ -467,10 +467,10 @@ const SubtitleEditor = props => {
 		if(newSub.trueFalse === false) {
 			if(subs.length > 0 && subLayerToEdit) {
 				for(const i in subs[subLayerToEdit].content) {
-					if(document.getElementById(`subStart${i}`)) {
-						document.getElementById(`subStart${i}`).style.border = null
-						document.getElementById(`subEnd${i}`).style.border = null
-						document.getElementById(`subText${i}`).style.border = null
+					if(document.getElementById(`sub-start${i}`)) {
+						document.getElementById(`sub-start${i}`).style.border = null
+						document.getElementById(`sub-end${i}`).style.border = null
+						document.getElementById(`sub-text${i}`).style.border = null
 					}
 				}
 			}
@@ -498,11 +498,11 @@ const SubtitleEditor = props => {
 					if(subs[subLayerToEdit].id === tempInvalidArray[j][0] && parseFloat(i) === tempInvalidArray[j][1]) {
 
 						if(tempInvalidArray[j][2].start === true)
-							document.getElementById(`subStart${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+							document.getElementById(`sub-start${tempInvalidArray[j][1]}`).style.border = `2px solid red`
 						if(tempInvalidArray[j][2].end === true)
-							document.getElementById(`subEnd${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+							document.getElementById(`sub-end${tempInvalidArray[j][1]}`).style.border = `2px solid red`
 						if(tempInvalidArray[j][2].text === true)
-							document.getElementById(`subText${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+							document.getElementById(`sub-text${tempInvalidArray[j][1]}`).style.border = `2px solid red`
 
 					}
 				}
@@ -675,12 +675,12 @@ const SubtitleEditor = props => {
 				checkError = true
 				disable = false
 				if(checking === `delete` && i >= index) {
-					if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
-						document.getElementById(`subStart${i}`).style.border = `2px solid red`
-						document.getElementById(`subStart${i + 1}`).style.border = ``
-					} else if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
-						document.getElementById(`subEnd${i}`).style.border = `2px solid red`
-						document.getElementById(`subEnd${i + 1}`).style.border = ``
+					if(document.getElementById(`sub-start${i + 1}`).style.border === `2px solid red`) {
+						document.getElementById(`sub-start${i}`).style.border = `2px solid red`
+						document.getElementById(`sub-start${i + 1}`).style.border = ``
+					} else if(document.getElementById(`sub-end${i + 1}`).style.border === `2px solid red`) {
+						document.getElementById(`sub-end${i}`).style.border = `2px solid red`
+						document.getElementById(`sub-end${i + 1}`).style.border = ``
 					}
 				}
 			} else if(i !== subs[subLayerToEdit].content.length - 1){
@@ -693,21 +693,21 @@ const SubtitleEditor = props => {
 					checkError = true
 					disable = false
 					if(checking === `delete` && i >= index) {
-						if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
-							document.getElementById(`subEnd${i}`).style.border = `2px solid red`
-							document.getElementById(`subEnd${i + 1}`).style.border = ``
-						} else if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
-							document.getElementById(`subStart${i}`).style.border = `2px solid red`
-							document.getElementById(`subStart${i + 1}`).style.border = ``
+						if(document.getElementById(`sub-end${i + 1}`).style.border === `2px solid red`) {
+							document.getElementById(`sub-end${i}`).style.border = `2px solid red`
+							document.getElementById(`sub-end${i + 1}`).style.border = ``
+						} else if(document.getElementById(`sub-start${i + 1}`).style.border === `2px solid red`) {
+							document.getElementById(`sub-start${i}`).style.border = `2px solid red`
+							document.getElementById(`sub-start${i + 1}`).style.border = ``
 						} else if(i === subs[subLayerToEdit].content.length - 2)
-							document.getElementById(`subStart${i + 1}`).style.border = `2px solid red`
+							document.getElementById(`sub-start${i + 1}`).style.border = `2px solid red`
 					}
 				}
 			}
 			if(!checkError) {
-				if(document.getElementById(`subStart${i}`)?.style){
-					document.getElementById(`subStart${i}`).style.border = ``
-					document.getElementById(`subEnd${i}`).style.border = ``
+				if(document.getElementById(`sub-start${i}`)?.style){
+					document.getElementById(`sub-start${i}`).style.border = ``
+					document.getElementById(`sub-end${i}`).style.border = ``
 				}
 				setDisableSave(false)
 			}
@@ -733,7 +733,7 @@ const SubtitleEditor = props => {
 				if (scrollSub !== sub){
 					setScrollSub(sub)
 					setSubToEdit(sub)
-					const subcontainer = document.getElementById(`allSubs`)
+					const subcontainer = document.getElementById(`all-subs`)
 					if(subcontainer)
 						subcontainer.scrollTop = document.getElementById(`sub-${subLayerToEdit}-${sub}`).offsetTop - subcontainer.offsetHeight * 0.5
 				}
@@ -823,7 +823,7 @@ const SubtitleEditor = props => {
 							<div className={`layer`}>
 								<div className={`addtrack`}>
 									<div
-										className='setSubModalVisible'
+										className='set-sub-modal-visible'
 										onClick={ () => {
 											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile, window.onkeyup)
 										}}>
@@ -835,7 +835,7 @@ const SubtitleEditor = props => {
 							{subtitles.map((sub, index) => (
 								<div className={`layer`} key={index}>
 									<div className={`handle`} >
-										<div className={`handleFocus`} onClick={() => handleFocus(index)}>
+										<div className={`handle-focus`} onClick={() => handleFocus(index)}>
 											<SubtitlesCard
 												title={sub.title !== `` ?
 													sub.title
@@ -881,7 +881,6 @@ const SubtitleEditor = props => {
 										index={subToEdit}
 										sideEditor={openSubEditor}
 										updateSubs={updateSubs}
-										closeEditor={closeSideEditor}
 										displayLayer={subLayerToEdit}
 										handleEventPosition={handleEventPosition}
 										setEventSeek={setEventSeek}
@@ -901,7 +900,6 @@ const SubtitleEditor = props => {
 									index={subToEdit}
 									sideEditor={openSubEditor}
 									updateSubs={updateSubs}
-									closeEditor={closeSideEditor}
 									displayLayer={subLayerToEdit}
 									handleEventPosition={handleEventPosition}
 									setEventSeek={setEventSeek}
