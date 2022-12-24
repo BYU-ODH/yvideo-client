@@ -114,19 +114,19 @@ describe(`VideoEditor testing`, () => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 		})
 
-		expect(wrapper.find(`.sideTabInput`).at(0).props().value).toBe(`00:00.00`)
-		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `00:01.30` } })
-		expect(wrapper.find(`.sideTabInput`).at(0).props().value).toBe(`00:01.30`)
+		expect(wrapper.find(`.side-tab-input`).at(0).props().value).toBe(`00:00.00`)
+		wrapper.find(`.side-tab-input`).at(0).simulate(`change`, { target: { value: `00:01.30` } })
+		expect(wrapper.find(`.side-tab-input`).at(0).props().value).toBe(`00:01.30`)
 
-		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `10:01.30` } })
-		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `10:01.30` } })
-		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `00:01.30` } })
-		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `03:01.30` } })
-		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `03:10.30` } })
+		wrapper.find(`.side-tab-input`).at(0).simulate(`change`, { target: { value: `10:01.30` } })
+		wrapper.find(`.side-tab-input`).at(1).simulate(`change`, { target: { value: `10:01.30` } })
+		wrapper.find(`.side-tab-input`).at(1).simulate(`change`, { target: { value: `00:01.30` } })
+		wrapper.find(`.side-tab-input`).at(1).simulate(`change`, { target: { value: `03:01.30` } })
+		wrapper.find(`.side-tab-input`).at(0).simulate(`change`, { target: { value: `03:10.30` } })
 
 		wrapper.find(`.video`).at(0).prop(`handleScroll`)(0, true)
 
-		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseEnter`)(
+		wrapper.find(`.side-tab-input`).at(0).prop(`onMouseEnter`)(
 			{
 				target:
 			{ getBoundingClientRect: () => {
@@ -134,13 +134,13 @@ describe(`VideoEditor testing`, () => {
 			}}
 				, currentTarget: {offsetWidth: 10},
 			})
-		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseLeave`)()
-		wrapper.find(`.sideTabInput`).at(0).prop(`onKeyUp`)(
+		wrapper.find(`.side-tab-input`).at(0).prop(`onMouseLeave`)()
+		wrapper.find(`.side-tab-input`).at(0).prop(`onKeyUp`)(
 			{ stopPropagation: () => {
 				return `stopPropagation`
 			}},
 		)
-		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseEnter`)(
+		wrapper.find(`.side-tab-input`).at(1).prop(`onMouseEnter`)(
 			{
 				target:
 			{ getBoundingClientRect: () => {
@@ -148,8 +148,8 @@ describe(`VideoEditor testing`, () => {
 			}}
 				, currentTarget: {offsetWidth: 10},
 			})
-		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseLeave`)()
-		wrapper.find(`.sideTabInput`).at(1).prop(`onKeyUp`)(
+		wrapper.find(`.side-tab-input`).at(1).prop(`onMouseLeave`)()
+		wrapper.find(`.side-tab-input`).at(1).prop(`onKeyUp`)(
 			{ stopPropagation: () => {
 				return `stopPropagation`
 			}},
@@ -167,13 +167,13 @@ describe(`VideoEditor testing`, () => {
 		})
 		// expect(wrapper.contains(<label>Blur Times</label>)).toEqual(true)
 
-		// wrapper.find(`.addCensor`).simulate(`click`)
+		// wrapper.find(`.add-censor`).simulate(`click`)
 		// wrapper.find(`.handle`).at(2).simulate(`click`)
-		// wrapper.find(`.censorRow`).prop(`onChange`)({ target: { value: 0.0 } }, 0, 1)
+		// wrapper.find(`.censor-row`).prop(`onChange`)({ target: { value: 0.0 } }, 0, 1)
 		// wrapper.find(`.blank`).at(0).prop(`onClick`)( { clientX: 60, clientY: 50 })
 
 		// wrapper.find(`.trashIcon`).simulate(`click`)
-		// wrapper.find(`.closeEditor`).simulate(`click`)
+		// wrapper.find(`.close-editor`).simulate(`click`)
 	})
 
 	it(`Rnd`, () => {

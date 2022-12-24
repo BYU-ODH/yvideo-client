@@ -235,7 +235,7 @@ export const SideEditor = styled.div`
 		display: flex;
 		font-size: 1.5rem;
 
-		& .sideTabInput {
+		& .side-tab-input {
 			margin: auto 10px auto auto !important;
 			padding: 0px 10px;
 			width: 120px;
@@ -309,7 +309,7 @@ export const SideEditor = styled.div`
 			margin-left: 1rem;
 		}
 
-		& > .sideButton {
+		& > .side-button {
 			position: relative;
 			float: right;
 			width: 8rem;
@@ -355,7 +355,7 @@ export const SideEditor = styled.div`
 		display: ${props => props.minimized !== false ? `none` : `visible`}
 		padding: 3rem;
 	}
-	& .subCard {
+	& .sub-card {
 		padding-left: 3rem;
 		padding-right: 3rem;
 	}
@@ -404,7 +404,7 @@ export const SideEditor = styled.div`
 			text-align: left;
 		}
 
-		& .tableHeader {
+		& .table-header {
 			width: 90%;
 			margin-left: 10px;
 			margin-top: 8px;

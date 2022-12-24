@@ -285,11 +285,10 @@ export const Icon = styled.div`
 	}
 `
 export const EventList = styled.div`
-	--minimized: ${false};
 
-	width: ${props => props.minimized !== false ? `4rem` : `35rem`};
+	width: 35rem;
 	height: calc(100vh - var(--navbar-height));
-	background: ${props => props.minimized !== false ? `var(--navy-blue)` : `white !important`};
+	background: white !important;
 	transition: .5s;
 	// z-index: 12;
 	overflow: hidden;

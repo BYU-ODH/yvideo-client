@@ -465,7 +465,7 @@ const ClipEditor = props => {
 				</span>
 				<SideEditor minimized={false}>
 					<header>
-						<div className='sideButton'>
+						<div className='side-button'>
 							{disableSave ?
 								<button className={`disable`}>
 									<span>Save</span>
@@ -487,7 +487,7 @@ const ClipEditor = props => {
 					</header>
 					<div className='clipItems'>
 						<p id={`clipMessage`}></p>
-						<table className='tableHeader'>
+						<table className='table-header'>
 							<thead>
 								<tr>
 									<th align='center'>Title</th>
@@ -503,7 +503,7 @@ const ClipEditor = props => {
 									clipList?.sort((a, b) => parseFloat(a) > parseFloat(b) ? -1 : 1).map((item, i) => (
 
 										<tbody key={i} className={`singleClip ${i === clipIndex && `clipActive`}`}>
-											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={i} >
+											<tr className={`${activeCensorPosition === item && `censor-active`}`} key={i} >
 												{clipItemTimeChange.length !== 0 && clipItemTimeChange[i]?.trueFalse ?
 													<>
 														<td className='deleteTd'>Change start time to current player time?</td>
@@ -570,7 +570,7 @@ const ClipEditor = props => {
 								}
 							</table>
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/>
-							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
+							<div id='table-bottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 						</div>
 						<Icon id='add-button' src={plus} onClick={() => createClip(elapsed)} />
 					</div>
