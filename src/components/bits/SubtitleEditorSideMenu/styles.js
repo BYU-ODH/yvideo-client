@@ -4,13 +4,13 @@ const Style = styled.div`
 	display: ${props => props.minimized !== false ? `initial` : `none`};
 	padding: 20px;
 
-	& .allSubs {
+	& .all-subs {
 		margin-top: 1rem;
 		padding-top: 2rem;
 		scroll-behavior: smooth;
 	}
 
-	& .closeEditor {
+	& .close-editor {
 		width: 2rem;
 		text-align: right;
 		cursor: pointer;
@@ -18,7 +18,7 @@ const Style = styled.div`
 		margin-left: 90%;
 	}
 
-	& .titleSub {
+	& .title-sub {
 		width: 19rem;
 		text-align:left;
 		cursor: pointer;
@@ -26,7 +26,7 @@ const Style = styled.div`
 		margin-left: 0.4%;
 	}
 
-	& .titleSubDisable {
+	& .title-sub-disable {
 		width: 19rem;
 		text-align:left;
 		cursor: pointer;
@@ -35,20 +35,20 @@ const Style = styled.div`
 		border-color: red;
 	}
 
-	& .titleWarn {
+	& .title-warn {
 		color:red;
 		font-weight: bold;
 		visibility: visible;
 	}
 
-	& .titleWarnDisable {
+	& .title-warn-disable {
 		visibility: hidden;
 	}
 
 	& .title {
 		display: flex;
 
-		& .titleLabel {
+		& .title-label {
 			width: 6rem;
 		}
 	}
@@ -58,7 +58,7 @@ const Style = styled.div`
 		display: flex;
 		font-size: 1.5rem;
 
-		& .sideTabInput {
+		& .side-tab-input {
 			margin: auto 10px auto auto !important;
 			padding: 0px 10px;
 			width: 120px;
@@ -79,7 +79,7 @@ const Style = styled.div`
 		}
 	}
 
-	& .subActive {
+	& .sub-active {
     background-color: rgba(5, 130, 202, 0.3);
 	}
 
@@ -87,7 +87,7 @@ const Style = styled.div`
 		display: flex;
 		flex-direction: column;
 
-		& .subContainer {
+		& .sub-container {
 			display: flex;
 			justify-content: space-evenly;
 			padding: 1rem;
@@ -96,23 +96,23 @@ const Style = styled.div`
 				background-color: rgba(5, 130, 202, 0.3);
 			}
 
-			& .subText {
+			& .sub-text {
 				width: 20rem;
 				resize: none;
 			}
 
-			& .subStartEnd {
+			& .sub-start-end {
 				display: flex;
 				flex-direction: column;
 
-				& .subStart {
+				& .sub-start {
 					width: 6.5rem;
 					height: 2rem;
 					margin-button: 0.5rem;
 					padding-left: 0.3rem;
 				}
 
-				& .subEnd {
+				& .sub-end {
 					width: 6.5rem;
 					height: 2rem;
 					margin-top: 0.5rem;

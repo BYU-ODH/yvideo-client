@@ -125,7 +125,7 @@ describe(`SubtitleEditorContainer testing`, () => {
 		})
 
 		expect(wrapper.contains(<h1>Choose an Option</h1>)).not.toEqual(false)
-		wrapper.find(`.setSubModalVisible`).simulate(`click`)
+		wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 		expect(wrapper.contains(<h1>Choose an Option</h1>)).toEqual(true)
 		expect(wrapper.contains(`No Language`)).toEqual(false)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
@@ -133,7 +133,7 @@ describe(`SubtitleEditorContainer testing`, () => {
 		// Edit title
 		expect(wrapper.contains(`Updated Title`)).toEqual(false)
 		wrapper.find(`.editIcon`).at(0).simulate(`click`)
-		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `Updated Title` } })
+		wrapper.find(`.side-tab-input`).at(0).simulate(`change`, { target: { value: `Updated Title` } })
 		wrapper.find(`.saveIcon`).at(0).simulate(`click`)
 		expect(wrapper.contains(`Updated Title`)).toEqual(true)
 
@@ -156,47 +156,46 @@ describe(`SubtitleEditorContainer testing`, () => {
 	// 		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 	// 	})
 
-	// 	const chicken = wrapper.find({"id": `subtitleEditorSideMenu`})
 
 	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
-	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
+	// 	wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 
-	// 	wrapper.find(`.subText`).simulate(`change`, { target: { value: `Updated text` } })
+	// 	wrapper.find(`.sub-text`).simulate(`change`, { target: { value: `Updated text` } })
 	// 	expect(wrapper.find(`textarea`).props().value).toBe(`Updated text`)
-	// 	wrapper.find(`#subStart0`).simulate(`click`)
+	// 	wrapper.find(`#sub-start0`).simulate(`click`)
 
-	// 	expect(wrapper.find(`#subStart0`).at(0).props().value).toBe(`00:00.00`)
-	// 	wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `00:01.30` } })
-	// 	expect(wrapper.find(`#subStart0`).at(0).props().value).toBe(`00:01.30`)
+	// 	expect(wrapper.find(`#sub-start0`).at(0).props().value).toBe(`00:00.00`)
+	// 	wrapper.find(`#sub-start0`).simulate(`change`, { target: { value: `00:01.30` } })
+	// 	expect(wrapper.find(`#sub-start0`).at(0).props().value).toBe(`00:01.30`)
 
-	// 	expect(wrapper.find(`#subEnd0`).at(0).props().value).toBe(`00:02.00`)
-	// 	wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:02.30` } })
-	// 	expect(wrapper.find(`#subEnd0`).at(0).props().value).toBe(`00:02.30`)
+	// 	expect(wrapper.find(`#sub-end0`).at(0).props().value).toBe(`00:02.00`)
+	// 	wrapper.find(`#sub-end0`).simulate(`change`, { target: { value: `00:02.30` } })
+	// 	expect(wrapper.find(`#sub-end0`).at(0).props().value).toBe(`00:02.30`)
 
-	// 	wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `00:03.30` } })
-	// 	wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `` } })
-	// 	wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `10:03.30` } })
+	// 	wrapper.find(`#sub-start0`).simulate(`change`, { target: { value: `00:03.30` } })
+	// 	wrapper.find(`#sub-start0`).simulate(`change`, { target: { value: `` } })
+	// 	wrapper.find(`#sub-start0`).simulate(`change`, { target: { value: `10:03.30` } })
 
-	// 	wrapper.find(`#subStart0`).simulate(`change`, { target: { value: `00:01.30` } })
+	// 	wrapper.find(`#sub-start0`).simulate(`change`, { target: { value: `00:01.30` } })
 
-	// 	wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `` } })
-	// 	wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `10:03.30` } })
-	// 	wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:01.20` } })
+	// 	wrapper.find(`#sub-end0`).simulate(`change`, { target: { value: `` } })
+	// 	wrapper.find(`#sub-end0`).simulate(`change`, { target: { value: `10:03.30` } })
+	// 	wrapper.find(`#sub-end0`).simulate(`change`, { target: { value: `00:01.20` } })
 
-	// 	wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:02.20` } })
+	// 	wrapper.find(`#sub-end0`).simulate(`change`, { target: { value: `00:02.20` } })
 
 	// 	wrapper.find(`.initial`).at(0).simulate(`click`)
-	// 	expect(wrapper.find(`#subStart0`).props().value).toBe(`00:00.00`)
-	// 	expect(wrapper.find(`#subEnd0`).props().value).toBe(`00:01.30`)
+	// 	expect(wrapper.find(`#sub-start0`).props().value).toBe(`00:00.00`)
+	// 	expect(wrapper.find(`#sub-end0`).props().value).toBe(`00:01.30`)
 
-	// 	wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `00:01.20` } })
-	// 	wrapper.find(`#subEnd0`).simulate(`change`, { target: { value: `00:01.30` } })
-	// 	wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `00:02.00` } })
+	// 	wrapper.find(`#sub-start1`).simulate(`change`, { target: { value: `00:01.20` } })
+	// 	wrapper.find(`#sub-end0`).simulate(`change`, { target: { value: `00:01.30` } })
+	// 	wrapper.find(`#sub-start1`).simulate(`change`, { target: { value: `00:02.00` } })
 
-	// 	expect(wrapper.find(`#subStart0`).props().value).toBe(`00:00.00`)
-	// 	expect(wrapper.find(`#subEnd0`).props().value).toBe(`00:01.30`)
-	// 	expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
-	// 	expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:02.20`)
+	// 	expect(wrapper.find(`#sub-start0`).props().value).toBe(`00:00.00`)
+	// 	expect(wrapper.find(`#sub-end0`).props().value).toBe(`00:01.30`)
+	// 	expect(wrapper.find(`#sub-start1`).props().value).toBe(`00:02.00`)
+	// 	expect(wrapper.find(`#sub-end1`).props().value).toBe(`00:02.20`)
 	// })
 
 	// it(`SubtitleEditorSideMenu: add middle and bottom button & onBlur`, () => {
@@ -204,34 +203,34 @@ describe(`SubtitleEditorContainer testing`, () => {
 	// 		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 	// 	})
 
-	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
+	// 	wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
-	// 	expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
-	// 	expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:04.00`)
+	// 	expect(wrapper.find(`#sub-start1`).props().value).toBe(`00:02.00`)
+	// 	expect(wrapper.find(`#sub-end1`).props().value).toBe(`00:04.00`)
 
-	// 	wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `00:03.00` } })
-	// 	wrapper.find(`#subEnd1`).simulate(`change`, { target: { value: `03:19.00` } })
+	// 	wrapper.find(`#sub-start1`).simulate(`change`, { target: { value: `00:03.00` } })
+	// 	wrapper.find(`#sub-end1`).simulate(`change`, { target: { value: `03:19.00` } })
 
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
-	// 	expect(wrapper.find(`#subStart1`).props().value).toBe(`00:02.00`)
-	// 	expect(wrapper.find(`#subEnd1`).props().value).toBe(`00:03.00`)
+	// 	expect(wrapper.find(`#sub-start1`).props().value).toBe(`00:02.00`)
+	// 	expect(wrapper.find(`#sub-end1`).props().value).toBe(`00:03.00`)
 
 	// 	wrapper.find(`.iconBottom`).at(8).simulate(`click`)
-	// 	expect(wrapper.find(`#subStart3`).props().value).toBe(`03:19.00`)
-	// 	expect(wrapper.find(`#subEnd3`).props().value).toBe(`03:20.00`)
+	// 	expect(wrapper.find(`#sub-start3`).props().value).toBe(`03:19.00`)
+	// 	expect(wrapper.find(`#sub-end3`).props().value).toBe(`03:20.00`)
 
 	// 	act(() => {
-	// 		wrapper.find(`#subStart3`).prop(`onBlur`)( { target: { value: `03:` } })
+	// 		wrapper.find(`#sub-start3`).prop(`onBlur`)( { target: { value: `03:` } })
 	// 	})
-	// 	wrapper.find(`#subEnd2`).simulate(`click`)
-	// 	expect(wrapper.find(`#subStart3`).props().value).toBe(`03:00.00`)
+	// 	wrapper.find(`#sub-end2`).simulate(`click`)
+	// 	expect(wrapper.find(`#sub-start3`).props().value).toBe(`03:00.00`)
 
 	// 	act(() => {
-	// 		wrapper.find(`#subEnd3`).prop(`onBlur`)( { target: { value: `03:01` } })
+	// 		wrapper.find(`#sub-end3`).prop(`onBlur`)( { target: { value: `03:01` } })
 	// 	})
-	// 	wrapper.find(`#subEnd2`).simulate(`click`)
-	// 	expect(wrapper.find(`#subEnd3`).props().value).toBe(`03:01.00`)
+	// 	wrapper.find(`#sub-end2`).simulate(`click`)
+	// 	expect(wrapper.find(`#sub-end3`).props().value).toBe(`03:01.00`)
 	// })
 
 	// it(`SubtitleEditorSideMenu: delete sub`, () => {
@@ -239,34 +238,34 @@ describe(`SubtitleEditorContainer testing`, () => {
 	// 		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 	// 	})
 
-	// 	wrapper.find(`.setSubModalVisible`).simulate(`click`)
+	// 	wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
 
-	// 	wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `10:00.00` } })
+	// 	wrapper.find(`#sub-start1`).simulate(`change`, { target: { value: `10:00.00` } })
 	// 	wrapper.find(`.subtitle-delete`).at(1).simulate(`click`)
 
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
-	// 	wrapper.find(`#subEnd1`).simulate(`change`, { target: { value: `10:00.00` } })
+	// 	wrapper.find(`#sub-end1`).simulate(`change`, { target: { value: `10:00.00` } })
 	// 	wrapper.find(`.subtitle-delete`).at(1).simulate(`click`)
 
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
 	// 	wrapper.find(`.iconBottom`).at(5).simulate(`click`)
-	// 	wrapper.find(`#subEnd1`).simulate(`change`, { target: { value: `01:00.00` } })
+	// 	wrapper.find(`#sub-end1`).simulate(`change`, { target: { value: `01:00.00` } })
 	// 	wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
 	// 	wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
 
 	// 	wrapper.find(`.iconBottom`).at(0).simulate(`click`)
 	// 	wrapper.find(`.iconBottom`).at(5).simulate(`click`)
-	// 	wrapper.find(`#subStart1`).simulate(`change`, { target: { value: `01:00.00` } })
+	// 	wrapper.find(`#sub-start1`).simulate(`change`, { target: { value: `01:00.00` } })
 	// 	wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
 	// 	wrapper.find(`.subtitle-delete`).at(0).simulate(`click`)
 	// })
 
 	it(`SubtitlesLayer: drag and drop`, () => {
 
-		wrapper.find(`.setSubModalVisible`).simulate(`click`)
+		wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		wrapper.find(`Rnd`).forEach((comp) => {
@@ -289,10 +288,10 @@ describe(`SubtitleEditorContainer testing`, () => {
 	})
 
 	it(`Zoom control`, () => {
-		wrapper.find(`.setSubModalVisible`).simulate(`click`)
+		wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
-		wrapper.find(`.setSubModalVisible`).simulate(`click`)
+		wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 		wrapper.find(`.modalButton`).at(0).simulate(`click`)
 
 		window.onload = function () {

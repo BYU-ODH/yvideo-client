@@ -186,7 +186,7 @@ const VideoEditor = props => {
 				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`side-tab-message`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
 
@@ -194,7 +194,7 @@ const VideoEditor = props => {
 				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`side-tab-message`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
 			}
@@ -206,28 +206,28 @@ const VideoEditor = props => {
 		if(event.start < 0 || event.start.isNaN){
 			event.start = 0.0
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
+				document.getElementById(`side-tab-explanation`).innerText=`Changed start time to 0`
 
 		} else if(event.start >= videoLength) {
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
+				document.getElementById(`side-tab-explanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
 		} else if(event.start > event.end){
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
+				document.getElementById(`side-tab-explanation`).innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
 		}
 
 		// check end event times
 		if(event.end <= event.start){
 			if(canAccessDom){
-				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
-				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number bigger than the start time`
+				document.getElementsByClassName(`side-tab-input`)[1].value=event.end
+				document.getElementById(`side-tab-message`).innerHTML=`Please enter a number bigger than the start time`
 			}
 		} else if(event.end > videoLength){
 			// event.end = 100
 			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number less than ${videoLength}`
-				document.getElementById(`sideTabExplanation`).innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
+				document.getElementById(`side-tab-message`).innerHTML=`Please enter a number less than ${videoLength}`
+				document.getElementById(`side-tab-explanation`).innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
 			}
 		}
 
@@ -245,7 +245,7 @@ const VideoEditor = props => {
 				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`side-tab-message`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 
@@ -256,18 +256,18 @@ const VideoEditor = props => {
 		if(event.start < 0){
 			event.start = 0
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
+				document.getElementById(`side-tab-explanation`).innerText=`Changed start time to 0`
 
 		} else if(event.start >= videoLength) {
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
+				document.getElementById(`side-tab-explanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
 		}
 		if(event.start >= 0 && event.start < videoLength){
 			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).style.color=`green`
-				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-				document.getElementById(`sideTabExplanation`).innerHTML=``
+				document.getElementById(`side-tab-message`).style.color=`green`
+				document.getElementById(`side-tab-message`).innerHTML=`Start and end times have been updated correctly`
+				document.getElementById(`side-tab-explanation`).innerHTML=``
 				setDisableSave(false)
 			}
 		} else
@@ -277,8 +277,8 @@ const VideoEditor = props => {
 
 	const updateEvents = (index, event, layerIndex, side, type) => {
 
-		if(showSideEditor && document.getElementById(`sideTabMessage`))
-			document.getElementById(`sideTabMessage`).style.color = `red`
+		if(showSideEditor && document.getElementById(`side-tab-message`))
+			document.getElementById(`side-tab-message`).style.color = `red`
 
 		const currentEvents = [...allEvents]
 		if(event.type === `Pause`)
@@ -373,7 +373,7 @@ const VideoEditor = props => {
 				pos[item][0] = `0.0`
 			else
 				pos[item][0] = value
-			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
+			document.getElementById(`censor-time-input-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
 			break
 
 		case 1: // x in %

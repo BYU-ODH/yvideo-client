@@ -44,16 +44,16 @@ describe(`TrackEditorSideMenu test`, () => {
 	// 	expect(wrapper.contains(<label >Y</label>)).toEqual(true)
 	// 	expect(wrapper.contains(<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>)).toEqual(true)
 
-	// 	wrapper.find(`.sideTabInput`).at(2).simulate(`change`, { target: { value: 10 } })
+	// 	wrapper.find(`.side-tab-input`).at(2).simulate(`change`, { target: { value: 10 } })
 	// 	let checked = wrapper.find(`[value=10]`).first()
 	// 	expect(checked).toBeDefined()
-	// 	wrapper.find(`.sideTabInput`).at(3).simulate(`change`, { target: { value: 10 } })
+	// 	wrapper.find(`.side-tab-input`).at(3).simulate(`change`, { target: { value: 10 } })
 	// 	checked = wrapper.find(`[value=10]`).first()
 	// 	expect(checked).toBeDefined()
 	// 	wrapper.find(`textarea`).simulate(`change`, { target: { value: 10 } })
 	// 	checked = wrapper.find(`[value=10]`).first()
 	// 	expect(checked).toBeDefined()
-	// 	wrapper.find(`.sideButton`).simulate(`click`)
+	// 	wrapper.find(`.side-button`).simulate(`click`)
 	// })
 
 	it(`TrackEditorSideMenu onChange`, () => {
@@ -61,7 +61,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		const color = document.getElementById = jest.fn().mockReturnValueOnce(mElement)
 		const wrapper = shallow(<TrackEditorSideMenu {...props}/>, { attachTo: color })
 
-		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: 10 } })
+		wrapper.find(`.side-tab-input`).at(0).simulate(`change`, { target: { value: 10 } })
 		const checked = wrapper.find(`[value=10]`).first()
 		expect(checked).toBeDefined()
 	})
@@ -74,14 +74,14 @@ describe(`TrackEditorSideMenu test`, () => {
 		)
 		const boundingMock = {x: 100, y: 50}
 
-		wrapper.find(`.sideTabInput`).at(0).simulate(`change`, { target: { value: `` } })
-		wrapper.find(`.sideTabInput`).at(0).prop(`onBlur`)( { target: { value: `` } } )
+		wrapper.find(`.side-tab-input`).at(0).simulate(`change`, { target: { value: `` } })
+		wrapper.find(`.side-tab-input`).at(0).prop(`onBlur`)( { target: { value: `` } } )
 		wrapper.find(`.center`).at(0).simulate(`click`)
-		wrapper.find(`.sideTabInput`).at(0).prop(`onKeyUp`)({stopPropagation: () => {
+		wrapper.find(`.side-tab-input`).at(0).prop(`onKeyUp`)({stopPropagation: () => {
 			return 1
 		} })
 
-		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseEnter`)(
+		wrapper.find(`.side-tab-input`).at(0).prop(`onMouseEnter`)(
 			{ target:
 				{ getBoundingClientRect: () => {
 					return boundingMock
@@ -89,16 +89,16 @@ describe(`TrackEditorSideMenu test`, () => {
 			, currentTarget: {offsetWidth: 10},
 			},
 		)
-		wrapper.find(`.sideTabInput`).at(0).prop(`onMouseLeave`)()
+		wrapper.find(`.side-tab-input`).at(0).prop(`onMouseLeave`)()
 
-		wrapper.find(`.sideTabInput`).at(1).simulate(`change`, { target: { value: `` } })
-		wrapper.find(`.sideTabInput`).at(1).prop(`onBlur`)( { target: { value: `` } } )
+		wrapper.find(`.side-tab-input`).at(1).simulate(`change`, { target: { value: `` } })
+		wrapper.find(`.side-tab-input`).at(1).prop(`onBlur`)( { target: { value: `` } } )
 		wrapper.find(`.center`).at(0).simulate(`click`)
-		wrapper.find(`.sideTabInput`).at(1).prop(`onKeyUp`)({stopPropagation: () => {
+		wrapper.find(`.side-tab-input`).at(1).prop(`onKeyUp`)({stopPropagation: () => {
 			return 1
 		} })
 
-		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseEnter`)(
+		wrapper.find(`.side-tab-input`).at(1).prop(`onMouseEnter`)(
 			{ target:
 				{ getBoundingClientRect: () => {
 					return boundingMock
@@ -106,7 +106,7 @@ describe(`TrackEditorSideMenu test`, () => {
 			, currentTarget: {offsetWidth: 10},
 			},
 		)
-		wrapper.find(`.sideTabInput`).at(1).prop(`onMouseLeave`)()
+		wrapper.find(`.side-tab-input`).at(1).prop(`onMouseLeave`)()
 	})
 
 	it(`TrackEditorSideMenu censor`, () => {
@@ -117,8 +117,8 @@ describe(`TrackEditorSideMenu test`, () => {
 				<TrackEditorSideMenu {...props}/>
 			</BrowserRouter>,
 		)
-		wrapper.find(`.addCensor`).simulate(`click`)
-		wrapper.find(`.censorRow`).at(0).simulate(`change`, { target: { value: `10` } })
+		wrapper.find(`.add-censor`).simulate(`click`)
+		wrapper.find(`.censor-row`).at(0).simulate(`change`, { target: { value: `10` } })
 		wrapper.find(`input`).at(2).simulate(`click`)
 		wrapper.find(`input`).at(2).simulate(`change`, { target: { value: `10` } })
 		wrapper.find(`input`).at(3).simulate(`click`)
@@ -130,7 +130,7 @@ describe(`TrackEditorSideMenu test`, () => {
 		wrapper.find(`input`).at(6).simulate(`click`)
 		wrapper.find(`input`).at(6).simulate(`change`, { target: { value: `10` } })
 		wrapper.find(`.trashIcon`).simulate(`click`)
-		wrapper.find(`.closeEditor`).simulate(`click`)
+		wrapper.find(`.close-editor`).simulate(`click`)
 	})
 
 })
