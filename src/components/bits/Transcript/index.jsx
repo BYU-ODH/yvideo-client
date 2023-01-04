@@ -49,28 +49,16 @@ const Transcript = props => {
 	} = props.handlers
 
 	const [words, setWords] = useState(``)
-	const [meanings, setMeanings] = useState(``)
 
 	useEffect(() => {
 		setWords(``)
-		setMeanings(``)
-		let allWords = ``
-		let allMeanings = ``
 
-		if(jsonResponse[Object.keys(jsonResponse)[0]] === undefined){
-			setWords(`No matches found`)
-			setMeanings(``)
+		if(jsonResponse.translatedText === undefined){
+			setWords(`No translation found`)
 			return
 		}
 
-		jsonResponse[Object.keys(jsonResponse)[0]].forEach((item, i) => {
-			allWords += `${item.lemma}; `
-			item[`meanings`].forEach((meaning, index) => {
-				allMeanings += `<b>${index}.</b>${meaning.meaning.substring(1, meaning.meaning.length - 1)} `
-			})
-		})
-		setWords(allWords)
-		setMeanings(allMeanings)
+		setWords(jsonResponse.translatedText)
 	}, [jsonResponse, translate])
 
 	const highlightWords = (text) => {
@@ -107,18 +95,8 @@ const Transcript = props => {
 	}
 
 	const getTranslation = (e) => {
-		if(e.target.tagName.toLowerCase() !== `p`){
-			const elementText = e.target.innerText
-			const wordArray = elementText.split(` `)
-			let foundWord = ``
-			// we only want to translate if and only if the word is highlighted
-			// single possible word
-			// there would only be one valid word in this array
-			wordArray.forEach(word => {
-				foundWord = word
-			})
-			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
-		}
+		const elementText = e.target.innerText
+		translate(elementText, languageCodes[content.settings.targetLanguage.toLowerCase()])
 	}
 
 	const parseString = (str) => {
@@ -286,10 +264,7 @@ const Transcript = props => {
 							{/* <h3 id='translation-word'></h3> */}
 							<ul id='translation-list'>
 								<li>
-									<label>Translation: {parse(words)}</label>
-								</li>
-								<li>
-									<label>Meaning: {parse(meanings)}</label>
+									<label>{parse(words)}</label>
 								</li>
 							</ul>
 						</div>
