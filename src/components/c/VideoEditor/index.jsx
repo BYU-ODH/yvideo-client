@@ -168,12 +168,12 @@ const VideoEditor = props => {
 			layer: index,
 		}
 
-		const percentOfBarWeWantCovered = 30 // one thirtieth of the bar
+		const portionOfBarToFill = 1/30 // one thirtieth of the bar
 		const scrollBArdWidthRatio = 100 // scroll bar width at normal zoom is 100 so we need to divide by 100 to get the ratio as we zoom in
 
 		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
-		eventObj.end = Number(startPercentage) + videoLength / percentOfBarWeWantCovered * (scrollBarWidth / scrollBArdWidthRatio)
+		eventObj.end = Number(startPercentage) + videoLength * portionOfBarToFill * (scrollBarWidth / scrollBArdWidthRatio)
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
