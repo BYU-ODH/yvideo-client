@@ -26,7 +26,6 @@ const TrackLayer = props => {
 
 	const layerIndex = parseInt(props.index)
 	const layerRef = useRef(null)
-
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
@@ -150,7 +149,7 @@ const TrackLayer = props => {
 
 		const cEvents = events
 		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
-		const endPercentage = beginTimePercentage + event.end - event.start
+		const endPercentage = beginTimePercentage + cEvents[index].end - cEvents[index].start
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
 		cEvents[index].start = beginTimePercentage
@@ -168,25 +167,13 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
+		// this gets the active front of the 
+		const start = position.x / layerWidth * videoLength
+		const end = (position.x + ref.offsetWidth) / layerWidth * videoLength
 
 		const cEvents = events
-		const difference = delta.width / layerWidth * 100 * videoLength / 100
-		if(direction === `right`){
-			cEvents[index].end += difference
 
-			if(cEvents[index].end > videoLength)
-				cEvents[index].end = videoLength
-
-		} else {
-			cEvents[index].start -= difference
-
-			if(cEvents[index].start < 0)
-				cEvents[index].start = 0
-			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength - 0.001
-				cEvents[index].end = videoLength
-			}
-		}
+		direction === `right` ? cEvents[index].end = end : cEvents[index].start = start
 
 		updateEvents(index, cEvents[index], layerIndex)
 	}
@@ -210,18 +197,22 @@ const TrackLayer = props => {
 				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
+				onDrag={(e, d) => {
+					handleDrag(d, event, index)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+				}}
 				onDragStop={(e, d) => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-				}
-				}
-				onResizeStop={(e, direction, ref, delta, position) => {
+				}}
+				onResize={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
-					handleEventPosition(event.start)
-				}
-				}
+					// if you are resizing the start of the clip it will seek to the start of the clip, otherwise it will seek to the end
+					direction === `left` ? handleEventPosition(event.start) : handleEventPosition(event.end)
+				}}
 				key={index}
 			>
 				<Icon src={event.icon} className={isMultiEvent && `half-icon`}/>

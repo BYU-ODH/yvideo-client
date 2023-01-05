@@ -42,7 +42,6 @@ const VideoEditorContainer = props => {
 	const [sKey, setKey] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
 	const [aspectRatio, setAspectRatio] = useState([16, 9])
-
 	useEffect(() => {
 		if (!contentCache.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
 			getContent(id)
