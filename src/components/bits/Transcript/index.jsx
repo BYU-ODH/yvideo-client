@@ -105,7 +105,7 @@ const Transcript = props => {
 	}
 
 	const addSpansAndHighlights = (str) => {
-		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
+		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}'-]*)/gu
 		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
 		return parse(replStr)
 	}
