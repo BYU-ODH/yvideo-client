@@ -60,7 +60,8 @@ const Transcript = props => {
 		}
 
 		setWords(jsonResponse.translatedText)
-	}, [jsonResponse])
+		setShowTranslationSpinner(false)
+	}, [jsonResponse, translate])
 
 	const highlightWords = (text) => {
 		// initialize the string where we can make changes
@@ -95,17 +96,12 @@ const Transcript = props => {
 		return parse(newString)
 	}
 
-	const toggleShowTranslationSpinner = () => {
-		setShowTranslationSpinner(!showTranslationSpinner)
-	}
-
 	const getTranslation = (e) => {
-		toggleShowTranslationSpinner()
+		setShowTranslationSpinner(true)
 		let selectedText = window.getSelection().toString()
 		if (selectedText === ``)
 			selectedText = e.target.innerText
 		translate(selectedText, languageCodes[content.settings.targetLanguage.toLowerCase()])
-		toggleShowTranslationSpinner()
 	}
 
 	const addSpansAndHighlights = (str) => {
