@@ -106,7 +106,7 @@ const Transcript = props => {
 
 	const addSpansAndHighlights = (str) => {
 		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
-		const replStr = str.replace(regexp, `${highlightWords(`$1`)}`)
+		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
 		return parse(replStr)
 	}
 
@@ -264,12 +264,20 @@ const Transcript = props => {
 					<div className={isMobile ? `transcript-translation translation-mobile` : `transcript-translation`}>
 						<br/>
 						<h4>
-							Translation by <a href='https://libretranslate.com/'>LibreTranslate</a>&nbsp;
+							Translation by <a className='libre-link' href='https://libretranslate.com/'>LibreTranslate</a>&nbsp;
 							{showTranslationSpinner && <Spinner animation='border' role='status' />}
 						</h4><br/>
 						<div id='translation-box'>
 							{words}
 						</div>
+						<br />
+						<h4>
+							* Click on a word to get its translation
+							<br /><br />
+							* Highlight multiple words or lines and click
+							<br />
+							the highlighted text to get the translation
+						</h4>
 					</div>
 				</>}
 		</Style>

@@ -311,6 +311,12 @@ export const Style = styled.div`
 			height: calc(100vh - 72vh - 84px) !important;
 		}
 	}
+
+	& .libre-link {
+		:hover {
+			text-decoration: underline;
+		}
+	}
 `
 export const Help = styled.img`
 	width: 25px;
