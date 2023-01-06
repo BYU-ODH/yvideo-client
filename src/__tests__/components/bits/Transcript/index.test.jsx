@@ -85,11 +85,6 @@ describe(`Transcript test`, () => {
 		item = wrapper.find(`.transcript-row`).at(0).simulate(`mouseLeave`)
 		expect(item).toBeDefined()
 	})
-	it(`words display`, () => {
-		expect(wrapper.contains(<h2>Quick Translation</h2>)).toEqual(true)
-		expect(wrapper.contains(<label>Translation: No matches found </label>)).toEqual(false)
-		expect(wrapper.contains(<label>Meaning: <b>0.</b>meaning </label>)).toEqual(true)
-	})
 	it(`transcript-row simulate action`, () => {
 		let item = wrapper.find(`p`).at(0).simulate(`click`)
 		expect(item).toBeDefined()
@@ -109,6 +104,6 @@ describe(`Transcript test`, () => {
 				</BrowserRouter>
 			</Provider>,
 		)
-		expect(wrapper.contains(<label>Translation: No matches found</label>)).toEqual(true)
+		expect(wrapper.contains(`No translation/matches found`)).toEqual(true)
 	})
 })

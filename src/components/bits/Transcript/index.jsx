@@ -55,7 +55,7 @@ const Transcript = props => {
 		setWords(``)
 
 		if(jsonResponse.translatedText === undefined){
-			setWords(`Click a subtitle or select text above to see a translation.`)
+			setWords(`No translation/matches found`)
 			return
 		}
 
@@ -272,9 +272,9 @@ const Transcript = props => {
 						</div>
 						<br />
 						<h4>
-							* Click on a word to get its translation
+							* Click on a single subtitle to get its translation
 							<br /><br />
-							* Highlight multiple words or lines and click
+							* Highlight multiple subtitles or lines and click
 							<br />
 							the highlighted text to get the translation
 						</h4>
