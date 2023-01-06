@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
-import { Style, Help } from './styles'
+import { Help, Spinner, Style } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
 import closeIcon from 'assets/close_icon.svg'
@@ -49,28 +49,18 @@ const Transcript = props => {
 	} = props.handlers
 
 	const [words, setWords] = useState(``)
-	const [meanings, setMeanings] = useState(``)
+	const [showTranslationSpinner, setShowTranslationSpinner] = useState(false)
 
 	useEffect(() => {
 		setWords(``)
-		setMeanings(``)
-		let allWords = ``
-		let allMeanings = ``
 
-		if(jsonResponse[Object.keys(jsonResponse)[0]] === undefined){
-			setWords(`No matches found`)
-			setMeanings(``)
+		if(jsonResponse.translatedText === undefined){
+			setWords(`No translation/matches found`)
 			return
 		}
 
-		jsonResponse[Object.keys(jsonResponse)[0]].forEach((item, i) => {
-			allWords += `${item.lemma}; `
-			item[`meanings`].forEach((meaning, index) => {
-				allMeanings += `<b>${index}.</b>${meaning.meaning.substring(1, meaning.meaning.length - 1)} `
-			})
-		})
-		setWords(allWords)
-		setMeanings(allMeanings)
+		setWords(jsonResponse.translatedText)
+		setShowTranslationSpinner(false)
 	}, [jsonResponse, translate])
 
 	const highlightWords = (text) => {
@@ -107,22 +97,15 @@ const Transcript = props => {
 	}
 
 	const getTranslation = (e) => {
-		if(e.target.tagName.toLowerCase() !== `p`){
-			const elementText = e.target.innerText
-			const wordArray = elementText.split(` `)
-			let foundWord = ``
-			// we only want to translate if and only if the word is highlighted
-			// single possible word
-			// there would only be one valid word in this array
-			wordArray.forEach(word => {
-				foundWord = word
-			})
-			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
-		}
+		setShowTranslationSpinner(true)
+		let selectedText = window.getSelection().toString()
+		if (selectedText === ``)
+			selectedText = e.target.innerText
+		translate(selectedText, languageCodes[content.settings.targetLanguage.toLowerCase()])
 	}
 
-	const parseString = (str) => {
-		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
+	const addSpansAndHighlights = (str) => {
+		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}'-]*)/gu
 		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
 		return parse(replStr)
 	}
@@ -256,7 +239,7 @@ const Transcript = props => {
 									<div id={`t-row-${index}`} className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
 										key={index}
 									>
-										<p className='transcript-trans' onClick={getTranslation}>{parseString(element.text)}</p>
+										<p className='transcript-trans' onClick={getTranslation}>{addSpansAndHighlights(element.text)}</p>
 										<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001)}
 											// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 											className='arrow'
@@ -280,19 +263,21 @@ const Transcript = props => {
 					</div>
 					<div className={isMobile ? `transcript-translation translation-mobile` : `transcript-translation`}>
 						<br/>
-						<h2>Quick Translation</h2><br/>
+						<h4>
+							Translation by <a className='libre-link' href='https://libretranslate.com/'>LibreTranslate</a>&nbsp;
+							{showTranslationSpinner && <Spinner animation='border' role='status' />}
+						</h4><br/>
 						<div id='translation-box'>
-							{/* I commented out this h3 because it has no content. If it's needed then uncomment it */}
-							{/* <h3 id='translation-word'></h3> */}
-							<ul id='translation-list'>
-								<li>
-									<label>Translation: {parse(words)}</label>
-								</li>
-								<li>
-									<label>Meaning: {parse(meanings)}</label>
-								</li>
-							</ul>
+							{words}
 						</div>
+						<br />
+						<h4>
+							* Click on a single subtitle to get its translation
+							<br /><br />
+							* Highlight multiple subtitles or lines and click
+							<br />
+							the highlighted text to get the translation
+						</h4>
 					</div>
 				</>}
 		</Style>

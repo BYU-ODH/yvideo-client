@@ -107,7 +107,7 @@ export const Style = styled.div`
 		color: ${props => props.sidebarisclip ? `#999999` : `white`};
 		border-radius: 5px;
 	}
-	
+
 	.fa-film:active {
 		border: 2px inset #dddddd;
 		color: #999999;
@@ -274,7 +274,7 @@ export const Style = styled.div`
 		margin-left: 45px;
 		height: 15vh;
 
-		& h2 {
+		& h4 {
 			padding: 2px;
 			margin: auto;
 			font-weight: 500;
@@ -311,10 +311,37 @@ export const Style = styled.div`
 			height: calc(100vh - 72vh - 84px) !important;
 		}
 	}
+
+	& .libre-link {
+		:hover {
+			text-decoration: underline;
+		}
+	}
 `
 export const Help = styled.img`
 	width: 25px;
 	height: 25px;
 	margin-top: 5px;
 	margin-right: 1px;
+`
+
+export const Spinner = styled.span`
+	width: 13px;
+	height: 13px;
+	border: 3px solid black;
+	border-radius: 50%;
+	display: inline-block;
+	border-top: 3px solid #FFF;
+	border-right: 3px solid transparent;
+	box-sizing: border-box;
+	animation: rotation 1s linear infinite;
+
+	@keyframes rotation {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  }
 `

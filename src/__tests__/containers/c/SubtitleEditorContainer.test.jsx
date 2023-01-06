@@ -156,7 +156,6 @@ describe(`SubtitleEditorContainer testing`, () => {
 	// 		wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 	// 	})
 
-
 	// 	wrapper.find(`.modalButton`).at(0).simulate(`click`)
 	// 	wrapper.find(`.set-sub-modal-visible`).simulate(`click`)
 

@@ -822,25 +822,22 @@ const apiProxy = {
 		}),
 	},
 	translation: {
-		getTranslation: async (word, language) => {
-			const result = await axios({
-				method: `GET`,
-				url: `/${language}/${word}`,
-				baseURL: process.env.REACT_APP_YVIDEO_SERVER_DICT,
+		getTranslation: async (input_string, src_language) => {
+			let result = await fetch(`${process.env.REACT_APP_YVIDEO_SERVER_LIBRETRANSLATE}/translate`, {
+				method: `POST`,
+				body: JSON.stringify({
+					q: input_string,
+					source: src_language,
+					target: `en`,
+					format: `text`,
+					api_key: ``,
+				}),
+				headers: { "Content-Type": `application/json` },
 			})
-			// const result = axios({
-			// 		method: 'GET',
-			// 		baseURL: 'http://yvideodev.byu.edu:5001',
-			// 		url: `/translate/${language}/${word}`
-			// 	}).then(response => {
-			// 		// console.log(response)
-			// 		return response
-			// 	})
-			// 	.catch(error => {
-			// 		console.log(error)
-			// 	});
-			return result.data
+			result = await result.json()
+			return result
 		},
+
 	},
 }
 
