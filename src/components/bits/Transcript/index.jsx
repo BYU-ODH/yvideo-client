@@ -99,9 +99,9 @@ const Transcript = props => {
 		translate(elementText, languageCodes[content.settings.targetLanguage.toLowerCase()])
 	}
 
-	const parseString = (str) => {
+	const addSpansAndHighlights = (str) => {
 		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
-		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
+		const replStr = str.replace(regexp, `${highlightWords(`$1`)}`)
 		return parse(replStr)
 	}
 
@@ -234,7 +234,7 @@ const Transcript = props => {
 									<div id={`t-row-${index}`} className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
 										key={index}
 									>
-										<p className='transcript-trans' onClick={getTranslation}>{parseString(element.text)}</p>
+										<p className='transcript-trans' onClick={getTranslation}>{addSpansAndHighlights(element.text)}</p>
 										<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001)}
 											// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
 											className='arrow'
@@ -258,7 +258,7 @@ const Transcript = props => {
 					</div>
 					<div className={isMobile ? `transcript-translation translation-mobile` : `transcript-translation`}>
 						<br/>
-						<h2>Quick Translation</h2><br/>
+						<h4>Translation by <a href='https://libretranslate.com/'>LibreTranslate</a></h4><br/>
 						<div id='translation-box'>
 							{/* I commented out this h3 because it has no content. If it's needed then uncomment it */}
 							{/* <h3 id='translation-word'></h3> */}
