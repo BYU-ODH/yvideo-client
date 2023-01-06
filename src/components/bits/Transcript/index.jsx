@@ -54,7 +54,7 @@ const Transcript = props => {
 		setWords(``)
 
 		if(jsonResponse.translatedText === undefined){
-			setWords(`No translation found`)
+			setWords(`Click a subtitle or select text above to see a translation.`)
 			return
 		}
 
@@ -95,8 +95,10 @@ const Transcript = props => {
 	}
 
 	const getTranslation = (e) => {
-		const elementText = e.target.innerText
-		translate(elementText, languageCodes[content.settings.targetLanguage.toLowerCase()])
+		let selectedText = window.getSelection().toString()
+		if (selectedText === ``)
+			selectedText = e.target.innerText
+		translate(selectedText, languageCodes[content.settings.targetLanguage.toLowerCase()])
 	}
 
 	const addSpansAndHighlights = (str) => {
