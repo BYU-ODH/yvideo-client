@@ -318,3 +318,24 @@ export const Help = styled.img`
 	margin-top: 5px;
 	margin-right: 1px;
 `
+
+export const Spinner = styled.span`
+	width: 13px;
+	height: 13px;
+	border: 3px solid black;
+	border-radius: 50%;
+	display: inline-block;
+	border-top: 3px solid #FFF;
+	border-right: 3px solid transparent;
+	box-sizing: border-box;
+	animation: rotation 1s linear infinite;
+
+	@keyframes rotation {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  }
+`

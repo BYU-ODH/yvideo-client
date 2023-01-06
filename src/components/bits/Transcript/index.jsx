@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
-import { Style, Help } from './styles'
+import { Help, Spinner, Style } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
 import closeIcon from 'assets/close_icon.svg'
@@ -49,6 +49,7 @@ const Transcript = props => {
 	} = props.handlers
 
 	const [words, setWords] = useState(``)
+	const [showTranslationSpinner, setShowTranslationSpinner] = useState(false)
 
 	useEffect(() => {
 		setWords(``)
@@ -59,7 +60,7 @@ const Transcript = props => {
 		}
 
 		setWords(jsonResponse.translatedText)
-	}, [jsonResponse, translate])
+	}, [jsonResponse])
 
 	const highlightWords = (text) => {
 		// initialize the string where we can make changes
@@ -94,11 +95,17 @@ const Transcript = props => {
 		return parse(newString)
 	}
 
+	const toggleShowTranslationSpinner = () => {
+		setShowTranslationSpinner(!showTranslationSpinner)
+	}
+
 	const getTranslation = (e) => {
+		toggleShowTranslationSpinner()
 		let selectedText = window.getSelection().toString()
 		if (selectedText === ``)
 			selectedText = e.target.innerText
 		translate(selectedText, languageCodes[content.settings.targetLanguage.toLowerCase()])
+		toggleShowTranslationSpinner()
 	}
 
 	const addSpansAndHighlights = (str) => {
@@ -260,15 +267,12 @@ const Transcript = props => {
 					</div>
 					<div className={isMobile ? `transcript-translation translation-mobile` : `transcript-translation`}>
 						<br/>
-						<h4>Translation by <a href='https://libretranslate.com/'>LibreTranslate</a></h4><br/>
+						<h4>
+							Translation by <a href='https://libretranslate.com/'>LibreTranslate</a>&nbsp;
+							{showTranslationSpinner && <Spinner animation='border' role='status' />}
+						</h4><br/>
 						<div id='translation-box'>
-							{/* I commented out this h3 because it has no content. If it's needed then uncomment it */}
-							{/* <h3 id='translation-word'></h3> */}
-							<ul id='translation-list'>
-								<li>
-									<label>{parse(words)}</label>
-								</li>
-							</ul>
+							{words}
 						</div>
 					</div>
 				</>}
