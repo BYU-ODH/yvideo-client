@@ -1,10 +1,11 @@
 
 import React, { useEffect, useState } from 'react'
 import parse from 'html-react-parser'
+import { Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
-import { Style, Help } from './styles'
+import { Help, Spinner, Style } from './styles'
 
 import chevron from 'assets/player-chevron-left.svg'
 import closeIcon from 'assets/close_icon.svg'
@@ -33,6 +34,9 @@ const Transcript = props => {
 		showTranscript,
 		isMobile,
 		scrollDisabled,
+		sideBarIsClip,
+		clips,
+		clipId,
 	} = props.viewstate
 
 	const {
@@ -41,32 +45,22 @@ const Transcript = props => {
 		handleToggleTranscript,
 		handleShowTip,
 		toggleTip,
+		handleClipToggle,
 	} = props.handlers
 
 	const [words, setWords] = useState(``)
-	const [meanings, setMeanings] = useState(``)
+	const [showTranslationSpinner, setShowTranslationSpinner] = useState(false)
 
 	useEffect(() => {
 		setWords(``)
-		setMeanings(``)
-		let allWords = ``
-		let allMeanings = ``
 
-		if(jsonResponse[Object.keys(jsonResponse)[0]] === undefined){
-			setWords(`No matches found`)
-			setMeanings(``)
+		if(jsonResponse.translatedText === undefined){
+			setWords(`No translation/matches found`)
 			return
 		}
 
-		jsonResponse[Object.keys(jsonResponse)[0]].forEach((item, i) => {
-			allWords += `${item.lemma}; `
-			item[`meanings`].forEach((meaning, index) => {
-				allMeanings += `<b>${index}.</b>${meaning.meaning.substring(1, meaning.meaning.length - 1)} `
-			})
-		})
-
-		setWords(allWords)
-		setMeanings(allMeanings)
+		setWords(jsonResponse.translatedText)
+		setShowTranslationSpinner(false)
 	}, [jsonResponse, translate])
 
 	const highlightWords = (text) => {
@@ -96,34 +90,28 @@ const Transcript = props => {
 
 				})
 			}
+
 		})
 
 		return parse(newString)
 	}
 
 	const getTranslation = (e) => {
-		if(e.target.tagName.toLowerCase() !== `p`){
-			const elementText = e.target.innerText
-			const wordArray = elementText.split(` `)
-			let foundWord = ``
-			// we only want to translate if and only if the word is highlighted
-			// single possible word
-			// there would only be one valid word in this array
-			wordArray.forEach(word => {
-				foundWord = word
-			})
-			translate(foundWord, languageCodes[content.settings.targetLanguage.toLowerCase()])
-		}
+		setShowTranslationSpinner(true)
+		let selectedText = window.getSelection().toString()
+		if (selectedText === ``)
+			selectedText = e.target.innerText
+		translate(selectedText, languageCodes[content.settings.targetLanguage.toLowerCase()])
 	}
 
-	const parseString = (str) => {
-		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}-]*)/gu
+	const addSpansAndHighlights = (str) => {
+		const regexp = /(<(.*?)>.*?<\/\2>|\p{L}[\p{L}'-]*)/gu
 		const replStr = str.replace(regexp, `<span>${highlightWords(`$1`)}</span>`)
 		return parse(replStr)
 	}
 
 	return (
-		<Style id='transcript' tabIndex='100' style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
+		<Style id='transcript' sidebarisclip={sideBarIsClip} toggletranscript={toggleTranscript} style={{ display: `${showTranscript !== false ? `initial` : `none`}` }} displayTranscript={toggleTranscript} scrolldisabled={scrollDisabled} isMobile={isMobile} >
 			<div className={isMobile ? `hide-element` : `side-bar`}>
 				{toggleTranscript ?
 					<>
@@ -136,6 +124,29 @@ const Transcript = props => {
 								})
 							}
 							onMouseLeave={() => toggleTip()} />
+						<hr className={`hr-sidebar`}/>
+
+						<i className='fa fa-file-text-o' onClick={() => handleClipToggle()}
+							onMouseEnter={e => handleShowTip(`captions-tab`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={() => toggleTip()} >
+						</i>
+
+						<i className='fa fa-film' onClick={() => handleClipToggle(`Clip`)}
+							onMouseEnter={e => handleShowTip(`clips-tab`,
+								{
+									x: e.target.getBoundingClientRect().x - 65,
+									y: e.target.getBoundingClientRect().y - 25,
+									width: e.currentTarget.offsetWidth,
+								})
+							}
+							onMouseLeave={() => toggleTip()} >
+						</i>
 						<Help src={helpIcon} onClick={handleShowHelp}
 							onMouseEnter={e => handleShowTip(`help`,
 								{
@@ -168,65 +179,107 @@ const Transcript = props => {
 							onMouseLeave={() => toggleTip()} />
 					</>
 				}
+			</div>
+			{ sideBarIsClip ?
+				<>
 
-			</div>
-			<div id='subtitles-container' className={isMobile ? `main-bar main-mobile` : `main-bar`}>
-				<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
-					<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
-						onMouseEnter={e => handleShowTip(`transcript-hide`,
-							{
-								x: e.target.getBoundingClientRect().x - 80,
-								y: e.target.getBoundingClientRect().y - 25,
-								width: e.currentTarget.offsetWidth,
-							})
-						}
-						onMouseLeave={() => toggleTip()}
-					/>
-				</div>
-				<div className={`transcript-content`}>
-					{	displaySubtitles !== null && displaySubtitles.content !== `` ?
-						displaySubtitles[`content`].map((element, index) =>
-							<div id={`t-row-${index}`} className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
-								key={index}
-							>
-								<p className='transcript-trans' onClick={getTranslation}>{parseString(element.text)}</p>
-								<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001)}
-									// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
-									className='arrow'
-									onMouseEnter={e => handleShowTip(`transcript-seek`,
-										{
-											x: e.target.getBoundingClientRect().x - 20,
-											y: e.target.getBoundingClientRect().y - 30,
-											width: e.currentTarget.offsetWidth,
-										})
-									}
-									onMouseLeave={() => toggleTip()}
-								>
-									<span><img src={seek} alt={`seek`} width='20' height='20'/></span>
-								</div>
-							</div>,
-						)
-						: null
-					}
-					<br/>
-				</div>
-			</div>
-			<div className={isMobile ? `transcript-translation translation-mobile` : `transcript-translation`}>
-				<br/>
-				<h2>Quick Translation</h2><br/>
-				<div id='translation-box'>
-					{/* I commented out this h3 because it has no content. If it's needed then uncomment it */}
-					{/* <h3 id='translation-word'></h3> */}
-					<ul id='translation-list'>
-						<li>
-							<label>Translation: {parse(words)}</label>
-						</li>
-						<li>
-							<label>Meaning: {parse(meanings)}</label>
-						</li>
-					</ul>
-				</div>
-			</div>
+					<div className={isMobile ? `main-bar main-mobile` : `main-bar`}>
+						<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
+							<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+								onMouseEnter={e => handleShowTip(`transcript-hide`,
+									{
+										x: e.target.getBoundingClientRect().x - 80,
+										y: e.target.getBoundingClientRect().y - 25,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={() => toggleTip()}
+							/>
+						</div>
+						<div className={`transcript-content`}>
+							<div className={`clip-container`} >
+								<h1 className={`clip-header`}>Clips</h1>
+								<hr className={`hr-style`}/>
+							</div>
+							<div className={`clip-item-container`}>
+								{
+									clips?.map((clip, index) => {
+										return (
+											<div key={index}>
+												<Link to={`/player/${clipId}/${index}`}>
+													<div className={`clip-item`}>
+														<p className={`clip-title`}><b>{clip.title}:&nbsp;</b>{new Date(clip[`start`] * 1000).toISOString().substr(11, 8)} - {new Date(clip[`end`] * 1000).toISOString().substr(11, 8)}</p>
+													</div>
+												</Link>
+											</div>
+										)
+									})
+								}
+							</div>
+						</div>
+					</div>
+				</> :
+				<>
+					<div id='subtitles-container' className={isMobile ? `main-bar main-mobile` : `main-bar`}>
+						<div className={`close-transcript`} style={{ display: `${isMobile ? `initial` : `none`}` }}>
+							<img src={closeIcon} alt={`closeIcon`} className={`toggle-transcript`} onClick={handleToggleTranscript}
+								onMouseEnter={e => handleShowTip(`transcript-hide`,
+									{
+										x: e.target.getBoundingClientRect().x - 80,
+										y: e.target.getBoundingClientRect().y - 25,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={() => toggleTip()}
+							/>
+						</div>
+						<div className={`transcript-content`}>
+							{	displaySubtitles !== null && displaySubtitles.content !== `` ?
+								displaySubtitles[`content`].map((element, index) =>
+									<div id={`t-row-${index}`} className={`transcript-row ${subtitleText === element.text && subtitleTextIndex === index && `active-sub`}`}
+										key={index}
+									>
+										<p className='transcript-trans' onClick={getTranslation}>{addSpansAndHighlights(element.text)}</p>
+										<div onClick={e => handleSeekChange(null, element.start + element.start * .0000001)}
+											// passing time + 1% of time. This is to make sure that when seeking it goes to the current subtitle and not the previous one
+											className='arrow'
+											onMouseEnter={e => handleShowTip(`transcript-seek`,
+												{
+													x: e.target.getBoundingClientRect().x - 20,
+													y: e.target.getBoundingClientRect().y - 30,
+													width: e.currentTarget.offsetWidth,
+												})
+											}
+											onMouseLeave={() => toggleTip()}
+										>
+											<span><img src={seek} alt={`seek`} width='20' height='20'/></span>
+										</div>
+									</div>,
+								)
+								: null
+							}
+							<br/>
+						</div>
+					</div>
+					<div className={isMobile ? `transcript-translation translation-mobile` : `transcript-translation`}>
+						<br/>
+						<h4>
+							Translation by <a className='libre-link' href='https://libretranslate.com/'>LibreTranslate</a>&nbsp;
+							{showTranslationSpinner && <Spinner animation='border' role='status' />}
+						</h4><br/>
+						<div id='translation-box'>
+							{words}
+						</div>
+						<br />
+						<h4>
+							* Click on a single subtitle to get its translation
+							<br /><br />
+							* Highlight multiple subtitles or lines and click
+							<br />
+							the highlighted text to get the translation
+						</h4>
+					</div>
+				</>}
 		</Style>
 	)
 }

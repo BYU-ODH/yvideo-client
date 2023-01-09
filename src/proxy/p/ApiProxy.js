@@ -1,12 +1,12 @@
 import axios from 'axios'
 import User from 'models/User'
 import Content from 'models/Content'
+import Swal from 'sweetalert2'
 
 const updateSessionId = (id) => {
 	if(id !== ``){
 		if(id === `expired`){
-
-			alert(`Your session has expired. Please, log back in`)
+			Swal.fire(`Session Expired`, `Your session has expired. Please, log back in`, `warning`)
 			apiProxy.auth.logout()
 			// CAS LOGOUT https://cas.byu.edu/cas/logout
 		}
@@ -513,7 +513,6 @@ const apiProxy = {
 			try {
 				if (window.clj_session_id === `{{ session-id }}`) {
 					// CALL TO GET SESSION ID FROM CLOJURE BACK END
-					// eslint-disable-next-line no-unused-vars
 					await axios.get(`${process.env.REACT_APP_YVIDEO_SERVER}/api/get-session-id/${process.env.REACT_APP_USER_NAME}/${process.env.REACT_APP_USER_KEY}`, {headers:{'Access-Control-Allow-Origin': `*`}}).then(async res => {
 						// console.log(`%c From User 1` , `color: red;`)
 						updateSessionId(res.data[`session-id`])
@@ -823,25 +822,22 @@ const apiProxy = {
 		}),
 	},
 	translation: {
-		getTranslation: async (word, language) => {
-			const result = await axios({
-				method: `GET`,
-				url: `/${language}/${word}`,
-				baseURL: process.env.REACT_APP_YVIDEO_SERVER_DICT,
+		getTranslation: async (input_string, src_language) => {
+			let result = await fetch(`${process.env.REACT_APP_YVIDEO_SERVER_LIBRETRANSLATE}/translate`, {
+				method: `POST`,
+				body: JSON.stringify({
+					q: input_string,
+					source: src_language,
+					target: `en`,
+					format: `text`,
+					api_key: ``,
+				}),
+				headers: { "Content-Type": `application/json` },
 			})
-			// const result = axios({
-			// 		method: 'GET',
-			// 		baseURL: 'http://yvideodev.byu.edu:5001',
-			// 		url: `/translate/${language}/${word}`
-			// 	}).then(response => {
-			// 		// console.log(response)
-			// 		return response
-			// 	})
-			// 	.catch(error => {
-			// 		console.log(error)
-			// 	});
-			return result.data
+			result = await result.json()
+			return result
 		},
+
 	},
 }
 

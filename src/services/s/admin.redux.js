@@ -622,8 +622,7 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.content.post(content)
+			await apiProxy.content.post(content)
 
 		} catch (error) {
 
@@ -636,8 +635,7 @@ export default class AdminService {
 		dispatch(this.actions.adminStart())
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
+			await apiProxy.admin.collection.content.createFromResource(collectionId, resourceId)
 
 		} catch (error) {
 			dispatch(this.actions.adminError(error))
@@ -768,8 +766,7 @@ export default class AdminService {
 			const currentResults = [...getState().adminStore.data]
 
 			currentResults.splice(currentResults.findIndex((element) => element.id === collectionId), 1)
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.admin.collection.delete(collectionId)
+			await apiProxy.admin.collection.delete(collectionId)
 
 			dispatch(this.actions.adminCollectionDelete(currentResults))
 
@@ -794,8 +791,7 @@ export default class AdminService {
 		}
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.admin.content.delete(contentId)
+			await apiProxy.admin.content.delete(contentId)
 
 			if(fromAdmin)
 				dispatch(this.actions.adminContentDeleteFromTable(currentState))
@@ -816,8 +812,7 @@ export default class AdminService {
 		currentResults.splice(currentResults.findIndex((element) => element.id === userId), 1)
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.admin.user.deleteWithCollections(userId)
+			await apiProxy.admin.user.deleteWithCollections(userId)
 
 			dispatch(this.actions.adminUserDelete(currentResults))
 
@@ -829,8 +824,7 @@ export default class AdminService {
 	updateUserRole = (role, userId) => async (dispatch, getState, { apiProxy }) => {
 		dispatch(this.actions.adminStart())
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.admin.user.edit(role, userId)
+			await apiProxy.admin.user.edit(role, userId)
 			const currentResults = [...getState().adminStore.data]
 
 			currentResults.forEach(element => {

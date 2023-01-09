@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
-// import { Prompt } from 'react-router'
 import { Rnd } from 'react-rnd'
 
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, updateZoom, handleZoomEandD, getParameters} from '../../common/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
-// import {DialogBox} from '../../../modals/components'
 
 import skipIcon from 'assets/event_skip.svg'
 import muteIcon from 'assets/event_mute.svg'
@@ -20,6 +18,7 @@ import commentIcon from 'assets/event_comment.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
+import Swal from 'sweetalert2'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 const VideoEditor = props => {
@@ -89,6 +88,7 @@ const VideoEditor = props => {
 		},
 	]
 	const [elapsed, setElapsed] = useState(0)
+	const [eventCount, setEventCount] = useState(0)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [currentEvent, setCurrentEvent] = useState()
 	const [shouldUpdate, setShouldUpdate] = useState(false)
@@ -104,18 +104,13 @@ const VideoEditor = props => {
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
 
-	// eslint-disable-next-line no-unused-vars
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
-	// eslint-disable-next-line no-unused-vars
-	const [scrollBarWidth, setScrollBar] = useState(0)
+	const [scrollBarWidth, setScrollBar] = useState(100)
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [isLoading, setIsLoading] = useState(false)
 	const [disableSave, setDisableSave] = useState(false)
+	const [isReplace, setIsReplace] = useState(false)
 
 	// refs
 	useEffect(() => {
@@ -126,15 +121,15 @@ const VideoEditor = props => {
 
 	useEffect(() => {
 		function handleResize() {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
 		setEvents(allEvents)
 		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
+
+		setEventCount(events.length)
 
 		if(blockLeave)
 			window.onbeforeunload = () => true
@@ -173,9 +168,12 @@ const VideoEditor = props => {
 			layer: index,
 		}
 
+		const portionOfBarToFill = 1/30 // one thirtieth of the bar
+		const scrollBarWidthRatio = 100 // scroll bar width at normal zoom is 100 so we need to divide by 100 to get the ratio as we zoom in
+
 		// this has to be changed as min/sec frame
 		eventObj.start = Number(startPercentage)
-		eventObj.end = Number(startPercentage) + eventObj.end
+		eventObj.end = Number(startPercentage) + videoLength * portionOfBarToFill * (scrollBarWidth / scrollBarWidthRatio)
 		currentEvents.push(eventObj)
 		setCurrentEvent(eventObj)
 		const eventIndex = currentEvents.length - 1 < 0 ? 0 : currentEvents.length - 1
@@ -191,7 +189,7 @@ const VideoEditor = props => {
 				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`side-tab-message`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
 
@@ -199,7 +197,7 @@ const VideoEditor = props => {
 				if(event.end.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.end.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.end = convertToSeconds(event.end, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`side-tab-message`).innerHTML=`Wrong format`
 					canAccessDom = false
 				}
 			}
@@ -211,28 +209,28 @@ const VideoEditor = props => {
 		if(event.start < 0 || event.start.isNaN){
 			event.start = 0.0
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
+				document.getElementById(`side-tab-explanation`).innerText=`Changed start time to 0`
 
 		} else if(event.start >= videoLength) {
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
+				document.getElementById(`side-tab-explanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
 		} else if(event.start > event.end){
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
+				document.getElementById(`side-tab-explanation`).innerHTML=`Start time cannot be larger than end time <br/> Change values to match criteria`
 		}
 
 		// check end event times
 		if(event.end <= event.start){
 			if(canAccessDom){
-				document.getElementsByClassName(`sideTabInput`)[1].value=event.end
-				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number bigger than the start time`
+				document.getElementsByClassName(`side-tab-input`)[1].value=event.end
+				document.getElementById(`side-tab-message`).innerHTML=`Please enter a number bigger than the start time`
 			}
 		} else if(event.end > videoLength){
 			// event.end = 100
 			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).innerHTML=`Please enter a number less than ${videoLength}`
-				document.getElementById(`sideTabExplanation`).innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
+				document.getElementById(`side-tab-message`).innerHTML=`Please enter a number less than ${videoLength}`
+				document.getElementById(`side-tab-explanation`).innerHTML=`End time cannot be larger than ${videoLength} <br/> Change value to ${videoLength} or less`
 			}
 		}
 
@@ -250,7 +248,7 @@ const VideoEditor = props => {
 				if(event.start.match(/^\d{2}:\d{2}\.\d{2}/) !== null || event.start.match(/^\d{1}:\d{2}:\d{2}\.\d{2}/) !== null || type === `onBlur`)
 					event.start = convertToSeconds(event.start, videoLength)
 				else {
-					// document.getElementById(`sideTabMessage`).innerHTML=`Wrong format`
+					// document.getElementById(`side-tab-message`).innerHTML=`Wrong format`
 					canAccessDom=false
 				}
 
@@ -261,18 +259,18 @@ const VideoEditor = props => {
 		if(event.start < 0){
 			event.start = 0
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerText=`Changed start time to 0`
+				document.getElementById(`side-tab-explanation`).innerText=`Changed start time to 0`
 
 		} else if(event.start >= videoLength) {
 			if(canAccessDom)
-				document.getElementById(`sideTabExplanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
+				document.getElementById(`side-tab-explanation`).innerHTML=`Start time cannot be larger than ${videoLength} <br/> Changed values to match criteria`
 
 		}
 		if(event.start >= 0 && event.start < videoLength){
 			if(canAccessDom){
-				document.getElementById(`sideTabMessage`).style.color=`green`
-				document.getElementById(`sideTabMessage`).innerHTML=`Start and end times have been updated correctly`
-				document.getElementById(`sideTabExplanation`).innerHTML=``
+				document.getElementById(`side-tab-message`).style.color=`green`
+				document.getElementById(`side-tab-message`).innerHTML=`Start and end times have been updated correctly`
+				document.getElementById(`side-tab-explanation`).innerHTML=``
 				setDisableSave(false)
 			}
 		} else
@@ -282,11 +280,8 @@ const VideoEditor = props => {
 
 	const updateEvents = (index, event, layerIndex, side, type) => {
 
-		let canAccessDom = false
-		if(showSideEditor && eventListMinimized === false && document.getElementById(`sideTabMessage`)){
-			canAccessDom = true // eslint-disable-line no-unused-vars
-			document.getElementById(`sideTabMessage`).style.color=`red`
-		}
+		if(showSideEditor && document.getElementById(`side-tab-message`))
+			document.getElementById(`side-tab-message`).style.color = `red`
 
 		const currentEvents = [...allEvents]
 		if(event.type === `Pause`)
@@ -381,7 +376,7 @@ const VideoEditor = props => {
 				pos[item][0] = `0.0`
 			else
 				pos[item][0] = value
-			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
+			document.getElementById(`censor-time-input-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
 			break
 
 		case 1: // x in %
@@ -437,7 +432,7 @@ const VideoEditor = props => {
 			})
 			if(exists){
 				const existId = Object.keys(cEvent.position).find(val => cEvent.position[val][0] === `${time.toFixed(1)}`)
-				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`,x / width * 100, (y-navHeight) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
+				cEvent.position[`${existId}`] = [`${time.toFixed(1)}`, x / width * 100, (y-navHeight) / height * 100, cEvent.position[`${existId}`][3], cEvent.position[`${existId}`][4]]
 			} else{
 				let newX = x / width * 100
 				let newY = (y - navHeight) / height * 100
@@ -532,6 +527,17 @@ const VideoEditor = props => {
 			}
 		}
 		jsonData.sort((a, b) => (a.options.start > b.options.start) - (a.options.start < b.options.start))
+		createFileAnnotationsJson(jsonData, `icplayer`)
+	}
+
+	const handleExportAnnotationYVideo = () => {
+		const jsonData = []
+		jsonData.push(allEvents)
+		jsonData.sort((a, b) => (a.start > b.start) - (a.start < b.start))
+		createFileAnnotationsJson(jsonData, `yvideo`)
+	}
+
+	const createFileAnnotationsJson = (jsonData, option)=> {
 		const json = JSON.stringify(jsonData, null, 2)
 		const blob = new Blob([json], {type: `application/json`})
 		// get the current website url
@@ -540,11 +546,54 @@ const VideoEditor = props => {
 		// create an anchor element to open the link we created
 		const a = document.createElement(`a`)
 		// trigger download and append file name
-		a.download = `${content.name}_annotations.json`
+		a.download = `${content.name}_${option}_annotations.json`
 		a.href = link
 		document.body.appendChild(a)
 		a.click()
 		document.body.removeChild(a)
+	}
+
+	const handleImportAnnotation = () => {
+		if (allEvents.length !== 0) {
+			Swal.fire({
+				title: `Import Y-Video Format`,
+				text: `Do you want to replace the actual content?`,
+				icon: `question`,
+				confirmButtonText: `Yes`,
+				showCancelButton: true,
+				confirmButtonColor: `#0089b7`,
+				cancelButtonText: `No`,
+			}).then(async (result) => {
+				result.isConfirmed ? setIsReplace(true) : setIsReplace(false)
+				await callImportFile()
+			}).catch((error)=>{
+				Swal.fire(`An error has occur`, error.message, `error`)
+			})
+		}
+	}
+
+	const callImportFile = async () => {
+		if(document.getElementById(`import-file`) !== null)
+			document.getElementById(`import-file`).click()
+	}
+
+	const processImportAnnotation = async () => {
+		const filePath = document.getElementById(`import-file`).files
+		try {
+			const reader = new FileReader()
+			reader.onload = (e) => {
+				const newElements = JSON.parse(e.target.result)
+				if(isReplace)
+					allEvents.splice(0, allEvents.length)
+				for(let i = 0; i < newElements[0].length; i++)
+					allEvents.push(newElements[0][i])
+				setBlock(true)
+			}
+			if(filePath !== undefined)
+				reader.readAsText(filePath[0])
+		}catch (error){
+			Swal.fire(`An error has occur`, error.message, `error`)
+		}
 	}
 
 	const checkSideBarTitle = () => {
@@ -585,7 +634,7 @@ const VideoEditor = props => {
 					eventToEdit={eventToEdit}
 					activeCensorPosition = {activeCensorPosition}
 					setActiveCensorPosition = {setActiveCensorPosition}
-					editorType={`video`}
+					editorType='video'
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
 					setEventSeek={setEventSeek}
@@ -596,20 +645,19 @@ const VideoEditor = props => {
 					setElapsed={setElapsed}
 				></VideoContainer>
 
-				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+				<Timeline zoom={scrollBarWidth}>
 
 					<section>
 						<div className='event-layers' id='layers-component'>
 							{layers.map((layer, index) => (
-								<div id={`layer-${index}`} className={`layer`} key={index}>
-									<div className={`handle`} onClick={() => setDisplayLayer(index)}>
+								<div id={`layer-${index}`} className='layer' key={index}>
+									<div className='handle' onClick={() => setDisplayLayer(index)}>
 										<EventCard event={events[index]} key={index}/>
-										<PlusIcon className={`plusIcon`} onClick={ e => addEventHandler(layer[index], index) }/>
+										<PlusIcon className='plusIcon' onClick={ e => addEventHandler(layer[index], index) }/>
 									</div>
 
 									<TrackLayer
 										videoLength={videoLength}
-										minimized={eventListMinimized}
 										width={layerWidth}
 										events={allEvents}
 										activeEvent={eventToEdit}
@@ -632,9 +680,9 @@ const VideoEditor = props => {
 						<div className='zoom-factor' id = 'zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								id={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								id='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -650,7 +698,10 @@ const VideoEditor = props => {
 								dragAxis='x'
 								onDrag={(e, d) => {
 									handleZoomEandD(e, d)
-									debouncedOnDrag()
+									if(eventCount > 100)
+										debouncedOnDrag()
+									else
+										updateZoom()
 								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
@@ -666,7 +717,7 @@ const VideoEditor = props => {
 
 						<div className='zoom-scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+								<div id='zoom-scroll-container' className='zoom-scroll-container'>
 									<Rnd
 										className= 'zoom-scroll-indicator'
 										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
@@ -682,8 +733,8 @@ const VideoEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
-										onDrag = {(e, d) => {
+										bounds='parent'
+										onDrag={(e, d) => {
 											handleScrollFactor(d.x)
 										}}
 									>
@@ -691,10 +742,10 @@ const VideoEditor = props => {
 								</div>
 							</div>
 
-							<div id={`time-indicator-container`}>
-								<div id={`layer-time-indicator`}>
-									<span id={`layer-time-indicator-line`}></span>
-									<span id={`layer-time-indicator-line-shadow`}></span>
+							<div id='time-indicator-container'>
+								<div id='layer-time-indicator'>
+									<span id='layer-time-indicator-line'></span>
+									<span id='layer-time-indicator-line-shadow'></span>
 								</div>
 							</div>
 						</div>
@@ -702,11 +753,11 @@ const VideoEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventEditor id='EventEditor' minimized={eventListMinimized} show={showSideEditor}>
+			<EventEditor id='EventEditor' show={showSideEditor}>
 				<header>
 					<img
 						src={helpIcon}
-						alt={`helpIcon`}
+						alt='helpIcon'
 						onClick={handleShowHelp}
 						onMouseEnter={e => handleShowTip(`help`,
 							{
@@ -718,13 +769,13 @@ const VideoEditor = props => {
 						onMouseLeave={() => toggleTip()}
 						style={{marginLeft: 10, marginTop: 15}}
 					/>
-					<div className={`save`}>
+					<div id='save' className='header-button'>
 						{disableSave ?
-							<button className={`disable`}>
+							<button className='disable'>
 								<span>Save</span>
 							</button>
 							:
-							<button className={`handleSaveAnnotation`} onClick={handleSaveAnnotation}>
+							<button className='handleSaveAnnotation' onClick={handleSaveAnnotation}>
 								{blockLeave ?
 									null
 									:
@@ -737,17 +788,34 @@ const VideoEditor = props => {
 							</button>
 						}
 					</div>
-					<div className={`save`}>
-						{!disableSave && !blockLeave && !isLoading ?
-							<button className={`handleExportAnnotation`} onClick={handleExportAnnotation}>
+					<div id='export' className='header-button'>
+						{disableSave || blockLeave || isLoading ?
+							<button className='disable'>
 								<span>Export</span>
 							</button>
 							:
-							null
+							<div className='import-export'>
+								<button className='import-export-button'>Export</button>
+								<div className='dropdown-content'>
+									<span onClick={handleExportAnnotationYVideo}><b>Y-Video</b></span>
+									<span onClick={handleExportAnnotation}><b>IC Player</b></span>
+								</div>
+							</div>
+						}
+					</div>
+					<div id='import' className='header-button'>
+						{disableSave || blockLeave || isLoading ?
+							<button className='disable'>
+								<span>Import</span>
+							</button>
+							:
+							<div className='import-export'>
+								<button id='get_file' className='import-export-button' onClick={handleImportAnnotation}>Import</button>
+								<input type='file' accept='.json' id='import-file' onChange={processImportAnnotation} style={{display:`none`}}/>
+							</div>
 						}
 					</div>
 				</header>
-
 				<>
 					<div className='breadcrumbs'>
 						{ showSideEditor &&
@@ -760,7 +828,7 @@ const VideoEditor = props => {
 						}
 					</div>
 
-					{ showSideEditor !== false && eventListMinimized !== true ?
+					{ showSideEditor !== false ?
 						<TrackEditorSideMenu
 							singleEvent={checkEvent()}
 							videoLength={videoLength}
@@ -783,7 +851,6 @@ const VideoEditor = props => {
 					}
 				</>
 			</EventEditor>
-
 			<>
 				{/* <Prompt
 					when={blockLeave}

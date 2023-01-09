@@ -12,7 +12,7 @@ export default class ResourceService {
 		RESOURCE_GET: `RESOURCE_GET`,
 		RESOURCE_ADD: `RESOURCE_ADD`,
 		RESOURCE_FILES: `RESOURCE_FILES`,
-		RESOURCE_FILE_DELETE: `RESOURCE_FILE_DELETE`, // eslint-disable-line no-unused-vars
+		RESOURCE_FILE_DELETE: `RESOURCE_FILE_DELETE`,
 		RESOURCE_SEARCH: `RESOURCE_SEARCH`,
 		RESOURCE_EDIT: `RESOURCE_EDIT`,
 		RESOURCE_DELETE: `RESOURCE_DELETE`,
@@ -75,7 +75,6 @@ export default class ResourceService {
 			RESOURCE_FILES,
 			RESOURCE_STREAM,
 			RESOURCE_FILES_EDIT,
-			RESOURCE_FILE_DELETE, // eslint-disable-line no-unused-vars
 			RESOURCE_ADD_ACCESS,
 			RESOURCE_READ_ACCESS,
 			RESOURCE_REMOVE_ACCESS,
@@ -232,7 +231,7 @@ export default class ResourceService {
 		try {
 
 			// add access to resource
-			const result = await apiProxy.resources.access.add(resourceId, username) // eslint-disable-line no-unused-vars
+			await apiProxy.resources.access.add(resourceId, username)
 
 		} catch (error) {
 			dispatch(this.actions.resourcesError(error))
@@ -261,8 +260,7 @@ export default class ResourceService {
 
 		try {
 			// remove access from resource
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.resources.access.remove(resourceId, username)
+			await apiProxy.resources.access.remove(resourceId, username)
 
 			// get access and filter out the name that just got deleted
 
@@ -318,8 +316,7 @@ export default class ResourceService {
 				"date-validated": resource.dateValidated,
 			}
 
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.resources.edit(backendForm, resourceId)
+			await apiProxy.resources.edit(backendForm, resourceId)
 
 			if(selectedFile !== undefined){
 				const files = getState().resourceStore.cache[resourceId].files
@@ -493,8 +490,7 @@ export default class ResourceService {
 					filteredResources[key] = currentResources[key]
 			})
 
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.resources.delete(resourceId)
+			await apiProxy.resources.delete(resourceId)
 			dispatch(this.actions.resourceDelete(filteredResources))
 
 		} catch(error){

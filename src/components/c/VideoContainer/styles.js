@@ -214,7 +214,7 @@ export const Blank = styled.div`
 	z-index: 15;
 	}
 	& #blankBox{
-		position: absolute;
+		position: inherit;
 		width: 100%;
 		height: 100%;
 		background-color: black;

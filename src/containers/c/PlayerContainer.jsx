@@ -9,7 +9,7 @@ import { isSafari, isIOS } from 'react-device-detect'
 import { Player } from 'components'
 import { Tooltip } from 'components/bits'
 
-import handleScrollFuncs from '../../components/vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../components/common/toggleScroll'
 
 import HelpDocumentation from 'components/modals/containers/HelpDocumentationContainer'
 
@@ -21,7 +21,7 @@ const PlayerContainer = props => {
 		isAdmin,
 		isProf,
 		contentCache,
-		getContent,
+		getContentCache,
 		getStreamKey,
 		addView,
 		setEvents,
@@ -37,12 +37,13 @@ const PlayerContainer = props => {
 		errorMessage,
 		errorPrev,
 		errorSync,
-		resource,
+		// resource, TODO: Figure out why this was used for other TODO around line 170
 		getFiles,
 	} = props
 
 	const params = useParams()
-
+	const [clips, setClips] = useState(``)
+	const [clipId, setClipId] = useState(``)
 	const [content, setContent] = useState()
 	const [sKey, setKey] = useState(``)
 	const [isMobile, setIsMobile] = useState(false)
@@ -60,8 +61,7 @@ const PlayerContainer = props => {
 	const [playTime, setPlayTime] = useState(`00:00:00`)
 	const [progressEntered, setProgressEntered] = useState(false)
 	const [url, setUrl] = useState(``) // The url of the video or song to play (can be array or MediaStream object)
-	// eslint-disable-next-line no-unused-vars
-	const [volume, setVolume] = useState(0.8) // Set the volume, between 0 and 1, null uses default volume on all players
+	const volume = 0.8
 	const [blank, setBlank] = useState(false)
 	const [videoComment, setVideoComment] = useState(``)
 	const [commentPosition, setCommentPosition] = useState({ x: 0, y: 0 })
@@ -93,19 +93,19 @@ const PlayerContainer = props => {
 	// clip variables
 	const [clipTime, setClipTime] = useState([])
 	const [isClip, setIsClip] = useState(false)
+	const [sideBarIsClip, setSideBarIsClip] = useState(false)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
+
+	const [showIcon, setShowIcon] = useState(true)
+	const [playPause,setPlayPause] = useState(``)
 
 	// aspect ratio
 	const [aspectRatio, setAspectRatio] = useState([16, 9])
 	const ref = player => {
 		setPlayer(player)
 	}
-
 	const [timeoutArray, setTimeoutArray] = useState([])
 	const arrayTracker = useRef(timeoutArray)
-
 	useEffect(() => {
 		setBreadcrumbs({ path: [`Home`, `Player (${contentCache?.[params.id]?.name})`], collectionId: ``, contentId: `` })
 		setShowTranscript(false)
@@ -113,15 +113,15 @@ const PlayerContainer = props => {
 		setDisplaySubtitles(null)
 
 		if (!contentCache.hasOwnProperty(params.id)) // eslint-disable-line no-prototype-builtins
-			getContent(params.id)
+			getContentCache(params.id)
 
 		if (contentCache[params.id]) {
 			setContent(contentCache[params.id])
 			setShowTranscript(contentCache[params.id].settings.showCaptions)
 			setEvents(contentCache[params.id].settings.annotationDocument)
 			const clips =
-				contentCache[params.id][`clips`] ?
-					JSON.parse(contentCache[params.id][`clips`])[params.clip]
+				contentCache?.[params.id]?.clips && Array.isArray(JSON.parse(contentCache[params.id].clips)) ?
+					JSON.parse(contentCache[params.id].clips)[params.clip]
 					: []
 
 			if (params.clip) setClipTime([clips[`start`], clips[`end`]])
@@ -133,7 +133,7 @@ const PlayerContainer = props => {
 				}
 				setUrl(contentCache[params.id].url)
 				if(contentCache[params.id].url.includes(`youtube`)){
-					const fetchData = async() => { // eslint-disable-line no-unused-vars
+					async () => { // eslint-disable-line no-unused-expressions
 						const rawData = await fetch(`https://www.youtube.com/oembed?url=${contentCache[params.id].url}&format=JSON`, {method: `GET`})
 						const data = await rawData.json()
 						if(data.hasOwnProperty(`width`) && data.hasOwnProperty(`height`)) // eslint-disable-line no-prototype-builtins
@@ -154,17 +154,15 @@ const PlayerContainer = props => {
 				if (streamKey)
 					setKey(streamKey)
 
-				if (sKey !== `` && !isUrlLoaded) {
+				if (sKey !== ``) {
 					setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-					// setIsUrlLoaded(true)
 					if (subtitlesContentId !== params.id && calledGetSubtitles === false) {
 						getSubtitles(params.id)
 						setCalledGetSubtitles(true)
 					}
 				}
 				if (resourceIdStream !== ``){
-					// eslint-disable-next-line no-unused-vars
-					const files = Promise.resolve(getFiles(resourceIdStream)).then((value) => {
+					Promise.resolve(getFiles(resourceIdStream)).then((value) => {
 						if (value){
 							const file = value.find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
 							if (file[`aspect-ratio`])
@@ -173,12 +171,12 @@ const PlayerContainer = props => {
 					})
 
 				}
-				if(resource[resourceIdStream]){
-					if(resource[resourceIdStream][`files`]){
-						// eslint-disable-next-line no-unused-vars
-						const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
-					}
-				}
+				// TODO: Figure what this was for
+				// if(resource[resourceIdStream]){
+				// 	if(resource[resourceIdStream][`files`]){
+				// 		const file = resource[resourceIdStream][`files`].find(element => element[`file-version`].includes(contentCache[params.id].settings.targetLanguage) !== false)
+				// 	}
+				// }
 
 			}
 			const wrap = document.getElementById(`player-container`)
@@ -188,7 +186,6 @@ const PlayerContainer = props => {
 			})
 			if(wrap)
 				wraplisten.observe(wrap)
-
 		}
 
 		if (window.innerWidth < 1000) {
@@ -207,13 +204,18 @@ const PlayerContainer = props => {
 		}
 		if (errorMessage !== errorPrev)
 			handleError()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [addView, contentCache, getContentCache, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev, params])
+
+	useEffect(() => {
+		if(clipTime.length > 0)
+			handleClipStart()
 			// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [addView, contentCache, getContent, streamKey, getSubtitles, content, sKey, subtitlesContentId, errorMessage, errorPrev])
+	}, [clipTime[0]])
 
 	useEffect(() => {
 		arrayTracker.current = timeoutArray
 	}, [timeoutArray])
-
 	useLayoutEffect(() => {
 		handleSubsObj()
 		handleScrollFuncs(document.getElementById(`subtitles-container`), setDisableScroll, setEnableScroll)
@@ -224,6 +226,16 @@ const PlayerContainer = props => {
 			setToggleTranscript(true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [displaySubtitles, duration])
+	useLayoutEffect(() => {
+		if (contentCache?.[params.id]?.clips)
+			setClips(JSON.parse(contentCache[params.id].clips))
+
+		if (contentCache[params.id]?.id){
+			const tempClipId = contentCache[params.id].id
+			setClipId(tempClipId)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [contentCache])
 
 	const handleShowTip = (tipName, position) => {
 		toggleTip({
@@ -287,6 +299,11 @@ const PlayerContainer = props => {
 			enableScroll.action()
 			setScrollDisabled(false)
 		}
+		setShowIcon(true)
+		setPlayPause(`pause`)
+		setTimeout(() => {
+			setShowIcon(false)
+		}, 1000)
 	}
 
 	const handlePlay = () => {
@@ -295,6 +312,11 @@ const PlayerContainer = props => {
 			disableScroll.action()
 			setScrollDisabled(true)
 		}
+		setShowIcon(true)
+		setPlayPause(`play`)
+		setTimeout(() => {
+			setShowIcon(false)
+		}, 1000)
 	}
 
 	const handleStart = () => {
@@ -408,7 +430,7 @@ const PlayerContainer = props => {
 		// player.seekTo(played)
 		let newPlayed = 0
 		if (e) {
-			const scrubber = e.currentTarget.getBoundingClientRect()
+			const scrubber = e.currentTarget?.getBoundingClientRect()
 			if (scrubber.width !== 0)
 				newPlayed = (e.pageX - scrubber.left) / scrubber.width
 
@@ -482,10 +504,10 @@ const PlayerContainer = props => {
 	const handleSubsObj = () => {
 		if(displaySubtitles && duration) {
 			let temp = {}
-			const navbarHeight = document.getElementById(`navbar`).getBoundingClientRect().height
+			const navbarHeight = document.getElementById(`navbar`)?.getBoundingClientRect().height
 			for (const i in displaySubtitles.content) {
 				const numIndex = parseFloat(i)
-				const elementYPos = document.getElementById(`t-row-${i}`).getBoundingClientRect().y
+				const elementYPos = document.getElementById(`t-row-${i}`)?.getBoundingClientRect().y
 
 				temp = handleTempObj(temp, numIndex, navbarHeight, elementYPos)
 			}
@@ -510,7 +532,7 @@ const PlayerContainer = props => {
 	}
 
 	const handleTempObj = (temp, loopIndex, navbarHeight, yPos) => {
-		const containerHeightFourth = document.getElementById(`subtitles-container`).getBoundingClientRect().height * .25
+		const containerHeightFourth = document.getElementById(`subtitles-container`)?.getBoundingClientRect().height * .25
 		return (
 			{...temp,
 				[loopIndex]: {
@@ -549,11 +571,17 @@ const PlayerContainer = props => {
 		})
 		errorSync()
 	}
+	const handleClipToggle = (clipOrTranscript) => {
+		if (clipOrTranscript === `Clip`)
+			setSideBarIsClip(true)
+		else
+			setSideBarIsClip(false)
+	}
 	const handleToggleTranscript = () => {
 		toggleTip()
 		setToggleTranscript(!toggleTranscript)
+		setSideBarIsClip(false)
 	}
-
 	const handleSeekToSubtitle = (e) => {
 		let seekToIndex = 0
 		if(displaySubtitles && subtitleTextIndex !== undefined){
@@ -600,24 +628,22 @@ const PlayerContainer = props => {
 		const censor = document.getElementById(`censorContainer`)
 		if(width / height > aspectRatio[0] / aspectRatio[1]) {
 			const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
-			const pad = (width - videoWidth) / 2
-			blank.style.marginLeft = `${pad}px`
+			blank.style.marginLeft =`0px`
 			blank.style.marginTop = `0px`
-			blank.style.width = `${videoWidth}px`
-			comment.style.width = `${videoWidth}px`
+			blank.style.width = `100%`
+			comment.style.width =`100%`
 			censor.style.width = `${videoWidth}px`
 			blank.style.height = `${height}px`
 			comment.style.height = `${height}px`
 			censor.style.height = `${height}px`
 		} else if(width / height < aspectRatio[0] / aspectRatio[1]) {
 			const videoHeight = width * aspectRatio[1] / aspectRatio[0]
-			const pad = (height - videoHeight) / 2
-			blank.style.marginTop = `${pad}px`
+			blank.style.marginTop = `0px`
 			blank.style.marginLeft = `0px`
-			blank.style.height = `${videoHeight}px`
+			blank.style.width = `100%`
+			blank.style.height = `100%`
 			comment.style.height = `${videoHeight}px`
 			censor.style.height = `${videoHeight}px`
-			blank.style.width = `${width}px`
 			comment.style.width = `${width}px`
 			censor.style.width = `${width}px`
 		}
@@ -692,16 +718,21 @@ const PlayerContainer = props => {
 		censorActive,
 		clipTime,
 		isClip,
+		sideBarIsClip,
 		isLandscape,
 		hasPausedClip,
 		events,
 		showSpeed,
 		scrollDisabled,
+		clips,
+		clipId,
 		progressEntered,
 		started,
 		mouseInactive,
 		timeoutArray,
 		controlsHovering,
+		showIcon,
+		playPause,
 	}
 
 	const handlers = {
@@ -743,6 +774,7 @@ const PlayerContainer = props => {
 		handleChangeSpeed,
 		handleChangeCaption,
 		checkBrowser,
+		handleClipToggle,
 		handleMouseMoved,
 	}
 
@@ -765,7 +797,7 @@ const mapStateToProps = ({ authStore, contentStore, resourceStore, subtitlesStor
 })
 
 const mapDispatchToProps = {
-	getContent: contentService.getContent,
+	getContentCache: contentService.getContent,
 	getStreamKey: resourceService.getStreamKey,
 	addView: contentService.addView,
 	setEvents: interfaceService.setEvents,

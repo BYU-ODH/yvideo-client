@@ -46,59 +46,6 @@ const newCollection = {
 	},
 }
 
-const courses = [ // eslint-disable-line no-unused-vars
-	{
-		catalogNumber: 122,
-		department: `ACC`,
-		id: `course id`,
-		sectionNumber: 12,
-	},
-]
-
-const newCourses = [ // eslint-disable-line no-unused-vars
-	{
-		catalogNumber: 123,
-		department: `ENG`,
-		id: 13,
-		sectionNumber: 12,
-	},
-]
-
-const admins = [ // eslint-disable-line no-unused-vars
-	{
-		id: 22,
-		username: `testusername`,
-		name: `testname`,
-		email: `test@test.com`,
-		linked: -1,
-		roles: [`admin`],
-		lastLogin: `2020-05-29T20:45:58.551Z`,
-		exceptions: [
-			{
-				email: `test@test.com`,
-				id: 22,
-				lastLogin: `2020-05-29T20:45:58.551Z`,
-				name: `testname`,
-				linked: -1,
-				roles: [`admin`],
-				username: `testusername`,
-			},
-		],
-	},
-]
-
-const exceptions = [ // eslint-disable-line no-unused-vars
-	{
-		email: `test@test.com`,
-		id: 22,
-		lastLogin: `2020-05-29T20:45:58.551Z`,
-		name: `testname`,
-		linked: -1,
-		roles: [`admin`],
-		username: `testusername`,
-	},
-]
-
 describe(`content service test`, () => {
 
 	let collectionServiceConstructor

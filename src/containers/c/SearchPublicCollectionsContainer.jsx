@@ -15,8 +15,6 @@ const SearchPublicCollectionsContainer = props => {
 		isAdmin,
 		displayBlocks,
 		content,
-		// setContent,
-		// collections,
 		searchedPublicCollections,
 		toggleCollectionsDisplay,
 		setHeaderBorder,
@@ -158,7 +156,6 @@ const mapStateToProps = ({ authStore, interfaceStore, collectionStore, contentSt
 const mapDispatchToProps = {
 	searchCollections: collectionService.searchCollections,
 	searchPublicCollections: adminService.searchPublicCollection,
-	setContent: contentService.setContent,
 	toggleCollectionsDisplay: interfaceService.toggleCollectionsDisplay,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,

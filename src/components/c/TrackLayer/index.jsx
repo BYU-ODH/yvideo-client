@@ -2,13 +2,11 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
-import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../common/toggleScroll'
 
 import {
 	Icon, Style,
 } from './styles'
-
-// TODO: Copy styles from NewTrackEditor used by these components into this file
 
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
@@ -25,24 +23,19 @@ const TrackLayer = props => {
 		setEventSeek,
 		setActiveCensorPosition,
 	} = props
+
 	const layerIndex = parseInt(props.index)
-
 	const layerRef = useRef(null)
-
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [layerHeight, setLayerHeight] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
-
-		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
 
 		if(events && layerIndex === 4){
 			// we are in censor, calculate overlapping
@@ -156,7 +149,7 @@ const TrackLayer = props => {
 
 		const cEvents = events
 		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
-		const endPercentage = beginTimePercentage + event.end - event.start
+		const endPercentage = beginTimePercentage + cEvents[index].end - cEvents[index].start
 
 		// LOGIC TO CHANGE THE TIME @params beginTime, end
 		cEvents[index].start = beginTimePercentage
@@ -174,25 +167,13 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
+		// this gets the active front of the 
+		const start = position.x / layerWidth * videoLength
+		const end = (position.x + ref.offsetWidth) / layerWidth * videoLength
 
 		const cEvents = events
-		const difference = delta.width / layerWidth * 100 * videoLength / 100
-		if(direction === `right`){
-			cEvents[index].end += difference
 
-			if(cEvents[index].end > videoLength)
-				cEvents[index].end = videoLength
-
-		} else {
-			cEvents[index].start -= difference
-
-			if(cEvents[index].start < 0)
-				cEvents[index].start = 0
-			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength - 0.001
-				cEvents[index].end = videoLength
-			}
-		}
+		direction === `right` ? cEvents[index].end = end : cEvents[index].start = start
 
 		updateEvents(index, cEvents[index], layerIndex)
 	}
@@ -203,10 +184,7 @@ const TrackLayer = props => {
 
 		return (
 			<Rnd
-				className={
-					`layer-event
-					${isMultiEvent && `half-event`}
-					${activeEvent === index && `active-event`}`}
+				className={`layer-event ${isMultiEvent ? `half-event` : ``} ${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={
@@ -219,21 +197,24 @@ const TrackLayer = props => {
 				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
+				onDrag={(e, d) => {
+					handleDrag(d, event, index)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+				}}
 				onDragStop={(e, d) => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-				}
-				}
-				onResizeStop={(e, direction, ref, delta, position) => {
+				}}
+				onResize={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
-					handleEventPosition(event.start)
-				}
-				}
+					// if you are resizing the start of the clip it will seek to the start of the clip, otherwise it will seek to the end
+					direction === `left` ? handleEventPosition(event.start) : handleEventPosition(event.end)
+				}}
 				key={index}
 			>
-				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon} className={isMultiEvent && `half-icon`}/>
 				{ event.type !== `Pause` ? (
 					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>

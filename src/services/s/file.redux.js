@@ -119,8 +119,7 @@ export default class FileService {
 		dispatch(this.actions.fileStart())
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.file.delete(id)
+			await apiProxy.file.delete(id)
 
 		} catch (error) {
 			dispatch(this.actions.fileError(error))
@@ -132,8 +131,7 @@ export default class FileService {
 		dispatch(this.actions.fileStart())
 
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const result = await apiProxy.file.patch(id, file)
+			await apiProxy.file.patch(id, file)
 
 			dispatch(this.actions.fileUpdate(file))
 

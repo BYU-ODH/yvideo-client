@@ -56,7 +56,7 @@ export const BarSkippedGray = styled.div`
 	position: absolute;
 	width: ${props => (props.end - props.start) / props.duration * 100}%;
 	left: ${props => props.start / props.duration * 100}%;
-	background-color: gray;
+	background-color: #303030;
 	height: ${barActive};
 `
 

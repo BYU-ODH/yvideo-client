@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { adminService, collectionService, interfaceService } from 'services'
 
-import handleScrollFuncs from '../../components/vanilla_scripts/toggleScroll.js'
+import handleScrollFuncs from '../../components/common/toggleScroll'
 
 import { BlockCollection } from 'components'
 

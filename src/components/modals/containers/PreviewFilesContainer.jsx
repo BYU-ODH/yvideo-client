@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import PreviewFiles from '../components/PreviewFiles'
 
-import { contentService, interfaceService, resourceService } from 'services'
-import { connect} from 'react-redux'
+import { interfaceService, resourceService } from 'services'
+import { connect } from 'react-redux'
 
 const PreviewFilesContainer = props => {
 	const {
@@ -12,18 +12,16 @@ const PreviewFilesContainer = props => {
 		getStreamKey,
 		contentCache,
 		streamKey,
-		getContent,
 		setBreadcrumbs,
 		file,
 		resourceId,
+		fileState,
 	}= props
-
 	const volume = 0.8
 
 	const [sKey, setKey] = useState(``)
 	const [url, setUrl] = useState(``)
 	const [isStreamKeyLoaded, setIsStreamKeyLoaded] = useState(false)
-	const [isUrlLoaded, setIsUrlLoaded] = useState(false)
 	const [playing, setPlaying] = useState(false)
 	const [player, setPlayer] = useState(null)
 	const [mouseOn, setMouseOn] = useState(false)
@@ -41,22 +39,17 @@ const PreviewFilesContainer = props => {
 		setBreadcrumbs({ path: [`Home`, `Manage Resources`], collectionId: ``, contentId: `` })
 
 		if (file && !isStreamKeyLoaded) {
-			getStreamKey(resourceId, file[`file-version`])
-			setIsStreamKeyLoaded(true)
+			getStreamKey(resourceId, file[`file-version`]).then(() => {
+				setIsStreamKeyLoaded(true)
+				if (streamKey)
+					setKey(streamKey)
+			})
 		}
 
-		if (streamKey)
-			setKey(streamKey)
-
-		if (sKey !== `` && !isUrlLoaded) {
+		if (sKey !== ``)
 			setUrl(`${process.env.REACT_APP_YVIDEO_SERVER}/api/partial-media/stream-media/${sKey}`)
-			setIsUrlLoaded(true)
-		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [contentCache, getContent, streamKey, sKey])
-
-	useLayoutEffect(() => {
-	},[duration])
+	}, [contentCache, file, sKey, isStreamKeyLoaded, streamKey])
 
 	const handlePlayPause = () => {
 		if (playing)
@@ -64,7 +57,6 @@ const PreviewFilesContainer = props => {
 		else
 			setPlaying(true)
 	}
-
 	const handlePause = () => {
 		setPlaying(false)
 	}
@@ -75,6 +67,12 @@ const PreviewFilesContainer = props => {
 
 	const toggleMouseOn = () => {
 		setMouseOn(!mouseOn)
+	}
+
+	const modalToggle = () => {
+		toggleModal()
+		setKey(``)
+		setIsStreamKeyLoaded(false)
 	}
 
 	const handleDuration = duration => {
@@ -121,10 +119,11 @@ const PreviewFilesContainer = props => {
 		duration,
 		hovering,
 		progressEntered,
+		fileState,
+		isStreamKeyLoaded,
 	}
 
 	const handlers = {
-		toggleModal,
 		toggleTip,
 		handlePlayPause,
 		handlePlay,
@@ -135,9 +134,10 @@ const PreviewFilesContainer = props => {
 		handleSeekChange,
 		handleMouseOver,
 		handleMouseOut,
+		modalToggle,
 	}
 
-	return <PreviewFiles viewstate={viewstate} handlers={handlers} toggleModal={toggleModal}/>
+	return <PreviewFiles viewstate={viewstate} handlers={handlers} />
 
 }
 
@@ -148,7 +148,6 @@ const mapStateToProps = ({ contentStore, resourceStore }) => ({
 })
 
 const mapDispatchToProps = {
-	getContent: contentService.getContent,
 	toggleModal: interfaceService.toggleModal,
 	toggleTip: interfaceService.toggleTip,
 	setBreadcrumbs: interfaceService.setBreadcrumbs,

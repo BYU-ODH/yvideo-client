@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 import trashIcon from 'assets/trash.svg'
 import saveIcon from 'assets/save.svg'
 import uploadIcon from 'assets/upload.svg'
@@ -170,7 +170,6 @@ export const TitleEdit = styled.input`
 	margin-left: 1rem;
 	box-sizing: border-box;
 	width: 40rem;
-
 `
 
 export const Title = styled.form`

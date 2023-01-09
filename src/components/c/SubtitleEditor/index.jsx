@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-// import { Prompt } from 'react-router'
 import Style, { Timeline, EventList, Icon, PlusIcon } from './styles'
 import { Rnd } from 'react-rnd'
 import { SubtitleEditorSideMenu, SubtitlesCard, SubtitlesLayer, SwitchToggle } from 'components/bits'
-// import * as Subtitle from 'subtitle'
-import {parse} from 'subtitle'
+import { parse } from 'subtitle'
 
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, updateZoom, handleZoomEandD, getParameters } from '../../common/editorCommon'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -19,6 +17,7 @@ import saveIcon from 'assets/check.svg'
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
+import Swal from 'sweetalert2'
 
 const SubtitleEditor = props => {
 	const { setEvents, updateContent, createSub, setAllSubs, activeUpdate, deleteSubtitles } = props
@@ -35,18 +34,14 @@ const SubtitleEditor = props => {
 	const layers = [{0: `Skip`}]
 
 	const [elapsed, setElapsed] = useState(0)
+	const [subsCount, setSubsCount] = useState(0)
 	const [isLoading, setIsLoading] = useState(false)
 	const [allEvents, setAllEvents] = useState(eventsArray)
 	const [blockLeave, setBlock] = useState(false)
 	const [videoLength, setVideoLength] = useState(0)
 	const [videoCurrentTime, setCurrentTime] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [timelineMinimized, setTimelineMinimized] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [eventListMinimized, setEventListMinimized] = useState(false)
 	const [isReady, setIsReady] = useState(false)
 	const [layerWidth, setWidth] = useState(0)
-	const [zoomFactor, setZoomFactor] = useState(0) // eslint-disable-line no-unused-vars
 	const [scrollBarWidth, setScrollBar] = useState(0)
 	const [subtitles, setSubs] = useState(subs)
 	const [subToEdit, setSubToEdit] = useState(0)
@@ -65,6 +60,9 @@ const SubtitleEditor = props => {
 	const [invalidSubs, setInvalidSubs] = useState([])
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
+	const [isNameUnique, setIsNameUnique] = useState(false)
+	const [titleNameRequired, setTitleNameRequired] = useState(false)
+	const [titleName, seTititleName] = useState(``)
 	// refs
 	const scrollRef = useRef()
 
@@ -76,14 +74,25 @@ const SubtitleEditor = props => {
 
 	useEffect(() => {
 		const handleResize = () => {
-			setZoomFactor(0)
 			setWidth(0)
-			setZoomFactor(1)
 			setWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
 		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
+
+		let subsCount = 0
+		if (subs) {
+			for (const i in subs) {
+				try {
+					subsCount += JSON.parse(subs[i].content).length
+				}catch (e) {
+					subsCount += subs[i].content.length
+					JSON.stringify(subs[i].content)
+				}
+			}
+			setSubsCount(subsCount)
+		}
 
 		let largestLayer = 0
 
@@ -158,7 +167,7 @@ const SubtitleEditor = props => {
 		activeUpdate(layerIndex)
 		setSideEditor(true)
 		const active = document.getElementById(`sub-${layerIndex}-${subIndex}`)
-		const allSubsContainer = document.getElementById(`allSubs`)
+		const allSubsContainer = document.getElementById(`all-subs`)
 		if(active)
 			allSubsContainer.scrollTop = active.offsetTop - allSubsContainer.offsetHeight * 0.5
 
@@ -449,7 +458,7 @@ const SubtitleEditor = props => {
 			setBlock(true)
 
 		}catch(error) {
-			alert(`there was an error adding the subtitle`)
+			Swal.fire(`Error Adding Subtitles`, `there was an error adding the subtitle`, `error`)
 			console.error(error) // eslint-disable-line no-console
 		}
 	}
@@ -458,10 +467,10 @@ const SubtitleEditor = props => {
 		if(newSub.trueFalse === false) {
 			if(subs.length > 0 && subLayerToEdit) {
 				for(const i in subs[subLayerToEdit].content) {
-					if(document.getElementById(`subStart${i}`)) {
-						document.getElementById(`subStart${i}`).style.border = null
-						document.getElementById(`subEnd${i}`).style.border = null
-						document.getElementById(`subText${i}`).style.border = null
+					if(document.getElementById(`sub-start${i}`)) {
+						document.getElementById(`sub-start${i}`).style.border = null
+						document.getElementById(`sub-end${i}`).style.border = null
+						document.getElementById(`sub-text${i}`).style.border = null
 					}
 				}
 			}
@@ -489,18 +498,18 @@ const SubtitleEditor = props => {
 					if(subs[subLayerToEdit].id === tempInvalidArray[j][0] && parseFloat(i) === tempInvalidArray[j][1]) {
 
 						if(tempInvalidArray[j][2].start === true)
-							document.getElementById(`subStart${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+							document.getElementById(`sub-start${tempInvalidArray[j][1]}`).style.border = `2px solid red`
 						if(tempInvalidArray[j][2].end === true)
-							document.getElementById(`subEnd${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+							document.getElementById(`sub-end${tempInvalidArray[j][1]}`).style.border = `2px solid red`
 						if(tempInvalidArray[j][2].text === true)
-							document.getElementById(`subText${tempInvalidArray[j][1]}`).style.border = `2px solid red`
+							document.getElementById(`sub-text${tempInvalidArray[j][1]}`).style.border = `2px solid red`
 
 					}
 				}
 			}
 		}
 
-		if(invalidSubs.length === 0)
+		if(invalidSubs.length === 0 && !isNameUnique && !titleNameRequired)
 			setDisableSave(false)
 		else
 			setDisableSave(true)
@@ -535,10 +544,14 @@ const SubtitleEditor = props => {
 		openSubEditor(subtitles.length, 0)
 		setSideEditor(true)
 		setBlock(true)
+		setDisableSave(true)
+		setTitleNameRequired(true)
 	}
 	const handleAddSubLayerFromFile = (url) => {
 		try{
 			const reader = new FileReader()
+			const nameSubTitle = url.name
+			searchUniqueName(subtitles, titleName)
 			reader.onload = (e) => {
 				const temp = parse(e.target.result)
 				for (let i = 0; i < temp.length; i++){
@@ -557,11 +570,11 @@ const SubtitleEditor = props => {
 					return item.end < videoLength
 				})
 				if (removeArray > 0)
-					alert(`Some subtitles had to be cut because the subtitles are longer than the video`)
+					Swal.fire(`Editing Subtitles`, `Some subtitles had to be cut because the subtitles are longer than the video`, `warning`)
 				if (subtitles === [] || !subtitles){
 					const tempSubList = []
 					const tempSub = {
-						title : ``,
+						title : nameSubTitle,
 						language: ``,
 						content: filtered1,
 						id: ``,
@@ -569,10 +582,11 @@ const SubtitleEditor = props => {
 					}
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
+					searchUniqueName(tempSubList, nameSubTitle)
 				}else {
 					const tempSubList = [...subtitles]
 					const tempSub = {
-						title : ``,
+						title : nameSubTitle,
 						language: ``,
 						content: filtered1,
 						id: ``,
@@ -581,7 +595,7 @@ const SubtitleEditor = props => {
 					tempSubList.push(tempSub)
 					setSubs(tempSubList)
 					setAllSubs(tempSubList)
-
+					searchUniqueName(tempSubList, nameSubTitle)
 				}
 				setSideEditor(false)
 				openSubEditor(subtitles.length, 0)
@@ -590,9 +604,8 @@ const SubtitleEditor = props => {
 			reader.readAsText(url)
 		}catch(error){
 			console.log(error) // eslint-disable-line no-console
-			alert(`There was an error importing subtitles`)
+			Swal.fire(`Error Importing Subtitles`, `There was an error importing subtitles`, `error`)
 		}
-
 	}
 	const handleDeleteSubLayer = (index) => {
 		closeSideEditor()
@@ -613,6 +626,7 @@ const SubtitleEditor = props => {
 		if(fun === `onKeyPress`)
 			setIsEdit(false)
 
+		validateTitleSub(title)
 		const temp = [...subtitles]
 		temp[subLayerToEdit].title = title
 		setSubs(temp)
@@ -661,12 +675,12 @@ const SubtitleEditor = props => {
 				checkError = true
 				disable = false
 				if(checking === `delete` && i >= index) {
-					if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
-						document.getElementById(`subStart${i}`).style.border = `2px solid red`
-						document.getElementById(`subStart${i + 1}`).style.border = ``
-					} else if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
-						document.getElementById(`subEnd${i}`).style.border = `2px solid red`
-						document.getElementById(`subEnd${i + 1}`).style.border = ``
+					if(document.getElementById(`sub-start${i + 1}`).style.border === `2px solid red`) {
+						document.getElementById(`sub-start${i}`).style.border = `2px solid red`
+						document.getElementById(`sub-start${i + 1}`).style.border = ``
+					} else if(document.getElementById(`sub-end${i + 1}`).style.border === `2px solid red`) {
+						document.getElementById(`sub-end${i}`).style.border = `2px solid red`
+						document.getElementById(`sub-end${i + 1}`).style.border = ``
 					}
 				}
 			} else if(i !== subs[subLayerToEdit].content.length - 1){
@@ -679,21 +693,21 @@ const SubtitleEditor = props => {
 					checkError = true
 					disable = false
 					if(checking === `delete` && i >= index) {
-						if(document.getElementById(`subEnd${i + 1}`).style.border === `2px solid red`) {
-							document.getElementById(`subEnd${i}`).style.border = `2px solid red`
-							document.getElementById(`subEnd${i + 1}`).style.border = ``
-						} else if(document.getElementById(`subStart${i + 1}`).style.border === `2px solid red`) {
-							document.getElementById(`subStart${i}`).style.border = `2px solid red`
-							document.getElementById(`subStart${i + 1}`).style.border = ``
+						if(document.getElementById(`sub-end${i + 1}`).style.border === `2px solid red`) {
+							document.getElementById(`sub-end${i}`).style.border = `2px solid red`
+							document.getElementById(`sub-end${i + 1}`).style.border = ``
+						} else if(document.getElementById(`sub-start${i + 1}`).style.border === `2px solid red`) {
+							document.getElementById(`sub-start${i}`).style.border = `2px solid red`
+							document.getElementById(`sub-start${i + 1}`).style.border = ``
 						} else if(i === subs[subLayerToEdit].content.length - 2)
-							document.getElementById(`subStart${i + 1}`).style.border = `2px solid red`
+							document.getElementById(`sub-start${i + 1}`).style.border = `2px solid red`
 					}
 				}
 			}
 			if(!checkError) {
-				if(document.getElementById(`subStart${i}`)?.style){
-					document.getElementById(`subStart${i}`).style.border = ``
-					document.getElementById(`subEnd${i}`).style.border = ``
+				if(document.getElementById(`sub-start${i}`)?.style){
+					document.getElementById(`sub-start${i}`).style.border = ``
+					document.getElementById(`sub-end${i}`).style.border = ``
 				}
 				setDisableSave(false)
 			}
@@ -719,7 +733,7 @@ const SubtitleEditor = props => {
 				if (scrollSub !== sub){
 					setScrollSub(sub)
 					setSubToEdit(sub)
-					const subcontainer = document.getElementById(`allSubs`)
+					const subcontainer = document.getElementById(`all-subs`)
 					if(subcontainer)
 						subcontainer.scrollTop = document.getElementById(`sub-${subLayerToEdit}-${sub}`).offsetTop - subcontainer.offsetHeight * 0.5
 				}
@@ -733,6 +747,29 @@ const SubtitleEditor = props => {
 
 	const newSubSetter = (index) => {
 		setNewSub({trueFalse: true, index})
+	}
+
+	const validateTitleSub = (nameTrack) => {
+		subs[subLayerToEdit].title = nameTrack
+		seTititleName(nameTrack)
+		if (nameTrack === `` || nameTrack === null) {
+			setTitleNameRequired(true)
+			setDisableSave(true)
+		} else {
+			setTitleNameRequired(false)
+			searchUniqueName(subs, nameTrack)
+		}
+	}
+
+	const searchUniqueName = (subtitles, fileName) => {
+		const filtered = subtitles.filter(entry => entry.title === fileName)
+		if (filtered !== undefined && filtered !== null && filtered.length > 1) {
+			setIsNameUnique(true)
+			setDisableSave(true)
+		} else {
+			setIsNameUnique(false)
+			setDisableSave(false)
+		}
 	}
 
 	return (
@@ -752,7 +789,7 @@ const SubtitleEditor = props => {
 					updateEvents={null}
 					eventToEdit={null}
 					activeCensorPosition={activeCensorPosition}
-					editorType={`subtitle`}
+					editorType='subtitle'
 					handleSubProgress={handleSubProgress}
 					aspectRatio={aspectRatio}
 					eventSeek={eventSeek}
@@ -764,7 +801,7 @@ const SubtitleEditor = props => {
 					setElapsed={setElapsed}
 				>
 				</VideoContainer>
-				<Timeline minimized={timelineMinimized} zoom={scrollBarWidth}>
+				<Timeline zoom={scrollBarWidth}>
 
 					<section id='event-section'>
 						<div className='event-layers'>
@@ -786,7 +823,7 @@ const SubtitleEditor = props => {
 							<div className={`layer`}>
 								<div className={`addtrack`}>
 									<div
-										className={`setSubModalVisible`}
+										className='set-sub-modal-visible'
 										onClick={ () => {
 											openSubModal(isReady, setIsReady, `create`, ``, handleAddSubLayer, handleAddSubLayerFromFile, window.onkeyup)
 										}}>
@@ -798,7 +835,7 @@ const SubtitleEditor = props => {
 							{subtitles.map((sub, index) => (
 								<div className={`layer`} key={index}>
 									<div className={`handle`} >
-										<div className={`handleFocus`} onClick={() => handleFocus(index)}>
+										<div className={`handle-focus`} onClick={() => handleFocus(index)}>
 											<SubtitlesCard
 												title={sub.title !== `` ?
 													sub.title
@@ -835,7 +872,6 @@ const SubtitleEditor = props => {
 									</div>
 									<SubtitlesLayer
 										videoLength={videoLength}
-										minimized={eventListMinimized}
 										width={layerWidth}
 										setIsReady={setIsReady}
 										isReady={isReady}
@@ -845,7 +881,6 @@ const SubtitleEditor = props => {
 										index={subToEdit}
 										sideEditor={openSubEditor}
 										updateSubs={updateSubs}
-										closeEditor={closeSideEditor}
 										displayLayer={subLayerToEdit}
 										handleEventPosition={handleEventPosition}
 										setEventSeek={setEventSeek}
@@ -856,7 +891,6 @@ const SubtitleEditor = props => {
 							{subtitles.length === 0 &&
 								<SubtitlesLayer
 									videoLength={videoLength}
-									minimized={eventListMinimized}
 									width={layerWidth}
 									isReady={isReady}
 									setIsReady={setIsReady}
@@ -866,7 +900,6 @@ const SubtitleEditor = props => {
 									index={subToEdit}
 									sideEditor={openSubEditor}
 									updateSubs={updateSubs}
-									closeEditor={closeSideEditor}
 									displayLayer={subLayerToEdit}
 									handleEventPosition={handleEventPosition}
 									setEventSeek={setEventSeek}
@@ -882,8 +915,8 @@ const SubtitleEditor = props => {
 						<div className='zoom-factor' id='zoom-factor'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className={`zoom-indicator`}
-								bounds={`parent`}
+								className='zoom-indicator'
+								bounds='parent'
 								enableResizing={
 									{
 										top: false,
@@ -899,7 +932,10 @@ const SubtitleEditor = props => {
 								dragAxis='x'
 								onDrag={(e, d) => {
 									handleZoomEandD(e, d)
-									debouncedOnDrag()
+									if(subsCount > 100)
+										debouncedOnDrag()
+									else
+										updateZoom()
 								}}
 								onMouseEnter={e => handleShowTip(`te-zoom`,
 									{
@@ -930,7 +966,7 @@ const SubtitleEditor = props => {
 												topLeft: false,
 											}
 										}
-										bounds = {`parent`}
+										bounds = 'parent'
 										onDrag = {(e, d) => {
 											handleScrollFactor(d.x)
 										}}
@@ -949,10 +985,10 @@ const SubtitleEditor = props => {
 				</Timeline>
 			</span>
 
-			<EventList minimized={eventListMinimized}>
+			<EventList>
 				<header>
 					<img
-						alt={`helpIcon`}
+						alt='helpIcon'
 						src={helpIcon}
 						onClick={handleShowHelp}
 						style={{ marginLeft: 10, marginTop: 15 }}
@@ -1004,6 +1040,10 @@ const SubtitleEditor = props => {
 							scrollRef={scrollRef}
 							handleShowTip={handleShowTip}
 							toggleTip={toggleTip}
+							validateTitleSub={validateTitleSub}
+							isNameUnique={isNameUnique}
+							titleNameRequired={titleNameRequired}
+							titleName={titleName}
 						></SubtitleEditorSideMenu>
 					) }
 				</>
