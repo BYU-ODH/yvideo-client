@@ -4,7 +4,6 @@ import Bar from './Bar'
 import BarPreview from './BarPreview'
 import BlockItem from './BlockItem'
 import Captcha from './Captcha'
-import CloseButton from './CloseButton'
 import EventCard from './EventCard'
 import LabAssistantTable from './LabAssistantTable'
 import LazyImage from './LazyImage'
@@ -34,7 +33,6 @@ export {
 	BarPreview,
 	BlockItem,
 	Captcha,
-	CloseButton,
 	EventCard,
 	LabAssistantTable,
 	LazyImage,
