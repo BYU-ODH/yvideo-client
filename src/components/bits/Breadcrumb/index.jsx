@@ -11,29 +11,29 @@ const Breadcrumb = props => {
 			<div>
 				{
 					Object.values(crumbs.path).map((crumb, index) => {
-						const disabled = isLast(index)
+						const isDisabled = isLast(index)
 						const link = toLink(crumb)
 						return (
 							<span key={index} className='breadcrumb-item align-items-center'>
 								{
 									isManager(crumb) ?
-										disabled ?
-											<Button disabled={disabled}><span className='std-outline-color'>{ crumb }</span></Button>
+										isDisabled ?
+											<Button disabled={isDisabled}><span className='std-outline-color'>{ crumb }</span></Button>
 											:
-											<Button disabled={disabled}><Link className='std-outline-color' to={`/${link}/${crumbs.collectionId}`}>{ crumb }</Link></Button>
+											<Button disabled={isDisabled}><Link className='std-outline-color' to={`/${link}/${crumbs.collectionId}`}>{ crumb }</Link></Button>
 										:
 										isPlayer(crumb) ?
-											disabled ?
-												<Button disabled={disabled}><span className='std-outline-color'>{ crumb }</span></Button>
+											isDisabled ?
+												<Button disabled={isDisabled}><span className='std-outline-color'>{ crumb }</span></Button>
 												:
-												<Button disabled={disabled}><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></Button>
+												<Button disabled={isDisabled}><Link className='std-outline-color' to={`/${link}/${crumbs.contentId}`}>{ crumb }</Link></Button>
 											:
-											disabled ?
-												<Button disabled={disabled}><span className='std-outline-color'>{ crumb }</span></Button>
+											isDisabled ?
+												<Button disabled={isDisabled}><span className='std-outline-color'>{ crumb }</span></Button>
 												:
-												<Button disabled={disabled}><Link className='std-outline-color' to={`/${link}`}>{ crumb }</Link></Button>
+												<Button disabled={isDisabled}><Link className='std-outline-color' to={`/${link}`}>{ crumb }</Link></Button>
 								}
-								<Slash disabled={disabled}> / </Slash>
+								<Slash disabled={isDisabled}> / </Slash>
 							</span>
 						)
 					})

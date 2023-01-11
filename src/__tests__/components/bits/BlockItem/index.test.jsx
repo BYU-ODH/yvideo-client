@@ -13,14 +13,9 @@ const props = {
 	},
 }
 
-const state = {
-	img: `test@thumbbnail`,
-	loaded: false,
-}
-
 const wrapper =
 	<BrowserRouter>
-		<BlockItem {...props} state={state}/>
+		<BlockItem {...props} />
 	</BrowserRouter>
 
 describe(`BlockItem test`, () => {

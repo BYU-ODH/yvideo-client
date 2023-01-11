@@ -16,7 +16,6 @@ const Captcha = props => {
 			ref={_reCaptchaRef}
 			verifyCallback={handleCaptchaChange}
 			expiredCallback={handleCaptchaChange}
-			// onChange={setIsPerson(!this.props.isPerson)}
 		/>
 	)
 }
