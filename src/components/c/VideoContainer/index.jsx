@@ -298,7 +298,7 @@ const VideoContainer = props => {
 				blank.style.top = `0px`
 				blank.style.width = `100%`
 				comment.style.width = `${videoWidth}px`
-				censor.style.width = `${videoWidth}px`
+				censor.style.width = `70vw`
 				blank.style.height = `${height}px`
 				comment.style.height = `${height}px`
 				censor.style.height = `${height}px`
@@ -477,10 +477,8 @@ const VideoContainer = props => {
 					{subtitleText !== `` &&
 						<Subtitles type={editorType}>{subtitleText}</Subtitles>
 					}
-					<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
-					</div>
-					<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
-					</div>
+					<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`}} />
+					<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`}} />
 					<PauseMessage id='pauseMessage'>
 						<button type='button' style={{width: `90px`, height: `50px`, position: `bottom right`}}>Close</button>
 					</PauseMessage>
