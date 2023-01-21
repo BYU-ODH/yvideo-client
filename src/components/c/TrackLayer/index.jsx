@@ -167,7 +167,7 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-		// this gets the active front of the 
+		// this gets the active front of the
 		const start = position.x / layerWidth * videoLength
 		const end = (position.x + ref.offsetWidth) / layerWidth * videoLength
 

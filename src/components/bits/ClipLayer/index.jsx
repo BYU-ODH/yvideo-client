@@ -9,7 +9,7 @@ import {
 
 const ClipLayer = props => {
 
-	const {clipList, width, setStart, setEnd, videoLength, activeIndex, index, handleEditClip} = props
+	const {clipList, width, setStart, setEnd, videoLength, activeIndex, index, handleEditClip, handleEventPosition, setEventSeek} = props
 	const layerRef = useRef(null)
 	const dragRef = useRef(null)
 
@@ -142,11 +142,21 @@ const ClipLayer = props => {
 							enableResizing={Enable}
 							dragAxis='x'
 							bounds={`.clip-layer-${index}`}
+							onDrag={(e, d) => {
+								handleDrag(d)
+								setEventSeek(true)
+								handleEventPosition(start)
+							}}
 							onDragStop={(e, d) => {
 								handleDrag(d)
+								setEventSeek(true)
+								handleEventPosition(start)
 							}}
-							onClick = {() => handleEditClip(index, index)}
-							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
+							onClick = {() => {
+								handleEditClip(index, index)
+								// het
+							}}
+							onResize={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
 							key={`clip-${index}`}
 							style={style}
 						>
