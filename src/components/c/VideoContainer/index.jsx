@@ -139,10 +139,8 @@ const VideoContainer = props => {
 				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					if(values.allEvents[y].end >= playedSeconds){
-						events[index].active = false
+					if(values.allEvents[y].end >= playedSeconds)
 						video.handleMute()
-					}
 					break
 				case `Pause`:
 					events[index].active = false
@@ -154,20 +152,18 @@ const VideoContainer = props => {
 					}
 					break
 				case `Skip`:
-					events[index].active = false
 					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
 				}
 			}
-
-			if(playedSeconds === duration){
-				// for all of the events. If the new seek time goes before events that were already executed activate the events again
-				events.forEach(event => {
+			// for all of the events. If the new seek time goes before events that were already executed activate the events again
+			events.forEach(event => {
+				if(playedSeconds < event.start)
 					event.active = true
-				})
-			}
+			})
+
 			if(typeof handleSubProgress === `function`)
 				handleSubProgress(playedSeconds)
 		},
