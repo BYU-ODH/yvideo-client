@@ -71,3 +71,26 @@ export const updateZoom = () => {
 }
 
 export const debouncedOnDrag = debounce(updateZoom, 25)
+
+export const calculateStartAndEndTimesForDrag = (d, layerWidth, videoLength, start, end) => {
+	const beginTimePercentage = d.x / layerWidth * videoLength
+	const endPercentage = beginTimePercentage + (end - start)
+
+	start = beginTimePercentage
+	end = endPercentage
+
+	if(end > videoLength)
+		end = videoLength
+
+	if(start < 0)
+		start = 0
+
+	return {start, end}
+}
+
+export const calculateStartAndEndTimesForResize = (position, layerWidth, videoLength, ref) => {
+	const start = position.x / layerWidth * videoLength
+	const end = (position.x + ref.offsetWidth) / layerWidth * videoLength
+
+	return {start, end}
+}

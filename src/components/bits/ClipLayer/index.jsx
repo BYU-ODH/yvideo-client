@@ -2,6 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import handleScrollFuncs from '../../common/toggleScroll'
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize } from '../../common/editorCommon'
 
 import {
 	Style,
@@ -85,42 +86,16 @@ const ClipLayer = props => {
 	// Drag within the layer
 	const handleDrag = (d) => {
 
-		const beginTimePercentage = d.x / layerWidth * videoLength
-		const endPercentage = beginTimePercentage + (end - start)
-		// LOGIC TO CHANGE THE TIME @params beginTime, end
-		let s = beginTimePercentage
-		let e = endPercentage
-		if(e > videoLength)
-			e = videoLength
+		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, start, end)
 
-		if(s < 0)
-			s = 0
-		// call handler from parent
-		setStart(s, null, index)
-		setEnd(e, null, index)
+		setStart(clipTimes.start, null, index)
+		setEnd(clipTimes.end, null, index)
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, i, e) => {
-		let s = start
-		let en = end
-		const difference = delta.width / layerWidth * videoLength
-		if(direction === `right`){
-			en += difference
+	const handleResize = (direction, ref, delta, e, position) => {
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref)
 
-			if(en > videoLength)
-				en = videoLength
-
-		} else {
-			s -= difference
-			if(s < 0)
-				s = 0
-			else if(s > videoLength){
-				s = videoLength - 30
-				en = videoLength
-			}
-		}
-		setStart(s, null, index)
-		setEnd(en, null, index)
+		direction === `right` ? setEnd(clipTimes.end, null, index) : setStart(clipTimes.start, null, index)
 	}
 
 	return (
@@ -156,7 +131,11 @@ const ClipLayer = props => {
 								handleEditClip(index, index)
 								// het
 							}}
-							onResize={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
+							onResize={(e, direction, ref, delta, position) => {
+								handleResize(direction, ref, delta, e, position)
+								setEventSeek(true)
+								direction === `left` ? handleEventPosition(start) : handleEventPosition(end)
+							}}
 							key={`clip-${index}`}
 							style={style}
 						>
