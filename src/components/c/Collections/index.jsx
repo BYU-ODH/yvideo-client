@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { ListCollectionContainer, BlockCollectionContainer } from 'containers'
 
-import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchMobile, SearchIcon, FeedbackMessage } from './styles'
+import Style, { ViewToggle, PublicViewToggle, Help, Search, SearchIcon, FeedbackMessage } from './styles'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -14,7 +14,6 @@ const Collections = props => {
 		displayBlocks,
 		publicDisplayBlocks,
 		collections,
-		isMobile,
 		publicCollections,
 		searchQuery,
 		hasCollectionPermissions,
@@ -60,21 +59,19 @@ const Collections = props => {
 						/></h3>
 				</div>
 				<div>
-					{ !isMobile &&
-						<ViewToggle
-							displayBlocks={displayBlocks}
-							role={user.roles}
-							hasCollectionPermissions={hasCollectionPermissions}
-							onClick={toggleCollectionsDisplay}
-							onMouseEnter={e => handleShowTip(`list-block`,
-								{
-									x: e.target.offsetLeft,
-									y: e.target.offsetTop + 12,
-									width: e.currentTarget.offsetWidth,
-								})
-							}
-							onMouseLeave={toggleTip} />
-					}
+					<ViewToggle
+						displayBlocks={displayBlocks}
+						role={user.roles}
+						hasCollectionPermissions={hasCollectionPermissions}
+						onClick={toggleCollectionsDisplay}
+						onMouseEnter={e => handleShowTip(`list-block`,
+							{
+								x: e.target.offsetLeft,
+								y: e.target.offsetTop + 12,
+								width: e.currentTarget.offsetWidth,
+							})
+						}
+						onMouseLeave={toggleTip} />
 					{
 						user !== null && (user.roles < 3 || hasCollectionPermissions?.[`ta-permission`] === true) &&
 							<h3>
@@ -89,10 +86,7 @@ const Collections = props => {
 
 				{ Object.keys(collections).length > 0 ? (
 					<>
-						{ isMobile ?
-							Object.keys(collections).map(key =>
-								<ListCollectionContainer key={key} collection={collections[key]} />)
-							:
+						{
 							displayBlocks ?
 								Object.keys(collections).map(key =>
 									<BlockCollectionContainer key={key} collection={collections[key]} />)
@@ -109,53 +103,20 @@ const Collections = props => {
 				) }
 			</div>
 
-			{ !isMobile ?
-				<>
-					{
-						user !== null && (user.roles < 3 || hasCollectionPermissions?.[`ta-permission`] === true) ?
-							<header className= 'collections-header'>
-								<div>
-									<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
-								</div>
-								<div>
-								</div>
-								<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
-									<SearchIcon />
-									<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-								</Search>
-								<div>
-									{ !isMobile &&
-										<PublicViewToggle
-											publicDisplayBlocks={publicDisplayBlocks}
-											role={user.roles}
-											onClick={togglePublicCollectionsDisplay}
-											onMouseEnter={e => handleShowTip(`public-list-block`,
-												{
-													x: e.target.offsetLeft,
-													y: e.target.offsetTop + 12,
-													width: e.currentTarget.offsetWidth,
-												})
-											}
-											onMouseLeave={toggleTip} />
-									}
-									{
-										user.roles === 0 &&
-										<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
-									}
-								</div>
-							</header>
-							:
-							<header className= 'collections-header-not-admin'>
-								<div>
-									<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
-								</div>
-								<div>
-								</div>
-								<Search className='resource-search-submit-not-admin' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
-									<SearchIcon />
-									<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-								</Search>
-								{ !isMobile &&
+			<>
+				{
+					user !== null && (user.roles < 3 || hasCollectionPermissions?.[`ta-permission`] === true) ?
+						<header className= 'collections-header'>
+							<div>
+								<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+							</div>
+							<div>
+							</div>
+							<Search className='resource-search-submit' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
+								<SearchIcon />
+								<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+							</Search>
+							<div>
 								<PublicViewToggle
 									publicDisplayBlocks={publicDisplayBlocks}
 									role={user.roles}
@@ -168,34 +129,50 @@ const Collections = props => {
 										})
 									}
 									onMouseLeave={toggleTip} />
-								}
 								{
 									user.roles === 0 &&
 									<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
 								}
-							</header>
-					}
-				</>
-				:
-				<header className= 'collections-header-mobile'>
-					<div>
-						<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
-					</div>
-					<>
-						<SearchMobile className='resource-search-submit-mobile' id='searchSubmitMobile' onSubmit={handleSearchQuerySubmit}>
-							<SearchIcon />
-							<input className='resource-search-input-mobile' type='search' placeholder={`search in public collections`} onChange={handleSearchTextChange} value={searchQuery} />
-						</SearchMobile>
-					</>
-				</header>
-			}
+							</div>
+						</header>
+						:
+						<header className= 'collections-header-not-admin'>
+							<div>
+								<h3>Public Collections &nbsp;&nbsp;&nbsp; </h3>
+							</div>
+							<div>
+							</div>
+							<Search className='resource-search-submit-not-admin' id='searchSubmit' onSubmit={handleSearchQuerySubmit}>
+								<SearchIcon />
+								<input id='resource-search-input' type='search' placeholder={`Search public collections`} onChange={handleSearchTextChange} value={searchQuery} />
+							</Search>
+							<PublicViewToggle
+								publicDisplayBlocks={publicDisplayBlocks}
+								role={user.roles}
+								onClick={togglePublicCollectionsDisplay}
+								onMouseEnter={e => handleShowTip(`public-list-block`,
+									{
+										x: e.target.offsetLeft,
+										y: e.target.offsetTop + 12,
+										width: e.currentTarget.offsetWidth,
+									})
+								}
+								onMouseLeave={toggleTip} />
+							{
+								user.roles === 0 &&
+								<h3><Link to={`/public-manager`}>Manage Public Collections</Link></h3>
+							}
+						</header>
+				}
+			</>
+
 			<div className='public-collections-list'>
 				{
 					Object.keys(publicCollections).length > 0 ?
 						<>
-							{ isMobile ?
+							{ publicDisplayBlocks ?
 								Object.keys(publicCollections).map(key =>
-									<ListCollectionContainer
+									<BlockCollectionContainer
 										key={key}
 										identifier={key}
 										collection={publicCollections[key]}
@@ -203,23 +180,13 @@ const Collections = props => {
 										defaultSubscription={subscribedObj[key].isSubscribed}
 									/>)
 								:
-								publicDisplayBlocks ?
-									Object.keys(publicCollections).map(key =>
-										<BlockCollectionContainer
-											key={key}
-											identifier={key}
-											collection={publicCollections[key]}
-											handleSetSubscribedObj={handleSetSubscribedObj}
-											defaultSubscription={subscribedObj[key].isSubscribed}
-										/>)
-									:
-									Object.keys(publicCollections).map(key =>
-										<ListCollectionContainer key={key}
-											identifier={key}
-											collection={publicCollections[key]}
-											handleSetSubscribedObj={handleSetSubscribedObj}
-											defaultSubscription={subscribedObj[key].isSubscribed}
-										/>)
+								Object.keys(publicCollections).map(key =>
+									<ListCollectionContainer key={key}
+										identifier={key}
+										collection={publicCollections[key]}
+										handleSetSubscribedObj={handleSetSubscribedObj}
+										defaultSubscription={subscribedObj[key].isSubscribed}
+									/>)
 							}
 						</>
 						:

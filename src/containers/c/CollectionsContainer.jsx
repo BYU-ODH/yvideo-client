@@ -29,7 +29,6 @@ const CollectionsContainer = props => {
 		setBreadcrumbs,
 	} = props
 
-	const [isMobile, setIsMobile] = useState(false)
 	const [isContentTab, setIsContentTab] = useState(true)
 	const [searchQuery, setSearchQuery] = useState(``)
 	const [publicCollections, setPublicCollections] = useState({})
@@ -41,10 +40,6 @@ const CollectionsContainer = props => {
 		toggleTip()
 		getCollections()
 		setHeaderBorder(false)
-
-		// determine mobiie size for different layout
-		if(window.innerWidth < 1000) setIsMobile(true)
-		else setIsMobile(false)
 
 		return () => {
 			setHeaderBorder(true)
@@ -138,7 +133,6 @@ const CollectionsContainer = props => {
 		publicDisplayBlocks,
 		collections: Object.entries(collections).filter(([k, v]) => !v.public).map(([k, v]) => v),
 		contentIds: Object.entries(content).filter(([k, v]) => v.published).map(([k, v]) => k),
-		isMobile,
 		hasCollectionPermissions,
 		isContentTab,
 		subscribedObj,
