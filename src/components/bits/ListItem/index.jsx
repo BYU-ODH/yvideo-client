@@ -34,7 +34,7 @@ const ListItem = props => {
 				<Col>
 					<Row>
 						<Col xs='11'>
-					<h4>{name}</h4>
+					<h4 style={{borderBottom : "none"}}>{name}</h4>
 					</Col>
 						{/* <ul>
 							<Icon className='translation' checked={translation} />
@@ -65,7 +65,7 @@ const ListItem = props => {
 				</Col>
 				<Col>
 					<Link to={`/player/${id}`}>
-						<h4>{name}</h4>
+						<h4 style={{borderBottom:"none"}}>{name}</h4>
 						<ul>
 							<Icon className='translation' checked={translation} />
 							<Icon className='captions' checked={captions} />

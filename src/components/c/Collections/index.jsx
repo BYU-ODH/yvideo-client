@@ -88,7 +88,7 @@ const Collections = props => {
 							user !== null && (user.roles < 3 || hasCollectionPermissions?.[`ta-permission`] === true) &&
 							<h3>
 								<Link to={`/manager`}>
-									<Button variant='primary'>
+									<Button variant='primary' className='button'>
 										Manage Collections
 									</Button>
 								</Link>
@@ -137,7 +137,7 @@ const Collections = props => {
 					{
 						user !== null && (user.roles < 3 || hasCollectionPermissions?.[`ta-permission`] === true) ?
 						<header className= 'collections-header'>
-						<Container className="subheader2">
+						<Container className="subheader">
 							<Row className="mt-5"></Row>
 							<Row width="50%"  className='justify-content-center align-items-center mb-4'>
 								<Col xs="1"></Col>
@@ -171,7 +171,7 @@ const Collections = props => {
 											user.roles === 0 &&
 												<h3>
 													<Link to={`/public-manager`}>
-														<Button variant='primary'>
+														<Button variant='primary' className='button'>
 															Manage Public Collections
 														</Button>
 													</Link>

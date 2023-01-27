@@ -104,7 +104,7 @@ export const ToolTip = (props) => {
 	// console.log("POSITION", position)
 
 	return(
-		<Style id='tip-box' position={position}><h3>{tips[`${name}`]}</h3></Style>
+		<Style id='tip-box' position={position}><h6>{tips[`${name}`]}</h6></Style>
 	)
 }
 

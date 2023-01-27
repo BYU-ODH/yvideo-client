@@ -46,7 +46,6 @@ const ComfirmationBoxContainer = props => {
 	}
 
 	const handleInputChange = (e, index, type, startOrEnd) => {
-		console.log(event)
 		const cEvent = event
 		const layer = cEvent.layer
 
@@ -70,7 +69,6 @@ const ComfirmationBoxContainer = props => {
 				editEvent(`end`, cEvent.end, null, layer, index, type)
 			}
 		}
-		console.log(event.start)
 		toggleModal()
 	}
 

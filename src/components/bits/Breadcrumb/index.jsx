@@ -33,7 +33,7 @@ const Breadcrumb = props => {
 												:
 												<Button disabled={disabled}><Link className='std-outline-color' to={`/${link}`}>{ crumb }</Link></Button>
 								}
-								<Slash disabled={disabled}> / </Slash>
+								<Slash disabled={disabled}> </Slash>
 							</span>
 						)
 					})

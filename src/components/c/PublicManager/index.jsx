@@ -7,7 +7,7 @@ import { Accordion } from 'components/bits'
 
 import {
 	Body,
-	Container,
+	PublicContainer,
 	CreateButton,
 	NoCollection,
 	SideMenu,
@@ -15,6 +15,10 @@ import {
 	PlusIcon,
 	FeedbackMessage,
 } from './styles'
+
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
 
 import helpIcon from 'assets/manage-collection-help-circle.svg'
 
@@ -39,7 +43,7 @@ const PublicManager = props => {
 	const empty = props.empty
 
 	return (
-		<Container>
+		<PublicContainer>
 			{ empty !== undefined ? (
 				<>
 					{ user ? (
@@ -117,7 +121,7 @@ const PublicManager = props => {
 					</Body>
 				</>
 			)}
-		</Container>
+		</PublicContainer>
 	)
 }
 

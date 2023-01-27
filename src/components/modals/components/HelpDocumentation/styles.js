@@ -3,59 +3,68 @@ import styled from 'styled-components'
 export const Back = styled.div`
 	position: fixed;
 	display: flex;
-	top: 0px;
-	left: 0px;
+	top: calc(100vh * 0.06);
+	margin: auto;
+	right: calc(100vw * 0.22);
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.2);
-`
-export const Container = styled.div`
-	margin: auto;
-	width: 80vw;
-	max-height: 70vh;
-	height: auto;
-	overflow-y: scroll !important;
-	background-color: white;
-	border-radius: 5px;
-	position: relative;
-	text-align: center;
 
-
-	::-webkit-scrollbar {
-		display: block !important;
-		width: 10px;
-	}
-
-	/* Track */
-	::-webkit-scrollbar-track {
-		background: #DDDDDD;
-		border-radius: 10px;
-	}
-
-	/* Handle */
-	::-webkit-scrollbar-thumb {
-		background: var(--light-blue);
-		border-radius: 10px;
-	}
-
-	/* Handle on hover */
-	::-webkit-scrollbar-thumb:hover {
-		background: var(--navy-blue);
-	}
-
-	& h1 {
-		position: fixed;
-		border-bottom: 2px solid #0582ca;
-		padding-top: 5px;
-		height: 30px;
-		width: calc(80vw - 10px);
-		z-index: 3;
+	& .helpModalHeader {
+		margin: auto;
+		width: 80vw;
+		max-height: 70vh;
+		height: auto;
 		background-color: white;
+		border-radius: 5px 5px 0 0;
+		position: relative;
+		border-bottom: 2px solid #0582ca;
+
+		& h1 {
+			padding-left: calc(100vw * 0.33);
+			text-align: center;
+		}
 	}
+
+	& .helpModalBody {
+		margin: auto;
+		width: 80vw;
+		max-height: 70vh;
+		height: auto;
+		overflow-y: scroll !important;
+		background-color: white;
+		border-radius: 0 0 5px 5px;
+		position: relative;
+
+
+		::-webkit-scrollbar {
+			display: block !important;
+			width: 10px;
+		}
+
+		/* Track */
+		::-webkit-scrollbar-track {
+			background: #DDDDDD;
+			border-radius: 10px;
+		}
+
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			background: var(--light-blue);
+			border-radius: 10px;
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+			background: var(--navy-blue);
+		}
+	}
+
+	/* Content Section */
 
 	& #content {
 		width: 80%;
-		margin: 75px auto auto auto;
+		margin: auto auto auto auto;
 		text-align: left;
 		position: relative;
 
@@ -80,7 +89,7 @@ export const Container = styled.div`
 			& h3 {
 				margin-left: -12px;
 				margin-top: -12px;
-				width: calc(100% + 4px);
+				width: calc(100% + 22px);
 				padding: 5px 10px;
 				margin-bottom: 5px;
 				background-color: rgba(5, 130, 202, 0.2);
@@ -100,6 +109,7 @@ export const Container = styled.div`
 					border-radius: 10px;
 				}
 			}
+
 			& kbd {
 				background-color: #dddddd;
 				margin-left: .5rem;
@@ -121,15 +131,13 @@ export const Container = styled.div`
 				}
 			}
 		}
-
-		& .flex-column {
-			flex-direction: column;
-		}
 	}
+
+	/* Video */
 
 	& .video-section {
 		width: 80%;
-		margin: auto auto auto auto;
+		margin: auto;
 		text-align: center;
 		position: relative;
 		border: 2.5px solid #0582ca;
@@ -138,12 +146,12 @@ export const Container = styled.div`
 		& h2 {
 			background-color: #0582ca;
 			height: 22px;
-			padding-top: 10px;
-			width: calc(100% + 4px);
-			border-radius: 10px 10px 0px 0px;
+			font-size: 20px;
+			margin-bottom: 5px;
+			width: calc(100%);
+			height: 30px;
+			border-radius: 7px 7px 0px 0px;
 			color: white;
-			margin-left: -2px;
-			margin-top: -2px;
 		}
 
 		& div {
@@ -160,28 +168,4 @@ export const Container = styled.div`
 			}
 		}
 	}
-
-`
-export const CloseHelp = styled.span`
-	height: 30px;
-	width: 30px;
-
-	& img {
-		width: 30px;
-		height: 30px;
-    position: absolute;
-    top: -4px;
-    right: 28px;
-	}
-	:hover {
-		cursor: pointer;
-	}
-`
-
-export const Header = styled.div`
-	position: fixed;
-	height: 50px;
-	width: calc(80vw - 10px);
-	background-color: white;
-	z-index: 5;
 `

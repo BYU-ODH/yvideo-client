@@ -58,103 +58,6 @@ const shimmer = keyframes`
 `
 
 export const Preview = styled.div`
-
-	display: flex;
-
-	& > div:nth-child(1) {
-		min-width: 14rem;
-		margin: 0px 2rem 0px 0px;
-
-		@media screen and (max-width: 1000px) {
-			min-width: 0;
-			margin: 0;
-		}
-	}
-
-	.fa {
-		font-size: 1.95rem;
-		margin-right: .4rem;
-		position: relative;
-		bottom: 2px;
-
-
-		.fa-trash-o{
-			color: var(--red);
-		}
-
-
-	}
-
-
-	& > div:nth-child(2) {
-
-		/* flex: 1; */
-
-		display: flex;
-		min-width: 10rem;
-		flex-direction: column;
-		justify-content: space-evenly;
-		margin: 0px 0px 0px 2rem;
-
-		.icon-Buttons{
-			display: flex;
-			flex-direction: row;
-
-		}
-
-		& .content-title {
-			font-weight: 500;
-			text-overflow: ellipsis;
-		}
-
-		& ul {
-			margin: 0;
-			padding: 0;
-
-			display: grid;
-			grid-template-columns: repeat(3, 2rem);
-			grid-gap: .5rem;
-
-			.fa-eye:before {
-				position: relative;
-				top: 2px;
-				color: black;
-			}
-
-			.fa-eye-slash:before {
-				position: relative;
-				top: 2px;
-				color: #ECECEC
-				// #A4A4A4
-			}
-
-			.fa-closed-captioning:before {
-				position: relative;
-				top: 2px;
-
-			}
-		}
-
-		& em {
-			font-weight: lighter;
-		}
-	}
-
-	& > div:nth-child(3) {
-		flex: 1;
-		display: flex;
-		justify-content: flex-end;
-	}
-
-	& > div:nth-child(4) {
-		display: flex;
-		justify-content: flex-end;
-	}
-
-	@media screen and (max-width: 1000px) {
-		align-items: center;
-	}
-
 	:hover{
 		& .LinksWrapper{
 			& .video-editor-wrapper{
@@ -205,6 +108,10 @@ export const Icon = styled.li`
 	background-size: contain;
 	list-style: none;
 
+	& h3 {
+		font-size: 10;
+	}
+
 	&.translation{
 		background: url(${props => props.checked ? translationsBlack : translationsLight}) center no-repeat;
 		display: block;
@@ -239,6 +146,7 @@ export const ContentIcons = styled.div`
 	background-size: contain;
 	list-style: none;
 	margin-bottom: 1rem;
+	display: block;
 
 	position: relative;
 	left: 50%;
@@ -261,6 +169,14 @@ export const SettingsIcon = styled.button`
 
 export const TitleWrapper = styled.div`
 	display: inline-flex;
+
+	& .content-title {
+		font-weight: 500;
+		text-overflow: ellipsis;
+		font-size: 17px;
+	}
+
+
 `
 
 export const Placeholder = styled.div`

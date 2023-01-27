@@ -154,7 +154,6 @@ const ClipEditor = props => {
 	}
 
 	const toggleItemTimeChange = (index, boolean, startOrEnd) => {
-		console.log(Object.en)
 		for(let i = 0; i < Object.entries(clipItemTimeChange).length; i++){
 			if(parseInt(Object.keys(clipItemTimeChange)[i]) === index){
 				index = index.toString()
@@ -166,7 +165,6 @@ const ClipEditor = props => {
 	const handleInputChange = (item, startOrEnd ) => {
 		for (let i = 0; i < Object.entries(clipList).length; i++){
 			if(Object.keys(clipList)[i] === item ){
-				console.log(item)
 				const title = clipList[item].title
 				const end = clipList[item].end
 				const start = clipList[item].start

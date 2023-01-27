@@ -14,39 +14,13 @@ const Style = styled.div`
 	& h3 {
 			margin: 0px;
 			display: inline;
-			font-weight: lighter;
+			font-weight: 300;
 			font-size: 1.3rem;
 	}
 
 	.text-right {
 		text-align: right;
 		display: inline;
-	}
-
-	.text-left {
-		margin-left: 2rem;
-	}
-}
-
-.subheader2 {
-	margin-top: 6px;
-
-
-	& h3 {
-			margin: 0px;
-			display: inline;
-			font-weight: lighter;
-			font-size: 1.3rem;
-	}
-
-	.text-right {
-		text-align: right;
-		display: inline;
-	}
-
-	.text-center {
-		text-align: center;
-		display: inline
 	}
 
 	.text-left {
@@ -57,100 +31,14 @@ const Style = styled.div`
 h3 {
 	margin: 0px;
 	display: inline;
-	font-weight: lighter;
-	font-size: 1.3rem;
+	font-size: 1.45rem;
 
 }
 
-// 	max-width: 100rem;
-// 	padding: 8.4rem 2.4rem 0 2.4rem;
-// 	margin: 0 auto;
-
-// 	& .list{
-// 		margin-bottom: 5rem;
-// 	}
-
-// 	& .resource-search-submit {
-// 		width: 62%;
-// 	}
-
-// 	& .resource-search-submit-not-admin{
-// 		width: 80%;
-// 		margin-left: 7rem;
-// 	}
-
-// & .collections-header-not-admin {
-// 		display: flex;
-// 		align-items: center;
-// 		padding: 2rem;
-
-// 		& > div {
-// 			display: flex;
-// 			align-items: center;
-
-// 			& > h3 {
-// 				font-weight: lighter;
-// 			}
-// 		}
-// }
-
-// & .collections-header{
-// 		display: flex;
-// 		justify-content: space-between;
-// 		align-items: center;
-// 		padding: 2rem;
-
-// 		& > div {
-// 			display: flex;
-// 			align-items: center;
-
-// 			& > h3 {
-// 				font-weight: lighter;
-// 				font-size: 1.3rem;
-// 			}
-
-// 			& a {
-// 				font-size: 1.1rem;
-// 				color: white;
-// 				outline: none;
-// 				background-color: var(--light-blue);
-// 				border: none;
-// 				border-radius: 6px;
-// 				text-align: center;
-// 				cursor: pointer;
-// 				padding: 8px 5px;
-// 				white-space: nowrap;
-
-// 				:hover {
-// 					box-shadow: 0px 3px 6px -2px rgba(0, 0, 0, 0.5);
-// 				}
-// 				@media screen and (max-width: 320px){
-// 					font-size: .9rem;
-// 				}
-// 			}
-// 		}
-// }
-
-// & .collections-header-mobile{
-// 		margin: 2rem;
-
-// 		& > div {
-// 			display: flex;
-// 			align-items: center;
-
-// 			& > h3 {
-// 				font-weight: bold;
-// 				font-size: 1.2rem;
-// 			}
-
-// 			& a {
-// 				font-weight: 300;
-// 				font-size: 1.2rem;
-// 				text-decoration: none;
-// 				color: #000;
-// 			}
-// 		}
-// }
+.button {
+	font-size: 13px;
+	border-radius: 5px
+}
 
 `
 

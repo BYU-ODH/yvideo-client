@@ -22,6 +22,15 @@ export const Container = styled.div`
 
 	border-top: 1px solid #ccc;
 
+	& h4 {
+		color: black;
+		font-size: 14px;
+	}
+
+	& a {
+		text-decoration: none;
+	}
+
 	& > div {
 		position: relative;
 	}

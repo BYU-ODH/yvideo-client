@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import plusIcon from 'assets/plus-white.svg'
 
-export const Container = styled.div`
+export const ManagerContainer = styled.div`
 
 	padding-top: 8.4rem;
 	display: flex;
@@ -44,7 +44,7 @@ export const SideMenu = styled.div`
 	flex: none;
 
 	border-right: 1px solid #c4c4c4;
-	width: 22rem;
+	width: 27rem;
 	min-height: calc(100vh - 14.4rem);
 
 	height: 100%;
@@ -62,10 +62,11 @@ export const SideMenu = styled.div`
 		display: ${props => !props.isOpen && `none`};
 	}
 
-	& > h4 {
+	& > h5 {
 		padding: .8rem 0;
 		margin-bottom: 1rem;
 		position: relative;
+		font-weight: bold;
 	}
 
 	& > div {
@@ -78,7 +79,9 @@ export const SideMenu = styled.div`
 		display: flex;
 		align-items: center;
 		padding-left: 2rem;
-		font-size: 1.3rem;
+		font-size: 1.2rem;
+		text-decoration: none;
+		color: black;
 	}
 
 	& .active-collection {

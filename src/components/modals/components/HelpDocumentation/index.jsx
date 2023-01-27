@@ -1,6 +1,11 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useEffect } from 'react'
 
-import { Container, Back, CloseHelp, Header } from './styles'
+import { Back } from './styles'
+
+import Modal from 'react-bootstrap/Modal'
+import Row from 'react-bootstrap/Row'
+import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
 
 import closeIcon from 'assets/x.svg'
 
@@ -20,17 +25,27 @@ const HelpDocumentation = props => {
 	}, [])
 
 	return (
-		<>
+		<div
+			className="modal show"
+			style={{ display: 'block', position: 'initial' }}
+		>
 			<Back
 				onKeyUp={e => e.code === `Escape` && toggleModal()}
 				onClick={toggleModal}>
-				<Container id='help-documentation-container' onClick={e => e.stopPropagation()}>
-					<Header><h1>{name} <CloseHelp onClick={toggleModal}><img alt='' src={closeIcon} /></CloseHelp></h1></Header>
-					<div id='content'>
-					</div>
+				<Modal.Dialog id='help-documentation-container' onClick={e => e.stopPropagation()} >
+					<Modal.Header closeButton onClick={toggleModal} className='helpModalHeader'><h1>{name}</h1></Modal.Header>
+					<Modal.Body className='helpModalBody'>
+						<Container>
+							<Row>
+									<Col>
+									<div id='content'>
+									</div>
+								</Col>
+							</Row>
 					{
 						name === `Manage Resource` ? (
-							<>
+							<Row className="mb-4">
+								<Col>
 								<div className='video-section'>
 									<h2>Create Resource Video Tutorial</h2>
 									<div>
@@ -39,22 +54,27 @@ const HelpDocumentation = props => {
 										</video>
 									</div>
 								</div>
-								<br/>
-							</>
+								</Col>
+							</Row>
 						) : null
 					}
-					<div className='video-section'>
-						<h2>{name} Video Tutorial</h2>
-						<div>
-							<video controls>
-								<source src={`/videos/${name.toLowerCase().replace(` `, `-`)}.webm`} type='video/webm'/>
-							</video>
-						</div>
-					</div>
+					<Row>
+						<Col>
+							<div className='video-section'>
+								<h2>{name} Video Tutorial</h2>
+								<div>
+									<video controls>
+										<source src={`/videos/${name.toLowerCase().replace(` `, `-`)}.webm`} type='video/webm'/>
+									</video>
+								</div>
+							</div>
+						</Col>
+					</Row>
 					<br/>
 					{
 						name === `Manage Collections` ? (
-							<>
+							<Row>
+								<Col>
 								<div className='video-section'>
 									<h2>Manage Content Video Tutorial</h2>
 									<div>
@@ -79,13 +99,16 @@ const HelpDocumentation = props => {
 										</video>
 									</div>
 								</div>
-							</>
+								</Col>
+							</Row>
 						) : null
 					}
+					</Container>
 					<br/>
-				</Container>
+					</Modal.Body>
+				</Modal.Dialog>
 			</Back>
-		</>
+		</div>
 	)
 }
 

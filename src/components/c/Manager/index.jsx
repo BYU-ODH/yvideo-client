@@ -5,9 +5,13 @@ import { ManageCollectionContainer, LabAssistantManageCollectionContainer } from
 
 import { Accordion } from 'components/bits'
 
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+
 import {
 	Body,
-	Container,
+	ManagerContainer,
 	CreateButton,
 	NoCollection,
 	SideMenu,
@@ -41,9 +45,9 @@ const Manager = props => {
 	} = props.handlers
 
 	return (
-		<Container>
+		<ManagerContainer>
 			{props.empty !== undefined ? (
-				<>
+				<Row>
 					{user ? (
 						<>
 							<h1 id='no-collections'>{user.name ? user.name : `This user`} does not have any collections</h1>
@@ -57,7 +61,7 @@ const Manager = props => {
 							<FeedbackMessage><p>There are no collections</p></FeedbackMessage>
 						</>
 					)}
-				</>
+				</Row>
 			) : (
 				<>
 					<>
@@ -69,7 +73,7 @@ const Manager = props => {
 									{ user.roles <= 2 &&
 										<CreateButton id='collection-create' className='std-outline-color' onClick={createNew}><PlusIcon />Collection</CreateButton>
 									}
-									<h4 id='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
+									<h5 id='collection-username'>{user ? `${user.name}'s Collections` : `My Collections`}
 										<Help
 											onMouseEnter={e => handleShowTip(`help`,
 												{
@@ -81,7 +85,7 @@ const Manager = props => {
 											onMouseLeave={() => toggleTip()}
 										><img id='help-document' src={helpIcon} alt='' onClick={handleShowHelp} />
 										</Help>
-									</h4>
+									</h5>
 
 									<Accordion id='collection-published' className='std-outline-color' header={`Published`} active>
 										{sideLists.published.map(({ id, name }, index) =>
@@ -149,7 +153,7 @@ const Manager = props => {
 					</Body>
 				</>
 			)}
-		</Container>
+		</ManagerContainer>
 	)
 }
 

@@ -24,7 +24,7 @@ const Style = styled.div`
 	transition: all .4s ease-in-out;
 
 	& > button:first-of-type {
-		position: relative;
+		position: absolute;
 		left: -10rem;
 		transition: left .4s ease-in-out;
 	}
@@ -42,6 +42,10 @@ const Style = styled.div`
 	& h4 {
 		margin-top: 2.4rem;
 		font-weight: 500;
+	}
+
+	& a {
+		font-size: 14px;
 	}
 
 	& hr {
@@ -68,6 +72,8 @@ export default Style
 export const LinkStyled = styled(Link)`
 	margin-bottom: 1rem;
 	width: fit-content;
+	color:black;
+	font-size: 13px;
 
 	text-decoration: none;
 	font-weight: 300;
@@ -78,6 +84,7 @@ export const LinkStyled = styled(Link)`
 export const AStyled = styled.a`
 	margin-bottom: 1rem;
 	width: fit-content;
+	color: black;
 
 	text-decoration: none;
 	font-weight: 300;
@@ -143,13 +150,15 @@ export const Footer = styled.div`
 
 export const MenuIcon = styled.button`
 	display: flex;
+	overflow: auto;
+	display: inline-block;
 	align-items: center;
 	justify-content: center;
 	height: 4rem;
 	width: 4rem;
 	border: .125rem solid white;
 	margin-right: 4rem;
-	margin-top: -1.3rem;
+	margin-top: -1.5rem;
 	background: url(${menuIcon}) center no-repeat;
 
 	:hover {

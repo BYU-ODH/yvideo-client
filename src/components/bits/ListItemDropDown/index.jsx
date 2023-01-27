@@ -41,7 +41,7 @@ const ListItemDropDown = props => {
 							return (
 								<div className='link' key={item}>
 									<Link to={`/player/${id}/${item}`}>
-										<Clipa>
+										<Clip>
 											<div className='name'>
 												<u>Clip - {parsedClips[item][`title`]}</u>
 											</div>

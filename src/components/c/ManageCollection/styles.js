@@ -163,7 +163,7 @@ export const TabHeader = styled.div`
     width: 10rem;
     background: transparent;
     height: 2.5rem;
-
+		font-size: 13px;
     border: none;
     cursor: pointer;
   }
@@ -195,6 +195,7 @@ export const NewContent = styled.button`
   object-position: center;
 
   margin: 2rem;
+	margin-left: 2.76rem;
 
 	@media screen and (max-width: 1000px) {
 		margin: 1rem;

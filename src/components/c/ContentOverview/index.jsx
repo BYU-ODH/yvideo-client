@@ -2,8 +2,6 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
 import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
-// import { Prompt } from 'react-router'
-
 import defaultThumbnail from 'assets/default-thumb.svg'
 import helpIcon from 'assets/help/help-icon-black.svg'
 
@@ -23,6 +21,10 @@ import Style, {
 	TitleWrapper,
 	SettingsIcon,
 } from './styles'
+
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const ContentOverview = props => {
 
@@ -97,98 +99,147 @@ const ContentOverview = props => {
 	return (
 		<Style>
 			<Preview onClick={handleToggleEdit}>
-				<div>
-					<Link to={`/player/${content.id}`}>
-						<LazyImage
-							src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail}
-							height='12rem'
-							width='21rem'
-							heightSm='4.5rem'
-							widthSm='6.5rem'
-						/>
-					</Link>
-				</div>
-				<div>
-					{editing &&
-							<div className='icon-Buttons'>
-								<PublishButton
-									className='publish-button'
-									published={content.published}
-									onClick={handleTogglePublish}>{content.published ?
-										<>
-											<i className='fa fa-eye-slash'></i> Unpublish
-										</>
+				<Container>
+					<Row>
+						<Col xs="6" lg="3" className="me-4">
+							<Link to={`/player/${content.id}`}>
+								<LazyImage
+									src={content.thumbnail !== `empty` ? content.thumbnail : defaultThumbnail}
+									height='12rem'
+									width='21rem'
+									heightSm='4.5rem'
+									widthSm='6.5rem'
+								/>
+							</Link>
+						</Col>
+
+				{/* page opened when you click settings -- Start */}
+
+							{editing &&
+									<div className='icon-Buttons'>
+										<PublishButton
+											className='publish-button'
+											published={content.published}
+											onClick={handleTogglePublish}>{content.published ?
+												<>
+													<i className='fa fa-eye-slash'></i> Unpublish
+												</>
+												:
+												<>
+													<i className='fa fa-eye'></i> Publish
+												</>
+											}
+										</PublishButton>
+										<RemoveButton className='remove-button' onClick={handleRemoveContent}><i className='fa fa-trash-o'></i>Delete</RemoveButton>
+										<EditButton id='edit-button' onClick={handleToggleEdit}><i className='fa fa-save'></i>Save</EditButton>
+									</div>
+							}
+				{/* page opened when you click settings -- End */}
+							<Col xs="6" lg="3">
+								<Row className="mt-5">
+									{editing ?
+										<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
 										:
-										<>
-											<i className='fa fa-eye'></i> Publish
-										</>
+										<TitleWrapper><h3 className={`content-title`}>{content.name}</h3></TitleWrapper>
 									}
-								</PublishButton>
-								<RemoveButton className='remove-button' onClick={handleRemoveContent}><i className='fa fa-trash-o'></i>Delete</RemoveButton>
-								<EditButton id='edit-button' onClick={handleToggleEdit}><i className='fa fa-save'></i>Save</EditButton>
-							</div>
-					}
-					{editing ?
-						<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
-						:
-						<TitleWrapper><h3 className={`content-title`}>{content.name}</h3></TitleWrapper>}
-					<ul>
-						<Icon className='translation' checked={allowDefinitions} onMouseEnter={e => handleShowTip(`${allowDefinitions ? `translation` : `translation-off`}`,
-							{
-								x: e.target.getBoundingClientRect().x + 10,
-								y: e.target.getBoundingClientRect().y + 5,
-								width: e.currentTarget.offsetWidth,
-							})
-						}
-						onMouseLeave={e => toggleTip()}/>
-						<Icon className='captions' checked={showCaptions} onMouseEnter={e => handleShowTip(`${showCaptions ? `closed-captioning-on` : `closed-captioning-off`}`,
-							{
-								x: e.target.getBoundingClientRect().x + 10,
-								y: e.target.getBoundingClientRect().y + 5,
-								width: e.currentTarget.offsetWidth,
-							})
-						}
-						onMouseLeave={e => toggleTip()}/>
-						<Icon className='annotations' checked={showAnnotations} />
-						<Icon>{content.published ? <i className='fa fa-eye'
-							onMouseEnter={e => handleShowTip(`published`,
-								{
-									x: e.target.getBoundingClientRect().x + 10,
-									y: e.target.getBoundingClientRect().y + 7,
-									width: e.currentTarget.offsetWidth,
-								})
+								</Row>
+							{/* <ul> */}
+							<Row className="mt-2">
+								<Col>
+									<Icon className='translation' style={{fontSize:"10px"}}checked={allowDefinitions} onMouseEnter={e => handleShowTip(`${allowDefinitions ? `translation` : `translation-off`}`,
+										{
+											x: e.target.getBoundingClientRect().x + 10,
+											y: e.target.getBoundingClientRect().y + 5,
+											width: e.currentTarget.offsetWidth,
+										})
+									}
+									onMouseLeave={e => toggleTip()}/>
+								</Col>
+								<Col>
+									<Icon className='captions' checked={showCaptions} onMouseEnter={e => handleShowTip(`${showCaptions ? `closed-captioning-on` : `closed-captioning-off`}`,
+										{
+											x: e.target.getBoundingClientRect().x + 10,
+											y: e.target.getBoundingClientRect().y + 5,
+											width: e.currentTarget.offsetWidth,
+										})
+									}
+									onMouseLeave={e => toggleTip()}/>
+								</Col>
+								{/* <Col>
+									<Icon className='annotations' checked={showAnnotations} />
+								</Col> */}
+								<Col>
+									<Icon>{content.published ? <i className='fa fa-eye'
+										onMouseEnter={e => handleShowTip(`published`,
+											{
+												x: e.target.getBoundingClientRect().x + 10,
+												y: e.target.getBoundingClientRect().y + 7,
+												width: e.currentTarget.offsetWidth,
+											})
+										}
+										onMouseLeave={e => toggleTip()}></i> : <i className='fa fa-eye-slash'
+										onMouseEnter={e => handleShowTip(`unpublished`,
+											{
+												x: e.target.getBoundingClientRect().x + 10,
+												y: e.target.getBoundingClientRect().y + 5,
+												width: e.currentTarget.offsetWidth,
+											})
+										}
+										onMouseLeave={e => toggleTip()}></i>}</Icon>
+									</Col>
+									<Col></Col>
+									<Col></Col>
+									<Col></Col>
+									<Col></Col>
+								</Row>
+							{/* </ul> */}
+						</Col>
+						<Col xs="6" lg="4">
+								{editing ||
+										<LinksWrapper className='LinksWrapper'>
+										<Row className="mt-5">
+												<Col>
+													<IconWrapper onClick={handleLinks} className='video-editor-wrapper'>
+															<ContentIcons className='video-editor'/>
+															<StyledLink to={`/videoeditor/${content.id}`} style={{ textAlign: 'center'}}>Video Editor</StyledLink>
+													</IconWrapper>
+												</Col>
+												<Col>
+													<IconWrapper onClick={handleLinks} className='subtitle-editor-wrapper'>
+														<ContentIcons className='subtitle-editor'/>
+														<StyledLink to={`/subtitleeditor/${content.id}`}>Subtitle Editor</StyledLink>
+													</IconWrapper>
+												</Col>
+												<Col>
+													<IconWrapper onClick={handleLinks} className='clip-manager-wrapper'>
+														<ContentIcons className='clip-manager'/>
+														<StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink>
+													</IconWrapper>
+												</Col>
+											</Row>
+
+										</LinksWrapper>
+								}
+						</Col>
+						<Col>
+							{ !editing &&
+									<SettingsIcon
+										onClick={handleEditAndTip}
+										onMouseEnter={e => handleShowTip(`settings`,
+											{
+												x: e.target.getBoundingClientRect().x + 45,
+												y: e.target.getBoundingClientRect().y - 5,
+												width: e.currentTarget.offsetWidth,
+											})
+										}
+										onMouseLeave={() => toggleTip()} />
 							}
-							onMouseLeave={e => toggleTip()}></i> : <i className='fa fa-eye-slash'
-							onMouseEnter={e => handleShowTip(`unpublished`,
-								{
-									x: e.target.getBoundingClientRect().x + 10,
-									y: e.target.getBoundingClientRect().y + 5,
-									width: e.currentTarget.offsetWidth,
-								})
-							}
-							onMouseLeave={e => toggleTip()}></i>}</Icon>
-					</ul>
-				</div>
-				{editing ||
-						<LinksWrapper className='LinksWrapper'>
-							<IconWrapper onClick={handleLinks} className='video-editor-wrapper'><ContentIcons className='video-editor'/><StyledLink to={`/videoeditor/${content.id}`}>Video Editor</StyledLink></IconWrapper>
-							<IconWrapper onClick={handleLinks} className='subtitle-editor-wrapper'><ContentIcons className='subtitle-editor'/><StyledLink to={`/subtitleeditor/${content.id}`}>Subtitle Editor</StyledLink></IconWrapper>
-							<IconWrapper onClick={handleLinks} className='clip-manager-wrapper'><ContentIcons className='clip-manager'/><StyledLink to={`/clipeditor/${content.id}`}>Clip Manager</StyledLink></IconWrapper>
-						</LinksWrapper>
-				}
-				{ !editing &&
-						<SettingsIcon
-							onClick={handleEditAndTip}
-							onMouseEnter={e => handleShowTip(`settings`,
-								{
-									x: e.target.getBoundingClientRect().x + 45,
-									y: e.target.getBoundingClientRect().y - 5,
-									width: e.currentTarget.offsetWidth,
-								})
-							}
-							onMouseLeave={() => toggleTip()} />
-				}
-			</Preview>
+						</Col>
+						</Row>
+					</Container>
+					</Preview>
+
+				<Row>
 			{editing &&
 					<InnerContainer>
 						<Column>
@@ -280,6 +331,8 @@ const ContentOverview = props => {
 					when={blockLeave}
 					message='Have you saved your changes already?'
 				/> */}
+				</Row>
+
 		</Style>
 	)
 }

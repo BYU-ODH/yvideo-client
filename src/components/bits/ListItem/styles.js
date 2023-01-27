@@ -19,7 +19,13 @@ export const Style = styled.div`
 		display: inline;
 		font-weight: 500;
 		font-size: 1.2rem;
+		color: black;
 	}
+
+	& a {
+		text-decoration: none;
+	}
+
 
 	& span {
 		flex: 1;

@@ -1,4 +1,4 @@
-const deptList = process.env.REACT_APP_DEPT_LIST.split(`,`)
+const deptList = process.env.REACT_APP_DEPT_LIST?.split(`,`)
 
 export const validateDept = dept => {
 	if (deptList.indexOf(dept) !== -1 || dept === ``) return true

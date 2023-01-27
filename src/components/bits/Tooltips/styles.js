@@ -12,6 +12,7 @@ const Style = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	font-size: 10;
 
 	padding: 5px;
 
@@ -40,7 +41,7 @@ const Style = styled.div`
 	border: rgba(0, 46, 93, 0.8);
 	color: white;
 
-	& h3 {
+	& h6 {
 		text-align: center !important;
 	}
 `

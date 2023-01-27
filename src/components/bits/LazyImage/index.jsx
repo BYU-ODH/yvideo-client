@@ -2,6 +2,8 @@ import React from 'react'
 
 import Style from './styles'
 
+import Image from 'react-bootstrap/Image'
+
 const LazyImage =
 	({
 		src,
@@ -20,10 +22,10 @@ const LazyImage =
 				widthSm={widthSm}
 			>
 				{src &&
-					<img
+					<Image
 						src={src}
 						alt={alt}
-					/>
+					fluid />
 				}
 			</Style>
 		)
