@@ -39,7 +39,7 @@ const TrackLayer = props => {
 
 	useLayoutEffect(() => {
 
-		if(events && layerIndex === 4){
+		if(events && (layerIndex === 4 || layerIndex === 3)){
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
@@ -118,7 +118,7 @@ const TrackLayer = props => {
 		for(let i = 0; i < sortedEvents.length; i++){
 			const currentEvent = sortedEvents[i]
 
-			if(currentEvent.type === `Censor`){
+			if(currentEvent.type === `Censor` || currentEvent.type === `Comment`){
 				const eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
 				if(lastCensorEvent === null){
 
