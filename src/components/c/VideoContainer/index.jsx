@@ -235,10 +235,14 @@ const VideoContainer = props => {
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
 
+			const cont = document.getElementById(`blankContainer`)
+			const width = cont.offsetWidth
+			const height = cont.offsetHeight
+
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
-					event.position[activeCensorPosition][1] = pos.x / videoRef.current.offsetWidth * 100 + event.position[activeCensorPosition][3] / 2
-					event.position[activeCensorPosition][2] = pos.y / videoRef.current.offsetHeight * 100 + event.position[activeCensorPosition][4] / 2
+					event.position[activeCensorPosition][1] = pos.x / width * 100 + event.position[activeCensorPosition][3] / 2
+					event.position[activeCensorPosition][2] = pos.y / height * 100 + event.position[activeCensorPosition][4] / 2
 				}
 			}
 
@@ -289,29 +293,30 @@ const VideoContainer = props => {
 			const censor = document.getElementById(`censorContainer`)
 			if(width/height > aspectRatio[0] / aspectRatio[1]) {
 				const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
-				const pad = (width - videoWidth) / 2
+				const padding = (width - videoWidth) / 2
 				blank.style.left =`0px`
 				blank.style.top = `0px`
-				blank.style.width = `100%`
+				blank.style.width = `${width}px`
 				comment.style.width = `${videoWidth}px`
-				censor.style.width = `70vw`
+				censor.style.width = `${width}px`
+				censor.style.width = `${width}px`
 				blank.style.height = `${height}px`
 				comment.style.height = `${height}px`
 				censor.style.height = `${height}px`
 				censor.style.visibility = `hidden`
-				setPlayerPadding([pad, 0])
+				setPlayerPadding([padding, 0])
 			} else if(width/height < aspectRatio[0] / aspectRatio[1]){
 				const videoHeight = width * aspectRatio[1] / aspectRatio[0]
-				const pad = (height - videoHeight) / 2
+				const padding = height - videoHeight / 2
 				blank.style.top = `0px`
 				blank.style.left = `0px`
 				blank.style.width = `100%`
 				blank.style.height = `${videoHeight}px`
 				comment.style.height = `${videoHeight}px`
-				censor.style.height = `${videoHeight}px`
+				censor.style.height = `${height}px`
 				comment.style.width = `${width}px`
 				censor.style.width = `${width}px`
-				setPlayerPadding([0, pad])
+				setPlayerPadding([0, padding])
 				censor.style.visibility = `hidden`
 			}
 			const EventEditor = document.getElementById(`EventEditor`)
