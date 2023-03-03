@@ -108,9 +108,13 @@ export const SectionInput = styled.input`
 
 export const AddButton = styled.button`
 	background: ${props =>
-		!props.course && !props.section ? `var(--royal-blue)` : `#eee`};
+		!props.course && !props.section ? `var(--light-blue)` : `#eee`};
 	color: ${props =>
 		!props.course && !props.section ? `white` : `initial`};
+
+	:hover {
+		background: ${props => !props.course && !props.section ? `var(--royal-blue)` : `#eee`};
+	}
 
 	height: 2.8rem;
 	width: 5rem;
@@ -126,6 +130,8 @@ export const AddButton = styled.button`
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
+
+	cursor: pointer;
 `
 export const AddManyButton = styled.button`
 	height: 2.8rem;
@@ -138,8 +144,11 @@ export const AddManyButton = styled.button`
 	overflow-x: auto;
 	overflow-y: hidden;
 	cursor: pointer;
-	background: #0582ca;
+	background: var(--navy-blue);
 	color: white;
+	:hover {
+		background: var(--royal-blue);
+	}
 `
 
 export const Table = styled.table`

@@ -139,10 +139,8 @@ const VideoContainer = props => {
 				const pauseMessageButton = `<button type='button' onclick={pauseMessage.style.visibility='hidden'}>Close</button>`
 				switch(values.allEvents[y].type){
 				case `Mute`:
-					if(values.allEvents[y].end >= playedSeconds){
-						events[index].active = false
+					if(values.allEvents[y].end >= playedSeconds)
 						video.handleMute()
-					}
 					break
 				case `Pause`:
 					events[index].active = false
@@ -154,20 +152,18 @@ const VideoContainer = props => {
 					}
 					break
 				case `Skip`:
-					events[index].active = false
 					video.handleSkip(values.allEvents[y].end)
 					break
 				default:
 					break
 				}
 			}
-
-			if(playedSeconds === duration){
-				// for all of the events. If the new seek time goes before events that were already executed activate the events again
-				events.forEach(event => {
+			// for all of the events. If the new seek time goes before events that were already executed activate the events again
+			events.forEach(event => {
+				if(playedSeconds < event.start)
 					event.active = true
-				})
-			}
+			})
+
 			if(typeof handleSubProgress === `function`)
 				handleSubProgress(playedSeconds)
 		},
@@ -298,7 +294,7 @@ const VideoContainer = props => {
 				blank.style.top = `0px`
 				blank.style.width = `100%`
 				comment.style.width = `${videoWidth}px`
-				censor.style.width = `${videoWidth}px`
+				censor.style.width = `70vw`
 				blank.style.height = `${height}px`
 				comment.style.height = `${height}px`
 				censor.style.height = `${height}px`
@@ -477,10 +473,8 @@ const VideoContainer = props => {
 					{subtitleText !== `` &&
 						<Subtitles type={editorType}>{subtitleText}</Subtitles>
 					}
-					<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
-					</div>
-					<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`}}>
-					</div>
+					<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`}} />
+					<div id ='commentContainer' style={{width: `100%`, height: `100%`, position: `absolute`}} />
 					<PauseMessage id='pauseMessage'>
 						<button type='button' style={{width: `90px`, height: `50px`, position: `bottom right`}}>Close</button>
 					</PauseMessage>

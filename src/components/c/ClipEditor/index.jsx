@@ -39,7 +39,7 @@ const ClipEditor = props => {
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 	const [layerWidth, setWidth] = useState(0)
 	const [annotationsSaved, setSaved] = useState(false)
-	const [scrollBarWidth, setScrollBar] = useState(0)
+	const [scrollBarWidth, setScrollBar] = useState(100)
 	const [clipList, setClipList] = useState([])
 	const [activeItem, setActiveItem] = useState(``)
 	const [activeIndex, setActiveIndex] = useState(``)
@@ -278,8 +278,11 @@ const ClipEditor = props => {
 			title: ``,
 		}
 
+		const portionOfBarToFill = 1/30 // one thirtieth of the bar
+		const scrollBarWidthRatio = 100 // scroll bar width at normal zoom is 100 so we need to divide by 100 to get the ratio as we zoom in
+
 		clip.start = Number(startPercentage)
-		clip.end = Number(startPercentage) + clip.end
+		clip.end = Number(startPercentage) + videoLength * portionOfBarToFill * (scrollBarWidth / scrollBarWidthRatio)
 
 		const clips = [...clipList]
 		clips[id] = clip
