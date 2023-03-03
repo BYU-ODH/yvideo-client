@@ -104,6 +104,7 @@ const CollectionPermissions = props => {
 						<h4>
 							Public
 							<SwitchToggle
+								className='switch-toggle'
 								on={collection.public}
 								setToggle={makePublic}
 								data_key='public'
