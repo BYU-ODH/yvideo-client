@@ -2,7 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import handleScrollFuncs from '../../common/toggleScroll'
-import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize } from '../../common/editorCommon'
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
 
 import {
 	Style,
@@ -18,6 +18,7 @@ const ClipLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [showError, setShowError] = useState(false)
 
 	const start = clipList[index][`start`]
 	const end = clipList[index][`end`]
@@ -84,10 +85,17 @@ const ClipLayer = props => {
 		topLeft: false,
 	}
 	// Drag within the layer
-	const handleDrag = (d) => {
+	const handleDrag = (d, index) => {
+		let isError = false
 
 		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, start, end)
 
+		isError = checkForErrors(index, clipList, videoLength, isError, clipTimes)
+
+		clipList[index].start = clipTimes.start
+		clipList[index].end = clipTimes.end
+
+		setShowError(isError)
 		setStart(clipTimes.start, null, index)
 		setEnd(clipTimes.end, null, index)
 	}
@@ -100,7 +108,7 @@ const ClipLayer = props => {
 
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='clip-box'>
 					<div className={`clip-layer-${index} events`}>
@@ -118,12 +126,12 @@ const ClipLayer = props => {
 							dragAxis='x'
 							bounds={`.clip-layer-${index}`}
 							onDrag={(e, d) => {
-								handleDrag(d)
+								handleDrag(d, index)
 								setEventSeek(true)
 								handleEventPosition(start)
 							}}
 							onDragStop={(e, d) => {
-								handleDrag(d)
+								handleDrag(d, index)
 								setEventSeek(true)
 								handleEventPosition(start)
 							}}

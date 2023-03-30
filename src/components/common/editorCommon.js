@@ -94,3 +94,23 @@ export const calculateStartAndEndTimesForResize = (position, layerWidth, videoLe
 
 	return {start, end}
 }
+
+export const checkForErrors = (index, cEvents, videoLength, isError, clipTimes) => {
+	if(index === 0 && index + 1 === cEvents.length)
+		isError = false
+	else if(index + 1 === cEvents.length) {
+		if(cEvents[index].end > videoLength)
+			cEvents[index].end = videoLength
+
+		if(clipTimes.start < cEvents[index - 1].end)
+			isError = true
+	} else if(index === 0) {
+		if(cEvents[index].start < 0)
+			cEvents[index].start = 0
+
+		if(clipTimes.end > cEvents[index + 1].start)
+			isError = true
+	} else if(clipTimes.end > cEvents[index + 1].start || clipTimes.start < cEvents[index - 1].end)
+		isError = true
+	return isError
+}

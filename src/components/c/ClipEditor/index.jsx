@@ -386,6 +386,7 @@ const ClipEditor = props => {
 											<p style={{color: `inherit`}}>{clipList?.[index]?.title}</p>
 										</div>
 										<ClipLayer
+											events={allEvents}
 											clipList={clipList}
 											setStart={setStartTime}
 											setEnd={setEndTime}

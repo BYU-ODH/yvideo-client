@@ -4,7 +4,7 @@ import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
 import handleScrollFuncs from '../../common/toggleScroll'
 
-import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize } from '../../common/editorCommon'
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
 
 import {
 	Icon, Style,
@@ -33,6 +33,7 @@ const TrackLayer = props => {
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [showError, setShowError] = useState(false)
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
@@ -148,9 +149,13 @@ const TrackLayer = props => {
 
 	const handleDrag = (d, event, index) => {
 		setActiveCensorPosition(-1)
+		let isError = false
 
 		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, events[index].start, events[index].end)
 
+		isError = checkForErrors(index, events, videoLength, isError, clipTimes)
+
+		setShowError(isError)
 		events[index].start = clipTimes.start
 		events[index].end = clipTimes.end
 
@@ -217,7 +222,7 @@ const TrackLayer = props => {
 
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				{layerIndex !== 4 &&
 					<div ref={layerRef} className='events-box'>
