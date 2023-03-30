@@ -111,51 +111,17 @@ const SubtitlesLayer = props => {
 		}
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e) => {
+	const handleResize = (direction, ref, delta, event, index, e, position) => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
-		const difference = delta.width / layerWidth * 100 * videoLength / 100
-		
-		if(direction === `right`){
-			if(cEvents[index].end > videoLength)
-				cEvents[index].end = videoLength
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, subs, index, direction)
+		isError = clipTimes.isError
 
-			if(index === 0 && index + 1 === cEvents.length)
-				cEvents[index].end += difference
-			else {
-				if(index + 1 === cEvents.length)
-					cEvents[index].end += difference
-				else if(cEvents[index].end + difference > cEvents[index + 1].start) {
-					setShowError(true)
-					isError = true
-				} else
-					cEvents[index].end += difference
-			}
-		} else {
-			if(cEvents[index].start < 0)
-				cEvents[index].start = 0
-			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength - 0.01
-				cEvents[index].end = videoLength
-			}
+		setShowError(isError)
 
-			if(index === 0 && index + 1 === cEvents.length)
-				cEvents[index].start -= difference
-			else {
-				if(index === 0)
-					cEvents[index].start -= difference
-				else if(cEvents[index].start - difference < cEvents[index - 1].end) {
-					setShowError(true)
-					isError = true
-				} else
-					cEvents[index].start -= difference
-			}
-		}
-		if(!isError) {
-			setShowError(false)
+		if(!isError)
 			updateSubs(index, cEvents[index], layerIndex)
-		}
 	}
 
 	// This opens the side tab editor

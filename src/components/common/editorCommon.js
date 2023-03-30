@@ -88,11 +88,29 @@ export const calculateStartAndEndTimesForDrag = (d, layerWidth, videoLength, sta
 	return {start, end}
 }
 
-export const calculateStartAndEndTimesForResize = (position, layerWidth, videoLength, ref) => {
-	const start = position.x / layerWidth * videoLength
-	const end = (position.x + ref.offsetWidth) / layerWidth * videoLength
+export const calculateStartAndEndTimesForResize = (position, layerWidth, videoLength, ref, cEvents, index, direction) => {
+	let isError = false
+	let start = position.x / layerWidth * videoLength
+	let end = (position.x + ref.offsetWidth) / layerWidth * videoLength
 
-	return {start, end}
+	if(direction === `right`){
+		if(end > videoLength)
+			end = videoLength
+		if(index + 1 < cEvents.length){
+			if(end > cEvents[index + 1].start)
+				isError = true
+		}
+	} else {
+		if(start < 0)
+			start = 0
+		else if(start > videoLength){
+			start = videoLength - 0.01
+			end = videoLength
+		}
+		if(start < cEvents[index - 1].end)
+			isError = true
+	}
+	return {start, end, isError}
 }
 
 export const checkForErrors = (index, cEvents, videoLength, isError, clipTimes) => {

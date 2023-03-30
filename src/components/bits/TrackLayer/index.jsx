@@ -165,7 +165,7 @@ const TrackLayer = props => {
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref)
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, events, index, direction)
 
 		direction === `right` ? events[index].end = clipTimes.end : events[index].start = clipTimes.start
 

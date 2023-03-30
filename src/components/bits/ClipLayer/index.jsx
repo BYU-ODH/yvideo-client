@@ -101,7 +101,9 @@ const ClipLayer = props => {
 	}
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, e, position) => {
-		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref)
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, clipList, index, direction)
+
+		setShowError(clipTimes.isError)
 
 		direction === `right` ? setEnd(clipTimes.end, null, index) : setStart(clipTimes.start, null, index)
 	}
