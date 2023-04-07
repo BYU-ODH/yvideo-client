@@ -45,13 +45,6 @@ const ManageCollection = props => {
 		toggleTip,
 	} = props.handlers
 
-	const expiredContent = collection[`expired-content`]
-	if(expiredContent?.[`content-title`]) {
-		expiredContent.sort((a, b) => {
-			return a[`content-title`].toLowerCase().replace(sortingRegex, `$1`) > b[`content-title`].toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
-		})
-	}
-
 	content.sort((a, b) => {
 		return a.name.toLowerCase().replace(sortingRegex, `$1`) > b.name.toLowerCase().replace(sortingRegex, `$1`) ? 1 : -1
 	})
@@ -144,20 +137,6 @@ const ManageCollection = props => {
 				:
 				<>
 					<Tab>
-						{expiredContent?.length > 0 && isContentTab &&
-							<>
-								<h3 id='expiredTitle'>Expired Content</h3>
-								<hr />
-							</>
-						}
-						{isContentTab && expiredContent?.length > 0 ?
-							expiredContent.map((item, index) => (
-								<ContentOverviewContainer key={index} content={item} isExpired={true}/>
-							))
-							:
-							null
-						}
-						{expiredContent?.length > 0 && isContentTab && <hr />}
 						{isContentTab ?
 							content.map((item, index) => (
 								<div key={index}>
