@@ -1,5 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import handleScrollFuncs from '../../../components/common/toggleScroll'
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
+
 import { Rnd } from 'react-rnd'
 import { Style } from './styles'
 
@@ -96,85 +98,30 @@ const SubtitlesLayer = props => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
-		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
-		const endPercentage = beginTimePercentage + (event.end - event.start)
+		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, cEvents[index].start, cEvents[index].end)
 
-		if(index === 0 && index + 1 === cEvents.length)
-			isError = false
-		else if(index + 1 === cEvents.length) {
-			if(cEvents[index].end > videoLength)
-				cEvents[index].end = videoLength
-
-			if(beginTimePercentage < cEvents[index - 1].end) {
-				setShowError(true)
-				isError = true
-			}
-		} else if(index === 0) {
-			if(cEvents[index].start < 0)
-				cEvents[index].start = 0
-
-			if(endPercentage > cEvents[index + 1].start){
-				setShowError(true)
-				isError = true
-			}
-		} else if(endPercentage > cEvents[index + 1].start || beginTimePercentage < cEvents[index - 1].end) {
-			setShowError(true)
-			isError = true
-		}
+		isError = checkForErrors(index, cEvents, videoLength, isError, clipTimes)
+		setShowError(isError)
 
 		if(!isError) {
 			// LOGIC TO CHANGE THE TIME @params beginTime, end
-			setShowError(false)
-			cEvents[index].start = beginTimePercentage
-			cEvents[index].end = endPercentage
+			cEvents[index].start = clipTimes.start
+			cEvents[index].end = clipTimes.end
 			updateSubs(index, cEvents[index], layerIndex)
 		}
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e) => {
+	const handleResize = (direction, ref, delta, event, index, e, position) => {
 		toggleEditor(layerIndex, index)
 		let isError = false
 		const cEvents = subs
-		const difference = delta.width / layerWidth * 100 * videoLength / 100
-		if(direction === `right`){
-			if(cEvents[index].end > videoLength)
-				cEvents[index].end = videoLength
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, subs, index, direction)
+		isError = clipTimes.isError
 
-			if(index === 0 && index + 1 === cEvents.length)
-				cEvents[index].end += difference
-			else {
-				if(index + 1 === cEvents.length)
-					cEvents[index].end += difference
-				else if(cEvents[index].end + difference > cEvents[index + 1].start) {
-					setShowError(true)
-					isError = true
-				} else
-					cEvents[index].end += difference
-			}
-		} else {
-			if(cEvents[index].start < 0)
-				cEvents[index].start = 0
-			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength - 0.01
-				cEvents[index].end = videoLength
-			}
+		setShowError(isError)
 
-			if(index === 0 && index + 1 === cEvents.length)
-				cEvents[index].start -= difference
-			else {
-				if(index === 0)
-					cEvents[index].start -= difference
-				else if(cEvents[index].start - difference < cEvents[index - 1].end) {
-					setShowError(true)
-					isError = true
-				} else
-					cEvents[index].start -= difference
-			}
-		}
-		if(!isError) {
-			setShowError(false)
+		if(!isError)
 			updateSubs(index, cEvents[index], layerIndex)
-		}
 	}
 
 	// This opens the side tab editor

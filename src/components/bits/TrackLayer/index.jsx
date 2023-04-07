@@ -4,6 +4,8 @@ import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
 import handleScrollFuncs from '../../common/toggleScroll'
 
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
+
 import {
 	Icon, Style,
 } from './styles'
@@ -31,13 +33,14 @@ const TrackLayer = props => {
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [showError, setShowError] = useState(false)
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
 
-		if(events && layerIndex === 4){
+		if(events && (layerIndex === 4 || layerIndex === 3)){
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
@@ -116,7 +119,7 @@ const TrackLayer = props => {
 		for(let i = 0; i < sortedEvents.length; i++){
 			const currentEvent = sortedEvents[i]
 
-			if(currentEvent.type === `Censor`){
+			if(currentEvent.type === `Censor` || currentEvent.type === `Comment`){
 				const eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
 				if(lastCensorEvent === null){
 
@@ -146,35 +149,27 @@ const TrackLayer = props => {
 
 	const handleDrag = (d, event, index) => {
 		setActiveCensorPosition(-1)
+		let isError = false
 
-		const cEvents = events
-		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
-		const endPercentage = beginTimePercentage + cEvents[index].end - cEvents[index].start
+		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, events[index].start, events[index].end)
 
-		// LOGIC TO CHANGE THE TIME @params beginTime, end
-		cEvents[index].start = beginTimePercentage
-		cEvents[index].end = endPercentage
+		isError = checkForErrors(index, events, videoLength, isError, clipTimes)
 
-		if(cEvents[index].end > videoLength)
-			cEvents[index].end = videoLength
+		setShowError(isError)
+		events[index].start = clipTimes.start
+		events[index].end = clipTimes.end
 
-		if(cEvents[index].start < 0)
-			cEvents[index].start = 0
 		// call handler from parent
-		updateEvents(index, cEvents[index], layerIndex)
-		// calculateOverlaps(events)
+		updateEvents(index, events[index], layerIndex)
 	}
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
-		const start = position.x / layerWidth * videoLength
-		const end = (position.x + ref.offsetWidth) / layerWidth * videoLength
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, events, index, direction)
 
-		const cEvents = events
+		direction === `right` ? events[index].end = clipTimes.end : events[index].start = clipTimes.start
 
-		direction === `right` ? cEvents[index].end = end : cEvents[index].start = start
-
-		updateEvents(index, cEvents[index], layerIndex)
+		updateEvents(index, events[index], layerIndex)
 	}
 
 	const printEvents = (event, index, isMultiEvent) => {
@@ -227,7 +222,7 @@ const TrackLayer = props => {
 
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				{layerIndex !== 4 &&
 					<div ref={layerRef} className='events-box'>

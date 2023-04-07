@@ -51,6 +51,8 @@ const ClipEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
 	const [isReady, setIsReady] = useState(false)
+	const [eventSeek, setEventSeek] = useState(false)
+	const [eventPosition, setEventPosition] = useState(0)
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
 
@@ -117,6 +119,10 @@ const ClipEditor = props => {
 		initChangeTimeArray()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [clipList])
+
+	const handleEventPosition = (position) => {
+		setEventPosition(position)
+	}
 
 	const initDeleteArray = () =>{
 		if (clipList){
@@ -340,6 +346,9 @@ const ClipEditor = props => {
 						eventToEdit={null}
 						activeCensorPosition = {activeCensorPosition}
 						editorType='clip'
+						eventSeek={eventSeek}
+						setEventSeek={setEventSeek}
+						eventPosition={eventPosition}
 						handleShowTip={handleShowTip}
 						toggleTip={toggleTip}
 						elapsed={elapsed}
@@ -377,6 +386,7 @@ const ClipEditor = props => {
 											<p style={{color: `inherit`}}>{clipList?.[index]?.title}</p>
 										</div>
 										<ClipLayer
+											events={allEvents}
 											clipList={clipList}
 											setStart={setStartTime}
 											setEnd={setEndTime}
@@ -385,6 +395,8 @@ const ClipEditor = props => {
 											activeIndex={activeIndex}
 											index={index}
 											handleEditClip={handleEditClip}
+											handleEventPosition={handleEventPosition}
+											setEventSeek={setEventSeek}
 										/>
 									</div>
 								),

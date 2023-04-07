@@ -2,6 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import handleScrollFuncs from '../../common/toggleScroll'
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
 
 import {
 	Style,
@@ -9,7 +10,7 @@ import {
 
 const ClipLayer = props => {
 
-	const {clipList, width, setStart, setEnd, videoLength, activeIndex, index, handleEditClip} = props
+	const {clipList, width, setStart, setEnd, videoLength, activeIndex, index, handleEditClip, handleEventPosition, setEventSeek} = props
 	const layerRef = useRef(null)
 	const dragRef = useRef(null)
 
@@ -17,6 +18,7 @@ const ClipLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [showError, setShowError] = useState(false)
 
 	const start = clipList[index][`start`]
 	const end = clipList[index][`end`]
@@ -83,49 +85,32 @@ const ClipLayer = props => {
 		topLeft: false,
 	}
 	// Drag within the layer
-	const handleDrag = (d) => {
+	const handleDrag = (d, index) => {
+		let isError = false
 
-		const beginTimePercentage = d.x / layerWidth * videoLength
-		const endPercentage = beginTimePercentage + (end - start)
-		// LOGIC TO CHANGE THE TIME @params beginTime, end
-		let s = beginTimePercentage
-		let e = endPercentage
-		if(e > videoLength)
-			e = videoLength
+		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, start, end)
 
-		if(s < 0)
-			s = 0
-		// call handler from parent
-		setStart(s, null, index)
-		setEnd(e, null, index)
+		isError = checkForErrors(index, clipList, videoLength, isError, clipTimes)
+
+		clipList[index].start = clipTimes.start
+		clipList[index].end = clipTimes.end
+
+		setShowError(isError)
+		setStart(clipTimes.start, null, index)
+		setEnd(clipTimes.end, null, index)
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, i, e) => {
-		let s = start
-		let en = end
-		const difference = delta.width / layerWidth * videoLength
-		if(direction === `right`){
-			en += difference
+	const handleResize = (direction, ref, delta, e, position) => {
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, clipList, index, direction)
 
-			if(en > videoLength)
-				en = videoLength
+		setShowError(clipTimes.isError)
 
-		} else {
-			s -= difference
-			if(s < 0)
-				s = 0
-			else if(s > videoLength){
-				s = videoLength - 30
-				en = videoLength
-			}
-		}
-		setStart(s, null, index)
-		setEnd(en, null, index)
+		direction === `right` ? setEnd(clipTimes.end, null, index) : setStart(clipTimes.start, null, index)
 	}
 
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='clip-box'>
 					<div className={`clip-layer-${index} events`}>
@@ -142,11 +127,25 @@ const ClipLayer = props => {
 							enableResizing={Enable}
 							dragAxis='x'
 							bounds={`.clip-layer-${index}`}
-							onDragStop={(e, d) => {
-								handleDrag(d)
+							onDrag={(e, d) => {
+								handleDrag(d, index)
+								setEventSeek(true)
+								handleEventPosition(start)
 							}}
-							onClick = {() => handleEditClip(index, index)}
-							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
+							onDragStop={(e, d) => {
+								handleDrag(d, index)
+								setEventSeek(true)
+								handleEventPosition(start)
+							}}
+							onClick = {() => {
+								handleEditClip(index, index)
+								// het
+							}}
+							onResize={(e, direction, ref, delta, position) => {
+								handleResize(direction, ref, delta, e, position)
+								setEventSeek(true)
+								direction === `left` ? handleEventPosition(start) : handleEventPosition(end)
+							}}
 							key={`clip-${index}`}
 							style={style}
 						>
