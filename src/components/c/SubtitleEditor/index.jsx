@@ -112,8 +112,8 @@ const SubtitleEditor = props => {
 			if(subtitles[0].content[0])
 				openSubEditor(0, 0)
 		}
-		if(document.getElementById(`videoContainer`))
-			document.getElementById(`videoContainer`).style.width = `100%`
+		if(document.getElementById(`blankContainer`))
+			document.getElementById(`blankContainer`).style.width = `100%`
 
 		handleNewSub()
 		handleInvalidSubs()

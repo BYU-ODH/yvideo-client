@@ -235,14 +235,14 @@ const VideoContainer = props => {
 		handleUpdateCensorPosition: (pos) => {
 			const event = events[eventToEdit]
 
-			const videoCont = document.getElementById(`videoContainer`)
-			const vidContWidth = videoCont.offsetWidth
-			const vidContHeight = videoCont.offsetHeight
+			const cont = document.getElementById(`blankContainer`)
+			const width = cont.offsetWidth
+			const height = cont.offsetHeight
 
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
-					event.position[activeCensorPosition][1] = pos.x / vidContWidth * 100 + event.position[activeCensorPosition][3] / 2
-					event.position[activeCensorPosition][2] = pos.y / vidContHeight * 100 + event.position[activeCensorPosition][4] / 2
+					event.position[activeCensorPosition][1] = pos.x / width * 100 + event.position[activeCensorPosition][3] / 2
+					event.position[activeCensorPosition][2] = pos.y / height * 100 + event.position[activeCensorPosition][4] / 2
 				}
 			}
 
@@ -257,12 +257,12 @@ const VideoContainer = props => {
 			const event = events[eventToEdit]
 			if (event.type === `Censor`){
 				if (event.position[activeCensorPosition] !== undefined){
-					const censorWidth = event.position[activeCensorPosition][3] + delta.width / videoRef.current.offsetWidth * 100
-					const censorHeight = event.position[activeCensorPosition][4] + delta.height / videoRef.current.offsetHeight * 100
-					event.position[activeCensorPosition][3] = censorWidth
-					event.position[activeCensorPosition][4] = censorHeight
-					event.position[activeCensorPosition][1] = pos.x / videoRef.current.offsetWidth * 100 + censorWidth / 2
-					event.position[activeCensorPosition][2] = pos.y / videoRef.current.offsetHeight * 100 + censorHeight / 2
+					const width = event.position[activeCensorPosition][3] + delta.width / videoRef.current.offsetWidth * 100
+					const height = event.position[activeCensorPosition][4] + delta.height / videoRef.current.offsetHeight * 100
+					event.position[activeCensorPosition][3] = width
+					event.position[activeCensorPosition][4] = height
+					event.position[activeCensorPosition][1] = pos.x / videoRef.current.offsetWidth * 100 + width / 2
+					event.position[activeCensorPosition][2] = pos.y / videoRef.current.offsetHeight * 100 + height / 2
 				}
 			}
 			updateEvents(eventToEdit, event, event[`layer`])
@@ -282,51 +282,46 @@ const VideoContainer = props => {
 
 		},
 		handleAspectRatio: () => {
-			const videoCont = document.getElementById(`videoContainer`)
-			if (!videoCont || !aspectRatio)
+			const cont = document.getElementById(`blankContainer`)
+			if (!cont || !aspectRatio)
 				return
 
-			const contWidth = videoCont.offsetWidth
-			const contHeight = videoCont.offsetHeight - 50
+			const width = cont.offsetWidth
+			const height = cont.offsetHeight - 50
 			const blank = document.getElementById(`blank`)
-			const commentCont = document.getElementById(`commentContainer`)
-			const censorCont = document.getElementById(`censorContainer`)
-			if(contWidth / contHeight > aspectRatio[0] / aspectRatio[1]) {
-				// container wider than video
-				const videoWidth = contHeight * (aspectRatio[0] / aspectRatio[1])
-
-				const xPadding = (contWidth - videoWidth) / 2
-				const yPadding = 0
+			const comment = document.getElementById(`commentContainer`)
+			const censor = document.getElementById(`censorContainer`)
+			if(width/height > aspectRatio[0] / aspectRatio[1]) {
+				const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
+				const padding = (width - videoWidth) / 2
+				blank.style.left =`0px`
 				blank.style.top = `0px`
-				blank.style.left =`${xPadding}px`
-				blank.style.width = `${videoWidth}px`
-				blank.style.height = `${contHeight}px`
-				commentCont.style.width = `${videoWidth}px`
-				censorCont.style.width = `${videoWidth}px`
-				censorCont.style.width = `${contWidth}px`
-				commentCont.style.height = `${contHeight}px`
-				censorCont.style.height = `${contHeight}px`
-				censorCont.style.visibility = `hidden`
-				setPlayerPadding([xPadding, yPadding])
-			} else if(contWidth / contHeight < aspectRatio[0] / aspectRatio[1]){
-				// video wider than container
-				const videoHeight = contWidth * ( aspectRatio[1] / aspectRatio[0] )
-				const xPadding = 0
-				const yPadding = contHeight - videoHeight / 2
-				blank.style.top = `${yPadding}px`
+				blank.style.width = `${width}px`
+				comment.style.width = `${videoWidth}px`
+				censor.style.width = `${width}px`
+				censor.style.width = `${width}px`
+				blank.style.height = `${height}px`
+				comment.style.height = `${height}px`
+				censor.style.height = `${height}px`
+				censor.style.visibility = `hidden`
+				setPlayerPadding([padding, 0])
+			} else if(width/height < aspectRatio[0] / aspectRatio[1]){
+				const videoHeight = width * aspectRatio[1] / aspectRatio[0]
+				const padding = height - videoHeight / 2
+				blank.style.top = `0px`
 				blank.style.left = `0px`
 				blank.style.width = `100%`
 				blank.style.height = `${videoHeight}px`
-				commentCont.style.height = `${videoHeight}px`
-				censorCont.style.height = `${contHeight}px`
-				commentCont.style.width = `${contWidth}px`
-				censorCont.style.width = `${contWidth}px`
-				setPlayerPadding([xPadding, yPadding])
-				censorCont.style.visibility = `hidden`
+				comment.style.height = `${videoHeight}px`
+				censor.style.height = `${height}px`
+				comment.style.width = `${width}px`
+				censor.style.width = `${width}px`
+				setPlayerPadding([0, padding])
+				censor.style.visibility = `hidden`
 			}
 			const EventEditor = document.getElementById(`EventEditor`)
 			if(EventEditor)
-				EventEditor.style.height = `${contHeight - 1}px`
+				EventEditor.style.height = `${height - 1}px`
 		},
 	}
 
@@ -429,7 +424,7 @@ const VideoContainer = props => {
 				event.active = true
 			})
 		}
-		const wrap = document.getElementById(`videoContainer`)
+		const wrap = document.getElementById(`blankContainer`)
 		const wraplisten = new ResizeObserver((entry) => {
 			video.handleAspectRatio()
 		})
@@ -466,7 +461,7 @@ const VideoContainer = props => {
 
 	return (
 		<Style style={{ maxHeight: `65vh` }} type={editorType} id='controller'>
-			<div id='videoContainer' style={{width: `70%`, height: `100%`, position: `absolute`}}>
+			<div id='blankContainer' style={{width: `70%`, height: `100%`, position: `absolute`}}>
 				<Blank
 					className='blank'
 					id='blank'
