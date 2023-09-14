@@ -1,12 +1,12 @@
 import Position from './censorPosition'
 const handleBlank = (blanks) => {
-	const blankContainer = document.getElementById(`blank`)
+	const blankDiv = document.getElementById(`blank`)
 	const blank = document.getElementById(`blankBox`)
 	if (blanks.length > 0){
 		if (!blank){
 			const blank = document.createElement(`div`)
 			blank.setAttribute(`id`, `blankBox`)
-			blankContainer.appendChild(blank)
+			blankDiv.appendChild(blank)
 		}
 	}else{
 		const blankBox = document.getElementById(`blankBox`)
