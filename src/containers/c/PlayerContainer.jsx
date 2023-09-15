@@ -624,28 +624,22 @@ const PlayerContainer = props => {
 		const width = cont.offsetWidth
 		const height = cont.offsetHeight
 		const blank = document.getElementById(`blank`)
-		const comment = document.getElementById(`commentContainer`)
-		const censor = document.getElementById(`censorContainer`)
 		if(width / height > aspectRatio[0] / aspectRatio[1]) {
 			const videoWidth = height * (aspectRatio[0] / aspectRatio[1])
-			blank.style.marginLeft =`0px`
-			blank.style.marginTop = `0px`
-			blank.style.width = `100%`
-			comment.style.width =`100%`
-			censor.style.width = `${videoWidth}px`
+			const padding = (width - videoWidth) / 2
+			// NOTE: censorContainer and commentContainer resize as children of blank
+			blank.style.left =`${padding}px`
+			blank.style.top = `0px`
+			blank.style.width = `${videoWidth}px`
 			blank.style.height = `${height}px`
-			comment.style.height = `${height}px`
-			censor.style.height = `${height}px`
 		} else if(width / height < aspectRatio[0] / aspectRatio[1]) {
 			const videoHeight = width * aspectRatio[1] / aspectRatio[0]
-			blank.style.marginTop = `0px`
-			blank.style.marginLeft = `0px`
-			blank.style.width = `100%`
-			blank.style.height = `100%`
-			comment.style.height = `${videoHeight}px`
-			censor.style.height = `${videoHeight}px`
-			comment.style.width = `${width}px`
-			censor.style.width = `${width}px`
+			const padding = (height - videoHeight) / 2
+			// NOTE: censorContainer and commentContainer resize as children of blank
+			blank.style.left = `0px`
+			blank.style.top = `${padding}px`
+			blank.style.width = `${width}px`
+			blank.style.height = `${videoHeight}px`
 		}
 	}
 

@@ -235,7 +235,6 @@ const TrackEditorSideMenu = props => {
 				{
 					event.type === `Censor` ? (
 						<div className='censor-menu'>
-							<label>Blur Times</label><br/><br/>
 							<table>
 								<thead className={`table-header`}>
 									<tr>
