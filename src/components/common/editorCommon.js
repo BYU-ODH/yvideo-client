@@ -43,16 +43,19 @@ export const handleScrollFactor = (direction, zoom) => {
 		let layerScrollWidth
 
 		if(document.getElementsByClassName(`events`).length >= 1)
-			layerScrollWidth = document.getElementsByClassName(`events`)[0].scrollWidth
+			layerScrollWidth = document.getElementsByClassName(`events`)[0].getBoundingClientRect().width
 		else
-			layerScrollWidth = document.getElementsByClassName(`events`).scrollWidth
+			layerScrollWidth = document.getElementsByClassName(`events`).getBoundingClientRect().width
 
 		const scrollBarContainer = document.getElementById(`zoom-scroll-container`).getBoundingClientRect().width
-		const dis = direction / scrollBarContainer
+		let scrollBarWidth = 0
+		if (!zoom)
+			scrollBarWidth = Math.ceil(Array.from(document.getElementsByClassName(`zoom-scroll-indicator react-draggable react-draggable-dragged`))[0].getBoundingClientRect().width)
 
-		scrubber.scrollLeft = scrubber.scrollWidth * dis
-		timeIndicator.scrollLeft = scrubber.scrollWidth * dis
-		scrubberContainer.scrollLeft = scrubber.scrollWidth * dis
+		const dis = Math.floor(scrollBarContainer) > direction + scrollBarWidth || direction === 0 ? direction / scrollBarContainer : 1.0
+
+		timeIndicator.scrollLeft = scrubber.getBoundingClientRect().width * dis
+		scrubberContainer.scrollLeft = scrubber.getBoundingClientRect().width * dis
 
 		allLayers.forEach((_element, i) => {
 			allLayers[i].scrollLeft = layerScrollWidth * dis

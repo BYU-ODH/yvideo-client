@@ -462,7 +462,7 @@ const ClipEditor = props => {
 											}
 											bounds = 'parent'
 											onDrag = {(e, d) => {
-												handleScrollFactor(d.x)
+												handleScrollFactor(d.x, false)
 											}}
 										>
 										</Rnd>
