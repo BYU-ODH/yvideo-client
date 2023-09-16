@@ -39,7 +39,7 @@ const ClipEditor = props => {
 	const [videoCurrentTime, setCurrentTime] = useState(0)
 	const [layerWidth, setWidth] = useState(0)
 	const [annotationsSaved, setSaved] = useState(false)
-	const [scrollBarWidth, setScrollBar] = useState(0)
+	const [scrollBarWidth, setScrollBar] = useState(100)
 	const [clipList, setClipList] = useState([])
 	const [activeItem, setActiveItem] = useState(``)
 	const [activeIndex, setActiveIndex] = useState(``)
@@ -51,6 +51,8 @@ const ClipEditor = props => {
 	const [disableSave, setDisableSave] = useState(false)
 	const [allowEvents, setAllowEvents] = useState(false)
 	const [isReady, setIsReady] = useState(false)
+	const [eventSeek, setEventSeek] = useState(false)
+	const [eventPosition, setEventPosition] = useState(0)
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
 
@@ -117,6 +119,10 @@ const ClipEditor = props => {
 		initChangeTimeArray()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [clipList])
+
+	const handleEventPosition = (position) => {
+		setEventPosition(position)
+	}
 
 	const initDeleteArray = () =>{
 		if (clipList){
@@ -272,8 +278,11 @@ const ClipEditor = props => {
 			title: ``,
 		}
 
+		const portionOfBarToFill = 1/30 // one thirtieth of the bar
+		const scrollBarWidthRatio = 100 // scroll bar width at normal zoom is 100 so we need to divide by 100 to get the ratio as we zoom in
+
 		clip.start = Number(startPercentage)
-		clip.end = Number(startPercentage) + clip.end
+		clip.end = Number(startPercentage) + videoLength * portionOfBarToFill * (scrollBarWidth / scrollBarWidthRatio)
 
 		const clips = [...clipList]
 		clips[id] = clip
@@ -337,6 +346,9 @@ const ClipEditor = props => {
 						eventToEdit={null}
 						activeCensorPosition = {activeCensorPosition}
 						editorType='clip'
+						eventSeek={eventSeek}
+						setEventSeek={setEventSeek}
+						eventPosition={eventPosition}
 						handleShowTip={handleShowTip}
 						toggleTip={toggleTip}
 						elapsed={elapsed}
@@ -374,6 +386,7 @@ const ClipEditor = props => {
 											<p style={{color: `inherit`}}>{clipList?.[index]?.title}</p>
 										</div>
 										<ClipLayer
+											events={allEvents}
 											clipList={clipList}
 											setStart={setStartTime}
 											setEnd={setEndTime}
@@ -382,6 +395,8 @@ const ClipEditor = props => {
 											activeIndex={activeIndex}
 											index={index}
 											handleEditClip={handleEditClip}
+											handleEventPosition={handleEventPosition}
+											setEventSeek={setEventSeek}
 										/>
 									</div>
 								),
@@ -447,7 +462,7 @@ const ClipEditor = props => {
 											}
 											bounds = 'parent'
 											onDrag = {(e, d) => {
-												handleScrollFactor(d.x)
+												handleScrollFactor(d.x, false)
 											}}
 										>
 										</Rnd>

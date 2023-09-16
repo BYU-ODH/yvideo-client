@@ -43,16 +43,19 @@ export const handleScrollFactor = (direction, zoom) => {
 		let layerScrollWidth
 
 		if(document.getElementsByClassName(`events`).length >= 1)
-			layerScrollWidth = document.getElementsByClassName(`events`)[0].scrollWidth
+			layerScrollWidth = document.getElementsByClassName(`events`)[0].getBoundingClientRect().width
 		else
-			layerScrollWidth = document.getElementsByClassName(`events`).scrollWidth
+			layerScrollWidth = document.getElementsByClassName(`events`).getBoundingClientRect().width
 
 		const scrollBarContainer = document.getElementById(`zoom-scroll-container`).getBoundingClientRect().width
-		const dis = direction / scrollBarContainer
+		let scrollBarWidth = 0
+		if (!zoom)
+			scrollBarWidth = Math.ceil(Array.from(document.getElementsByClassName(`zoom-scroll-indicator react-draggable react-draggable-dragged`))[0].getBoundingClientRect().width)
 
-		scrubber.scrollLeft = scrubber.scrollWidth * dis
-		timeIndicator.scrollLeft = scrubber.scrollWidth * dis
-		scrubberContainer.scrollLeft = scrubber.scrollWidth * dis
+		const dis = Math.floor(scrollBarContainer) > direction + scrollBarWidth || direction === 0 ? direction / scrollBarContainer : 1.0
+
+		timeIndicator.scrollLeft = scrubber.getBoundingClientRect().width * dis
+		scrubberContainer.scrollLeft = scrubber.getBoundingClientRect().width * dis
 
 		allLayers.forEach((_element, i) => {
 			allLayers[i].scrollLeft = layerScrollWidth * dis
@@ -71,3 +74,66 @@ export const updateZoom = () => {
 }
 
 export const debouncedOnDrag = debounce(updateZoom, 25)
+
+export const calculateStartAndEndTimesForDrag = (d, layerWidth, videoLength, start, end) => {
+	const beginTimePercentage = d.x / layerWidth * videoLength
+	const endPercentage = beginTimePercentage + (end - start)
+
+	start = beginTimePercentage
+	end = endPercentage
+
+	if(end > videoLength)
+		end = videoLength
+
+	if(start < 0)
+		start = 0
+
+	return {start, end}
+}
+
+export const calculateStartAndEndTimesForResize = (position, layerWidth, videoLength, ref, cEvents, index, direction) => {
+	let isError = false
+	let start = position.x / layerWidth * videoLength
+	let end = (position.x + ref.offsetWidth) / layerWidth * videoLength
+
+	if(direction === `right`){
+		if(end > videoLength)
+			end = videoLength
+		if(index + 1 < cEvents.length){
+			if(end > cEvents[index + 1].start)
+				isError = true
+		}
+	} else {
+		if(start < 0)
+			start = 0
+		else if(start > videoLength){
+			start = videoLength - 0.01
+			end = videoLength
+		}
+		if(index - 1 > -1){
+			if(start < cEvents[index - 1].end)
+				isError = true
+		}
+	}
+	return {start, end, isError}
+}
+
+export const checkForErrors = (index, cEvents, videoLength, isError, clipTimes) => {
+	if(index === 0 && index + 1 === cEvents.length)
+		isError = false
+	else if(index + 1 === cEvents.length) {
+		if(cEvents[index].end > videoLength)
+			cEvents[index].end = videoLength
+
+		if(clipTimes.start < cEvents[index - 1].end)
+			isError = true
+	} else if(index === 0) {
+		if(cEvents[index].start < 0)
+			cEvents[index].start = 0
+
+		if(clipTimes.end > cEvents[index + 1].start)
+			isError = true
+	} else if(clipTimes.end > cEvents[index + 1].start || clipTimes.start < cEvents[index - 1].end)
+		isError = true
+	return isError
+}

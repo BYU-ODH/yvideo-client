@@ -34,6 +34,7 @@ export const Circle = styled.div`
 	transition: left .3s ease-out;
 
 	background-color: ${props => props.on ? `#0582CA` : `#CCC`};
+	cursor: pointer;
 `
 
 export const Groove = styled.div`
