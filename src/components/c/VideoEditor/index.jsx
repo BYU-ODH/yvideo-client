@@ -397,7 +397,6 @@ const VideoEditor = props => {
 				pos[item][3] = 0
 			else
 				pos[item][3] = value
-
 			break
 
 		case 4: // height in %
@@ -406,6 +405,34 @@ const VideoEditor = props => {
 			else
 				pos[item][4] = value
 			break
+
+		default:
+			break
+		}
+		cEvent.position = pos
+		updateEvents(index, cEvent, layer, ``, type)
+		setEditCensor(object)
+	}
+
+	const handleEditCensorFromTrackSideMenu = (time, item, int, type) => {
+		const object = editCensor
+		const index = eventToEdit
+		const cEvent = allEvents[index]
+		const layer = cEvent.layer
+		const pos = cEvent.position
+		let value
+		if (int === 5)
+			value = time
+		else
+			value = Number(parseFloat(time).toFixed(0))
+		switch (int) {
+		case 5:
+			if(value === 0)
+			pos[item][0] = `0.0`
+		else
+			pos[item][0] = value
+		document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
+		break
 
 		default:
 			break
@@ -555,7 +582,7 @@ const VideoEditor = props => {
 			return ``
 		}
 	}
-	const setCurrentTimePercentage = (time) => {
+const setCurrentTimePercentage = (time) => {
 		const seconds = time * videoLength
 		setCurrentTime(seconds)
 	}
@@ -753,7 +780,7 @@ const VideoEditor = props => {
 						{ showSideEditor &&
 								<>
 									<>
-										<span className='current'>{allEvents !== [] && `${checkSideBarTitle()}`}</span>
+										<span className='current'>{allEvents.length !== 0 && `${checkSideBarTitle()}`}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>
@@ -769,6 +796,7 @@ const VideoEditor = props => {
 							editCensor={editCensor}
 							index={eventToEdit}
 							handleEditCensor={handleEditCensor}
+							handleEditCensorFromTrackSideMenu={handleEditCensorFromTrackSideMenu}
 							handleCensorRemove={handleCensorRemove}
 							handleAddCensor={handleAddCensor}
 							activeCensorPosition={activeCensorPosition}
@@ -777,6 +805,7 @@ const VideoEditor = props => {
 							handleShowTip={handleShowTip}
 							setEventSeek={setEventSeek}
 							handleEventPosition={handleEventPosition}
+							videoCurrentTime={videoCurrentTime}
 						></TrackEditorSideMenu>
 						:
 						<></>
