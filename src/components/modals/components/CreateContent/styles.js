@@ -6,7 +6,7 @@ export const FormResource = styled.form`
 	display: grid;
 	/* grid: repeat(3, 1fr) / 1fr; */
 
-	min-width: 30rem;
+	min-width: 30rem; 
 	min-height: 35rem;
 
 	& > label {
@@ -154,7 +154,7 @@ export const DecideButton = styled.button`
 			color: #ffffff;
 		}
 	// :hover {
-	// 	box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6);
+	// 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.6);
 	// 	transition: 0.5s;
 	/* } */
 `

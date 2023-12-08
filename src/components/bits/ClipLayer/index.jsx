@@ -1,7 +1,8 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
-import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../common/toggleScroll'
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
 
 import {
 	Style,
@@ -9,7 +10,7 @@ import {
 
 const ClipLayer = props => {
 
-	const {clipName, clipList, width, setStart, setEnd, videoLength, active, index, handleEditClip} = props
+	const {clipList, width, setStart, setEnd, videoLength, activeIndex, index, handleEditClip, handleEventPosition, setEventSeek} = props
 	const layerRef = useRef(null)
 	const dragRef = useRef(null)
 
@@ -17,11 +18,12 @@ const ClipLayer = props => {
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerWidth, setLayerWidth] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [showError, setShowError] = useState(false)
 
-	const start = clipList[clipName][`start`]
-	const end = clipList[clipName][`end`]
+	const start = clipList[index][`start`]
+	const end = clipList[index][`end`]
 
-	const style = active !== clipName ?
+	const style = activeIndex !== index ?
 		{
 			top: `0px`,
 			backgroundColor:`#fff`,
@@ -83,56 +85,38 @@ const ClipLayer = props => {
 		topLeft: false,
 	}
 	// Drag within the layer
-	const handleDrag = (d) => {
+	const handleDrag = (d, index) => {
+		let isError = false
 
-		const beginTimePercentage = d.x / layerWidth * videoLength
-		const endPercentage = beginTimePercentage + (end - start)
-		// LOGIC TO CHANGE THE TIME @params beginTime, end
-		let s = beginTimePercentage
-		let e = endPercentage
-		if(e > videoLength)
-			e = videoLength
+		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, start, end)
 
-		if(s < 0)
-			s = 0
-		// call handler from parent
-		setStart(s, null, clipName)
-		setEnd(e, null, clipName)
+		isError = checkForErrors(index, clipList, videoLength, isError, clipTimes)
+
+		clipList[index].start = clipTimes.start
+		clipList[index].end = clipTimes.end
+
+		setShowError(isError)
+		setStart(clipTimes.start, null, index)
+		setEnd(clipTimes.end, null, index)
 	}
 	// Resize within the layer
-	const handleResize = (direction, ref, delta, event, index, e ) => {
-		let s = start
-		let en = end
-		const difference = delta.width / layerWidth * videoLength
-		if(direction === `right`){
-			en += difference
+	const handleResize = (direction, ref, delta, e, position) => {
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, clipList, index, direction)
 
-			if(en > videoLength)
-				en = videoLength
+		setShowError(clipTimes.isError)
 
-		} else {
-			s -= difference
-			if(s < 0)
-				s = 0
-			else if(s > videoLength){
-				s = videoLength - 30
-				en = videoLength
-			}
-		}
-		setStart(s, null, clipName)
-		setEnd(en, null, clipName)
+		direction === `right` ? setEnd(clipTimes.end, null, index) : setStart(clipTimes.start, null, index)
 	}
-	// eslint-disable-next-line no-unused-vars
-	const curr = {...dragRef.current}
+
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				<div ref={layerRef} className='clip-box'>
-					<div className={`clip-layer-${clipName} events`}>
+					<div className={`clip-layer-${index} events`}>
 						<Rnd
 							ref={dragRef}
-							className={`Rnd`}
+							id='Rnd'
 							data-testid='Rnd'
 							size={{width: `${(end - start) / videoLength * layerWidth}px`, height: `46px`}}
 							position={
@@ -142,14 +126,27 @@ const ClipLayer = props => {
 								}}
 							enableResizing={Enable}
 							dragAxis='x'
-							bounds={`.clip-layer-${clipName}`}
-							onDragStop={(e, d) => {
-
-								handleDrag(d)
+							bounds={`.clip-layer-${index}`}
+							onDrag={(e, d) => {
+								handleDrag(d, index)
+								setEventSeek(true)
+								handleEventPosition(start)
 							}}
-							onClick = {() => handleEditClip(clipName, index)}
-							onResizeStop={(e, direction, ref, delta, position) => handleResize(direction, ref, delta, e, position)}
-							key={`clip-${clipName}`}
+							onDragStop={(e, d) => {
+								handleDrag(d, index)
+								setEventSeek(true)
+								handleEventPosition(start)
+							}}
+							onClick = {() => {
+								handleEditClip(index, index)
+								// het
+							}}
+							onResize={(e, direction, ref, delta, position) => {
+								handleResize(direction, ref, delta, e, position)
+								setEventSeek(true)
+								direction === `left` ? handleEventPosition(start) : handleEventPosition(end)
+							}}
+							key={`clip-${index}`}
 							style={style}
 						>
 						</Rnd>

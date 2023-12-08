@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player'
 
 import { PlayerControls, Transcript } from 'components/bits'
 import { PlayerSubtitlesContainer } from 'containers'
-import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/vanilla_scripts/getCurrentEvents'
+import { CurrentEvents, CensorChange, CommentChange, handleSubtitle } from 'components/common/getCurrentEvents'
 
 import playButton from 'assets/hexborder.svg'
 import Style, { Blank, Subtitles, PlayButton, PauseMessage, AlertMessage } from './styles'
@@ -33,6 +33,9 @@ const Player = props => {
 		started,
 		hovering,
 		mouseInactive,
+		controlsHovering,
+		showIcon,
+		playPause,
 	} = props.viewstate
 
 	const {
@@ -62,12 +65,14 @@ const Player = props => {
 	const isPlaying = useRef(playing)
 	const isFullscreen = useRef(fullscreen)
 	const isShowTranscript = useRef(showTranscript)
+	const isShowIcon = useRef(showIcon)
 
 	useEffect(() => {
 		isPlaying.current = playing
 		isFullscreen.current = fullscreen
 		isShowTranscript.current = showTranscript
-	}, [playing, fullscreen, showTranscript])
+		isShowIcon.current = showIcon
+	}, [playing, fullscreen, showTranscript,showIcon,playPause])
 
 	useEffect(() => {
 		document.body.onkeyup = e => handleHotKeys(e)
@@ -196,7 +201,7 @@ const Player = props => {
 			// needed for unmuting after muting event is done
 			const index = events.findIndex(event => event.type === values.doneEvents[j].type && event.start === values.doneEvents[j].start && event.end === values.doneEvents[j].end)
 
-			if(!events[index].active)
+			if(!events[index]?.active)
 				return
 
 			switch(values.doneEvents[j].type){
@@ -216,22 +221,25 @@ const Player = props => {
 		handleAspectRatio()
 		if(events){
 			const eventFilterSkip = events.filter((values) => {
-				return values.type === `Skip` // TODO: Make sure this is fine
+				return values.type === `Skip`
 			})
 			setSkipArray(eventFilterSkip)
 		}
 	}
 
 	return (
-		<Style onMouseMove={handleMouseMoved} hovering={hovering} started={started} playing={playing} mouseInactive={mouseInactive}>
+		<Style onMouseMove={handleMouseMoved} hovering={hovering} started={started} playing={playing} mouseInactive={mouseInactive} controlsHovering={controlsHovering}>
 			<div style={
 				{
 					display: `${showTranscript !== false ? `flex` : `initial`}`,
 					height: `100%`,
 					overflow: `hidden`,
+					alignContent:`center`,
 				}
 			}>
+
 				<div className='player-wrapper' id={`player-container`} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} onClick={playing ? handlePause : handlePlay} style={{ flex: 1 }}>
+					<div className={showIcon === true ? `${playPause}-icon zoom-in-zoom-out`:`${playPause}-icon`}></div>
 					<ReactPlayer
 						ref={ref}
 						className='react-player'
@@ -270,12 +278,13 @@ const Player = props => {
 							},
 						}}
 					/>
+
 					<PlayerControls viewstate={props.viewstate} handlers={props.handlers} skipArray={skipArray}/>
 					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
 						{ !started &&
 							<PlayButton playing={playing} onClick={() => handlePlayPause(playing)} started={started} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 						}
-						{displaySubtitles !== null && showTranscript &&
+						{displaySubtitles !== null && displaySubtitles !== undefined && showTranscript &&
 							<Subtitles id='subtitleBox'><h3 id='subtitle'></h3></Subtitles> /* eslint-disable-line jsx-a11y/heading-has-content */
 						}
 						<div id='censorContainer' style={{width: `100%`, height: `100%`, position: `absolute`, top: `0px`}}>
@@ -287,12 +296,12 @@ const Player = props => {
 						<AlertMessage id='alertMessage'></AlertMessage>
 					</Blank>
 				</div>
+
 				<Transcript viewstate={props.viewstate} handlers={props.handlers}>
 				</Transcript>
 			</div>
 			{
 				url !== `` && showTranscript ? (
-					// showsubtitles
 					<PlayerSubtitlesContainer
 						currentTime={progress}
 						duration={duration}

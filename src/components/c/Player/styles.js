@@ -1,11 +1,13 @@
 import styled from 'styled-components'
+import playIcon from 'assets/play.svg'
+import pauseIcon from 'assets/pause.svg'
 
 export const Style = styled.div`
 
-	margin-top: 8.4rem;
-	height: calc(100vh - 8.4rem);
+	margin-top: 6rem;
+	height: calc(100vh - 6rem);
 	overflow: hidden;
-	cursor: ${props => !props.mouseInactive || !props.started || !props.playing ? `default` : `none`};
+	cursor: ${props => !props.mouseInactive || !props.playing || props.controlsHovering ? `default` : `none`};
 
 	& > div {
 
@@ -13,7 +15,7 @@ export const Style = styled.div`
 		& .videoBox,
 		& .mediaPlayer {
 			width: 100% !important;
-			height: 70vh;
+			height: 90vh;
 		}
 		& .sliderContainer {
 			padding-bottom: 0 !important;
@@ -22,9 +24,54 @@ export const Style = styled.div`
 
 	& .player-wrapper {
 		height: 100%;
+		align-content: center;
 		position: relative;
 		background-color: black;
 	}
+
+	& .play-icon {
+		align-content: center;		
+		opacity: 0.5;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -50px 0 0 -50px;	
+		background: url(${playIcon}) center no-repeat;		
+		border-radius: 50%;
+		background-color:#b4b4b4;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	}
+
+	.pause-icon {
+		align-content: center;	
+		opacity: 0.5;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -50px 0 0 -50px;
+		background: url(${pauseIcon}) center no-repeat;
+		border-radius: 50%;
+		background-color:#b4b4b4;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	}	
+   .zoom-in-zoom-out {
+	margin: -50px 0 0 -50px;
+	width: 70px;
+	height: 70px;	
+	animation: zoom-in-zoom-out 2s ease-out infinite;
+  }
+
+  @keyframes zoom-in-zoom-out {
+	0% {
+	  transform: scale(1, 1);
+	}
+	50% {
+	  transform: scale(1.5, 1.5);
+	}
+	100% {
+	  transform: scale(1, 1);
+	}
+  }
 `
 
 export const Blank = styled.div`

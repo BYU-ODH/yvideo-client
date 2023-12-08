@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
 import plus from 'assets/plus-circle.svg'
-import Style, {Icon} from './styles.js'
+import Style, { Icon } from './styles.js'
 
 import { convertSecondsToMinute } from '../../common/timeConversion'
 
@@ -25,6 +25,9 @@ const SubtitleEditorSideMenu = props => {
 		scrollRef,
 		handleShowTip,
 		toggleTip,
+		validateTitleSub,
+		isNameUnique,
+		titleNameRequired,
 	} = props
 
 	const [event, setEvent] = useState(singleEvent)
@@ -71,12 +74,27 @@ const SubtitleEditorSideMenu = props => {
 	}
 
 	return (
-		<Style id='subtitleEditorSideMenu'>
+		<Style id='subtitle-editor-side-menu'>
 			<div>
-				<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+				<img alt={`close-editor`} className={`close-editor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 			</div>
-
-			<div id = {`allSubs`} className={`allSubs`} ref={scrollRef} style={{overflowY: `scroll`, height: `68vh`}}>
+			<div>
+				<p>
+					<b>Title:</b>
+					<input
+						type='text'
+						id='title-sub'
+						value={subs[subLayer].title}
+						className={disableSave ? `title-sub-disable` : `title-sub`}
+						placeholder='enter title...'
+						onKeyUp={e => e.stopPropagation()}
+						onChange={(e) => validateTitleSub(e.target.value)}>
+					</input>
+				</p>
+				<p className={titleNameRequired ? `title-warn`: `title-warn-disable`}>*Title name is required</p>
+				<p className={isNameUnique ? `title-warn` : `title-warn-disable`}>*Title name most be unique</p>
+			</div>
+			<div id = {`all-subs`} className={`all-subs`} ref={scrollRef} style={{overflowY: `scroll`, height: `68vh`}}>
 				<Icon id={`initial`} className={`initial`} src={plus} onClick={() => addSub(subLayer, 0, `top`)}
 					visibility={subs?.[subLayer]?.[`content`]?.length === 0 && disableSave === false ? `visible`: `hidden`}
 				/>
@@ -84,23 +102,23 @@ const SubtitleEditorSideMenu = props => {
 					<div id={`sub-${subLayer}-${ind}`} key={ind}>
 						<div className={`container`}>
 							{/* This toggles the z-index of the icons as the state for the submodal changes */}
-							<Icon className={`IconMiddle`} src={plus} ind={ind} onClick={() => addSub(subLayer, ind, `top`)}
-								position={`top`}
+							<Icon className={`icon-middle`} src={plus} ind={ind} onClick={() => addSub(subLayer, ind, `top`)}
+								position='top'
 								visibility={subs?.[subLayer]?.[`content`]?.[0]?.start > 0.01 && ind === 0 && disableSave === false ? `visible` : `hidden`}
 							/>
-							<div id={`subContainer${ind}`} className={`subContainer ${ind === index && `subActive`}`}>
+							<div id={`sub-container${ind}`} className={`sub-container ${ind === index && `sub-active`}`}>
 								<textarea
-									id={`subText${ind}`}
-									className='subText'
+									id={`sub-text${ind}`}
+									className='sub-text'
 									type='text'
 									onKeyUp={e => e.stopPropagation()}
 									onClick={ () => changeSubIndex(ind) }
 									value={sub.text}
 									onChange={ (value) => editSub(null, null, value, subLayer, ind, `onChange`, subs[subLayer].id) } />
-								<div id={`${ind === index && `subStartEnd`}`} className={`subStartEnd`}>
+								<div id={`${ind === index && `sub-start-end`}`} className={`sub-start-end`}>
 									<input
-										id={`subStart${ind}`}
-										className={`subStart sideTabInput`}
+										id={`sub-start${ind}`}
+										className='sub-start side-tab-input'
 										type='text'
 										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
@@ -118,8 +136,8 @@ const SubtitleEditorSideMenu = props => {
 
 									/>
 									<input
-										id={`subEnd${ind}`}
-										className={`subEnd`}
+										id={`sub-end${ind}`}
+										className='sub-end'
 										type='text'
 										value={`${sub.end === `` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
@@ -141,22 +159,22 @@ const SubtitleEditorSideMenu = props => {
 						</div>
 						{
 							ind === subs[subLayer][`content`].length - 1 ?
-								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
+								<Icon className='icon-bottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
 									visibility={ subs[subLayer][`content`][ind].end - videoLength < 0.00 && disableSave === false ?
 										`visible`
 										:
 										`hidden`
 									}
-									active={ind === index ? `subActive` : `nonActive`}
+									active={ind === index ? `sub-active` : `nonActive`}
 								/>
 								:
-								<Icon className='iconBottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
+								<Icon className='icon-bottom' id={`icon${ind}`} src={plus} ind={ind} onClick={ () => addSub(subLayer, ind, `button`) }
 									visibility={ subs[subLayer][`content`][ind + 1].start - subs[subLayer][`content`][ind].end !== 0 && disableSave === false ?
 										`visible`
 										:
 										`hidden`
 									}
-									active={ind === index ? `subActive` : `nonActive`}
+									active={ind === index ? `sub-active` : `nonActive`}
 								/>
 						}
 					</div>

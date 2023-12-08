@@ -2,13 +2,13 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import { Rnd } from 'react-rnd'
 import { convertSecondsToMinute } from '../../common/timeConversion'
-import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
+import handleScrollFuncs from '../../common/toggleScroll'
+
+import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
 
 import {
 	Icon, Style,
 } from './styles'
-
-// TODO: Copy styles from NewTrackEditor used by these components into this file
 
 // This is inspired from the React DnD example found here: https://react-dnd.github.io/react-dnd/examples/dustbin/multiple-targets
 
@@ -25,26 +25,22 @@ const TrackLayer = props => {
 		setEventSeek,
 		setActiveCensorPosition,
 	} = props
+
 	const layerIndex = parseInt(props.index)
-
 	const layerRef = useRef(null)
-
 	const [initialWidth, setInitialWidth] = useState(0)
 	const [shouldUpdate, setShouldUpdate] = useState(false)
 	const [layerOverlap, setLayerOverlap] = useState([])
 	const [layerWidth, setLayerWidth] = useState(0)
-	// eslint-disable-next-line no-unused-vars
-	const [layerHeight, setLayerHeight] = useState(0)
 	const [disableScroll, setDisableScroll] = useState({action: null})
+	const [showError, setShowError] = useState(false)
 
 	if(shouldUpdate)
 		setShouldUpdate(false)
 
 	useLayoutEffect(() => {
 
-		setLayerHeight(layerRef.current.offsetHeight * layerIndex)
-
-		if(events && layerIndex === 4){
+		if(events && (layerIndex === 4 || layerIndex === 3)){
 			// we are in censor, calculate overlapping
 			// overlap count tells us how many half layers we need
 			const overlapCount = calculateOverlaps()
@@ -123,7 +119,7 @@ const TrackLayer = props => {
 		for(let i = 0; i < sortedEvents.length; i++){
 			const currentEvent = sortedEvents[i]
 
-			if(currentEvent.type === `Censor`){
+			if(currentEvent.type === `Censor` || currentEvent.type === `Comment`){
 				const eventIndex = events.findIndex((event) => currentEvent.start === event.start && currentEvent.type === event.type)
 				if(lastCensorEvent === null){
 
@@ -153,48 +149,27 @@ const TrackLayer = props => {
 
 	const handleDrag = (d, event, index) => {
 		setActiveCensorPosition(-1)
+		let isError = false
 
-		const cEvents = events
-		const beginTimePercentage = d.x / layerWidth * 100 * videoLength / 100
-		const endPercentage = beginTimePercentage + event.end - event.start
+		const clipTimes = calculateStartAndEndTimesForDrag(d, layerWidth, videoLength, events[index].start, events[index].end)
 
-		// LOGIC TO CHANGE THE TIME @params beginTime, end
-		cEvents[index].start = beginTimePercentage
-		cEvents[index].end = endPercentage
+		isError = checkForErrors(index, events, videoLength, isError, clipTimes)
 
-		if(cEvents[index].end > videoLength)
-			cEvents[index].end = videoLength
+		setShowError(isError)
+		events[index].start = clipTimes.start
+		events[index].end = clipTimes.end
 
-		if(cEvents[index].start < 0)
-			cEvents[index].start = 0
 		// call handler from parent
-		updateEvents(index, cEvents[index], layerIndex)
-		// calculateOverlaps(events)
+		updateEvents(index, events[index], layerIndex)
 	}
 
 	// Resize within the layer
 	const handleResize = (direction, ref, delta, event, index, e, position) => {
+		const clipTimes = calculateStartAndEndTimesForResize(position, layerWidth, videoLength, ref, events, index, direction)
 
-		const cEvents = events
-		const difference = delta.width / layerWidth * 100 * videoLength / 100
-		if(direction === `right`){
-			cEvents[index].end += difference
+		direction === `right` ? events[index].end = clipTimes.end : events[index].start = clipTimes.start
 
-			if(cEvents[index].end > videoLength)
-				cEvents[index].end = videoLength
-
-		} else {
-			cEvents[index].start -= difference
-
-			if(cEvents[index].start < 0)
-				cEvents[index].start = 0
-			else if(cEvents[index].start > videoLength){
-				cEvents[index].start = videoLength - 0.001
-				cEvents[index].end = videoLength
-			}
-		}
-
-		updateEvents(index, cEvents[index], layerIndex)
+		updateEvents(index, events[index], layerIndex)
 	}
 
 	const printEvents = (event, index, isMultiEvent) => {
@@ -203,10 +178,7 @@ const TrackLayer = props => {
 
 		return (
 			<Rnd
-				className={
-					`layer-event
-					${isMultiEvent && `half-event`}
-					${activeEvent === index && `active-event`}`}
+				className={`layer-event ${isMultiEvent ? `half-event` : ``} ${activeEvent === index ? `active-event` : ``}`}
 				id={`event-${index}`}
 				bounds={`.layer-${layerIndex}`}
 				size={
@@ -219,21 +191,24 @@ const TrackLayer = props => {
 				resizeHandleStyles={handleStyles}
 				enableResizing={Enable}
 				dragAxis='x'
+				onDrag={(e, d) => {
+					handleDrag(d, event, index)
+					setEventSeek(true)
+					handleEventPosition(event.start)
+				}}
 				onDragStop={(e, d) => {
 					handleDrag(d, event, index)
 					setEventSeek(true)
 					handleEventPosition(event.start)
-				}
-				}
-				onResizeStop={(e, direction, ref, delta, position) => {
+				}}
+				onResize={(e, direction, ref, delta, position) => {
 					handleResize(direction, ref, delta, event, index, e, position)
 					setEventSeek(true)
-					handleEventPosition(event.start)
-				}
-				}
+					// if you are resizing the start of the clip it will seek to the start of the clip, otherwise it will seek to the end
+					direction === `left` ? handleEventPosition(event.start) : handleEventPosition(event.end)
+				}}
 				key={index}
 			>
-				{/* //TODO: Change the p tag to be an svg icon */}
 				<Icon src={event.icon} className={isMultiEvent && `half-icon`}/>
 				{ event.type !== `Pause` ? (
 					<p>{convertSecondsToMinute(event.start, videoLength)} - {convertSecondsToMinute(event.end, videoLength)}</p>
@@ -247,7 +222,7 @@ const TrackLayer = props => {
 
 	return (
 		<>
-			<Style layerWidth={layerWidth} className='layer-container'>
+			<Style layerWidth={layerWidth} showError={showError} className='layer-container'>
 				{/* overflow-x should be like scroll or something */}
 				{layerIndex !== 4 &&
 					<div ref={layerRef} className='events-box'>

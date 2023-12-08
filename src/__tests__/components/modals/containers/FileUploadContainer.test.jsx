@@ -20,7 +20,8 @@ describe(`FileUploadContainer test`, () => {
 		).childAt(0).dive()
 
 		// test viewstate made correctly
-		const viewstate = wrapper.props().viewstate // eslint-disable-line no-unused-vars
+		const viewstate = wrapper.props().viewstate
+		expect(viewstate).toBeDefined()
 	})
 
 	it(`should pass event handlers test`, () => {

@@ -218,35 +218,6 @@ export const Search = styled.form`
 	}
 `
 
-export const SearchMobile = styled.form`
-
-	position: relative;
-	width: 100%;
-
-	& > input {
-		z-index: 1;
-		background: white;
-
-		height: 4rem;
-		width: 100%;
-
-		font-size: 1.2rem;
-
-		border: none;
-		border-radius: 2rem;
-
-		margin-left: 1rem;
-		padding: 0 1.25rem 0 3.25rem;
-
-		outline: none;
-		box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
-		@media screen and (max-width: 320px){
-			font-size: 1rem;
-		}
-	}
-
-`
-
 export const FeedbackMessage = styled.div`
 	height: 100px;
 	display: flex;

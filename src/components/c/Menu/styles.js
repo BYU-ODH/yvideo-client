@@ -75,6 +75,16 @@ export const LinkStyled = styled(Link)`
 	background: transparent;
 	border: none;
 `
+export const AStyled = styled.a`
+	margin-bottom: 1rem;
+	width: fit-content;
+
+	text-decoration: none;
+	font-weight: 300;
+
+	background: transparent;
+	border: none;
+`
 
 export const Header = styled.h4`
 	text-transform: uppercase;
@@ -139,6 +149,7 @@ export const MenuIcon = styled.button`
 	width: 4rem;
 	border: .125rem solid white;
 	margin-right: 4rem;
+	margin-top: -1.3rem;
 	background: url(${menuIcon}) center no-repeat;
 
 	:hover {

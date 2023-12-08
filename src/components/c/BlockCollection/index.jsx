@@ -2,7 +2,7 @@ import React, { createRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { BlockItem } from 'components/bits'
-import * as sortingRegex from 'components/vanilla_scripts/sorting_regex'
+import * as sortingRegex from 'components/common/sorting_regex'
 
 import { Container, Header, SlideWrapper, Arrow, BlockEnd, PublicCollectionButton, PublicButton } from './styles.js'
 
@@ -142,7 +142,7 @@ const BlockCollection = props => {
 							{!isOwner ?
 								<PublicButton
 									onClick={handlePublicCollection}
-									className={`public-button`}
+									className='public-button'
 									isSubscribed={isSubscribed}
 								>
 									{isSubscribed ?

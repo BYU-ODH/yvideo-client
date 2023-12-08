@@ -1,6 +1,6 @@
 import React from 'react'
 import Scrubber from '../../../../components/bits/Scrubber'
-import { render, screen, cleanup} from '@testing-library/react'
+import { render, screen, cleanup } from '@testing-library/react'
 const props = {
 	duration: 300,
 	clipTime: [],

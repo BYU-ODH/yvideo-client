@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { FileOverview } from 'components'
 
-import {isChrome} from 'react-device-detect'
+import { isChrome } from 'react-device-detect'
 
 import DeleteConfirmContainer from '../../components/modals/containers/DeleteConfirmContainer'
 import PreviewFilesContainer from '../../components/modals/containers/PreviewFilesContainer'
@@ -71,6 +71,7 @@ const FileOverviewContainer = props => {
 			props: {
 				file,
 				resourceId: fileState[`resource-id`],
+				fileState,
 			},
 		})
 	}

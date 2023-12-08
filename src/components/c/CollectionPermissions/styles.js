@@ -42,9 +42,9 @@ export const SearchIcon = styled.span`
 	background-size: contain;
 	background: url(${searchIcon}) center no-repeat;
 	height: 1.4rem;
-	left: .7rem;
+	left: 0.7rem;
 	position: absolute;
-	top: .6rem;
+	top: 0.6rem;
 	width: 1.4rem;
 	z-index: 10;
 `
@@ -52,25 +52,27 @@ export const SearchIcon = styled.span`
 export const DepartmentSelect = styled.input`
 	background: white;
 	border-radius: 1.3rem;
-	border: none;
+	border: ${props => props.isDeptValid ? `none` : `solid`};
+	border-color: ${props => props.isDeptValid ? `none` : `var(--yellow)`};
 	box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.15);
 	height: 2.6rem;
 	margin-bottom: 1.6rem;
 	margin-right: 2rem;
 	outline: none;
-	padding-left: .6rem;
+	padding-left: 0.6rem;
 	padding-right: 1.2rem;
 	width: 10rem;
 `
 
 export const CatalogInput = styled.input`
-	background: ${props => props.disabled ? `#eee` : `white`};
+	background: white;
 
 	height: 2.6rem;
 	width: 10rem;
 
-	border: none;
 	border-radius: 1.3rem;
+	border: ${props => props.isCourseValid ? `none` : `solid`};
+	border-color: ${props => props.isCourseValid ? `none` : `red`};
 
 	margin-bottom: 1.6rem;
 	margin-right: 2rem;
@@ -84,13 +86,14 @@ export const CatalogInput = styled.input`
 `
 
 export const SectionInput = styled.input`
-	background: ${props => props.disabled ? `#eee` : `white`};
+	background: white;
 
 	height: 2.6rem;
 	width: 10rem;
 
-	border: none;
 	border-radius: 1.3rem;
+	border: ${props => props.isSectionValid ? `none` : `solid`};
+	border-color: ${props => props.isSectionValid ? `none` : `var(--red)`};
 
 	margin-bottom: 1.6rem;
 	margin-right: 2rem;
@@ -104,8 +107,14 @@ export const SectionInput = styled.input`
 `
 
 export const AddButton = styled.button`
-	background: ${props => props.disabled ? `#eee` : `#0582CA`};
-	color: ${props => props.disabled ? `initial` : `white`};
+	background: ${props =>
+		!props.course && !props.section ? `var(--light-blue)` : `#eee`};
+	color: ${props =>
+		!props.course && !props.section ? `white` : `initial`};
+
+	:hover {
+		background: ${props => !props.course && !props.section ? `var(--royal-blue)` : `#eee`};
+	}
 
 	height: 2.8rem;
 	width: 5rem;
@@ -121,6 +130,8 @@ export const AddButton = styled.button`
 
 	padding-left: 1rem;
 	padding-right: 1.2rem;
+
+	cursor: pointer;
 `
 export const AddManyButton = styled.button`
 	height: 2.8rem;
@@ -133,8 +144,11 @@ export const AddManyButton = styled.button`
 	overflow-x: auto;
 	overflow-y: hidden;
 	cursor: pointer;
-	background: #0582CA;
+	background: var(--navy-blue);
 	color: white;
+	:hover {
+		background: var(--royal-blue);
+	}
 `
 
 export const Table = styled.table`
@@ -147,14 +161,13 @@ export const Table = styled.table`
 		horizontal-align: middle;
 	}
 
-
 	& td {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 		padding: 2px;
 		text-align: center;
 
 		& img {
-			opacity: .5;
+			opacity: 0.5;
 			cursor: pointer;
 
 			:hover {
@@ -164,7 +177,6 @@ export const Table = styled.table`
 	}
 
 	& .loading {
-
 		& td {
 			border-bottom: none;
 
@@ -196,12 +208,19 @@ export const Sort = styled.button`
 	cursor: pointer;
 `
 
-export const UserListTable = styled.div`
-
-`
+export const UserListTable = styled.div``
 
 export const CourseTable = styled.div`
 	margin-right: 5rem;
+
+	& .warning {
+		color: var(--yellow);
+		margin-bottom: 1rem;
+	}
+	& .error {
+		color: var(--red);
+		margin-bottom: 1rem;
+	}
 
 	@media screen and (max-width: 1000px) {
 		margin-bottom: 2rem;
@@ -287,7 +306,7 @@ const rotate = keyframes`
 `
 
 export const Spinner = styled.td`
-	background: url(${logo})  no-repeat;
+	background: url(${logo}) no-repeat;
 	background-size: cover;
 	width: 12rem;
 	height: 12rem;

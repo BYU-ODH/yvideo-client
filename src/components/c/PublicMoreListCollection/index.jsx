@@ -34,7 +34,7 @@ const PublicMoreListCollection = props => {
 						<PublicCollectionButton>
 							<PublicButton
 								onClick={handlePublicCollection}
-								className={`public-button`}
+								className='public-button'
 							>
 								{isOwner ? <>Unsubscribe</> : <>Subscribe</>}
 							</PublicButton>

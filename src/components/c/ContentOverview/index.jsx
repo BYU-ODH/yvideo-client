@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { SwitchToggle, Tag, LazyImage } from 'components/bits'
-import {useCallbackPrompt} from '../../../hooks/useCallbackPrompt'
-// import { Prompt } from 'react-router'
+import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 
 import defaultThumbnail from 'assets/default-thumb.svg'
 import helpIcon from 'assets/help/help-icon-black.svg'
@@ -65,6 +64,7 @@ const ContentOverview = props => {
 		handleShowTip,
 		toggleTip,
 		handleNavigation,
+		handleToggleClose,
 	} = props.handlers
 
 	const {
@@ -125,11 +125,11 @@ const ContentOverview = props => {
 									}
 								</PublishButton>
 								<RemoveButton className='remove-button' onClick={handleRemoveContent}><i className='fa fa-trash-o'></i>Delete</RemoveButton>
-								<EditButton id='edit-button' onClick={handleToggleEdit}><i className='fa fa-save'></i>Save</EditButton>
+								<EditButton id='edit-button' onClick={handleToggleClose}><i className='fa fa-save'></i>Save</EditButton>
 							</div>
 					}
 					{editing ?
-						<TitleEdit type='text' value={content.name} onChange={handleNameChange} />
+						<TitleEdit type='text' value={content.name} onChange={handleNameChange} onBlur={handleToggleClose} onKeyUp={e => e.stopPropagation()} />
 						:
 						<TitleWrapper><h3 className={`content-title`}>{content.name}</h3></TitleWrapper>}
 					<ul>
@@ -257,7 +257,7 @@ const ContentOverview = props => {
 						</Column>
 						<Column>
 							<h4>Important Words
-								<img src={helpIcon} alt={`help`}
+								<img src={helpIcon} alt='help'
 									onClick={handleShowHelp}
 									onMouseEnter={e => handleShowTip(`help`,
 										{

@@ -6,7 +6,7 @@ import closeIcon from 'assets/close_icon.svg'
 
 import plus from 'assets/plus-circle.svg'
 
-import Style, {Icon} from './styles.js'
+import Style, { Icon } from './styles.js'
 import { convertSecondsToMinute } from '../../common/timeConversion'
 import StartEndTimeConfirm from '../../modals/components/StartEndTImeConfirm'
 
@@ -73,7 +73,6 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditEventBeginTimeChange = (e, type) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const currentEvent = event
 		const layer = currentEvent.layer
 
@@ -85,7 +84,6 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditEventEndTimeChange = (e, type) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const currentEvent = event
 		const layer = currentEvent.layer
 
@@ -207,7 +205,7 @@ const TrackEditorSideMenu = props => {
 	}
 
 	const handleEditComment = (value, currentEvent, int) => {
-		// document.getElementById(`saveComment`).disabled = false
+    // document.getElementById(`saveComment`).disabled = false
 		switch (int) {
 		case 1:
 			if(editComment.position !== undefined)
@@ -253,11 +251,11 @@ const TrackEditorSideMenu = props => {
 		<Style>
 			<div className='event-content'>
 				<div>
-					<p id={`sideTabMessage`}></p>
-					<p id={`sideTabExplanation`}></p>
+					<p id={`side-tab-message`}></p>
+					<p id={`side-tab-explanation`}></p>
 					{event !== undefined ?
 						<>
-							<img alt={`closeEditor`} className={`closeEditor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
+							<img alt={`close-editor`} className={`close-editor`} src={`${closeIcon}`} onClick={closeSideEditor}/>
 							<>
 								<div className='center'>
 									<label>Start</label>
@@ -367,14 +365,14 @@ const TrackEditorSideMenu = props => {
 								<label>Y</label>
 							</div>
 							<div className='center'>
-								<input type='number' className='sideTabInput' placeholder={event.position.x.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 1)}/>
-								<input type='number' className='sideTabInput' placeholder={event.position.y.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 2)}/>
+								<input type='number' className='side-tab-input' placeholder={event.position.x.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 1)}/>
+								<input type='number' className='side-tab-input' placeholder={event.position.y.toFixed(2)} onChange={e => handleEditComment(e.target.value, event, 2)}/>
 							</div>
 							<div className='center' style={{ flexDirection: `column` }}>
 								<label style={{ textAlign: `left`, margin: `15px 5px 5px 5px` }}>Type a comment</label>
 								<textarea style={{ margin: `5%`, width: `90%` }} rows='4' cols='50' placeholder={event.comment} onChange={e => handleEditComment(e.target.value, event, 3)}></textarea>
 								<p><i>Save is only required when changing the X, Y, or comment values</i></p>
-								<button id='saveComment' onClick={handleSaveComment} className='sideButton'>Save Comment</button>
+								<button id='save-comment' onClick={handleSaveComment} className='side-button'>Save Comment</button>
 							</div>
 						</div>
 					) : null
@@ -382,10 +380,9 @@ const TrackEditorSideMenu = props => {
 
 				{
 					event.type === `Censor` ? (
-						<div className='censorMenu'>
-							<label>Blur Times</label><br/><br/>
+						<div className='censor-menu'>
 							<table>
-								<thead className={`tableHeader`}>
+								<thead className={`table-header`}>
 									<tr>
 										<th align='center'>Time</th>
 										<th align='center'>X</th>
@@ -395,7 +392,7 @@ const TrackEditorSideMenu = props => {
 										<th align='center'>&nbsp;</th>
 									</tr>
 								</thead>
-								<tbody className={`censorList`}>
+								<tbody className={`censor-list`}>
 									{event.type === `Censor` &&
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<>
@@ -447,7 +444,7 @@ const TrackEditorSideMenu = props => {
 													onChange={(e) => handleEditCensor(e, item, 2)}
 												/></td>
 												<td><input
-													id={`censorWidthInput-${i}`}
+													id={`censor-width-input-${i}`}
 													type='number'
 													value={`${event.position[item][3]}`}
 													onKeyUp={e => e.stopPropagation()}
@@ -456,7 +453,7 @@ const TrackEditorSideMenu = props => {
 													onChange={(e) => handleEditCensor(e, item, 3, `onChange`)}
 												/></td>
 												<td><input
-													id={`censorHeightInput-${i}`}
+													id={`censor-height-input-${i}`}
 													type='number'
 													value={`${event.position[item][4]}`}
 													onKeyUp={e => e.stopPropagation()}
@@ -483,9 +480,9 @@ const TrackEditorSideMenu = props => {
 								</tbody>
 							</table>
 							<div id='loader' style={{visibility: `hidden`}}>Loading</div><br/><br/>
-							<div id='tableBottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
+							<div id='table-bottom' style={{ width: `90%`, marginLeft: `0px` }}></div>
 
-							<button className='addCensor' onClick={handleAddCensor}><Icon src={plus}/></button>
+							<button className='add-censor' onClick={handleAddCensor}><Icon src={plus}/></button>
 						</div>
 					) : null
 				}

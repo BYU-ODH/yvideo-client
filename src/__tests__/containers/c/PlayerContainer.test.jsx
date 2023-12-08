@@ -1,6 +1,4 @@
 import * as testutil from '../../testutil/testutil'
-// import ContentService from '../../../services/s/content.redux'
-// import AuthService from '../../../services/s/auth.redux'
 import proxies from 'proxy'
 
 const settings = testutil.settings
@@ -47,17 +45,18 @@ const content = [
 	},
 ]
 
-const props = { // eslint-disable-line no-unused-vars
-	contentCache: content,
-	getContent: jest.fn(),
-	setEvents: jest.fn(),
-	getStreamKey: jest.fn(),
-	resourceCache: jest.fn(),
-	getResources: jest.fn(),
-	addView: jest.fn(),
-	streamKey: `key`,
-	indexToDisplay: 0,
-}
+// TODO: Will be uncommented when we go back to finally fixing tests
+// const props = {
+// 	contentCache: content,
+// 	getContent: jest.fn(),
+// 	setEvents: jest.fn(),
+// 	getStreamKey: jest.fn(),
+// 	resourceCache: jest.fn(),
+// 	getResources: jest.fn(),
+// 	addView: jest.fn(),
+// 	streamKey: `key`,
+// 	indexToDisplay: 0,
+// }
 
 // mock useParams
 jest.mock(`react-router-dom`, () => ({
@@ -80,11 +79,11 @@ proxies.apiProxy.content.get.mockImplementation(() => {
 
 // TODO: need to re-write player container test
 describe(`PlayerContainer test`, () => {
-	// let contentServiceConstructor // eslint-disable-line no-unused-vars
-	// let authServiceConstructor // eslint-disable-line no-unused-vars
-	// let dispatch // eslint-disable-line no-unused-vars
-	// let getState // eslint-disable-line no-unused-vars
-	// let apiProxy // eslint-disable-line no-unused-vars
+	// let contentServiceConstructor
+	// let authServiceConstructor
+	// let dispatch
+	// let getState
+	// let apiProxy
 
 	// beforeEach(async() => {
 	// 	authServiceConstructor = new AuthService()

@@ -46,14 +46,12 @@ proxies.apiProxy.resources.search.mockImplementation(() => {
 
 describe(`collection container test`, () => {
 	let authServiceConstructor
-	let resourceServiceConstructor // eslint-disable-line no-unused-vars
 	let dispatch
 	let getState
 	let apiProxy
 
 	beforeEach(async() => {
 		authServiceConstructor = new AuthService()
-		resourceServiceConstructor = new ResourceService()
 		dispatch = store.dispatch
 		getState = store.getState
 		apiProxy = proxies.apiProxy

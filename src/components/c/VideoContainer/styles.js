@@ -204,7 +204,7 @@ export const Blank = styled.div`
 			width: 100%;
 			height: 100%;
 			background-color: transparent;
-			backdrop-filter: ${props => props.active ? `blur(30px)` : `blur(30px)`};
+			backdrop-filter: blur(30px);
 		}
 	}
 	& .comment{
@@ -214,7 +214,7 @@ export const Blank = styled.div`
 	z-index: 15;
 	}
 	& #blankBox{
-		position: absolute;
+		position: inherit;
 		width: 100%;
 		height: 100%;
 		background-color: black;
