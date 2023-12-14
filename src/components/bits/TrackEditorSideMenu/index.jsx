@@ -6,8 +6,8 @@ import closeIcon from 'assets/close_icon.svg'
 
 import plus from 'assets/plus-circle.svg'
 
-import Style, { Icon } from './styles.js'
-import { convertSecondsToMinute } from '../../common/timeConversion'
+import Style, {Icon} from './styles.js'
+import { convertSecondsToHMS } from '../../common/timeConversion'
 import StartEndTimeConfirm from '../../modals/components/StartEndTImeConfirm'
 
 const TrackEditorSideMenu = props => {
@@ -94,22 +94,10 @@ const TrackEditorSideMenu = props => {
 		}
 	}
 
-	const secondsToTime = (seconds) => {
-		const minutes = Math.floor(seconds / 60)
-		const remainingSeconds = Math.floor(seconds % 60).toFixed(0)
-		const hundredths = Math.floor((seconds - Math.floor(seconds)) * 100).toFixed(0)
-
-		const formattedMinutes = String(minutes).padStart(2, `0`)
-		const formattedSeconds = String(remainingSeconds).padStart(2, `0`)
-		const formattedHundredths = String(hundredths).padStart(2, `0`)
-
-		return `${formattedMinutes}:${formattedSeconds}.${formattedHundredths}`
-	}
-
 	const handleShowConfirmation = (e, startOrEnd) => {
 		setCurrentTime(videoCurrentTime)
 		if (startOrEnd === `start`){
-			const displayTime = secondsToTime(videoCurrentTime)
+			const displayTime = convertSecondsToHMS(videoCurrentTime)
 			setConfirmationMessage(`Change start time to current time? (${displayTime})`)
 			setStartOrEnd(`start`)
 			setEvent(event)
@@ -117,7 +105,7 @@ const TrackEditorSideMenu = props => {
 			setEndInputHighlight(false)
 		}
 		else if (startOrEnd === `end`){
-			const displayTime = secondsToTime(videoCurrentTime)
+			const displayTime = convertSecondsToHMS(videoCurrentTime)
 			setConfirmationMessage(`Change end time to current time? (${displayTime})`)
 			setStartOrEnd(`end`)
 			setEvent(event)
@@ -167,7 +155,7 @@ const TrackEditorSideMenu = props => {
 		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const currentEvent = {...event}
 		const layer = currentEvent.layer
-		const formattedTime = secondsToTime(videoCurrentTime)
+		const formattedTime = convertSecondsToHMS(videoCurrentTime)
 		setCurrentTime(formattedTime)
 		currentEvent.start = videoCurrentTime
 		setEvent(currentEvent)
@@ -179,7 +167,7 @@ const TrackEditorSideMenu = props => {
 		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const currentEvent = event
 		const layer = currentEvent.layer
-		const formattedTime = secondsToTime(videoCurrentTime)
+		const formattedTime = convertSecondsToHMS(videoCurrentTime)
 		setCurrentTime(formattedTime)
 			currentEvent.end = videoCurrentTime
 			setEvent(currentEvent)
@@ -270,7 +258,7 @@ const TrackEditorSideMenu = props => {
 										type='text'
 										className={`sideTabInput ${startInputHighlight ? 'blue-highlight' : ''}`}
 										style={{ padding: event.type === `Pause` ? `0 50px 0 10px` : `0 10px`}}
-										value={`${convertSecondsToMinute(start, videoLength)}`}
+										value={`${convertSecondsToHMS(start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventBeginTimeChange(e, `onChange`)}
 										onBlur={e => handleEditEventBeginTimeChange(e, `onBlur`)}

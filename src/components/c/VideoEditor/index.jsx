@@ -4,8 +4,8 @@ import { Rnd } from 'react-rnd'
 import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
-import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, updateZoom, handleZoomEandD, getParameters} from '../../common/editorCommon'
+import { convertSecondsToHMS, convertToSeconds } from '../../common/timeConversion'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'
@@ -376,7 +376,7 @@ const VideoEditor = props => {
 				pos[item][0] = `0.0`
 			else
 				pos[item][0] = value
-			document.getElementById(`censor-time-input-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
+			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToHMS(parseFloat(pos[item][0]), videoLength)
 			break
 
 		case 1: // x in %
@@ -426,7 +426,7 @@ const VideoEditor = props => {
 			pos[item][0] = `0.0`
 		else
 			pos[item][0] = value
-		document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
+		document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToHMS(parseFloat(pos[item][0]), videoLength)
 		break
 
 		default:
@@ -503,7 +503,6 @@ const VideoEditor = props => {
 		allEvents.forEach((event) => {
 			if(event.halfLayer)
 				delete event.halfLayer
-
 		})
 		content.settings.annotationDocument = [...allEvents]
 		await updateContent(content)
@@ -517,7 +516,7 @@ const VideoEditor = props => {
 			if (allEvents[e].type !== `Censor`){
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
-					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
+					"label": `${convertSecondsToHMS(allEvents[e].start)} — ${convertSecondsToHMS(allEvents[e].end)}`,
 					"start": parseFloat(parseFloat(allEvents[e].start).toFixed(2)),
 					"end": parseFloat(parseFloat(allEvents[e].end).toFixed(2)),
 					"details": `{}`,
@@ -538,7 +537,7 @@ const VideoEditor = props => {
 				}
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
-					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
+					"label": `${convertSecondsToHMS(allEvents[e].start)} — ${convertSecondsToHMS(allEvents[e].end)}`,
 					"start": parseFloat(parseFloat(allEvents[e].start).toFixed(2)),
 					"end": parseFloat(parseFloat(allEvents[e].end).toFixed(2)),
 					"details": {

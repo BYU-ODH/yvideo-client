@@ -3,7 +3,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 import { Rnd } from 'react-rnd'
 import skipIcon from 'assets/event_skip_gray.svg'
 
-import { convertSecondsToMinute } from '../../common/timeConversion'
+import { convertSecondsToHMS } from '../../common/timeConversion'
 
 import { Icon, Style } from './styles'
 
@@ -92,7 +92,7 @@ const SkipLayer = props => {
 				<div className='timemarker' key={i} style={{left: `${tickInt / videoLength * i * 100}%`}}>
 					<div className='tickbar'>
 					</div>
-					<p className='time'>{convertSecondsToMinute(tickInt * i)}</p>
+					<p className='time'>{convertSecondsToHMS(tickInt * i)}</p>
 				</div>,
 			)
 		}

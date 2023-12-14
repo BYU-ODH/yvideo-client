@@ -12,8 +12,7 @@ import play from 'assets/controls_play.svg'
 import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
-import { convertSecondsToMinute } from '../../common/timeConversion'
-import Swal from 'sweetalert2'
+import { convertSecondsToHMS } from '../../common/timeConversion'
 
 const VideoContainer = props => {
 
@@ -327,7 +326,7 @@ const VideoContainer = props => {
 		},
 	}
 
-	const formattedElapsed = convertSecondsToMinute(elapsed)
+	const formattedElapsed = convertSecondsToHMS(elapsed)
 
 	const showError = () => {
 		Swal.fire(`Error Video Loading`, `There was an error loading the video`, `error`)
@@ -381,7 +380,7 @@ const VideoContainer = props => {
 					const scrubberScrollWidth = document.getElementById(`time-bar-progress`).scrollWidth
 					const mouseoverRatio = e.offsetX / scrubberScrollWidth // what percentage of through the scrubber is the mouse (including what's hidden)
 
-					const formattedElapsed = convertSecondsToMinute(mouseoverRatio * duration)
+					const formattedElapsed = convertSecondsToHMS(mouseoverRatio * duration)
 					// set new x position to the red bar
 					timeBarShadow.style.visibility = `visible`
 					timeBarShadow.style.transform = `translateX(${e.offsetX - 2}px)`
