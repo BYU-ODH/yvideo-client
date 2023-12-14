@@ -4,7 +4,6 @@ import { Rnd } from 'react-rnd'
 import handleScrollFuncs from '../../common/toggleScroll'
 import { calculateStartAndEndTimesForDrag, calculateStartAndEndTimesForResize, checkForErrors} from '../../common/editorCommon'
 import { convertSecondsToHMS } from '../../common/timeConversion'
-import handleScrollFuncs from '../../vanilla_scripts/toggleScroll'
 
 import {
 	Icon, Style,

@@ -5,7 +5,7 @@ import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToHMS, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../vanilla_scripts/editorCommon'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters, updateZoom } from '../../common/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'

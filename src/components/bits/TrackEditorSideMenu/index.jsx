@@ -118,7 +118,7 @@ const TrackEditorSideMenu = props => {
 	const handleShowBlurConfirmation = (e, item) => {
 		setShowConfirmation(true);
 		setCurrentTime(videoCurrentTime)
-		const displayTime = secondsToTime(videoCurrentTime)
+		const displayTime = convertSecondsToHMS(videoCurrentTime, videoLength)
 		setConfirmationMessage(`Change blur time to current time? (${displayTime})`)
 		setStartOrEnd(`blur`)
 		setTrIndex(parseInt(e.target.id.split("-")[1]))
@@ -287,7 +287,7 @@ const TrackEditorSideMenu = props => {
 									<input
 										type='text'
 										className= {`sideTabInput endInput ${endInputHighlight ? 'blue-highlight' : ''}`}
-										value={`${convertSecondsToMinute(end, videoLength)}`}
+										value={`${convertSecondsToHMS(end, videoLength)}`}
 										style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventEndTimeChange(e, `onChange`)}
@@ -391,7 +391,7 @@ const TrackEditorSideMenu = props => {
 													id={`censorTimeInput-${item}`}
 													className={`censorRow ${blurInputHighlight ? 'blue-highlight' : ''} `}
 													type='text'
-													defaultValue={`${convertSecondsToMinute(parseFloat(event.position[item][0]), videoLength)}`}
+													defaultValue={`${convertSecondsToHMS(parseFloat(event.position[item][0]), videoLength)}`}
 													onKeyUp={e => e.stopPropagation()}
 													onClick={() => handleCensorActive(item)}
 													onBlur={(e) => handleEditCensor(e, item, 0, `onBlur`)}
