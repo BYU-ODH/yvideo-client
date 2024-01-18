@@ -39,7 +39,7 @@ const TrackEditorSideMenu = props => {
 	const [startOrEnd, setStartOrEnd] = useState(``)
 	const [confirmationMessage, setConfirmationMessage] = useState(``)
 	const [startInputHighlight, setStartInputHighlight] = useState(false);
-  const [endInputHighlight, setEndInputHighlight] = useState(false);
+	const [endInputHighlight, setEndInputHighlight] = useState(false);
 	const [blurInputHighlight, setBlurInputHighlight] = useState(false);
 	const [trIndex, setTrIndex] = useState(0)
 
