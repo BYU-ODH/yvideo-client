@@ -543,7 +543,7 @@ const ClipEditor = props => {
 																	<input
 																		type='text'
 																		id={`timeInput-${i}`}
-																		value={`${convertSecondsToHMS(clipList[item].start, videoLength)}`}
+																		value={`${convertSecondsToHMS(clipList?.[i]?.start, videoLength)}`}
 																		onKeyUp={e => e.stopPropagation()}
 																		onClick={() => handleEditClip(item, i)}
 																		onChange={(e) => setStartTime(e.target.value, `input`, i)}
@@ -557,7 +557,7 @@ const ClipEditor = props => {
 																	<i className='fa fa-clock' onClick={() => toggleItemTimeChange(i, true, `end`)}></i>}
 																	<input
 																		type='text'
-																		value={`${convertSecondsToHMS(clipList[item].end, videoLength)}`}
+																		value={`${convertSecondsToHMS(clipList?.[i]?.end, videoLength)}`}
 																		onKeyUp={e => e.stopPropagation()}
 																		onClick={() => handleEditClip(item, i)}
 																		onChange={(e) => setEndTime(e.target.value, `input`, i)}

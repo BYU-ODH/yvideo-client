@@ -256,7 +256,7 @@ const TrackEditorSideMenu = props => {
 								<div className='center'>
 									<input
 										type='text'
-										className={`sideTabInput ${startInputHighlight ? 'blue-highlight' : ''}`}
+										className={`side-tab-input ${startInputHighlight ? 'blue-highlight' : ''}`}
 										style={{ padding: event.type === `Pause` ? `0 50px 0 10px` : `0 10px`}}
 										value={`${convertSecondsToHMS(start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
@@ -286,7 +286,7 @@ const TrackEditorSideMenu = props => {
 									</div>
 									<input
 										type='text'
-										className= {`sideTabInput endInput ${endInputHighlight ? 'blue-highlight' : ''}`}
+										className= {`side-tab-input endInput ${endInputHighlight ? 'blue-highlight' : ''}`}
 										value={`${convertSecondsToHMS(end, videoLength)}`}
 										style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}
 										onKeyUp={e => e.stopPropagation()}
@@ -318,7 +318,7 @@ const TrackEditorSideMenu = props => {
 										</div>
 									}
 									{event.type === `Pause` ? (
-										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='sideTabInput' value={event.message}
+										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='side-tab-input' value={event.message}
 											placeholder = 'Enter message'
 											onChange={e => editPauseMessage(e)}/>
 									) : <></>
@@ -383,13 +383,13 @@ const TrackEditorSideMenu = props => {
 								<tbody className={`censor-list`}>
 									{event.type === `Censor` &&
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
-											<>
-											<tr className={`${activeCensorPosition === item && `censorActive`}`} key={item} >
+											<React.Fragment key={item}>
+											<tr className={`${activeCensorPosition === item && `censorActive`}`} >
 												<td id={`time-td-${item}`} className={`tdOne`}>
 												<span className={`flexbox`}>
 													<input
 													id={`censorTimeInput-${item}`}
-													className={`censorRow ${blurInputHighlight ? 'blue-highlight' : ''} `}
+													className={`censor-row ${blurInputHighlight ? 'blue-highlight' : ''} `}
 													type='text'
 													defaultValue={`${convertSecondsToHMS(parseFloat(event.position[item][0]), videoLength)}`}
 													onKeyUp={e => e.stopPropagation()}
@@ -462,7 +462,7 @@ const TrackEditorSideMenu = props => {
 													)}
 												</td>
 											</tr>
-											</>
+											</React.Fragment>
 										))
 									}
 								</tbody>
