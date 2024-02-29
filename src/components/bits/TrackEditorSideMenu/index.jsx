@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import ReactPlayer from 'react-player'
 
 import trashIcon from 'assets/trash_icon.svg'
 import closeIcon from 'assets/close_icon.svg'
@@ -38,9 +37,9 @@ const TrackEditorSideMenu = props => {
 	const [showConfirmation, setShowConfirmation] = useState(false)
 	const [startOrEnd, setStartOrEnd] = useState(``)
 	const [confirmationMessage, setConfirmationMessage] = useState(``)
-	const [startInputHighlight, setStartInputHighlight] = useState(false);
-	const [endInputHighlight, setEndInputHighlight] = useState(false);
-	const [blurInputHighlight, setBlurInputHighlight] = useState(false);
+	const [startInputHighlight, setStartInputHighlight] = useState(false)
+	const [endInputHighlight, setEndInputHighlight] = useState(false)
+	const [blurInputHighlight, setBlurInputHighlight] = useState(false)
 	const [trIndex, setTrIndex] = useState(0)
 
 	useEffect(() => {
@@ -103,8 +102,7 @@ const TrackEditorSideMenu = props => {
 			setEvent(event)
 			setStartInputHighlight(true)
 			setEndInputHighlight(false)
-		}
-		else if (startOrEnd === `end`){
+		}else if (startOrEnd === `end`){
 			const displayTime = convertSecondsToHMS(videoCurrentTime)
 			setConfirmationMessage(`Change end time to current time? (${displayTime})`)
 			setStartOrEnd(`end`)
@@ -112,67 +110,64 @@ const TrackEditorSideMenu = props => {
 			setStartInputHighlight(false)
 			setEndInputHighlight(true)
 		}
-    setShowConfirmation(true);
-  };
+		setShowConfirmation(true)
+	}
 
+	// this function is specially made for blurs to make sure the correct item is grabbed
 	const handleShowBlurConfirmation = (e, item) => {
-		setShowConfirmation(true);
+		setShowConfirmation(true)
 		setCurrentTime(videoCurrentTime)
 		const displayTime = convertSecondsToHMS(videoCurrentTime, videoLength)
 		setConfirmationMessage(`Change blur time to current time? (${displayTime})`)
 		setStartOrEnd(`blur`)
-		setTrIndex(parseInt(e.target.id.split("-")[1]))
+		setTrIndex(parseInt(e.target.id.split(`-`)[1]))
 		setEvent(event)
 		setBlurInputHighlight(true)
 		setStartInputHighlight(false)
 		setEndInputHighlight(false)
 	}
 
-  const handleConfirm = (e, time) => {
-		if (startOrEnd === `start`){
+	const handleConfirm = (e, time) => {
+		if (startOrEnd === `start`)
 			handleEventBeginTimeChangeByButton(e, time, `start`)
-		}
-		else if (startOrEnd === `end`){
-			handleEventEndTimeChangeByButton(e,time, `end`)
-		}
-    setShowConfirmation(false);
-  };
+		else if (startOrEnd === `end`)
+			handleEventEndTimeChangeByButton(e, time, `end`)
+		setShowConfirmation(false)
+	}
 
 	const handleConfirmBlur = () => {
 		handleEditCensorFromTrackSideMenu(currentTime, trIndex, 5, `onBlur`)
 		setShowConfirmation(false)
 	}
 
-  const handleCancel = () => {
-    // Handle the cancellation action here
-    setShowConfirmation(false)
+	const handleCancel = () => {
+	// Handle the cancellation action here
+		setShowConfirmation(false)
 		setStartInputHighlight(false)
 		setEndInputHighlight(false)
 		setBlurInputHighlight(false)
-  };
+	}
 
 	const handleEventBeginTimeChangeByButton = (e, time, type) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
-		const currentEvent = {...event}
+		const currentEvent = event
 		const layer = currentEvent.layer
 		const formattedTime = convertSecondsToHMS(videoCurrentTime)
 		setCurrentTime(formattedTime)
 		currentEvent.start = videoCurrentTime
 		setEvent(currentEvent)
-			// updateEvents(index, currentEvent, layer, `end`)
+		// updateEvents(index, currentEvent, layer, `end`)
 		editEvent(`beg`, currentEvent.start, null, layer, index, type)
 	}
 
 	const handleEventEndTimeChangeByButton = (e, time, type) => {
-		// document.getElementById(`sideTabMessage`).style.color=`red`
 		const currentEvent = event
 		const layer = currentEvent.layer
 		const formattedTime = convertSecondsToHMS(videoCurrentTime)
 		setCurrentTime(formattedTime)
-			currentEvent.end = videoCurrentTime
-			setEvent(currentEvent)
-			// editEvent(index, currentEvent, layer, `beg`)
-			editEvent(`end`, currentEvent.end, null, layer, index, type)
+		currentEvent.end = videoCurrentTime
+		setEvent(currentEvent)
+		// editEvent(index, currentEvent, layer, `beg`)
+		editEvent(`end`, currentEvent.end, null, layer, index, type)
 	}
 
 	const handleSaveComment = () => {
@@ -189,11 +184,9 @@ const TrackEditorSideMenu = props => {
 			editComment.comment
 
 		updateEvents(ind, currentEvent, layer, `null`)
-		// document.getElementById(`saveComment`).disabled = true
 	}
 
 	const handleEditComment = (value, currentEvent, int) => {
-    // document.getElementById(`saveComment`).disabled = false
 		switch (int) {
 		case 1:
 			if(editComment.position !== undefined)
@@ -256,7 +249,7 @@ const TrackEditorSideMenu = props => {
 								<div className='center'>
 									<input
 										type='text'
-										className={`side-tab-input ${startInputHighlight ? 'blue-highlight' : ''}`}
+										className={`side-tab-input ${startInputHighlight ? `blue-highlight` : ``}`}
 										style={{ padding: event.type === `Pause` ? `0 50px 0 10px` : `0 10px`}}
 										value={`${convertSecondsToHMS(start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
@@ -281,12 +274,12 @@ const TrackEditorSideMenu = props => {
 										}
 										onMouseLeave={() => toggleTip()}
 										style={{ right: event.type === `Pause` ? `63px` : `30px`}}
-										>
+									>
 										<i className='fa fa-clock fa-lg' onClick={(e) => handleShowConfirmation(e, `start`)}></i>
 									</div>
 									<input
 										type='text'
-										className= {`side-tab-input endInput ${endInputHighlight ? 'blue-highlight' : ''}`}
+										className= {`side-tab-input end-input ${endInputHighlight ? `blue-highlight` : ``}`}
 										value={`${convertSecondsToHMS(end, videoLength)}`}
 										style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}
 										onKeyUp={e => e.stopPropagation()}
@@ -303,19 +296,18 @@ const TrackEditorSideMenu = props => {
 									/>
 									{event.type !== `Pause` &&
 											<div
-											className={`clock`}
-											onMouseEnter={e => handleShowTip(`endclock`,
-												{
-													x: e.target.getBoundingClientRect().x - 15,
-													y: e.target.getBoundingClientRect().y + 20,
-													width: e.currentTarget.offsetWidth + 40,
-												})
-											}
-										onMouseLeave={() => toggleTip()}>
-										<i className='fa fa-clock fa-lg' onClick={(e) => handleShowConfirmation(e, `end`)}
-												style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}
-										></i>
-										</div>
+												className={`clock`}
+												onMouseEnter={e => handleShowTip(`endclock`,
+													{
+														x: e.target.getBoundingClientRect().x - 15,
+														y: e.target.getBoundingClientRect().y + 20,
+														width: e.currentTarget.offsetWidth + 40,
+													})
+												}
+												onMouseLeave={() => toggleTip()}>
+												<i className='fa fa-clock fa-lg' onClick={(e) => handleShowConfirmation(e, `end`)}
+													style={{ display: `${event.type === `Pause` ? `none` : `block`}` }}></i>
+											</div>
 									}
 									{event.type === `Pause` ? (
 										<textarea style={{ margin: `5%`, width: `90%`}} rows='4' cols='50' className='side-tab-input' value={event.message}
@@ -324,20 +316,20 @@ const TrackEditorSideMenu = props => {
 									) : <></>
 									}
 								</div>
-								{showConfirmation && startOrEnd==`start` && (
-										<StartEndTimeConfirm
-											message={confirmationMessage}
-											onConfirm={handleConfirm}
-											onCancel={handleCancel}
-										/>
-									)}
-								{showConfirmation && startOrEnd==`end` && (
-										<StartEndTimeConfirm
-											message={confirmationMessage}
-											onConfirm={handleConfirm}
-											onCancel={handleCancel}
-										/>
-									)}
+								{showConfirmation && startOrEnd === `start` && (
+									<StartEndTimeConfirm
+										message={confirmationMessage}
+										onConfirm={handleConfirm}
+										onCancel={handleCancel}
+									/>
+								)}
+								{showConfirmation && startOrEnd === `end` && (
+									<StartEndTimeConfirm
+										message={confirmationMessage}
+										onConfirm={handleConfirm}
+										onCancel={handleCancel}
+									/>
+								)}
 								<br/>
 							</>
 						</>
@@ -384,84 +376,84 @@ const TrackEditorSideMenu = props => {
 									{event.type === `Censor` &&
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<React.Fragment key={item}>
-											<tr className={`${activeCensorPosition === item && `censorActive`}`} >
-												<td id={`time-td-${item}`} className={`tdOne`}>
-												<span className={`flexbox`}>
-													<input
-													id={`censorTimeInput-${item}`}
-													className={`censor-row ${blurInputHighlight ? 'blue-highlight' : ''} `}
-													type='text'
-													defaultValue={`${convertSecondsToHMS(parseFloat(event.position[item][0]), videoLength)}`}
-													onKeyUp={e => e.stopPropagation()}
-													onClick={() => handleCensorActive(item)}
-													onBlur={(e) => handleEditCensor(e, item, 0, `onBlur`)}
-													onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
-														{
-															x: e.target.getBoundingClientRect().x - 125,
-															y: e.target.getBoundingClientRect().y - 25,
-															width: e.currentTarget.offsetWidth + 20,
-														})
-													}
-													onMouseLeave={() => toggleTip()}
-												/>
-													<i className={`fa fa-clock blurClock`}
-														id={`clock-${item}`}
-														onClick={(e) => handleShowBlurConfirmation(e, item, 0, `onBlur`)}
-														onMouseEnter={e => handleShowTip(`changetime`,
-														{
-															x: e.target.getBoundingClientRect().x - 320,
-															y: e.target.getBoundingClientRect().y - 30,
-															width: e.currentTarget.offsetWidth + 20,
-														})
-													}
-													onMouseLeave={() => toggleTip()}></i>
-												</span>
-												</td>
-												<td><input disabled
-													type='number'
-													value={`${event.position[item][1]}`}
-													onKeyUp={e => e.stopPropagation()}
-													onClick={() => handleCensorActive(item)}
-													onChange={(e) => handleEditCensor(e, item, 1)}
-												/></td>
-												<td><input disabled
-													type='number'
-													value={`${event.position[item][2]}`}
-													onKeyUp={e => e.stopPropagation()}
-													onClick={() => handleCensorActive(item)}
-													onChange={(e) => handleEditCensor(e, item, 2)}
-												/></td>
-												<td><input
-													id={`censor-width-input-${i}`}
-													type='number'
-													value={`${event.position[item][3]}`}
-													onKeyUp={e => e.stopPropagation()}
-													onClick={() => handleCensorActive(item)}
-													onBlur={(e) => handleEditCensor(e, item, 3, `onBlur`)}
-													onChange={(e) => handleEditCensor(e, item, 3, `onChange`)}
-												/></td>
-												<td><input
-													id={`censor-height-input-${i}`}
-													type='number'
-													value={`${event.position[item][4]}`}
-													onKeyUp={e => e.stopPropagation()}
-													onClick={() => handleCensorActive(item)}
-													onBlur={(e) => handleEditCensor(e, item, 4, `onBlur`)}
-													onChange={(e) => handleEditCensor(e, item, 4, `onChange`)}
-												/></td>
-												<td><img className={`trashIcon`} src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
-											</tr>
-											<tr>
-												<td colSpan={6}>
-													{showConfirmation && trIndex==item && startOrEnd===`blur` && (
-														<StartEndTimeConfirm
-															message={confirmationMessage}
-															onConfirm={handleConfirmBlur}
-															onCancel={handleCancel}
-														/>
-													)}
-												</td>
-											</tr>
+												<tr className={`${activeCensorPosition === item && `censorActive`}`} >
+													<td id={`time-td-${item}`} className={`td-one`}>
+														<span className={`flex-box`}>
+															<input
+																id={`censorTimeInput-${item}`}
+																className={`censor-row ${blurInputHighlight ? `blue-highlight` : ``} `}
+																type='text'
+																defaultValue={`${convertSecondsToHMS(parseFloat(event.position[item][0]), videoLength)}`}
+																onKeyUp={e => e.stopPropagation()}
+																onClick={() => handleCensorActive(item)}
+																onBlur={(e) => handleEditCensor(e, item, 0, `onBlur`)}
+																onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+																	{
+																		x: e.target.getBoundingClientRect().x - 125,
+																		y: e.target.getBoundingClientRect().y - 25,
+																		width: e.currentTarget.offsetWidth + 20,
+																	})
+																}
+																onMouseLeave={() => toggleTip()}
+															/>
+															<i className={`fa fa-clock blur-clock`}
+																id={`clock-${item}`}
+																onClick={(e) => handleShowBlurConfirmation(e, item, 0, `onBlur`)}
+																onMouseEnter={e => handleShowTip(`changetime`,
+																	{
+																		x: e.target.getBoundingClientRect().x - 160,
+																		y: e.target.getBoundingClientRect().y - 30,
+																		width: e.currentTarget.offsetWidth + 20,
+																	})
+																}
+																onMouseLeave={() => toggleTip()}></i>
+														</span>
+													</td>
+													<td><input disabled
+														type='number'
+														value={`${event.position[item][1]}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleCensorActive(item)}
+														onChange={(e) => handleEditCensor(e, item, 1)}
+													/></td>
+													<td><input disabled
+														type='number'
+														value={`${event.position[item][2]}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleCensorActive(item)}
+														onChange={(e) => handleEditCensor(e, item, 2)}
+													/></td>
+													<td><input
+														id={`censor-width-input-${i}`}
+														type='number'
+														value={`${event.position[item][3]}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleCensorActive(item)}
+														onBlur={(e) => handleEditCensor(e, item, 3, `onBlur`)}
+														onChange={(e) => handleEditCensor(e, item, 3, `onChange`)}
+													/></td>
+													<td><input
+														id={`censor-height-input-${i}`}
+														type='number'
+														value={`${event.position[item][4]}`}
+														onKeyUp={e => e.stopPropagation()}
+														onClick={() => handleCensorActive(item)}
+														onBlur={(e) => handleEditCensor(e, item, 4, `onBlur`)}
+														onChange={(e) => handleEditCensor(e, item, 4, `onChange`)}
+													/></td>
+													<td><img className={`trashIcon`} src={`${trashIcon}`} alt='' onClick={() => handleCensorRemove(item)}/></td>
+												</tr>
+												<tr>
+													<td colSpan={6}>
+														{showConfirmation && trIndex===item && startOrEnd===`blur` && (
+															<StartEndTimeConfirm
+																message={confirmationMessage}
+																onConfirm={handleConfirmBlur}
+																onCancel={handleCancel}
+															/>
+														)}
+													</td>
+												</tr>
 											</React.Fragment>
 										))
 									}

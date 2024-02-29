@@ -14,7 +14,6 @@ import pauseIcon from 'assets/event_pause.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
 import commentIcon from 'assets/event_comment.svg'
-
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
@@ -423,11 +422,11 @@ const VideoEditor = props => {
 		switch (int) {
 		case 5:
 			if(value === 0)
-			pos[item][0] = `0.0`
-		else
-			pos[item][0] = value
-		document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToHMS(parseFloat(pos[item][0]), videoLength)
-		break
+				pos[item][0] = `0.0`
+			else
+				pos[item][0] = value
+			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToHMS(parseFloat(pos[item][0]), videoLength)
+			break
 
 		default:
 			break
@@ -630,7 +629,7 @@ const VideoEditor = props => {
 			return ``
 		}
 	}
-const setCurrentTimePercentage = (time) => {
+	const setCurrentTimePercentage = (time) => {
 		const seconds = time * videoLength
 		setCurrentTime(seconds)
 	}

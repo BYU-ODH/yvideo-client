@@ -28,14 +28,6 @@ const Style = styled.div`
 		}
 	}
 
-	& .startClock {
-		position: relative;
-	}
-
-	& .endClock {
-		position: relative;
-	}
-
 	& .closeEditor {
 		width: 2rem;
 		text-align: right;
@@ -49,7 +41,7 @@ const Style = styled.div`
 		display: flex;
 		font-size: 1.5rem;
 
-		& .sideTabInput {
+		& .side-tab-input {
 			margin:auto 20% 5% 5% !important;
 			padding: 0px 10px;
 			width: 100px;
@@ -193,22 +185,22 @@ const Style = styled.div`
 			}
 		}
 
-		& .clockColumn {
-			width: 5%;
-		}
+		// & .clockColumn {
+		// 	width: 5%;
+		// }
 
-		& .tdOne {
+		& .td-one {
 			width:30% !important;
 		}
 
-		& .flexbox {
+		& .flex-box {
 			display: flex;
 			align-items: center;
 			width: 100%;
 			position:relative;
 		}
 
-		& .blurClock {
+		& .blur-clock {
 			position: absolute;
 			left: 75%;
 			margin-right: 10%;

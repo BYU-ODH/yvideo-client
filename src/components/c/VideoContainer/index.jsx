@@ -13,7 +13,7 @@ import pause from 'assets/controls_pause.svg'
 import mute from 'assets/controls_unmuted.svg'
 import unmute from 'assets/controls_muted.svg'
 import { convertSecondsToHMS } from '../../common/timeConversion'
-import Swal from 'sweetalert2' 
+import Swal from 'sweetalert2'
 
 const VideoContainer = props => {
 
