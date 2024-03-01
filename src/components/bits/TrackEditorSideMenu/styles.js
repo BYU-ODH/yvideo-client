@@ -112,7 +112,7 @@ const Style = styled.div`
 		font-size: 1.3rem;
 	}
 
-	& .Menu {
+	& .censor-menu {
 		font-size: 1.5rem;
 		height: 65%;
 		overflow-y: scroll;
