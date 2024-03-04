@@ -4,8 +4,8 @@ import { Rnd } from 'react-rnd'
 import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
-import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, updateZoom, handleZoomEandD, getParameters} from '../../common/editorCommon'
+import { convertSecondsToHMS, convertToSeconds } from '../../common/timeConversion'
+import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters, updateZoom } from '../../common/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'
@@ -14,7 +14,6 @@ import pauseIcon from 'assets/event_pause.svg'
 import censorIcon from 'assets/event_censor.svg'
 import blankIcon from 'assets/event_blank.svg'
 import commentIcon from 'assets/event_comment.svg'
-
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
 import helpIcon from 'assets/te-help-circle-white.svg'
@@ -376,7 +375,7 @@ const VideoEditor = props => {
 				pos[item][0] = `0.0`
 			else
 				pos[item][0] = value
-			document.getElementById(`censor-time-input-${item}`).value = convertSecondsToMinute(parseFloat(pos[item][0]), videoLength)
+			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToHMS(parseFloat(pos[item][0]), videoLength)
 			break
 
 		case 1: // x in %
@@ -392,7 +391,6 @@ const VideoEditor = props => {
 				pos[item][3] = 0
 			else
 				pos[item][3] = value
-
 			break
 
 		case 4: // height in %
@@ -400,6 +398,34 @@ const VideoEditor = props => {
 				pos[item][4] = 0
 			else
 				pos[item][4] = value
+			break
+
+		default:
+			break
+		}
+		cEvent.position = pos
+		updateEvents(index, cEvent, layer, ``, type)
+		setEditCensor(object)
+	}
+
+	const handleEditCensorFromTrackSideMenu = (time, item, int, type) => {
+		const object = editCensor
+		const index = eventToEdit
+		const cEvent = allEvents[index]
+		const layer = cEvent.layer
+		const pos = cEvent.position
+		let value
+		if (int === 5)
+			value = time
+		else
+			value = Number(parseFloat(time).toFixed(0))
+		switch (int) {
+		case 5:
+			if(value === 0)
+				pos[item][0] = `0.0`
+			else
+				pos[item][0] = value
+			document.getElementById(`censorTimeInput-${item}`).value = convertSecondsToHMS(parseFloat(pos[item][0]), videoLength)
 			break
 
 		default:
@@ -476,7 +502,6 @@ const VideoEditor = props => {
 		allEvents.forEach((event) => {
 			if(event.halfLayer)
 				delete event.halfLayer
-
 		})
 		content.settings.annotationDocument = [...allEvents]
 		await updateContent(content)
@@ -490,7 +515,7 @@ const VideoEditor = props => {
 			if (allEvents[e].type !== `Censor`){
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
-					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
+					"label": `${convertSecondsToHMS(allEvents[e].start)} — ${convertSecondsToHMS(allEvents[e].end)}`,
 					"start": parseFloat(parseFloat(allEvents[e].start).toFixed(2)),
 					"end": parseFloat(parseFloat(allEvents[e].end).toFixed(2)),
 					"details": `{}`,
@@ -511,7 +536,7 @@ const VideoEditor = props => {
 				}
 				const data = {"options": {
 					"type": allEvents[e].type.toLowerCase(),
-					"label": `${convertSecondsToMinute(allEvents[e].start)} — ${convertSecondsToMinute(allEvents[e].end)}`,
+					"label": `${convertSecondsToHMS(allEvents[e].start)} — ${convertSecondsToHMS(allEvents[e].end)}`,
 					"start": parseFloat(parseFloat(allEvents[e].start).toFixed(2)),
 					"end": parseFloat(parseFloat(allEvents[e].end).toFixed(2)),
 					"details": {
@@ -821,7 +846,7 @@ const VideoEditor = props => {
 						{ showSideEditor &&
 								<>
 									<>
-										<span className='current'>{allEvents !== [] && `${checkSideBarTitle()}`}</span>
+										<span className='current'>{allEvents.length !== 0 && `${checkSideBarTitle()}`}</span>
 										<button className='deleteEventButton' onClick={deleteEvent}>Delete Event</button>
 									</>
 								</>
@@ -837,6 +862,7 @@ const VideoEditor = props => {
 							editCensor={editCensor}
 							index={eventToEdit}
 							handleEditCensor={handleEditCensor}
+							handleEditCensorFromTrackSideMenu={handleEditCensorFromTrackSideMenu}
 							handleCensorRemove={handleCensorRemove}
 							handleAddCensor={handleAddCensor}
 							activeCensorPosition={activeCensorPosition}
@@ -845,6 +871,7 @@ const VideoEditor = props => {
 							handleShowTip={handleShowTip}
 							setEventSeek={setEventSeek}
 							handleEventPosition={handleEventPosition}
+							videoCurrentTime={videoCurrentTime}
 						></TrackEditorSideMenu>
 						:
 						<></>

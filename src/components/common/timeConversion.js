@@ -1,4 +1,4 @@
-export const convertSecondsToMinute = (time, videoLength) => {
+export const convertSecondsToHMS = (time, videoLength) => {
 	try {
 		// here is meant to use two equal
 		if(typeof time == `number`) { // eslint-disable-line eqeqeq
