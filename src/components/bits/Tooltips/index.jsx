@@ -97,10 +97,12 @@ export const ToolTip = (props) => {
 		"translation-off": `Translations off`,
 		"transcript-seek": `Click to seek`,
 		"definitions-disabled": `Definitions are not supported for this language`,
+		"startclock":`set start time`,
+		"endclock":`set end time`,
+		"changetime":`change time`,
 		"clips-tab": `Clips`,
 		"captions-tab": `Captions`,
 	}
-
 	// console.log("POSITION", position)
 
 	return(

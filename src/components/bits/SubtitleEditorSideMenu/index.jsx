@@ -5,7 +5,7 @@ import closeIcon from 'assets/close_icon.svg'
 import plus from 'assets/plus-circle.svg'
 import Style, { Icon } from './styles.js'
 
-import { convertSecondsToMinute } from '../../common/timeConversion'
+import { convertSecondsToHMS } from '../../common/timeConversion'
 
 const SubtitleEditorSideMenu = props => {
 
@@ -120,7 +120,7 @@ const SubtitleEditorSideMenu = props => {
 										id={`sub-start${ind}`}
 										className='sub-start side-tab-input'
 										type='text'
-										value={`${sub.start === `` ? `` : convertSecondsToMinute(sub.start, videoLength)}`}
+										value={`${sub.start === `` ? `` : convertSecondsToHMS(sub.start, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
 										onClick={ () => changeSubIndex(ind) }
 										onChange={e => editSub(`beg`, e.target.value, null, subLayer, ind, null, subs[subLayer].id)}
@@ -139,7 +139,7 @@ const SubtitleEditorSideMenu = props => {
 										id={`sub-end${ind}`}
 										className='sub-end'
 										type='text'
-										value={`${sub.end === `` ? `` : convertSecondsToMinute(sub.end, videoLength)}`}
+										value={`${sub.end === `` ? `` : convertSecondsToHMS(sub.end, videoLength)}`}
 										onKeyUp={e => e.stopPropagation()}
 										onClick={ () => changeSubIndex(ind) }
 										onChange={e => editSub(`end`, e.target.value, null, subLayer, ind, null, subs[subLayer].id)}

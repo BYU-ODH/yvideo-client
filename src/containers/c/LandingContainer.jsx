@@ -29,11 +29,11 @@ const LandingContainer = props => {
 	const checkBrowser = () => {
 		// safari
 		if(isSafari) {
-			setAlertMessage(`video playback doesn't work on safari, we recommend Chrome.`)
+			setAlertMessage(`Video playback does not currently work on Safari. Please use a chromium-based browser, like Chrome.`)
 			setIsAlertMessage(true)
 			setDisabled(true)
 		}else if(isIOS && isMobile) { // ios
-			setAlertMessage(`video playback doesn't work on the IOS system, please use a different device.`)
+			setAlertMessage(`Video playback does not currently work on iOS. Please use a different device.`)
 			setIsAlertMessage(true)
 			setDisabled(true)
 		}
