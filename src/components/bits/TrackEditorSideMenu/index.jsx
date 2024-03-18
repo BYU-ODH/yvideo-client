@@ -41,10 +41,19 @@ const TrackEditorSideMenu = props => {
 	const [endInputHighlight, setEndInputHighlight] = useState(false)
 	const [blurInputHighlight, setBlurInputHighlight] = useState(false)
 	const [trIndex, setTrIndex] = useState(0)
+	const [startTimeInputValue, setStartTimeInputValue] = useState(``)
 
 	useEffect(() => {
 		setEvent(singleEvent)
 	}, [index, event, singleEvent])
+
+	useEffect(() => {
+		if (event.type === `Censor`){
+			const startInputTimeValue = document.getElementsByClassName(`censor-time-input-0`)
+			if (startInputTimeValue && startInputTimeValue[0] && startInputTimeValue[0].value!== null)
+				setStartTimeInputValue(startInputTimeValue[0].value)
+		}
+	}, [setStartTimeInputValue, handleEditCensor, index, event.type])
 
 	const editEvent = (side, time, value, layer, ind, type) => {
 		const ev = {...event}
@@ -120,7 +129,7 @@ const TrackEditorSideMenu = props => {
 		const displayTime = convertSecondsToHMS(videoCurrentTime, videoLength)
 		setConfirmationMessage(`Change blur time to current time? (${displayTime})`)
 		setStartOrEnd(`blur`)
-		setTrIndex(parseInt(e.target.id.split(`-`)[1]))
+		setTrIndex(e.target.id.split(`-`)[1]).toString()
 		setEvent(event)
 		setBlurInputHighlight(true)
 		setStartInputHighlight(false)
@@ -225,6 +234,7 @@ const TrackEditorSideMenu = props => {
 		setEventSeek(true)
 		handleEventPosition(event.position[e][0])
 		setActiveCensorPosition(e)
+		setBlurInputHighlight(true)
 	}
 	const start = event.start
 	const end = event.end
@@ -251,7 +261,7 @@ const TrackEditorSideMenu = props => {
 										type='text'
 										className={`side-tab-input ${startInputHighlight ? `blue-highlight` : ``}`}
 										style={{ padding: event.type === `Pause` ? `0 50px 0 10px` : `0 10px`}}
-										value={`${convertSecondsToHMS(start, videoLength)}`}
+										value={event.type === `Censor` ? startTimeInputValue : convertSecondsToHMS(start, videoLength)}
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventBeginTimeChange(e, `onChange`)}
 										onBlur={e => handleEditEventBeginTimeChange(e, `onBlur`)}
@@ -263,20 +273,23 @@ const TrackEditorSideMenu = props => {
 											})
 										}
 										onMouseLeave={() => toggleTip()}
+										disabled={event.type === `Censor`}
 									/>
-									<div className={`clock`}
-										onMouseEnter={e => handleShowTip(`startclock`,
-											{
-												x: e.target.getBoundingClientRect().x - 15,
-												y: e.target.getBoundingClientRect().y + 20,
-												width: e.currentTarget.offsetWidth + 40,
-											})
-										}
-										onMouseLeave={() => toggleTip()}
-										style={{ right: event.type === `Pause` ? `63px` : `30px`}}
-									>
-										<i className='fa fa-clock fa-lg' onClick={(e) => handleShowConfirmation(e, `start`)}></i>
-									</div>
+									{event.type !== `Censor` && ( // Conditionally render the <i> element if event.type is not 'Censor'
+										<div className={`clock`}
+											onMouseEnter={e => handleShowTip(`startclock`,
+												{
+													x: e.target.getBoundingClientRect().x - 15,
+													y: e.target.getBoundingClientRect().y + 20,
+													width: e.currentTarget.offsetWidth + 40,
+												})
+											}
+											onMouseLeave={() => toggleTip()}
+											style={{ right: event.type === `Pause` ? `63px` : `30px`}}
+										>
+											<i className='fa fa-clock fa-lg' onClick={(e) => handleShowConfirmation(e, `start`)}></i>
+										</div>
+									)}
 									<input
 										type='text'
 										className= {`side-tab-input end-input ${endInputHighlight ? `blue-highlight` : ``}`}
@@ -376,12 +389,12 @@ const TrackEditorSideMenu = props => {
 									{event.type === `Censor` &&
 										Object.keys(event.position).sort((a, b) => parseFloat(event.position[a][0]) - parseFloat(event.position[b][0])).map((item, i) => (
 											<React.Fragment key={item}>
-												<tr className={`${activeCensorPosition === item && `censorActive`}`} >
+												<tr className={`${activeCensorPosition === item && `censor-active`}`} >
 													<td id={`time-td-${item}`} className={`td-one`}>
 														<span className={`flex-box`}>
 															<input
 																id={`censorTimeInput-${item}`}
-																className={`censor-row ${blurInputHighlight ? `blue-highlight` : ``} `}
+																className={`censor-row ${blurInputHighlight ? `blue-highlight` : ``} censor-time-input-${i}`}
 																type='text'
 																defaultValue={`${convertSecondsToHMS(parseFloat(event.position[item][0]), videoLength)}`}
 																onKeyUp={e => e.stopPropagation()}
