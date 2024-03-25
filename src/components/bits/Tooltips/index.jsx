@@ -102,6 +102,8 @@ export const ToolTip = (props) => {
 		"changetime":`change time`,
 		"clips-tab": `Clips`,
 		"captions-tab": `Captions`,
+		"import-disable": `Save changes to import`,
+		"export-disable": `Save changes to export`,
 	}
 	// console.log("POSITION", position)
 
