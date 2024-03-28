@@ -255,12 +255,12 @@ const TrackEditorSideMenu = props => {
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventBeginTimeChange(e, `onChange`)}
 										onBlur={e => handleEditEventBeginTimeChange(e, `onBlur`)}
-										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS`: `HMMSSMS`}`,
+										onMouseEnter={e => handleShowTip(`only-sec`,
 											{
 												x: e.target.getBoundingClientRect().x - 15,
 												y: e.target.getBoundingClientRect().y + 20,
 												width: e.currentTarget.offsetWidth + 20,
-											})
+											}, start)
 										}
 										onMouseLeave={() => toggleTip()}
 									/>
@@ -285,12 +285,12 @@ const TrackEditorSideMenu = props => {
 										onKeyUp={e => e.stopPropagation()}
 										onChange={e => handleEditEventEndTimeChange(e, `onChange`)}
 										onBlur={e => handleEditEventEndTimeChange(e, `onBlur`)}
-										onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+										onMouseEnter={e => handleShowTip(`only-sec`,
 											{
 												x: e.target.getBoundingClientRect().x - 15,
 												y: e.target.getBoundingClientRect().y + 20,
 												width: e.currentTarget.offsetWidth + 20,
-											})
+											}, end)
 										}
 										onMouseLeave={() => toggleTip()}
 									/>
@@ -387,12 +387,12 @@ const TrackEditorSideMenu = props => {
 																onKeyUp={e => e.stopPropagation()}
 																onClick={() => handleCensorActive(item)}
 																onBlur={(e) => handleEditCensor(e, item, 0, `onBlur`)}
-																onMouseEnter={e => handleShowTip(`${videoLength < 3600 ? `MMSSMS` : `HMMSSMS`}`,
+																onMouseEnter={e => handleShowTip(`only-sec`,
 																	{
 																		x: e.target.getBoundingClientRect().x - 125,
 																		y: e.target.getBoundingClientRect().y - 25,
 																		width: e.currentTarget.offsetWidth + 20,
-																	})
+																	}, parseFloat(event.position[item][0]))
 																}
 																onMouseLeave={() => toggleTip()}
 															/>
