@@ -582,15 +582,23 @@ const VideoEditor = props => {
 		if (allEvents.length !== 0) {
 			Swal.fire({
 				title: `Import Y-Video Format`,
-				text: `Do you want to replace the actual content?`,
+				text: `Do you want to delete the current annotations?`,
 				icon: `question`,
 				confirmButtonText: `Yes`,
 				showCancelButton: true,
+				showDenyButton: true,
 				confirmButtonColor: `#0089b7`,
-				cancelButtonText: `No`,
+				denyButtonText: `No`,
+				cancelButtonText: `Cancel`,
 			}).then(async (result) => {
-				result.isConfirmed ? setIsReplace(true) : setIsReplace(false)
-				await callImportFile()
+				if (result.isConfirmed) {
+					setIsReplace(true)
+					await callImportFile()
+				} else if (result.isDenied){
+					setIsReplace(false)
+					await callImportFile()
+				}else
+					setIsReplace(false)
 			}).catch((error)=>{
 				Swal.fire(`An error has occur`, error.message, `error`)
 			})
@@ -816,7 +824,14 @@ const VideoEditor = props => {
 					<div id='export' className='header-button'>
 						{disableSave || blockLeave || isLoading ?
 							<button className='disable'>
-								<span>Export</span>
+								<span
+									onMouseEnter={e => handleShowTip(`export-disable`,
+										{
+											x: e.target.getBoundingClientRect().x - 15,
+											y: e.target.getBoundingClientRect().y + 20,
+											width: e.currentTarget.offsetWidth + 20,
+										})}
+									onMouseLeave={() => toggleTip()}>Export</span>
 							</button>
 							:
 							<div className='import-export'>
@@ -831,7 +846,14 @@ const VideoEditor = props => {
 					<div id='import' className='header-button'>
 						{disableSave || blockLeave || isLoading ?
 							<button className='disable'>
-								<span>Import</span>
+								<span
+									onMouseEnter={e => handleShowTip(`import-disable`,
+										{
+											x: e.target.getBoundingClientRect().x + 10,
+											y: e.target.getBoundingClientRect().y + 20,
+											width: e.currentTarget.offsetWidth + 20,
+										})}
+									onMouseLeave={() => toggleTip()}>Import</span>
 							</button>
 							:
 							<div className='import-export'>

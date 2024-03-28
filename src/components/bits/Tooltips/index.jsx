@@ -43,10 +43,12 @@ export const ToolTip = (props) => {
 
 	const {
 		tip,
+		secValue,
 	} = props
 
 	const [name, setName] = useState(``)
 	const [position, setPosition] = useState(null)
+	const [timeValue, setTimeValue] = useState()
 
 	useEffect(() => {
 		if(window.innerWidth < 600){
@@ -65,9 +67,10 @@ export const ToolTip = (props) => {
 			setName(tip.props.name)
 			if(tip.props.position)
 				setPosition(tip.props.position)
-
+			if(tip.props.secValue || tip.props.secValue === 0.0)
+				setTimeValue(Number(tip.props.secValue).toFixed(2))
 		}
-	}, [tip, name, position])
+	}, [tip, name, position, secValue])
 
 	const tips = {
 		"actions": `Actions`,
@@ -102,11 +105,15 @@ export const ToolTip = (props) => {
 		"changetime":`change time`,
 		"clips-tab": `Clips`,
 		"captions-tab": `Captions`,
+		"import-disable": `Save changes to import`,
+		"export-disable": `Save changes to export`,
+		"only-sec":`only sec`,
 	}
-	// console.log("POSITION", position)
 
 	return(
-		<Style id='tip-box' position={position}><h3>{tips[`${name}`]}</h3></Style>
+		<Style id='tip-box' position={position}>
+			<h3>{tips[name] === `only sec` ? `${timeValue} secs` : `${tips[name]}`}</h3>
+		</Style>
 	)
 }
 

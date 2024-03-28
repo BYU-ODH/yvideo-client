@@ -104,12 +104,13 @@ const VideoEditorContainer = props => {
 		})
 	}
 
-	const handleShowTip = (tipName, position) => {
+	const handleShowTip = (tipName, position, secValue) => {
 		toggleTip({
 			component: Tooltip,
 			props: {
 				name: tipName,
 				position,
+				secValue,
 			},
 		})
 	}
