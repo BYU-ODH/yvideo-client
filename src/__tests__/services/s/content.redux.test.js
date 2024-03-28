@@ -18,7 +18,6 @@ const newcontent = {
 	thumbnail: `test@thumbnail.com`,
 	physicalCopyExists: false,
 	isCopyrighted: false,
-	expired: true,
 	dateValidated: ``,
 	requester: ``,
 	resourceId: `5ebdaef833e57cec218b457c`,

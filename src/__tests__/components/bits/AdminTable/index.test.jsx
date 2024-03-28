@@ -17,7 +17,6 @@ const viewstate = {
 			owner: `owner`,
 			collectionId: `23`,
 			contentType: `contentType`,
-			expired: false,
 			resourceId: `123`,
 		},
 		{
@@ -31,7 +30,6 @@ const viewstate = {
 			owner: `owner1`,
 			collectionId: `24`,
 			contentType: `contentType1`,
-			expired: false,
 			resourceId: `234`,
 		},
 	],
@@ -282,7 +280,6 @@ describe(`Admin Table test`, () => {
 				names: screen.getAllByText(/testname/i),
 				collections: screen.getAllByText(/23|24/),
 				types: screen.getAllByText(/contentType/),
-				expirations: screen.getAllByText(/false|true/i),
 				resourceIds: screen.getAllByText(/123|234/),
 			}
 

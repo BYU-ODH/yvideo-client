@@ -32,7 +32,6 @@ const newcontent = {
 	thumbnail: `test@thumbnail.com`,
 	physicalCopyExists: false,
 	isCopyrighted: false,
-	expired: true,
 	dateValidated: ``,
 	requester: ``,
 	resourceId: `5ebdaef833e57cec218b457c`,
@@ -52,7 +51,6 @@ const content1 = {
 	thumbnail: `test@thumbnail.com`,
 	physicalCopyExists: false,
 	isCopyrighted: false,
-	expired: true,
 	dateValidated: ``,
 	requester: ``,
 	resourceId: `5ebdaef833e57cec218b457c`,
@@ -72,7 +70,6 @@ const content2 = {
 	thumbnail: `test@thumbnail.com`,
 	physicalCopyExists: false,
 	isCopyrighted: false,
-	expired: true,
 	dateValidated: ``,
 	requester: ``,
 	resourceId: `5ebdaef833e57cec218b457c`,
@@ -92,7 +89,6 @@ const content3 = {
 	thumbnail: `test@thumbnail.com`,
 	physicalCopyExists: false,
 	isCopyrighted: false,
-	expired: true,
 	dateValidated: ``,
 	requester: ``,
 	resourceId: `5ebdaef833e57cec218b457c`,
@@ -123,7 +119,6 @@ const collection = {
 	owner: 22,
 	published: true,
 	thumbnail: `test@thumbnail`,
-	'expired-content': content,
 }
 
 const props = {
@@ -149,7 +144,6 @@ describe(`manage collection container test`, () => {
 		expect(content.thumbnail).toBe(`test@thumbnail.com`)
 		expect(content.physicalCopyExists).toBe(false)
 		expect(content.isCopyrighted).toBe(false)
-		expect(content.expired).toBe(true)
 		expect(content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 
@@ -168,7 +162,6 @@ describe(`manage collection container test`, () => {
 		expect(viewstate.collection.content[0].thumbnail).toBe(`test@thumbnail.com`)
 		expect(viewstate.collection.content[0].physicalCopyExists).toBe(false)
 		expect(viewstate.collection.content[0].isCopyrighted).toBe(false)
-		expect(viewstate.collection.content[0].expired).toBe(true)
 		expect(viewstate.collection.content[0].resourceId).toBe(`5ebdaef833e57cec218b457c`)
 
 		// viewstate collection
@@ -183,7 +176,6 @@ describe(`manage collection container test`, () => {
 		expect(viewstate.content[0].thumbnail).toBe(`https://i.ytimg.com/vi/HK7SPnGSxLM/default.jpg`)
 		expect(viewstate.content[0].physicalCopyExists).toBe(false)
 		expect(viewstate.content[0].isCopyrighted).toBe(false)
-		expect(viewstate.content[0].expired).toBe(false)
 		expect(viewstate.content[0].resourceId).toBe(`00000000-0000-0000-0000-000000000000`)
 	})
 

@@ -22,24 +22,6 @@ const Style = styled.div`
 		}
 	}
 
-	& .expired {
-		& .content-title {
-		width: 100%;
-		position: relative;
-		font-weight: 500;
-		text-overflow: ellipsis;
-
-			& span {
-				position: absolute;
-				right: 0px;
-			}
-		}
-
-		& p {
-			font-style: italic;
-		}
-	}
-
 	@media screen and (max-width: 1000px) {
 		padding: 1rem;
 	}

@@ -104,9 +104,6 @@ const AdminTable = props => {
 					},
 				},
 				{
-					title: `Expired`,
-				},
-				{
 					title: `ResourceID`,
 				},
 			],
@@ -179,7 +176,6 @@ const AdminTable = props => {
 					<td>{item.name}</td>
 					<td><u><Link className={`${item.collectionId}`} to={`/manager/${item.collectionId}`} >{item.collectionId}</Link></u></td>
 					<td>{item.contentType}</td>
-					<td>{item.expired.toString()}</td>
 					<td>{item.resourceId}</td>
 				</>
 			)

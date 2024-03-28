@@ -4,7 +4,6 @@ export default class Content {
 	contentType = ``
 	dateValidated = ``
 	description = ``
-	expired = false
 	fullVideo = false
 	id = null
 	isCopyrighted = false
