@@ -12,7 +12,23 @@ const Style = styled.div`
 			display: block !important;
 	}
 
-	& .close-editor {
+	& .clock {
+		position: relative;
+		width: 15px;
+		padding-left:2%;
+		cursor: pointer;
+		right: 30px;
+		height: 4rem;
+		display: flex;
+    align-items: center;
+		margin-left: -22%;
+		opacity:0%;
+		:hover {
+			opacity:1 !important;
+		}
+	}
+
+	& .closeEditor {
 		width: 2rem;
 		text-align: right;
 		cursor: pointer;
@@ -26,12 +42,30 @@ const Style = styled.div`
 		font-size: 1.5rem;
 
 		& .side-tab-input {
-			margin: auto 10px auto auto !important;
+			margin:auto 20% 5% 5% !important;
 			padding: 0px 10px;
-			width: 120px;
+			width: 100px;
 			height: 4rem;
-			margin: 10px;
 			border: 1px solid var(--royal-blue);
+			:hover {
+				+ .clock {
+					-webkit-filter: invert(50%);
+					filter: invert(50%);
+					opacity:1;
+					:hover {
+						opacity:1;
+					}
+				}
+			}
+		}
+
+		& .endInput {
+			margin-left: 20% !important;
+		}
+
+		.blue-highlight {
+			background-color: #002e5d;
+			color: white;
 		}
 
 		& label {
@@ -101,12 +135,26 @@ const Style = styled.div`
 		overflow-y: scroll;
 		position: relative;
 		top: 20px;
+		& tr {
+			& i{
+				opacity: 0%
+			}
+		}
 		& td {
 			width: 15%;
 			padding: 2px;
 			margin: auto;
+			:hover {
+				& i {
+					opacity: 100%;
+					-webkit-filter: invert(50%);
+					filter: invert(50%);
+				}
+			}
 			& input {
 				margin: auto;
+				display: flex;
+				display: inline-block;
 				width: 90% !important;
 				&::-webkit-inner-spin-button {
 					-webkit-appearance: none;
@@ -119,9 +167,46 @@ const Style = styled.div`
 				cursor: pointer;
 			}
 		}
+
 		& #time-td {
-			width: 25%;
+			width: 23%;
 		}
+
+		& i {
+			z-index: 25 !important;
+			position: absolute;
+			padding-top: 5px;
+			right: 14px;
+			cursor: pointer;
+			left: 22%;
+			:hover{
+				-webkit-filter: invert(0%) !important;
+				filter: invert(0%) !important;
+			}
+		}
+
+		// & .clockColumn {
+		// 	width: 5%;
+		// }
+
+		& .td-one {
+			width:30% !important;
+		}
+
+		& .flex-box {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			position:relative;
+		}
+
+		& .blur-clock {
+			position: absolute;
+			left: 75%;
+			margin-right: 10%;
+			margin-top: -5%;
+		}
+
 
 		& #loader {
 			background-color: rgba(196, 196, 196, 0.7);

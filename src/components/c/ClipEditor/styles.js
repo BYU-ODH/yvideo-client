@@ -277,7 +277,6 @@ export const SideEditor = styled.div`
 			-webkit-filter: invert(0%) !important;
 			filter: invert(0%) !important;
 		}
-		//visibility: ${props => props.inputHover ? `visible` : `hidden`};
 	}
 
 	&  input {

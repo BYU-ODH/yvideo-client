@@ -6,6 +6,7 @@ import { authService } from 'services'
 import { Landing } from 'components'
 
 import { isMobile, isSafari, isIOS } from 'react-device-detect'
+import Swal from 'sweetalert2'
 
 const LandingContainer = props => {
 
@@ -14,9 +15,6 @@ const LandingContainer = props => {
 	} = props
 
 	const [overlay, setOverlay] = useState(false)
-	const [isAlertMessage, setIsAlertMessage] = useState(false)
-	const [alertMessage, setAlertMessage] = useState(``)
-	const [disabled, setDisabled] = useState(false)
 	const toggleOverlay = () => {
 		setOverlay(!overlay)
 	}
@@ -27,37 +25,39 @@ const LandingContainer = props => {
 	}
 
 	const checkBrowser = () => {
-		// safari
-		if(isSafari) {
-			setAlertMessage(`video playback doesn't work on safari, we recommend Chrome.`)
-			setIsAlertMessage(true)
-			setDisabled(true)
-		}else if(isIOS && isMobile) { // ios
-			setAlertMessage(`video playback doesn't work on the IOS system, please use a different device.`)
-			setIsAlertMessage(true)
-			setDisabled(true)
+		if(isSafari){
+			Swal.fire({
+				text: `Video playback does not currently work on Safari. Please use a chromium-based browser, like Chrome`,
+				icon: `warning`,
+				confirmButtonText: `Ok`,
+			}).then((result) => {
+				if (result.isConfirmed)
+					Swal.close()
+			}).catch((error) => {
+				Swal.fire(`An error has occurred`, error.message, `error`)
+			})
+		} else if(isIOS && isMobile){
+			Swal.fire({
+				text: `Video playback does not currently work on iOS. Please use a different device.`,
+				icon: `warning`,
+				confirmButtonText: `Ok`,
+			}).then((result) => {
+				if (result.isConfirmed)
+					Swal.close()
+			}).catch((error) => {
+				Swal.fire(`An error has occurred`, error.message, `error`)
+			})
 		}
-	}
-
-	const toggleAlertMessage = () => {
-		setDisabled(false)
-		const alert = document.getElementById(`alertMessage`)
-		if (alert)
-			alert.style.visibility = `hidden`
 	}
 
 	const viewstate = {
 		overlay,
-		alertMessage,
-		isAlertMessage,
-		disabled,
 	}
 
 	const handlers = {
 		toggleOverlay,
 		handleLogin,
 		checkBrowser,
-		toggleAlertMessage,
 	}
 
 	return <Landing viewstate={viewstate} handlers={handlers} />

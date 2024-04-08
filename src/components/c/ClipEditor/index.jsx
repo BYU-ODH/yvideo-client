@@ -6,7 +6,7 @@ import { ClipLayer, SwitchToggle } from 'components/bits'
 import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { convertSecondsToMinute, convertToSeconds } from '../../common/timeConversion'
+import { convertSecondsToHMS, convertToSeconds } from '../../common/timeConversion'
 import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
 
 import zoomIn from 'assets/te-zoom-in.svg'
@@ -543,7 +543,7 @@ const ClipEditor = props => {
 																	<input
 																		type='text'
 																		id={`timeInput-${i}`}
-																		value={`${convertSecondsToMinute(clipList?.[i]?.start, videoLength)}`}
+																		value={`${convertSecondsToHMS(clipList?.[i]?.start, videoLength)}`}
 																		onKeyUp={e => e.stopPropagation()}
 																		onClick={() => handleEditClip(item, i)}
 																		onChange={(e) => setStartTime(e.target.value, `input`, i)}
@@ -557,7 +557,7 @@ const ClipEditor = props => {
 																	<i className='fa fa-clock' onClick={() => toggleItemTimeChange(i, true, `end`)}></i>}
 																	<input
 																		type='text'
-																		value={`${convertSecondsToMinute(clipList?.[i]?.end, videoLength)}`}
+																		value={`${convertSecondsToHMS(clipList?.[i]?.end, videoLength)}`}
 																		onKeyUp={e => e.stopPropagation()}
 																		onClick={() => handleEditClip(item, i)}
 																		onChange={(e) => setEndTime(e.target.value, `input`, i)}
