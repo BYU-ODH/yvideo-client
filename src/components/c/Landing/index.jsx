@@ -3,21 +3,17 @@ import { Link } from 'react-router-dom'
 
 import { Overlay } from 'components'
 
-import { Wrapper, Comets, Welcome, Logo, Button, AlertMessage } from './styles'
+import { Wrapper, Comets, Welcome, Logo, Button } from './styles'
 
 const Landing = props => {
 
 	const {
 		overlay,
-		alertMessage,
-		isAlertMessage,
-		disabled,
 	} = props.viewstate
 
 	const {
 		toggleOverlay,
 		handleLogin,
-		toggleAlertMessage,
 		checkBrowser,
 	} = props.handlers
 
@@ -31,21 +27,14 @@ const Landing = props => {
 			<Comets className='left' />
 			<Comets className='right' />
 
-			<Welcome disable={disabled}>
+			<Welcome>
 				<div>
 					<Logo />
 					<h1>Y-VIDEO</h1>
 				</div>
-				{isAlertMessage &&
-					<AlertMessage id='alertMessage'>
-						<div>{alertMessage}</div>
-						<button type='button' onClick={toggleAlertMessage}>Close</button>
-					</AlertMessage>
-				}
-
 				<div className='button-wrapper'>
-					<Button id='primary' className='primary' onClick={handleLogin} disabled={disabled}>Sign In</Button>
-					<Button className='secondary' onClick={toggleOverlay} disabled={disabled}>About</Button>
+					<Button id='primary' className='primary' onClick={handleLogin}>Sign In</Button>
+					<Button className='secondary' onClick={toggleOverlay}>About</Button>
 					<Button className='secondary'><Link to={`/search-public-collections`} className='inactive'>Public Videos</Link></Button>
 					{/* <Button className='secondary' onClick={toggleOverlay}>Public</Button> */}
 				</div>
