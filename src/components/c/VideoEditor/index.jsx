@@ -5,7 +5,7 @@ import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { EventCard, TrackEditorSideMenu } from 'components/bits'
 import { TrackLayer, VideoContainer } from 'components'
 import { convertSecondsToHMS, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters, updateZoom } from '../../common/editorCommon'
+import { handleScrollFactor, debounceUpdateZoom, handleZoomEandD, getParameters, updateZoom } from '../../common/editorCommon'
 import Style, { Timeline, EventEditor, PlusIcon } from './styles'
 
 import skipIcon from 'assets/event_skip.svg'
@@ -103,8 +103,8 @@ const VideoEditor = props => {
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		useCallbackPrompt(blockLeave)
 
-	const [layerWidth, setWidth] = useState(0)
-	const [scrollBarWidth, setScrollBar] = useState(100)
+	const [layerWidth, setLayerWidth] = useState(0)
+	const [scrollBarWidth, setScrollBarWidth] = useState(100)
 	const [editCensor, setEditCensor] = useState({})
 	const [activeCensorPosition, setActiveCensorPosition] = useState(-1)
 	const [isLoading, setIsLoading] = useState(false)
@@ -120,13 +120,13 @@ const VideoEditor = props => {
 
 	useEffect(() => {
 		function handleResize() {
-			setWidth(0)
-			setWidth(1)
+			setLayerWidth(0)
+			setLayerWidth(1)
 		}
 		window.addEventListener(`resize`, handleResize)
 		setAllEvents(eventsArray)
 		setEvents(allEvents)
-		getParameters(videoLength, setWidth, videoCurrentTime, setScrollBar, document.getElementsByClassName(`events-box`))
+		getParameters(videoLength, setLayerWidth, videoCurrentTime, setScrollBarWidth, document.getElementsByClassName(`events-box`))
 
 		setEventCount(events.length)
 
@@ -139,7 +139,7 @@ const VideoEditor = props => {
 			window.onbeforeunload = undefined
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [eventsArray, blockLeave, videoLength])
+	}, [eventsArray, blockLeave, videoLength, videoCurrentTime])
 
 	// end of useEffect
 
@@ -679,7 +679,6 @@ const VideoEditor = props => {
 				></VideoContainer>
 
 				<Timeline zoom={scrollBarWidth}>
-
 					<section>
 						<div className='event-layers' id='layers-component'>
 							{layers.map((layer, index) => (
@@ -710,11 +709,11 @@ const VideoEditor = props => {
 
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
-						<div className='zoom-factor' id = 'zoom-factor'>
+						<div className='zoom-track' id = 'zoom-track'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className='zoom-indicator'
-								id='zoom-indicator'
+								className='zoom-thumb'
+								id='zoom-thumb'
 								bounds='parent'
 								enableResizing={
 									{
@@ -732,7 +731,7 @@ const VideoEditor = props => {
 								onDrag={(e, d) => {
 									handleZoomEandD(e, d)
 									if(eventCount > 100)
-										debouncedOnDrag()
+										debounceUpdateZoom()
 									else
 										updateZoom()
 								}}
@@ -748,11 +747,11 @@ const VideoEditor = props => {
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
 
-						<div className='zoom-scroll'>
+						<div className='scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div id='zoom-scroll-container' className='zoom-scroll-container'>
+								<div id='scroll-track' className='scroll-track'>
 									<Rnd
-										className= 'zoom-scroll-indicator'
+										id = 'scroll-thumb'
 										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={
 											{

@@ -94,14 +94,14 @@ export const Timeline = styled.div`
 		border-top: 1px solid black;
 		position: fixed;
 		bottom: 0px;
-		& .zoom-factor {
+		& .zoom-track {
 			margin: auto;
 			width: 140px;
 			height: 50%;
 			border-radius: 10px;
 			background-color: rgba(220, 220, 220, 0.5);
 			position: relative;
-			& .zoom-indicator {
+			& .zoom-thumb {
 				width: 2rem !important;
 				height: 100% !important;
 				background-color: var(--light-blue);
@@ -109,14 +109,14 @@ export const Timeline = styled.div`
 				cursor: move;
 			}
 		}
-		& .zoom-scroll {
+		& .scroll {
 			width: calc(100% - 161px);
 			height: calc(100%);
 			border-left: 1px solid black;
 			display: flex;
 			flex-direction: column;
 			overflow-x: scroll;
-			& .zoom-scroll-container {
+			& .scroll-track {
 				margin: auto;
 				width: 90%;
 				height: 50%;
@@ -124,7 +124,7 @@ export const Timeline = styled.div`
 				background-color: rgba(220, 220, 220, 0.5);
 				position: relative;
 				overflow: hidden;
-				& .zoom-scroll-indicator {
+				& #scroll-thumb {
 					position: absolute;
 					min-width: 5%;
 					width: ${props => props.zoom !== 0 ? `${props.zoom}%` : `100%`} !important;

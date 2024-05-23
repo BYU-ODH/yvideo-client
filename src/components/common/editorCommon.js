@@ -4,14 +4,17 @@ let zoomParams
 let lengthParam
 let setWidthParam
 let videoTimeParam
-let setScrollBarParam
+let setScrollBarWidthParam
 let eventsBoxParam
+let scrollThumbWidthInPixels
+let scrollThumbPositionRatio
+let scrollThumbWidthValue
 
-export const getParameters = (videoLength, setWidth, videoCurrentTime, setScrollBar, eventsBox) => {
+export const getParameters = (videoLength, setLayerWidth, videoCurrentTime, setScrollBarWidth, eventsBox) => {
 	lengthParam = videoLength
-	setWidthParam = setWidth
+	setWidthParam = setLayerWidth
 	videoTimeParam = videoCurrentTime
-	setScrollBarParam = setScrollBar
+	setScrollBarWidthParam = setScrollBarWidth
 	eventsBoxParam = eventsBox
 }
 
@@ -19,21 +22,33 @@ export const handleZoomEandD = (e, d) => {
 	zoomParams = {e, d}
 }
 
-const handleZoomChange = (_e, d, videoLength, setWidth, videoCurrentTime, setScrollBar, eventElements) => {
-	let width = 0
+const handleZoomChange = (_e, d, videoLength, setLayerWidth, videoCurrentTime, setScrollBarWidth, eventElements) => {
+	let zoomThumbPosition = d.x
+	let widthOfInvisiblePortionOfVideoInPixels = 0
 	if(eventElements[0]){ // eventElements is any one of the Rnd containers
-		const eventElemsVisWidth = eventElements[0].offsetWidth // width of the area that contains the subtitle Rnds
-		width = d.x * videoLength / 10 /* when zoom controls are at 0 displacement, this is also 0 because this is telling the width of the portion of the layer that's not visible, or eventsBoxWidth - total width of the eventsbox
+		const eventElemsVisWidth = eventElements[0].offsetWidth // width of the area that contains the events Rnds
+		widthOfInvisiblePortionOfVideoInPixels = zoomThumbPosition * videoLength / 10 /* when zoom controls are at 0 displacement, this is also 0 because this is telling the width of the portion of the layer that's not visible, or eventsBoxWidth - total width of the eventsbox
 																			if the whole box (including what is not visible) is 3000px, and the visible portion is 500px, then width is 3000 - 500 = 2500px */
-		setWidth(width) // this is setting layerWidth = total width of the eventsbox - width of the portion of the layer that's not visible
-		handleScrollFactor(videoCurrentTime * .95 / videoLength, true)
-		if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
-			setScrollBar(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventElemsVisWidth + width))
-	}
+		console.log("zoomThumbPosition: " + zoomThumbPosition)
+		console.log("width: " + widthOfInvisiblePortionOfVideoInPixels)
+		console.log("-----")
+		setLayerWidth(widthOfInvisiblePortionOfVideoInPixels) // this is setting layerWidth = total width of the eventsbox - width of the portion of the layer that is visible
+		handleScrollFactor(videoCurrentTime * .95 / videoLength, true) //**Suspect #1 - 0.95**
+		// console.log("videoCurrentTime * .95: "+ videoCurrentTime * .95)
+		// console.log("videoLength: "+ videoLength)
+		// if(document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0])
+		// 	setScrollBarWidth(document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventElemsVisWidth + width))
+		// console.log("XXXXX: "+scrollBarWidth)
+		//8***********8
+		if (document.getElementsByClassName(`layer-container`)[0] && document.getElementsByClassName(`events`)[0]) {
+            scrollThumbWidthValue = document.getElementsByClassName(`layer-container`)[0].clientWidth * 100 / (eventElemsVisWidth + widthOfInvisiblePortionOfVideoInPixels)
+			setScrollBarWidth(scrollThumbWidthValue)
 }
-
-export const handleScrollFactor = (direction, zoom) => {
-	if(document.getElementsByClassName(`layer-container`) && document.getElementById(`zoom-scroll-container`)){
+}
+}
+  
+export const handleScrollFactor = (scrollThumbPosition, zoom) => {
+	if(document.getElementsByClassName(`layer-container`) && document.getElementById(`scroll-track`)){
 		const scrubberContainer = document.getElementById(`time-bar`)
 		const scrubber = document.getElementById(`time-bar-progress`)
 		const timeIndicator = document.getElementById(`time-indicator-container`)
@@ -47,21 +62,43 @@ export const handleScrollFactor = (direction, zoom) => {
 		else
 			layerScrollWidth = document.getElementsByClassName(`events`).getBoundingClientRect().width
 
-		const scrollBarContainer = document.getElementById(`zoom-scroll-container`).getBoundingClientRect().width
-		let scrollBarWidth = 0
-		if (!zoom)
-			scrollBarWidth = Math.ceil(Array.from(document.getElementsByClassName(`zoom-scroll-indicator react-draggable react-draggable-dragged`))[0].getBoundingClientRect().width)
+		console.log("layerScrollWidth: "+ layerScrollWidth)
+		const scrollTrackWidth = document.getElementById(`scroll-track`).getBoundingClientRect().width
 
-		const dis = Math.floor(scrollBarContainer) > direction + scrollBarWidth || direction === 0 ? direction / scrollBarContainer : 1.0
+		if (!zoom){
+			scrollThumbWidthInPixels = Math.ceil(document.getElementById(`scroll-thumb`).getBoundingClientRect().width)
+			scrollThumbPositionRatio = Math.floor(scrollTrackWidth) > scrollThumbPosition + scrollThumbWidthInPixels || scrollThumbPosition === 0 ? scrollThumbPosition / scrollTrackWidth : 1.0		
+		}
 
-		timeIndicator.scrollLeft = scrubber.getBoundingClientRect().width * dis
-		scrubberContainer.scrollLeft = scrubber.getBoundingClientRect().width * dis
+		// console.log("scrollThumbWidthValue: "+ scrollThumbWidthValue)
+		// console.log("scrollThumbWidthInPixels: "+ scrollThumbWidthInPixels)
+		// console.log("scrollThumbPosition: "+ scrollThumbPosition)
+		// console.log("scrollTrackWidth: "+ scrollTrackWidth)
+		// console.log("scrollThumbPositionRatio: "+ scrollThumbPositionRatio)
+		// console.log("=====")
+
+				
+		const availableSpaceRight = scrollTrackWidth - scrollThumbPosition - scrollThumbWidthInPixels;
+		const spaceLeftRatio = availableSpaceRight >= 0 ? 1.0 : scrollThumbWidthValue / scrollTrackWidth;
+
+		// console.log("availableSpaceRight:" + availableSpaceRight)
+		// console.log("spaceLeftRatio:" + spaceLeftRatio)
+
+		if (availableSpaceRight <= 0) {
+            // If availableSpaceRight is negative, move the scrollbar to the left
+			// left space = scrollthumbwidthvalue * scrollThumbPositionRatio
+			const leftSpace = scrollThumbWidthValue * scrollThumbPositionRatio
+			console.log("leftSpace: " + leftSpace)
+        }
+
+		timeIndicator.scrollLeft = scrubber.getBoundingClientRect().width * scrollThumbPositionRatio
+		scrubberContainer.scrollLeft = scrubber.getBoundingClientRect().width * scrollThumbPositionRatio
 
 		allLayers.forEach((_element, i) => {
-			allLayers[i].scrollLeft = layerScrollWidth * dis
+			allLayers[i].scrollLeft = layerScrollWidth * scrollThumbPositionRatio
 		})
 		if(skipLayer)
-			skipLayer.scrollLeft = layerScrollWidth * dis
+			skipLayer.scrollLeft = layerScrollWidth * scrollThumbPositionRatio
 	}
 }
 
@@ -70,10 +107,10 @@ export const handleElapsed = (time, setElapsed) => {
 }
 
 export const updateZoom = () => {
-	handleZoomChange(zoomParams.e, zoomParams.d, lengthParam, setWidthParam, videoTimeParam, setScrollBarParam, eventsBoxParam)
-}
+	handleZoomChange(zoomParams.e, zoomParams.d, lengthParam, setWidthParam, videoTimeParam, setScrollBarWidthParam, eventsBoxParam);
+  };
 
-export const debouncedOnDrag = debounce(updateZoom, 25)
+export const debounceUpdateZoom = debounce(updateZoom, 25)
 
 export const calculateStartAndEndTimesForDrag = (d, layerWidth, videoLength, start, end) => {
 	const beginTimePercentage = d.x / layerWidth * videoLength

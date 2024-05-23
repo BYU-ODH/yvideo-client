@@ -7,7 +7,7 @@ import { parse } from 'subtitle'
 import { useCallbackPrompt } from '../../../hooks/useCallbackPrompt'
 import { VideoContainer, SkipLayer } from 'components'
 import { convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, updateZoom, handleZoomEandD, getParameters } from '../../common/editorCommon'
+import { handleScrollFactor, debounceUpdateZoom, updateZoom, handleZoomEandD, getParameters } from '../../common/editorCommon'
 
 // ICONS FOR THE EVENTS CAN BE FOUND AT https://feathericons.com/
 // TRASH ICON COLOR IS: #eb6e79. OTHER ICON STROKES ARE LIGHT BLUE VAR IN CSS: #0582ca
@@ -912,10 +912,10 @@ const SubtitleEditor = props => {
 
 					<div className='zoom-controls'>
 						{/* ADD ZOOM ICON */}
-						<div className='zoom-factor' id='zoom-factor'>
+						<div className='zoom-track' id='zoom-track'>
 							<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 							<Rnd
-								className='zoom-indicator'
+								className='zoom-thumb'
 								bounds='parent'
 								enableResizing={
 									{
@@ -933,7 +933,7 @@ const SubtitleEditor = props => {
 								onDrag={(e, d) => {
 									handleZoomEandD(e, d)
 									if(subsCount > 100)
-										debouncedOnDrag()
+										debounceUpdateZoom()
 									else
 										updateZoom()
 								}}
@@ -948,11 +948,11 @@ const SubtitleEditor = props => {
 							></Rnd>
 							<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 						</div>
-						<div className='zoom-scroll'>
+						<div className='scroll'>
 							<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-								<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+								<div id={`scroll-track`} className={`scroll-track`}>
 									<Rnd
-										className= 'zoom-scroll-indicator'
+										id = 'scroll-thumb'
 										size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 										enableResizing={
 											{

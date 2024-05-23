@@ -207,7 +207,7 @@ describe(`VideoEditor testing`, () => {
 		})
 	})
 
-	it(`zoom-indicator`, () => {
+	it(`zoom-thumb`, () => {
 		act(() => {
 			wrapper.find(`ReactPlayer`).prop(`onDuration`)(200)
 			wrapper.find(`Rnd`).forEach(e => e.prop(`onDragStop`)(``, {x: 0}))

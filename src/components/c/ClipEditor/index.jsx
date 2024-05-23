@@ -7,7 +7,7 @@ import { DndProvider } from 'react-dnd'
 import { Rnd } from 'react-rnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { convertSecondsToHMS, convertToSeconds } from '../../common/timeConversion'
-import { handleScrollFactor, debouncedOnDrag, handleZoomEandD, getParameters } from '../../common/editorCommon'
+import { handleScrollFactor, debounceUpdateZoom, handleZoomEandD, getParameters } from '../../common/editorCommon'
 
 import zoomIn from 'assets/te-zoom-in.svg'
 import zoomOut from 'assets/te-zoom-out.svg'
@@ -68,7 +68,7 @@ const ClipEditor = props => {
 	}, [showPrompt])
 
 	useEffect(() => {
-		// setScrollWidth(document.getElementsByClassName(`zoom-scroll-container`)[0].clientWidth)
+		// setScrollWidth(document.getElementsByClassName(`scroll-track`)[0].clientWidth)
 		const handleResize = () => {
 			setWidth(0)
 			setWidth(1)
@@ -409,10 +409,10 @@ const ClipEditor = props => {
 						<section>
 						</section>
 						<div className='zoom-controls'>
-							<div className='zoom-factor'>
+							<div className='zoom-track'>
 								<img src={zoomOut} alt='' style={{ width: `20px` }}/>
 								<Rnd
-									className='zoom-indicator'
+									className='zoom-thumb'
 									bounds='parent'
 									enableResizing={
 										{
@@ -429,7 +429,7 @@ const ClipEditor = props => {
 									dragAxis='x'
 									onDrag={(e, d) => {
 										handleZoomEandD(e, d)
-										debouncedOnDrag()
+										debounceUpdateZoom()
 									}}
 									onMouseEnter={e => handleShowTip(`te-zoom`,
 										{
@@ -442,11 +442,11 @@ const ClipEditor = props => {
 								></Rnd>
 								<img src={zoomIn} alt='' style={{ float: `right`, width: `20px` }}/>
 							</div>
-							<div className='zoom-scroll'>
+							<div className='scroll'>
 								<div style={{ width: `100%`, height: `100%`, display: `flex` }}>
-									<div id={`zoom-scroll-container`} className={`zoom-scroll-container`}>
+									<div id={`scroll-track`} className={`scroll-track`}>
 										<Rnd
-											className= 'zoom-scroll-indicator'
+											id = 'scroll-thumb'
 											size={{width: scrollBarWidth !== 0 ? `${scrollBarWidth}%` : `100%`, height: `100%`}}
 											enableResizing={
 												{
