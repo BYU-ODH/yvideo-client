@@ -8,6 +8,7 @@ import { isSafari, isIOS } from 'react-device-detect'
 
 import { Player } from 'components'
 import { Tooltip } from 'components/bits'
+import Swal from 'sweetalert2'
 
 import handleScrollFuncs from '../../components/common/toggleScroll'
 
@@ -672,11 +673,17 @@ const PlayerContainer = props => {
 	}
 
 	const checkBrowser = () => {
-		const alertMessage = `Video playback does not currently work on iOS devices or the Safari browser. <br><br>`
-		if(isSafari || isIOS) {
-			document.getElementById(`alertMessage`).style.visibility = `visible`
-			const alertMessageButton = `<button type='button' onclick={alertMessage.style.visibility='hidden'}>Close</button>`
-			document.getElementById(`alertMessage`).innerHTML = alertMessage + alertMessageButton
+		if(isSafari || isIOS){
+			Swal.fire({
+				text: `Video playback does not currently work on iOS devices or the Safari browser.`,
+				icon: `warning`,
+				confirmButtonText: `Ok`,
+			}).then((result) => {
+				if (result.isConfirmed)
+					Swal.close()
+			}).catch((error) => {
+				Swal.fire(`An error has occurred`, error.message, `error`)
+			})
 		}
 	}
 
