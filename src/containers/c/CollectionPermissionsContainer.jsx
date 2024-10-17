@@ -261,7 +261,7 @@ const CollectionPermissionsContainer = props => {
 	const addBatchNetids = () => {
 		toggleModal({
 			component: AddBatchNetidsContainer,
-			props: { collectionId: collection.id, isLoading },
+			props: { collectionId: collection.id, setIsLoading: setIsLoading },
 		})
 		setIsEdited(true)
 	}
