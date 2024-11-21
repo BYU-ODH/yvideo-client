@@ -128,6 +128,19 @@ const Player = props => {
 		}
 	}
 
+	const expectedRatio  = 1.7777777 // 16:9 ratio
+
+	function checkRatio(e) {
+		const blankEl = document.getElementById("blank");
+		const bounding = blankEl.getBoundingClientRect();
+		const height = bounding.height;
+		const width = bounding.width;
+		const currentRatio = width / height;
+		const difference = Math.abs(expectedRatio - currentRatio);
+		const percentage = difference / expectedRatio * 100;
+		console.log(`Current difference percentage is ${percentage}`);
+	}
+
 	const handleOnProgress = ({ played, playedSeconds }) => {
 		handleProgress(playedSeconds)
 		document.getElementById(`seconds-time-holder`).innerText = playedSeconds
@@ -280,7 +293,7 @@ const Player = props => {
 					/>
 
 					<PlayerControls viewstate={props.viewstate} handlers={props.handlers} skipArray={skipArray}/>
-					<Blank blank={blank} id='blank' onContextMenu={e => e.preventDefault()}>
+					<Blank blank={blank} onResize={checkRatio} id='blank' onContextMenu={e => e.preventDefault()}>
 						{ !started &&
 							<PlayButton playing={playing} onClick={() => handlePlayPause(playing)} started={started} src={playButton} isMobile={isMobile} isLandscape={isLandscape}/>
 						}
