@@ -24,7 +24,6 @@ import { objectIsEmpty } from 'lib/util'
 const ContentOverviewContainer = props => {
 
 	const {
-		isExpired,
 		content,
 		removeCollectionContent,
 		updateContent,
@@ -78,8 +77,6 @@ const ContentOverviewContainer = props => {
 	}, [blockLeave])
 
 	if (objectIsEmpty(content)) return null
-	if (isExpired)
-		return <ContentOverview isExpired={true} content={content}/>
 
 	// TODO: probably don't need the await here
 	const handleToggleEdit = async () => {

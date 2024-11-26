@@ -34,7 +34,6 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 		expect(viewstate.collection.content[0].thumbnail).toBe(`test@thumbnail.com`)
 		expect(viewstate.collection.content[0].physicalCopyExists).toBe(false)
 		expect(viewstate.collection.content[0].isCopyrighted).toBe(false)
-		expect(viewstate.collection.content[0].expired).toBe(true)
 		expect(viewstate.collection.content[0].resourceId).toBe(`5ebdaef833e57cec218b457c`)
 
 		// viewstate collection
@@ -50,7 +49,6 @@ describe(`LabAssistantManageCollectionContainer container test`, () => {
 		expect(viewstate.content[0].thumbnail).toBe(`test@thumbnail.com`)
 		expect(viewstate.content[0].physicalCopyExists).toBe(false)
 		expect(viewstate.content[0].isCopyrighted).toBe(false)
-		expect(viewstate.content[0].expired).toBe(true)
 		expect(viewstate.content[0].resourceId).toBe(`5ebdaef833e57cec218b457c`)
 	})
 

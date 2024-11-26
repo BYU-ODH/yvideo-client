@@ -17,7 +17,6 @@ const newcontent = {
 	thumbnail: `test@thumbnail.com`,
 	physicalCopyExists: false,
 	isCopyrighted: false,
-	expired: true,
 	dateValidated: ``,
 	requester: ``,
 	resourceId: `5ebdaef833e57cec218b457c`,
@@ -55,7 +54,6 @@ const props = {
 				thumbnail: `test@thumbnail.com`,
 				physicalCopyExists: false,
 				isCopyrighted: false,
-				expired: true,
 				dateValidated: ``,
 				requester: ``,
 				resourceId: `5ebdaef833e57cec218b457c`,
@@ -137,7 +135,6 @@ describe(`manage collection test`, () => {
 			expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
 			expect(viewstate.content.physicalCopyExists).toBe(false)
 			expect(viewstate.content.isCopyrighted).toBe(false)
-			expect(viewstate.content.expired).toBe(true)
 			expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 		}
 	})

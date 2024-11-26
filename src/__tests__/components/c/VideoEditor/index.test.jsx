@@ -39,7 +39,6 @@ const viewstate = {
 		contentType: `video`,
 		dateValidated: ``,
 		description: `test`,
-		expired: false,
 		fullVideo: false,
 		id: `0`,
 		isCopyrighted: false,

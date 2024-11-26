@@ -40,7 +40,6 @@ describe(`manage collection test`, () => {
 		expect(viewstate.content.thumbnail).toBe(`test@thumbnail.com`)
 		expect(viewstate.content.physicalCopyExists).toBe(false)
 		expect(viewstate.content.isCopyrighted).toBe(false)
-		expect(viewstate.content.expired).toBe(true)
 		expect(viewstate.content.resourceId).toBe(`5ebdaef833e57cec218b457c`)
 
 		// simulate edit button clicks, it should show 3 other buttons when it is clicked

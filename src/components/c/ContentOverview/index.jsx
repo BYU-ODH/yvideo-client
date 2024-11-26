@@ -25,16 +25,6 @@ import Style, {
 
 const ContentOverview = props => {
 
-	if(props.isExpired){
-		return (
-			<Style>
-				<div className='expired'>
-					<h3 className={`content-title`}>{props.content[`content-title`]} <span>Expired</span></h3><br/>
-					<p>Please, contact a lab assistant to learn how to recover this content</p>
-				</div>
-			</Style>
-		)
-	}
 	const SUPPORTED_LANGUAGES = [
 		`German`,
 		`Spanish`,
