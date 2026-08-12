@@ -7,10 +7,23 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 	<meta name='theme-color' content='#FFFFFF'>
 	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	<!--
+	OneTrust cookie consent is disabled because it breaks YouTube playback.
+
+	OtAutoBlock.js blocks tags listed under consent categories the user has not accepted.
+	BYU's shared block list (domain script 6985a5b2-0d75-4cac-8d42-8564ff47121f) categorises
+	both https://www.youtube.com/iframe_api and https://www.youtube.com/embed/ as C0004
+	(targeting cookies), and the site grants only C0001 by default. The result: the iframe
+	API script is rewritten to type="text/plain" so it never executes, and the embed iframe
+	has its src moved to data-src, so no YouTube video can ever play. It fails silently,
+	with no error the player can report.
+
+	Re-enabling this requires the YouTube entries to be categorised as strictly necessary
+	(C0001). That cannot be scoped to one hostname within a shared block list, so it needs a
+	OneTrust domain script ID specific to yvideo.byu.edu. Once that exists, restore the block
+	below and swap both occurrences of the domain script ID.
+
 	<script type='text/javascript' src='https://cdn.cookielaw.org/consent/6985a5b2-0d75-4cac-8d42-8564ff47121f/OtAutoBlock.js' ></script>
-
-
-
 
 	<script>
 	(function() { // Scoping function to avoid globals
@@ -21,6 +34,7 @@
 		<\/script>`)
 	})();
 	</script>
+	-->
 
 
 

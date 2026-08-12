@@ -227,6 +227,12 @@ const Player = props => {
 		}
 	}
 
+	// Without this, playback failures (blocked YouTube embeds, SDK load errors, bad
+	// stream urls) are swallowed silently and the player just never starts.
+	const handleOnError = (error, data) => {
+		console.error(`Player error:`, error, data) // eslint-disable-line no-console
+	}
+
 	return (
 		<Style onMouseMove={handleMouseMoved} hovering={hovering} started={started} playing={playing} mouseInactive={mouseInactive} controlsHovering={controlsHovering}>
 			<div style={
@@ -255,6 +261,7 @@ const Player = props => {
 						onPause={handlePause}
 						onStart={handleStart}
 						onReady = {handleOnReady}
+						onError={handleOnError}
 						onSeek={e => e}
 						progressInterval={30}
 						onProgress={handleOnProgress}
