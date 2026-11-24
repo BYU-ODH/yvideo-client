@@ -82,3 +82,52 @@ export const Logo = styled.div`
 	width: 3.0rem;
 	margin-top: 1.8rem;
 `
+
+export const ReleaseBanner = styled.div`
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	box-sizing: border-box;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+
+	padding: .8rem 4rem;
+
+	background-color: var(--navy-blue);
+	color: white;
+	font-size: 1.4rem;
+	box-shadow: 0 .2rem .6rem rgba(0, 0, 0, 0.2);
+
+	& p {
+		margin: 0;
+		text-align: center;
+	}
+
+	& a {
+		color: white;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+
+	&& > button {
+		position: absolute;
+		right: 1.5rem;
+		margin: 0;
+		padding: 0 .6rem;
+		background: transparent;
+		border: none;
+		border-radius: .3rem;
+		color: white;
+		font-size: 2rem;
+		line-height: 1;
+		cursor: pointer;
+
+		&:hover, &:focus {
+			background-color: rgba(255, 255, 255, 0.2);
+		}
+	}
+`
